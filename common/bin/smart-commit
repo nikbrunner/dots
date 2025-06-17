@@ -296,9 +296,12 @@ EOF
         echo ""
     else
         # Try regular push
-        if ! git push 2>&1; then
+        local push_output
+        if ! push_output=$(git push 2>&1); then
             echo ""
-            echo "Push failed. Would you like to force push?"
+            echo "Push failed:"
+            echo "$push_output"
+            echo ""
             if gum confirm "Force push with --force-with-lease?"; then
                 git push --force-with-lease
                 echo ""
@@ -323,9 +326,12 @@ else
     echo ""
     if gum confirm "Push to remote?"; then
         # Try regular push
-        if ! git push 2>&1; then
+        local push_output
+        if ! push_output=$(git push 2>&1); then
             echo ""
-            echo "Push failed. Would you like to force push?"
+            echo "Push failed:"
+            echo "$push_output"
+            echo ""
             if gum confirm "Force push with --force-with-lease?"; then
                 git push --force-with-lease
                 echo ""
