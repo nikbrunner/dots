@@ -155,11 +155,15 @@ do_push() {
     else
         # Try regular push
         if command -v gum >/dev/null 2>&1; then
-            if gum spin --spinner="dot" --title="Pushing..." -- git push 2>/dev/null; then
+            # Capture output to show error message
+            local push_output
+            if push_output=$(gum spin --spinner="dot" --title="Pushing..." -- git push 2>&1); then
                 log_success "Changes pushed"
             else
-                log_warning "Push failed. Would you like to force push?"
-                if command -v gum >/dev/null 2>&1 && gum confirm "Force push with --force-with-lease?"; then
+                log_warning "Push failed:"
+                echo "$push_output"
+                echo ""
+                if gum confirm "Force push with --force-with-lease?"; then
                     gum spin --spinner="dot" --title="Force pushing..." -- git push --force-with-lease
                     log_success "Changes force pushed"
                 else
@@ -168,10 +172,14 @@ do_push() {
                 fi
             fi
         else
-            if git push 2>/dev/null; then
+            # Capture output to show error message  
+            local push_output
+            if push_output=$(git push 2>&1); then
                 log_success "Changes pushed"
             else
-                log_warning "Push failed. Try: git push --force-with-lease"
+                log_warning "Push failed:"
+                echo "$push_output"
+                echo "Try: git push --force-with-lease"
                 return 1
             fi
         fi
