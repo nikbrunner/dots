@@ -51,27 +51,34 @@ dots clean
    - For cross-platform configs: Place in `common/` following home directory structure
    - For OS-specific configs: Place in `macos/` or `linux/` following home directory structure
    - Example: For a new tool config, place it in `common/.config/toolname/`
-2. Run `dots link` to create symlinks (the recursive linking will handle new files automatically)
-3. No manual script updates needed - the structure is self-documenting
+2. Run `dots link` to create symlinks (mappings are auto-generated if outdated)
+3. No manual script updates needed - new files are automatically detected and mapped
 
 ## Symlink Mappings
 
-The system now uses recursive linking where the repository structure exactly mirrors the home directory:
+The system uses JSON-based mapping files for precise file-level symlinks. The `scripts/generate-mappings.sh` script creates mapping files that define exactly which files should be symlinked where.
+
+### Mapping System
+- **File-level linking only**: Every file is individually symlinked (no directory symlinks)
+- **JSON mappings**: `.mappings/macos.json` and `.mappings/linux.json` define source→target mappings
+- **Automatic parent directory creation**: Parent directories are created as needed when symlinking files
 
 ### Common (Cross-platform) Files
 - `common/.zshrc` → `~/.zshrc`
 - `common/.gitconfig` → `~/.gitconfig`
-- `common/.config/yazi/` → `~/.config/yazi/`
-- `common/bin/` → `~/bin/`
-- All files in `common/` are recursively symlinked to `~/`
+- `common/.config/yazi/yazi.toml` → `~/.config/yazi/yazi.toml`
+- `common/.config/oh-my-posh/nbr.omp.json` → `~/.config/oh-my-posh/nbr.omp.json`
+- `common/bin/dots` → `~/bin/dots`
+- All files in `common/` are individually mapped and symlinked
 
 ### macOS-specific Files
-- `macos/Library/Application Support/Claude/` → `~/Library/Application Support/Claude/`
+- `macos/.config/karabiner/karabiner.json` → `~/.config/karabiner/karabiner.json`
+- `macos/Library/Application Support/Claude/claude_desktop_config.json` → `~/Library/Application Support/Claude/claude_desktop_config.json`
 - `macos/Brewfile` → `~/Brewfile`
-- All files in `macos/` are recursively symlinked to `~/`
+- All files in `macos/` are individually mapped and symlinked
 
 ### Linux-specific Files
-- All files in `linux/` are recursively symlinked to `~/` (when on Linux systems)
+- All files in `linux/` are individually mapped and symlinked (when on Linux systems)
 
 ## Backup Files
 

@@ -1,6 +1,6 @@
 #!/bin/bash
-# Creates symlinks for dotfiles based on OS
-# Usage: ./scripts/link.sh [--force]
+# Creates symlinks for dotfiles based on JSON mappings
+# Usage: ./scripts/link.sh [--force] [--dry-run]
 
 set -e
 
@@ -40,9 +40,6 @@ fi
 create_symlink() {
     local source="$1"
     local target="$2"
-
-    # Create parent directory if it doesn't exist
-    mkdir -p "$(dirname "$target")"
 
     if [[ "$DRY_RUN" == true ]]; then
         # Dry run mode - just show what would happen
@@ -98,96 +95,43 @@ echo "Setting up dotfiles symlinks..."
 echo "OS detected: $(get_os)"
 echo ""
 
-# Recursive function to create symlinks
-link_recursive() {
-    local source_dir="$1"
-    local target_dir="$2"
-    
-    # Skip if source directory doesn't exist
-    [[ ! -d "$source_dir" ]] && return
-    
-    # Process each item in source directory
-    for item in "$source_dir"/*; do
-        # Skip if glob didn't match anything
-        [[ ! -e "$item" ]] && continue
-        
-        local basename=$(basename "$item")
-        local target="$target_dir/$basename"
-        
-        if [[ -d "$item" ]] && [[ ! -L "$item" ]]; then
-            # For config directories, symlink the entire directory
-            if [[ "$basename" != ".config" ]] && [[ "$(dirname "$target")" == *"/.config" ]]; then
-                # This is a tool config directory inside .config, symlink it entirely
-                create_symlink "$item" "$target"
-            else
-                # It's a regular directory, recurse and process dotfiles
-                link_recursive "$item" "$target"
-                link_dotfiles "$item" "$target"
-            fi
-        elif [[ -f "$item" ]] || [[ -L "$item" ]]; then
-            # It's a file or symlink, create symlink
-            create_symlink "$item" "$target"
-        fi
-    done
-}
+# Get current OS
+CURRENT_OS=$(get_os)
+MAPPING_FILE="$DOTS_DIR/.mappings/$CURRENT_OS.json"
 
-# Process dotfiles (files starting with .)
-link_dotfiles() {
-    local source_dir="$1"
-    local target_dir="$2"
-    
-    # Skip if source directory doesn't exist
-    [[ ! -d "$source_dir" ]] && return
-    
-    # Process dotfiles in source directory
-    for item in "$source_dir"/.*; do
-        # Skip . and ..
-        [[ "$item" == "$source_dir/." ]] || [[ "$item" == "$source_dir/.." ]] && continue
-        [[ ! -e "$item" ]] && continue
-        
-        local basename=$(basename "$item")
-        local target="$target_dir/$basename"
-        
-        if [[ -d "$item" ]] && [[ ! -L "$item" ]]; then
-            # For config directories, symlink the entire directory
-            if [[ "$basename" != ".config" ]] && [[ "$(dirname "$target")" == *"/.config" ]]; then
-                # This is a tool config directory inside .config, symlink it entirely
-                create_symlink "$item" "$target"
-            else
-                # It's a regular directory, recurse and process dotfiles
-                link_recursive "$item" "$target"
-                link_dotfiles "$item" "$target"
-            fi
-        elif [[ -f "$item" ]] || [[ -L "$item" ]]; then
-            # It's a file or symlink, create symlink
-            create_symlink "$item" "$target"
-        fi
-    done
-}
-
-# Main linking logic
-echo "Linking common files..."
-link_recursive "$DOTS_DIR/common" "$HOME"
-link_dotfiles "$DOTS_DIR/common" "$HOME"
-
-# OS-specific linking
-if [[ "$(get_os)" == "macos" ]]; then
-    echo ""
-    echo "Linking macOS-specific files..."
-    link_recursive "$DOTS_DIR/macos" "$HOME"
-    link_dotfiles "$DOTS_DIR/macos" "$HOME"
-elif [[ "$(get_os)" == "linux" ]]; then
-    echo ""
-    echo "Linking Linux-specific files..."
-    link_recursive "$DOTS_DIR/linux" "$HOME"
-    link_dotfiles "$DOTS_DIR/linux" "$HOME"
+# Generate mappings if they don't exist or are outdated
+if [[ ! -f "$MAPPING_FILE" ]] || [[ "$DOTS_DIR/common" -nt "$MAPPING_FILE" ]] || [[ "$DOTS_DIR/$CURRENT_OS" -nt "$MAPPING_FILE" ]]; then
+    echo -e "${YELLOW}→${NC} Generating fresh mappings..."
+    "$SCRIPT_DIR/generate-mappings.sh" > /dev/null
 fi
 
-# Future submodules (commented out for now)
-# create_symlink "$DOTS_DIR/submodules/nvim" "$HOME/.config/nvim"
-# create_symlink "$DOTS_DIR/submodules/wezterm" "$HOME/.config/wezterm"
-# create_symlink "$DOTS_DIR/submodules/zed" "$HOME/.config/zed"
+# Check if mapping file exists
+if [[ ! -f "$MAPPING_FILE" ]]; then
+    echo -e "${RED}✗${NC} Mapping file not found: $MAPPING_FILE"
+    echo "Run: $SCRIPT_DIR/generate-mappings.sh"
+    exit 1
+fi
+
+echo -e "${YELLOW}→${NC} Using mappings: $MAPPING_FILE"
+echo ""
+
+# Parse JSON and create symlinks
+# Using a simple approach that works with basic JSON without requiring jq
+while IFS=':' read -r source_part target_part; do
+    # Skip lines that don't contain mappings (like opening/closing braces)
+    [[ ! "$source_part" =~ \".*\" ]] && continue
+    [[ ! "$target_part" =~ \".*\" ]] && continue
+    
+    # Clean up the strings (remove quotes, commas, spaces)
+    source=$(echo "$source_part" | sed 's/^[[:space:]]*"//' | sed 's/"[[:space:]]*$//')
+    target=$(echo "$target_part" | sed 's/^[[:space:]]*"//' | sed 's/"[[:space:]]*,*[[:space:]]*$//')
+    
+    # Skip empty lines
+    [[ -z "$source" || -z "$target" ]] && continue
+    
+    create_symlink "$source" "$target"
+    
+done < "$MAPPING_FILE"
 
 echo ""
 echo "Symlink setup complete!"
-
