@@ -17,10 +17,23 @@ GREEN='\033[0;32m'
 YELLOW='\033[0;33m'
 NC='\033[0m' # No Color
 
-# Check for force flag
+# Check for flags
 FORCE=false
-if [[ "$1" == "--force" ]]; then
-    FORCE=true
+DRY_RUN=false
+for arg in "$@"; do
+    case $arg in
+        --force)
+            FORCE=true
+            ;;
+        --dry-run)
+            DRY_RUN=true
+            ;;
+    esac
+done
+
+if [[ "$DRY_RUN" == true ]]; then
+    echo -e "${YELLOW}DRY RUN MODE - No changes will be made${NC}"
+    echo ""
 fi
 
 # Function to create symlink
@@ -28,6 +41,29 @@ create_symlink() {
     local source="$1"
     local target="$2"
 
+    # Create parent directory if it doesn't exist
+    mkdir -p "$(dirname "$target")"
+
+    if [[ "$DRY_RUN" == true ]]; then
+        # Dry run mode - just show what would happen
+        if [[ -L "$target" ]]; then
+            local actual_target=$(readlink "$target")
+            if [[ "$actual_target" == "$source" ]]; then
+                echo -e "${GREEN}✓${NC} [DRY] Symlink OK: $target → $source"
+            else
+                echo -e "${YELLOW}⚠${NC} [DRY] Wrong target: $target → $actual_target (expected: $source)"
+            fi
+        elif [[ -e "$target" ]]; then
+            echo -e "${RED}✗${NC} [DRY] File exists (not symlink): $target"
+            if [[ "$FORCE" == true ]]; then
+                echo -e "${YELLOW}⚠${NC} [DRY] Would backup and replace with symlink"
+            fi
+        else
+            echo -e "${GREEN}+${NC} [DRY] Would create symlink: $target → $source"
+        fi
+        return
+    fi
+    
     # Create parent directory if it doesn't exist
     mkdir -p "$(dirname "$target")"
 
@@ -62,34 +98,87 @@ echo "Setting up dotfiles symlinks..."
 echo "OS detected: $(get_os)"
 echo ""
 
-# Root configs
-create_symlink "$DOTS_DIR/config/zsh/.zshrc" "$HOME/.zshrc"
-create_symlink "$DOTS_DIR/config/git/.gitconfig" "$HOME/.gitconfig"
-create_symlink "$DOTS_DIR/config/git/.gitignore" "$HOME/.gitignore"
-create_symlink "$DOTS_DIR/config/vim/.vimrc" "$HOME/.vimrc"
-create_symlink "$DOTS_DIR/config/vim/.ideavimrc" "$HOME/.ideavimrc"
-create_symlink "$DOTS_DIR/config/shell/.hushlogin" "$HOME/.hushlogin"
+# Recursive function to create symlinks
+link_recursive() {
+    local source_dir="$1"
+    local target_dir="$2"
+    
+    # Skip if source directory doesn't exist
+    [[ ! -d "$source_dir" ]] && return
+    
+    # Process each item in source directory
+    for item in "$source_dir"/*; do
+        # Skip if glob didn't match anything
+        [[ ! -e "$item" ]] && continue
+        
+        local basename=$(basename "$item")
+        local target="$target_dir/$basename"
+        
+        if [[ -d "$item" ]] && [[ ! -L "$item" ]]; then
+            # For config directories, symlink the entire directory
+            if [[ "$basename" != ".config" ]] && [[ "$(dirname "$target")" == *"/.config" ]]; then
+                # This is a tool config directory inside .config, symlink it entirely
+                create_symlink "$item" "$target"
+            else
+                # It's a regular directory, recurse
+                link_recursive "$item" "$target"
+            fi
+        elif [[ -f "$item" ]] || [[ -L "$item" ]]; then
+            # It's a file or symlink, create symlink
+            create_symlink "$item" "$target"
+        fi
+    done
+}
 
-# Config directories
-create_symlink "$DOTS_DIR/config/yazi" "$HOME/.config/yazi"
-create_symlink "$DOTS_DIR/config/lazygit" "$HOME/.config/lazygit"
-create_symlink "$DOTS_DIR/config/bat" "$HOME/.config/bat"
-create_symlink "$DOTS_DIR/config/tmux" "$HOME/.config/tmux"
-create_symlink "$DOTS_DIR/config/gallery-dl" "$HOME/.config/gallery-dl"
-create_symlink "$DOTS_DIR/config/oh-my-posh" "$HOME/.config/oh-my-posh"
-create_symlink "$DOTS_DIR/config/karabiner" "$HOME/.config/karabiner"
-create_symlink "$DOTS_DIR/config/kitty" "$HOME/.config/kitty"
-create_symlink "$DOTS_DIR/config/ghostty" "$HOME/.config/ghostty"
+# Process dotfiles (files starting with .)
+link_dotfiles() {
+    local source_dir="$1"
+    local target_dir="$2"
+    
+    # Skip if source directory doesn't exist
+    [[ ! -d "$source_dir" ]] && return
+    
+    # Process dotfiles in source directory
+    for item in "$source_dir"/.*; do
+        # Skip . and ..
+        [[ "$item" == "$source_dir/." ]] || [[ "$item" == "$source_dir/.." ]] && continue
+        [[ ! -e "$item" ]] && continue
+        
+        local basename=$(basename "$item")
+        local target="$target_dir/$basename"
+        
+        if [[ -d "$item" ]] && [[ ! -L "$item" ]]; then
+            # For config directories, symlink the entire directory
+            if [[ "$basename" != ".config" ]] && [[ "$(dirname "$target")" == *"/.config" ]]; then
+                # This is a tool config directory inside .config, symlink it entirely
+                create_symlink "$item" "$target"
+            else
+                # It's a regular directory, recurse
+                link_recursive "$item" "$target"
+            fi
+        elif [[ -f "$item" ]] || [[ -L "$item" ]]; then
+            # It's a file or symlink, create symlink
+            create_symlink "$item" "$target"
+        fi
+    done
+}
 
-# Scripts
-create_symlink "$DOTS_DIR/scripts-custom" "$HOME/.scripts"
+# Main linking logic
+echo "Linking common files..."
+link_recursive "$DOTS_DIR/common" "$HOME"
+link_dotfiles "$DOTS_DIR/common" "$HOME"
 
-# OS-specific configs
+# OS-specific linking
 if [[ "$(get_os)" == "macos" ]]; then
     echo ""
-    echo "Setting up macOS-specific configs..."
-    create_symlink "$DOTS_DIR/os-specific/macos/Library/Application Support/Claude/claude_desktop_config.json" \
-        "$HOME/Library/Application Support/Claude/claude_desktop_config.json"
+    echo "Linking macOS-specific files..."
+    link_recursive "$DOTS_DIR/macos" "$HOME"
+    link_dotfiles "$DOTS_DIR/macos" "$HOME"
+elif [[ "$(get_os)" == "linux" ]]; then
+    echo ""
+    echo "Linking Linux-specific files..."
+    link_recursive "$DOTS_DIR/linux" "$HOME"
+    link_dotfiles "$DOTS_DIR/linux" "$HOME"
 fi
 
 # Future submodules (commented out for now)
