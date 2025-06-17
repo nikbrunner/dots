@@ -27,10 +27,10 @@ fi
 create_symlink() {
     local source="$1"
     local target="$2"
-    
+
     # Create parent directory if it doesn't exist
     mkdir -p "$(dirname "$target")"
-    
+
     if [[ -L "$target" ]]; then
         # Target is a symlink
         if [[ "$FORCE" == true ]]; then
@@ -62,7 +62,7 @@ echo "Setting up dotfiles symlinks..."
 echo "OS detected: $(get_os)"
 echo ""
 
-# Core configs
+# Root configs
 create_symlink "$DOTS_DIR/config/zsh/.zshrc" "$HOME/.zshrc"
 create_symlink "$DOTS_DIR/config/git/.gitconfig" "$HOME/.gitconfig"
 create_symlink "$DOTS_DIR/config/git/.gitignore" "$HOME/.gitignore"
@@ -89,7 +89,7 @@ if [[ "$(get_os)" == "macos" ]]; then
     echo ""
     echo "Setting up macOS-specific configs..."
     create_symlink "$DOTS_DIR/os-specific/macos/Library/Application Support/Claude/claude_desktop_config.json" \
-                   "$HOME/Library/Application Support/Claude/claude_desktop_config.json"
+        "$HOME/Library/Application Support/Claude/claude_desktop_config.json"
 fi
 
 # Future submodules (commented out for now)
@@ -99,3 +99,4 @@ fi
 
 echo ""
 echo "Symlink setup complete!"
+

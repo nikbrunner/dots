@@ -95,8 +95,8 @@ dots sync  # Pull latest changes and update submodules
 
 ### Adding New Dotfiles
 
-1. Copy your config to the appropriate location in `config/`
-2. Add the symlink creation to `scripts/link.sh`
+1. Add it to the appropriate location in `config/`
+2. Add a symlink to `scripts/link.sh`
 3. Run `dots link` to create the symlink
 
 ### OS-Specific Configurations
