@@ -22,32 +22,32 @@ add_submodule() {
     local repo_url="$1"
     local path="$2"
     local name="$(basename "$path")"
-    
+
     if [[ -z "$repo_url" || -z "$path" ]]; then
         echo -e "${RED}✗${NC} Usage: add_submodule <repo_url> <path>"
         return 1
     fi
-    
+
     echo -e "${YELLOW}→${NC} Adding submodule: $name"
-    
+
     if [[ -d "$path" ]]; then
         echo -e "${RED}✗${NC} Path already exists: $path"
         return 1
     fi
-    
+
     git submodule add "$repo_url" "$path"
     git submodule update --init --recursive "$path"
-    
+
     echo -e "${GREEN}✓${NC} Added submodule: $name"
 }
 
 # Function to update all submodules
 update_submodules() {
     echo -e "${YELLOW}→${NC} Updating all submodules..."
-    
+
     git submodule update --init --recursive
     git submodule foreach 'git pull origin main || git pull origin master'
-    
+
     echo -e "${GREEN}✓${NC} All submodules updated"
 }
 
@@ -55,26 +55,26 @@ update_submodules() {
 remove_submodule() {
     local path="$1"
     local name="$(basename "$path")"
-    
+
     if [[ -z "$path" ]]; then
         echo -e "${RED}✗${NC} Usage: remove_submodule <path>"
         return 1
     fi
-    
+
     echo -e "${YELLOW}→${NC} Removing submodule: $name"
-    
+
     # Remove the submodule entry from .git/config
     git submodule deinit -f "$path"
-    
+
     # Remove the submodule directory from the working tree
     rm -rf "$path"
-    
+
     # Remove the submodule directory from .git/modules
     rm -rf ".git/modules/$path"
-    
+
     # Remove the entry in .gitmodules and stage the file
     git rm -f "$path"
-    
+
     echo -e "${GREEN}✓${NC} Removed submodule: $name"
 }
 

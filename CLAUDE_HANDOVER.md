@@ -45,11 +45,13 @@ dots/
 **DECISION NEEDED**: Choose between two approaches:
 
 #### Option A: Directory-Level Linking (RECOMMENDED)
+
 - Link entire config directories: `~/.config/kitty` → `dots/common/.config/kitty`
 - Safer for applications that expect directory structures
 - Exception: Individual files in sensitive directories like `Library/`
 
 #### Option B: File-Level Linking (CURRENT - BROKEN)
+
 - Link individual files: `~/.config/kitty/kitty.conf` → `dots/common/.config/kitty/kitty.conf`
 - More granular but breaks some applications
 - Current approach causing oh-my-posh errors
@@ -86,7 +88,7 @@ cd ~/repos/nikbrunner/dots && git status
 ### Key Files for Next Claude
 
 1. **`scripts/generate-mappings.sh`** - Core mapping generation logic
-2. **`scripts/link.sh`** - Core linking script using mappings  
+2. **`scripts/link.sh`** - Core linking script using mappings
 3. **`.mappings/macos.json`** - Current file-level mappings
 4. **`common/bin/dots`** - Updated status/clean commands
 

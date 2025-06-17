@@ -4,10 +4,10 @@
 
 get_os() {
     case "$OSTYPE" in
-        darwin*)  echo "macos" ;;
-        linux*)   echo "linux" ;;
-        msys*)    echo "windows" ;;
-        *)        echo "unknown" ;;
+        darwin*) echo "macos" ;;
+        linux*) echo "linux" ;;
+        msys*) echo "windows" ;;
+        *) echo "unknown" ;;
     esac
 }
 

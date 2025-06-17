@@ -9,11 +9,13 @@ This is a symlink-based dotfiles management system designed to organize and depl
 ## Core Architecture
 
 ### Symlink System
+
 - Configuration files live in `~/repos/nikbrunner/dots/` but are symlinked to their standard locations
 - The `scripts/link.sh` script creates all symlinks with backup functionality
 - Running `dots link` automatically backs up existing files with timestamps before creating symlinks
 
 ### Directory Structure
+
 - `common/` - Cross-platform configuration files that mirror home directory structure
   - Root dotfiles (.zshrc, .gitconfig, etc.)
   - `.config/` directory with tool configurations
@@ -63,11 +65,13 @@ dots test
 The system uses JSON-based mapping files for precise file-level symlinks. The `scripts/generate-mappings.sh` script creates mapping files that define exactly which files should be symlinked where.
 
 ### Mapping System
+
 - **File-level linking only**: Every file is individually symlinked (no directory symlinks)
 - **JSON mappings**: `.mappings/macos.json` and `.mappings/linux.json` define source→target mappings
 - **Automatic parent directory creation**: Parent directories are created as needed when symlinking files
 
 ### Common (Cross-platform) Files
+
 - `common/.zshrc` → `~/.zshrc`
 - `common/.gitconfig` → `~/.gitconfig`
 - `common/.config/yazi/yazi.toml` → `~/.config/yazi/yazi.toml`
@@ -76,12 +80,14 @@ The system uses JSON-based mapping files for precise file-level symlinks. The `s
 - All files in `common/` are individually mapped and symlinked
 
 ### macOS-specific Files
+
 - `macos/.config/karabiner/karabiner.json` → `~/.config/karabiner/karabiner.json`
 - `macos/Library/Application Support/Claude/claude_desktop_config.json` → `~/Library/Application Support/Claude/claude_desktop_config.json`
 - `macos/Brewfile` → `~/Brewfile`
 - All files in `macos/` are individually mapped and symlinked
 
 ### Linux-specific Files
+
 - All files in `linux/` are individually mapped and symlinked (when on Linux systems)
 
 ## Backup Files
@@ -99,8 +105,9 @@ The system uses `scripts/detect-os.sh` to detect the operating system and condit
 ## Testing and Validation
 
 The `dots test` command provides comprehensive system validation:
+
 - Repository structure checks
-- OS detection verification  
+- OS detection verification
 - Mapping generation testing
 - JSON mapping file validation
 - Symlink creation testing (dry-run)

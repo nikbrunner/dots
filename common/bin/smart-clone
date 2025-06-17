@@ -61,4 +61,3 @@ if [ -d "$target_dir/$repo" ]; then
 fi
 
 echo "Cloning $git_url to $target_dir/$repo"
-

@@ -76,10 +76,10 @@ if [[ "$DRY_RUN" == true ]]; then
     fi
 else
     echo -e "${YELLOW}→${NC} Setting up dots command..."
-    
+
     # Create ~/.local/bin if it doesn't exist
     mkdir -p "$HOME/.local/bin"
-    
+
     # Create dots command symlink
     if [[ -L "$HOME/.local/bin/dots" ]]; then
         rm "$HOME/.local/bin/dots"

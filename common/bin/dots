@@ -32,6 +32,7 @@ show_usage() {
     echo "  sub-add      - Add new submodule"
     echo "  status       - Show git and symlink status"
     echo "  test         - Run comprehensive system tests"
+    echo "  format       - Format files (markdown, shell scripts, etc.)"
     echo "  log          - Show git log"
     echo ""
 }
@@ -362,6 +363,98 @@ cmd_test() {
     fi
 }
 
+# Format command - format various file types
+cmd_format() {
+    echo -e "${BLUE}=== Formatting Files ===${NC}"
+    echo ""
+    
+    local formatted_files=0
+    local skipped_files=0
+    local error_files=0
+    
+    # Check if we have prettier for markdown and JSON files
+    if command -v npx >/dev/null 2>&1; then
+        echo -e "${YELLOW}→${NC} Formatting markdown and JSON files..."
+        
+        # Use prettier with glob patterns for efficiency
+        if npx prettier --write "**/*.{md,json}" --ignore-path /dev/null --ignore-unknown 2>/dev/null; then
+            # Count the files that would be formatted
+            local md_count=$(find . -name "*.md" -not -path "./.git/*" -not -path "./node_modules/*" | wc -l | tr -d ' ')
+            local json_count=$(find . -name "*.json" -not -path "./.git/*" -not -path "./node_modules/*" | wc -l | tr -d ' ')
+            local total_prettier_files=$((md_count + json_count))
+            formatted_files=$((formatted_files + total_prettier_files))
+            echo -e "${GREEN}✓${NC} Formatted $total_prettier_files files (markdown + JSON)"
+        else
+            echo -e "${RED}✗${NC} Failed to format with prettier"
+            ((error_files++))
+        fi
+    else
+        echo -e "${YELLOW}⚠${NC} npx not available, skipping markdown/JSON formatting"
+        ((skipped_files++))
+    fi
+    
+    # Check if we have shfmt for shell scripts
+    if command -v shfmt >/dev/null 2>&1; then
+        echo -e "${YELLOW}→${NC} Formatting shell scripts..."
+        
+        # Collect all shell files for batch processing
+        local shell_files=()
+        
+        # Add .sh files
+        while IFS= read -r -d '' file; do
+            shell_files+=("$file")
+        done < <(find . -name "*.sh" -not -path "./.git/*" -print0 2>/dev/null)
+        
+        # Add executable scripts with shell shebangs
+        while IFS= read -r -d '' file; do
+            if [[ -x "$file" && -f "$file" ]]; then
+                local first_line=$(head -n1 "$file" 2>/dev/null)
+                if [[ "$first_line" =~ ^#!.*/(bash|sh|zsh) ]]; then
+                    shell_files+=("$file")
+                fi
+            fi
+        done < <(find . -type f -not -path "./.git/*" -not -name "*.sh" -print0 2>/dev/null)
+        
+        # Format all shell files in one command if any found
+        if [[ ${#shell_files[@]} -gt 0 ]]; then
+            if shfmt -w -i 4 -ci "${shell_files[@]}" >/dev/null 2>&1; then
+                formatted_files=$((formatted_files + ${#shell_files[@]}))
+                echo -e "${GREEN}✓${NC} Formatted ${#shell_files[@]} shell scripts"
+            else
+                echo -e "${RED}✗${NC} Failed to format some shell scripts"
+                ((error_files++))
+            fi
+        else
+            echo -e "${YELLOW}→${NC} No shell scripts found"
+        fi
+    else
+        echo -e "${YELLOW}⚠${NC} shfmt not available, skipping shell script formatting"
+        echo -e "    Install with: brew install shfmt"
+        ((skipped_files++))
+    fi
+    
+    # Summary
+    echo ""
+    echo -e "${BLUE}=== Format Summary ===${NC}"
+    echo -e "  ${GREEN}✓${NC} Formatted: $formatted_files files"
+    if [[ $error_files -gt 0 ]]; then
+        echo -e "  ${RED}✗${NC} Errors: $error_files files"
+    fi
+    if [[ $skipped_files -gt 0 ]]; then
+        echo -e "  ${YELLOW}⚠${NC} Skipped: $skipped_files file types (tools not available)"
+    fi
+    
+    if [[ $error_files -gt 0 ]]; then
+        echo ""
+        echo -e "${RED}❌ Some files failed to format${NC}"
+        return 1
+    else
+        echo ""
+        echo -e "${GREEN}🎉 Formatting complete${NC}"
+        return 0
+    fi
+}
+
 # Log command
 cmd_log() {
     echo -e "${YELLOW}→${NC} Recent commits:"
@@ -401,6 +494,9 @@ case "${1:-}" in
         ;;
     test)
         cmd_test
+        ;;
+    format)
+        cmd_format
         ;;
     log)
         cmd_log
