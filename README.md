@@ -7,22 +7,24 @@ A clean, organized dotfiles repository using symlinks for easy management and de
 ```
 dots/
 ├── README.md                # This file
-├── install.sh              # Main installation script
+├── CLAUDE.md               # Claude Code instructions
+├── .mappings/              # JSON mapping files
+│   ├── macos.json         # macOS file mappings
+│   └── linux.json         # Linux file mappings
 ├── scripts/               # Management scripts
 │   ├── detect-os.sh       # OS detection utility
-│   ├── link.sh           # Symlink creation
-│   └── submodules.sh     # Git submodule management
-├── config/               # All configuration files
-│   ├── zsh/             # Zsh configuration
-│   ├── git/             # Git configuration
-│   ├── vim/             # Vim configuration
-│   ├── tmux/            # Tmux configuration
-│   ├── kitty/           # Kitty terminal
-│   └── ...              # Other configs
-├── os-specific/         # OS-specific configurations
-│   └── macos/           # macOS specific files
-├── scripts-custom/      # Custom user scripts
-└── submodules/         # Git submodules (nvim, wezterm, zed)
+│   ├── link.sh           # Symlink creation using mappings
+│   └── generate-mappings.sh # Creates JSON mappings
+├── common/               # Cross-platform configurations
+│   ├── .config/          # Config files (.zshrc, .gitconfig, etc.)
+│   ├── bin/              # Custom scripts
+│   └── .zshrc, .gitconfig, etc. # Root dotfiles
+├── macos/                # macOS-specific configurations
+│   ├── .config/karabiner/ # Karabiner configuration
+│   ├── Library/          # Application Support files
+│   └── Brewfile          # Homebrew dependencies
+├── linux/                # Linux-specific configurations
+└── submodules/           # Git submodules (nvim, wezterm, zed)
 ```
 
 ## 🚀 Installation
@@ -74,10 +76,11 @@ dots log          # Show git log
 
 #### Adding a New Configuration
 
-1. Add your config file to the appropriate directory in `config/`
-2. Update `scripts/link.sh` to create the symlink
-3. Run `dots link` to create the symlink
-4. Commit your changes: `dots push "Add new config"`
+1. Add your config file to the appropriate directory structure:
+   - Cross-platform: `common/` (mirrors home directory structure)
+   - OS-specific: `macos/` or `linux/` (mirrors home directory structure)
+2. Run `dots link` to create symlinks (mappings auto-generated)
+3. Commit your changes: `dots push "Add new config"`
 
 #### Updating Configurations
 
@@ -95,13 +98,15 @@ dots sync  # Pull latest changes and update submodules
 
 ### Adding New Dotfiles
 
-1. Add it to the appropriate location in `config/`
-2. Add a symlink to `scripts/link.sh`
-3. Run `dots link` to create the symlink
+1. Add it to the appropriate location:
+   - Cross-platform: `common/` following home directory structure
+   - OS-specific: `macos/` or `linux/` following home directory structure
+2. Run `dots link` to create symlinks (mappings are auto-generated)
+3. No manual script updates needed - files are automatically detected
 
 ### OS-Specific Configurations
 
-Place OS-specific files in `os-specific/<os>/`. The `link.sh` script automatically detects your OS and creates appropriate symlinks.
+Place OS-specific files in `macos/` or `linux/` following the home directory structure. The system automatically detects your OS and creates appropriate symlinks using JSON mappings.
 
 ### Submodules
 

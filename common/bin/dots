@@ -92,59 +92,48 @@ cmd_clean() {
     
     echo -e "${YELLOW}→${NC} Cleaning broken dotfiles symlinks..."
     
+    # Get current OS and mapping file
+    source "$DOTS_DIR/scripts/detect-os.sh"
+    local current_os=$(get_os)
+    local mapping_file="$DOTS_DIR/.mappings/$current_os.json"
+    
+    # Generate mappings if they don't exist
+    if [[ ! -f "$mapping_file" ]]; then
+        echo -e "${YELLOW}→${NC} Generating mappings..."
+        "$DOTS_DIR/scripts/generate-mappings.sh" > /dev/null
+    fi
+    
+    if [[ ! -f "$mapping_file" ]]; then
+        echo -e "${RED}✗${NC} Could not find or generate mapping file: $mapping_file"
+        return 1
+    fi
+    
     local count=0
     
-    # Function to check if a symlink points to our dots directory
-    is_dots_symlink() {
-        local link="$1"
-        local target=$(readlink "$link" 2>/dev/null)
-        [[ "$target" == "$DOTS_DIR"* ]]
-    }
-    
-    # Check specific locations where we create symlinks
-    local check_locations=(
-        "$HOME/bin"
-        "$HOME/.config"
-        "$HOME/.claude"
-        "$HOME/.local/bin/dots"
-        "$HOME"
-    )
-    
-    for location in "${check_locations[@]}"; do
-        if [[ ! -e "$location" ]]; then
-            continue
-        fi
+    # Check each symlink from our mappings
+    while IFS=':' read -r source_part target_part; do
+        # Skip lines that don't contain mappings
+        [[ ! "$source_part" =~ \".*\" ]] && continue
+        [[ ! "$target_part" =~ \".*\" ]] && continue
         
-        # Find symlinks in this location
-        while IFS= read -r -d '' link; do
-            # Only process if it's a dots-related symlink
-            if is_dots_symlink "$link"; then
-                # Check if the symlink is broken
-                if [[ ! -e "$link" ]]; then
-                    if [[ "$dry_run" == true ]]; then
-                        echo -e "${RED}✗${NC} [DRY] Would remove broken symlink: $link"
-                    else
-                        echo -e "${RED}✗${NC} Removing broken symlink: $link"
-                        rm "$link"
-                    fi
-                    ((count++))
-                fi
-            fi
-        done < <(find "$location" -maxdepth 2 -type l -print0 2>/dev/null)
-    done
-    
-    # Also check root dotfiles in home directory
-    for dotfile in "$HOME"/.* ; do
-        if [[ -L "$dotfile" ]] && is_dots_symlink "$dotfile" && [[ ! -e "$dotfile" ]]; then
+        # Clean up the target path
+        local target=$(echo "$target_part" | sed 's/^[[:space:]]*"//' | sed 's/"[[:space:]]*,*[[:space:]]*$//')
+        
+        # Skip empty targets
+        [[ -z "$target" ]] && continue
+        
+        # Check if this symlink is broken
+        if [[ -L "$target" ]] && [[ ! -e "$target" ]]; then
             if [[ "$dry_run" == true ]]; then
-                echo -e "${RED}✗${NC} [DRY] Would remove broken symlink: $dotfile"
+                echo -e "${RED}✗${NC} [DRY] Would remove broken symlink: $target"
             else
-                echo -e "${RED}✗${NC} Removing broken symlink: $dotfile"
-                rm "$dotfile"
+                echo -e "${RED}✗${NC} Removing broken symlink: $target"
+                rm "$target"
             fi
             ((count++))
         fi
-    done
+        
+    done < "$mapping_file"
     
     if [[ $count -eq 0 ]]; then
         echo -e "${GREEN}✓${NC} No broken dotfiles symlinks found"
@@ -171,7 +160,7 @@ cmd_sub_add() {
     "$DOTS_DIR/scripts/submodules.sh" add "$@"
 }
 
-# Status command - enhanced with symlink status
+# Status command - enhanced with symlink status using JSON mappings
 cmd_status() {
     echo -e "${BLUE}=== Git Repository Status ===${NC}"
     git status --short
@@ -179,88 +168,81 @@ cmd_status() {
     echo ""
     echo -e "${BLUE}=== Symlink Status ===${NC}"
     
+    # Get current OS and mapping file
+    source "$DOTS_DIR/scripts/detect-os.sh"
+    local current_os=$(get_os)
+    local mapping_file="$DOTS_DIR/.mappings/$current_os.json"
+    
+    # Generate mappings if they don't exist
+    if [[ ! -f "$mapping_file" ]]; then
+        echo -e "${YELLOW}→${NC} Generating mappings..."
+        "$DOTS_DIR/scripts/generate-mappings.sh" > /dev/null
+    fi
+    
+    if [[ ! -f "$mapping_file" ]]; then
+        echo -e "${RED}✗${NC} Could not find or generate mapping file: $mapping_file"
+        return 1
+    fi
+    
     local total_links=0
     local valid_links=0
     local broken_links=0
     local missing_links=0
+    local wrong_target_links=0
     
-    # Function to check a symlink
-    check_symlink() {
-        local link_path="$1"
-        local expected_target="$2"
+    echo "Checking symlinks from mappings..."
+    
+    # Check each symlink from our mappings
+    while IFS=':' read -r source_part target_part; do
+        # Skip lines that don't contain mappings
+        [[ ! "$source_part" =~ \".*\" ]] && continue
+        [[ ! "$target_part" =~ \".*\" ]] && continue
+        
+        # Clean up the paths
+        local source=$(echo "$source_part" | sed 's/^[[:space:]]*"//' | sed 's/"[[:space:]]*$//')
+        local target=$(echo "$target_part" | sed 's/^[[:space:]]*"//' | sed 's/"[[:space:]]*,*[[:space:]]*$//')
+        
+        # Skip empty paths
+        [[ -z "$source" || -z "$target" ]] && continue
+        
         ((total_links++))
         
-        if [[ -L "$link_path" ]]; then
+        if [[ -L "$target" ]]; then
             # It's a symlink, check if it's valid
-            local actual_target=$(readlink "$link_path")
-            if [[ "$actual_target" == "$expected_target" ]]; then
+            local actual_target=$(readlink "$target")
+            if [[ "$actual_target" == "$source" ]]; then
                 ((valid_links++))
             else
-                echo -e "${YELLOW}⚠${NC}  Wrong target: $link_path → $actual_target"
-                echo -e "    Expected: $expected_target"
+                ((wrong_target_links++))
+                echo -e "${YELLOW}⚠${NC}  Wrong target: $target → $actual_target"
+                echo -e "    Expected: $source"
             fi
             
             # Check if target exists
-            if [[ ! -e "$link_path" ]]; then
+            if [[ ! -e "$target" ]]; then
                 ((broken_links++))
-                echo -e "${RED}✗${NC} Broken link: $link_path"
+                echo -e "${RED}✗${NC} Broken link: $target"
             fi
-        elif [[ -e "$link_path" ]]; then
+        elif [[ -e "$target" ]]; then
             # File/directory exists but is not a symlink
-            echo -e "${RED}✗${NC} Not a symlink: $link_path"
+            echo -e "${RED}✗${NC} Not a symlink: $target"
             echo -e "    Run 'dots link --force' to fix"
         else
             # Neither symlink nor file exists
             ((missing_links++))
-            echo -e "${YELLOW}→${NC} Missing link: $link_path"
+            echo -e "${YELLOW}→${NC} Missing link: $target"
         fi
-    }
-    
-    # Check main symlinks we expect
-    echo "Checking main configuration symlinks..."
-    
-    # Check root dotfiles
-    check_symlink "$HOME/.zshrc" "$DOTS_DIR/common/.zshrc"
-    check_symlink "$HOME/.gitconfig" "$DOTS_DIR/common/.gitconfig" 
-    check_symlink "$HOME/.gitignore" "$DOTS_DIR/common/.gitignore"
-    check_symlink "$HOME/.vimrc" "$DOTS_DIR/common/.vimrc"
-    check_symlink "$HOME/.ideavimrc" "$DOTS_DIR/common/.ideavimrc"
-    check_symlink "$HOME/.hushlogin" "$DOTS_DIR/common/.hushlogin"
-    
-    # Check config directories (symlinked as whole directories)
-    check_symlink "$HOME/.config/yazi" "$DOTS_DIR/common/.config/yazi"
-    check_symlink "$HOME/.config/lazygit" "$DOTS_DIR/common/.config/lazygit"
-    check_symlink "$HOME/.config/bat" "$DOTS_DIR/common/.config/bat"
-    check_symlink "$HOME/.config/tmux" "$DOTS_DIR/common/.config/tmux"
-    check_symlink "$HOME/.config/kitty" "$DOTS_DIR/common/.config/kitty"
-    check_symlink "$HOME/.config/ghostty" "$DOTS_DIR/common/.config/ghostty"
-    check_symlink "$HOME/.config/oh-my-posh" "$DOTS_DIR/common/.config/oh-my-posh"
-    check_symlink "$HOME/.config/gallery-dl" "$DOTS_DIR/common/.config/gallery-dl"
-    
-    # Check individual script files in bin directory
-    for script in "$DOTS_DIR/common/bin"/*; do
-        [[ -f "$script" ]] || continue
-        local script_name=$(basename "$script")
-        check_symlink "$HOME/bin/$script_name" "$script"
-    done
-    
-    # Check git completion files
-    check_symlink "$HOME/.config/.zsh/_git" "$DOTS_DIR/common/.config/.zsh/_git"
-    check_symlink "$HOME/.config/.zsh/git-completion.bash" "$DOTS_DIR/common/.config/.zsh/git-completion.bash"
-    
-    # Check OS-specific files
-    if [[ "$OSTYPE" == darwin* ]]; then
-        echo "Checking macOS-specific symlinks..."
-        check_symlink "$HOME/.config/karabiner" "$DOTS_DIR/macos/.config/karabiner"
-        check_symlink "$HOME/Library/Application Support/Claude/claude_desktop_config.json" "$DOTS_DIR/macos/Library/Application Support/Claude/claude_desktop_config.json"
-        check_symlink "$HOME/Brewfile" "$DOTS_DIR/macos/Brewfile"
-    fi
+        
+    done < "$mapping_file"
     
     # Summary
     echo ""
     echo -e "${BLUE}Summary:${NC}"
     echo -e "  Total expected links: $total_links"
     echo -e "  ${GREEN}✓${NC} Valid links: $valid_links"
+    if [[ $wrong_target_links -gt 0 ]]; then
+        echo -e "  ${YELLOW}⚠${NC} Wrong targets: $wrong_target_links"
+    fi
     if [[ $broken_links -gt 0 ]]; then
         echo -e "  ${RED}✗${NC} Broken links: $broken_links"
     fi
