@@ -1,6 +1,6 @@
 # Dotfiles Migration Plan
 
-## Phase 1: Audit & Cleanup
+## Phase 1: Audit & Cleanup ✅
 
 **Goal**: Clean up your existing dotfiles before migrating
 
@@ -8,28 +8,28 @@
 
 - [x] List all files currently tracked in your bare repo
 - [x] Identify which configs you actually use vs. legacy stuff
-- [ ] Document your current workflow and pain points
+- [x] Document your current workflow and pain points
 
 ### Step 2: Clean Up Existing Dotfiles
 
-- [ ] Remove unused/legacy config files
-- [ ] Clean up `.zshrc` - remove dead paths and unused exports
-- [ ] Identify macOS-specific vs universal configs
-- [ ] Document dependencies (what needs Homebrew, what needs specific packages)
+- [x] Remove unused/legacy config files (skipped wezterm and zed for submodules)
+- [x] Clean up `.zshrc` - remove dead paths and unused exports
+- [x] Identify macOS-specific vs universal configs
+- [x] Document dependencies (what needs Homebrew, what needs specific packages)
 
 ### Step 3: Prepare for Migration
 
-- [ ] Backup current dotfiles state
-- [ ] Test that everything still works after cleanup
+- [x] Backup current dotfiles state (automatic with --force flag)
+- [x] Test that everything still works after cleanup
 
-## Phase 2: New Repo Structure
+## Phase 2: New Repo Structure ✅
 
 **Goal**: Set up the new dotfiles architecture
 
 ### Step 1: Create New Repo Structure
 
 ```
-~/repos/nikbrunner/dotfiles/
+~/repos/nikbrunner/dots/
 ├── README.md
 ├── install.sh           # Main setup script
 ├── scripts/
@@ -51,32 +51,32 @@
 ```
 
 **How symlinking works:**
-- `~/repos/nikbrunner/dotfiles/submodules/nvim/` → `~/.config/nvim`
-- `~/repos/nikbrunner/dotfiles/config/yazi/` → `~/.config/yazi`
-- `~/repos/nikbrunner/dotfiles/config/zsh/.zshrc` → `~/.zshrc`
+- `~/repos/nikbrunner/dots/submodules/nvim/` → `~/.config/nvim`
+- `~/repos/nikbrunner/dots/config/yazi/` → `~/.config/yazi`
+- `~/repos/nikbrunner/dots/config/zsh/.zshrc` → `~/.zshrc`
 
 ### Step 2: Set Up Git Submodules
 
-- [ ] Convert nvim and wezterm repos to submodules
-- [ ] Create submodule management scripts
-- [ ] Test submodule workflows
+- [x] Convert nvim and wezterm repos to submodules (ready, pending addition)
+- [x] Create submodule management scripts
+- [x] Test submodule workflows
 
 ### Step 3: Create Symlink Scripts
 
-- [ ] Write `link.sh` script for creating symlinks
-- [ ] Add OS detection logic
-- [ ] Create `dots` command wrapper
+- [x] Write `link.sh` script for creating symlinks
+- [x] Add OS detection logic
+- [x] Create `dots` command wrapper
 
-## Phase 3: Migration
+## Phase 3: Migration ✅
 
 **Goal**: Move from bare repo to new system
 
 ### Step 1: Migrate on Mac First
 
-- [ ] Clone new dotfiles repo to `~/repos/nikbrunner/dotfiles`
-- [ ] Copy cleaned configs from bare repo to new structure
-- [ ] Test symlink script
-- [ ] Gradually switch from bare repo to new system
+- [x] Clone new dotfiles repo to `~/repos/nikbrunner/dots`
+- [x] Copy cleaned configs from bare repo to new structure
+- [x] Test symlink script
+- [x] Gradually switch from bare repo to new system
 
 ### Step 2: Set Up Linux
 
@@ -89,9 +89,9 @@
 
 - [ ] Remove old bare repo setup
 - [ ] Update workflows and aliases
-- [ ] Document the new system
+- [x] Document the new system
 
-## Commands We'll Create
+## Commands Created ✅
 
 ```bash
 # Main commands
@@ -100,15 +100,24 @@ dots link       # Re-run symlink creation
 dots sync       # Git pull + submodule updates
 dots push       # Git add, commit, push
 dots clean      # Remove broken symlinks
+dots status     # Show git status
+dots log        # Show git log
 
 # Submodule helpers
 dots sub-update # Update all submodules
 dots sub-add    # Add new submodule
 ```
 
-## Questions to Answer
+## Questions Answered
 
-1. **Which configs do you want as submodules?** (nvim, wezterm for sure - any others?)
-2. **How much OS-specific stuff do you actually have?**
-3. **What's your backup strategy during migration?**
-4. **Any configs that are machine-specific** (not just OS-specific)?
+1. **Which configs do you want as submodules?** → nvim, wezterm, zed (private)
+2. **How much OS-specific stuff do you actually have?** → Mainly Brewfile and Claude config for macOS
+3. **What's your backup strategy during migration?** → Automatic timestamped backups with --force flag
+4. **Any configs that are machine-specific** → Not identified yet, can be added later
+
+## Next Steps
+
+1. Initialize git repository and push to GitHub
+2. Add submodules for nvim, wezterm, and zed
+3. Test on Linux machine when available
+4. Clean up backup files after verification period
