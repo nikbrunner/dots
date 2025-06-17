@@ -31,7 +31,7 @@ check_gum() {
 # Enhanced output functions using gum when available
 log_section() {
     if command -v gum >/dev/null 2>&1; then
-        gum style --foreground="#88C0D0" --bold "$1"
+        gum style --foreground=4 --bold "$1"
     else
         echo -e "${BLUE}$1${NC}"
     fi
@@ -39,7 +39,7 @@ log_section() {
 
 log_success() {
     if command -v gum >/dev/null 2>&1; then
-        gum style --foreground="#A3BE8C" "✓ $1"
+        gum style --foreground=2 "✓ $1"
     else
         echo -e "${GREEN}✓${NC} $1"
     fi
@@ -47,7 +47,7 @@ log_success() {
 
 log_warning() {
     if command -v gum >/dev/null 2>&1; then
-        gum style --foreground="#EBCB8B" "⚠ $1"
+        gum style --foreground=3 "⚠ $1"
     else
         echo -e "${YELLOW}⚠${NC} $1"
     fi
@@ -55,7 +55,7 @@ log_warning() {
 
 log_error() {
     if command -v gum >/dev/null 2>&1; then
-        gum style --foreground="#BF616A" "✗ $1"
+        gum style --foreground=1 "✗ $1"
     else
         echo -e "${RED}✗${NC} $1"
     fi
@@ -63,7 +63,7 @@ log_error() {
 
 log_info() {
     if command -v gum >/dev/null 2>&1; then
-        gum style --foreground="#81A1C1" "→ $1"
+        gum style --foreground=6 "→ $1"
     else
         echo -e "${YELLOW}→${NC} $1"
     fi
@@ -73,22 +73,22 @@ log_info() {
 show_usage() {
     if command -v gum >/dev/null 2>&1; then
         gum style --border="rounded" --padding="1 2" --margin="1" \
-            --foreground="#88C0D0" --bold "dots - Dotfiles management command"
+            --foreground=4 --bold "dots - Dotfiles management command"
         echo ""
-        gum style --foreground="#a1afca" "Usage: dots <command> [options]"
+        gum style "Usage: dots <command> [options]"
         echo ""
-        gum style --foreground="#88C0D0" --bold "Commands:"
-        gum style --foreground="#A3BE8C" "  install      - Initial setup with symlinks and submodules [--dry-run]"
-        gum style --foreground="#A3BE8C" "  link         - Re-run symlink creation [--dry-run]"
-        gum style --foreground="#A3BE8C" "  sync         - Git pull + submodule updates"
-        gum style --foreground="#A3BE8C" "  push         - Git add, commit, push"
-        gum style --foreground="#A3BE8C" "  clean        - Remove broken symlinks [--dry-run]"
-        gum style --foreground="#A3BE8C" "  sub-update   - Update all submodules"
-        gum style --foreground="#A3BE8C" "  sub-add      - Add new submodule"
-        gum style --foreground="#A3BE8C" "  status       - Show git and symlink status"
-        gum style --foreground="#A3BE8C" "  test         - Run comprehensive system tests"
-        gum style --foreground="#A3BE8C" "  format       - Format files (markdown, shell scripts, etc.)"
-        gum style --foreground="#A3BE8C" "  log          - Show git log"
+        gum style --foreground=4 --bold "Commands:"
+        gum style --foreground=2 "  install      - Initial setup with symlinks and submodules [--dry-run]"
+        gum style --foreground=2 "  link         - Re-run symlink creation [--dry-run]"
+        gum style --foreground=2 "  sync         - Git pull + submodule updates"
+        gum style --foreground=2 "  push         - Git add, commit, push"
+        gum style --foreground=2 "  clean        - Remove broken symlinks [--dry-run]"
+        gum style --foreground=2 "  sub-update   - Update all submodules"
+        gum style --foreground=2 "  sub-add      - Add new submodule"
+        gum style --foreground=2 "  status       - Show git and symlink status"
+        gum style --foreground=2 "  test         - Run comprehensive system tests"
+        gum style --foreground=2 "  format       - Format files (markdown, shell scripts, etc.)"
+        gum style --foreground=2 "  log          - Show git log"
         echo ""
     else
         echo -e "${BLUE}dots - Dotfiles management command${NC}"
@@ -104,7 +104,7 @@ show_usage() {
         echo "  sub-update   - Update all submodules"
         echo "  sub-add      - Add new submodule"
         echo "  status       - Show git and symlink status"
-        echo "  test         - Run comprehensive system tests"
+        echo "  test         - Run comprehensive syst/var/folders/cd/c9wfbwnx1gb2610hclry0crc0000gn/T/TemporaryItems/NSIRD_screencaptureui_ayqnVp/Screenshot\ 2025-06-17\ at\ 18.25.15.pngem tests"
         echo "  format       - Format files (markdown, shell scripts, etc.)"
         echo "  log          - Show git log"
         echo ""
@@ -177,7 +177,7 @@ cmd_clean() {
     if [[ "$1" == "--dry-run" ]]; then
         dry_run=true
         if command -v gum >/dev/null 2>&1; then
-            gum style --foreground="#EBCB8B" --bold "DRY RUN MODE - No changes will be made"
+            gum style --foreground=3 --bold "DRY RUN MODE - No changes will be made"
         else
             echo -e "${YELLOW}DRY RUN MODE - No changes will be made${NC}"
         fi
@@ -257,11 +257,7 @@ cmd_sub_add() {
 # Status command - enhanced with symlink status using JSON mappings
 cmd_status() {
     log_section "=== Git Repository Status ==="
-    if command -v gum >/dev/null 2>&1; then
-        gum style --border="rounded" --padding="1" --margin="0 1" "$(git status --short)"
-    else
-        git status --short
-    fi
+    git status --short
 
     echo ""
     log_section "=== Symlink Status ==="
@@ -341,38 +337,16 @@ cmd_status() {
     echo ""
     log_section "Summary:"
 
-    if command -v gum >/dev/null 2>&1; then
-        local summary_text="Total expected links: $total_links
-✓ Valid links: $valid_links"
-
-        if [[ $wrong_target_links -gt 0 ]]; then
-            summary_text="$summary_text
-⚠ Wrong targets: $wrong_target_links"
-        fi
-
-        if [[ $broken_links -gt 0 ]]; then
-            summary_text="$summary_text
-✗ Broken links: $broken_links"
-        fi
-
-        if [[ $missing_links -gt 0 ]]; then
-            summary_text="$summary_text
-→ Missing links: $missing_links"
-        fi
-
-        gum style --border="rounded" --padding="1" --margin="0 1" --foreground="#D8DEE9" "$summary_text"
-    else
-        echo "  Total expected links: $total_links"
-        echo -e "  ${GREEN}✓${NC} Valid links: $valid_links"
-        if [[ $wrong_target_links -gt 0 ]]; then
-            echo -e "  ${YELLOW}⚠${NC} Wrong targets: $wrong_target_links"
-        fi
-        if [[ $broken_links -gt 0 ]]; then
-            echo -e "  ${RED}✗${NC} Broken links: $broken_links"
-        fi
-        if [[ $missing_links -gt 0 ]]; then
-            echo -e "  ${YELLOW}→${NC} Missing links: $missing_links"
-        fi
+    echo "  Total expected links: $total_links"
+    log_success "Valid links: $valid_links"
+    if [[ $wrong_target_links -gt 0 ]]; then
+        log_warning "Wrong targets: $wrong_target_links"
+    fi
+    if [[ $broken_links -gt 0 ]]; then
+        log_error "Broken links: $broken_links"
+    fi
+    if [[ $missing_links -gt 0 ]]; then
+        log_info "Missing links: $missing_links"
     fi
 
 }
@@ -630,4 +604,3 @@ log)
     show_usage
     ;;
 esac
-
