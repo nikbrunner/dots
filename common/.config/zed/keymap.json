@@ -1,0 +1,144 @@
+[
+  {
+    "bindings": {
+      "ctrl-s": "workspace::SaveAll",
+      "ctrl-q": "pane::CloseActiveItem",
+
+      "alt-[": "workspace::ToggleLeftDock",
+      "alt-]": "workspace::ToggleRightDock",
+
+      "ctrl-e": "file_finder::Toggle",
+
+      ", a w": "projects::OpenRecent",
+      ", a t": "theme_selector::Toggle",
+      ", a s": "zed::OpenSettings",
+      ", a k": "zed::OpenKeymap",
+
+      // Intelligence
+      ", a i a": "editor::ToggleEditPrediction",
+
+      "ctrl-h": "workspace::ActivatePaneLeft",
+      "ctrl-l": "workspace::ActivatePaneRight",
+      "ctrl-k": "workspace::ActivatePaneUp",
+      "ctrl-j": "workspace::ActivatePaneDown"
+    }
+  },
+  {
+    "context": "Workspace",
+    "bindings": {
+      ", a g": [
+        "task::Spawn",
+        { "task_name": "Open lazygit", "target": "center" }
+      ],
+      ", w d": "file_finder::Toggle",
+      ", w s": "project_symbols::Toggle",
+      ", w f": "pane::DeploySearch",
+      ", w e": "project_panel::ToggleFocus" // reveal current file
+    }
+  },
+  {
+    "context": "Editor && mode == full",
+    "bindings": {
+      "shift-enter": [
+        "editor::ExpandExcerpts",
+        {
+          "lines": 5
+        }
+      ]
+    }
+  },
+  {
+    "context": "Editor && vim_mode == normal && !VimWaiting && !menu",
+    "bindings": {
+      // Find
+      // ", ,": ["workspace::SendKeystrokes", ":"],
+
+      ", d f": "buffer_search::Deploy",
+
+      "H": "pane::ActivatePreviousItem",
+      "L": "pane::ActivateNextItem",
+
+      "space": ["workspace::SendKeystrokes", "c i w"],
+
+      // Document Actions
+      ", d y p": "workspace::CopyRelativePath",
+      ", d v r": "git::RestoreFile",
+      ", d s": "outline::Toggle",
+
+      // Change
+      // ", c r": "editor::RevertSelectedHunks",
+      ", c r": "git::Restore",
+      ", c d": "editor::ToggleSelectedDiffHunks",
+      "] c": "editor::GoToHunk",
+      "[ c": "editor::GoToPreviousHunk",
+
+      // Symbol
+      "s d": "editor::GoToDefinition",
+      "s r": "editor::FindAllReferences",
+      "s i": "editor::Hover",
+      "s n": "editor::Rename",
+      "s a": "editor::ToggleCodeActions",
+
+      // Custom
+      // comment out and copy under
+      "y c": ["workspace::SendKeystrokes", "y y g c c p"]
+    }
+  },
+  {
+    "context": "Editor && vim_mode == visual && !VimWaiting && !menu",
+    "bindings": {
+      // Assistant
+      "g a": "assistant::QuoteSelection",
+
+      // Fold
+      // "z a": "editor::Fold",
+      // "z o": "editor::UnfoldLines"
+      "v": "editor::SelectLargerSyntaxNode",
+      "V": "editor::SelectSmallerSyntaxNode",
+      "A": "editor::SelectAll",
+      "K": "editor::MoveLineUp",
+      "J": "editor::MoveLineDown",
+
+      ", c c g": "editor::CopyPermalinkToLine"
+    }
+  },
+  {
+    "context": "Editor && vim_mode == insert && !menu",
+    "bindings": {
+      // put key-bindings here if you want them to work in insert mode
+    }
+  },
+  {
+    // this is not working. i dont know why really.
+    "context": "ProjectPanel && not_editing",
+    "bindings": {
+      "escape": "project_panel::ToggleFocus",
+      ", e e": "workspace::ToggleLeftDock",
+      "h": "project_panel::CollapseSelectedEntry",
+      "j": "menu::SelectNext",
+      "k": "menu::SelectPrevious",
+      "l": "project_panel::ExpandSelectedEntry",
+      "enter": "project_panel::OpenPermanent",
+      "r": "project_panel::Rename",
+      "z c": "project_panel::CollapseSelectedEntry",
+      "z o": "project_panel::ExpandSelectedEntry",
+      "z m": "project_panel::CollapseSelectedEntry",
+      "z M": "project_panel::CollapseAllEntries",
+      "x": "project_panel::Cut",
+      "c": "project_panel::Copy",
+      "p": "project_panel::Paste",
+      "d": "project_panel::Trash",
+      "a": "project_panel::NewFile",
+      "shift-a": "project_panel::NewDirectory",
+      "shift-y": "workspace::CopyRelativePath",
+      "g y": "workspace::CopyPath"
+    }
+  },
+  {
+    "context": "Terminal",
+    "bindings": {
+      "alt-h": "pane::ActivatePreviousItem",
+      "alt-l": "pane::ActivateNextItem"
+    }
+  }
+]

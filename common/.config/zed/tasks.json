@@ -1,0 +1,8 @@
+[
+  {
+    "label": "Open lazygit",
+    "command": "lazygit",
+    "allow_concurrent_runs": false,
+    "reveal": "always"
+  }
+]

@@ -1,0 +1,491 @@
+{
+  "id": "98afd8c2-9b2e-4920-aa73-f3b71851aaf6",
+  "zed": "context",
+  "version": "0.4.0",
+  "text": "\n\n\ncore/src\n```ts core/src/cli.ts\nimport * as z from \"@zod\";\nimport { AdapterConfig, adapterConfigSchema, TemplateConfig } from \"./schemas/adapter.ts\";\nimport { config } from \"./config.ts\";\nimport log from \"./lib/log.ts\";\nimport black_atom_corp_eng from \"./themes/corp/black-atom-corp-eng.ts\";\nimport { processTemplate, writeOutput } from \"./lib/template.ts\";\nimport { Definition, Key } from \"./types/theme.ts\";\n\nconst themeMap: Record<Key, Definition | null> = {\n    \"black-atom-corp-eng\": black_atom_corp_eng,\n    \"black-atom-corp-ops\": null,\n    \"black-atom-corp-med\": null,\n    \"black-atom-corp-res\": null,\n    \"black-atom-jpn-koyo-yoru\": null,\n    \"black-atom-jpn-koyo-hiru\": null,\n    \"black-atom-jpn-tsuki-yoru\": null,\n    \"black-atom-crbn-null\": null,\n    \"black-atom-crbn-supr\": null,\n    \"black-atom-terra-spring-day\": null,\n    \"black-atom-terra-spring-night\": null,\n    \"black-atom-terra-fall-day\": null,\n    \"black-atom-terra-fall-night\": null,\n    \"black-atom-terra-summer-day\": null,\n    \"black-atom-terra-summer-night\": null,\n    \"black-atom-terra-winter-day\": null,\n    \"black-atom-terra-winter-night\": null,\n};\n\nasync function getAdapterConfig(): Promise<AdapterConfig> {\n    try {\n        const adapterConfig = await Deno.readTextFile(config.adapterFileName);\n        return adapterConfigSchema.parse(JSON.parse(adapterConfig));\n    } catch (error) {\n        if (error instanceof Deno.errors.NotFound) {\n            log.error(`No \\`${config.adapterFileName}\\` found in current directory. Abort.`);\n            Deno.exit(1);\n        }\n\n        if (error instanceof z.ZodError) {\n            log.error(\"Invalid adapter configuration!\");\n            console.dir(error.issues);\n            Deno.exit(1);\n        }\n\n        throw error;\n    }\n}\n\nasync function processThemeTemplates(themeKey: Key, config: TemplateConfig) {\n    const theme = themeMap[themeKey];\n    if (!theme) {\n        log.error(`Theme \"${themeKey}\" not implemented yet`);\n        return;\n    }\n\n    const paths = config.template ? [config.template] : config.templates;\n    for (const path of paths) {\n        try {\n            log.info(`Processing template: ${path}`);\n            const content = await processTemplate(theme, path);\n            await writeOutput(content, path);\n            log.success(`Generated: ${path.replace(\".template.\", \".\")}`);\n        } catch (error) {\n            if (error instanceof Error) {\n                log.error(`Failed to process template ${path}: ${error.message}`);\n            }\n        }\n    }\n}\n\nif (import.meta.main) {\n    const command = Deno.args[0];\n\n    switch (command) {\n        case \"generate\": {\n            const adapterConfig = await getAdapterConfig();\n            log.success(\"Adapter configuration loaded successfully\");\n\n            // Omit $schema and process only theme configs\n            const { $schema, ...themeConfigs } = adapterConfig;\n\n            for (const [key, config] of Object.entries(themeConfigs)) {\n                if (config) {\n                    await processThemeTemplates(key as Key, config);\n                }\n            }\n            break;\n        }\n\n        case \"-h\":\n        case \"--help\":\n            log.menu();\n            break;\n\n        default:\n            log.menu();\n            Deno.exit(1);\n    }\n}\n```\n\n```ts core/src/config.ts\nimport { join } from \"@std/path\";\n\nconst cwd = Deno.cwd();\n\nexport const config = {\n    adapterFileName: \"adapter.json\",\n    dir: {\n        themes: join(cwd, \"src\", \"themes\"),\n    },\n};\n\nexport type Config = typeof config;\n```\n\nlib\n```ts core/src/lib/log.ts\nimport * as colors from \"@std/fmt/colors\";\n\nconst log = {\n    error: (message: string) => {\n        console.error(colors.red(\" \" + message));\n    },\n    info: (message: string) => {\n        console.info(colors.white(\" \" + message));\n    },\n    warn: (message: string) => {\n        console.warn(colors.yellow(\" \" + message));\n    },\n    success: (message: string) => {\n        console.log(colors.green(\" \" + message));\n    },\n    menu: () => {\n        log.info(`Usage: black-atom-core <command>\n\nCommands:\n  ${colors.yellow(\"generate\")}    Generate theme files from templates\n`);\n    },\n};\n\nexport default log;\n```\n\n```ts core/src/lib/template.ts\nimport { Eta } from \"@eta\";\nimport { dirname } from \"@std/path\";\nimport type { Definition } from \"../types/theme.ts\";\n\n// Initialize Eta with options\nconst eta = new Eta({\n    views: Deno.cwd(), // Use current working directory as views directory\n    cache: true, // Enable caching for better performance\n    autoEscape: false, // Don't escape HTML since we're not generating HTML\n    varName: \"theme\", // Use 'theme' as the variable name in templates\n});\n\nexport async function processTemplate(themeDef: Definition, templatePath: string): Promise<string> {\n    try {\n        // Read template file\n        const template = await Deno.readTextFile(templatePath);\n\n        // Process template with Eta\n        return eta.renderString(template, themeDef);\n    } catch (error) {\n        if (error instanceof Deno.errors.NotFound) {\n            throw new Error(`Template file not found: ${templatePath}`);\n        }\n        throw error;\n    }\n}\n\nexport async function writeOutput(content: string, templatePath: string): Promise<void> {\n    // Generate output path by removing .template from the file name\n    const outputPath = templatePath.replace(\".template.\", \".\");\n\n    // Ensure the output directory exists\n    await Deno.mkdir(dirname(outputPath), { recursive: true });\n\n    // Write the processed content\n    await Deno.writeTextFile(outputPath, content);\n}\n```\n\n\nschemas\n```ts core/src/schemas/adapter.ts\nimport * as z from \"@zod\";\nimport { themeKeys } from \"../types/theme.ts\";\n\nconst themeKeySchema = z.enum(themeKeys);\n\nconst templateConfigSchema = z.discriminatedUnion(\"template\", [\n    z.object({\n        template: z.string(),\n        templates: z.undefined(),\n    }),\n    z.object({\n        template: z.undefined(),\n        templates: z.array(z.string()),\n    }),\n]);\n\nexport const adapterConfigSchema = z.object({\n    $schema: z.string().optional(),\n    ...themeKeys.map((key) => [key, templateConfigSchema]),\n});\n\n// This will give us a more precise type\nexport type TemplateConfig = z.infer<typeof templateConfigSchema>;\nexport type AdapterConfig = z.infer<typeof adapterConfigSchema>;\n```\n\n\nthemes/corp\n```ts core/src/themes/corp/black-atom-corp-eng.ts\nimport * as Theme from \"../../types/theme.ts\";\n\nimport syntax_dark from \"./syntax_dark.ts\";\nimport ui_dark from \"./ui_dark.ts\";\n\nconst meta: Theme.Meta = {\n    key: \"black-atom-corp-eng\",\n    label: \"Black Atom - Corp [ENG]\",\n    appearance: \"dark\",\n    status: \"release\",\n    collection: {\n        key: \"corp\",\n        label: \"Corporate\",\n    },\n};\n\nconst primaries: Theme.Primaries = [\n    \"#040505\",\n    \"#0e1110\",\n    \"#181b19\",\n    \"#1d201e\",\n    \"#3e4441\",\n    \"#565f59\",\n    \"#606a65\",\n    \"#79857f\",\n    \"#9fafa7\",\n    \"#abbbb3\",\n    \"#c4d4cc\",\n    \"#d0e0d8\",\n];\n\nconst palette: Theme.Palette = {\n    black: primaries[2],\n    gray: primaries[5],\n\n    darkRed: \"#9891d6\",\n    red: \"#a6a1df\",\n\n    darkGreen: \"#93c270\",\n    green: \"#a0ce7d\",\n\n    darkYellow: primaries[9],\n    yellow: \"#9BE197\",\n\n    darkBlue: primaries[8],\n    blue: primaries[10],\n\n    darkMagenta: \"#a498e9\",\n    magenta: \"#b7aded\",\n\n    darkCyan: \"#6ac779\",\n    cyan: \"#88dc96\",\n\n    lightGray: primaries[8],\n    white: primaries[11],\n};\n\nconst theme: Theme.Definition = {\n    meta,\n    primaries,\n    palette,\n    ui: ui_dark(primaries, palette),\n    syntax: syntax_dark(primaries, palette),\n};\n\nexport default theme;\n```\n\n```ts core/src/themes/corp/syntax_dark.ts\nimport { Palette, Primaries, Syntax } from \"../../types/theme.ts\";\n\nexport default function (primaries: Primaries, palette: Palette): Syntax {\n    return {\n        variable: {\n            default: palette.blue,\n            builtin: palette.blue,\n            member: palette.darkBlue,\n            parameter: palette.darkYellow,\n        },\n        property: {\n            default: palette.darkBlue,\n        },\n        string: {\n            default: palette.green,\n            doc: palette.green,\n            regexp: palette.red,\n            escape: palette.red,\n        },\n        constant: {\n            default: primaries[10],\n            builtin: palette.darkRed,\n        },\n        module: {\n            default: palette.darkBlue,\n        },\n        boolean: {\n            default: palette.darkGreen,\n        },\n        number: {\n            default: palette.darkGreen,\n        },\n        type: {\n            default: palette.cyan,\n            builtin: palette.darkCyan,\n        },\n        attribute: {\n            default: palette.darkYellow,\n            builtin: palette.darkYellow,\n        },\n        func: {\n            default: palette.yellow,\n            builtin: palette.yellow,\n            method: palette.yellow,\n        },\n        constructor: {\n            default: palette.yellow,\n        },\n        keyword: {\n            default: palette.magenta,\n            import: palette.red,\n            export: palette.red,\n        },\n        operator: {\n            default: palette.magenta,\n        },\n        punctuation: {\n            default: palette.lightGray,\n            delimiter: primaries[8],\n            bracket: palette.lightGray,\n            special: palette.lightGray,\n        },\n        comment: {\n            default: palette.gray,\n            doc: palette.darkGreen,\n            todo: palette.green,\n            error: palette.red,\n            warn: palette.yellow,\n            info: palette.blue,\n            hint: palette.darkYellow,\n        },\n        markup: {\n            heading: {\n                h1: palette.yellow,\n                h2: palette.yellow,\n                h3: palette.yellow,\n                h4: palette.lightGray,\n                h5: palette.lightGray,\n                h6: palette.lightGray,\n            },\n            strong: palette.yellow,\n            italic: palette.yellow,\n            strikethrough: palette.yellow,\n            quote: palette.green,\n            math: palette.darkGreen,\n            link: palette.green,\n            list: {\n                default: palette.lightGray,\n                checked: palette.green,\n                unchecked: palette.lightGray,\n            },\n            code: {\n                fg: palette.gray,\n                bg: palette.black,\n            },\n        },\n        tag: {\n            default: palette.yellow,\n            builtin: palette.darkYellow,\n            attribute: primaries[8],\n            delimiter: primaries[9],\n        },\n    };\n}\n```\n\n```ts core/src/themes/corp/ui_dark.ts\nimport { Palette, Primaries, UI } from \"../../types/theme.ts\";\n\nexport default function (primaries: Primaries, palette: Palette): UI {\n    return {\n        bg: {\n            default: primaries[2],\n            panel: primaries[1],\n            float: primaries[1],\n            active: primaries[3],\n            disabled: primaries[5],\n            hover: primaries[3],\n            selection: primaries[4],\n            search: primaries[4],\n            contrast: primaries[11],\n            negative: palette.red,\n            warn: palette.yellow,\n            info: palette.blue,\n            hint: palette.darkYellow,\n            positive: palette.green,\n            add: palette.green,\n            delete: palette.red,\n            modify: palette.blue,\n        },\n        fg: {\n            default: primaries[11],\n            subtle: primaries[9],\n            disabled: primaries[7],\n            accent: palette.yellow,\n            contrast: primaries[2],\n            negative: palette.red,\n            warn: palette.yellow,\n            info: palette.blue,\n            hint: palette.darkYellow,\n            positive: palette.green,\n            add: palette.green,\n            delete: palette.red,\n            modify: palette.blue,\n        },\n    };\n}\n```\n\n\ntypes\n```ts core/src/types/color.ts\nexport type HexColor = `#${string}`;\n```\n\n```ts core/src/types/theme.ts\nimport { HexColor } from \"./color.ts\";\n\nexport const themeKeys = [\n    \"black-atom-corp-eng\",\n    \"black-atom-corp-ops\",\n    \"black-atom-corp-med\",\n    \"black-atom-corp-res\",\n    \"black-atom-jpn-koyo-yoru\",\n    \"black-atom-jpn-koyo-hiru\",\n    \"black-atom-jpn-tsuki-yoru\",\n    \"black-atom-crbn-null\",\n    \"black-atom-crbn-supr\",\n    \"black-atom-terra-spring-day\",\n    \"black-atom-terra-spring-night\",\n    \"black-atom-terra-fall-day\",\n    \"black-atom-terra-fall-night\",\n    \"black-atom-terra-summer-day\",\n    \"black-atom-terra-summer-night\",\n    \"black-atom-terra-winter-day\",\n    \"black-atom-terra-winter-night\",\n] as const;\n\ntype Key = typeof themeKeys[number];\n\ntype CollectionKey = \"corp\" | \"terra\" | \"jpn\" | \"crbn\";\n\ntype CollectionLabel = string;\n\ninterface Meta {\n    key: Key;\n    label:\n        | \"Black Atom - Corp [ENG]\"\n        | \"Black Atom - Corp [OPS]\"\n        | \"Black Atom - Corp [MED]\"\n        | \"Black Atom - Corp [RES]\";\n    appearance: \"light\" | \"dark\";\n    status: \"development\" | \"beta\" | \"release\";\n    collection: {\n        key: CollectionKey;\n        label: CollectionLabel;\n    };\n}\n\ntype Primaries = [\n    HexColor,\n    HexColor,\n    HexColor,\n    HexColor,\n    HexColor,\n    HexColor,\n    HexColor,\n    HexColor,\n    HexColor,\n    HexColor,\n    HexColor,\n    HexColor,\n];\n\ninterface Palette {\n    black: HexColor;\n    gray: HexColor;\n    darkRed: HexColor;\n    red: HexColor;\n    darkGreen: HexColor;\n    green: HexColor;\n    darkYellow: HexColor;\n    yellow: HexColor;\n    darkBlue: HexColor;\n    blue: HexColor;\n    darkMagenta: HexColor;\n    magenta: HexColor;\n    darkCyan: HexColor;\n    cyan: HexColor;\n    lightGray: HexColor;\n    white: HexColor;\n}\n\ninterface UIBackground {\n    default: HexColor;\n    panel: HexColor;\n    float: HexColor;\n    active: HexColor;\n    disabled: HexColor;\n    hover: HexColor;\n    selection: HexColor;\n    search: HexColor;\n    contrast: HexColor;\n    negative: HexColor;\n    warn: HexColor;\n    info: HexColor;\n    hint: HexColor;\n    positive: HexColor;\n    add: HexColor;\n    delete: HexColor;\n    modify: HexColor;\n}\n\ninterface UIForeground {\n    default: HexColor;\n    subtle: HexColor;\n    accent: HexColor;\n    disabled: HexColor;\n    contrast: HexColor;\n    negative: HexColor;\n    warn: HexColor;\n    info: HexColor;\n    hint: HexColor;\n    positive: HexColor;\n    add: HexColor;\n    delete: HexColor;\n    modify: HexColor;\n}\n\ninterface UI {\n    bg: UIBackground;\n    fg: UIForeground;\n}\n\ninterface Syntax {\n    variable: {\n        default: HexColor;\n        builtin: HexColor;\n        parameter: HexColor;\n        member: HexColor;\n    };\n    string: {\n        default: HexColor;\n        doc: HexColor;\n        regexp: HexColor;\n        escape: HexColor;\n    };\n    boolean: {\n        default: HexColor;\n    };\n    number: {\n        default: HexColor;\n    };\n    property: {\n        default: HexColor;\n    };\n    constant: {\n        default: HexColor;\n        builtin: HexColor;\n    };\n    module: {\n        default: HexColor;\n    };\n    type: {\n        default: HexColor;\n        builtin: HexColor;\n    };\n    attribute: {\n        default: HexColor;\n        builtin: HexColor;\n    };\n    func: {\n        default: HexColor;\n        builtin: HexColor;\n        method: HexColor;\n    };\n    constructor: {\n        default: HexColor;\n    };\n    operator: {\n        default: HexColor;\n    };\n    keyword: {\n        default: HexColor;\n        import: HexColor;\n        export: HexColor;\n    };\n    punctuation: {\n        default: HexColor;\n        delimiter: HexColor;\n        bracket: HexColor;\n        special: HexColor;\n    };\n    comment: {\n        default: HexColor;\n        doc: HexColor;\n        todo: HexColor;\n        error: HexColor;\n        warn: HexColor;\n        info: HexColor;\n        hint: HexColor;\n    };\n    tag: {\n        default: HexColor;\n        builtin: HexColor;\n        delimiter: HexColor;\n        attribute: HexColor;\n    };\n    markup: {\n        heading: {\n            h1: HexColor;\n            h2: HexColor;\n            h3: HexColor;\n            h4: HexColor;\n            h5: HexColor;\n            h6: HexColor;\n        };\n        list: {\n            default: HexColor;\n            checked: HexColor;\n            unchecked: HexColor;\n        };\n        strong: HexColor;\n        italic: HexColor;\n        strikethrough: HexColor;\n        quote: HexColor;\n        math: HexColor;\n        link: HexColor;\n        code: {\n            fg: HexColor;\n            bg: HexColor;\n        };\n    };\n}\n\ninterface Definition {\n    meta: Meta;\n    primaries: Primaries;\n    palette: Palette;\n    ui: UI;\n    syntax: Syntax;\n}\n\nexport type {\n    CollectionKey,\n    CollectionLabel,\n    Definition,\n    Key,\n    Meta,\n    Palette,\n    Primaries,\n    Syntax,\n    UI,\n};\n```\n\n\n\ndiagnostics\ncore/src/cli.ts\n```typescript\n\n    const paths = config.template ? [config.template] : config.templates;\n    for (const path of paths) {\n// error: 'paths' is possibly 'undefined'.\n        try {\n            log.info(`Processing template: ${path}`);\n```\ncore/src/schemas/adapter.ts\n```typescript\n]);\n\nexport const adapterConfigSchema = z.object({\n// error: Argument of type '{ length: number; toString(): string; toLocaleString(): string; toLocaleString(locales: string | string[], options?: Intl.NumberFormatOptions & Intl.DateTimeFormatOptions): string; pop(): (\"black-atom-corp-eng\" | ... 16 more ... | z.ZodDiscriminatedUnion<...>)[] | undefined; ... 37 more ...; $schema: z.ZodOptional<....' is not assignable to parameter of type 'ZodRawShape'.\n//          Property 'length' is incompatible with index signature.\n//            Type 'number' is not assignable to type 'ZodTypeAny'.\n    $schema: z.string().optional(),\n    ...themeKeys.map((key) => [key, templateConfigSchema]),\n});\n\n// This will give us a more precise type\n```\n\n\nI am having a typing problem.\nLet me help you fix those typing issues:\n\n1. For the first error in `cli.ts`, we need to handle the case where `paths` could be undefined. We can modify the code to ensure type safety:\n\n```typescript\n// In cli.ts\nasync function processThemeTemplates(themeKey: Key, config: TemplateConfig) {\n    const theme = themeMap[themeKey];\n    if (!theme) {\n        log.error(`Theme \"${themeKey}\" not implemented yet`);\n        return;\n    }\n\n    // Create a definite array of paths\n    const templatePaths = config.template \n        ? [config.template] \n        : config.templates ?? []; // Add fallback empty array\n\n    for (const path of templatePaths) {\n        try {\n            log.info(`Processing template: ${path}`);\n            const content = await processTemplate(theme, path);\n            await writeOutput(content, path);\n            log.success(`Generated: ${path.replace(\".template.\", \".\")}`);\n        } catch (error) {\n            if (error instanceof Error) {\n                log.error(`Failed to process template ${path}: ${error.message}`);\n            }\n        }\n    }\n}\n```\n\n2. For the second error in `adapter.ts`, the issue is with how we're spreading the theme keys. We need to create a proper object from the array. Here's the fix:\n\n```typescript\n// In schemas/adapter.ts\nexport const adapterConfigSchema = z.object({\n    $schema: z.string().optional(),\n    ...Object.fromEntries(\n        themeKeys.map((key) => [key, templateConfigSchema.optional()])\n    ),\n});\n```\n\nThe key changes are:\n\n1. Using `Object.fromEntries()` to convert the array of key-value pairs into an object\n2. Making each theme configuration optional with `.optional()`\n\nThis should resolve both typing issues. The first fix ensures we have a definite array to iterate over, and the second fix properly creates a Zod object shape from the theme keys.\n\nLet me know if you need any clarification or run into other issues!\nSymbols for core/src/schemas/adapter.ts:\n- const themeKeySchema\n- const templateConfigSchema\n- const adapterConfigSchema\n- type TemplateConfig\n- type AdapterConfig\n\n\nYeah its still not working. This is the structure I was trying to achieve. But It is the first time for me working with zod. Maybe that is too complex for now?\n\n\n\n```ts\ntype TemplateConfig = {\n    template: string;\n    templates?: never;\n} | {\n    template?: never;\n    templates: string[];\n};\n\ntype AdapterConfig =\n    & {\n        [K in typeof themeKeys[number]]: TemplateConfig;\n     }\n     & {\n         $schema?: string;\n     };\n```\n\nSince we also make everything to an array, maybe its easier if its always an array?\n\n```ts core/src/cli.ts:57-58\n// Excerpt from: async function processThemeTemplates( )\n    const templatePaths = config.template ? [config.template] : config.templates ?? []; // Add fallback empty array\n\n```\n\nYes, simplifying the schema would make it clearer. If we're always converting to an array anyway, we can make the schema simpler. Here's a revised version:\n\n```typescript\n// core/src/schemas/adapter.ts\nimport * as z from \"@zod\";\nimport { themeKeys } from \"../types/theme.ts\";\n\n// Theme key enum schema\nconst themeKeySchema = z.enum(themeKeys);\n\n// Simplified template config - just an array of strings\nconst templateConfigSchema = z.array(z.string());\n\n// Adapter config schema\nconst adapterConfigSchema = z.object({\n    $schema: z.string().optional(),\n    ...Object.fromEntries(\n        themeKeys.map((key) => [key, templateConfigSchema.optional()])\n    ),\n});\n\n// Export types\nexport type TemplateConfig = z.infer<typeof templateConfigSchema>;\nexport type AdapterConfig = z.infer<typeof adapterConfigSchema>;\n```\n\nThen in the CLI, you can simplify the template processing:\n\n```typescript\n// core/src/cli.ts\nasync function processThemeTemplates(themeKey: Key, config: string[]) {\n    const theme = themeMap[themeKey];\n    if (!theme) {\n        log.error(`Theme \"${themeKey}\" not implemented yet`);\n        return;\n    }\n\n    for (const path of config) {\n        try {\n            log.info(`Processing template: ${path}`);\n            const content = await processTemplate(theme, path);\n            await writeOutput(content, path);\n            log.success(`Generated: ${path.replace(\".template.\", \".\")}`);\n        } catch (error) {\n            if (error instanceof Error) {\n                log.error(`Failed to process template ${path}: ${error.message}`);\n            }\n        }\n    }\n}\n```\n\nThis approach:\n1. Simplifies the schema to just use arrays of strings for templates\n2. Makes the types clearer and easier to work with\n3. Removes the need for the template/templates discrimination\n4. Still maintains type safety\n5. Makes the actual usage more straightforward\n\nThe adapter.json would then look like:\n```json\n{\n    \"$schema\": \"...\",\n    \"black-atom-corp-eng\": [\"path/to/template1.template.json\", \"path/to/template2.template.json\"],\n    \"black-atom-corp-ops\": [\"path/to/template.template.json\"]\n}\n```\n\nWould this simpler approach work better for your needs?\n\nIt does not. \n\nThis is all I want. Is this structure possible to describe with Zod or not?\n\nIf I was using Typescript alone, i would write it like this:\n\n```ts\ntype TemplateConfig = {\n    templates: string[];\n};\n\ntype AdapterConfig =\n    & {\n        $schema: string;\n    }\n    & {\n        [K in typeof themeKeys[number]]: TemplateConfig;\n    };\n\n```\nYes, this structure is definitely possible to describe with Zod. Here's how:\n\n```typescript\n// core/src/schemas/adapter.ts\nimport * as z from \"@zod\";\nimport { themeKeys } from \"../types/theme.ts\";\n\n// Simple template config with just templates array\nconst templateConfigSchema = z.object({\n    templates: z.array(z.string()),\n});\n\n// Adapter config combining required $schema and theme configs\nconst adapterConfigSchema = z.object({\n    $schema: z.string(),\n    ...Object.fromEntries(\n        themeKeys.map((key) => [key, templateConfigSchema])\n    ),\n});\n\n// Export types\nexport type TemplateConfig = z.infer<typeof templateConfigSchema>;\nexport type AdapterConfig = z.infer<typeof adapterConfigSchema>;\n```\n\nThis will create exactly the type structure you want, where:\n- Each template config must have a `templates` array of strings\n- The adapter config must have a `$schema` string\n- Each theme key must have a template config\n\nThe resulting JSON structure would look like:\n```json\n{\n    \"$schema\": \"some-schema\",\n    \"black-atom-corp-eng\": {\n        \"templates\": [\"path1\", \"path2\"]\n    },\n    \"black-atom-corp-ops\": {\n        \"templates\": [\"path3\"]\n    }\n}\n```\n\nSymbols for core/src/schemas/adapter.ts:\n- const templateConfigSchema\n- const adapterConfigSchema\n- type TemplateConfig\n- type AdapterConfig\n\n\nWell this is not it. This is the resulting type of AdapterConfig. All the theme keys are missing.\n\n```ts\ntype AdapterConfig = {\n    $schema: string;\n}\n````\nLet me fix that. Here's how to properly create the schema with all theme keys:\n\n```typescript\n// core/src/schemas/adapter.ts\nimport * as z from \"@zod\";\nimport { themeKeys } from \"../types/theme.ts\";\n\nconst templateConfigSchema = z.object({\n    templates: z.array(z.string()),\n});\n\n// Create a record type mapping all theme keys to template configs\nconst themeConfigsSchema = z.record(\n    z.enum(themeKeys),\n    templateConfigSchema\n);\n\nconst adapterConfigSchema = z.object({\n    $schema: z.string(),\n}).merge(themeConfigsSchema);\n\nexport type TemplateConfig = z.infer<typeof templateConfigSchema>;\nexport type AdapterConfig = z.infer<typeof adapterConfigSchema>;\n```\n\nThis should now give you the correct type structure where AdapterConfig has:\n- `$schema: string`\n- All theme keys from `themeKeys` with `TemplateConfig` as their value type\n\nThe resulting type should match what you wanted:\n```typescript\ntype AdapterConfig = {\n    $schema: string;\n    \"black-atom-corp-eng\": { templates: string[] };\n    \"black-atom-corp-ops\": { templates: string[] };\n    // ... all other theme keys\n}\n```\n\ndiagnostics\ncore/src/cli.ts\n```typescript\nimport * as z from \"@zod\";\nimport { AdapterConfig, adapterConfigSchema } from \"./schemas/adapter.ts\";\n// error: '\"./schemas/adapter.ts\"' has no exported member named 'adapterConfigSchema'. Did you mean 'AdapterConfig'?\nimport { config } from \"./config.ts\";\nimport log from \"./lib/log.ts\";\n```\ncore/src/schemas/adapter.ts\n```typescript\nconst adapterConfigSchema = z.object({\n    $schema: z.string(),\n}).merge(themeConfigsSchema);\n// error: Argument of type 'ZodRecord<ZodEnum<[\"black-atom-corp-eng\", \"black-atom-corp-ops\", \"black-atom-corp-med\", \"black-atom-corp-res\", \"black-atom-jpn-koyo-yoru\", \"black-atom-jpn-koyo-hiru\", \"black-atom-jpn-tsuki-yoru\", ... 9 more ..., \"black-atom-terra-winter-night\"]>, ZodObject<...>>' is not assignable to parameter of type 'AnyZodObject'.\n//          Type 'ZodRecord<ZodEnum<[\"black-atom-corp-eng\", \"black-atom-corp-ops\", \"black-atom-corp-med\", \"black-atom-corp-res\", \"black-atom-jpn-koyo-yoru\", \"black-atom-jpn-koyo-hiru\", \"black-atom-jpn-tsuki-yoru\", ... 9 more ..., \"black-atom-terra-winter-night\"]>, ZodObject<...>>' is missing the following properties from type 'ZodObject<any, any, any, { [x: string]: any; }, { [x: string]: any; }>': _cached, _getCached, shape, strict, and 14 more.\n\nexport type TemplateConfig = z.infer<typeof templateConfigSchema>;\n```\n\n\nHere's the corrected version to fix the typing issues:\n\n```typescript\n// core/src/schemas/adapter.ts\nimport * as z from \"@zod\";\nimport { themeKeys } from \"../types/theme.ts\";\n\nconst templateConfigSchema = z.object({\n    templates: z.array(z.string()),\n});\n\nconst adapterConfigSchema = z.object({\n    $schema: z.string(),\n    ...Object.fromEntries(\n        themeKeys.map(key => [key, templateConfigSchema])\n    ),\n});\n\nexport type TemplateConfig = z.infer<typeof templateConfigSchema>;\nexport type AdapterConfig = z.infer<typeof adapterConfigSchema>;\nexport { adapterConfigSchema }; // Add this export\n```\n\nThe main changes are:\n1. Removed the `z.record()` and `merge()` approach which was causing typing issues\n2. Went back to using `Object.fromEntries()` to create the object schema\n3. Added explicit export of `adapterConfigSchema`\n\nThis should resolve both the export error in `cli.ts` and the type error in `adapter.ts`, while still maintaining the type structure you want:\n\n```typescript\ntype AdapterConfig = {\n    $schema: string;\n    \"black-atom-corp-eng\": { templates: string[] };\n    \"black-atom-corp-ops\": { templates: string[] };\n    // ... all other theme keys\n}\n```\n\nWe are running in circles here. Now the keys are missing again...\n\nSymbols for core/src/schemas/adapter.ts:\n- const templateConfigSchema\n- const adapterConfigSchema\n- type TemplateConfig\n- type AdapterConfig\n\n\nAh, I see the issue now. Here's the correct way to build the schema to ensure all theme keys are included:\n\n```typescript\n// core/src/schemas/adapter.ts\nimport * as z from \"@zod\";\nimport { themeKeys } from \"../types/theme.ts\";\n\nconst templateConfigSchema = z.object({\n    templates: z.array(z.string()),\n});\n\n// Create a schema shape with all theme keys\nconst themeConfigShape = Object.fromEntries(\n    themeKeys.map(key => [key, templateConfigSchema])\n) as { [K in typeof themeKeys[number]]: typeof templateConfigSchema };\n\nconst adapterConfigSchema = z.object({\n    $schema: z.string(),\n    ...themeConfigShape\n});\n\nexport type TemplateConfig = z.infer<typeof templateConfigSchema>;\nexport type AdapterConfig = z.infer<typeof adapterConfigSchema>;\nexport { adapterConfigSchema };\n```\n\nThis should now correctly create a type where:\n1. Each theme key from `themeKeys` is required\n2. Each theme config must have a `templates` array\n3. `$schema` is required\n\nThe resulting type should be:\n```typescript\ntype AdapterConfig = {\n    $schema: string;\n    \"black-atom-corp-eng\": { templates: string[] };\n    \"black-atom-corp-ops\": { templates: string[] };\n    \"black-atom-corp-med\": { templates: string[] };\n    // ... all other theme keys\n}\n```\n\nThe key addition is the type assertion on `themeConfigShape` to ensure all theme keys are included in the type.\n\nOkay thanks. This finally works.\n\n```ts core/src/schemas/adapter.ts\nimport * as z from \"@zod\";\nimport { themeKeys } from \"../types/theme.ts\";\n\nconst templateConfigSchema = z.object({\n    templates: z.array(z.string()),\n});\n\n// Create a schema shape with all theme keys\nconst themeConfigShape = Object.fromEntries(\n    themeKeys.map((key) => [key, templateConfigSchema]),\n) as { [K in typeof themeKeys[number]]: typeof templateConfigSchema };\n\nexport const adapterConfigSchema = z.object({\n    $schema: z.string(),\n    ...themeConfigShape,\n});\n\nexport type TemplateConfig = z.infer<typeof templateConfigSchema>;\nexport type AdapterConfig = z.infer<typeof adapterConfigSchema>;\n```\n\n```ts core/src/cli.ts\nimport * as z from \"@zod\";\nimport { AdapterConfig, adapterConfigSchema, TemplateConfig } from \"./schemas/adapter.ts\";\nimport { config } from \"./config.ts\";\nimport log from \"./lib/log.ts\";\nimport black_atom_corp_eng from \"./themes/corp/black-atom-corp-eng.ts\";\nimport { processTemplate, writeOutput } from \"./lib/template.ts\";\nimport { Definition, Key } from \"./types/theme.ts\";\n\nconst themeMap: Record<Key, Definition | null> = {\n    \"black-atom-corp-eng\": black_atom_corp_eng,\n    \"black-atom-corp-ops\": null,\n    \"black-atom-corp-med\": null,\n    \"black-atom-corp-res\": null,\n    \"black-atom-jpn-koyo-yoru\": null,\n    \"black-atom-jpn-koyo-hiru\": null,\n    \"black-atom-jpn-tsuki-yoru\": null,\n    \"black-atom-crbn-null\": null,\n    \"black-atom-crbn-supr\": null,\n    \"black-atom-terra-spring-day\": null,\n    \"black-atom-terra-spring-night\": null,\n    \"black-atom-terra-fall-day\": null,\n    \"black-atom-terra-fall-night\": null,\n    \"black-atom-terra-summer-day\": null,\n    \"black-atom-terra-summer-night\": null,\n    \"black-atom-terra-winter-day\": null,\n    \"black-atom-terra-winter-night\": null,\n};\n\nasync function getAdapterConfig(): Promise<AdapterConfig> {\n    try {\n        const adapterConfig = await Deno.readTextFile(config.adapterFileName);\n        return adapterConfigSchema.parse(JSON.parse(adapterConfig));\n    } catch (error) {\n        if (error instanceof Deno.errors.NotFound) {\n            log.error(`No \\`${config.adapterFileName}\\` found in current directory. Abort.`);\n            Deno.exit(1);\n        }\n\n        if (error instanceof z.ZodError) {\n            log.error(\"Invalid adapter configuration!\");\n            console.dir(error.issues);\n            Deno.exit(1);\n        }\n\n        throw error;\n    }\n}\n\nasync function processThemeTemplates(themeKey: Key, templatePath: TemplateConfig[\"templates\"]) {\n    const theme = themeMap[themeKey];\n\n    if (!theme) {\n        log.error(`Theme \"${themeKey}\" not found`);\n        return;\n    }\n\n    for (const path of templatePath) {\n        try {\n            log.info(`Processing template: ${path}`);\n            const content = await processTemplate(theme, path);\n            await writeOutput(content, path);\n            log.success(`Generated: ${path.replace(\".template.\", \".\")}`);\n        } catch (error) {\n            if (error instanceof Error) {\n                log.error(`Failed to process template ${path}: ${error.message}`);\n            }\n        }\n    }\n}\n\nif (import.meta.main) {\n    const command = Deno.args[0];\n\n    switch (command) {\n        case \"generate\": {\n            const adapterConfig = await getAdapterConfig();\n            log.success(\"Adapter configuration loaded successfully\");\n\n            const { $schema: _, ...configs } = adapterConfig;\n\n            for (const [themeKey, config] of Object.entries(configs)) {\n                await processThemeTemplates(themeKey as Key, config.templates);\n            }\n            break;\n        }\n\n        case \"-h\":\n        case \"--help\":\n            log.menu();\n            break;\n\n        default:\n            log.menu();\n            Deno.exit(1);\n    }\n}\n```\n\n\nWe need to update the schema also:\n\n```json core/adapter.schema.json\n{\n    \"$schema\": \"http://json-schema.org/draft-07/schema#\",\n    \"title\": \"Black Atom Adapter Configuration\",\n    \"description\": \"Configuration schema for Black Atom theme adapters\",\n    \"type\": \"object\",\n    \"properties\": {\n        \"$schema\": {\n            \"type\": \"string\",\n            \"description\": \"The JSON Schema URL\"\n        },\n        \"black-atom-corp-eng\": { \"$ref\": \"#/$defs/templateConfig\" },\n        \"black-atom-corp-ops\": { \"$ref\": \"#/$defs/templateConfig\" },\n        \"black-atom-corp-med\": { \"$ref\": \"#/$defs/templateConfig\" },\n        \"black-atom-corp-res\": { \"$ref\": \"#/$defs/templateConfig\" },\n        \"black-atom-jpn-koyo-yoru\": { \"$ref\": \"#/$defs/templateConfig\" },\n        \"black-atom-jpn-koyo-hiru\": { \"$ref\": \"#/$defs/templateConfig\" },\n        \"black-atom-jpn-tsuki-yoru\": { \"$ref\": \"#/$defs/templateConfig\" },\n        \"black-atom-crbn-null\": { \"$ref\": \"#/$defs/templateConfig\" },\n        \"black-atom-crbn-supr\": { \"$ref\": \"#/$defs/templateConfig\" },\n        \"black-atom-terra-spring-day\": { \"$ref\": \"#/$defs/templateConfig\" },\n        \"black-atom-terra-spring-night\": { \"$ref\": \"#/$defs/templateConfig\" },\n        \"black-atom-terra-fall-day\": { \"$ref\": \"#/$defs/templateConfig\" },\n        \"black-atom-terra-fall-night\": { \"$ref\": \"#/$defs/templateConfig\" },\n        \"black-atom-terra-summer-day\": { \"$ref\": \"#/$defs/templateConfig\" },\n        \"black-atom-terra-summer-night\": { \"$ref\": \"#/$defs/templateConfig\" },\n        \"black-atom-terra-winter-day\": { \"$ref\": \"#/$defs/templateConfig\" },\n        \"black-atom-terra-winter-night\": { \"$ref\": \"#/$defs/templateConfig\" }\n    },\n    \"additionalProperties\": false,\n    \"$defs\": {\n        \"templateConfig\": {\n            \"oneOf\": [\n                {\n                    \"type\": \"object\",\n                    \"properties\": {\n                        \"template\": {\n                            \"type\": \"string\",\n                            \"description\": \"Path to a single template file\"\n                        }\n                    },\n                    \"required\": [\"template\"],\n                    \"additionalProperties\": false\n                },\n                {\n                    \"type\": \"object\",\n                    \"properties\": {\n                        \"templates\": {\n                            \"type\": \"array\",\n                            \"items\": {\n                                \"type\": \"string\",\n                                \"description\": \"Path to a template file\"\n                            },\n                            \"minItems\": 1\n                        }\n                    },\n                    \"required\": [\"templates\"],\n                    \"additionalProperties\": false\n                }\n            ]\n        }\n    }\n}\n```\n\n\nI see, so you want to update the schema to match the current code structure. Here's the updated JSON schema:\n\n```json\n{\n    \"$schema\": \"http://json-schema.org/draft-07/schema#\",\n    \"title\": \"Black Atom Adapter Configuration\",\n    \"description\": \"Configuration schema for Black Atom theme adapters\",\n    \"type\": \"object\",\n    \"properties\": {\n        \"$schema\": {\n            \"type\": \"string\",\n            \"description\": \"The JSON Schema URL\"\n        },\n        \"black-atom-corp-eng\": { \"$ref\": \"#/$defs/templateConfig\" },\n        \"black-atom-corp-ops\": { \"$ref\": \"#/$defs/templateConfig\" },\n        \"black-atom-corp-med\": { \"$ref\": \"#/$defs/templateConfig\" },\n        \"black-atom-corp-res\": { \"$ref\": \"#/$defs/templateConfig\" },\n        \"black-atom-jpn-koyo-yoru\": { \"$ref\": \"#/$defs/templateConfig\" },\n        \"black-atom-jpn-koyo-hiru\": { \"$ref\": \"#/$defs/templateConfig\" },\n        \"black-atom-jpn-tsuki-yoru\": { \"$ref\": \"#/$defs/templateConfig\" },\n        \"black-atom-crbn-null\": { \"$ref\": \"#/$defs/templateConfig\" },\n        \"black-atom-crbn-supr\": { \"$ref\": \"#/$defs/templateConfig\" },\n        \"black-atom-terra-spring-day\": { \"$ref\": \"#/$defs/templateConfig\" },\n        \"black-atom-terra-spring-night\": { \"$ref\": \"#/$defs/templateConfig\" },\n        \"black-atom-terra-fall-day\": { \"$ref\": \"#/$defs/templateConfig\" },\n        \"black-atom-terra-fall-night\": { \"$ref\": \"#/$defs/templateConfig\" },\n        \"black-atom-terra-summer-day\": { \"$ref\": \"#/$defs/templateConfig\" },\n        \"black-atom-terra-summer-night\": { \"$ref\": \"#/$defs/templateConfig\" },\n        \"black-atom-terra-winter-day\": { \"$ref\": \"#/$defs/templateConfig\" },\n        \"black-atom-terra-winter-night\": { \"$ref\": \"#/$defs/templateConfig\" }\n    },\n    \"required\": [\n        \"$schema\",\n        \"black-atom-corp-eng\",\n        \"black-atom-corp-ops\",\n        \"black-atom-corp-med\",\n        \"black-atom-corp-res\",\n        \"black-atom-jpn-koyo-yoru\",\n        \"black-atom-jpn-koyo-hiru\",\n        \"black-atom-jpn-tsuki-yoru\",\n        \"black-atom-crbn-null\",\n        \"black-atom-crbn-supr\",\n        \"black-atom-terra-spring-day\",\n        \"black-atom-terra-spring-night\",\n        \"black-atom-terra-fall-day\",\n        \"black-atom-terra-fall-night\",\n        \"black-atom-terra-summer-day\",\n        \"black-atom-terra-summer-night\",\n        \"black-atom-terra-winter-day\",\n        \"black-atom-terra-winter-night\"\n    ],\n    \"additionalProperties\": false,\n    \"$defs\": {\n        \"templateConfig\": {\n            \"type\": \"object\",\n            \"properties\": {\n                \"templates\": {\n                    \"type\": \"array\",\n                    \"items\": {\n                        \"type\": \"string\",\n                        \"description\": \"Path to a template file\"\n                    },\n                    \"minItems\": 1\n                }\n            },\n            \"required\": [\"templates\"],\n            \"additionalProperties\": false\n        }\n    }\n}\n```\n\nKey changes:\n1. Simplified the `templateConfig` definition to only include the `templates` array\n2. Added all theme keys to the `required` array since they're all required in the TypeScript type\n3. Removed the `oneOf` and `template` single string option since we're now always using arrays\n4. Kept `minItems: 1` to ensure at least one template is provided\n\nThis JSON Schema now matches exactly what the TypeScript types enforce.\n\nSorry but not all the theme keys need to be required. Only $schema needs to be required. \nAh, you're right! Here's the corrected JSON schema where only `$schema` is required:\n\n```json\n{\n    \"$schema\": \"http://json-schema.org/draft-07/schema#\",\n    \"title\": \"Black Atom Adapter Configuration\",\n    \"description\": \"Configuration schema for Black Atom theme adapters\",\n    \"type\": \"object\",\n    \"properties\": {\n        \"$schema\": {\n            \"type\": \"string\",\n            \"description\": \"The JSON Schema URL\"\n        },\n        \"black-atom-corp-eng\": { \"$ref\": \"#/$defs/templateConfig\" },\n        \"black-atom-corp-ops\": { \"$ref\": \"#/$defs/templateConfig\" },\n        \"black-atom-corp-med\": { \"$ref\": \"#/$defs/templateConfig\" },\n        \"black-atom-corp-res\": { \"$ref\": \"#/$defs/templateConfig\" },\n        \"black-atom-jpn-koyo-yoru\": { \"$ref\": \"#/$defs/templateConfig\" },\n        \"black-atom-jpn-koyo-hiru\": { \"$ref\": \"#/$defs/templateConfig\" },\n        \"black-atom-jpn-tsuki-yoru\": { \"$ref\": \"#/$defs/templateConfig\" },\n        \"black-atom-crbn-null\": { \"$ref\": \"#/$defs/templateConfig\" },\n        \"black-atom-crbn-supr\": { \"$ref\": \"#/$defs/templateConfig\" },\n        \"black-atom-terra-spring-day\": { \"$ref\": \"#/$defs/templateConfig\" },\n        \"black-atom-terra-spring-night\": { \"$ref\": \"#/$defs/templateConfig\" },\n        \"black-atom-terra-fall-day\": { \"$ref\": \"#/$defs/templateConfig\" },\n        \"black-atom-terra-fall-night\": { \"$ref\": \"#/$defs/templateConfig\" },\n        \"black-atom-terra-summer-day\": { \"$ref\": \"#/$defs/templateConfig\" },\n        \"black-atom-terra-summer-night\": { \"$ref\": \"#/$defs/templateConfig\" },\n        \"black-atom-terra-winter-day\": { \"$ref\": \"#/$defs/templateConfig\" },\n        \"black-atom-terra-winter-night\": { \"$ref\": \"#/$defs/templateConfig\" }\n    },\n    \"required\": [\"$schema\"],\n    \"additionalProperties\": false,\n    \"$defs\": {\n        \"templateConfig\": {\n            \"type\": \"object\",\n            \"properties\": {\n                \"templates\": {\n                    \"type\": \"array\",\n                    \"items\": {\n                        \"type\": \"string\",\n                        \"description\": \"Path to a template file\"\n                    },\n                    \"minItems\": 1\n                }\n            },\n            \"required\": [\"templates\"],\n            \"additionalProperties\": false\n        }\n    }\n}\n```\n\nOnly change is in the `required` array - now it only includes `\"$schema\"`. This means users can include any of the theme configurations they need, but must provide the schema reference.\n\nOkay sorry but in the zod validation file all keys are required too. This is not okay. Only $schema should be required.\n\n```ts core/src/schemas/adapter.ts\nimport * as z from \"@zod\";\nimport { themeKeys } from \"../types/theme.ts\";\n\nconst templateConfigSchema = z.object({\n    templates: z.array(z.string()),\n});\n\nconst themeConfigShape = Object.fromEntries(\n    themeKeys.map((key) => [key, templateConfigSchema]),\n) as { [K in typeof themeKeys[number]]: typeof templateConfigSchema };\n\nexport const adapterConfigSchema = z.object({\n    $schema: z.string(),\n    ...themeConfigShape,\n});\n\nexport type TemplateConfig = z.infer<typeof templateConfigSchema>;\nexport type AdapterConfig = z.infer<typeof adapterConfigSchema>;\n```\n\n\nAh yes, we need to make the theme keys optional in the Zod schema as well. Here's the corrected version:\n\n```typescript\n// core/src/schemas/adapter.ts\nimport * as z from \"@zod\";\nimport { themeKeys } from \"../types/theme.ts\";\n\nconst templateConfigSchema = z.object({\n    templates: z.array(z.string()),\n});\n\nconst themeConfigShape = Object.fromEntries(\n    themeKeys.map((key) => [key, templateConfigSchema.optional()]),\n) as { [K in typeof themeKeys[number]]: typeof templateConfigSchema };\n\nexport const adapterConfigSchema = z.object({\n    $schema: z.string(),\n    ...themeConfigShape,\n});\n\nexport type TemplateConfig = z.infer<typeof templateConfigSchema>;\nexport type AdapterConfig = z.infer<typeof adapterConfigSchema>;\n```\n\nThe key change is adding `.optional()` to `templateConfigSchema` in the `themeConfigShape` mapping. Now both the Zod schema and JSON schema are aligned:\n- Only `$schema` is required\n- All theme configurations are optional\n- When a theme configuration is provided, it must have a `templates` array\nThat does not seem to work:\ndiagnostics\ncore/src/schemas/adapter.ts\n```typescript\n});\n\nconst themeConfigShape = Object.fromEntries(\n// error: Conversion of type '{ [k: string]: ZodOptional<ZodObject<{ templates: ZodArray<ZodString, \"many\">; }, \"strip\", ZodTypeAny, { templates: string[]; }, { templates: string[]; }>>; }' to type '{ \"black-atom-corp-eng\": ZodObject<{ templates: ZodArray<ZodString, \"many\">; }, \"strip\", ZodTypeAny, { templates: string[]; }, { templates: string[]; }>; ... 15 more ...; \"black-atom-terra-winter-night\": ZodObject<...>; }' may be a mistake because neither type sufficiently overlaps with the other. If this was intentional, convert the expression to 'unknown' first.\n//          Type '{ [k: string]: ZodOptional<ZodObject<{ templates: ZodArray<ZodString, \"many\">; }, \"strip\", ZodTypeAny, { templates: string[]; }, { templates: string[]; }>>; }' is missing the following properties from type '{ \"black-atom-corp-eng\": ZodObject<{ templates: ZodArray<ZodString, \"many\">; }, \"strip\", ZodTypeAny, { templates: string[]; }, { templates: string[]; }>; ... 15 more ...; \"black-atom-terra-winter-night\": ZodObject<...>; }': \"black-atom-corp-eng\", \"black-atom-corp-ops\", \"black-atom-corp-med\", \"black-atom-corp-res\", and 13 more.\n    themeKeys.map((key) => [key, templateConfigSchema.optional()]),\n) as { [K in typeof themeKeys[number]]: typeof templateConfigSchema };\n\nexport const adapterConfigSchema = z.object({\n```\n\n\nLet's fix the type assertion. We need to adjust it to match the optional schema:\n\n```typescript\n// core/src/schemas/adapter.ts\nimport * as z from \"@zod\";\nimport { themeKeys } from \"../types/theme.ts\";\n\nconst templateConfigSchema = z.object({\n    templates: z.array(z.string()),\n});\n\nconst themeConfigShape = Object.fromEntries(\n    themeKeys.map((key) => [key, templateConfigSchema.optional()]),\n) as { [K in typeof themeKeys[number]]?: typeof templateConfigSchema };\n// Added ? to make the properties optional in the type assertion\n\nexport const adapterConfigSchema = z.object({\n    $schema: z.string(),\n    ...themeConfigShape,\n});\n\nexport type TemplateConfig = z.infer<typeof templateConfigSchema>;\nexport type AdapterConfig = z.infer<typeof adapterConfigSchema>;\n```\n\nThe key change is adding the `?` in the type assertion to make all properties optional. This should now properly match the optional Zod schema we're creating.\n\ndiagnostics\ncore/src/cli.ts\n```typescript\n\n            for (const [themeKey, config] of Object.entries(configs)) {\n                await processThemeTemplates(themeKey as Key, config.templates);\n// error: 'config' is of type 'unknown'.\n            }\n            break;\n```\n\nSymbols for core/src/schemas/adapter.ts:\n- const templateConfigSchema\n- const themeConfigShape\n- const adapterConfigSchema\n- type TemplateConfig\n- type AdapterConfig\n\n\n\nNow I get another type error. :(\nLet's fix the type inference issue. Here's the corrected version:\n\n```typescript\n// core/src/schemas/adapter.ts\nimport * as z from \"@zod\";\nimport { themeKeys } from \"../types/theme.ts\";\n\nconst templateConfigSchema = z.object({\n    templates: z.array(z.string()),\n});\n\n// Create partial record type for theme configs\nconst themeConfigShape: { [K in typeof themeKeys[number]]?: typeof templateConfigSchema } = \n    Object.fromEntries(\n        themeKeys.map((key) => [key, templateConfigSchema.optional()])\n    );\n\nexport const adapterConfigSchema = z.object({\n    $schema: z.string(),\n    ...themeConfigShape,\n});\n\nexport type TemplateConfig = z.infer<typeof templateConfigSchema>;\nexport type AdapterConfig = z.infer<typeof adapterConfigSchema>;\n```\n\nAnd then in cli.ts, you'll need to add type checking:\n\n```typescript\n// core/src/cli.ts\n            const { $schema: _, ...configs } = adapterConfig;\n\n            for (const [themeKey, config] of Object.entries(configs)) {\n                if (config) {  // Check if config exists\n                    await processThemeTemplates(\n                        themeKey as Key, \n                        (config as TemplateConfig).templates\n                    );\n                }\n            }\n```\n\nThe key changes are:\n1. Explicitly typing `themeConfigShape` instead of using type assertion\n2. Adding runtime checks in the CLI for the optional configs\n3. Using type assertion for the config object since we know its structure after the check\n\nThis should resolve the type errors while maintaining the optional nature of the theme configurations.\n\n```ts core/src/schemas/adapter.ts\nimport * as z from \"@zod\";\nimport { themeKeys } from \"../types/theme.ts\";\n\nconst templateConfigSchema = z.object({\n    templates: z.array(z.string()),\n});\n\nconst themeConfigShape = Object.fromEntries(\n    themeKeys.map((key) => [key, templateConfigSchema]),\n) as { [K in typeof themeKeys[number]]: typeof templateConfigSchema };\n\nexport const adapterConfigSchema = z.object({\n    $schema: z.string(),\n    ...themeConfigShape,\n}).partial();\n\nexport type TemplateConfig = z.infer<typeof templateConfigSchema>;\nexport type AdapterConfig = z.infer<typeof adapterConfigSchema>;\n```\n\n\nI did it like this and it seems to work better then your solution\nAh yes, that's a much cleaner solution! Using Zod's `.partial()` is the more idiomatic way to make all properties optional in the schema. This way:\n\n1. We keep the original type assertion for `themeConfigShape`\n2. We make the entire schema optional using `.partial()` at the end\n3. We don't need extra runtime checks in the CLI code since the types will be properly inferred\n\nThis is a better approach because:\n- It's more concise\n- It uses Zod's built-in functionality\n- It maintains better type inference\n- It's more maintainable\n\nThanks for showing this solution! It's definitely the way to go.\n\n\n\nCan you please adjust the schema file that at least one one theme key should be defined?\n\n",
+  "messages": [
+    {
+      "id": { "replica_id": 0, "value": 0 },
+      "start": 0,
+      "metadata": {
+        "role": "user",
+        "status": "Done",
+        "timestamp": { "replica_id": 0, "value": 4468 }
+      }
+    },
+    {
+      "id": { "replica_id": 0, "value": 55 },
+      "start": 17809,
+      "metadata": {
+        "role": "assistant",
+        "status": "Done",
+        "timestamp": { "replica_id": 0, "value": 4469 }
+      }
+    },
+    {
+      "id": { "replica_id": 0, "value": 56 },
+      "start": 19715,
+      "metadata": {
+        "role": "user",
+        "status": "Done",
+        "timestamp": { "replica_id": 0, "value": 4470 }
+      }
+    },
+    {
+      "id": { "replica_id": 0, "value": 313 },
+      "start": 20610,
+      "metadata": {
+        "role": "assistant",
+        "status": "Done",
+        "timestamp": { "replica_id": 0, "value": 4471 }
+      }
+    },
+    {
+      "id": { "replica_id": 0, "value": 314 },
+      "start": 22776,
+      "metadata": {
+        "role": "user",
+        "status": "Done",
+        "timestamp": { "replica_id": 0, "value": 4472 }
+      }
+    },
+    {
+      "id": { "replica_id": 0, "value": 533 },
+      "start": 23127,
+      "metadata": {
+        "role": "assistant",
+        "status": "Done",
+        "timestamp": { "replica_id": 0, "value": 4473 }
+      }
+    },
+    {
+      "id": { "replica_id": 0, "value": 534 },
+      "start": 24292,
+      "metadata": {
+        "role": "user",
+        "status": "Done",
+        "timestamp": { "replica_id": 0, "value": 4474 }
+      }
+    },
+    {
+      "id": { "replica_id": 0, "value": 766 },
+      "start": 24592,
+      "metadata": {
+        "role": "assistant",
+        "status": "Done",
+        "timestamp": { "replica_id": 0, "value": 4475 }
+      }
+    },
+    {
+      "id": { "replica_id": 0, "value": 767 },
+      "start": 25684,
+      "metadata": {
+        "role": "user",
+        "status": "Done",
+        "timestamp": { "replica_id": 0, "value": 4476 }
+      }
+    },
+    {
+      "id": { "replica_id": 0, "value": 840 },
+      "start": 27028,
+      "metadata": {
+        "role": "assistant",
+        "status": "Done",
+        "timestamp": { "replica_id": 0, "value": 4477 }
+      }
+    },
+    {
+      "id": { "replica_id": 0, "value": 841 },
+      "start": 28207,
+      "metadata": {
+        "role": "user",
+        "status": "Done",
+        "timestamp": { "replica_id": 0, "value": 4478 }
+      }
+    },
+    {
+      "id": { "replica_id": 0, "value": 1049 },
+      "start": 28418,
+      "metadata": {
+        "role": "assistant",
+        "status": "Done",
+        "timestamp": { "replica_id": 0, "value": 4479 }
+      }
+    },
+    {
+      "id": { "replica_id": 0, "value": 1050 },
+      "start": 29771,
+      "metadata": {
+        "role": "user",
+        "status": "Done",
+        "timestamp": { "replica_id": 0, "value": 4480 }
+      }
+    },
+    {
+      "id": { "replica_id": 0, "value": 1412 },
+      "start": 36370,
+      "metadata": {
+        "role": "assistant",
+        "status": "Done",
+        "timestamp": { "replica_id": 0, "value": 4481 }
+      }
+    },
+    {
+      "id": { "replica_id": 0, "value": 1413 },
+      "start": 39709,
+      "metadata": {
+        "role": "user",
+        "status": "Done",
+        "timestamp": { "replica_id": 0, "value": 4482 }
+      }
+    },
+    {
+      "id": { "replica_id": 0, "value": 1734 },
+      "start": 39800,
+      "metadata": {
+        "role": "assistant",
+        "status": "Done",
+        "timestamp": { "replica_id": 0, "value": 4483 }
+      }
+    },
+    {
+      "id": { "replica_id": 0, "value": 1735 },
+      "start": 42245,
+      "metadata": {
+        "role": "user",
+        "status": "Done",
+        "timestamp": { "replica_id": 0, "value": 4484 }
+      }
+    },
+    {
+      "id": { "replica_id": 0, "value": 2183 },
+      "start": 42970,
+      "metadata": {
+        "role": "assistant",
+        "status": "Done",
+        "timestamp": { "replica_id": 0, "value": 4485 }
+      }
+    },
+    {
+      "id": { "replica_id": 0, "value": 2184 },
+      "start": 43997,
+      "metadata": {
+        "role": "user",
+        "status": "Done",
+        "timestamp": { "replica_id": 0, "value": 4486 }
+      }
+    },
+    {
+      "id": { "replica_id": 0, "value": 2401 },
+      "start": 45441,
+      "metadata": {
+        "role": "assistant",
+        "status": "Done",
+        "timestamp": { "replica_id": 0, "value": 4487 }
+      }
+    },
+    {
+      "id": { "replica_id": 0, "value": 2402 },
+      "start": 46372,
+      "metadata": {
+        "role": "user",
+        "status": "Done",
+        "timestamp": { "replica_id": 0, "value": 4488 }
+      }
+    },
+    {
+      "id": { "replica_id": 0, "value": 3428 },
+      "start": 46849,
+      "metadata": {
+        "role": "assistant",
+        "status": "Done",
+        "timestamp": { "replica_id": 0, "value": 4489 }
+      }
+    },
+    {
+      "id": { "replica_id": 0, "value": 3429 },
+      "start": 48439,
+      "metadata": {
+        "role": "user",
+        "status": "Done",
+        "timestamp": { "replica_id": 0, "value": 4490 }
+      }
+    },
+    {
+      "id": { "replica_id": 0, "value": 3826 },
+      "start": 49119,
+      "metadata": {
+        "role": "assistant",
+        "status": "Done",
+        "timestamp": { "replica_id": 0, "value": 4491 }
+      }
+    },
+    {
+      "id": { "replica_id": 0, "value": 4466 },
+      "start": 49809,
+      "metadata": {
+        "role": "assistant",
+        "status": "Done",
+        "timestamp": { "replica_id": 0, "value": 4494 }
+      }
+    },
+    {
+      "id": { "replica_id": 0, "value": 4467 },
+      "start": 49810,
+      "metadata": {
+        "role": "user",
+        "status": "Done",
+        "timestamp": { "replica_id": 0, "value": 4493 }
+      }
+    }
+  ],
+  "summary": "TypeScript Type Errors in Map",
+  "slash_command_output_sections": [
+    {
+      "range": { "start": 0, "end": 1 },
+      "icon": "Library",
+      "label": "Default",
+      "metadata": null
+    },
+    {
+      "range": { "start": 3, "end": 16732 },
+      "icon": "Folder",
+      "label": "core/src",
+      "metadata": null
+    },
+    {
+      "range": { "start": 12, "end": 3283 },
+      "icon": "File",
+      "label": "core/src/cli.ts",
+      "metadata": { "path": "core/src/cli.ts" }
+    },
+    {
+      "range": { "start": 3284, "end": 3536 },
+      "icon": "File",
+      "label": "core/src/config.ts",
+      "metadata": { "path": "core/src/config.ts" }
+    },
+    {
+      "range": { "start": 3537, "end": 5590 },
+      "icon": "Folder",
+      "label": "lib",
+      "metadata": null
+    },
+    {
+      "range": { "start": 3541, "end": 4193 },
+      "icon": "File",
+      "label": "core/src/lib/log.ts",
+      "metadata": { "path": "core/src/lib/log.ts" }
+    },
+    {
+      "range": { "start": 4194, "end": 5589 },
+      "icon": "File",
+      "label": "core/src/lib/template.ts",
+      "metadata": { "path": "core/src/lib/template.ts" }
+    },
+    {
+      "range": { "start": 5591, "end": 6328 },
+      "icon": "Folder",
+      "label": "schemas",
+      "metadata": null
+    },
+    {
+      "range": { "start": 5599, "end": 6327 },
+      "icon": "File",
+      "label": "core/src/schemas/adapter.ts",
+      "metadata": { "path": "core/src/schemas/adapter.ts" }
+    },
+    {
+      "range": { "start": 6329, "end": 11866 },
+      "icon": "Folder",
+      "label": "themes/corp",
+      "metadata": null
+    },
+    {
+      "range": { "start": 6341, "end": 7591 },
+      "icon": "File",
+      "label": "core/src/themes/corp/black-atom-corp-eng.ts",
+      "metadata": { "path": "core/src/themes/corp/black-atom-corp-eng.ts" }
+    },
+    {
+      "range": { "start": 7592, "end": 10575 },
+      "icon": "File",
+      "label": "core/src/themes/corp/syntax_dark.ts",
+      "metadata": { "path": "core/src/themes/corp/syntax_dark.ts" }
+    },
+    {
+      "range": { "start": 10576, "end": 11865 },
+      "icon": "File",
+      "label": "core/src/themes/corp/ui_dark.ts",
+      "metadata": { "path": "core/src/themes/corp/ui_dark.ts" }
+    },
+    {
+      "range": { "start": 11867, "end": 16732 },
+      "icon": "Folder",
+      "label": "types",
+      "metadata": null
+    },
+    {
+      "range": { "start": 11873, "end": 11944 },
+      "icon": "File",
+      "label": "core/src/types/color.ts",
+      "metadata": { "path": "core/src/types/color.ts" }
+    },
+    {
+      "range": { "start": 11945, "end": 16731 },
+      "icon": "File",
+      "label": "core/src/types/theme.ts",
+      "metadata": { "path": "core/src/types/theme.ts" }
+    },
+    {
+      "range": { "start": 16734, "end": 17777 },
+      "icon": "Warning",
+      "label": "Diagnostics: 2 errors",
+      "metadata": null
+    },
+    {
+      "range": { "start": 16746, "end": 16997 },
+      "icon": "File",
+      "label": "core/src/cli.ts",
+      "metadata": null
+    },
+    {
+      "range": { "start": 16762, "end": 16997 },
+      "icon": "XCircle",
+      "label": "'paths' is possibly 'undefined'.",
+      "metadata": null
+    },
+    {
+      "range": { "start": 16998, "end": 17776 },
+      "icon": "File",
+      "label": "core/src/schemas/adapter.ts",
+      "metadata": null
+    },
+    {
+      "range": { "start": 17026, "end": 17776 },
+      "icon": "XCircle",
+      "label": "Argument of type '{ length: number; toString(): string; toLocaleString(): string; toLocaleString(locales: string | string[], options?: Intl.NumberFormatOptions & Intl.DateTimeFormatOptions): string; pop(): (\"black-atom-corp-eng\" | ... 16 more ... | z.ZodDiscriminatedUnion<...>)[] | undefined; ... 37 more ...; $schema: z.ZodOptional<....' is not assignable to parameter of type 'ZodRawShape'.\n  Property 'length' is incompatible with index signature.\n    Type 'number' is not assignable to type 'ZodTypeAny'.",
+      "metadata": null
+    },
+    {
+      "range": { "start": 19715, "end": 19879 },
+      "icon": "ListTree",
+      "label": "core/src/schemas/adapter.ts",
+      "metadata": null
+    },
+    {
+      "range": { "start": 24293, "end": 24434 },
+      "icon": "ListTree",
+      "label": "core/src/schemas/adapter.ts",
+      "metadata": null
+    },
+    {
+      "range": { "start": 25685, "end": 27026 },
+      "icon": "Warning",
+      "label": "Diagnostics: 2 errors",
+      "metadata": null
+    },
+    {
+      "range": { "start": 25697, "end": 26019 },
+      "icon": "File",
+      "label": "core/src/cli.ts",
+      "metadata": null
+    },
+    {
+      "range": { "start": 25713, "end": 26019 },
+      "icon": "XCircle",
+      "label": "'\"./schemas/adapter.ts\"' has no exported member named 'adapterConfigSchema'. Did you mean 'AdapterConfig'?",
+      "metadata": null
+    },
+    {
+      "range": { "start": 26020, "end": 27025 },
+      "icon": "File",
+      "label": "core/src/schemas/adapter.ts",
+      "metadata": null
+    },
+    {
+      "range": { "start": 26048, "end": 27025 },
+      "icon": "XCircle",
+      "label": "Argument of type 'ZodRecord<ZodEnum<[\"black-atom-corp-eng\", \"black-atom-corp-ops\", \"black-atom-corp-med\", \"black-atom-corp-res\", \"black-atom-jpn-koyo-yoru\", \"black-atom-jpn-koyo-hiru\", \"black-atom-jpn-tsuki-yoru\", ... 9 more ..., \"black-atom-terra-winter-night\"]>, ZodObject<...>>' is not assignable to parameter of type 'AnyZodObject'.\n  Type 'ZodRecord<ZodEnum<[\"black-atom-corp-eng\", \"black-atom-corp-ops\", \"black-atom-corp-med\", \"black-atom-corp-res\", \"black-atom-jpn-koyo-yoru\", \"black-atom-jpn-koyo-hiru\", \"black-atom-jpn-tsuki-yoru\", ... 9 more ..., \"black-atom-terra-winter-night\"]>, ZodObject<...>>' is missing the following properties from type 'ZodObject<any, any, any, { [x: string]: any; }, { [x: string]: any; }>': _cached, _getCached, shape, strict, and 14 more.",
+      "metadata": null
+    },
+    {
+      "range": { "start": 28275, "end": 28416 },
+      "icon": "ListTree",
+      "label": "core/src/schemas/adapter.ts",
+      "metadata": null
+    },
+    {
+      "range": { "start": 29806, "end": 30452 },
+      "icon": "File",
+      "label": "core/src/schemas/adapter.ts",
+      "metadata": { "path": "core/src/schemas/adapter.ts" }
+    },
+    {
+      "range": { "start": 30453, "end": 33569 },
+      "icon": "File",
+      "label": "core/src/cli.ts",
+      "metadata": { "path": "core/src/cli.ts" }
+    },
+    {
+      "range": { "start": 33607, "end": 36368 },
+      "icon": "File",
+      "label": "core/adapter.schema.json",
+      "metadata": { "path": "core/adapter.schema.json" }
+    },
+    {
+      "range": { "start": 42367, "end": 42968 },
+      "icon": "File",
+      "label": "core/src/schemas/adapter.ts",
+      "metadata": { "path": "core/src/schemas/adapter.ts" }
+    },
+    {
+      "range": { "start": 44025, "end": 45439 },
+      "icon": "Warning",
+      "label": "Diagnostics: 1 errors",
+      "metadata": null
+    },
+    {
+      "range": { "start": 44037, "end": 45438 },
+      "icon": "File",
+      "label": "core/src/schemas/adapter.ts",
+      "metadata": null
+    },
+    {
+      "range": { "start": 44065, "end": 45438 },
+      "icon": "XCircle",
+      "label": "Conversion of type '{ [k: string]: ZodOptional<ZodObject<{ templates: ZodArray<ZodString, \"many\">; }, \"strip\", ZodTypeAny, { templates: string[]; }, { templates: string[]; }>>; }' to type '{ \"black-atom-corp-eng\": ZodObject<{ templates: ZodArray<ZodString, \"many\">; }, \"strip\", ZodTypeAny, { templates: string[]; }, { templates: string[]; }>; ... 15 more ...; \"black-atom-terra-winter-night\": ZodObject<...>; }' may be a mistake because neither type sufficiently overlaps with the other. If this was intentional, convert the expression to 'unknown' first.\n  Type '{ [k: string]: ZodOptional<ZodObject<{ templates: ZodArray<ZodString, \"many\">; }, \"strip\", ZodTypeAny, { templates: string[]; }, { templates: string[]; }>>; }' is missing the following properties from type '{ \"black-atom-corp-eng\": ZodObject<{ templates: ZodArray<ZodString, \"many\">; }, \"strip\", ZodTypeAny, { templates: string[]; }, { templates: string[]; }>; ... 15 more ...; \"black-atom-terra-winter-night\": ZodObject<...>; }': \"black-atom-corp-eng\", \"black-atom-corp-ops\", \"black-atom-corp-med\", \"black-atom-corp-res\", and 13 more.",
+      "metadata": null
+    },
+    {
+      "range": { "start": 46373, "end": 46646 },
+      "icon": "Warning",
+      "label": "Diagnostics: 1 errors",
+      "metadata": null
+    },
+    {
+      "range": { "start": 46385, "end": 46645 },
+      "icon": "File",
+      "label": "core/src/cli.ts",
+      "metadata": null
+    },
+    {
+      "range": { "start": 46401, "end": 46645 },
+      "icon": "XCircle",
+      "label": "'config' is of type 'unknown'.",
+      "metadata": null
+    },
+    {
+      "range": { "start": 46647, "end": 46813 },
+      "icon": "ListTree",
+      "label": "core/src/schemas/adapter.ts",
+      "metadata": null
+    },
+    {
+      "range": { "start": 48440, "end": 49051 },
+      "icon": "File",
+      "label": "core/src/schemas/adapter.ts",
+      "metadata": { "path": "core/src/schemas/adapter.ts" }
+    }
+  ]
+}

@@ -18,7 +18,7 @@ echo -e "${YELLOW}→${NC} Installing git hooks..."
 mkdir -p "$DOTS_DIR/.git/hooks"
 
 # Install pre-commit hook
-cat > "$DOTS_DIR/.git/hooks/pre-commit" << 'EOF'
+cat >"$DOTS_DIR/.git/hooks/pre-commit" <<'EOF'
 #!/bin/bash
 # Pre-commit hook to clean up broken symlinks when files are deleted from dots repo
 
