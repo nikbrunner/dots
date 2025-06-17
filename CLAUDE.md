@@ -34,8 +34,11 @@ dots status
 # Create/update symlinks (automatically backs up existing files)
 dots link [--dry-run]
 
-# Commit and push changes
-dots push "commit message"
+# Interactive committing with LazyGit
+dots commit
+
+# Push commits to remote
+dots push [--force]
 
 # Pull latest changes and update submodules
 dots sync
@@ -44,10 +47,22 @@ dots sync
 dots sub-add <repo-url> submodules/<name>
 
 # Clean broken symlinks
-dots clean
+dots clean [--dry-run]
 
 # Run comprehensive system tests
 dots test
+
+# Format files (markdown, shell scripts, etc.)
+dots format
+
+# Add a file or directory to dots management
+dots add <path>
+
+# Remove a file or directory from dots management
+dots remove <path>
+
+# Install/reinstall git hooks
+dots hooks
 ```
 
 ## Adding New Configurations
@@ -116,6 +131,20 @@ The `dots test` command provides comprehensive system validation:
 
 Use `dots test` for overall system health checks and `dots link --dry-run` for detailed symlink operation previews.
 
+## Recent Enhancements
+
+- **File Management**: Use `dots add <path>` and `dots remove <path>` for managing files in dots repository
+- **Relative Path Support**: `dots add` now supports relative paths when run from any directory
+- **Improved Commit Workflow**: `dots commit` opens LazyGit for interactive committing, `dots push` only pushes
+- **Formatting**: `dots format` automatically formats markdown and shell scripts
+- **Git Hooks**: Automatic broken symlink cleanup on commit via pre-commit hooks
+- **Enhanced Testing**: `dots test` includes shellcheck linting for script quality
+- **Gum Integration**: Beautiful CLI interface when gum is installed
+
 ## Memories
 
 - Remember to run commands like `dots test` to check if everything is working
+- Use `dots add` to easily add new configuration files to the repository
+- The system automatically handles relative paths and directory structures
+- All shell scripts pass shellcheck linting for quality assurance
+- This repository is only for me and nobody else
