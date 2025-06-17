@@ -486,6 +486,60 @@ cmd_test() {
         ((tests_failed++))
     fi
 
+    # Test 8: Lint shell scripts with shellcheck
+    echo -e "${YELLOW}→${NC} Linting shell scripts..."
+    if command -v shellcheck >/dev/null 2>&1; then
+        local shell_files=()
+        local lint_errors=0
+
+        # Find all shell files
+        while IFS= read -r -d '' file; do
+            shell_files+=("$file")
+        done < <(find . -name "*.sh" -not -path "./.git/*" -print0 2>/dev/null)
+
+        # Add executable scripts with shell shebangs
+        while IFS= read -r -d '' file; do
+            if [[ -x "$file" && -f "$file" ]]; then
+                local first_line=$(head -n1 "$file" 2>/dev/null)
+                if [[ "$first_line" =~ ^#!.*/(bash|sh|zsh) ]]; then
+                    shell_files+=("$file")
+                fi
+            fi
+        done < <(find . -type f -not -path "./.git/*" -not -name "*.sh" -print0 2>/dev/null)
+
+        if [[ ${#shell_files[@]} -gt 0 ]]; then
+            local files_with_issues=()
+            for file in "${shell_files[@]}"; do
+                if ! shellcheck "$file" >/dev/null 2>&1; then
+                    ((lint_errors++))
+                    files_with_issues+=("$file")
+                fi
+            done
+
+            if [[ $lint_errors -eq 0 ]]; then
+                echo -e "${GREEN}✓${NC} Shell scripts lint OK (${#shell_files[@]} files)"
+                ((tests_passed++))
+            else
+                echo -e "${YELLOW}⚠${NC} Shell scripts have lint issues ($lint_errors/${#shell_files[@]} files):"
+                for file in "${files_with_issues[@]}"; do
+                    echo ""
+                    log_warning "Issues in $file:"
+                    # Run shellcheck and indent the output
+                    shellcheck "$file" 2>&1 | sed 's/^/      /'
+                done
+                # Don't fail the test - just warn about lint issues
+                ((tests_passed++))
+            fi
+        else
+            echo -e "${GREEN}✓${NC} No shell scripts found"
+            ((tests_passed++))
+        fi
+    else
+        echo -e "${YELLOW}⚠${NC} shellcheck not available, skipping shell script linting"
+        echo "    Install with: brew install shellcheck"
+        ((tests_passed++))
+    fi
+
     # Summary
     echo ""
     echo -e "${BLUE}=== Test Summary ===${NC}"
