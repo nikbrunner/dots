@@ -3,8 +3,8 @@
 
 # - Dotfiles -
 echo "Setting up Dotfiles"
-mkdir $HOME/dotfiles
-git init --bare $HOME/dotfiles
+mkdir "$HOME"/dotfiles
+git init --bare "$HOME"/dotfiles
 alias df='/usr/bin/git --git-dir=$HOME/dotfiles/ --work-tree=$HOME' | zsh
 df config --local status.showUntrackedFiles no
 df remote add origin git@github.com:nikbrunner/dotfiles-apple.git
@@ -21,9 +21,8 @@ echo "Your public ssh key is created and copied to your clipboard!"
 
 # Add public ssh key to GitHub
 echo "Add the ssh-key to your GitHub account from your clipboard. Press any key to continue afterwards."
-while [ true ]; do
-    read -t 3 -n 1
-    if [ $? = 0 ]; then
+while true; do
+    if read -r -t 3 -n 1; then
         exit
     else
         echo "Waiting for the keypress."

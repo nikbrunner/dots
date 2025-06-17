@@ -106,13 +106,16 @@ generate_commit_message() {
     current_model="$selected_model"
 
     # Get staged diff
-    local git_diff=$(git diff --staged)
+    local git_diff
+    git_diff=$(git diff --staged)
 
     # Get current branch
-    local current_branch=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
+    local current_branch
+    current_branch=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
 
     # Get last commit messages from current branch
-    local commit_messages=$(git log -n $HISTORY_COUNT --format='%s%n%b' HEAD 2>/dev/null)
+    local commit_messages
+    commit_messages=$(git log -n "$HISTORY_COUNT" --format='%s%n%b' HEAD 2>/dev/null)
 
     # Build the prompt
     local prompt="You are an expert at following the Conventional Commit specification. Given the git diff listed below, generate a succinct commit message.
@@ -143,7 +146,8 @@ $git_diff
 \`\`\`"
 
     # Check for issue ID in branch name
-    local issue_id=$(echo "$current_branch" | grep -oE '^bcd-([0-9]{4})' | sed 's/bcd-//')
+    local issue_id
+    issue_id=$(echo "$current_branch" | grep -oE '^bcd-([0-9]{4})' | sed 's/bcd-//')
     if [ -n "$issue_id" ]; then
         prompt="$prompt
 
@@ -153,7 +157,8 @@ Example: BCD-$issue_id feat: some new feature"
     fi
 
     # Prepare the JSON payload
-    local json_payload=$(jq -n \
+    local json_payload
+    json_payload=$(jq -n \
         --arg prompt "$prompt" \
         --arg model "$selected_model" \
         --arg max_tokens "$MAX_TOKENS" \
@@ -169,7 +174,8 @@ Example: BCD-$issue_id feat: some new feature"
         }')
 
     # Call Claude API with spinner
-    local response=$(gum spin --spinner dot --title "Generating commit message with $selected_model..." -- \
+    local response
+    response=$(gum spin --spinner dot --title "Generating commit message with $selected_model..." -- \
         curl -s -X POST "https://api.anthropic.com/v1/messages" \
         -H "x-api-key: $ANTHROPIC_API_KEY" \
         -H "anthropic-version: $API_VERSION" \
@@ -296,7 +302,7 @@ EOF
         echo ""
     else
         # Try regular push
-        local push_output
+        push_output=""
         if ! push_output=$(git push 2>&1); then
             echo ""
             echo "Push failed:"
@@ -326,7 +332,7 @@ else
     echo ""
     if gum confirm "Push to remote?"; then
         # Try regular push
-        local push_output
+        push_output=""
         if ! push_output=$(git push 2>&1); then
             echo ""
             echo "Push failed:"

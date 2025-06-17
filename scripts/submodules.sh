@@ -21,7 +21,8 @@ cd "$DOTS_DIR"
 add_submodule() {
     local repo_url="$1"
     local path="$2"
-    local name="$(basename "$path")"
+    local name
+    name="$(basename "$path")"
 
     if [[ -z "$repo_url" || -z "$path" ]]; then
         echo -e "${RED}✗${NC} Usage: add_submodule <repo_url> <path>"
@@ -54,7 +55,8 @@ update_submodules() {
 # Function to remove a submodule
 remove_submodule() {
     local path="$1"
-    local name="$(basename "$path")"
+    local name
+    name="$(basename "$path")"
 
     if [[ -z "$path" ]]; then
         echo -e "${RED}✗${NC} Usage: remove_submodule <path>"

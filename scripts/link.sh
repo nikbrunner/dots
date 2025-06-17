@@ -9,6 +9,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 DOTS_DIR="$(dirname "$SCRIPT_DIR")"
 
 # Source OS detection
+# shellcheck disable=SC1091
 source "$SCRIPT_DIR/detect-os.sh"
 
 # Colors for output
@@ -40,7 +41,8 @@ create_symlink() {
     if [[ "$DRY_RUN" == true ]]; then
         # Dry run mode - just show what would happen
         if [[ -L "$target" ]]; then
-            local actual_target=$(readlink "$target")
+            local actual_target
+            actual_target=$(readlink "$target")
             if [[ "$actual_target" == "$source" ]]; then
                 echo -e "${GREEN}✓${NC} [DRY] Symlink OK: $target → $source"
             else
@@ -60,7 +62,8 @@ create_symlink() {
 
     if [[ -L "$target" ]]; then
         # Target is a symlink
-        local actual_target=$(readlink "$target")
+        local actual_target
+        actual_target=$(readlink "$target")
         if [[ "$actual_target" == "$source" ]]; then
             echo -e "${GREEN}✓${NC} Symlink OK: $target"
         else
