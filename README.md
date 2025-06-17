@@ -69,6 +69,7 @@ dots clean        # Remove broken symlinks
 dots sub-update   # Update all submodules
 dots sub-add      # Add new submodule
 dots status       # Show git and symlink status
+dots test         # Run comprehensive system tests
 dots log          # Show git log
 ```
 
@@ -93,6 +94,18 @@ dots log          # Show git log
 ```bash
 dots sync  # Pull latest changes and update submodules
 ```
+
+#### Testing the System
+
+```bash
+# Run comprehensive system tests (good before making changes)
+dots test
+
+# Preview what symlinks would be created (detailed output)
+dots link --dry-run
+```
+
+The `dots test` command validates the entire system (repository structure, OS detection, mapping generation, symlinks, etc.) and reports pass/fail status. Use `dots link --dry-run` when you want detailed output showing exactly what symlink operations would be performed.
 
 ## 🔧 Configuration
 
