@@ -142,6 +142,17 @@
 - [ ] Add wezterm submodule: `dots sub-add https://github.com/nikbrunner/wezterm submodules/wezterm`
 - [ ] Add zed submodule (private): `dots sub-add <private-repo-url> submodules/zed`
 
+### Refactor Tasks (New)
+- [ ] Implement mirror home directory structure:
+  - [ ] Create `common/`, `macos/`, `linux/` directories
+  - [ ] Move all common configs to `common/` with exact home paths
+  - [ ] Move macOS-specific configs to `macos/`
+  - [ ] Rewrite `link.sh` to use recursive linking
+  - [ ] Update `dots status` to dynamically discover symlinks
+  - [ ] Test new structure on macOS
+  - [ ] Update all documentation
+  - [ ] See `docs/REFACTOR_PLAN.md` for detailed steps
+
 ### Cleanup Tasks
 - [ ] Remove backup files after verifying everything works:
   - [ ] Remove `.zshrc.backup.*`
