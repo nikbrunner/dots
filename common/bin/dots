@@ -24,10 +24,13 @@ show_usage() {
     echo ""
     echo "Commands:"
     echo "  install      - Initial setup with symlinks and submodules"
+    echo "               Options: --dry-run"
     echo "  link         - Re-run symlink creation"
+    echo "               Options: --force, --dry-run"
     echo "  sync         - Git pull + submodule updates"
     echo "  push         - Git add, commit, push"
     echo "  clean        - Remove broken symlinks"
+    echo "               Options: --dry-run"
     echo "  sub-update   - Update all submodules"
     echo "  sub-add      - Add new submodule"
     echo "  status       - Show git and symlink status"
@@ -80,21 +83,77 @@ cmd_push() {
 
 # Clean command
 cmd_clean() {
-    echo -e "${YELLOW}→${NC} Cleaning broken symlinks..."
+    local dry_run=false
+    if [[ "$1" == "--dry-run" ]]; then
+        dry_run=true
+        echo -e "${YELLOW}DRY RUN MODE - No changes will be made${NC}"
+        echo ""
+    fi
+    
+    echo -e "${YELLOW}→${NC} Cleaning broken dotfiles symlinks..."
     
     local count=0
-    while IFS= read -r -d '' link; do
-        if [[ ! -e "$link" ]]; then
-            echo -e "${RED}✗${NC} Removing broken symlink: $link"
-            rm "$link"
+    
+    # Function to check if a symlink points to our dots directory
+    is_dots_symlink() {
+        local link="$1"
+        local target=$(readlink "$link" 2>/dev/null)
+        [[ "$target" == "$DOTS_DIR"* ]]
+    }
+    
+    # Check specific locations where we create symlinks
+    local check_locations=(
+        "$HOME/bin"
+        "$HOME/.config"
+        "$HOME/.claude"
+        "$HOME/.local/bin/dots"
+        "$HOME"
+    )
+    
+    for location in "${check_locations[@]}"; do
+        if [[ ! -e "$location" ]]; then
+            continue
+        fi
+        
+        # Find symlinks in this location
+        while IFS= read -r -d '' link; do
+            # Only process if it's a dots-related symlink
+            if is_dots_symlink "$link"; then
+                # Check if the symlink is broken
+                if [[ ! -e "$link" ]]; then
+                    if [[ "$dry_run" == true ]]; then
+                        echo -e "${RED}✗${NC} [DRY] Would remove broken symlink: $link"
+                    else
+                        echo -e "${RED}✗${NC} Removing broken symlink: $link"
+                        rm "$link"
+                    fi
+                    ((count++))
+                fi
+            fi
+        done < <(find "$location" -maxdepth 2 -type l -print0 2>/dev/null)
+    done
+    
+    # Also check root dotfiles in home directory
+    for dotfile in "$HOME"/.* ; do
+        if [[ -L "$dotfile" ]] && is_dots_symlink "$dotfile" && [[ ! -e "$dotfile" ]]; then
+            if [[ "$dry_run" == true ]]; then
+                echo -e "${RED}✗${NC} [DRY] Would remove broken symlink: $dotfile"
+            else
+                echo -e "${RED}✗${NC} Removing broken symlink: $dotfile"
+                rm "$dotfile"
+            fi
             ((count++))
         fi
-    done < <(find "$HOME" -type l -print0 2>/dev/null)
+    done
     
     if [[ $count -eq 0 ]]; then
-        echo -e "${GREEN}✓${NC} No broken symlinks found"
+        echo -e "${GREEN}✓${NC} No broken dotfiles symlinks found"
     else
-        echo -e "${GREEN}✓${NC} Removed $count broken symlinks"
+        if [[ "$dry_run" == true ]]; then
+            echo -e "${GREEN}✓${NC} Would remove $count broken dotfiles symlinks"
+        else
+            echo -e "${GREEN}✓${NC} Removed $count broken dotfiles symlinks"
+        fi
     fi
 }
 
@@ -235,7 +294,8 @@ case "${1:-}" in
         cmd_push "$@"
         ;;
     clean)
-        cmd_clean
+        shift
+        cmd_clean "$@"
         ;;
     sub-update)
         cmd_sub_update
