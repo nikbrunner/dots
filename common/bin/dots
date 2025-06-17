@@ -23,18 +23,16 @@ show_usage() {
     echo "Usage: dots <command> [options]"
     echo ""
     echo "Commands:"
-    echo "  install      - Initial setup with symlinks and submodules"
-    echo "               Options: --dry-run"
-    echo "  link         - Re-run symlink creation"
-    echo "               Options: --force, --dry-run"
+    echo "  install      - Initial setup with symlinks and submodules [--dry-run]"
+    echo "  link         - Re-run symlink creation [--dry-run]"
     echo "  sync         - Git pull + submodule updates"
     echo "  push         - Git add, commit, push"
-    echo "  clean        - Remove broken symlinks"
-    echo "               Options: --dry-run"
+    echo "  clean        - Remove broken symlinks [--dry-run]"
     echo "  sub-update   - Update all submodules"
     echo "  sub-add      - Add new submodule"
     echo "  status       - Show git and symlink status"
     echo "  log          - Show git log"
+    echo ""
 }
 
 # Install command
