@@ -53,7 +53,7 @@ if [ -d "$target_dir/$repo" ]; then
     read -p "Do you want to overwrite it? (y/N): " -n 1 -r
     echo
     if [[ $REPLY =~ ^[Yy]$ ]]; then
-        rm -rf "$target_dir/$repo"
+        rm -rf "${target_dir:?}/${repo:?}"
     else
         echo "Aborted."
         exit 0

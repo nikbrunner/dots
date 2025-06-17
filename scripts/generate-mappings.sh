@@ -9,6 +9,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 DOTS_DIR="$(dirname "$SCRIPT_DIR")"
 
 # Source OS detection
+# shellcheck disable=SC1091
 source "$SCRIPT_DIR/detect-os.sh"
 
 # Colors for output
@@ -29,7 +30,7 @@ generate_mappings() {
 
     # Find all files recursively and create file-level mappings
     while IFS= read -r -d '' file; do
-        local rel_path="${file#$source_base/}"
+        local rel_path="${file#"$source_base"/}"
         local target="$target_base/$rel_path"
         mappings+=("\"$file\":\"$target\"")
     done < <(find "$source_base" -type f -print0 2>/dev/null)
