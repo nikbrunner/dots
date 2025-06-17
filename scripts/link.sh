@@ -120,8 +120,9 @@ link_recursive() {
                 # This is a tool config directory inside .config, symlink it entirely
                 create_symlink "$item" "$target"
             else
-                # It's a regular directory, recurse
+                # It's a regular directory, recurse and process dotfiles
                 link_recursive "$item" "$target"
+                link_dotfiles "$item" "$target"
             fi
         elif [[ -f "$item" ]] || [[ -L "$item" ]]; then
             # It's a file or symlink, create symlink
@@ -153,8 +154,9 @@ link_dotfiles() {
                 # This is a tool config directory inside .config, symlink it entirely
                 create_symlink "$item" "$target"
             else
-                # It's a regular directory, recurse
+                # It's a regular directory, recurse and process dotfiles
                 link_recursive "$item" "$target"
+                link_dotfiles "$item" "$target"
             fi
         elif [[ -f "$item" ]] || [[ -L "$item" ]]; then
             # It's a file or symlink, create symlink
