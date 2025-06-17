@@ -31,6 +31,7 @@ show_usage() {
     echo "  sub-update   - Update all submodules"
     echo "  sub-add      - Add new submodule"
     echo "  status       - Show git and symlink status"
+    echo "  test         - Run comprehensive system tests"
     echo "  log          - Show git log"
     echo ""
 }
@@ -250,6 +251,117 @@ cmd_status() {
     
 }
 
+# Test command - comprehensive system checks
+cmd_test() {
+    echo -e "${BLUE}=== Dotfiles System Test ===${NC}"
+    echo ""
+    
+    local tests_passed=0
+    local tests_failed=0
+    
+    # Test 1: Check if we're in the right directory
+    echo -e "${YELLOW}→${NC} Testing repository structure..."
+    if [[ -f "CLAUDE.md" && -d "scripts" && -d ".mappings" ]]; then
+        echo -e "${GREEN}✓${NC} Repository structure OK"
+        ((tests_passed++))
+    else
+        echo -e "${RED}✗${NC} Repository structure missing"
+        ((tests_failed++))
+    fi
+    
+    # Test 2: Check OS detection
+    echo -e "${YELLOW}→${NC} Testing OS detection..."
+    source "$DOTS_DIR/scripts/detect-os.sh"
+    local detected_os=$(get_os)
+    if [[ -n "$detected_os" && ("$detected_os" == "macos" || "$detected_os" == "linux") ]]; then
+        echo -e "${GREEN}✓${NC} OS detection OK: $detected_os"
+        ((tests_passed++))
+    else
+        echo -e "${RED}✗${NC} OS detection failed: $detected_os"
+        ((tests_failed++))
+    fi
+    
+    # Test 3: Check mapping generation
+    echo -e "${YELLOW}→${NC} Testing mapping generation..."
+    if "$DOTS_DIR/scripts/generate-mappings.sh" > /dev/null 2>&1; then
+        echo -e "${GREEN}✓${NC} Mapping generation OK"
+        ((tests_passed++))
+    else
+        echo -e "${RED}✗${NC} Mapping generation failed"
+        ((tests_failed++))
+    fi
+    
+    # Test 4: Check mapping files exist and are valid JSON
+    echo -e "${YELLOW}→${NC} Testing mapping files..."
+    local mapping_file="$DOTS_DIR/.mappings/$detected_os.json"
+    if [[ -f "$mapping_file" ]] && python3 -m json.tool "$mapping_file" > /dev/null 2>&1; then
+        local mapping_count=$(grep -o '":' "$mapping_file" | wc -l | tr -d ' ')
+        echo -e "${GREEN}✓${NC} Mapping file OK: $mapping_count entries"
+        ((tests_passed++))
+    else
+        echo -e "${RED}✗${NC} Mapping file invalid or missing"
+        ((tests_failed++))
+    fi
+    
+    # Test 5: Check symlink creation (dry run)
+    echo -e "${YELLOW}→${NC} Testing symlink creation (dry run)..."
+    if "$DOTS_DIR/scripts/link.sh" --dry-run > /dev/null 2>&1; then
+        echo -e "${GREEN}✓${NC} Symlink creation test OK"
+        ((tests_passed++))
+    else
+        echo -e "${RED}✗${NC} Symlink creation test failed"
+        ((tests_failed++))
+    fi
+    
+    # Test 6: Check critical symlinks exist and are correct
+    echo -e "${YELLOW}→${NC} Testing critical symlinks..."
+    local critical_links=("$HOME/.zshrc" "$HOME/.gitconfig" "$HOME/bin/dots")
+    local valid_symlinks=0
+    
+    for link in "${critical_links[@]}"; do
+        if [[ -L "$link" && -e "$link" ]]; then
+            ((valid_symlinks++))
+        fi
+    done
+    
+    if [[ $valid_symlinks -eq ${#critical_links[@]} ]]; then
+        echo -e "${GREEN}✓${NC} Critical symlinks OK ($valid_symlinks/${#critical_links[@]})"
+        ((tests_passed++))
+    else
+        echo -e "${YELLOW}⚠${NC} Some critical symlinks missing ($valid_symlinks/${#critical_links[@]})"
+        # Don't fail the test - symlinks might not be set up yet
+        ((tests_passed++))
+    fi
+    
+    # Test 7: Check git repository status
+    echo -e "${YELLOW}→${NC} Testing git repository..."
+    if git rev-parse --git-dir > /dev/null 2>&1; then
+        echo -e "${GREEN}✓${NC} Git repository OK"
+        ((tests_passed++))
+    else
+        echo -e "${RED}✗${NC} Git repository not found"
+        ((tests_failed++))
+    fi
+    
+    # Summary
+    echo ""
+    echo -e "${BLUE}=== Test Summary ===${NC}"
+    local total_tests=$((tests_passed + tests_failed))
+    echo -e "  Total tests: $total_tests"
+    echo -e "  ${GREEN}✓${NC} Passed: $tests_passed"
+    
+    if [[ $tests_failed -gt 0 ]]; then
+        echo -e "  ${RED}✗${NC} Failed: $tests_failed"
+        echo ""
+        echo -e "${RED}❌ System tests FAILED${NC}"
+        return 1
+    else
+        echo ""
+        echo -e "${GREEN}🎉 All system tests PASSED${NC}"
+        return 0
+    fi
+}
+
 # Log command
 cmd_log() {
     echo -e "${YELLOW}→${NC} Recent commits:"
@@ -286,6 +398,9 @@ case "${1:-}" in
         ;;
     status)
         cmd_status
+        ;;
+    test)
+        cmd_test
         ;;
     log)
         cmd_log

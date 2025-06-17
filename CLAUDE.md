@@ -43,6 +43,9 @@ dots sub-add <repo-url> submodules/<name>
 
 # Clean broken symlinks
 dots clean
+
+# Run comprehensive system tests
+dots test
 ```
 
 ## Adding New Configurations
@@ -53,6 +56,7 @@ dots clean
    - Example: For a new tool config, place it in `common/.config/toolname/`
 2. Run `dots link` to create symlinks (mappings are auto-generated if outdated)
 3. No manual script updates needed - new files are automatically detected and mapped
+4. Verify with `dots test` to ensure everything is working correctly
 
 ## Symlink Mappings
 
@@ -91,3 +95,20 @@ When using `dots link`, backups are created with timestamp format: `.<name>.back
 ## OS Detection
 
 The system uses `scripts/detect-os.sh` to detect the operating system and conditionally create OS-specific symlinks. Currently supports macOS and Linux detection.
+
+## Testing and Validation
+
+The `dots test` command provides comprehensive system validation:
+- Repository structure checks
+- OS detection verification  
+- Mapping generation testing
+- JSON mapping file validation
+- Symlink creation testing (dry-run)
+- Critical symlink verification
+- Git repository status
+
+Use `dots test` for overall system health checks and `dots link --dry-run` for detailed symlink operation previews.
+
+## Memories
+
+- Remember to run commands like `dots test` to check if everything is working
