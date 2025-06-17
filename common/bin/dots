@@ -89,6 +89,8 @@ show_usage() {
         gum style --foreground=2 "  status       - Show git and symlink status"
         gum style --foreground=2 "  test         - Run comprehensive system tests"
         gum style --foreground=2 "  format       - Format files (markdown, shell scripts, etc.)"
+        gum style --foreground=2 "  add          - Add a file to dots management"
+        gum style --foreground=2 "  remove       - Remove a file from dots management"
         gum style --foreground=2 "  log          - Show git log"
         echo ""
     else
@@ -106,8 +108,10 @@ show_usage() {
         echo "  sub-update   - Update all submodules"
         echo "  sub-add      - Add new submodule"
         echo "  status       - Show git and symlink status"
-        echo "  test         - Run comprehensive syst/var/folders/cd/c9wfbwnx1gb2610hclry0crc0000gn/T/TemporaryItems/NSIRD_screencaptureui_ayqnVp/Screenshot\ 2025-06-17\ at\ 18.25.15.pngem tests"
+        echo "  test         - Run comprehensive system tests"
         echo "  format       - Format files (markdown, shell scripts, etc.)"
+        echo "  add          - Add a file to dots management"
+        echo "  remove       - Remove a file from dots management"
         echo "  log          - Show git log"
         echo ""
     fi
@@ -651,6 +655,157 @@ cmd_format() {
     fi
 }
 
+# Add command - add a file to dots management
+cmd_add() {
+    local file_path="$1"
+    
+    if [[ -z "$file_path" ]]; then
+        log_error "Usage: dots add <file_path>"
+        echo "Example: dots add ~/.vimrc"
+        return 1
+    fi
+    
+    # Convert to absolute path
+    file_path=$(realpath "$file_path" 2>/dev/null)
+    if [[ ! -e "$file_path" ]]; then
+        log_error "File does not exist: $file_path"
+        return 1
+    fi
+    
+    # Check if file is already under dots management
+    if [[ -L "$file_path" ]]; then
+        local target
+        target=$(readlink "$file_path")
+        if [[ "$target" == "$DOTS_DIR"* ]]; then
+            log_warning "File is already managed by dots: $file_path"
+            return 0
+        fi
+    fi
+    
+    # Determine target location in dots repository
+    local relative_path="${file_path#$HOME/}"
+    if [[ "$relative_path" == "$file_path" ]]; then
+        log_error "File must be in your home directory to be managed by dots"
+        return 1
+    fi
+    
+    # Get current OS for platform-specific files
+    source "$DOTS_DIR/scripts/detect-os.sh"
+    local current_os
+    current_os=$(get_os)
+    
+    local dots_file
+    # Determine if this should go in common or OS-specific directory
+    if command -v gum >/dev/null 2>&1; then
+        local location
+        location=$(gum choose "common (cross-platform)" "$current_os (OS-specific)")
+        if [[ "$location" == *"common"* ]]; then
+            dots_file="$DOTS_DIR/common/$relative_path"
+        else
+            dots_file="$DOTS_DIR/$current_os/$relative_path"
+        fi
+    else
+        echo "Should this file be:"
+        echo "1) common (cross-platform)"
+        echo "2) $current_os (OS-specific)"
+        echo -n "Choice (1/2): "
+        read -r choice
+        if [[ "$choice" == "1" ]]; then
+            dots_file="$DOTS_DIR/common/$relative_path"
+        else
+            dots_file="$DOTS_DIR/$current_os/$relative_path"
+        fi
+    fi
+    
+    # Create directory structure
+    mkdir -p "$(dirname "$dots_file")"
+    
+    # Move file to dots repository
+    log_info "Moving $file_path to $dots_file"
+    mv "$file_path" "$dots_file"
+    
+    # Create symlink
+    ln -s "$dots_file" "$file_path"
+    
+    # Regenerate mappings and relink
+    log_info "Regenerating mappings..."
+    "$DOTS_DIR/scripts/generate-mappings.sh" >/dev/null
+    
+    log_success "File added to dots management: $file_path"
+    log_info "File stored at: $dots_file"
+}
+
+# Remove command - remove a file from dots management
+cmd_remove() {
+    local file_path="$1"
+    
+    if [[ -z "$file_path" ]]; then
+        log_error "Usage: dots remove <file_path>"
+        echo "Example: dots remove ~/.vimrc"
+        return 1
+    fi
+    
+    # Convert to absolute path
+    file_path=$(realpath "$file_path" 2>/dev/null || echo "$file_path")
+    
+    # Check if file is a symlink managed by dots
+    if [[ ! -L "$file_path" ]]; then
+        log_error "File is not a symlink: $file_path"
+        return 1
+    fi
+    
+    local target
+    target=$(readlink "$file_path")
+    if [[ "$target" != "$DOTS_DIR"* ]]; then
+        log_error "File is not managed by dots: $file_path"
+        return 1
+    fi
+    
+    # Check if target file exists in dots repo
+    if [[ ! -e "$target" ]]; then
+        log_warning "Target file doesn't exist in dots repo: $target"
+        log_info "Removing broken symlink only"
+        rm "$file_path"
+        return 0
+    fi
+    
+    # Confirm removal
+    if command -v gum >/dev/null 2>&1; then
+        if ! gum confirm "Remove $file_path from dots management and restore original file?"; then
+            log_info "Removal cancelled"
+            return 0
+        fi
+    else
+        echo -n "Remove $file_path from dots management and restore original file? (y/N): "
+        read -r response
+        if [[ ! "$response" =~ ^[Yy]$ ]]; then
+            log_info "Removal cancelled"
+            return 0
+        fi
+    fi
+    
+    # Remove symlink and restore original file
+    log_info "Removing symlink: $file_path"
+    rm "$file_path"
+    
+    log_info "Restoring original file: $file_path"
+    mv "$target" "$file_path"
+    
+    # Clean up empty directories in dots repo
+    local target_dir
+    target_dir=$(dirname "$target")
+    if [[ -d "$target_dir" ]] && [[ -z "$(ls -A "$target_dir")" ]]; then
+        log_info "Removing empty directory: $target_dir"
+        rmdir "$target_dir"
+    fi
+    
+    # Regenerate mappings
+    log_info "Regenerating mappings..."
+    "$DOTS_DIR/scripts/generate-mappings.sh" >/dev/null
+    
+    log_success "File removed from dots management: $file_path"
+}
+
 # Log command
 cmd_log() {
     echo -e "${YELLOW}→${NC} Recent commits:"
@@ -697,6 +852,14 @@ test)
     ;;
 format)
     cmd_format
+    ;;
+add)
+    shift
+    cmd_add "$@"
+    ;;
+remove)
+    shift
+    cmd_remove "$@"
     ;;
 log)
     cmd_log
