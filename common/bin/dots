@@ -91,6 +91,7 @@ show_usage() {
         gum style --foreground=2 "  format       - Format files (markdown, shell scripts, etc.)"
         gum style --foreground=2 "  add          - Add a file to dots management"
         gum style --foreground=2 "  remove       - Remove a file from dots management"
+        gum style --foreground=2 "  hooks        - Install/reinstall git hooks"
         gum style --foreground=2 "  log          - Show git log"
         echo ""
     else
@@ -112,6 +113,7 @@ show_usage() {
         echo "  format       - Format files (markdown, shell scripts, etc.)"
         echo "  add          - Add a file to dots management"
         echo "  remove       - Remove a file from dots management"
+        echo "  hooks        - Install/reinstall git hooks"
         echo "  log          - Show git log"
         echo ""
     fi
@@ -806,6 +808,12 @@ cmd_remove() {
     log_success "File removed from dots management: $file_path"
 }
 
+# Hooks command - install/reinstall git hooks
+cmd_hooks() {
+    log_info "Installing git hooks..."
+    "$DOTS_DIR/scripts/install-hooks.sh"
+}
+
 # Log command
 cmd_log() {
     echo -e "${YELLOW}→${NC} Recent commits:"
@@ -860,6 +868,9 @@ add)
 remove)
     shift
     cmd_remove "$@"
+    ;;
+hooks)
+    cmd_hooks
     ;;
 log)
     cmd_log

@@ -52,7 +52,15 @@ if [[ ! -d "$SCRIPT_DIR/.git" ]]; then
     fi
 fi
 
-# 3. Run submodule initialization (when we have submodules)
+# 3. Install git hooks
+if [[ "$DRY_RUN" == true ]]; then
+    echo -e "${YELLOW}→${NC} [DRY] Would install git hooks"
+else
+    echo -e "${YELLOW}→${NC} Installing git hooks..."
+    "$SCRIPT_DIR/scripts/install-hooks.sh"
+fi
+
+# 4. Run submodule initialization (when we have submodules)
 if [[ -f "$SCRIPT_DIR/.gitmodules" ]]; then
     if [[ "$DRY_RUN" == true ]]; then
         echo -e "${YELLOW}→${NC} [DRY] Would initialize submodules"
@@ -62,12 +70,12 @@ if [[ -f "$SCRIPT_DIR/.gitmodules" ]]; then
     fi
 fi
 
-# 4. Create symlinks
+# 5. Create symlinks
 echo ""
 echo -e "${YELLOW}→${NC} Creating symlinks..."
 "$SCRIPT_DIR/scripts/link.sh" "$@"
 
-# 5. Set up dots command
+# 6. Set up dots command
 echo ""
 if [[ "$DRY_RUN" == true ]]; then
     echo -e "${YELLOW}→${NC} [DRY] Would set up dots command at ~/.local/bin/dots"
