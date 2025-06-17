@@ -81,7 +81,8 @@ show_usage() {
         gum style --foreground=2 "  install      - Initial setup with symlinks and submodules [--dry-run]"
         gum style --foreground=2 "  link         - Re-run symlink creation [--dry-run]"
         gum style --foreground=2 "  sync         - Git pull + submodule updates"
-        gum style --foreground=2 "  push         - Git add, commit, push"
+        gum style --foreground=2 "  commit       - Open LazyGit for interactive committing"
+        gum style --foreground=2 "  push         - Push commits to remote [--force]"
         gum style --foreground=2 "  clean        - Remove broken symlinks [--dry-run]"
         gum style --foreground=2 "  sub-update   - Update all submodules"
         gum style --foreground=2 "  sub-add      - Add new submodule"
@@ -99,7 +100,8 @@ show_usage() {
         echo "  install      - Initial setup with symlinks and submodules [--dry-run]"
         echo "  link         - Re-run symlink creation [--dry-run]"
         echo "  sync         - Git pull + submodule updates"
-        echo "  push         - Git add, commit, push"
+        echo "  commit       - Open LazyGit for interactive committing"
+        echo "  push         - Push commits to remote [--force]"
         echo "  clean        - Remove broken symlinks [--dry-run]"
         echo "  sub-update   - Update all submodules"
         echo "  sub-add      - Add new submodule"
@@ -136,39 +138,72 @@ cmd_sync() {
     echo -e "${GREEN}✓${NC} Sync complete"
 }
 
-# Push command
+# Shared push function
+do_push() {
+    local force_flag="${1:-false}"
+    
+    log_info "Pushing to remote..."
+    
+    if [[ "$force_flag" == "true" ]]; then
+        # Force push directly
+        if command -v gum >/dev/null 2>&1; then
+            gum spin --spinner="dot" --title="Force pushing..." -- git push --force-with-lease
+        else
+            git push --force-with-lease
+        fi
+        log_success "Changes force pushed"
+    else
+        # Try regular push
+        if command -v gum >/dev/null 2>&1; then
+            if gum spin --spinner="dot" --title="Pushing..." -- git push 2>/dev/null; then
+                log_success "Changes pushed"
+            else
+                log_warning "Push failed. Would you like to force push?"
+                if command -v gum >/dev/null 2>&1 && gum confirm "Force push with --force-with-lease?"; then
+                    gum spin --spinner="dot" --title="Force pushing..." -- git push --force-with-lease
+                    log_success "Changes force pushed"
+                else
+                    log_error "Push cancelled"
+                    return 1
+                fi
+            fi
+        else
+            if git push 2>/dev/null; then
+                log_success "Changes pushed"
+            else
+                log_warning "Push failed. Try: git push --force-with-lease"
+                return 1
+            fi
+        fi
+    fi
+}
+
+# Commit command - opens LazyGit for interactive committing
+cmd_commit() {
+    log_info "Opening LazyGit for commits..."
+    
+    if command -v lazygit >/dev/null 2>&1; then
+        lazygit
+    else
+        log_error "LazyGit not found. Install with: brew install lazygit"
+        return 1
+    fi
+}
+
+# Push command - only pushes, no committing
 cmd_push() {
-    local message="${1:-}"
-
-    log_info "Pushing changes..."
-
-    # Check if there are changes
-    if [[ -z $(git status --porcelain) ]]; then
-        log_success "No changes to commit"
+    local force_flag=false
+    if [[ "$1" == "--force" || "$1" == "-f" ]]; then
+        force_flag=true
+    fi
+    
+    # Check if there are any commits to push
+    if [[ -z $(git log @{u}.. 2>/dev/null) ]]; then
+        log_success "No commits to push"
         return 0
     fi
-
-    # If no message provided, prompt for one with gum
-    if [[ -z "$message" ]] && command -v gum >/dev/null 2>&1; then
-        message=$(gum write --placeholder="Enter commit message..." --char-limit=72)
-        if [[ -z "$message" ]]; then
-            log_warning "No commit message provided, using default"
-            message="Updates"
-        fi
-    elif [[ -z "$message" ]]; then
-        message="Updates"
-    fi
-
-    if command -v gum >/dev/null 2>&1; then
-        gum spin --spinner="dot" --title="Committing and pushing changes..." -- \
-            bash -c "git add -A && git commit -m '$message' && (git push origin main || git push origin master)"
-    else
-        git add -A
-        git commit -m "$message"
-        git push origin main || git push origin master
-    fi
-
-    log_success "Changes pushed"
+    
+    do_push "$force_flag"
 }
 
 # Clean command
@@ -572,6 +607,10 @@ link)
     ;;
 sync)
     cmd_sync
+    ;;
+commit)
+    shift
+    cmd_commit "$@"
     ;;
 push)
     shift
