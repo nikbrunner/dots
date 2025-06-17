@@ -54,7 +54,7 @@ create_symlink() {
         fi
         return
     fi
-    
+
     # Create parent directory if it doesn't exist
     mkdir -p "$(dirname "$target")"
 
@@ -93,7 +93,7 @@ MAPPING_FILE="$DOTS_DIR/.mappings/$CURRENT_OS.json"
 # Generate mappings if they don't exist or are outdated
 if [[ ! -f "$MAPPING_FILE" ]] || [[ "$DOTS_DIR/common" -nt "$MAPPING_FILE" ]] || [[ "$DOTS_DIR/$CURRENT_OS" -nt "$MAPPING_FILE" ]]; then
     echo -e "${YELLOW}→${NC} Generating fresh mappings..."
-    "$SCRIPT_DIR/generate-mappings.sh" > /dev/null
+    "$SCRIPT_DIR/generate-mappings.sh" >/dev/null
 fi
 
 # Check if mapping file exists
@@ -112,17 +112,17 @@ while IFS=':' read -r source_part target_part; do
     # Skip lines that don't contain mappings (like opening/closing braces)
     [[ ! "$source_part" =~ \".*\" ]] && continue
     [[ ! "$target_part" =~ \".*\" ]] && continue
-    
+
     # Clean up the strings (remove quotes, commas, spaces)
     source=$(echo "$source_part" | sed 's/^[[:space:]]*"//' | sed 's/"[[:space:]]*$//')
     target=$(echo "$target_part" | sed 's/^[[:space:]]*"//' | sed 's/"[[:space:]]*,*[[:space:]]*$//')
-    
+
     # Skip empty lines
     [[ -z "$source" || -z "$target" ]] && continue
-    
+
     create_symlink "$source" "$target"
-    
-done < "$MAPPING_FILE"
+
+done <"$MAPPING_FILE"
 
 echo ""
 echo "Symlink setup complete!"

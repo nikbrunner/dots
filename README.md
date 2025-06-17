@@ -40,11 +40,13 @@ cd ~/repos/nikbrunner/dots
 ### Manual Steps
 
 1. Clone the repository:
+
    ```bash
    git clone https://github.com/nikbrunner/dots.git ~/repos/nikbrunner/dots
    ```
 
 2. Run the installation script:
+
    ```bash
    cd ~/repos/nikbrunner/dots
    ./install.sh
@@ -130,8 +132,9 @@ dots sub-add https://github.com/nikbrunner/nvim submodules/nvim
 ```
 
 Current submodules (to be added):
+
 - `nvim` - Neovim configuration
-- `wezterm` - WezTerm configuration  
+- `wezterm` - WezTerm configuration
 - `zed` - Zed editor configuration (private)
 
 ## 📦 Dependencies
@@ -145,4 +148,3 @@ Current submodules (to be added):
 - ✅ macOS (primary development)
 - ✅ Linux (EndeavourOS/Arch)
 - ❌ Windows (not supported)
-

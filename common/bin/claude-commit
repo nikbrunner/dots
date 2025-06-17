@@ -116,22 +116,22 @@ read -p "Your choice: " -n 1 -r choice
 echo ""
 
 case "$choice" in
-    y|Y)
+    y | Y)
         git commit -m "$commit_message"
         ;;
-    e|E)
+    e | E)
         # Create temp file with commit message
         TEMP_FILE=$(mktemp)
-        echo "$commit_message" > "$TEMP_FILE"
-        
+        echo "$commit_message" >"$TEMP_FILE"
+
         # Open in nvim for editing
         nvim "$TEMP_FILE"
-        
+
         # Check if file still exists and has content
         if [ -s "$TEMP_FILE" ]; then
             edited_message=$(cat "$TEMP_FILE")
             rm -f "$TEMP_FILE"
-            
+
             echo ""
             echo "Committing with edited message..."
             git commit -m "$edited_message"
@@ -141,7 +141,7 @@ case "$choice" in
             exit 1
         fi
         ;;
-    n|N|*)
+    n | N | *)
         echo "Commit cancelled."
         exit 1
         ;;
