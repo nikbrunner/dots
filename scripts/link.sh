@@ -1,6 +1,6 @@
 #!/bin/bash
 # Creates symlinks for dotfiles based on JSON mappings
-# Usage: ./scripts/link.sh [--force] [--dry-run]
+# Usage: ./scripts/link.sh [--dry-run]
 
 set -e
 
@@ -18,13 +18,9 @@ YELLOW='\033[0;33m'
 NC='\033[0m' # No Color
 
 # Check for flags
-FORCE=false
 DRY_RUN=false
 for arg in "$@"; do
     case $arg in
-        --force)
-            FORCE=true
-            ;;
         --dry-run)
             DRY_RUN=true
             ;;
@@ -51,10 +47,8 @@ create_symlink() {
                 echo -e "${YELLOW}⚠${NC} [DRY] Wrong target: $target → $actual_target (expected: $source)"
             fi
         elif [[ -e "$target" ]]; then
-            echo -e "${RED}✗${NC} [DRY] File exists (not symlink): $target"
-            if [[ "$FORCE" == true ]]; then
-                echo -e "${YELLOW}⚠${NC} [DRY] Would backup and replace with symlink"
-            fi
+            echo -e "${YELLOW}⚠${NC} [DRY] File exists (not symlink): $target"
+            echo -e "${YELLOW}⚠${NC} [DRY] Would backup and replace with symlink"
         else
             echo -e "${GREEN}+${NC} [DRY] Would create symlink: $target → $source"
         fi
@@ -66,24 +60,21 @@ create_symlink() {
 
     if [[ -L "$target" ]]; then
         # Target is a symlink
-        if [[ "$FORCE" == true ]]; then
+        local actual_target=$(readlink "$target")
+        if [[ "$actual_target" == "$source" ]]; then
+            echo -e "${GREEN}✓${NC} Symlink OK: $target"
+        else
+            echo -e "${YELLOW}⚠${NC} Updating symlink: $target"
             rm "$target"
             ln -s "$source" "$target"
             echo -e "${GREEN}✓${NC} Updated symlink: $target"
-        else
-            echo -e "${YELLOW}→${NC} Symlink exists: $target"
         fi
     elif [[ -e "$target" ]]; then
-        # Target exists but is not a symlink
-        if [[ "$FORCE" == true ]]; then
-            echo -e "${YELLOW}⚠${NC} Backing up existing file: $target"
-            mv "$target" "$target.backup.$(date +%Y%m%d_%H%M%S)"
-            ln -s "$source" "$target"
-            echo -e "${GREEN}✓${NC} Created symlink: $target"
-        else
-            echo -e "${RED}✗${NC} File exists (not a symlink): $target"
-            echo "  Use --force to backup and replace"
-        fi
+        # Target exists but is not a symlink - backup and replace
+        echo -e "${YELLOW}⚠${NC} Backing up existing file: $target"
+        mv "$target" "$target.backup.$(date +%Y%m%d_%H%M%S)"
+        ln -s "$source" "$target"
+        echo -e "${GREEN}✓${NC} Created symlink: $target"
     else
         # Target doesn't exist
         ln -s "$source" "$target"

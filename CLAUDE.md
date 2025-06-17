@@ -11,7 +11,7 @@ This is a symlink-based dotfiles management system designed to organize and depl
 ### Symlink System
 - Configuration files live in `~/repos/nikbrunner/dots/` but are symlinked to their standard locations
 - The `scripts/link.sh` script creates all symlinks with backup functionality
-- Running `dots link --force` backs up existing files with timestamps before creating symlinks
+- Running `dots link` automatically backs up existing files with timestamps before creating symlinks
 
 ### Directory Structure
 - `common/` - Cross-platform configuration files that mirror home directory structure
@@ -29,8 +29,8 @@ This is a symlink-based dotfiles management system designed to organize and depl
 # Check status of git repo and all symlinks
 dots status
 
-# Create/update symlinks (use --force to backup existing files)
-dots link [--force]
+# Create/update symlinks (automatically backs up existing files)
+dots link [--dry-run]
 
 # Commit and push changes
 dots push "commit message"
@@ -82,7 +82,7 @@ The system uses JSON-based mapping files for precise file-level symlinks. The `s
 
 ## Backup Files
 
-When using `dots link --force`, backups are created with timestamp format: `.<name>.backup.YYYYMMDD_HHMMSS`
+When using `dots link`, backups are created with timestamp format: `.<name>.backup.YYYYMMDD_HHMMSS`
 
 ## Environment Variables
 
