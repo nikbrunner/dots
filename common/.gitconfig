@@ -67,9 +67,9 @@
   fullreset = !git fetch origin && git reset --hard "origin/$(git rev-parse --abbrev-ref HEAD)" && git stash --include-untracked && git fetch -p && git branch -vv | awk '/: gone]/{print $1}' | xargs git branch -D
 
 
-  smart-branch= "!f() { ~/.scripts/smart-branch \"$@\"; }; f"
-  smart-commit = "!f() { msg=$("~/.scripts/smart-git-message"); git commit -m \"$msg\"; }; f"
+  ; smart-branch= "!f() { ~/.scripts/smart-branch \"$@\"; }; f"
+  ; smart-commit = "!f() { msg=$("~/.scripts/smart-git-message"); git commit -m \"$msg\"; }; f"
 
   wip = "!git add -A; git rm $(git ls-files --deleted) 2> /dev/null; git commit --no-verify --no-gpg-sign --message \"--wip--\""
   unwip = "!git rev-list --max-count=1 --format=\"%s\" HEAD | grep -q \"\\--wip--\" && git reset HEAD~1"
-  sc = !/Users/nbr/.scripts/smart-commit
+  sc = !/Users/nbr/bin/smart-commit

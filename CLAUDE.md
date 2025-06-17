@@ -14,10 +14,13 @@ This is a symlink-based dotfiles management system designed to organize and depl
 - Running `dots link --force` backs up existing files with timestamps before creating symlinks
 
 ### Directory Structure
-- `config/` - Contains all configuration files organized by tool
-- `os-specific/` - OS-specific configurations (currently macOS only)
+- `common/` - Cross-platform configuration files that mirror home directory structure
+  - Root dotfiles (.zshrc, .gitconfig, etc.)
+  - `.config/` directory with tool configurations
+  - `bin/` directory with custom scripts
+- `macos/` - macOS-specific configurations that mirror home directory structure
+- `linux/` - Linux-specific configurations that mirror home directory structure
 - `scripts/` - Core management scripts (link.sh, detect-os.sh, submodules.sh)
-- `scripts-custom/` - User's custom scripts (symlinked to ~/.scripts)
 - `submodules/` - Git submodules for larger configs (nvim, wezterm, zed)
 
 ## Common Commands
@@ -44,21 +47,31 @@ dots clean
 
 ## Adding New Configurations
 
-1. Add config files to appropriate directory in `config/`
-2. Update `scripts/link.sh` to add the new symlink mapping:
-   ```bash
-   create_symlink "$DOTS_DIR/config/toolname/config" "$HOME/.config/toolname/config"
-   ```
-3. Update the symlink checking in `scripts-custom/dots` cmd_status function
-4. Run `dots link` to create the symlink
+1. Add config files to the appropriate directory structure:
+   - For cross-platform configs: Place in `common/` following home directory structure
+   - For OS-specific configs: Place in `macos/` or `linux/` following home directory structure
+   - Example: For a new tool config, place it in `common/.config/toolname/`
+2. Run `dots link` to create symlinks (the recursive linking will handle new files automatically)
+3. No manual script updates needed - the structure is self-documenting
 
 ## Symlink Mappings
 
-Key symlinks created by the system:
-- Individual files: `.zshrc`, `.gitconfig`, `.gitignore`, `.vimrc`, `.ideavimrc`, `.hushlogin`
-- Config directories: `.config/yazi`, `.config/lazygit`, `.config/bat`, `.config/tmux`, `.config/karabiner`, `.config/kitty`, `.config/ghostty`, `.config/oh-my-posh`, `.config/gallery-dl`
-- Scripts: `.scripts` → `scripts-custom/`
-- macOS: `Library/Application Support/Claude/claude_desktop_config.json`
+The system now uses recursive linking where the repository structure exactly mirrors the home directory:
+
+### Common (Cross-platform) Files
+- `common/.zshrc` → `~/.zshrc`
+- `common/.gitconfig` → `~/.gitconfig`
+- `common/.config/yazi/` → `~/.config/yazi/`
+- `common/bin/` → `~/bin/`
+- All files in `common/` are recursively symlinked to `~/`
+
+### macOS-specific Files
+- `macos/Library/Application Support/Claude/` → `~/Library/Application Support/Claude/`
+- `macos/Brewfile` → `~/Brewfile`
+- All files in `macos/` are recursively symlinked to `~/`
+
+### Linux-specific Files
+- All files in `linux/` are recursively symlinked to `~/` (when on Linux systems)
 
 ## Backup Files
 

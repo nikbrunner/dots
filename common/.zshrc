@@ -10,7 +10,6 @@ export PATH=${brew_opt_path}/python@3.10/bin/python3:$PATH
 # Path Exports ===========================================================
 export PATH=$HOME/bin:/usr/local/bin:$PATH
 export PATH=$HOME/.local/bin:$PATH
-export PATH=$HOME/.scripts:$PATH
 export PATH=$HOME/.cargo/bin:$PATH
 export PATH=$HOME/Applications:$PATH
 export PATH=/usr/bin/python:$PATH

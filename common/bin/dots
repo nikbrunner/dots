@@ -157,28 +157,44 @@ cmd_status() {
         fi
     }
     
-    # Check all expected symlinks
-    check_symlink "$HOME/.zshrc" "$DOTS_DIR/config/zsh/.zshrc"
-    check_symlink "$HOME/.gitconfig" "$DOTS_DIR/config/git/.gitconfig"
-    check_symlink "$HOME/.gitignore" "$DOTS_DIR/config/git/.gitignore"
-    check_symlink "$HOME/.vimrc" "$DOTS_DIR/config/vim/.vimrc"
-    check_symlink "$HOME/.ideavimrc" "$DOTS_DIR/config/vim/.ideavimrc"
-    check_symlink "$HOME/.hushlogin" "$DOTS_DIR/config/shell/.hushlogin"
-    check_symlink "$HOME/.config/yazi" "$DOTS_DIR/config/yazi"
-    check_symlink "$HOME/.config/lazygit" "$DOTS_DIR/config/lazygit"
-    check_symlink "$HOME/.config/bat" "$DOTS_DIR/config/bat"
-    check_symlink "$HOME/.config/tmux" "$DOTS_DIR/config/tmux"
-    check_symlink "$HOME/.config/gallery-dl" "$DOTS_DIR/config/gallery-dl"
-    check_symlink "$HOME/.config/oh-my-posh" "$DOTS_DIR/config/oh-my-posh"
-    check_symlink "$HOME/.config/karabiner" "$DOTS_DIR/config/karabiner"
-    check_symlink "$HOME/.config/kitty" "$DOTS_DIR/config/kitty"
-    check_symlink "$HOME/.config/ghostty" "$DOTS_DIR/config/ghostty"
-    check_symlink "$HOME/.scripts" "$DOTS_DIR/scripts-custom"
+    # Check main symlinks we expect
+    echo "Checking main configuration symlinks..."
     
-    # Add macOS-specific links if on macOS
+    # Check root dotfiles
+    check_symlink "$HOME/.zshrc" "$DOTS_DIR/common/.zshrc"
+    check_symlink "$HOME/.gitconfig" "$DOTS_DIR/common/.gitconfig" 
+    check_symlink "$HOME/.gitignore" "$DOTS_DIR/common/.gitignore"
+    check_symlink "$HOME/.vimrc" "$DOTS_DIR/common/.vimrc"
+    check_symlink "$HOME/.ideavimrc" "$DOTS_DIR/common/.ideavimrc"
+    check_symlink "$HOME/.hushlogin" "$DOTS_DIR/common/.hushlogin"
+    
+    # Check config directories (symlinked as whole directories)
+    check_symlink "$HOME/.config/yazi" "$DOTS_DIR/common/.config/yazi"
+    check_symlink "$HOME/.config/lazygit" "$DOTS_DIR/common/.config/lazygit"
+    check_symlink "$HOME/.config/bat" "$DOTS_DIR/common/.config/bat"
+    check_symlink "$HOME/.config/tmux" "$DOTS_DIR/common/.config/tmux"
+    check_symlink "$HOME/.config/kitty" "$DOTS_DIR/common/.config/kitty"
+    check_symlink "$HOME/.config/ghostty" "$DOTS_DIR/common/.config/ghostty"
+    check_symlink "$HOME/.config/oh-my-posh" "$DOTS_DIR/common/.config/oh-my-posh"
+    check_symlink "$HOME/.config/gallery-dl" "$DOTS_DIR/common/.config/gallery-dl"
+    
+    # Check individual script files in bin directory
+    for script in "$DOTS_DIR/common/bin"/*; do
+        [[ -f "$script" ]] || continue
+        local script_name=$(basename "$script")
+        check_symlink "$HOME/bin/$script_name" "$script"
+    done
+    
+    # Check git completion files
+    check_symlink "$HOME/.config/.zsh/_git" "$DOTS_DIR/common/.config/.zsh/_git"
+    check_symlink "$HOME/.config/.zsh/git-completion.bash" "$DOTS_DIR/common/.config/.zsh/git-completion.bash"
+    
+    # Check OS-specific files
     if [[ "$OSTYPE" == darwin* ]]; then
-        check_symlink "$HOME/Library/Application Support/Claude/claude_desktop_config.json" \
-                      "$DOTS_DIR/os-specific/macos/Library/Application Support/Claude/claude_desktop_config.json"
+        echo "Checking macOS-specific symlinks..."
+        check_symlink "$HOME/.config/karabiner" "$DOTS_DIR/macos/.config/karabiner"
+        check_symlink "$HOME/Library/Application Support/Claude/claude_desktop_config.json" "$DOTS_DIR/macos/Library/Application Support/Claude/claude_desktop_config.json"
+        check_symlink "$HOME/Brewfile" "$DOTS_DIR/macos/Brewfile"
     fi
     
     # Summary
@@ -193,39 +209,6 @@ cmd_status() {
         echo -e "  ${YELLOW}→${NC} Missing links: $missing_links"
     fi
     
-    # Check for unlinked files in config directories
-    echo ""
-    echo -e "${BLUE}=== Checking for Unlinked Config Files ===${NC}"
-    
-    local unlinked_found=false
-    
-    # List of directories that are symlinked as whole directories
-    local linked_dirs="yazi lazygit bat tmux gallery-dl oh-my-posh karabiner kitty ghostty"
-    
-    # Check config directory for files that might need linking
-    for config_dir in "$DOTS_DIR/config"/*; do
-        if [[ -d "$config_dir" ]]; then
-            local dirname=$(basename "$config_dir")
-            
-            # Skip directories that are already linked
-            if echo "$linked_dirs" | grep -q "\b$dirname\b"; then
-                continue
-            fi
-            
-            # Skip special directories that have individual file links
-            if [[ "$dirname" == "zsh" ]] || [[ "$dirname" == "git" ]] || 
-               [[ "$dirname" == "vim" ]] || [[ "$dirname" == "shell" ]]; then
-                continue
-            fi
-            
-            echo -e "${YELLOW}?${NC} Unlinked config: $config_dir"
-            unlinked_found=true
-        fi
-    done
-    
-    if [[ "$unlinked_found" == false ]]; then
-        echo -e "${GREEN}✓${NC} All config files are properly linked"
-    fi
 }
 
 # Log command
