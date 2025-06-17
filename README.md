@@ -4,6 +4,8 @@ A clean, organized dotfiles repository using symlinks for easy management and de
 
 ## Roadmap
 
+See [IMPLEMENTATION_PLAN.md](./IMPLEMENTATION_PLAN.md) for detailed implementation plans.
+
 - [ ] Modularize `dots` command
 - [ ] Remove old commands
 - [ ] Add submodules for `nvim`, `wezterm`
@@ -14,6 +16,7 @@ A clean, organized dotfiles repository using symlinks for easy management and de
 dots/
 ├── README.md                # This file
 ├── CLAUDE.md               # Claude Code instructions
+├── IMPLEMENTATION_PLAN.md  # Detailed roadmap implementation plans
 ├── .mappings/              # JSON mapping files
 │   ├── macos.json         # macOS file mappings
 │   └── linux.json         # Linux file mappings
@@ -72,12 +75,17 @@ The `dots` command provides a unified interface for managing your dotfiles:
 dots install      # Initial setup with symlinks and submodules
 dots link         # Re-run symlink creation
 dots sync         # Git pull + submodule updates
-dots push         # Git add, commit, push
-dots clean        # Remove broken symlinks
+dots commit       # Open LazyGit for interactive committing
+dots push         # Push commits to remote [--force]
+dots clean        # Remove broken symlinks [--dry-run]
 dots sub-update   # Update all submodules
 dots sub-add      # Add new submodule
 dots status       # Show git and symlink status
 dots test         # Run comprehensive system tests
+dots format       # Format files (markdown, shell scripts, etc.)
+dots add          # Add a file or directory to dots management
+dots remove       # Remove a file or directory from dots management
+dots hooks        # Install/reinstall git hooks
 dots log          # Show git log
 ```
 
@@ -89,13 +97,13 @@ dots log          # Show git log
    - Cross-platform: `common/` (mirrors home directory structure)
    - OS-specific: `macos/` or `linux/` (mirrors home directory structure)
 2. Run `dots link` to create symlinks (mappings auto-generated)
-3. Commit your changes: `dots push "Add new config"`
+3. Commit your changes: Use `dots commit` for interactive committing or `dots push` after manual commit
 
 #### Updating Configurations
 
 1. Edit files directly in your home directory (they're symlinked!)
 2. Check what changed: `dots status`
-3. Commit changes: `dots push "Update configs"`
+3. Commit changes: Use `dots commit` for interactive committing
 
 #### Syncing Across Machines
 
