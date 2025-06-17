@@ -66,7 +66,7 @@ dots push         # Git add, commit, push
 dots clean        # Remove broken symlinks
 dots sub-update   # Update all submodules
 dots sub-add      # Add new submodule
-dots status       # Show git status
+dots status       # Show git and symlink status
 dots log          # Show git log
 ```
 

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # New dots command for symlink-based dotfiles management
 
 set -e
@@ -30,7 +30,7 @@ show_usage() {
     echo "  clean        - Remove broken symlinks"
     echo "  sub-update   - Update all submodules"
     echo "  sub-add      - Add new submodule"
-    echo "  status       - Show git status"
+    echo "  status       - Show git and symlink status"
     echo "  log          - Show git log"
 }
 
@@ -112,10 +112,120 @@ cmd_sub_add() {
     "$DOTS_DIR/scripts/submodules.sh" add "$@"
 }
 
-# Status command
+# Status command - enhanced with symlink status
 cmd_status() {
-    echo -e "${YELLOW}→${NC} Repository status:"
-    git status
+    echo -e "${BLUE}=== Git Repository Status ===${NC}"
+    git status --short
+    
+    echo ""
+    echo -e "${BLUE}=== Symlink Status ===${NC}"
+    
+    local total_links=0
+    local valid_links=0
+    local broken_links=0
+    local missing_links=0
+    
+    # Function to check a symlink
+    check_symlink() {
+        local link_path="$1"
+        local expected_target="$2"
+        ((total_links++))
+        
+        if [[ -L "$link_path" ]]; then
+            # It's a symlink, check if it's valid
+            local actual_target=$(readlink "$link_path")
+            if [[ "$actual_target" == "$expected_target" ]]; then
+                ((valid_links++))
+            else
+                echo -e "${YELLOW}⚠${NC}  Wrong target: $link_path → $actual_target"
+                echo -e "    Expected: $expected_target"
+            fi
+            
+            # Check if target exists
+            if [[ ! -e "$link_path" ]]; then
+                ((broken_links++))
+                echo -e "${RED}✗${NC} Broken link: $link_path"
+            fi
+        elif [[ -e "$link_path" ]]; then
+            # File/directory exists but is not a symlink
+            echo -e "${RED}✗${NC} Not a symlink: $link_path"
+            echo -e "    Run 'dots link --force' to fix"
+        else
+            # Neither symlink nor file exists
+            ((missing_links++))
+            echo -e "${YELLOW}→${NC} Missing link: $link_path"
+        fi
+    }
+    
+    # Check all expected symlinks
+    check_symlink "$HOME/.zshrc" "$DOTS_DIR/config/zsh/.zshrc"
+    check_symlink "$HOME/.gitconfig" "$DOTS_DIR/config/git/.gitconfig"
+    check_symlink "$HOME/.gitignore" "$DOTS_DIR/config/git/.gitignore"
+    check_symlink "$HOME/.vimrc" "$DOTS_DIR/config/vim/.vimrc"
+    check_symlink "$HOME/.ideavimrc" "$DOTS_DIR/config/vim/.ideavimrc"
+    check_symlink "$HOME/.hushlogin" "$DOTS_DIR/config/shell/.hushlogin"
+    check_symlink "$HOME/.config/yazi" "$DOTS_DIR/config/yazi"
+    check_symlink "$HOME/.config/lazygit" "$DOTS_DIR/config/lazygit"
+    check_symlink "$HOME/.config/bat" "$DOTS_DIR/config/bat"
+    check_symlink "$HOME/.config/tmux" "$DOTS_DIR/config/tmux"
+    check_symlink "$HOME/.config/gallery-dl" "$DOTS_DIR/config/gallery-dl"
+    check_symlink "$HOME/.config/oh-my-posh" "$DOTS_DIR/config/oh-my-posh"
+    check_symlink "$HOME/.config/karabiner" "$DOTS_DIR/config/karabiner"
+    check_symlink "$HOME/.config/kitty" "$DOTS_DIR/config/kitty"
+    check_symlink "$HOME/.config/ghostty" "$DOTS_DIR/config/ghostty"
+    check_symlink "$HOME/.scripts" "$DOTS_DIR/scripts-custom"
+    
+    # Add macOS-specific links if on macOS
+    if [[ "$OSTYPE" == darwin* ]]; then
+        check_symlink "$HOME/Library/Application Support/Claude/claude_desktop_config.json" \
+                      "$DOTS_DIR/os-specific/macos/Library/Application Support/Claude/claude_desktop_config.json"
+    fi
+    
+    # Summary
+    echo ""
+    echo -e "${BLUE}Summary:${NC}"
+    echo -e "  Total expected links: $total_links"
+    echo -e "  ${GREEN}✓${NC} Valid links: $valid_links"
+    if [[ $broken_links -gt 0 ]]; then
+        echo -e "  ${RED}✗${NC} Broken links: $broken_links"
+    fi
+    if [[ $missing_links -gt 0 ]]; then
+        echo -e "  ${YELLOW}→${NC} Missing links: $missing_links"
+    fi
+    
+    # Check for unlinked files in config directories
+    echo ""
+    echo -e "${BLUE}=== Checking for Unlinked Config Files ===${NC}"
+    
+    local unlinked_found=false
+    
+    # List of directories that are symlinked as whole directories
+    local linked_dirs="yazi lazygit bat tmux gallery-dl oh-my-posh karabiner kitty ghostty"
+    
+    # Check config directory for files that might need linking
+    for config_dir in "$DOTS_DIR/config"/*; do
+        if [[ -d "$config_dir" ]]; then
+            local dirname=$(basename "$config_dir")
+            
+            # Skip directories that are already linked
+            if echo "$linked_dirs" | grep -q "\b$dirname\b"; then
+                continue
+            fi
+            
+            # Skip special directories that have individual file links
+            if [[ "$dirname" == "zsh" ]] || [[ "$dirname" == "git" ]] || 
+               [[ "$dirname" == "vim" ]] || [[ "$dirname" == "shell" ]]; then
+                continue
+            fi
+            
+            echo -e "${YELLOW}?${NC} Unlinked config: $config_dir"
+            unlinked_found=true
+        fi
+    done
+    
+    if [[ "$unlinked_found" == false ]]; then
+        echo -e "${GREEN}✓${NC} All config files are properly linked"
+    fi
 }
 
 # Log command
