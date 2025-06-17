@@ -1,0 +1,15 @@
+{
+  "#": "gallery-dl default configuration file",
+
+  "#": "full documentation at",
+  "#": "https://gdl-org.github.io/docs/configuration.html",
+
+  "extractor": {
+    "base-directory": "~/Library/CloudStorage/ProtonDrive-nik.brunner@proton.me-folder/Resources/Images",
+    "deviantart": {
+      "client-id": "44737",
+      "client-secret": "faa648af68084bb226221ec0915a86b3",
+      "metadata": true
+    }
+  }
+}

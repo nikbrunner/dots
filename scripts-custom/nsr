@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+# Check if package.json exists
+if [ ! -f "package.json" ]; then
+    echo "No package.json found in current directory!"
+    exit 1
+fi
+
+# Extract script names and pipe directly to fzf
+selected=$(jq -r '.scripts | keys | .[]' package.json | fzf --header='Select an npm script to run:')
+
+# If a script was selected (user didn't cancel), run it
+if [ ! -z "$selected" ]; then
+    "$selected"
+fi

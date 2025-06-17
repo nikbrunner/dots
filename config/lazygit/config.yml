@@ -1,0 +1,147 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/jesseduffield/lazygit/master/schema/config.json
+# https://github.com/jesseduffield/lazygit/blob/master/docs/Config.md
+os:
+  open: "zed {{filename}}"
+  editPreset: "nvim-remote"
+  # edit: "nvim --server $NVIM --remote-send '<cmd>close<cr><cmd>lua EditFromLazygit({{filename}})<CR>'"
+  # editAtLine: "nvim --server $NVIM --remote-send '<cmd>close<CR><cmd>lua EditLineFromLazygit({{filename}},{{line}})<CR>'"
+  editInTerminal: true
+  openDirInEditor: "nvim {{dir}}"
+promptToReturnFromSubprocess: false
+gui:
+  theme:
+    activeBorderColor:
+      - green
+      - bold
+    inactiveBorderColor:
+      - gray
+    optionsTextColor:
+      - cyan
+    selectedLineBgColor:
+      - reverse
+      - bold
+    cherryPickedCommitBgColor:
+      - gray
+    cherryPickedCommitFgColor:
+      - green
+    unstagedChangesColor:
+      - red
+    defaultFgColor:
+      - default
+    searchingActiveBorderColor:
+      - yellow
+  authorColors:
+    "rootiest": red
+    "*": magenta
+  branchColors:
+    "main": red
+    "master": red
+    # These do not work... ? Too old version?
+    "bcd-[0-9]+": "green" # This will match bcd- followed by one or more digits
+    "docs/.+": "black"
+    "feature/collapse-all": "red"
+  # stuff relating to the UI
+  scrollHeight: 10 # how many lines you scroll by
+  scrollPastBottom: true # enable scrolling past the bottom
+  sidePanelWidth: 0.35 # number from 0 to 1
+  expandFocusedSidePanel: true
+  mainPanelSplitMode: flexible # one of 'horizontal' | 'flexible' | 'vertical'
+  portraitMode: auto # one of 'auto' | 'never' | 'always'
+  enlargedSideViewLocation: left # one of 'left' | 'top'
+  # theme:
+  #   selectedLineBgColor:
+  #     - reverse
+  commitLength:
+    show: true
+  mouseEvents: true
+  skipDiscardChangeWarning: false
+  skipStashWarning: true
+  showFileTree: true # for rendering changes files in a tree format
+  nerdFontsVersion: "3" # nerd fonts version to use ("2" or "3"); empty means don't show nerd font icons
+  border: "single" # one of 'single' | 'double' | 'rounded' | 'hidden'
+git:
+  commit:
+    autoWrapCommitMessage: true
+    autoWrapWidth: 72
+  commitPrefixes:
+    bc-desktop-client:
+      - pattern: "^bcd-(\\d{4}).*"
+        replace: "BCD-$1 "
+    bc-homepage:
+      - pattern: "^bcd-(\\d{4}).*"
+        replace: "BCD-$1 "
+    terra-core.nvim:
+      - pattern: "^feature/dev-(\\d{3}).*"
+        replace: "DEV-$1 "
+  paging:
+    colorArg: always
+    pager: delta --paging=never
+  merging:
+    # only applicable to unix users
+    manualCommit: false
+    # extra args passed to `git merge`, e.g. --no-ff
+    args: ""
+  skipHookPrefix: WIP
+  autoFetch: true
+  # The main branches. We colour commits green if they belong to one of these branches,
+  # so that you can easily see which commits are unique to your branch (coloured in yellow)
+  mainBranches: [master, main]
+  branchLogCmd: "git log --graph --color=always --abbrev-commit --decorate --date=relative --pretty=medium {{branchName}} --"
+  allBranchesLogCmd: "git log --graph --all --color=always --abbrev-commit --decorate --date=relative  --pretty=medium"
+  overrideGpg: false # prevents lazygit from spawning a separate process when using GPG
+  disableForcePushing: false
+refresher:
+  refreshInterval: 10 # file/submodule refresh interval in seconds
+  fetchInterval: 60 # re-fetch interval in seconds
+update:
+  method: prompt # can be: prompt | background | never
+  days: 14 # how often an update is checked for
+confirmOnQuit: false
+# determines whether hitting 'esc' will quit the application when there is nothing to cancel/close
+quitOnTopLevelReturn: false
+disableStartupPopups: false
+notARepository: "skip" # one of: 'prompt' | 'create' | 'skip'
+customCommands:
+  - key: "D"
+    command: "git branch -D {{.SelectedLocalBranch.Name}}"
+    context: "localBranches"
+  - key: "G"
+    context: "localBranches"
+    command: "git fullreset"
+  # - key: "Z"
+  #   context: "files"
+  #   command: "git cz"
+  #   subprocess: true
+  # use alt-c to run git sc
+  - command: git -c core.pager="delta --syntax-theme gruvbox-dark --dark --side-by-side --paging=always" diff {{.SelectedLocalCommit.Sha}}^ {{.SelectedLocalCommit.Sha}}
+    context: files
+    description: full-screen diff of selected file
+    key: <c-f>
+    stream: true
+    subprocess: true
+  - key: "Z"
+    context: "files"
+    command: "git sc"
+    subprocess: true
+  - key: "N"
+    context: "localBranches"
+    prompts:
+      - type: "menu"
+        title: "What kind of branch is it?"
+        key: "BranchType"
+        options:
+          - name: "feature"
+            description: "a feature branch"
+            value: "feature"
+          - name: "hotfix"
+            description: "a hotfix branch"
+            value: "hotfix"
+          - name: "release"
+            description: "a release branch"
+            value: "release"
+      - type: "input"
+        title: "What is the new branch name?"
+        key: "BranchName"
+        initialValue: ""
+    command: "git flow {{.Form.BranchType}} start {{.Form.BranchName}}"
+    loadingText: "Creating branch"

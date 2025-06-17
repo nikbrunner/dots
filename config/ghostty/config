@@ -1,0 +1,72 @@
+# ghostty +show-config --default --docs
+# ghostty +list-themes
+# vim: colorcolumn=35
+
+# theme                             = dark:GitHub-Dark-Default,light:GitHub-Light-Default
+# theme                             = dark:GitHub-Dark-Dimmed,light:GitHub-Light-Default
+theme                             = dark:black-atom-jpn-koyo-yoru.conf,light:black-atom-jpn-koyo-hiru.conf
+# theme                             = dark:black-atom-terra-spring-night.conf,light:black-atom-terra-spring-day.conf
+# theme                             = dark:black-atom-stations-engineering.conf,light:black-atom-stations-research.conf
+# theme                             = dark:black-atom-crbn-null.conf,light:black-atom-crbn-supr.conf
+
+# custom-shader                     = ./shaders/bettercrt.glsl
+# custom-shader                     = ./shaders/bloom.glsl
+# custom-shader                     = ./crt-shader-with-chromatic-aberration-glow-scanlines-dot-matrix/crt-shader-with-chromatic-aberration-glow-scanlines-dot-matrix.glsl
+# custom-shader = ./shaders/drunkard.glsl
+# custom-shader = ./shaders/tft.glsl
+# custom-shader = ./shaders/glitchy.glsl
+
+# background-opacity               = 0.85
+# background-blur                  = 65
+
+font-family                      = JetBrainsMono Nerd Font
+# font-family                      = TX-02
+# font-family                      = SF Mono
+# font-family                      = Maple Mono NF
+# font-family                      = Menlo
+# font-family                      = ComicCodeLigatures Nerd Font
+# font-family                      = ComicShannsMono Nerd Font
+# font-family                      = FiraCode Nerd Font
+# font-family                      = RecMonoCasual Nerd Font
+# font-family                      = RecMonoDuotone Nerd Font
+
+font-size                         = 16
+# font-thicken = true
+adjust-cell-height                = 25%
+window-padding-x                  = 20
+window-padding-y                  = 10
+
+
+# Disable blinking cursor
+cursor-style-blink = false
+cursor-style = block
+shell-integration-features        = no-cursor
+
+# Look and Feel
+adjust-cursor-thickness           = 3
+adjust-underline-position         = 3
+bold-is-bright                    = true
+link-url                          = true
+mouse-hide-while-typing           = true
+window-vsync                      = true
+window-inherit-working-directory  = true
+unfocused-split-opacity           = 1
+
+window-inherit-working-directory = true
+window-inherit-font-size = true
+window-theme = system
+clipboard-trim-trailing-spaces = true
+mouse-hide-while-typing = true
+
+
+# Key bindings
+keybind                        = cmd+;=toggle_quick_terminal
+keybind                        = cmd+z=toggle_fullscreen
+# keybind                          = ctrl+h=goto_split:left
+# keybind                          = ctrl+j=goto_split:bottom
+# keybind                          = ctrl+k=goto_split:top
+# keybind                          = ctrl+l=goto_split:right
+# keybind                          = ctrl+shift+l=new_split:right
+# keybind                          = ctrl+shift+j=new_split:down
+# keybind                          = ctrl+shift+enter=new_split:auto
+

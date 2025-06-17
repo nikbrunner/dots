@@ -1,0 +1,121 @@
+{
+  "$schema": "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json",
+  "console_title_template": " {{ .Folder }} :: {{if .Root}}Admin{{end}}",
+  "blocks": [
+    {
+      "alignment": "left",
+      "segments": [
+        {
+          "type": "path",
+          "style": "plain",
+          "foreground": "yellow",
+          "properties": {
+            "style": "folder"
+          },
+          "template": "<d>{{ .Parent }}</d>{{ .Path }} "
+        },
+        {
+          "type": "git",
+          "style": "plain",
+          "foreground": "green",
+          "foreground_templates": [
+            "{{ if or (.Working.Changed) (.Staging.Changed) }}red{{ end }}",
+            "{{ if and (gt .Ahead 0) (gt .Behind 0)}}blue {{ end }}",
+            "{{ if gt .Ahead 0 }}blue{{ end }}",
+            "{{ if gt .Behind 0 }}blue{{ end }}"
+          ],
+          "template": "({{ .HEAD}})",
+          "properties": {
+            "fetch_status": true,
+            "branch_icon": "\ue725 "
+          }
+        },
+        {
+          "type": "status",
+          "style": "plain",
+          "foreground": "red",
+          "template": " \uf00d"
+        }
+      ],
+      "type": "prompt"
+    },
+    {
+      "alignment": "right",
+      "overflow": "hide",
+      "segments": [
+        {
+          "type": "node",
+          "style": "plain",
+          "foreground": "green",
+          "template": "\ue718 {{ .Full }} "
+        },
+        {
+          "type": "php",
+          "style": "plain",
+          "foreground": "blue",
+          "template": "\ue73d {{ .Full }} "
+        },
+        {
+          "type": "python",
+          "style": "plain",
+          "foreground": "yellow",
+          "template": "\uE235 {{ .Full }}"
+        },
+        {
+          "type": "julia",
+          "style": "plain",
+          "foreground": "magenta",
+          "template": "\uE624 {{ .Full }}"
+        },
+        {
+          "type": "ruby",
+          "style": "plain",
+          "foreground": "red",
+          "template": "\uE791 {{ .Full}}"
+        },
+        {
+          "type": "go",
+          "style": "plain",
+          "foreground": "blue",
+          "template": "\uFCD1 {{ .Full}}"
+        },
+        {
+          "type": "command",
+          "style": "plain",
+          "foreground": "lightMagenta",
+          "properties": {
+            "command": "git log --pretty=format:%cr -1 || date +%H:%M:%S",
+            "shell": "bash"
+          }
+        }
+      ],
+      "type": "prompt"
+    },
+    {
+      "alignment": "left",
+      "newline": true,
+      "segments": [
+        {
+          "foreground": "lightYellow",
+          "style": "plain",
+          "template": "",
+          "type": "text"
+        }
+      ],
+      "type": "prompt"
+    }
+  ],
+  "secondary_prompt": {
+    "background": "transparent",
+    "foreground": "blue",
+    "template": ""
+  },
+  "transient_prompt": {
+    "background": "background",
+    "foreground": "blue",
+    "template": "\u279c "
+  },
+  "final_space": true,
+  "version": 3,
+  "terminal_background": "background"
+}

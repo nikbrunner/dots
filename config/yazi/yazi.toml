@@ -1,0 +1,43 @@
+# A TOML linter such as https://taplo.tamasfe.dev/ can use this schema to validate your config.
+# If you encounter any issues, please make an issue at https://github.com/yazi-rs/schemas.
+"$schema" = "https://yazi-rs.github.io/schemas/yazi.json"
+
+[manager]
+show_hidden = true
+ratio          = [ 1, 2, 3]
+
+[preview]
+ueberzug_offset = [7.5, 1, 0, 0]
+max_width       = 2400
+max_height      = 2400
+
+[opener]
+edit = [
+  { run = 'nvim "$@"', desc = "$EDITOR", block = true, for = "unix" },
+  { run = 'code "%*"', orphan = true, desc = "code", for = "windows" },
+  { run = 'code -w "%*"', block = true, desc = "code (block)", for = "windows" },
+]
+
+# Add music opener for VLC
+music = [
+  { run = 'open -a "VLC" "$@"', desc = "VLC", for = "unix" },
+]
+
+# Smart folder opener
+folder = [
+  # { run = './smart-open.sh "$@"', desc = "Smart Open", for = "unix" },
+  { run = 'open "$@"', desc = "Finder", for = "unix" },
+  { run = 'open -a "VLC" "$@"', desc = "Play Album (VLC)", for = "unix" },
+]
+
+# VLC for everything
+play = [
+  { run = 'open -a "VLC" "$@"', desc = "VLC", for = "unix" },
+  { run = 'mpv "$@"', desc = "mpv", for = "unix" },
+]
+
+[open]
+append_rules = [
+  { name = "*.{mp3,flac,wav,aac,ogg,m4a,wma}", use = "music" },
+  { name = "*/", use = "folder" },  # Now uses smart opener
+]

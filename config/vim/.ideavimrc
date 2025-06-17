@@ -1,0 +1,168 @@
+let mapleader =               "\<Space>"
+
+Plug 'tpope/vim-commentary'
+Plug 'preservim/nerdtree'
+Plug 'machakann/vim-highlightedyank'
+
+" Basic Settings
+set rnu nu
+set incsearch
+set ideamarks
+" set highlightedyank
+" set surround
+" set easymotion
+set scrolloff=8
+set ignorecase
+set smartcase
+set notimeout
+
+
+" WhichKey
+set which-key
+let g:WhichKey_ShowVimActions =                         "true"
+let g:WhichKey_DefaultDelay =                           0
+
+" NERDTree
+set NERDTree
+
+" Unbind Q
+map Q                                                   <nop>
+
+" Start / End of Line
+nmap H                                                  ^
+nmap L                                                  $
+
+nmap k                                                  gk
+nmap j                                                  gj
+
+nmap vv                                                 ^v$
+
+" Saving
+nmap <CR>                                               :wa<CR>
+
+" G-expand
+nmap gh                                                  :action QuickJavaDoc<CR>
+let g:WhichKeyDesc_quick_doc =                          "gh QuickDoc"
+
+nmap gl                                                  :action ShowErrorDescription<CR>
+let g:WhichKeyDesc_quick_error =                        "gl QuickError"
+
+nmap gr                                                 :action GotoDeclaration<CR>
+let g:WhichKeyDesc_lsp_references =                     "gr References"
+
+vmap S                                                 :action SurroundWith<CR>
+let g:WhichKeyDesc_surround =                           "gs SurroundWith"
+
+" Window Navigation
+map <C-h>                                               :action TabShiftActions.MoveFocusLeft<CR>
+map <C-j>                                               :action TabShiftActions.MoveFocusDown<CR>
+map <C-k>                                               :action TabShiftActions.MoveFocusUp<CR>
+map <C-l>                                               :action TabShiftActions.MoveFocusRight<CR>
+
+" Switch Tabs
+nmap <S-Tab>                                            :action PreviousTab<CR>
+nmap <Tab>                                              :action NextTab<CR>
+nmap tp                                                 :action PinActiveTabToggle<CR>
+
+" Move Tabs
+nmap <C-S-h>                                            :action TabShiftActions.ShiftLeft<CR>
+nmap <C-S-j>                                            :action TabShiftActions.ShiftDown<CR>
+nmap <C-S-k>                                            :action TabShiftActions.ShiftUp<CR>
+nmap <C-S-l>                                            :action TabShiftActions.ShiftRight<CR>
+
+" Resize Splits
+" map H                                                 :action TabShiftActions.StretchLeft<CR>
+" map J                                                 :action TabShiftActions.StretchDown<CR>
+" map K                                                 :action TabShiftActions.StretchUp<CR>
+" map L                                                 :action TabShiftActions.StretchRight<CR>
+
+" Next / Prev
+map [g                                                  :action VcsShowPrevChangeMarker<CR>
+map ]g                                                  :action VcsShowNextChangeMarker<CR>
+
+map [q                                                  :action PreviousOccurence<CR>
+map ]q                                                  :action NextOccurence<CR>
+
+nmap [d                                                 :action GotoPreviousError<CR>
+nmap ]d                                                 :action GotoNextError<CR>
+
+" View
+let g:WhichKeyDesc_view =                               "<leader>v View"
+
+map <leader>vz                                          :action ToggleZenMode<CR>
+let g:WhichKeyDesc_view_zen_mode =                      "<leader>vz ZenMode"
+
+map <leader>vd                                          :action ToggleDistractionFreeMode<CR>
+let g:WhichKeyDesc_view_distraction_free =              "<leader>vd Distraction Free"
+
+map <leader>vm                                          :action TabShiftActions.ToggleMaximizeRestore<CR>
+let g:WhichKeyDesc_view_maximize =                      "<leader>vm Maximize/Restore Split"
+
+" Find
+let g:WhichKeyDesc_find =                               "<leader>f Find"
+
+nmap <leader>f                                         :action GotoFile<CR>
+let g:WhichKeyDesc_find_file =                          "<leader>f File"
+
+nmap dh                                                 :action ShowHoverInfo<CR>
+
+nmap <leader>sc                                         :action GotoAction<CR>
+let g:WhichKeyDesc_find_command =                       "<leader>sc Command"
+
+nmap <leader>ss                                         :action GotoSymbol<CR>
+let g:WhichKeyDesc_find_symbol =                        "<leader>ss Symbol"
+
+nmap <leader>sp                                         :action ManageRecentProjects<CR>
+let g:WhichKeyDesc_find_project =                       "<leader>sp Project"
+
+nmap <leader>st                                         :action FindInPath<CR>
+let g:WhichKeyDesc_find_text =                          "<leader>st Text"
+
+" Quit
+let g:WhichKeyDesc_quit =                               "<leader>q Quit"
+
+map <leader>qg                                          :action CloseEditorsGroup<CR>
+let g:WhichKeyDesc_quit_group =                         "<leader>qg Group"
+
+map <leader>qu                                          :action CloseAllUnmodifiedEditors<CR>
+let g:WhichKeyDesc_quit_unmodified =                    "<leader>qu Unmodified Files"
+
+map <leader>qo                                          :action CloseAllEditorsButActive<CR>
+let g:WhichKeyDesc_quit_others =                        "<leader>qo Other Files"
+
+" VCS
+let g:WhichKeyDesc_git =                                "<leader>g Git"
+
+map <leader>gl                                          :action Annotate<CR>
+let g:WhichKeyDesc_git_blame =                          "<leader>gl Blame"
+
+map <leader>gs                                          :action Vcs.Show.Local.Changes<CR>
+let g:WhichKeyDesc_git_status =                         "<leader>gs Status"
+
+map <leader>gb                                          :action Git.Branches<CR>
+let g:WhichKeyDesc_git_branches =                       "<leader>gb Branches"
+
+map <leader>gc                                          :action CheckinProject<CR>
+let g:WhichKeyDesc_git_commit =                         "<leader>gc Commit"
+
+map <leader>ga                                          :action Vcs.QuickListPopupAction<CR>
+let g:WhichKeyDesc_git_actions =                        "<leader>ga Actions"
+
+let g:WhichKeyDesc_git_hunk =                           "<leader>gh Hunk"
+map <leader>ghk                                         :action VcsShowPrevChangeMarker<CR>
+let g:WhichKeyDesc_git_hunk_prev =                      "<leader>ghk Prev"
+
+map <leader>ghj                                         :action VcsShowNextChangeMarker<CR>
+let g:WhichKeyDesc_git_hunk_next =                      "<leader>ghj Next"
+
+map <leader>ghr                                         :action Vcs.RollbackChangedLines<CR>
+let g:WhichKeyDesc_git_hunk_reset =                     "<leader>ghr Reset Hunk"
+
+" LSP
+let g:WhichKeyDesc_lsp =                                "<leader>a Actions"
+
+nmap <leader>ac                                         :action Refactorings.QuickListPopupAction<CR>
+let g:WhichKeyDesc_lsp_action =                         "<leader>ac Action"
+
+nmap <leader>aC                                         :action ShowIntentionActions<CR>
+let g:WhichKeyDesc_lsp_context =                         "<leader>aC Context"

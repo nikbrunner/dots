@@ -1,0 +1,163 @@
+#!/bin/bash
+# New dots command for symlink-based dotfiles management
+
+set -e
+
+# Get the dots directory
+DOTS_DIR="${DOTS_DIR:-$HOME/repos/nikbrunner/dots}"
+
+# Colors for output
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[0;33m'
+BLUE='\033[0;34m'
+NC='\033[0m' # No Color
+
+# Change to dots directory for git operations
+cd "$DOTS_DIR"
+
+# Function to show usage
+show_usage() {
+    echo -e "${BLUE}dots - Dotfiles management command${NC}"
+    echo ""
+    echo "Usage: dots <command> [options]"
+    echo ""
+    echo "Commands:"
+    echo "  install      - Initial setup with symlinks and submodules"
+    echo "  link         - Re-run symlink creation"
+    echo "  sync         - Git pull + submodule updates"
+    echo "  push         - Git add, commit, push"
+    echo "  clean        - Remove broken symlinks"
+    echo "  sub-update   - Update all submodules"
+    echo "  sub-add      - Add new submodule"
+    echo "  status       - Show git status"
+    echo "  log          - Show git log"
+}
+
+# Install command
+cmd_install() {
+    echo -e "${YELLOW}→${NC} Running installation..."
+    "$DOTS_DIR/install.sh" "$@"
+}
+
+# Link command
+cmd_link() {
+    echo -e "${YELLOW}→${NC} Creating symlinks..."
+    "$DOTS_DIR/scripts/link.sh" "$@"
+}
+
+# Sync command
+cmd_sync() {
+    echo -e "${YELLOW}→${NC} Syncing repository..."
+    git pull origin main || git pull origin master
+    
+    if [[ -f .gitmodules ]]; then
+        echo -e "${YELLOW}→${NC} Updating submodules..."
+        "$DOTS_DIR/scripts/submodules.sh" update
+    fi
+    
+    echo -e "${GREEN}✓${NC} Sync complete"
+}
+
+# Push command
+cmd_push() {
+    local message="${1:-Updates}"
+    
+    echo -e "${YELLOW}→${NC} Pushing changes..."
+    
+    # Check if there are changes
+    if [[ -z $(git status --porcelain) ]]; then
+        echo -e "${GREEN}✓${NC} No changes to commit"
+        return 0
+    fi
+    
+    git add -A
+    git commit -m "$message"
+    git push origin main || git push origin master
+    
+    echo -e "${GREEN}✓${NC} Changes pushed"
+}
+
+# Clean command
+cmd_clean() {
+    echo -e "${YELLOW}→${NC} Cleaning broken symlinks..."
+    
+    local count=0
+    while IFS= read -r -d '' link; do
+        if [[ ! -e "$link" ]]; then
+            echo -e "${RED}✗${NC} Removing broken symlink: $link"
+            rm "$link"
+            ((count++))
+        fi
+    done < <(find "$HOME" -type l -print0 2>/dev/null)
+    
+    if [[ $count -eq 0 ]]; then
+        echo -e "${GREEN}✓${NC} No broken symlinks found"
+    else
+        echo -e "${GREEN}✓${NC} Removed $count broken symlinks"
+    fi
+}
+
+# Submodule update command
+cmd_sub_update() {
+    "$DOTS_DIR/scripts/submodules.sh" update
+}
+
+# Submodule add command
+cmd_sub_add() {
+    if [[ $# -lt 2 ]]; then
+        echo -e "${RED}✗${NC} Usage: dots sub-add <repo_url> <path>"
+        return 1
+    fi
+    "$DOTS_DIR/scripts/submodules.sh" add "$@"
+}
+
+# Status command
+cmd_status() {
+    echo -e "${YELLOW}→${NC} Repository status:"
+    git status
+}
+
+# Log command
+cmd_log() {
+    echo -e "${YELLOW}→${NC} Recent commits:"
+    git log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate -10
+}
+
+# Main command dispatcher
+case "${1:-}" in
+    install)
+        shift
+        cmd_install "$@"
+        ;;
+    link)
+        shift
+        cmd_link "$@"
+        ;;
+    sync)
+        cmd_sync
+        ;;
+    push)
+        shift
+        cmd_push "$@"
+        ;;
+    clean)
+        cmd_clean
+        ;;
+    sub-update)
+        cmd_sub_update
+        ;;
+    sub-add)
+        shift
+        cmd_sub_add "$@"
+        ;;
+    status)
+        cmd_status
+        ;;
+    log)
+        cmd_log
+        ;;
+    *)
+        show_usage
+        ;;
+esac

@@ -1,0 +1,75 @@
+#!/bin/bash
+# vim: set filetype=sh:
+
+# Check if OPENAI_API_KEY is set
+if [ -z "$OPENAI_API_KEY" ]; then
+    echo "OPENAI_API_KEY is not set. Please set it to your OpenAI API key."
+    exit 1
+fi
+
+# Check if files are provided
+if [ $# -eq 0 ]; then
+    echo "No files provided for diff."
+    exit 1
+fi
+
+# Initialize an empty string for the diff
+git_diff=""
+
+# Loop over each file and append its diff to the git_diff variable
+for file in "$@"; do
+    git_diff+=$(git diff -- "$file")
+    git_diff+="\n" # Add a newline between diffs of different files
+done
+
+# Check if there's any diff
+if [ -z "$git_diff" ]; then
+    echo "No changes detected in the selected files."
+    exit 1
+fi
+
+# Format the input for GPT-4
+formatted_input=$(
+    cat <<EOF
+Convert this git diff into a concise, lowercase commit message following the conventional commit paradigm.
+- The summary should be max 72 characters long. If the commit requires a longer description, add an escaped newline, another new empty line, and the description.
+- Try to find a scope under which the changes can be summarized, and add them after the conventional commit type. For changes scoped to a single file, use the file name (without extension) as the scope. Example: feat(keymaps): <summary>.
+- If changes are not scoped to a single file or no sensible scope can be found, skip the scope and just use the commit type. Example: feat: <summary>.
+- If an issue number is found in the branch name, prefix the message with the capitalized issue number. Example: BCD-2565 feat(<optional scope>): <summary>.
+
+Git Diff:
+$git_diff
+EOF
+)
+
+# Prepare the JSON payload
+json_payload=$(jq -n \
+    --arg model "gpt-4o" \
+    --arg input "$formatted_input" \
+    '{
+        model: $model,
+        messages: [
+            { role: "system", content: "You are a helpful assistant who can summarize git diffs into commit messages." },
+            { role: "user", content: $input }
+        ]
+    }')
+
+# Use curl to send the request to OpenAI's API
+response=$(curl -s -X POST "https://api.openai.com/v1/chat/completions" \
+    -H "Authorization: Bearer $OPENAI_API_KEY" \
+    -H "Content-Type: application/json" \
+    -d "$json_payload")
+
+# Extract the commit message from the response
+commit_message=$(echo "$response" | jq -r '.choices[0].message.content' | xargs)
+
+# Check the commit message
+if [ -z "$commit_message" ] || [ "$commit_message" = "null" ]; then
+    echo "GPT-4 did not return a valid output."
+    exit 1
+fi
+
+# Copy the commit message to clipboard via pbcopy
+echo "$commit_message" | pbcopy
+
+echo "$commit_message"
