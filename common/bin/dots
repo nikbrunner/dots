@@ -16,25 +16,99 @@ NC='\033[0m' # No Color
 # Change to dots directory for git operations
 cd "$DOTS_DIR"
 
+# Check for gum and provide helpful message if missing
+check_gum() {
+    if ! command -v gum >/dev/null 2>&1; then
+        echo -e "${YELLOW}⚠${NC} gum not found - install for enhanced UI:"
+        echo "  macOS: brew install gum"
+        echo "  Linux: See https://github.com/charmbracelet/gum#installation"
+        echo ""
+        return 1
+    fi
+    return 0
+}
+
+# Enhanced output functions using gum when available
+log_section() {
+    if command -v gum >/dev/null 2>&1; then
+        gum style --foreground="#88C0D0" --bold "$1"
+    else
+        echo -e "${BLUE}$1${NC}"
+    fi
+}
+
+log_success() {
+    if command -v gum >/dev/null 2>&1; then
+        gum style --foreground="#A3BE8C" "✓ $1"
+    else
+        echo -e "${GREEN}✓${NC} $1"
+    fi
+}
+
+log_warning() {
+    if command -v gum >/dev/null 2>&1; then
+        gum style --foreground="#EBCB8B" "⚠ $1"
+    else
+        echo -e "${YELLOW}⚠${NC} $1"
+    fi
+}
+
+log_error() {
+    if command -v gum >/dev/null 2>&1; then
+        gum style --foreground="#BF616A" "✗ $1"
+    else
+        echo -e "${RED}✗${NC} $1"
+    fi
+}
+
+log_info() {
+    if command -v gum >/dev/null 2>&1; then
+        gum style --foreground="#81A1C1" "→ $1"
+    else
+        echo -e "${YELLOW}→${NC} $1"
+    fi
+}
+
 # Function to show usage
 show_usage() {
-    echo -e "${BLUE}dots - Dotfiles management command${NC}"
-    echo ""
-    echo "Usage: dots <command> [options]"
-    echo ""
-    echo "Commands:"
-    echo "  install      - Initial setup with symlinks and submodules [--dry-run]"
-    echo "  link         - Re-run symlink creation [--dry-run]"
-    echo "  sync         - Git pull + submodule updates"
-    echo "  push         - Git add, commit, push"
-    echo "  clean        - Remove broken symlinks [--dry-run]"
-    echo "  sub-update   - Update all submodules"
-    echo "  sub-add      - Add new submodule"
-    echo "  status       - Show git and symlink status"
-    echo "  test         - Run comprehensive system tests"
-    echo "  format       - Format files (markdown, shell scripts, etc.)"
-    echo "  log          - Show git log"
-    echo ""
+    if command -v gum >/dev/null 2>&1; then
+        gum style --border="rounded" --padding="1 2" --margin="1" \
+            --foreground="#88C0D0" --bold "dots - Dotfiles management command"
+        echo ""
+        gum style --foreground="#a1afca" "Usage: dots <command> [options]"
+        echo ""
+        gum style --foreground="#88C0D0" --bold "Commands:"
+        gum style --foreground="#A3BE8C" "  install      - Initial setup with symlinks and submodules [--dry-run]"
+        gum style --foreground="#A3BE8C" "  link         - Re-run symlink creation [--dry-run]"
+        gum style --foreground="#A3BE8C" "  sync         - Git pull + submodule updates"
+        gum style --foreground="#A3BE8C" "  push         - Git add, commit, push"
+        gum style --foreground="#A3BE8C" "  clean        - Remove broken symlinks [--dry-run]"
+        gum style --foreground="#A3BE8C" "  sub-update   - Update all submodules"
+        gum style --foreground="#A3BE8C" "  sub-add      - Add new submodule"
+        gum style --foreground="#A3BE8C" "  status       - Show git and symlink status"
+        gum style --foreground="#A3BE8C" "  test         - Run comprehensive system tests"
+        gum style --foreground="#A3BE8C" "  format       - Format files (markdown, shell scripts, etc.)"
+        gum style --foreground="#A3BE8C" "  log          - Show git log"
+        echo ""
+    else
+        echo -e "${BLUE}dots - Dotfiles management command${NC}"
+        echo ""
+        echo "Usage: dots <command> [options]"
+        echo ""
+        echo "Commands:"
+        echo "  install      - Initial setup with symlinks and submodules [--dry-run]"
+        echo "  link         - Re-run symlink creation [--dry-run]"
+        echo "  sync         - Git pull + submodule updates"
+        echo "  push         - Git add, commit, push"
+        echo "  clean        - Remove broken symlinks [--dry-run]"
+        echo "  sub-update   - Update all submodules"
+        echo "  sub-add      - Add new submodule"
+        echo "  status       - Show git and symlink status"
+        echo "  test         - Run comprehensive system tests"
+        echo "  format       - Format files (markdown, shell scripts, etc.)"
+        echo "  log          - Show git log"
+        echo ""
+    fi
 }
 
 # Install command
@@ -53,32 +127,48 @@ cmd_link() {
 cmd_sync() {
     echo -e "${YELLOW}→${NC} Syncing repository..."
     git pull origin main || git pull origin master
-    
+
     if [[ -f .gitmodules ]]; then
         echo -e "${YELLOW}→${NC} Updating submodules..."
         "$DOTS_DIR/scripts/submodules.sh" update
     fi
-    
+
     echo -e "${GREEN}✓${NC} Sync complete"
 }
 
 # Push command
 cmd_push() {
-    local message="${1:-Updates}"
-    
-    echo -e "${YELLOW}→${NC} Pushing changes..."
-    
+    local message="${1:-}"
+
+    log_info "Pushing changes..."
+
     # Check if there are changes
     if [[ -z $(git status --porcelain) ]]; then
-        echo -e "${GREEN}✓${NC} No changes to commit"
+        log_success "No changes to commit"
         return 0
     fi
-    
-    git add -A
-    git commit -m "$message"
-    git push origin main || git push origin master
-    
-    echo -e "${GREEN}✓${NC} Changes pushed"
+
+    # If no message provided, prompt for one with gum
+    if [[ -z "$message" ]] && command -v gum >/dev/null 2>&1; then
+        message=$(gum write --placeholder="Enter commit message..." --char-limit=72)
+        if [[ -z "$message" ]]; then
+            log_warning "No commit message provided, using default"
+            message="Updates"
+        fi
+    elif [[ -z "$message" ]]; then
+        message="Updates"
+    fi
+
+    if command -v gum >/dev/null 2>&1; then
+        gum spin --spinner="dot" --title="Committing and pushing changes..." -- \
+            bash -c "git add -A && git commit -m '$message' && (git push origin main || git push origin master)"
+    else
+        git add -A
+        git commit -m "$message"
+        git push origin main || git push origin master
+    fi
+
+    log_success "Changes pushed"
 }
 
 # Clean command
@@ -86,42 +176,46 @@ cmd_clean() {
     local dry_run=false
     if [[ "$1" == "--dry-run" ]]; then
         dry_run=true
-        echo -e "${YELLOW}DRY RUN MODE - No changes will be made${NC}"
+        if command -v gum >/dev/null 2>&1; then
+            gum style --foreground="#EBCB8B" --bold "DRY RUN MODE - No changes will be made"
+        else
+            echo -e "${YELLOW}DRY RUN MODE - No changes will be made${NC}"
+        fi
         echo ""
     fi
-    
-    echo -e "${YELLOW}→${NC} Cleaning broken dotfiles symlinks..."
-    
+
+    log_info "Cleaning broken dotfiles symlinks..."
+
     # Get current OS and mapping file
     source "$DOTS_DIR/scripts/detect-os.sh"
     local current_os=$(get_os)
     local mapping_file="$DOTS_DIR/.mappings/$current_os.json"
-    
+
     # Generate mappings if they don't exist
     if [[ ! -f "$mapping_file" ]]; then
         echo -e "${YELLOW}→${NC} Generating mappings..."
-        "$DOTS_DIR/scripts/generate-mappings.sh" > /dev/null
+        "$DOTS_DIR/scripts/generate-mappings.sh" >/dev/null
     fi
-    
+
     if [[ ! -f "$mapping_file" ]]; then
         echo -e "${RED}✗${NC} Could not find or generate mapping file: $mapping_file"
         return 1
     fi
-    
+
     local count=0
-    
+
     # Check each symlink from our mappings
     while IFS=':' read -r source_part target_part; do
         # Skip lines that don't contain mappings
         [[ ! "$source_part" =~ \".*\" ]] && continue
         [[ ! "$target_part" =~ \".*\" ]] && continue
-        
+
         # Clean up the target path
         local target=$(echo "$target_part" | sed 's/^[[:space:]]*"//' | sed 's/"[[:space:]]*,*[[:space:]]*$//')
-        
+
         # Skip empty targets
         [[ -z "$target" ]] && continue
-        
+
         # Check if this symlink is broken
         if [[ -L "$target" ]] && [[ ! -e "$target" ]]; then
             if [[ "$dry_run" == true ]]; then
@@ -132,9 +226,9 @@ cmd_clean() {
             fi
             ((count++))
         fi
-        
-    done < "$mapping_file"
-    
+
+    done <"$mapping_file"
+
     if [[ $count -eq 0 ]]; then
         echo -e "${GREEN}✓${NC} No broken dotfiles symlinks found"
     else
@@ -162,51 +256,59 @@ cmd_sub_add() {
 
 # Status command - enhanced with symlink status using JSON mappings
 cmd_status() {
-    echo -e "${BLUE}=== Git Repository Status ===${NC}"
-    git status --short
-    
+    log_section "=== Git Repository Status ==="
+    if command -v gum >/dev/null 2>&1; then
+        gum style --border="rounded" --padding="1" --margin="0 1" "$(git status --short)"
+    else
+        git status --short
+    fi
+
     echo ""
-    echo -e "${BLUE}=== Symlink Status ===${NC}"
-    
+    log_section "=== Symlink Status ==="
+
     # Get current OS and mapping file
     source "$DOTS_DIR/scripts/detect-os.sh"
     local current_os=$(get_os)
     local mapping_file="$DOTS_DIR/.mappings/$current_os.json"
-    
+
     # Generate mappings if they don't exist
     if [[ ! -f "$mapping_file" ]]; then
-        echo -e "${YELLOW}→${NC} Generating mappings..."
-        "$DOTS_DIR/scripts/generate-mappings.sh" > /dev/null
+        log_info "Generating mappings..."
+        "$DOTS_DIR/scripts/generate-mappings.sh" >/dev/null
     fi
-    
+
     if [[ ! -f "$mapping_file" ]]; then
-        echo -e "${RED}✗${NC} Could not find or generate mapping file: $mapping_file"
+        log_error "Could not find or generate mapping file: $mapping_file"
         return 1
     fi
-    
+
     local total_links=0
     local valid_links=0
     local broken_links=0
     local missing_links=0
     local wrong_target_links=0
-    
-    echo "Checking symlinks from mappings..."
-    
+
+    if command -v gum >/dev/null 2>&1; then
+        gum spin --spinner="dot" --title="Checking symlinks from mappings..." -- sleep 0.5
+    else
+        echo "Checking symlinks from mappings..."
+    fi
+
     # Check each symlink from our mappings
     while IFS=':' read -r source_part target_part; do
         # Skip lines that don't contain mappings
         [[ ! "$source_part" =~ \".*\" ]] && continue
         [[ ! "$target_part" =~ \".*\" ]] && continue
-        
+
         # Clean up the paths
         local source=$(echo "$source_part" | sed 's/^[[:space:]]*"//' | sed 's/"[[:space:]]*$//')
         local target=$(echo "$target_part" | sed 's/^[[:space:]]*"//' | sed 's/"[[:space:]]*,*[[:space:]]*$//')
-        
+
         # Skip empty paths
         [[ -z "$source" || -z "$target" ]] && continue
-        
+
         ((total_links++))
-        
+
         if [[ -L "$target" ]]; then
             # It's a symlink, check if it's valid
             local actual_target=$(readlink "$target")
@@ -214,52 +316,75 @@ cmd_status() {
                 ((valid_links++))
             else
                 ((wrong_target_links++))
-                echo -e "${YELLOW}⚠${NC}  Wrong target: $target → $actual_target"
-                echo -e "    Expected: $source"
+                log_warning "Wrong target: $target → $actual_target"
+                echo "    Expected: $source"
             fi
-            
+
             # Check if target exists
             if [[ ! -e "$target" ]]; then
                 ((broken_links++))
-                echo -e "${RED}✗${NC} Broken link: $target"
+                log_error "Broken link: $target"
             fi
         elif [[ -e "$target" ]]; then
             # File/directory exists but is not a symlink
-            echo -e "${RED}✗${NC} Not a symlink: $target"
-            echo -e "    Run 'dots link --force' to fix"
+            log_error "Not a symlink: $target"
+            echo "    Run 'dots link' to fix"
         else
             # Neither symlink nor file exists
             ((missing_links++))
-            echo -e "${YELLOW}→${NC} Missing link: $target"
+            log_warning "Missing link: $target"
         fi
-        
-    done < "$mapping_file"
-    
+
+    done <"$mapping_file"
+
     # Summary
     echo ""
-    echo -e "${BLUE}Summary:${NC}"
-    echo -e "  Total expected links: $total_links"
-    echo -e "  ${GREEN}✓${NC} Valid links: $valid_links"
-    if [[ $wrong_target_links -gt 0 ]]; then
-        echo -e "  ${YELLOW}⚠${NC} Wrong targets: $wrong_target_links"
+    log_section "Summary:"
+
+    if command -v gum >/dev/null 2>&1; then
+        local summary_text="Total expected links: $total_links
+✓ Valid links: $valid_links"
+
+        if [[ $wrong_target_links -gt 0 ]]; then
+            summary_text="$summary_text
+⚠ Wrong targets: $wrong_target_links"
+        fi
+
+        if [[ $broken_links -gt 0 ]]; then
+            summary_text="$summary_text
+✗ Broken links: $broken_links"
+        fi
+
+        if [[ $missing_links -gt 0 ]]; then
+            summary_text="$summary_text
+→ Missing links: $missing_links"
+        fi
+
+        gum style --border="rounded" --padding="1" --margin="0 1" --foreground="#D8DEE9" "$summary_text"
+    else
+        echo "  Total expected links: $total_links"
+        echo -e "  ${GREEN}✓${NC} Valid links: $valid_links"
+        if [[ $wrong_target_links -gt 0 ]]; then
+            echo -e "  ${YELLOW}⚠${NC} Wrong targets: $wrong_target_links"
+        fi
+        if [[ $broken_links -gt 0 ]]; then
+            echo -e "  ${RED}✗${NC} Broken links: $broken_links"
+        fi
+        if [[ $missing_links -gt 0 ]]; then
+            echo -e "  ${YELLOW}→${NC} Missing links: $missing_links"
+        fi
     fi
-    if [[ $broken_links -gt 0 ]]; then
-        echo -e "  ${RED}✗${NC} Broken links: $broken_links"
-    fi
-    if [[ $missing_links -gt 0 ]]; then
-        echo -e "  ${YELLOW}→${NC} Missing links: $missing_links"
-    fi
-    
+
 }
 
 # Test command - comprehensive system checks
 cmd_test() {
     echo -e "${BLUE}=== Dotfiles System Test ===${NC}"
     echo ""
-    
+
     local tests_passed=0
     local tests_failed=0
-    
+
     # Test 1: Check if we're in the right directory
     echo -e "${YELLOW}→${NC} Testing repository structure..."
     if [[ -f "CLAUDE.md" && -d "scripts" && -d ".mappings" ]]; then
@@ -269,7 +394,7 @@ cmd_test() {
         echo -e "${RED}✗${NC} Repository structure missing"
         ((tests_failed++))
     fi
-    
+
     # Test 2: Check OS detection
     echo -e "${YELLOW}→${NC} Testing OS detection..."
     source "$DOTS_DIR/scripts/detect-os.sh"
@@ -281,21 +406,21 @@ cmd_test() {
         echo -e "${RED}✗${NC} OS detection failed: $detected_os"
         ((tests_failed++))
     fi
-    
+
     # Test 3: Check mapping generation
     echo -e "${YELLOW}→${NC} Testing mapping generation..."
-    if "$DOTS_DIR/scripts/generate-mappings.sh" > /dev/null 2>&1; then
+    if "$DOTS_DIR/scripts/generate-mappings.sh" >/dev/null 2>&1; then
         echo -e "${GREEN}✓${NC} Mapping generation OK"
         ((tests_passed++))
     else
         echo -e "${RED}✗${NC} Mapping generation failed"
         ((tests_failed++))
     fi
-    
+
     # Test 4: Check mapping files exist and are valid JSON
     echo -e "${YELLOW}→${NC} Testing mapping files..."
     local mapping_file="$DOTS_DIR/.mappings/$detected_os.json"
-    if [[ -f "$mapping_file" ]] && python3 -m json.tool "$mapping_file" > /dev/null 2>&1; then
+    if [[ -f "$mapping_file" ]] && python3 -m json.tool "$mapping_file" >/dev/null 2>&1; then
         local mapping_count=$(grep -o '":' "$mapping_file" | wc -l | tr -d ' ')
         echo -e "${GREEN}✓${NC} Mapping file OK: $mapping_count entries"
         ((tests_passed++))
@@ -303,28 +428,28 @@ cmd_test() {
         echo -e "${RED}✗${NC} Mapping file invalid or missing"
         ((tests_failed++))
     fi
-    
+
     # Test 5: Check symlink creation (dry run)
     echo -e "${YELLOW}→${NC} Testing symlink creation (dry run)..."
-    if "$DOTS_DIR/scripts/link.sh" --dry-run > /dev/null 2>&1; then
+    if "$DOTS_DIR/scripts/link.sh" --dry-run >/dev/null 2>&1; then
         echo -e "${GREEN}✓${NC} Symlink creation test OK"
         ((tests_passed++))
     else
         echo -e "${RED}✗${NC} Symlink creation test failed"
         ((tests_failed++))
     fi
-    
+
     # Test 6: Check critical symlinks exist and are correct
     echo -e "${YELLOW}→${NC} Testing critical symlinks..."
     local critical_links=("$HOME/.zshrc" "$HOME/.gitconfig" "$HOME/bin/dots")
     local valid_symlinks=0
-    
+
     for link in "${critical_links[@]}"; do
         if [[ -L "$link" && -e "$link" ]]; then
             ((valid_symlinks++))
         fi
     done
-    
+
     if [[ $valid_symlinks -eq ${#critical_links[@]} ]]; then
         echo -e "${GREEN}✓${NC} Critical symlinks OK ($valid_symlinks/${#critical_links[@]})"
         ((tests_passed++))
@@ -333,24 +458,24 @@ cmd_test() {
         # Don't fail the test - symlinks might not be set up yet
         ((tests_passed++))
     fi
-    
+
     # Test 7: Check git repository status
     echo -e "${YELLOW}→${NC} Testing git repository..."
-    if git rev-parse --git-dir > /dev/null 2>&1; then
+    if git rev-parse --git-dir >/dev/null 2>&1; then
         echo -e "${GREEN}✓${NC} Git repository OK"
         ((tests_passed++))
     else
         echo -e "${RED}✗${NC} Git repository not found"
         ((tests_failed++))
     fi
-    
+
     # Summary
     echo ""
     echo -e "${BLUE}=== Test Summary ===${NC}"
     local total_tests=$((tests_passed + tests_failed))
     echo -e "  Total tests: $total_tests"
     echo -e "  ${GREEN}✓${NC} Passed: $tests_passed"
-    
+
     if [[ $tests_failed -gt 0 ]]; then
         echo -e "  ${RED}✗${NC} Failed: $tests_failed"
         echo ""
@@ -367,15 +492,15 @@ cmd_test() {
 cmd_format() {
     echo -e "${BLUE}=== Formatting Files ===${NC}"
     echo ""
-    
+
     local formatted_files=0
     local skipped_files=0
     local error_files=0
-    
+
     # Check if we have prettier for markdown and JSON files
     if command -v npx >/dev/null 2>&1; then
         echo -e "${YELLOW}→${NC} Formatting markdown and JSON files..."
-        
+
         # Use prettier with glob patterns for efficiency
         if npx prettier --write "**/*.{md,json}" --ignore-path /dev/null --ignore-unknown 2>/dev/null; then
             # Count the files that would be formatted
@@ -392,19 +517,19 @@ cmd_format() {
         echo -e "${YELLOW}⚠${NC} npx not available, skipping markdown/JSON formatting"
         ((skipped_files++))
     fi
-    
+
     # Check if we have shfmt for shell scripts
     if command -v shfmt >/dev/null 2>&1; then
         echo -e "${YELLOW}→${NC} Formatting shell scripts..."
-        
+
         # Collect all shell files for batch processing
         local shell_files=()
-        
+
         # Add .sh files
         while IFS= read -r -d '' file; do
             shell_files+=("$file")
         done < <(find . -name "*.sh" -not -path "./.git/*" -print0 2>/dev/null)
-        
+
         # Add executable scripts with shell shebangs
         while IFS= read -r -d '' file; do
             if [[ -x "$file" && -f "$file" ]]; then
@@ -414,7 +539,7 @@ cmd_format() {
                 fi
             fi
         done < <(find . -type f -not -path "./.git/*" -not -name "*.sh" -print0 2>/dev/null)
-        
+
         # Format all shell files in one command if any found
         if [[ ${#shell_files[@]} -gt 0 ]]; then
             if shfmt -w -i 4 -ci "${shell_files[@]}" >/dev/null 2>&1; then
@@ -432,7 +557,7 @@ cmd_format() {
         echo -e "    Install with: brew install shfmt"
         ((skipped_files++))
     fi
-    
+
     # Summary
     echo ""
     echo -e "${BLUE}=== Format Summary ===${NC}"
@@ -443,7 +568,7 @@ cmd_format() {
     if [[ $skipped_files -gt 0 ]]; then
         echo -e "  ${YELLOW}⚠${NC} Skipped: $skipped_files file types (tools not available)"
     fi
-    
+
     if [[ $error_files -gt 0 ]]; then
         echo ""
         echo -e "${RED}❌ Some files failed to format${NC}"
@@ -463,45 +588,46 @@ cmd_log() {
 
 # Main command dispatcher
 case "${1:-}" in
-    install)
-        shift
-        cmd_install "$@"
-        ;;
-    link)
-        shift
-        cmd_link "$@"
-        ;;
-    sync)
-        cmd_sync
-        ;;
-    push)
-        shift
-        cmd_push "$@"
-        ;;
-    clean)
-        shift
-        cmd_clean "$@"
-        ;;
-    sub-update)
-        cmd_sub_update
-        ;;
-    sub-add)
-        shift
-        cmd_sub_add "$@"
-        ;;
-    status)
-        cmd_status
-        ;;
-    test)
-        cmd_test
-        ;;
-    format)
-        cmd_format
-        ;;
-    log)
-        cmd_log
-        ;;
-    *)
-        show_usage
-        ;;
+install)
+    shift
+    cmd_install "$@"
+    ;;
+link)
+    shift
+    cmd_link "$@"
+    ;;
+sync)
+    cmd_sync
+    ;;
+push)
+    shift
+    cmd_push "$@"
+    ;;
+clean)
+    shift
+    cmd_clean "$@"
+    ;;
+sub-update)
+    cmd_sub_update
+    ;;
+sub-add)
+    shift
+    cmd_sub_add "$@"
+    ;;
+status)
+    cmd_status
+    ;;
+test)
+    cmd_test
+    ;;
+format)
+    cmd_format
+    ;;
+log)
+    cmd_log
+    ;;
+*)
+    show_usage
+    ;;
 esac
+
