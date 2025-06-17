@@ -2,6 +2,12 @@
 
 A clean, organized dotfiles repository using symlinks for easy management and deployment.
 
+## Roadmap
+
+- [ ] Modularize `dots` command
+- [ ] Remove old commands
+- [ ] Add submodules for `nvim`, `wezterm`
+
 ## 📁 Structure
 
 ```
