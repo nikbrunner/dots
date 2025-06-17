@@ -1,0 +1,106 @@
+{
+  "agent": {
+    "default_profile": "write",
+    "version": "2",
+    "default_model": {
+      "provider": "anthropic",
+      "model": "claude-sonnet-4-latest"
+    },
+    "always_allow_tool_actions": true
+  },
+  "hide_mouse": "on_typing_and_movement",
+  "icon_theme": "Catppuccin Macchiato",
+  "edit_predictions": {
+    "mode": "eager",
+    "enabled_in_text_threads": false
+  },
+  "ssh_connections": [
+    {
+      "host": "BC_OFFICE_LAN",
+      "projects": []
+    }
+  ],
+  "cursor_blink": false,
+  "features": {
+    "edit_prediction_provider": "supermaven"
+  },
+  "theme": {
+    "mode": "system",
+    "dark": "Black Atom — NORTH ∷ Dark Night",
+    "light": "Black Atom — NORTH ∷ Night"
+  },
+  "base_keymap": "VSCode",
+  "vim_mode": true,
+  "ui_font_family": "Helvetica Neue",
+  "ui_font_size": 18,
+  "buffer_line_height": "comfortable",
+  "buffer_font_size": 14,
+  "buffer_font_family": "TX-02",
+  "buffer_font_weight": 400,
+  "show_completions_on_input": true,
+  "git": {
+    "git_gutter": "tracked_files"
+  },
+  "tab_bar": {
+    "show": true,
+    "show_nav_history_buttons": false
+  },
+  "indent_guides": {
+    "enabled": false
+  },
+  "git_panel": {
+    "status_style": "icon",
+    "sort_by_path": true
+  },
+  "project_panel": {
+    "git_status": true,
+    "indent_guides": {
+      "show": "never"
+    }
+  },
+  "diagnostics": {
+    "include_warnings": true,
+    "inline": {
+      "enabled": true
+    }
+  },
+  "semantic_index": {
+    "enabled": true
+  },
+  "format_on_save": "on",
+  "terminal": {
+    "line_height": "standard",
+    "font_family": "TX-02",
+    "working_directory": "current_project_directory"
+  },
+  "lsp": {
+    "deno": {
+      "settings": {
+        "deno": {
+          "enable": false
+        }
+      }
+    },
+    "vtsls": {
+      "settings": {
+        "typescript": {
+          "preferences": {
+            "importModuleSpecifier": "relative"
+          }
+        }
+      }
+    },
+    "eslint": {
+      "settings": {
+        "eslint": {
+          "enable": true
+        }
+      }
+    }
+  },
+  "languages": {
+    "Markdown": {
+      "language_servers": ["marksman"]
+    }
+  }
+}

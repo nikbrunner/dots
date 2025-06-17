@@ -1,0 +1,191 @@
+{
+  "id": "68f55892-9b89-4d3a-97f0-1f31061420b5",
+  "zed": "context",
+  "version": "0.4.0",
+  "text": "\n\n\nnbr.haus/src\n\nassets\n```svg nbr.haus/src/assets/astro.svg\n<svg xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" width=\"115\" height=\"48\"><path fill=\"#17191E\" d=\"M7.77 36.35C6.4 35.11 6 32.51 6.57 30.62c.99 1.2 2.35 1.57 3.75 1.78 2.18.33 4.31.2 6.33-.78.23-.12.44-.27.7-.42.18.55.23 1.1.17 1.67a4.56 4.56 0 0 1-1.94 3.23c-.43.32-.9.61-1.34.91-1.38.94-1.76 2.03-1.24 3.62l.05.17a3.63 3.63 0 0 1-1.6-1.38 3.87 3.87 0 0 1-.63-2.1c0-.37 0-.74-.05-1.1-.13-.9-.55-1.3-1.33-1.32a1.56 1.56 0 0 0-1.63 1.26c0 .06-.03.12-.05.2Z\"/><path fill=\"url(#a)\" d=\"M7.77 36.35C6.4 35.11 6 32.51 6.57 30.62c.99 1.2 2.35 1.57 3.75 1.78 2.18.33 4.31.2 6.33-.78.23-.12.44-.27.7-.42.18.55.23 1.1.17 1.67a4.56 4.56 0 0 1-1.94 3.23c-.43.32-.9.61-1.34.91-1.38.94-1.76 2.03-1.24 3.62l.05.17a3.63 3.63 0 0 1-1.6-1.38 3.87 3.87 0 0 1-.63-2.1c0-.37 0-.74-.05-1.1-.13-.9-.55-1.3-1.33-1.32a1.56 1.56 0 0 0-1.63 1.26c0 .06-.03.12-.05.2Z\"/><path fill=\"#17191E\" d=\"M.02 30.31s4.02-1.95 8.05-1.95l3.04-9.4c.11-.45.44-.76.82-.76.37 0 .7.31.82.76l3.04 9.4c4.77 0 8.05 1.95 8.05 1.95L17 11.71c-.2-.56-.53-.91-.98-.91H7.83c-.44 0-.76.35-.97.9L.02 30.31Zm42.37-5.97c0 1.64-2.05 2.62-4.88 2.62-1.85 0-2.5-.45-2.5-1.41 0-1 .8-1.49 2.65-1.49 1.67 0 3.09.03 4.73.23v.05Zm.03-2.04a21.37 21.37 0 0 0-4.37-.36c-5.32 0-7.82 1.25-7.82 4.18 0 3.04 1.71 4.2 5.68 4.2 3.35 0 5.63-.84 6.46-2.92h.14c-.03.5-.05 1-.05 1.4 0 1.07.18 1.16 1.06 1.16h4.15a16.9 16.9 0 0 1-.36-4c0-1.67.06-2.93.06-4.62 0-3.45-2.07-5.64-8.56-5.64-2.8 0-5.9.48-8.26 1.19.22.93.54 2.83.7 4.06 2.04-.96 4.95-1.37 7.2-1.37 3.11 0 3.97.71 3.97 2.15v.57Zm11.37 3c-.56.07-1.33.07-2.12.07-.83 0-1.6-.03-2.12-.1l-.02.58c0 2.85 1.87 4.52 8.45 4.52 6.2 0 8.2-1.64 8.2-4.55 0-2.74-1.33-4.09-7.2-4.39-4.58-.2-4.99-.7-4.99-1.28 0-.66.59-1 3.65-1 3.18 0 4.03.43 4.03 1.35v.2a46.13 46.13 0 0 1 4.24.03l.02-.55c0-3.36-2.8-4.46-8.2-4.46-6.08 0-8.13 1.49-8.13 4.39 0 2.6 1.64 4.23 7.48 4.48 4.3.14 4.77.62 4.77 1.28 0 .7-.7 1.03-3.71 1.03-3.47 0-4.35-.48-4.35-1.47v-.13Zm19.82-12.05a17.5 17.5 0 0 1-6.24 3.48c.03.84.03 2.4.03 3.24l1.5.02c-.02 1.63-.04 3.6-.04 4.9 0 3.04 1.6 5.32 6.58 5.32 2.1 0 3.5-.23 5.23-.6a43.77 43.77 0 0 1-.46-4.13c-1.03.34-2.34.53-3.78.53-2 0-2.82-.55-2.82-2.13 0-1.37 0-2.65.03-3.84 2.57.02 5.13.07 6.64.11-.02-1.18.03-2.9.1-4.04-2.2.04-4.65.07-6.68.07l.07-2.93h-.16Zm13.46 6.04a767.33 767.33 0 0 1 .07-3.18H82.6c.07 1.96.07 3.98.07 6.92 0 2.95-.03 4.99-.07 6.93h5.18c-.09-1.37-.11-3.68-.11-5.65 0-3.1 1.26-4 4.12-4 1.33 0 2.28.16 3.1.46.03-1.16.26-3.43.4-4.43-.86-.25-1.81-.41-2.96-.41-2.46-.03-4.26.98-5.1 3.38l-.17-.02Zm22.55 3.65c0 2.5-1.8 3.66-4.64 3.66-2.81 0-4.61-1.1-4.61-3.66s1.82-3.52 4.61-3.52c2.82 0 4.64 1.03 4.64 3.52Zm4.71-.11c0-4.96-3.87-7.18-9.35-7.18-5.5 0-9.23 2.22-9.23 7.18 0 4.94 3.49 7.59 9.21 7.59 5.77 0 9.37-2.65 9.37-7.6Z\"/><defs><linearGradient id=\"a\" x1=\"6.33\" x2=\"19.43\" y1=\"40.8\" y2=\"34.6\" gradientUnits=\"userSpaceOnUse\"><stop stop-color=\"#D83333\"/><stop offset=\"1\" stop-color=\"#F041FF\"/></linearGradient></defs></svg>\n```\n\n```svg nbr.haus/src/assets/background.svg\n<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"1440\" height=\"1024\" fill=\"none\"><path fill=\"url(#a)\" fill-rule=\"evenodd\" d=\"M-217.58 475.75c91.82-72.02 225.52-29.38 341.2-44.74C240 415.56 372.33 315.14 466.77 384.9c102.9 76.02 44.74 246.76 90.31 366.31 29.83 78.24 90.48 136.14 129.48 210.23 57.92 109.99 169.67 208.23 155.9 331.77-13.52 121.26-103.42 264.33-224.23 281.37-141.96 20.03-232.72-220.96-374.06-196.99-151.7 25.73-172.68 330.24-325.85 315.72-128.6-12.2-110.9-230.73-128.15-358.76-12.16-90.14 65.87-176.25 44.1-264.57-26.42-107.2-167.12-163.46-176.72-273.45-10.15-116.29 33.01-248.75 124.87-320.79Z\" clip-rule=\"evenodd\" style=\"opacity:.154\"/><path fill=\"url(#b)\" fill-rule=\"evenodd\" d=\"M1103.43 115.43c146.42-19.45 275.33-155.84 413.5-103.59 188.09 71.13 409 212.64 407.06 413.88-1.94 201.25-259.28 278.6-414.96 405.96-130 106.35-240.24 294.39-405.6 265.3-163.7-28.8-161.93-274.12-284.34-386.66-134.95-124.06-436-101.46-445.82-284.6-9.68-180.38 247.41-246.3 413.54-316.9 101.01-42.93 207.83 21.06 316.62 6.61Z\" clip-rule=\"evenodd\" style=\"opacity:.154\"/><defs><linearGradient id=\"b\" x1=\"373\" x2=\"1995.44\" y1=\"1100\" y2=\"118.03\" gradientUnits=\"userSpaceOnUse\"><stop stop-color=\"#D83333\"/><stop offset=\"1\" stop-color=\"#F041FF\"/></linearGradient><linearGradient id=\"a\" x1=\"107.37\" x2=\"1130.66\" y1=\"1993.35\" y2=\"1026.31\" gradientUnits=\"userSpaceOnUse\"><stop stop-color=\"#3245FF\"/><stop offset=\"1\" stop-color=\"#BC52EE\"/></linearGradient></defs></svg>\n```\n\n\ncomponents\n```astro nbr.haus/src/components/GitHubActivity.astro\n---\nimport { getGitHubUser, getGithubPushEvents } from \"../lib/github\";\n\nconst { data: nikbrunner, error: nikbrunnerError } = await getGitHubUser();\nconst { data: events, error: eventsError } = await getGithubPushEvents();\n---\n\n{\n    nikbrunnerError || eventsError ? (\n        <div class=\"error\">{nikbrunnerError || eventsError}</div>\n    ) : (\n        <>\n            <h2>\n                Activity of{\" \"}\n                <span class=\"text-orange-400\">{nikbrunner?.name}</span>\n            </h2>\n\n            <ul class=\"list-none text-xs\">\n                {events.map((evt) => (\n                    <li class=\"mb-5\">\n                        <span class=\"text-orange-400 font-bold\">\n                            {evt.type} - {evt.repo.name} - {evt.created_at}\n                        </span>\n                        {evt.type === \"PushEvent\" && (\n                            <ul>\n                                {evt.payload.commits?.map((commit) => (\n                                    <code>\n                                        {commit.message\n                                            .split(\"\\n\")\n                                            .map((line) => (\n                                                <>\n                                                    {line}\n                                                    <br />\n                                                </>\n                                            ))}\n                                    </code>\n                                ))}\n                            </ul>\n                        )}\n                    </li>\n                ))}\n            </ul>\n        </>\n    )\n}\n```\n\n```astro nbr.haus/src/components/Header.astro\n---\nconst currentPath = Astro.url.pathname;\n---\n\n<div class=\"flex justify-between items-center p-8\">\n    <a href=\"/\" class=\"no-underline\">\n        <h1 class=\"m-0\">\n            <span class=\"text-slate-400\">nbr</span><span class=\"text-orange-400\"\n                >.haus</span\n            >\n        </h1>\n    </a>\n\n    <nav>\n        <a\n            href=\"/office\"\n            class=\"no-underline\"\n            class:list={[\n                currentPath === \"/office\"\n                    ? \"text-orange-400\"\n                    : \"text-slate-400\",\n                \"hover:text-orange-400\",\n            ]}\n        >\n            Office\n        </a>\n    </nav>\n</div>\n```\n\n```astro nbr.haus/src/components/Welcome.astro\n---\nimport astroLogo from \"../assets/astro.svg\";\nimport background from \"../assets/background.svg\";\n---\n\n<div id=\"container\">\n    <img id=\"background\" src={background.src} alt=\"\" fetchpriority=\"high\" />\n    <main>\n        <section id=\"hero\">\n            <a href=\"https://astro.build\"\n                ><img\n                    src={astroLogo.src}\n                    width=\"115\"\n                    height=\"48\"\n                    alt=\"Astro Homepage\"\n                /></a\n            >\n            <h1>\n                To get started, open the <code><pre>src/pages</pre></code> directory\n                in your project.\n            </h1>\n            <section id=\"links\">\n                <a class=\"button\" href=\"https://docs.astro.build\"\n                    >Read our docs</a\n                >\n                <a href=\"https://astro.build/chat\"\n                    >Join our Discord <svg\n                        xmlns=\"http://www.w3.org/2000/svg\"\n                        viewBox=\"0 0 127.14 96.36\"\n                        ><path\n                            fill=\"currentColor\"\n                            d=\"M107.7 8.07A105.15 105.15 0 0 0 81.47 0a72.06 72.06 0 0 0-3.36 6.83 97.68 97.68 0 0 0-29.11 0A72.37 72.37 0 0 0 45.64 0a105.89 105.89 0 0 0-26.25 8.09C2.79 32.65-1.71 56.6.54 80.21a105.73 105.73 0 0 0 32.17 16.15 77.7 77.7 0 0 0 6.89-11.11 68.42 68.42 0 0 1-10.85-5.18c.91-.66 1.8-1.34 2.66-2a75.57 75.57 0 0 0 64.32 0c.87.71 1.76 1.39 2.66 2a68.68 68.68 0 0 1-10.87 5.19 77 77 0 0 0 6.89 11.1 105.25 105.25 0 0 0 32.19-16.14c2.64-27.38-4.51-51.11-18.9-72.15ZM42.45 65.69C36.18 65.69 31 60 31 53s5-12.74 11.43-12.74S54 46 53.89 53s-5.05 12.69-11.44 12.69Zm42.24 0C78.41 65.69 73.25 60 73.25 53s5-12.74 11.44-12.74S96.23 46 96.12 53s-5.04 12.69-11.43 12.69Z\"\n                        ></path></svg\n                    >\n                </a>\n            </section>\n        </section>\n    </main>\n\n    <a href=\"https://astro.build/blog/astro-5/\" id=\"news\" class=\"box\">\n        <svg\n            width=\"32\"\n            height=\"32\"\n            fill=\"none\"\n            xmlns=\"http://www.w3.org/2000/svg\"\n            ><path\n                d=\"M24.667 12c1.333 1.414 2 3.192 2 5.334 0 4.62-4.934 5.7-7.334 12C18.444 28.567 18 27.456 18 26c0-4.642 6.667-7.053 6.667-14Zm-5.334-5.333c1.6 1.65 2.4 3.43 2.4 5.333 0 6.602-8.06 7.59-6.4 17.334C13.111 27.787 12 25.564 12 22.666c0-4.434 7.333-8 7.333-16Zm-6-5.333C15.111 3.555 16 5.556 16 7.333c0 8.333-11.333 10.962-5.333 22-3.488-.774-6-4-6-8 0-8.667 8.666-10 8.666-20Z\"\n                fill=\"#111827\"></path></svg\n        >\n        <h2>What's New in Astro 5.0?</h2>\n        <p>\n            From content layers to server islands, click to learn more about the\n            new features and improvements in Astro 5.0\n        </p>\n    </a>\n</div>\n\n<style>\n    #background {\n        position: fixed;\n        top: 0;\n        left: 0;\n        width: 100%;\n        height: 100%;\n        z-index: -1;\n        filter: blur(100px);\n    }\n\n    #container {\n        font-family: Inter, Roboto, \"Helvetica Neue\", \"Arial Nova\",\n            \"Nimbus Sans\", Arial, sans-serif;\n        height: 100%;\n    }\n\n    main {\n        height: 100%;\n        display: flex;\n        justify-content: center;\n    }\n\n    #hero {\n        display: flex;\n        align-items: start;\n        flex-direction: column;\n        justify-content: center;\n        padding: 16px;\n    }\n\n    h1 {\n        font-size: 22px;\n        margin-top: 0.25em;\n    }\n\n    #links {\n        display: flex;\n        gap: 16px;\n    }\n\n    #links a {\n        display: flex;\n        align-items: center;\n        padding: 10px 12px;\n        color: #111827;\n        text-decoration: none;\n        transition: color 0.2s;\n    }\n\n    #links a:hover {\n        color: rgb(78, 80, 86);\n    }\n\n    #links a svg {\n        height: 1em;\n        margin-left: 8px;\n    }\n\n    #links a.button {\n        color: white;\n        background: linear-gradient(83.21deg, #3245ff 0%, #bc52ee 100%);\n        box-shadow:\n            inset 0 0 0 1px rgba(255, 255, 255, 0.12),\n            inset 0 -2px 0 rgba(0, 0, 0, 0.24);\n        border-radius: 10px;\n    }\n\n    #links a.button:hover {\n        color: rgb(230, 230, 230);\n        box-shadow: none;\n    }\n\n    pre {\n        font-family: ui-monospace, \"Cascadia Code\", \"Source Code Pro\", Menlo,\n            Consolas, \"DejaVu Sans Mono\", monospace;\n        font-weight: normal;\n        background: linear-gradient(14deg, #d83333 0%, #f041ff 100%);\n        -webkit-background-clip: text;\n        -webkit-text-fill-color: transparent;\n        background-clip: text;\n        margin: 0;\n    }\n\n    h2 {\n        margin: 0 0 1em;\n        font-weight: normal;\n        color: #111827;\n        font-size: 20px;\n    }\n\n    p {\n        color: #4b5563;\n        font-size: 16px;\n        line-height: 24px;\n        letter-spacing: -0.006em;\n        margin: 0;\n    }\n\n    code {\n        display: inline-block;\n        background:\n            linear-gradient(66.77deg, #f3cddd 0%, #f5cee7 100%) padding-box,\n            linear-gradient(155deg, #d83333 0%, #f041ff 18%, #f5cee7 45%)\n                border-box;\n        border-radius: 8px;\n        border: 1px solid transparent;\n        padding: 6px 8px;\n    }\n\n    .box {\n        padding: 16px;\n        background: rgba(255, 255, 255, 1);\n        border-radius: 16px;\n        border: 1px solid white;\n    }\n\n    #news {\n        position: absolute;\n        bottom: 16px;\n        right: 16px;\n        max-width: 300px;\n        text-decoration: none;\n        transition: background 0.2s;\n        backdrop-filter: blur(50px);\n    }\n\n    #news:hover {\n        background: rgba(255, 255, 255, 0.55);\n    }\n\n    @media screen and (max-height: 368px) {\n        #news {\n            display: none;\n        }\n    }\n\n    @media screen and (max-width: 768px) {\n        #container {\n            display: flex;\n            flex-direction: column;\n        }\n\n        #hero {\n            display: block;\n            padding-top: 10%;\n        }\n\n        #links {\n            flex-wrap: wrap;\n        }\n\n        #links a.button {\n            padding: 14px 18px;\n        }\n\n        #news {\n            right: 16px;\n            left: 16px;\n            bottom: 2.5rem;\n            max-width: 100%;\n        }\n\n        h1 {\n            line-height: 1.5;\n        }\n    }\n</style>\n```\n\n\nlayouts\n```astro nbr.haus/src/layouts/Content.astro\n<div class=\"p-8\">\n    <slot />\n</div>\n```\n\n```astro nbr.haus/src/layouts/Layout.astro\n---\nimport Header from \"../components/Header.astro\";\nimport Content from \"../layouts/Content.astro\";\n---\n\n<!doctype html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"UTF-8\" />\n    <meta name=\"viewport\" content=\"width=device-width\" />\n    <link rel=\"icon\" type=\"image/svg+xml\" href=\"/favicon.svg\" />\n    <meta name=\"generator\" content={Astro.generator} />\n    <title>nbr.haus</title>\n  </head>\n  <body class=\"bg-slate-200\">\n    <Header />\n\n    <Content>\n      <slot />\n    </Content>\n  </body>\n</html>\n\n<style>\n  @import \"../styles/global.css\";\n\n  html,\n  body {\n    margin: 0;\n    width: 100%;\n    height: 100%;\n  }\n</style>\n```\n\n\nlib\n```ts nbr.haus/src/lib/github.ts\nimport { Octokit } from \"@octokit/rest\";\nimport type { GitHubEvent } from \"../types/github\";\n\n/** Currently on return push events */\nexport const getGithubPushEvents = async (\n  username: string = \"nikbrunner\",\n  limit: number = 25,\n) => {\n  try {\n    const octokit = new Octokit({\n      auth: import.meta.env.GITHUB_TOKEN,\n    });\n\n    const { data } = (await octokit.activity.listPublicEventsForUser({\n      username,\n      per_page: limit,\n    })) as unknown as { data: GitHubEvent[] };\n\n    const pushEvents = data.filter((event) => event.type === \"PushEvent\");\n\n    const uniqueEvents = pushEvents.filter(\n      (event, index, self) =>\n        index ===\n        self.findIndex(\n          (e) =>\n            e.payload.commits[0].message === event.payload.commits[0].message,\n        ),\n    );\n\n    return { data: uniqueEvents, error: null };\n  } catch (error) {\n    console.error(\"Error fetching GitHub events:\", error);\n    return {\n      data: [],\n      error: error instanceof Error ? error.message : \"Unknown error\",\n    };\n  }\n};\n\nexport const getGitHubUser = async (username: string = \"nikbrunner\") => {\n  try {\n    const octokit = new Octokit({\n      auth: import.meta.env.GITHUB_TOKEN,\n    });\n\n    const { data } = await octokit.users.getByUsername({\n      username,\n    });\n\n    return { data, error: null };\n  } catch (error) {\n    console.error(\"Error fetching GitHub user:\", error);\n    return {\n      data: null,\n      error: error instanceof Error ? error.message : \"Unknown error\",\n    };\n  }\n};\n```\n\n\npages\n```astro nbr.haus/src/pages/index.astro\n---\nimport Layout from \"../layouts/Layout.astro\";\nimport { getGitHubUser } from \"../lib/github\";\n\nconst { data: nikbrunner } = await getGitHubUser();\n---\n\n<Layout>\n    <img class=\"h-32\" src={nikbrunner?.avatar_url} />\n\n    Hi.\n</Layout>\n```\n\n```astro nbr.haus/src/pages/office.astro\n---\nimport GitHubActivity from \"../components/GitHubActivity.astro\";\nimport Layout from \"../layouts/Layout.astro\";\n---\n\n<Layout>\n    <GitHubActivity />\n</Layout>\n```\n\n\nstyles\n```css nbr.haus/src/styles/global.css\n@import \"tailwindcss\";\n```\n\n\ntypes\n```ts nbr.haus/src/types/github.ts\nexport type GitHubCommit = {\n  sha: string;\n  message: string;\n  author: {\n    name: string;\n    email: string;\n  };\n  distinct: boolean;\n  url: string;\n};\n\nexport type PushEventPayload = {\n  repository_id: number;\n  push_id: number;\n  size: number;\n  distinct_size: number;\n  ref: string;\n  head: string;\n  before: string;\n  commits: GitHubCommit[];\n};\n\nexport type GitHubEvent = {\n  id: string;\n  type: string;\n  actor: {\n    id: number;\n    login: string;\n    display_login: string;\n    gravatar_id: string;\n    url: string;\n    avatar_url: string;\n  };\n  repo: {\n    id: number;\n    name: string;\n    url: string;\n  };\n  payload: PushEventPayload;\n  public: boolean;\n  created_at: string;\n};\n```\n\n\n\n\nAdd a about me page page\n\nI'll help you create an \"About Me\" page. First, let's create a new page file and update the navigation to include the new link.\n\nCreate a new file `src/pages/about.astro`:\n\n```astro\n---\nimport Layout from \"../layouts/Layout.astro\";\nimport { getGitHubUser } from \"../lib/github\";\n\nconst { data: nikbrunner } = await getGitHubUser();\n---\n\n<Layout>\n    <div class=\"max-w-2xl\">\n        <div class=\"flex items-center gap-6 mb-8\">\n            <img \n                class=\"h-32 w-32 rounded-full border-4 border-orange-400\" \n                src={nikbrunner?.avatar_url} \n                alt=\"Profile picture\"\n            />\n            <div>\n                <h1 class=\"text-3xl font-bold mb-2\">{nikbrunner?.name}</h1>\n                <p class=\"text-slate-600\">{nikbrunner?.bio}</p>\n            </div>\n        </div>\n\n        <section class=\"mb-8\">\n            <h2 class=\"text-2xl font-bold mb-4\">About Me</h2>\n            <p class=\"text-slate-600 leading-relaxed\">\n                I'm a passionate developer based in {nikbrunner?.location}. \n                With a focus on web development, I love creating elegant solutions \n                to complex problems. When I'm not coding, you can find me exploring \n                new technologies and contributing to open-source projects.\n            </p>\n        </section>\n\n        <section class=\"mb-8\">\n            <h2 class=\"text-2xl font-bold mb-4\">Contact</h2>\n            <ul class=\"space-y-2\">\n                {nikbrunner?.blog && (\n                    <li>\n                        <a \n                            href={nikbrunner.blog}\n                            class=\"text-orange-400 hover:text-orange-500\"\n                            target=\"_blank\"\n                            rel=\"noopener noreferrer\"\n                        >\n                            Website\n                        </a>\n                    </li>\n                )}\n                {nikbrunner?.html_url && (\n                    <li>\n                        <a \n                            href={nikbrunner.html_url}\n                            class=\"text-orange-400 hover:text-orange-500\"\n                            target=\"_blank\"\n                            rel=\"noopener noreferrer\"\n                        >\n                            GitHub\n                        </a>\n                    </li>\n                )}\n                {nikbrunner?.twitter_username && (\n                    <li>\n                        <a \n                            href={`https://twitter.com/${nikbrunner.twitter_username}`}\n                            class=\"text-orange-400 hover:text-orange-500\"\n                            target=\"_blank\"\n                            rel=\"noopener noreferrer\"\n                        >\n                            Twitter\n                        </a>\n                    </li>\n                )}\n            </ul>\n        </section>\n    </div>\n</Layout>\n```\n\nThen update the Header component (`src/components/Header.astro`) to include the new About link:\n\n```astro\n---\nconst currentPath = Astro.url.pathname;\n---\n\n<div class=\"flex justify-between items-center p-8\">\n    <a href=\"/\" class=\"no-underline\">\n        <h1 class=\"m-0\">\n            <span class=\"text-slate-400\">nbr</span><span class=\"text-orange-400\"\n                >.haus</span\n            >\n        </h1>\n    </a>\n\n    <nav class=\"flex gap-6\">\n        <a\n            href=\"/about\"\n            class=\"no-underline\"\n            class:list={[\n                currentPath === \"/about\"\n                    ? \"text-orange-400\"\n                    : \"text-slate-400\",\n                \"hover:text-orange-400\",\n            ]}\n        >\n            About\n        </a>\n        <a\n            href=\"/office\"\n            class=\"no-underline\"\n            class:list={[\n                currentPath === \"/office\"\n                    ? \"text-orange-400\"\n                    : \"text-slate-400\",\n                \"hover:text-orange-400\",\n            ]}\n        >\n            Office\n        </a>\n    </nav>\n</div>\n```\n\nThis will create a new About page that:\n1. Shows your GitHub profile image\n2. Displays your name and bio from GitHub\n3. Includes an About Me section with a brief description\n4. Lists contact links to your website, GitHub profile, and Twitter (if available)\n5. Uses the same styling theme as the rest of your site\n6. Is accessible via a new navigation link in the header\n\nThe page uses the GitHub user data you're already fetching and maintains the consistent styling of your site using Tailwind CSS classes.\n\nI understand you'd like me to provide code changes to add an About page to the codebase. I'll help with that.\n\n<patch>\n<title>Add About page and nav link</title>\n\n<edit>\n<path>src/pages/about.astro</path>\n<description>Create new About page that displays GitHub profile info and bio</description>\n<operation>create</operation>\n<new_text>---\nimport Layout from \"../layouts/Layout.astro\";\nimport { getGitHubUser } from \"../lib/github\";\n\nconst { data: nikbrunner } = await getGitHubUser();\n---\n\n<Layout>\n    <div class=\"max-w-2xl\">\n        <div class=\"flex items-center gap-6 mb-8\">\n            <img \n                class=\"h-32 w-32 rounded-full border-4 border-orange-400\" \n                src={nikbrunner?.avatar_url} \n                alt=\"Profile picture\"\n            />\n            <div>\n                <h1 class=\"text-3xl font-bold mb-2\">{nikbrunner?.name}</h1>\n                <p class=\"text-slate-600\">{nikbrunner?.bio}</p>\n            </div>\n        </div>\n\n        <section class=\"mb-8\">\n            <h2 class=\"text-2xl font-bold mb-4\">About Me</h2>\n            <p class=\"text-slate-600 leading-relaxed\">\n                I'm a passionate developer based in {nikbrunner?.location}. \n                I specialize in web development and enjoy building modern, \n                user-friendly applications using cutting-edge technologies.\n            </p>\n        </section>\n\n        <section>\n            <h2 class=\"text-2xl font-bold mb-4\">Find Me Online</h2>\n            <div class=\"flex gap-4\">\n                <a \n                    href={nikbrunner?.html_url}\n                    class=\"text-orange-400 hover:text-orange-500\"\n                    target=\"_blank\"\n                    rel=\"noopener noreferrer\"\n                >\n                    GitHub\n                </a>\n                {nikbrunner?.blog && (\n                    <a \n                        href={nikbrunner.blog}\n                        class=\"text-orange-400 hover:text-orange-500\"\n                        target=\"_blank\"\n                        rel=\"noopener noreferrer\"\n                    >\n                        Website\n                    </a>\n                )}\n            </div>\n        </section>\n    </div>\n</Layout>\n</new_text>\n</edit>\n\n<edit>\n<path>src/components/Header.astro</path>\n<description>Add About link to navigation</description>\n<operation>update</operation>\n<old_text>    <nav>\n        <a\n            href=\"/office\"\n            class=\"no-underline\"\n            class:list={[\n                currentPath === \"/office\"\n                    ? \"text-orange-400\"\n                    : \"text-slate-400\",\n                \"hover:text-orange-400\",\n            ]}\n        >\n            Office\n        </a>\n    </nav></old_text>\n<new_text>    <nav class=\"flex gap-4\">\n        <a\n            href=\"/about\"\n            class=\"no-underline\"\n            class:list={[\n                currentPath === \"/about\"\n                    ? \"text-orange-400\"\n                    : \"text-slate-400\",\n                \"hover:text-orange-400\",\n            ]}\n        >\n            About\n        </a>\n        <a\n            href=\"/office\"\n            class=\"no-underline\"\n            class:list={[\n                currentPath === \"/office\"\n                    ? \"text-orange-400\"\n                    : \"text-slate-400\",\n                \"hover:text-orange-400\",\n            ]}\n        >\n            Office\n        </a>\n    </nav></new_text>\n</edit>\n\n</patch>\n",
+  "messages": [
+    {
+      "id": { "replica_id": 0, "value": 0 },
+      "start": 0,
+      "metadata": {
+        "role": "user",
+        "status": "Done",
+        "timestamp": { "replica_id": 0, "value": 236 }
+      }
+    },
+    {
+      "id": { "replica_id": 0, "value": 48 },
+      "start": 16937,
+      "metadata": {
+        "role": "assistant",
+        "status": "Done",
+        "timestamp": { "replica_id": 0, "value": 237 }
+      }
+    },
+    {
+      "id": { "replica_id": 0, "value": 175 },
+      "start": 16938,
+      "metadata": {
+        "role": "assistant",
+        "status": "Done",
+        "timestamp": { "replica_id": 0, "value": 238 }
+      }
+    },
+    {
+      "id": { "replica_id": 0, "value": 176 },
+      "start": 21462,
+      "metadata": {
+        "role": "user",
+        "status": "Done",
+        "timestamp": { "replica_id": 0, "value": 239 }
+      }
+    },
+    {
+      "id": { "replica_id": 0, "value": 210 },
+      "start": 21463,
+      "metadata": {
+        "role": "assistant",
+        "status": "Done",
+        "timestamp": { "replica_id": 0, "value": 240 }
+      }
+    },
+    {
+      "id": { "replica_id": 0, "value": 211 },
+      "start": 24897,
+      "metadata": {
+        "role": "user",
+        "status": "Done",
+        "timestamp": { "replica_id": 0, "value": 241 }
+      }
+    }
+  ],
+  "summary": "Adding About Page to Astro Website",
+  "slash_command_output_sections": [
+    {
+      "range": { "start": 0, "end": 1 },
+      "icon": "Library",
+      "label": "Default",
+      "metadata": null
+    },
+    {
+      "range": { "start": 3, "end": 16909 },
+      "icon": "Folder",
+      "label": "nbr.haus/src",
+      "metadata": null
+    },
+    {
+      "range": { "start": 17, "end": 4481 },
+      "icon": "Folder",
+      "label": "assets",
+      "metadata": null
+    },
+    {
+      "range": { "start": 24, "end": 2979 },
+      "icon": "File",
+      "label": "nbr.haus/src/assets/astro.svg",
+      "metadata": { "path": "nbr.haus/src/assets/astro.svg" }
+    },
+    {
+      "range": { "start": 2980, "end": 4480 },
+      "icon": "File",
+      "label": "nbr.haus/src/assets/background.svg",
+      "metadata": { "path": "nbr.haus/src/assets/background.svg" }
+    },
+    {
+      "range": { "start": 4482, "end": 13266 },
+      "icon": "Folder",
+      "label": "components",
+      "metadata": null
+    },
+    {
+      "range": { "start": 4493, "end": 6212 },
+      "icon": "File",
+      "label": "nbr.haus/src/components/GitHubActivity.astro",
+      "metadata": { "path": "nbr.haus/src/components/GitHubActivity.astro" }
+    },
+    {
+      "range": { "start": 6213, "end": 6920 },
+      "icon": "File",
+      "label": "nbr.haus/src/components/Header.astro",
+      "metadata": { "path": "nbr.haus/src/components/Header.astro" }
+    },
+    {
+      "range": { "start": 6921, "end": 13265 },
+      "icon": "File",
+      "label": "nbr.haus/src/components/Welcome.astro",
+      "metadata": { "path": "nbr.haus/src/components/Welcome.astro" }
+    },
+    {
+      "range": { "start": 13267, "end": 14036 },
+      "icon": "Folder",
+      "label": "layouts",
+      "metadata": null
+    },
+    {
+      "range": { "start": 13275, "end": 13361 },
+      "icon": "File",
+      "label": "nbr.haus/src/layouts/Content.astro",
+      "metadata": { "path": "nbr.haus/src/layouts/Content.astro" }
+    },
+    {
+      "range": { "start": 13362, "end": 14035 },
+      "icon": "File",
+      "label": "nbr.haus/src/layouts/Layout.astro",
+      "metadata": { "path": "nbr.haus/src/layouts/Layout.astro" }
+    },
+    {
+      "range": { "start": 14037, "end": 15595 },
+      "icon": "Folder",
+      "label": "lib",
+      "metadata": null
+    },
+    {
+      "range": { "start": 14041, "end": 15594 },
+      "icon": "File",
+      "label": "nbr.haus/src/lib/github.ts",
+      "metadata": { "path": "nbr.haus/src/lib/github.ts" }
+    },
+    {
+      "range": { "start": 15596, "end": 16092 },
+      "icon": "Folder",
+      "label": "pages",
+      "metadata": null
+    },
+    {
+      "range": { "start": 15602, "end": 15883 },
+      "icon": "File",
+      "label": "nbr.haus/src/pages/index.astro",
+      "metadata": { "path": "nbr.haus/src/pages/index.astro" }
+    },
+    {
+      "range": { "start": 15884, "end": 16091 },
+      "icon": "File",
+      "label": "nbr.haus/src/pages/office.astro",
+      "metadata": { "path": "nbr.haus/src/pages/office.astro" }
+    },
+    {
+      "range": { "start": 16093, "end": 16166 },
+      "icon": "Folder",
+      "label": "styles",
+      "metadata": null
+    },
+    {
+      "range": { "start": 16100, "end": 16165 },
+      "icon": "File",
+      "label": "nbr.haus/src/styles/global.css",
+      "metadata": { "path": "nbr.haus/src/styles/global.css" }
+    },
+    {
+      "range": { "start": 16167, "end": 16909 },
+      "icon": "Folder",
+      "label": "types",
+      "metadata": null
+    },
+    {
+      "range": { "start": 16173, "end": 16908 },
+      "icon": "File",
+      "label": "nbr.haus/src/types/github.ts",
+      "metadata": { "path": "nbr.haus/src/types/github.ts" }
+    }
+  ]
+}

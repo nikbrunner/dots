@@ -6,6 +6,9 @@ set -e
 # Get the dots directory
 DOTS_DIR="${DOTS_DIR:-$HOME/repos/nikbrunner/dots}"
 
+# Capture the original working directory before changing to dots dir
+ORIGINAL_PWD="$(pwd)"
+
 # Colors for output
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -89,8 +92,8 @@ show_usage() {
         gum style --foreground=2 "  status       - Show git and symlink status"
         gum style --foreground=2 "  test         - Run comprehensive system tests"
         gum style --foreground=2 "  format       - Format files (markdown, shell scripts, etc.)"
-        gum style --foreground=2 "  add          - Add a file to dots management"
-        gum style --foreground=2 "  remove       - Remove a file from dots management"
+        gum style --foreground=2 "  add          - Add a file or directory to dots management"
+        gum style --foreground=2 "  remove       - Remove a file or directory from dots management"
         gum style --foreground=2 "  hooks        - Install/reinstall git hooks"
         gum style --foreground=2 "  log          - Show git log"
         echo ""
@@ -111,8 +114,8 @@ show_usage() {
         echo "  status       - Show git and symlink status"
         echo "  test         - Run comprehensive system tests"
         echo "  format       - Format files (markdown, shell scripts, etc.)"
-        echo "  add          - Add a file to dots management"
-        echo "  remove       - Remove a file from dots management"
+        echo "  add          - Add a file or directory to dots management"
+        echo "  remove       - Remove a file or directory from dots management"
         echo "  hooks        - Install/reinstall git hooks"
         echo "  log          - Show git log"
         echo ""
@@ -662,24 +665,39 @@ cmd_add() {
     local file_path="$1"
     
     if [[ -z "$file_path" ]]; then
-        log_error "Usage: dots add <file_path>"
-        echo "Example: dots add ~/.vimrc"
+        log_error "Usage: dots add <path>"
+        echo "Examples:"
+        echo "  dots add ~/.vimrc        # Add a file"
+        echo "  dots add ~/.config/zed   # Add a directory"
         return 1
     fi
     
     # Convert to absolute path
+    local original_path="$file_path"
+    
+    # Handle relative paths by prepending original working directory
+    if [[ "$file_path" != /* ]]; then
+        file_path="$ORIGINAL_PWD/$file_path"
+    fi
+    
+    # Resolve the path
     file_path=$(realpath "$file_path" 2>/dev/null)
-    if [[ ! -e "$file_path" ]]; then
-        log_error "File does not exist: $file_path"
+    if [[ $? -ne 0 || -z "$file_path" ]]; then
+        log_error "Could not resolve path: $original_path"
         return 1
     fi
     
-    # Check if file is already under dots management
+    if [[ ! -e "$file_path" ]]; then
+        log_error "Path does not exist: $file_path"
+        return 1
+    fi
+    
+    # Check if path is already under dots management
     if [[ -L "$file_path" ]]; then
         local target
         target=$(readlink "$file_path")
         if [[ "$target" == "$DOTS_DIR"* ]]; then
-            log_warning "File is already managed by dots: $file_path"
+            log_warning "Path is already managed by dots: $file_path"
             return 0
         fi
     fi
@@ -687,7 +705,7 @@ cmd_add() {
     # Determine target location in dots repository
     local relative_path="${file_path#$HOME/}"
     if [[ "$relative_path" == "$file_path" ]]; then
-        log_error "File must be in your home directory to be managed by dots"
+        log_error "Path must be in your home directory to be managed by dots"
         return 1
     fi
     
@@ -698,7 +716,7 @@ cmd_add() {
     
     local dots_file
     # Determine if this should go in common or OS-specific directory
-    if command -v gum >/dev/null 2>&1; then
+    if command -v gum >/dev/null 2>&1 && [[ -t 0 ]]; then
         local location
         location=$(gum choose "common (cross-platform)" "$current_os (OS-specific)")
         if [[ "$location" == *"common"* ]]; then
@@ -707,34 +725,60 @@ cmd_add() {
             dots_file="$DOTS_DIR/$current_os/$relative_path"
         fi
     else
-        echo "Should this file be:"
-        echo "1) common (cross-platform)"
-        echo "2) $current_os (OS-specific)"
-        echo -n "Choice (1/2): "
-        read -r choice
-        if [[ "$choice" == "1" ]]; then
-            dots_file="$DOTS_DIR/common/$relative_path"
-        else
-            dots_file="$DOTS_DIR/$current_os/$relative_path"
-        fi
+        # Default to common for non-interactive environments
+        log_info "No interactive input available, defaulting to common (cross-platform)"
+        dots_file="$DOTS_DIR/common/$relative_path"
     fi
     
     # Create directory structure
     mkdir -p "$(dirname "$dots_file")"
     
-    # Move file to dots repository
-    log_info "Moving $file_path to $dots_file"
-    mv "$file_path" "$dots_file"
-    
-    # Create symlink
-    ln -s "$dots_file" "$file_path"
+    if [[ -d "$file_path" ]]; then
+        # Handle directory - add all files recursively
+        log_info "Adding directory recursively: $file_path"
+        
+        local file_count=0
+        local added_files=()
+        
+        # Find all files in the directory
+        while IFS= read -r -d '' file; do
+            local rel_file_path="${file#$file_path/}"
+            local target_file="$dots_file/$rel_file_path"
+            
+            # Create parent directory structure
+            mkdir -p "$(dirname "$target_file")"
+            
+            # Move file and track it
+            mv "$file" "$target_file"
+            added_files+=("$target_file")
+            ((file_count++))
+            
+        done < <(find "$file_path" -type f -print0)
+        
+        # Remove the now-empty original directory
+        rm -rf "$file_path"
+        
+        # Create symlink to the dots directory
+        ln -s "$dots_file" "$file_path"
+        
+        log_success "Directory added to dots management: $file_path"
+        log_info "Added $file_count files to: $dots_file"
+        
+    else
+        # Handle single file
+        log_info "Moving file: $file_path to $dots_file"
+        mv "$file_path" "$dots_file"
+        
+        # Create symlink
+        ln -s "$dots_file" "$file_path"
+        
+        log_success "File added to dots management: $file_path"
+        log_info "File stored at: $dots_file"
+    fi
     
     # Regenerate mappings and relink
     log_info "Regenerating mappings..."
     "$DOTS_DIR/scripts/generate-mappings.sh" >/dev/null
-    
-    log_success "File added to dots management: $file_path"
-    log_info "File stored at: $dots_file"
 }
 
 # Remove command - remove a file from dots management
