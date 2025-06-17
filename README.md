@@ -1,4 +1,4 @@
-# Dots - Symlink-based Dotfiles Management
+# dots
 
 A clean, organized dotfiles repository using symlinks for easy management and deployment.
 
