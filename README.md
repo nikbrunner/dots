@@ -17,13 +17,9 @@ dots/
 ├── README.md                # This file
 ├── CLAUDE.md               # Claude Code instructions
 ├── IMPLEMENTATION_PLAN.md  # Detailed roadmap implementation plans
-├── .mappings/              # JSON mapping files
-│   ├── macos.json         # macOS file mappings
-│   └── linux.json         # Linux file mappings
 ├── scripts/               # Management scripts
 │   ├── detect-os.sh       # OS detection utility
-│   ├── link.sh           # Symlink creation using mappings
-│   └── generate-mappings.sh # Creates JSON mappings
+│   └── link.sh           # Symlink creation using direct traversal
 ├── common/               # Cross-platform configurations
 │   ├── .config/          # Config files (.zshrc, .gitconfig, etc.)
 │   ├── bin/              # Custom scripts
@@ -146,7 +142,7 @@ dots test
 dots link --dry-run
 ```
 
-The `dots test` command validates the entire system (repository structure, OS detection, mapping generation, symlinks, etc.) and reports pass/fail status. Use `dots link --dry-run` when you want detailed output showing exactly what symlink operations would be performed.
+The `dots test` command validates the entire system (repository structure, OS detection, symlink creation, etc.) and reports pass/fail status. Use `dots link --dry-run` when you want detailed output showing exactly what symlink operations would be performed.
 
 ## 🔧 How It Works
 
@@ -168,15 +164,15 @@ Each directory mirrors your home directory structure. For example:
 When you run `dots link`:
 
 1. **Cleans up**: Removes any broken symlinks from previous configurations
-2. **Creates/Updates**: Makes symlinks for all files in your platform directories
-3. **Auto-generates mappings**: Creates JSON files tracking all symlinks
+2. **Discovers files**: Scans `common/`, `macos/`, and `linux/` directories directly
+3. **Creates/Updates**: Makes symlinks for all discovered files to their home directory locations
 4. **Backs up conflicts**: If a real file exists where a symlink should go, it's backed up with a timestamp
 
 This single command handles all scenarios: adding, removing, renaming, or moving files.
 
 ### OS-Specific Configurations
 
-Place OS-specific files in `macos/` or `linux/` following the home directory structure. The system automatically detects your OS and creates appropriate symlinks using JSON mappings.
+Place OS-specific files in `macos/` or `linux/` following the home directory structure. The system automatically detects your OS and creates appropriate symlinks using direct directory traversal.
 
 ### Submodules
 
