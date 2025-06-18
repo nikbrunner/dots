@@ -98,7 +98,6 @@ dots log          # Show recent commits
 
 # Maintenance
 dots test         # Run comprehensive system tests
-dots format       # Format files (markdown, shell scripts, etc.)
 dots hooks        # Install/reinstall git hooks
 
 # Submodules
