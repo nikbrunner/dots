@@ -48,9 +48,6 @@ dots sub-add <repo-url> <target-path>
 # Run comprehensive system tests
 dots test
 
-# Format files (markdown, shell scripts, etc.)
-dots format
-
 # Install/reinstall git hooks
 dots hooks
 ```
@@ -145,7 +142,6 @@ Use `dots test` for overall system health checks and `dots link --dry-run` for d
 - **Simplified Workflow**: `dots link` now handles both creating/updating symlinks AND removing broken ones
 - **Manual File Management**: Add files directly to `common/`, `macos/`, or `linux/` directories instead of using commands
 - **Improved Commit Workflow**: `dots commit` opens LazyGit for interactive committing, `dots push` only pushes
-- **Formatting**: `dots format` automatically formats markdown and shell scripts
 - **Git Hooks**: Automatic broken symlink cleanup on commit via pre-commit hooks
 - **Enhanced Testing**: `dots test` includes shellcheck linting for script quality
 - **Gum Integration**: Beautiful CLI interface when gum is installed
