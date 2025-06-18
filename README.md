@@ -2,6 +2,23 @@
 
 A clean, organized dotfiles repository using symlinks for easy management and deployment.
 
+## 📚 Table of Contents
+
+- [Overview](#overview)
+- [Structure](#-structure)
+- [Installation](#-installation)
+- [Usage](#-usage)
+  - [Common Workflows](#common-workflows)
+- [How It Works](#-how-it-works)
+- [Submodules](#-submodules)
+  - [Understanding Submodules](#understanding-submodules)
+  - [Current Submodules](#current-submodules)
+  - [Managing Submodules](#managing-submodules)
+  - [Troubleshooting Submodules](#troubleshooting-submodules)
+  - [Common Submodule Commands](#common-submodule-commands)
+- [Dependencies](#-dependencies)
+- [Platform Support](#-platform-support)
+
 ## Overview
 
 This dotfiles system uses a simple symlink-based approach:
@@ -150,7 +167,6 @@ The `dots test` command validates the entire system (repository structure, OS de
 - **`common/`**: Cross-platform configurations (used on all systems)
 - **`macos/`**: macOS-specific configurations
 - **`linux/`**: Linux-specific configurations
-- **`submodules/`**: Larger configurations managed as git submodules
 
 Each directory mirrors your home directory structure. For example:
 
@@ -173,21 +189,126 @@ This single command handles all scenarios: adding, removing, renaming, or moving
 
 Place OS-specific files in `macos/` or `linux/` following the home directory structure. The system automatically detects your OS and creates appropriate symlinks using direct directory traversal.
 
-### Submodules
+## 🔗 Submodules
 
-Submodules are added directly to their target configuration locations. To add a submodule:
+### Understanding Submodules
+
+Git submodules allow you to include other Git repositories within your repository. In this dotfiles setup, we use submodules for larger configurations (like Neovim) that are maintained as separate repositories. Submodules are added directly to their target configuration locations, so they work seamlessly with the symlink system.
+
+### Current Submodules
+
+- `common/.config/nvim` - Neovim configuration ([nikbrunner/nbr.nvim](https://github.com/nikbrunner/nbr.nvim))
+
+### Managing Submodules
+
+#### Adding a New Submodule
 
 ```bash
-dots sub-add https://github.com/nikbrunner/nbr.nvim common/.config/nvim
+# Using dots command (recommended)
+dots sub-add git@github.com:username/repo.git common/.config/toolname
+
+# Using git directly
+git submodule add git@github.com:username/repo.git common/.config/toolname
+git commit -m "Add toolname submodule"
 ```
 
-Current submodules:
+#### Cloning with Submodules
 
-- `common/.config/nvim` - Neovim configuration (https://github.com/nikbrunner/nbr.nvim)
+When cloning this repository on a new machine:
 
-Future submodules:
+```bash
+# Option 1: Clone with submodules included
+git clone --recurse-submodules git@github.com:nikbrunner/dots.git ~/repos/nikbrunner/dots
 
-- `common/.config/wezterm` - WezTerm configuration
+# Option 2: Clone first, then initialize submodules
+git clone git@github.com:nikbrunner/dots.git ~/repos/nikbrunner/dots
+cd ~/repos/nikbrunner/dots
+git submodule update --init --recursive
+
+# Option 3: Just run install.sh (it handles submodules automatically)
+./install.sh
+```
+
+#### Updating Submodules
+
+```bash
+# Update all submodules to their latest commits
+dots sub-update
+
+# Or using git directly
+git submodule update --remote --merge
+
+# Update a specific submodule
+cd common/.config/nvim
+git pull origin main
+cd ../../..
+git add common/.config/nvim
+git commit -m "Update nvim submodule"
+```
+
+#### Removing a Submodule
+
+```bash
+# Remove submodule completely
+git submodule deinit -f common/.config/toolname
+rm -rf .git/modules/common/.config/toolname
+git rm -f common/.config/toolname
+git commit -m "Remove toolname submodule"
+```
+
+### Troubleshooting Submodules
+
+#### Problem: Submodule directory is empty
+
+```bash
+# Initialize and update the submodule
+git submodule update --init --recursive
+```
+
+#### Problem: Submodule is in detached HEAD state
+
+```bash
+cd common/.config/nvim
+git checkout main
+git pull origin main
+```
+
+#### Problem: Can't clone due to authentication
+
+```bash
+# Check your submodule URLs (should use SSH not HTTPS)
+cat .gitmodules
+
+# Update submodule URL if needed
+git config submodule.common/.config/nvim.url git@github.com:nikbrunner/nbr.nvim.git
+git submodule sync
+```
+
+#### Problem: Symlinks are broken after adding submodule
+
+```bash
+# Re-run the link command to fix all symlinks
+dots link
+```
+
+### Common Submodule Commands
+
+| Command                                      | Description                          |
+| -------------------------------------------- | ------------------------------------ |
+| `git submodule status`                       | Show status of all submodules        |
+| `git submodule foreach git pull origin main` | Update all submodules                |
+| `git submodule sync`                         | Sync submodule URLs with .gitmodules |
+| `git submodule update --init --recursive`    | Initialize and update all submodules |
+| `git config status.submodulesummary 1`       | Show submodule summary in git status |
+| `git diff --submodule`                       | Show submodule changes in diff       |
+
+### Best Practices
+
+1. **Use SSH URLs** for submodules (git@github.com:user/repo.git)
+2. **Commit submodule changes** when you update them
+3. **Keep submodules on a branch** (not detached HEAD)
+4. **Document your submodules** in this README
+5. **Test after adding** with `dots test` and `dots link`
 
 ## 📦 Dependencies
 
