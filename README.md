@@ -28,8 +28,7 @@ dots/
 │   ├── .config/karabiner/ # Karabiner configuration
 │   ├── Library/          # Application Support files
 │   └── Brewfile          # Homebrew dependencies
-├── linux/                # Linux-specific configurations
-└── submodules/           # Git submodules (nvim, wezterm, zed)
+└── linux/                # Linux-specific configurations
 ```
 
 ## 🚀 Installation
@@ -176,16 +175,19 @@ Place OS-specific files in `macos/` or `linux/` following the home directory str
 
 ### Submodules
 
-To add a submodule:
+Submodules are added directly to their target configuration locations. To add a submodule:
 
 ```bash
-dots sub-add https://github.com/nikbrunner/nvim submodules/nvim
+dots sub-add https://github.com/nikbrunner/nbr.nvim common/.config/nvim
 ```
 
-Current submodules (to be added):
+Current submodules:
 
-- `nvim` - Neovim configuration
-- `wezterm` - WezTerm configuration
+- `common/.config/nvim` - Neovim configuration (https://github.com/nikbrunner/nbr.nvim)
+
+Future submodules:
+
+- `common/.config/wezterm` - WezTerm configuration
 
 ## 📦 Dependencies
 

@@ -23,7 +23,6 @@ This is a symlink-based dotfiles management system designed to organize and depl
 - `macos/` - macOS-specific configurations that mirror home directory structure
 - `linux/` - Linux-specific configurations that mirror home directory structure
 - `scripts/` - Core management scripts (link.sh, detect-os.sh, submodules.sh)
-- `submodules/` - Git submodules for larger configs (nvim, wezterm, zed)
 
 ## Common Commands
 
@@ -44,7 +43,7 @@ dots push [--force]
 dots sync
 
 # Add a new submodule
-dots sub-add <repo-url> submodules/<name>
+dots sub-add <repo-url> <target-path>
 
 # Run comprehensive system tests
 dots test
@@ -150,6 +149,27 @@ Use `dots test` for overall system health checks and `dots link --dry-run` for d
 - **Git Hooks**: Automatic broken symlink cleanup on commit via pre-commit hooks
 - **Enhanced Testing**: `dots test` includes shellcheck linting for script quality
 - **Gum Integration**: Beautiful CLI interface when gum is installed
+- **Submodule Integration**: Submodules are now added directly to their target locations (e.g., `common/.config/nvim`)
+
+## Submodules
+
+Submodules are added directly to their target configuration locations. To add a submodule:
+
+```bash
+dots sub-add https://github.com/nikbrunner/nbr.nvim common/.config/nvim
+```
+
+Current submodules:
+
+- `common/.config/nvim` - Neovim configuration (https://github.com/nikbrunner/nbr.nvim)
+
+Future submodules:
+
+- `common/.config/wezterm` - WezTerm configuration
+
+Regular configuration files (NOT submodules):
+
+- `common/.config/zed/` - Zed editor configuration
 
 ## Memories
 
