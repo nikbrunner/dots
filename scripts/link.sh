@@ -1,5 +1,5 @@
 #!/bin/bash
-# Creates symlinks for dotfiles based on JSON mappings
+# Creates symlinks for dotfiles using direct directory traversal
 # Usage: ./scripts/link.sh [--dry-run]
 
 set -e
@@ -85,18 +85,48 @@ create_symlink() {
     fi
 }
 
+# Function to process directory and create symlinks
+process_directory() {
+    local source_dir="$1"
+    local target_base="$2"
+    local dir_name="$3"
+    
+    [[ ! -d "$source_dir" ]] && return
+    
+    echo -e "${YELLOW}→${NC} Processing $dir_name files..."
+    
+    local file_count=0
+    
+    # Find all files and symlinks recursively
+    while IFS= read -r -d '' file; do
+        # Calculate relative path from source directory
+        local rel_path="${file#"$source_dir"/}"
+        local target="$target_base/$rel_path"
+        
+        # Skip if source file doesn't exist (shouldn't happen, but be safe)
+        [[ ! -e "$file" ]] && continue
+        
+        create_symlink "$file" "$target"
+        ((file_count++))
+    done < <(find "$source_dir" \( -type f -o -type l \) -print0 2>/dev/null)
+    
+    if [[ $file_count -eq 0 ]]; then
+        echo -e "${YELLOW}→${NC} No files found in $dir_name"
+    else
+        echo -e "${GREEN}✓${NC} Processed $file_count files from $dir_name"
+    fi
+}
+
 echo "Setting up dotfiles symlinks..."
 echo "OS detected: $(get_os)"
 echo ""
 
 # Get current OS
 CURRENT_OS=$(get_os)
-MAPPING_FILE="$DOTS_DIR/.mappings/$CURRENT_OS.json"
 
-# Clean up broken symlinks BEFORE generating mappings
+# Clean up broken symlinks BEFORE creating new ones
 echo -e "${YELLOW}→${NC} Cleaning broken symlinks..."
 
-# Find ALL symlinks that point to our dots directory and check if they're broken
 broken_count=0
 temp_broken_links="/tmp/dots_broken_links_$$"
 true > "$temp_broken_links"
@@ -144,47 +174,15 @@ else
 fi
 echo ""
 
-# Now generate fresh mappings
-echo -e "${YELLOW}→${NC} Generating fresh mappings..."
-"$SCRIPT_DIR/generate-mappings.sh" >/dev/null
+# Process common files first
+process_directory "$DOTS_DIR/common" "$HOME" "common"
 
-# Check if mapping file exists
-if [[ ! -f "$MAPPING_FILE" ]]; then
-    echo -e "${RED}✗${NC} Mapping file not found: $MAPPING_FILE"
-    echo "Run: $SCRIPT_DIR/generate-mappings.sh"
-    exit 1
+# Process OS-specific files
+if [[ "$CURRENT_OS" == "macos" && -d "$DOTS_DIR/macos" ]]; then
+    process_directory "$DOTS_DIR/macos" "$HOME" "macOS-specific"
+elif [[ "$CURRENT_OS" == "linux" && -d "$DOTS_DIR/linux" ]]; then
+    process_directory "$DOTS_DIR/linux" "$HOME" "Linux-specific"
 fi
-
-echo -e "${YELLOW}→${NC} Using mappings: $MAPPING_FILE"
-echo ""
-
-# Parse JSON and create symlinks
-# Using a simple approach that works with basic JSON without requiring jq
-while IFS=':' read -r source_part target_part; do
-    # Skip lines that don't contain mappings (like opening/closing braces)
-    [[ ! "$source_part" =~ \".*\" ]] && continue
-    [[ ! "$target_part" =~ \".*\" ]] && continue
-
-    # Clean up the strings (remove quotes, commas, spaces)
-    source=$(echo "$source_part" | sed 's/^[[:space:]]*"//' | sed 's/"[[:space:]]*$//')
-    target=$(echo "$target_part" | sed 's/^[[:space:]]*"//' | sed 's/"[[:space:]]*,*[[:space:]]*$//')
-
-    # Skip empty lines
-    [[ -z "$source" || -z "$target" ]] && continue
-
-    # Skip if source file doesn't exist
-    if [[ ! -e "$source" ]]; then
-        if [[ "$DRY_RUN" == true ]]; then
-            echo -e "${YELLOW}⚠${NC} [DRY] Source file missing, skipping: $source"
-        else
-            echo -e "${YELLOW}⚠${NC} Source file missing, skipping: $source"
-        fi
-        continue
-    fi
-
-    create_symlink "$source" "$target"
-
-done <"$MAPPING_FILE"
 
 echo ""
 echo "Symlink setup complete!"

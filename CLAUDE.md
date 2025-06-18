@@ -83,14 +83,14 @@ dots hooks
    - A new symlink (`~/bin/tmux-layout-ide`) is created
 3. No manual cleanup needed - it just works!
 
-## Symlink Mappings
+## Symlink System
 
-The system uses JSON-based mapping files for precise file-level symlinks. The `scripts/generate-mappings.sh` script creates mapping files that define exactly which files should be symlinked where.
+The system uses direct directory traversal for precise file-level symlinks. All files in `common/`, `macos/`, and `linux/` directories are automatically discovered and symlinked.
 
-### Mapping System
+### Symlink System
 
 - **File-level linking only**: Every file is individually symlinked (no directory symlinks)
-- **JSON mappings**: `.mappings/macos.json` and `.mappings/linux.json` define source→target mappings
+- **Direct traversal**: Files are discovered by scanning the source directories directly
 - **Automatic parent directory creation**: Parent directories are created as needed when symlinking files
 
 ### Common (Cross-platform) Files
@@ -142,6 +142,7 @@ Use `dots test` for overall system health checks and `dots link --dry-run` for d
 
 ## Recent Changes
 
+- **Simplified Architecture**: Removed JSON mapping system in favor of direct directory traversal (~60% code reduction)
 - **Simplified Workflow**: `dots link` now handles both creating/updating symlinks AND removing broken ones
 - **Manual File Management**: Add files directly to `common/`, `macos/`, or `linux/` directories instead of using commands
 - **Improved Commit Workflow**: `dots commit` opens LazyGit for interactive committing, `dots push` only pushes

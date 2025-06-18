@@ -231,7 +231,7 @@ cmd_sub_add() {
     "$DOTS_DIR/scripts/submodules.sh" add "$@"
 }
 
-# Status command - enhanced with symlink status using JSON mappings
+# Status command - enhanced with symlink status using direct directory traversal
 cmd_status() {
     log_section "=== Git Repository Status ==="
     git status --short
@@ -239,21 +239,9 @@ cmd_status() {
     echo ""
     log_section "=== Symlink Status ==="
 
-    # Get current OS and mapping file
+    # Get current OS
     source "$DOTS_DIR/scripts/detect-os.sh"
     local current_os=$(get_os)
-    local mapping_file="$DOTS_DIR/.mappings/$current_os.json"
-
-    # Generate mappings if they don't exist
-    if [[ ! -f "$mapping_file" ]]; then
-        log_info "Generating mappings..."
-        "$DOTS_DIR/scripts/generate-mappings.sh" >/dev/null
-    fi
-
-    if [[ ! -f "$mapping_file" ]]; then
-        log_error "Could not find or generate mapping file: $mapping_file"
-        return 1
-    fi
 
     local total_links=0
     local valid_links=0
@@ -262,53 +250,64 @@ cmd_status() {
     local wrong_target_links=0
 
     if command -v gum >/dev/null 2>&1; then
-        gum spin --spinner="dot" --title="Checking symlinks from mappings..." -- sleep 0.5
+        gum spin --spinner="dot" --title="Checking symlinks..." -- sleep 0.5
     else
-        echo "Checking symlinks from mappings..."
+        echo "Checking symlinks..."
     fi
 
-    # Check each symlink from our mappings
-    while IFS=':' read -r source_part target_part; do
-        # Skip lines that don't contain mappings
-        [[ ! "$source_part" =~ \".*\" ]] && continue
-        [[ ! "$target_part" =~ \".*\" ]] && continue
+    # Function to check symlinks from a directory
+    check_directory_symlinks() {
+        local source_dir="$1"
+        local target_base="$2"
+        
+        [[ ! -d "$source_dir" ]] && return
+        
+        # Find all files and symlinks recursively
+        while IFS= read -r -d '' file; do
+            # Calculate relative path and target
+            local rel_path="${file#"$source_dir"/}"
+            local target="$target_base/$rel_path"
+            
+            ((total_links++))
 
-        # Clean up the paths
-        local source=$(echo "$source_part" | sed 's/^[[:space:]]*"//' | sed 's/"[[:space:]]*$//')
-        local target=$(echo "$target_part" | sed 's/^[[:space:]]*"//' | sed 's/"[[:space:]]*,*[[:space:]]*$//')
+            if [[ -L "$target" ]]; then
+                # It's a symlink, check if it's valid
+                local actual_target=$(readlink "$target")
+                if [[ "$actual_target" == "$file" ]]; then
+                    ((valid_links++))
+                else
+                    ((wrong_target_links++))
+                    log_warning "Wrong target: $target → $actual_target"
+                    echo "    Expected: $file"
+                fi
 
-        # Skip empty paths
-        [[ -z "$source" || -z "$target" ]] && continue
-
-        ((total_links++))
-
-        if [[ -L "$target" ]]; then
-            # It's a symlink, check if it's valid
-            local actual_target=$(readlink "$target")
-            if [[ "$actual_target" == "$source" ]]; then
-                ((valid_links++))
+                # Check if target exists
+                if [[ ! -e "$target" ]]; then
+                    ((broken_links++))
+                    log_error "Broken link: $target"
+                fi
+            elif [[ -e "$target" ]]; then
+                # File/directory exists but is not a symlink
+                log_error "Not a symlink: $target"
+                echo "    Run 'dots link' to fix"
             else
-                ((wrong_target_links++))
-                log_warning "Wrong target: $target → $actual_target"
-                echo "    Expected: $source"
+                # Neither symlink nor file exists
+                ((missing_links++))
+                log_warning "Missing link: $target"
             fi
 
-            # Check if target exists
-            if [[ ! -e "$target" ]]; then
-                ((broken_links++))
-                log_error "Broken link: $target"
-            fi
-        elif [[ -e "$target" ]]; then
-            # File/directory exists but is not a symlink
-            log_error "Not a symlink: $target"
-            echo "    Run 'dots link' to fix"
-        else
-            # Neither symlink nor file exists
-            ((missing_links++))
-            log_warning "Missing link: $target"
-        fi
+        done < <(find "$source_dir" \( -type f -o -type l \) -print0 2>/dev/null)
+    }
 
-    done <"$mapping_file"
+    # Check common files
+    check_directory_symlinks "$DOTS_DIR/common" "$HOME"
+
+    # Check OS-specific files
+    if [[ "$current_os" == "macos" && -d "$DOTS_DIR/macos" ]]; then
+        check_directory_symlinks "$DOTS_DIR/macos" "$HOME"
+    elif [[ "$current_os" == "linux" && -d "$DOTS_DIR/linux" ]]; then
+        check_directory_symlinks "$DOTS_DIR/linux" "$HOME"
+    fi
 
     # Summary
     echo ""
@@ -338,7 +337,7 @@ cmd_test() {
 
     # Test 1: Check if we're in the right directory
     echo -e "${YELLOW}→${NC} Testing repository structure..."
-    if [[ -f "CLAUDE.md" && -d "scripts" && -d ".mappings" ]]; then
+    if [[ -f "CLAUDE.md" && -d "scripts" && -d "common" ]]; then
         echo -e "${GREEN}✓${NC} Repository structure OK"
         ((tests_passed++))
     else
@@ -358,29 +357,24 @@ cmd_test() {
         ((tests_failed++))
     fi
 
-    # Test 3: Check mapping generation
-    echo -e "${YELLOW}→${NC} Testing mapping generation..."
-    if "$DOTS_DIR/scripts/generate-mappings.sh" >/dev/null 2>&1; then
-        echo -e "${GREEN}✓${NC} Mapping generation OK"
+    # Test 3: Check directory structure
+    echo -e "${YELLOW}→${NC} Testing directory structure..."
+    local expected_dirs=("$DOTS_DIR/common" "$DOTS_DIR/$detected_os" "$DOTS_DIR/scripts")
+    local missing_dirs=0
+    for dir in "${expected_dirs[@]}"; do
+        if [[ ! -d "$dir" ]]; then
+            ((missing_dirs++))
+        fi
+    done
+    if [[ $missing_dirs -eq 0 ]]; then
+        echo -e "${GREEN}✓${NC} Directory structure OK"
         ((tests_passed++))
     else
-        echo -e "${RED}✗${NC} Mapping generation failed"
+        echo -e "${RED}✗${NC} Directory structure incomplete ($missing_dirs missing)"
         ((tests_failed++))
     fi
 
-    # Test 4: Check mapping files exist and are valid JSON
-    echo -e "${YELLOW}→${NC} Testing mapping files..."
-    local mapping_file="$DOTS_DIR/.mappings/$detected_os.json"
-    if [[ -f "$mapping_file" ]] && python3 -m json.tool "$mapping_file" >/dev/null 2>&1; then
-        local mapping_count=$(grep -o '":' "$mapping_file" | wc -l | tr -d ' ')
-        echo -e "${GREEN}✓${NC} Mapping file OK: $mapping_count entries"
-        ((tests_passed++))
-    else
-        echo -e "${RED}✗${NC} Mapping file invalid or missing"
-        ((tests_failed++))
-    fi
-
-    # Test 5: Check symlink creation (dry run)
+    # Test 4: Check symlink creation (dry run)
     echo -e "${YELLOW}→${NC} Testing symlink creation (dry run)..."
     if "$DOTS_DIR/scripts/link.sh" --dry-run >/dev/null 2>&1; then
         echo -e "${GREEN}✓${NC} Symlink creation test OK"
@@ -390,7 +384,7 @@ cmd_test() {
         ((tests_failed++))
     fi
 
-    # Test 6: Check critical symlinks exist and are correct
+    # Test 5: Check critical symlinks exist and are correct
     echo -e "${YELLOW}→${NC} Testing critical symlinks..."
     local critical_links=("$HOME/.zshrc" "$HOME/.gitconfig" "$HOME/bin/dots")
     local valid_symlinks=0
@@ -410,7 +404,7 @@ cmd_test() {
         ((tests_passed++))
     fi
 
-    # Test 7: Check git repository status
+    # Test 6: Check git repository status
     echo -e "${YELLOW}→${NC} Testing git repository..."
     if git rev-parse --git-dir >/dev/null 2>&1; then
         echo -e "${GREEN}✓${NC} Git repository OK"
@@ -420,7 +414,7 @@ cmd_test() {
         ((tests_failed++))
     fi
 
-    # Test 8: Lint shell scripts with shellcheck
+    # Test 7: Lint shell scripts with shellcheck
     echo -e "${YELLOW}→${NC} Linting shell scripts..."
     if command -v shellcheck >/dev/null 2>&1; then
         local shell_files=()
