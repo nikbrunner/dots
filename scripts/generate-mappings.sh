@@ -28,12 +28,12 @@ generate_mappings() {
     # Skip if source doesn't exist
     [[ ! -d "$source_base" ]] && return
 
-    # Find all files recursively and create file-level mappings
+    # Find all files and symlinks recursively and create file-level mappings
     while IFS= read -r -d '' file; do
         local rel_path="${file#"$source_base"/}"
         local target="$target_base/$rel_path"
         mappings+=("\"$file\":\"$target\"")
-    done < <(find "$source_base" -type f -print0 2>/dev/null)
+    done < <(find "$source_base" \( -type f -o -type l \) -print0 2>/dev/null)
 
     # Print mappings
     printf '%s\n' "${mappings[@]}"
