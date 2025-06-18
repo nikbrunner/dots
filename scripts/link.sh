@@ -93,45 +93,35 @@ echo ""
 CURRENT_OS=$(get_os)
 MAPPING_FILE="$DOTS_DIR/.mappings/$CURRENT_OS.json"
 
-# Always generate fresh mappings to ensure accuracy
-echo -e "${YELLOW}→${NC} Generating fresh mappings..."
-"$SCRIPT_DIR/generate-mappings.sh" >/dev/null
-
-# Clean up broken symlinks that point to our dots directory
+# Clean up broken symlinks BEFORE regenerating mappings
 echo -e "${YELLOW}→${NC} Cleaning broken symlinks..."
 
-# Create temporary file to collect unique broken symlinks
-temp_broken_links="/tmp/dots_broken_links_$$"
-> "$temp_broken_links"
-
-# Find broken symlinks that point to our dots directory
-find "$HOME/.config" "$HOME/bin" "$HOME/Library" "$HOME" -maxdepth 2 -type l 2>/dev/null | sort -u | while read -r symlink; do
-    if [[ -L "$symlink" ]]; then
-        target_path=$(readlink "$symlink")
-        # Check if it points to our dots directory and is broken
-        if [[ "$target_path" == "$DOTS_DIR"* ]] && [[ ! -e "$symlink" ]]; then
-            echo "$symlink" >> "$temp_broken_links"
-        fi
-    fi
-done
-
-# Process the broken symlinks (remove duplicates)
+# If mapping file exists, use it to check for broken symlinks
 broken_count=0
-if [[ -s "$temp_broken_links" ]]; then
-    sort -u "$temp_broken_links" | while read -r symlink; do
-        if [[ -e "$symlink" ]]; then  # Check if it still exists before trying to remove
+if [[ -f "$MAPPING_FILE" ]]; then
+    while IFS=':' read -r source_part target_part; do
+        # Skip lines that don't contain mappings
+        [[ ! "$source_part" =~ \".*\" ]] && continue
+        [[ ! "$target_part" =~ \".*\" ]] && continue
+
+        # Clean up the paths
+        target=$(echo "$target_part" | sed 's/^[[:space:]]*"//' | sed 's/"[[:space:]]*,*[[:space:]]*$//')
+        
+        # Skip empty paths
+        [[ -z "$target" ]] && continue
+
+        # Check if symlink exists but target doesn't (broken symlink)
+        if [[ -L "$target" ]] && [[ ! -e "$target" ]]; then
             if [[ "$DRY_RUN" == true ]]; then
-                echo -e "${RED}✗${NC} [DRY] Would remove broken symlink: $symlink"
+                echo -e "${RED}✗${NC} [DRY] Would remove broken symlink: $target"
             else
-                echo -e "${RED}✗${NC} Removing broken symlink: $symlink"
-                rm "$symlink"
+                echo -e "${RED}✗${NC} Removing broken symlink: $target"
+                rm "$target"
             fi
             ((broken_count++))
         fi
-    done
+    done < "$MAPPING_FILE"
 fi
-
-rm -f "$temp_broken_links"
 
 if [[ $broken_count -eq 0 ]]; then
     echo -e "${GREEN}✓${NC} No broken symlinks found"
@@ -143,6 +133,10 @@ else
     fi
 fi
 echo ""
+
+# Now generate fresh mappings to ensure accuracy
+echo -e "${YELLOW}→${NC} Generating fresh mappings..."
+"$SCRIPT_DIR/generate-mappings.sh" >/dev/null
 
 # Check if mapping file exists
 if [[ ! -f "$MAPPING_FILE" ]]; then
