@@ -186,7 +186,6 @@ Current submodules (to be added):
 
 - `nvim` - Neovim configuration
 - `wezterm` - WezTerm configuration
-- `zed` - Zed editor configuration (private)
 
 ## 📦 Dependencies
 
