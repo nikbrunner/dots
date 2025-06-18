@@ -16,6 +16,7 @@ A clean, organized dotfiles repository using symlinks for easy management and de
   - [Managing Submodules](#managing-submodules)
   - [Troubleshooting Submodules](#troubleshooting-submodules)
   - [Common Submodule Commands](#common-submodule-commands)
+  - [Removal Plan](#removal-plan)
 - [Dependencies](#-dependencies)
 - [Platform Support](#-platform-support)
 
@@ -191,6 +192,8 @@ Place OS-specific files in `macos/` or `linux/` following the home directory str
 
 ## 🔗 Submodules
 
+> **💡 Considering Simplification?** See [SUBMODULES_REMOVAL_PLAN.md](./SUBMODULES_REMOVAL_PLAN.md) for a detailed plan to remove submodules and simplify the workflow.
+
 ### Quick Reference
 
 | Task                   | Command                                                         |
@@ -340,6 +343,16 @@ dots link
 3. **Keep submodules on a branch** (not detached HEAD)
 4. **Document your submodules** in this README
 5. **Test after adding** with `dots test` and `dots link`
+
+### Removal Plan
+
+If you're considering simplifying your workflow by removing submodules entirely, see the comprehensive [Submodules Removal Implementation Plan](./SUBMODULES_REMOVAL_PLAN.md) which includes:
+
+- Step-by-step migration process
+- Repository archival procedures
+- Detailed pros/cons analysis
+- Risk assessment and rollback plans
+- Post-migration workflow examples
 
 ## 📦 Dependencies
 
