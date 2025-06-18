@@ -6,9 +6,10 @@ A clean, organized dotfiles repository using symlinks for easy management and de
 
 See [IMPLEMENTATION_PLAN.md](./IMPLEMENTATION_PLAN.md) for detailed implementation plans.
 
-- [ ] Modularize `dots` command
 - [ ] Remove old commands
+- [ ] Modularize `dots` command
 - [ ] Add submodules for `nvim`, `wezterm`
+- [ ] Bin: Validate `mac-setup` script
 
 ## 📁 Structure
 
