@@ -90,26 +90,26 @@ process_directory() {
     local source_dir="$1"
     local target_base="$2"
     local dir_name="$3"
-    
+
     [[ ! -d "$source_dir" ]] && return
-    
+
     echo -e "${YELLOW}→${NC} Processing $dir_name files..."
-    
+
     local file_count=0
-    
+
     # Find all files and symlinks recursively
     while IFS= read -r -d '' file; do
         # Calculate relative path from source directory
         local rel_path="${file#"$source_dir"/}"
         local target="$target_base/$rel_path"
-        
+
         # Skip if source file doesn't exist (shouldn't happen, but be safe)
         [[ ! -e "$file" ]] && continue
-        
+
         create_symlink "$file" "$target"
         ((file_count++))
     done < <(find "$source_dir" \( -type f -o -type l \) -print0 2>/dev/null)
-    
+
     if [[ $file_count -eq 0 ]]; then
         echo -e "${YELLOW}→${NC} No files found in $dir_name"
     else
@@ -129,18 +129,18 @@ echo -e "${YELLOW}→${NC} Cleaning broken symlinks..."
 
 broken_count=0
 temp_broken_links="/tmp/dots_broken_links_$$"
-true > "$temp_broken_links"
+true >"$temp_broken_links"
 
 # Search in common directories for symlinks pointing to dots directory
 for search_dir in "$HOME/.config" "$HOME/bin" "$HOME/Library" "$HOME"; do
     [[ ! -d "$search_dir" ]] && continue
-    
+
     find "$search_dir" -maxdepth 2 -type l 2>/dev/null | while read -r symlink; do
         if [[ -L "$symlink" ]]; then
             target_path=$(readlink "$symlink")
             # Check if it points to our dots directory and is broken
             if [[ "$target_path" == "$DOTS_DIR"* ]] && [[ ! -e "$target_path" ]]; then
-                echo "$symlink" >> "$temp_broken_links"
+                echo "$symlink" >>"$temp_broken_links"
             fi
         fi
     done
@@ -149,7 +149,7 @@ done
 # Process the broken symlinks (remove duplicates)
 if [[ -s "$temp_broken_links" ]]; then
     while IFS= read -r symlink; do
-        if [[ -L "$symlink" ]]; then  # Double-check it's still a symlink
+        if [[ -L "$symlink" ]]; then # Double-check it's still a symlink
             if [[ "$DRY_RUN" == true ]]; then
                 echo -e "${RED}✗${NC} [DRY] Would remove broken symlink: $symlink"
             else
