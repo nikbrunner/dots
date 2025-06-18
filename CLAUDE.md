@@ -31,7 +31,7 @@ This is a symlink-based dotfiles management system designed to organize and depl
 # Check status of git repo and all symlinks
 dots status
 
-# Create/update symlinks (automatically backs up existing files)
+# Update all symlinks (removes broken + creates/updates new)
 dots link [--dry-run]
 
 # Interactive committing with LazyGit
@@ -46,34 +46,42 @@ dots sync
 # Add a new submodule
 dots sub-add <repo-url> submodules/<name>
 
-# Clean broken symlinks
-dots clean [--dry-run]
-
 # Run comprehensive system tests
 dots test
 
 # Format files (markdown, shell scripts, etc.)
 dots format
 
-# Add a file or directory to dots management
-dots add <path>
-
-# Remove a file or directory from dots management
-dots remove <path>
-
 # Install/reinstall git hooks
 dots hooks
 ```
 
-## Adding New Configurations
+## Managing Configurations
 
-1. Add config files to the appropriate directory structure:
+### Adding New Configurations
+
+1. Add config files directly to the appropriate directory structure:
    - For cross-platform configs: Place in `common/` following home directory structure
    - For OS-specific configs: Place in `macos/` or `linux/` following home directory structure
-   - Example: For a new tool config, place it in `common/.config/toolname/`
-2. Run `dots link` to create symlinks (mappings are auto-generated if outdated)
-3. No manual script updates needed - new files are automatically detected and mapped
+   - Example: For a new tool config, create `common/.config/toolname/config`
+2. Run `dots link` to update all symlinks (this also removes any broken symlinks)
+3. Mappings are auto-generated when outdated - no manual updates needed
 4. Verify with `dots test` to ensure everything is working correctly
+
+### Removing Configurations
+
+1. Delete the file from the repository (`common/`, `macos/`, or `linux/`)
+2. Run `dots link` to update symlinks (broken symlinks are automatically removed)
+3. The original symlink in your home directory will be cleaned up
+
+### Renaming/Moving Configurations
+
+1. Rename or move the file within the repository
+   - Example: `mv common/bin/ide common/bin/tmux-layout-ide`
+2. Run `dots link` to update everything:
+   - The old symlink (`~/bin/ide`) is automatically removed
+   - A new symlink (`~/bin/tmux-layout-ide`) is created
+3. No manual cleanup needed - it just works!
 
 ## Symlink Mappings
 
@@ -128,13 +136,14 @@ The `dots test` command provides comprehensive system validation:
 - Symlink creation testing (dry-run)
 - Critical symlink verification
 - Git repository status
+- Shell script linting with shellcheck
 
 Use `dots test` for overall system health checks and `dots link --dry-run` for detailed symlink operation previews.
 
-## Recent Enhancements
+## Recent Changes
 
-- **File Management**: Use `dots add <path>` and `dots remove <path>` for managing files in dots repository
-- **Relative Path Support**: `dots add` now supports relative paths when run from any directory
+- **Simplified Workflow**: `dots link` now handles both creating/updating symlinks AND removing broken ones
+- **Manual File Management**: Add files directly to `common/`, `macos/`, or `linux/` directories instead of using commands
 - **Improved Commit Workflow**: `dots commit` opens LazyGit for interactive committing, `dots push` only pushes
 - **Formatting**: `dots format` automatically formats markdown and shell scripts
 - **Git Hooks**: Automatic broken symlink cleanup on commit via pre-commit hooks
