@@ -11,5 +11,5 @@ selected=$(jq -r '.scripts | keys | .[]' package.json | fzf --header='Select an 
 
 # If a script was selected (user didn't cancel), run it
 if [ ! -z "$selected" ]; then
-    "$selected"
+    npm run "$selected"
 fi
