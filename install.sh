@@ -136,7 +136,6 @@ if [[ "$OS" == "macos" ]]; then
     echo "• Run 'brew bundle' in $SCRIPT_DIR/macos to install Homebrew packages"
 fi
 echo ""
-echo "To add submodules later:"
-echo "• nvim: ./scripts/submodules.sh add https://github.com/nikbrunner/nvim submodules/nvim"
-echo "• wezterm: ./scripts/submodules.sh add https://github.com/nikbrunner/wezterm submodules/wezterm"
+echo "To add more submodules later:"
+echo "• dots sub-add git@github.com:user/wezterm-config.git common/.config/wezterm"
 echo ""
