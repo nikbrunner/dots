@@ -87,7 +87,7 @@ The `dots` command provides a unified interface for managing your dotfiles:
 ```bash
 # Core Commands
 dots install      # Initial setup with symlinks and submodules
-dots link         # Update all symlinks (removes broken + creates new) [--dry-run]
+dots link         # Update all symlinks (removes broken + creates new) [--dry-run] [--no-backup]
 dots sync         # Git pull + submodule updates
 dots status       # Show git and symlink status
 
@@ -160,6 +160,18 @@ dots link --dry-run
 
 The `dots test` command validates the entire system (repository structure, OS detection, symlink creation, etc.) and reports pass/fail status. Use `dots link --dry-run` when you want detailed output showing exactly what symlink operations would be performed.
 
+#### Removing Backup Files
+
+When `dots link` encounters existing files, it creates backups with timestamps (`.backup.YYYYMMDD_HHMMSS`). To clean these up:
+
+```bash
+# Preview what backup files would be deleted (dry run)
+find /path/to/folder -name "*.backup.*" -type f -print
+
+# Remove all backup files from the dots directory
+find /path/to/folder -name "*.backup.*" -type f -delete
+```
+
 ## 🔧 How It Works
 
 ### File Organization
@@ -181,9 +193,13 @@ When you run `dots link`:
 1. **Cleans up**: Removes any broken symlinks from previous configurations
 2. **Discovers files**: Scans `common/`, `macos/`, and `linux/` directories directly
 3. **Creates/Updates**: Makes symlinks for all discovered files to their home directory locations
-4. **Backs up conflicts**: If a real file exists where a symlink should go, it's backed up with a timestamp
+4. **Backs up conflicts**: If a real file exists where a symlink should go, it's backed up with a timestamp (unless `--no-backup` is used)
 
 This single command handles all scenarios: adding, removing, renaming, or moving files.
+
+**Options:**
+- `--dry-run`: Preview what would happen without making changes
+- `--no-backup`: Overwrite existing files instead of backing them up
 
 ### OS-Specific Configurations
 
