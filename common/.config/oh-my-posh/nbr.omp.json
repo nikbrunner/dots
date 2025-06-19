@@ -110,11 +110,6 @@
     "foreground": "blue",
     "template": ""
   },
-  "transient_prompt": {
-    "background": "background",
-    "foreground": "blue",
-    "template": "\u279c "
-  },
   "final_space": true,
   "version": 3,
   "terminal_background": "background"
