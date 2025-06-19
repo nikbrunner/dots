@@ -355,8 +355,11 @@ If you're considering simplifying your workflow by removing submodules entirely,
 
 ## 🛣️ Roadmap
 
-- [ ] Migrate wezterm
-- [ ] How to handle `~/.ssh` ?
+- [x] Migrate wezterm
+- [ ] Remove `*backup` files
+- [ ] Archive old dotfiles
+- [ ] Make this repo public
+- [ ] Document `~/.ssh` setup
 - [ ] Reduce complexity if possible
 - [ ] Verify that install script is working
 
