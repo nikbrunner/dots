@@ -108,6 +108,7 @@ The `dots` command provides a unified interface for managing your dotfiles:
 | `dots sub-update` | Update all submodules | - |
 | `dots sub-add` | Add new submodule | `<url> <path>` |
 | `dots sub-commit` | Commit submodule hash updates | - |
+| `dots sub-status` | Show status of all submodules | - |
 
 ### Maintenance
 
@@ -228,6 +229,7 @@ Place OS-specific files in `macos/` or `linux/` following the home directory str
 | Add submodule          | `dots sub-add git@github.com:user/repo.git common/.config/tool` |
 | Update all submodules  | `dots sub-update`                                               |
 | Commit submodule updates | `dots sub-commit`                                               |
+| Check submodule status | `dots sub-status`                                               |
 | Sync repo + submodules | `dots sync`                                                     |
 | Fix broken symlinks    | `dots link`                                                     |
 
@@ -359,8 +361,8 @@ dots link
 | `dots sub-add <url> <path>` | `git submodule add <url> <path>`                                              | Add a new submodule                  |
 | `dots sub-update`           | `git submodule update --init --recursive`<br>`git submodule foreach git pull` | Update all submodules                |
 | `dots sub-commit`           | `git add <submodules>`<br>`git commit -m "chore: update submodule hashes"`   | Commit submodule hash updates        |
+| `dots sub-status`           | `git submodule status`<br>Show uncommitted changes                           | Show status of all submodules        |
 | `dots sync`                 | `git pull` + submodule update                                                 | Pull changes & update submodules     |
-| -                           | `git submodule status`                                                        | Show status of all submodules        |
 | -                           | `git submodule sync`                                                          | Sync submodule URLs with .gitmodules |
 | -                           | `git config status.submodulesummary 1`                                        | Show submodule summary in git status |
 | -                           | `git diff --submodule`                                                        | Show submodule changes in diff       |
