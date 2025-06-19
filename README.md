@@ -51,6 +51,7 @@ dots/
 ## Installation
 
 1. Clone and install:
+
    ```bash
    git clone https://github.com/nikbrunner/dots.git ~/repos/nikbrunner/dots
    cd ~/repos/nikbrunner/dots
@@ -153,7 +154,6 @@ dots link --dry-run
 
 The `dots test` command validates the entire system (repository structure, OS detection, symlink creation, etc.) and reports pass/fail status. Use `dots link --dry-run` when you want detailed output showing exactly what symlink operations would be performed.
 
-
 ## How It Works
 
 When you run `dots link`:
@@ -178,10 +178,12 @@ Place OS-specific files in `macos/` or `linux/` following the home directory str
 ## Submodules
 
 Current submodules:
+
 - `common/.config/nvim` - Neovim configuration ([nikbrunner/nbr.nvim](https://github.com/nikbrunner/nbr.nvim))
 - `common/.config/wezterm` - Wezterm configuration ([nikbrunner/wezterm-config](https://github.com/nikbrunner/wezterm))
 
 Common commands:
+
 - `dots sub-add <url> <path>` - Add new submodule
 - `dots sub-update` - Update all submodules
 - `dots sub-status` - Show submodule status
