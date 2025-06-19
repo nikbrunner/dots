@@ -92,6 +92,7 @@ show_usage() {
         gum style --foreground=2 "  sub-status   - Show status of all submodules"
         gum style --foreground=2 "  status       - Show git and symlink status"
         gum style --foreground=2 "  test         - Run comprehensive system tests"
+        gum style --foreground=2 "  format       - Format repository files with prettier and shfmt [--check]"
         gum style --foreground=2 "  log          - Show git log"
         echo ""
     else
@@ -111,6 +112,7 @@ show_usage() {
         echo "  sub-status   - Show status of all submodules"
         echo "  status       - Show git and symlink status"
         echo "  test         - Run comprehensive system tests"
+        echo "  format       - Format repository files with prettier and shfmt [--check]"
         echo "  log          - Show git log"
         echo ""
     fi
@@ -589,6 +591,12 @@ cmd_test() {
 }
 
 
+# Format command
+cmd_format() {
+    echo -e "${YELLOW}→${NC} Formatting repository files..."
+    "$DOTS_DIR/scripts/format.sh" "$@"
+}
+
 # Log command
 cmd_log() {
     echo -e "${YELLOW}→${NC} Recent commits:"
@@ -634,6 +642,10 @@ status)
     ;;
 test)
     cmd_test
+    ;;
+format)
+    shift
+    cmd_format "$@"
     ;;
 log)
     cmd_log

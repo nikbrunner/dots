@@ -199,6 +199,7 @@ Common commands:
 - [x] Remove hooks
 - [x] Add `sub-commit` command
 - [x] Add `sub-status` command
+- [x] Add `format` command
 - [ ] Refactor `dots` command (see [docs/DOTS_COMMAND_REFACTOR.md](./docs/DOTS_COMMAND_REFACTOR.md))
 - [ ] Add test script
 - [ ] Verify that install script is working
