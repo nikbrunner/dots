@@ -2,6 +2,7 @@
 [manager]
 prepend_keymap = [
   { on = [ "g", "r", ], run = "cd ~/repos", desc = "Go to the Projects directory" },
+  { on = [ "g", ".", ], run = "cd ~/repos/nikbrunner/dots", desc = "Go to the Dots directory" },
   { on = [ "g", "m", ], run = "cd ~/pCloud\\ Drive/02_AREAS/Music", desc = "Music [pCloud]" },
   { on = [ "g", "p", ], run = "cd ~/Library/CloudStorage/ProtonDrive-nik.brunner@proton.me-folder", desc = "Proton Cloud" },
   # shell doc: https://yazi-rs.github.io/docs/configuration/keymap/#manager.shell
