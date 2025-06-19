@@ -49,12 +49,6 @@ export BC_ANGELA_ST=CNZFGQ2
 export BAT_THEME="base16"
 
 # Aliases ================================================================
-# Dotfiles 
-alias df='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
-alias dfu='df add -u && df commit -m "Update dotfiles" && df push'
-alias dfs='df status'
-alias dflg='lazygit --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
-
 alias vim="nvim"
 alias ls="eza --all --oneline --long --icons --sort=type"
 alias lt="eza --all --tree --icons --sort=type --level=1 --ignore-glob=\"node_modules|.git\""

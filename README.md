@@ -372,12 +372,12 @@ If you're considering simplifying your workflow by removing submodules entirely,
 ## 🛣️ Roadmap
 
 - [x] Migrate wezterm
-- [ ] Remove `*backup` files
-- [ ] Archive old dotfiles
-- [ ] Make this repo public
-- [ ] Document `~/.ssh` setup
+- [x] Remove `*backup` files
+- [x] Archive old dotfiles
+- [x] Make this repo public
 - [ ] Reduce complexity if possible
 - [ ] Verify that install script is working
+- [ ] Document `~/.ssh` setup
 
 ## 📦 Dependencies
 
