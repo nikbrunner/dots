@@ -86,36 +86,35 @@ The `dots` command provides a unified interface for managing your dotfiles:
 
 ### Core Commands
 
-| Command | Description | Options |
-|---------|-------------|---------|
-| `dots install` | Initial setup with symlinks and submodules | `--dry-run` |
-| `dots link` | Update all symlinks (removes broken + creates new) | `--dry-run`, `--no-backup`, `--verbose` |
-| `dots sync` | Git pull + submodule updates | - |
-| `dots status` | Show git and symlink status | - |
+| Command        | Description                                        | Options                                 |
+| -------------- | -------------------------------------------------- | --------------------------------------- |
+| `dots install` | Initial setup with symlinks and submodules         | `--dry-run`                             |
+| `dots link`    | Update all symlinks (removes broken + creates new) | `--dry-run`, `--no-backup`, `--verbose` |
+| `dots sync`    | Git pull + submodule updates                       | -                                       |
+| `dots status`  | Show git and symlink status                        | -                                       |
 
 ### Git Operations
 
-| Command | Description | Options |
-|---------|-------------|---------|
-| `dots commit` | Open LazyGit for interactive committing | - |
-| `dots push` | Push commits to remote | `--force` |
-| `dots log` | Show recent commits | - |
+| Command       | Description                             | Options   |
+| ------------- | --------------------------------------- | --------- |
+| `dots commit` | Open LazyGit for interactive committing | -         |
+| `dots push`   | Push commits to remote                  | `--force` |
+| `dots log`    | Show recent commits                     | -         |
 
 ### Submodules
 
-| Command | Description | Options |
-|---------|-------------|---------|
-| `dots sub-update` | Update all submodules | - |
-| `dots sub-add` | Add new submodule | `<url> <path>` |
-| `dots sub-commit` | Commit submodule hash updates | - |
-| `dots sub-status` | Show status of all submodules | - |
+| Command           | Description                   | Options        |
+| ----------------- | ----------------------------- | -------------- |
+| `dots sub-update` | Update all submodules         | -              |
+| `dots sub-add`    | Add new submodule             | `<url> <path>` |
+| `dots sub-commit` | Commit submodule hash updates | -              |
+| `dots sub-status` | Show status of all submodules | -              |
 
 ### Maintenance
 
-| Command | Description | Options |
-|---------|-------------|---------|
-| `dots test` | Run comprehensive system tests | - |
-
+| Command     | Description                    | Options |
+| ----------- | ------------------------------ | ------- |
+| `dots test` | Run comprehensive system tests | -       |
 
 ### Common Workflows
 
@@ -210,6 +209,7 @@ When you run `dots link`:
 This single command handles all scenarios: adding, removing, renaming, or moving files.
 
 **Options:**
+
 - `--dry-run`: Preview what would happen without making changes
 - `--no-backup`: Overwrite existing files instead of backing them up
 - `--verbose`: Show detailed output for each symlink operation
@@ -224,14 +224,14 @@ Place OS-specific files in `macos/` or `linux/` following the home directory str
 
 ### Quick Reference
 
-| Task                   | Command                                                         |
-| ---------------------- | --------------------------------------------------------------- |
-| Add submodule          | `dots sub-add git@github.com:user/repo.git common/.config/tool` |
-| Update all submodules  | `dots sub-update`                                               |
+| Task                     | Command                                                         |
+| ------------------------ | --------------------------------------------------------------- |
+| Add submodule            | `dots sub-add git@github.com:user/repo.git common/.config/tool` |
+| Update all submodules    | `dots sub-update`                                               |
 | Commit submodule updates | `dots sub-commit`                                               |
-| Check submodule status | `dots sub-status`                                               |
-| Sync repo + submodules | `dots sync`                                                     |
-| Fix broken symlinks    | `dots link`                                                     |
+| Check submodule status   | `dots sub-status`                                               |
+| Sync repo + submodules   | `dots sync`                                                     |
+| Fix broken symlinks      | `dots link`                                                     |
 
 ### Understanding Submodules
 
@@ -360,8 +360,8 @@ dots link
 | --------------------------- | ----------------------------------------------------------------------------- | ------------------------------------ |
 | `dots sub-add <url> <path>` | `git submodule add <url> <path>`                                              | Add a new submodule                  |
 | `dots sub-update`           | `git submodule update --init --recursive`<br>`git submodule foreach git pull` | Update all submodules                |
-| `dots sub-commit`           | `git add <submodules>`<br>`git commit -m "chore: update submodule hashes"`   | Commit submodule hash updates        |
-| `dots sub-status`           | `git submodule status`<br>Show uncommitted changes                           | Show status of all submodules        |
+| `dots sub-commit`           | `git add <submodules>`<br>`git commit -m "chore: update submodule hashes"`    | Commit submodule hash updates        |
+| `dots sub-status`           | `git submodule status`<br>Show uncommitted changes                            | Show status of all submodules        |
 | `dots sync`                 | `git pull` + submodule update                                                 | Pull changes & update submodules     |
 | -                           | `git submodule sync`                                                          | Sync submodule URLs with .gitmodules |
 | -                           | `git config status.submodulesummary 1`                                        | Show submodule summary in git status |

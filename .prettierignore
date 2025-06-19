@@ -1,2 +1,10 @@
-common/.config/zed/conversations/
-common/.config/zed/prompts/
+# Exclude dotfiles directories to avoid formatting configuration files
+common/
+macos/
+linux/
+
+# Node modules
+node_modules/
+
+# Git directory
+.git/
