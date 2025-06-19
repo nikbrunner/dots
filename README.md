@@ -5,20 +5,20 @@ A clean, organized dotfiles repository using symlinks for easy management and de
 ## 📚 Table of Contents
 
 - [Overview](#overview)
-- [Structure](#-structure)
-- [Installation](#-installation)
-- [Usage](#-usage)
+- [Structure](#structure)
+- [Installation](#installation)
+- [Usage](#usage)
   - [Common Workflows](#common-workflows)
-- [How It Works](#-how-it-works)
-- [Submodules](#-submodules)
+- [How It Works](#how-it-works)
+- [Submodules](#submodules)
   - [Understanding Submodules](#understanding-submodules)
   - [Current Submodules](#current-submodules)
   - [Managing Submodules](#managing-submodules)
   - [Troubleshooting Submodules](#troubleshooting-submodules)
   - [Common Submodule Commands](#common-submodule-commands)
   - [Removal Plan](#removal-plan)
-- [Dependencies](#-dependencies)
-- [Platform Support](#-platform-support)
+- [Dependencies](#dependencies)
+- [Platform Support](#platform-support)
 
 ## Overview
 
@@ -28,13 +28,12 @@ This dotfiles system uses a simple symlink-based approach:
 - Files are symlinked to their expected locations in your home directory
 - Running `dots link` updates everything automatically (removes broken symlinks + creates new ones)
 
-## 📁 Structure
+## Structure
 
 ```
 dots/
 ├── README.md                # This file
 ├── CLAUDE.md                # Claude Code instructions
-├── IMPLEMENTATION_PLAN.md   # Detailed roadmap implementation plans
 ├── scripts/                 # Management scripts
 │   ├── detect-os.sh         # OS detection utility
 │   └── link.sh              # Symlink creation using direct traversal
@@ -49,38 +48,22 @@ dots/
 └── linux/                   # Linux-specific configurations
 ```
 
-## 🚀 Installation
+## Installation
 
-### Quick Install
-
-```bash
-git clone https://github.com/nikbrunner/dots.git ~/repos/nikbrunner/dots
-cd ~/repos/nikbrunner/dots
-./install.sh
-```
-
-### Manual Steps
-
-1. Clone the repository:
-
+1. Clone and install:
    ```bash
    git clone https://github.com/nikbrunner/dots.git ~/repos/nikbrunner/dots
-   ```
-
-2. Run the installation script:
-
-   ```bash
    cd ~/repos/nikbrunner/dots
    ./install.sh
    ```
 
-3. Add `~/.local/bin` to your PATH if not already present:
+2. Add to PATH (if needed):
    ```bash
    echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.zshrc
    source ~/.zshrc
    ```
 
-## 📝 Usage
+## Usage
 
 The `dots` command provides a unified interface for managing your dotfiles:
 
@@ -123,7 +106,6 @@ The `dots` command provides a unified interface for managing your dotfiles:
 1. **Add the file** to the appropriate directory:
    - Cross-platform: `common/` (mirrors home directory structure)
    - OS-specific: `macos/` or `linux/` (mirrors home directory structure)
-   - Example: `cp ~/.config/newtool/config common/.config/newtool/config`
 2. **Update symlinks**: `dots link`
 3. **Commit changes**: `dots commit` (opens LazyGit)
 
@@ -171,33 +153,8 @@ dots link --dry-run
 
 The `dots test` command validates the entire system (repository structure, OS detection, symlink creation, etc.) and reports pass/fail status. Use `dots link --dry-run` when you want detailed output showing exactly what symlink operations would be performed.
 
-#### Removing Backup Files
 
-When `dots link` encounters existing files, it creates backups with timestamps (`.backup.YYYYMMDD_HHMMSS`). To clean these up:
-
-```bash
-# Preview what backup files would be deleted (dry run)
-find /path/to/folder -name "*.backup.*" -type f -print
-
-# Remove all backup files from the dots directory
-find /path/to/folder -name "*.backup.*" -type f -delete
-```
-
-## 🔧 How It Works
-
-### File Organization
-
-- **`common/`**: Cross-platform configurations (used on all systems)
-- **`macos/`**: macOS-specific configurations
-- **`linux/`**: Linux-specific configurations
-
-Each directory mirrors your home directory structure. For example:
-
-- `common/.zshrc` → `~/.zshrc`
-- `common/.config/git/config` → `~/.config/git/config`
-- `macos/.config/karabiner/karabiner.json` → `~/.config/karabiner/karabiner.json`
-
-### The Magic of `dots link`
+## How It Works
 
 When you run `dots link`:
 
@@ -218,10 +175,11 @@ This single command handles all scenarios: adding, removing, renaming, or moving
 
 Place OS-specific files in `macos/` or `linux/` following the home directory structure. The system automatically detects your OS and creates appropriate symlinks using direct directory traversal.
 
-## 🔗 Submodules
+## Submodules
 
 Current submodules:
 - `common/.config/nvim` - Neovim configuration ([nikbrunner/nbr.nvim](https://github.com/nikbrunner/nbr.nvim))
+- `common/.config/wezterm` - Wezterm configuration ([nikbrunner/wezterm-config](https://github.com/nikbrunner/wezterm))
 
 Common commands:
 - `dots sub-add <url> <path>` - Add new submodule
@@ -245,13 +203,13 @@ Common commands:
 - [ ] Verify that install script is working
 - [ ] Document `~/.ssh` setup
 
-## 📦 Dependencies
+## Dependencies
 
 - Git
 - Bash 4+ (macOS users: `brew install bash`)
 - Standard Unix tools (ln, mkdir, etc.)
 
-## 🤝 Platform Support
+## Platform Support
 
 - ✅ macOS (primary development)
 - ✅ Linux (EndeavourOS/Arch)
