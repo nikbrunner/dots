@@ -45,6 +45,9 @@ dots sync
 # Add a new submodule
 dots sub-add <repo-url> <target-path>
 
+# Commit submodule hash updates
+dots sub-commit
+
 # Run comprehensive system tests
 dots test
 ```
