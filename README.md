@@ -33,20 +33,20 @@ This dotfiles system uses a simple symlink-based approach:
 ```
 dots/
 ├── README.md                # This file
-├── CLAUDE.md               # Claude Code instructions
-├── IMPLEMENTATION_PLAN.md  # Detailed roadmap implementation plans
-├── scripts/               # Management scripts
-│   ├── detect-os.sh       # OS detection utility
-│   └── link.sh           # Symlink creation using direct traversal
-├── common/               # Cross-platform configurations
-│   ├── .config/          # Config files (.zshrc, .gitconfig, etc.)
-│   ├── bin/              # Custom scripts
-│   └── .zshrc, .gitconfig, etc. # Root dotfiles
-├── macos/                # macOS-specific configurations
-│   ├── .config/karabiner/ # Karabiner configuration
-│   ├── Library/          # Application Support files
-│   └── Brewfile          # Homebrew dependencies
-└── linux/                # Linux-specific configurations
+├── CLAUDE.md                # Claude Code instructions
+├── IMPLEMENTATION_PLAN.md   # Detailed roadmap implementation plans
+├── scripts/                 # Management scripts
+│   ├── detect-os.sh         # OS detection utility
+│   └── link.sh              # Symlink creation using direct traversal
+├── common/                  # Cross-platform configurations
+│   ├── .config/             # Config files (.zshrc, .gitconfig, etc.)
+│   ├── bin/                 # Custom scripts
+│   └── .zshrc, etc.         # Root dotfiles
+├── macos/                   # macOS-specific configurations
+│   ├── .config/karabiner/   # Karabiner configuration
+│   ├── Library/             # Application Support files
+│   └── Brewfile             # Homebrew dependencies
+└── linux/                   # Linux-specific configurations
 ```
 
 ## 🚀 Installation
