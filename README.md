@@ -89,7 +89,7 @@ The `dots` command provides a unified interface for managing your dotfiles:
 | Command | Description | Options |
 |---------|-------------|---------|
 | `dots install` | Initial setup with symlinks and submodules | `--dry-run` |
-| `dots link` | Update all symlinks (removes broken + creates new) | `--dry-run`, `--no-backup` |
+| `dots link` | Update all symlinks (removes broken + creates new) | `--dry-run`, `--no-backup`, `--verbose` |
 | `dots sync` | Git pull + submodule updates | - |
 | `dots status` | Show git and symlink status | - |
 
@@ -211,6 +211,7 @@ This single command handles all scenarios: adding, removing, renaming, or moving
 **Options:**
 - `--dry-run`: Preview what would happen without making changes
 - `--no-backup`: Overwrite existing files instead of backing them up
+- `--verbose`: Show detailed output for each symlink operation
 
 ### OS-Specific Configurations
 

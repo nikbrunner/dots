@@ -31,7 +31,7 @@ This is a symlink-based dotfiles management system designed to organize and depl
 dots status
 
 # Update all symlinks (removes broken + creates/updates new)
-dots link [--dry-run]
+dots link [--dry-run] [--no-backup] [--verbose]
 
 # Interactive committing with LazyGit
 dots commit

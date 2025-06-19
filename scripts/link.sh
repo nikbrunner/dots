@@ -1,6 +1,6 @@
 #!/bin/bash
 # Creates symlinks for dotfiles using direct directory traversal
-# Usage: ./scripts/link.sh [--dry-run] [--no-backup]
+# Usage: ./scripts/link.sh [--dry-run] [--no-backup] [--verbose]
 
 set -e
 
@@ -21,6 +21,7 @@ NC='\033[0m' # No Color
 # Check for flags
 DRY_RUN=false
 NO_BACKUP=false
+VERBOSE=false
 for arg in "$@"; do
     case $arg in
         --dry-run)
@@ -28,6 +29,9 @@ for arg in "$@"; do
             ;;
         --no-backup)
             NO_BACKUP=true
+            ;;
+        --verbose)
+            VERBOSE=true
             ;;
     esac
 done
@@ -53,21 +57,26 @@ create_symlink() {
             local actual_target
             actual_target=$(readlink "$target")
             if [[ "$actual_target" == "$source" ]]; then
-                echo -e "${GREEN}✓${NC} [DRY] Symlink OK: $target → $source"
+                [[ "$VERBOSE" == true ]] && echo -e "${GREEN}✓${NC} [DRY] Symlink OK: $target → $source"
+                return 0
             else
-                echo -e "${YELLOW}⚠${NC} [DRY] Wrong target: $target → $actual_target (expected: $source)"
+                [[ "$VERBOSE" == true ]] && echo -e "${YELLOW}⚠${NC} [DRY] Wrong target: $target → $actual_target (expected: $source)"
+                return 1
             fi
         elif [[ -e "$target" ]]; then
-            echo -e "${YELLOW}⚠${NC} [DRY] File exists (not symlink): $target"
-            if [[ "$NO_BACKUP" == true ]]; then
-                echo -e "${YELLOW}⚠${NC} [DRY] Would replace file with symlink"
-            else
-                echo -e "${YELLOW}⚠${NC} [DRY] Would backup and replace with symlink"
+            if [[ "$VERBOSE" == true ]]; then
+                echo -e "${YELLOW}⚠${NC} [DRY] File exists (not symlink): $target"
+                if [[ "$NO_BACKUP" == true ]]; then
+                    echo -e "${YELLOW}⚠${NC} [DRY] Would replace file with symlink"
+                else
+                    echo -e "${YELLOW}⚠${NC} [DRY] Would backup and replace with symlink"
+                fi
             fi
+            return 2
         else
-            echo -e "${GREEN}+${NC} [DRY] Would create symlink: $target → $source"
+            [[ "$VERBOSE" == true ]] && echo -e "${GREEN}+${NC} [DRY] Would create symlink: $target → $source"
+            return 3
         fi
-        return
     fi
 
     # Create parent directory if it doesn't exist
@@ -78,28 +87,32 @@ create_symlink() {
         local actual_target
         actual_target=$(readlink "$target")
         if [[ "$actual_target" == "$source" ]]; then
-            echo -e "${GREEN}✓${NC} Symlink OK: $target"
+            [[ "$VERBOSE" == true ]] && echo -e "${GREEN}✓${NC} Symlink OK: $target"
+            return 0
         else
-            echo -e "${YELLOW}⚠${NC} Updating symlink: $target"
+            [[ "$VERBOSE" == true ]] && echo -e "${YELLOW}⚠${NC} Updating symlink: $target"
             rm "$target"
             ln -s "$source" "$target"
-            echo -e "${GREEN}✓${NC} Updated symlink: $target"
+            [[ "$VERBOSE" == true ]] && echo -e "${GREEN}✓${NC} Updated symlink: $target"
+            return 1
         fi
     elif [[ -e "$target" ]]; then
         # Target exists but is not a symlink
         if [[ "$NO_BACKUP" == true ]]; then
-            echo -e "${YELLOW}⚠${NC} Replacing file with symlink: $target"
+            [[ "$VERBOSE" == true ]] && echo -e "${YELLOW}⚠${NC} Replacing file with symlink: $target"
             rm -f "$target"
         else
-            echo -e "${YELLOW}⚠${NC} Backing up existing file: $target"
+            [[ "$VERBOSE" == true ]] && echo -e "${YELLOW}⚠${NC} Backing up existing file: $target"
             mv "$target" "$target.backup.$(date +%Y%m%d_%H%M%S)"
         fi
         ln -s "$source" "$target"
-        echo -e "${GREEN}✓${NC} Created symlink: $target"
+        [[ "$VERBOSE" == true ]] && echo -e "${GREEN}✓${NC} Created symlink: $target"
+        return 2
     else
         # Target doesn't exist
         ln -s "$source" "$target"
-        echo -e "${GREEN}✓${NC} Created symlink: $target"
+        [[ "$VERBOSE" == true ]] && echo -e "${GREEN}✓${NC} Created symlink: $target"
+        return 3
     fi
 }
 
@@ -114,6 +127,10 @@ process_directory() {
     echo -e "${YELLOW}→${NC} Processing $dir_name files..."
 
     local file_count=0
+    local ok_count=0
+    local updated_count=0
+    local created_count=0
+    local replaced_count=0
 
     # Find all files and symlinks recursively
     while IFS= read -r -d '' file; do
@@ -125,13 +142,28 @@ process_directory() {
         [[ ! -e "$file" ]] && continue
 
         create_symlink "$file" "$target"
+        local result=$?
+        
+        case $result in
+            0) ((ok_count++)) ;;
+            1) ((updated_count++)) ;;
+            2) ((replaced_count++)) ;;
+            3) ((created_count++)) ;;
+        esac
+        
         ((file_count++))
     done < <(find "$source_dir" \( -type f -o -type l \) -print0 2>/dev/null)
 
     if [[ $file_count -eq 0 ]]; then
         echo -e "${YELLOW}→${NC} No files found in $dir_name"
     else
-        echo -e "${GREEN}✓${NC} Processed $file_count files from $dir_name"
+        local summary=""
+        [[ $ok_count -gt 0 ]] && summary+="${ok_count} ok"
+        [[ $created_count -gt 0 ]] && summary+="${summary:+, }${created_count} created"
+        [[ $updated_count -gt 0 ]] && summary+="${summary:+, }${updated_count} updated"
+        [[ $replaced_count -gt 0 ]] && summary+="${summary:+, }${replaced_count} replaced"
+        
+        echo -e "${GREEN}✓${NC} $dir_name: $file_count files ($summary)"
     fi
 }
 
@@ -169,9 +201,9 @@ if [[ -s "$temp_broken_links" ]]; then
     while IFS= read -r symlink; do
         if [[ -L "$symlink" ]]; then # Double-check it's still a symlink
             if [[ "$DRY_RUN" == true ]]; then
-                echo -e "${RED}✗${NC} [DRY] Would remove broken symlink: $symlink"
+                [[ "$VERBOSE" == true ]] && echo -e "${RED}✗${NC} [DRY] Would remove broken symlink: $symlink"
             else
-                echo -e "${RED}✗${NC} Removing broken symlink: $symlink"
+                [[ "$VERBOSE" == true ]] && echo -e "${RED}✗${NC} Removing broken symlink: $symlink"
                 rm "$symlink"
             fi
             ((broken_count++))
@@ -187,7 +219,7 @@ else
     if [[ "$DRY_RUN" == true ]]; then
         echo -e "${GREEN}✓${NC} Would remove $broken_count broken symlinks"
     else
-        echo -e "${GREEN}✓${NC} Removed $broken_count broken symlinks"
+        echo -e "${GREEN}✓${NC} Cleaned up: $broken_count broken symlinks"
     fi
 fi
 echo ""
