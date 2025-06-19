@@ -353,6 +353,13 @@ If you're considering simplifying your workflow by removing submodules entirely,
 - Risk assessment and rollback plans
 - Post-migration workflow examples
 
+## 🛣️ Roadmap
+
+- [ ] Migrate wezterm
+- [ ] How to handle `~/.ssh` ?
+- [ ] Reduce complexity if possible
+- [ ] Verify that install script is working
+
 ## 📦 Dependencies
 
 - Git
