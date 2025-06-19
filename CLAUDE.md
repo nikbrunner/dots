@@ -48,6 +48,9 @@ dots sub-add <repo-url> <target-path>
 # Commit submodule hash updates
 dots sub-commit
 
+# Show status of all submodules
+dots sub-status
+
 # Run comprehensive system tests
 dots test
 ```
