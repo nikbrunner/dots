@@ -8,15 +8,14 @@ A clean, organized dotfiles repository using symlinks for easy management and de
 - [Structure](#structure)
 - [Installation](#installation)
 - [Usage](#usage)
+  - [Core Commands](#core-commands)
+  - [Git Operations](#git-operations)
+  - [Submodules](#submodules-1)
+  - [Maintenance](#maintenance)
   - [Common Workflows](#common-workflows)
 - [How It Works](#how-it-works)
 - [Submodules](#submodules)
-  - [Understanding Submodules](#understanding-submodules)
-  - [Current Submodules](#current-submodules)
-  - [Managing Submodules](#managing-submodules)
-  - [Troubleshooting Submodules](#troubleshooting-submodules)
-  - [Common Submodule Commands](#common-submodule-commands)
-  - [Removal Plan](#removal-plan)
+- [Roadmap](#roadmap)
 - [Dependencies](#dependencies)
 - [Platform Support](#platform-support)
 
@@ -191,7 +190,7 @@ Common commands:
 
 > **📖 Detailed Documentation**: See [docs/SUBMODULES.md](./docs/SUBMODULES.md) for comprehensive submodule management guide including troubleshooting, best practices, and removal planning.
 
-## 🛣️ Roadmap
+## Roadmap
 
 - [x] Migrate wezterm
 - [x] Remove `*backup` files
