@@ -235,10 +235,10 @@ cmd_sub_commit() {
     
     # Check if there are any submodule changes
     local submodule_changes
-    submodule_changes=$(git status --porcelain | grep "^M " | grep -E "(common|macos|linux)/.+")
+    submodule_changes=$(git status --porcelain | grep "^M " | grep -E "(common|macos|linux)/.+" || true)
     
     if [[ -z "$submodule_changes" ]]; then
-        log_warning "No submodule changes found to commit"
+        log_success "All submodules are up to date"
         return 0
     fi
     
