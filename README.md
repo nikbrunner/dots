@@ -84,26 +84,37 @@ cd ~/repos/nikbrunner/dots
 
 The `dots` command provides a unified interface for managing your dotfiles:
 
-```bash
-# Core Commands
-dots install      # Initial setup with symlinks and submodules
-dots link         # Update all symlinks (removes broken + creates new) [--dry-run] [--no-backup]
-dots sync         # Git pull + submodule updates
-dots status       # Show git and symlink status
+### Core Commands
 
-# Git Operations
-dots commit       # Open LazyGit for interactive committing
-dots push         # Push commits to remote [--force]
-dots log          # Show recent commits
+| Command | Description | Options |
+|---------|-------------|---------|
+| `dots install` | Initial setup with symlinks and submodules | `--dry-run` |
+| `dots link` | Update all symlinks (removes broken + creates new) | `--dry-run`, `--no-backup` |
+| `dots sync` | Git pull + submodule updates | - |
+| `dots status` | Show git and symlink status | - |
 
-# Maintenance
-dots test         # Run comprehensive system tests
-dots hooks        # Install/reinstall git hooks
+### Git Operations
 
-# Submodules
-dots sub-update   # Update all submodules
-dots sub-add      # Add new submodule
-```
+| Command | Description | Options |
+|---------|-------------|---------|
+| `dots commit` | Open LazyGit for interactive committing | - |
+| `dots push` | Push commits to remote | `--force` |
+| `dots log` | Show recent commits | - |
+
+### Submodules
+
+| Command | Description | Options |
+|---------|-------------|---------|
+| `dots sub-update` | Update all submodules | - |
+| `dots sub-add` | Add new submodule | `<url> <path>` |
+
+### Maintenance
+
+| Command | Description | Options |
+|---------|-------------|---------|
+| `dots test` | Run comprehensive system tests | - |
+| `dots hooks` | Install/reinstall git hooks | - |
+
 
 ### Common Workflows
 
