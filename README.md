@@ -392,7 +392,9 @@ If you're considering simplifying your workflow by removing submodules entirely,
 - [x] Archive old dotfiles
 - [x] Make this repo public
 - [x] Remove hooks
-- [ ] Add `sub-commit` command
+- [x] Add `sub-commit` command
+- [x] Add `sub-status` command
+- [ ] Add test script
 - [ ] Verify that install script is working
 - [ ] Document `~/.ssh` setup
 
