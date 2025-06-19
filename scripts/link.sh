@@ -1,6 +1,6 @@
 #!/bin/bash
 # Creates symlinks for dotfiles using direct directory traversal
-# Usage: ./scripts/link.sh [--dry-run]
+# Usage: ./scripts/link.sh [--dry-run] [--no-backup]
 
 set -e
 
@@ -20,16 +20,25 @@ NC='\033[0m' # No Color
 
 # Check for flags
 DRY_RUN=false
+NO_BACKUP=false
 for arg in "$@"; do
     case $arg in
         --dry-run)
             DRY_RUN=true
+            ;;
+        --no-backup)
+            NO_BACKUP=true
             ;;
     esac
 done
 
 if [[ "$DRY_RUN" == true ]]; then
     echo -e "${YELLOW}DRY RUN MODE - No changes will be made${NC}"
+    echo ""
+fi
+
+if [[ "$NO_BACKUP" == true ]]; then
+    echo -e "${YELLOW}NO BACKUP MODE - Existing files will be overwritten${NC}"
     echo ""
 fi
 
@@ -50,7 +59,11 @@ create_symlink() {
             fi
         elif [[ -e "$target" ]]; then
             echo -e "${YELLOW}⚠${NC} [DRY] File exists (not symlink): $target"
-            echo -e "${YELLOW}⚠${NC} [DRY] Would backup and replace with symlink"
+            if [[ "$NO_BACKUP" == true ]]; then
+                echo -e "${YELLOW}⚠${NC} [DRY] Would replace file with symlink"
+            else
+                echo -e "${YELLOW}⚠${NC} [DRY] Would backup and replace with symlink"
+            fi
         else
             echo -e "${GREEN}+${NC} [DRY] Would create symlink: $target → $source"
         fi
@@ -73,9 +86,14 @@ create_symlink() {
             echo -e "${GREEN}✓${NC} Updated symlink: $target"
         fi
     elif [[ -e "$target" ]]; then
-        # Target exists but is not a symlink - backup and replace
-        echo -e "${YELLOW}⚠${NC} Backing up existing file: $target"
-        mv "$target" "$target.backup.$(date +%Y%m%d_%H%M%S)"
+        # Target exists but is not a symlink
+        if [[ "$NO_BACKUP" == true ]]; then
+            echo -e "${YELLOW}⚠${NC} Replacing file with symlink: $target"
+            rm -f "$target"
+        else
+            echo -e "${YELLOW}⚠${NC} Backing up existing file: $target"
+            mv "$target" "$target.backup.$(date +%Y%m%d_%H%M%S)"
+        fi
         ln -s "$source" "$target"
         echo -e "${GREEN}✓${NC} Created symlink: $target"
     else
