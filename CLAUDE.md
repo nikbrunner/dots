@@ -47,9 +47,6 @@ dots sub-add <repo-url> <target-path>
 
 # Run comprehensive system tests
 dots test
-
-# Install/reinstall git hooks
-dots hooks
 ```
 
 ## Managing Configurations
@@ -142,7 +139,6 @@ Use `dots test` for overall system health checks and `dots link --dry-run` for d
 - **Simplified Workflow**: `dots link` now handles both creating/updating symlinks AND removing broken ones
 - **Manual File Management**: Add files directly to `common/`, `macos/`, or `linux/` directories instead of using commands
 - **Improved Commit Workflow**: `dots commit` opens LazyGit for interactive committing, `dots push` only pushes
-- **Git Hooks**: Automatic broken symlink cleanup on commit via pre-commit hooks
 - **Enhanced Testing**: `dots test` includes shellcheck linting for script quality
 - **Gum Integration**: Beautiful CLI interface when gum is installed
 - **Submodule Integration**: Submodules are now added directly to their target locations (e.g., `common/.config/nvim`)

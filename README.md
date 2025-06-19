@@ -113,7 +113,6 @@ The `dots` command provides a unified interface for managing your dotfiles:
 | Command | Description | Options |
 |---------|-------------|---------|
 | `dots test` | Run comprehensive system tests | - |
-| `dots hooks` | Install/reinstall git hooks | - |
 
 
 ### Common Workflows
@@ -386,7 +385,8 @@ If you're considering simplifying your workflow by removing submodules entirely,
 - [x] Remove `*backup` files
 - [x] Archive old dotfiles
 - [x] Make this repo public
-- [ ] Reduce complexity if possible
+- [x] Remove hooks
+- [ ] Add `sub-commit` command
 - [ ] Verify that install script is working
 - [ ] Document `~/.ssh` setup
 
