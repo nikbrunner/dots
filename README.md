@@ -179,7 +179,7 @@ Place OS-specific files in `macos/` or `linux/` following the home directory str
 Current submodules:
 
 - `common/.config/nvim` - Neovim configuration ([nikbrunner/nbr.nvim](https://github.com/nikbrunner/nbr.nvim))
-- `common/.config/wezterm` - Wezterm configuration ([nikbrunner/wezterm-config](https://github.com/nikbrunner/wezterm))
+- `common/.config/wezterm` - Wezterm configuration ([nikbrunner/wezterm](https://github.com/nikbrunner/wezterm))
 
 Common commands:
 
