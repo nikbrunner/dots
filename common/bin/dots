@@ -90,7 +90,6 @@ show_usage() {
         gum style --foreground=2 "  sub-add      - Add new submodule"
         gum style --foreground=2 "  status       - Show git and symlink status"
         gum style --foreground=2 "  test         - Run comprehensive system tests"
-        gum style --foreground=2 "  hooks        - Install/reinstall git hooks"
         gum style --foreground=2 "  log          - Show git log"
         echo ""
     else
@@ -108,7 +107,6 @@ show_usage() {
         echo "  sub-add      - Add new submodule"
         echo "  status       - Show git and symlink status"
         echo "  test         - Run comprehensive system tests"
-        echo "  hooks        - Install/reinstall git hooks"
         echo "  log          - Show git log"
         echo ""
     fi
@@ -486,12 +484,6 @@ cmd_test() {
 }
 
 
-# Hooks command - install/reinstall git hooks
-cmd_hooks() {
-    log_info "Installing git hooks..."
-    "$DOTS_DIR/scripts/install-hooks.sh"
-}
-
 # Log command
 cmd_log() {
     echo -e "${YELLOW}→${NC} Recent commits:"
@@ -531,9 +523,6 @@ status)
     ;;
 test)
     cmd_test
-    ;;
-hooks)
-    cmd_hooks
     ;;
 log)
     cmd_log
