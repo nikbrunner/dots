@@ -88,6 +88,7 @@ show_usage() {
         gum style --foreground=2 "  push         - Push commits to remote [--force]"
         gum style --foreground=2 "  sub-update   - Update all submodules"
         gum style --foreground=2 "  sub-add      - Add new submodule"
+        gum style --foreground=2 "  sub-commit   - Commit submodule hash updates"
         gum style --foreground=2 "  status       - Show git and symlink status"
         gum style --foreground=2 "  test         - Run comprehensive system tests"
         gum style --foreground=2 "  log          - Show git log"
@@ -105,6 +106,7 @@ show_usage() {
         echo "  push         - Push commits to remote [--force]"
         echo "  sub-update   - Update all submodules"
         echo "  sub-add      - Add new submodule"
+        echo "  sub-commit   - Commit submodule hash updates"
         echo "  status       - Show git and symlink status"
         echo "  test         - Run comprehensive system tests"
         echo "  log          - Show git log"
@@ -225,6 +227,46 @@ cmd_sub_add() {
         return 1
     fi
     "$DOTS_DIR/scripts/submodules.sh" add "$@"
+}
+
+# Submodule commit command - commits submodule hash updates
+cmd_sub_commit() {
+    log_info "Checking for submodule changes..."
+    
+    # Check if there are any submodule changes
+    local submodule_changes
+    submodule_changes=$(git status --porcelain | grep "^M " | grep -E "(common|macos|linux)/.+")
+    
+    if [[ -z "$submodule_changes" ]]; then
+        log_warning "No submodule changes found to commit"
+        return 0
+    fi
+    
+    log_info "Found submodule changes:"
+    echo "$submodule_changes" | while read -r line; do
+        echo "  $line"
+    done
+    
+    # Add all submodule changes
+    echo "$submodule_changes" | while read -r status file; do
+        git add "$file"
+    done
+    
+    # Create commit message
+    local commit_msg="chore: update submodule commit hashes"
+    
+    # Add submodule details to commit message
+    local submodule_list
+    submodule_list=$(echo "$submodule_changes" | sed 's/^M  /- /' | tr '\n' '\n')
+    
+    if command -v gum >/dev/null 2>&1; then
+        gum spin --spinner="dot" --title="Committing submodule updates..." -- \
+            git commit -m "$commit_msg"$'\n\n'"$submodule_list"
+    else
+        git commit -m "$commit_msg"$'\n\n'"$submodule_list"
+    fi
+    
+    log_success "Submodule changes committed"
 }
 
 # Status command - enhanced with symlink status using direct directory traversal
@@ -517,6 +559,9 @@ sub-update)
 sub-add)
     shift
     cmd_sub_add "$@"
+    ;;
+sub-commit)
+    cmd_sub_commit
     ;;
 status)
     cmd_status
