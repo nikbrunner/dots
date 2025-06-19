@@ -17,12 +17,14 @@ find /path/to/folder -name "*.backup.*" -type f -delete
 ## Symlink Issues
 
 ### Broken Symlinks
+
 ```bash
 # Fix all broken symlinks
 dots link
 ```
 
 ### Wrong Symlink Targets
+
 ```bash
 # Check symlink status
 dots status
@@ -34,6 +36,7 @@ dots link
 ## Git Issues
 
 ### Authentication Problems
+
 ```bash
 # Check remote URL
 git remote -v
@@ -43,4 +46,5 @@ git remote set-url origin git@github.com:nikbrunner/dots.git
 ```
 
 ### Submodule Issues
+
 See [docs/SUBMODULES.md](./SUBMODULES.md) for comprehensive submodule troubleshooting.
