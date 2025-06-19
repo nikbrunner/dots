@@ -394,6 +394,7 @@ If you're considering simplifying your workflow by removing submodules entirely,
 - [x] Remove hooks
 - [x] Add `sub-commit` command
 - [x] Add `sub-status` command
+- [ ] Refactor `dots` command (see [docs/DOTS_COMMAND_REFACTOR.md](./docs/DOTS_COMMAND_REFACTOR.md))
 - [ ] Add test script
 - [ ] Verify that install script is working
 - [ ] Document `~/.ssh` setup
