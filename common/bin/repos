@@ -1,0 +1,388 @@
+#!/usr/bin/env bash
+
+# Configuration
+REPOS_BASE_PATH="$HOME/repos"
+
+# List of repositories to ensure are cloned
+ENSURE_CLONED=(
+    # Add repositories here, examples:
+    # "git@github.com:username/repo.git"
+    # "https://github.com/username/repo.git"
+    # "git@github.com:organization/*"  # Clone all repos from organization
+    "git@github.com:nikbrunner/dots"
+    "git@github.com:black-atom-industries/*"
+)
+
+# Colors for output
+GREEN='\033[0;32m'
+RED='\033[0;31m'
+NC='\033[0m' # No Color
+
+# Helper functions
+print_success() {
+    echo -e "${GREEN}✓ $1${NC}"
+}
+
+print_error() {
+    echo -e "${RED}✗ $1${NC}"
+}
+
+# Parse git URL to extract username and repo name
+parse_git_url() {
+    local url="$1"
+    local username repo_name
+
+    # Remove .git suffix if present
+    url="${url%.git}"
+
+    if [[ "$url" =~ ^git@.*:(.+)/(.+)$ ]]; then
+        # SSH URL format: git@github.com:username/repo
+        username="${BASH_REMATCH[1]}"
+        repo_name="${BASH_REMATCH[2]}"
+    elif [[ "$url" =~ ^https?://.*github\.com/(.+)/(.+)$ ]]; then
+        # HTTPS URL format: https://github.com/username/repo
+        username="${BASH_REMATCH[1]}"
+        repo_name="${BASH_REMATCH[2]}"
+    else
+        print_error "Invalid Git URL format"
+        return 1
+    fi
+
+    echo "$username/$repo_name"
+}
+
+# Add a repository
+add_repo() {
+    local git_url="$1"
+
+    if [[ -z "$git_url" ]]; then
+        print_error "Please provide a git URL"
+        echo "Usage: repos add <git-url>"
+        exit 1
+    fi
+
+    local repo_path
+    repo_path=$(parse_git_url "$git_url")
+
+    if [[ $? -ne 0 ]]; then
+        exit 1
+    fi
+
+    local clone_path="$REPOS_BASE_PATH/$repo_path"
+
+    if [[ -d "$clone_path" ]]; then
+        print_error "Repository already exists at $clone_path"
+        exit 1
+    fi
+
+    print_success "Cloning repository to $clone_path"
+
+    # Create parent directory if it doesn't exist
+    mkdir -p "$(dirname "$clone_path")"
+
+    if git clone "$git_url" "$clone_path"; then
+        print_success "Repository cloned successfully"
+    else
+        print_error "Failed to clone repository"
+        exit 1
+    fi
+}
+
+# List all repositories
+list_repos() {
+    find "$REPOS_BASE_PATH" -mindepth 2 -maxdepth 2 -type d |
+        sed "s|$REPOS_BASE_PATH/||" |
+        sort
+}
+
+# Remove a repository
+remove_repo() {
+    local repos
+    repos=$(list_repos)
+
+    if [[ -z "$repos" ]]; then
+        print_error "No repositories found"
+        exit 1
+    fi
+
+    local selected
+    selected=$(echo "$repos" | fzf --prompt="Select repository to remove: " --height=10 --reverse)
+
+    if [[ -z "$selected" ]]; then
+        echo "No repository selected"
+        exit 0
+    fi
+
+    local repo_path="$REPOS_BASE_PATH/$selected"
+
+    # Kill tmux session if it exists
+    local session_name
+    session_name=$(echo "$selected" | tr '/:.' '-')
+    tmux kill-session -t "$session_name" 2>/dev/null
+
+    # Confirm removal
+    echo "Are you sure you want to remove $selected? (y/N)"
+    read -r confirm
+
+    if [[ "$confirm" == "y" || "$confirm" == "Y" ]]; then
+        rm -rf "$repo_path"
+        print_success "Repository removed: $selected"
+    else
+        echo "Removal cancelled"
+    fi
+}
+
+# Open a repository in tmux
+open_repo() {
+    local repos
+    repos=$(list_repos)
+
+    if [[ -z "$repos" ]]; then
+        print_error "No repositories found"
+        exit 1
+    fi
+
+    local selected
+    selected=$(echo "$repos" | fzf --prompt="Select repository to open: " --height=10 --reverse)
+
+    if [[ -z "$selected" ]]; then
+        echo "No repository selected"
+        exit 0
+    fi
+
+    local repo_path="$REPOS_BASE_PATH/$selected"
+    local session_name
+    session_name=$(echo "$selected" | tr '/:.' '-')
+
+    # Check if session already exists
+    if tmux has-session -t "$session_name" 2>/dev/null; then
+        if [[ -n "$TMUX" ]]; then
+            tmux switch-client -t "$session_name"
+        else
+            tmux attach-session -t "$session_name"
+        fi
+    else
+        # Create new session
+        if [[ -n "$TMUX" ]]; then
+            tmux new-session -d -s "$session_name" -c "$repo_path"
+            tmux switch-client -t "$session_name"
+        else
+            tmux new-session -s "$session_name" -c "$repo_path"
+        fi
+    fi
+}
+
+# Check if gh CLI is installed and authenticated
+check_gh_cli() {
+    if ! command -v gh &>/dev/null; then
+        print_error "GitHub CLI (gh) is not installed"
+        echo "Install it from: https://cli.github.com/"
+        return 1
+    fi
+    
+    if ! gh auth status &>/dev/null; then
+        print_error "GitHub CLI is not authenticated"
+        echo "Run: gh auth login"
+        return 1
+    fi
+    
+    return 0
+}
+
+# Get all repositories for an organization/user using GitHub CLI
+get_github_repos() {
+    local org_user="$1"
+    
+    # Check gh CLI before proceeding
+    check_gh_cli || return 1
+    
+    # Use gh to list repos (it handles both users and orgs automatically)
+    local repos
+    repos=$(gh repo list "$org_user" --limit 1000 --json name --jq '.[].name' 2>/dev/null)
+    
+    if [[ $? -ne 0 ]] || [[ -z "$repos" ]]; then
+        # Try as user if org failed
+        repos=$(gh api "users/$org_user/repos?per_page=100" --jq '.[].name' 2>/dev/null)
+    fi
+    
+    echo "$repos"
+}
+
+# Setup repositories from ENSURE_CLONED list
+setup_repos() {
+    if [[ ${#ENSURE_CLONED[@]} -eq 0 ]]; then
+        print_error "No repositories defined in ENSURE_CLONED variable"
+        echo "Edit this script and add repositories to the ENSURE_CLONED array"
+        exit 1
+    fi
+    
+    # Check if any wildcard patterns exist that would need gh CLI
+    local has_wildcards=false
+    for pattern in "${ENSURE_CLONED[@]}"; do
+        if [[ "$pattern" == *"/*" ]]; then
+            has_wildcards=true
+            break
+        fi
+    done
+    
+    if [[ "$has_wildcards" == true ]]; then
+        check_gh_cli || exit 1
+    fi
+
+    local total=0
+    local cloned=0
+    local skipped=0
+
+    for repo_pattern in "${ENSURE_CLONED[@]}"; do
+        # Skip comments and empty lines
+        [[ "$repo_pattern" =~ ^[[:space:]]*# ]] && continue
+        [[ -z "$repo_pattern" ]] && continue
+
+        # Check if it's a wildcard pattern
+        if [[ "$repo_pattern" == *"/*" ]]; then
+            # Extract organization/user from wildcard pattern
+            local base_url="${repo_pattern%/*}"
+            local org_user
+
+            if [[ "$base_url" =~ git@.*:(.+)$ ]]; then
+                org_user="${BASH_REMATCH[1]}"
+            elif [[ "$base_url" =~ https?://.*github\.com/(.+)$ ]]; then
+                org_user="${BASH_REMATCH[1]}"
+            else
+                print_error "Invalid wildcard pattern: $repo_pattern"
+                continue
+            fi
+
+            echo "Fetching repositories for $org_user..."
+            local repos
+            repos=$(get_github_repos "$org_user")
+
+            if [[ $? -ne 0 ]]; then
+                # Error already printed by get_github_repos
+                continue
+            fi
+
+            if [[ -z "$repos" ]]; then
+                print_error "No repositories found for $org_user"
+                continue
+            fi
+
+            # Clone each repository
+            while IFS= read -r repo_name; do
+                [[ -z "$repo_name" ]] && continue
+
+                local full_url="${base_url}/${repo_name}.git"
+                ((total++))
+
+                local repo_path
+                repo_path=$(parse_git_url "$full_url")
+                local clone_path="$REPOS_BASE_PATH/$repo_path"
+
+                if [[ -d "$clone_path" ]]; then
+                    echo "Skipping $repo_path (already exists)"
+                    ((skipped++))
+                else
+                    echo "Cloning $repo_path..."
+                    mkdir -p "$(dirname "$clone_path")"
+                    if git clone "$full_url" "$clone_path" >/dev/null 2>&1; then
+                        print_success "Cloned $repo_path"
+                        ((cloned++))
+                    else
+                        print_error "Failed to clone $repo_path"
+                    fi
+                fi
+            done <<<"$repos"
+        else
+            # Single repository
+            ((total++))
+            local repo_path
+            repo_path=$(parse_git_url "$repo_pattern")
+
+            if [[ $? -ne 0 ]]; then
+                continue
+            fi
+
+            local clone_path="$REPOS_BASE_PATH/$repo_path"
+
+            if [[ -d "$clone_path" ]]; then
+                echo "Skipping $repo_path (already exists)"
+                ((skipped++))
+            else
+                echo "Cloning $repo_path..."
+                mkdir -p "$(dirname "$clone_path")"
+                if git clone "$repo_pattern" "$clone_path" >/dev/null 2>&1; then
+                    print_success "Cloned $repo_path"
+                    ((cloned++))
+                else
+                    print_error "Failed to clone $repo_path"
+                fi
+            fi
+        fi
+    done
+
+    echo
+    print_success "Setup complete: $total repositories processed"
+    echo "  Cloned: $cloned"
+    echo "  Skipped: $skipped"
+    echo "  Failed: $((total - cloned - skipped))"
+}
+
+# Show help
+show_help() {
+    cat <<EOF
+repos - Minimal repository manager
+
+Usage:
+  repos add <git-url>    Clone a repository to organized path
+  repos remove           Remove a repository (interactive)
+  repos open             Open a repository in tmux (interactive)
+  repos setup            Clone all repositories from ENSURE_CLONED list
+  repos help             Show this help message
+
+Repository base path: $REPOS_BASE_PATH
+
+Examples:
+  repos add git@github.com:username/repo.git
+  repos add https://github.com/username/repo.git
+  repos remove
+  repos open
+  repos setup
+
+Setup wildcard support:
+  Edit the ENSURE_CLONED variable in this script to include:
+  - Individual repos: "git@github.com:username/repo.git"
+  - All repos from user/org: "git@github.com:organization/*"
+
+Requirements:
+  - GitHub CLI (gh) must be installed and authenticated
+  - Install: https://cli.github.com/
+  - Authenticate: gh auth login
+EOF
+}
+
+# Main command handler
+case "${1:-}" in
+add)
+    add_repo "$2"
+    ;;
+remove)
+    remove_repo
+    ;;
+open)
+    open_repo
+    ;;
+setup)
+    setup_repos
+    ;;
+help | --help | -h)
+    show_help
+    ;;
+*)
+    if [[ -n "$1" ]]; then
+        print_error "Unknown command: $1"
+    fi
+    show_help
+    exit 1
+    ;;
+esac
+
