@@ -266,6 +266,146 @@ open_repo() {
     fi
 }
 
+# Guide user through dependency installation
+install_deps() {
+    echo "repos - Dependency Installation Guide"
+    echo "===================================="
+    echo
+    
+    # Check current status
+    local missing_required=()
+    local missing_optional=()
+    
+    # Check required dependencies
+    for cmd in git fzf tmux; do
+        if ! command -v "$cmd" &>/dev/null; then
+            missing_required+=("$cmd")
+        else
+            print_success "$cmd is installed"
+        fi
+    done
+    
+    # Check optional dependencies
+    if ! command -v gum &>/dev/null; then
+        missing_optional+=("gum")
+    else
+        print_success "gum is installed (optional - enhanced UX)"
+    fi
+    
+    if ! command -v gh &>/dev/null; then
+        missing_optional+=("gh")
+    else
+        print_success "gh is installed (optional - wildcard repo cloning)"
+        # Check if authenticated
+        if ! gh auth status &>/dev/null; then
+            print_warning "GitHub CLI is not authenticated"
+            echo "  Run: gh auth login"
+        else
+            print_success "GitHub CLI is authenticated"
+        fi
+    fi
+    
+    echo
+    
+    # Installation instructions for missing dependencies
+    if [[ ${#missing_required[@]} -gt 0 ]]; then
+        echo "Required dependencies to install:"
+        for dep in "${missing_required[@]}"; do
+            print_error "$dep is missing"
+        done
+        echo
+        
+        # OS-specific installation instructions
+        case "$(uname)" in
+            Darwin)
+                echo "macOS installation (using Homebrew):"
+                echo "  brew install git fzf tmux"
+                ;;
+            Linux)
+                # Detect Linux distribution
+                if command -v apt &>/dev/null; then
+                    echo "Ubuntu/Debian installation:"
+                    echo "  sudo apt update && sudo apt install git fzf tmux"
+                elif command -v yum &>/dev/null; then
+                    echo "CentOS/RHEL installation:"
+                    echo "  sudo yum install git fzf tmux"
+                elif command -v pacman &>/dev/null; then
+                    echo "Arch Linux installation:"
+                    echo "  sudo pacman -S git fzf tmux"
+                else
+                    echo "Linux installation (check your package manager):"
+                    echo "  Install: git fzf tmux"
+                fi
+                ;;
+            *)
+                echo "Please install the missing dependencies using your system's package manager"
+                ;;
+        esac
+        echo
+    fi
+    
+    if [[ ${#missing_optional[@]} -gt 0 ]]; then
+        echo "Optional dependencies for enhanced experience:"
+        for dep in "${missing_optional[@]}"; do
+            print_warning "$dep is not installed (optional)"
+        done
+        echo
+        
+        # Installation instructions for optional deps
+        case "$(uname)" in
+            Darwin)
+                echo "macOS installation (using Homebrew):"
+                [[ " ${missing_optional[*]} " =~ " gum " ]] && echo "  brew install gum"
+                [[ " ${missing_optional[*]} " =~ " gh " ]] && echo "  brew install gh"
+                ;;
+            Linux)
+                if command -v apt &>/dev/null; then
+                    echo "Ubuntu/Debian installation:"
+                    [[ " ${missing_optional[*]} " =~ " gum " ]] && echo "  # gum: https://github.com/charmbracelet/gum#installation"
+                    [[ " ${missing_optional[*]} " =~ " gh " ]] && echo "  sudo apt install gh"
+                elif command -v pacman &>/dev/null; then
+                    echo "Arch Linux installation:"
+                    [[ " ${missing_optional[*]} " =~ " gum " ]] && echo "  sudo pacman -S gum"
+                    [[ " ${missing_optional[*]} " =~ " gh " ]] && echo "  sudo pacman -S github-cli"
+                else
+                    echo "Linux installation:"
+                    [[ " ${missing_optional[*]} " =~ " gum " ]] && echo "  gum: https://github.com/charmbracelet/gum#installation"
+                    [[ " ${missing_optional[*]} " =~ " gh " ]] && echo "  gh: https://cli.github.com/"
+                fi
+                ;;
+            *)
+                [[ " ${missing_optional[*]} " =~ " gum " ]] && echo "  gum: https://github.com/charmbracelet/gum#installation"
+                [[ " ${missing_optional[*]} " =~ " gh " ]] && echo "  gh: https://cli.github.com/"
+                ;;
+        esac
+        echo
+    fi
+    
+    # GitHub CLI authentication note
+    if command -v gh &>/dev/null && ! gh auth status &>/dev/null; then
+        echo "📋 GitHub CLI Authentication:"
+        echo "  After installing gh, authenticate with:"
+        echo "  gh auth login"
+        echo
+        echo "  This is required for wildcard repository cloning (e.g., 'org/*' patterns)"
+        echo
+    fi
+    
+    # Summary
+    if [[ ${#missing_required[@]} -eq 0 ]]; then
+        print_success "All required dependencies are installed!"
+        if [[ ${#missing_optional[@]} -eq 0 ]]; then
+            print_success "All optional dependencies are also installed!"
+            echo "You're ready to use all repos features! 🎉"
+        else
+            echo "You can use repos now, with enhanced features available after installing optional dependencies."
+        fi
+    else
+        echo "Install the required dependencies above, then run 'repos install' again to verify."
+        exit 1
+    fi
+}
+
 # Show git status for all repos
 status_repos() {
     local repos
@@ -507,6 +647,7 @@ show_help() {
 repos - Minimal repository manager
 
 Usage:
+  repos install            Guide through dependency installation
   repos add <git-url>      Clone a repository to organized path
   repos remove             Remove a repository (interactive)
   repos open               Open a repository in tmux (interactive)
@@ -521,6 +662,7 @@ Environment Variables:
 Repository base path: $REPOS_BASE_PATH
 
 Examples:
+  repos install            # Check dependencies and get installation guide
   repos add git@github.com:username/repo.git
   repos add https://github.com/username/repo.git
   repos remove
@@ -547,6 +689,9 @@ check_dependencies
 
 # Main command handler
 case "${1:-}" in
+install)
+    install_deps
+    ;;
 add)
     add_repo "$2"
     ;;
