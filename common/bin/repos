@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Configuration
-REPOS_BASE_PATH="$HOME/repos"
+REPOS_BASE_PATH="${REPOS_BASE_PATH:-$HOME/repos}"
 
 # List of repositories to ensure are cloned
 ENSURE_CLONED=(
@@ -13,9 +13,13 @@ ENSURE_CLONED=(
     "git@github.com:black-atom-industries/*"
 )
 
+# Default parallel clone jobs
+DEFAULT_PARALLEL_JOBS=4
+
 # Colors for output
 GREEN='\033[0;32m'
 RED='\033[0;31m'
+YELLOW='\033[0;33m'
 NC='\033[0m' # No Color
 
 # Helper functions
@@ -27,14 +31,92 @@ print_error() {
     echo -e "${RED}✗ $1${NC}"
 }
 
+print_warning() {
+    echo -e "${YELLOW}⚠ $1${NC}"
+}
+
+# Check if gum is available
+has_gum() {
+    command -v gum &>/dev/null
+}
+
+# Dependency check
+check_dependencies() {
+    local missing_deps=()
+    
+    for cmd in git fzf tmux; do
+        if ! command -v "$cmd" &>/dev/null; then
+            missing_deps+=("$cmd")
+        fi
+    done
+    
+    if [[ ${#missing_deps[@]} -gt 0 ]]; then
+        print_error "Missing required dependencies: ${missing_deps[*]}"
+        echo "Please install the missing dependencies and try again."
+        exit 1
+    fi
+    
+    # Check if REPOS_BASE_PATH exists
+    if [[ ! -d "$REPOS_BASE_PATH" ]]; then
+        print_warning "Repository base path does not exist: $REPOS_BASE_PATH"
+        echo -n "Create it? (y/N) "
+        read -r create_dir
+        if [[ "$create_dir" == "y" || "$create_dir" == "Y" ]]; then
+            if ! mkdir -p "$REPOS_BASE_PATH"; then
+                print_error "Failed to create directory: $REPOS_BASE_PATH"
+                exit 1
+            fi
+            print_success "Created directory: $REPOS_BASE_PATH"
+        else
+            exit 1
+        fi
+    fi
+}
+
+# Confirm action with gum or fallback
+confirm_action() {
+    local prompt="$1"
+    
+    if has_gum; then
+        gum confirm "$prompt"
+    else
+        echo -n "$prompt (y/N) "
+        read -r confirm
+        [[ "$confirm" == "y" || "$confirm" == "Y" ]]
+    fi
+}
+
+# Select repository with fzf or gum filter
+select_repo() {
+    local prompt="$1"
+    local repos
+    repos=$(list_repos)
+    
+    if [[ -z "$repos" ]]; then
+        print_error "No repositories found"
+        return 1
+    fi
+    
+    if has_gum; then
+        echo "$repos" | gum filter --placeholder "$prompt"
+    else
+        echo "$repos" | fzf --prompt="$prompt" --height=10 --reverse
+    fi
+}
+
+# Get tmux session name from repo path
+get_session_name() {
+    echo "$1" | tr '/:.' '-'
+}
+
 # Parse git URL to extract username and repo name
 parse_git_url() {
     local url="$1"
     local username repo_name
-
+    
     # Remove .git suffix if present
     url="${url%.git}"
-
+    
     if [[ "$url" =~ ^git@.*:(.+)/(.+)$ ]]; then
         # SSH URL format: git@github.com:username/repo
         username="${BASH_REMATCH[1]}"
@@ -47,86 +129,106 @@ parse_git_url() {
         print_error "Invalid Git URL format"
         return 1
     fi
-
+    
     echo "$username/$repo_name"
+}
+
+# Clone a single repository
+clone_single_repo() {
+    local git_url="$1"
+    local show_progress="${2:-true}"
+    
+    local repo_path
+    repo_path=$(parse_git_url "$git_url") || return 1
+    
+    local clone_path="$REPOS_BASE_PATH/$repo_path"
+    
+    if [[ -d "$clone_path" ]]; then
+        echo "Skipping $repo_path (already exists)"
+        return 2  # Already exists
+    fi
+    
+    # Create parent directory
+    if ! mkdir -p "$(dirname "$clone_path")"; then
+        print_error "Failed to create directory for $repo_path"
+        return 1
+    fi
+    
+    echo "Cloning $repo_path..."
+    
+    if [[ "$show_progress" == "true" ]]; then
+        if git clone "$git_url" "$clone_path"; then
+            print_success "Cloned $repo_path"
+            return 0
+        else
+            print_error "Failed to clone $repo_path"
+            return 1
+        fi
+    else
+        if git clone "$git_url" "$clone_path" >/dev/null 2>&1; then
+            print_success "Cloned $repo_path"
+            return 0
+        else
+            print_error "Failed to clone $repo_path"
+            return 1
+        fi
+    fi
 }
 
 # Add a repository
 add_repo() {
     local git_url="$1"
-
+    
     if [[ -z "$git_url" ]]; then
         print_error "Please provide a git URL"
         echo "Usage: repos add <git-url>"
         exit 1
     fi
-
-    local repo_path
-    repo_path=$(parse_git_url "$git_url")
-
-    if [[ $? -ne 0 ]]; then
-        exit 1
-    fi
-
-    local clone_path="$REPOS_BASE_PATH/$repo_path"
-
-    if [[ -d "$clone_path" ]]; then
-        print_error "Repository already exists at $clone_path"
-        exit 1
-    fi
-
-    print_success "Cloning repository to $clone_path"
-
-    # Create parent directory if it doesn't exist
-    mkdir -p "$(dirname "$clone_path")"
-
-    if git clone "$git_url" "$clone_path"; then
-        print_success "Repository cloned successfully"
+    
+    if has_gum; then
+        gum spin --spinner dot --title "Cloning repository..." -- clone_single_repo "$git_url" false
     else
-        print_error "Failed to clone repository"
-        exit 1
+        clone_single_repo "$git_url" true
     fi
 }
 
 # List all repositories
 list_repos() {
-    find "$REPOS_BASE_PATH" -mindepth 2 -maxdepth 2 -type d |
+    if [[ ! -d "$REPOS_BASE_PATH" ]]; then
+        return
+    fi
+    
+    find "$REPOS_BASE_PATH" -mindepth 2 -maxdepth 2 -type d 2>/dev/null |
         sed "s|$REPOS_BASE_PATH/||" |
         sort
 }
 
 # Remove a repository
 remove_repo() {
-    local repos
-    repos=$(list_repos)
-
-    if [[ -z "$repos" ]]; then
-        print_error "No repositories found"
-        exit 1
-    fi
-
     local selected
-    selected=$(echo "$repos" | fzf --prompt="Select repository to remove: " --height=10 --reverse)
-
+    selected=$(select_repo "Select repository to remove: ")
+    
     if [[ -z "$selected" ]]; then
         echo "No repository selected"
         exit 0
     fi
-
+    
     local repo_path="$REPOS_BASE_PATH/$selected"
-
+    
     # Kill tmux session if it exists
     local session_name
-    session_name=$(echo "$selected" | tr '/:.' '-')
-    tmux kill-session -t "$session_name" 2>/dev/null
-
+    session_name=$(get_session_name "$selected")
+    tmux kill-session -t "$session_name" 2>/dev/null && \
+        print_warning "Killed tmux session: $session_name"
+    
     # Confirm removal
-    echo "Are you sure you want to remove $selected? (y/N)"
-    read -r confirm
-
-    if [[ "$confirm" == "y" || "$confirm" == "Y" ]]; then
-        rm -rf "$repo_path"
-        print_success "Repository removed: $selected"
+    if confirm_action "Are you sure you want to remove $selected?"; then
+        if rm -rf "$repo_path"; then
+            print_success "Repository removed: $selected"
+        else
+            print_error "Failed to remove repository: $selected"
+            exit 1
+        fi
     else
         echo "Removal cancelled"
     fi
@@ -134,26 +236,18 @@ remove_repo() {
 
 # Open a repository in tmux
 open_repo() {
-    local repos
-    repos=$(list_repos)
-
-    if [[ -z "$repos" ]]; then
-        print_error "No repositories found"
-        exit 1
-    fi
-
     local selected
-    selected=$(echo "$repos" | fzf --prompt="Select repository to open: " --height=10 --reverse)
-
+    selected=$(select_repo "Select repository to open: ")
+    
     if [[ -z "$selected" ]]; then
         echo "No repository selected"
         exit 0
     fi
-
+    
     local repo_path="$REPOS_BASE_PATH/$selected"
     local session_name
-    session_name=$(echo "$selected" | tr '/:.' '-')
-
+    session_name=$(get_session_name "$selected")
+    
     # Check if session already exists
     if tmux has-session -t "$session_name" 2>/dev/null; then
         if [[ -n "$TMUX" ]]; then
@@ -169,6 +263,50 @@ open_repo() {
         else
             tmux new-session -s "$session_name" -c "$repo_path"
         fi
+    fi
+}
+
+# Show git status for all repos
+status_repos() {
+    local repos
+    repos=$(list_repos)
+    
+    if [[ -z "$repos" ]]; then
+        print_error "No repositories found"
+        exit 1
+    fi
+    
+    echo "Checking status of all repositories..."
+    echo
+    
+    local has_changes=false
+    
+    while IFS= read -r repo; do
+        [[ -z "$repo" ]] && continue
+        
+        local repo_path="$REPOS_BASE_PATH/$repo"
+        cd "$repo_path" || continue
+        
+        # Check if it's a git repository
+        if [[ ! -d .git ]]; then
+            print_warning "$repo is not a git repository"
+            continue
+        fi
+        
+        # Get git status
+        local status_output
+        status_output=$(git status --porcelain 2>/dev/null)
+        
+        if [[ -n "$status_output" ]]; then
+            has_changes=true
+            echo -e "${YELLOW}$repo${NC}"
+            git status --short
+            echo
+        fi
+    done <<<"$repos"
+    
+    if [[ "$has_changes" == false ]]; then
+        print_success "All repositories are clean"
     fi
 }
 
@@ -198,9 +336,16 @@ get_github_repos() {
     
     # Use gh to list repos (it handles both users and orgs automatically)
     local repos
-    repos=$(gh repo list "$org_user" --limit 1000 --json name --jq '.[].name' 2>/dev/null)
     
-    if [[ $? -ne 0 ]] || [[ -z "$repos" ]]; then
+    if has_gum; then
+        repos=$(gum spin --spinner dot --title "Fetching repositories for $org_user..." -- \
+            gh repo list "$org_user" --limit 1000 --json name --jq '.[].name' 2>/dev/null)
+    else
+        echo "Fetching repositories for $org_user..."
+        repos=$(gh repo list "$org_user" --limit 1000 --json name --jq '.[].name' 2>/dev/null)
+    fi
+    
+    if [[ -z "$repos" ]]; then
         # Try as user if org failed
         repos=$(gh api "users/$org_user/repos?per_page=100" --jq '.[].name' 2>/dev/null)
     fi
@@ -208,8 +353,37 @@ get_github_repos() {
     echo "$repos"
 }
 
+# Parallel clone helper function
+parallel_clone() {
+    local git_url="$1"
+    local repo_path
+    repo_path=$(parse_git_url "$git_url") || return 1
+    
+    local clone_path="$REPOS_BASE_PATH/$repo_path"
+    
+    if [[ -d "$clone_path" ]]; then
+        echo "SKIP:$repo_path"
+        return 0
+    fi
+    
+    mkdir -p "$(dirname "$clone_path")" 2>/dev/null
+    
+    if git clone "$git_url" "$clone_path" >/dev/null 2>&1; then
+        echo "OK:$repo_path"
+        return 0
+    else
+        echo "FAIL:$repo_path"
+        return 1
+    fi
+}
+
+export -f parallel_clone parse_git_url print_success print_error
+export REPOS_BASE_PATH
+
 # Setup repositories from ENSURE_CLONED list
 setup_repos() {
+    local parallel_jobs="${PARALLEL_JOBS:-$DEFAULT_PARALLEL_JOBS}"
+    
     if [[ ${#ENSURE_CLONED[@]} -eq 0 ]]; then
         print_error "No repositories defined in ENSURE_CLONED variable"
         echo "Edit this script and add repositories to the ENSURE_CLONED array"
@@ -228,22 +402,21 @@ setup_repos() {
     if [[ "$has_wildcards" == true ]]; then
         check_gh_cli || exit 1
     fi
-
-    local total=0
-    local cloned=0
-    local skipped=0
-
+    
+    local clone_urls=()
+    
+    # First, expand all patterns to get actual URLs
     for repo_pattern in "${ENSURE_CLONED[@]}"; do
         # Skip comments and empty lines
         [[ "$repo_pattern" =~ ^[[:space:]]*# ]] && continue
         [[ -z "$repo_pattern" ]] && continue
-
+        
         # Check if it's a wildcard pattern
         if [[ "$repo_pattern" == *"/*" ]]; then
             # Extract organization/user from wildcard pattern
             local base_url="${repo_pattern%/*}"
             local org_user
-
+            
             if [[ "$base_url" =~ git@.*:(.+)$ ]]; then
                 org_user="${BASH_REMATCH[1]}"
             elif [[ "$base_url" =~ https?://.*github\.com/(.+)$ ]]; then
@@ -252,79 +425,80 @@ setup_repos() {
                 print_error "Invalid wildcard pattern: $repo_pattern"
                 continue
             fi
-
-            echo "Fetching repositories for $org_user..."
+            
             local repos
-            repos=$(get_github_repos "$org_user")
-
-            if [[ $? -ne 0 ]]; then
-                # Error already printed by get_github_repos
+            if ! repos=$(get_github_repos "$org_user"); then
                 continue
             fi
-
+            
             if [[ -z "$repos" ]]; then
                 print_error "No repositories found for $org_user"
                 continue
             fi
-
-            # Clone each repository
+            
+            # Add each repository URL
             while IFS= read -r repo_name; do
                 [[ -z "$repo_name" ]] && continue
-
-                local full_url="${base_url}/${repo_name}.git"
-                ((total++))
-
-                local repo_path
-                repo_path=$(parse_git_url "$full_url")
-                local clone_path="$REPOS_BASE_PATH/$repo_path"
-
-                if [[ -d "$clone_path" ]]; then
-                    echo "Skipping $repo_path (already exists)"
-                    ((skipped++))
-                else
-                    echo "Cloning $repo_path..."
-                    mkdir -p "$(dirname "$clone_path")"
-                    if git clone "$full_url" "$clone_path" >/dev/null 2>&1; then
-                        print_success "Cloned $repo_path"
-                        ((cloned++))
-                    else
-                        print_error "Failed to clone $repo_path"
-                    fi
-                fi
+                clone_urls+=("${base_url}/${repo_name}.git")
             done <<<"$repos"
         else
             # Single repository
-            ((total++))
-            local repo_path
-            repo_path=$(parse_git_url "$repo_pattern")
-
-            if [[ $? -ne 0 ]]; then
-                continue
-            fi
-
-            local clone_path="$REPOS_BASE_PATH/$repo_path"
-
-            if [[ -d "$clone_path" ]]; then
-                echo "Skipping $repo_path (already exists)"
-                ((skipped++))
-            else
-                echo "Cloning $repo_path..."
-                mkdir -p "$(dirname "$clone_path")"
-                if git clone "$repo_pattern" "$clone_path" >/dev/null 2>&1; then
-                    print_success "Cloned $repo_path"
-                    ((cloned++))
-                else
-                    print_error "Failed to clone $repo_path"
-                fi
-            fi
+            clone_urls+=("$repo_pattern")
         fi
     done
-
+    
+    if [[ ${#clone_urls[@]} -eq 0 ]]; then
+        print_error "No repositories to clone"
+        exit 1
+    fi
+    
+    echo "Found ${#clone_urls[@]} repositories to process"
+    echo "Using $parallel_jobs parallel jobs"
+    echo
+    
+    # Use parallel cloning
+    local results
+    if has_gum; then
+        results=$(printf '%s\n' "${clone_urls[@]}" | \
+            gum spin --spinner dot --title "Cloning repositories..." -- \
+            xargs -P "$parallel_jobs" -I {} bash -c 'parallel_clone "{}"')
+    else
+        echo "Cloning repositories (this may take a while)..."
+        results=$(printf '%s\n' "${clone_urls[@]}" | \
+            xargs -P "$parallel_jobs" -I {} bash -c 'parallel_clone "{}"')
+    fi
+    
+    # Process results
+    local cloned=0
+    local skipped=0
+    local failed=0
+    
+    while IFS= read -r result; do
+        [[ -z "$result" ]] && continue
+        
+        case "$result" in
+            OK:*)
+                ((cloned++))
+                print_success "Cloned ${result#OK:}"
+                ;;
+            SKIP:*)
+                ((skipped++))
+                echo "Skipped ${result#SKIP:} (already exists)"
+                ;;
+            FAIL:*)
+                ((failed++))
+                print_error "Failed ${result#FAIL:}"
+                ;;
+        esac
+    done <<<"$results"
+    
+    local total=$((cloned + skipped + failed))
+    
     echo
     print_success "Setup complete: $total repositories processed"
     echo "  Cloned: $cloned"
     echo "  Skipped: $skipped"
-    echo "  Failed: $((total - cloned - skipped))"
+    echo "  Failed: $failed"
 }
 
 # Show help
@@ -333,11 +507,16 @@ show_help() {
 repos - Minimal repository manager
 
 Usage:
-  repos add <git-url>    Clone a repository to organized path
-  repos remove           Remove a repository (interactive)
-  repos open             Open a repository in tmux (interactive)
-  repos setup            Clone all repositories from ENSURE_CLONED list
-  repos help             Show this help message
+  repos add <git-url>      Clone a repository to organized path
+  repos remove             Remove a repository (interactive)
+  repos open               Open a repository in tmux (interactive)
+  repos status             Show git status for all repositories
+  repos setup              Clone all repositories from ENSURE_CLONED list
+  repos help               Show this help message
+
+Environment Variables:
+  REPOS_BASE_PATH          Override repository base path (default: ~/repos)
+  PARALLEL_JOBS            Number of parallel clone jobs (default: 4)
 
 Repository base path: $REPOS_BASE_PATH
 
@@ -346,7 +525,8 @@ Examples:
   repos add https://github.com/username/repo.git
   repos remove
   repos open
-  repos setup
+  repos status
+  PARALLEL_JOBS=8 repos setup
 
 Setup wildcard support:
   Edit the ENSURE_CLONED variable in this script to include:
@@ -354,11 +534,16 @@ Setup wildcard support:
   - All repos from user/org: "git@github.com:organization/*"
 
 Requirements:
-  - GitHub CLI (gh) must be installed and authenticated
-  - Install: https://cli.github.com/
-  - Authenticate: gh auth login
+  - git, fzf, tmux (required)
+  - gum (optional, for better UX)
+  - GitHub CLI (gh) for wildcard patterns
+    - Install: https://cli.github.com/
+    - Authenticate: gh auth login
 EOF
 }
+
+# Initialize - check dependencies
+check_dependencies
 
 # Main command handler
 case "${1:-}" in
@@ -370,6 +555,9 @@ remove)
     ;;
 open)
     open_repo
+    ;;
+status)
+    status_repos
     ;;
 setup)
     setup_repos
@@ -385,4 +573,3 @@ help | --help | -h)
     exit 1
     ;;
 esac
-
