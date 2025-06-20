@@ -446,6 +446,78 @@ status_repos() {
     fi
 }
 
+# Find and open files across all repositories
+find_files() {
+    local repos
+    repos=$(list_repos)
+    
+    if [[ -z "$repos" ]]; then
+        print_error "No repositories found"
+        exit 1
+    fi
+    
+    # Check if EDITOR is set
+    if [[ -z "$EDITOR" ]]; then
+        print_warning "EDITOR environment variable not set, using 'vim' as default"
+        local editor="vim"
+    else
+        local editor="$EDITOR"
+    fi
+    
+    echo "Searching files across all repositories..."
+    
+    # Build list of all git-tracked files with repo prefix
+    local temp_file
+    temp_file=$(mktemp)
+    
+    while IFS= read -r repo; do
+        [[ -z "$repo" ]] && continue
+        
+        local repo_path="$REPOS_BASE_PATH/$repo"
+        
+        # Check if it's a git repository
+        if [[ ! -d "$repo_path/.git" ]]; then
+            continue
+        fi
+        
+        # Get all git-tracked files and prefix with repo name
+        (cd "$repo_path" && git ls-files 2>/dev/null | sed "s|^|$repo/|") >> "$temp_file"
+    done <<<"$repos"
+    
+    # Check if any files were found
+    if [[ ! -s "$temp_file" ]]; then
+        rm -f "$temp_file"
+        print_error "No git-tracked files found in any repository"
+        exit 1
+    fi
+    
+    # Use fzf to select file with preview
+    local selected_file
+    selected_file=$(cat "$temp_file" | fzf \
+        --prompt="Search files: " \
+        --height=20 \
+        --reverse \
+        --preview "head -50 $REPOS_BASE_PATH/{}" \
+        --preview-window=right:50%:wrap)
+    
+    rm -f "$temp_file"
+    
+    if [[ -z "$selected_file" ]]; then
+        echo "No file selected"
+        exit 0
+    fi
+    
+    local full_path="$REPOS_BASE_PATH/$selected_file"
+    
+    if [[ ! -f "$full_path" ]]; then
+        print_error "File not found: $full_path"
+        exit 1
+    fi
+    
+    echo "Opening $selected_file with $editor..."
+    "$editor" "$full_path"
+}
+
 # Check if gh CLI is installed and authenticated
 check_gh_cli() {
     if ! command -v gh &>/dev/null; then
@@ -641,6 +713,7 @@ Usage:
   repos add <git-url>      Clone a repository to organized path
   repos remove             Remove a repository (interactive)
   repos open               Open a repository in tmux (interactive)
+  repos find               Find and open files across all repositories
   repos status             Show git status for all repositories
   repos setup              Clone all repositories from ENSURE_CLONED list
   repos help               Show this help message
@@ -657,6 +730,7 @@ Examples:
   repos add https://github.com/username/repo.git
   repos remove
   repos open
+  repos find               # Search and open files with $EDITOR
   repos status
   PARALLEL_JOBS=8 repos setup
 
@@ -690,6 +764,9 @@ remove)
     ;;
 open)
     open_repo
+    ;;
+find)
+    find_files
     ;;
 status)
     status_repos
