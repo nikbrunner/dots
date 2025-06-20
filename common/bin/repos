@@ -35,7 +35,7 @@ print_warning() {
     echo -e "${YELLOW}⚠ $1${NC}"
 }
 
-# Check if gum is available
+# Check if gum is available (only used for confirmations)
 has_gum() {
     command -v gum &>/dev/null
 }
@@ -86,7 +86,7 @@ confirm_action() {
     fi
 }
 
-# Select repository with fzf or gum filter
+# Select repository with styled fzf
 select_repo() {
     local prompt="$1"
     local repos
@@ -97,16 +97,42 @@ select_repo() {
         return 1
     fi
     
-    if has_gum; then
-        echo "$repos" | gum filter --placeholder "$prompt"
-    else
-        echo "$repos" | fzf --prompt="$prompt" --height=10 --reverse
-    fi
+    echo "$repos" | styled_fzf "$prompt"
 }
 
 # Get tmux session name from repo path
 get_session_name() {
     echo "$1" | tr '/:.' '-'
+}
+
+# Styled fzf wrapper with consistent configuration
+styled_fzf() {
+    local prompt="${1:-Select: }"
+    local preview_cmd="${2:-}"
+    local additional_args=("${@:3}")
+    
+    local fzf_args=(
+        --reverse
+        --no-separator
+        --no-info
+        --no-scrollbar
+        --border=bold
+        --border-label="┃   repos ┃"
+        --border-label-pos=3
+        --prompt="$prompt"
+        --padding="1,5"
+        --color="fg:white,fg+:yellow,bg+:-1,gutter:-1,hl+:magenta,border:yellow,prompt:cyan,pointer:yellow,marker:cyan,spinner:green,header:blue,label:yellow,query:magenta"
+    )
+    
+    # Add preview if provided
+    if [[ -n "$preview_cmd" ]]; then
+        fzf_args+=(--preview "$preview_cmd" --preview-window=right:50%:wrap)
+    fi
+    
+    # Add any additional arguments
+    fzf_args+=("${additional_args[@]}")
+    
+    fzf "${fzf_args[@]}"
 }
 
 # Parse git URL to extract username and repo name
@@ -285,7 +311,7 @@ install_deps() {
     if ! command -v gum &>/dev/null; then
         missing_optional+=("gum")
     else
-        print_success "gum is installed (optional - enhanced UX)"
+        print_success "gum is installed (optional - enhanced UX for confirmations)"
     fi
     
     if ! command -v gh &>/dev/null; then
@@ -491,14 +517,9 @@ find_files() {
         exit 1
     fi
     
-    # Use fzf to select file with preview
+    # Use styled fzf to select file with preview
     local selected_file
-    selected_file=$(cat "$temp_file" | fzf \
-        --prompt="Search files: " \
-        --height=20 \
-        --reverse \
-        --preview "head -50 $REPOS_BASE_PATH/{}" \
-        --preview-window=right:50%:wrap)
+    selected_file=$(cat "$temp_file" | styled_fzf "Search files: " "head -50 $REPOS_BASE_PATH/{}")
     
     rm -f "$temp_file"
     
@@ -741,7 +762,7 @@ Setup wildcard support:
 
 Requirements:
   - git, fzf, tmux (required)
-  - gum (optional, for better UX)
+  - gum (optional, for enhanced confirmations)
   - GitHub CLI (gh) for wildcard patterns
     - Install: https://cli.github.com/
     - Authenticate: gh auth login
