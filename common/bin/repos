@@ -126,7 +126,7 @@ styled_fzf() {
     
     # Add preview if provided
     if [[ -n "$preview_cmd" ]]; then
-        fzf_args+=(--preview "$preview_cmd" --preview-window=right:50%:wrap)
+        fzf_args+=(--preview "$preview_cmd" --preview-window=down:50%:wrap)
     fi
     
     # Add any additional arguments
@@ -517,9 +517,18 @@ find_files() {
         exit 1
     fi
     
-    # Use styled fzf to select file with preview
+    # Use styled fzf to select file with preview and syntax highlighting
+    local preview_cmd
+    if command -v bat &>/dev/null; then
+        preview_cmd="bat --color=always --style=numbers --line-range=:50 $REPOS_BASE_PATH/{}"
+    elif command -v highlight &>/dev/null; then
+        preview_cmd="highlight -O ansi --force $REPOS_BASE_PATH/{} 2>/dev/null | head -50"
+    else
+        preview_cmd="head -50 $REPOS_BASE_PATH/{}"
+    fi
+    
     local selected_file
-    selected_file=$(cat "$temp_file" | styled_fzf "Search files: " "head -50 $REPOS_BASE_PATH/{}")
+    selected_file=$(cat "$temp_file" | styled_fzf "Search files: " "$preview_cmd")
     
     rm -f "$temp_file"
     
