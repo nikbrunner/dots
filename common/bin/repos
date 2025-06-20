@@ -185,11 +185,7 @@ add_repo() {
         exit 1
     fi
     
-    if has_gum; then
-        gum spin --spinner dot --title "Cloning repository..." -- clone_single_repo "$git_url" false
-    else
-        clone_single_repo "$git_url" true
-    fi
+    clone_single_repo "$git_url" true
 }
 
 # List all repositories
@@ -597,16 +593,10 @@ setup_repos() {
     echo
     
     # Use parallel cloning
+    echo "Cloning repositories (this may take a while)..."
     local results
-    if has_gum; then
-        results=$(printf '%s\n' "${clone_urls[@]}" | \
-            gum spin --spinner dot --title "Cloning repositories..." -- \
-            xargs -P "$parallel_jobs" -I {} bash -c 'parallel_clone "{}"')
-    else
-        echo "Cloning repositories (this may take a while)..."
-        results=$(printf '%s\n' "${clone_urls[@]}" | \
-            xargs -P "$parallel_jobs" -I {} bash -c 'parallel_clone "{}"')
-    fi
+    results=$(printf '%s\n' "${clone_urls[@]}" | \
+        xargs -P "$parallel_jobs" -I {} bash -c 'parallel_clone "{}"')
     
     # Process results
     local cloned=0
