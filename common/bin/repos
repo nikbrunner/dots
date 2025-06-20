@@ -548,6 +548,24 @@ find_files() {
     "$editor" "$full_path"
 }
 
+# Open the repos script for editing
+config_repos() {
+    # Check if EDITOR is set
+    if [[ -z "$EDITOR" ]]; then
+        print_warning "EDITOR environment variable not set, using 'vim' as default"
+        local editor="vim"
+    else
+        local editor="$EDITOR"
+    fi
+    
+    # Get the path to this script
+    local script_path
+    script_path=$(realpath "${BASH_SOURCE[0]}")
+    
+    echo "Opening repos configuration with $editor..."
+    "$editor" "$script_path"
+}
+
 # Check if gh CLI is installed and authenticated
 check_gh_cli() {
     if ! command -v gh &>/dev/null; then
@@ -744,6 +762,7 @@ Usage:
   repos remove             Remove a repository (interactive)
   repos open               Open a repository in tmux (interactive)
   repos find               Find and open files across all repositories
+  repos config             Edit the repos script configuration
   repos status             Show git status for all repositories
   repos setup              Clone all repositories from ENSURE_CLONED list
   repos help               Show this help message
@@ -761,6 +780,7 @@ Examples:
   repos remove
   repos open
   repos find               # Search and open files with $EDITOR
+  repos config             # Edit ENSURE_CLONED and other settings
   repos status
   PARALLEL_JOBS=8 repos setup
 
@@ -797,6 +817,9 @@ open)
     ;;
 find)
     find_files
+    ;;
+config)
+    config_repos
     ;;
 status)
     status_repos
