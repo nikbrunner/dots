@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # Generate commit message using Claude API and commit staged changes
 
 # TODO: Consider implementing dynamic model fetching with caching
