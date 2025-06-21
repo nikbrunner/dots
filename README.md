@@ -9,11 +9,19 @@ A clean, organized dotfiles repository using symlinks for easy management and de
 - [Installation](#installation)
 - [Usage](#usage)
   - [Core Commands](#core-commands)
-  - [Git Operations](#git-operations)
-  - [Submodules](#submodules-1)
-  - [Maintenance](#maintenance)
-  - [Common Workflows](#common-workflows)
+    - [`dots` - Dotfiles Management](#dots---dotfiles-management)
+    - [`repos` - Repository Manager](#repos---repository-manager)
+    - [`repo` - Repository Operations](#repo---repository-operations)
+- [`dots` Usage Examples](#dots-usage-examples)
+  - [Adding a New Configuration](#adding-a-new-configuration)
+  - [Removing a Configuration](#removing-a-configuration)
+  - [Renaming/Moving a Configuration](#renamingmoving-a-configuration)
+  - [Editing Configurations](#editing-configurations)
+  - [Syncing Across Machines](#syncing-across-machines)
+  - [Testing the System](#testing-the-system)
+  - [Other Notable Commands](#other-notable-commands)
 - [How It Works](#how-it-works)
+  - [OS-Specific Configurations](#os-specific-configurations)
 - [Submodules](#submodules)
 - [Roadmap](#roadmap)
 - [Dependencies](#dependencies)
@@ -69,63 +77,61 @@ The `dots` command provides a unified interface for managing your dotfiles:
 
 ### Core Commands
 
-#### Dotfiles Management (`dots`)
+#### `dots` - Dotfiles Management
 
-| Command        | Description                                        | Options                                 |
-| -------------- | -------------------------------------------------- | --------------------------------------- |
-| `dots install` | Initial setup with symlinks and submodules         | `--dry-run`                             |
-| `dots link`    | Update all symlinks (removes broken + creates new) | `--dry-run`, `--no-backup`, `--verbose` |
-| `dots sync`    | Git pull + submodule updates                       | -                                       |
-| `dots status`  | Show git and symlink status                        | -                                       |
-| `dots open`    | Open dots directory with `$EDITOR`                 | -                                       |
-| `dots test`    | Run comprehensive system tests                     | -                                       |
-| `dots format`  | Format repository files with prettier and shfmt    | `--check`                               |
+| Command           | Description                                                                        | Options                                 |
+| ----------------- | ---------------------------------------------------------------------------------- | --------------------------------------- |
+| `dots install`    | Initial setup with symlinks and submodules                                         | `--dry-run`                             |
+| `dots link`       | Update all symlinks (removes broken + creates new)                                 | `--dry-run`, `--no-backup`, `--verbose` |
+| `dots sync`       | Git pull + submodule updates                                                       | -                                       |
+| `dots status`     | Show git and symlink status                                                        | -                                       |
+| `dots open`       | Open dots directory with `$EDITOR`                                                 | -                                       |
+| `dots test`       | Run comprehensive system tests                                                     | -                                       |
+| `dots format`     | Format repository files with prettier and shfmt                                    | `--check`                               |
+| `dots commit`     | Open LazyGit for interactive committing                                            | -                                       |
+| `dots push`       | Push commits to remote                                                             | `--force`                               |
+| `dots log`        | Show recent commits                                                                | -                                       |
+| `dots sub-update` | Update all submodules                                                              | -                                       |
+| `dots sub-add`    | Add new submodule                                                                  | `<url> <path>`                          |
+| `dots sub-commit` | Commit submodule hash updates                                                      | -                                       |
+| `dots sub-status` | Show status of all submodules                                                      | -                                       |
+| `dots test`       | Run comprehensive system tests (repository structure, OS detection, symlinks, etc) | -                                       |
 
-#### Repository Manager (`repos`)
+#### `repos` - Repository Manager
 
 A minimal but powerful repository manager for organizing all your git repositories under `~/repos/username/repo-name/`:
 
-| Command           | Description                                         | Options |
-| ----------------- | --------------------------------------------------- | ------- |
-| `repos find`      | Search and open files across all repositories      | -       |
-| `repos open`      | Open a repository in tmux                          | -       |
-| `repos status`    | Show git status for all repositories               | -       |
-| `repos add <url>` | Clone a repository to organized location           | -       |
-| `repos config`    | Edit repos configuration (ENSURE_CLONED list)      | -       |
-| `repos setup`     | Clone all repositories from ENSURE_CLONED list     | -       |
+| Command           | Description                                    | Options |
+| ----------------- | ---------------------------------------------- | ------- |
+| `repos find`      | Search and open files across all repositories  | -       |
+| `repos open`      | Open a repository in tmux                      | -       |
+| `repos status`    | Show git status for all repositories           | -       |
+| `repos add <url>` | Clone a repository to organized location       | -       |
+| `repos config`    | Edit repos configuration (ENSURE_CLONED list)  | -       |
+| `repos setup`     | Clone all repositories from ENSURE_CLONED list | -       |
 
-#### Smart Commit (`git sc`)
+#### `repo` - Repository Operations
 
-An intelligent git commit helper (alias for `smart-commit`):
-- Automatically generates meaningful commit messages using AI
-- Analyzes your staged changes and creates conventional commits
-- Follows best practices for commit message formatting
-- Usage: Stage your changes with `git add`, then run `git sc`
+Unified repository operations with optional AI assistance:
 
-### Git Operations
+| Command                 | Description                             | Options                                             |
+| ----------------------- | --------------------------------------- | --------------------------------------------------- |
+| `repo commit`           | Open lazygit for interactive committing | -                                                   |
+| `repo commit -s`        | Generate commit message with AI         | `-y` (auto-confirm), `-p` (push), `-f` (force push) |
+| `repo branch "name"`    | Create branch with exact name           | -                                                   |
+| `repo branch -s "desc"` | Generate branch name with AI            | `-y` (auto-create)                                  |
 
-| Command       | Description                             | Options   |
-| ------------- | --------------------------------------- | --------- |
-| `dots commit` | Open LazyGit for interactive committing | -         |
-| `dots push`   | Push commits to remote                  | `--force` |
-| `dots log`    | Show recent commits                     | -         |
+**Git Aliases:**
 
-### Submodules
+- `git sc` → `repo commit -s` (smart commit)
+- `git sb` → `repo branch -s` (smart branch)
 
-| Command           | Description                   | Options        |
-| ----------------- | ----------------------------- | -------------- |
-| `dots sub-update` | Update all submodules         | -              |
-| `dots sub-add`    | Add new submodule             | `<url> <path>` |
-| `dots sub-commit` | Commit submodule hash updates | -              |
-| `dots sub-status` | Show status of all submodules | -              |
+**Examples:**
 
-### Maintenance
+- `repo commit -s -yp` - AI commit with auto-confirm and push
+- `repo branch -s -y "BCD-123 fix login"` - AI branch name with auto-create
 
-| Command     | Description                                                                        | Options |
-| ----------- | ---------------------------------------------------------------------------------- | ------- |
-| `dots test` | Run comprehensive system tests (repository structure, OS detection, symlinks, etc) | -       |
-
-### Common Workflows
+## `dots` Usage Examples
 
 #### Adding a New Configuration
 
@@ -180,6 +186,7 @@ dots link --dry-run
 The `dots test` command validates the entire system (repository structure, OS detection, symlink creation, etc.) and reports pass/fail status. Use `dots link --dry-run` when you want detailed output showing exactly what symlink operations would be performed.
 
 #### Other Notable Commands
+
 - Various helper scripts in `~/bin/` for development workflows
 - Platform-specific utilities and configurations
 
