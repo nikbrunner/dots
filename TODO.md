@@ -2,7 +2,7 @@
 
 ## High Priority
 
-- [ ] **Fix `dots status` symlink checking** - Currently hangs during symlink processing despite using identical code to working `link.sh`
+- [x] **Fix `dots status` symlink checking** - Fixed by delegating to external script like `link.sh`
 - [ ] **Refactor `dots` command** - See [docs/DOTS_COMMAND_REFACTOR.md](./docs/DOTS_COMMAND_REFACTOR.md)
 - [ ] **Add test script** - Comprehensive system validation script
 - [ ] **Test complete Linux setup on EndeavorOS** - Validate cross-platform functionality
