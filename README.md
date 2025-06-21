@@ -231,15 +231,20 @@ Common commands:
 - [x] Add `sub-status` command
 - [x] Add `format` command
 - [ ] Refactor `dots` command (see [docs/DOTS_COMMAND_REFACTOR.md](./docs/DOTS_COMMAND_REFACTOR.md))
+- [ ] Implement repos cleanup workflow (see [docs/REPOS_CLEANUP_WORKFLOW.md](./docs/REPOS_CLEANUP_WORKFLOW.md))
+- [ ] Standardize bash across all scripts (see [docs/BASH_STANDARDIZATION.md](./docs/BASH_STANDARDIZATION.md))
 - [ ] Add test script
 - [ ] Verify that install script is working
 - [ ] Document `~/.ssh` setup
 
 ## Dependencies
 
-- Git
-- Bash 4+ (macOS users: `brew install bash`)
-- Standard Unix tools (ln, mkdir, etc.)
+- **Git** - Version control operations
+- **Bash 4+** - Modern shell features (associative arrays, etc.)
+  - macOS: `brew install bash` (system bash 3.2 is too old)
+  - Arch Linux: Modern bash included by default
+  - Other Linux: Install via package manager
+- **Standard Unix tools** - ln, mkdir, find, etc.
 
 ## Platform Support
 
