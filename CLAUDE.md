@@ -27,6 +27,9 @@ This is a symlink-based dotfiles management system designed to organize and depl
 ## Common Commands
 
 ```bash
+# Complete machine setup with dependency installation
+dots install [--dry-run] [--no-deps]
+
 # Check status of git repo and all symlinks
 dots status
 
@@ -141,12 +144,14 @@ Use `dots test` for overall system health checks and `dots link --dry-run` for d
 
 ## Recent Changes
 
+- **Complete Machine Setup**: `dots install` now provides full machine setup with automatic dependency installation
+- **Unified Dependency Management**: Cross-platform dependency installation for macOS (Homebrew) and Linux (Arch/pacman)
+- **Fixed Link Script**: Resolved hanging issues during symlink processing with improved file handling
+- **Simplified Dependencies**: All tools are now required (no essential/optional distinction)
+- **Cross-Platform Git Configuration**: OS-specific Git configs with conditional includes for 1Password paths
+- **Linux Compatibility**: Enhanced cross-platform support with OS detection and package manager abstraction
 - **Simplified Architecture**: Removed JSON mapping system in favor of direct directory traversal (~60% code reduction)
-- **Simplified Workflow**: `dots link` now handles both creating/updating symlinks AND removing broken ones
-- **Manual File Management**: Add files directly to `common/`, `macos/`, or `linux/` directories instead of using commands
-- **Improved Commit Workflow**: `dots commit` opens LazyGit for interactive committing, `dots push` only pushes
 - **Enhanced Testing**: `dots test` includes shellcheck linting for script quality
-- **Gum Integration**: Beautiful CLI interface when gum is installed
 - **Submodule Integration**: Submodules are now added directly to their target locations (e.g., `common/.config/nvim`)
 
 ## Submodules
@@ -172,7 +177,8 @@ Regular configuration files (NOT submodules):
 ## Memories
 
 - Remember to run commands like `dots test` to check if everything is working
-- Use `dots add` to easily add new configuration files to the repository
+- Use `dots install` for complete machine setup including all dependencies
 - The system automatically handles relative paths and directory structures
 - All shell scripts pass shellcheck linting for quality assurance
 - This repository is only for me and nobody else
+- Always update CHANGELOG.md when making significant changes to track development progress

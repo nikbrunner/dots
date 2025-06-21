@@ -57,19 +57,27 @@ dots/
 
 ## Installation
 
-1. Clone and install:
+**Complete Machine Setup** (recommended):
 
-   ```bash
-   git clone https://github.com/nikbrunner/dots.git ~/repos/nikbrunner/dots
-   cd ~/repos/nikbrunner/dots
-   ./install.sh
-   ```
+```bash
+git clone https://github.com/nikbrunner/dots.git ~/repos/nikbrunner/dots
+cd ~/repos/nikbrunner/dots
+./install.sh
+```
 
-2. Add to PATH (if needed):
-   ```bash
-   echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.zshrc
-   source ~/.zshrc
-   ```
+This will:
+- Install all required dependencies (git, zsh, tmux, neovim, fzf, ripgrep, etc.)
+- Configure system settings (default shell, Git signing)
+- Create all symlinks
+- Set up the `dots` command
+
+**Manual Installation** (skip dependencies):
+
+```bash
+./install.sh --no-deps
+echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.zshrc
+source ~/.zshrc
+```
 
 ## Usage
 
@@ -81,7 +89,7 @@ The `dots` command provides a unified interface for managing your dotfiles:
 
 | Command           | Description                                                                        | Options                                 |
 | ----------------- | ---------------------------------------------------------------------------------- | --------------------------------------- |
-| `dots install`    | Initial setup with symlinks and submodules                                         | `--dry-run`                             |
+| `dots install`    | Complete machine setup with dependencies, symlinks and submodules                  | `--dry-run`, `--no-deps`                |
 | `dots link`       | Update all symlinks (removes broken + creates new)                                 | `--dry-run`, `--no-backup`, `--verbose` |
 | `dots sync`       | Git pull + submodule updates                                                       | -                                       |
 | `dots status`     | Show git and symlink status                                                        | -                                       |
@@ -239,21 +247,42 @@ Common commands:
 - [x] Add `format` command
 - [x] Standardize bash across all scripts
 - [ ] Refactor `dots` command (see [docs/DOTS_COMMAND_REFACTOR.md](./docs/DOTS_COMMAND_REFACTOR.md))
-- [ ] Implement unified dependency management (see [docs/DEPENDENCY_MANAGEMENT.md](./docs/DEPENDENCY_MANAGEMENT.md))
+- [x] Implement unified dependency management (see [docs/DEPENDENCY_MANAGEMENT.md](./docs/DEPENDENCY_MANAGEMENT.md))
 - [x] Implement repos cleanup workflow
 - [ ] Add test script
-- [ ] Verify that install script is working
+- [x] Verify that install script is working
 - [x] Document `~/.ssh` setup (see [docs/SSH_SETUP.md](./docs/SSH_SETUP.md))
-- [ ] Test SSH setup on Linux (1Password paths may differ)
+- [x] Add cross-platform support for macOS/Linux (OS detection, package managers)
+- [ ] Test complete Linux setup on EndeavorOS
 
 ## Dependencies
 
+**Automatically installed by `dots install`:**
 - **Git** - Version control operations
-- **Bash 4+** - Modern shell features (associative arrays, etc.)
-  - macOS: `brew install bash` (system bash 3.2 is too old)
-  - Arch Linux: Modern bash included by default
-  - Other Linux: Install via package manager
+- **Zsh** - Modern shell with configuration
+- **Tmux** - Terminal multiplexer for session management
+- **Neovim** - Text editor with custom configuration
+- **Fzf** - Fuzzy finder for interactive selection
+- **Ripgrep** - Fast text search
+- **Fd** - Fast file finder
+- **Bat** - Syntax highlighting for file previews
+- **Delta** - Enhanced git diff output
+- **Lazygit** - Interactive git interface
+- **Eza** - Modern ls replacement
+- **Zoxide** - Smart directory jumper
+- **Gum** - Enhanced CLI prompts and styling
+- **GitHub CLI** - GitHub repository operations
+- **1Password** - Password manager with SSH agent
+
+**System requirements:**
+- **Bash 4+** - Modern shell features
+  - macOS: Installed automatically via Homebrew
+  - Linux: Usually included by default
 - **Standard Unix tools** - ln, mkdir, find, etc.
+
+**Package Managers:**
+- **macOS**: Homebrew (installed automatically if missing)
+- **Arch Linux**: pacman, yay, or paru
 
 ## Platform Support
 
