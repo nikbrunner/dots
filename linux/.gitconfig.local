@@ -1,0 +1,5 @@
+# Linux-specific Git configuration
+[gpg "ssh"]
+	# This will be set by the setup script based on actual installation
+	# Common Linux paths: /usr/bin/op-ssh-sign or /opt/1Password/op-ssh-sign
+	program = /usr/bin/op-ssh-sign
