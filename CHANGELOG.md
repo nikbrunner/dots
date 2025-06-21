@@ -6,6 +6,11 @@ All notable changes to this dotfiles repository will be documented in this file.
 
 ### 🚀 Major Features
 
+- **Complete Machine Setup**: Enhanced `dots install` with automatic dependency management
+  - Unified dependency installation for macOS (Homebrew) and Linux (Arch/pacman)
+  - Single command machine setup: `dots install` handles everything
+  - Cross-platform package mapping with proper 1Password integration
+  - System configuration (shell, Git signing, NVM installation)
 - **Unified Repository Command**: Replaced `smart-commit` and `smart-branch` with new unified `repo` command
   - Manual operations: `repo commit` (opens lazygit), `repo branch "name"` (direct creation)
   - AI-powered operations: `repo commit -s`, `repo branch -s` with Claude Code/API support
@@ -13,6 +18,7 @@ All notable changes to this dotfiles repository will be documented in this file.
 - **Git Commit Signing**: Added SSH-based commit signing with 1Password integration
   - Configured GPG signing with SSH keys and 1Password's `op-ssh-sign`
   - Added `allowed_signers` file for signature verification
+- **Cross-Platform Git Configuration**: OS-specific Git configs with conditional includes for 1Password paths
 
 ### 📚 Documentation
 
@@ -30,6 +36,9 @@ All notable changes to this dotfiles repository will be documented in this file.
 
 ### 🔧 Script Improvements
 
+- **Fixed Link Script Hanging**: Resolved process substitution issues causing symlink operations to hang
+- **Simplified Dependencies**: Removed essential/optional distinction - all tools are now required
+- **Linux Compatibility**: Enhanced cross-platform support with OS detection and package manager abstraction
 - **Claude API Migration**: Migrated `smart-branch` from OpenAI to Claude API for consistency
 - **Claude Code Integration**: Added support for Claude Code CLI across smart scripts
 - **Bash Standardization**: Standardized bash usage across all scripts for better compatibility
