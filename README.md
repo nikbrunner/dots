@@ -23,7 +23,7 @@ A clean, organized dotfiles repository using symlinks for easy management and de
 - [How It Works](#how-it-works)
   - [OS-Specific Configurations](#os-specific-configurations)
 - [Submodules](#submodules)
-- [Roadmap](#roadmap)
+- [Development](#development)
 - [Dependencies](#dependencies)
 - [Platform Support](#platform-support)
 
@@ -235,25 +235,16 @@ Common commands:
 
 > **📖 Detailed Documentation**: See [docs/SUBMODULES.md](./docs/SUBMODULES.md) for comprehensive submodule management guide including troubleshooting, best practices, and removal planning.
 
-## Roadmap
+## Development
 
-- [x] Migrate wezterm
-- [x] Remove `*backup` files
-- [x] Archive old dotfiles
-- [x] Make this repo public
-- [x] Remove hooks
-- [x] Add `sub-commit` command
-- [x] Add `sub-status` command
-- [x] Add `format` command
-- [x] Standardize bash across all scripts
-- [ ] Refactor `dots` command (see [docs/DOTS_COMMAND_REFACTOR.md](./docs/DOTS_COMMAND_REFACTOR.md))
-- [x] Implement unified dependency management (see [docs/DEPENDENCY_MANAGEMENT.md](./docs/DEPENDENCY_MANAGEMENT.md))
-- [x] Implement repos cleanup workflow
-- [ ] Add test script
-- [x] Verify that install script is working
-- [x] Document `~/.ssh` setup (see [docs/SSH_SETUP.md](./docs/SSH_SETUP.md))
-- [x] Add cross-platform support for macOS/Linux (OS detection, package managers)
-- [ ] Test complete Linux setup on EndeavorOS
+**Current Status:**
+- ✅ Complete machine setup with automatic dependency management
+- ✅ Cross-platform support (macOS/Linux) 
+- ✅ Comprehensive testing and validation
+- ⚠️ Known issue: `dots status` symlink checking hangs (use `dots link --dry-run` as workaround)
+
+**Development Tasks:**
+- See [TODO.md](./TODO.md) for current development priorities and planned features
 
 ## Dependencies
 
