@@ -1,6 +1,6 @@
 #!/bin/bash
 # Main installation script for dots
-# Usage: ./install.sh
+# Usage: ./install.sh [--dry-run] [--no-deps]
 
 set -e
 
@@ -11,23 +11,31 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 GREEN='\033[0;32m'
 YELLOW='\033[0;33m'
 BLUE='\033[0;34m'
+RED='\033[0;31m'
 NC='\033[0m' # No Color
 
-# Check for dry run flag
+# Parse arguments
 DRY_RUN=false
+SKIP_DEPS=false
 for arg in "$@"; do
-	if [[ "$arg" == "--dry-run" ]]; then
-		DRY_RUN=true
-		break
-	fi
+	case "$arg" in
+		--dry-run)
+			DRY_RUN=true
+			;;
+		--no-deps)
+			SKIP_DEPS=true
+			;;
+	esac
 done
 
-# Source OS detection
+# Source dependencies and OS detection
 # shellcheck disable=SC1091
 source "$SCRIPT_DIR/scripts/detect-os.sh"
+# shellcheck disable=SC1091
+source "$SCRIPT_DIR/scripts/deps.sh"
 
 echo -e "${BLUE}╔══════════════════════════════════════╗${NC}"
-echo -e "${BLUE}║      Dots Installation Script        ║${NC}"
+echo -e "${BLUE}║    Dots Complete Machine Setup       ║${NC}"
 echo -e "${BLUE}╚══════════════════════════════════════╝${NC}"
 echo ""
 
@@ -40,7 +48,44 @@ fi
 OS=$(get_os)
 echo -e "${GREEN}✓${NC} Detected OS: $OS"
 
-# 2. Initialize git repository if needed
+# 2. Install dependencies (unless skipped)
+if [[ "$SKIP_DEPS" == false ]]; then
+	echo ""
+	echo -e "${BLUE}📋 Phase 1: Dependency Installation${NC}"
+	if [[ "$DRY_RUN" == true ]]; then
+		echo -e "${YELLOW}→${NC} [DRY] Would install all required dependencies"
+		echo "  Required: git, zsh, tmux, neovim, fzf, ripgrep, fd, bat, delta, lazygit, eza, zoxide, gum, gh, 1password, 1password-cli"
+	else
+		if ! install_all_dependencies; then
+			echo -e "${RED}❌ Failed to install dependencies${NC}"
+			echo "You can skip dependency installation with: ./install.sh --no-deps"
+			exit 1
+		fi
+	fi
+else
+	echo ""
+	echo -e "${YELLOW}⚠️  Skipping dependency installation (--no-deps flag)${NC}"
+fi
+
+# 3. Configure system
+echo ""
+echo -e "${BLUE}⚙️  Phase 2: System Configuration${NC}"
+if [[ "$DRY_RUN" == true ]]; then
+	echo -e "${YELLOW}→${NC} [DRY] Would configure system settings"
+	echo "  • Set zsh as default shell"
+	echo "  • Configure Git SSH signing"
+	echo "  • Install NVM (Linux only)"
+else
+	if [[ "$SKIP_DEPS" == false ]]; then
+		configure_system
+	else
+		echo -e "${YELLOW}→${NC} Skipping system configuration (dependencies skipped)"
+	fi
+fi
+
+# 4. Initialize git repository if needed
+echo ""
+echo -e "${BLUE}🔗 Phase 3: Dotfiles Setup${NC}"
 if [[ ! -d "$SCRIPT_DIR/.git" ]]; then
 	if [[ "$DRY_RUN" == true ]]; then
 		echo -e "${YELLOW}→${NC} [DRY] Would initialize git repository"
@@ -52,7 +97,7 @@ if [[ ! -d "$SCRIPT_DIR/.git" ]]; then
 	fi
 fi
 
-# 3. Run submodule initialization (when we have submodules)
+# 5. Run submodule initialization (when we have submodules)
 if [[ -f "$SCRIPT_DIR/.gitmodules" ]]; then
 	if [[ "$DRY_RUN" == true ]]; then
 		echo -e "${YELLOW}→${NC} [DRY] Would initialize submodules"
@@ -62,13 +107,11 @@ if [[ -f "$SCRIPT_DIR/.gitmodules" ]]; then
 	fi
 fi
 
-# 4. Create symlinks
-echo ""
+# 6. Create symlinks
 echo -e "${YELLOW}→${NC} Creating symlinks..."
 "$SCRIPT_DIR/scripts/link.sh" "$@"
 
-# 5. Set up dots command
-echo ""
+# 7. Set up dots command
 if [[ "$DRY_RUN" == true ]]; then
 	echo -e "${YELLOW}→${NC} [DRY] Would set up dots command at ~/.local/bin/dots"
 	if [[ ! -L "$HOME/.local/bin/dots" ]]; then
@@ -88,8 +131,7 @@ else
 	echo -e "${GREEN}✓${NC} Created dots command at ~/.local/bin/dots"
 fi
 
-# Make all scripts executable
-echo ""
+# 8. Make all scripts executable
 if [[ "$DRY_RUN" == true ]]; then
 	echo -e "${YELLOW}→${NC} [DRY] Would make scripts executable"
 	echo "  Would chmod +x: install.sh"
@@ -103,6 +145,20 @@ else
 	echo -e "${GREEN}✓${NC} All scripts are now executable"
 fi
 
+# 9. Validate installation
+if [[ "$SKIP_DEPS" == false ]] && [[ "$DRY_RUN" == false ]]; then
+	echo ""
+	echo -e "${BLUE}🧪 Phase 4: Validation${NC}"
+	if validate_dependencies; then
+		echo -e "${GREEN}✓${NC} Testing dots command..."
+		if command -v dots &> /dev/null; then
+			echo -e "${GREEN}✓${NC} dots command functional"
+		else
+			echo -e "${YELLOW}⚠️${NC} dots command not in PATH - reload shell"
+		fi
+	fi
+fi
+
 # Success message
 echo ""
 if [[ "$DRY_RUN" == true ]]; then
@@ -114,20 +170,36 @@ if [[ "$DRY_RUN" == true ]]; then
 	echo "Run without --dry-run to perform the actual installation."
 else
 	echo -e "${GREEN}╔══════════════════════════════════════╗${NC}"
-	echo -e "${GREEN}║    Installation Complete! 🎉         ║${NC}"
+	echo -e "${GREEN}║   Machine Setup Complete! 🎉         ║${NC}"
 	echo -e "${GREEN}╚══════════════════════════════════════╝${NC}"
+	echo ""
+	if [[ "$SKIP_DEPS" == false ]]; then
+		echo "🎯 Your development environment is ready:"
+		echo "  • Modern shell: zsh with custom configuration"
+		echo "  • Editor: neovim with custom configuration"
+		echo "  • Tools: fzf, ripgrep, tmux, lazygit, gh"
+		echo "  • Configuration: Use 'dots' for dotfiles management"
+		echo ""
+	fi
+fi
+
+echo "📋 Next steps:"
+if [[ "$SKIP_DEPS" == false ]]; then
+	echo "1. Logout and login (for shell change to take effect)"
+	echo "2. Reload your shell: source ~/.zshrc"
+	echo "3. Test with: dots status"
+	echo "4. Verify SSH: ssh -T git@github.com"
+else
+	echo "1. Install dependencies manually or run: ./install.sh (without --no-deps)"
+	echo "2. Ensure ~/.local/bin is in your PATH"
+	echo "3. Reload your shell: source ~/.zshrc"
 fi
 echo ""
-echo "Next steps:"
-echo "1. Ensure ~/.local/bin is in your PATH"
-echo "2. Reload your shell configuration: source ~/.zshrc"
-echo "3. Run 'dots' to see available commands"
-echo ""
-echo "OS-specific notes:"
-if [[ "$OS" == "macos" ]]; then
-	echo "• Run 'brew bundle' in $SCRIPT_DIR/macos to install Homebrew packages"
+
+if [[ "$SKIP_DEPS" == false ]]; then
+	echo "🛠️  Available commands:"
+	echo "  • 'dots' - dotfiles management (status, sync, link)"
+	echo "  • 'repos' - repository management (find, open, status)"
+	echo "  • 'repo' - individual repository operations"
 fi
-echo ""
-echo "To add more submodules later:"
-echo "• dots sub-add git@github.com:user/wezterm-config.git common/.config/wezterm"
 echo ""
