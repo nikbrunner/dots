@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # The goal of this script is to clone a repo to my repos folder
 # It should use the git url to parse the repo owner and name and then clone it to the repos folder with the owner as the folder name

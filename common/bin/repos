@@ -428,7 +428,7 @@ install_deps() {
     fi
 }
 
-# Show git status for all repos
+# Show git status for all repos, grouped by owner
 status_repos() {
     local repos
     repos=$(list_repos)
@@ -438,37 +438,111 @@ status_repos() {
         exit 1
     fi
 
+    local clean_only=false
+    if [[ "$1" == "--clean" ]]; then
+        clean_only=true
+    fi
+
     echo "Checking status of all repositories..."
     echo
 
-    local has_changes=false
+    # Group repositories by owner using associative arrays
+    declare -A owner_repos
+    declare -A owner_dirty_repos
+    declare -A owner_non_git_repos
+    local total_repos=0
+    local total_dirty_repos=0
+    local total_non_git=0
 
     while IFS= read -r repo; do
         [[ -z "$repo" ]] && continue
+        ((total_repos++))
 
+        local owner="${repo%%/*}"
         local repo_path="$REPOS_BASE_PATH/$repo"
-        cd "$repo_path" || continue
 
         # Check if it's a git repository
-        if [[ ! -d .git ]]; then
-            print_warning "$repo is not a git repository"
+        if [[ ! -d "$repo_path/.git" ]]; then
+            owner_non_git_repos["$owner"]+="$repo "
+            ((total_non_git++))
             continue
         fi
 
         # Get git status
         local status_output
-        status_output=$(git status --porcelain 2>/dev/null)
+        status_output=$(cd "$repo_path" && git status --porcelain 2>/dev/null)
 
         if [[ -n "$status_output" ]]; then
-            has_changes=true
-            echo -e "${YELLOW}$repo${NC}"
-            git status --short
-            echo
+            owner_dirty_repos["$owner"]+="$repo "
+            ((total_dirty_repos++))
+        else
+            owner_repos["$owner"]+="$repo "
         fi
     done <<<"$repos"
 
-    if [[ "$has_changes" == false ]]; then
-        print_success "All repositories are clean"
+    # Show results grouped by owner
+    local has_any_issues=false
+
+    for owner in $(printf '%s\n' "${!owner_dirty_repos[@]}" "${!owner_non_git_repos[@]}" | sort -u); do
+        local dirty_repos="${owner_dirty_repos[$owner]}"
+        local non_git_repos="${owner_non_git_repos[$owner]}"
+        
+        if [[ -n "$dirty_repos" || -n "$non_git_repos" ]]; then
+            has_any_issues=true
+            echo -e "${YELLOW}=== $owner ===${NC}"
+
+            # Show non-git directories first
+            if [[ -n "$non_git_repos" ]]; then
+                for repo in $non_git_repos; do
+                    print_warning "$repo is not a git repository"
+                done
+                echo
+            fi
+
+            # Show dirty repositories
+            if [[ -n "$dirty_repos" ]]; then
+                for repo in $dirty_repos; do
+                    local repo_path="$REPOS_BASE_PATH/$repo"
+                    echo -e "${YELLOW}$repo${NC}"
+                    (cd "$repo_path" && git status --short)
+                    echo
+                done
+            fi
+        fi
+    done
+
+    # Show clean repositories if not --clean flag
+    if [[ "$clean_only" == false ]]; then
+        local has_clean=false
+        for owner in $(printf '%s\n' "${!owner_repos[@]}" | sort); do
+            local clean_repos="${owner_repos[$owner]}"
+            if [[ -n "$clean_repos" ]]; then
+                if [[ "$has_clean" == false ]]; then
+                    echo -e "${GREEN}=== Clean Repositories ===${NC}"
+                    has_clean=true
+                fi
+                echo -e "${GREEN}$owner:${NC} $(echo $clean_repos | wc -w | tr -d ' ') repositories"
+            fi
+        done
+        [[ "$has_clean" == true ]] && echo
+    fi
+
+    # Summary
+    echo -e "${YELLOW}=== Summary ===${NC}"
+    echo "Total repositories: $total_repos"
+    if [[ $total_dirty_repos -gt 0 ]]; then
+        echo -e "${YELLOW}Repositories with changes: $total_dirty_repos${NC}"
+    else
+        print_success "All git repositories are clean"
+    fi
+    if [[ $total_non_git -gt 0 ]]; then
+        print_warning "Non-git directories: $total_non_git"
+    fi
+
+    # Suggest cleanup if there are dirty repos
+    if [[ $total_dirty_repos -gt 0 ]]; then
+        echo
+        echo "💡 Run 'repos cleanup' to interactively clean up repositories"
     fi
 }
 
@@ -822,7 +896,7 @@ config)
     config_repos
     ;;
 status)
-    status_repos
+    status_repos "$2"
     ;;
 setup)
     setup_repos
