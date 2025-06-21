@@ -1,49 +1,274 @@
 #!/usr/bin/env bash
+# Generate branch name using Claude API and create new branch
 
-# Check if there's an argument
+# Configuration
+MODEL_OPTIONS=(
+    "claude-opus-4-20250514 (most capable and intelligent)"
+    "claude-sonnet-4-20250514 (exceptional reasoning)"
+    "claude-3-7-sonnet-20250219 (high-performance with extended thinking)"
+    "claude-3-opus-20240229 (powerful for complex tasks)"
+    "claude-3-5-sonnet-20241022 (previous intelligent model)"
+    "claude-3-5-haiku-20241022 (fastest model)"
+    "claude-3-haiku-20240307 (fast and compact)"
+)
+MODEL="claude-3-5-haiku-20241022"
+MAX_TOKENS=256
+API_VERSION="2023-06-01"
+
+# Parse command line arguments
+YES_FLAG=false
+
+while [[ $# -gt 0 ]]; do
+    case $1 in
+    -y | --yes)
+        YES_FLAG=true
+        shift
+        ;;
+    -h | --help)
+        echo "Usage: $0 [-y|--yes] <task description>"
+        echo "  -y, --yes    Auto-create branch without confirmation"
+        echo ""
+        echo "Examples:"
+        echo "  smart-branch \"fix login bug\""
+        echo "  smart-branch \"BCD-1234 implement user dashboard\""
+        echo "  smart-branch -y \"refactor api endpoints\""
+        exit 0
+        ;;
+    -*)
+        echo "Unknown option: $1"
+        echo "Usage: $0 [-y|--yes] <task description>"
+        exit 1
+        ;;
+    *)
+        break
+        ;;
+    esac
+done
+
+# Check if there's a task description
 if [ $# -eq 0 ]; then
-    echo "No arguments provided. Please provide a task description."
+    echo "No task description provided. Please provide a task description."
+    echo "Usage: $0 [-y|--yes] <task description>"
     exit 1
 fi
 
-# Check if OPENAI_API_KEY is set
-if [ -z "$OPENAI_API_KEY" ]; then
-    echo "OPENAI_API_KEY is not set. Please set it to your OpenAI API key."
+# Check if ANTHROPIC_API_KEY is set
+if [ -z "$ANTHROPIC_API_KEY" ]; then
+    echo "ANTHROPIC_API_KEY is not set. Please set it to your Anthropic API key."
     exit 1
 fi
 
 # Join arguments into a single string
 input="$*"
 
-# Format the input for GPT-4
-formatted_input="Convert this task description into a concise English branch name. If the description contains a issue number like 'bcd-xxxx', please include it in the branch name. The end result should be lowercase, always english (translate if you have to), and should look something like this: '<bcd-xxxx>-<summary>'.: $input"
+# Function to generate branch name
+generate_branch_name() {
+    local selected_model=${1:-$MODEL}
+    current_model="$selected_model"
 
-# Prepare the JSON payload
-json_payload=$(jq -n \
-    --arg model "gpt-4o" \
-    --arg input "$formatted_input" \
-    '{
-        model: $model,
-        messages: [
-            { role: "system", content: "You are a helpful assistant." },
-            { role: "user", content: $input }
-        ]
-    }')
+    # Get current branch for context
+    local current_branch
+    current_branch=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
 
-# Use curl to send the request to OpenAI's API
-response=$(curl -s -X POST "https://api.openai.com/v1/chat/completions" \
-    -H "Authorization: Bearer $OPENAI_API_KEY" \
-    -H "Content-Type: application/json" \
-    -d "$json_payload")
+    # Build the prompt
+    local prompt="Generate a concise git branch name from this task description: \"$input\"
 
-# Extract the text from the response using jq
-branch_name=$(echo "$response" | jq -r '.choices[0].message.content' | xargs)
+Rules:
+- Use lowercase letters, numbers, and hyphens only
+- Keep it under 50 characters
+- Make it descriptive but concise
+- If the description contains an issue number like 'BCD-1234' or 'bcd-xxxx', include it as a prefix
+- Use format: 'issue-id-short-description' or just 'short-description'
+- Replace spaces with hyphens
+- Use English only
 
-# Validate output
-if [ -z "$branch_name" ] || [ "$branch_name" = "null" ]; then
-    echo "GPT-4 did not return a valid output."
+Examples:
+- \"Fix login validation\" → \"fix-login-validation\"
+- \"BCD-1234 implement user dashboard\" → \"bcd-1234-implement-user-dashboard\"
+- \"refactor API endpoints\" → \"refactor-api-endpoints\"
+
+Return ONLY the branch name, nothing else."
+
+    # Prepare the JSON payload
+    local json_payload
+    json_payload=$(jq -n \
+        --arg prompt "$prompt" \
+        --arg model "$selected_model" \
+        --arg max_tokens "$MAX_TOKENS" \
+        '{
+            model: $model,
+            max_tokens: ($max_tokens | tonumber),
+            messages: [
+                {
+                    role: "user",
+                    content: $prompt
+                }
+            ]
+        }')
+
+    # Call Claude API with spinner
+    local response
+    if command -v gum &>/dev/null; then
+        response=$(gum spin --spinner dot --title "Generating branch name with $selected_model..." -- \
+            curl -s -X POST "https://api.anthropic.com/v1/messages" \
+            -H "x-api-key: $ANTHROPIC_API_KEY" \
+            -H "anthropic-version: $API_VERSION" \
+            -H "content-type: application/json" \
+            -d "$json_payload")
+    else
+        echo "Generating branch name..."
+        response=$(curl -s -X POST "https://api.anthropic.com/v1/messages" \
+            -H "x-api-key: $ANTHROPIC_API_KEY" \
+            -H "anthropic-version: $API_VERSION" \
+            -H "content-type: application/json" \
+            -d "$json_payload")
+    fi
+
+    # Extract the branch name from the response
+    branch_name=$(echo "$response" | jq -r '.content[0].text' 2>/dev/null | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
+
+    # Check if we got a valid response
+    if [ -z "$branch_name" ] || [ "$branch_name" = "null" ]; then
+        echo "Error: Failed to generate branch name"
+        echo "Response: $response"
+        return 1
+    fi
+
+    # Clean up the branch name (remove quotes, extra spaces, etc.)
+    branch_name=$(echo "$branch_name" | sed 's/^["'"'"']//;s/["'"'"']$//' | tr -d '\n\r')
+
+    return 0
+}
+
+# Generate initial branch name
+current_model="$MODEL"
+if ! generate_branch_name; then
     exit 1
 fi
 
-# Create a new branch with the GPT-4 output
-git switch -c "$branch_name"
+# Display the generated branch name
+echo ""
+if command -v gum &>/dev/null; then
+    gum format -t template <<EOF
+{{ Color "2" "" "Generated branch name" }} {{ Color "15" "9" " 󰣩 $current_model " }}
+EOF
+    echo ""
+    echo "----------------------------------------"
+    echo "$branch_name" | gum format
+    echo "----------------------------------------"
+    echo ""
+else
+    echo "Generated branch name: $branch_name"
+    echo ""
+fi
+
+# Handle user confirmation based on flags
+if [ "$YES_FLAG" = true ]; then
+    # Auto-create branch
+    if command -v gum &>/dev/null; then
+        gum format -t emoji ':seedling: Auto-creating branch (--yes flag)...'
+    else
+        echo "Creating branch..."
+    fi
+
+    if git switch -c "$branch_name"; then
+        echo ""
+        if command -v gum &>/dev/null; then
+            gum format -t emoji ':sparkles: Branch created and switched successfully!'
+        else
+            echo "Branch '$branch_name' created and switched successfully!"
+        fi
+    else
+        echo "Failed to create branch '$branch_name'"
+        exit 1
+    fi
+else
+    # Interactive loop for regeneration
+    while true; do
+        if command -v gum &>/dev/null; then
+            action=$(gum choose "Create Branch" "Regenerate" "Cancel")
+        else
+            echo "Options:"
+            echo "1) Create Branch"
+            echo "2) Regenerate"
+            echo "3) Cancel"
+            read -p "Choose an option (1-3): " choice
+            case "$choice" in
+            1) action="Create Branch" ;;
+            2) action="Regenerate" ;;
+            3) action="Cancel" ;;
+            *)
+                echo "Invalid choice"
+                continue
+                ;;
+            esac
+        fi
+
+        case "$action" in
+        "Create Branch")
+            echo ""
+            if command -v gum &>/dev/null; then
+                gum format -t emoji ':seedling: Creating branch...'
+            else
+                echo "Creating branch..."
+            fi
+
+            if git switch -c "$branch_name"; then
+                echo ""
+                if command -v gum &>/dev/null; then
+                    gum format -t emoji ':sparkles: Branch created and switched successfully!'
+                else
+                    echo "Branch '$branch_name' created and switched successfully!"
+                fi
+                break
+            else
+                echo "Failed to create branch '$branch_name'"
+                exit 1
+            fi
+            ;;
+        "Regenerate")
+            echo ""
+            if command -v gum &>/dev/null; then
+                echo "Select model for regeneration:"
+                selected_model=$(printf '%s\n' "${MODEL_OPTIONS[@]}" | gum choose | awk '{print $1}')
+            else
+                echo "Available models:"
+                for i in "${!MODEL_OPTIONS[@]}"; do
+                    echo "$((i + 1))) ${MODEL_OPTIONS[$i]}"
+                done
+                read -p "Choose model (1-${#MODEL_OPTIONS[@]}): " model_choice
+                if [[ "$model_choice" =~ ^[0-9]+$ ]] && [ "$model_choice" -ge 1 ] && [ "$model_choice" -le ${#MODEL_OPTIONS[@]} ]; then
+                    selected_model=$(echo "${MODEL_OPTIONS[$((model_choice - 1))]}" | awk '{print $1}')
+                else
+                    echo "Invalid choice, using default model"
+                    selected_model="$MODEL"
+                fi
+            fi
+
+            if generate_branch_name "$selected_model"; then
+                # Display the new branch name
+                echo ""
+                if command -v gum &>/dev/null; then
+                    gum format -t template <<EOF
+{{ Color "2" "" "Generated branch name" }} {{ Color "15" "4" " $current_model " }}
+EOF
+                    echo ""
+                    echo "----------------------------------------"
+                    echo "$branch_name" | gum format
+                    echo "----------------------------------------"
+                    echo ""
+                else
+                    echo "Generated branch name: $branch_name"
+                    echo ""
+                fi
+            else
+                echo "Failed to regenerate. Using previous name."
+            fi
+            ;;
+        "Cancel")
+            echo "Branch creation cancelled."
+            exit 1
+            ;;
+        esac
+    done
+fi
