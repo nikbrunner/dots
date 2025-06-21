@@ -4,6 +4,21 @@ All notable changes to this dotfiles repository will be documented in this file.
 
 ## 2025-06-21
 
+### 🐛 Bug Fixes
+
+- **Fixed `dots status` Hanging**: Resolved hanging issue during symlink checking
+  - Root cause: File descriptor conflicts in nested bash function contexts
+  - Solution: Unified library that works both as standalone script and library
+  - Eliminated code duplication and improved maintainability
+
+### 🔧 Code Improvements
+
+- **Unified Symlink Library**: Created `scripts/lib/symlinks.sh` as hybrid library/script
+  - Single file handles both library (sourced) and standalone execution
+  - Consolidated all symlink operations (check, create, update, cleanup)
+  - Eliminated duplicate code between status and link commands
+  - Simplified architecture with fewer files to maintain
+
 ### 🚀 Major Features
 
 - **Complete Machine Setup**: Enhanced `dots install` with automatic dependency management

@@ -336,7 +336,7 @@ cmd_sub_commit() {
     fi
 }
 
-# Status command - enhanced with symlink status using direct directory traversal
+# Status command - delegate to external script
 cmd_status() {
     log_section "=== Git Repository Status ==="
     git status --short
@@ -344,92 +344,54 @@ cmd_status() {
     echo ""
     log_section "=== Symlink Status ==="
 
-    # Get current OS
-    source "$DOTS_DIR/scripts/detect-os.sh"
-    local current_os=$(get_os)
+    echo "Checking symlinks..."
+    
+    # Run the symlinks library as standalone script and capture output
+    local output
+    output=$("$DOTS_DIR/scripts/lib/symlinks.sh")
+    
+    # Split output into lines array
+    local lines=()
+    while IFS= read -r line; do
+        lines+=("$line")
+    done <<< "$output"
+    
+    # Show all lines except the last one
+    local num_lines=${#lines[@]}
+    if [[ $num_lines -gt 1 ]]; then
+        for ((i=0; i<num_lines-1; i++)); do
+            echo "${lines[i]}"
+        done
+    fi
+    
+    # Parse the stats from the last line
+    local stats_line="${lines[-1]}"
+    
+    if [[ "$stats_line" =~ ^STATS:([0-9]+):([0-9]+):([0-9]+):([0-9]+):([0-9]+)$ ]]; then
+        local total_links="${BASH_REMATCH[1]}"
+        local valid_links="${BASH_REMATCH[2]}"
+        local broken_links="${BASH_REMATCH[3]}"
+        local missing_links="${BASH_REMATCH[4]}"
+        local wrong_target_links="${BASH_REMATCH[5]}"
+        
+        # Summary
+        echo ""
+        log_section "Summary:"
 
-    local total_links=0
-    local valid_links=0
-    local broken_links=0
-    local missing_links=0
-    local wrong_target_links=0
-
-    if command -v gum >/dev/null 2>&1; then
-        gum spin --spinner="dot" --title="Checking symlinks..." -- sleep 0.5
+        echo "  Total expected links: $total_links"
+        log_success "Valid links: $valid_links"
+        if [[ $wrong_target_links -gt 0 ]]; then
+            log_warning "Wrong targets: $wrong_target_links"
+        fi
+        if [[ $broken_links -gt 0 ]]; then
+            log_error "Broken links: $broken_links"
+        fi
+        if [[ $missing_links -gt 0 ]]; then
+            log_info "Missing links: $missing_links"
+        fi
     else
-        echo "Checking symlinks..."
+        log_error "Failed to parse symlink check results"
     fi
-
-    # Function to check symlinks from a directory
-    check_directory_symlinks() {
-        local source_dir="$1"
-        local target_base="$2"
-        
-        [[ ! -d "$source_dir" ]] && return
-        
-        # Find all files and symlinks recursively
-        while IFS= read -r -d '' file; do
-            # Calculate relative path and target
-            local rel_path="${file#"$source_dir"/}"
-            local target="$target_base/$rel_path"
-            
-            ((total_links++))
-
-            if [[ -L "$target" ]]; then
-                # It's a symlink, check if it's valid
-                local actual_target=$(readlink "$target")
-                if [[ "$actual_target" == "$file" ]]; then
-                    ((valid_links++))
-                else
-                    ((wrong_target_links++))
-                    log_warning "Wrong target: $target → $actual_target"
-                    echo "    Expected: $file"
-                fi
-
-                # Check if target exists
-                if [[ ! -e "$target" ]]; then
-                    ((broken_links++))
-                    log_error "Broken link: $target"
-                fi
-            elif [[ -e "$target" ]]; then
-                # File/directory exists but is not a symlink
-                log_error "Not a symlink: $target"
-                echo "    Run 'dots link' to fix"
-            else
-                # Neither symlink nor file exists
-                ((missing_links++))
-                log_warning "Missing link: $target"
-            fi
-
-        done < <(find "$source_dir" \( -type f -o -type l \) -print0 2>/dev/null)
-    }
-
-    # Check common files
-    check_directory_symlinks "$DOTS_DIR/common" "$HOME"
-
-    # Check OS-specific files
-    if [[ "$current_os" == "macos" && -d "$DOTS_DIR/macos" ]]; then
-        check_directory_symlinks "$DOTS_DIR/macos" "$HOME"
-    elif [[ "$current_os" == "linux" && -d "$DOTS_DIR/linux" ]]; then
-        check_directory_symlinks "$DOTS_DIR/linux" "$HOME"
-    fi
-
-    # Summary
-    echo ""
-    log_section "Summary:"
-
-    echo "  Total expected links: $total_links"
-    log_success "Valid links: $valid_links"
-    if [[ $wrong_target_links -gt 0 ]]; then
-        log_warning "Wrong targets: $wrong_target_links"
-    fi
-    if [[ $broken_links -gt 0 ]]; then
-        log_error "Broken links: $broken_links"
-    fi
-    if [[ $missing_links -gt 0 ]]; then
-        log_info "Missing links: $missing_links"
-    fi
-
 }
 
 # Test command - comprehensive system checks
