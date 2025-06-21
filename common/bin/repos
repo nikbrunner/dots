@@ -537,6 +537,12 @@ status_repos() {
     fi
     if [[ $total_non_git -gt 0 ]]; then
         print_warning "Non-git directories: $total_non_git"
+        for owner in $(printf '%s\n' "${!owner_non_git_repos[@]}" | sort); do
+            local non_git_repos_list="${owner_non_git_repos[$owner]}"
+            for repo in $non_git_repos_list; do
+                echo "  • $repo"
+            done
+        done
     fi
 
     # Suggest cleanup if there are dirty repos
@@ -856,8 +862,9 @@ cleanup_repos() {
 
     echo "Building cleanup queue..."
     
-    # Build queue of dirty repositories
+    # Build queue of dirty repositories and non-git directories
     local dirty_repos=()
+    local non_git_repos=()
     while IFS= read -r repo; do
         [[ -z "$repo" ]] && continue
 
@@ -865,6 +872,7 @@ cleanup_repos() {
 
         # Check if it's a git repository
         if [[ ! -d "$repo_path/.git" ]]; then
+            non_git_repos+=("$repo")
             continue
         fi
 
@@ -878,16 +886,86 @@ cleanup_repos() {
     done <<<"$repos"
 
     # Check if there's anything to clean up
-    if [[ ${#dirty_repos[@]} -eq 0 ]]; then
+    if [[ ${#dirty_repos[@]} -eq 0 && ${#non_git_repos[@]} -eq 0 ]]; then
         print_success "All repositories are clean! Nothing to cleanup."
         return 0
     fi
 
+    local total_items=$((${#dirty_repos[@]} + ${#non_git_repos[@]}))
     echo "Found ${#dirty_repos[@]} repositories with changes"
+    if [[ ${#non_git_repos[@]} -gt 0 ]]; then
+        echo "Found ${#non_git_repos[@]} non-git directories"
+    fi
     echo
 
-    # Process each dirty repository with lazygit
+    # Process non-git directories first
     local current=1
+    for repo in "${non_git_repos[@]}"; do
+        local repo_path="$REPOS_BASE_PATH/$repo"
+        local repo_name="${repo#*/}"
+        
+        echo -e "${YELLOW}Non-git directory: $repo${NC}"
+        
+        local actions=(
+            "Initialize as Git|Run git init and make initial commit"
+            "Remove Directory|Delete the entire directory"
+            "Skip|Leave as-is and continue"
+        )
+        
+        local selected_action
+        selected_action=$(printf '%s\n' "${actions[@]}" | cut -d'|' -f1 | styled_fzf "Action for $repo_name: ")
+        
+        case "$selected_action" in
+        "Initialize as Git")
+            if (cd "$repo_path" && git init && git add -A && git commit -m "Initial commit"); then
+                print_success "$repo_name: initialized as git repository"
+            else
+                print_error "$repo_name: git initialization failed"
+            fi
+            ;;
+        "Remove Directory")
+            if confirm_action "Really delete $repo_name directory?"; then
+                if rm -rf "$repo_path"; then
+                    print_success "$repo_name: directory removed"
+                else
+                    print_error "$repo_name: removal failed"
+                fi
+            fi
+            ;;
+        "Skip")
+            echo "Skipping $repo_name"
+            ;;
+        esac
+        
+        # Show progress and prompt to continue
+        echo
+        echo "Progress: $current/$total_items items processed"
+        
+        # If this is the last item, don't prompt
+        if [[ $current -eq $total_items ]]; then
+            break
+        fi
+        
+        # Use gum confirm if available, otherwise fallback
+        if has_gum; then
+            if ! gum confirm "Continue to next item?"; then
+                echo "Cleanup stopped"
+                break
+            fi
+        else
+            echo -n "Continue to next item? (y/N) "
+            read -r continue_input
+            if [[ "$continue_input" != "y" && "$continue_input" != "Y" ]]; then
+                echo "Cleanup stopped"
+                break
+            fi
+        fi
+        
+        ((current++))
+        echo
+    done
+
+    # Process each dirty repository with lazygit
     for repo in "${dirty_repos[@]}"; do
         local repo_path="$REPOS_BASE_PATH/$repo"
         
@@ -898,10 +976,10 @@ cleanup_repos() {
         
         # Show progress and prompt to continue
         echo
-        echo "Progress: $current/${#dirty_repos[@]} repositories processed"
+        echo "Progress: $current/$total_items items processed"
         
-        # If this is the last repo, don't prompt
-        if [[ $current -eq ${#dirty_repos[@]} ]]; then
+        # If this is the last item, don't prompt
+        if [[ $current -eq $total_items ]]; then
             break
         fi
         
