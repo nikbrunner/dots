@@ -98,15 +98,15 @@ Implementation plan for creating a unified dependency management system where `d
 - `check_all_dependencies()` - Comprehensive dependency check
 - `show_missing_deps_guidance()` - User-friendly error messages
 
-#### 2. Enhanced `dots install` Command
+#### 2. Enhanced `dots install` Command (Complete Machine Setup)
 
 **Responsibilities:**
 - Detect operating system
-- Check all essential dependencies
-- Install missing dependencies with user confirmation
-- Verify installations
+- Install all required dependencies (no essential/optional distinction)
+- Configure system settings (default shell, etc.)
 - Set up symlinks and submodules (existing functionality)
-- Provide summary and next steps
+- Configure development environment
+- Provide summary and next steps for complete working machine
 
 #### 3. Dependency Integration in Bins
 
@@ -127,7 +127,7 @@ Implementation plan for creating a unified dependency management system where `d
 - [ ] Create user-friendly error messaging
 
 #### 1.2 Dependency Definition
-- [ ] Define essential vs optional dependencies
+- [ ] Define all required dependencies for complete working machine
 - [ ] Map dependencies to package names per OS
 - [ ] Create validation functions for each dependency
 
@@ -136,23 +136,31 @@ Implementation plan for creating a unified dependency management system where `d
 - [ ] Implement pacman integration for Arch Linux
 - [ ] Add user confirmation prompts for installations
 
-### Phase 2: Enhanced `dots install`
+### Phase 2: Complete Machine Setup (`dots install`)
 
-#### 2.1 Integrate Dependency Management
+#### 2.1 Dependency Management Integration
 - [ ] Source dependency library in `dots install`
-- [ ] Add dependency checking phase
-- [ ] Implement interactive installation prompts
-- [ ] Add installation progress feedback
+- [ ] Install all required dependencies (git, fzf, tmux, ripgrep, neovim, gum, gh, lazygit, bat, delta)
+- [ ] Implement interactive installation prompts with progress feedback
+- [ ] Verify all installations successful
 
-#### 2.2 Preserve Existing Functionality
-- [ ] Maintain symlink creation
-- [ ] Maintain submodule setup
-- [ ] Add dependency verification to final summary
+#### 2.2 System Configuration
+- [ ] Set zsh as default shell (`chsh -s $(which zsh)`)
+- [ ] Configure shell environment (PATH, exports, aliases)
+- [ ] Set up development environment preferences
+- [ ] Configure git global settings (if not already configured)
 
-#### 2.3 Enhanced User Experience
-- [ ] Add installation progress indicators
-- [ ] Provide clear success/failure feedback
-- [ ] Show post-installation verification
+#### 2.3 Existing Functionality (Enhanced)
+- [ ] Create all symlinks (dotfiles, configs, bins)
+- [ ] Initialize and update all submodules
+- [ ] Verify symlink integrity and submodule status
+- [ ] Set appropriate file permissions
+
+#### 2.4 Post-Setup Validation
+- [ ] Verify all dependencies are functional
+- [ ] Test critical commands (repos, dots, etc.)
+- [ ] Show comprehensive setup summary
+- [ ] Provide next steps and usage guidance
 
 ### Phase 3: Script Integration
 
@@ -171,17 +179,39 @@ Implementation plan for creating a unified dependency management system where `d
 - [ ] Test on Arch Linux with missing dependencies
 - [ ] Verify graceful degradation scenarios
 
-### Phase 4: Documentation and Polish
+### Phase 4: Extended System Setup
 
-#### 4.1 User Documentation
-- [ ] Update README with dependency information
-- [ ] Add troubleshooting guide
-- [ ] Document manual installation procedures
+#### 4.1 Advanced Configuration
+- [ ] SSH key generation and GitHub setup guidance
+- [ ] Development environment optimization (vim/neovim configs)
+- [ ] Terminal preferences and themes
+- [ ] macOS system preferences automation (Finder, Dock, etc.)
 
-#### 4.2 Developer Documentation
+#### 4.2 Development Tools Setup
+- [ ] Node.js/npm via nvm installation
+- [ ] Python environment setup
+- [ ] Development directories structure (`~/repos`, `~/projects`, etc.)
+- [ ] IDE/editor preferences and plugins
+
+#### 4.3 Optional Integrations
+- [ ] Cloud storage sync setup guidance
+- [ ] Backup strategy configuration
+- [ ] Security tools and configurations
+- [ ] Productivity apps and configurations
+
+### Phase 5: Documentation and Polish
+
+#### 5.1 User Documentation
+- [ ] Update README with complete setup guide
+- [ ] Add troubleshooting guide for common issues
+- [ ] Document manual installation procedures as fallback
+- [ ] Create platform-specific setup guides
+
+#### 5.2 Developer Documentation
 - [ ] Document dependency library usage
 - [ ] Add guidelines for script integration
 - [ ] Create contribution guidelines for new dependencies
+- [ ] Document system configuration patterns
 
 ## Technical Implementation Details
 
@@ -274,41 +304,64 @@ fi
 
 ## User Experience Flow
 
-### Initial Setup Experience
+### Complete Machine Setup Experience
 
 ```bash
 $ dots install
+🚀 Welcome to dots - Complete Machine Setup
 🔍 Detecting operating system... macOS (Homebrew)
-📋 Checking dependencies...
 
-Essential Dependencies:
+📋 Phase 1: Dependency Installation
+Checking required dependencies...
   ✅ git - already installed
   ❌ fzf - missing
-  ❌ tmux - missing
+  ❌ tmux - missing  
+  ❌ ripgrep - missing
+  ❌ neovim - missing
+  ❌ gum - missing
+  ❌ gh - missing
+  ❌ lazygit - missing
+  ❌ bat - missing
+  ❌ delta - missing
 
-Optional Dependencies:
-  ❌ gum - missing (enhanced CLI experience)
-  ❌ gh - missing (GitHub repository operations)
-  ✅ lazygit - already installed
+🚀 Install all dependencies? (y/N) y
 
-🚀 Install missing dependencies? (y/N) y
-
-📦 Installing fzf...
-📦 Installing tmux...
-📦 Installing gum...
-📦 Installing gh...
-
+📦 Installing dependencies via Homebrew...
+📦 Installing fzf, tmux, ripgrep, neovim...
+📦 Installing gum, gh, lazygit, bat, git-delta...
 ✅ All dependencies installed successfully!
 
-🔗 Creating symlinks...
-📁 Setting up submodules...
+⚙️  Phase 2: System Configuration
+🐚 Setting zsh as default shell...
+🔧 Configuring shell environment...
+✅ System configuration complete!
 
-🎉 Setup complete! Your dotfiles are ready to use.
+🔗 Phase 3: Dotfiles Setup  
+🔗 Creating symlinks (.zshrc, .gitconfig, bin/*, .config/*)...
+📁 Initializing submodules (nvim, wezterm)...
+🔒 Setting file permissions...
+✅ Dotfiles setup complete!
+
+🧪 Phase 4: Validation
+✅ Testing dots command...
+✅ Testing repos command...
+✅ Testing neovim configuration...
+✅ All systems functional!
+
+🎉 Machine setup complete! 
+
+Your development environment is ready:
+  • Modern shell: zsh with oh-my-posh
+  • Editor: neovim with custom configuration  
+  • Tools: fzf, ripgrep, tmux, lazygit, gh
+  • Repositories: Use 'repos' for git repository management
+  • Configuration: Use 'dots' for dotfiles management
 
 Next steps:
-  • Try 'repos status' to see your repositories
-  • Run 'dots status' to verify your configuration
-  • Use 'dots --help' for available commands
+  • Run 'repos setup' to clone your development repositories
+  • Try 'repos status' to see repository status
+  • Use 'dots status' to verify your configuration
+  • Open neovim to verify editor setup
 ```
 
 ### Script-Level Dependency Detection
