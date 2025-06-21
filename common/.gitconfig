@@ -70,5 +70,5 @@
   wip = "!git add -A; git rm $(git ls-files --deleted) 2> /dev/null; git commit --no-verify --no-gpg-sign --message \"--wip--\""
   unwip = "!git rev-list --max-count=1 --format=\"%s\" HEAD | grep -q \"\\--wip--\" && git reset HEAD~1"
 
-  sc = !/Users/nbr/bin/smart-commit
-  sb = !/Users/nbr/bin/smart-branch
+  sc = !/Users/nbr/bin/repo commit -s
+  sb = !/Users/nbr/bin/repo branch -s

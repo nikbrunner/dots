@@ -112,7 +112,7 @@ customCommands:
   #   context: "files"
   #   command: "git cz"
   #   subprocess: true
-  # use alt-c to run git sc
+  # use Z to run repo commit -s (smart commit)
   - command: git -c core.pager="delta --syntax-theme gruvbox-dark --dark --side-by-side --paging=always" diff {{.SelectedLocalCommit.Sha}}^ {{.SelectedLocalCommit.Sha}}
     context: files
     description: full-screen diff of selected file
@@ -121,7 +121,7 @@ customCommands:
     subprocess: true
   - key: "Z"
     context: "files"
-    command: "git sc"
+    command: "repo commit -s"
     subprocess: true
   - key: "N"
     context: "localBranches"
