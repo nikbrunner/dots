@@ -243,7 +243,8 @@ Common commands:
 - [x] Implement repos cleanup workflow
 - [ ] Add test script
 - [ ] Verify that install script is working
-- [ ] Document `~/.ssh` setup
+- [x] Document `~/.ssh` setup (see [docs/SSH_SETUP.md](./docs/SSH_SETUP.md))
+- [ ] Test SSH setup on Linux (1Password paths may differ)
 
 ## Dependencies
 
