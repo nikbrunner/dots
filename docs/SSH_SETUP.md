@@ -2,7 +2,7 @@
 
 Personal reference for setting up 1Password SSH integration on new machines.
 
-> [!IMPORTANT]
+> [!IMPORTANT] 
 > **SSH config and known_hosts are backed up in 1Password (~/.ssh items)**
 
 ## 📋 Quick Setup Checklist
@@ -10,7 +10,7 @@ Personal reference for setting up 1Password SSH integration on new machines.
 When setting up a new machine:
 
 - [ ] Install 1Password and enable SSH agent ([Official Guide](https://developer.1password.com/docs/ssh/get-started))
-- [ ] Restore SSH config from 1Password backup  
+- [ ] Restore SSH config from 1Password backup
 - [ ] Set correct SSH permissions (`chmod 700 ~/.ssh && chmod 600 ~/.ssh/*`)
 - [ ] Test GitHub SSH connection (`ssh -T git@github.com`)
 - [ ] Verify Git commit signing works (dotfiles handle this automatically)
@@ -22,6 +22,7 @@ When setting up a new machine:
 Follow: [Get started with 1Password for SSH | 1Password Developer](https://developer.1password.com/docs/ssh/get-started)
 
 **Key points:**
+
 - Install 1Password on your platform
 - Enable SSH agent in settings
 - Your SSH keys are already in 1Password vault
@@ -29,11 +30,13 @@ Follow: [Get started with 1Password for SSH | 1Password Developer](https://devel
 ### 2. Restore SSH Configuration
 
 1. **Create SSH directory:**
+
    ```bash
    mkdir -p ~/.ssh && chmod 700 ~/.ssh
    ```
 
 2. **Restore from 1Password:**
+
    - Find "~/.ssh" items in 1Password
    - Copy config content to `~/.ssh/config`
    - Copy known_hosts content to `~/.ssh/known_hosts`
@@ -47,6 +50,7 @@ Follow: [Get started with 1Password for SSH | 1Password Developer](https://devel
 ## 🔧 Troubleshooting
 
 ### 1Password SSH Agent Issues
+
 ```bash
 # Check if agent is working
 ssh-add -l
@@ -58,6 +62,7 @@ ssh-add -l
 ```
 
 ### Git Signing Issues
+
 - Git signing is configured in dotfiles `.gitconfig`
 - Should work automatically with 1Password SSH agent
 - Test: `git log --show-signature -1`
@@ -74,10 +79,12 @@ ssh-add -l
 When setting up on Linux machines:
 
 1. **1Password SSH agent socket path** may differ from macOS:
+
    - Check 1Password settings for the correct socket path
    - Update SSH config `IdentityAgent` line if needed
 
 2. **Git signing program path** may be different:
+
    - macOS: `/Applications/1Password.app/Contents/MacOS/op-ssh-sign`
    - Linux: May be `/usr/bin/op-ssh-sign` or similar
    - Check with: `which op-ssh-sign` after 1Password installation
@@ -89,4 +96,3 @@ When setting up on Linux machines:
 3. **1Password installation:**
    - Follow Linux-specific installation from 1Password docs
    - Ensure CLI tools are properly installed
-
