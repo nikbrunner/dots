@@ -5,11 +5,10 @@ This document serves as a comprehensive troubleshooting and setup guide for depl
 ## 🎯 Quick Setup Checklist
 
 ### Pre-Installation Dependencies
-- [ ] **Essential packages**: `git`, `zsh`, `tmux`, `nvim`
+- [ ] **Run the automated setup**: `./common/bin/linux-setup` (handles most dependencies)
 - [ ] **1Password**: Install 1Password for Linux and enable SSH agent
-- [ ] **Terminal**: Kitty (instead of WezTerm)
-- [ ] **Package manager**: `paru` or `yay` for AUR packages
-- [ ] **Shell**: Ensure zsh is default shell (`chsh -s $(which zsh)`)
+- [ ] **Terminal**: Kitty (installed by setup script)
+- [ ] **Shell**: Setup script will prompt to change to zsh
 
 ### Post-Installation Verification
 - [ ] SSH agent working (`ssh-add -l`)
@@ -38,22 +37,15 @@ git config --global gpg.ssh.program "$(which op-ssh-sign)"
 
 **Expected Linux path**: `/usr/bin/op-ssh-sign` or `/opt/1Password/op-ssh-sign`
 
-### 2. **Homebrew Dependencies** ⚠️
+### 2. **Homebrew Dependencies** ✅ **RESOLVED**
 **Issue**: macOS Homebrew paths hardcoded in shell configuration
-**Location**: `common/.zshrc:4-8, 21`
+**Location**: `common/.zshrc` (now has OS detection)
 
-**Problematic lines**:
-```bash
-brew_path="/opt/homebrew/bin"
-brew_opt_path="/opt/homebrew/opt"
-export PATH=${brew_path}:${PATH}
-[ -s "${brew_opt_path}/nvm/nvm.sh" ] && . "${brew_opt_path}/nvm/nvm.sh"
-```
+**✅ Fixed**: The `.zshrc` now detects the OS and uses appropriate package managers:
+- **macOS**: Uses Homebrew paths and NVM
+- **Linux**: Uses system packages and official NVM installation
 
-**Linux alternatives**:
-- Replace Homebrew with `paru`/`yay` and system packages
-- Use system package manager for Python, NVM, etc.
-- Install NVM via official script or AUR
+**No action needed** - this is now handled automatically by the OS detection in `.zshrc`.
 
 ### 3. **Terminal-Specific Issues** ⚠️
 **Issue**: Tmux keybindings not working in Kitty
