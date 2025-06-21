@@ -132,7 +132,11 @@ process_directory() {
 	local created_count=0
 	local replaced_count=0
 
-	# Find all files and symlinks recursively
+	# Find all files and symlinks recursively (using temporary file to avoid process substitution issues)
+	local temp_file
+	temp_file=$(mktemp)
+	find "$source_dir" \( -type f -o -type l \) -print0 2>/dev/null > "$temp_file"
+	
 	while IFS= read -r -d '' file; do
 		# Calculate relative path from source directory
 		local rel_path="${file#"$source_dir"/}"
@@ -152,7 +156,9 @@ process_directory() {
 		esac
 
 		((file_count++))
-	done < <(find "$source_dir" \( -type f -o -type l \) -print0 2>/dev/null)
+	done < "$temp_file"
+	
+	rm -f "$temp_file"
 
 	if [[ $file_count -eq 0 ]]; then
 		echo -e "${YELLOW}→${NC} No files found in $dir_name"
