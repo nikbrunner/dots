@@ -131,13 +131,17 @@ generate_commit_message() {
     commit_messages=$(git log -n "$HISTORY_COUNT" --format='%s%n%b' HEAD 2>/dev/null)
 
     # Build the prompt
-    local prompt="You are an expert at following the Conventional Commit specification. Given the git diff listed below, generate a succinct commit message.
-- The summary line MUST NOT exceed $SUMMARY_LENGTH characters.
-- In most cases, the summary alone is sufficient; ONLY add a body if the change is complex or non-obvious.
-- If you do add a body, it should be concise and use bullet points.
-- Wrap variable names or code elements in backticks.
-- Consider changed file paths for scope.
-- Omit explanations and return only the commit message text."
+    local prompt="Generate a conventional commit message for the git diff below.
+
+CRITICAL: Return ONLY the commit message. Do not include ANY explanations, analysis, commentary, or additional text. Do not describe what you see in the diff. Just output the commit message and nothing else.
+
+Requirements:
+- Summary line MUST NOT exceed $SUMMARY_LENGTH characters
+- Use conventional commit format (type(scope): description)
+- Only add body if absolutely necessary for complex changes
+- NO explanations, NO analysis, NO commentary
+
+Output format: Just the commit message, nothing more."
 
     # Add previous commits if available
     if [ -n "$commit_messages" ] && [[ ! "$commit_messages" =~ fatal ]]; then
