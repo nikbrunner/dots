@@ -94,6 +94,7 @@ show_usage() {
         gum style --foreground=2 "  test         - Run comprehensive system tests"
         gum style --foreground=2 "  format       - Format repository files with prettier and shfmt [--check]"
         gum style --foreground=2 "  log          - Show git log"
+        gum style --foreground=2 "  open         - Open dots directory with \$EDITOR"
         echo ""
     else
         echo -e "${BLUE}dots - Dotfiles management command${NC}"
@@ -114,6 +115,7 @@ show_usage() {
         echo "  test         - Run comprehensive system tests"
         echo "  format       - Format repository files with prettier and shfmt [--check]"
         echo "  log          - Show git log"
+        echo "  open         - Open dots directory with \$EDITOR"
         echo ""
     fi
 }
@@ -603,6 +605,20 @@ cmd_log() {
     git log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate -10
 }
 
+# Open command - open dots directory with $EDITOR
+cmd_open() {
+    # Check if EDITOR is set
+    if [[ -z "$EDITOR" ]]; then
+        echo -e "${YELLOW}⚠${NC} EDITOR environment variable not set, using 'vim' as default"
+        local editor="vim"
+    else
+        local editor="$EDITOR"
+    fi
+    
+    echo -e "${YELLOW}→${NC} Opening dots directory with $editor..."
+    "$editor" "$DOTS_DIR"
+}
+
 # Main command dispatcher
 case "${1:-}" in
 install)
@@ -649,6 +665,9 @@ format)
     ;;
 log)
     cmd_log
+    ;;
+open)
+    cmd_open
     ;;
 *)
     show_usage
