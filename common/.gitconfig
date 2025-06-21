@@ -71,10 +71,13 @@
 
   sc = !/Users/nbr/bin/repo commit -s
   sb = !/Users/nbr/bin/repo branch -s
+
 [gpg]
 	format = ssh
+
 [gpg "ssh"]
 	program = /Applications/1Password.app/Contents/MacOS/op-ssh-sign
 	allowedSignersFile = ~/.ssh/allowed_signers
+
 [commit]
 	gpgsign = true
