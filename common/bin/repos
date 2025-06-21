@@ -486,7 +486,7 @@ status_repos() {
     for owner in $(printf '%s\n' "${!owner_dirty_repos[@]}" "${!owner_non_git_repos[@]}" | sort -u); do
         local dirty_repos="${owner_dirty_repos[$owner]}"
         local non_git_repos="${owner_non_git_repos[$owner]}"
-        
+
         if [[ -n "$dirty_repos" || -n "$non_git_repos" ]]; then
             has_any_issues=true
             echo -e "${YELLOW}=== $owner ===${NC}"
@@ -793,10 +793,15 @@ setup_repos() {
     echo
 
     # Use parallel cloning
-    echo "Cloning repositories (this may take a while)..."
     local results
-    results=$(printf '%s\n' "${clone_urls[@]}" |
-        xargs -P "$parallel_jobs" -I {} bash -c 'parallel_clone "{}"')
+    if has_gum; then
+        results=$(gum spin --spinner dot --title "Cloning repositories..." -- \
+            bash -c 'printf "%s\n" '"$(printf '"%s" ' "${clone_urls[@]}")"' | xargs -P '"$parallel_jobs"' -I {} bash -c "parallel_clone \"{}\""')
+    else
+        echo "Cloning repositories (this may take a while)..."
+        results=$(printf '%s\n' "${clone_urls[@]}" |
+            xargs -P "$parallel_jobs" -I {} bash -c 'parallel_clone "{}"')
+    fi
 
     # Process results
     local cloned=0
@@ -861,7 +866,7 @@ cleanup_repos() {
     fi
 
     echo "Building cleanup queue..."
-    
+
     # Build queue of dirty repositories and non-git directories
     local dirty_repos=()
     local non_git_repos=()
@@ -903,18 +908,18 @@ cleanup_repos() {
     for repo in "${non_git_repos[@]}"; do
         local repo_path="$REPOS_BASE_PATH/$repo"
         local repo_name="${repo#*/}"
-        
+
         echo -e "${YELLOW}Non-git directory: $repo${NC}"
-        
+
         local actions=(
             "Initialize as Git|Run git init and make initial commit"
             "Remove Directory|Delete the entire directory"
             "Skip|Leave as-is and continue"
         )
-        
+
         local selected_action
         selected_action=$(printf '%s\n' "${actions[@]}" | cut -d'|' -f1 | styled_fzf "Action for $repo_name: ")
-        
+
         case "$selected_action" in
         "Initialize as Git")
             if (cd "$repo_path" && git init && git add -A && git commit -m "Initial commit"); then
@@ -936,16 +941,16 @@ cleanup_repos() {
             echo "Skipping $repo_name"
             ;;
         esac
-        
+
         # Show progress and prompt to continue
         echo
         echo "Progress: $current/$total_items items processed"
-        
+
         # If this is the last item, don't prompt
         if [[ $current -eq $total_items ]]; then
             break
         fi
-        
+
         # Use gum confirm if available, otherwise fallback
         if has_gum; then
             if ! gum confirm "Continue to next item?"; then
@@ -960,7 +965,7 @@ cleanup_repos() {
                 break
             fi
         fi
-        
+
         ((current++))
         echo
     done
@@ -968,21 +973,21 @@ cleanup_repos() {
     # Process each dirty repository with lazygit
     for repo in "${dirty_repos[@]}"; do
         local repo_path="$REPOS_BASE_PATH/$repo"
-        
+
         echo -e "${YELLOW}Opening lazygit for: $repo${NC}"
-        
+
         # Change to repository directory and run lazygit
         (cd "$repo_path" && lazygit)
-        
+
         # Show progress and prompt to continue
         echo
         echo "Progress: $current/$total_items items processed"
-        
+
         # If this is the last item, don't prompt
         if [[ $current -eq $total_items ]]; then
             break
         fi
-        
+
         # Use gum confirm if available, otherwise fallback
         if has_gum; then
             if ! gum confirm "Continue to next repository?"; then
@@ -997,7 +1002,7 @@ cleanup_repos() {
                 break
             fi
         fi
-        
+
         ((current++))
         echo
     done
@@ -1098,4 +1103,3 @@ help | --help | -h)
     exit 1
     ;;
 esac
-
