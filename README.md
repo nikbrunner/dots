@@ -13,6 +13,10 @@ A clean, organized dotfiles repository using symlinks for easy management and de
   - [Submodules](#submodules-1)
   - [Maintenance](#maintenance)
   - [Common Workflows](#common-workflows)
+- [Key Commands and Tools](#key-commands-and-tools)
+  - [dots - Dotfiles Management](#dots---dotfiles-management)
+  - [repos - Repository Manager](#repos---repository-manager)
+  - [git sc - Smart Commit](#git-sc---smart-commit)
 - [How It Works](#how-it-works)
 - [Submodules](#submodules)
 - [Roadmap](#roadmap)
@@ -152,6 +156,40 @@ dots link --dry-run
 ```
 
 The `dots test` command validates the entire system (repository structure, OS detection, symlink creation, etc.) and reports pass/fail status. Use `dots link --dry-run` when you want detailed output showing exactly what symlink operations would be performed.
+
+## Key Commands and Tools
+
+This dotfiles repository includes several powerful custom commands:
+
+### `dots` - Dotfiles Management
+The main command for managing your dotfiles:
+- `dots status` - Check git and symlink status
+- `dots link` - Update all symlinks (removes broken + creates new)
+- `dots commit` - Interactive committing with LazyGit
+- `dots open` - Open dots directory with `$EDITOR`
+- `dots test` - Run comprehensive system tests
+
+### `repos` - Repository Manager
+A minimal but powerful repository manager for organizing all your git repositories:
+- `repos find` - Search and open files across all repositories with fzf
+- `repos open` - Open a repository in tmux
+- `repos status` - Show git status for all repositories
+- `repos add <url>` - Clone a repository to organized location
+- `repos config` - Edit repos configuration (ENSURE_CLONED list)
+- `repos setup` - Clone all repositories from ENSURE_CLONED list
+
+Repositories are organized under `~/repos/username/repo-name/` for clean structure.
+
+### `git sc` - Smart Commit
+An intelligent git commit helper (alias for `smart-commit`):
+- Automatically generates meaningful commit messages using AI
+- Analyzes your staged changes and creates conventional commits
+- Follows best practices for commit message formatting
+- Usage: Stage your changes with `git add`, then run `git sc`
+
+### Other Notable Commands
+- Various helper scripts in `~/bin/` for development workflows
+- Platform-specific utilities and configurations
 
 ## How It Works
 
