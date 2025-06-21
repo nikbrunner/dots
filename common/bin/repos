@@ -825,6 +825,108 @@ setup_repos() {
     echo "  Failed: $failed"
 }
 
+# Interactive cleanup workflow using lazygit for repositories with changes
+cleanup_repos() {
+    # Check if lazygit is available
+    if ! command -v lazygit &>/dev/null; then
+        print_error "lazygit is not installed"
+        echo "Install it from: https://github.com/jesseduffield/lazygit"
+        case "$(uname)" in
+        Darwin)
+            echo "  brew install lazygit"
+            ;;
+        Linux)
+            if command -v pacman &>/dev/null; then
+                echo "  sudo pacman -S lazygit"
+            elif command -v apt &>/dev/null; then
+                echo "  # Follow installation guide at https://github.com/jesseduffield/lazygit"
+            fi
+            ;;
+        esac
+        exit 1
+    fi
+
+    local repos
+    repos=$(list_repos)
+
+    if [[ -z "$repos" ]]; then
+        print_error "No repositories found"
+        exit 1
+    fi
+
+    echo "Building cleanup queue..."
+    
+    # Build queue of dirty repositories
+    local dirty_repos=()
+    while IFS= read -r repo; do
+        [[ -z "$repo" ]] && continue
+
+        local repo_path="$REPOS_BASE_PATH/$repo"
+
+        # Check if it's a git repository
+        if [[ ! -d "$repo_path/.git" ]]; then
+            continue
+        fi
+
+        # Get git status
+        local status_output
+        status_output=$(cd "$repo_path" && git status --porcelain 2>/dev/null)
+
+        if [[ -n "$status_output" ]]; then
+            dirty_repos+=("$repo")
+        fi
+    done <<<"$repos"
+
+    # Check if there's anything to clean up
+    if [[ ${#dirty_repos[@]} -eq 0 ]]; then
+        print_success "All repositories are clean! Nothing to cleanup."
+        return 0
+    fi
+
+    echo "Found ${#dirty_repos[@]} repositories with changes"
+    echo
+
+    # Process each dirty repository with lazygit
+    local current=1
+    for repo in "${dirty_repos[@]}"; do
+        local repo_path="$REPOS_BASE_PATH/$repo"
+        
+        echo -e "${YELLOW}Opening lazygit for: $repo${NC}"
+        
+        # Change to repository directory and run lazygit
+        (cd "$repo_path" && lazygit)
+        
+        # Show progress and prompt to continue
+        echo
+        echo "Progress: $current/${#dirty_repos[@]} repositories processed"
+        
+        # If this is the last repo, don't prompt
+        if [[ $current -eq ${#dirty_repos[@]} ]]; then
+            break
+        fi
+        
+        # Use gum confirm if available, otherwise fallback
+        if has_gum; then
+            if ! gum confirm "Continue to next repository?"; then
+                echo "Cleanup stopped"
+                break
+            fi
+        else
+            echo -n "Continue to next repository? (y/N) "
+            read -r continue_input
+            if [[ "$continue_input" != "y" && "$continue_input" != "Y" ]]; then
+                echo "Cleanup stopped"
+                break
+            fi
+        fi
+        
+        ((current++))
+        echo
+    done
+
+    print_success "Cleanup completed!"
+}
+
 # Show help
 show_help() {
     cat <<EOF
@@ -837,7 +939,8 @@ Usage:
   repos open               Open a repository in tmux (interactive)
   repos find               Find and open files across all repositories
   repos config             Edit the repos script configuration
-  repos status             Show git status for all repositories
+  repos status [--clean]   Show git status for all repositories
+  repos cleanup            Interactive cleanup workflow for dirty repositories
   repos setup              Clone all repositories from ENSURE_CLONED list
   repos help               Show this help message
 
@@ -855,7 +958,9 @@ Examples:
   repos open
   repos find               # Search and open files with $EDITOR
   repos config             # Edit ENSURE_CLONED and other settings
-  repos status
+  repos status             # Show all repositories
+  repos status --clean     # Show only repositories with changes
+  repos cleanup            # Interactive cleanup workflow
   PARALLEL_JOBS=8 repos setup
 
 Setup wildcard support:
@@ -897,6 +1002,9 @@ config)
     ;;
 status)
     status_repos "$2"
+    ;;
+cleanup)
+    cleanup_repos
     ;;
 setup)
     setup_repos

@@ -233,7 +233,7 @@ Common commands:
 - [x] Standardize bash across all scripts
 - [ ] Refactor `dots` command (see [docs/DOTS_COMMAND_REFACTOR.md](./docs/DOTS_COMMAND_REFACTOR.md))
 - [ ] Implement unified dependency management (see [docs/DEPENDENCY_MANAGEMENT.md](./docs/DEPENDENCY_MANAGEMENT.md))
-- [ ] Implement repos cleanup workflow (see [docs/REPOS_CLEANUP_WORKFLOW.md](./docs/REPOS_CLEANUP_WORKFLOW.md))
+- [x] Implement repos cleanup workflow
 - [ ] Add test script
 - [ ] Verify that install script is working
 - [ ] Document `~/.ssh` setup
