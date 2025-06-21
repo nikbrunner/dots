@@ -1,13 +1,32 @@
 # Is this not default?
 export XDG_CONFIG_HOME="$HOME/.config"
 
-# HomeBrew
-brew_path="/opt/homebrew/bin"
-brew_opt_path="/opt/homebrew/opt"
-export PATH=${brew_path}:${PATH}
-export PATH=${brew_opt_path}/python@3.10/bin/python3:$PATH
+# OS Detection ===========================================================
+case "$(uname -s)" in
+    Darwin)
+        # macOS-specific configuration
+        OS="macos"
+        # HomeBrew
+        brew_path="/opt/homebrew/bin"
+        brew_opt_path="/opt/homebrew/opt"
+        export PATH=${brew_path}:${PATH}
+        export PATH=${brew_opt_path}/python@3.10/bin/python3:$PATH
+        
+        # NVM (Homebrew)
+        export NVM_DIR=$HOME/.nvm
+        [ -s "${brew_opt_path}/nvm/nvm.sh" ] && . "${brew_opt_path}/nvm/nvm.sh"
+        ;;
+    Linux)
+        # Linux-specific configuration
+        OS="linux"
+        # NVM (official script installation)
+        export NVM_DIR="$HOME/.nvm"
+        [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+        [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+        ;;
+esac
 
-# Path Exports ===========================================================
+# Cross-Platform Path Exports ===========================================
 export PATH=$HOME/bin:/usr/local/bin:$PATH
 export PATH=$HOME/.local/bin:$PATH
 export PATH=$HOME/.cargo/bin:$PATH
@@ -15,10 +34,6 @@ export PATH=$HOME/Applications:$PATH
 export PATH=/usr/bin/python:$PATH
 export PATH=/usr/bin/python3:$PATH 
 export PATH=$HOME/.deno/bin:$PATH
-
-# NVM ====================================================================
-export NVM_DIR=$HOME/.nvm
-[ -s "${brew_opt_path}/nvm/nvm.sh" ] && . "${brew_opt_path}/nvm/nvm.sh"
 
 # Oh My ZSH ==============================================================
 export ZSH="$HOME/.oh-my-zsh"
@@ -190,10 +205,24 @@ autoload -Uz compinit && compinit
 
 eval "$(zoxide init zsh)"
 
-source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+# OS-Specific Plugin Loading ============================================
+case "$OS" in
+    macos)
+        # macOS (Homebrew)
+        source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+        source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+        ;;
+    linux)
+        # Linux (system packages)
+        [ -f /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh ] && \
+            source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
+        [ -f /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ] && \
+            source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+        ;;
+esac
+
 # bind Ctrl-y to accept autosuggestion
 bindkey '^y' autosuggest-accept
 ZSH_AUTOSUGGEST_STRATEGY=(history completion)
-source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 eval "$(oh-my-posh init zsh --config ~/.config/oh-my-posh/nbr.omp.json)"
