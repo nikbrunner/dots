@@ -29,44 +29,44 @@ FORCE_FLAG=false
 
 while [[ $# -gt 0 ]]; do
     case $1 in
-        -y | --yes)
-            YES_FLAG=true
-            shift
-            ;;
-        -p | --push)
-            PUSH_FLAG=true
-            shift
-            ;;
-        -f | --force)
-            FORCE_FLAG=true
-            shift
-            ;;
-        -yp | -py)
-            YES_FLAG=true
-            PUSH_FLAG=true
-            shift
-            ;;
-        -yf | -fy)
-            YES_FLAG=true
-            FORCE_FLAG=true
-            shift
-            ;;
-        -pf | -fp)
-            PUSH_FLAG=true
-            FORCE_FLAG=true
-            shift
-            ;;
-        -ypf | -yfp | -pyf | -pfy | -fyp | -fpy)
-            YES_FLAG=true
-            PUSH_FLAG=true
-            FORCE_FLAG=true
-            shift
-            ;;
-        *)
-            echo "Unknown option: $1"
-            echo "Usage: $0 [-y|--yes] [-p|--push] [-f|--force]"
-            exit 1
-            ;;
+    -y | --yes)
+        YES_FLAG=true
+        shift
+        ;;
+    -p | --push)
+        PUSH_FLAG=true
+        shift
+        ;;
+    -f | --force)
+        FORCE_FLAG=true
+        shift
+        ;;
+    -yp | -py)
+        YES_FLAG=true
+        PUSH_FLAG=true
+        shift
+        ;;
+    -yf | -fy)
+        YES_FLAG=true
+        FORCE_FLAG=true
+        shift
+        ;;
+    -pf | -fp)
+        PUSH_FLAG=true
+        FORCE_FLAG=true
+        shift
+        ;;
+    -ypf | -yfp | -pyf | -pfy | -fyp | -fpy)
+        YES_FLAG=true
+        PUSH_FLAG=true
+        FORCE_FLAG=true
+        shift
+        ;;
+    *)
+        echo "Unknown option: $1"
+        echo "Usage: $0 [-y|--yes] [-p|--push] [-f|--force]"
+        exit 1
+        ;;
     esac
 done
 
@@ -223,66 +223,66 @@ else
     # Interactive loop for regeneration
     while true; do
         # Use gum for interactive confirmation
-        action=$(gum choose "Commit" "Edit" "Regenerate" "Cancel")
+        action=$(gum choose "Commit" "Regenerate" "Edit" "Cancel")
 
         case "$action" in
-            "Commit")
+        "Commit")
+            echo ""
+            gum format -t emoji ':floppy_disk: Committing changes...'
+            git commit -m "$commit_message"
+            echo ""
+            gum format -t emoji ':sparkles: Changes committed successfully!'
+            break
+            ;;
+        "Edit")
+            # Create temp file with commit message
+            TEMP_FILE=$(mktemp)
+            echo "$commit_message" >"$TEMP_FILE"
+
+            # Open in nvim for editing
+            nvim "$TEMP_FILE"
+
+            # Check if file still exists and has content
+            if [ -s "$TEMP_FILE" ]; then
+                edited_message=$(cat "$TEMP_FILE")
+                rm -f "$TEMP_FILE"
+
                 echo ""
-                gum format -t emoji ':floppy_disk: Committing changes...'
-                git commit -m "$commit_message"
+                gum format -t emoji ':memo: Committing with edited message...'
+                git commit -m "$edited_message"
                 echo ""
                 gum format -t emoji ':sparkles: Changes committed successfully!'
                 break
-                ;;
-            "Edit")
-                # Create temp file with commit message
-                TEMP_FILE=$(mktemp)
-                echo "$commit_message" >"$TEMP_FILE"
+            else
+                rm -f "$TEMP_FILE"
+                echo "Commit cancelled (empty message)."
+                exit 1
+            fi
+            ;;
+        "Regenerate")
+            echo ""
+            echo "Select model for regeneration:"
+            selected_model=$(printf '%s\n' "${MODEL_OPTIONS[@]}" | gum choose | awk '{print $1}')
 
-                # Open in nvim for editing
-                nvim "$TEMP_FILE"
-
-                # Check if file still exists and has content
-                if [ -s "$TEMP_FILE" ]; then
-                    edited_message=$(cat "$TEMP_FILE")
-                    rm -f "$TEMP_FILE"
-
-                    echo ""
-                    gum format -t emoji ':memo: Committing with edited message...'
-                    git commit -m "$edited_message"
-                    echo ""
-                    gum format -t emoji ':sparkles: Changes committed successfully!'
-                    break
-                else
-                    rm -f "$TEMP_FILE"
-                    echo "Commit cancelled (empty message)."
-                    exit 1
-                fi
-                ;;
-            "Regenerate")
+            if generate_commit_message "$selected_model"; then
+                # Display the new message
                 echo ""
-                echo "Select model for regeneration:"
-                selected_model=$(printf '%s\n' "${MODEL_OPTIONS[@]}" | gum choose | awk '{print $1}')
-
-                if generate_commit_message "$selected_model"; then
-                    # Display the new message
-                    echo ""
-                    gum format -t template <<EOF
+                gum format -t template <<EOF
 {{ Color "2" "" "Generated commit message" }} {{ Color "15" "4" " $current_model " }}
 EOF
-                    echo ""
-                    echo "----------------------------------------"
-                    echo "$commit_message" | gum format
-                    echo "----------------------------------------"
-                    echo ""
-                else
-                    echo "Failed to regenerate. Using previous message."
-                fi
-                ;;
-            "Cancel")
-                echo "Commit cancelled."
-                exit 1
-                ;;
+                echo ""
+                echo "----------------------------------------"
+                echo "$commit_message" | gum format
+                echo "----------------------------------------"
+                echo ""
+            else
+                echo "Failed to regenerate. Using previous message."
+            fi
+            ;;
+        "Cancel")
+            echo "Commit cancelled."
+            exit 1
+            ;;
         esac
     done
 fi
