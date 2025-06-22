@@ -21,6 +21,7 @@
 - [ ] **Linux** - Setup Wezterm & Multiplexer
     - If the bindings are not working, think about switchting to just TMUX
 - [ ] **Linux** - Setup docker
+- [ ] **Wezterm** - Clean up OS specific configurations
 - [ ] Setup fonts
 - [ ] Store and set `.zshenv` from MacOS
 - [ ] **Refactor `dots` command** - See [docs/DOTS_COMMAND_REFACTOR.md](./docs/DOTS_COMMAND_REFACTOR.md)
