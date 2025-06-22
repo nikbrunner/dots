@@ -20,6 +20,9 @@ declare -a REQUIRED_DEPS=(
     "gum:Enhanced CLI prompts"
     "gh:GitHub CLI"
     "1password:Password manager"
+    "zsh-autosuggestions:Fish-like autosuggestions for zsh"
+    "zsh-syntax-highlighting:Syntax highlighting for zsh"
+    "oh-my-posh:Cross-platform prompt theme engine"
 )
 
 # Detect operating system
@@ -44,7 +47,27 @@ detect_os() {
 # Check if a dependency exists
 check_dependency() {
     local dep="$1"
-    command -v "$dep" &> /dev/null
+    case "$dep" in
+        neovim)
+            command -v nvim &> /dev/null
+            ;;
+        ripgrep)
+            command -v rg &> /dev/null
+            ;;
+        zsh-autosuggestions)
+            # Check for the plugin file on both macOS and Linux
+            [[ -f "/usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh" ]] || \
+            [[ -f "$(brew --prefix 2>/dev/null)/share/zsh-autosuggestions/zsh-autosuggestions.zsh" ]]
+            ;;
+        zsh-syntax-highlighting)
+            # Check for the plugin file on both macOS and Linux
+            [[ -f "/usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ]] || \
+            [[ -f "$(brew --prefix 2>/dev/null)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ]]
+            ;;
+        *)
+            command -v "$dep" &> /dev/null
+            ;;
+    esac
 }
 
 # Get package manager for current OS
@@ -102,6 +125,9 @@ get_package_name() {
                 gh) echo "gh" ;;
                 1password) echo "--cask 1password" ;;
                 1password-cli) echo "1password-cli" ;;
+                zsh-autosuggestions) echo "zsh-autosuggestions" ;;
+                zsh-syntax-highlighting) echo "zsh-syntax-highlighting" ;;
+                oh-my-posh) echo "oh-my-posh" ;;
                 *) echo "$dep" ;;
             esac
             ;;
@@ -123,6 +149,9 @@ get_package_name() {
                 gh) echo "github-cli" ;;
                 1password) echo "1password" ;;
                 1password-cli) echo "1password-cli" ;;
+                zsh-autosuggestions) echo "zsh-autosuggestions" ;;
+                zsh-syntax-highlighting) echo "zsh-syntax-highlighting" ;;
+                oh-my-posh) echo "oh-my-posh" ;;
                 *) echo "$dep" ;;
             esac
             ;;
@@ -180,7 +209,10 @@ check_all_dependencies() {
         fi
     done
     
-    printf '%s\n' "${missing[@]}"
+    # Only print if there are missing dependencies
+    if [[ ${#missing[@]} -gt 0 ]]; then
+        printf '%s\n' "${missing[@]}"
+    fi
 }
 
 # Show missing dependencies with installation guidance
@@ -257,6 +289,15 @@ install_all_dependencies() {
     echo "📋 Checking required dependencies..."
     readarray -t missing_deps < <(check_all_dependencies "${REQUIRED_DEPS[@]}")
     
+    # Filter out empty elements
+    local filtered_missing_deps=()
+    for dep in "${missing_deps[@]}"; do
+        if [[ -n "$dep" ]]; then
+            filtered_missing_deps+=("$dep")
+        fi
+    done
+    missing_deps=("${filtered_missing_deps[@]}")
+    
     # Show status
     echo ""
     echo "Required dependencies:"
@@ -297,27 +338,52 @@ configure_system() {
     echo "⚙️  Configuring system settings..."
     
     # Set zsh as default shell
-    if [[ "$SHELL" != "$(which zsh)" ]]; then
+    local current_shell
+    current_shell=$(getent passwd "$USER" | cut -d: -f7)
+    local zsh_path
+    zsh_path=$(which zsh)
+    
+    if [[ "$current_shell" != "$zsh_path" ]]; then
         echo "🐚 Setting zsh as default shell..."
+        echo "  Current shell: $current_shell"
+        echo "  Target shell: $zsh_path"
+        
         if command -v chsh &> /dev/null; then
-            chsh -s "$(which zsh)"
-            echo "✅ Default shell changed to zsh (logout/login required)"
+            if chsh -s "$zsh_path"; then
+                echo "✅ Default shell changed to zsh (logout/login required)"
+            else
+                echo "❌ Failed to change shell - you may need to run manually: chsh -s $zsh_path"
+            fi
         else
-            echo "⚠️  chsh not available - manually set zsh as default shell"
+            echo "⚠️  chsh not available - manually run: chsh -s $zsh_path"
         fi
     else
-        echo "✅ zsh already set as default shell"
+        echo "✅ zsh already set as default shell ($current_shell)"
     fi
     
     # Configure Git signing (if 1Password available)
+    local op_ssh_sign_path=""
+    
+    # Check for op-ssh-sign in common locations
     if command -v op-ssh-sign &> /dev/null; then
+        op_ssh_sign_path=$(which op-ssh-sign)
+    elif [[ -x "/opt/1Password/op-ssh-sign" ]]; then
+        op_ssh_sign_path="/opt/1Password/op-ssh-sign"
+    elif [[ -x "/Applications/1Password.app/Contents/MacOS/op-ssh-sign" ]]; then
+        op_ssh_sign_path="/Applications/1Password.app/Contents/MacOS/op-ssh-sign"
+    fi
+    
+    if [[ -n "$op_ssh_sign_path" ]]; then
         echo "🔑 Configuring Git SSH signing with 1Password..."
-        local op_path
-        op_path=$(which op-ssh-sign)
-        git config --global gpg.ssh.program "$op_path"
-        echo "✅ Git signing configured with: $op_path"
+        git config --global gpg.ssh.program "$op_ssh_sign_path"
+        echo "✅ Git signing configured with: $op_ssh_sign_path"
+        
+        # Also check if SSH agent socket exists
+        if [[ -S "$HOME/.1password/agent.sock" ]] || [[ -S "$HOME/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock" ]]; then
+            echo "✅ 1Password SSH agent is running"
+        fi
     else
-        echo "⚠️  1Password SSH agent not found - Git signing will use system SSH"
+        echo "⚠️  1Password SSH signing tool not found - Git signing will use system SSH"
     fi
     
     # Install NVM on Linux if not present

@@ -35,12 +35,6 @@ export PATH=/usr/bin/python:$PATH
 export PATH=/usr/bin/python3:$PATH 
 export PATH=$HOME/.deno/bin:$PATH
 
-# Oh My ZSH ==============================================================
-export ZSH="$HOME/.oh-my-zsh"
-# plugins=(git zsh-autosuggestions zsh-syntax-highlighting)
-# ZSH_THEME=refined
-source $ZSH/oh-my-zsh.sh
-
 # Globals ================================================================
 export EDITOR="nvim"
 
@@ -196,7 +190,15 @@ alias gbra='git_branch_switch -a'
 alias ,,="fzf -m --preview='bat --color=always {}' --bind 'enter:become(nvim {+}),ctrl-y:execute-silent(echo {} | pbcopy)+abort'"
 
 # Misc =================================================================
-myip=$(ipconfig getifaddr en0)
+# Get IP address (cross-platform)
+case "$OS" in
+    macos)
+        myip=$(ipconfig getifaddr en0 2>/dev/null || echo "Not connected")
+        ;;
+    linux)
+        myip=$(ip route get 1.1.1.1 2>/dev/null | grep -oP 'src \K\S+' || echo "Not connected")
+        ;;
+esac
 
 # Git completion =========================================================
 zstyle ':completion:*:*:git:*' script ~/.config/.zsh/git-completion.bash
@@ -225,4 +227,10 @@ esac
 bindkey '^y' autosuggest-accept
 ZSH_AUTOSUGGEST_STRATEGY=(history completion)
 
-eval "$(oh-my-posh init zsh --config ~/.config/oh-my-posh/nbr.omp.json)"
+# Oh My Posh prompt (if available)
+if command -v oh-my-posh &> /dev/null; then
+    eval "$(oh-my-posh init zsh --config ~/.config/oh-my-posh/nbr.omp.json)"
+else
+    # Fallback prompt
+    PS1='%F{cyan}%n@%m%f:%F{blue}%~%f%# '
+fi
