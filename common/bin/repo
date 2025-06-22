@@ -958,45 +958,110 @@ EOF
 # ========================================================================
 
 show_help() {
-    cat <<EOF
-repo - Unified repository operations with optional AI assistance
-
-Usage: repo <command> [options]
-
-Commands:
-  commit    Commit changes (manual or AI-powered)
-  branch    Create branches (manual or AI-powered)
-  help      Show this help message
-
-Manual Operations (Fast & Simple):
-  repo commit                  # Open lazygit for manual commit
-  repo branch "feature-xyz"    # Create branch with exact name
-
-AI-Powered Operations (Smart Mode):
-  repo commit -s               # Generate commit message with AI
-  repo commit -s -y            # AI commit with auto-confirm
-  repo commit -s -yp           # AI commit, auto-confirm, and push
-  repo branch -s "fix bug"     # Generate branch name with AI
-  repo branch -s -y "BCD-123"  # AI branch with auto-create
-
-Options vary by command. Use 'repo <command> --help' for details.
-
-Examples:
-  # Quick manual workflow
-  repo commit                  # Opens lazygit immediately
-  repo branch hotfix-123       # Creates branch instantly
-
-  # AI-assisted workflow
-  repo commit -s               # Generate commit message
-  repo branch -s "implement user dashboard"  # Generate branch name
-
-Environment:
-  - Claude Code: $(if has_claude_code; then echo "Available (preferred)"; else echo "Not installed"; fi)
-  - ANTHROPIC_API_KEY: $(if [ -n "$ANTHROPIC_API_KEY" ]; then echo "Set"; else echo "Not set"; fi)
-
-For AI features, you need either Claude Code or ANTHROPIC_API_KEY.
-Learn more: https://claude.ai/code
-EOF
+    # Check which tools are installed for dynamic status
+    local git_status="$(command -v git &>/dev/null && echo "✓" || echo "✗")"
+    local lazygit_status="$(command -v lazygit &>/dev/null && echo "✓" || echo "◦")"
+    local claude_status="$(has_claude_code && echo "✓" || echo "◦")"
+    local api_key_status="$([ -n "${ANTHROPIC_API_KEY:-}" ] && echo "✓" || echo "◦")"
+    
+    # Color functions using gum when available, fallback to ANSI
+    style_header() {
+        if command -v gum >/dev/null 2>&1; then
+            gum style --foreground=4 --bold "$1"
+        else
+            echo -e "\033[1;34m$1\033[0m"
+        fi
+    }
+    
+    style_command() {
+        if command -v gum >/dev/null 2>&1; then
+            gum style --foreground=2 "$1"
+        else
+            echo -e "\033[32m$1\033[0m"
+        fi
+    }
+    
+    style_option() {
+        if command -v gum >/dev/null 2>&1; then
+            gum style --foreground=3 "$1"
+        else
+            echo -e "\033[33m$1\033[0m"
+        fi
+    }
+    
+    style_path() {
+        if command -v gum >/dev/null 2>&1; then
+            gum style --foreground=6 "$1"
+        else
+            echo -e "\033[36m$1\033[0m"
+        fi
+    }
+    
+    style_accent() {
+        if command -v gum >/dev/null 2>&1; then
+            gum style --foreground=5 "$1"
+        else
+            echo -e "\033[35m$1\033[0m"
+        fi
+    }
+    
+    echo " ╭────────────────────────────────────────╮ "
+    echo " │                                        │ "
+    echo " │  repo - AI-powered repository ops      │ "
+    echo " │                                        │ "
+    echo " ╰────────────────────────────────────────╯ "
+    echo "                                            "
+    echo ""
+    
+    style_header "Usage: repo <command> [options]"
+    echo ""
+    style_header "Commands:"
+    echo "  $(style_command "commit")    - Commit changes (manual or AI-powered)"
+    echo "  $(style_command "branch")    - Create branches (manual or AI-powered)"
+    echo "  $(style_command "help")      - Show this help message"
+    echo ""
+    style_header "Manual Operations $(style_accent "(Fast & Simple)"):"
+    echo "  repo commit                                  # Open lazygit for manual commit"
+    echo "  repo branch \"feature-xyz\"                   # Create branch with exact name"
+    echo ""
+    style_header "AI-Powered Operations $(style_accent "(Smart Mode)"):"
+    if command -v gum >/dev/null 2>&1; then
+        echo "  repo commit $(gum style --foreground=3 -- "-s")                               # Generate commit message with AI"
+        echo "  repo commit $(gum style --foreground=3 -- "-s") $(gum style --foreground=3 -- "-y")                            # AI commit with auto-confirm"
+        echo "  repo commit $(gum style --foreground=3 -- "-s") $(gum style --foreground=3 -- "-yp")                           # AI commit, auto-confirm, and push"
+        echo "  repo branch $(gum style --foreground=3 -- "-s") \"fix bug\"                     # Generate branch name with AI"
+        echo "  repo branch $(gum style --foreground=3 -- "-s") $(gum style --foreground=3 -- "-y") \"BCD-123\"                # AI branch with auto-create"
+    else
+        echo "  repo commit \033[33m-s\033[0m                               # Generate commit message with AI"
+        echo "  repo commit \033[33m-s\033[0m \033[33m-y\033[0m                            # AI commit with auto-confirm"
+        echo "  repo commit \033[33m-s\033[0m \033[33m-yp\033[0m                           # AI commit, auto-confirm, and push"
+        echo "  repo branch \033[33m-s\033[0m \"fix bug\"                     # Generate branch name with AI"
+        echo "  repo branch \033[33m-s\033[0m \033[33m-y\033[0m \"BCD-123\"                # AI branch with auto-create"
+    fi
+    echo ""
+    style_header "Examples:"
+    echo "  # Quick manual workflow"
+    echo "  repo commit                                  # Opens lazygit immediately"
+    echo "  repo branch hotfix-123                       # Creates branch instantly"
+    echo ""
+    echo "  # AI-assisted workflow"
+    echo "  repo commit -s                               # Generate commit message"
+    echo "  repo branch -s \"implement user dashboard\"   # Generate branch name"
+    echo ""
+    style_header "Environment:"
+    local claude_text="$(has_claude_code && echo "Available (preferred)" || echo "Not installed")"
+    local api_text="$([ -n "${ANTHROPIC_API_KEY:-}" ] && echo "Set" || echo "Not set")"
+    echo "  Claude Code: $(style_path "$claude_text")"
+    echo "  ANTHROPIC_API_KEY: $(style_path "$api_text")"
+    echo ""
+    style_header "Requirements:"
+    echo "  $git_status git (required)"
+    echo "  $lazygit_status lazygit (required for manual commits)"
+    echo "  $claude_status Claude Code (preferred for AI features)"
+    echo "  $api_key_status ANTHROPIC_API_KEY (alternative for AI features)"
+    echo ""
+    echo "$(style_accent "For AI features, you need either Claude Code or ANTHROPIC_API_KEY.")"
+    echo "Learn more: $(style_path "https://claude.ai/code")"
 }
 
 # ========================================================================
