@@ -1,6 +1,3 @@
-# Is this not default?
-export XDG_CONFIG_HOME="$HOME/.config"
-
 # OS Detection ===========================================================
 case "$(uname -s)" in
     Darwin)
