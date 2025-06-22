@@ -78,12 +78,12 @@ ssh-add -l
 
 When setting up on Linux machines:
 
-1. **1Password SSH agent socket path** may differ from macOS:
+- [x] **1Password SSH agent socket path** may differ from macOS:
 
    - Check 1Password settings for the correct socket path
    - Update SSH config `IdentityAgent` line if needed
 
-2. **Git signing program path** may be different:
+- [x] **Git signing program path** may be different:
 
    - macOS: `/Applications/1Password.app/Contents/MacOS/op-ssh-sign`
    - Linux: May be `/usr/bin/op-ssh-sign` or similar
@@ -93,6 +93,6 @@ When setting up on Linux machines:
      git config --global gpg.ssh.program "$(which op-ssh-sign)"
      ```
 
-3. **1Password installation:**
+- [x] **1Password installation:**
    - Follow Linux-specific installation from 1Password docs
    - Ensure CLI tools are properly installed

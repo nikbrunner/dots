@@ -20,7 +20,6 @@ declare -a REQUIRED_DEPS=(
     "gum:Enhanced CLI prompts"
     "gh:GitHub CLI"
     "1password:Password manager"
-    "1password-cli:1Password CLI"
 )
 
 # Detect operating system
