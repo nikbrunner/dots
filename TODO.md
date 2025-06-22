@@ -3,6 +3,11 @@
 ## High Priority
 
 - [x] **Fix `dots status` symlink checking** - Fixed by delegating to external script like `link.sh`
+- [ ] Fix `install` script
+    - [ ] Fix missing deps
+    - [ ] Add more deps
+    - [ ] Notes should also be cloned or the erroring dependency should be
+      independ
 - [ ] **Refactor `dots` command** - See [docs/DOTS_COMMAND_REFACTOR.md](./docs/DOTS_COMMAND_REFACTOR.md)
 - [ ] **Add test script** - Comprehensive system validation script
 - [ ] **Test complete Linux setup on EndeavorOS** - Validate cross-platform functionality
