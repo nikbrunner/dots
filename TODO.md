@@ -3,17 +3,31 @@
 ## High Priority
 
 - [x] **Fix `dots status` symlink checking** - Fixed by delegating to external script like `link.sh`
-- [ ] Fix `install` script
-    - [ ] Fix missing deps
-    - [ ] Add more deps
-    - [ ] Notes should also be cloned or the erroring dependency should be
-      independ
+- [x] Fix current `install` script
+- [ ] `dots sync` 
+    - Should check if there are current local changes before syncing and abort
+      if so
+    - After sync it should offer to run `dots link` to update symlinks
+- [ ] Complete `install` script
+    - [ ]  deps
+        - [ ] Homebrew on macOS
+        - [ ] Obsidian
+- [ ] `repos` - Complete ENSURED_INSTALL  
+    - [ ] `nikbrunner/notes`
+    - [ ] `nikbrunner/dcd-notes`
+    - [ ] `dealercenter-digital/...`
+- [ ] **Linux** - Setup Wezterm & Multiplexer
+    - If the bindings are not working, think about switchting to just TMUX
+- [ ] **Linux** - Setup docker
+- [ ] Setup fonts
+- [ ] Store and set `.zshenv` from MacOS
 - [ ] **Refactor `dots` command** - See [docs/DOTS_COMMAND_REFACTOR.md](./docs/DOTS_COMMAND_REFACTOR.md)
 - [ ] **Add test script** - Comprehensive system validation script
 - [ ] **Test complete Linux setup on EndeavorOS** - Validate cross-platform functionality
 
 ## Medium Priority
 
+- [ ] **Linux:** Setup Wallpaper
 - [ ] **Implement enhanced testing framework** - More comprehensive validation
 - [ ] **Add configuration backup/restore functionality** - Safety features for dotfiles management
 - [ ] **Improve error handling and user feedback** - Better UX for failed operations
