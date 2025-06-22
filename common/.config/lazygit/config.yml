@@ -87,9 +87,10 @@ git:
   # so that you can easily see which commits are unique to your branch (coloured in yellow)
   mainBranches: [master, main]
   branchLogCmd: "git log --graph --color=always --abbrev-commit --decorate --date=relative --pretty=medium {{branchName}} --"
-  allBranchesLogCmd: "git log --graph --all --color=always --abbrev-commit --decorate --date=relative  --pretty=medium"
   overrideGpg: false # prevents lazygit from spawning a separate process when using GPG
   disableForcePushing: false
+  allBranchesLogCmds:
+    - git log --graph --all --color=always --abbrev-commit --decorate --date=relative  --pretty=medium
 refresher:
   refreshInterval: 10 # file/submodule refresh interval in seconds
   fetchInterval: 60 # re-fetch interval in seconds
@@ -117,12 +118,11 @@ customCommands:
     context: files
     description: full-screen diff of selected file
     key: <c-f>
-    stream: true
-    subprocess: true
+    output: terminal
   - key: "Z"
     context: "files"
     command: "repo commit -s"
-    subprocess: true
+    output: terminal
   - key: "N"
     context: "localBranches"
     prompts:
