@@ -2,6 +2,36 @@
 
 All notable changes to this dotfiles repository will be documented in this file.
 
+## 2025-06-22
+
+### 🐛 Critical Bug Fixes
+
+- **Fixed Script Exit Issue on Linux**: Resolved scripts exiting immediately during symlink processing
+  - Root cause: `((variable++))` arithmetic syntax incompatibility with certain bash environments when `set -e` is enabled
+  - Solution: Replaced all `((variable++))` with `variable=$((variable + 1))` for better compatibility
+  - Affected scripts: `install.sh`, `link.sh`, and `symlinks.sh` library
+  - Impact: Full Linux compatibility restored
+
+### 🔧 Shell Compatibility Improvements
+
+- **Standardized Shell Usage**: Fixed mixed shell requirements across scripts
+  - Standardized all scripts to use `#!/usr/bin/env bash` shebang
+  - Removed zsh-specific syntax `${(%):-%x}` in favor of bash-only `${BASH_SOURCE[0]}`
+  - Ensures consistent behavior across different systems
+
+### 🛠 Enhanced Debugging
+
+- **Added Debug Flag Support**: Implemented `--debug` flag for comprehensive diagnostics
+  - Available in `install.sh` and `link.sh` for troubleshooting
+  - Provides detailed execution tracing during symlink operations
+  - Useful for cross-platform compatibility testing
+
+### 📚 Documentation Updates
+
+- **Updated Linux Compatibility Guide**: Added section on recently fixed issues
+- **Enhanced README**: Removed obsolete known issues, added troubleshooting section
+- **Improved Installation Instructions**: Added debug flag usage examples
+
 ## 2025-06-21
 
 ### 🐛 Bug Fixes

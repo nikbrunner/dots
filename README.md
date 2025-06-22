@@ -79,6 +79,16 @@ echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.zshrc
 source ~/.zshrc
 ```
 
+**Troubleshooting**:
+
+```bash
+# For detailed diagnostics during installation
+./install.sh --debug --dry-run
+
+# For testing symlink operations
+dots link --debug --dry-run
+```
+
 ## Usage
 
 The `dots` command provides a unified interface for managing your dotfiles:
@@ -239,9 +249,9 @@ Common commands:
 
 **Current Status:**
 - ✅ Complete machine setup with automatic dependency management
-- ✅ Cross-platform support (macOS/Linux) 
+- ✅ Cross-platform support (macOS/Linux) with full Linux compatibility
 - ✅ Comprehensive testing and validation
-- ⚠️ Known issue: `dots status` symlink checking hangs (use `dots link --dry-run` as workaround)
+- ✅ Robust script compatibility across different bash environments
 
 **Development Tasks:**
 - See [TODO.md](./TODO.md) for current development priorities and planned features

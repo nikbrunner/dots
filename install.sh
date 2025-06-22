@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # Main installation script for dots
 # Usage: ./install.sh [--dry-run] [--no-deps]
 
@@ -17,6 +17,7 @@ NC='\033[0m' # No Color
 # Parse arguments
 DRY_RUN=false
 SKIP_DEPS=false
+DEBUG=false
 for arg in "$@"; do
 	case "$arg" in
 		--dry-run)
@@ -24,6 +25,9 @@ for arg in "$@"; do
 			;;
 		--no-deps)
 			SKIP_DEPS=true
+			;;
+		--debug)
+			DEBUG=true
 			;;
 	esac
 done
@@ -41,6 +45,11 @@ echo ""
 
 if [[ "$DRY_RUN" == true ]]; then
 	echo -e "${YELLOW}DRY RUN MODE - No changes will be made${NC}"
+	echo ""
+fi
+
+if [[ "$DEBUG" == true ]]; then
+	echo -e "${YELLOW}DEBUG MODE - Extra diagnostics enabled${NC}"
 	echo ""
 fi
 

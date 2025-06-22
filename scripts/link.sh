@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # Creates symlinks for dotfiles using shared library
 # Usage: ./scripts/link.sh [--dry-run] [--no-backup] [--verbose]
 
@@ -42,6 +42,11 @@ if [[ "$NO_BACKUP" == true ]]; then
 	echo ""
 fi
 
+if [[ "$DEBUG" == true ]]; then
+	echo -e "${YELLOW}DEBUG MODE - Extra diagnostics enabled${NC}"
+	echo ""
+fi
+
 echo "Setting up dotfiles symlinks..."
 echo "OS detected: $(get_os)"
 echo ""
@@ -80,6 +85,7 @@ process_directory() {
 	[[ "$DRY_RUN" == true ]] && opts+=("--dry-run")
 	[[ "$NO_BACKUP" == true ]] && opts+=("--no-backup")
 	[[ "$VERBOSE" == true ]] && opts+=("--verbose")
+	[[ "$DEBUG" == true ]] && opts+=("--debug")
 
 	# Process symlinks
 	process_symlinks "$source_dir" "$target_base" "create" "${opts[@]}"

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # Shared library for symlink operations
 # Can be used as both a library (sourced) and standalone script
 
@@ -22,6 +22,7 @@ process_symlinks() {
     local dry_run=false
     local no_backup=false
     local verbose=false
+    local debug=false
     
     for arg in "$@"; do
         case $arg in
@@ -32,6 +33,10 @@ process_symlinks() {
             no_backup=true
             ;;
         --verbose)
+            verbose=true
+            ;;
+        --debug)
+            debug=true
             verbose=true
             ;;
         esac
@@ -49,38 +54,67 @@ process_symlinks() {
     
     [[ ! -d "$source_dir" ]] && return
     
-    # Find all files and symlinks recursively (using temporary file for reliability)
+    # Find all files and symlinks recursively
+    [[ "$debug" == true ]] && echo "[DEBUG] Processing directory: $source_dir"
+    [[ "$debug" == true ]] && echo "[DEBUG] Starting file processing loop..."
+    
+    # Simple approach: use find with proper quoting
     local temp_file
     temp_file=$(mktemp)
-    find "$source_dir" \( -type f -o -type l \) -print0 2>/dev/null > "$temp_file"
+    [[ "$debug" == true ]] && echo "[DEBUG] About to run find command"
+    if ! find "$source_dir" \( -type f -o -type l \) -print0 2>/dev/null > "$temp_file"; then
+        echo "ERROR: Find command failed"
+        rm -f "$temp_file"
+        return 1
+    fi
+    [[ "$debug" == true ]] && echo "[DEBUG] Find command completed"
     
+    # Count files for debugging
+    [[ "$debug" == true ]] && echo "[DEBUG] About to count files"
+    local total_count
+    total_count=$(tr '\0' '\n' < "$temp_file" | wc -l)
+    [[ "$debug" == true ]] && echo "[DEBUG] Found $total_count files to process"
+    
+    # Read null-terminated entries one by one
+    [[ "$debug" == true ]] && echo "[DEBUG] Starting while loop"
+    # Keep set -e but add proper error handling for individual commands
     while IFS= read -r -d '' file; do
-        # Skip if file doesn't exist
-        [[ ! -e "$file" ]] && continue
+        [[ "$debug" == true ]] && echo "[DEBUG] Processing file: $file"
+        
+        # Skip if file doesn't exist (this might be failing)
+        if [[ ! -e "$file" ]]; then
+            [[ "$debug" == true ]] && echo "[DEBUG] File doesn't exist, skipping: $file"
+            continue
+        fi
         
         # Calculate relative path and target
         local rel_path="${file#"$source_dir"/}"
         local target="$target_base/$rel_path"
+        [[ "$debug" == true ]] && echo "[DEBUG] Target would be: $target"
         
-        ((total_links++))
+        [[ "$debug" == true ]] && echo "[DEBUG] About to increment total_links (currently: $total_links)"
+        total_links=$((total_links + 1))
+        [[ "$debug" == true ]] && echo "[DEBUG] total_links now: $total_links"
         
+        [[ "$debug" == true ]] && echo "[DEBUG] Mode is: '$mode'"
         if [[ "$mode" == "check" ]]; then
+            [[ "$debug" == true ]] && echo "[DEBUG] In check mode"
             # Check mode - only report status
             if [[ -L "$target" ]]; then
                 # It's a symlink, check if it's valid
                 local actual_target
-                actual_target=$(readlink "$target")
+                actual_target=$(readlink "$target" 2>/dev/null)
                 if [[ "$actual_target" == "$file" ]]; then
-                    ((valid_links++))
+                    valid_links=$((valid_links + 1))
                 else
-                    ((wrong_target_links++))
+                    wrong_target_links=$((wrong_target_links + 1))
                     echo -e "${YELLOW}⚠${NC} Wrong target: $target → $actual_target"
                     echo "    Expected: $file"
                 fi
                 
                 # Check if target exists
                 if [[ ! -e "$target" ]]; then
-                    ((broken_links++))
+                    broken_links=$((broken_links + 1))
                     echo -e "${RED}✗${NC} Broken link: $target"
                 fi
             elif [[ -e "$target" ]]; then
@@ -89,23 +123,34 @@ process_symlinks() {
                 echo "    Run 'dots link' to fix"
             else
                 # Neither symlink nor file exists
-                ((missing_links++))
+                missing_links=$((missing_links + 1))
                 if [[ "$verbose" == true ]]; then
                     echo -e "${YELLOW}⚠${NC} Missing link: $target"
                 fi
             fi
         elif [[ "$mode" == "create" ]]; then
+            [[ "$debug" == true ]] && echo "[DEBUG] In create mode"
             # Create mode - create/update symlinks
             if [[ "$dry_run" == true ]]; then
+                [[ "$debug" == true ]] && echo "[DEBUG] In dry run mode"
                 # Dry run mode - just show what would happen
+                [[ "$debug" == true ]] && echo "[DEBUG] Checking if target is symlink: $target"
                 if [[ -L "$target" ]]; then
+                    [[ "$debug" == true ]] && echo "[DEBUG] Target is a symlink, reading link"
                     local actual_target
-                    actual_target=$(readlink "$target")
+                    if ! actual_target=$(readlink "$target"); then
+                        [[ "$debug" == true ]] && echo "[DEBUG] readlink failed for $target"
+                        continue
+                    fi
+                    [[ "$debug" == true ]] && echo "[DEBUG] actual_target=$actual_target"
+                    [[ "$debug" == true ]] && echo "[DEBUG] Comparing '$actual_target' == '$file'"
                     if [[ "$actual_target" == "$file" ]]; then
-                        ((valid_links++))
+                        [[ "$debug" == true ]] && echo "[DEBUG] Match! Incrementing valid_links"
+                        valid_links=$((valid_links + 1))
                         [[ "$verbose" == true ]] && echo -e "${GREEN}✓${NC} [DRY] Symlink OK: $target → $file"
                     else
-                        ((wrong_target_links++))
+                        [[ "$debug" == true ]] && echo "[DEBUG] No match. Incrementing wrong_target_links"
+                        wrong_target_links=$((wrong_target_links + 1))
                         [[ "$verbose" == true ]] && echo -e "${YELLOW}⚠${NC} [DRY] Wrong target: $target → $actual_target (expected: $file)"
                     fi
                 elif [[ -e "$target" ]]; then
@@ -117,9 +162,9 @@ process_symlinks() {
                             echo -e "${YELLOW}⚠${NC} [DRY] Would backup and replace with symlink"
                         fi
                     fi
-                    ((replaced_links++))
+                    replaced_links=$((replaced_links + 1))
                 else
-                    ((created_links++))
+                    created_links=$((created_links + 1))
                     [[ "$verbose" == true ]] && echo -e "${GREEN}+${NC} [DRY] Would create symlink: $target → $file"
                 fi
             else
@@ -129,12 +174,12 @@ process_symlinks() {
                 if [[ -L "$target" ]]; then
                     # Target is a symlink
                     local actual_target
-                    actual_target=$(readlink "$target")
+                    actual_target=$(readlink "$target" 2>/dev/null)
                     if [[ "$actual_target" == "$file" ]]; then
-                        ((valid_links++))
+                        valid_links=$((valid_links + 1))
                         [[ "$verbose" == true ]] && echo -e "${GREEN}✓${NC} Symlink OK: $target"
                     else
-                        ((updated_links++))
+                        updated_links=$((updated_links + 1))
                         [[ "$verbose" == true ]] && echo -e "${YELLOW}⚠${NC} Updating symlink: $target"
                         rm "$target"
                         ln -s "$file" "$target"
@@ -142,7 +187,7 @@ process_symlinks() {
                     fi
                 elif [[ -e "$target" ]]; then
                     # Target exists but is not a symlink
-                    ((replaced_links++))
+                    replaced_links=$((replaced_links + 1))
                     if [[ "$no_backup" == true ]]; then
                         [[ "$verbose" == true ]] && echo -e "${YELLOW}⚠${NC} Replacing file with symlink: $target"
                         rm -f "$target"
@@ -154,7 +199,7 @@ process_symlinks() {
                     [[ "$verbose" == true ]] && echo -e "${GREEN}✓${NC} Created symlink: $target"
                 else
                     # Target doesn't exist
-                    ((created_links++))
+                    created_links=$((created_links + 1))
                     ln -s "$file" "$target"
                     [[ "$verbose" == true ]] && echo -e "${GREEN}✓${NC} Created symlink: $target"
                 fi
@@ -211,7 +256,7 @@ cleanup_broken_symlinks() {
                     [[ "$verbose" == true ]] && echo -e "${RED}✗${NC} Removing broken symlink: $symlink"
                     rm "$symlink"
                 fi
-                ((broken_count++))
+                broken_count=$((broken_count + 1))
             fi
         done < <(sort -u "$temp_broken_links")
     fi

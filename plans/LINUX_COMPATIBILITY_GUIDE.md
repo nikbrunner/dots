@@ -18,6 +18,21 @@ This document serves as a comprehensive troubleshooting and setup guide for depl
 - [ ] All symlinks created (`dots status`)
 - [ ] Submodules updated (`dots sub-status`)
 
+## ✅ Recently Fixed Issues
+
+### ✅ **Script Exit Issue (FIXED)** 
+**Issue**: Install and link scripts exiting immediately during symlink processing on Linux
+**Root Cause**: `((variable++))` arithmetic syntax incompatibility with certain bash environments when `set -e` is enabled
+**Fix Applied**: Replaced all `((variable++))` with `variable=$((variable + 1))` for better compatibility
+**Status**: ✅ Fixed in latest version
+
+### ✅ **Shell Compatibility (FIXED)**
+**Issue**: Mixed shell requirements and incorrect shebangs
+**Fix Applied**: 
+- Standardized all scripts to use `#!/usr/bin/env bash`
+- Removed zsh-specific syntax `${(%):-%x}` in favor of bash-only `${BASH_SOURCE[0]}`
+- Added `--debug` flag support for troubleshooting
+
 ## 🔴 High-Priority Compatibility Issues
 
 ### 1. **1Password SSH Integration** ⚠️
