@@ -4,7 +4,7 @@
 
 - [x] **Fix `dots status` symlink checking** - Fixed by delegating to external script like `link.sh`
 - [x] Fix current `install` script
-- [ ] `dots sync` 
+- [x] `dots sync` 
     - Should check if there are current local changes before syncing and abort
       if so
     - After sync it should offer to run `dots link` to update symlinks
@@ -16,6 +16,8 @@
     - [ ] `nikbrunner/notes`
     - [ ] `nikbrunner/dcd-notes`
     - [ ] `dealercenter-digital/...`
+- [ ] `deps` - Simplify dependency management by introducing config file for
+  package names on different platforms
 - [ ] **Linux** - Setup Wezterm & Multiplexer
     - If the bindings are not working, think about switchting to just TMUX
 - [ ] **Linux** - Setup docker

@@ -134,15 +134,83 @@ cmd_link() {
 
 # Sync command
 cmd_sync() {
-    echo -e "${YELLOW}→${NC} Syncing repository..."
-    git pull origin main || git pull origin master
-
-    if [[ -f .gitmodules ]]; then
-        echo -e "${YELLOW}→${NC} Updating submodules..."
-        "$DOTS_DIR/scripts/submodules.sh" update
+    log_info "Checking for local changes..."
+    
+    # Check if there are uncommitted changes
+    if ! git diff-index --quiet HEAD --; then
+        log_error "Local changes detected! Please commit or stash changes before syncing."
+        echo ""
+        log_info "Run 'dots status' to see changes or 'dots commit' to commit them"
+        return 1
+    fi
+    
+    # Check for untracked files
+    if [[ -n $(git ls-files --others --exclude-standard) ]]; then
+        log_warning "Untracked files detected:"
+        git ls-files --others --exclude-standard | sed 's/^/  /'
+        echo ""
+        if command -v gum >/dev/null 2>&1; then
+            if ! gum confirm "Continue syncing anyway?"; then
+                log_info "Sync cancelled"
+                return 1
+            fi
+        else
+            echo -n "Continue syncing anyway? (y/N) "
+            read -r continue_sync
+            if [[ "$continue_sync" != "y" && "$continue_sync" != "Y" ]]; then
+                log_info "Sync cancelled"
+                return 1
+            fi
+        fi
+        echo ""
     fi
 
-    echo -e "${GREEN}✓${NC} Sync complete"
+    log_info "Syncing repository..."
+    
+    # Try to pull from remote
+    if command -v gum >/dev/null 2>&1; then
+        if ! gum spin --spinner="dot" --title="Pulling from remote..." -- git pull origin main 2>/dev/null; then
+            if ! gum spin --spinner="dot" --title="Trying master branch..." -- git pull origin master 2>/dev/null; then
+                log_error "Failed to pull from remote"
+                return 1
+            fi
+        fi
+    else
+        if ! git pull origin main 2>/dev/null; then
+            if ! git pull origin master 2>/dev/null; then
+                log_error "Failed to pull from remote"
+                return 1
+            fi
+        fi
+    fi
+
+    # Update submodules if they exist
+    if [[ -f .gitmodules ]]; then
+        log_info "Updating submodules..."
+        if command -v gum >/dev/null 2>&1; then
+            gum spin --spinner="dot" --title="Updating submodules..." -- "$DOTS_DIR/scripts/submodules.sh" update
+        else
+            "$DOTS_DIR/scripts/submodules.sh" update
+        fi
+    fi
+
+    log_success "Sync complete"
+    
+    # Offer to update symlinks
+    echo ""
+    if command -v gum >/dev/null 2>&1; then
+        if gum confirm "Update symlinks to reflect any new changes?"; then
+            echo ""
+            cmd_link
+        fi
+    else
+        echo -n "Update symlinks to reflect any new changes? (y/N) "
+        read -r update_links
+        if [[ "$update_links" == "y" || "$update_links" == "Y" ]]; then
+            echo ""
+            cmd_link
+        fi
+    fi
 }
 
 # Shared push function
