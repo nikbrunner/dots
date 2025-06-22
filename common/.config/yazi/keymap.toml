@@ -1,5 +1,5 @@
 # Defaults: https://github.com/sxyazi/yazi/blob/latest/yazi-config/preset/keymap.toml
-[manager]
+[mgr]
 prepend_keymap = [
   { on = [ "g", "r", ], run = "cd ~/repos", desc = "Go to the Projects directory" },
   { on = [ "g", ".", ], run = "cd ~/repos/nikbrunner/dots", desc = "Go to the Dots directory" },
