@@ -1014,52 +1014,97 @@ cleanup_repos() {
 
 # Show help
 show_help() {
-    cat <<EOF
-repos - Minimal repository manager
-
-Usage:
-  repos install            Guide through dependency installation
-  repos add <git-url>      Clone a repository to organized path
-  repos remove             Remove a repository (interactive)
-  repos open               Open a repository in tmux (interactive)
-  repos find               Find and open files across all repositories
-  repos config             Edit the repos script configuration
-  repos status [--clean]   Show git status for all repositories
-  repos cleanup            Interactive cleanup workflow for dirty repositories
-  repos setup              Clone all repositories from ENSURE_CLONED list
-  repos help               Show this help message
-
-Environment Variables:
-  REPOS_BASE_PATH          Override repository base path (default: ~/repos)
-  PARALLEL_JOBS            Number of parallel clone jobs (default: 4)
-
-Repository base path: $REPOS_BASE_PATH
-
-Examples:
-  repos install            # Check dependencies and get installation guide
-  repos add git@github.com:username/repo.git
-  repos add https://github.com/username/repo.git
-  repos remove
-  repos open
-  repos find               # Search and open files with $EDITOR
-  repos config             # Edit ENSURE_CLONED and other settings
-  repos status             # Show all repositories
-  repos status --clean     # Show only repositories with changes
-  repos cleanup            # Interactive cleanup workflow
-  PARALLEL_JOBS=8 repos setup
-
-Setup wildcard support:
-  Edit the ENSURE_CLONED variable in this script to include:
-  - Individual repos: "git@github.com:username/repo.git"
-  - All repos from user/org: "git@github.com:organization/*"
-
-Requirements:
-  - git, fzf, tmux (required)
-  - gum (optional, for enhanced confirmations)
-  - GitHub CLI (gh) for wildcard patterns
-    - Install: https://cli.github.com/
-    - Authenticate: gh auth login
-EOF
+    # Check which tools are installed for dynamic status
+    local git_status="$(command -v git &>/dev/null && echo "✓" || echo "✗")"
+    local fzf_status="$(command -v fzf &>/dev/null && echo "✓" || echo "✗")"
+    local tmux_status="$(command -v tmux &>/dev/null && echo "✓" || echo "✗")"
+    local gum_status="$(command -v gum &>/dev/null && echo "✓" || echo "◦")"
+    local gh_status="$(command -v gh &>/dev/null && echo "✓" || echo "◦")"
+    
+    # Color functions using gum when available, fallback to ANSI
+    style_header() {
+        if command -v gum >/dev/null 2>&1; then
+            gum style --foreground=4 --bold "$1"
+        else
+            echo -e "\033[1;34m$1\033[0m"
+        fi
+    }
+    
+    style_command() {
+        if command -v gum >/dev/null 2>&1; then
+            gum style --foreground=2 "$1"
+        else
+            echo -e "\033[32m$1\033[0m"
+        fi
+    }
+    
+    style_option() {
+        if command -v gum >/dev/null 2>&1; then
+            gum style --foreground=3 "$1"
+        else
+            echo -e "\033[33m$1\033[0m"
+        fi
+    }
+    
+    style_path() {
+        if command -v gum >/dev/null 2>&1; then
+            gum style --foreground=6 "$1"
+        else
+            echo -e "\033[36m$1\033[0m"
+        fi
+    }
+    
+    echo " ╭────────────────────────────────────────╮ "
+    echo " │                                        │ "
+    echo " │  repos - Minimal repository manager    │ "
+    echo " │                                        │ "
+    echo " ╰────────────────────────────────────────╯ "
+    echo "                                            "
+    echo ""
+    
+    style_header "Usage: repos <command> [options]"
+    echo ""
+    style_header "Commands:"
+    echo "  $(style_command "install")      - Guide through dependency installation"
+    echo "  $(style_command "add")          - Clone a repository to organized path"
+    echo "  $(style_command "remove")       - Remove a repository (interactive)"
+    echo "  $(style_command "open")         - Open a repository in tmux (interactive)"
+    echo "  $(style_command "find")         - Find and open files across all repositories"
+    echo "  $(style_command "config")       - Edit the repos script configuration"
+    if command -v gum >/dev/null 2>&1; then
+        echo "  $(style_command "status")       - Show git status for all repositories [$(gum style --foreground=3 -- "--clean")]"
+    else
+        echo "  $(style_command "status")       - Show git status for all repositories [\033[33m--clean\033[0m]"
+    fi
+    echo "  $(style_command "cleanup")      - Interactive cleanup workflow for dirty repositories"
+    echo "  $(style_command "setup")        - Clone all repositories from ENSURE_CLONED list"
+    echo "  $(style_command "help")         - Show this help message"
+    echo ""
+    style_header "Environment Variables:"
+    echo "  $(style_option "REPOS_BASE_PATH")  - Override repository base path (default: ~/repos)"
+    echo "  $(style_option "PARALLEL_JOBS")    - Number of parallel clone jobs (default: 4)"
+    echo ""
+    style_header "Current Configuration:"
+    echo "  Repository base path: $(style_path "$REPOS_BASE_PATH")"
+    echo ""
+    style_header "Examples:"
+    echo "  repos install                                    # Check dependencies"
+    echo "  repos add git@github.com:username/repo.git       # Clone a repository"
+    echo "  repos setup                                      # Clone all ENSURE_CLONED repos"
+    echo "  repos status --clean                             # Show only dirty repositories"
+    echo "  PARALLEL_JOBS=8 repos setup                     # Clone with 8 parallel jobs"
+    echo ""
+    style_header "Setup Wildcard Support:"
+    echo "  Edit the ENSURE_CLONED variable in this script to include:"
+    echo "  - Individual repos: \"git@github.com:username/repo.git\""
+    echo "  - All repos from user/org: \"git@github.com:organization/*\""
+    echo ""
+    style_header "Requirements:"
+    echo "  $git_status git, $fzf_status fzf, $tmux_status tmux (required)"
+    echo "  $gum_status gum (optional, for enhanced confirmations)"
+    echo "  $gh_status GitHub CLI (gh) for wildcard patterns"
+    echo "    Install: https://cli.github.com/"
+    echo "    Authenticate: gh auth login"
 }
 
 # Initialize - check dependencies
