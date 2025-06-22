@@ -23,6 +23,7 @@ declare -a REQUIRED_DEPS=(
     "zsh-autosuggestions:Fish-like autosuggestions for zsh"
     "zsh-syntax-highlighting:Syntax highlighting for zsh"
     "oh-my-posh:Cross-platform prompt theme engine"
+    "gallery-dl:Command-line program to download image galleries"
 )
 
 # Detect operating system
@@ -63,6 +64,9 @@ check_dependency() {
             # Check for the plugin file on both macOS and Linux
             [[ -f "/usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ]] || \
             [[ -f "$(brew --prefix 2>/dev/null)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ]]
+            ;;
+        gallery-dl)
+            command -v gallery-dl &> /dev/null
             ;;
         *)
             command -v "$dep" &> /dev/null
@@ -128,6 +132,7 @@ get_package_name() {
                 zsh-autosuggestions) echo "zsh-autosuggestions" ;;
                 zsh-syntax-highlighting) echo "zsh-syntax-highlighting" ;;
                 oh-my-posh) echo "oh-my-posh" ;;
+                gallery-dl) echo "gallery-dl" ;;
                 *) echo "$dep" ;;
             esac
             ;;
@@ -152,6 +157,7 @@ get_package_name() {
                 zsh-autosuggestions) echo "zsh-autosuggestions" ;;
                 zsh-syntax-highlighting) echo "zsh-syntax-highlighting" ;;
                 oh-my-posh) echo "oh-my-posh" ;;
+                gallery-dl) echo "gallery-dl" ;;
                 *) echo "$dep" ;;
             esac
             ;;

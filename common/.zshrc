@@ -67,7 +67,7 @@ alias ta="tmux attach"
 alias tk="tmux kill-server"
 alias zj="zellij"
 alias lazyvim="NVIM_APPNAME=lazyvim nvim"
-alias id="gallery-dl"
+alias gdl="gallery-dl"
 alias npmu="npm-upgrade"
 
 alias :q=exit
