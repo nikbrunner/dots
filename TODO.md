@@ -4,22 +4,23 @@
 
 - [x] **Fix `dots status` symlink checking** - Fixed by delegating to external script like `link.sh`
 - [x] Fix current `install` script
-- [x] `dots sync` 
-    - Should check if there are current local changes before syncing and abort
-      if so
-    - After sync it should offer to run `dots link` to update symlinks
+- [x] `dots sync`
+  - Should check if there are current local changes before syncing and abort
+    if so
+  - After sync it should offer to run `dots link` to update symlinks
 - [ ] Complete `install` script
-    - [ ]  deps
-        - [ ] Homebrew on macOS
-        - [ ] Obsidian
-- [ ] `repos` - Complete ENSURED_INSTALL  
-    - [ ] `nikbrunner/notes`
-    - [ ] `nikbrunner/dcd-notes`
-    - [ ] `dealercenter-digital/...`
+  - [ ] deps
+    - [ ] Homebrew on macOS
+    - [ ] Obsidian
+- [ ] `repos` - Complete ENSURED_INSTALL
+  - [ ] `nikbrunner/notes`
+  - [ ] `nikbrunner/dcd-notes`
+  - [ ] `dealercenter-digital/...`
+- [ ] Fix colorscheme mappings (wezterm / nvim / kitty / `.current_colors.json`)
 - [ ] `deps` - Simplify dependency management by introducing config file for
-  package names on different platforms
+      package names on different platforms
 - [ ] **Linux** - Setup Wezterm & Multiplexer
-    - If the bindings are not working, think about switchting to just TMUX
+  - If the bindings are not working, think about switchting to just TMUX
 - [ ] **Linux** - Setup docker
 - [ ] **Wezterm** - Clean up OS specific configurations
 - [ ] Setup fonts
@@ -68,4 +69,4 @@
 
 ---
 
-*This file tracks all pending tasks and improvements for the dotfiles system. Items are prioritized by impact and urgency.*
+_This file tracks all pending tasks and improvements for the dotfiles system. Items are prioritized by impact and urgency._
