@@ -16,7 +16,9 @@
   - [ ] `nikbrunner/notes`
   - [ ] `nikbrunner/dcd-notes`
   - [ ] `dealercenter-digital/...`
-- [ ] Fix colorscheme mappings (wezterm / nvim / kitty / `.current_colors.json`)
+- [ ] **Fix colorscheme synchronization** - See [plans/COLORSCHEME_SYNC_SOLUTION.md](./plans/COLORSCHEME_SYNC_SOLUTION.md)
+  - [x] Immediate fix: Use absolute paths in nvim to avoid $XDG_CONFIG_HOME issues
+  - [ ] Implement long-term solution (Option 3: Event-based system recommended)
 - [ ] `deps` - Simplify dependency management by introducing config file for
       package names on different platforms
 - [ ] **Linux** - Setup Wezterm & Multiplexer
