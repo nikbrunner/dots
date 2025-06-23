@@ -81,3 +81,7 @@
 - Prefer modular approaches over monolithic files
 - Use consistent naming conventions within projects
 - Clean up redundant or outdated code when encountered
+
+## Git Workflow
+
+- When commiting, don't credit yourself as coauthor please
