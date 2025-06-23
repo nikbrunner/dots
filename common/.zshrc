@@ -32,6 +32,9 @@ export PATH=/usr/bin/python:$PATH
 export PATH=/usr/bin/python3:$PATH 
 export PATH=$HOME/.deno/bin:$PATH
 
+# Because of https://github.com/jesseduffield/lazygit/blob/master/docs/Config.md#user-config
+export XDG_CONFIG_HOME="$HOME/.config"
+
 # Globals ================================================================
 export EDITOR="nvim"
 
