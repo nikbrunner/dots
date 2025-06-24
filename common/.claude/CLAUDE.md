@@ -19,6 +19,11 @@
 - Offer to use your web fetch tool to get the information you need
 - Always ask before creating new files unless absolutely necessary
 - Prefer editing existing files over creating new ones if sensible
+- Always ask before making extensive changes to documents or plans
+- Prefers to push WIP commits and continue work the next day
+- Values real functionality over placeholders or mock data
+- Good at catching when available resources aren't being used
+- Expects clear justification when proposing complex solutions
 
 ## Development Workflow
 
@@ -65,6 +70,12 @@
 - Is very thorough and pays attention to detail
 - Avoids hacky or ad-hoc solutions
 - Values typesafety and type annotations alot and likes to use generics
+- Dislikes temporal coupling and "ping-ponging" initialization patterns (e.g., setting something to null/any and updating it later)
+- Prefers clean initialization without circular dependencies
+- Sensitive to code smells - if something feels wrong, it probably is
+- Values standard APIs over custom wrappers when possible
+- Evaluates automatic vs manual patterns case-by-case - not a fan of absolutes
+- Likes single object exports with proper typing in config files
 
 ## Communication Style
 
