@@ -109,15 +109,15 @@ customCommands:
   - key: "G"
     context: "localBranches"
     command: "git fullreset"
-  # - key: "Z"
-  #   context: "files"
-  #   command: "git cz"
-  #   subprocess: true
-  # use Z to run repo commit -s (smart commit)
-  - command: git -c core.pager="delta --syntax-theme gruvbox-dark --dark --side-by-side --paging=always" diff {{.SelectedLocalCommit.Sha}}^ {{.SelectedLocalCommit.Sha}}
-    context: files
-    description: full-screen diff of selected file
-    key: <c-f>
+    # - key: "Z"
+    #   context: "files"
+    #   command: "git cz"
+    #   subprocess: true
+    # use Z to run repo commit -s (smart commit)
+    # - command: git -c core.pager="delta --syntax-theme gruvbox-dark --dark --side-by-side --paging=always" diff {{.SelectedLocalCommit.Sha}}^ {{.SelectedLocalCommit.Sha}}
+    #   context: files
+    #   description: full-screen diff of selected file
+    #   key: <c-f>
     output: terminal
   - key: "Z"
     context: "files"
