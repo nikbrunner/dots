@@ -2,12 +2,7 @@
 # ghostty +list-themes
 # vim: colorcolumn=35
 
-# theme                             = dark:GitHub-Dark-Default,light:GitHub-Light-Default
-# theme                             = dark:GitHub-Dark-Dimmed,light:GitHub-Light-Default
-theme                             = dark:black-atom-jpn-koyo-yoru.conf,light:black-atom-jpn-koyo-hiru.conf
-# theme                             = dark:black-atom-terra-spring-night.conf,light:black-atom-terra-spring-day.conf
-# theme                             = dark:black-atom-stations-engineering.conf,light:black-atom-stations-research.conf
-# theme                             = dark:black-atom-crbn-null.conf,light:black-atom-crbn-supr.conf
+theme = dark:black-atom-jpn-koyo-yoru.conf,light:black-atom-stations-research.conf
 
 # custom-shader                     = ./shaders/bettercrt.glsl
 # custom-shader                     = ./shaders/bloom.glsl
@@ -19,8 +14,8 @@ theme                             = dark:black-atom-jpn-koyo-yoru.conf,light:bla
 # background-opacity               = 0.85
 # background-blur                  = 65
 
-font-family                      = JetBrainsMono Nerd Font
-# font-family                      = TX-02
+# font-family                      = JetBrainsMono Nerd Font
+font-family                      = TX-02
 # font-family                      = SF Mono
 # font-family                      = Maple Mono NF
 # font-family                      = Menlo
