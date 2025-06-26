@@ -6,7 +6,7 @@ theme = dark:black-atom-jpn-murasaki-yoru.conf,light:black-atom-jpn-koyo-hiru.co
 
 # custom-shader                     = ./shaders/bettercrt.glsl
 # custom-shader                     = ./shaders/bloom.glsl
-custom-shader                     = ./shaders/crt-shader/crt-shader-with-chromatic-aberration-glow-scanlines-dot-matrix.glsl
+custom-shader                     = ./shaders/crt-shader.glsl
 # custom-shader = ./shaders/drunkard.glsl
 # custom-shader = ./shaders/tft.glsl
 # custom-shader = ./shaders/glitchy.glsl
