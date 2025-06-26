@@ -4,3 +4,6 @@
 [submodule "common/.config/wezterm"]
 	path = common/.config/wezterm
 	url = git@github.com:nikbrunner/wezterm.git
+[submodule "common/.config/ghostty/shaders/crt-shader"]
+	path = common/.config/ghostty/shaders/crt-shader
+	url = https://github.com/luiscarlospando/crt-shader-with-chromatic-aberration-glow-scanlines-dot-matrix.git

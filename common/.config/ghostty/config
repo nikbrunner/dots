@@ -2,17 +2,17 @@
 # ghostty +list-themes
 # vim: colorcolumn=35
 
-theme = dark:black-atom-jpn-koyo-yoru.conf,light:black-atom-stations-research.conf
+theme = dark:black-atom-jpn-murasaki-yoru.conf,light:black-atom-jpn-koyo-hiru.conf
 
 # custom-shader                     = ./shaders/bettercrt.glsl
 # custom-shader                     = ./shaders/bloom.glsl
-# custom-shader                     = ./crt-shader-with-chromatic-aberration-glow-scanlines-dot-matrix/crt-shader-with-chromatic-aberration-glow-scanlines-dot-matrix.glsl
+custom-shader                     = ./shaders/crt-shader/crt-shader-with-chromatic-aberration-glow-scanlines-dot-matrix.glsl
 # custom-shader = ./shaders/drunkard.glsl
 # custom-shader = ./shaders/tft.glsl
 # custom-shader = ./shaders/glitchy.glsl
 
-# background-opacity               = 0.85
-# background-blur                  = 65
+background-opacity               = 0.9
+background-blur                  = 65
 
 # font-family                      = JetBrainsMono Nerd Font
 font-family                      = TX-02
