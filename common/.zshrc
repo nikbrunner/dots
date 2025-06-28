@@ -75,10 +75,9 @@ alias :q=exit
 alias start="tmux new -s dots -c ~/.config/nvim && rr"
 alias scratch="$EDITOR $HOME/scratchpad.md"
 
-# MUSIC_DIR="$HOME/Library/CloudStorage/ProtonDrive-nik.brunner@proton.me-folder/Areas/Music/Inbox"
-MUSIC_DIR="$HOME/pCloud\ Drive/02_AREAS/Music"
-alias ytmp3="yt-dlp -x --audio-format mp3 --audio-quality 0 --embed-metadata --add-metadata -o \"${MUSIC_DIR}/Inbox/%(uploader)s - %(title)s.%(ext)s\""
-alias ytalbum="yt-dlp -x --audio-format mp3 --audio-quality 0 --embed-metadata --add-metadata --write-thumbnail -o \"${MUSIC_DIR}/Youtube DL Inbox/%(uploader)s - %(playlist)s/%(playlist_index)02d - %(title)s.%(ext)s\""
+# MUSIC_DIR="$HOME/pCloud Drive/02_AREAS/Music"
+alias ytmp3='yt-dlp -x --audio-format mp3 --audio-quality 0 --embed-metadata --add-metadata -o "$HOME/pCloud Drive/02_AREAS/Music/Inbox/%(uploader)s - %(title)s.%(ext)s"'
+alias ytalbum='yt-dlp -x --audio-format mp3 --audio-quality 0 --embed-metadata --add-metadata --write-thumbnail -o "$HOME/pCloud Drive/02_AREAS/Music/Inbox/%(uploader)s - %(playlist)s/%(playlist_index)02d - %(title)s.%(ext)s"'
 
 function select_npm_script() {
   local color_scheme="fg:white,fg+:yellow,bg+:-1,gutter:-1,hl+:magenta,border:yellow,prompt:cyan,pointer:yellow,marker:cyan,spinner:green,header:blue,label:yellow,query:magenta"
