@@ -24,6 +24,9 @@ declare -a REQUIRED_DEPS=(
     "zsh-syntax-highlighting:Syntax highlighting for zsh"
     "oh-my-posh:Cross-platform prompt theme engine"
     "gallery-dl:Command-line program to download image galleries"
+    "yt-dlp:YouTube downloader with extended features"
+    "ffmpeg:Media conversion and processing"
+    "eye-d3:MP3 ID3 tag editor"
 )
 
 # Detect operating system
