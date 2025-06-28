@@ -7,7 +7,7 @@
 //-----------------------------------------------------------------------------
 
 // Transparency Settings
-const float GLOBAL_OPACITY = 0.9;        // Overall transparency (1.0 = fully opaque, 0.0 = fully transparent)
+const float GLOBAL_OPACITY = 1.0;        // Overall transparency (1.0 = fully opaque, 0.0 = fully transparent)
 
 // Chromatic Aberration Settings
 const float ABBERATION_FACTOR = 0.005;    // Strength of color splitting effect (default: 0.05)
@@ -17,12 +17,12 @@ const float DIM_CUTOFF = 0.28;           // Threshold for what's considered a di
 const float BRIGHT_CUTOFF = 0.65;        // Threshold for what's considered a bright pixel
 const float BRIGHT_BOOST = 1.0;          // Brightness multiplier for bright pixels (default: 1.2)
 const float DIM_GLOW = 0.05;             // Glow intensity for dim pixels (default: 0.05)
-const float BRIGHT_GLOW = 0.10;          // Glow intensity for bright pixels (default: 0.10)
+const float BRIGHT_GLOW = 0.05;          // Glow intensity for bright pixels (default: 0.10)
 const float COLOR_GLOW = 0.3;            // Color bleeding intensity (default: 0.3)
 
 // Scanline Settings
 const float SCANLINE_INTENSITY = 0.5;    // Overall intensity of scanlines (default: 1.0)
-const float SCANLINE_DENSITY = 0.25;     // Density/thickness of scanlines (default: 0.25)
+const float SCANLINE_DENSITY = 0.15;     // Density/thickness of scanlines (default: 0.25)
 
 // Dot Matrix Settings
 const float MASK_INTENSITY = 0;          // Strength of the dot pattern (default: 0.3)

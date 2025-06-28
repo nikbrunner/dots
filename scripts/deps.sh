@@ -26,7 +26,8 @@ declare -a REQUIRED_DEPS=(
     "gallery-dl:Command-line program to download image galleries"
     "yt-dlp:YouTube downloader with extended features"
     "ffmpeg:Media conversion and processing"
-    "eye-d3:MP3 ID3 tag editor"
+    "eyeD3:MP3 ID3 tag editor"
+    "mpd:Music Player Daemon"
 )
 
 # Detect operating system
