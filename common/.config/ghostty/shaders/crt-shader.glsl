@@ -21,7 +21,7 @@ const float BRIGHT_GLOW = 0.10;          // Glow intensity for bright pixels (de
 const float COLOR_GLOW = 0.3;            // Color bleeding intensity (default: 0.3)
 
 // Scanline Settings
-const float SCANLINE_INTENSITY = 1.0;    // Overall intensity of scanlines (default: 1.0)
+const float SCANLINE_INTENSITY = 0.5;    // Overall intensity of scanlines (default: 1.0)
 const float SCANLINE_DENSITY = 0.25;     // Density/thickness of scanlines (default: 0.25)
 
 // Dot Matrix Settings
