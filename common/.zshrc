@@ -115,22 +115,14 @@ zle -N select_npm_script
 bindkey '^N' select_npm_script
 
 # Yazi ==================================================================
-function y() {
+function yy() {
 	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")"
-	zle clear-screen
-	yazi "$@" --cwd-file="$tmp" </dev/tty
+	yazi "$@" --cwd-file="$tmp"
 	if cwd="$(cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
-		BUFFER="cd ${(q)cwd}"
-		zle accept-line
-	else
-		zle reset-prompt
+		cd -- "$cwd"
 	fi
 	rm -f -- "$tmp"
 }
-
-# Create a widget from the function
-zle -N y
-bindkey '^E' y
 
 # fzf ====================================================================
 export FZF_DEFAULT_COMMAND='rg --files --hidden --follow --no-ignore-vcs'
