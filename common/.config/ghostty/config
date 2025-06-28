@@ -4,7 +4,7 @@
 
 theme = dark:black-atom-stations-engineering.conf,light:black-atom-stations-medical.conf
 
-custom-shader                      = ./shaders/crt-shader.glsl
+# custom-shader                      = ./shaders/crt-shader.glsl
 # custom-shader                      = ./shaders/bloom015.glsl
 # custom-shader                      = ./shaders/bloom025.glsl
 # custom-shader                      = ./shaders/bloom050.glsl
