@@ -4,7 +4,7 @@
 (
     address: "127.0.0.1:6601",
     password: None,
-    theme: Some("black-atom-jpn-koyo-hiru"),
+    theme: Some("black-atom-jpn-tsuki-yoru"),
     cache_dir: None,
     on_song_change: None,
     volume_step: 5,
