@@ -1,0 +1,235 @@
+#!/usr/bin/env bash
+
+# Smart YouTube Music Downloader with Cover Art Embedding
+# Usage: ytdl <URL>
+# Automatically detects and handles single songs, albums, and playlists
+
+set -euo pipefail
+
+# Configuration
+MUSIC_DIR="${MUSIC_DIR:-$HOME/pCloud Drive/02_AREAS/Music}"
+INBOX_DIR="$MUSIC_DIR/Inbox"
+
+# Colors for output
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[0;33m'
+BLUE='\033[0;34m'
+NC='\033[0m' # No Color
+
+# Check dependencies
+for cmd in yt-dlp ffmpeg eyeD3; do
+    if ! command -v "$cmd" &> /dev/null; then
+        echo -e "${RED}Error: $cmd is required but not installed.${NC}"
+        if [ "$cmd" = "eyeD3" ]; then
+            echo -e "${YELLOW}Install with: brew install eye-d3${NC}"
+        fi
+        exit 1
+    fi
+done
+
+# Check arguments
+if [ $# -eq 0 ]; then
+    echo "Usage: ytdl <URL>"
+    echo "Downloads music from YouTube/YouTube Music with embedded cover art"
+    echo "Automatically handles:"
+    echo "  • Single songs → Downloads to Inbox/"
+    echo "  • Albums/Playlists → Downloads to Inbox/[Album Name]/"
+    exit 1
+fi
+
+URL="$1"
+TEMP_DIR=$(mktemp -d)
+
+# Clean up on exit
+trap 'rm -rf "$TEMP_DIR"' EXIT
+
+echo -e "${BLUE}🔍 Analyzing URL...${NC}"
+
+# Simple detection: check if URL contains "playlist" or "album"
+if [[ "$URL" =~ playlist|album|list= ]]; then
+    # It's likely a playlist/album
+    echo -e "${YELLOW}⏳ Detecting playlist information...${NC}"
+    
+    # Get playlist title using a simple extraction
+    PLAYLIST_INFO=$(yt-dlp --playlist-items 1 --print "%(playlist)s|%(playlist_count)s" "$URL" 2>/dev/null || echo "")
+    
+    if [ -n "$PLAYLIST_INFO" ] && [ "$PLAYLIST_INFO" != "NA|NA" ]; then
+        PLAYLIST_TITLE=$(echo "$PLAYLIST_INFO" | cut -d'|' -f1)
+        TRACK_COUNT=$(echo "$PLAYLIST_INFO" | cut -d'|' -f2)
+        
+        # Remove common YouTube Music prefixes
+        PLAYLIST_TITLE=${PLAYLIST_TITLE#"Album - "}
+        PLAYLIST_TITLE=${PLAYLIST_TITLE#"Playlist - "}
+        PLAYLIST_TITLE=${PLAYLIST_TITLE#"Single - "}
+        PLAYLIST_TITLE=${PLAYLIST_TITLE#"EP - "}
+        
+        echo -e "${GREEN}📀 Detected album/playlist: $PLAYLIST_TITLE${NC}"
+        [ -n "$TRACK_COUNT" ] && [ "$TRACK_COUNT" != "NA" ] && echo -e "${GREEN}   Tracks: $TRACK_COUNT${NC}"
+        
+        # Use cleaned playlist title in output template
+        OUTPUT_TEMPLATE="$TEMP_DIR/$PLAYLIST_TITLE/%(playlist_index)02d - %(title)s.%(ext)s"
+        IS_PLAYLIST=true
+    else
+        # Fallback: still treat as playlist but with generic name
+        echo -e "${GREEN}📀 Detected playlist/album${NC}"
+        OUTPUT_TEMPLATE="$TEMP_DIR/%(playlist)s/%(playlist_index)02d - %(title)s.%(ext)s"
+        IS_PLAYLIST=true
+    fi
+else
+    # It's likely a single video
+    VIDEO_TITLE=$(yt-dlp --get-title "$URL" 2>/dev/null || echo "Unknown")
+    echo -e "${GREEN}🎵 Detected single track: $VIDEO_TITLE${NC}"
+    
+    OUTPUT_TEMPLATE="$TEMP_DIR/%(uploader)s - %(title)s.%(ext)s"
+    IS_PLAYLIST=false
+fi
+
+echo -e "${BLUE}⬇️  Downloading...${NC}"
+
+# Download with metadata and thumbnails
+if ! yt-dlp \
+    -x \
+    --audio-format mp3 \
+    --audio-quality 0 \
+    --embed-metadata \
+    --add-metadata \
+    --write-thumbnail \
+    --convert-thumbnails jpg \
+    -o "$OUTPUT_TEMPLATE" \
+    "$URL"; then
+    echo -e "${RED}❌ Error: Download failed${NC}"
+    echo -e "${YELLOW}This might be due to:${NC}"
+    echo -e "${YELLOW}  • Region restrictions${NC}"
+    echo -e "${YELLOW}  • Unavailable content${NC}"
+    echo -e "${YELLOW}  • Private/deleted videos${NC}"
+    exit 1
+fi
+
+# Process downloaded files
+if [ "$IS_PLAYLIST" = true ]; then
+    # Handle album/playlist
+    ALBUM_DIR=$(find "$TEMP_DIR" -maxdepth 1 -type d ! -path "$TEMP_DIR" | head -1)
+    
+    if [ -z "$ALBUM_DIR" ]; then
+        echo -e "${RED}❌ Error: No files were downloaded${NC}"
+        echo -e "${YELLOW}The album/playlist might be unavailable or region-restricted${NC}"
+        exit 1
+    fi
+    
+    ALBUM_NAME=$(basename "$ALBUM_DIR")
+    
+    # Remove common YouTube Music prefixes from album name
+    ALBUM_NAME=${ALBUM_NAME#"Album - "}
+    ALBUM_NAME=${ALBUM_NAME#"Playlist - "}
+    ALBUM_NAME=${ALBUM_NAME#"Single - "}
+    ALBUM_NAME=${ALBUM_NAME#"EP - "}
+    
+    # Find album cover (largest jpg)
+    ALBUM_COVER=$(find "$ALBUM_DIR" -name "*.jpg" -type f -exec ls -S {} + | head -1)
+    
+    if [ -n "$ALBUM_COVER" ]; then
+        echo -e "${BLUE}🎨 Embedding album art...${NC}"
+        
+        # Get total track count for proper numbering
+        TOTAL_TRACKS=$(find "$ALBUM_DIR" -name "*.mp3" | wc -l | tr -d ' ')
+        
+        for mp3 in "$ALBUM_DIR"/*.mp3; do
+            if [ -f "$mp3" ]; then
+                echo -e "   ${YELLOW}Processing: $(basename "$mp3")${NC}"
+                
+                # Extract track number from filename (assumes format: "01 - Title.mp3")
+                TRACK_NUM=$(basename "$mp3" | grep -o '^[0-9]\+' || echo "")
+                
+                # Use eyeD3 to embed cover art and ensure track number is set
+                if [ -n "$TRACK_NUM" ]; then
+                    eyeD3 --add-image="$ALBUM_COVER:FRONT_COVER" \
+                          --track="$TRACK_NUM" \
+                          --track-total="$TOTAL_TRACKS" \
+                          --album="$ALBUM_NAME" \
+                          --preserve-file-times \
+                          "$mp3" &>/dev/null
+                else
+                    eyeD3 --add-image="$ALBUM_COVER:FRONT_COVER" \
+                          --album="$ALBUM_NAME" \
+                          --preserve-file-times \
+                          "$mp3" &>/dev/null
+                fi
+                
+                if [ $? -eq 0 ]; then
+                    echo -e "   ${GREEN}✓ Updated metadata and artwork${NC}"
+                else
+                    echo -e "   ${YELLOW}⚠️  Warning: Failed to update metadata for $(basename "$mp3")${NC}"
+                fi
+            fi
+        done
+    fi
+    
+    # Create destination and move files
+    FINAL_DIR="$INBOX_DIR/$ALBUM_NAME"
+    mkdir -p "$FINAL_DIR"
+    
+    echo -e "${BLUE}📦 Moving to: $FINAL_DIR${NC}"
+    mv "$ALBUM_DIR"/*.mp3 "$FINAL_DIR/"
+    
+    # Keep album cover
+    if [ -n "$ALBUM_COVER" ]; then
+        cp "$ALBUM_COVER" "$FINAL_DIR/cover.jpg"
+    fi
+    
+    # Summary
+    TRACK_COUNT=$(find "$FINAL_DIR" -name "*.mp3" | wc -l)
+    echo -e "${GREEN}✅ Album downloaded successfully!${NC}"
+    echo -e "${GREEN}   Location: $FINAL_DIR${NC}"
+    echo -e "${GREEN}   Tracks: $TRACK_COUNT${NC}"
+    
+else
+    # Handle single track
+    MP3_FILE=$(find "$TEMP_DIR" -name "*.mp3" | head -1)
+    JPG_FILE=$(find "$TEMP_DIR" -name "*.jpg" | head -1)
+    
+    if [ -z "$MP3_FILE" ]; then
+        echo -e "${RED}❌ Error: No MP3 file found${NC}"
+        exit 1
+    fi
+    
+    # Embed cover art if available
+    if [ -n "$JPG_FILE" ]; then
+        echo -e "${BLUE}🎨 Embedding cover art...${NC}"
+        
+        # Use eyeD3 to embed cover art
+        if eyeD3 --add-image="$JPG_FILE:FRONT_COVER" \
+                 --preserve-file-times \
+                 "$MP3_FILE" &>/dev/null; then
+            echo -e "${GREEN}✓ Updated artwork${NC}"
+        else
+            echo -e "${YELLOW}⚠️  Warning: Failed to embed cover art${NC}"
+        fi
+    fi
+    
+    # Move to inbox
+    echo -e "${BLUE}📦 Moving to: $INBOX_DIR${NC}"
+    mv "$MP3_FILE" "$INBOX_DIR/"
+    
+    # Summary
+    echo -e "${GREEN}✅ Track downloaded successfully!${NC}"
+    echo -e "${GREEN}   Location: $INBOX_DIR/$(basename "$MP3_FILE")${NC}"
+fi
+
+# Automatically organize if music-organize is available
+if command -v music-organize &>/dev/null; then
+    echo ""
+    echo -e "${BLUE}🤖 Starting AI organization...${NC}"
+    
+    # Determine what to pass to music-organize
+    if [ "$IS_PLAYLIST" = true ]; then
+        # Pass the album directory
+        ORGANIZE_TARGET="$FINAL_DIR"
+    else
+        # Pass the single file
+        ORGANIZE_TARGET="$INBOX_DIR/$(basename "$MP3_FILE")"
+    fi
+    
+    echo ""
+    music-organize "$ORGANIZE_TARGET"
+fi

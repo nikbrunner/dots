@@ -229,6 +229,26 @@ This single command handles all scenarios: adding, removing, renaming, or moving
 
 Place OS-specific files in `macos/` or `linux/` following the home directory structure. The system automatically detects your OS and creates appropriate symlinks using direct directory traversal.
 
+### Multiplexer Configuration
+
+The terminal configuration supports switching between WezTerm and tmux as multiplexers while maintaining consistent keybindings. This allows you to use the same muscle memory regardless of which tool handles session/window/pane management.
+
+**Switching multiplexers:**
+
+To use **tmux as multiplexer**:
+1. In `~/.config/wezterm/keymaps.lua`: Comment out the multiplexer bindings (lines 48-51)
+2. In `~/.config/tmux/keymaps.conf`: Uncomment the source line (line 27)
+
+To use **WezTerm as multiplexer** (default):
+1. In `~/.config/wezterm/keymaps.lua`: Ensure multiplexer bindings are uncommented 
+2. In `~/.config/tmux/keymaps.conf`: Ensure the source line is commented out
+
+**How it works:**
+- WezTerm loads multiplexer keybindings when uncommented, providing full session/window/pane management
+- tmux loads multiplexer keybindings when uncommented, handling session/window/pane management
+- Both configurations provide the same keybinding experience for navigation and management
+- Simple comment/uncomment approach works reliably across all platforms and desktop environments
+
 ## Submodules
 
 Current submodules:
@@ -290,3 +310,7 @@ Common commands:
 - ✅ macOS (primary development)
 - ✅ Linux (EndeavourOS/Arch)
 - ❌ Windows (not supported)
+
+## Useful Links
+
+- [Omarchy: Opinionated Arch/Hyprland Setup By DHH](https://omarchy.org/)

@@ -2,25 +2,20 @@
 # ghostty +list-themes
 # vim: colorcolumn=35
 
-# theme                             = dark:GitHub-Dark-Default,light:GitHub-Light-Default
-# theme                             = dark:GitHub-Dark-Dimmed,light:GitHub-Light-Default
-theme                             = dark:black-atom-jpn-koyo-yoru.conf,light:black-atom-jpn-koyo-hiru.conf
-# theme                             = dark:black-atom-terra-spring-night.conf,light:black-atom-terra-spring-day.conf
-# theme                             = dark:black-atom-stations-engineering.conf,light:black-atom-stations-research.conf
-# theme                             = dark:black-atom-crbn-null.conf,light:black-atom-crbn-supr.conf
+theme = dark:black-atom-jpn-tsuki-yoru.conf,light:black-atom-jpn-koyo-hiru.conf
 
-# custom-shader                     = ./shaders/bettercrt.glsl
-# custom-shader                     = ./shaders/bloom.glsl
-# custom-shader                     = ./crt-shader-with-chromatic-aberration-glow-scanlines-dot-matrix/crt-shader-with-chromatic-aberration-glow-scanlines-dot-matrix.glsl
-# custom-shader = ./shaders/drunkard.glsl
-# custom-shader = ./shaders/tft.glsl
-# custom-shader = ./shaders/glitchy.glsl
+# custom-shader                      = ./shaders/crt-shader.glsl
+# custom-shader                      = ./shaders/bloom015.glsl
+# custom-shader                      = ./shaders/bloom025.glsl
+# custom-shader                      = ./shaders/bloom050.glsl
+custom-shader                      = ./shaders/cursor_smear.glsl
+# custom-shader                      = ./shaders/cursor_blaze_no_trail.glsl
 
-# background-opacity               = 0.85
-# background-blur                  = 65
+background-opacity                 = 0.9
+background-blur                    = 65
 
-font-family                      = JetBrainsMono Nerd Font
-# font-family                      = TX-02
+# font-family                      = JetBrainsMono Nerd Font
+font-family                      = TX-02
 # font-family                      = SF Mono
 # font-family                      = Maple Mono NF
 # font-family                      = Menlo

@@ -1,0 +1,80 @@
+#!/usr/bin/env bash
+
+# Music management script for MPD
+
+set -euo pipefail
+
+MPD_CONFIG="$HOME/.config/mpd/mpd.conf"
+
+# Check if MPD is installed
+if ! command -v mpd &> /dev/null; then
+    echo "❌ MPD is not installed. Install with: brew install mpd"
+    exit 1
+fi
+
+# Check if config exists
+if [ ! -f "$MPD_CONFIG" ]; then
+    echo "❌ MPD config not found at $MPD_CONFIG"
+    echo "Run 'dots link' to create the configuration."
+    exit 1
+fi
+
+case "${1:-start}" in
+    start)
+        echo "🎵 Starting MPD..."
+        mpd "$MPD_CONFIG"
+        echo "✅ MPD started. Use 'rmpc' or 'music client' to control it."
+        ;;
+    
+    stop)
+        echo "⏹️  Stopping MPD..."
+        if pkill -x mpd; then
+            echo "✅ MPD stopped."
+        else
+            echo "❌ MPD was not running."
+        fi
+        ;;
+    
+    restart)
+        echo "🔄 Restarting MPD..."
+        pkill -x mpd 2>/dev/null || true
+        sleep 1
+        mpd "$MPD_CONFIG"
+        echo "✅ MPD restarted."
+        ;;
+    
+    status)
+        if pgrep -x "mpd" > /dev/null; then
+            echo "✅ MPD is running"
+        else
+            echo "❌ MPD is not running"
+        fi
+        ;;
+    
+    update)
+        echo "🔄 Updating MPD database..."
+        mpc update
+        echo "✅ Database updated."
+        ;;
+    
+    client)
+        if command -v rmpc &> /dev/null; then
+            echo "🎵 Starting rmpc..."
+            rmpc
+        else
+            echo "❌ rmpc not found. Install with: cargo install rmpc"
+        fi
+        ;;
+    
+    *)
+        echo "Usage: music [start|stop|restart|status|update|client]"
+        echo ""
+        echo "Commands:"
+        echo "  start   - Start MPD daemon"
+        echo "  stop    - Stop MPD daemon"
+        echo "  restart - Restart MPD daemon"
+        echo "  status  - Check if MPD is running"
+        echo "  update  - Update music database"
+        echo "  client  - Launch music client (rmpc or ncmpcpp)"
+        ;;
+esac

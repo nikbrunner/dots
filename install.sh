@@ -83,6 +83,7 @@ if [[ "$DRY_RUN" == true ]]; then
 	echo -e "${YELLOW}→${NC} [DRY] Would configure system settings"
 	echo "  • Set zsh as default shell"
 	echo "  • Configure Git SSH signing"
+	echo "  • Install TPM (Tmux Plugin Manager)"
 	echo "  • Install NVM (Linux only)"
 else
 	if [[ "$SKIP_DEPS" == false ]]; then
@@ -154,6 +155,32 @@ else
 	echo -e "${GREEN}✓${NC} All scripts are now executable"
 fi
 
+# 8.5. Install rmpc music client
+if [[ "$SKIP_DEPS" == false ]]; then
+	echo ""
+	echo -e "${BLUE}🎵 Phase 5: Music Client Setup${NC}"
+	if [[ "$DRY_RUN" == true ]]; then
+		echo -e "${YELLOW}→${NC} [DRY] Would install rmpc music client"
+		echo "  Would run: cargo install rmpc"
+	else
+		if command -v cargo &> /dev/null; then
+			if ! command -v rmpc &> /dev/null; then
+				echo -e "${YELLOW}→${NC} Installing rmpc music client..."
+				echo -e "${YELLOW}   This may take several minutes to compile...${NC}"
+				if cargo install rmpc; then
+					echo -e "${GREEN}✓${NC} rmpc installed successfully"
+				else
+					echo -e "${YELLOW}⚠️${NC} rmpc installation failed (this is optional)"
+				fi
+			else
+				echo -e "${GREEN}✓${NC} rmpc already installed"
+			fi
+		else
+			echo -e "${YELLOW}⚠️${NC} Cargo not available, skipping rmpc installation"
+		fi
+	fi
+fi
+
 # 9. Validate installation
 if [[ "$SKIP_DEPS" == false ]] && [[ "$DRY_RUN" == false ]]; then
 	echo ""
@@ -210,5 +237,8 @@ if [[ "$SKIP_DEPS" == false ]]; then
 	echo "  • 'dots' - dotfiles management (status, sync, link)"
 	echo "  • 'repos' - repository management (find, open, status)"
 	echo "  • 'repo' - individual repository operations"
+	echo "  • 'ytdl' - download music from YouTube with metadata"
+	echo "  • 'music' - control MPD music daemon"
+	echo "  • 'rmpc' - terminal music player"
 fi
 echo ""

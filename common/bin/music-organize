@@ -1,0 +1,474 @@
+#!/usr/bin/env bash
+# music-organize - AI-powered music organization after download
+# Usage: music-organize <file_or_directory>
+
+set -euo pipefail
+
+# Configuration
+MUSIC_DIR="${MUSIC_DIR:-$HOME/pCloud Drive/02_AREAS/Music}"
+INBOX_DIR="$MUSIC_DIR/Inbox"
+
+# Colors
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[0;33m'
+BLUE='\033[0;34m'
+MAGENTA='\033[0;35m'
+NC='\033[0m' # No Color
+
+# Check if we have either claude or API key
+check_ai_availability() {
+    if ! command -v claude &>/dev/null && [ -z "$ANTHROPIC_API_KEY" ]; then
+        echo -e "${RED}Error: Neither Claude Code nor ANTHROPIC_API_KEY is available.${NC}"
+        echo "Please either:"
+        echo "  1. Install Claude Code: https://claude.ai/code"
+        echo "  2. Set ANTHROPIC_API_KEY to your Anthropic API key"
+        exit 1
+    fi
+}
+
+# Get music metadata using eyeD3
+get_metadata() {
+    local file="$1"
+    local filename=$(basename "$file" .mp3)
+    local metadata=""
+    
+    if command -v eyeD3 &>/dev/null; then
+        metadata=$(eyeD3 "$file" 2>/dev/null | grep -E "artist:|album:|title:|genre:" | sed 's/^[[:space:]]*//')
+    fi
+    
+    # Always include filename for context
+    if [ -n "$metadata" ]; then
+        metadata="$metadata
+filename: $filename"
+    else
+        # Parse filename for artist/title if no metadata
+        if [[ "$filename" =~ ^([^-]+)[[:space:]]*-[[:space:]]*(.+)$ ]]; then
+            local artist="${BASH_REMATCH[1]}"
+            local title="${BASH_REMATCH[2]}"
+            metadata="artist: $artist
+title: $title
+filename: $filename"
+        else
+            metadata="title: $filename
+filename: $filename"
+        fi
+    fi
+    
+    echo "$metadata"
+}
+
+# Get list of existing folders
+get_existing_folders() {
+    find "$MUSIC_DIR" -maxdepth 2 -type d -not -path "$MUSIC_DIR" -not -path "$INBOX_DIR" -not -path "$INBOX_DIR/*" | 
+        sed "s|$MUSIC_DIR/||" | 
+        sort
+}
+
+# Call AI to suggest folder
+suggest_folder() {
+    local metadata="$1"
+    local existing_folders="$2"
+    local filename="$3"
+    
+    local prompt="You are organizing music files. Given the metadata and existing folder structure, suggest where this music should go.
+
+CRITICAL: Return ONLY ONE of these responses:
+1. An existing folder path (e.g., 'Artists/Pink Floyd' or 'Genres/Rock')
+2. A new folder suggestion prefixed with 'NEW:' (e.g., 'NEW:Artists/The Beatles')
+3. The word 'SKIP' if it should stay in Inbox
+
+Music file: $filename
+Metadata:
+$metadata
+
+Existing folders:
+$existing_folders
+
+Rules:
+- Prefer existing folders when appropriate
+- Use 'Artists/[Artist Name]' for well-known artists
+- Use 'Genres/[Genre]' for compilations or various artists
+- Use 'Soundtracks/[Name]' for movie/game soundtracks
+- Use 'Albums/[Album Name]' only for special albums
+- If uncertain, return 'SKIP'
+
+Output: Just the folder path or 'NEW:path' or 'SKIP', nothing else."
+
+    local suggestion
+    if command -v claude &>/dev/null; then
+        suggestion=$(claude --model claude-3-5-haiku-20241022 --print "$prompt" 2>&1)
+    else
+        # Use API call similar to repo script
+        local json_payload
+        json_payload=$(jq -n \
+            --arg prompt "$prompt" \
+            '{
+                model: "claude-3-5-haiku-20241022",
+                max_tokens: 100,
+                messages: [
+                    {
+                        role: "user",
+                        content: $prompt
+                    }
+                ]
+            }')
+        
+        local response
+        response=$(curl -s -X POST "https://api.anthropic.com/v1/messages" \
+            -H "x-api-key: $ANTHROPIC_API_KEY" \
+            -H "anthropic-version: 2023-06-01" \
+            -H "content-type: application/json" \
+            -d "$json_payload")
+        
+        suggestion=$(echo "$response" | jq -r '.content[0].text' 2>/dev/null | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
+    fi
+    
+    # Clean up response
+    suggestion=$(echo "$suggestion" | tr -d '\n\r' | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
+    echo "$suggestion"
+}
+
+# Process a single music file with interactive menu
+process_file() {
+    local file="$1"
+    local filename=$(basename "$file")
+    
+    echo -e "${BLUE}🎵 Processing: $filename${NC}"
+    
+    # Get metadata
+    local metadata=$(get_metadata "$file")
+    echo -e "${YELLOW}   Metadata:${NC}"
+    echo "$metadata" | sed 's/^/     /'
+    
+    # Get existing folders
+    local existing_folders=$(get_existing_folders)
+    
+    # Get AI suggestion
+    echo -e "${YELLOW}   Getting AI suggestion...${NC}"
+    local suggestion=$(suggest_folder "$metadata" "$existing_folders" "$filename")
+    
+    # Handle the suggestion with interactive menu
+    local action=""
+    local target_folder=""
+    
+    if [ "$suggestion" = "SKIP" ]; then
+        echo -e "${YELLOW}   → AI uncertain - manual selection needed${NC}"
+        target_folder=""
+    elif [[ "$suggestion" == NEW:* ]]; then
+        # New folder suggested
+        target_folder="${suggestion#NEW:}"
+        echo -e "${MAGENTA}   → AI suggests new folder: $target_folder${NC}"
+    else
+        # Existing folder suggested
+        target_folder="$suggestion"
+        echo -e "${GREEN}   → AI suggests existing folder: $target_folder${NC}"
+    fi
+    
+    echo
+    
+    # Interactive menu
+    if command -v gum &>/dev/null; then
+        local menu_options=()
+        
+        if [ -n "$target_folder" ]; then
+            if [[ "$suggestion" == NEW:* ]]; then
+                menu_options+=("Create new folder: $target_folder")
+            else
+                menu_options+=("Move to: $target_folder")
+            fi
+        fi
+        
+        menu_options+=("Browse existing folders")
+        menu_options+=("Create custom folder")
+        menu_options+=("Keep in Inbox")
+        
+        action=$(printf '%s\n' "${menu_options[@]}" | gum choose)
+    else
+        # Fallback without gum
+        echo "Options:"
+        local idx=1
+        if [ -n "$target_folder" ]; then
+            if [[ "$suggestion" == NEW:* ]]; then
+                echo "$idx) Create new folder: $target_folder"
+            else
+                echo "$idx) Move to: $target_folder"
+            fi
+            ((idx++))
+        fi
+        echo "$idx) Browse existing folders"
+        ((idx++))
+        echo "$idx) Create custom folder"
+        ((idx++))
+        echo "$idx) Keep in Inbox"
+        ((idx++))
+        echo "$idx) Skip this file"
+        
+        read -r -p "Choose an option (1-$idx): " choice
+        # Map choice to action based on menu
+        # ... (simplified for now)
+        action="Skip this file"
+    fi
+    
+    # Handle the chosen action
+    case "$action" in
+        "Move to: "* | "Create new folder: "*)
+            if [[ "$action" == "Create new folder: "* ]]; then
+                mkdir -p "$MUSIC_DIR/$target_folder"
+            fi
+            mv "$file" "$MUSIC_DIR/$target_folder/"
+            echo -e "${GREEN}✓ Moved to: $target_folder${NC}"
+            ;;
+            
+        "Browse existing folders")
+            if command -v gum &>/dev/null; then
+                local selected_folder=$(echo "$existing_folders" | gum filter --placeholder "Search folders...")
+                if [ -n "$selected_folder" ]; then
+                    mv "$file" "$MUSIC_DIR/$selected_folder/"
+                    echo -e "${GREEN}✓ Moved to: $selected_folder${NC}"
+                else
+                    echo -e "${YELLOW}→ Keeping in Inbox${NC}"
+                fi
+            else
+                echo "Existing folders:"
+                echo "$existing_folders" | nl
+                echo -e "${YELLOW}→ Manual selection not available without gum${NC}"
+            fi
+            ;;
+            
+        "Create custom folder")
+            if command -v gum &>/dev/null; then
+                local custom_folder=$(gum input --placeholder "Enter folder path (e.g., Artists/New Artist)")
+                if [ -n "$custom_folder" ]; then
+                    mkdir -p "$MUSIC_DIR/$custom_folder"
+                    mv "$file" "$MUSIC_DIR/$custom_folder/"
+                    echo -e "${GREEN}✓ Moved to: $custom_folder${NC}"
+                else
+                    echo -e "${YELLOW}→ Keeping in Inbox${NC}"
+                fi
+            else
+                read -p "Enter folder path: " custom_folder
+                if [ -n "$custom_folder" ]; then
+                    mkdir -p "$MUSIC_DIR/$custom_folder"
+                    mv "$file" "$MUSIC_DIR/$custom_folder/"
+                    echo -e "${GREEN}✓ Moved to: $custom_folder${NC}"
+                else
+                    echo -e "${YELLOW}→ Keeping in Inbox${NC}"
+                fi
+            fi
+            ;;
+            
+        "Keep in Inbox" | *)
+            echo -e "${YELLOW}→ Keeping in Inbox${NC}"
+            ;;
+    esac
+    echo
+}
+
+# Process a directory (album) with interactive menu
+process_directory() {
+    local dir="$1"
+    local dirname=$(basename "$dir")
+    
+    echo -e "${BLUE}📀 Processing album: $dirname${NC}"
+    
+    # Get metadata from first MP3 file
+    local first_mp3=$(find "$dir" -name "*.mp3" -type f | head -1)
+    if [ -z "$first_mp3" ]; then
+        echo -e "${RED}   No MP3 files found${NC}"
+        return
+    fi
+    
+    local metadata=$(get_metadata "$first_mp3")
+    echo -e "${YELLOW}   Metadata from first track:${NC}"
+    echo "$metadata" | sed 's/^/     /'
+    
+    # Get existing folders
+    local existing_folders=$(get_existing_folders)
+    
+    # Get AI suggestion
+    echo -e "${YELLOW}   Getting AI suggestion...${NC}"
+    local suggestion=$(suggest_folder "$metadata" "$existing_folders" "Album: $dirname")
+    
+    # Handle the suggestion with interactive menu
+    local action=""
+    local target_folder=""
+    
+    if [ "$suggestion" = "SKIP" ]; then
+        echo -e "${YELLOW}   → AI uncertain - manual selection needed${NC}"
+        target_folder=""
+    elif [[ "$suggestion" == NEW:* ]]; then
+        # New folder suggested
+        target_folder="${suggestion#NEW:}"
+        echo -e "${MAGENTA}   → AI suggests new folder: $target_folder${NC}"
+    else
+        # Existing folder suggested
+        target_folder="$suggestion"
+        echo -e "${GREEN}   → AI suggests existing folder: $target_folder${NC}"
+    fi
+    
+    echo
+    
+    # Interactive menu
+    if command -v gum &>/dev/null; then
+        local menu_options=()
+        
+        if [ -n "$target_folder" ]; then
+            if [[ "$suggestion" == NEW:* ]]; then
+                menu_options+=("Create new folder: $target_folder")
+            else
+                menu_options+=("Move to: $target_folder")
+            fi
+        fi
+        
+        menu_options+=("Browse existing folders")
+        menu_options+=("Create custom folder")
+        menu_options+=("Keep in Inbox")
+        
+        action=$(printf '%s\n' "${menu_options[@]}" | gum choose)
+    else
+        # Fallback without gum
+        echo "Options:"
+        local idx=1
+        if [ -n "$target_folder" ]; then
+            if [[ "$suggestion" == NEW:* ]]; then
+                echo "$idx) Create new folder: $target_folder"
+            else
+                echo "$idx) Move to: $target_folder"
+            fi
+            ((idx++))
+        fi
+        echo "$idx) Browse existing folders"
+        ((idx++))
+        echo "$idx) Create custom folder"
+        ((idx++))
+        echo "$idx) Keep in Inbox"
+        ((idx++))
+        echo "$idx) Skip this album"
+        
+        read -r -p "Choose an option (1-$idx): " choice
+        action="Skip this album"
+    fi
+    
+    # Handle the chosen action
+    case "$action" in
+        "Move to: "* | "Create new folder: "*)
+            if [[ "$action" == "Create new folder: "* ]]; then
+                mkdir -p "$MUSIC_DIR/$target_folder"
+            fi
+            mv "$dir" "$MUSIC_DIR/$target_folder/"
+            echo -e "${GREEN}✓ Moved to: $target_folder${NC}"
+            ;;
+            
+        "Browse existing folders")
+            if command -v gum &>/dev/null; then
+                local selected_folder=$(echo "$existing_folders" | gum filter --placeholder "Search folders...")
+                if [ -n "$selected_folder" ]; then
+                    mv "$dir" "$MUSIC_DIR/$selected_folder/"
+                    echo -e "${GREEN}✓ Moved to: $selected_folder${NC}"
+                else
+                    echo -e "${YELLOW}→ Keeping in Inbox${NC}"
+                fi
+            else
+                echo "Existing folders:"
+                echo "$existing_folders" | nl
+                echo -e "${YELLOW}→ Manual selection not available without gum${NC}"
+            fi
+            ;;
+            
+        "Create custom folder")
+            if command -v gum &>/dev/null; then
+                local custom_folder=$(gum input --placeholder "Enter folder path (e.g., Artists/New Artist)")
+                if [ -n "$custom_folder" ]; then
+                    mkdir -p "$MUSIC_DIR/$custom_folder"
+                    mv "$dir" "$MUSIC_DIR/$custom_folder/"
+                    echo -e "${GREEN}✓ Moved to: $custom_folder${NC}"
+                else
+                    echo -e "${YELLOW}→ Keeping in Inbox${NC}"
+                fi
+            else
+                read -p "Enter folder path: " custom_folder
+                if [ -n "$custom_folder" ]; then
+                    mkdir -p "$MUSIC_DIR/$custom_folder"
+                    mv "$dir" "$MUSIC_DIR/$custom_folder/"
+                    echo -e "${GREEN}✓ Moved to: $custom_folder${NC}"
+                else
+                    echo -e "${YELLOW}→ Keeping in Inbox${NC}"
+                fi
+            fi
+            ;;
+            
+        "Keep in Inbox" | *)
+            echo -e "${YELLOW}→ Keeping in Inbox${NC}"
+            ;;
+    esac
+    echo
+}
+
+# Main function
+main() {
+    check_ai_availability
+    
+    # Check if gum is available for better UX
+    if ! command -v gum &>/dev/null; then
+        echo -e "${YELLOW}Note: Install 'gum' for better interactive experience${NC}"
+        echo
+    fi
+    
+    # Default to organizing everything in Inbox if no argument
+    if [ $# -eq 0 ]; then
+        echo -e "${BLUE}🎵 Organizing music in Inbox...${NC}"
+        echo
+        
+        # Find all MP3 files and directories in Inbox
+        local found_items=false
+        
+        # Process individual MP3 files first
+        local mp3_files=()
+        while IFS= read -r -d '' file; do
+            mp3_files+=("$file")
+        done < <(find "$INBOX_DIR" -maxdepth 1 -name "*.mp3" -type f -print0 2>/dev/null)
+        
+        if [ ${#mp3_files[@]} -gt 0 ]; then
+            found_items=true
+            echo -e "${YELLOW}Found ${#mp3_files[@]} MP3 file(s) to process${NC}"
+            echo
+            
+            for file in "${mp3_files[@]}"; do
+                process_file "$file"
+            done
+        fi
+        
+        # Then process directories (albums)
+        while IFS= read -r -d '' dir; do
+            found_items=true
+            process_directory "$dir"
+        done < <(find "$INBOX_DIR" -maxdepth 1 -type d -not -path "$INBOX_DIR" -print0)
+        
+        if [ "$found_items" = false ]; then
+            echo -e "${YELLOW}No music files or albums found in Inbox${NC}"
+        fi
+    else
+        # Process specific file or directory
+        local target="$1"
+        
+        if [ ! -e "$target" ]; then
+            echo -e "${RED}Error: '$target' does not exist${NC}"
+            exit 1
+        fi
+        
+        if [ -f "$target" ]; then
+            process_file "$target"
+        elif [ -d "$target" ]; then
+            process_directory "$target"
+        else
+            echo -e "${RED}Error: '$target' is neither a file nor directory${NC}"
+            exit 1
+        fi
+    fi
+    
+    echo -e "${GREEN}✨ Music organization complete!${NC}"
+}
+
+# Run main
+main "$@"

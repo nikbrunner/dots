@@ -24,6 +24,10 @@ declare -a REQUIRED_DEPS=(
     "zsh-syntax-highlighting:Syntax highlighting for zsh"
     "oh-my-posh:Cross-platform prompt theme engine"
     "gallery-dl:Command-line program to download image galleries"
+    "yt-dlp:YouTube downloader with extended features"
+    "ffmpeg:Media conversion and processing"
+    "eyeD3:MP3 ID3 tag editor"
+    "mpd:Music Player Daemon"
 )
 
 # Detect operating system
@@ -64,6 +68,10 @@ check_dependency() {
             # Check for the plugin file on both macOS and Linux
             [[ -f "/usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ]] || \
             [[ -f "$(brew --prefix 2>/dev/null)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ]]
+            ;;
+        1password)
+            # Check for 1Password app on macOS
+            [[ -d "/Applications/1Password.app" ]] || [[ -d "$HOME/Applications/1Password.app" ]]
             ;;
         gallery-dl)
             command -v gallery-dl &> /dev/null
@@ -345,7 +353,12 @@ configure_system() {
     
     # Set zsh as default shell
     local current_shell
-    current_shell=$(getent passwd "$USER" | cut -d: -f7)
+    if command -v getent &> /dev/null; then
+        current_shell=$(getent passwd "$USER" | cut -d: -f7)
+    else
+        # macOS doesn't have getent, use dscl instead
+        current_shell=$(dscl . -read "/Users/$USER" UserShell | awk '{print $2}')
+    fi
     local zsh_path
     zsh_path=$(which zsh)
     
@@ -390,6 +403,19 @@ configure_system() {
         fi
     else
         echo "⚠️  1Password SSH signing tool not found - Git signing will use system SSH"
+    fi
+    
+    # Install TPM (Tmux Plugin Manager) if not present
+    if [[ ! -d "$HOME/.tmux/plugins/tpm" ]]; then
+        echo "🔌 Installing TPM (Tmux Plugin Manager)..."
+        if command -v git &> /dev/null; then
+            git clone https://github.com/tmux-plugins/tpm "$HOME/.tmux/plugins/tpm"
+            echo "✅ TPM installed - use prefix + I to install plugins"
+        else
+            echo "⚠️  git not available - install TPM manually"
+        fi
+    else
+        echo "✅ TPM already installed"
     fi
     
     # Install NVM on Linux if not present

@@ -43,7 +43,7 @@ gui:
   # stuff relating to the UI
   scrollHeight: 10 # how many lines you scroll by
   scrollPastBottom: true # enable scrolling past the bottom
-  sidePanelWidth: 0.35 # number from 0 to 1
+  sidePanelWidth: 0.25 # number from 0 to 1
   expandFocusedSidePanel: true
   mainPanelSplitMode: flexible # one of 'horizontal' | 'flexible' | 'vertical'
   portraitMode: auto # one of 'auto' | 'never' | 'always'
@@ -109,15 +109,15 @@ customCommands:
   - key: "G"
     context: "localBranches"
     command: "git fullreset"
-  # - key: "Z"
-  #   context: "files"
-  #   command: "git cz"
-  #   subprocess: true
-  # use Z to run repo commit -s (smart commit)
-  - command: git -c core.pager="delta --syntax-theme gruvbox-dark --dark --side-by-side --paging=always" diff {{.SelectedLocalCommit.Sha}}^ {{.SelectedLocalCommit.Sha}}
-    context: files
-    description: full-screen diff of selected file
-    key: <c-f>
+    # - key: "Z"
+    #   context: "files"
+    #   command: "git cz"
+    #   subprocess: true
+    # use Z to run repo commit -s (smart commit)
+    # - command: git -c core.pager="delta --syntax-theme gruvbox-dark --dark --side-by-side --paging=always" diff {{.SelectedLocalCommit.Sha}}^ {{.SelectedLocalCommit.Sha}}
+    #   context: files
+    #   description: full-screen diff of selected file
+    #   key: <c-f>
     output: terminal
   - key: "Z"
     context: "files"
