@@ -1,74 +1,63 @@
 # TODO
 
-## High Priority
+## High Priority (Omarchy-Inspired Enhancements)
 
-- [x] **Fix `dots status` symlink checking** - Fixed by delegating to external script like `link.sh`
-- [x] Fix current `install` script
-- [x] `dots sync`
-  - Should check if there are current local changes before syncing and abort
-    if so
-  - After sync it should offer to run `dots link` to update symlinks
-- [ ] Complete `install` script
-  - [ ] deps
-    - [ ] Homebrew on macOS
-    - [ ] Obsidian
-- [ ] `repos` - Complete ENSURED_INSTALL
-  - [ ] `nikbrunner/notes`
-  - [ ] `nikbrunner/dcd-notes`
-  - [ ] `dealercenter-digital/...`
+### Foundation (BLOCKERS)
+- [ ] **deps.json/yaml** - Structured package mappings for all platforms (BLOCKS: everything below) - See [plans/PLATFORM_SPECIFIC_INSTALL_SCRIPTS.md](./plans/PLATFORM_SPECIFIC_INSTALL_SCRIPTS.md)
+- [ ] **Enhanced deps.sh** - Parse deps.json instead of hardcoded mappings (DEPENDS: deps.json) - See [plans/PLATFORM_SPECIFIC_INSTALL_SCRIPTS.md](./plans/PLATFORM_SPECIFIC_INSTALL_SCRIPTS.md)
+- [ ] **User identification system** - Interactive setup for name/email (INDEPENDENT) - See [plans/PLATFORM_SPECIFIC_INSTALL_SCRIPTS.md](./plans/PLATFORM_SPECIFIC_INSTALL_SCRIPTS.md)
+
+### Platform-Specific Installs  
+- [ ] **install-macos.sh** - Homebrew-focused installation script (DEPENDS: deps.json) - See [plans/PLATFORM_SPECIFIC_INSTALL_SCRIPTS.md](./plans/PLATFORM_SPECIFIC_INSTALL_SCRIPTS.md)
+- [ ] **install-arch.sh** - yay/pacman-focused with Omarchy patterns (DEPENDS: deps.json) - See [plans/PLATFORM_SPECIFIC_INSTALL_SCRIPTS.md](./plans/PLATFORM_SPECIFIC_INSTALL_SCRIPTS.md)
+- [ ] **Enhanced install.sh** - Dispatcher to platform scripts (DEPENDS: platform scripts) - See [plans/PLATFORM_SPECIFIC_INSTALL_SCRIPTS.md](./plans/PLATFORM_SPECIFIC_INSTALL_SCRIPTS.md)
+
+### Feature Integration
+- [ ] **Migration system** - Timestamped update scripts (INDEPENDENT) - See [plans/OMARCHY_ANALYSIS_AND_INSPIRATIONS.md](./plans/OMARCHY_ANALYSIS_AND_INSPIRATIONS.md)
+- [ ] **Hyprland/Wayland configs** - Extract snippets from Omarchy (waybar, wofi, hyprlock, hotkeys) (INDEPENDENT) - See [plans/OMARCHY_ANALYSIS_AND_INSPIRATIONS.md](./plans/OMARCHY_ANALYSIS_AND_INSPIRATIONS.md)
+- [ ] **Web app integration** - Desktop launchers + hotkeys (DEPENDS: platform installs) - See [plans/OMARCHY_ANALYSIS_AND_INSPIRATIONS.md](./plans/OMARCHY_ANALYSIS_AND_INSPIRATIONS.md)
+- [ ] **Theme system** - Multi-app theme switching (DEPENDS: user identification) - See [plans/OMARCHY_ANALYSIS_AND_INSPIRATIONS.md](./plans/OMARCHY_ANALYSIS_AND_INSPIRATIONS.md)
+- [ ] **Enhanced dots command** - Add theme/webapp/migrate commands (DEPENDS: all features)
+
+## High Priority (Existing)
+
 - [ ] **Fix colorscheme synchronization** - See [plans/COLORSCHEME_SYNC_SOLUTION.md](./plans/COLORSCHEME_SYNC_SOLUTION.md)
-  - [x] Immediate fix: Use absolute paths in nvim to avoid $XDG_CONFIG_HOME issues
-  - [ ] Implement long-term solution (Option 3: Event-based system recommended)
-- [ ] `deps` - Simplify dependency management by introducing config file for
-      package names on different platforms
-- [ ] **Linux** - Setup Wezterm & Multiplexer
-  - If the bindings are not working, think about switchting to just TMUX
+- [ ] **Linux** - Setup Wezterm & Multiplexer - See [plans/SIMPLE_MULTIPLEXER_BINDINGS.md](./plans/SIMPLE_MULTIPLEXER_BINDINGS.md)
 - [ ] **Linux** - Setup docker
-- [ ] **Wezterm** - Clean up OS specific configurations
 - [ ] Setup fonts
-- [ ] Store and set `.zshenv` from MacOS
-- [ ] **Refactor `dots` command** - See [docs/DOTS_COMMAND_REFACTOR.md](./docs/DOTS_COMMAND_REFACTOR.md)
-- [ ] **Add test script** - Comprehensive system validation script
-- [ ] **Test complete Linux setup on EndeavorOS** - Validate cross-platform functionality
+- [ ] Store and set `.zshenv` from macOS
 
 ## Medium Priority
 
-- [ ] **Linux:** Setup Wallpaper
-- [ ] **Implement enhanced testing framework** - More comprehensive validation
-- [ ] **Add configuration backup/restore functionality** - Safety features for dotfiles management
-- [ ] **Improve error handling and user feedback** - Better UX for failed operations
-- [ ] **Add configuration templates** - Quick setup for common tools
+- [ ] **Linux:** Setup Wallpaper  
+- [ ] **Wezterm** - Clean up OS specific configurations
+- [ ] **Enhanced testing framework** - Validate new Omarchy features - See [plans/TESTING_IMPLEMENTATION.md](./plans/TESTING_IMPLEMENTATION.md)  
+- [ ] **repos command** - Complete ENSURED_INSTALL workflow
 
 ## Low Priority
 
-- [ ] **Performance optimizations** - Speed up symlink operations for large configurations
-- [ ] **Extended platform support** - Ubuntu/Debian, CentOS/RHEL support
-- [ ] **Integration with cloud sync** - Backup strategy configuration
-- [ ] **Advanced logging and monitoring** - Detailed operation tracking
-
-## Research & Investigation
-
-- [ ] **Investigate `dots status` hanging issue** - Deep dive into execution context differences
-- [ ] **Evaluate alternative symlink management approaches** - Potential architectural improvements
+- [ ] **Performance optimizations** - Speed up symlink operations
 - [ ] **Security audit** - Review all scripts for security best practices
 
 ## Completed ✅
 
+### Recently Completed
+- [x] **Fix `dots status` symlink checking** - Delegated to external script  
+- [x] **Fix `dots sync`** - Checks for local changes, offers to update symlinks
+- [x] **Add test script** - Comprehensive system validation with `dots test`
+- [x] **Colorscheme sync immediate fix** - Use absolute paths in nvim
+
+### Previously Completed  
 - [x] Migrate wezterm
-- [x] Remove `*backup` files
-- [x] Archive old dotfiles
-- [x] Make this repo public
-- [x] Remove hooks
-- [x] Add `sub-commit` command
-- [x] Add `sub-status` command
+- [x] Add `sub-commit` and `sub-status` commands
 - [x] Add `format` command
-- [x] Standardize bash across all scripts
-- [x] Implement unified dependency management (see [docs/DEPENDENCY_MANAGEMENT.md](./docs/DEPENDENCY_MANAGEMENT.md))
-- [x] Implement repos cleanup workflow
-- [x] Verify that install script is working
-- [x] Document `~/.ssh` setup (see [docs/SSH_SETUP.md](./docs/SSH_SETUP.md))
-- [x] Add cross-platform support for macOS/Linux (OS detection, package managers)
+- [x] Implement unified dependency management - See [plans/DEPENDENCY_MANAGEMENT.md](./plans/DEPENDENCY_MANAGEMENT.md)
+- [x] Add cross-platform support for macOS/Linux
+- [x] Document `~/.ssh` setup
+- [x] Make repo public and remove hooks
 
 ---
 
-_This file tracks all pending tasks and improvements for the dotfiles system. Items are prioritized by impact and urgency._
+**Next Focus**: Start with `deps.json` as it blocks most Omarchy enhancements.  
+**Dependencies**: Items marked with `(DEPENDS: ...)` can't start until dependencies complete.  
+**Parallel Work**: Items marked `(INDEPENDENT)` can be worked on simultaneously.
