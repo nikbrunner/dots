@@ -11,8 +11,8 @@ theme = dark:black-atom-jpn-tsuki-yoru.conf,light:black-atom-jpn-koyo-hiru.conf
 custom-shader                      = ./shaders/cursor_smear.glsl
 # custom-shader                      = ./shaders/cursor_blaze_no_trail.glsl
 
-background-opacity                 = 0.9
-background-blur                    = 65
+# background-opacity                 = 0.9
+# background-blur                    = 65
 
 # font-family                      = JetBrainsMono Nerd Font
 font-family                      = TX-02
