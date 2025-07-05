@@ -85,12 +85,15 @@ $metadata
 Existing folders:
 $existing_folders
 
-Rules:
-- Prefer existing folders when appropriate
-- Use 'Artists/[Artist Name]' for well-known artists
-- Use 'Genres/[Genre]' for compilations or various artists
-- Use 'Soundtracks/[Name]' for movie/game soundtracks
-- Use 'Albums/[Album Name]' only for special albums
+Rules (in order of priority):
+- STRONGLY prefer existing folders when they fit the content (e.g., 'Mixes/Techno' over 'NEW:Electronic/Artist/Album')
+- Look for existing folders that match the genre, style, or category
+- Consider existing folder hierarchies and subdirectories
+- Only suggest NEW folders when no existing folder is appropriate
+- For NEW folders, use format '<genre>/<artist>/<album>' when creating artist-specific albums
+- For NEW folders, use format '<genre>/<artist>' when creating artist collections
+- For NEW folders, use format 'Mixes/<genre>' for DJ mixes or compilations
+- Use 'Soundtracks/<name>' for movie/game soundtracks
 - If uncertain, return 'SKIP'
 
 Output: Just the folder path or 'NEW:path' or 'SKIP', nothing else."

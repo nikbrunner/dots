@@ -108,8 +108,8 @@ fi
 
 # Process downloaded files
 if [ "$IS_PLAYLIST" = true ]; then
-    # Handle album/playlist
-    ALBUM_DIR=$(find "$TEMP_DIR" -maxdepth 1 -type d ! -path "$TEMP_DIR" | head -1)
+    # Handle album/playlist - find the directory that actually contains MP3 files
+    ALBUM_DIR=$(find "$TEMP_DIR" -type d -exec sh -c 'test $(find "$1" -maxdepth 1 -name "*.mp3" | wc -l) -gt 0' _ {} \; -print | head -1)
     
     if [ -z "$ALBUM_DIR" ]; then
         echo -e "${RED}❌ Error: No files were downloaded${NC}"
@@ -117,13 +117,23 @@ if [ "$IS_PLAYLIST" = true ]; then
         exit 1
     fi
     
-    ALBUM_NAME=$(basename "$ALBUM_DIR")
+    # Use the playlist title we already extracted, with fallback to directory name
+    if [ -n "$PLAYLIST_TITLE" ]; then
+        ALBUM_NAME="$PLAYLIST_TITLE"
+    else
+        # Fallback: use directory name but handle the path separator issue
+        ALBUM_NAME=$(basename "$ALBUM_DIR")
+    fi
     
-    # Remove common YouTube Music prefixes from album name
-    ALBUM_NAME=${ALBUM_NAME#"Album - "}
-    ALBUM_NAME=${ALBUM_NAME#"Playlist - "}
-    ALBUM_NAME=${ALBUM_NAME#"Single - "}
-    ALBUM_NAME=${ALBUM_NAME#"EP - "}
+    # Create a clean album name for the final directory (removing prefixes but keeping Unicode chars)
+    CLEAN_ALBUM_NAME="$ALBUM_NAME"
+    CLEAN_ALBUM_NAME=${CLEAN_ALBUM_NAME#"Album - "}
+    CLEAN_ALBUM_NAME=${CLEAN_ALBUM_NAME#"Playlist - "}
+    CLEAN_ALBUM_NAME=${CLEAN_ALBUM_NAME#"Single - "}
+    CLEAN_ALBUM_NAME=${CLEAN_ALBUM_NAME#"EP - "}
+    
+    # Replace filesystem-unsafe characters for directory names
+    CLEAN_ALBUM_NAME=${CLEAN_ALBUM_NAME//\//-}  # Replace / with -
     
     # Find album cover (largest jpg)
     ALBUM_COVER=$(find "$ALBUM_DIR" -name "*.jpg" -type f -exec ls -S {} + | head -1)
@@ -134,7 +144,8 @@ if [ "$IS_PLAYLIST" = true ]; then
         # Get total track count for proper numbering
         TOTAL_TRACKS=$(find "$ALBUM_DIR" -name "*.mp3" | wc -l | tr -d ' ')
         
-        for mp3 in "$ALBUM_DIR"/*.mp3; do
+        # Process MP3 files with proper Unicode handling
+        while IFS= read -r -d '' mp3; do
             if [ -f "$mp3" ]; then
                 echo -e "   ${YELLOW}Processing: $(basename "$mp3")${NC}"
                 
@@ -143,34 +154,37 @@ if [ "$IS_PLAYLIST" = true ]; then
                 
                 # Use eyeD3 to embed cover art and ensure track number is set
                 if [ -n "$TRACK_NUM" ]; then
-                    eyeD3 --add-image="$ALBUM_COVER:FRONT_COVER" \
-                          --track="$TRACK_NUM" \
-                          --track-total="$TOTAL_TRACKS" \
-                          --album="$ALBUM_NAME" \
-                          --preserve-file-times \
-                          "$mp3" &>/dev/null
+                    if eyeD3 --add-image="$ALBUM_COVER:FRONT_COVER" \
+                             --track="$TRACK_NUM" \
+                             --track-total="$TOTAL_TRACKS" \
+                             --album="$CLEAN_ALBUM_NAME" \
+                             --preserve-file-times \
+                             "$mp3" &>/dev/null; then
+                        echo -e "   ${GREEN}✓ Updated metadata and artwork${NC}"
+                    else
+                        echo -e "   ${YELLOW}⚠️  Warning: Failed to update metadata for $(basename "$mp3")${NC}"
+                    fi
                 else
-                    eyeD3 --add-image="$ALBUM_COVER:FRONT_COVER" \
-                          --album="$ALBUM_NAME" \
-                          --preserve-file-times \
-                          "$mp3" &>/dev/null
-                fi
-                
-                if [ $? -eq 0 ]; then
-                    echo -e "   ${GREEN}✓ Updated metadata and artwork${NC}"
-                else
-                    echo -e "   ${YELLOW}⚠️  Warning: Failed to update metadata for $(basename "$mp3")${NC}"
+                    if eyeD3 --add-image="$ALBUM_COVER:FRONT_COVER" \
+                             --album="$CLEAN_ALBUM_NAME" \
+                             --preserve-file-times \
+                             "$mp3" &>/dev/null; then
+                        echo -e "   ${GREEN}✓ Updated metadata and artwork${NC}"
+                    else
+                        echo -e "   ${YELLOW}⚠️  Warning: Failed to update metadata for $(basename "$mp3")${NC}"
+                    fi
                 fi
             fi
-        done
+        done < <(find "$ALBUM_DIR" -maxdepth 1 -name "*.mp3" -type f -print0)
     fi
     
     # Create destination and move files
-    FINAL_DIR="$INBOX_DIR/$ALBUM_NAME"
+    FINAL_DIR="$INBOX_DIR/$CLEAN_ALBUM_NAME"
     mkdir -p "$FINAL_DIR"
     
     echo -e "${BLUE}📦 Moving to: $FINAL_DIR${NC}"
-    mv "$ALBUM_DIR"/*.mp3 "$FINAL_DIR/"
+    # Move all MP3 files using find to handle spaces properly
+    find "$ALBUM_DIR" -maxdepth 1 -name "*.mp3" -type f -exec mv {} "$FINAL_DIR/" \;
     
     # Keep album cover
     if [ -n "$ALBUM_COVER" ]; then
