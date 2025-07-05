@@ -37,6 +37,9 @@ get_metadata() {
         metadata=$(eyeD3 "$file" 2>/dev/null | grep -E "artist:|album:|title:|genre:" | sed 's/^[[:space:]]*//')
     fi
     
+    # Sanitize filesystem-unsafe characters in metadata to match actual directory names
+    metadata=$(echo "$metadata" | sed 's|/|-|g')
+    
     # Always include filename for context
     if [ -n "$metadata" ]; then
         metadata="$metadata
@@ -90,10 +93,18 @@ Rules (in order of priority):
 - Look for existing folders that match the genre, style, or category
 - Consider existing folder hierarchies and subdirectories
 - Only suggest NEW folders when no existing folder is appropriate
-- For NEW folders, use format '<genre>/<artist>/<album>' when creating artist-specific albums
-- For NEW folders, use format '<genre>/<artist>' when creating artist collections
-- For NEW folders, use format 'Mixes/<genre>' for DJ mixes or compilations
-- Use 'Soundtracks/<name>' for movie/game soundtracks
+
+Multi-Artist Album Detection:
+- If album contains multiple different artists/composers (indicated by album title with multiple names, classical compilations, or \"Various Artists\"), use \"Various Artists\" as artist level
+- Examples: \"NEW:Classic/Various Artists/<album>\" for classical compilations, \"NEW:Soundtracks/Various Artists/<movie>\" for movie soundtracks
+- Look for existing \"Various Artists\" folders under appropriate genres
+
+For NEW folders:
+- Single artist albums: \"<genre>/<artist>/<album>\" 
+- Multi-artist albums: \"<genre>/Various Artists/<album>\"
+- Artist collections: \"<genre>/<artist>\"
+- DJ mixes/compilations: \"Mixes/<genre>\" or \"<genre>/Various Artists/<compilation>\"
+- Movie/game soundtracks: \"Soundtracks/<name>\" or \"Soundtracks/Various Artists/<name>\"
 - If uncertain, return 'SKIP'
 
 Output: Just the folder path or 'NEW:path' or 'SKIP', nothing else."
