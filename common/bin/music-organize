@@ -74,13 +74,19 @@ suggest_folder() {
     local existing_folders="$2"
     local filename="$3"
     
-    local prompt="You are organizing music files. Given the metadata and existing folder structure, suggest where this music should go.
+    # Extract artist name from metadata for web search
+    local artist_name=$(echo "$metadata" | grep "^artist:" | sed 's/^artist:[[:space:]]*//' | head -1)
+    
+    local prompt="You are organizing music files. First, search the web for information about the artist '$artist_name' to understand their musical genre, style, and discography (including album names). Then use this information along with the metadata and existing folder structure to suggest where this music should go.
 
-CRITICAL: Return ONLY ONE of these responses:
+CRITICAL OUTPUT FORMAT - Return EXACTLY ONE of these responses with NO additional text, explanations, or reasoning:
 1. An existing folder path (e.g., 'Artists/Pink Floyd' or 'Genres/Rock')
 2. A new folder suggestion prefixed with 'NEW:' (e.g., 'NEW:Artists/The Beatles')
 3. The word 'SKIP' if it should stay in Inbox
 
+DO NOT include explanations, reasoning, or additional text. Return ONLY the folder path or 'SKIP'.
+
+Artist to research: $artist_name
 Music file: $filename
 Metadata:
 $metadata
@@ -100,25 +106,26 @@ Multi-Artist Album Detection:
 - Look for existing \"Various Artists\" folders under appropriate genres
 
 For NEW folders:
-- Single artist albums: \"<genre>/<artist>/<album>\" 
+- Single artist albums: \"<genre>/<artist>/<album>\" (prefer full 3-level structure when album info is available)
 - Multi-artist albums: \"<genre>/Various Artists/<album>\"
-- Artist collections: \"<genre>/<artist>\"
+- Artist collections: \"<genre>/<artist>\" (only when album info unavailable)
 - DJ mixes/compilations: \"Mixes/<genre>\" or \"<genre>/Various Artists/<compilation>\"
 - Movie/game soundtracks: \"Soundtracks/<name>\" or \"Soundtracks/Various Artists/<name>\"
+- Use web search to verify correct album names when metadata shows album information
 - If uncertain, return 'SKIP'
 
 Output: Just the folder path or 'NEW:path' or 'SKIP', nothing else."
 
     local suggestion
     if command -v claude &>/dev/null; then
-        suggestion=$(claude --model claude-3-5-haiku-20241022 --print "$prompt" 2>&1)
+        suggestion=$(claude --model claude-sonnet-4-20250514 --print "$prompt" 2>&1)
     else
         # Use API call similar to repo script
         local json_payload
         json_payload=$(jq -n \
             --arg prompt "$prompt" \
             '{
-                model: "claude-3-5-haiku-20241022",
+                model: "claude-sonnet-4-20250514",
                 max_tokens: 100,
                 messages: [
                     {
@@ -138,8 +145,17 @@ Output: Just the folder path or 'NEW:path' or 'SKIP', nothing else."
         suggestion=$(echo "$response" | jq -r '.content[0].text' 2>/dev/null | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
     fi
     
-    # Clean up response
+    # Clean up response and extract just the folder path
     suggestion=$(echo "$suggestion" | tr -d '\n\r' | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
+    
+    # Extract folder suggestion from verbose AI response
+    # Look for patterns like "I recommend: Folder/Path" or "suggest: Folder/Path"
+    if [[ "$suggestion" =~ (recommend|suggest)[^:]*:[[:space:]]*([^[:space:]]+[^.,!]+) ]]; then
+        suggestion="${BASH_REMATCH[2]}"
+        # Clean up any trailing punctuation or text
+        suggestion=$(echo "$suggestion" | sed 's/[.,!].*$//' | sed 's/The reasoning.*$//' | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
+    fi
+    
     echo "$suggestion"
 }
 
