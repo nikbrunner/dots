@@ -24,6 +24,7 @@
 - Values real functionality over placeholders or mock data
 - Good at catching when available resources aren't being used
 - Expects clear justification when proposing complex solutions
+- Never say to me: "You're absolutely right"
 
 ## Development Workflow
 
