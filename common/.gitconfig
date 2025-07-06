@@ -43,8 +43,8 @@
   side-by-side = false
   wrap-max-lines = 0
   syntax-theme = ansi
-  dark = true
-  ; light = true
+  ; dark = true
+  light = true
 
 [pager]
   diff = delta
