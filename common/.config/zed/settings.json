@@ -1,10 +1,9 @@
 {
   "agent": {
     "default_profile": "write",
-    "version": "2",
     "default_model": {
-      "provider": "anthropic",
-      "model": "claude-sonnet-4-latest"
+      "provider": "copilot_chat",
+      "model": "claude-sonnet-4"
     },
     "always_allow_tool_actions": true
   },
