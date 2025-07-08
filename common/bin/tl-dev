@@ -3,13 +3,13 @@
 
 # TODO: start nvm use automatically if `.nvmrc` exists
 
-tmux split-window -v -p 25
+tmux split-window -v -p 25 -c "#{pane_current_path}"
 
-tmux split-window -h -p 66
-tmux split-window -h -p 50
+tmux split-window -h -p 66 -c "#{pane_current_path}"
+tmux split-window -h -p 50 -c "#{pane_current_path}"
 
 tmux select-pane -t 1
-tmux split-window -h -p 75
+tmux split-window -h -p 75 -c "#{pane_current_path}"
 
 # sleep 1
 tmux select-pane -t 1
