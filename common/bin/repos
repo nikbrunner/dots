@@ -280,12 +280,16 @@ open_repo() {
             tmux attach-session -t "$session_name"
         fi
     else
-        # Create new session
+        # Create new session and run tl-dev layout if available
         if [[ -n "$TMUX" ]]; then
             tmux new-session -d -s "$session_name" -c "$repo_path"
             tmux switch-client -t "$session_name"
+            # Run tl-dev layout if available
+            if command -v tl-dev &>/dev/null; then
+                tl-dev
+            fi
         else
-            tmux new-session -s "$session_name" -c "$repo_path"
+            tmux new-session -s "$session_name" -c "$repo_path" \; run-shell "tl-dev 2>/dev/null || true"
         fi
     fi
 }
