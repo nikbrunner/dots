@@ -222,3 +222,7 @@ else
     # Fallback prompt
     PS1='%F{cyan}%n@%m%f:%F{blue}%~%f%# '
 fi
+
+. "$HOME/.atuin/bin/env"
+
+eval "$(atuin init zsh)"

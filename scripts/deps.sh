@@ -28,6 +28,7 @@ declare -a REQUIRED_DEPS=(
     "ffmpeg:Media conversion and processing"
     "eyeD3:MP3 ID3 tag editor"
     "mpd:Music Player Daemon"
+    "atuin:Magical shell history"
 )
 
 # Detect operating system
@@ -141,6 +142,7 @@ get_package_name() {
                 zsh-syntax-highlighting) echo "zsh-syntax-highlighting" ;;
                 oh-my-posh) echo "oh-my-posh" ;;
                 gallery-dl) echo "gallery-dl" ;;
+                atuin) echo "atuin" ;;
                 *) echo "$dep" ;;
             esac
             ;;
@@ -166,6 +168,7 @@ get_package_name() {
                 zsh-syntax-highlighting) echo "zsh-syntax-highlighting" ;;
                 oh-my-posh) echo "oh-my-posh" ;;
                 gallery-dl) echo "gallery-dl" ;;
+                atuin) echo "atuin" ;;
                 *) echo "$dep" ;;
             esac
             ;;
