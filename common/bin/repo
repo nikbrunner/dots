@@ -747,6 +747,7 @@ generate_branch_name() {
 CRITICAL: Return ONLY the branch name. No explanations, no analysis, no additional text. Just the branch name and nothing else.
 
 Requirements:
+- The branch name must be in english and lowercase letters, numbers, hyphens only
 - Lowercase letters, numbers, hyphens only
 - Under 50 characters
 - Include issue numbers (BCD-1234) as prefix if present
@@ -963,7 +964,7 @@ show_help() {
     local lazygit_status="$(command -v lazygit &>/dev/null && echo "✓" || echo "◦")"
     local claude_status="$(has_claude_code && echo "✓" || echo "◦")"
     local api_key_status="$([ -n "${ANTHROPIC_API_KEY:-}" ] && echo "✓" || echo "◦")"
-    
+
     # Color functions using gum when available, fallback to ANSI
     style_header() {
         if command -v gum >/dev/null 2>&1; then
@@ -972,7 +973,7 @@ show_help() {
             echo -e "\033[1;34m$1\033[0m"
         fi
     }
-    
+
     style_command() {
         if command -v gum >/dev/null 2>&1; then
             gum style --foreground=2 "$1"
@@ -980,7 +981,7 @@ show_help() {
             echo -e "\033[32m$1\033[0m"
         fi
     }
-    
+
     style_option() {
         if command -v gum >/dev/null 2>&1; then
             gum style --foreground=3 "$1"
@@ -988,7 +989,7 @@ show_help() {
             echo -e "\033[33m$1\033[0m"
         fi
     }
-    
+
     style_path() {
         if command -v gum >/dev/null 2>&1; then
             gum style --foreground=6 "$1"
@@ -996,7 +997,7 @@ show_help() {
             echo -e "\033[36m$1\033[0m"
         fi
     }
-    
+
     style_accent() {
         if command -v gum >/dev/null 2>&1; then
             gum style --foreground=5 "$1"
@@ -1004,7 +1005,7 @@ show_help() {
             echo -e "\033[35m$1\033[0m"
         fi
     }
-    
+
     echo " ╭────────────────────────────────────────╮ "
     echo " │                                        │ "
     echo " │  repo - AI-powered repository ops      │ "
@@ -1012,7 +1013,7 @@ show_help() {
     echo " ╰────────────────────────────────────────╯ "
     echo "                                            "
     echo ""
-    
+
     style_header "Usage: repo <command> [options]"
     echo ""
     style_header "Commands:"
@@ -1086,4 +1087,3 @@ help | --help | -h | "")
     exit 1
     ;;
 esac
-
