@@ -2,7 +2,7 @@
 # ghostty +list-themes
 # vim: colorcolumn=35
 
-theme = dark:black-atom-jpn-koyo-yoru.conf,light:black-atom-jpn-koyo-hiru.conf
+theme = dark:black-atom-crbn-null.conf,light:black-atom-crbn-supr.conf
 
 # custom-shader                      = ./shaders/crt-shader.glsl
 # custom-shader                      = ./shaders/bloom015.glsl
@@ -16,6 +16,7 @@ theme = dark:black-atom-jpn-koyo-yoru.conf,light:black-atom-jpn-koyo-hiru.conf
 
 # font-family                      = JetBrainsMono Nerd Font
 font-family                      = TX-02
+# font-family                      = BlexMono Nerd Font
 # font-family                      = SF Mono
 # font-family                      = Maple Mono NF
 # font-family                      = Menlo
@@ -25,7 +26,7 @@ font-family                      = TX-02
 # font-family                      = RecMonoCasual Nerd Font
 # font-family                      = RecMonoDuotone Nerd Font
 
-font-size                         = 16
+font-size                         = 12
 # font-thicken = true
 adjust-cell-height                = 25%
 window-padding-x                  = 20
