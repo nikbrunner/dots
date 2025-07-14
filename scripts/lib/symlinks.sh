@@ -235,7 +235,7 @@ cleanup_broken_symlinks() {
     for search_dir in "$HOME/.config" "$HOME/bin" "$HOME/Library" "$HOME"; do
         [[ ! -d "$search_dir" ]] && continue
         
-        find "$search_dir" -maxdepth 2 -type l 2>/dev/null | while read -r symlink; do
+        find "$search_dir" -maxdepth 3 -type l 2>/dev/null | while read -r symlink; do
             if [[ -L "$symlink" ]]; then
                 target_path=$(readlink "$symlink")
                 # Check if it points to our dots directory and is broken
