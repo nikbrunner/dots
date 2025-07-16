@@ -35,14 +35,7 @@
           "style": "plain",
           "foreground": "red",
           "template": " \uf00d"
-        }
-      ],
-      "type": "prompt"
-    },
-    {
-      "alignment": "right",
-      "overflow": "hide",
-      "segments": [
+        },
         {
           "type": "node",
           "style": "plain",
