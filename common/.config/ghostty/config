@@ -14,17 +14,7 @@ theme = dark:black-atom-term-dark.conf,light:black-atom-term-light.conf
 # background-opacity                 = 0.9
 # background-blur                    = 65
 
-# font-family                      = JetBrainsMono Nerd Font
-font-family                      = TX-02
-# font-family                      = BlexMono Nerd Font
-# font-family                      = SF Mono
-# font-family                      = Maple Mono NF
-# font-family                      = Menlo
-# font-family                      = ComicCodeLigatures Nerd Font
-# font-family                      = ComicShannsMono Nerd Font
-# font-family                      = FiraCode Nerd Font
-# font-family                      = RecMonoCasual Nerd Font
-# font-family                      = RecMonoDuotone Nerd Font
+font-family = BlexMono Nerd Font
 
 font-size                         = 12
 # font-thicken = true
