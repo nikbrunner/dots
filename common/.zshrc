@@ -127,17 +127,7 @@ function yy() {
 
 # fzf ====================================================================
 export FZF_DEFAULT_COMMAND='rg --files --hidden --follow --no-ignore-vcs'
-export FZF_DEFAULT_OPTS=" --bind 'ctrl-e:execute(echo {+} | xargs -o nvim)' "
-export FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS \
-  --highlight-line \
-  --prompt='  ' \
-  --ansi \
-  --border \
-  --layout=reverse \
-  --no-scrollbar \
-  --color=16 \
-  --color=gutter:-1 \
-"
+export FZF_DEFAULT_OPTS_FILE="$HOME/.config/fzf/fzfrc"
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

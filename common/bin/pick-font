@@ -10,15 +10,15 @@ FONTS_JSON="$HOME/fonts.json"
 
 # Get current active font
 get_current_font() {
-    grep "^font-family" "$GHOSTTY_CONFIG" | \
-    sed 's/^font-family[[:space:]]*=[[:space:]]*//' | \
-    xargs
+    grep "^font-family" "$GHOSTTY_CONFIG" |
+        sed 's/^font-family[[:space:]]*=[[:space:]]*//' |
+        xargs
 }
 
 # Update the config with the selected font
 update_font() {
     local selected_font="$1"
-    
+
     # Use sed to replace the font-family value
     sed -i '' "s/^font-family[[:space:]]*=.*/font-family = ${selected_font}/" "$GHOSTTY_CONFIG"
 }
@@ -29,51 +29,43 @@ main() {
         echo "Error: Ghostty config not found at $GHOSTTY_CONFIG"
         exit 1
     fi
-    
+
     if [[ ! -f "$FONTS_JSON" ]]; then
         echo "Error: Fonts JSON not found at $FONTS_JSON"
         exit 1
     fi
-    
+
     # Check if fzf is available
-    if ! command -v fzf &> /dev/null; then
+    if ! command -v fzf &>/dev/null; then
         echo "Error: fzf is required but not installed"
         exit 1
     fi
-    
+
     # Check if jq is available
-    if ! command -v jq &> /dev/null; then
+    if ! command -v jq &>/dev/null; then
         echo "Error: jq is required but not installed"
         exit 1
     fi
-    
+
     # Get available fonts from JSON
     fonts=$(jq -r '.[]' "$FONTS_JSON")
     current_font=$(get_current_font)
-    
+
     if [[ -z "$fonts" ]]; then
         echo "No fonts found in $FONTS_JSON"
         exit 1
     fi
-    
+
     # Show current font
     echo "Current font: $current_font"
     echo
-    
-    # Use fzf to select font with styled appearance
+
+    # Use fzf to select fon
     selected_font=$(echo "$fonts" | fzf \
-        --reverse \
-        --no-separator \
-        --no-info \
-        --no-scrollbar \
-        --border=bold \
         --border-label="┃ pick-font ┃" \
-        --border-label-pos=3 \
         --prompt="Select font: " \
-        --padding="1,5" \
-        --color="fg:white,fg+:yellow,bg+:-1,gutter:-1,hl+:magenta,border:yellow,prompt:cyan,pointer:yellow,marker:cyan,spinner:green,header:blue,label:yellow,query:magenta" \
         --header="Current: $current_font")
-    
+
     if [[ -n "$selected_font" ]]; then
         if [[ "$selected_font" == "$current_font" ]]; then
             echo "Font unchanged: $selected_font"
@@ -88,3 +80,4 @@ main() {
 }
 
 main "$@"
+

@@ -107,24 +107,16 @@ get_session_name() {
     echo "$1" | tr '/:.' '-'
 }
 
-# Styled fzf wrapper with consistent configuration
+# Set FZF config file path
+export FZF_DEFAULT_OPTS_FILE="$HOME/.config/fzf/fzfrc"
+
+# Styled fzf wrapper (styling via FZF_DEFAULT_OPTS)
 styled_fzf() {
     local prompt="${1:-Select: }"
     local preview_cmd="${2:-}"
     local additional_args=("${@:3}")
 
-    local fzf_args=(
-        --reverse
-        --no-separator
-        --no-info
-        --no-scrollbar
-        --border=bold
-        --border-label="┃ repos ┃"
-        --border-label-pos=3
-        --prompt="$prompt"
-        --padding="1,5"
-        --color="fg:white,fg+:yellow,bg+:-1,gutter:-1,hl+:magenta,border:yellow,prompt:cyan,pointer:yellow,marker:cyan,spinner:green,header:blue,label:yellow,query:magenta"
-    )
+    local fzf_args=(--border-label="┃ repos ┃" --prompt="$prompt")
 
     # Add preview if provided
     if [[ -n "$preview_cmd" ]]; then
