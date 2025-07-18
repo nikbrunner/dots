@@ -77,44 +77,6 @@ alias :q=exit
 alias start="tmux new -s dots -c ~/.config/nvim && rr"
 alias scratch="$EDITOR $HOME/scratchpad.md"
 
-function select_npm_script() {
-  local color_scheme="fg:white,fg+:yellow,bg+:-1,gutter:-1,hl+:magenta,border:yellow,prompt:cyan,pointer:yellow,marker:cyan,spinner:green,header:blue,label:yellow,query:magenta"
-
-  local fzf_output=$(
-    {
-      fc -ln 1 | grep "npm run" | sed 's/^/  /'
-      [ -f package.json ] && jq -r '.scripts | keys | .[]' package.json | sed 's/^/  /'
-    } | awk '!seen[$0]++' |
-    fzf --reverse \
-        --no-separator \
-        --no-info \
-        --no-scrollbar \
-        --border=bold \
-        --border-label="┃ npm scripts ┃" \
-        --border-label-pos=3 \
-        --prompt="❯ " \
-        --padding="1,5" \
-        --height=65% \
-        --color="$color_scheme" \
-        --header='Select an npm script:' \
-        --expect=alt-enter \
-        --bind 'alt-enter:accept' |
-    sed 's/^[^ ]*  //'
-  )
-
-  local lines=("${(@f)fzf_output}")
-
-  if [[ "${lines[1]}" == "alt-enter" ]]; then
-    LBUFFER="${LBUFFER}npm run ${lines[2]} "
-  else
-    LBUFFER="${LBUFFER}${lines[1]} "
-  fi
-
-  zle reset-prompt
-}
-
-zle -N select_npm_script
-bindkey '^N' select_npm_script
 
 # Yazi ==================================================================
 function yy() {
