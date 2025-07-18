@@ -59,6 +59,7 @@ export BAT_THEME="base16"
 
 # Aliases ================================================================
 alias vim="nvim"
+alias edit="nvim"
 alias ls="eza --all --oneline --long --icons --sort=type"
 alias lt="eza --all --tree --icons --sort=type --level=1 --ignore-glob=\"node_modules|.git\""
 alias lg="lazygit"
