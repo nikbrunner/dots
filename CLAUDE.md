@@ -152,26 +152,14 @@ Use `dots test` for overall system health checks and `dots link --dry-run` for d
 - **Linux Compatibility**: Enhanced cross-platform support with OS detection and package manager abstraction
 - **Simplified Architecture**: Removed JSON mapping system in favor of direct directory traversal (~60% code reduction)
 - **Enhanced Testing**: `dots test` includes shellcheck linting for script quality
-- **Submodule Integration**: Submodules are now added directly to their target locations (e.g., `common/.config/nvim`)
+- **Regular Files**: nvim and wezterm configurations are now regular files in the repository (no longer submodules)
 
-## Submodules
+## Configuration Files
 
-Submodules are added directly to their target configuration locations. To add a submodule:
+All configuration files are now stored directly in the repository:
 
-```bash
-dots sub-add https://github.com/nikbrunner/nbr.nvim common/.config/nvim
-```
-
-Current submodules:
-
-- `common/.config/nvim` - Neovim configuration (https://github.com/nikbrunner/nbr.nvim)
-
-Future submodules:
-
-- `common/.config/wezterm` - WezTerm configuration
-
-Regular configuration files (NOT submodules):
-
+- `common/.config/nvim/` - Neovim configuration
+- `common/.config/wezterm/` - WezTerm configuration  
 - `common/.config/zed/` - Zed editor configuration
 
 ## Memories
