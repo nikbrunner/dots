@@ -163,13 +163,14 @@ return {
                         },
                     },
                 },
-                column = {
+                float = {
                     preview = "main",
                     layout = {
                         position = "float",
                         width = 60,
+                        col = 0.15,
                         min_width = 60,
-                        height = 0.80,
+                        height = 0.85,
                         min_height = 25,
                         box = "vertical",
                         border = "solid",
@@ -273,12 +274,12 @@ return {
                     replace_netrw = true,
                     git_status = true,
                     jump = {
-                        close = false,
+                        close = true,
                     },
                     hidden = true,
                     ignored = true,
                     layout = {
-                        preset = "sidebar",
+                        preset = "float",
                         preview = {
                             main = true,
                             enabled = false,
@@ -289,6 +290,7 @@ return {
                             keys = {
                                 ["]c"] = "explorer_git_next",
                                 ["[c"] = "explorer_git_prev",
+                                ["<c-t>"] = { "tab", mode = { "n", "i" } },
                             },
                         },
                     },
@@ -561,7 +563,7 @@ return {
             { "<leader>.",           function() Snacks.picker.resume() end, desc = "Resume Picker" },
             { "<leader>:",           function() Snacks.picker.command_history() end, desc = "Command History" },
             { "<leader>'",           function() Snacks.picker.registers() end, desc = "Registers" },
-            { "<C-/>",               function() Snacks.terminal() end, desc = "Toggle Terminal" },
+            { "<C-_>",               function() Snacks.terminal() end, desc = "Toggle Terminal" },
             { "]]",                  function() Snacks.words.jump(vim.v.count1) end, desc = "Next Reference" },
             { "[[",                  function() Snacks.words.jump(-vim.v.count1) end, desc = "Prev Reference" },
             { "<F6>",                function() Snacks.dashboard.open() end, desc = "Dashboard" },

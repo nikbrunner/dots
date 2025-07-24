@@ -54,21 +54,21 @@ function M.custom_jump(jumpCount, severity)
         float = false,
     })
 
-    M.set_diagnostic_virtual_lines()
+    -- M.set_diagnostic_virtual_lines()
     vim.cmd("norm zz")
-    -- vim.diagnostic.open_float(nil, { focusable = true, source = "if_many" })
-    local auto_group = vim.api.nvim_create_augroup(auto_group_name, { clear = true })
+    vim.diagnostic.open_float(nil, { focusable = true, source = "if_many" })
+    -- local auto_group = vim.api.nvim_create_augroup(auto_group_name, { clear = true })
 
-    vim.defer_fn(function() -- deferred to not trigger by jump itself
-        vim.api.nvim_create_autocmd("CursorMoved", {
-            once = true,
-            desc = "User(once): Reset diagnostics virtual lines",
-            group = auto_group,
-            callback = function()
-                M.set_diagnostic_virtual_text()
-            end,
-        })
-    end, 1)
+    -- vim.defer_fn(function() -- deferred to not trigger by jump itself
+    --     vim.api.nvim_create_autocmd("CursorMoved", {
+    --         once = true,
+    --         desc = "User(once): Reset diagnostics virtual lines",
+    --         group = auto_group,
+    --         callback = function()
+    --             M.set_diagnostic_virtual_text()
+    --         end,
+    --     })
+    -- end, 1)
 end
 
 -- =============================================================================
@@ -289,19 +289,19 @@ vim.api.nvim_create_autocmd("LspAttach", {
 
         -- LSP Diagnostics
         -- M.map("n", "sp", vim.diagnostic.open_float, o({ desc = "[P]roblems (Float)" }))
-        M.map("n", "sp", function()
-            M.set_diagnostic_virtual_lines()
-
-            vim.api.nvim_create_autocmd("CursorMoved", {
-                group = vim.api.nvim_create_augroup("symbol-problems", {}),
-                desc = "User(once): Reset diagnostics virtual lines",
-                once = true,
-                callback = function()
-                    M.set_diagnostic_virtual_text()
-                    return true
-                end,
-            })
-        end, o({ desc = "[P]roblems (Inline)" }))
+        -- M.map("n", "sp", function()
+        --     M.set_diagnostic_virtual_lines()
+        --
+        --     vim.api.nvim_create_autocmd("CursorMoved", {
+        --         group = vim.api.nvim_create_augroup("symbol-problems", {}),
+        --         desc = "User(once): Reset diagnostics virtual lines",
+        --         once = true,
+        --         callback = function()
+        --             M.set_diagnostic_virtual_text()
+        --             return true
+        --         end,
+        --     })
+        -- end, o({ desc = "[P]roblems (Inline)" }))
 
         -- vim.api.nvim_create_autocmd("CursorHold", {
         --     group = vim.api.nvim_create_augroup("cursor-hold-diagnostics", {}),
