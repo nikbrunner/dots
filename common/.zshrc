@@ -60,6 +60,7 @@ export BAT_THEME="base16"
 # Aliases ================================================================
 alias vim="nvim"
 alias edit="nvim"
+alias e="nvim"
 alias ls="eza --all --oneline --long --icons --sort=type"
 alias lt="eza --all --tree --icons --sort=type --level=1 --ignore-glob=\"node_modules|.git\""
 alias lg="lazygit"
@@ -168,14 +169,8 @@ esac
 bindkey '^y' autosuggest-accept
 ZSH_AUTOSUGGEST_STRATEGY=(history completion)
 
-# Oh My Posh prompt (if available)
-if command -v oh-my-posh &> /dev/null; then
-    eval "$(oh-my-posh init zsh --config ~/.config/oh-my-posh/nbr.omp.json)"
-else
-    # Fallback prompt
-    PS1='%F{cyan}%n@%m%f:%F{blue}%~%f%# '
-fi
-
 . "$HOME/.atuin/bin/env"
 
 eval "$(atuin init zsh)"
+
+eval "$(starship init zsh)"
