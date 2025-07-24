@@ -54,6 +54,9 @@ echo ""
 # Get current OS
 CURRENT_OS=$(get_os)
 
+# Initialize manifest tracking
+init_manifest "$DOTS_DIR"
+
 # Clean up broken symlinks BEFORE creating new ones
 echo -e "${YELLOW}→${NC} Cleaning broken symlinks..."
 
@@ -115,4 +118,12 @@ elif [[ "$CURRENT_OS" == "linux" && -d "$DOTS_DIR/linux" ]]; then
 fi
 
 echo ""
+
+# Save manifest file
+if [[ "$DRY_RUN" != true ]]; then
+	echo -e "${YELLOW}→${NC} Saving manifest..."
+	save_manifest
+	echo -e "${GREEN}✓${NC} Manifest saved to .dots-manifest.json"
+fi
+
 echo "Symlink setup complete!"

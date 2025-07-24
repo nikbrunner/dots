@@ -8,6 +8,44 @@ GREEN='\033[0;32m'
 YELLOW='\033[0;33m'
 NC='\033[0m' # No Color
 
+# Global manifest tracking
+MANIFEST_DATA=""
+MANIFEST_FILE=""
+
+# Initialize manifest tracking
+init_manifest() {
+    local dots_dir="$1"
+    MANIFEST_FILE="$dots_dir/.dots-manifest.json"
+    MANIFEST_DATA="{}"
+}
+
+# Add symlink to manifest
+add_to_manifest() {
+    local symlink="$1"
+    local target="$2"
+    local escaped_symlink=$(printf '%s\n' "$symlink" | sed 's/[[\.*^$(){}?+|]/\\&/g')
+    local escaped_target=$(printf '%s\n' "$target" | sed 's/[[\.*^$(){}?+|]/\\&/g')
+    
+    # Use jq if available, otherwise build JSON manually
+    if command -v jq &> /dev/null; then
+        MANIFEST_DATA=$(echo "$MANIFEST_DATA" | jq --arg link "$symlink" --arg target "$target" '. + {($link): $target}')
+    else
+        # Simple JSON building (not ideal for complex strings but should work for paths)
+        if [[ "$MANIFEST_DATA" == "{}" ]]; then
+            MANIFEST_DATA="{\"$symlink\":\"$target\"}"
+        else
+            MANIFEST_DATA="${MANIFEST_DATA%}},\"$symlink\":\"$target\"}"
+        fi
+    fi
+}
+
+# Save manifest to file
+save_manifest() {
+    if [[ -n "$MANIFEST_FILE" ]] && [[ -n "$MANIFEST_DATA" ]]; then
+        echo "$MANIFEST_DATA" > "$MANIFEST_FILE"
+    fi
+}
+
 # Function to process files and check/create symlinks
 # Usage: process_symlinks <source_dir> <target_base> <mode> [options...]
 # Modes: "check" (status only), "create" (create/update symlinks)
@@ -148,6 +186,8 @@ process_symlinks() {
                         [[ "$debug" == true ]] && echo "[DEBUG] Match! Incrementing valid_links"
                         valid_links=$((valid_links + 1))
                         [[ "$verbose" == true ]] && echo -e "${GREEN}✓${NC} [DRY] Symlink OK: $target → $file"
+                        # Add to manifest (even in dry-run, to show what would be tracked)
+                        add_to_manifest "$target" "$file"
                     else
                         [[ "$debug" == true ]] && echo "[DEBUG] No match. Incrementing wrong_target_links"
                         wrong_target_links=$((wrong_target_links + 1))
@@ -166,6 +206,8 @@ process_symlinks() {
                 else
                     created_links=$((created_links + 1))
                     [[ "$verbose" == true ]] && echo -e "${GREEN}+${NC} [DRY] Would create symlink: $target → $file"
+                    # Add to manifest (even in dry-run, to show what would be tracked)
+                    add_to_manifest "$target" "$file"
                 fi
             else
                 # Create parent directory if it doesn't exist
@@ -178,12 +220,16 @@ process_symlinks() {
                     if [[ "$actual_target" == "$file" ]]; then
                         valid_links=$((valid_links + 1))
                         [[ "$verbose" == true ]] && echo -e "${GREEN}✓${NC} Symlink OK: $target"
+                        # Add to manifest
+                        add_to_manifest "$target" "$file"
                     else
                         updated_links=$((updated_links + 1))
                         [[ "$verbose" == true ]] && echo -e "${YELLOW}⚠${NC} Updating symlink: $target"
                         rm "$target"
                         ln -s "$file" "$target"
                         [[ "$verbose" == true ]] && echo -e "${GREEN}✓${NC} Updated symlink: $target"
+                        # Add to manifest
+                        add_to_manifest "$target" "$file"
                     fi
                 elif [[ -e "$target" ]]; then
                     # Target exists but is not a symlink
@@ -197,11 +243,15 @@ process_symlinks() {
                     fi
                     ln -s "$file" "$target"
                     [[ "$verbose" == true ]] && echo -e "${GREEN}✓${NC} Created symlink: $target"
+                    # Add to manifest
+                    add_to_manifest "$target" "$file"
                 else
                     # Target doesn't exist
                     created_links=$((created_links + 1))
                     ln -s "$file" "$target"
                     [[ "$verbose" == true ]] && echo -e "${GREEN}✓${NC} Created symlink: $target"
+                    # Add to manifest
+                    add_to_manifest "$target" "$file"
                 fi
             fi
         fi
@@ -220,7 +270,7 @@ process_symlinks() {
     STATS_REPLACED=$replaced_links
 }
 
-# Function to clean up broken symlinks
+# Function to clean up broken symlinks using manifest
 # Usage: cleanup_broken_symlinks <dots_dir> <dry_run> <verbose>
 cleanup_broken_symlinks() {
     local dots_dir="$1"
@@ -228,40 +278,68 @@ cleanup_broken_symlinks() {
     local verbose="${3:-false}"
     
     local broken_count=0
-    local temp_broken_links="/tmp/dots_broken_links_$$"
-    true > "$temp_broken_links"
+    local manifest_file="$dots_dir/.dots-manifest.json"
     
-    # Search in common directories for symlinks pointing to dots directory
-    for search_dir in "$HOME/.config" "$HOME/bin" "$HOME/Library" "$HOME"; do
-        [[ ! -d "$search_dir" ]] && continue
-        
-        find "$search_dir" -maxdepth 3 -type l 2>/dev/null | while read -r symlink; do
-            if [[ -L "$symlink" ]]; then
-                target_path=$(readlink "$symlink")
-                # Check if it points to our dots directory and is broken
-                if [[ "$target_path" == "$dots_dir"* ]] && [[ ! -e "$target_path" ]]; then
-                    echo "$symlink" >> "$temp_broken_links"
-                fi
-            fi
-        done
-    done
+    # Check if manifest exists
+    if [[ ! -f "$manifest_file" ]]; then
+        [[ "$verbose" == true ]] && echo "  No manifest file found, skipping cleanup"
+        CLEANUP_BROKEN_COUNT=0
+        return
+    fi
     
-    # Process the broken symlinks (remove duplicates)
-    if [[ -s "$temp_broken_links" ]]; then
-        while IFS= read -r symlink; do
-            if [[ -L "$symlink" ]]; then # Double-check it's still a symlink
+    # Read manifest and check each symlink
+    local temp_manifest
+    temp_manifest=$(mktemp)
+    
+    # Use jq if available, otherwise use python
+    if command -v jq &> /dev/null; then
+        jq -r 'to_entries | .[] | "\(.key)|\(.value)"' "$manifest_file" > "$temp_manifest"
+    elif command -v python3 &> /dev/null; then
+        python3 -c "
+import json
+with open('$manifest_file') as f:
+    data = json.load(f)
+    for link, target in data.items():
+        print(f'{link}|{target}')
+" > "$temp_manifest"
+    else
+        echo "Warning: Neither jq nor python3 found. Cannot read manifest."
+        CLEANUP_BROKEN_COUNT=0
+        return
+    fi
+    
+    # Check each symlink in manifest
+    while IFS='|' read -r symlink target; do
+        if [[ -L "$symlink" ]]; then
+            # Check if symlink points to expected target and target exists
+            local actual_target
+            actual_target=$(readlink "$symlink" 2>/dev/null)
+            
+            if [[ "$actual_target" != "$target" ]] || [[ ! -e "$target" ]]; then
+                # Symlink is broken or points to wrong target
                 if [[ "$dry_run" == true ]]; then
-                    [[ "$verbose" == true ]] && echo -e "${RED}✗${NC} [DRY] Would remove broken symlink: $symlink"
+                    if [[ ! -e "$target" ]]; then
+                        [[ "$verbose" == true ]] && echo -e "${RED}✗${NC} [DRY] Would remove orphaned symlink: $symlink"
+                    else
+                        [[ "$verbose" == true ]] && echo -e "${RED}✗${NC} [DRY] Would remove wrong symlink: $symlink"
+                    fi
                 else
-                    [[ "$verbose" == true ]] && echo -e "${RED}✗${NC} Removing broken symlink: $symlink"
+                    if [[ ! -e "$target" ]]; then
+                        [[ "$verbose" == true ]] && echo -e "${RED}✗${NC} Removing orphaned symlink: $symlink"
+                    else
+                        [[ "$verbose" == true ]] && echo -e "${RED}✗${NC} Removing wrong symlink: $symlink"
+                    fi
                     rm "$symlink"
                 fi
                 broken_count=$((broken_count + 1))
             fi
-        done < <(sort -u "$temp_broken_links")
-    fi
+        elif [[ -e "$symlink" ]]; then
+            # File exists but is not a symlink (user might have replaced it)
+            [[ "$verbose" == true ]] && echo -e "${YELLOW}⚠${NC} Not a symlink (in manifest): $symlink"
+        fi
+    done < "$temp_manifest"
     
-    rm -f "$temp_broken_links"
+    rm -f "$temp_manifest"
     
     # Return count via global variable
     CLEANUP_BROKEN_COUNT=$broken_count
