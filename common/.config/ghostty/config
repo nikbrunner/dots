@@ -14,7 +14,7 @@ theme = dark:black-atom-mnml-mono-dark.conf,light:black-atom-mnml-blue-light.con
 # background-opacity                 = 0.9
 # background-blur                    = 65
 
-font-family = RecMonoDuotone Nerd Font
+font-family = ComicCodeLigatures Nerd Font
 
 font-size                         = 16
 # font-thicken = true
