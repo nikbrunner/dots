@@ -56,7 +56,7 @@ return {
 
                 -- [W]orkspace
                 { "<leader>w", group = "[W]orkspace", icon = "󰲃 " },
-                { "<leader>wg", icon = " " },
+                { "<leader>wg", group = "[G]it", icon = " " },
                 { "<leader>wv", group = "[V]ersion Control", icon = "󰋚 " },
                 { "<leader>wS", group = "[S]ession", icon = " " },
 

@@ -591,8 +591,9 @@ return {
 
             -- Workspace
             { "<leader>we",          M.explorer, desc = "[E]xplorer" },
-            { "<leader>wg",          function() Snacks.lazygit() end, desc = "[G]it" },
-            { "<leader>wl",          function() Snacks.lazygit.log() end, desc = "[G]it Log" },
+            { "<leader>wgg",          function() Snacks.lazygit() end, desc = "[G]raph" },
+            { "<leader>wgl",          function() Snacks.lazygit.log() end, desc = "[L]Log" },
+            { "<leader>wgb",         function() Snacks.picker.git_branches() end, desc = "[B]ranches" },
             { "<leader>wd",          function() Snacks.picker.smart() end, desc = "[D]ocument" },
             { "<C-e>",               function() Snacks.picker.smart({ filter = { cwd = true }}) end, desc = "[D]ocument" },
             { "<C-r>",               function() Snacks.picker.recent({ filter = { cwd = true }}) end, desc = "[R]ecent Documents" },
@@ -603,7 +604,6 @@ return {
             { "<leader>wc",          function() Snacks.picker.git_diff() end, desc = "[C]hanges" },
             { "<leader>wp",          function() Snacks.picker.diagnostics() end, desc = "[P]roblems" },
             { "<leader>ws",          function() Snacks.picker.lsp_workspace_symbols() end, desc = "[S]ymbols" },
-            { "<leader>wvb",         function() Snacks.picker.git_branches() end, desc = "[B]ranches" },
 
             -- TODO: <leader>dc [D]ocument [C]hanges -- git_diff but scope on current file
             -- Document
