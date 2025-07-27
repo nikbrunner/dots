@@ -15,8 +15,8 @@ M.config = {
     ---ghostty colors: https://ghostty.org/docs/reference/config
     colorscheme_config_map = {
         ["default"] = {
-            wezterm = "nvim_default_dark",
-            ghostty = "default.conf",
+            wezterm = "neovim",
+            ghostty = "neovim-dark.conf",
         },
 
         ["black-atom-jpn-koyo-yoru"] = {
@@ -30,27 +30,38 @@ M.config = {
 
         ["github_dark_default"] = {
             wezterm = "github_dark_default",
-            ghostty = "github-dark.conf",
+            ghostty = "GitHub-Dark-Default",
+        },
+        ["github_dark_dimmed"] = {
+            wezterm = "github_dark_dimmed",
+            ghostty = "GitHub-Dark-Dimmed",
+        },
+        ["github_light_default"] = {
+            wezterm = "Google Light (Gogh)",
+            ghostty = "GitHub-Light-Default",
         },
 
         ["catppuccin-mocha"] = {
             wezterm = "catppuccin-mocha",
-            ghostty = "catppuccin-mocha.conf",
+            ghostty = "catppuccin-mocha",
         },
 
         ["tokyonight-night"] = {
             wezterm = "Tokyo Night",
-            ghostty = "tokyonight-night.conf",
+            ghostty = "tokyonight_night",
         },
 
-        ["rose-pine"] = {
+        ["rose-pine-main"] = {
             wezterm = "rose-pine",
-            ghostty = "rose-pine.conf",
+            ghostty = "rose-pine",
         },
-
-        ["nord"] = {
-            wezterm = "nord",
-            ghostty = "nord.conf",
+        ["rose-pine-moon"] = {
+            wezterm = "rose-pine-moon",
+            ghostty = "rose-pine-moon",
+        },
+        ["rose-pine-dawn"] = {
+            wezterm = "rose-pine-dawn",
+            ghostty = "rose-pine-dawn",
         },
 
         -- Black Atom Stations themes
@@ -155,9 +166,6 @@ M.config = {
             ghostty = "black-atom-mnml-blue-light.conf",
         },
 
-        ["github_dark_dimmed"] = { wezterm = "github_dark_dimmed" },
-        ["github_light_default"] = { wezterm = "Google Light (Gogh)" },
-
         ["catppuccin"] = { wezterm = "catppuccin" },
         ["catppuccin-frappe"] = { wezterm = "catppuccin-frappe" },
         ["catppuccin-macchiato"] = { wezterm = "catppuccin-macchiato" },
@@ -166,10 +174,6 @@ M.config = {
         ["tokyonight-moon"] = { wezterm = "Tokyo Night Moon" },
         ["tokyonight-day"] = { wezterm = "Tokyo Night Day" },
         ["tokyonight-storm"] = { wezterm = "Tokyo Night Storm" },
-
-        ["rose-pine-main"] = { wezterm = "rose-pine" },
-        ["rose-pine-moon"] = { wezterm = "rose-pine-moon" },
-        ["rose-pine-dawn"] = { wezterm = "rose-pine-dawn" },
 
         ["kanso-zen"] = { wezterm = "kanso-zen" },
         ["kanso-ink"] = { wezterm = "kanso-ink" },
