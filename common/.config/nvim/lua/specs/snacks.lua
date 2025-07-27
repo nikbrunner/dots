@@ -410,7 +410,8 @@ return {
                         icon = "󰋚 ",
                         key = "<leader>wr",
                         desc = "[W]orkspace [R]ecent Document",
-                        action = ":lua require('fzf-lua').oldfiles({ cwd_only = true, prompt = 'Recent Files (CWD): '})",
+                        -- action = ":lua require('fzf-lua').oldfiles({ cwd_only = true, prompt = 'Recent Files (CWD): '})",
+                        action = ":lua Snacks.picker.recent({ filter = { cwd = true }})",
                     },
                     {
                         icon = " ",
@@ -563,7 +564,6 @@ return {
             { "<leader>.",           function() Snacks.picker.resume() end, desc = "Resume Picker" },
             { "<leader>:",           function() Snacks.picker.command_history() end, desc = "Command History" },
             { "<leader>'",           function() Snacks.picker.registers() end, desc = "Registers" },
-            { "<C-_>",               function() Snacks.terminal() end, desc = "Toggle Terminal" },
             { "]]",                  function() Snacks.words.jump(vim.v.count1) end, desc = "Next Reference" },
             { "[[",                  function() Snacks.words.jump(-vim.v.count1) end, desc = "Prev Reference" },
             { "<F6>",                function() Snacks.dashboard.open() end, desc = "Dashboard" },
