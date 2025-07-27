@@ -2,7 +2,7 @@
 # ghostty +list-themes
 # vim: colorcolumn=35
 
-theme = dark:black-atom-jpn-koyo-yoru.conf,light:black-atom-mnml-mono-light.conf
+theme = dark:black-atom-mnml-mono-dark.conf,light:black-atom-mnml-mono-light.conf
 
 # custom-shader                      = ./shaders/crt-shader.glsl
 # custom-shader                      = ./shaders/bloom015.glsl
