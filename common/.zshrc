@@ -173,4 +173,8 @@ ZSH_AUTOSUGGEST_STRATEGY=(history completion)
 
 eval "$(atuin init zsh)"
 
-eval "$(starship init zsh)"
+
+eval "$(oh-my-posh init zsh --config ~/.config/oh-my-posh/nbr.omp.json)"
+# eval "$(starship init zsh)"
+# PS1='%F{cyan}%n@%m%f:%F{blue}%~%f%# '
+
