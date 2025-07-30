@@ -253,21 +253,4 @@ return {
         },
     },
 
-    {
-        "OXY2DEV/markview.nvim",
-        lazy = false,
-        enabled = false,
-        dependencies = {
-            "saghen/blink.cmp",
-        },
-        opts = {
-            preview = {
-                enable = false,
-                icon_provider = "mini",
-            },
-        },
-        keys = {
-            { "<localleader>p", "<cmd>Markview toggle<cr>", desc = "Preview" },
-        },
-    },
 }
