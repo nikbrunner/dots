@@ -69,7 +69,7 @@ exmap unfoldall obcommand editor:unfold-all
 nmap zR :unfoldall<CR>
 
 " Workspace
-exmap findFiles obcommand obsidian-better-command-palette:open-better-commmand-palette-file-search
+exmap findFiles obcommand darlal-switcher-plus:switcher-plus:open
 nmap ,wd :findFiles<CR>
 
 exmap fileExplorer obcommand quick-explorer:browse-current

@@ -289,19 +289,19 @@ vim.api.nvim_create_autocmd("LspAttach", {
 
         -- LSP Diagnostics
         -- M.map("n", "sp", vim.diagnostic.open_float, o({ desc = "[P]roblems (Float)" }))
-        -- M.map("n", "sp", function()
-        --     M.set_diagnostic_virtual_lines()
-        --
-        --     vim.api.nvim_create_autocmd("CursorMoved", {
-        --         group = vim.api.nvim_create_augroup("symbol-problems", {}),
-        --         desc = "User(once): Reset diagnostics virtual lines",
-        --         once = true,
-        --         callback = function()
-        --             M.set_diagnostic_virtual_text()
-        --             return true
-        --         end,
-        --     })
-        -- end, o({ desc = "[P]roblems (Inline)" }))
+        M.map("n", "sp", function()
+            M.set_diagnostic_virtual_lines()
+
+            vim.api.nvim_create_autocmd("CursorMoved", {
+                group = vim.api.nvim_create_augroup("symbol-problems", {}),
+                desc = "User(once): Reset diagnostics virtual lines",
+                once = true,
+                callback = function()
+                    M.set_diagnostic_virtual_text()
+                    return true
+                end,
+            })
+        end, o({ desc = "[P]roblems (Inline)" }))
 
         -- vim.api.nvim_create_autocmd("CursorHold", {
         --     group = vim.api.nvim_create_augroup("cursor-hold-diagnostics", {}),
