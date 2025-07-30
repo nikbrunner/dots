@@ -390,6 +390,7 @@ return {
         ---@type snacks.dashboard.Config
         ---@diagnostic disable-next-line: missing-fields
         dashboard = {
+            enabled = false,
             preset = {
                 -- Defaults to a picker that supports `fzf-lua`, `telescope.nvim` and `mini.pick`
                 ---@type fun(cmd:string, opts:table)|nil
