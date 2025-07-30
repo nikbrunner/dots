@@ -3,10 +3,10 @@
 
 # TODO: start nvm use automatically if `.nvmrc` exists
 
-# tmux split-window -v -p 20 -c "#{pane_current_path}"
+tmux split-window -v -p 20 -c "#{pane_current_path}"
 
-# tmux split-window -h -p 66 -c "#{pane_current_path}"
-# tmux split-window -h -p 50 -c "#{pane_current_path}"
+tmux split-window -h -p 66 -c "#{pane_current_path}"
+tmux split-window -h -p 50 -c "#{pane_current_path}"
 
 tmux select-pane -t 1
 tmux split-window -h -p 80 -c "#{pane_current_path}"
@@ -14,7 +14,7 @@ tmux split-window -h -p 80 -c "#{pane_current_path}"
 # sleep 1
 tmux select-pane -t 1
 tmux send-keys "clear" Enter
-# tmux send-keys "claude" Enter
+tmux send-keys "claude" Enter
 
 # refocus nvim
 sleep 1

@@ -49,8 +49,8 @@
   ; minus-style = 'auto bold "#e74c3c"'
 
   # https://github.com/jesseduffield/lazygit/issues/4550
-  ; dark = true
-  light = true
+  dark = true
+  ; light = true
 
 [pager]
   diff = delta
