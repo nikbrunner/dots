@@ -1,6 +1,5 @@
 local Config = require("config")
 local UI = require("lib.ui")
-local ShaDa = require("shada")
 
 local auto = vim.api.nvim_create_autocmd
 
@@ -8,30 +7,10 @@ local function auto_group(name)
     return vim.api.nvim_create_augroup("nvim_" .. name, { clear = true })
 end
 
-auto("VimEnter", {
+auto({ "VimEnter", "ColorScheme" }, {
     group = auto_group("vim_enter"),
     callback = function()
-        ---@diagnostic disable-next-line: undefined-field
-        -- local background = vim.opt.background:get()
-        local background = ShaDa.read("background")
-        local colorscheme = ShaDa.read("colorscheme_" .. background)
-
-        -- Check if colorscheme is a string
-        if type(colorscheme) == "string" then
-            UI.handle_colors(Config, colorscheme, background)
-        end
-    end,
-})
---
-auto("ColorScheme", {
-    group = auto_group("colorscheme_sync"),
-    callback = function(args)
-        ---@diagnostic disable-next-line: undefined-field
-        local background = vim.opt.background:get()
-        local colorscheme = args.match
-
-        ShaDa.update("colorscheme_" .. background, colorscheme)
-        UI.handle_colors(Config, colorscheme, background)
+        UI.handle_colors(Config)
     end,
 })
 

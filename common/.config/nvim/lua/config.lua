@@ -2,13 +2,9 @@ local M = {}
 
 ---@class VinConfig
 M.config = {
-    ---@type boolean
-    dev_mode = false,
-    ---@type "dark" | "light"
-    background = "dark",
-    ---@type string
-    colorscheme_light = "black-atom-jpn-koyo-hiru",
-    ---@type string
+    dev_mode = true,
+    background = "light",
+    colorscheme_light = "black-atom-mnml-47-light",
     colorscheme_dark = "black-atom-jpn-koyo-yoru",
 
     ---see for wezterm themes: https://wezfurlong.org/wezterm/colorschemes/index.html
@@ -164,6 +160,10 @@ M.config = {
         ["black-atom-mnml-blue-light"] = {
             wezterm = "Black Atom — MNM ∷ Blue Light",
             ghostty = "black-atom-mnml-blue-light.conf",
+        },
+        ["black-atom-mnml-47-light"] = {
+            wezterm = "Black Atom — MNM ∷ 47 Light",
+            ghostty = "black-atom-mnml-47-light.conf",
         },
 
         ["catppuccin"] = { wezterm = "catppuccin" },

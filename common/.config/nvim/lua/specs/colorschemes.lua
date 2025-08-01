@@ -1,25 +1,5 @@
-local ShaDa = require("shada")
-
 ---@type LazyPluginSpec[]
 return {
-    {
-        "f-person/auto-dark-mode.nvim",
-        lazy = false,
-        priority = 10000,
-        opts = {
-            set_dark_mode = function()
-                vim.cmd.colorscheme(ShaDa.read("colorscheme_dark"))
-                ShaDa.update("background", "dark")
-            end,
-            set_light_mode = function()
-                vim.cmd.colorscheme(ShaDa.read("colorscheme_light"))
-                ShaDa.update("background", "light")
-            end,
-            fallback = ShaDa.read("background"),
-            update_interval = 25,
-        },
-    },
-
     {
         "black-atom-industries/nvim",
         name = "black-atom",
