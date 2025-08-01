@@ -314,7 +314,7 @@ return {
                 },
                 smart = {
                     layout = { preset = "flow" },
-                    -- multi = { "recent", "files" },
+                    multi = { "recent", "files" },
                 },
                 ---TODO: filter out empty file
                 ---@type snacks.picker.recent.Config
@@ -373,7 +373,7 @@ return {
 
         zen = {
             toggles = {
-                dim = true,
+                dim = false,
                 git_signs = false,
                 mini_diff_signs = false,
                 diagnostics = true,
@@ -386,83 +386,6 @@ return {
 
         ---@type snacks.words.Config
         words = { debounce = 100 },
-
-        ---@type snacks.dashboard.Config
-        ---@diagnostic disable-next-line: missing-fields
-        dashboard = {
-            enabled = false,
-            preset = {
-                -- Defaults to a picker that supports `fzf-lua`, `telescope.nvim` and `mini.pick`
-                ---@type fun(cmd:string, opts:table)|nil
-                pick = nil,
-                -- Used by the `keys` section to show keymaps.
-                -- Set your curstom keymaps here.
-                -- When using a function, the `items` argument are the default keymaps.
-                ---@type snacks.dashboard.Item[]
-                keys = {
-                    { icon = " ", key = "n", desc = "New Document", action = ":ene | startinsert" },
-                    {
-                        icon = " ",
-                        key = "<leader>wd",
-                        desc = "[W]orkspace [D]ocument",
-                        action = ":lua Snacks.dashboard.pick('files')",
-                    },
-                    {
-                        icon = "󰋚 ",
-                        key = "<leader>wr",
-                        desc = "[W]orkspace [R]ecent Document",
-                        -- action = ":lua require('fzf-lua').oldfiles({ cwd_only = true, prompt = 'Recent Files (CWD): '})",
-                        action = ":lua Snacks.picker.recent({ filter = { cwd = true }})",
-                    },
-                    {
-                        icon = " ",
-                        key = "<leader>wt",
-                        desc = "[W]orkspace [T]ext",
-                        action = ":lua Snacks.dashboard.pick('live_grep')",
-                    },
-                    {
-                        icon = " ",
-                        key = "<leader>as",
-                        desc = "[A]pplication [S]ettings",
-                        action = ":lua Snacks.dashboard.pick('files', {cwd = vim.fn.stdpath('config')})",
-                    },
-                    { icon = " ", key = "s", desc = "Restore Session", section = "session" },
-                    {
-                        icon = "󰒲 ",
-                        key = "<leader>ax",
-                        desc = "Application Extentions",
-                        action = ":Lazy",
-                        enabled = package.loaded.lazy ~= nil,
-                    },
-                    { icon = " ", key = "q", desc = "Quit", action = ":qa" },
-                },
-                header = [[
-                  ┓        •                                  
-                ┏┓┣┓┏┓ ┏┓┓┏┓┏┳┓                               
-                ┛┗┗┛┛ •┛┗┗┛┗┛┗┗                               
-                ]],
-            },
-
-            sections = {
-                { section = "header" },
-                { section = "keys", gap = 1, padding = 1 },
-                { pane = 2, icon = " ", title = "Recent Files", section = "recent_files", indent = 2, padding = 1 },
-                { pane = 2, icon = " ", title = "Projects", section = "projects", indent = 2, padding = 1 },
-                -- {
-                --     pane = 2,
-                --     icon = " ",
-                --     title = "Git Status",
-                --     section = "terminal",
-                --     enabled = vim.fn.isdirectory(".git") == 1,
-                --     cmd = "hub status --short --branch --renames",
-                --     height = 5,
-                --     padding = 1,
-                --     ttl = 5 * 60,
-                --     indent = 3,
-                -- },
-                { section = "startup" },
-            },
-        },
 
         terminal = {
             win = {

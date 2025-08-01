@@ -71,6 +71,7 @@ return {
 
                 -- [H]unk
                 { "<leader>c", group = "[C]hange", icon = " " },
+                { "<leader>s", group = "[S]ession", icon = " " },
 
                 -- [S]ymbol
                 { "s", group = "[S]ymbol", icon = " " },

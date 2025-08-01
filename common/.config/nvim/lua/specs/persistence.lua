@@ -7,10 +7,10 @@ return {
         local ps = require("persistence")
 
         return {
-            { "<leader>wSs", ps.select, desc = "Select session" },
-            { "<leader>wSl", ps.load, desc = "Load session" },
+            { "<leader>ss", ps.select, desc = "Select session" },
+            { "<leader>sl", ps.load, desc = "Load session" },
             {
-                "<leader>wSr",
+                "<leader>sr",
                 function()
                     ps.load({ last = true })
                 end,

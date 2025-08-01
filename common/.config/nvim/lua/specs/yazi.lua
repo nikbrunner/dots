@@ -25,7 +25,10 @@ return {
     ---@type YaziConfig
     opts = {
         yazi_floating_window_winblend = 10,
-        floating_window_scaling_factor = 0.50,
+        floating_window_scaling_factor = {
+            height = 0.8,
+            width = 0.9,
+        },
         yazi_floating_window_border = "solid",
     },
 }
