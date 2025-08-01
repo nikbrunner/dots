@@ -90,7 +90,7 @@ M.specs = {
                         local colorscheme = m.is_truncated(200) and "" or " " .. colorscheme_name
 
                         local dev_mode = m.is_truncated(125) and ""
-                            or "DEV_MODE: " .. (require("shada").read().dev_mode and "ON" or "OFF")
+                            or "DEV_MODE: " .. (require("config").dev_mode and "ON" or "OFF")
 
                         return m.combine_groups({
                             { hl = mode_hl, strings = { mode } },

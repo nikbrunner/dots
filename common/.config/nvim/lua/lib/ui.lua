@@ -3,16 +3,17 @@ local Files = require("lib.files")
 local M = {}
 
 ---@param config VinConfig
----@param colorscheme string
----@param background string
-function M.handle_colors(config, colorscheme, background)
-    vim.opt.background = background
+function M.handle_colors(config, background)
+    background = background or config.background
+    local colorscheme = config["colorscheme_" .. background]
+
+    vim.api.nvim_set_option_value("background", background, {})
     vim.cmd.colorscheme(colorscheme)
 
     vim.defer_fn(function()
-        Files.sync_wezterm_colorscheme(config, colorscheme)
-        Files.sync_ghostty_colorscheme(config, colorscheme)
-    end, 25)
+        Files.sync_wezterm_colorscheme(config, colorscheme, background)
+        Files.sync_ghostty_colorscheme(config, colorscheme, background)
+    end, 100)
 end
 
 M._maximized_window = nil

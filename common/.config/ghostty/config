@@ -1,4 +1,4 @@
-theme = dark:black-atom-jpn-tsuki-yoru.conf,light:black-atom-mnml-mono-light.conf
+theme = dark:black-atom-jpn-koyo-yoru.conf,light:black-atom-mnml-47-light.conf
 
 # custom-shader                      = ./shaders/crt-shader.glsl
 # custom-shader                      = ./shaders/bloom015.glsl
@@ -10,7 +10,7 @@ theme = dark:black-atom-jpn-tsuki-yoru.conf,light:black-atom-mnml-mono-light.con
 # background-opacity                 = 0.9
 # background-blur                    = 65
 
-font-family = JetBrainsMono Nerd Font
+font-family = Maple Mono NF
 
 font-size                         = 16
 # font-thicken = true

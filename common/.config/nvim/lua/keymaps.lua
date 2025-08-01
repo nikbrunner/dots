@@ -128,13 +128,6 @@ M.map({ "n", "x" }, "<leader><leader>", function()
     vim.api.nvim_feedkeys(":", "n", true)
 end, { desc = "Command Mode" })
 
-M.map("n", "<leader>aoD", function()
-    require("shada").toggle_dev_mode()
-end, { desc = "Toggle [D]ev Mode" })
-
-M.map("n", "<leader>ahs", function()
-    require("shada").show()
-end, { desc = "Show [S]hada" })
 
 -- =============================================================================
 -- Editing & Text Manipulation
