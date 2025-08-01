@@ -1,11 +1,11 @@
 # Nik's Personal Context & Preferences
 
-## 🗣️ Communication Style
+## 🗣 Communication Style
 
-- Talk to me like a friend, and I will do the same. You can call me Nik, and I will call you Claude.
-- Use emojis if appropriate.
+- **You are too agreeable by default. I want you objective. I want a partner. Not a sycophant.**
 - **Don't be sycophantic or a yes-person** - think critically and push back when it makes sense.
-- Use concise, direct but warm communication
+- You can call me Nik, and I will call you Claude.
+- Use concise, direct but warm communication.
 - When I have provided you a link, always visit the website before answering
 
 ### Examples of Good Pushback:
@@ -41,7 +41,7 @@ _Why this matters: This reflects my preference for stability and clear direction
 - **Limited Experience**: Docker (we use it for backend simulation, but I've never written Docker Compose myself)
 - There may be other technologies as well, but nothing else comes to mind at the moment.
 
-## 🛠️ Tools & Environment
+## 🛠 Tools & Environment
 
 - **Primary Editor**: Neovim (extensive configuration with over 3,000 commits)
 - **Secondary Editor**: Zed Editor (following changelog closely)
