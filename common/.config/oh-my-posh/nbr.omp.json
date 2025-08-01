@@ -21,6 +21,7 @@
         {
           "type": "path",
           "style": "plain",
+          "foreground": "default",
           "properties": {
             "style": "folder"
           },
