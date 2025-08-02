@@ -65,29 +65,7 @@ return {
                 },
             },
 
-            mappings = {
-                -- Overrides the 'gf' mapping to work on markdown/wiki links within your vault.
-                ["gf"] = {
-                    action = function()
-                        return require("obsidian").util.gf_passthrough()
-                    end,
-                    opts = { noremap = false, expr = true, buffer = true },
-                },
-                -- Disable this mapping
-                ["<C-t>"] = {
-                    action = function()
-                        return require("obsidian").util.toggle_checkbox()
-                    end,
-                    opts = { buffer = true },
-                },
-                -- Smart action depending on context: follow link, show notes with tag, toggle checkbox, or toggle heading fold
-                ["<cr>"] = {
-                    action = function()
-                        return require("obsidian").util.smart_action()
-                    end,
-                    opts = { buffer = true, expr = true },
-                },
-            },
+            legacy_commands = false,
 
             completion = {
                 nvim_cmp = false,
@@ -100,6 +78,27 @@ return {
         },
         config = function(_, opts)
             require("obsidian").setup(opts)
+
+            -- Set up keymaps for Obsidian buffers
+            vim.api.nvim_create_autocmd("User", {
+                pattern = "ObsidianNoteEnter",
+                callback = function(ev)
+                    -- Overrides the 'gf' mapping to work on markdown/wiki links within your vault
+                    vim.keymap.set("n", "gf", function()
+                        return require("obsidian").util.gf_passthrough()
+                    end, { buffer = ev.buf, noremap = false, expr = true, desc = "Follow link" })
+
+                    -- Toggle checkbox
+                    vim.keymap.set("n", "<C-t>", function()
+                        return require("obsidian").util.toggle_checkbox()
+                    end, { buffer = ev.buf, desc = "Toggle checkbox" })
+
+                    -- Smart action depending on context
+                    vim.keymap.set("n", "<cr>", function()
+                        return require("obsidian").util.smart_action()
+                    end, { buffer = ev.buf, expr = true, desc = "Smart action" })
+                end,
+            })
 
             -- Define vault paths once
             local cwd = vim.fn.getcwd()
