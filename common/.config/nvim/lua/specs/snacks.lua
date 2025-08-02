@@ -519,8 +519,6 @@ return {
             { "<leader>wgl",          function() Snacks.lazygit.log() end, desc = "[L]Log" },
             { "<leader>wgb",         function() Snacks.picker.git_branches() end, desc = "[B]ranches" },
             { "<leader>wd",          function() Snacks.picker.smart() end, desc = "[D]ocument" },
-            { "<C-e>",               function() Snacks.picker.smart({ filter = { cwd = true }}) end, desc = "[D]ocument" },
-            { "<C-r>",               function() Snacks.picker.recent({ filter = { cwd = true }}) end, desc = "[R]ecent Documents" },
             { "<leader>wr",          function() Snacks.picker.recent({ filter = { cwd = true }}) end, desc = "[R]ecent Documents" },
             { "<leader>wt",          function() Snacks.picker.grep() end, desc = "[T]ext" },
             { "<leader>ww",          function() Snacks.picker.grep_word() end, desc = "[W]ord" },
