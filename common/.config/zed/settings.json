@@ -26,7 +26,7 @@
   "theme": {
     "mode": "system",
     "dark": "Black Atom — NORTH ∷ Dark Night",
-    "light": "Black Atom — MNM ∷ Orange Light"
+    "light": "Black Atom — MNM ∷ 47 Dark"
   },
   "base_keymap": "VSCode",
   "vim_mode": true,

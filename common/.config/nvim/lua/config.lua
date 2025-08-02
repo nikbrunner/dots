@@ -3,9 +3,9 @@ local M = {}
 ---@class VinConfig
 M.config = {
     dev_mode = true,
-    background = "light",
+    background = "dark",
     colorscheme_light = "black-atom-mnml-47-light",
-    colorscheme_dark = "black-atom-jpn-koyo-yoru",
+    colorscheme_dark = "black-atom-mnml-47-dark",
 
     ---see for wezterm themes: https://wezfurlong.org/wezterm/colorschemes/index.html
     ---ghostty colors: https://ghostty.org/docs/reference/config
@@ -164,6 +164,10 @@ M.config = {
         ["black-atom-mnml-47-light"] = {
             wezterm = "Black Atom — MNM ∷ 47 Light",
             ghostty = "black-atom-mnml-47-light.conf",
+        },
+        ["black-atom-mnml-47-dark"] = {
+            wezterm = "Black Atom — MNM ∷ 47 Dark",
+            ghostty = "black-atom-mnml-47-dark.conf",
         },
 
         ["catppuccin"] = { wezterm = "catppuccin" },
