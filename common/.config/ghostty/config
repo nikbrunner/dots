@@ -1,4 +1,4 @@
-theme = dark:black-atom-jpn-koyo-yoru.conf,light:black-atom-mnml-47-light.conf
+theme = dark:black-atom-mnml-47-dark.conf,light:black-atom-mnml-47-light.conf
 
 # custom-shader                      = ./shaders/crt-shader.glsl
 # custom-shader                      = ./shaders/bloom015.glsl
