@@ -48,7 +48,7 @@ M.spec = {
     },
     keys = {
         {
-            "<leader>dr",
+            "<leader>df",
             mode = { "n", "x" },
             function()
                 require("grug-far").open({ prefills = { paths = vim.fn.expand("%") } })
