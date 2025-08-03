@@ -1,14 +1,27 @@
 ---@type LazyPluginSpec
 return {
     "folke/persistence.nvim",
-    event = "BufReadPre",
+    lazy = false,
     opts = {},
     keys = function()
         local ps = require("persistence")
 
         return {
-            { "<leader>ss", ps.select, desc = "Select session" },
-            { "<leader>sl", ps.load, desc = "Load session" },
+            {
+                "<leader>ss",
+                function()
+                    ps.save()
+                    ps.select()
+                end,
+                desc = "Select session",
+            },
+            {
+                "<leader>sl",
+                function()
+                    ps.load()
+                end,
+                desc = "Load session",
+            },
             {
                 "<leader>sr",
                 function()
