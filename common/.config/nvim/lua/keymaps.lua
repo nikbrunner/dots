@@ -29,6 +29,12 @@ function M.goto_split_definition()
     vim.cmd("norm zz")
 end
 
+function M.goto_tab_definition()
+    vim.cmd.wincmd("T")
+    vim.lsp.buf.definition()
+    vim.cmd("norm zz")
+end
+
 function M.set_diagnostic_virtual_text()
     vim.diagnostic.config({
         virtual_lines = false,
@@ -127,7 +133,6 @@ M.map("i", ";", ";<c-g>u", { desc = "Undo Semicolon" })
 M.map({ "n", "x" }, "<leader><leader>", function()
     vim.api.nvim_feedkeys(":", "n", true)
 end, { desc = "Command Mode" })
-
 
 -- =============================================================================
 -- Editing & Text Manipulation
@@ -304,7 +309,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
         --         M.set_diagnostic_virtual_lines()
         --     end,
         -- })
-        --
+
         -- Helper function to create diagnostic navigation mappings
         local function create_diagnostic_mappings(key, severity_type, severity_value)
             local severity_param = severity_value and { severity = severity_value } or nil
@@ -332,6 +337,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
 
         -- LSP Go To Definition (in split)
         M.map("n", "sD", M.goto_split_definition, o({ desc = "[D]efinition in Split" })) -- Uses helper defined above
+        M.map("n", "sT", M.goto_tab_definition, o({ desc = "[D]efinition in Tab" })) -- Uses helper defined above
 
         -- LSP Signature Help (Insert mode)
         M.map("i", "<C-k>", vim.lsp.buf.signature_help, o({ desc = "Signature Help" }))
