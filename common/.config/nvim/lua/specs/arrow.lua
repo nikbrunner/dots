@@ -7,6 +7,7 @@ M.spec = {
     -- This plugin was taking ~35ms on startup. Now it only loads when you use
     -- the keybindings (M, m, <M-k>, <M-j>), reducing startup time significantly.
     dir = require("lib.config").get_repo_path("nikbrunner/arrow.nvim"),
+    enabled = false,
     opts = {
         leader_key = "M",
         buffer_leader_key = "m",

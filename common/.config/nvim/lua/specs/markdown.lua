@@ -251,5 +251,4 @@ return {
             enable_local_options = false,
         },
     },
-
 }

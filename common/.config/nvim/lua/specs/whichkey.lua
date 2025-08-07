@@ -7,7 +7,7 @@ return {
     event = "VeryLazy",
     ---@type wk.Opts
     opts = {
-        preset = "helix",
+        preset = "modern",
         win = {
             title = "nbr.nvim",
             border = "solid",

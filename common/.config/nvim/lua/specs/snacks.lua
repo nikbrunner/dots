@@ -314,7 +314,10 @@ return {
                 },
                 smart = {
                     layout = { preset = "flow" },
-                    multi = { "recent", "files" },
+                    -- multi = { "buffers", "recent", "files" },
+                    multi = { "buffers", "recent", "files" },
+                    sort = { fields = { "source_id" } }, -- source_id:asc, source_id:desc
+                    filter = { cwd = true },
                 },
                 ---TODO: filter out empty file
                 ---@type snacks.picker.recent.Config
