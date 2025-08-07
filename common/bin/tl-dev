@@ -6,7 +6,7 @@ tmux split-window -h -p 75 -c "#{pane_current_path}"
 # sleep 1
 tmux select-pane -t 1
 tmux send-keys "clear" Enter
-tmux send-keys "claude" Enter
+# tmux send-keys "claude" Enter
 
 # refocus nvim
 sleep 1
