@@ -96,6 +96,7 @@
   "/Users/nbr/.config/nvim/lua/specs/markdown.lua": "/Users/nbr/repos/nikbrunner/dots/common/.config/nvim/lua/specs/markdown.lua",
   "/Users/nbr/.config/nvim/lua/specs/treewalker.lua": "/Users/nbr/repos/nikbrunner/dots/common/.config/nvim/lua/specs/treewalker.lua",
   "/Users/nbr/.config/nvim/lua/specs/flash.lua": "/Users/nbr/repos/nikbrunner/dots/common/.config/nvim/lua/specs/flash.lua",
+  "/Users/nbr/.config/nvim/lua/specs/fzf.lua": "/Users/nbr/repos/nikbrunner/dots/common/.config/nvim/lua/specs/fzf.lua",
   "/Users/nbr/.config/nvim/lua/specs/barbecue.lua": "/Users/nbr/repos/nikbrunner/dots/common/.config/nvim/lua/specs/barbecue.lua",
   "/Users/nbr/.config/nvim/lua/specs/navigator.lua": "/Users/nbr/repos/nikbrunner/dots/common/.config/nvim/lua/specs/navigator.lua",
   "/Users/nbr/.config/nvim/lua/specs/yazi.lua": "/Users/nbr/repos/nikbrunner/dots/common/.config/nvim/lua/specs/yazi.lua",
