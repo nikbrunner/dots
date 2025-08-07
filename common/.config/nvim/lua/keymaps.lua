@@ -57,12 +57,12 @@ function M.custom_jump(jumpCount, severity)
     vim.diagnostic.jump({
         count = jumpCount,
         severity = severity,
-        float = false,
+        float = true,
     })
 
     -- M.set_diagnostic_virtual_lines()
     vim.cmd("norm zz")
-    vim.diagnostic.open_float(nil, { focusable = true, source = "if_many" })
+    -- vim.diagnostic.open_float(nil, { focusable = true, source = "if_many" })
     -- local auto_group = vim.api.nvim_create_augroup(auto_group_name, { clear = true })
 
     -- vim.defer_fn(function() -- deferred to not trigger by jump itself
@@ -336,8 +336,8 @@ vim.api.nvim_create_autocmd("LspAttach", {
         M.map("n", "sn", vim.lsp.buf.rename, o({ desc = "Re[n]ame" }))
 
         -- LSP Go To Definition (in split)
-        M.map("n", "sD", M.goto_split_definition, o({ desc = "[D]efinition in Split" })) -- Uses helper defined above
-        M.map("n", "sT", M.goto_tab_definition, o({ desc = "[D]efinition in Tab" })) -- Uses helper defined above
+        M.map("n", "sV", M.goto_split_definition, o({ desc = "[D]efinition in Split" }))
+        M.map("n", "sT", M.goto_tab_definition, o({ desc = "[D]efinition in Tab" }))
 
         -- LSP Signature Help (Insert mode)
         M.map("i", "<C-k>", vim.lsp.buf.signature_help, o({ desc = "Signature Help" }))
