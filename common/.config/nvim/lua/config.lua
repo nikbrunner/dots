@@ -3,7 +3,7 @@ local M = {}
 ---@class VinConfig
 M.config = {
     dev_mode = true,
-    background = "dark",
+    background = "light",
     colorscheme_light = "black-atom-mnml-47-light",
     colorscheme_dark = "black-atom-mnml-47-dark",
 
