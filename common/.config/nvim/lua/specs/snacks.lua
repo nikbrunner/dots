@@ -110,6 +110,11 @@ return {
         scroll = { enabled = false },
         -- https://github.com/folke/snacks.nvim/blob/main/lua/snacks/picker/config/defaults.lua
         picker = {
+            icons = {
+                files = {
+                    enabled = false,
+                },
+            },
             ui_select = true, -- replace `vim.ui.select` with the snacks picker
             matcher = {
                 -- the bonusses below, possibly require string concatenation and path normalization,
@@ -515,6 +520,7 @@ return {
             { "<leader>.",           function() Snacks.picker.resume() end, desc = "Resume Picker" },
             { "<leader>:",           function() Snacks.picker.command_history() end, desc = "Command History" },
             { "<leader>'",           function() Snacks.picker.registers() end, desc = "Registers" },
+            { "'",                  function() Snacks.picker.marks() end, desc = "Registers" },
             { "]]",                  function() Snacks.words.jump(vim.v.count1) end, desc = "Next Reference" },
             { "[[",                  function() Snacks.words.jump(-vim.v.count1) end, desc = "Prev Reference" },
             { "<F6>",                function() Snacks.dashboard.open() end, desc = "Dashboard" },
