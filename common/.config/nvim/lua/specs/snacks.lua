@@ -520,7 +520,7 @@ return {
             { "<leader>.",           function() Snacks.picker.resume() end, desc = "Resume Picker" },
             { "<leader>:",           function() Snacks.picker.command_history() end, desc = "Command History" },
             { "<leader>'",           function() Snacks.picker.registers() end, desc = "Registers" },
-            { "'",                  function() Snacks.picker.marks() end, desc = "Registers" },
+            { "'",                   function() Snacks.picker.marks() end, desc = "Registers" },
             { "]]",                  function() Snacks.words.jump(vim.v.count1) end, desc = "Next Reference" },
             { "[[",                  function() Snacks.words.jump(-vim.v.count1) end, desc = "Prev Reference" },
             { "<F6>",                function() Snacks.dashboard.open() end, desc = "Dashboard" },
@@ -533,10 +533,9 @@ return {
             { "<leader>af",          function() Snacks.zen.zen() end, desc = "[F]ocus Mode" },
             { "<leader>as",          function() Snacks.picker.files({ cwd = vim.fn.expand("$HOME") .. "/repos/nikbrunner/dots" }) end, desc = "[S]ettings" },
             { "<leader>ad",          M.file_surfer, desc = "[D]ocument" },
-            -- { "<leader>aS",          function() Snacks.picker.files({ cwd = vim.fn.expand("$XDG_CONFIG_HOME") }) end, desc = "[S]ettings (.config)" },
             { "<leader>at",          function() Snacks.picker.colorschemes() end, desc = "[T]hemes" },
             { "<leader>ar",          function() Snacks.picker.recent() end, desc = "[R]ecent Documents (Anywhere)" },
-            { "<leader>aoz",          function() Snacks.zen.zoom() end, desc = "[Z]oom Mode" },
+            { "<leader>aoz",         function() Snacks.zen.zoom() end, desc = "[Z]oom Mode" },
             { "<leader>an",          function() Snacks.notifier.show_history() end, desc = "[N]otifications" },
             { "<leader>ak",          function() Snacks.picker.keymaps() end, desc = "[K]eymaps" },
             { "<leader>aj",          function() Snacks.picker.jumps() end, desc = "[J]umps" },
@@ -548,11 +547,10 @@ return {
 
             -- Workspace
             { "<leader>we",          M.explorer, desc = "[E]xplorer" },
-            { "<leader>wgg",          function() Snacks.lazygit() end, desc = "[G]raph" },
-            { "<leader>wgl",          function() Snacks.lazygit.log() end, desc = "[L]Log" },
+            { "<leader>wgg",         function() Snacks.lazygit() end, desc = "[G]raph" },
+            { "<leader>wgl",         function() Snacks.lazygit.log() end, desc = "[L]Log" },
             { "<leader>wgb",         function() Snacks.picker.git_branches() end, desc = "[B]ranches" },
             { "<leader>wd",          function() Snacks.picker.smart() end, desc = "[D]ocument" },
-            { "<C-e>",          function() Snacks.picker.smart() end, desc = "[D]ocument" },
             { "<leader>wr",          function() Snacks.picker.recent({ filter = { cwd = true }}) end, desc = "[R]ecent Documents" },
             { "<leader>wt",          function() Snacks.picker.grep() end, desc = "[T]ext" },
             { "<leader>ww",          function() Snacks.picker.grep_word() end, desc = "[W]ord" },
@@ -569,8 +567,6 @@ return {
             { "<leader>ds",          function() Snacks.picker.lsp_symbols() end, desc = "[S]ymbols" },
             { "<leader>du",          function() Snacks.picker.undo() end, desc = "[U]ndo" },
             { "<leader>da",          M.find_associated_files, desc = "[A]ssociated Documents" },
-
-            -- Document
 
             -- Symbol
             { "sd",                  function() Snacks.picker.lsp_definitions() end, desc = "[D]efintions" },
