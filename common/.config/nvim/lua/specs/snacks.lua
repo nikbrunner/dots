@@ -200,6 +200,24 @@ return {
                         { win = "list", border = "none" },
                     },
                 },
+                left_bottom_corner = {
+                    preview = "main",
+                    layout = {
+                        width = 0.35,
+                        min_width = 0.35,
+                        height = 0.35,
+                        min_height = 0.35,
+                        row = 0.65,
+                        col = 0,
+                        border = "solid",
+                        box = "vertical",
+                        title = "{title} {live} {flags}",
+                        title_pos = "center",
+                        { win = "preview", title = "{preview}", width = 0.6, border = "left" },
+                        { win = "input", height = 1, border = "solid" },
+                        { win = "list", border = "none" },
+                    },
+                },
                 sidebar_right = {
                     preview = "main",
                     layout = {
@@ -312,12 +330,18 @@ return {
                         border = "solid",
                     },
                 },
+                ---@type snacks.picker.smart.Config
                 smart = {
                     layout = { preset = "flow" },
-                    -- multi = { "buffers", "recent", "files" },
-                    multi = { "buffers", "recent", "files" },
-                    sort = { fields = { "source_id" } }, -- source_id:asc, source_id:desc
-                    filter = { cwd = true },
+                    multi = { { source = "buffers", current = false }, "recent", "files" },
+                    -- multi = { { source = "buffers", current = false }, { source = "recent", current = false }, "files" },
+                    -- filter = {
+                    --     cwd = true,
+                    --     -- exclude current file
+                    --     filter = function(item, filter)
+                    --         return item.file ~= vim.fn.expand("%:p")
+                    --     end,
+                    -- },
                 },
                 ---TODO: filter out empty file
                 ---@type snacks.picker.recent.Config
@@ -522,6 +546,7 @@ return {
             { "<leader>wgl",          function() Snacks.lazygit.log() end, desc = "[L]Log" },
             { "<leader>wgb",         function() Snacks.picker.git_branches() end, desc = "[B]ranches" },
             { "<leader>wd",          function() Snacks.picker.smart() end, desc = "[D]ocument" },
+            { "<C-e>",          function() Snacks.picker.smart() end, desc = "[D]ocument" },
             { "<leader>wr",          function() Snacks.picker.recent({ filter = { cwd = true }}) end, desc = "[R]ecent Documents" },
             { "<leader>wt",          function() Snacks.picker.grep() end, desc = "[T]ext" },
             { "<leader>ww",          function() Snacks.picker.grep_word() end, desc = "[W]ord" },
