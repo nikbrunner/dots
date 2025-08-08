@@ -4,7 +4,7 @@
 return {
     {
         "stevearc/oil.nvim",
-        enabled = true,
+        enabled = false,
         ---@module 'oil'
         ---@type oil.SetupOpts
         opts = {
@@ -84,12 +84,12 @@ return {
     {
         "A7Lavinraj/fyler.nvim",
         dependencies = {},
-        enabled = false,
+        enabled = true,
         event = "VeryLazy",
         branch = "main",
         keys = {
             { "<M-[>", "<cmd>Fyler kind=split_left_most<CR>", desc = "Fyler" },
-            { "<leader>f", "<cmd>Fyler<CR>", desc = "Fyler" },
+            { "<leader>we", "<cmd>Fyler<CR>", desc = "Fyler" },
         },
         opts = {
             hooks = {

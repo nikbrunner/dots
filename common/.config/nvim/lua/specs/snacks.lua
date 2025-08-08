@@ -546,7 +546,7 @@ return {
             { "<leader>aN",          M.get_news, desc = "[N]ews",  },
 
             -- Workspace
-            { "<leader>we",          M.explorer, desc = "[E]xplorer" },
+            -- { "<leader>we",          M.explorer, desc = "[E]xplorer" },
             { "<leader>wgg",         function() Snacks.lazygit() end, desc = "[G]raph" },
             { "<leader>wgl",         function() Snacks.lazygit.log() end, desc = "[L]Log" },
             { "<leader>wgb",         function() Snacks.picker.git_branches() end, desc = "[B]ranches" },
