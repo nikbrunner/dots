@@ -127,11 +127,6 @@ M.map("i", ",", ",<c-g>u", { desc = "Undo Comma" })
 M.map("i", ".", ".<c-g>u", { desc = "Undo Dot" })
 M.map("i", ";", ";<c-g>u", { desc = "Undo Semicolon" })
 
--- Quick access to command mode
-M.map({ "n", "x" }, "<leader><leader>", function()
-    vim.api.nvim_feedkeys(":", "n", true)
-end, { desc = "Command Mode" })
-
 -- =============================================================================
 -- Editing & Text Manipulation
 -- =============================================================================
