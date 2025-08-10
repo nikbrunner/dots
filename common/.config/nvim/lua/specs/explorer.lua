@@ -4,7 +4,7 @@
 return {
     {
         "stevearc/oil.nvim",
-        enabled = false,
+        enabled = true,
         ---@module 'oil'
         ---@type oil.SetupOpts
         opts = {
@@ -84,7 +84,7 @@ return {
     {
         "A7Lavinraj/fyler.nvim",
         dependencies = {},
-        enabled = true,
+        enabled = false,
         event = "VeryLazy",
         branch = "main",
         keys = {
