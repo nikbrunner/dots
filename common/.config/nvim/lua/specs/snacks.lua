@@ -191,7 +191,7 @@ return {
                     layout = {
                         backdrop = false,
                         -- col = 0,
-                        width = 0.65,
+                        width = 0.35,
                         min_width = 50,
                         row = 0.65,
                         height = 0.30,
