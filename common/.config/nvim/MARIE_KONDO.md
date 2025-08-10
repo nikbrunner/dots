@@ -30,54 +30,57 @@ There are also new LSP keymaps for example
 
 ### ✅ Core Essentials (MUST KEEP - 11 plugins)
 
-- #keep **nvim-treesitter** - Syntax highlighting, text objects
+- [x] #keep **nvim-treesitter** - Syntax highlighting, text objects
   - Here it would be important to switch to the new `main` branch. Currently we are on
     the old `master` branch. This would also be important for the Black Atom
     development process.
-- #keep **blink.cmp** - Completion engine
+- [ ] #decide **blink.cmp** - Completion engine
   - There is also now built in vim completion, but I don't know which vim version
   - But I really like the command line completion from blink.nvim
   - I would like to try out the built in vim completion
   - There is also I think a option or command which triggers the autocompletion
     automatically? I am not sure.
-- #keep **LuaSnip** - Snippet engine
+  - `mini.completion` could also be tried out
+- [x] #keep **LuaSnip** - Snippet engine
   - There is also `vim.snippet` (:h vim.snippet) now
     - #keep **friendly-snippets** - Snippet collection
-- #keep **Snacks.nvim** - Swiss army knife (picker, utilities)
-- #keep **Mason.nvim** - LSP installer/manager
-- #keep **conform.nvim** - Formatting
-- #keep **nvim-lint** - Linting
-- #keep **lazydev.nvim** - Neovim Lua development
+- [x] #keep **Snacks.nvim** - Swiss army knife (picker, utilities)
+- [ ] #keep **Mason.nvim** - LSP installer/manager
+- [x] #keep **conform.nvim** - Formatting
+- [x] #keep **nvim-lint** - Linting
+- [x] #keep **lazydev.nvim** - Neovim Lua development
 - [x] #archive ~**wezterm-types** - WezTerm type definitions~ ✅ ARCHIVED
   - Can be uninstalled - I am using ghostty atm
-- #keep **lazy.nvim** - Plugin manager
+- [x] #keep **lazy.nvim** - Plugin manager
   - I would be fine by switching to the new built-in plugin manager `vim.pack` but I
     really like the `lazy-lock.json` file from `lazy.nvim`, but maybe if I not update
     all the time I maybe not need it.
 
-### 📝 TypeScript Development (KEEP - 3 plugins)
+### [x] 📝 TypeScript Development (KEEP - 3 plugins)
 
-- #keep **tsc.nvim** - TypeScript compiler integration
-- #keep **ts-error-translator.nvim** - Readable TS errors
-- #keep **trouble.nvim** - Diagnostics list (integrates with tsc.nvim)
+- [x] #keep **tsc.nvim** - TypeScript compiler integration
+- [x] #keep **ts-error-translator.nvim** - Readable TS errors
+- [x] #keep **trouble.nvim** - Diagnostics list (integrates with tsc.nvim)
 
-### 🎨 Colorschemes (Keep 2-3)
+### [x] 🎨 Colorschemes (Keep 2-3)
 
-- #keep **black-atom** - Custom colorscheme
+- [x] #keep **black-atom** - Custom colorscheme
 - [x] #archive **github-nvim-theme** - GitHub themes
 - [x] #archive **rose-pine** - Rose Pine theme
 
-### 📁 File Explorers (Choose ONE)
+### [x] 📁 File Explorers (Choose ONE)
 
 Here its really hard for me to decide which one to use.
 
-- #decide **fyler.nvim** - LOADED - Hybrid tree/buffer explorer
-- #decide **oil.nvim** - DISABLED - Pure buffer editing
-- #decide **yazi.nvim** - DISABLED - Terminal file manager
-- #decide **Snacks explorer** - Available but not configured
-- #decide **mini.files** - Not installed - Buffer-like with sync
+- [x] #decide **fyler.nvim** - LOADED - Hybrid tree/buffer explorer
+- [x] #decide **oil.nvim** - DISABLED - Pure buffer editing
+- [x] #decide **yazi.nvim** - DISABLED - Terminal file manager
+- [x] #decide **Snacks explorer** - Available but not configured
+- [x] #decide **mini.files** - Not installed - Buffer-like with sync
 
-### 🔍 File Pickers (Choose ONE)
+> I decided on `mini.files`.
+
+### [x] 🔍 File Pickers (Choose ONE)
 
 Fzf-Lua is pretty good, but I really configured Snacks pretty good.
 The FzfLua Frecency picker is much better though.
@@ -92,9 +95,11 @@ of other pickers obsolete.
 Maybe from a third party or user?
 See here: https://github.com/echasnovski/mini.nvim/discussions/609
 
+> I decided on `mini.pick`. I even got frecency to work with it.
+
 ### 🚀 Navigation & Movement (Review each)
 
-- [x] #decide **flash.nvim** - NOT LOADED - Jump anywhere
+- [x] #archive **flash.nvim** - NOT LOADED - Jump anywhere
   - It is pretty good, but it also has some querks, that I cant resolve.
   - For example it auto jumps to the first and only match.
   - I think I should try to archive this.
@@ -104,7 +109,7 @@ See here: https://github.com/echasnovski/mini.nvim/discussions/609
   - But I can also try to archive this.
   - I also have `<leader>aj` (App Jumps) for this
   - Archived
-- #decide **Navigator.nvim** - NOT LOADED - Tmux navigation
+- [ ] #decide **Navigator.nvim** - NOT LOADED - Tmux navigation
   - Well I am pretty used to this now, but I could try to leave without this
   - But then I would also need mappings to quickly navigate between tmux panes
 
