@@ -110,6 +110,7 @@
   "/Users/nbr/.config/nvim/lua/specs/whichkey.lua": "/Users/nbr/repos/nikbrunner/dots/common/.config/nvim/lua/specs/whichkey.lua",
   "/Users/nbr/.config/nvim/lua/specs/conform.lua": "/Users/nbr/repos/nikbrunner/dots/common/.config/nvim/lua/specs/conform.lua",
   "/Users/nbr/.config/nvim/lua/specs/mini.lua": "/Users/nbr/repos/nikbrunner/dots/common/.config/nvim/lua/specs/mini.lua",
+  "/Users/nbr/.config/nvim/lua/specs/sleuth.lua": "/Users/nbr/repos/nikbrunner/dots/common/.config/nvim/lua/specs/sleuth.lua",
   "/Users/nbr/.config/nvim/lua/specs/helpview.lua": "/Users/nbr/repos/nikbrunner/dots/common/.config/nvim/lua/specs/helpview.lua",
   "/Users/nbr/.config/nvim/lua/specs/treesitter.lua": "/Users/nbr/repos/nikbrunner/dots/common/.config/nvim/lua/specs/treesitter.lua",
   "/Users/nbr/.config/nvim/lua/specs/grug.lua": "/Users/nbr/repos/nikbrunner/dots/common/.config/nvim/lua/specs/grug.lua",
