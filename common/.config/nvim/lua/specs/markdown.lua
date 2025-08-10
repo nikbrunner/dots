@@ -1,6 +1,5 @@
 ---@diagnostic disable: missing-fields
 
-local Config = require("config")
 local date_format = "%Y.%m.%d - %A"
 
 ---@type LazyPluginSpec[]
@@ -8,7 +7,19 @@ return {
     {
         "obsidian-nvim/obsidian.nvim",
         version = "*", -- recommended, use latest release instead of latest commit
-        event = "VeryLazy",
+        ft = "markdown",
+        cmd = {
+            "Obsidian",
+            "ObsidianNew",
+            "ObsidianOpen",
+            "ObsidianQuickSwitch",
+            "ObsidianSearch",
+            "ObsidianToday",
+            "ObsidianYesterday",
+            "ObsidianTomorrow",
+            "ObsidianDailies",
+            "ObsidianTemplate",
+        },
         dependencies = {
             "nvim-lua/plenary.nvim",
             "folke/snacks.nvim",
@@ -102,8 +113,9 @@ return {
 
             -- Define vault paths once
             local cwd = vim.fn.getcwd()
-            local personal_vault = vim.fn.expand(Config.pathes.notes.personal)
-            local work_vault = vim.fn.expand(Config.pathes.notes.work.dcd)
+            local config = require("config")
+            local personal_vault = vim.fn.expand(config.pathes.notes.personal)
+            local work_vault = vim.fn.expand(config.pathes.notes.work.dcd)
 
             -- Function to check and open today's note
             local function open_daily_note_if_in_vault()

@@ -1,6 +1,3 @@
-local Config = require("config")
-local UI = require("lib.ui")
-
 local auto = vim.api.nvim_create_autocmd
 
 local function auto_group(name)
@@ -10,7 +7,7 @@ end
 auto({ "VimEnter", "ColorScheme" }, {
     group = auto_group("vim_enter"),
     callback = function()
-        UI.handle_colors(Config)
+        require("lib.ui").handle_colors(require("config"))
     end,
 })
 

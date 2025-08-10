@@ -28,12 +28,10 @@ M.spec = {
     keys = {
         { "<leader>aoa", M.toggle_inline_completion, desc = "[A]uto-Completion" },
     },
-    init = function()
-        -- Disable inline completion by default
-        require("supermaven-nvim.completion_preview").disable_inline_completion = false
-    end,
     config = function(_, opts)
         require("supermaven-nvim").setup(opts)
+        -- Disable inline completion by default
+        require("supermaven-nvim.completion_preview").disable_inline_completion = false
     end,
 }
 

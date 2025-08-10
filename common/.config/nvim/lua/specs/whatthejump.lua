@@ -1,5 +1,8 @@
 ---@type LazyPluginSpec
 return {
     "lewis6991/whatthejump.nvim",
-    event = "VeryLazy",
+    keys = {
+        { "<C-o>", desc = "Jump back" },
+        { "<C-i>", desc = "Jump forward" },
+    },
 }

@@ -1,7 +1,7 @@
 ---@type LazyPluginSpec
 return {
     "uga-rosa/ccc.nvim",
-    event = "VeryLazy",
+    cmd = { "CccPick", "CccConvert", "CccHighlighterToggle" },
     keys = { { "<leader>ac", "<cmd>CccPick<CR>", desc = "[C]olor Picker" } },
     opts = function()
         -- Documentation: https://github.com/uga-rosa/ccc.nvim

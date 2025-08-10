@@ -1,10 +1,9 @@
-local lib = require("lib")
-
 local set_hl = vim.api.nvim_set_hl
 
-local hl_normal = lib.colors.get_hex_color("Normal")
-local hl_comment = lib.colors.get_hex_color("Comment")
-local darkend_normal_bg = lib.colors.darken(hl_normal.bg, 0.9, "#000000")
+local lib_colors = require("lib.colors")
+local hl_normal = lib_colors.get_hex_color("Normal")
+local hl_comment = lib_colors.get_hex_color("Comment")
+local darkend_normal_bg = lib_colors.darken(hl_normal.bg, 0.9, "#000000")
 local pmenu_bg = darkend_normal_bg or hl_normal.bg
 
 set_hl(0, "Pmenu", { fg = hl_normal.fg, bg = pmenu_bg }) -- Since many colorschemes derive their floating and darker elements from it, I manually override it.

@@ -1,10 +1,7 @@
-local darken = require("lib.colors").darken
-local lighten = require("lib.colors").lighten
-local bit = require("bit")
-
 ---@param dec number
 local function dec_to_hex(dec)
     dec = dec or 0
+    local bit = require("bit")
     local r = bit.rshift(bit.band(dec, 0xFF0000), 16)
     local g = bit.rshift(bit.band(dec, 0x00FF00), 8)
     local b = bit.band(dec, 0x0000FF)
@@ -60,12 +57,12 @@ local colors = {
     },
     bg = {
         ---@diagnostic disable-next-line: undefined-field
-        dark = darken(dec_to_hex(hls.normal.bg), vim.opt.background:get() == "dark" and 0.85 or 0.95),
+        dark = require("lib.colors").darken(dec_to_hex(hls.normal.bg), vim.opt.background:get() == "dark" and 0.85 or 0.95),
         main = dec_to_hex(hls.normal.bg),
-        light = lighten(dec_to_hex(hls.normal.bg), 0.75),
+        light = require("lib.colors").lighten(dec_to_hex(hls.normal.bg), 0.75),
     },
     fg = {
-        dark = darken(dec_to_hex(hls.comment.fg), 0.35),
+        dark = require("lib.colors").darken(dec_to_hex(hls.comment.fg), 0.35),
         main = dec_to_hex(hls.normal.fg),
     },
     active = {

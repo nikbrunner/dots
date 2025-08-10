@@ -6,7 +6,7 @@ M.specs = {
         "nvim-treesitter/nvim-treesitter",
         build = ":TSUpdate",
         branch = "master",
-        event = { "VeryLazy" },
+        event = { "BufReadPost", "BufNewFile" },
         opts = {
             highlight = {
                 enable = true,
@@ -98,10 +98,9 @@ M.specs = {
 
     {
         "windwp/nvim-ts-autotag",
-        event = "BufReadPre",
+        event = "InsertEnter",
         opts = {},
     },
-
 
     {
         "folke/ts-comments.nvim",

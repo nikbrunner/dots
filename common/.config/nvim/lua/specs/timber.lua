@@ -1,7 +1,11 @@
 ---@type LazyPluginSpec
 return {
     "Goose97/timber.nvim",
-    event = "VeryLazy",
+    keys = {
+        { "slk", desc = "Insert log above" },
+        { "slj", desc = "Insert log below" },
+        { "slb", desc = "Insert batch log" },
+    },
     opts = {
         log_templates = {
             default = {

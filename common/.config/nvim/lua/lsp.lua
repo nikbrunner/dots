@@ -1,5 +1,3 @@
-local icons = require("icons")
-
 local Severity = vim.diagnostic.severity
 
 vim.diagnostic.config({
@@ -12,10 +10,10 @@ vim.diagnostic.config({
     },
     signs = {
         text = {
-            [Severity.ERROR] = icons.diagnostics.Error,
-            [Severity.WARN] = icons.diagnostics.Warn,
-            [Severity.INFO] = icons.diagnostics.Info,
-            [Severity.HINT] = icons.diagnostics.Hint,
+            [Severity.ERROR] = require("icons").diagnostics.Error,
+            [Severity.WARN] = require("icons").diagnostics.Warn,
+            [Severity.INFO] = require("icons").diagnostics.Info,
+            [Severity.HINT] = require("icons").diagnostics.Hint,
         },
     },
 })

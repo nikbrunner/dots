@@ -1,5 +1,3 @@
-local Lib = require("lib")
-
 local M = {}
 
 -- =============================================================================
@@ -96,7 +94,7 @@ end, { desc = "Escape and clear hlsearch" })
 -- Shift+Escape clears notifier and floating windows
 M.map("n", "<S-Esc>", function()
     require("snacks.notifier").hide()
-    Lib.ui.close_all_floating_windows()
+    require("lib.ui").close_all_floating_windows()
 end, { desc = "Clear Notifier and Trouble" })
 
 -- Center screen when moving through jump list
@@ -177,7 +175,7 @@ end, { desc = "[A]ll" })
 
 -- Yank current file path(s) (uses lib function)
 M.map({ "n", "v" }, "<leader>dyp", function()
-    Lib.copy.list_paths()
+    require("lib.copy").list_paths()
 end, { desc = "[P]ath" })
 
 -- =============================================================================
