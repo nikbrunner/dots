@@ -4,6 +4,7 @@
 ---@type LazyPluginSpec
 return {
     "folke/which-key.nvim",
+    enabled = false,
     event = "VeryLazy",
     ---@type wk.Opts
     opts = {

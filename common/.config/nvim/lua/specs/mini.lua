@@ -1,5 +1,6 @@
 --- Sources:
 --- https://github.com/JulesNP/nvim/blob/main/lua/plugins/mini.lua
+--- https://github.com/SylvanFranklin/.config/blob/main/nvim/init.lua
 
 local Mini = {}
 
@@ -11,14 +12,14 @@ function Mini.files()
             show_help = "g?",
             close = "q",
             go_in = "l",
-            go_in_plus = "L",
+            go_in_plus = "<CR>",
             go_out = "h",
             go_out_plus = "H",
             mark_goto = "'",
             mark_set = "m",
             reset = "<BS>",
             reveal_cwd = "@",
-            synchronize = "=",
+            synchronize = "<C-s>",
             trim_left = "<",
             trim_right = ">",
         },
@@ -137,6 +138,7 @@ function Mini.pick()
     end
 
     vim.keymap.set("n", "<leader><leader>", MiniPick.registry.frecency, { desc = "Pick file" })
+    vim.keymap.set("n", "<leader>ahp", "<cmd>Pick help<CR>", { desc = "[P]ages" })
 end
 
 function Mini.extra()
@@ -285,6 +287,54 @@ function Mini.surround()
     })
 end
 
+function Mini.clue(MiniClue)
+    -- local MiniClue = require("mini.clue")
+
+    MiniClue.setup({
+        triggers = {
+            { mode = "c", keys = "<C-r>" },
+            { mode = "i", keys = "<C-r>" },
+            { mode = "i", keys = "<C-x>" },
+            { mode = "n", keys = "'" },
+            { mode = "n", keys = "<C-w>" },
+            { mode = "n", keys = "<Leader>" },
+            { mode = "n", keys = "[" },
+            { mode = "n", keys = "]" },
+            { mode = "n", keys = "`" },
+            { mode = "n", keys = "g" },
+            { mode = "n", keys = "s" },
+            { mode = "n", keys = "z" },
+            { mode = "n", keys = '"' },
+            { mode = "x", keys = "'" },
+            { mode = "x", keys = "<Leader>" },
+            { mode = "x", keys = "`" },
+            { mode = "x", keys = "g" },
+            { mode = "x", keys = "z" },
+            { mode = "x", keys = '"' },
+        },
+        clues = {
+            MiniClue.gen_clues.builtin_completion(),
+            MiniClue.gen_clues.g(),
+            MiniClue.gen_clues.marks(),
+            MiniClue.gen_clues.registers(),
+            MiniClue.gen_clues.windows(),
+            MiniClue.gen_clues.z(),
+            { mode = "n", keys = "<Leader>a", desc = "[A]pp" },
+            { mode = "n", keys = "<Leader>w", desc = "[W]orkspace" },
+            { mode = "n", keys = "<Leader>d", desc = "[D]ocument" },
+            { mode = "n", keys = "<Leader>c", desc = "[C]ange" },
+        },
+        window = {
+            config = {
+                width = math.floor(0.35 * vim.o.columns),
+            },
+            delay = 350,
+        },
+    })
+
+    -- https://github.com/echasnovski/mini.nvim/blob/2e38ed16c2ced64bcd576986ccad4b18e2006e18/doc/mini-pick.txt#L650-L660
+end
+
 ---@type LazyPluginSpec
 return {
     "echasnovski/mini.nvim",
@@ -301,5 +351,6 @@ return {
         Mini.visits()
         Mini.extra()
         Mini.surround()
+        Mini.clue(require("mini.clue"))
     end,
 }

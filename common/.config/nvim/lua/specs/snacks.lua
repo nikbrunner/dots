@@ -539,7 +539,7 @@ return {
             { "<leader>an",          function() Snacks.notifier.show_history() end, desc = "[N]otifications" },
             { "<leader>ak",          function() Snacks.picker.keymaps() end, desc = "[K]eymaps" },
             { "<leader>aj",          function() Snacks.picker.jumps() end, desc = "[J]umps" },
-            { "<leader>ahp",         function() Snacks.picker.help() end, desc = "[P]ages" },
+            -- { "<leader>ahp",         function() Snacks.picker.help() end, desc = "[P]ages" },
             { "<leader>ahm",         function() Snacks.picker.man() end, desc = "[M]anuals" },
             { "<leader>ahh",         function() Snacks.picker.highlights() end, desc = "[H]ightlights" },
             { "<leader>aR",          function() Snacks.gitbrowse() end, desc = "Open in [R]emote" },

@@ -1,3 +1,5 @@
+--- Delay: https://github.com/Saghen/blink.cmp/issues/619
+
 ---@doc https://cmp.saghen.dev/
 ---@type LazyPluginSpec
 return {
