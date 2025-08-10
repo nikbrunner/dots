@@ -1,9 +1,9 @@
 --- Sources:
 --- https://github.com/JulesNP/nvim/blob/main/lua/plugins/mini.lua
 
-local Setup = {}
+local Mini = {}
 
-function Setup.files()
+function Mini.files()
     local MiniFiles = require("mini.files")
 
     MiniFiles.setup({
@@ -65,7 +65,7 @@ function Setup.files()
     end, { desc = "Explorer" })
 end
 
-function Setup.pick()
+function Mini.pick()
     local MiniPick = require("mini.pick")
     local MiniFuzzy = require("mini.fuzzy")
     local MiniVisits = require("mini.visits")
@@ -139,22 +139,20 @@ function Setup.pick()
     vim.keymap.set("n", "<leader><leader>", MiniPick.registry.frecency, { desc = "Pick file" })
 end
 
-function Setup.extra()
-    local Extra = require("mini.extra")
-    Extra.setup({})
+function Mini.extra()
+    require("mini.extra").setup()
 end
 
-function Setup.visits()
-    local Visits = require("mini.visits")
-    Visits.setup({})
+function Mini.visits()
+    require("mini.visits").setup()
 end
 
-function Setup.ai()
-    local MiniAI = require("mini.ai")
-    MiniAI.setup({})
+function Mini.ai()
+    require("mini.ai").setup()
 end
 
-function Setup.statusline()
+-- TODO: Clean up
+function Mini.statusline()
     require("mini.statusline").setup({
         content = {
             active = function()
@@ -257,7 +255,7 @@ function Setup.statusline()
     })
 end
 
-function Setup.icons()
+function Mini.icons()
     require("mini.icons").setup({
         file = {
             [".eslintrc.js"] = { glyph = "󰱺", hl = "MiniIconsYellow" },
@@ -273,7 +271,7 @@ function Setup.icons()
     })
 end
 
-function Setup.surround()
+function Mini.surround()
     require("mini.surround").setup({
         mappings = {
             add = "Sa", -- Add surrounding in Normal and Visual modes
@@ -293,15 +291,15 @@ return {
     version = "*",
     event = "VeryLazy",
     config = function()
-        Setup.pick()
-        Setup.files()
-        Setup.extra()
-        Setup.ai()
-        Setup.statusline()
-        Setup.icons()
-        Setup.pick()
-        Setup.visits()
-        Setup.extra()
-        Setup.surround()
+        Mini.pick()
+        Mini.files()
+        Mini.extra()
+        Mini.ai()
+        Mini.statusline()
+        Mini.icons()
+        Mini.pick()
+        Mini.visits()
+        Mini.extra()
+        Mini.surround()
     end,
 }
