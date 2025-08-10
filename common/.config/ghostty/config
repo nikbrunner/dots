@@ -10,7 +10,7 @@ theme = dark:black-atom-mnml-47-dark.conf,light:black-atom-mnml-47-light.conf
 # background-opacity                 = 0.9
 # background-blur                    = 65
 
-font-family = JetBrainsMono Nerd Font
+font-family = TX-02
 
 font-size                         = 16
 # font-thicken = true
