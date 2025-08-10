@@ -2,7 +2,7 @@
 ---@type LazyPluginSpec
 return {
     "saghen/blink.cmp",
-    event = "InsertEnter",
+    event = { "InsertEnter", "CmdlineEnter" },
     version = "v0.*",
     dependencies = {
         "L3MON4D3/LuaSnip",
