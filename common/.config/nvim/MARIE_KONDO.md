@@ -48,7 +48,7 @@ There are also new LSP keymaps for example
 - #keep **conform.nvim** - Formatting
 - #keep **nvim-lint** - Linting
 - #keep **lazydev.nvim** - Neovim Lua development
-- #archive ~**wezterm-types** - WezTerm type definitions~
+- [x] #archive ~**wezterm-types** - WezTerm type definitions~ ✅ ARCHIVED
   - Can be uninstalled - I am using ghostty atm
 - #keep **lazy.nvim** - Plugin manager
   - I would be fine by switching to the new built-in plugin manager `vim.pack` but I
@@ -64,8 +64,8 @@ There are also new LSP keymaps for example
 ### 🎨 Colorschemes (Keep 2-3)
 
 - #keep **black-atom** - Custom colorscheme
-- #archive **github-nvim-theme** - GitHub themes
-- #archive **rose-pine** - Rose Pine theme
+- [x] #archive **github-nvim-theme** - GitHub themes
+- [x] #archive **rose-pine** - Rose Pine theme
 
 ### 📁 File Explorers (Choose ONE)
 
@@ -94,15 +94,16 @@ See here: https://github.com/echasnovski/mini.nvim/discussions/609
 
 ### 🚀 Navigation & Movement (Review each)
 
-- #decide **flash.nvim** - NOT LOADED - Jump anywhere
+- [x] #decide **flash.nvim** - NOT LOADED - Jump anywhere
   - It is pretty good, but it also has some querks, that I cant resolve.
   - For example it auto jumps to the first and only match.
   - I think I should try to archive this.
 - #keep **treewalker.nvim** - LOADED - AST-based movement
-- #decide **whatthejump.nvim** - NOT LOADED - Enhanced jumplist
+- [x] #decide **whatthejump.nvim** - NOT LOADED - Enhanced jumplist
   - This is pretty good! It is very small
   - But I can also try to archive this.
   - I also have `<leader>aj` (App Jumps) for this
+  - Archived
 - #decide **Navigator.nvim** - NOT LOADED - Tmux navigation
   - Well I am pretty used to this now, but I could try to leave without this
   - But then I would also need mappings to quickly navigate between tmux panes
@@ -193,9 +194,10 @@ This is one of the most important unsatisfing problems for me right now.
 ### 🤖 AI/Completion (Review each)
 
 - #keep **supermaven-nvim** - LOADED - AI completion
-- #archive **codecompanion.nvim** - NOT LOADED - AI chat
+- [x] #archive **codecompanion.nvim** - NOT LOADED - AI chat
   - **codecompanion-history.nvim** - NOT LOADED - Chat history
   - I mainly use Claude Code or OpenCode now
+  - Archived
 
 ### 🔌 Utilities (Review each)
 
@@ -212,7 +214,7 @@ This is one of the most important unsatisfing problems for me right now.
 
 ### 🗑️ Already Disabled (DELETE)
 
-- #archive **arrow.nvim** - DISABLED - Harpoon alternative
+- [x] #archive **arrow.nvim** - DISABLED - Harpoon alternative
   - I was unsatisfied with this.
   - I could try to just use global marks and the Snacks.picker.marks() function.
 
