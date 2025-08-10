@@ -4,7 +4,6 @@ local M = {}
 M.spec = {
     "codethread/qmk.nvim",
     ft = "c",
-    event = "VeryLazy",
     opts = {
         comment_preview = {
             position = "inside",
