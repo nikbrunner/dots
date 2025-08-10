@@ -26,6 +26,8 @@ vim.o.winborder = "solid"
 
 vim.o.conceallevel = 0
 
+vim.opt.jumpoptions = "stack"
+
 vim.o.foldenable = true
 vim.o.foldlevel = 99
 vim.o.foldmethod = "indent"
