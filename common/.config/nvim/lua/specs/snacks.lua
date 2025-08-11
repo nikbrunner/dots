@@ -69,6 +69,67 @@ function M.find_associated_files()
     })
 end
 
+function M.smart_visits_picker()
+    local MiniVisits = require("mini.visits")
+    local visit_paths = MiniVisits.list_paths()
+    local current_file = vim.fn.expand("%")
+
+    -- Create items with frecency scoring
+    local function get_scored_items()
+        local items = {}
+
+        -- Use ripgrep to find files, respecting .gitignore and ripgreprc
+        local files = vim.fn.systemlist("rg --files --hidden 2>/dev/null")
+
+        -- Flip visit_paths for lookup optimization
+        local flipped_visits = {}
+        for index, path in ipairs(visit_paths) do
+            local key = vim.fn.fnamemodify(path, ":.")
+            flipped_visits[key] = index - 1
+        end
+
+        for _, file in ipairs(files) do
+            local relative_file = vim.fn.fnamemodify(file, ":.")
+            local full_path = vim.fn.fnamemodify(file, ":p")
+
+            -- Skip current file
+            if relative_file ~= vim.fn.fnamemodify(current_file, ":.") then
+                -- Calculate visit score (lower index = more recent = better score)
+                local visit_score = flipped_visits[relative_file] or #visit_paths
+
+                table.insert(items, {
+                    text = relative_file,
+                    file = full_path,
+                    _path = full_path,
+                    _visit_score = visit_score,
+                })
+            end
+        end
+
+        -- Sort by visit frequency (visited files first), then alphabetically for stable sort
+        table.sort(items, function(a, b)
+            local score_a = a._visit_score or 999999
+            local score_b = b._visit_score or 999999
+
+            if score_a == score_b then
+                -- Secondary sort: alphabetical by filename for stable ordering
+                return a.text < b.text
+            end
+            return score_a < score_b
+        end)
+
+        return items
+    end
+
+    -- Use Snacks picker with custom items
+    Snacks.picker.pick({
+        items = get_scored_items(),
+        format = "file",
+        preview = "file",
+        layout = { preset = "flow" },
+    })
+end
+
 function M.explorer()
     local explorer_pickers = Snacks.picker.get({ source = "explorer" })
     for _, v in pairs(explorer_pickers) do
@@ -551,6 +612,7 @@ return {
             { "<leader>wgl",         function() Snacks.lazygit.log() end, desc = "[L]Log" },
             { "<leader>wgb",         function() Snacks.picker.git_branches() end, desc = "[B]ranches" },
             { "<leader>wd",          function() Snacks.picker.smart() end, desc = "[D]ocument" },
+            { "<leader>wv",          M.smart_visits_picker, desc = "[V]isits (Frecency)" },
             { "<leader>wr",          function() Snacks.picker.recent({ filter = { cwd = true }}) end, desc = "[R]ecent Documents" },
             { "<leader>wt",          function() Snacks.picker.grep() end, desc = "[T]ext" },
             { "<leader>ww",          function() Snacks.picker.grep_word() end, desc = "[W]ord" },
