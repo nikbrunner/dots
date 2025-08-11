@@ -2,10 +2,28 @@
 -- Based on OliverChao/bufmsg.nvim
 
 local buffer_name = "Messages"
+local hint_ns = vim.api.nvim_create_namespace("bufmsg_hints")
 
 local function is_bmessages_buffer_open()
     local bufnr = vim.fn.bufnr(buffer_name)
     return vim.api.nvim_buf_is_valid(bufnr) and vim.api.nvim_buf_is_loaded(bufnr)
+end
+
+local function add_keybinding_hints(bufnr)
+    -- Clear existing hints
+    vim.api.nvim_buf_clear_namespace(bufnr, hint_ns, 0, -1)
+
+    -- Get last line number
+    local line_count = vim.api.nvim_buf_line_count(bufnr)
+    if line_count == 0 then
+        return
+    end
+
+    -- Add virtual text with keybinding hints
+    vim.api.nvim_buf_set_extmark(bufnr, hint_ns, line_count - 1, 0, {
+        virt_text = { { " <C-u>: update | <C-r>: clear | q: close", "Comment" } },
+        virt_text_pos = "eol",
+    })
 end
 
 local function update_messages_buffer()
@@ -25,6 +43,9 @@ local function update_messages_buffer()
         vim.api.nvim_set_option_value("modifiable", true, { buf = bufnr })
         vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, lines)
         vim.api.nvim_set_option_value("modifiable", false, { buf = bufnr })
+
+        -- Add keybinding hints
+        add_keybinding_hints(bufnr)
 
         -- Auto-scroll to bottom if not in the messages buffer
         if vim.api.nvim_buf_get_name(vim.api.nvim_get_current_buf()) ~= buffer_name then
@@ -62,6 +83,9 @@ local function create_messages_buffer()
 
     local update_fn = update_messages_buffer()
     update_fn()
+
+    -- Add initial keybinding hints
+    add_keybinding_hints(bufnr)
 
     -- Set up buffer keymaps
     vim.keymap.set("n", "<C-u>", update_fn, { silent = true, buffer = bufnr, desc = "Update messages" })
