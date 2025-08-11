@@ -6,6 +6,9 @@ return {
         opts = {
             use_trouble_qflist = true,
         },
+        keys = {
+            { "<leader>wp", "<cmd>TSC<CR>", desc = "[P]roblems" },
+        },
     },
     {
         "dmmulroy/ts-error-translator.nvim",

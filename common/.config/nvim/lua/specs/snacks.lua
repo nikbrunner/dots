@@ -556,7 +556,7 @@ return {
             { "<leader>ww",          function() Snacks.picker.grep_word() end, desc = "[W]ord" },
             { "<leader>wm",          function() Snacks.picker.git_status() end, desc = "[M]odified Documents" },
             { "<leader>wc",          function() Snacks.picker.git_diff() end, desc = "[C]hanges" },
-            { "<leader>wp",          function() Snacks.picker.diagnostics() end, desc = "[P]roblems" },
+            -- { "<leader>wp",          function() Snacks.picker.diagnostics() end, desc = "[P]roblems" },
             { "<leader>ws",          function() Snacks.picker.lsp_workspace_symbols() end, desc = "[S]ymbols" },
 
             -- TODO: <leader>dc [D]ocument [C]hanges -- git_diff but scope on current file
