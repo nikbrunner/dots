@@ -4,6 +4,31 @@
 
 local Mini = {}
 
+-- https://github.com/echasnovski/mini.nvim/blob/2e38ed16c2ced64bcd576986ccad4b18e2006e18/doc/mini-pick.txt#L650-L660
+Mini.win_config = {
+    left_buf_corner = function()
+        local height = math.floor(0.2 * vim.o.lines)
+        local width = math.floor(0.3 * vim.o.columns)
+
+        return {
+            relative = "win",
+            height = height,
+            width = width,
+            row = math.floor(vim.o.lines - 5),
+            col = 10,
+            border = "solid",
+        }
+    end,
+    cursor = function()
+        return {
+            relative = "cursor",
+            anchor = "NW",
+            row = 0,
+            col = 0,
+        }
+    end,
+}
+
 function Mini.files()
     local MiniFiles = require("mini.files")
 
@@ -111,6 +136,11 @@ function Mini.pick()
             scroll_right = "<C-l>",
             scroll_up = "<C-u>",
         },
+        window = {
+            config = Mini.win_config.left_buf_corner,
+            prompt_caret = "█",
+            prompt_prefix = "  ",
+        },
     })
 
     MiniPick.registry.frecency = function()
@@ -172,6 +202,10 @@ function Mini.pick()
 
     vim.keymap.set("n", "<leader><leader>", MiniPick.registry.frecency, { desc = "Pick file" })
     vim.keymap.set("n", "<leader>ahp", "<cmd>Pick help<CR>", { desc = "[P]ages" })
+    -- vim.keymap.set("n", "<leader>ds", "<cmd>Pick lsp scope='document_symbol'<CR>", { desc = "[S]ymbols" })
+    vim.keymap.set("n", "<leader>ds", function()
+        require("mini.extra").pickers.lsp({ scope = "document_symbol" })
+    end, { desc = "[S]ymbols" })
 end
 
 function Mini.extra()
@@ -320,8 +354,8 @@ function Mini.surround()
     })
 end
 
-function Mini.clue(MiniClue)
-    -- local MiniClue = require("mini.clue")
+function Mini.clue()
+    local MiniClue = require("mini.clue")
 
     MiniClue.setup({
         triggers = {
@@ -364,15 +398,13 @@ function Mini.clue(MiniClue)
             delay = 350,
         },
     })
-
-    -- https://github.com/echasnovski/mini.nvim/blob/2e38ed16c2ced64bcd576986ccad4b18e2006e18/doc/mini-pick.txt#L650-L660
 end
 
 ---@type LazyPluginSpec
 return {
     "echasnovski/mini.nvim",
     version = "*",
-    event = "VeryLazy",
+    lazy = false,
     config = function()
         Mini.pick()
         Mini.files()
@@ -384,6 +416,6 @@ return {
         Mini.visits()
         Mini.extra()
         Mini.surround()
-        Mini.clue(require("mini.clue"))
+        Mini.clue()
     end,
 }
