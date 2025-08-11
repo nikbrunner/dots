@@ -83,14 +83,13 @@ end
 ---@param colorscheme string
 ---@param background string
 function M.sync_ghostty_colorscheme(config, colorscheme, background)
+    if not config.colorscheme_config_map[colorscheme] then
+        return
+    end
+
     local current_light_colorscheme = config.colorscheme_config_map[config.colorscheme_light].ghostty
     local current_dark_colorscheme = config.colorscheme_config_map[config.colorscheme_dark].ghostty
     local colorscheme_to_update = config.colorscheme_config_map[colorscheme].ghostty
-
-    -- Silently skip if colorscheme doesn't have ghostty config
-    if not colorscheme_to_update then
-        return
-    end
 
     local ghostty_config_file = vim.fn.expand("~/.config/ghostty/config")
 
