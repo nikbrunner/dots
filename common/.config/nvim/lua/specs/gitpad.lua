@@ -25,21 +25,21 @@ M.spec = {
     end,
     keys = {
         {
-            "<leader>ngp",
+            "<leader>np",
             function()
                 require("gitpad").toggle_gitpad()
             end,
             desc = "Project notes",
         },
         {
-            "<leader>ngb",
+            "<leader>nb",
             function()
                 require("gitpad").toggle_gitpad_branch()
             end,
             desc = "Branch notes",
         },
         {
-            "<leader>ngf",
+            "<leader>nf",
             function()
                 local filename = vim.fn.expand("%:p") -- or just use vim.fn.bufname()
                 if filename == "" then
