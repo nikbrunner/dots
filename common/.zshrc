@@ -35,6 +35,8 @@ export PATH=$HOME/.deno/bin:$PATH
 # Because of https://github.com/jesseduffield/lazygit/blob/master/docs/Config.md#user-config
 export XDG_CONFIG_HOME="$HOME/.config"
 
+export RIPGREP_CONFIG_PATH=$HOME/.ripgreprc
+
 # Globals ================================================================
 export EDITOR="nvim"
 
