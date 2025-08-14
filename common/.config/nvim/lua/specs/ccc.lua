@@ -1,6 +1,7 @@
 ---@type LazyPluginSpec
 return {
     "uga-rosa/ccc.nvim",
+    event = "BufReadPre /Users/nbr/repos/black-atom-industries/**/*",
     cmd = { "CccPick", "CccConvert", "CccHighlighterToggle" },
     keys = { { "<leader>ac", "<cmd>CccPick<CR>", desc = "[C]olor Picker" } },
     opts = function()
