@@ -257,6 +257,17 @@ M.map("n", "<leader>all", "<cmd>LspLog<CR>", { desc = "[L]og" })
 
 M.map("n", "sI", vim.show_pos, { desc = "[I]nspect Position" })
 
+vim.keymap.set("n", "<leader>t", function()
+    local date = tostring(os.date("## [[%Y.%m.%d - %A]]"))
+    vim.api.nvim_put({ date }, "l", true, true)
+end, { desc = "Insert current date" })
+
+-- For insert mode
+vim.keymap.set("i", "<M-t>", function()
+    local date = tostring(os.date("## [[%Y.%m.%d - %A]]"))
+    vim.api.nvim_put({ date }, "c", true, true)
+end, { desc = "Insert current date" })
+
 -- LSP mappings are defined below within the LspAttach autocmd for buffer-local setup
 
 -- =============================================================================
