@@ -4,8 +4,8 @@ local M = {}
 M.config = {
     dev_mode = true,
     background = "dark",
-    colorscheme_light = "black-atom-mnml-47-light",
-    colorscheme_dark = "black-atom-mnml-47-dark",
+    colorscheme_light = "black-atom-mnml-mikado-light",
+    colorscheme_dark = "black-atom-mnml-mikado-dark",
 
     ---see for wezterm themes: https://wezfurlong.org/wezterm/colorschemes/index.html
     ---ghostty colors: https://ghostty.org/docs/reference/config
@@ -153,13 +153,13 @@ M.config = {
             wezterm = "Black Atom — MNM ∷ Orange Light",
             ghostty = "black-atom-mnml-orange-light.conf",
         },
-        ["black-atom-mnml-blue-dark"] = {
-            wezterm = "Black Atom — MNM ∷ Blue Dark",
-            ghostty = "black-atom-mnml-blue-dark.conf",
+        ["black-atom-mnml-mikado-dark"] = {
+            wezterm = "Black Atom — MNM ∷ Mikado Dark",
+            ghostty = "black-atom-mnml-mikado-dark.conf",
         },
-        ["black-atom-mnml-blue-light"] = {
-            wezterm = "Black Atom — MNM ∷ Blue Light",
-            ghostty = "black-atom-mnml-blue-light.conf",
+        ["black-atom-mnml-mikado-light"] = {
+            wezterm = "Black Atom — MNM ∷ Mikado Light",
+            ghostty = "black-atom-mnml-mikado-light.conf",
         },
         ["black-atom-mnml-47-light"] = {
             wezterm = "Black Atom — MNM ∷ 47 Light",
