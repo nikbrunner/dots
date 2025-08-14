@@ -2,6 +2,7 @@ local M = {}
 
 ---@param config VinConfig
 function M.handle_colors(config, background)
+    local files = require("lib.files")
     background = background or config.background
     local colorscheme = config["colorscheme_" .. background]
 
@@ -9,7 +10,6 @@ function M.handle_colors(config, background)
     vim.cmd.colorscheme(colorscheme)
 
     vim.defer_fn(function()
-        local files = require("lib.files")
         files.sync_wezterm_colorscheme(config, colorscheme, background)
         files.sync_ghostty_colorscheme(config, colorscheme, background)
     end, 100)
