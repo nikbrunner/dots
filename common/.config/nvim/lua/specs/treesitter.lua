@@ -6,7 +6,7 @@ M.specs = {
         "nvim-treesitter/nvim-treesitter",
         build = ":TSUpdate",
         branch = "master",
-        event = { "BufReadPost", "BufNewFile" },
+        lazy = false,
         opts = {
             highlight = {
                 enable = true,
