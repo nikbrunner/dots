@@ -17,6 +17,14 @@
         "/Users/nbr/repos"
       ],
       "env": {}
+    },
+    "vendure-local-mcp": {
+      "command": "npx",
+      "args": [
+        "@vendure/mcp-server@latest",
+        "--projectPath",
+        "/Users/nbr/repos/dealercenter-digital/bc-web-client-poc/backend/src"
+      ]
     }
   }
 }
