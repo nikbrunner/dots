@@ -73,6 +73,8 @@ vim.opt.fileencoding = "utf-8"
 vim.opt.guifont = { "JetBrainsMono Nerd Font", ":h16" }
 -- vim.opt.guifont = { "Maple Mono NF", ":h16" }
 
+vim.opt.guicursor = "a:blinkon0"
+
 vim.opt.scrolloff = 4
 
 vim.opt.hlsearch = true
