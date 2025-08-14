@@ -8,7 +8,7 @@ case "$(uname -s)" in
         brew_opt_path="/opt/homebrew/opt"
         export PATH=${brew_path}:${PATH}
         export PATH=${brew_opt_path}/python@3.10/bin/python3:$PATH
-        
+
         # NVM (Homebrew)
         export NVM_DIR=$HOME/.nvm
         [ -s "${brew_opt_path}/nvm/nvm.sh" ] && . "${brew_opt_path}/nvm/nvm.sh"
@@ -26,10 +26,11 @@ esac
 # Cross-Platform Path Exports ===========================================
 export PATH=$HOME/bin:/usr/local/bin:$PATH
 export PATH=$HOME/.local/bin:$PATH
+export PATH=$HOME/.local/share/bob/nvim-bin:$PATH
 export PATH=$HOME/.cargo/bin:$PATH
 export PATH=$HOME/Applications:$PATH
 export PATH=/usr/bin/python:$PATH
-export PATH=/usr/bin/python3:$PATH 
+export PATH=/usr/bin/python3:$PATH
 export PATH=$HOME/.deno/bin:$PATH
 
 # Because of https://github.com/jesseduffield/lazygit/blob/master/docs/Config.md#user-config
@@ -179,4 +180,3 @@ eval "$(atuin init zsh)"
 eval "$(oh-my-posh init zsh --config ~/.config/oh-my-posh/nbr.omp.json)"
 # eval "$(starship init zsh)"
 # PS1='%F{cyan}%n@%m%f:%F{blue}%~%f%# '
-
