@@ -6,6 +6,7 @@ local date_format = "%Y.%m.%d - %A"
 return {
     {
         "obsidian-nvim/obsidian.nvim",
+        enabled = false,
         version = "*", -- recommended, use latest release instead of latest commit
         ft = "markdown",
         cmd = {
@@ -239,9 +240,9 @@ return {
 
             commands = {
                 -- All these are hanlded by Obsidian
-                create_from_template = false,
-                insert_checkbox = false,
-                toggle_checkbox = false,
+                -- create_from_template = false,
+                -- insert_checkbox = false,
+                -- toggle_checkbox = false,
             },
 
             -- Keymappings for shortcuts. Set to `false` or `""` to disable.
