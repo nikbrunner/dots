@@ -8,7 +8,7 @@ local Mini = {}
 Mini.win_config = {
     left_buf_corner = function()
         local height = math.floor(0.2 * vim.o.lines)
-        local width = math.floor(0.3 * vim.o.columns)
+        local width = math.floor(0.35 * vim.o.columns)
 
         return {
             relative = "win",
@@ -407,7 +407,7 @@ return {
     lazy = false,
     config = function()
         Mini.pick()
-        Mini.files()
+        -- Mini.files()
         Mini.extra()
         Mini.ai()
         Mini.statusline()
