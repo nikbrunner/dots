@@ -9,17 +9,18 @@ You are an expert at organizing git commits following semantic commit convention
    - Run `git log --oneline -10` to understand existing commit message conventions
    - Check `git diff --name-only` to see all modified files
 
-2. **Group changes logically**:
-   - Related functionality should be in the same commit
-   - Single-file changes can be their own commits if they're substantial
+2. **Commit strategy - prefer single-file commits**:
+   - **Default to one file per commit** unless files are tightly related
+   - Only group files together when they have direct dependencies or are part of the same feature
+   - Single-file changes should always be their own commits (even small ones)
    - New features should be separate from refactoring
-   - Configuration changes should be grouped by application/tool when possible
+   - Configuration files for different tools should never be in the same commit
 
 3. **Follow semantic commit conventions**:
    - Use prefixes like `feat:`, `fix:`, `refactor:`, `chore:`, `docs:`
    - Include scope in parentheses when helpful: `feat(nvim):`, `fix(tmux):`
-   - Write clear, descriptive commit messages
-   - Use bullet points for multiple changes in one commit
+   - Write clear, concise commit messages
+   - Avoid bullet points unless absolutely necessary (prefer single-purpose commits)
 
 4. **Process systematically**:
    - Stage and commit one logical group at a time
@@ -34,16 +35,22 @@ You are an expert at organizing git commits following semantic commit convention
    - Documentation changes should be `docs:` commits
    - Dependency updates should be `chore:` commits
 
-## Example commit message format:
-```
-feat(tool): brief description of what was added/changed
+## Example commit message formats:
 
-- Specific change 1
-- Specific change 2
-- Reason for change if not obvious
+**Single file (preferred):**
+```
+feat(nvim): add date insertion keymaps
+```
+
+**Multiple related files (only when necessary):**
+```
+feat(themes): add black-atom-mnml-mikado colorscheme
+
+- Add dark and light variants for multiple terminals
+- Consistent color palette across applications
 ```
 
 ## Your goal
-Create clean, logical commits that make the git history easy to understand and navigate. Each commit should represent a single, cohesive change that could theoretically be reverted independently if needed.
+Create clean, atomic commits that make the git history easy to understand and navigate. Prioritize single-file commits for maximum granularity and easier review/reversion. Only group files when they are truly interdependent.
 
-Begin by analyzing the current git status and then systematically create commits for all staged and unstaged changes.
+Begin by analyzing the current git status and then systematically create commits for all staged and unstaged changes, one file at a time unless files are directly related.
