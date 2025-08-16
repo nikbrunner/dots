@@ -62,7 +62,7 @@ export BAT_THEME="base16"
 
 # Aliases ================================================================
 alias edit="nvim"
-alias e="NVIM_APPNAME=nvim_min nvim"
+alias e="NVIM_APPNAME=nvim_mnml nvim"
 
 alias ls="eza --all --oneline --long --icons --sort=type"
 alias lt="eza --all --tree --icons --sort=type --level=1 --ignore-glob=\"node_modules|.git\""

@@ -1,11 +1,12 @@
---- Sources:
---- https://github.com/JulesNP/nvim/blob/main/lua/plugins/mini.lua
---- https://github.com/SylvanFranklin/.config/blob/main/nvim/init.lua
+local M = {}
 
-local Mini = {}
+---@type vim.pack.Spec
+M.spec = {
+    src = "https://github.com/echasnovski/mini.nvim",
+}
 
 -- https://github.com/echasnovski/mini.nvim/blob/2e38ed16c2ced64bcd576986ccad4b18e2006e18/doc/mini-pick.txt#L650-L660
-Mini.win_config = {
+M.win_config = {
     left_buf_corner = function()
         local height = math.floor(0.2 * vim.o.lines)
         local width = math.floor(0.35 * vim.o.columns)
@@ -29,8 +30,13 @@ Mini.win_config = {
     end,
 }
 
-function Mini.files()
-    local MiniFiles = require("mini.files")
+function M.files()
+    local present, MiniFiles = pcall(require, "mini.files")
+
+    if not present then
+        vim.notify_once("`mini.files` module not found!", vim.log.levels.ERROR)
+        return
+    end
 
     MiniFiles.setup({
         mappings = {
@@ -79,13 +85,6 @@ function Mini.files()
         end,
     })
 
-    vim.api.nvim_create_autocmd("User", {
-        pattern = "MiniFilesActionRename",
-        callback = function(event)
-            Snacks.rename.on_rename_file(event.data.from, event.data.to)
-        end,
-    })
-
     -- Set focused directory as current working directory
     local set_cwd = function()
         local path = (MiniFiles.get_fs_entry() or {}).path
@@ -119,15 +118,30 @@ function Mini.files()
         end,
     })
 
-    vim.keymap.set("n", "<leader>we", function()
+    vim.keymap.set("n", "-", function()
         MiniFiles.open(vim.api.nvim_buf_get_name(0))
     end, { desc = "Explorer" })
 end
 
-function Mini.pick()
-    local MiniPick = require("mini.pick")
-    local MiniFuzzy = require("mini.fuzzy")
-    local MiniVisits = require("mini.visits")
+function M.pick()
+    local present_pick, MiniPick = pcall(require, "mini.pick")
+    local present_fuzzy, MiniFuzzy = pcall(require, "mini.fuzzy")
+    local present_visits, MiniVisits = pcall(require, "mini.visits")
+
+    if not present_pick then
+        vim.notify_once("`mini.pick` module not found!", vim.log.levels.ERROR)
+        return
+    end
+
+    if not present_fuzzy then
+        vim.notify_once("`mini.fuzzy` module not found!", vim.log.levels.ERROR)
+        return
+    end
+
+    if not present_visits then
+        vim.notify_once("`mini.visits` module not found!", vim.log.levels.ERROR)
+        return
+    end
 
     MiniPick.setup({
         mappings = {
@@ -137,7 +151,7 @@ function Mini.pick()
             scroll_up = "<C-u>",
         },
         window = {
-            config = Mini.win_config.left_buf_corner,
+            config = M.win_config.left_buf_corner,
             prompt_caret = "█",
             prompt_prefix = "  ",
         },
@@ -202,26 +216,55 @@ function Mini.pick()
 
     vim.keymap.set("n", "<leader><leader>", MiniPick.registry.frecency, { desc = "Pick file" })
     vim.keymap.set("n", "<leader>ahp", "<cmd>Pick help<CR>", { desc = "[P]ages" })
+    vim.keymap.set("n", "<leader>ds", "<cmd>Pick lsp scope='document_symbol'<CR>", { desc = "[S]ymbols" })
     vim.keymap.set("n", "<leader>ds", function()
         require("mini.extra").pickers.lsp({ scope = "document_symbol" })
     end, { desc = "[S]ymbols" })
 end
 
-function Mini.extra()
-    require("mini.extra").setup()
+function M.extra()
+    local present, MiniExtra = pcall(require, "mini.extra")
+
+    if not present then
+        vim.notify_once("`mini.extra` module not found!", vim.log.levels.ERROR)
+        return
+    end
+
+    MiniExtra.setup()
 end
 
-function Mini.visits()
-    require("mini.visits").setup()
+function M.visits()
+    local present, MiniVisits = pcall(require, "mini.visits")
+
+    if not present then
+        vim.notify_once("`mini.visits` module not found!", vim.log.levels.ERROR)
+        return
+    end
+
+    MiniVisits.setup()
 end
 
-function Mini.ai()
-    require("mini.ai").setup()
+function M.ai()
+    local present, MiniAi = pcall(require, "mini.ai")
+
+    if not present then
+        vim.notify_once("`mini.ai` module not found!", vim.log.levels.ERROR)
+        return
+    end
+
+    MiniAi.setup()
 end
 
 -- TODO: Clean up
-function Mini.statusline()
-    require("mini.statusline").setup({
+function M.statusline()
+    local present, MiniStatusline = pcall(require, "mini.statusline")
+
+    if not present then
+        vim.notify_once("`mini.statusline` module not found!", vim.log.levels.ERROR)
+        return
+    end
+
+    MiniStatusline.setup({
         content = {
             active = function()
                 local m = require("mini.statusline")
@@ -234,25 +277,10 @@ function Mini.statusline()
                     return parent_project_folder .. "/" .. current_project_folder
                 end
 
-                local lazy_plug_count = function()
-                    local stats = require("lazy").stats()
-                    return " " .. stats.count
-                end
-
-                local lazy_startup = function()
-                    local stats = require("lazy").stats()
-                    local ms = (math.floor(stats.startuptime * 100 + 0.5) / 100)
-                    return " " .. ms .. "ms"
-                end
-
-                local lazy_updates = function()
-                    return require("lazy.status").updates()
-                end
-
                 local word_count = function()
                     if vim.bo.filetype == "markdown" then
                         local words = vim.fn.wordcount().words
-                        return " " .. words .. "w"
+                        return " " .. words .. " "
                     end
                     return ""
                 end
@@ -271,9 +299,6 @@ function Mini.statusline()
                 end
 
                 local diagnostics = m.section_diagnostics({ trunc_width = 75 })
-                local viewport = "󰊉 " .. vim.o.lines .. ":W" .. vim.o.columns
-                local position = "󰩷 " .. vim.fn.line(".") .. ":" .. vim.fn.col(".")
-                local filetype = " " .. vim.bo.filetype
 
                 local black_atom_label = nil
                 local black_atom_meta = require("black-atom.api").get_meta()
@@ -281,10 +306,8 @@ function Mini.statusline()
                 if black_atom_meta then
                     black_atom_label = black_atom_meta.label
                 end
-                local colorscheme_name = black_atom_label or vim.g.colors_name or "default"
-                local colorscheme = m.is_truncated(200) and "" or " " .. colorscheme_name
-
-                local dev_mode = m.is_truncated(125) and "" or "DEV_MODE: " .. (require("config").dev_mode and "ON" or "OFF")
+                local colorscheme_name = black_atom_label or vim.g.colors_name or "N/A"
+                local colorscheme = m.is_truncated(200) and "" or "  " .. colorscheme_name
 
                 return m.combine_groups({
                     { hl = mode_hl, strings = { mode } },
@@ -297,6 +320,11 @@ function Mini.statusline()
                         strings = (m.is_truncated(200) and {} or { git }),
                     },
 
+                    {
+                        hl = "@comment",
+                        strings = { relative_filepath() },
+                    },
+
                     "%<", -- Mark general truncate point
 
                     { hl = "DiagnosticError", strings = { diagnostics } },
@@ -304,15 +332,9 @@ function Mini.statusline()
                     "%=", -- End left alignment
 
                     {
-                        hl = "@function",
-                        strings = { dev_mode, word_count(), position, viewport, filetype },
-                    },
-                    {
                         hl = "Comment",
                         strings = (m.is_truncated(165) and {} or {
-                            lazy_plug_count(),
-                            lazy_updates(),
-                            lazy_startup(),
+                            word_count(),
                             colorscheme,
                             "[" .. vim.o.background .. "]",
                         }),
@@ -323,8 +345,15 @@ function Mini.statusline()
     })
 end
 
-function Mini.icons()
-    require("mini.icons").setup({
+function M.icons()
+    local present, MiniIcons = pcall(require, "mini.icons")
+
+    if not present then
+        vim.notify_once("`mini.icons` module not found!", vim.log.levels.ERROR)
+        return
+    end
+
+    MiniIcons.setup({
         file = {
             [".eslintrc.js"] = { glyph = "󰱺", hl = "MiniIconsYellow" },
             [".node-version"] = { glyph = "", hl = "MiniIconsGreen" },
@@ -339,8 +368,15 @@ function Mini.icons()
     })
 end
 
-function Mini.surround()
-    require("mini.surround").setup({
+function M.surround()
+    local present, MiniSurround = pcall(require, "mini.surround")
+
+    if not present then
+        vim.notify_once("`mini.surround` module not found!", vim.log.levels.ERROR)
+        return
+    end
+
+    MiniSurround.setup({
         mappings = {
             add = "Sa", -- Add surrounding in Normal and Visual modes
             delete = "Sd", -- Delete surrounding
@@ -353,8 +389,13 @@ function Mini.surround()
     })
 end
 
-function Mini.clue()
-    local MiniClue = require("mini.clue")
+function M.clue()
+    local present, MiniClue = pcall(require, "mini.clue")
+
+    if not present then
+        vim.notify_once("`mini.clue` module not found!", vim.log.levels.ERROR)
+        return
+    end
 
     MiniClue.setup({
         triggers = {
@@ -399,22 +440,18 @@ function Mini.clue()
     })
 end
 
----@type LazyPluginSpec
-return {
-    "echasnovski/mini.nvim",
-    version = "*",
-    lazy = false,
-    config = function()
-        Mini.pick()
-        -- Mini.files()
-        Mini.extra()
-        Mini.ai()
-        Mini.statusline()
-        Mini.icons()
-        Mini.pick()
-        Mini.visits()
-        Mini.extra()
-        Mini.surround()
-        Mini.clue()
-    end,
-}
+function M.init()
+    M.visits()
+    M.extra()
+    M.files()
+    M.pick()
+    M.extra()
+    M.ai()
+    M.statusline()
+    M.icons()
+    M.pick()
+    M.surround()
+    M.clue()
+end
+
+return M
