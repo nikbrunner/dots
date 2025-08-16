@@ -61,9 +61,9 @@ export BC_ANGELA_ST=CNZFGQ2
 export BAT_THEME="base16"
 
 # Aliases ================================================================
-alias vim="nvim"
 alias edit="nvim"
-alias e="nvim"
+alias e="NVIM_APPNAME=nvim_min nvim"
+
 alias ls="eza --all --oneline --long --icons --sort=type"
 alias lt="eza --all --tree --icons --sort=type --level=1 --ignore-glob=\"node_modules|.git\""
 alias lg="lazygit"
@@ -173,7 +173,6 @@ bindkey '^y' autosuggest-accept
 ZSH_AUTOSUGGEST_STRATEGY=(history completion)
 
 . "$HOME/.atuin/bin/env"
-
 eval "$(atuin init zsh)"
 
 source ~/.config/zsh/prompt.zsh
