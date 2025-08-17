@@ -33,17 +33,17 @@ for arg in "$@"; do
 done
 
 if [[ "$DRY_RUN" == true ]]; then
-	echo -e "${YELLOW}DRY RUN MODE - No changes will be made${NC}"
+	echo "DRY RUN MODE - No changes will be made"
 	echo ""
 fi
 
 if [[ "$NO_BACKUP" == true ]]; then
-	echo -e "${YELLOW}NO BACKUP MODE - Existing files will be overwritten${NC}"
+	echo "NO BACKUP MODE - Existing files will be overwritten"
 	echo ""
 fi
 
 if [[ "$DEBUG" == true ]]; then
-	echo -e "${YELLOW}DEBUG MODE - Extra diagnostics enabled${NC}"
+	echo "DEBUG MODE - Extra diagnostics enabled"
 	echo ""
 fi
 
@@ -58,17 +58,17 @@ CURRENT_OS=$(get_os)
 init_manifest "$DOTS_DIR"
 
 # Clean up broken symlinks BEFORE creating new ones
-echo -e "${YELLOW}→${NC} Cleaning broken symlinks..."
+echo "→ Cleaning broken symlinks..."
 
 cleanup_broken_symlinks "$DOTS_DIR" "$DRY_RUN" "$VERBOSE"
 
 if [[ $CLEANUP_BROKEN_COUNT -eq 0 ]]; then
-	echo -e "${GREEN}✓${NC} No broken symlinks found"
+	echo "✓ No broken symlinks found"
 else
 	if [[ "$DRY_RUN" == true ]]; then
-		echo -e "${GREEN}✓${NC} Would remove $CLEANUP_BROKEN_COUNT broken symlinks"
+		echo "✓ Would remove $CLEANUP_BROKEN_COUNT broken symlinks"
 	else
-		echo -e "${GREEN}✓${NC} Cleaned up: $CLEANUP_BROKEN_COUNT broken symlinks"
+		echo "✓ Cleaned up: $CLEANUP_BROKEN_COUNT broken symlinks"
 	fi
 fi
 echo ""
@@ -81,7 +81,7 @@ process_directory() {
 
 	[[ ! -d "$source_dir" ]] && return
 
-	echo -e "${YELLOW}→${NC} Processing $dir_name files..."
+	echo "→ Processing $dir_name files..."
 
 	# Build options array
 	local opts=()
@@ -95,7 +95,7 @@ process_directory() {
 
 	# Display summary
 	if [[ $STATS_TOTAL -eq 0 ]]; then
-		echo -e "${YELLOW}→${NC} No files found in $dir_name"
+		echo "→ No files found in $dir_name"
 	else
 		local summary=""
 		[[ $STATS_VALID -gt 0 ]] && summary+="${STATS_VALID} ok"
@@ -103,7 +103,7 @@ process_directory() {
 		[[ $STATS_UPDATED -gt 0 ]] && summary+="${summary:+, }${STATS_UPDATED} updated"
 		[[ $STATS_REPLACED -gt 0 ]] && summary+="${summary:+, }${STATS_REPLACED} replaced"
 
-		echo -e "${GREEN}✓${NC} $dir_name: $STATS_TOTAL files ($summary)"
+		echo "✓ $dir_name: $STATS_TOTAL files ($summary)"
 	fi
 }
 
@@ -121,9 +121,9 @@ echo ""
 
 # Save manifest file
 if [[ "$DRY_RUN" != true ]]; then
-	echo -e "${YELLOW}→${NC} Saving manifest..."
+	echo "→ Saving manifest..."
 	save_manifest
-	echo -e "${GREEN}✓${NC} Manifest saved to .dots-manifest.json"
+	echo "✓ Manifest saved to .dots-manifest.json"
 fi
 
 echo "Symlink setup complete!"

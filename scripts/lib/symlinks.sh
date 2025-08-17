@@ -2,11 +2,11 @@
 # Shared library for symlink operations
 # Can be used as both a library (sourced) and standalone script
 
-# Colors for output
-RED='\033[0;31m'
-GREEN='\033[0;32m'
-YELLOW='\033[0;33m'
-NC='\033[0m' # No Color
+# Colors disabled for compatibility
+RED=''
+GREEN=''
+YELLOW=''
+NC='' # No Color
 
 # Global manifest tracking
 MANIFEST_DATA=""
@@ -146,24 +146,24 @@ process_symlinks() {
                     valid_links=$((valid_links + 1))
                 else
                     wrong_target_links=$((wrong_target_links + 1))
-                    echo -e "${YELLOW}⚠${NC} Wrong target: $target → $actual_target"
+                    echo "⚠ Wrong target: $target → $actual_target"
                     echo "    Expected: $file"
                 fi
                 
                 # Check if target exists
                 if [[ ! -e "$target" ]]; then
                     broken_links=$((broken_links + 1))
-                    echo -e "${RED}✗${NC} Broken link: $target"
+                    echo "✗ Broken link: $target"
                 fi
             elif [[ -e "$target" ]]; then
                 # File/directory exists but is not a symlink
-                echo -e "${RED}✗${NC} Not a symlink: $target"
+                echo "✗ Not a symlink: $target"
                 echo "    Run 'dots link' to fix"
             else
                 # Neither symlink nor file exists
                 missing_links=$((missing_links + 1))
                 if [[ "$verbose" == true ]]; then
-                    echo -e "${YELLOW}⚠${NC} Missing link: $target"
+                    echo "⚠ Missing link: $target"
                 fi
             fi
         elif [[ "$mode" == "create" ]]; then
@@ -185,27 +185,27 @@ process_symlinks() {
                     if [[ "$actual_target" == "$file" ]]; then
                         [[ "$debug" == true ]] && echo "[DEBUG] Match! Incrementing valid_links"
                         valid_links=$((valid_links + 1))
-                        [[ "$verbose" == true ]] && echo -e "${GREEN}✓${NC} [DRY] Symlink OK: $target → $file"
+                        [[ "$verbose" == true ]] && echo "✓ [DRY] Symlink OK: $target → $file"
                         # Add to manifest (even in dry-run, to show what would be tracked)
                         add_to_manifest "$target" "$file"
                     else
                         [[ "$debug" == true ]] && echo "[DEBUG] No match. Incrementing wrong_target_links"
                         wrong_target_links=$((wrong_target_links + 1))
-                        [[ "$verbose" == true ]] && echo -e "${YELLOW}⚠${NC} [DRY] Wrong target: $target → $actual_target (expected: $file)"
+                        [[ "$verbose" == true ]] && echo "⚠ [DRY] Wrong target: $target → $actual_target (expected: $file)"
                     fi
                 elif [[ -e "$target" ]]; then
                     if [[ "$verbose" == true ]]; then
-                        echo -e "${YELLOW}⚠${NC} [DRY] File exists (not symlink): $target"
+                        echo "⚠ [DRY] File exists (not symlink): $target"
                         if [[ "$no_backup" == true ]]; then
-                            echo -e "${YELLOW}⚠${NC} [DRY] Would replace file with symlink"
+                            echo "⚠ [DRY] Would replace file with symlink"
                         else
-                            echo -e "${YELLOW}⚠${NC} [DRY] Would backup and replace with symlink"
+                            echo "⚠ [DRY] Would backup and replace with symlink"
                         fi
                     fi
                     replaced_links=$((replaced_links + 1))
                 else
                     created_links=$((created_links + 1))
-                    [[ "$verbose" == true ]] && echo -e "${GREEN}+${NC} [DRY] Would create symlink: $target → $file"
+                    [[ "$verbose" == true ]] && echo "+ [DRY] Would create symlink: $target → $file"
                     # Add to manifest (even in dry-run, to show what would be tracked)
                     add_to_manifest "$target" "$file"
                 fi
@@ -219,15 +219,15 @@ process_symlinks() {
                     actual_target=$(readlink "$target" 2>/dev/null)
                     if [[ "$actual_target" == "$file" ]]; then
                         valid_links=$((valid_links + 1))
-                        [[ "$verbose" == true ]] && echo -e "${GREEN}✓${NC} Symlink OK: $target"
+                        [[ "$verbose" == true ]] && echo "✓ Symlink OK: $target"
                         # Add to manifest
                         add_to_manifest "$target" "$file"
                     else
                         updated_links=$((updated_links + 1))
-                        [[ "$verbose" == true ]] && echo -e "${YELLOW}⚠${NC} Updating symlink: $target"
+                        [[ "$verbose" == true ]] && echo "⚠ Updating symlink: $target"
                         rm "$target"
                         ln -s "$file" "$target"
-                        [[ "$verbose" == true ]] && echo -e "${GREEN}✓${NC} Updated symlink: $target"
+                        [[ "$verbose" == true ]] && echo "✓ Updated symlink: $target"
                         # Add to manifest
                         add_to_manifest "$target" "$file"
                     fi
@@ -235,21 +235,21 @@ process_symlinks() {
                     # Target exists but is not a symlink
                     replaced_links=$((replaced_links + 1))
                     if [[ "$no_backup" == true ]]; then
-                        [[ "$verbose" == true ]] && echo -e "${YELLOW}⚠${NC} Replacing file with symlink: $target"
+                        [[ "$verbose" == true ]] && echo "⚠ Replacing file with symlink: $target"
                         rm -f "$target"
                     else
-                        [[ "$verbose" == true ]] && echo -e "${YELLOW}⚠${NC} Backing up existing file: $target"
+                        [[ "$verbose" == true ]] && echo "⚠ Backing up existing file: $target"
                         mv "$target" "$target.backup.$(date +%Y%m%d_%H%M%S)"
                     fi
                     ln -s "$file" "$target"
-                    [[ "$verbose" == true ]] && echo -e "${GREEN}✓${NC} Created symlink: $target"
+                    [[ "$verbose" == true ]] && echo "✓ Created symlink: $target"
                     # Add to manifest
                     add_to_manifest "$target" "$file"
                 else
                     # Target doesn't exist
                     created_links=$((created_links + 1))
                     ln -s "$file" "$target"
-                    [[ "$verbose" == true ]] && echo -e "${GREEN}✓${NC} Created symlink: $target"
+                    [[ "$verbose" == true ]] && echo "✓ Created symlink: $target"
                     # Add to manifest
                     add_to_manifest "$target" "$file"
                 fi
@@ -319,15 +319,15 @@ with open('$manifest_file') as f:
                 # Symlink is broken or points to wrong target
                 if [[ "$dry_run" == true ]]; then
                     if [[ ! -e "$target" ]]; then
-                        [[ "$verbose" == true ]] && echo -e "${RED}✗${NC} [DRY] Would remove orphaned symlink: $symlink"
+                        [[ "$verbose" == true ]] && echo "✗ [DRY] Would remove orphaned symlink: $symlink"
                     else
-                        [[ "$verbose" == true ]] && echo -e "${RED}✗${NC} [DRY] Would remove wrong symlink: $symlink"
+                        [[ "$verbose" == true ]] && echo "✗ [DRY] Would remove wrong symlink: $symlink"
                     fi
                 else
                     if [[ ! -e "$target" ]]; then
-                        [[ "$verbose" == true ]] && echo -e "${RED}✗${NC} Removing orphaned symlink: $symlink"
+                        [[ "$verbose" == true ]] && echo "✗ Removing orphaned symlink: $symlink"
                     else
-                        [[ "$verbose" == true ]] && echo -e "${RED}✗${NC} Removing wrong symlink: $symlink"
+                        [[ "$verbose" == true ]] && echo "✗ Removing wrong symlink: $symlink"
                     fi
                     rm "$symlink"
                 fi
@@ -335,7 +335,7 @@ with open('$manifest_file') as f:
             fi
         elif [[ -e "$symlink" ]]; then
             # File exists but is not a symlink (user might have replaced it)
-            [[ "$verbose" == true ]] && echo -e "${YELLOW}⚠${NC} Not a symlink (in manifest): $symlink"
+            [[ "$verbose" == true ]] && echo "⚠ Not a symlink (in manifest): $symlink"
         fi
     done < "$temp_manifest"
     

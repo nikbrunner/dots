@@ -9,12 +9,12 @@ DOTS_DIR="${DOTS_DIR:-$HOME/repos/nikbrunner/dots}"
 # Capture the original working directory before changing to dots dir
 ORIGINAL_PWD="$(pwd)"
 
-# Colors for output
-RED='\033[0;31m'
-GREEN='\033[0;32m'
-YELLOW='\033[0;33m'
-BLUE='\033[0;34m'
-NC='\033[0m' # No Color
+# Colors disabled for compatibility
+RED=''
+GREEN=''
+YELLOW=''
+BLUE=''
+NC='' # No Color
 
 # Change to dots directory for git operations
 cd "$DOTS_DIR"
@@ -22,7 +22,7 @@ cd "$DOTS_DIR"
 # Check for gum and provide helpful message if missing
 check_gum() {
     if ! command -v gum >/dev/null 2>&1; then
-        echo -e "${YELLOW}⚠${NC} gum not found - install for enhanced UI:"
+        echo "⚠ gum not found - install for enhanced UI:"
         echo "  macOS: brew install gum"
         echo "  Linux: See https://github.com/charmbracelet/gum#installation"
         echo ""
@@ -36,7 +36,7 @@ log_section() {
     if command -v gum >/dev/null 2>&1; then
         gum style --foreground=4 --bold "$1"
     else
-        echo -e "${BLUE}$1${NC}"
+        echo "$1"
     fi
 }
 
@@ -44,7 +44,7 @@ log_success() {
     if command -v gum >/dev/null 2>&1; then
         gum style --foreground=2 "✓ $1"
     else
-        echo -e "${GREEN}✓${NC} $1"
+        echo "✓ $1"
     fi
 }
 
@@ -52,7 +52,7 @@ log_warning() {
     if command -v gum >/dev/null 2>&1; then
         gum style --foreground=3 "⚠ $1"
     else
-        echo -e "${YELLOW}⚠${NC} $1"
+        echo "⚠ $1"
     fi
 }
 
@@ -60,7 +60,7 @@ log_error() {
     if command -v gum >/dev/null 2>&1; then
         gum style --foreground=1 "✗ $1"
     else
-        echo -e "${RED}✗${NC} $1"
+        echo "✗ $1"
     fi
 }
 
@@ -68,7 +68,7 @@ log_info() {
     if command -v gum >/dev/null 2>&1; then
         gum style --foreground=6 "→ $1"
     else
-        echo -e "${YELLOW}→${NC} $1"
+        echo "→ $1"
     fi
 }
 
@@ -98,7 +98,7 @@ show_usage() {
         gum style --foreground=2 "  remove       - Remove path from git tracking (keep files locally)"
         echo ""
     else
-        echo -e "${BLUE}dots - Dotfiles management command${NC}"
+        echo "dots - Dotfiles management command"
         echo ""
         echo "Usage: dots <command> [options]"
         echo ""
@@ -124,13 +124,13 @@ show_usage() {
 
 # Install command
 cmd_install() {
-    echo -e "${YELLOW}→${NC} Running installation..."
+    echo "→ Running installation..."
     "$DOTS_DIR/install.sh" "$@"
 }
 
 # Link command
 cmd_link() {
-    echo -e "${YELLOW}→${NC} Creating symlinks..."
+    echo "→ Creating symlinks..."
     "$DOTS_DIR/scripts/link.sh" "$@"
 }
 
@@ -299,7 +299,7 @@ cmd_sub_update() {
 # Submodule add command
 cmd_sub_add() {
     if [[ $# -lt 2 ]]; then
-        echo -e "${RED}✗${NC} Usage: dots sub-add <repo_url> <path>"
+        echo "✗ Usage: dots sub-add <repo_url> <path>"
         return 1
     fi
     "$DOTS_DIR/scripts/submodules.sh" add "$@"
@@ -466,36 +466,36 @@ cmd_status() {
 
 # Test command - comprehensive system checks
 cmd_test() {
-    echo -e "${BLUE}=== Dotfiles System Test ===${NC}"
+    echo "=== Dotfiles System Test ==="
     echo ""
 
     local tests_passed=0
     local tests_failed=0
 
     # Test 1: Check if we're in the right directory
-    echo -e "${YELLOW}→${NC} Testing repository structure..."
+    echo "→ Testing repository structure..."
     if [[ -f "CLAUDE.md" && -d "scripts" && -d "common" ]]; then
-        echo -e "${GREEN}✓${NC} Repository structure OK"
+        echo "✓ Repository structure OK"
         ((tests_passed++))
     else
-        echo -e "${RED}✗${NC} Repository structure missing"
+        echo "✗ Repository structure missing"
         ((tests_failed++))
     fi
 
     # Test 2: Check OS detection
-    echo -e "${YELLOW}→${NC} Testing OS detection..."
+    echo "→ Testing OS detection..."
     source "$DOTS_DIR/scripts/detect-os.sh"
     local detected_os=$(get_os)
     if [[ -n "$detected_os" && ("$detected_os" == "macos" || "$detected_os" == "linux") ]]; then
-        echo -e "${GREEN}✓${NC} OS detection OK: $detected_os"
+        echo "✓ OS detection OK: $detected_os"
         ((tests_passed++))
     else
-        echo -e "${RED}✗${NC} OS detection failed: $detected_os"
+        echo "✗ OS detection failed: $detected_os"
         ((tests_failed++))
     fi
 
     # Test 3: Check directory structure
-    echo -e "${YELLOW}→${NC} Testing directory structure..."
+    echo "→ Testing directory structure..."
     local expected_dirs=("$DOTS_DIR/common" "$DOTS_DIR/$detected_os" "$DOTS_DIR/scripts")
     local missing_dirs=0
     for dir in "${expected_dirs[@]}"; do
@@ -504,25 +504,25 @@ cmd_test() {
         fi
     done
     if [[ $missing_dirs -eq 0 ]]; then
-        echo -e "${GREEN}✓${NC} Directory structure OK"
+        echo "✓ Directory structure OK"
         ((tests_passed++))
     else
-        echo -e "${RED}✗${NC} Directory structure incomplete ($missing_dirs missing)"
+        echo "✗ Directory structure incomplete ($missing_dirs missing)"
         ((tests_failed++))
     fi
 
     # Test 4: Check symlink creation (dry run)
-    echo -e "${YELLOW}→${NC} Testing symlink creation (dry run)..."
+    echo "→ Testing symlink creation (dry run)..."
     if "$DOTS_DIR/scripts/link.sh" --dry-run >/dev/null 2>&1; then
-        echo -e "${GREEN}✓${NC} Symlink creation test OK"
+        echo "✓ Symlink creation test OK"
         ((tests_passed++))
     else
-        echo -e "${RED}✗${NC} Symlink creation test failed"
+        echo "✗ Symlink creation test failed"
         ((tests_failed++))
     fi
 
     # Test 5: Check critical symlinks exist and are correct
-    echo -e "${YELLOW}→${NC} Testing critical symlinks..."
+    echo "→ Testing critical symlinks..."
     local critical_links=("$HOME/.zshrc" "$HOME/.gitconfig" "$HOME/bin/dots")
     local valid_symlinks=0
 
@@ -533,26 +533,26 @@ cmd_test() {
     done
 
     if [[ $valid_symlinks -eq ${#critical_links[@]} ]]; then
-        echo -e "${GREEN}✓${NC} Critical symlinks OK ($valid_symlinks/${#critical_links[@]})"
+        echo "✓ Critical symlinks OK ($valid_symlinks/${#critical_links[@]})"
         ((tests_passed++))
     else
-        echo -e "${YELLOW}⚠${NC} Some critical symlinks missing ($valid_symlinks/${#critical_links[@]})"
+        echo "⚠ Some critical symlinks missing ($valid_symlinks/${#critical_links[@]})"
         # Don't fail the test - symlinks might not be set up yet
         ((tests_passed++))
     fi
 
     # Test 6: Check git repository status
-    echo -e "${YELLOW}→${NC} Testing git repository..."
+    echo "→ Testing git repository..."
     if git rev-parse --git-dir >/dev/null 2>&1; then
-        echo -e "${GREEN}✓${NC} Git repository OK"
+        echo "✓ Git repository OK"
         ((tests_passed++))
     else
-        echo -e "${RED}✗${NC} Git repository not found"
+        echo "✗ Git repository not found"
         ((tests_failed++))
     fi
 
     # Test 7: Lint shell scripts with shellcheck
-    echo -e "${YELLOW}→${NC} Linting shell scripts..."
+    echo "→ Linting shell scripts..."
     if command -v shellcheck >/dev/null 2>&1; then
         local shell_files=()
         local lint_errors=0
@@ -582,10 +582,10 @@ cmd_test() {
             done
 
             if [[ $lint_errors -eq 0 ]]; then
-                echo -e "${GREEN}✓${NC} Shell scripts lint OK (${#shell_files[@]} files)"
+                echo "✓ Shell scripts lint OK (${#shell_files[@]} files)"
                 ((tests_passed++))
             else
-                echo -e "${YELLOW}⚠${NC} Shell scripts have lint issues ($lint_errors/${#shell_files[@]} files):"
+                echo "⚠ Shell scripts have lint issues ($lint_errors/${#shell_files[@]} files):"
                 for file in "${files_with_issues[@]}"; do
                     echo ""
                     log_warning "Issues in $file:"
@@ -596,30 +596,30 @@ cmd_test() {
                 ((tests_passed++))
             fi
         else
-            echo -e "${GREEN}✓${NC} No shell scripts found"
+            echo "✓ No shell scripts found"
             ((tests_passed++))
         fi
     else
-        echo -e "${YELLOW}⚠${NC} shellcheck not available, skipping shell script linting"
+        echo "⚠ shellcheck not available, skipping shell script linting"
         echo "    Install with: brew install shellcheck"
         ((tests_passed++))
     fi
 
     # Summary
     echo ""
-    echo -e "${BLUE}=== Test Summary ===${NC}"
+    echo "=== Test Summary ==="
     local total_tests=$((tests_passed + tests_failed))
-    echo -e "  Total tests: $total_tests"
-    echo -e "  ${GREEN}✓${NC} Passed: $tests_passed"
+    echo "  Total tests: $total_tests"
+    echo "  ✓ Passed: $tests_passed"
 
     if [[ $tests_failed -gt 0 ]]; then
-        echo -e "  ${RED}✗${NC} Failed: $tests_failed"
+        echo "  ✗ Failed: $tests_failed"
         echo ""
-        echo -e "${RED}❌ System tests FAILED${NC}"
+        echo "❌ System tests FAILED"
         return 1
     else
         echo ""
-        echo -e "${GREEN}🎉 All system tests PASSED${NC}"
+        echo "🎉 All system tests PASSED"
         return 0
     fi
 }
@@ -627,13 +627,13 @@ cmd_test() {
 
 # Format command
 cmd_format() {
-    echo -e "${YELLOW}→${NC} Formatting repository files..."
+    echo "→ Formatting repository files..."
     "$DOTS_DIR/scripts/format.sh" "$@"
 }
 
 # Log command
 cmd_log() {
-    echo -e "${YELLOW}→${NC} Recent commits:"
+    echo "→ Recent commits:"
     git log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate -10
 }
 
@@ -641,13 +641,13 @@ cmd_log() {
 cmd_open() {
     # Check if EDITOR is set
     if [[ -z "$EDITOR" ]]; then
-        echo -e "${YELLOW}⚠${NC} EDITOR environment variable not set, using 'vim' as default"
+        echo "⚠ EDITOR environment variable not set, using 'vim' as default"
         local editor="vim"
     else
         local editor="$EDITOR"
     fi
     
-    echo -e "${YELLOW}→${NC} Opening dots directory with $editor..."
+    echo "→ Opening dots directory with $editor..."
     "$editor" "$DOTS_DIR"
 }
 
