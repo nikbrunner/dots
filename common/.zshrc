@@ -77,6 +77,8 @@ alias gdl="gallery-dl"
 alias npmu="npm-upgrade"
 
 alias :q=exit
+alias :vs='tmux split-window -h -c "#{pane_current_path}"'
+alias :sp='tmux split-window -v -c "#{pane_current_path}"'
 
 alias start="tmux new -s dots -c ~/.config/nvim && rr"
 alias scratch="$EDITOR $HOME/scratchpad.md"
