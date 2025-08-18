@@ -26,9 +26,3 @@ auto("User", {
     end,
 })
 
-auto("VimEnter", {
-    group = auto_group("vim_enter"),
-    callback = function()
-        vim.cmd.colorscheme("black-atom-mnml-mikado-dark")
-    end,
-})

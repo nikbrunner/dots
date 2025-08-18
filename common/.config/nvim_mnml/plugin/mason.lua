@@ -1,13 +1,6 @@
-local M = {}
-
----@type vim.pack.Spec
-M.spec = {
-    src = "https://github.com/mason-org/mason.nvim",
-}
-
 -- Direct Mason package names
 -- https://mason-registry.dev/registry/list
-M.packages = {
+local packages = {
     -- LSP Servers
     "astro-language-server",
     "bash-language-server",
@@ -29,7 +22,7 @@ M.packages = {
     "shfmt",
 }
 
-function M:setup_install_notification()
+local function setup_install_notification()
     vim.api.nvim_create_autocmd("User", {
         pattern = "MasonToolsStartingInstall",
         callback = function()
@@ -40,7 +33,7 @@ function M:setup_install_notification()
     })
 end
 
-function M:install_package(pkg, pkg_name)
+local function install_package(pkg, pkg_name)
     vim.notify(string.format("Mason: Installing %s", pkg_name), vim.log.levels.INFO)
 
     pkg:install({}, function(success, result)
@@ -57,10 +50,10 @@ function M:install_package(pkg, pkg_name)
     end)
 end
 
-function M:get_missing_packages(registry)
+local function get_missing_packages(registry)
     local missing = {}
 
-    for _, pkg_name in ipairs(M.packages) do
+    for _, pkg_name in ipairs(packages) do
         local ok, pkg = pcall(registry.get_package, pkg_name)
         if ok then
             if not pkg:is_installed() then
@@ -73,40 +66,37 @@ function M:get_missing_packages(registry)
 
     return missing
 end
-function M:ensure_installed()
+
+local function ensure_installed()
     local registry = require("mason-registry")
 
     registry.refresh(function()
-        local missing_packages = M:get_missing_packages(registry)
+        local missing_packages = get_missing_packages(registry)
 
         if #missing_packages > 0 then
             vim.api.nvim_exec_autocmds("User", { pattern = "MasonToolsStartingInstall" })
 
             for _, pkg_info in ipairs(missing_packages) do
-                M:install_package(pkg_info.package, pkg_info.name)
+                install_package(pkg_info.package, pkg_info.name)
             end
         end
     end)
 end
 
-function M.init()
-    local present, mason = pcall(require, "mason")
+local present, mason = pcall(require, "mason")
 
-    if not present then
-        vim.notify_once("`Mason` module not found!", vim.log.levels.ERROR)
-        return
-    end
-
-    mason.setup()
-
-    -- Custom ensure_installed implementation
-    -- Based on: https://github.com/mason-org/mason.nvim/pull/1949
-    M:setup_install_notification()
-
-    -- Run ensure_installed after a small delay to ensure mason is fully loaded
-    vim.defer_fn(function()
-        M:ensure_installed()
-    end, 100)
+if not present then
+    vim.notify_once("`Mason` module not found!", vim.log.levels.ERROR)
+    return
 end
 
-return M
+mason.setup()
+
+-- Custom ensure_installed implementation
+-- Based on: https://github.com/mason-org/mason.nvim/pull/1949
+setup_install_notification()
+
+-- Run ensure_installed after a small delay to ensure mason is fully loaded
+vim.defer_fn(function()
+    ensure_installed()
+end, 100)

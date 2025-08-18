@@ -1,12 +1,4 @@
-local M = {}
-
----@type vim.pack.Spec
-M.spec = {
-    src = "https://github.com/echasnovski/mini.nvim",
-}
-
--- https://github.com/echasnovski/mini.nvim/blob/2e38ed16c2ced64bcd576986ccad4b18e2006e18/doc/mini-pick.txt#L650-L660
-M.win_config = {
+local win_config = {
     left_buf_corner = function()
         local height = math.floor(0.2 * vim.o.lines)
         local width = math.floor(0.35 * vim.o.columns)
@@ -30,7 +22,7 @@ M.win_config = {
     end,
 }
 
-function M.files()
+local function setup_files()
     local present, MiniFiles = pcall(require, "mini.files")
 
     if not present then
@@ -123,7 +115,7 @@ function M.files()
     end, { desc = "Explorer" })
 end
 
-function M.pick()
+local function setup_pick()
     local present_pick, MiniPick = pcall(require, "mini.pick")
     local present_fuzzy, MiniFuzzy = pcall(require, "mini.fuzzy")
     local present_visits, MiniVisits = pcall(require, "mini.visits")
@@ -151,9 +143,9 @@ function M.pick()
             scroll_up = "<C-u>",
         },
         window = {
-            config = M.win_config.left_buf_corner,
+            config = win_config.left_buf_corner,
             prompt_caret = "█",
-            prompt_prefix = "  ",
+            prompt_prefix = "  ",
         },
     })
 
@@ -222,7 +214,7 @@ function M.pick()
     end, { desc = "[S]ymbols" })
 end
 
-function M.extra()
+local function setup_extra()
     local present, MiniExtra = pcall(require, "mini.extra")
 
     if not present then
@@ -233,7 +225,7 @@ function M.extra()
     MiniExtra.setup()
 end
 
-function M.visits()
+local function setup_visits()
     local present, MiniVisits = pcall(require, "mini.visits")
 
     if not present then
@@ -244,7 +236,7 @@ function M.visits()
     MiniVisits.setup()
 end
 
-function M.ai()
+local function setup_ai()
     local present, MiniAi = pcall(require, "mini.ai")
 
     if not present then
@@ -256,7 +248,7 @@ function M.ai()
 end
 
 -- TODO: Clean up
-function M.statusline()
+local function setup_statusline()
     local present, MiniStatusline = pcall(require, "mini.statusline")
 
     if not present then
@@ -280,7 +272,7 @@ function M.statusline()
                 local word_count = function()
                     if vim.bo.filetype == "markdown" then
                         local words = vim.fn.wordcount().words
-                        return " " .. words .. " "
+                        return " " .. words .. " "
                     end
                     return ""
                 end
@@ -307,7 +299,7 @@ function M.statusline()
                     black_atom_label = black_atom_meta.label
                 end
                 local colorscheme_name = black_atom_label or vim.g.colors_name or "N/A"
-                local colorscheme = m.is_truncated(200) and "" or "  " .. colorscheme_name
+                local colorscheme = m.is_truncated(200) and "" or "  " .. colorscheme_name
 
                 return m.combine_groups({
                     { hl = mode_hl, strings = { mode } },
@@ -345,7 +337,7 @@ function M.statusline()
     })
 end
 
-function M.icons()
+local function setup_icons()
     local present, MiniIcons = pcall(require, "mini.icons")
 
     if not present then
@@ -356,19 +348,19 @@ function M.icons()
     MiniIcons.setup({
         file = {
             [".eslintrc.js"] = { glyph = "󰱺", hl = "MiniIconsYellow" },
-            [".node-version"] = { glyph = "", hl = "MiniIconsGreen" },
-            [".prettierrc"] = { glyph = "", hl = "MiniIconsPurple" },
-            [".yarnrc.yml"] = { glyph = "", hl = "MiniIconsBlue" },
+            [".node-version"] = { glyph = "", hl = "MiniIconsGreen" },
+            [".prettierrc"] = { glyph = "", hl = "MiniIconsPurple" },
+            [".yarnrc.yml"] = { glyph = "", hl = "MiniIconsBlue" },
             ["eslint.config.js"] = { glyph = "󰱺", hl = "MiniIconsYellow" },
-            ["package.json"] = { glyph = "", hl = "MiniIconsGreen" },
-            ["tsconfig.json"] = { glyph = "", hl = "MiniIconsAzure" },
-            ["tsconfig.build.json"] = { glyph = "", hl = "MiniIconsAzure" },
-            ["yarn.lock"] = { glyph = "", hl = "MiniIconsBlue" },
+            ["package.json"] = { glyph = "", hl = "MiniIconsGreen" },
+            ["tsconfig.json"] = { glyph = "", hl = "MiniIconsAzure" },
+            ["tsconfig.build.json"] = { glyph = "", hl = "MiniIconsAzure" },
+            ["yarn.lock"] = { glyph = "", hl = "MiniIconsBlue" },
         },
     })
 end
 
-function M.surround()
+local function setup_surround()
     local present, MiniSurround = pcall(require, "mini.surround")
 
     if not present then
@@ -389,7 +381,7 @@ function M.surround()
     })
 end
 
-function M.clue()
+local function setup_clue()
     local present, MiniClue = pcall(require, "mini.clue")
 
     if not present then
@@ -440,18 +432,15 @@ function M.clue()
     })
 end
 
-function M.init()
-    M.visits()
-    M.extra()
-    M.files()
-    M.pick()
-    M.extra()
-    M.ai()
-    M.statusline()
-    M.icons()
-    M.pick()
-    M.surround()
-    M.clue()
-end
-
-return M
+-- Initialize all mini modules
+setup_visits()
+setup_extra()
+setup_files()
+setup_pick()
+setup_extra()
+setup_ai()
+setup_statusline()
+setup_icons()
+setup_pick()
+setup_surround()
+setup_clue()
