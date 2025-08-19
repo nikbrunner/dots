@@ -4,10 +4,10 @@ local M = {}
 ---@type LazyPluginSpec
 M.spec = {
     "MagicDuck/grug-far.nvim",
-    ---@type GrugFarOptions
+    ---@type grug.far.Options
     ---@diagnostic disable-next-line: missing-fields
     opts = {
-        windowCreationCommand = "topleft vsplit",
+        windowCreationCommand = "topleft 75vsplit",
         engines = {
             ripgrep = {
                 placeholders = {
