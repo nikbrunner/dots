@@ -498,9 +498,13 @@ return {
                 },
             },
             win = {
+                backdrop = false,
                 border = "solid",
                 width = vim.o.columns,
                 height = vim.o.lines,
+                wo = {
+                    winhighlight = "Normal:Normal,FloatBorder:Normal",
+                },
             },
         },
 
