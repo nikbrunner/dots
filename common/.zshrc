@@ -177,4 +177,4 @@ ZSH_AUTOSUGGEST_STRATEGY=(history completion)
 . "$HOME/.atuin/bin/env"
 eval "$(atuin init zsh)"
 
-source ~/.config/zsh/prompt.zsh
+# source ~/.config/zsh/prompt.zsh
