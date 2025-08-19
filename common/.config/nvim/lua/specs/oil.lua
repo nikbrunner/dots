@@ -1,6 +1,7 @@
 ---@type LazySpec
 return {
     "stevearc/oil.nvim",
+    enabled = false,
     lazy = false,
     dependencies = {
         { "echasnovski/mini.icons", opts = {} },
@@ -60,6 +61,13 @@ return {
         },
     },
     keys = {
+        {
+            "-",
+            function()
+                require("oil").open()
+            end,
+            desc = "[E]xplorer",
+        },
         {
             "<leader>we",
             function()
