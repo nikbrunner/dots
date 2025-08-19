@@ -3,28 +3,13 @@
   "mcpServers": {
     "obsidian": {
       "command": "uvx",
-      "args": ["mcp-obsidian"],
+      "args": [
+        "mcp-obsidian"
+      ],
       "env": {
         "OBSIDIAN_API_KEY": "3b4000ed7260b3b16001efc31e91ef774c910f848f90a37064cb446c7a1dd429",
         "OBSIDIAN_HOST": "https://127.0.0.1:27124/"
       }
-    },
-    "filesystem": {
-      "command": "npx",
-      "args": [
-        "-y",
-        "@modelcontextprotocol/server-filesystem",
-        "/Users/nbr/repos"
-      ],
-      "env": {}
-    },
-    "vendure-local-mcp": {
-      "command": "npx",
-      "args": [
-        "@vendure/mcp-server@latest",
-        "--projectPath",
-        "/Users/nbr/repos/dealercenter-digital/bc-web-client-poc/backend/src"
-      ]
     }
   }
 }
