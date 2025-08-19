@@ -499,8 +499,8 @@ return {
             },
             win = {
                 border = "solid",
-                width = 0.95,
-                height = 0.9,
+                width = vim.o.columns,
+                height = vim.o.lines,
             },
         },
 
@@ -560,7 +560,7 @@ return {
             pattern = "VeryLazy",
             callback = function()
                 -- stylua: ignore start
-                Snacks.toggle.dim():map("<leader>aod")
+                Snacks.toggle.dim():map("<leader>amd")
                 Snacks.toggle.line_number():map("<leader>aol")
                 Snacks.toggle.inlay_hints():map("<leader>aoh")
                 -- Snacks.toggle.diagnostics():map("<leader>aoD")
@@ -591,12 +591,14 @@ return {
             { "<leader>aW",          function() Snacks.picker.zoxide() end, desc = "[W]orkspace (Zoxide)" },
             { "<leader>aa",          function() Snacks.picker.commands() end, desc = "[A]ctions" },
             { "<leader>ag",          function() Snacks.lazygit() end, desc = "[G]it" },
-            { "<leader>af",          function() Snacks.zen.zen() end, desc = "[F]ocus Mode" },
             { "<leader>as",          function() Snacks.picker.files({ cwd = vim.fn.expand("$HOME") .. "/repos/nikbrunner/dots" }) end, desc = "[S]ettings" },
             { "<leader>ad",          M.file_surfer, desc = "[D]ocument" },
             { "<leader>at",          function() Snacks.picker.colorschemes() end, desc = "[T]hemes" },
             { "<leader>ar",          function() Snacks.picker.recent() end, desc = "[R]ecent Documents (Anywhere)" },
-            { "<leader>aoz",         function() Snacks.zen.zoom() end, desc = "[Z]oom Mode" },
+
+            { "<leader>amf",          function() Snacks.zen.zen() end, desc = "[F]ocus Mode" },
+            { "<leader>amz",         function() Snacks.zen.zoom() end, desc = "[Z]oom Mode" },
+
             { "<leader>an",          function() Snacks.notifier.show_history() end, desc = "[N]otifications" },
             { "<leader>ak",          function() Snacks.picker.keymaps() end, desc = "[K]eymaps" },
             { "<leader>aj",          function() Snacks.picker.jumps() end, desc = "[J]umps" },
