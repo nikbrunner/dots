@@ -4,8 +4,8 @@ local M = {}
 M.config = {
     dev_mode = true,
     background = "dark",
-    colorscheme_light = "black-atom-mnml-mikado-light",
-    colorscheme_dark = "black-atom-mnml-mikado-dark",
+    colorscheme_light = "black-atom-mnml-47-light",
+    colorscheme_dark = "black-atom-mnml-47-dark",
 
     ---see for wezterm themes: https://wezfurlong.org/wezterm/colorschemes/index.html
     ---ghostty colors: https://ghostty.org/docs/reference/config
