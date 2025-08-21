@@ -380,6 +380,8 @@
   "/Users/nbr/bin/tl-2x2": "/Users/nbr/repos/nikbrunner/dots/common/bin/tl-2x2",
   "/Users/nbr/bin/tl-dev": "/Users/nbr/repos/nikbrunner/dots/common/bin/tl-dev",
   "/Users/nbr/.zshrc": "/Users/nbr/repos/nikbrunner/dots/common/.zshrc",
+  "/Users/nbr/.claude/settings.json": "/Users/nbr/repos/nikbrunner/dots/common/.claude/settings.json",
+  "/Users/nbr/.claude/agents/implementation-architect.md": "/Users/nbr/repos/nikbrunner/dots/common/.claude/agents/implementation-architect.md",
   "/Users/nbr/.claude/commands/dcd/create-issue.md": "/Users/nbr/repos/nikbrunner/dots/common/.claude/commands/dcd/create-issue.md",
   "/Users/nbr/.claude/commands/dcd/fill-pr-description.md": "/Users/nbr/repos/nikbrunner/dots/common/.claude/commands/dcd/fill-pr-description.md",
   "/Users/nbr/.claude/commands/dots/git-cleanup.md": "/Users/nbr/repos/nikbrunner/dots/common/.claude/commands/dots/git-cleanup.md",
