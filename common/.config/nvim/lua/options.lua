@@ -9,7 +9,7 @@ vim.opt.clipboard = "unnamedplus"
 
 vim.opt.spelllang = "en_us,de_de"
 
-vim.opt.cursorline = true
+vim.opt.cursorline = false
 vim.opt.cursorcolumn = false
 
 -- preview for substitution
@@ -58,7 +58,7 @@ vim.opt.writebackup = false
 vim.opt.undofile = true
 vim.opt.updatetime = 500
 
-vim.opt.cmdheight = 1
+vim.opt.cmdheight = 0
 vim.opt.pumheight = 30
 vim.opt.pumblend = 10
 
@@ -71,9 +71,8 @@ vim.opt.encoding = "utf-8"
 vim.opt.fileencoding = "utf-8"
 
 vim.opt.guifont = { "JetBrainsMono Nerd Font", ":h16" }
--- vim.opt.guifont = { "Maple Mono NF", ":h16" }
 
-vim.opt.guicursor = "a:blinkon0"
+vim.opt.guicursor = "n-v-c:block,i-ci-ve:ver25,r-cr-o:hor20"
 
 vim.opt.scrolloff = 4
 
@@ -107,4 +106,15 @@ vim.api.nvim_create_autocmd("TermOpen", {
         vim.opt.relativenumber = false
         vim.opt.signcolumn = "no"
     end,
+})
+
+-- :h vim._extui
+require("vim._extui").enable({
+    enable = true, -- Whether to enable or disable the UI.
+    msg = { -- Options related to the message module.
+        ---@type 'cmd'|'msg' Where to place regular messages, either in the
+        ---cmdline or in a separate ephemeral message window.
+        target = "cmd",
+        timeout = 4000, -- Time a message is visible in the message window.
+    },
 })
