@@ -21,8 +21,10 @@ return {
             ["mr"] = "<cmd>edit $HOME/repos/<CR>",
             ["md"] = "<cmd>edit $HOME/repos/nikbrunner/dots<CR>",
             ["mn"] = "<cmd>edit $HOME/repos/nikbrunner/notes<CR>",
+            ["<C-h>"] = false,
+            ["<C-l>"] = false,
+            ["<C-s>"] = false,
             ["<C-v>"] = { "actions.select", opts = { vertical = true } },
-            ["<C-s>"] = { "actions.select", opts = { horizontal = true } },
             ["<C-t>"] = { "actions.select", opts = { tab = true } },
         },
         lsp_file_methods = {
@@ -35,6 +37,8 @@ return {
             autosave_changes = true,
         },
         win_options = {
+            number = false,
+            relativenumber = false,
             winbar = "%{v:lua.require('oil').get_current_dir()}",
         },
         float = {
@@ -54,6 +58,7 @@ return {
             border = "solid",
             win_options = {
                 winblend = 10,
+                signcolumn = "yes:2",
             },
         },
         keymaps_help = {
@@ -76,16 +81,16 @@ return {
             desc = "[E]xplorer",
         },
     },
-    -- config = function(_, opts)
-    --     require("oil").setup(opts)
-    --
-    --     vim.api.nvim_create_autocmd("User", {
-    --         pattern = "OilActionsPost",
-    --         callback = function(event)
-    --             if event.data.actions.type == "move" then
-    --                 Snacks.rename.on_rename_file(event.data.actions.src_url, event.data.actions.dest_url)
-    --             end
-    --         end,
-    --     })
-    -- end,
+    config = function(_, opts)
+        require("oil").setup(opts)
+
+        vim.api.nvim_create_autocmd("User", {
+            pattern = "OilActionsPost",
+            callback = function(event)
+                if event.data.actions.type == "move" then
+                    Snacks.rename.on_rename_file(event.data.actions.src_url, event.data.actions.dest_url)
+                end
+            end,
+        })
+    end,
 }
