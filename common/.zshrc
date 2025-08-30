@@ -32,10 +32,7 @@ export PATH=$HOME/Applications:$PATH
 export PATH=/usr/bin/python:$PATH
 export PATH=/usr/bin/python3:$PATH
 export PATH=$HOME/.deno/bin:$PATH
-
-# Because of https://github.com/jesseduffield/lazygit/blob/master/docs/Config.md#user-config
-export XDG_CONFIG_HOME="$HOME/.config"
-
+export XDG_CONFIG_HOME="$HOME/.config" # Because of https://github.com/jesseduffield/lazygit/blob/master/docs/Config.md#user-config
 export RIPGREP_CONFIG_PATH=$HOME/.ripgreprc
 
 # Globals ================================================================
@@ -75,13 +72,11 @@ alias zj="zellij"
 alias lazyvim="NVIM_APPNAME=lazyvim nvim"
 alias gdl="gallery-dl"
 alias npmu="npm-upgrade"
-
+alias start="tmux new -s dots -c ~/.config/nvim && rr"
+alias scratch="$EDITOR $HOME/scratchpad.md"
 alias :q=exit
 alias :vs='tmux split-window -h -c "#{pane_current_path}"'
 alias :sp='tmux split-window -v -c "#{pane_current_path}"'
-
-alias start="tmux new -s dots -c ~/.config/nvim && rr"
-alias scratch="$EDITOR $HOME/scratchpad.md"
 
 
 # Yazi ==================================================================
@@ -174,7 +169,15 @@ esac
 bindkey '^y' autosuggest-accept
 ZSH_AUTOSUGGEST_STRATEGY=(history completion)
 
+# Atuin
 . "$HOME/.atuin/bin/env"
 eval "$(atuin init zsh)"
 
-# source ~/.config/zsh/prompt.zsh
+# Prompt
+fpath+=("$(brew --prefix)/share/zsh/site-functions")
+autoload -U promptinit; promptinit
+prompt pure
+export PURE_GIT_UP_ARROW=
+export PURE_GIT_DOWN_ARROW=
+
+source <(av completion zsh)
