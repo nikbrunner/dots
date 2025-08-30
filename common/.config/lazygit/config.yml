@@ -15,12 +15,12 @@ gui:
       - "#ff8833"
 
     # See https://github.com/jesseduffield/lazygit/blob/master/docs/Config.md#highlighting-the-selected-line
-    selectedLineBgColor:
-      - black
+    # selectedLineBgColor:
+    # - black
 
     # Default text color
-    defaultFgColor:
-      - default
+    # defaultFgColor:
+    #   - default
   authorColors:
     "nbr": "#ff8833"
     "*": default
