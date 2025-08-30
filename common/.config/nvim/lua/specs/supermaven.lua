@@ -31,7 +31,7 @@ M.spec = {
     config = function(_, opts)
         require("supermaven-nvim").setup(opts)
         -- Disable inline completion by default
-        require("supermaven-nvim.completion_preview").disable_inline_completion = false
+        require("supermaven-nvim.completion_preview").disable_inline_completion = true
     end,
 }
 
