@@ -249,15 +249,29 @@ remove_repo() {
 
 # Open a repository in tmux
 open_repo() {
-    local selected
-    selected=$(select_repo "Select repository to open: ")
+    local selected="$1"
 
+    # If no argument provided, use interactive selection
     if [[ -z "$selected" ]]; then
-        echo "No repository selected"
-        exit 0
+        selected=$(select_repo "Select repository to open: ")
+
+        if [[ -z "$selected" ]]; then
+            echo "No repository selected"
+            exit 0
+        fi
     fi
 
+    # Check if the repository exists
     local repo_path="$REPOS_BASE_PATH/$selected"
+    if [[ ! -d "$repo_path" ]]; then
+        print_error "Repository not found: $selected"
+        echo "Available repositories:"
+        list_repos | head -10
+        echo "..."
+        echo "Use 'repos open' without arguments for interactive selection"
+        exit 1
+    fi
+
     local session_name
     session_name=$(get_session_name "$selected")
 
@@ -269,16 +283,11 @@ open_repo() {
             tmux attach-session -t "$session_name"
         fi
     else
-        # Create new session and run tl-dev layout if available
         if [[ -n "$TMUX" ]]; then
             tmux new-session -d -s "$session_name" -c "$repo_path"
             tmux switch-client -t "$session_name"
-            # Run tl-dev layout if available
-            if command -v tl-dev &>/dev/null; then
-                tl-dev
-            fi
         else
-            tmux new-session -s "$session_name" -c "$repo_path" \; run-shell "tl-dev 2>/dev/null || true"
+            tmux new-session -s "$session_name" -c "$repo_path"
         fi
     fi
 }
@@ -1061,7 +1070,7 @@ show_help() {
     echo "  $(style_command "install")      - Guide through dependency installation"
     echo "  $(style_command "add")          - Clone a repository to organized path"
     echo "  $(style_command "remove")       - Remove a repository (interactive)"
-    echo "  $(style_command "open")         - Open a repository in tmux (interactive)"
+    echo "  $(style_command "open")         - Open a repository in tmux [repo-path]"
     echo "  $(style_command "find")         - Find and open files across all repositories"
     echo "  $(style_command "config")       - Edit the repos script configuration"
     if command -v gum >/dev/null 2>&1; then
@@ -1083,6 +1092,7 @@ show_help() {
     style_header "Examples:"
     echo "  repos install                                    # Check dependencies"
     echo "  repos add git@github.com:username/repo.git       # Clone a repository"
+    echo "  repos open nikbrunner/dots                       # Open specific repo directly"
     echo "  repos setup                                      # Clone all ENSURE_CLONED repos"
     echo "  repos status --clean                             # Show only dirty repositories"
     echo "  PARALLEL_JOBS=8 repos setup                     # Clone with 8 parallel jobs"
@@ -1115,7 +1125,7 @@ remove)
     remove_repo
     ;;
 open)
-    open_repo
+    open_repo "$2"
     ;;
 find)
     find_files
