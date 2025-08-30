@@ -28,6 +28,7 @@ M.config = {
     persist = {
         -- Path to persist session data in
         path = vim.fs.joinpath(vim.fn.stdpath("data"), "pins"),
+        filename = "data.json",
     },
 
     -- Set an individual mapping to false to disable
@@ -81,6 +82,28 @@ function M:get_next_unused_pin_label()
     error("No more pins available")
 end
 
+function M:write(path, tbl)
+    local ok, _ = pcall(function()
+        local fd = assert(vim.uv.fs_open(path, "w", 438)) -- 438 = 0666
+        assert(vim.uv.fs_write(fd, vim.json.encode(tbl)))
+        assert(vim.uv.fs_close(fd))
+    end)
+
+    return ok
+end
+
+function M:read(path)
+    local ok, content = pcall(function()
+        local fd = assert(vim.uv.fs_open(path, "r", 438)) -- 438 = 0666
+        local stat = assert(vim.uv.fs_fstat(fd))
+        local data = assert(vim.uv.fs_read(fd, stat.size, 0))
+        assert(vim.uv.fs_close(fd))
+        return data
+    end)
+
+    return ok and vim.json.decode(content) or nil
+end
+
 ---@param filename string
 ---@returns Pin
 function M:add_pin(filename)
@@ -113,6 +136,63 @@ function M:remove_pin(filename)
     return removed_pin
 end
 
+function M:get_project_path()
+    local cwd = vim.uv.cwd()
+    if cwd then
+        local sanitized_path = vim.fn.fnameescape(cwd)
+        return vim.fn.fnamemodify(sanitized_path, ":~")
+    else
+        return nil
+    end
+end
+
+-- TODO: Could not be a git project
+function M:get_git_branch()
+    local branch = vim.fn.systemlist("git branch --show-current")[1]
+    local sanitized_branch = vim.fn.fnameescape(branch)
+    return sanitized_branch
+end
+
+function M:load()
+    local is_readable = vim.fn.filereadable(self.config.persist.path)
+    if is_readable == 1 then
+        return self:read(self.config.persist.path)
+    else
+        return nil
+    end
+end
+
+function M:persist()
+    local project_path = M:get_project_path()
+    local git_branch = M:get_git_branch()
+
+    local persisted_data = M:load()
+    local data
+
+    if persisted_data == nil then
+        data = {
+            [project_path] = {
+                [git_branch] = {
+                    pins = self.state.pins,
+                },
+            },
+        }
+    else
+        data = vim.tbl_deep_extend("force", persisted_data, {
+            [project_path] = {
+                [git_branch] = {
+                    pins = self.state.pins,
+                },
+            },
+        })
+    end
+
+    vim.fn.mkdir(self.config.persist.path, "p")
+    local full_file_path = self.config.persist.path .. "/" .. self.config.persist.filename
+    self:write(full_file_path, data)
+    return data
+end
+
 ---@param filename string
 ---@return Pin
 function M:toggle_pin(filename)
@@ -125,6 +205,10 @@ function M:toggle_pin(filename)
     else
         pin = M:remove_pin(filename)
     end
+
+    vim.defer_fn(function()
+        self:persist()
+    end, 500)
 
     return pin
 end
@@ -273,6 +357,8 @@ for _, label in ipairs(M.config.board.pin_labels) do
         M:highlight_active_pin()
     end, { desc = "Open " .. label .. " Pin" })
 end
+
+M:load()
 
 _G.Pins = M
 
