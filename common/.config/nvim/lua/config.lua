@@ -4,8 +4,8 @@ local M = {}
 M.config = {
     dev_mode = true,
     background = "dark",
-    colorscheme_light = "black-atom-mnml-47-light",
-    colorscheme_dark = "black-atom-mnml-47-dark",
+    colorscheme_light = "black-atom-jpn-koyo-hiru",
+    colorscheme_dark = "black-atom-stations-engineering",
 
     ---see for wezterm themes: https://wezfurlong.org/wezterm/colorschemes/index.html
     ---ghostty colors: https://ghostty.org/docs/reference/config
@@ -13,15 +13,6 @@ M.config = {
         ["default"] = {
             wezterm = "neovim",
             ghostty = "neovim-dark.conf",
-        },
-
-        ["black-atom-jpn-koyo-yoru"] = {
-            wezterm = "Black Atom — JPN ∷ Koyo Yoru",
-            ghostty = "black-atom-jpn-koyo-yoru.conf",
-        },
-        ["black-atom-jpn-koyo-hiru"] = {
-            wezterm = "Black Atom — JPN ∷ Koyo Hiru",
-            ghostty = "black-atom-jpn-koyo-hiru.conf",
         },
 
         ["github_dark_default"] = {
@@ -60,6 +51,14 @@ M.config = {
             ghostty = "rose-pine-dawn",
         },
 
+        ["black-atom-jpn-koyo-yoru"] = {
+            wezterm = "Black Atom — JPN ∷ Koyo Yoru",
+            ghostty = "black-atom-jpn-koyo-yoru.conf",
+        },
+        ["black-atom-jpn-koyo-hiru"] = {
+            wezterm = "Black Atom — JPN ∷ Koyo Hiru",
+            ghostty = "black-atom-jpn-koyo-hiru.conf",
+        },
         -- Black Atom Stations themes
         ["black-atom-stations-engineering"] = {
             wezterm = "Black Atom — STA ∷ Engineering",
