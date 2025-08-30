@@ -25,17 +25,15 @@ M.config = {
         },
     },
 
-    -- State persistence. Use Dart.read_session and Dart.write_session manually
     persist = {
         -- Path to persist session data in
-        path = vim.fs.joinpath(vim.fn.stdpath("data"), "dart"),
+        path = vim.fs.joinpath(vim.fn.stdpath("data"), "pins"),
     },
 
     -- Set an individual mapping to false to disable
     mappings = {
-        pin = ";;", -- pin current buffer
-        jump = ";", -- Jump to buffer marked by next character i.e `;1`
-        pick = ";p", -- Open Dart.pick
+        pin = "``", -- pin current buffer
+        jump = "`", -- Jump to buffer marked by next character i.e `;1`
         prev = "<S-k>", -- Cycle left through the tabline
         next = "<S-j>", -- Cycle right through the tabline
     },
@@ -221,7 +219,8 @@ function M:create_board()
     local win_opts = vim.tbl_deep_extend("force", self.config.board.win, {
         width = board_width,
         height = #entries,
-        row = math.floor((vim.o.lines - #entries) - 10),
+        -- row = math.floor((vim.o.lines - #entries) - 10),
+        row = 1,
         col = math.floor((vim.o.columns - board_width) - 2),
     })
 
@@ -255,7 +254,8 @@ function M:update_board()
     vim.api.nvim_win_set_config(self.state.pin_board_win, {
         relative = "editor",
         height = #self.state.pins,
-        row = math.floor((vim.o.lines - #self.state.pins) - 10),
+        -- row = math.floor((vim.o.lines - #self.state.pins) - 10),
+        row = 1,
         col = math.floor((vim.o.columns - self.config.board.win.width) - 2),
     })
     M:highlight_active_pin()
