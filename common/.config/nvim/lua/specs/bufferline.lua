@@ -3,6 +3,7 @@ return {
     "akinsho/bufferline.nvim",
     -- STARTUP OPTIMIZATION: Load only when we have multiple tabs
     -- Since mode = "tabs", it only shows tabpages, so we load it on TabNew
+    enabled = false,
     event = { "TabNew" },
     opts = {
         options = {
