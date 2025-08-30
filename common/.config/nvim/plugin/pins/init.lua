@@ -33,10 +33,8 @@ M.config = {
 
     -- Set an individual mapping to false to disable
     mappings = {
-        pin = "``", -- pin current buffer
-        jump = "`", -- Jump to buffer marked by next character i.e `;1`
-        prev = "<S-k>", -- Cycle left through the tabline
-        next = "<S-j>", -- Cycle right through the tabline
+        pin = "<leader><leader>", -- pin current buffer
+        jump = "<leader>", -- Jump to buffer marked by next character i.e `;1`
     },
 }
 
@@ -259,6 +257,28 @@ function M:pin(buf_nr)
     end
 end
 
+function M:is_current_file_pinned()
+    local current_file = self:get_current_filename()
+
+    local is_pinned = false
+
+    for _, pin in ipairs(self.state.pins) do
+        if pin.filename == current_file then
+            is_pinned = true
+            break
+        end
+    end
+
+    return is_pinned
+end
+
+vim.api.nvim_create_autocmd("BufEnter", {
+    group = vim.api.nvim_create_augroup("pins_read", { clear = true }),
+    callback = function()
+        M:highlight_active_pin()
+    end,
+})
+
 ---@param label string
 function M:open_pin(label)
     local pin = self.state.get_pin_from_label(tostring(label))
@@ -311,12 +331,6 @@ function M:create_board()
     local new_buf_id = vim.api.nvim_create_buf(false, true)
     vim.api.nvim_buf_set_lines(new_buf_id, 0, -1, false, entries)
 
-    local line_text = vim.api.nvim_buf_get_lines(new_buf_id, 0, 1, false)[1]
-    vim.api.nvim_buf_set_extmark(new_buf_id, self.config.board._namespace_id, 0, 0, {
-        end_col = #line_text,
-        hl_group = "@function",
-    })
-
     local board_width = self.config.board.win.width
     local win_opts = vim.tbl_deep_extend("force", self.config.board.win, {
         width = board_width,
@@ -337,13 +351,20 @@ function M:highlight_active_pin()
     local curr_filepath = self:get_current_filename()
     local curr_formatted_filepath = self:get_formatted_filepath(curr_filepath)
 
+    -- Abort on empty files
+    if curr_formatted_filepath == "" then
+        return
+    end
+
+    vim.api.nvim_buf_clear_namespace(pin_board_buf_id, self.config.board._namespace_id, 0, -1)
+
     for i, line in ipairs(lines) do
-        if line:find(curr_formatted_filepath) then
-            vim.api.nvim_buf_clear_namespace(pin_board_buf_id, self.config.board._namespace_id, 0, -1)
+        if line:find(curr_formatted_filepath, 1, true) then
             vim.api.nvim_buf_set_extmark(pin_board_buf_id, self.config.board._namespace_id, i - 1, 0, {
                 end_col = #line,
                 hl_group = "@function",
             })
+            break
         end
     end
 end
@@ -356,11 +377,9 @@ function M:update_board()
     vim.api.nvim_win_set_config(self.state.pin_board_win, {
         relative = "editor",
         height = #self.state.pins,
-        -- row = math.floor((vim.o.lines - #self.state.pins) - 10),
         row = 1,
         col = math.floor((vim.o.columns - self.config.board.win.width) - 2),
     })
-    M:highlight_active_pin()
 end
 
 vim.keymap.set("n", M.config.mappings.pin, M.pin, { desc = "Pin the current buffer" })
