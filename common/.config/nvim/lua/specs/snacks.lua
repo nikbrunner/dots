@@ -71,59 +71,28 @@ end
 
 function M.smart_visits_picker()
     local MiniVisits = require("mini.visits")
-    local visit_paths = MiniVisits.list_paths()
-    local current_file = vim.fn.expand("%")
 
-    -- Create items with frecency scoring
-    local function get_scored_items()
-        local items = {}
+    local cwd = vim.fn.getcwd()
+    local current_file = vim.fn.expand("%:p")
 
-        -- Use ripgrep to find files, respecting .gitignore and ripgreprc
-        local files = vim.fn.systemlist("rg --files --hidden 2>/dev/null")
+    local sort_recent = MiniVisits.gen_sort.default({ recency_weight = 1 })
+    local visit_paths = MiniVisits.list_paths(cwd, { sort = sort_recent })
 
-        -- Flip visit_paths for lookup optimization
-        local flipped_visits = {}
-        for index, path in ipairs(visit_paths) do
-            local key = vim.fn.fnamemodify(path, ":.")
-            flipped_visits[key] = index - 1
+    local items = {}
+    for _, path in ipairs(visit_paths) do
+        local should_include = path ~= current_file and path ~= cwd
+        if should_include then
+            table.insert(items, {
+                text = vim.fn.fnamemodify(path, ":."),
+                file = path,
+                _path = path,
+            })
         end
-
-        for _, file in ipairs(files) do
-            local relative_file = vim.fn.fnamemodify(file, ":.")
-            local full_path = vim.fn.fnamemodify(file, ":p")
-
-            -- Skip current file
-            if relative_file ~= vim.fn.fnamemodify(current_file, ":.") then
-                -- Calculate visit score (lower index = more recent = better score)
-                local visit_score = flipped_visits[relative_file] or #visit_paths
-
-                table.insert(items, {
-                    text = relative_file,
-                    file = full_path,
-                    _path = full_path,
-                    _visit_score = visit_score,
-                })
-            end
-        end
-
-        -- Sort by visit frequency (visited files first), then alphabetically for stable sort
-        table.sort(items, function(a, b)
-            local score_a = a._visit_score or 999999
-            local score_b = b._visit_score or 999999
-
-            if score_a == score_b then
-                -- Secondary sort: alphabetical by filename for stable ordering
-                return a.text < b.text
-            end
-            return score_a < score_b
-        end)
-
-        return items
     end
 
-    -- Use Snacks picker with custom items
+    -- Use Snacks picker with MiniVisits items
     Snacks.picker.pick({
-        items = get_scored_items(),
+        items = items,
         format = "file",
         preview = "file",
         layout = { preset = "flow" },
@@ -252,7 +221,7 @@ return {
                     layout = {
                         backdrop = false,
                         -- col = 0,
-                        width = 0.35,
+                        width = 0.5,
                         min_width = 50,
                         row = 0.65,
                         height = 0.30,
@@ -269,12 +238,12 @@ return {
                 left_bottom_corner = {
                     preview = "main",
                     layout = {
-                        width = 0.35,
+                        width = 0.5,
                         min_width = 0.35,
                         height = 0.35,
                         min_height = 0.35,
-                        row = 0.65,
-                        col = 0,
+                        row = 0.5,
+                        col = 10,
                         border = "solid",
                         box = "vertical",
                         title = "{title} {live} {flags}",
@@ -564,7 +533,7 @@ return {
             pattern = "VeryLazy",
             callback = function()
                 -- stylua: ignore start
-                Snacks.toggle.dim():map("<leader>amd")
+                -- Snacks.toggle.dim():map("<leader>amd")
                 Snacks.toggle.line_number():map("<leader>aol")
                 Snacks.toggle.inlay_hints():map("<leader>aoh")
                 -- Snacks.toggle.diagnostics():map("<leader>aoD")
@@ -585,7 +554,7 @@ return {
             { "<leader>.",           function() Snacks.picker.resume() end, desc = "Resume Picker" },
             { "<leader>:",           function() Snacks.picker.command_history() end, desc = "Command History" },
             { "<leader>'",           function() Snacks.picker.registers() end, desc = "Registers" },
-            { "'",                   function() Snacks.picker.marks() end, desc = "Registers" },
+            -- { "'",                   function() Snacks.picker.marks() end, desc = "Registers" },
             { "]]",                  function() Snacks.words.jump(vim.v.count1) end, desc = "Next Reference" },
             { "[[",                  function() Snacks.words.jump(-vim.v.count1) end, desc = "Prev Reference" },
             { "<F6>",                function() Snacks.dashboard.open() end, desc = "Dashboard" },
@@ -600,8 +569,8 @@ return {
             { "<leader>at",          function() Snacks.picker.colorschemes() end, desc = "[T]hemes" },
             { "<leader>ar",          function() Snacks.picker.recent() end, desc = "[R]ecent Documents (Anywhere)" },
 
-            { "<leader>amf",          function() Snacks.zen.zen() end, desc = "[F]ocus Mode" },
-            { "<leader>amz",         function() Snacks.zen.zoom() end, desc = "[Z]oom Mode" },
+            { "<leader>f",          function() Snacks.zen.zen() end, desc = "[F]ocus Mode" },
+            { "<leader>z",         function() Snacks.zen.zoom() end, desc = "[Z]oom Mode" },
 
             { "<leader>an",          function() Snacks.notifier.show_history() end, desc = "[N]otifications" },
             { "<leader>ak",          function() Snacks.picker.keymaps() end, desc = "[K]eymaps" },
@@ -617,8 +586,8 @@ return {
             { "<leader>wgg",         function() Snacks.lazygit() end, desc = "[G]raph" },
             { "<leader>wgl",         function() Snacks.lazygit.log() end, desc = "[L]Log" },
             { "<leader>wgb",         function() Snacks.picker.git_branches() end, desc = "[B]ranches" },
-            { "<leader>wd",          function() Snacks.picker.smart() end, desc = "[D]ocument" },
-            { "<leader>wv",          M.smart_visits_picker, desc = "[V]isits (Frecency)" },
+            -- { "<leader>wd",          function() Snacks.picker.smart() end, desc = "[D]ocument" },
+            -- { "<leader><leader>",    M.smart_visits_picker, desc = "[V]isits (Frecency)" },
             { "<leader>wr",          function() Snacks.picker.recent({ filter = { cwd = true }}) end, desc = "[R]ecent Documents" },
             { "<leader>wt",          function() Snacks.picker.grep() end, desc = "[T]ext" },
             { "<leader>ww",          function() Snacks.picker.grep_word() end, desc = "[W]ord" },
@@ -632,7 +601,7 @@ return {
             { "<leader>dg",          function() Snacks.lazygit.log_file() end, desc = "[G]it" },
             { "<leader>dt",          function() Snacks.picker.lines() end, desc = "[T]ext" },
             { "<leader>dp",          function() Snacks.picker.diagnostics_buffer() end, desc = "[P]roblems" },
-            -- { "<leader>ds",          function() Snacks.picker.lsp_symbols() end, desc = "[S]ymbols" },
+            { "<leader>ds",          function() Snacks.picker.lsp_symbols() end, desc = "[S]ymbols" },
             { "<leader>du",          function() Snacks.picker.undo() end, desc = "[U]ndo" },
             { "<leader>da",          M.find_associated_files, desc = "[A]ssociated Documents" },
 
