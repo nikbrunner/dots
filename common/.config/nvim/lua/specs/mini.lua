@@ -200,11 +200,11 @@ function Mini.pick()
         })
     end
 
-    vim.keymap.set("n", "<leader><leader>", MiniPick.registry.frecency, { desc = "Pick file" })
+    vim.keymap.set("n", "<leader>wd", MiniPick.registry.frecency, { desc = "Pick file" })
     vim.keymap.set("n", "<leader>ahp", "<cmd>Pick help<CR>", { desc = "[P]ages" })
-    vim.keymap.set("n", "<leader>ds", function()
-        require("mini.extra").pickers.lsp({ scope = "document_symbol" })
-    end, { desc = "[S]ymbols" })
+    -- vim.keymap.set("n", "<leader>ds", function()
+    --     require("mini.extra").pickers.lsp({ scope = "document_symbol" })
+    -- end, { desc = "[S]ymbols" })
 end
 
 function Mini.extra()
@@ -302,21 +302,6 @@ function Mini.statusline()
                     { hl = "DiagnosticError", strings = { diagnostics } },
 
                     "%=", -- End left alignment
-
-                    {
-                        hl = "@function",
-                        strings = { dev_mode, word_count(), position, viewport, filetype },
-                    },
-                    {
-                        hl = "Comment",
-                        strings = (m.is_truncated(165) and {} or {
-                            lazy_plug_count(),
-                            lazy_updates(),
-                            lazy_startup(),
-                            colorscheme,
-                            "[" .. vim.o.background .. "]",
-                        }),
-                    },
                 })
             end,
         },
