@@ -153,6 +153,10 @@ function M:get_git_branch()
     return sanitized_branch
 end
 
+function M:get_persist_file_path()
+    return self.config.persist.path .. "/" .. self.config.persist.filename
+end
+
 function M:load()
     local is_readable = vim.fn.filereadable(self.config.persist.path)
     if is_readable == 1 then
@@ -188,9 +192,23 @@ function M:persist()
     end
 
     vim.fn.mkdir(self.config.persist.path, "p")
-    local full_file_path = self.config.persist.path .. "/" .. self.config.persist.filename
-    self:write(full_file_path, data)
+    self:write(self:get_persist_file_path(), data)
     return data
+end
+
+function M:populate()
+    local data = self:read(self:get_persist_file_path())
+    local project_path = M:get_project_path()
+    local git_branch = M:get_git_branch()
+
+    if data ~= nil then
+        local persisted_pins = data[project_path][git_branch].pins
+        self.state.pins = persisted_pins
+
+        if #persisted_pins > 0 then
+            M:create_board()
+        end
+    end
 end
 
 ---@param filename string
@@ -358,7 +376,7 @@ for _, label in ipairs(M.config.board.pin_labels) do
     end, { desc = "Open " .. label .. " Pin" })
 end
 
-M:load()
+M:populate()
 
 _G.Pins = M
 
