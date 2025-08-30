@@ -3,8 +3,8 @@
 ## TODO
 
 - [ ] Highlight current file (if it's pinned)
-- [ ] Dynamic Width
 - [ ] Persist per git branch
+- [ ] Dynamic Width
 - [ ] Last (unpinned) 5 oldfiles
 
 ## Future Ideas
