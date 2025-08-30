@@ -2,6 +2,7 @@
 return {
     "A7Lavinraj/fyler.nvim",
     dependencies = { "echasnovski/mini.icons" },
+    enabled = false,
     ---@type FylerConfig
     opts = {
         hooks = {
@@ -60,7 +61,7 @@ return {
         {
             "-",
             function()
-                require("fyler").open({ cwd = vim.fn.getcwd(), kind = "float" })
+                require("fyler").open()
             end,
             desc = "Fyler",
         },
