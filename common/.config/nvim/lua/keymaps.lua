@@ -154,10 +154,6 @@ end, { desc = "Dupe line (Comment out old one)" })
 -- Select All
 M.map("n", "vA", "ggVG", { desc = "Select All" })
 
--- Change inside word (convenience)
-M.map("n", "<space>", "ciw", { desc = "Change Inside Word" })
-M.map("x", "<space>", "c", { desc = "Change Selection" })
-
 -- Yank entire buffer content
 M.map("n", "<leader>dya", function()
     -- Save current cursor position
