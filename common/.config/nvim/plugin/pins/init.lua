@@ -33,8 +33,8 @@ M.config = {
 
     -- Set an individual mapping to false to disable
     mappings = {
-        pin = "<leader><leader>", -- pin current buffer
-        jump = "<leader>", -- Jump to buffer marked by next character i.e `;1`
+        pin = "<space><space>", -- pin current buffer
+        jump = "<space>", -- Jump to buffer marked by next character i.e `;1`
     },
 }
 
