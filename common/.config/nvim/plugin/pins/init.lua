@@ -1,5 +1,8 @@
 local M = {}
 
+local script_dir = vim.fn.expand("<script>:p:h")
+package.path = package.path .. ";" .. script_dir .. "/lua/?.lua"
+
 ---@class Pins.Config
 M.config = {
     board = {
@@ -136,17 +139,22 @@ end
 
 function M:get_project_path()
     local cwd = vim.uv.cwd()
-    if cwd then
-        local sanitized_path = vim.fn.fnameescape(cwd)
-        return vim.fn.fnamemodify(sanitized_path, ":~")
-    else
+
+    if not cwd then
         return nil
     end
+
+    local sanitized_path = vim.fn.fnameescape(cwd)
+    return vim.fn.fnamemodify(sanitized_path, ":~")
 end
 
 -- TODO: Could not be a git project
 function M:get_git_branch()
     local branch = vim.fn.systemlist("git branch --show-current")[1]
+    if branch == "" then
+        return nil
+    end
+
     local sanitized_branch = vim.fn.fnameescape(branch)
     return sanitized_branch
 end
@@ -196,11 +204,16 @@ end
 
 function M:populate()
     local data = self:read(self:get_persist_file_path())
-    local project_path = M:get_project_path()
-    local git_branch = M:get_git_branch()
 
     if data ~= nil then
-        local persisted_pins = data[project_path][git_branch].pins
+        local project_path = M:get_project_path()
+        local git_branch = M:get_git_branch()
+        local persisted_pins = vim.tbl_get(data, project_path, git_branch, "pins")
+
+        if persisted_pins == nil then
+            return
+        end
+
         self.state.pins = persisted_pins
 
         if #persisted_pins > 0 then
@@ -322,7 +335,13 @@ function M:create_entries(pins)
 end
 
 function M:get_board_bufid()
-    return vim.api.nvim_win_get_buf(self.state.pin_board_win)
+    local win = self.state.pin_board_win
+
+    if win ~= nil and vim.api.nvim_win_is_valid(win) then
+        return vim.api.nvim_win_get_buf(win)
+    else
+        return nil
+    end
 end
 
 function M:create_board()
@@ -346,6 +365,11 @@ end
 
 function M:highlight_active_pin()
     local pin_board_buf_id = self:get_board_bufid()
+
+    if pin_board_buf_id == nil then
+        return
+    end
+
     local lines = vim.api.nvim_buf_get_lines(pin_board_buf_id, 0, -1, false)
 
     local curr_filepath = self:get_current_filename()
