@@ -4,13 +4,6 @@ local function auto_group(name)
     return vim.api.nvim_create_augroup("nvim_" .. name, { clear = true })
 end
 
-auto({ "VimEnter", "ColorScheme" }, {
-    group = auto_group("vim_enter"),
-    callback = function()
-        require("lib.ui").handle_colors(require("config"))
-    end,
-})
-
 -- Close these filetypes with <Esc> & q in normal mode
 auto("FileType", {
     group = auto_group("quit_mapping"),

@@ -1,29 +1,15 @@
 local M = {}
 
----@param config VinConfig
-function M.handle_colors(config, background)
-    local files = require("lib.files")
-    background = background or config.background
-    local colorscheme = config["colorscheme_" .. background]
+M.maximized_window = nil
 
-    vim.api.nvim_set_option_value("background", background, {})
-    vim.cmd.colorscheme(colorscheme)
-
-    vim.defer_fn(function()
-        files.sync_wezterm_colorscheme(config, colorscheme, background)
-        files.sync_ghostty_colorscheme(config, colorscheme, background)
-    end, 100)
-end
-
-M._maximized_window = nil
 function M.maximize_window()
-    if M._maximized_window then
-        vim.o.winwidth = M._maximized_window.width
-        vim.o.winheight = M._maximized_window.height
-        M._maximized_window = nil
+    if M.maximized_window then
+        vim.o.winwidth = M.maximized_window.width
+        vim.o.winheight = M.maximized_window.height
+        M.maximized_window = nil
         vim.cmd("wincmd =")
     else
-        M._maximized_window = {
+        M.maximized_window = {
             width = vim.o.winwidth,
             height = vim.o.winheight,
         }
