@@ -472,7 +472,7 @@ return {
                 width = vim.o.columns,
                 height = vim.o.lines,
                 wo = {
-                    winhighlight = "Normal:Normal,FloatBorder:Normal",
+                    winhighlight = "Normal:NormalFloat,FloatBorder:Normal",
                 },
             },
         },
