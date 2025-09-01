@@ -5,6 +5,8 @@ vim.g.maplocalleader = "."
 
 vim.opt.mouse = "a"
 
+vim.opt.background = require("config").background
+
 vim.opt.clipboard = "unnamedplus"
 
 vim.opt.spelllang = "en_us,de_de"
