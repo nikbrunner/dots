@@ -11,7 +11,7 @@ vim.opt.clipboard = "unnamedplus"
 
 vim.opt.spelllang = "en_us,de_de"
 
-vim.opt.cursorline = false
+vim.opt.cursorline = true
 vim.opt.cursorcolumn = false
 
 -- preview for substitution
