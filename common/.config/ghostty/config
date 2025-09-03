@@ -1,4 +1,4 @@
-theme = black-atom-stations-research.conf
+theme = black-atom-jpn-murasaki-yoru.conf
 
 # custom-shader                      = ./shaders/crt-shader.glsl
 # custom-shader                      = ./shaders/bloom015.glsl
@@ -10,7 +10,7 @@ custom-shader                      = ./shaders/cursor_smear.glsl
 # background-opacity                 = 0.9
 # background-blur                    = 65
 
-font-family = TX-02
+font-family = IosevkaTermSlab Nerd Font
 
 font-size                         = 16
 # font-thicken = true
