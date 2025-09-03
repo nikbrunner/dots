@@ -6,6 +6,7 @@
 set -euo pipefail
 
 GHOSTTY_CONFIG="$HOME/repos/nikbrunner/dots/common/.config/ghostty/config"
+ZED_CONFIG="$HOME/repos/nikbrunner/dots/common/.config/zed/settings.json"
 FONTS_JSON="$HOME/fonts.json"
 
 # Get current active font
@@ -15,18 +16,35 @@ get_current_font() {
         xargs
 }
 
-# Update the config with the selected font
-update_font() {
+# Update Ghostty config with the selected font
+update_ghostty_font() {
     local selected_font="$1"
-
-    # Use sed to replace the font-family value
     sed -i '' "s/^font-family[[:space:]]*=.*/font-family = ${selected_font}/" "$GHOSTTY_CONFIG"
 }
+
+# Update Zed config with the selected font
+update_zed_font() {
+    local selected_font="$1"
+    # Update all font settings in Zed
+    jq --arg font "$selected_font" '
+        .ui_font_family = $font |
+        .buffer_font_family = $font |
+        .terminal.font_family = $font
+    ' "$ZED_CONFIG" > "$ZED_CONFIG.tmp" && mv "$ZED_CONFIG.tmp" "$ZED_CONFIG"
+}
+
+# Source shared Ghostty reload function
+source "$HOME/repos/nikbrunner/dots/common/bin/ghostty-reload"
 
 main() {
     # Check if required files exist
     if [[ ! -f "$GHOSTTY_CONFIG" ]]; then
         echo "Error: Ghostty config not found at $GHOSTTY_CONFIG"
+        exit 1
+    fi
+
+    if [[ ! -f "$ZED_CONFIG" ]]; then
+        echo "Error: Zed config not found at $ZED_CONFIG"
         exit 1
     fi
 
@@ -70,9 +88,17 @@ main() {
         if [[ "$selected_font" == "$current_font" ]]; then
             echo "Font unchanged: $selected_font"
         else
-            update_font "$selected_font"
+            # Update both Ghostty and Zed
+            update_ghostty_font "$selected_font"
+            update_zed_font "$selected_font"
+            
             echo "Font updated to: $selected_font"
-            echo "Restart Ghostty to apply changes"
+            echo "Updated configurations:"
+            echo "  ✓ Ghostty"
+            echo "  ✓ Zed"
+            
+            # Reload Ghostty automatically
+            reload_ghostty
         fi
     else
         echo "No font selected"
