@@ -256,14 +256,19 @@ restart_neovim_instances() {
         debug_log "restart_neovim_instances: Using alt_panes"
     fi
     
-    echo "Restarting Neovim instances in tmux..."
     debug_log "restart_neovim_instances: Processing panes: $panes_to_use"
     
     local count=0
+    local total_panes
+    total_panes=$(echo "$panes_to_use" | wc -l | tr -d ' ')
+    
+    echo "Restarting $total_panes Neovim instances..."
+    
     # Send restart and session restore to each Neovim pane
     while IFS= read -r pane; do
         if [[ -n "$pane" ]]; then
             count=$((count + 1))
+            echo -n "  [$count/$total_panes] "
             debug_log "restart_neovim_instances: Processing pane $count: $pane"
             
             # Send escape first to exit any mode, then restart
@@ -274,19 +279,17 @@ restart_neovim_instances() {
             sleep 0.8
             
             # Send session restore command using Lua
-            tmux send-keys -t "$pane" ':lua require("persistence").load({ last = true })' 'Enter' 2>/dev/null
+            tmux send-keys -t "$pane" ':lua require("persistence").load()' 'Enter' 2>/dev/null
             debug_log "restart_neovim_instances: Sent session restore to pane $pane"
+            echo "✓"
             
             # Minimal delay between panes
             sleep 0.1
         fi
     done <<< "$panes_to_use"
     
-    if [[ $count -gt 0 ]]; then
-        echo "Processed $count Neovim instances"
-        debug_log "restart_neovim_instances: Processed $count instances"
-    else
-        echo "No Neovim instances were processed"
+    if [[ $count -eq 0 ]]; then
+        echo "No Neovim instances found"
         debug_log "restart_neovim_instances: No instances processed"
     fi
     debug_log "restart_neovim_instances: Completed"
@@ -315,7 +318,6 @@ apply_theme() {
     echo "Applying theme: $theme ($appearance mode)"
     
     # Apply theme to all tools
-    echo "Updating configurations..."
     debug_log "apply_theme: Starting configuration updates"
     update_nvim_theme "$theme" "$appearance"
     update_tmux_theme "$theme" "$collection"
@@ -324,21 +326,17 @@ apply_theme() {
     debug_log "apply_theme: Configuration updates completed"
     
     # Reload configurations
-    echo "Reloading configurations..."
     debug_log "apply_theme: Starting configuration reloads"
     reload_tmux
     reload_ghostty
     debug_log "apply_theme: Configuration reloads completed"
     
     # Restart Neovim instances with new theme
-    echo "Restarting Neovim instances..."
     debug_log "apply_theme: Starting Neovim restarts"
     restart_neovim_instances
     debug_log "apply_theme: Neovim restarts completed"
     
     echo "Theme applied successfully!"
-    echo "Neovim: Updated $appearance theme to $theme"
-    echo "Ghostty: Configuration reloaded (if running)"
     debug_log "apply_theme: Completed successfully"
 }
 
