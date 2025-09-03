@@ -1,7 +1,7 @@
 ---@type LazySpec
 return {
     "stevearc/oil.nvim",
-    enabled = false,
+    enabled = true,
     lazy = false,
     dependencies = {
         { "echasnovski/mini.icons", opts = {} },
