@@ -26,7 +26,7 @@
   "theme": {
     "mode": "system",
     "dark": "One Dark",
-    "light": "Black Atom — JPN ∷ Koyo Hiru"
+    "light": "Black Atom — STA ∷ Research"
   },
   "base_keymap": "VSCode",
   "vim_mode": true,
@@ -48,7 +48,7 @@
     "enabled": false
   },
   "git_panel": {
-    "dock": "right",
+    "dock": "left",
     "status_style": "icon",
     "sort_by_path": true
   },
@@ -102,7 +102,9 @@
   },
   "languages": {
     "Markdown": {
-      "language_servers": ["marksman"]
+      "language_servers": [
+        "marksman"
+      ]
     }
   }
 }

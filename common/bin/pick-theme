@@ -14,6 +14,7 @@ NVIM_CONFIG="$DOTS_DIR/common/.config/nvim/lua/config.lua"
 TMUX_CONFIG="$DOTS_DIR/common/.config/tmux/tmux.conf"
 GHOSTTY_CONFIG="$DOTS_DIR/common/.config/ghostty/config"
 GIT_CONFIG="$DOTS_DIR/common/.gitconfig"
+ZED_CONFIG="$DOTS_DIR/common/.config/zed/settings.json"
 
 # Get current theme from nvim config
 get_current_theme() {
@@ -58,6 +59,20 @@ update_tmux_theme() {
 update_ghostty_theme() {
     local theme="$1"
     sed -i '' "s/^theme = .*/theme = ${theme}.conf/" "$GHOSTTY_CONFIG"
+}
+
+# Update Zed configuration
+update_zed_theme() {
+    local theme="$1"
+    local appearance="$2"
+    local display_name
+    display_name=$(jq -r ".themes.\"$theme\".display_name" "$THEMES_JSON")
+    
+    if [[ "$appearance" == "dark" ]]; then
+        jq ".theme.dark = \"$display_name\"" "$ZED_CONFIG" > "$ZED_CONFIG.tmp" && mv "$ZED_CONFIG.tmp" "$ZED_CONFIG"
+    else
+        jq ".theme.light = \"$display_name\"" "$ZED_CONFIG" > "$ZED_CONFIG.tmp" && mv "$ZED_CONFIG.tmp" "$ZED_CONFIG"
+    fi
 }
 
 # Update Git delta configuration
@@ -202,6 +217,7 @@ apply_theme() {
     update_nvim_theme "$theme"
     update_tmux_theme "$theme" "$collection"
     update_ghostty_theme "$theme"
+    update_zed_theme "$theme" "$appearance"
     update_delta_theme "$appearance"
     update_macos_appearance "$appearance"
     
