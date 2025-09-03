@@ -469,8 +469,8 @@ return {
             win = {
                 backdrop = false,
                 border = "solid",
-                width = vim.o.columns,
-                height = vim.o.lines,
+                width = 9999,
+                height = 9999,
                 wo = {
                     winhighlight = "Normal:NormalFloat,FloatBorder:Normal",
                 },
