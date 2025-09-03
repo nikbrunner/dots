@@ -1,3 +1,4 @@
 macos/Library/Application Support/.DS_Store
 node_modules
 common/.config/zed/prompts/
+.DS_Store
