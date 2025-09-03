@@ -40,7 +40,7 @@
 
 [delta]
   navigate = true
-  side-by-side = true
+  ; side-by-side = true
   wrap-max-lines = 0
   hyperlinks = true
   hyperlinks-file-link-format = "lazygit-edit://{path}:{line}"
