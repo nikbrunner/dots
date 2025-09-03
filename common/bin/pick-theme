@@ -8,7 +8,6 @@ set -euo pipefail
 # Configuration
 DOTS_DIR="$HOME/repos/nikbrunner/dots"
 THEMES_JSON="$DOTS_DIR/common/themes.json"
-BACKUP_DIR="$DOTS_DIR/.theme-backups"
 
 # Tool configurations
 NVIM_CONFIG="$DOTS_DIR/common/.config/nvim/lua/config.lua"
@@ -125,34 +124,6 @@ update_delta_theme() {
     fi
 }
 
-# Create backup before making changes
-create_backup() {
-    local timestamp=$(date +%Y%m%d_%H%M%S)
-    mkdir -p "$BACKUP_DIR"
-    
-    cp "$NVIM_CONFIG" "$BACKUP_DIR/config.lua.$timestamp"
-    cp "$TMUX_CONFIG" "$BACKUP_DIR/tmux.conf.$timestamp"
-    cp "$GHOSTTY_CONFIG" "$BACKUP_DIR/ghostty-config.$timestamp"
-    cp "$GIT_CONFIG" "$BACKUP_DIR/gitconfig.$timestamp"
-    
-    echo "$timestamp"
-}
-
-# Restore from backup
-restore_backup() {
-    local timestamp="$1"
-    
-    if [[ -f "$BACKUP_DIR/config.lua.$timestamp" ]]; then
-        cp "$BACKUP_DIR/config.lua.$timestamp" "$NVIM_CONFIG"
-        cp "$BACKUP_DIR/tmux.conf.$timestamp" "$TMUX_CONFIG"
-        cp "$BACKUP_DIR/ghostty-config.$timestamp" "$GHOSTTY_CONFIG"
-        cp "$BACKUP_DIR/gitconfig.$timestamp" "$GIT_CONFIG"
-        echo "Backup restored: $timestamp"
-    else
-        echo "Backup not found: $timestamp"
-        return 1
-    fi
-}
 
 # Reload tmux configuration if tmux is running
 reload_tmux() {
@@ -177,11 +148,6 @@ apply_theme() {
     fi
     
     echo "Applying theme: $theme ($appearance mode)"
-    
-    # Create backup
-    local backup_timestamp
-    backup_timestamp=$(create_backup)
-    echo "Backup created: $backup_timestamp"
     
     # Apply theme to all tools
     update_nvim_theme "$theme" "$appearance"
@@ -226,22 +192,6 @@ main() {
     # Validate environment
     validate_environment || exit 1
     
-    # Handle command line arguments
-    case "${1:-}" in
-        --restore)
-            [[ -n "${2:-}" ]] || { echo "Usage: pick-theme --restore TIMESTAMP"; exit 1; }
-            restore_backup "$2"
-            exit 0
-            ;;
-        --list-backups)
-            if [[ -d "$BACKUP_DIR" ]]; then
-                ls -1 "$BACKUP_DIR" | grep "config.lua" | sed 's/config.lua.//' | sort -r
-            else
-                echo "No backups found"
-            fi
-            exit 0
-            ;;
-    esac
     
     # Get current state
     local current_theme current_mode
