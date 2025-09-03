@@ -1,7 +1,6 @@
 ---@diagnostic disable: missing-fields
 return {
     "A7Lavinraj/fyler.nvim",
-    dependencies = { "echasnovski/mini.icons" },
     enabled = false,
     ---@type FylerConfig
     opts = {
@@ -11,48 +10,36 @@ return {
             end,
         },
         mappings = {
-            explorer = {
-                ["q"] = "CloseView",
-                ["<CR>"] = "Select",
-                ["<C-t>"] = "SelectTab",
-                ["<C-v>"] = "SelectVSplit",
-                ["<C-s>"] = "SelectSplit",
-                ["-"] = "GotoParent",
-                ["="] = "GotoCwd",
-                ["."] = "GotoNode",
-            },
-            confirm = {
-                ["y"] = "Confirm",
-                ["n"] = "Discard",
-            },
+            ["q"] = "CloseView",
+            ["<CR>"] = "Select",
+            ["<C-t>"] = "SelectTab",
+            ["<C-v>"] = "SelectVSplit",
+            ["<C-s>"] = "SelectSplit",
+            ["-"] = "GotoParent",
+            ["="] = "GotoCwd",
+            ["."] = "GotoNode",
         },
-        views = {
-            confirm = {
-                border = "solid",
-                win_opts = {
-                    winhighlight = "Normal:NormalFloat,FloatBorder:FloatBorder,FloatTitle:FloatTitle",
-                    wrap = false,
-                },
+        close_on_select = true,
+        indentscope = {
+            enabled = false,
+        },
+        win = {
+            border = "solid",
+            win_opts = {
+                winhighlight = "Normal:NormalFloat,FloatBorder:FloatBorder,FloatTitle:FloatTitle",
+                wrap = false,
+                number = false,
+                relativenumber = false,
             },
-            explorer = {
-                close_on_select = true,
-                win = {
-                    border = "solid",
-                    win_opts = {
-                        winhighlight = "Normal:NormalFloat,FloatBorder:FloatBorder,FloatTitle:FloatTitle",
-                        wrap = false,
-                    },
-                    kind_presets = {
-                        float = {
-                            height = "0.6rel",
-                            width = "0.2rel",
-                            top = "0.1rel",
-                            left = "0.1rel",
-                        },
-                        split_left_most = {
-                            width = "0.2rel",
-                        },
-                    },
+            kind_presets = {
+                float = {
+                    height = "0.6rel",
+                    width = "0.25rel",
+                    top = "0.1rel",
+                    left = "0.15rel",
+                },
+                split_left_most = {
+                    width = "0.2rel",
                 },
             },
         },
@@ -61,7 +48,7 @@ return {
         {
             "-",
             function()
-                require("fyler").open()
+                require("fyler").open({ kind = "float" })
             end,
             desc = "Fyler",
         },
