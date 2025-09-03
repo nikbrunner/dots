@@ -42,7 +42,6 @@ export BC_OFFICE_LAN_IP=10.2.0.95
 export BC_OFFICE_WLAN_IP=10.2.0.109
 export BC_OFFICE_ST=67S3033
 
-export BC_HOME_LAN_IP=null
 export BC_HOME_WLAN_IP=192.168.2.109
 export BC_HOME_ST=4WSMH53
 
@@ -58,8 +57,7 @@ export BC_ANGELA_ST=CNZFGQ2
 export BAT_THEME="base16"
 
 # Aliases ================================================================
-alias edit="nvim"
-alias e="NVIM_APPNAME=nvim_mnml nvim"
+alias vin="NVIM_APPNAME=nvim_mnml nvim"
 
 alias ls="eza --all --oneline --long --icons --sort=type"
 alias lt="eza --all --tree --icons --sort=type --level=1 --ignore-glob=\"node_modules|.git\""
@@ -74,6 +72,7 @@ alias gdl="gallery-dl"
 alias npmu="npm-upgrade"
 alias start="tmux new -s dots -c ~/.config/nvim && rr"
 alias scratch="$EDITOR $HOME/scratchpad.md"
+
 alias :q=exit
 alias :vs='tmux split-window -h -c "#{pane_current_path}"'
 alias :sp='tmux split-window -v -c "#{pane_current_path}"'
