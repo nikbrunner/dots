@@ -18,6 +18,10 @@ M.spec = {
             on_attach = function(bufnr)
                 vim.api.nvim_buf_set_keymap(bufnr, "n", "q", "<Cmd>wq<CR>", { noremap = true, silent = true })
             end,
+            ---@type vim.api.keyset.win_config
+            split_win_opts = {
+                split = "right", -- Controls split direction if window_type == 'split'. Options are 'left', 'right', 'above', or 'below'. See :help nvim_open_win()
+            },
         }
     end,
     config = function(_, opts)
