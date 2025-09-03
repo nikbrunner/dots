@@ -96,6 +96,8 @@ show_usage() {
         gum style --foreground=2 "  log          - Show git log"
         gum style --foreground=2 "  open         - Open dots directory with \$EDITOR"
         gum style --foreground=2 "  remove       - Remove path from git tracking (keep files locally)"
+        gum style --foreground=2 "  theme        - Interactive theme selector for all development tools [--debug]"
+        gum style --foreground=2 "  font         - Interactive font selector for terminal applications"
         echo ""
     else
         echo "dots - Dotfiles management command"
@@ -118,6 +120,8 @@ show_usage() {
         echo "  log          - Show git log"
         echo "  open         - Open dots directory with \$EDITOR"
         echo "  remove       - Remove path from git tracking (keep files locally)"
+        echo "  theme        - Interactive theme selector for all development tools [--debug]"
+        echo "  font         - Interactive font selector for terminal applications"
         echo ""
     fi
 }
@@ -796,6 +800,16 @@ open)
 remove)
     shift
     cmd_remove "$@"
+    ;;
+theme)
+    # Return to original directory before running pick-theme
+    cd "$ORIGINAL_PWD"
+    exec pick-theme "$@"
+    ;;
+font)
+    # Return to original directory before running pick-font
+    cd "$ORIGINAL_PWD"
+    exec pick-font "$@"
     ;;
 *)
     show_usage
