@@ -10,7 +10,7 @@ M.config = {
     colorscheme_light = "black-atom-stations-research",
 
     ---@type BlackAtom.Theme.Key
-    colorscheme_dark = "black-atom-jpn-murasaki-yoru",
+    colorscheme_dark = "black-atom-jpn-koyo-yoru",
 
     open_previous_files_on_startup = false,
     open_neotree_on_startup = false,

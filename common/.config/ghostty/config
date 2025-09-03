@@ -1,4 +1,4 @@
-theme = dark:black-atom-jpn-murasaki-yoru.conf,light:black-atom-stations-research.conf
+theme = dark:black-atom-jpn-koyo-yoru.conf,light:black-atom-stations-research.conf
 
 # custom-shader                      = ./shaders/crt-shader.glsl
 # custom-shader                      = ./shaders/bloom015.glsl
