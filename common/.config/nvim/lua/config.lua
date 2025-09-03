@@ -2,16 +2,9 @@ local M = {}
 
 ---@class VinConfig
 M.config = {
+    ---@type BlackAtom.Theme.Key
+    colorscheme = "black-atom-stations-operations",
     dev_mode = true,
-
-    background = "dark",
-
-    ---@type BlackAtom.Theme.Key
-    colorscheme_light = "black-atom-stations-research",
-
-    ---@type BlackAtom.Theme.Key
-    colorscheme_dark = "black-atom-mnml-mono-dark",
-
     open_previous_files_on_startup = false,
     open_neotree_on_startup = false,
     pathes = {

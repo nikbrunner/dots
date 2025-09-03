@@ -43,19 +43,21 @@ GIT_CONFIG="$DOTS_DIR/common/.gitconfig"
 
 # Get current theme from nvim config
 get_current_theme() {
-    local current_mode
-    current_mode=$(get_current_mode)
-    
-    if [[ "$current_mode" == "dark" ]]; then
-        grep "colorscheme_dark" "$NVIM_CONFIG" | sed 's/.*= *"//' | sed 's/".*//'
-    else
-        grep "colorscheme_light" "$NVIM_CONFIG" | sed 's/.*= *"//' | sed 's/".*//'
-    fi
+    grep "colorscheme" "$NVIM_CONFIG" | sed 's/.*= *"//' | sed 's/".*//'
 }
 
-# Get current background mode from nvim config
+# Get current background mode from macOS system
 get_current_mode() {
-    grep "background" "$NVIM_CONFIG" | sed 's/.*= *"//' | sed 's/".*//'
+    if [[ "$(uname)" == "Darwin" ]]; then
+        if defaults read -g AppleInterfaceStyle 2>/dev/null | grep -q "Dark"; then
+            echo "dark"
+        else
+            echo "light"
+        fi
+    else
+        # Default to dark on non-macOS systems
+        echo "dark"
+    fi
 }
 
 # Get theme metadata (appearance and collection)
@@ -72,18 +74,9 @@ update_nvim_theme() {
     debug_log "update_nvim_theme: theme=$theme, appearance=$appearance"
     debug_log "update_nvim_theme: NVIM_CONFIG=$NVIM_CONFIG"
     
-    # Update the colorscheme for the matching appearance
-    if [[ "$appearance" == "dark" ]]; then
-        debug_log "update_nvim_theme: Updating dark colorscheme"
-        sed -i '' "s/colorscheme_dark = .*/colorscheme_dark = \"$theme\",/" "$NVIM_CONFIG"
-    else
-        debug_log "update_nvim_theme: Updating light colorscheme"
-        sed -i '' "s/colorscheme_light = .*/colorscheme_light = \"$theme\",/" "$NVIM_CONFIG"
-    fi
-    
-    # Update background mode
-    debug_log "update_nvim_theme: Updating background to $appearance"
-    sed -i '' "s/background = .*/background = \"$appearance\",/" "$NVIM_CONFIG"
+    # Update the colorscheme - single theme that follows system appearance
+    debug_log "update_nvim_theme: Updating colorscheme to $theme"
+    sed -i '' "s/colorscheme = .*/colorscheme = \"$theme\",/" "$NVIM_CONFIG"
     debug_log "update_nvim_theme: Completed"
 }
 
@@ -104,11 +97,6 @@ update_tmux_theme() {
     debug_log "update_tmux_theme: Completed"
 }
 
-# Get current ghostty theme configuration
-get_current_ghostty_themes() {
-    grep "^theme = " "$GHOSTTY_CONFIG" | head -1 | sed 's/theme = //'
-}
-
 # Update Ghostty configuration
 update_ghostty_theme() {
     local theme="$1"
@@ -117,36 +105,9 @@ update_ghostty_theme() {
     debug_log "update_ghostty_theme: theme=$theme, appearance=$appearance"
     debug_log "update_ghostty_theme: GHOSTTY_CONFIG=$GHOSTTY_CONFIG"
     
-    local current_config dark_theme light_theme
-    current_config=$(get_current_ghostty_themes)
-    debug_log "update_ghostty_theme: current_config=$current_config"
-    
-    # Parse current themes (handle both single and paired formats)
-    if [[ "$current_config" == *","* ]]; then
-        debug_log "update_ghostty_theme: Parsing paired theme format"
-        dark_theme=${current_config#*dark:}
-        dark_theme=${dark_theme%%,*}
-        dark_theme=${dark_theme%.conf}
-        light_theme=${current_config#*light:}
-        light_theme=${light_theme%.conf}
-    else
-        debug_log "update_ghostty_theme: Parsing single theme format"
-        # Single theme - use current as fallback for the other mode
-        local clean_current
-        clean_current=${current_config%.conf}
-        [[ "$appearance" == "dark" ]] && light_theme="$clean_current" || dark_theme="$clean_current"
-    fi
-    
-    debug_log "update_ghostty_theme: Before update - dark_theme=$dark_theme, light_theme=$light_theme"
-    
-    # Update the appropriate theme
-    [[ "$appearance" == "dark" ]] && dark_theme="$theme" || light_theme="$theme"
-    
-    debug_log "update_ghostty_theme: After update - dark_theme=$dark_theme, light_theme=$light_theme"
-    
-    # Apply the configuration
-    debug_log "update_ghostty_theme: Running sed to update theme line"
-    sed -i '' "s/^theme = .*/theme = dark:${dark_theme}.conf,light:${light_theme}.conf/" "$GHOSTTY_CONFIG"
+    # Simple single theme that follows system appearance
+    debug_log "update_ghostty_theme: Setting theme to $theme"
+    sed -i '' "s/^theme = .*/theme = ${theme}.conf/" "$GHOSTTY_CONFIG"
     debug_log "update_ghostty_theme: Completed"
 }
 

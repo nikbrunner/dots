@@ -18,9 +18,7 @@ return {
         },
         config = function(_, opts)
             require("black-atom").setup(opts)
-            local config = require("config")
-            local colorscheme = config["colorscheme_" .. vim.opt.background:get()]
-            vim.cmd.colorscheme(colorscheme)
+            vim.cmd.colorscheme(require("config").colorscheme)
         end,
     },
     {
