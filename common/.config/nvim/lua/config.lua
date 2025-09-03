@@ -4,10 +4,10 @@ local M = {}
 M.config = {
     dev_mode = true,
 
-    background = "light",
+    background = "dark",
 
     ---@type BlackAtom.Theme.Key
-    colorscheme_light = "black-atom-jpn-koyo-hiru",
+    colorscheme_light = "black-atom-stations-research",
 
     ---@type BlackAtom.Theme.Key
     colorscheme_dark = "black-atom-stations-engineering",
