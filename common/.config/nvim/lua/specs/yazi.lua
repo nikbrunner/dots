@@ -1,7 +1,7 @@
 return {
     "mikavilpas/yazi.nvim",
     dependencies = { "nvim-lua/plenary.nvim" },
-    enabled = true,
+    enabled = false,
     event = "VeryLazy",
     keys = {
         {
