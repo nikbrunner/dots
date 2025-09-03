@@ -10,7 +10,7 @@ theme = dark:black-atom-stations-engineering.conf,light:black-atom-stations-rese
 # background-opacity                 = 0.9
 # background-blur                    = 65
 
-font-family = TX-02
+font-family = Iosevka Term SS14
 
 font-size                         = 16
 # font-thicken = true
