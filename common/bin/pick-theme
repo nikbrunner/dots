@@ -5,32 +5,6 @@
 
 set -euo pipefail
 
-# Debug mode flag
-DEBUG=false
-LOG_FILE="$HOME/pick-theme.log"
-
-# Parse command line arguments
-for arg in "$@"; do
-    case $arg in
-        --debug)
-            DEBUG=true
-            shift
-            ;;
-    esac
-done
-
-# Debug logging function
-debug_log() {
-    if [[ "$DEBUG" == "true" ]]; then
-        echo "[DEBUG $(date '+%H:%M:%S')] $*" | tee -a "$LOG_FILE"
-    fi
-}
-
-# Initialize log file
-if [[ "$DEBUG" == "true" ]]; then
-    echo "=== pick-theme debug session started at $(date) ===" > "$LOG_FILE"
-fi
-
 # Configuration
 DOTS_DIR="$HOME/repos/nikbrunner/dots"
 THEMES_JSON="$DOTS_DIR/common/themes.json"
@@ -69,121 +43,71 @@ get_theme_metadata() {
 # Update Neovim configuration
 update_nvim_theme() {
     local theme="$1"
-    local appearance="$2"
-    
-    debug_log "update_nvim_theme: theme=$theme, appearance=$appearance"
-    debug_log "update_nvim_theme: NVIM_CONFIG=$NVIM_CONFIG"
-    
-    # Update the colorscheme - single theme that follows system appearance
-    debug_log "update_nvim_theme: Updating colorscheme to $theme"
     sed -i '' "s/colorscheme = .*/colorscheme = \"$theme\",/" "$NVIM_CONFIG"
-    debug_log "update_nvim_theme: Completed"
 }
 
 # Update tmux configuration
 update_tmux_theme() {
     local theme="$1"
     local collection="$2"
-    
-    debug_log "update_tmux_theme: theme=$theme, collection=$collection"
-    
     local theme_path="~/repos/black-atom-industries/tmux/themes/$collection/${theme}.conf"
-    debug_log "update_tmux_theme: theme_path=$theme_path"
-    debug_log "update_tmux_theme: TMUX_CONFIG=$TMUX_CONFIG"
-    
-    # Replace any existing theme source line with new theme
-    debug_log "update_tmux_theme: Running sed to update theme source line"
     sed -i '' "s|source-file .*/black-atom-industries/tmux/themes/.*/.*\.conf|source-file $theme_path|" "$TMUX_CONFIG"
-    debug_log "update_tmux_theme: Completed"
 }
 
 # Update Ghostty configuration
 update_ghostty_theme() {
     local theme="$1"
-    local appearance="$2"
-    
-    debug_log "update_ghostty_theme: theme=$theme, appearance=$appearance"
-    debug_log "update_ghostty_theme: GHOSTTY_CONFIG=$GHOSTTY_CONFIG"
-    
-    # Simple single theme that follows system appearance
-    debug_log "update_ghostty_theme: Setting theme to $theme"
     sed -i '' "s/^theme = .*/theme = ${theme}.conf/" "$GHOSTTY_CONFIG"
-    debug_log "update_ghostty_theme: Completed"
 }
 
 # Update Git delta configuration
 update_delta_theme() {
     local appearance="$1"
-    
-    debug_log "update_delta_theme: appearance=$appearance"
-    debug_log "update_delta_theme: GIT_CONFIG=$GIT_CONFIG"
-    
     if [[ "$appearance" == "dark" ]]; then
-        debug_log "update_delta_theme: Setting dark mode"
         sed -i '' 's/^  light = true/  ; light = true/' "$GIT_CONFIG"
         sed -i '' 's/^  ; dark = true/  dark = true/' "$GIT_CONFIG"
     else
-        debug_log "update_delta_theme: Setting light mode"
         sed -i '' 's/^  dark = true/  ; dark = true/' "$GIT_CONFIG"
         sed -i '' 's/^  ; light = true/  light = true/' "$GIT_CONFIG"
     fi
-    debug_log "update_delta_theme: Completed"
 }
 
 # Update macOS system appearance
 update_macos_appearance() {
     local appearance="$1"
-    
-    debug_log "update_macos_appearance: appearance=$appearance"
-    
     if [[ "$(uname)" == "Darwin" ]]; then
         if [[ "$appearance" == "dark" ]]; then
-            debug_log "update_macos_appearance: Setting macOS to dark mode"
             osascript -e 'tell application "System Events" to tell appearance preferences to set dark mode to true' 2>/dev/null && echo "macOS switched to dark mode"
         else
-            debug_log "update_macos_appearance: Setting macOS to light mode"
             osascript -e 'tell application "System Events" to tell appearance preferences to set dark mode to false' 2>/dev/null && echo "macOS switched to light mode"
         fi
-        debug_log "update_macos_appearance: Completed"
-    else
-        debug_log "update_macos_appearance: Not on macOS, skipping"
     fi
 }
 
 
 # Reload tmux configuration if tmux is running
 reload_tmux() {
-    debug_log "reload_tmux: Starting"
     if command -v tmux >/dev/null 2>&1 && tmux list-sessions >/dev/null 2>&1; then
-        debug_log "reload_tmux: tmux is running, reloading config"
-        tmux source-file "$TMUX_CONFIG" 2>/dev/null && echo "tmux configuration reloaded"
-        debug_log "reload_tmux: Config reloaded successfully"
-    else
-        debug_log "reload_tmux: tmux not running or no sessions"
+        if tmux source-file "$TMUX_CONFIG" 2>/dev/null; then
+            echo "tmux configuration reloaded"
+        fi
     fi
-    debug_log "reload_tmux: Completed"
 }
 
 # Reload Ghostty configuration using SIGUSR2 signal with AppleScript fallback
 reload_ghostty() {
-    debug_log "reload_ghostty: Starting"
     if ! pgrep -x ghostty >/dev/null 2>&1; then
-        debug_log "reload_ghostty: Ghostty not running"
         return 0
     fi
     
-    debug_log "reload_ghostty: Ghostty is running, trying SIGUSR2 signal"
     # Try SIGUSR2 signal method (requires Ghostty 1.2.0+)
     if pkill -SIGUSR2 ghostty 2>/dev/null; then
         echo "Ghostty configuration reloaded"
-        debug_log "reload_ghostty: SIGUSR2 signal sent successfully"
         return 0
     fi
     
-    debug_log "reload_ghostty: SIGUSR2 failed, trying AppleScript fallback"
     # Fallback to AppleScript on macOS
     if [[ "$(uname)" == "Darwin" ]] && command -v osascript >/dev/null 2>&1; then
-        debug_log "reload_ghostty: Running AppleScript"
         osascript -e 'tell application "System Events"
             tell process "Ghostty"
                 try
@@ -194,36 +118,26 @@ reload_ghostty() {
                 end try
             end tell
         end tell' >/dev/null 2>&1 && echo "Ghostty configuration reloaded (AppleScript fallback)"
-        debug_log "reload_ghostty: AppleScript completed"
-    else
-        debug_log "reload_ghostty: AppleScript not available"
     fi
-    debug_log "reload_ghostty: Completed"
 }
 
 # Restart Neovim instances and restore sessions (tmux-aware)
 restart_neovim_instances() {
-    debug_log "restart_neovim_instances: Starting"
     if ! command -v tmux >/dev/null 2>&1; then
         echo "tmux not found, skipping Neovim restart"
-        debug_log "restart_neovim_instances: tmux not found"
         return 0
     fi
     
-    debug_log "restart_neovim_instances: Searching for Neovim panes"
     # Find tmux panes running Neovim
     local nvim_panes
     nvim_panes=$(tmux list-panes -a -F "#{session_name}:#{window_index}.#{pane_index}" -f "#{==:#{pane_current_command},nvim}" 2>/dev/null)
-    debug_log "restart_neovim_instances: nvim_panes='$nvim_panes'"
     
     # Also try alternative search patterns
     local alt_panes
     alt_panes=$(tmux list-panes -a -F "#{session_name}:#{window_index}.#{pane_index} #{pane_current_command}" | grep nvim | cut -d' ' -f1 2>/dev/null)
-    debug_log "restart_neovim_instances: alt_panes='$alt_panes'"
     
     if [[ -z "$nvim_panes" ]] && [[ -z "$alt_panes" ]]; then
         echo "No Neovim instances found in tmux"
-        debug_log "restart_neovim_instances: No Neovim panes found"
         return 0
     fi
     
@@ -231,13 +145,9 @@ restart_neovim_instances() {
     local panes_to_use
     if [[ -n "$nvim_panes" ]]; then
         panes_to_use="$nvim_panes"
-        debug_log "restart_neovim_instances: Using nvim_panes"
     else
         panes_to_use="$alt_panes"
-        debug_log "restart_neovim_instances: Using alt_panes"
     fi
-    
-    debug_log "restart_neovim_instances: Processing panes: $panes_to_use"
     
     local count=0
     local total_panes
@@ -250,18 +160,15 @@ restart_neovim_instances() {
         if [[ -n "$pane" ]]; then
             count=$((count + 1))
             echo -n "  [$count/$total_panes] "
-            debug_log "restart_neovim_instances: Processing pane $count: $pane"
             
             # Send escape first to exit any mode, then restart
             tmux send-keys -t "$pane" 'Escape' ':restart' 'Enter' 2>/dev/null
-            debug_log "restart_neovim_instances: Sent restart command to pane $pane"
             
             # Moderate delay for restart to complete
             sleep 0.8
             
             # Send session restore command using Lua
             tmux send-keys -t "$pane" ':lua require("persistence").load()' 'Enter' 2>/dev/null
-            debug_log "restart_neovim_instances: Sent session restore to pane $pane"
             echo "✓"
             
             # Minimal delay between panes
@@ -271,55 +178,50 @@ restart_neovim_instances() {
     
     if [[ $count -eq 0 ]]; then
         echo "No Neovim instances found"
-        debug_log "restart_neovim_instances: No instances processed"
     fi
-    debug_log "restart_neovim_instances: Completed"
 }
 
 # Apply theme to all tools
 apply_theme() {
     local theme="$1"
     
-    debug_log "apply_theme: Starting with theme=$theme"
-    
     # Get and validate theme metadata
     local metadata appearance collection
     metadata=$(get_theme_metadata "$theme")
-    debug_log "apply_theme: metadata=$metadata"
     
     if [[ -z "$metadata" || "$metadata" == *"null"* ]]; then
         echo "Error: Theme '$theme' not found"
-        debug_log "apply_theme: Theme not found, exiting"
         return 1
     fi
     
     read -r appearance collection <<< "$metadata"
-    debug_log "apply_theme: appearance=$appearance, collection=$collection"
     
     echo "Applying theme: $theme ($appearance mode)"
     
     # Apply theme to all tools
-    debug_log "apply_theme: Starting configuration updates"
-    update_nvim_theme "$theme" "$appearance"
+    update_nvim_theme "$theme"
     update_tmux_theme "$theme" "$collection"
-    update_ghostty_theme "$theme" "$appearance"
+    update_ghostty_theme "$theme"
     update_delta_theme "$appearance"
     update_macos_appearance "$appearance"
-    debug_log "apply_theme: Configuration updates completed"
+    
+    # Brief pause to let file changes and system appearance settle
+    sleep 0.2
     
     # Reload configurations
-    debug_log "apply_theme: Starting configuration reloads"
+    echo "Reloading configurations..."
     reload_tmux
-    reload_ghostty
-    debug_log "apply_theme: Configuration reloads completed"
+    echo "tmux reload completed"
+    reload_ghostty  
+    echo "ghostty reload completed"
+    
+    # Brief pause before Neovim restarts
+    sleep 0.1
     
     # Restart Neovim instances with new theme
-    debug_log "apply_theme: Starting Neovim restarts"
     restart_neovim_instances
-    debug_log "apply_theme: Neovim restarts completed"
     
     echo "Theme applied successfully!"
-    debug_log "apply_theme: Completed successfully"
 }
 
 # Validate dependencies and configuration files
