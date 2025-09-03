@@ -48,6 +48,7 @@
     "enabled": false
   },
   "git_panel": {
+    "dock": "right",
     "status_style": "icon",
     "sort_by_path": true
   },
