@@ -169,6 +169,26 @@ update_delta_theme() {
     debug_log "update_delta_theme: Completed"
 }
 
+# Update macOS system appearance
+update_macos_appearance() {
+    local appearance="$1"
+    
+    debug_log "update_macos_appearance: appearance=$appearance"
+    
+    if [[ "$(uname)" == "Darwin" ]]; then
+        if [[ "$appearance" == "dark" ]]; then
+            debug_log "update_macos_appearance: Setting macOS to dark mode"
+            osascript -e 'tell application "System Events" to tell appearance preferences to set dark mode to true' 2>/dev/null && echo "macOS switched to dark mode"
+        else
+            debug_log "update_macos_appearance: Setting macOS to light mode"
+            osascript -e 'tell application "System Events" to tell appearance preferences to set dark mode to false' 2>/dev/null && echo "macOS switched to light mode"
+        fi
+        debug_log "update_macos_appearance: Completed"
+    else
+        debug_log "update_macos_appearance: Not on macOS, skipping"
+    fi
+}
+
 
 # Reload tmux configuration if tmux is running
 reload_tmux() {
@@ -323,6 +343,7 @@ apply_theme() {
     update_tmux_theme "$theme" "$collection"
     update_ghostty_theme "$theme" "$appearance"
     update_delta_theme "$appearance"
+    update_macos_appearance "$appearance"
     debug_log "apply_theme: Configuration updates completed"
     
     # Reload configurations
