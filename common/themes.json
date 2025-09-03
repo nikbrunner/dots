@@ -1,0 +1,164 @@
+{
+  "themes": {
+    "black-atom-stations-engineering": {
+      "display_name": "Black Atom — STA ∷ Engineering",
+      "appearance": "dark",
+      "collection": "stations"
+    },
+    "black-atom-stations-research": {
+      "display_name": "Black Atom — STA ∷ Research", 
+      "appearance": "light",
+      "collection": "stations"
+    },
+    "black-atom-stations-operations": {
+      "display_name": "Black Atom — STA ∷ Operations",
+      "appearance": "dark", 
+      "collection": "stations"
+    },
+    "black-atom-stations-medical": {
+      "display_name": "Black Atom — STA ∷ Medical",
+      "appearance": "light",
+      "collection": "stations"
+    },
+    "black-atom-jpn-koyo-yoru": {
+      "display_name": "Black Atom — JPN ∷ Koyo Yoru",
+      "appearance": "dark",
+      "collection": "jpn"
+    },
+    "black-atom-jpn-koyo-hiru": {
+      "display_name": "Black Atom — JPN ∷ Koyo Hiru",
+      "appearance": "light",
+      "collection": "jpn"
+    },
+    "black-atom-jpn-tsuki-yoru": {
+      "display_name": "Black Atom — JPN ∷ Tsuki Yoru",
+      "appearance": "dark",
+      "collection": "jpn"
+    },
+    "black-atom-jpn-murasaki-yoru": {
+      "display_name": "Black Atom — JPN ∷ Murasaki Yoru", 
+      "appearance": "dark",
+      "collection": "jpn"
+    },
+    "black-atom-terra-spring-day": {
+      "display_name": "Black Atom — TER ∷ Spring Day",
+      "appearance": "light",
+      "collection": "terra"
+    },
+    "black-atom-terra-spring-night": {
+      "display_name": "Black Atom — TER ∷ Spring Night",
+      "appearance": "dark",
+      "collection": "terra"
+    },
+    "black-atom-terra-fall-day": {
+      "display_name": "Black Atom — TER ∷ Fall Day",
+      "appearance": "light",
+      "collection": "terra"
+    },
+    "black-atom-terra-fall-night": {
+      "display_name": "Black Atom — TER ∷ Fall Night",
+      "appearance": "dark",
+      "collection": "terra"
+    },
+    "black-atom-terra-summer-day": {
+      "display_name": "Black Atom — TER ∷ Summer Day",
+      "appearance": "light", 
+      "collection": "terra"
+    },
+    "black-atom-terra-summer-night": {
+      "display_name": "Black Atom — TER ∷ Summer Night",
+      "appearance": "dark",
+      "collection": "terra"
+    },
+    "black-atom-terra-winter-day": {
+      "display_name": "Black Atom — TER ∷ Winter Day",
+      "appearance": "light",
+      "collection": "terra"
+    },
+    "black-atom-terra-winter-night": {
+      "display_name": "Black Atom — TER ∷ Winter Night",
+      "appearance": "dark",
+      "collection": "terra"
+    },
+    "black-atom-north-night": {
+      "display_name": "Black Atom — NORTH ∷ Night",
+      "appearance": "dark",
+      "collection": "north"
+    },
+    "black-atom-north-dark-night": {
+      "display_name": "Black Atom — NORTH ∷ Dark Night",
+      "appearance": "dark",
+      "collection": "north"
+    },
+    "black-atom-north-day": {
+      "display_name": "Black Atom — NORTH ∷ Day",
+      "appearance": "light",
+      "collection": "north"
+    },
+    "black-atom-mnml-mono-dark": {
+      "display_name": "Black Atom — MNM ∷ Mono Dark",
+      "appearance": "dark",
+      "collection": "mnml"
+    },
+    "black-atom-mnml-mono-light": {
+      "display_name": "Black Atom — MNM ∷ Mono Light",
+      "appearance": "light",
+      "collection": "mnml"
+    },
+    "black-atom-mnml-orange-dark": {
+      "display_name": "Black Atom — MNM ∷ Orange Dark",
+      "appearance": "dark",
+      "collection": "mnml"
+    },
+    "black-atom-mnml-orange-light": {
+      "display_name": "Black Atom — MNM ∷ Orange Light",
+      "appearance": "light",
+      "collection": "mnml"
+    },
+    "black-atom-mnml-mikado-dark": {
+      "display_name": "Black Atom — MNM ∷ Mikado Dark",
+      "appearance": "dark", 
+      "collection": "mnml"
+    },
+    "black-atom-mnml-mikado-light": {
+      "display_name": "Black Atom — MNM ∷ Mikado Light",
+      "appearance": "light",
+      "collection": "mnml"
+    },
+    "black-atom-mnml-47-light": {
+      "display_name": "Black Atom — MNM ∷ 47 Light",
+      "appearance": "light",
+      "collection": "mnml"
+    },
+    "black-atom-mnml-47-dark": {
+      "display_name": "Black Atom — MNM ∷ 47 Dark",
+      "appearance": "dark",
+      "collection": "mnml"
+    }
+  },
+  "tools": {
+    "nvim": {
+      "config_path": "~/repos/nikbrunner/dots/common/.config/nvim/lua/config.lua",
+      "update_method": "lua_table"
+    },
+    "tmux": {
+      "config_path": "~/repos/nikbrunner/dots/common/.config/tmux/themes.conf",
+      "update_method": "source_file",
+      "base_paths": {
+        "stations": "~/repos/black-atom-industries/tmux/themes/stations",
+        "jpn": "~/repos/black-atom-industries/tmux/themes/jpn", 
+        "terra": "~/repos/black-atom-industries/tmux/themes/terra",
+        "north": "~/repos/black-atom-industries/tmux/themes/north",
+        "mnml": "~/repos/black-atom-industries/tmux/themes/mnml"
+      }
+    },
+    "ghostty": {
+      "config_path": "~/repos/nikbrunner/dots/common/.config/ghostty/config",
+      "update_method": "theme_line"
+    },
+    "delta": {
+      "config_path": "~/repos/nikbrunner/dots/common/.gitconfig",
+      "update_method": "ini_value"
+    }
+  }
+}

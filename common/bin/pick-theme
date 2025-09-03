@@ -1,0 +1,286 @@
+#!/bin/bash
+
+# pick-theme - Unified theme selector for all development tools
+# Uses fzf to select from Black Atom themes and updates configurations
+
+set -euo pipefail
+
+# Configuration
+DOTS_DIR="$HOME/repos/nikbrunner/dots"
+THEMES_JSON="$DOTS_DIR/common/themes.json"
+BACKUP_DIR="$DOTS_DIR/.theme-backups"
+
+# Tool configurations
+NVIM_CONFIG="$DOTS_DIR/common/.config/nvim/lua/config.lua"
+TMUX_CONFIG="$DOTS_DIR/common/.config/tmux/tmux.conf"
+GHOSTTY_CONFIG="$DOTS_DIR/common/.config/ghostty/config"
+GIT_CONFIG="$DOTS_DIR/common/.gitconfig"
+
+# Get current theme from nvim config
+get_current_theme() {
+    local current_mode
+    current_mode=$(get_current_mode)
+    
+    if [[ "$current_mode" == "dark" ]]; then
+        grep "colorscheme_dark" "$NVIM_CONFIG" | sed 's/.*= *"//' | sed 's/".*//'
+    else
+        grep "colorscheme_light" "$NVIM_CONFIG" | sed 's/.*= *"//' | sed 's/".*//'
+    fi
+}
+
+# Get current background mode from nvim config
+get_current_mode() {
+    grep "background" "$NVIM_CONFIG" | sed 's/.*= *"//' | sed 's/".*//'
+}
+
+# Get theme appearance (light/dark)
+get_theme_appearance() {
+    local theme="$1"
+    jq -r ".themes.\"$theme\".appearance" "$THEMES_JSON"
+}
+
+# Get theme collection
+get_theme_collection() {
+    local theme="$1"
+    jq -r ".themes.\"$theme\".collection" "$THEMES_JSON"
+}
+
+# Update Neovim configuration
+update_nvim_theme() {
+    local theme="$1"
+    local appearance="$2"
+    
+    # Update the colorscheme for the matching appearance
+    if [[ "$appearance" == "dark" ]]; then
+        sed -i '' "s/colorscheme_dark = .*/colorscheme_dark = \"$theme\",/" "$NVIM_CONFIG"
+    else
+        sed -i '' "s/colorscheme_light = .*/colorscheme_light = \"$theme\",/" "$NVIM_CONFIG"
+    fi
+    
+    # Update background mode
+    sed -i '' "s/background = .*/background = \"$appearance\",/" "$NVIM_CONFIG"
+}
+
+# Update tmux configuration
+update_tmux_theme() {
+    local theme="$1"
+    local collection="$2"
+    
+    local theme_path="~/repos/black-atom-industries/tmux/themes/$collection/${theme}.conf"
+    
+    # Replace the themes.conf source line with direct theme source
+    sed -i '' "s|source-file ~/.config/tmux/themes.conf|source-file $theme_path|" "$TMUX_CONFIG"
+}
+
+# Get current ghostty theme configuration
+get_current_ghostty_themes() {
+    grep "^theme = " "$GHOSTTY_CONFIG" | head -1 | sed 's/theme = //'
+}
+
+# Update Ghostty configuration
+update_ghostty_theme() {
+    local theme="$1"
+    local appearance="$2"
+    
+    local current_config
+    current_config=$(get_current_ghostty_themes)
+    
+    if [[ "$current_config" == *","* ]]; then
+        # Parse existing dark:theme1,light:theme2 format
+        local dark_theme light_theme
+        dark_theme=$(echo "$current_config" | sed 's/dark:\([^,]*\).*/\1/' | sed 's/\.conf$//')
+        light_theme=$(echo "$current_config" | sed 's/.*light:\([^,]*\)/\1/' | sed 's/\.conf$//')
+        
+        # Update only the matching appearance
+        if [[ "$appearance" == "dark" ]]; then
+            dark_theme="$theme"
+        else
+            light_theme="$theme"
+        fi
+        
+        sed -i '' "s/^theme = .*/theme = dark:${dark_theme}.conf,light:${light_theme}.conf/" "$GHOSTTY_CONFIG"
+    else
+        # Single theme format, convert to dark/light format
+        local clean_current
+        clean_current=$(echo "$current_config" | sed 's/\.conf$//')
+        
+        if [[ "$appearance" == "dark" ]]; then
+            sed -i '' "s/^theme = .*/theme = dark:${theme}.conf,light:${clean_current}.conf/" "$GHOSTTY_CONFIG"
+        else
+            sed -i '' "s/^theme = .*/theme = dark:${clean_current}.conf,light:${theme}.conf/" "$GHOSTTY_CONFIG"
+        fi
+    fi
+}
+
+# Update Git delta configuration
+update_delta_theme() {
+    local appearance="$1"
+    
+    if [[ "$appearance" == "dark" ]]; then
+        sed -i '' 's/^  light = true/  ; light = true/' "$GIT_CONFIG"
+        sed -i '' 's/^  ; dark = true/  dark = true/' "$GIT_CONFIG"
+    else
+        sed -i '' 's/^  dark = true/  ; dark = true/' "$GIT_CONFIG"
+        sed -i '' 's/^  ; light = true/  light = true/' "$GIT_CONFIG"
+    fi
+}
+
+# Create backup before making changes
+create_backup() {
+    local timestamp=$(date +%Y%m%d_%H%M%S)
+    mkdir -p "$BACKUP_DIR"
+    
+    cp "$NVIM_CONFIG" "$BACKUP_DIR/config.lua.$timestamp"
+    cp "$TMUX_CONFIG" "$BACKUP_DIR/tmux.conf.$timestamp"
+    cp "$GHOSTTY_CONFIG" "$BACKUP_DIR/ghostty-config.$timestamp"
+    cp "$GIT_CONFIG" "$BACKUP_DIR/gitconfig.$timestamp"
+    
+    echo "$timestamp"
+}
+
+# Restore from backup
+restore_backup() {
+    local timestamp="$1"
+    
+    if [[ -f "$BACKUP_DIR/config.lua.$timestamp" ]]; then
+        cp "$BACKUP_DIR/config.lua.$timestamp" "$NVIM_CONFIG"
+        cp "$BACKUP_DIR/tmux.conf.$timestamp" "$TMUX_CONFIG"
+        cp "$BACKUP_DIR/ghostty-config.$timestamp" "$GHOSTTY_CONFIG"
+        cp "$BACKUP_DIR/gitconfig.$timestamp" "$GIT_CONFIG"
+        echo "Backup restored: $timestamp"
+    else
+        echo "Backup not found: $timestamp"
+        return 1
+    fi
+}
+
+# Reload tmux configuration if tmux is running
+reload_tmux() {
+    if command -v tmux >/dev/null 2>&1 && tmux list-sessions >/dev/null 2>&1; then
+        tmux source-file "$TMUX_CONFIG" 2>/dev/null && echo "tmux configuration reloaded"
+    fi
+}
+
+# Apply theme to all tools
+apply_theme() {
+    local theme="$1"
+    
+    # Get theme metadata
+    local appearance collection
+    appearance=$(get_theme_appearance "$theme")
+    collection=$(get_theme_collection "$theme")
+    
+    # Validate theme exists
+    if [[ "$appearance" == "null" ]]; then
+        echo "Error: Theme '$theme' not found"
+        return 1
+    fi
+    
+    echo "Applying theme: $theme ($appearance mode)"
+    
+    # Create backup
+    local backup_timestamp
+    backup_timestamp=$(create_backup)
+    echo "Backup created: $backup_timestamp"
+    
+    # Apply theme to all tools
+    update_nvim_theme "$theme" "$appearance"
+    update_tmux_theme "$theme" "$collection"
+    update_ghostty_theme "$theme" "$appearance"
+    update_delta_theme "$appearance"
+    
+    # Reload tmux if running
+    reload_tmux
+    
+    echo "Theme applied successfully!"
+    echo "Neovim: Updated $appearance theme to $theme"
+    echo "New Ghostty windows will use updated theme"
+}
+
+# Validate dependencies and configuration files
+validate_environment() {
+    local errors=()
+    
+    # Check required commands
+    for cmd in jq fzf; do
+        if ! command -v "$cmd" >/dev/null 2>&1; then
+            errors+=("$cmd is required but not installed")
+        fi
+    done
+    
+    # Check configuration files
+    [[ -f "$THEMES_JSON" ]] || errors+=("Themes registry not found: $THEMES_JSON")
+    [[ -f "$NVIM_CONFIG" ]] || errors+=("Neovim config not found: $NVIM_CONFIG")
+    [[ -f "$TMUX_CONFIG" ]] || errors+=("tmux config not found: $TMUX_CONFIG")
+    [[ -f "$GHOSTTY_CONFIG" ]] || errors+=("Ghostty config not found: $GHOSTTY_CONFIG")
+    [[ -f "$GIT_CONFIG" ]] || errors+=("Git config not found: $GIT_CONFIG")
+    
+    if [[ ${#errors[@]} -gt 0 ]]; then
+        echo "Environment errors:"
+        printf "  - %s\n" "${errors[@]}"
+        return 1
+    fi
+}
+
+main() {
+    # Validate environment
+    validate_environment || exit 1
+    
+    # Handle command line arguments
+    case "${1:-}" in
+        --restore)
+            [[ -n "${2:-}" ]] || { echo "Usage: pick-theme --restore TIMESTAMP"; exit 1; }
+            restore_backup "$2"
+            exit 0
+            ;;
+        --list-backups)
+            if [[ -d "$BACKUP_DIR" ]]; then
+                ls -1 "$BACKUP_DIR" | grep "config.lua" | sed 's/config.lua.//' | sort -r
+            else
+                echo "No backups found"
+            fi
+            exit 0
+            ;;
+    esac
+    
+    # Get current state
+    local current_theme current_mode
+    current_theme=$(get_current_theme)
+    current_mode=$(get_current_mode)
+    
+    # Get available themes with display names
+    local themes_display
+    themes_display=$(jq -r '.themes | to_entries[] | "\(.key):\(.value.display_name)"' "$THEMES_JSON")
+    
+    if [[ -z "$themes_display" ]]; then
+        echo "No themes found in $THEMES_JSON"
+        exit 1
+    fi
+    
+    # Show current state
+    echo "Current theme: $current_theme ($current_mode mode)"
+    echo
+    
+    # Interactive selection with fzf
+    local selected_line selected_theme
+    selected_line=$(echo "$themes_display" | fzf \
+        --border-label="┃ pick-theme ┃" \
+        --prompt="Select theme: " \
+        --header="Current: $current_theme | Mode: $current_mode" \
+        --with-nth=2 \
+        --delimiter=":")
+    
+    if [[ -n "$selected_line" ]]; then
+        selected_theme=$(echo "$selected_line" | cut -d: -f1)
+        
+        if [[ "$selected_theme" == "$current_theme" ]]; then
+            echo "Theme unchanged: $selected_theme"
+        else
+            apply_theme "$selected_theme"
+        fi
+    else
+        echo "No theme selected"
+    fi
+}
+
+main "$@"
