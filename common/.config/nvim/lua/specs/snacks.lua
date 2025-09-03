@@ -546,6 +546,19 @@ return {
                 -- stylua: ignore end
             end,
         })
+
+        vim.api.nvim_create_autocmd("User", {
+            pattern = "SnacksTerminalClose",
+            callback = function()
+                -- Refresh gitsigns when terminal closes
+                vim.defer_fn(function()
+                    local ok, gitsigns = pcall(require, "gitsigns")
+                    if ok then
+                        gitsigns.refresh()
+                    end
+                end, 100)
+            end,
+        })
     end,
 
     keys = function()
