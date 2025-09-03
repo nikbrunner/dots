@@ -67,8 +67,8 @@ update_tmux_theme() {
     
     local theme_path="~/repos/black-atom-industries/tmux/themes/$collection/${theme}.conf"
     
-    # Replace the themes.conf source line with direct theme source
-    sed -i '' "s|source-file ~/.config/tmux/themes.conf|source-file $theme_path|" "$TMUX_CONFIG"
+    # Replace any existing theme source line with new theme
+    sed -i '' "s|source-file ~/repos/black-atom-industries/tmux/themes/.*/.*\.conf|source-file $theme_path|" "$TMUX_CONFIG"
 }
 
 # Get current ghostty theme configuration
