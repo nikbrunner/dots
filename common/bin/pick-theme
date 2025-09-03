@@ -32,16 +32,10 @@ get_current_mode() {
     grep "background" "$NVIM_CONFIG" | sed 's/.*= *"//' | sed 's/".*//'
 }
 
-# Get theme appearance (light/dark)
-get_theme_appearance() {
+# Get theme metadata (appearance and collection)
+get_theme_metadata() {
     local theme="$1"
-    jq -r ".themes.\"$theme\".appearance" "$THEMES_JSON"
-}
-
-# Get theme collection
-get_theme_collection() {
-    local theme="$1"
-    jq -r ".themes.\"$theme\".collection" "$THEMES_JSON"
+    jq -r ".themes.\"$theme\" | [.appearance, .collection] | @tsv" "$THEMES_JSON"
 }
 
 # Update Neovim configuration
@@ -68,7 +62,7 @@ update_tmux_theme() {
     local theme_path="~/repos/black-atom-industries/tmux/themes/$collection/${theme}.conf"
     
     # Replace any existing theme source line with new theme
-    sed -i '' "s|source-file ~/repos/black-atom-industries/tmux/themes/.*/.*\.conf|source-file $theme_path|" "$TMUX_CONFIG"
+    sed -i '' "s|source-file .*/black-atom-industries/tmux/themes/.*/.*\.conf|source-file $theme_path|" "$TMUX_CONFIG"
 }
 
 # Get current ghostty theme configuration
@@ -81,34 +75,28 @@ update_ghostty_theme() {
     local theme="$1"
     local appearance="$2"
     
-    local current_config
+    local current_config dark_theme light_theme
     current_config=$(get_current_ghostty_themes)
     
+    # Parse current themes (handle both single and paired formats)
     if [[ "$current_config" == *","* ]]; then
-        # Parse existing dark:theme1,light:theme2 format
-        local dark_theme light_theme
-        dark_theme=$(echo "$current_config" | sed 's/dark:\([^,]*\).*/\1/' | sed 's/\.conf$//')
-        light_theme=$(echo "$current_config" | sed 's/.*light:\([^,]*\)/\1/' | sed 's/\.conf$//')
-        
-        # Update only the matching appearance
-        if [[ "$appearance" == "dark" ]]; then
-            dark_theme="$theme"
-        else
-            light_theme="$theme"
-        fi
-        
-        sed -i '' "s/^theme = .*/theme = dark:${dark_theme}.conf,light:${light_theme}.conf/" "$GHOSTTY_CONFIG"
+        dark_theme=${current_config#*dark:}
+        dark_theme=${dark_theme%%,*}
+        dark_theme=${dark_theme%.conf}
+        light_theme=${current_config#*light:}
+        light_theme=${light_theme%.conf}
     else
-        # Single theme format, convert to dark/light format
+        # Single theme - use current as fallback for the other mode
         local clean_current
-        clean_current=$(echo "$current_config" | sed 's/\.conf$//')
-        
-        if [[ "$appearance" == "dark" ]]; then
-            sed -i '' "s/^theme = .*/theme = dark:${theme}.conf,light:${clean_current}.conf/" "$GHOSTTY_CONFIG"
-        else
-            sed -i '' "s/^theme = .*/theme = dark:${clean_current}.conf,light:${theme}.conf/" "$GHOSTTY_CONFIG"
-        fi
+        clean_current=${current_config%.conf}
+        [[ "$appearance" == "dark" ]] && light_theme="$clean_current" || dark_theme="$clean_current"
     fi
+    
+    # Update the appropriate theme
+    [[ "$appearance" == "dark" ]] && dark_theme="$theme" || light_theme="$theme"
+    
+    # Apply the configuration
+    sed -i '' "s/^theme = .*/theme = dark:${dark_theme}.conf,light:${light_theme}.conf/" "$GHOSTTY_CONFIG"
 }
 
 # Update Git delta configuration
@@ -136,16 +124,16 @@ reload_tmux() {
 apply_theme() {
     local theme="$1"
     
-    # Get theme metadata
-    local appearance collection
-    appearance=$(get_theme_appearance "$theme")
-    collection=$(get_theme_collection "$theme")
+    # Get and validate theme metadata
+    local metadata appearance collection
+    metadata=$(get_theme_metadata "$theme")
     
-    # Validate theme exists
-    if [[ "$appearance" == "null" ]]; then
+    if [[ -z "$metadata" || "$metadata" == *"null"* ]]; then
         echo "Error: Theme '$theme' not found"
         return 1
     fi
+    
+    read -r appearance collection <<< "$metadata"
     
     echo "Applying theme: $theme ($appearance mode)"
     
@@ -168,10 +156,9 @@ validate_environment() {
     local errors=()
     
     # Check required commands
-    for cmd in jq fzf; do
-        if ! command -v "$cmd" >/dev/null 2>&1; then
-            errors+=("$cmd is required but not installed")
-        fi
+    local required_cmds=("jq" "fzf")
+    for cmd in "${required_cmds[@]}"; do
+        command -v "$cmd" >/dev/null 2>&1 || errors+=("$cmd is required but not installed")
     done
     
     # Check configuration files
@@ -191,7 +178,6 @@ validate_environment() {
 main() {
     # Validate environment
     validate_environment || exit 1
-    
     
     # Get current state
     local current_theme current_mode
