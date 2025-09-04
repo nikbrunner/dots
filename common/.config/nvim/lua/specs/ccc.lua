@@ -29,8 +29,7 @@ return {
                 relative = "cursor",
                 row = 1,
                 col = 1,
-                style = "minimal",
-                border = "rounded",
+                border = "solid",
             },
             ---@type boolean
             auto_close = true,
@@ -46,6 +45,7 @@ return {
                 output.hex,
                 output.hex_short,
                 output.css_rgb,
+                output.css_rgba,
                 output.css_hsl,
             },
             pickers = {
