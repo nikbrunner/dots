@@ -64,11 +64,6 @@ return {
 
                 if supported_filetypes[ft] then
                     lint.linters_by_ft[ft] = { linter }
-                    vim.notify(
-                        string.format("Using %s for linting %s files", linter, ft),
-                        vim.log.levels.INFO,
-                        { title = "Lint" }
-                    )
                 end
             end
         end
