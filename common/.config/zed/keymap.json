@@ -7,8 +7,6 @@
       "alt-[": "workspace::ToggleLeftDock",
       "alt-]": "workspace::ToggleRightDock",
 
-      "ctrl-e": "file_finder::Toggle",
-
       ", a w": "projects::OpenRecent",
       ", a t": "theme_selector::Toggle",
       ", a s": "zed::OpenSettings",
@@ -31,6 +29,7 @@
         { "task_name": "Open lazygit", "target": "center" }
       ],
       ", w d": "file_finder::Toggle",
+      ", w r": "tab_switcher::Toggle",
       ", w s": "project_symbols::Toggle",
       ", w f": "pane::DeploySearch",
       ", w e": "project_panel::ToggleFocus" // reveal current file
