@@ -1,4 +1,4 @@
-theme = black-atom-jpn-murasaki-yoru.conf
+theme = black-atom-mnml-47-dark.conf
 
 # custom-shader                      = ./shaders/crt-shader.glsl
 # custom-shader                      = ./shaders/bloom015.glsl
@@ -10,7 +10,7 @@ theme = black-atom-jpn-murasaki-yoru.conf
 # background-opacity                 = 0.9
 # background-blur                    = 65
 
-font-family = IosevkaTermSlab Nerd Font
+font-family = TX-02
 
 font-size                         = 16
 # font-thicken = true
