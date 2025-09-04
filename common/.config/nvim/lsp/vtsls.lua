@@ -1,8 +1,13 @@
 -- Install with: @vtsls/language-server
 -- https://github.com/MariaSolOs/dotfiles/blob/main/.config/nvim/lsp/vtsls.lua
 
+---@see https://github.com/typescript-language-server/typescript-language-server/blob/master/docs/configuration.md
 local shared_jsts_settings = {
     suggest = { completeFunctionCalls = true },
+    preferences = {
+        importModuleSpecifier = "relative",
+        includePackageJsonAutoImports = "off",
+    },
     inlayHints = {
         functionLikeReturnTypes = { enabled = true },
         parameterNames = { enabled = "literals" },
@@ -29,12 +34,6 @@ end
 return {
     cmd = { "vtsls", "--stdio" },
     filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
-    init_options = {
-        ---@see https://github.com/typescript-language-server/typescript-language-server#initializationoptions
-        preferences = {
-            importModuleSpecifierPreference = "relative",
-        },
-    },
     root_dir = function(bufnr, cb)
         local fname = vim.uri_to_fname(vim.uri_from_bufnr(bufnr))
 
@@ -97,8 +96,6 @@ return {
                 vim.api.nvim_del_augroup_by_id(group)
             end,
         })
-
-        vim.notify("Attached to vtsls with auto-import on save", vim.log.levels.INFO, { title = "vtsls" })
     end,
     settings = {
         typescript = shared_jsts_settings,
