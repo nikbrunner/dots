@@ -2,8 +2,10 @@ local M = {}
 
 ---@type LazyPluginSpec
 M.spec = {
-    "folke/trouble.nvim",
+    -- https://github.com/folke/trouble.nvim/pull/656
+    "h-michael/trouble.nvim",
     event = "LspAttach",
+    branch = "fix/decoration-provider-api",
     ---@type trouble.Config
     opts = {
         focus = true,
