@@ -76,18 +76,6 @@
     "working_directory": "current_project_directory"
   },
   "lsp": {
-    "biome": {
-      "settings": {
-        "require_config_file": true
-      }
-    },
-    "deno": {
-      "settings": {
-        "deno": {
-          "enable": false
-        }
-      }
-    },
     "vtsls": {
       "settings": {
         "typescript": {
