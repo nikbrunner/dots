@@ -599,6 +599,22 @@ return {
             { "<leader>wgg",         function() Snacks.lazygit() end, desc = "[G]raph" },
             { "<leader>wgl",         function() Snacks.lazygit.log() end, desc = "[L]Log" },
             { "<leader>wgb",         function() Snacks.picker.git_branches() end, desc = "[B]ranches" },
+            { "<leader>wgp",         function()
+                local current_branch = vim.fn.system("git branch --show-current"):gsub("%s+", "")
+                if vim.v.shell_error ~= 0 then
+                    vim.notify("Not in a git repository", vim.log.levels.ERROR)
+                    return
+                end
+                
+                local pr_result = vim.fn.system("gh pr view --json url -q '.url' 2>/dev/null")
+                if vim.v.shell_error == 0 and pr_result:match("^https://") then
+                    local pr_url = pr_result:gsub("%s+", "")
+                    vim.fn.system("open " .. pr_url)
+                    vim.notify("Opening PR: " .. pr_url, vim.log.levels.INFO)
+                else
+                    vim.notify("No PR found for branch: " .. current_branch, vim.log.levels.WARN)
+                end
+            end, desc = "[P]R" },
             -- { "<leader>wd",          function() Snacks.picker.smart() end, desc = "[D]ocument" },
             -- { "<leader><leader>",    M.smart_visits_picker, desc = "[V]isits (Frecency)" },
             { "<leader>wr",          function() Snacks.picker.recent({ filter = { cwd = true }}) end, desc = "[R]ecent Documents" },
@@ -613,6 +629,7 @@ return {
             -- Document
             { "<leader>dg",          function() Snacks.lazygit.log_file() end, desc = "[G]it" },
             { "<leader>dt",          function() Snacks.picker.lines() end, desc = "[T]ext" },
+            { "",          function() Snacks.picker.lines() end, desc = "[T]ext" },
             { "<leader>dp",          function() Snacks.picker.diagnostics_buffer() end, desc = "[P]roblems" },
             { "<leader>ds",          function() Snacks.picker.lsp_symbols() end, desc = "[S]ymbols" },
             { "<leader>du",          function() Snacks.picker.undo() end, desc = "[U]ndo" },
