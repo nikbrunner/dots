@@ -15,22 +15,7 @@ return {
             skip_confirm_for_simple_edits = true,
             prompt_save_on_select_new_entry = false,
         },
-        keymaps = {
-            ["q"] = { "actions.close", mode = "n" },
-            ["mh"] = { "<cmd>edit $HOME<CR>", desc = "[H]ome" },
-            ["mr"] = { "<cmd>edit $HOME/repos<CR>", desc = "[R]epos" },
-            ["0"] = { "<cmd>edit $HOME/repos/nikbrunner/dots<CR>", desc = "Dots" },
-            ["1"] = { "<cmd>edit $HOME/repos/nikbrunner/notes<CR>", desc = "Notes" },
-            ["2"] = { "<cmd>edit $HOME/repos/nikbrunner/dcd-notes<CR>", desc = "DCD Notes" },
-            ["4"] = { "<cmd>edit $HOME/repos/black-atom-industries/core<CR>", desc = "BAI Core" },
-            ["7"] = { "<cmd>edit $HOME/repos/dealercenter-digital/bc-desktop-client<CR>", desc = "DCD Desktop Client" },
-            ["8"] = { "<cmd>edit $HOME/repos/dealercenter-digital/bc-web-client-poc<CR>", desc = "DCD Web Client" },
-            ["<C-h>"] = false,
-            ["<C-l>"] = false,
-            ["<C-s>"] = false,
-            ["<C-v>"] = { "actions.select", opts = { vertical = true, close = true } },
-            ["<C-t>"] = { "actions.select", opts = { tab = true, close = true } },
-        },
+        watch_for_changes = true,
         lsp_file_methods = {
             -- Enable or disable LSP file operations
             enabled = true,
@@ -47,7 +32,7 @@ return {
         },
         float = {
             padding = 5,
-            max_width = 0.35,
+            max_width = 50,
             max_height = 0.5,
             border = "solid",
             win_options = {
@@ -67,6 +52,22 @@ return {
         },
         keymaps_help = {
             border = "solid",
+        },
+        keymaps = {
+            ["q"] = { "actions.close", mode = "n" },
+            ["mh"] = { "<cmd>edit $HOME<CR>", desc = "[H]ome" },
+            ["mr"] = { "<cmd>edit $HOME/repos<CR>", desc = "[R]epos" },
+            ["0"] = { "<cmd>edit $HOME/repos/nikbrunner/dots<CR>", desc = "Dots" },
+            ["1"] = { "<cmd>edit $HOME/repos/nikbrunner/notes<CR>", desc = "Notes" },
+            ["2"] = { "<cmd>edit $HOME/repos/nikbrunner/dcd-notes<CR>", desc = "DCD Notes" },
+            ["4"] = { "<cmd>edit $HOME/repos/black-atom-industries/core<CR>", desc = "BAI Core" },
+            ["7"] = { "<cmd>edit $HOME/repos/dealercenter-digital/bc-desktop-client<CR>", desc = "DCD Desktop Client" },
+            ["8"] = { "<cmd>edit $HOME/repos/dealercenter-digital/bc-web-client-poc<CR>", desc = "DCD Web Client" },
+            ["<C-h>"] = false,
+            ["<C-l>"] = false,
+            ["<C-s>"] = false,
+            ["<C-v>"] = { "actions.select", opts = { vertical = true, close = true } },
+            ["<C-t>"] = { "actions.select", opts = { tab = true, close = true } },
         },
     },
     keys = {
