@@ -52,18 +52,6 @@ auto("BufReadPost", {
     end,
 })
 
--- Check if we need to reload the file when it changed
-auto({ "BufEnter", "FocusGained", "TermClose", "TermLeave" }, {
-    group = auto_group("checktime"),
-    callback = function()
-        vim.cmd("checktime")
-        local ok, gitsigns = pcall(require, "gitsigns")
-        if ok then
-            gitsigns.refresh()
-        end
-    end,
-})
-
 -- Highlight on yank
 auto("TextYankPost", {
     group = auto_group("highlight_yank"),
@@ -95,41 +83,42 @@ auto({ "BufEnter" }, {
         end
     end,
 })
--- -- Close buffers when they are no longer valid
--- auto("FocusGained", {
---     callback = function()
---         local closedBuffers = {}
---         vim.iter(vim.api.nvim_list_bufs())
---             :filter(function(bufnr)
---                 local valid = vim.api.nvim_buf_is_valid(bufnr)
---                 local loaded = vim.api.nvim_buf_is_loaded(bufnr)
---                 return valid and loaded
---             end)
---             :filter(function(bufnr)
---                 local bufPath = vim.api.nvim_buf_get_name(bufnr)
---                 ---@diagnostic disable-next-line: undefined-field
---                 local doesNotExist = vim.uv.fs_stat(bufPath) == nil
---                 local notSpecialBuffer = vim.bo[bufnr].buftype == ""
---                 local notNewBuffer = bufPath ~= ""
---                 return doesNotExist and notSpecialBuffer and notNewBuffer
---             end)
---             :each(function(bufnr)
---                 local bufName = vim.fs.basename(vim.api.nvim_buf_get_name(bufnr))
---                 table.insert(closedBuffers, bufName)
---                 vim.api.nvim_buf_delete(bufnr, { force = true })
---             end)
---         if #closedBuffers == 0 then
---             return
---         end
---
---         if #closedBuffers == 1 then
---             vim.notify("Buffer closed" .. closedBuffers[1])
---         else
---             local text = "- " .. table.concat(closedBuffers, "\n- ")
---             vim.notify("Buffers closed" .. text)
---         end
---     end,
--- })
+
+-- Close buffers when they are no longer valid
+auto("FocusGained", {
+    callback = function()
+        local closedBuffers = {}
+        vim.iter(vim.api.nvim_list_bufs())
+            :filter(function(bufnr)
+                local valid = vim.api.nvim_buf_is_valid(bufnr)
+                local loaded = vim.api.nvim_buf_is_loaded(bufnr)
+                return valid and loaded
+            end)
+            :filter(function(bufnr)
+                local bufPath = vim.api.nvim_buf_get_name(bufnr)
+                ---@diagnostic disable-next-line: undefined-field
+                local doesNotExist = vim.uv.fs_stat(bufPath) == nil
+                local notSpecialBuffer = vim.bo[bufnr].buftype == ""
+                local notNewBuffer = bufPath ~= ""
+                return doesNotExist and notSpecialBuffer and notNewBuffer
+            end)
+            :each(function(bufnr)
+                local bufName = vim.fs.basename(vim.api.nvim_buf_get_name(bufnr))
+                table.insert(closedBuffers, bufName)
+                vim.api.nvim_buf_delete(bufnr, { force = true })
+            end)
+        if #closedBuffers == 0 then
+            return
+        end
+
+        if #closedBuffers == 1 then
+            vim.notify("Buffer closed" .. closedBuffers[1])
+        else
+            local text = "- " .. table.concat(closedBuffers, "\n- ")
+            vim.notify("Buffers closed" .. text)
+        end
+    end,
+})
 
 auto("LspProgress", {
     ---@param ev {data: {client_id: integer, params: lsp.ProgressParams}}
