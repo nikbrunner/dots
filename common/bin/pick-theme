@@ -67,11 +67,11 @@ update_zed_theme() {
     local appearance="$2"
     local display_name
     display_name=$(jq -r ".themes.\"$theme\".display_name" "$THEMES_JSON")
-    
+
     if [[ "$appearance" == "dark" ]]; then
-        jq ".theme.dark = \"$display_name\"" "$ZED_CONFIG" > "$ZED_CONFIG.tmp" && mv "$ZED_CONFIG.tmp" "$ZED_CONFIG"
+        jq ".theme.dark = \"$display_name\"" "$ZED_CONFIG" >"$ZED_CONFIG.tmp" && mv "$ZED_CONFIG.tmp" "$ZED_CONFIG"
     else
-        jq ".theme.light = \"$display_name\"" "$ZED_CONFIG" > "$ZED_CONFIG.tmp" && mv "$ZED_CONFIG.tmp" "$ZED_CONFIG"
+        jq ".theme.light = \"$display_name\"" "$ZED_CONFIG" >"$ZED_CONFIG.tmp" && mv "$ZED_CONFIG.tmp" "$ZED_CONFIG"
     fi
 }
 
@@ -99,7 +99,6 @@ update_macos_appearance() {
     fi
 }
 
-
 # Reload tmux configuration if tmux is running
 reload_tmux() {
     if command -v tmux >/dev/null 2>&1 && tmux list-sessions >/dev/null 2>&1; then
@@ -118,20 +117,20 @@ restart_neovim_instances() {
         echo "tmux not found, skipping Neovim restart"
         return 0
     fi
-    
+
     # Find tmux panes running Neovim
     local nvim_panes
     nvim_panes=$(tmux list-panes -a -F "#{session_name}:#{window_index}.#{pane_index}" -f "#{==:#{pane_current_command},nvim}" 2>/dev/null)
-    
+
     # Also try alternative search patterns
     local alt_panes
     alt_panes=$(tmux list-panes -a -F "#{session_name}:#{window_index}.#{pane_index} #{pane_current_command}" | grep nvim | cut -d' ' -f1 2>/dev/null)
-    
+
     if [[ -z "$nvim_panes" ]] && [[ -z "$alt_panes" ]]; then
         echo "No Neovim instances found in tmux"
         return 0
     fi
-    
+
     # Use whichever search found results
     local panes_to_use
     if [[ -n "$nvim_panes" ]]; then
@@ -139,34 +138,34 @@ restart_neovim_instances() {
     else
         panes_to_use="$alt_panes"
     fi
-    
+
     local count=0
     local total_panes
     total_panes=$(echo "$panes_to_use" | wc -l | tr -d ' ')
-    
+
     echo "Restarting $total_panes Neovim instances..."
-    
+
     # Send restart and session restore to each Neovim pane
     while IFS= read -r pane; do
         if [[ -n "$pane" ]]; then
             count=$((count + 1))
             echo -n "  [$count/$total_panes] "
-            
+
             # Send escape first to exit any mode, then restart
             tmux send-keys -t "$pane" 'Escape' ':restart' 'Enter' 2>/dev/null
-            
+
             # Moderate delay for restart to complete
-            sleep 0.8
-            
+            sleep 0.2
+
             # Send session restore command using Lua
             tmux send-keys -t "$pane" ':lua require("persistence").load()' 'Enter' 2>/dev/null
             echo "✓"
-            
+
             # Minimal delay between panes
             sleep 0.1
         fi
-    done <<< "$panes_to_use"
-    
+    done <<<"$panes_to_use"
+
     if [[ $count -eq 0 ]]; then
         echo "No Neovim instances found"
     fi
@@ -175,20 +174,20 @@ restart_neovim_instances() {
 # Apply theme to all tools
 apply_theme() {
     local theme="$1"
-    
+
     # Get and validate theme metadata
     local metadata appearance collection
     metadata=$(get_theme_metadata "$theme")
-    
+
     if [[ -z "$metadata" || "$metadata" == *"null"* ]]; then
         echo "Error: Theme '$theme' not found"
         return 1
     fi
-    
-    read -r appearance collection <<< "$metadata"
-    
+
+    read -r appearance collection <<<"$metadata"
+
     echo "Applying theme: $theme ($appearance mode)"
-    
+
     # Apply theme to all tools
     update_nvim_theme "$theme"
     update_tmux_theme "$theme" "$collection"
@@ -196,43 +195,43 @@ apply_theme() {
     update_zed_theme "$theme" "$appearance"
     update_delta_theme "$appearance"
     update_macos_appearance "$appearance"
-    
+
     # Brief pause to let file changes and system appearance settle
     sleep 0.2
-    
+
     # Reload configurations
     echo "Reloading configurations..."
     reload_tmux
     echo "tmux reload completed"
-    reload_ghostty  
+    reload_ghostty
     echo "ghostty reload completed"
-    
+
     # Brief pause before Neovim restarts
     sleep 0.1
-    
+
     # Restart Neovim instances with new theme
     restart_neovim_instances
-    
+
     echo "Theme applied successfully!"
 }
 
 # Validate dependencies and configuration files
 validate_environment() {
     local errors=()
-    
+
     # Check required commands
     local required_cmds=("jq" "fzf")
     for cmd in "${required_cmds[@]}"; do
         command -v "$cmd" >/dev/null 2>&1 || errors+=("$cmd is required but not installed")
     done
-    
+
     # Check configuration files
     [[ -f "$THEMES_JSON" ]] || errors+=("Themes registry not found: $THEMES_JSON")
     [[ -f "$NVIM_CONFIG" ]] || errors+=("Neovim config not found: $NVIM_CONFIG")
     [[ -f "$TMUX_CONFIG" ]] || errors+=("tmux config not found: $TMUX_CONFIG")
     [[ -f "$GHOSTTY_CONFIG" ]] || errors+=("Ghostty config not found: $GHOSTTY_CONFIG")
     [[ -f "$GIT_CONFIG" ]] || errors+=("Git config not found: $GIT_CONFIG")
-    
+
     if [[ ${#errors[@]} -gt 0 ]]; then
         echo "Environment errors:"
         printf "  - %s\n" "${errors[@]}"
@@ -243,25 +242,25 @@ validate_environment() {
 main() {
     # Validate environment
     validate_environment || exit 1
-    
+
     # Get current state
     local current_theme current_mode
     current_theme=$(get_current_theme)
     current_mode=$(get_current_mode)
-    
+
     # Get available themes with display names
     local themes_display
     themes_display=$(jq -r '.themes | to_entries[] | "\(.key):\(.value.display_name)"' "$THEMES_JSON")
-    
+
     if [[ -z "$themes_display" ]]; then
         echo "No themes found in $THEMES_JSON"
         exit 1
     fi
-    
+
     # Show current state
     echo "Current theme: $current_theme ($current_mode mode)"
     echo
-    
+
     # Interactive selection with fzf
     local selected_line selected_theme
     selected_line=$(echo "$themes_display" | fzf \
@@ -270,10 +269,10 @@ main() {
         --header="Current: $current_theme | Mode: $current_mode" \
         --with-nth=2 \
         --delimiter=":")
-    
+
     if [[ -n "$selected_line" ]]; then
         selected_theme=$(echo "$selected_line" | cut -d: -f1)
-        
+
         if [[ "$selected_theme" == "$current_theme" ]]; then
             echo "Theme unchanged: $selected_theme"
         else
@@ -285,3 +284,4 @@ main() {
 }
 
 main "$@"
+
