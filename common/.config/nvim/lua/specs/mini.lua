@@ -354,6 +354,7 @@ function Mini.clue()
             { mode = "n", keys = "`" },
             { mode = "n", keys = "g" },
             { mode = "n", keys = "s" },
+            { mode = "n", keys = "m" },
             { mode = "n", keys = "z" },
             { mode = "n", keys = '"' },
             { mode = "x", keys = "'" },
