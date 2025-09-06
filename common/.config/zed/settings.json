@@ -25,16 +25,16 @@
   },
   "theme": {
     "mode": "system",
-    "dark": "Black Atom — MNM ∷ 47 Dark",
-    "light": "Black Atom — STA ∷ Medical"
+    "dark": "Black Atom — TER ∷ Fall Night",
+    "light": "Black Atom — TER ∷ Fall Day"
   },
   "base_keymap": "VSCode",
   "vim_mode": true,
-  "ui_font_family": "TX-02",
+  "ui_font_family": "Iosevka Term SS14",
   "ui_font_size": 20,
   "buffer_line_height": "comfortable",
   "buffer_font_size": 20,
-  "buffer_font_family": "TX-02",
+  "buffer_font_family": "Iosevka Term SS14",
   "buffer_font_weight": 400,
   "show_completions_on_input": true,
   "tabs": {
@@ -72,7 +72,7 @@
   "format_on_save": "on",
   "terminal": {
     "line_height": "standard",
-    "font_family": "TX-02",
+    "font_family": "Iosevka Term SS14",
     "working_directory": "current_project_directory"
   },
   "lsp": {
