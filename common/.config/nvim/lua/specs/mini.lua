@@ -7,16 +7,16 @@ local Mini = {}
 -- https://github.com/echasnovski/mini.nvim/blob/2e38ed16c2ced64bcd576986ccad4b18e2006e18/doc/mini-pick.txt#L650-L660
 Mini.win_config = {
     left_buf_corner = function()
-        local height = math.floor(0.2 * vim.o.lines)
+        local height = math.floor(0.25 * vim.o.lines)
         local width = math.floor(0.35 * vim.o.columns)
 
         return {
             relative = "win",
             height = height,
+            border = "solid",
             width = width,
             row = math.floor(vim.o.lines - 5),
             col = 10,
-            border = "solid",
         }
     end,
     cursor = function()
@@ -200,8 +200,8 @@ function Mini.pick()
         })
     end
 
-    vim.keymap.set("n", "<leader>wd", MiniPick.registry.frecency, { desc = "Pick file" })
-    vim.keymap.set("n", "<leader>ahp", "<cmd>Pick help<CR>", { desc = "[P]ages" })
+    -- vim.keymap.set("n", "<leader>wd", MiniPick.registry.frecency, { desc = "Pick file" })
+    -- vim.keymap.set("n", "<leader>ahp", "<cmd>Pick help<CR>", { desc = "[P]ages" })
     -- vim.keymap.set("n", "<leader>ds", function()
     --     require("mini.extra").pickers.lsp({ scope = "document_symbol" })
     -- end, { desc = "[S]ymbols" })
@@ -387,18 +387,17 @@ end
 
 ---@type LazyPluginSpec
 return {
-    "echasnovski/mini.nvim",
+    "nvim-mini/mini.nvim",
     version = "*",
     lazy = false,
     config = function()
-        Mini.pick()
+        -- Mini.pick()
         -- Mini.files()
-        Mini.extra()
+        -- Mini.visits()
+        -- Mini.extra()
         Mini.ai()
         Mini.statusline()
         Mini.icons()
-        Mini.pick()
-        Mini.visits()
         Mini.extra()
         Mini.surround()
         Mini.clue()
