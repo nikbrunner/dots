@@ -51,6 +51,7 @@
   "/Users/nbr/.config/nvim/.brick.yml": "/Users/nbr/repos/nikbrunner/dots/common/.config/nvim/.brick.yml",
   "/Users/nbr/.config/nvim/plugin/logger.lua": "/Users/nbr/repos/nikbrunner/dots/common/.config/nvim/plugin/logger.lua",
   "/Users/nbr/.config/nvim/plugin/component.lua": "/Users/nbr/repos/nikbrunner/dots/common/.config/nvim/plugin/component.lua",
+  "/Users/nbr/.config/nvim/plugin/picker.lua": "/Users/nbr/repos/nikbrunner/dots/common/.config/nvim/plugin/picker.lua",
   "/Users/nbr/.config/nvim/plugin/bufmsg.lua": "/Users/nbr/repos/nikbrunner/dots/common/.config/nvim/plugin/bufmsg.lua",
   "/Users/nbr/.config/nvim/plugin/tmux.lua": "/Users/nbr/repos/nikbrunner/dots/common/.config/nvim/plugin/tmux.lua",
   "/Users/nbr/.config/nvim/.claude/settings.local.json": "/Users/nbr/repos/nikbrunner/dots/common/.config/nvim/.claude/settings.local.json",

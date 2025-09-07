@@ -1,0 +1,491 @@
+local M = {}
+
+local function tolines(items, opts)
+    local func = nil
+    if opts["key"] then
+        func = function(item)
+            return item[opts["key"]]
+        end
+    elseif opts["text_cb"] then
+        func = opts["text_cb"]
+    end
+    if func then
+        return vim.tbl_map(func, items)
+    end
+    return items
+end
+
+function M.pick(prompt, src, onclose, opts)
+    local lspbuf = vim.api.nvim_get_current_buf()
+    local lspwin = vim.api.nvim_get_current_win()
+    opts = vim.tbl_deep_extend("force", { matchseq = 1 }, opts or {})
+    local items = nil
+    local sitems = nil
+    if not opts["live"] then
+        if type(src) == "function" then
+            src(function(result)
+                opts["src"] = src
+                M.pick(prompt, result, onclose, opts)
+            end)
+            return
+        end
+        items = src
+        if #items == 0 then
+            vim.api.nvim_echo({ { "No " .. prompt .. " to select", "WarningMsg" } }, false, {})
+            onclose(nil, {})
+            return
+        elseif #items == 1 then
+            onclose(items[1], { open = vim.cmd.edit })
+            return
+        end
+    end
+    local pbuf = vim.api.nvim_create_buf(false, true)
+    vim.b[pbuf].completion = false
+    -- Calculate width based on available space, but keep positioning simple
+    local win_width = vim.api.nvim_win_get_width(lspwin)
+    local win_height = vim.api.nvim_win_get_height(lspwin)
+
+    -- Use a percentage of the current window width, with min/max constraints
+    local width = math.max(40, math.min(80, math.floor(win_width * 0.6)))
+    local height = math.max(10, math.min(20, math.floor(win_height * 0.4)))
+
+    -- Position relative to the entire editor, but consider available space
+    local row = math.floor((vim.o.lines - height) / 3)
+    local col = math.floor((vim.o.columns - width) / 2)
+
+    vim.api.nvim_open_win(pbuf, true, {
+        relative = "editor",
+        width = width,
+        height = 1,
+        row = row,
+        col = col,
+        style = "minimal",
+        border = { "", "", "", " ", " ", "-", " ", " " },
+    })
+
+    -- show prompt
+    local ns = vim.api.nvim_create_namespace("picker-prompt")
+    vim.api.nvim_buf_set_extmark(pbuf, ns, 0, 0, {
+        virt_text = { { prompt, "Comment" } },
+        virt_text_pos = "right_align",
+        strict = false,
+    })
+
+    local sbuf = vim.api.nvim_create_buf(false, true)
+    local function create_select_win()
+        local swin = vim.api.nvim_open_win(sbuf, false, {
+            relative = "editor",
+            width = width,
+            height = height - 2,
+            row = row + 2,
+            col = col,
+            style = "minimal",
+            border = { "", "", "", " ", "", "", "", " " },
+            focusable = false,
+        })
+        return swin
+    end
+    local swin = create_select_win()
+    vim.cmd.startinsert()
+
+    local function preview_item()
+        if not sitems or #sitems == 0 then
+            return
+        end
+        local line = vim.api.nvim_win_get_cursor(swin)[1]
+        if line > 0 and line <= #sitems then
+            local item = sitems[line]
+            if vim.api.nvim_win_is_valid(lspwin) then
+                if type(item) == "string" then
+                    -- Handle file paths and buffer names
+                    local file_path = item
+                    if not vim.fn.filereadable(file_path) then
+                        -- Try to find the file in current directory
+                        local cwd_file = vim.fn.getcwd() .. "/" .. file_path
+                        if vim.fn.filereadable(cwd_file) then
+                            file_path = cwd_file
+                        end
+                    end
+                    if vim.fn.filereadable(file_path) then
+                        vim.api.nvim_win_call(lspwin, function()
+                            -- Temporarily disable oldfiles updates during preview
+                            local old_viminfo = vim.o.viminfo
+                            vim.o.viminfo = ""
+
+                            vim.cmd.edit(file_path)
+
+                            -- Restore oldfiles updates
+                            vim.o.viminfo = old_viminfo
+
+                            -- Force filetype detection and treesitter highlighting
+                            vim.cmd("filetype detect")
+                            vim.schedule(function()
+                                pcall(vim.treesitter.start)
+                            end)
+                        end)
+                    end
+                elseif type(item) == "table" and item["filename"] then
+                    -- Handle LSP items
+                    vim.api.nvim_win_call(lspwin, function()
+                        -- Temporarily disable oldfiles updates during preview
+                        local old_viminfo = vim.o.viminfo
+                        vim.o.viminfo = ""
+
+                        vim.cmd.edit(item["filename"])
+
+                        -- Restore oldfiles updates
+                        vim.o.viminfo = old_viminfo
+
+                        -- Force filetype detection and treesitter highlighting
+                        vim.cmd("filetype detect")
+
+                        -- Position cursor immediately during preview
+                        if item["lnum"] and item["col"] then
+                            vim.fn.cursor(item["lnum"], item["col"])
+                            -- Center the line in the window to show context
+                            vim.cmd("normal! zz")
+                        end
+
+                        -- Start treesitter highlighting after positioning
+                        vim.schedule(function()
+                            pcall(vim.treesitter.start)
+                        end)
+                    end)
+                end
+            end
+        end
+    end
+
+    local function close(copts)
+        local item = nil
+        if copts then
+            local line = vim.fn.line(".", swin)
+            if sitems ~= nil and line > 0 and line <= #sitems then
+                item = sitems[line]
+            end
+        end
+        vim.cmd.stopinsert()
+        vim.api.nvim_buf_delete(pbuf, {})
+        vim.api.nvim_buf_delete(sbuf, {})
+
+        -- Restore original buffer if user cancelled OR used split/tab commands
+        if vim.api.nvim_win_is_valid(lspwin) then
+            if
+                not item
+                or (copts and (copts.open == vim.cmd.split or copts.open == vim.cmd.vsplit or copts.open == vim.cmd.tabedit))
+            then
+                vim.api.nvim_win_set_buf(lspwin, lspbuf)
+            end
+        end
+        onclose(item, copts)
+    end
+    local function move(i)
+        local line = vim.api.nvim_win_get_cursor(swin)[1] + i
+        if line > 0 and line <= vim.api.nvim_buf_line_count(sbuf) then
+            vim.api.nvim_win_set_cursor(swin, { line, 0 })
+            preview_item()
+        end
+    end
+    local function keymap(lhs, func, args)
+        vim.keymap.set("i", lhs, function()
+            func(unpack(args))
+        end, { buffer = pbuf })
+    end
+    keymap("<cr>", close, { { open = vim.cmd.edit } })
+    keymap("<c-s>", close, { { open = vim.cmd.split } })
+    keymap("<c-v>", close, { { open = vim.cmd.vsplit } })
+    keymap("<c-t>", close, { { open = vim.cmd.tabedit } })
+    keymap("<esc>", close, { nil })
+    keymap("<c-n>", move, { 1 })
+    keymap("<c-p>", move, { -1 })
+    keymap("<down>", move, { 1 })
+    keymap("<up>", move, { -1 })
+    ns = vim.api.nvim_create_namespace("fuzzyhl")
+    local function setitems(lines, pos)
+        sitems = lines
+        lines = tolines(lines, opts)
+        vim.api.nvim_buf_clear_namespace(sbuf, ns, 0, -1)
+        vim.api.nvim_buf_set_lines(sbuf, 0, -1, false, lines)
+        vim.api.nvim_set_option_value("cursorline", #lines > 0, { win = swin })
+        if #lines == 0 then
+            vim.api.nvim_buf_set_extmark(sbuf, ns, 0, 0, {
+                virt_text = { { "nothing to show", "Comment" } },
+                virt_text_pos = "right_align",
+                strict = false,
+            })
+            vim.api.nvim_win_set_width(swin, width)
+            vim.api.nvim_win_set_height(swin, 1)
+        else
+            vim.api.nvim_win_set_height(swin, math.min(height - 2, #lines))
+            local w = width
+            for _, line in ipairs(lines) do
+                w = math.max(w, #line)
+            end
+            vim.api.nvim_win_set_width(swin, w)
+            if pos ~= nil then
+                for line, arr in ipairs(pos) do
+                    for _, p in ipairs(arr) do
+                        vim.api.nvim_buf_set_extmark(sbuf, ns, line - 1, p, {
+                            end_col = p + 1,
+                            hl_group = "Special",
+                            strict = false,
+                        })
+                    end
+                end
+            end
+        end
+        -- Preview the first item after setting items
+        if #sitems > 0 then
+            vim.api.nvim_win_set_cursor(swin, { 1, 0 })
+            preview_item()
+        end
+    end
+    setitems(items or {})
+    local timer = nil
+    vim.api.nvim_create_autocmd("TextChangedI", {
+        buffer = pbuf,
+        callback = function()
+            if timer then
+                vim.fn.timer_stop(timer)
+                timer = nil
+            end
+            local query = vim.fn.getline(1)
+            if #query > 0 then
+                if opts["live"] then
+                    timer = vim.fn.timer_start(250, function()
+                        vim.api.nvim_set_current_buf(lspbuf)
+                        src(function(result)
+                            setitems(result, nil)
+                        end, query)
+                        vim.api.nvim_set_current_buf(pbuf)
+                    end)
+                else
+                    local matched = vim.fn.matchfuzzypos(items, query, opts)
+                    setitems(matched[1], matched[2])
+                end
+            else
+                setitems(items or {}, nil)
+            end
+        end,
+    })
+end
+
+function M.select(items, opts, on_choice)
+    local prompt = opts and opts["prompt"] or ""
+    prompt = prompt:match("^%s*(.-)%s*$") or ""
+    if #prompt > 1 and prompt:sub(-1) == ":" then
+        prompt = prompt:sub(1, -2)
+    end
+    local popts = {}
+    if opts and opts["format_item"] ~= nil then
+        popts["text_cb"] = opts["format_item"]
+    end
+    M.pick(prompt, items, on_choice, popts)
+end
+
+local function fileshorten(absname)
+    local fname = vim.fn.fnamemodify(absname, ":.")
+    if fname == absname then
+        fname = vim.fn.fnamemodify(fname, ":~")
+    end
+    local width = 50
+    if #fname > width then
+        local i = #fname
+        for t = 3, #fname do
+            if fname:sub(t, t) == "/" then
+                i = t
+                break
+            end
+        end
+        local j = i + 1
+        while #fname - ((j - i - 1) == 0 and 0 or (j - i)) > width do
+            local temp
+            for t = j + 1, #fname do
+                if fname:sub(t, t) == "/" then
+                    temp = t
+                    break
+                end
+            end
+            if temp then
+                j = temp
+            else
+                break
+            end
+        end
+        if j - i - 1 == 0 then
+            return fname
+        end
+        return fname:sub(1, i) .. "…" .. fname:sub(j)
+    end
+    return fname
+end
+
+------------------------------------------------------------------------
+
+local function files()
+    local cmd
+    if vim.fn.executable("fd") == 1 then
+        cmd = "fd --type f --type l --color=never --hidden -E .git"
+    elseif vim.fn.executable("rg") == 1 then
+        cmd = "rg --files --no-messages --color=never --hidden"
+    else
+        cmd = "find . -type f -not -path '*/git/*'"
+    end
+    return vim.fn.systemlist(cmd)
+end
+
+local function edit(item, opts)
+    if item then
+        opts["open"](item)
+    end
+end
+
+function M.pick_file()
+    M.pick("File", files(), edit)
+end
+
+------------------------------------------------------------------------
+
+local function buffers()
+    local cur = vim.fn.bufnr("%")
+    local alt = vim.fn.bufnr("#")
+    local items = {}
+    for _, bufinfo in ipairs(vim.fn.getbufinfo({ bufloaded = 1, buflisted = 1 })) do
+        if bufinfo.bufnr == alt then
+            table.insert(items, 1, vim.fn.fnamemodify(bufinfo.name, ":."))
+        elseif bufinfo.bufnr ~= cur then
+            table.insert(items, vim.fn.fnamemodify(bufinfo.name, ":."))
+        end
+    end
+    return items
+end
+
+function M.pick_buffer()
+    M.pick("Buffer", buffers(), edit)
+end
+
+------------------------------------------------------------------------
+
+local function lsp_items(func)
+    return function(on_list)
+        return func({
+            on_list = function(result)
+                on_list(result.items)
+            end,
+        })
+    end
+end
+
+local function lsp_item_text(item)
+    local text = item["text"]:match("^%s*(.-)$") or ""
+    return string.format("%s:%d:%d  %s", fileshorten(item["filename"]), item["lnum"], item["col"], text)
+end
+
+local function open_lsp_item(item, opts)
+    if item ~= nil then
+        opts["open"](item["filename"])
+        vim.schedule(function()
+            vim.fn.cursor(item["lnum"], item["col"])
+        end)
+    end
+end
+
+local function pick_lsp_item(prompt, func)
+    M.pick(prompt, lsp_items(func), open_lsp_item, { text_cb = lsp_item_text })
+end
+
+function M.pick_definition()
+    pick_lsp_item("Definition", vim.lsp.buf.definition)
+end
+
+function M.pick_type_definition()
+    pick_lsp_item("TypeDefinition", vim.lsp.buf.type_definition)
+end
+
+function M.pick_implementation()
+    pick_lsp_item("Implementation", vim.lsp.buf.implementation)
+end
+
+function M.pick_references()
+    pick_lsp_item("Reference", function(opts)
+        return vim.lsp.buf.references({}, opts)
+    end)
+end
+
+------------------------------------------------------------------------
+
+local exclude_symbols = {
+    { "Constant", "Variable", "Object", "Number", "String", "Boolean", "Array" },
+    lua = { "Package" },
+}
+
+local function filter_symbol(item)
+    local kind = item["kind"]
+    if vim.tbl_contains(exclude_symbols[1], kind) then
+        return false
+    end
+    local tbl = exclude_symbols[vim.bo.filetype]
+    if tbl ~= nil and vim.tbl_contains(tbl, kind) then
+        return false
+    end
+    return true
+end
+
+local function document_symbols(on_list)
+    return vim.lsp.buf.document_symbol({
+        on_list = function(result)
+            on_list(vim.tbl_filter(filter_symbol, result.items))
+        end,
+    })
+end
+
+local function symbol_text(item)
+    local text = item["text"]
+    local index = string.find(text, " ")
+    if index then
+        text = string.sub(text, index + 1)
+    end
+    return string.format("%-58s %11s", text, item["kind"])
+end
+
+function M.pick_document_symbol()
+    M.pick("DocSymbol", document_symbols, open_lsp_item, { text_cb = symbol_text })
+end
+
+local function workspace_symbols(on_list, query)
+    return vim.lsp.buf.workspace_symbol(query, {
+        on_list = function(result)
+            on_list(vim.tbl_filter(filter_symbol, result.items))
+        end,
+    })
+end
+
+function M.pick_workspace_symbol()
+    M.pick("WorkSymbol", workspace_symbols, open_lsp_item, { text_cb = symbol_text, live = true })
+end
+
+------------------------------------------------------------------------
+
+function M.setup()
+    vim.ui.select = M.select
+    vim.keymap.set("n", "<leader>wd", M.pick_file)
+    vim.keymap.set("n", "<leader>b", M.pick_buffer)
+    vim.api.nvim_create_autocmd("LspAttach", {
+        group = vim.api.nvim_create_augroup("LspPickers", {}),
+        callback = function(ev)
+            local function opts(desc)
+                return { buffer = ev.buf, desc = desc }
+            end
+            vim.keymap.set("n", "sd", M.pick_definition, opts("Goto definition"))
+            vim.keymap.set("n", "si", M.pick_implementation, opts("Goto implementation"))
+            vim.keymap.set("n", "st", M.pick_type_definition, opts("Goto type definition"))
+            vim.keymap.set("n", "sr", M.pick_references, opts("Goto reference"))
+            vim.keymap.set("n", "<leader>s", M.pick_document_symbol, opts("Open symbol picker"))
+            vim.keymap.set("n", "<leader>S", M.pick_workspace_symbol, opts("Open workspace symbol picker"))
+        end,
+    })
+end
+
+-- M.setup()
+
+return M
