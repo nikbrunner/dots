@@ -69,36 +69,6 @@ function M.find_associated_files()
     })
 end
 
-function M.smart_visits_picker()
-    local MiniVisits = require("mini.visits")
-
-    local cwd = vim.fn.getcwd()
-    local current_file = vim.fn.expand("%:p")
-
-    local sort_recent = MiniVisits.gen_sort.default({ recency_weight = 1 })
-    local visit_paths = MiniVisits.list_paths(cwd, { sort = sort_recent })
-
-    local items = {}
-    for _, path in ipairs(visit_paths) do
-        local should_include = path ~= current_file and path ~= cwd
-        if should_include then
-            table.insert(items, {
-                text = vim.fn.fnamemodify(path, ":."),
-                file = path,
-                _path = path,
-            })
-        end
-    end
-
-    -- Use Snacks picker with MiniVisits items
-    Snacks.picker.pick({
-        items = items,
-        format = "file",
-        preview = "file",
-        layout = { preset = "flow" },
-    })
-end
-
 function M.explorer()
     local explorer_pickers = Snacks.picker.get({ source = "explorer" })
     for _, v in pairs(explorer_pickers) do
@@ -116,6 +86,87 @@ end
 --- https://github.com/folke/snacks.nvim/blob/main/lua/snacks/picker/config/defaults.lua
 --- https://github.com/folke/snacks.nvim/blob/main/lua/snacks/picker/config/sources.lua
 --- https://github.com/kaiphat/dotfiles/blob/master/nvim/lua/plugins/snacks.lua
+
+function M.keys()
+    -- stylua: ignore start
+    return {
+        { "<leader>.",           function() Snacks.picker.resume() end, desc = "Resume Picker" },
+        { "<leader>;",           function() Snacks.picker.commands() end, desc = "Command History" },
+        { "<leader>:",           function() Snacks.picker.command_history() end, desc = "Command History" },
+        { "<leader>'",           function() Snacks.picker.registers() end, desc = "Registers" },
+        { "]]",                  function() Snacks.words.jump(vim.v.count1) end, desc = "Next Reference" },
+        { "[[",                  function() Snacks.words.jump(-vim.v.count1) end, desc = "Prev Reference" },
+        { "<F6>",                function() Snacks.dashboard.open() end, desc = "Dashboard" },
+
+        -- App
+        { "<leader>aw",          function() Snacks.picker.projects() end, desc = "[W]orkspace" },
+        { "<leader>aW",          function() Snacks.picker.zoxide() end, desc = "[W]orkspace (Zoxide)" },
+        { "<leader>ad",          M.file_surfer, desc = "[D]ocument" },
+        { "<leader>aa",          function() Snacks.picker.commands() end, desc = "[A]ctions" },
+        { "<leader>ag",          function() Snacks.lazygit() end, desc = "[G]it" },
+        { "<leader>as",          function() Snacks.picker.files({ cwd = vim.fn.expand("$HOME") .. "/repos/nikbrunner/dots" }) end, desc = "[S]ettings" },
+        { "<leader>at",          function() Snacks.picker.colorschemes() end, desc = "[T]hemes" },
+        { "<leader>ar",          function() Snacks.picker.recent() end, desc = "[R]ecent Documents (Anywhere)" },
+
+        { "<leader>f",           function() Snacks.zen.zen() end, desc = "[F]ocus Mode" },
+        { "<leader>z",           function() Snacks.zen.zoom() end, desc = "[Z]oom Mode" },
+
+        { "<leader>an",          function() Snacks.notifier.show_history() end, desc = "[N]otifications" },
+        { "<leader>ak",          function() Snacks.picker.keymaps() end, desc = "[K]eymaps" },
+        { "<leader>aj",          function() Snacks.picker.jumps() end, desc = "[J]umps" },
+        { "<leader>ahp",         function() Snacks.picker.help() end, desc = "[P]ages" },
+        { "<leader>ahm",         function() Snacks.picker.man() end, desc = "[M]anuals" },
+        { "<leader>ahh",         function() Snacks.picker.highlights() end, desc = "[H]ightlights" },
+        { "<leader>aR",          function() Snacks.gitbrowse() end, desc = "Open in [R]emote" },
+        { "<leader>aN",          M.get_news, desc = "[N]ews",  },
+
+        -- Workspace
+        { "<leader>we",          M.explorer, desc = "[E]xplorer" },
+        { "<leader>wgg",         function() Snacks.lazygit() end, desc = "[G]raph" },
+        { "<leader>wgl",         function() Snacks.lazygit.log() end, desc = "[L]Log" },
+        { "<leader>wgb",         function() Snacks.picker.git_branches() end, desc = "[B]ranches" },
+        { "<leader>wgp",         function()
+            local current_branch = vim.fn.system("git branch --show-current"):gsub("%s+", "")
+            if vim.v.shell_error ~= 0 then
+                vim.notify("Not in a git repository", vim.log.levels.ERROR)
+                return
+            end
+            
+            local pr_result = vim.fn.system("gh pr view --json url -q '.url' 2>/dev/null")
+            if vim.v.shell_error == 0 and pr_result:match("^https://") then
+                local pr_url = pr_result:gsub("%s+", "")
+                vim.fn.system("open " .. pr_url)
+                vim.notify("Opening PR: " .. pr_url, vim.log.levels.INFO)
+            else
+                vim.notify("No PR found for branch: " .. current_branch, vim.log.levels.WARN)
+            end
+        end, desc = "[P]R" },
+        { "<leader>wd",          function() Snacks.picker.smart() end, desc = "[D]ocument" },
+        { "<leader>wr",          function() Snacks.picker.recent({ filter = { cwd = true }}) end, desc = "[R]ecent Documents" },
+        { "<leader>wt",          function() Snacks.picker.grep() end, desc = "[T]ext" },
+        { "<leader>ww",          function() Snacks.picker.grep_word() end, desc = "[W]ord" },
+        { "<leader>wm",          function() Snacks.picker.git_status() end, desc = "[M]odified Documents" },
+        { "<leader>wc",          function() Snacks.picker.git_diff() end, desc = "[C]hanges" },
+        -- { "<leader>wp",          function() Snacks.picker.diagnostics() end, desc = "[P]roblems" },
+        { "<leader>ws",          function() Snacks.picker.lsp_workspace_symbols() end, desc = "[S]ymbols" },
+
+        -- TODO: <leader>dc [D]ocument [C]hanges -- git_diff but scope on current file
+        -- Document
+        { "<leader>dg",          function() Snacks.lazygit.log_file() end, desc = "[G]it" },
+        { "<leader>dt",          function() Snacks.picker.lines() end, desc = "[T]ext" },
+        { "<leader>dp",          function() Snacks.picker.diagnostics_buffer() end, desc = "[P]roblems" },
+        { "<leader>ds",          function() Snacks.picker.lsp_symbols() end, desc = "[S]ymbols" },
+        { "<leader>du",          function() Snacks.picker.undo() end, desc = "[U]ndo" },
+        { "<leader>da",          M.find_associated_files, desc = "[A]ssociated Documents" },
+
+        -- Symbol
+        { "sd",                  function() Snacks.picker.lsp_definitions() end, desc = "[D]efintions" },
+        { "sr",                  function() Snacks.picker.lsp_references() end, desc = "[R]eferences" },
+        { "st",                  function() Snacks.picker.lsp_type_definitions() end, desc = "[T]ype Definitions" },
+        { "sg",                  function() Snacks.git.blame_line() end, desc = "[G]it" },
+    }
+    -- stylua: ignore end
+end
 
 ---@type LazyPluginSpec
 return {
@@ -368,15 +419,6 @@ return {
                 ---@type snacks.picker.smart.Config
                 smart = {
                     layout = { preset = "flow" },
-                    multi = { { source = "buffers", current = false }, "recent", "files" },
-                    -- multi = { { source = "buffers", current = false }, { source = "recent", current = false }, "files" },
-                    -- filter = {
-                    --     cwd = true,
-                    --     -- exclude current file
-                    --     filter = function(item, filter)
-                    --         return item.file ~= vim.fn.expand("%:p")
-                    --     end,
-                    -- },
                 },
                 ---TODO: filter out empty file
                 ---@type snacks.picker.recent.Config
@@ -516,6 +558,8 @@ return {
         },
     },
 
+    keys = M.keys(),
+
     init = function()
         -- vim.api.nvim_create_autocmd("BufEnter", {
         --     group = vim.api.nvim_create_augroup("snacks_explorer_start_directory", { clear = true }),
@@ -559,88 +603,5 @@ return {
                 end, 100)
             end,
         })
-    end,
-
-    keys = function()
-        return {
-            -- stylua: ignore start
-            { "<leader>.",           function() Snacks.picker.resume() end, desc = "Resume Picker" },
-            { "<leader>:",           function() Snacks.picker.command_history() end, desc = "Command History" },
-            { "<leader>'",           function() Snacks.picker.registers() end, desc = "Registers" },
-            -- { "'",                   function() Snacks.picker.marks() end, desc = "Registers" },
-            { "]]",                  function() Snacks.words.jump(vim.v.count1) end, desc = "Next Reference" },
-            { "[[",                  function() Snacks.words.jump(-vim.v.count1) end, desc = "Prev Reference" },
-            { "<F6>",                function() Snacks.dashboard.open() end, desc = "Dashboard" },
-
-            -- App
-            { "<leader>aw",          function() Snacks.picker.projects() end, desc = "[W]orkspace" },
-            { "<leader>aW",          function() Snacks.picker.zoxide() end, desc = "[W]orkspace (Zoxide)" },
-            { "<leader>aa",          function() Snacks.picker.commands() end, desc = "[A]ctions" },
-            { "<leader>ag",          function() Snacks.lazygit() end, desc = "[G]it" },
-            { "<leader>as",          function() Snacks.picker.files({ cwd = vim.fn.expand("$HOME") .. "/repos/nikbrunner/dots" }) end, desc = "[S]ettings" },
-            { "<leader>ad",          M.file_surfer, desc = "[D]ocument" },
-            { "<leader>at",          function() Snacks.picker.colorschemes() end, desc = "[T]hemes" },
-            { "<leader>ar",          function() Snacks.picker.recent() end, desc = "[R]ecent Documents (Anywhere)" },
-
-            { "<leader>f",          function() Snacks.zen.zen() end, desc = "[F]ocus Mode" },
-            { "<leader>z",         function() Snacks.zen.zoom() end, desc = "[Z]oom Mode" },
-
-            { "<leader>an",          function() Snacks.notifier.show_history() end, desc = "[N]otifications" },
-            { "<leader>ak",          function() Snacks.picker.keymaps() end, desc = "[K]eymaps" },
-            { "<leader>aj",          function() Snacks.picker.jumps() end, desc = "[J]umps" },
-            -- { "<leader>ahp",         function() Snacks.picker.help() end, desc = "[P]ages" },
-            { "<leader>ahm",         function() Snacks.picker.man() end, desc = "[M]anuals" },
-            { "<leader>ahh",         function() Snacks.picker.highlights() end, desc = "[H]ightlights" },
-            { "<leader>aR",          function() Snacks.gitbrowse() end, desc = "Open in [R]emote" },
-            { "<leader>aN",          M.get_news, desc = "[N]ews",  },
-
-            -- Workspace
-            -- { "<leader>we",          M.explorer, desc = "[E]xplorer" },
-            { "<leader>wgg",         function() Snacks.lazygit() end, desc = "[G]raph" },
-            { "<leader>wgl",         function() Snacks.lazygit.log() end, desc = "[L]Log" },
-            { "<leader>wgb",         function() Snacks.picker.git_branches() end, desc = "[B]ranches" },
-            { "<leader>wgp",         function()
-                local current_branch = vim.fn.system("git branch --show-current"):gsub("%s+", "")
-                if vim.v.shell_error ~= 0 then
-                    vim.notify("Not in a git repository", vim.log.levels.ERROR)
-                    return
-                end
-                
-                local pr_result = vim.fn.system("gh pr view --json url -q '.url' 2>/dev/null")
-                if vim.v.shell_error == 0 and pr_result:match("^https://") then
-                    local pr_url = pr_result:gsub("%s+", "")
-                    vim.fn.system("open " .. pr_url)
-                    vim.notify("Opening PR: " .. pr_url, vim.log.levels.INFO)
-                else
-                    vim.notify("No PR found for branch: " .. current_branch, vim.log.levels.WARN)
-                end
-            end, desc = "[P]R" },
-            -- { "<leader>wd",          function() Snacks.picker.smart() end, desc = "[D]ocument" },
-            -- { "<leader><leader>",    M.smart_visits_picker, desc = "[V]isits (Frecency)" },
-            { "<leader>wr",          function() Snacks.picker.recent({ filter = { cwd = true }}) end, desc = "[R]ecent Documents" },
-            { "<leader>wt",          function() Snacks.picker.grep() end, desc = "[T]ext" },
-            { "<leader>ww",          function() Snacks.picker.grep_word() end, desc = "[W]ord" },
-            { "<leader>wm",          function() Snacks.picker.git_status() end, desc = "[M]odified Documents" },
-            { "<leader>wc",          function() Snacks.picker.git_diff() end, desc = "[C]hanges" },
-            -- { "<leader>wp",          function() Snacks.picker.diagnostics() end, desc = "[P]roblems" },
-            { "<leader>ws",          function() Snacks.picker.lsp_workspace_symbols() end, desc = "[S]ymbols" },
-
-            -- TODO: <leader>dc [D]ocument [C]hanges -- git_diff but scope on current file
-            -- Document
-            { "<leader>dg",          function() Snacks.lazygit.log_file() end, desc = "[G]it" },
-            { "<leader>dt",          function() Snacks.picker.lines() end, desc = "[T]ext" },
-            { "",          function() Snacks.picker.lines() end, desc = "[T]ext" },
-            { "<leader>dp",          function() Snacks.picker.diagnostics_buffer() end, desc = "[P]roblems" },
-            { "<leader>ds",          function() Snacks.picker.lsp_symbols() end, desc = "[S]ymbols" },
-            { "<leader>du",          function() Snacks.picker.undo() end, desc = "[U]ndo" },
-            { "<leader>da",          M.find_associated_files, desc = "[A]ssociated Documents" },
-
-            -- Symbol
-            { "sd",                  function() Snacks.picker.lsp_definitions() end, desc = "[D]efintions" },
-            { "sr",                  function() Snacks.picker.lsp_references() end, desc = "[R]eferences" },
-            { "st",                  function() Snacks.picker.lsp_type_definitions() end, desc = "[T]ype Definitions" },
-            { "sg",                  function() Snacks.git.blame_line() end, desc = "[G]it" },
-        }
-        -- stylua: ignore end
     end,
 }

@@ -78,13 +78,6 @@ return {
             end,
             desc = "[E]xplorer",
         },
-        {
-            "<leader>we",
-            function()
-                require("oil").open()
-            end,
-            desc = "[E]xplorer",
-        },
     },
     config = function(_, opts)
         require("oil").setup(opts)
