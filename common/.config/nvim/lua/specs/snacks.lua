@@ -186,7 +186,6 @@ function M.keys()
         { "<leader>aN",          M.get_news, desc = "[N]ews",  },
 
         -- Workspace
-        { "<leader>we",          M.explorer, desc = "[E]xplorer" },
         { "<leader>wgg",         function() Snacks.lazygit() end, desc = "[G]raph" },
         { "<leader>wgl",         function() Snacks.lazygit.log() end, desc = "[L]Log" },
         { "<leader>wgb",         function() Snacks.picker.git_branches() end, desc = "[B]ranches" },
@@ -391,28 +390,6 @@ return {
                         { win = "preview", title = "{preview}", height = 0.4, border = "top" },
                     },
                 },
-            },
-
-            actions = {
-                flash = function(picker)
-                    require("flash").jump({
-                        pattern = "^",
-                        label = { after = { 0, 0 } },
-                        search = {
-                            mode = "search",
-                            exclude = {
-                                function(win)
-                                    return vim.bo[vim.api.nvim_win_get_buf(win)].filetype ~= "snacks_picker_list"
-                                end,
-                            },
-                        },
-                        -- TODO: would be cool if it would select and confirm the picked entry, and does not require an additional enter press
-                        action = function(match)
-                            local idx = picker.list:row2idx(match.pos[1])
-                            picker.list:_move(idx, true, true)
-                        end,
-                    })
-                end,
             },
 
             win = {
