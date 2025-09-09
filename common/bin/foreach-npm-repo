@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+# Mac OS Homebrew nvm
+source "/opt/homebrew/opt/nvm/nvm.sh"
+
+# Find all package.json files (excluding node_modules)
+for package_json in $(rg --files --glob "package.json" --glob '!./node_modules'); do
+    dir=$(dirname "$package_json")
+    echo "📦 Running command in $dir"
+
+    if [[ "$1" == "npm" ]] && [[ "$2" == "ci" ]]; then
+        # check if there a package-lock.json exists
+        if [[ ! -f "$dir/package-lock.json" ]]; then
+            echo "⏭️  Skipping $dir (no package-lock.json, required for npm ci)"
+            echo "--------------------------------------------------------------------------------"
+            continue
+        fi
+    fi
+
+    # Run the command in the directory
+    (cd "$dir" && nvm use && "$@")
+done
