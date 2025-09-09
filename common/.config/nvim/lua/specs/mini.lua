@@ -357,6 +357,7 @@ function Mini.clue()
             { mode = "n", keys = "m" },
             { mode = "n", keys = "z" },
             { mode = "n", keys = '"' },
+            { mode = "n", keys = " " },
             { mode = "x", keys = "'" },
             { mode = "x", keys = "<Leader>" },
             { mode = "x", keys = "`" },
