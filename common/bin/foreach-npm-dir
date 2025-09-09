@@ -20,8 +20,17 @@ for package_json in $(rg --files --glob "package.json" --glob '!./node_modules')
     # Run the command in the directory
     # If the first argument is "npm", use nvm to switch to the correct node version
     if [[ "$1" == "npm" ]]; then
-        (cd "$dir" && nvm use && "$@")
+        if (cd "$dir" && nvm use && "$@"); then
+            echo "✅ Command succeeded"
+        else
+            echo "❌ Command failed (exit code: $?)"
+        fi
     else
-        (cd "$dir" && "$@")
+        if (cd "$dir" && "$@"); then
+            echo "✅ Command succeeded"
+        else
+            echo "❌ Command failed (exit code: $?)"
+        fi
     fi
+    echo "--------------------------------------------------------------------------------"
 done
