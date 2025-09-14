@@ -294,7 +294,7 @@ function Mini.statusline()
                     },
                     {
                         hl = "@variable.member",
-                        strings = (m.is_truncated(200) and {} or { git }),
+                        strings = { git },
                     },
 
                     "%<", -- Mark general truncate point
