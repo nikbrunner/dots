@@ -22,10 +22,12 @@ A clean, organized dotfiles repository using symlinks for easy management and de
   - [Other Notable Commands](#other-notable-commands)
 - [How It Works](#how-it-works)
   - [OS-Specific Configurations](#os-specific-configurations)
+  - [Multiplexer Configuration](#multiplexer-configuration)
 - [Submodules](#submodules)
 - [Development](#development)
 - [Dependencies](#dependencies)
 - [Platform Support](#platform-support)
+- [Useful Links](#useful-links)
 
 ## Overview
 
