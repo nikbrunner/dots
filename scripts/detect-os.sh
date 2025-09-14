@@ -5,7 +5,13 @@
 get_os() {
 	case "$OSTYPE" in
 	darwin*) echo "macos" ;;
-	linux*) echo "linux" ;;
+	linux*)
+		if [[ -f /etc/arch-release ]] || command -v pacman &> /dev/null; then
+			echo "arch"
+		else
+			echo "linux"
+		fi
+		;;
 	msys*) echo "windows" ;;
 	*) echo "unknown" ;;
 	esac

@@ -28,6 +28,7 @@ declare -a REQUIRED_DEPS=(
     "ffmpeg:Media conversion and processing"
     "eyeD3:MP3 ID3 tag editor"
     "mpd:Music Player Daemon"
+    "mpc:Music Player Daemon client"
     "atuin:Magical shell history"
 )
 
@@ -142,6 +143,11 @@ get_package_name() {
                 zsh-syntax-highlighting) echo "zsh-syntax-highlighting" ;;
                 oh-my-posh) echo "oh-my-posh" ;;
                 gallery-dl) echo "gallery-dl" ;;
+                yt-dlp) echo "yt-dlp" ;;
+                ffmpeg) echo "ffmpeg" ;;
+                eyeD3) echo "eyed3" ;;
+                mpd) echo "mpd" ;;
+                mpc) echo "mpc" ;;
                 atuin) echo "atuin" ;;
                 *) echo "$dep" ;;
             esac
@@ -168,6 +174,11 @@ get_package_name() {
                 zsh-syntax-highlighting) echo "zsh-syntax-highlighting" ;;
                 oh-my-posh) echo "oh-my-posh" ;;
                 gallery-dl) echo "gallery-dl" ;;
+                yt-dlp) echo "yt-dlp" ;;
+                ffmpeg) echo "ffmpeg" ;;
+                eyeD3) echo "python-eyed3" ;;
+                mpd) echo "mpd" ;;
+                mpc) echo "mpc" ;;
                 atuin) echo "atuin" ;;
                 *) echo "$dep" ;;
             esac
