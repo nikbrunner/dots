@@ -61,21 +61,49 @@
   diffFilter = delta --color-only
 
 [alias]
+  sc = !~/bin/repo commit -s
+  sb = !~/bin/repo branch -s
+
   graph = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%n''          %C(white)%s%C(reset) %C(dim white)- %an%C(reset)' --all -10
   graphfull = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%n''          %C(white)%s%C(reset) %C(dim white)- %an%C(reset)' --all
   last = log -1 HEAD
   root = rev-parse --show-toplevel
-  all = !git-all
 
-  # Fetches from origin, resets current branch to match origin, stashes untracked changes, and deletes branches with no upstream
   fullreset = !git fetch origin && git reset --hard "origin/$(git rev-parse --abbrev-ref HEAD)" && git stash --include-untracked && git fetch -p && git branch -vv | awk '/: gone]/{print $1}' | xargs git branch -D
-
-
+  trunk = !git switch $(git symbolic-ref refs/remotes/origin/HEAD | sed 's@^refs/remotes/origin/@@')
+  fresh = !git trunk && git fullreset && git switch -c
   wip = "!git add -A; git rm $(git ls-files --deleted) 2> /dev/null; git commit --no-verify --no-gpg-sign --message \"--wip--\""
   unwip = "!git rev-list --max-count=1 --format=\"%s\" HEAD | grep -q \"\\--wip--\" && git reset HEAD~1"
 
-  sc = !~/bin/repo commit -s
-  sb = !~/bin/repo branch -s
+  # Quick amend without editing message
+  oops = commit --amend --no-edit
+
+  # Show files changed in last commit
+  files = diff-tree --no-commit-id --name-only -r HEAD
+
+  # Undo last commit but keep changes staged
+  undo = reset --soft HEAD~1
+
+  # Quick stash with message based on current branch
+  save = !git stash push -m "$(git rev-parse --abbrev-ref HEAD): $(date +%Y-%m-%d_%H:%M)"
+
+  # Interactive rebase on last N commits (usage: git fix 3)
+  fix = "!f() { git rebase -i HEAD~${1:-2}; }; f"
+
+  # Show branches sorted by last commit date
+  recent = for-each-ref --sort=-committerdate --format='%(committerdate:short) %(color:cyan)%(refname:short)' refs/heads/
+
+  # Delete all merged branches except default
+  cleanup = !git branch --merged | grep -v $(git symbolic-ref refs/remotes/origin/HEAD | sed 's@^refs/remotes/origin/@@') | xargs -n 1 git branch -d
+
+  # Quick commit with branch name prefix (useful for ticket numbers)
+  ci = "!f() { git commit -m \"$(git rev-parse --abbrev-ref HEAD | grep -o '^[A-Z]*-[0-9]*' || echo 'feat'): $1\"; }; f"
+
+  # Show current branch's upstream
+  upstream = rev-parse --abbrev-ref --symbolic-full-name @{u}
+
+  # Quick push with upstream set
+  p = push -u origin HEAD
 
 [gpg]
 	format = ssh
