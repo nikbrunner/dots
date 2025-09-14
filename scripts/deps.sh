@@ -51,6 +51,44 @@ detect_os() {
     esac
 }
 
+# Check if a package is installed using package manager
+check_package_installed() {
+    local package="$1"
+    local os
+    local pkg_manager
+    
+    os=$(detect_os)
+    pkg_manager=$(get_package_manager)
+    
+    case "$os" in
+        macos)
+            if [[ "$pkg_manager" == "brew" ]]; then
+                # For cask packages, check differently
+                local package_name
+                package_name=$(get_package_name "$package")
+                if [[ "$package_name" == --cask* ]]; then
+                    # Extract package name from --cask flag
+                    local cask_name="${package_name#--cask }"
+                    brew list --cask "$cask_name" &> /dev/null
+                else
+                    brew list "$package_name" &> /dev/null
+                fi
+            else
+                return 1
+            fi
+            ;;
+        arch)
+            # pacman tracks all installed packages regardless of installation method
+            local package_name
+            package_name=$(get_package_name "$package")
+            pacman -Qi "$package_name" &> /dev/null
+            ;;
+        *)
+            return 1
+            ;;
+    esac
+}
+
 # Check if a dependency exists
 check_dependency() {
     local dep="$1"
@@ -62,18 +100,16 @@ check_dependency() {
             command -v rg &> /dev/null
             ;;
         zsh-autosuggestions)
-            # Check for the plugin file on both macOS and Linux
-            [[ -f "/usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh" ]] || \
-            [[ -f "$(brew --prefix 2>/dev/null)/share/zsh-autosuggestions/zsh-autosuggestions.zsh" ]]
+            # Use package manager to check if installed
+            check_package_installed "zsh-autosuggestions"
             ;;
         zsh-syntax-highlighting)
-            # Check for the plugin file on both macOS and Linux
-            [[ -f "/usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ]] || \
-            [[ -f "$(brew --prefix 2>/dev/null)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ]]
+            # Use package manager to check if installed
+            check_package_installed "zsh-syntax-highlighting"
             ;;
         1password)
-            # Check for 1Password app on macOS
-            [[ -d "/Applications/1Password.app" ]] || [[ -d "$HOME/Applications/1Password.app" ]]
+            # Use package manager to check if installed
+            check_package_installed "1password"
             ;;
         gallery-dl)
             command -v gallery-dl &> /dev/null
