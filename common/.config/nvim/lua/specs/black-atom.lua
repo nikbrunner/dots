@@ -30,7 +30,7 @@ return {
         opts = {
             keys = {
                 prefix = "<space>",
-                lock = "<space>l",
+                lock = "<space>",
             },
         },
     },
