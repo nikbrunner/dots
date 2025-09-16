@@ -26,6 +26,8 @@ return {
             "tailwind.config.mjs",
             "tailwind.config.ts",
             "tailwind.css",
+            -- Fallback for tailwind v4, where tailwind.config.* is not required anymore
+            ".git",
         }
 
         local fname = vim.uri_to_fname(vim.uri_from_bufnr(bufnr))
