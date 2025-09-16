@@ -1,3 +1,13 @@
+float ease(float x) {
+    return pow(1.0 - x, 10.0);
+}
+
+float sdBox(in vec2 p, in vec2 xy, in vec2 b)
+{
+    vec2 d = abs(p - xy) - b;
+    return length(max(d, 0.0)) + min(max(d.x, d.y), 0.0);
+}
+
 float getSdfRectangle(in vec2 p, in vec2 xy, in vec2 b)
 {
     vec2 d = abs(p - xy) - b;
@@ -60,13 +70,12 @@ vec2 getRectangleCenter(vec4 rectangle) {
     return vec2(rectangle.x + (rectangle.z / 2.), rectangle.y - (rectangle.w / 2.));
 }
 
-const vec4 TRAIL_COLOR = vec4(1.0, 0.725, 0.161, 1.0);
-const vec4 TRAIL_COLOR_ACCENT = vec4(1.0, 0., 0., 1.0);
-// const vec4 TRAIL_COLOR = vec4(0.482, 0.886, 1.0, 1.0);
-// const vec4 TRAIL_COLOR_ACCENT = vec4(0.0, 0.424, 1.0, 1.0);
+const vec4 TRAIL_COLOR = vec4(1.0, 0.725, 0.161, 1.0); // yellow
 const vec4 CURRENT_CURSOR_COLOR = TRAIL_COLOR;
 const vec4 PREVIOUS_CURSOR_COLOR = TRAIL_COLOR;
-const float DURATION = 0.3;
+const vec4 TRAIL_COLOR_ACCENT = vec4(1.0, 0., 0., 1.0); // red-orange
+const float DURATION = .5;
+const float OPACITY = .2;
 
 void mainImage(out vec4 fragColor, in vec2 fragCoord)
 {
@@ -95,23 +104,27 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord)
 
     vec4 newColor = vec4(fragColor);
 
-    float progress = blend(clamp((iTime - iTimeCursorChange) / DURATION, 0.0, 1.0));
+    float progress = blend(clamp((iTime - iTimeCursorChange) / DURATION, 0.0, 1));
+    float easedProgress = ease(progress);
 
     //Distance between cursors determine the total length of the parallelogram;
     vec2 centerCC = getRectangleCenter(currentCursor);
     vec2 centerCP = getRectangleCenter(previousCursor);
     float lineLength = distance(centerCC, centerCP);
     float distanceToEnd = distance(vu.xy, centerCC);
-    float alphaModifier = distanceToEnd / (lineLength * (1.0 - progress));
+    float alphaModifier = distanceToEnd / (lineLength * (easedProgress));
+
+    if (alphaModifier > 1.0) { // this change fixed it for me.
+      alphaModifier = 1.0;
+    }
 
     float sdfCursor = getSdfRectangle(vu, currentCursor.xy - (currentCursor.zw * offsetFactor), currentCursor.zw * 0.5);
     float sdfTrail = getSdfParallelogram(vu, v0, v1, v2, v3);
 
     newColor = mix(newColor, TRAIL_COLOR_ACCENT, 1.0 - smoothstep(sdfTrail, -0.01, 0.001));
-    newColor = mix(newColor, TRAIL_COLOR, 1.0 - smoothstep(sdfTrail, -0.01, 0.001));
     newColor = mix(newColor, TRAIL_COLOR, antialising(sdfTrail));
+
     newColor = mix(fragColor, newColor, 1.0 - alphaModifier);
-    newColor = mix(newColor, TRAIL_COLOR_ACCENT, 1.0 - smoothstep(sdfCursor, -0.000, 0.003 * (1. - progress)));
-    newColor = mix(newColor, CURRENT_CURSOR_COLOR, 1.0 - smoothstep(sdfCursor, -0.000, 0.003 * (1. - progress)));
-    fragColor = mix(newColor, fragColor, step(sdfCursor, 0.));
+    fragColor = mix(newColor, fragColor, step(sdfCursor, 0));
+
 }
