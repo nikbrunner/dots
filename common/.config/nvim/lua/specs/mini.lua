@@ -386,6 +386,10 @@ function Mini.clue()
     })
 end
 
+function Mini.test()
+    require("mini.test").setup()
+end
+
 ---@type LazyPluginSpec
 return {
     "nvim-mini/mini.nvim",
@@ -402,5 +406,6 @@ return {
         Mini.extra()
         Mini.surround()
         Mini.clue()
+        Mini.test()
     end,
 }
