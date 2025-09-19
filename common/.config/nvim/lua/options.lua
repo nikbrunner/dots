@@ -64,6 +64,8 @@ vim.opt.cmdheight = 0
 vim.opt.pumheight = 30
 vim.opt.pumblend = 10
 
+vim.opt.winbar = "%f"
+
 vim.opt.showmode = false
 vim.opt.laststatus = 3
 
