@@ -245,9 +245,9 @@ end, { desc = "[.] Set Root" })
 -- LSP (Language Server Protocol) Related Mappings & Language Management
 -- =============================================================================
 M.map("n", "<leader>als", "<cmd>Mason<CR>", { desc = "[S]ervers" })
-M.map("n", "<leader>alr", "<cmd>LspRestart<CR>", { desc = "[R]estart" })
-M.map("n", "<leader>ali", "<cmd>LspInfo<CR>", { desc = "[I]nfo" })
-M.map("n", "<leader>all", "<cmd>LspLog<CR>", { desc = "[L]og" })
+M.map("n", "<leader>alr", require("lib.lsp").restart, { desc = "[R]estart" })
+M.map("n", "<leader>ali", require("lib.lsp").info, { desc = "[I]nfo" })
+M.map("n", "<leader>all", require("lib.lsp").open_log, { desc = "[L]og" })
 
 -- Show cursor position and related info
 

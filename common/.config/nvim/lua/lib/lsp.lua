@@ -157,23 +157,4 @@ function M.open_log()
     end
 end
 
--- Create commands
-vim.api.nvim_create_user_command("LspRestart", function()
-    M.restart()
-end, {
-    desc = "Restart LSP servers",
-})
-
-vim.api.nvim_create_user_command("LspInfo", function()
-    M.info()
-end, {
-    desc = "Show LSP information",
-})
-
-vim.api.nvim_create_user_command("LspLog", function()
-    M.open_log()
-end, {
-    desc = "Open LSP log file",
-})
-
 return M
