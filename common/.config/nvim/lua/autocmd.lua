@@ -120,6 +120,14 @@ auto("FocusGained", {
     end,
 })
 
+-- Check for external changes when entering buffer
+auto("BufEnter", {
+    group = auto_group("check_external_changes"),
+    callback = function()
+        vim.cmd("checktime")
+    end,
+})
+
 auto("LspProgress", {
     ---@param ev {data: {client_id: integer, params: lsp.ProgressParams}}
     callback = function(ev)
