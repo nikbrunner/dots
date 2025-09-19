@@ -44,7 +44,7 @@ function Mini.files()
             mark_set = "m",
             reset = "<BS>",
             reveal_cwd = "@",
-            synchronize = "w",
+            synchronize = "=",
             trim_left = "<",
             trim_right = ">",
         },
@@ -119,9 +119,13 @@ function Mini.files()
         end,
     })
 
+    vim.keymap.set("n", "-", function()
+        MiniFiles.open(vim.api.nvim_buf_get_name(0))
+    end, { desc = "[E]xplorer" })
+
     vim.keymap.set("n", "<leader>we", function()
         MiniFiles.open(vim.api.nvim_buf_get_name(0))
-    end, { desc = "Explorer" })
+    end, { desc = "[E]xplorer" })
 end
 
 function Mini.pick()
@@ -397,7 +401,7 @@ return {
     lazy = false,
     config = function()
         -- Mini.pick()
-        -- Mini.files()
+        Mini.files()
         -- Mini.visits()
         -- Mini.extra()
         Mini.ai()
