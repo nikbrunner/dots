@@ -50,7 +50,7 @@ function M.info()
         row = row,
         col = col,
         style = "minimal",
-        border = "rounded",
+        border = "solid",
         title = " LSP Information ",
         title_pos = "center",
     }
