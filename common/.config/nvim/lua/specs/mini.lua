@@ -238,21 +238,6 @@ function Mini.statusline()
                     return parent_project_folder .. "/" .. current_project_folder
                 end
 
-                local lazy_plug_count = function()
-                    local stats = require("lazy").stats()
-                    return " " .. stats.count
-                end
-
-                local lazy_startup = function()
-                    local stats = require("lazy").stats()
-                    local ms = (math.floor(stats.startuptime * 100 + 0.5) / 100)
-                    return " " .. ms .. "ms"
-                end
-
-                local lazy_updates = function()
-                    return require("lazy.status").updates()
-                end
-
                 local word_count = function()
                     if vim.bo.filetype == "markdown" then
                         local words = vim.fn.wordcount().words
