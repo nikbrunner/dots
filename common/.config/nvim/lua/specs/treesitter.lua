@@ -150,6 +150,45 @@ M.specs = {
             -- { "<C-S-l>", "<CMD>Treewalker SwapRight<CR>" },
         },
     },
+    {
+        "nvim-treesitter/nvim-treesitter-context",
+        dependencies = "nvim-treesitter/nvim-treesitter",
+        event = "VeryLazy",
+        ---@type TSContext.Config
+        ---@diagnostic disable-next-line: missing-fields
+        opts = {
+            line_numbers = true,
+            enable = true, -- Enable this plugin (Can be enabled/disabled later via commands)
+            max_lines = 6, -- How many lines the window should span. Values <= 0 mean no limit.
+            multiline_threshold = 20, -- Maximum number of lines to show for a single context
+            trim_scope = "outer", -- Which context lines to discard if `max_lines` is exceeded. Choices: 'inner', 'outer'
+            zindex = 20, -- The Z-index of the context window
+            mode = "cursor", -- Line used to calculate context. Choices: 'cursor', 'topline'
+            on_attach = function(bufnr)
+                local disabled_filetypes = { "markdown", "vim" }
+                local line_count = vim.api.nvim_buf_line_count(bufnr)
+                local should_not_attach = vim.list_contains(disabled_filetypes, vim.bo[bufnr].filetype) or line_count > 5000
+                return not should_not_attach
+            end,
+            patterns = {
+                default = {
+                    "class",
+                    "function",
+                    "method",
+                    "for", -- These won't appear in the context
+                    "while",
+                    "if",
+                    "switch",
+                    "case",
+                    "const",
+                },
+            },
+        },
+        config = function(_, opts)
+            local context = require("treesitter-context")
+            context.setup(opts)
+        end,
+    },
 }
 
 return M.specs
