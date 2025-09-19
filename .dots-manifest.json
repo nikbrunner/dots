@@ -66,6 +66,7 @@
   "/Users/nbr/.config/nvim/lsp/vtsls.lua": "/Users/nbr/repos/nikbrunner/dots/common/.config/nvim/lsp/vtsls.lua",
   "/Users/nbr/.config/nvim/lsp/eslint.lua": "/Users/nbr/repos/nikbrunner/dots/common/.config/nvim/lsp/eslint.lua",
   "/Users/nbr/.config/nvim/lsp/gopls.lua": "/Users/nbr/repos/nikbrunner/dots/common/.config/nvim/lsp/gopls.lua",
+  "/Users/nbr/.config/nvim/lsp/tsgo.lua": "/Users/nbr/repos/nikbrunner/dots/common/.config/nvim/lsp/tsgo.lua",
   "/Users/nbr/.config/nvim/lsp/md-oxide.lua": "/Users/nbr/repos/nikbrunner/dots/common/.config/nvim/lsp/md-oxide.lua",
   "/Users/nbr/.config/nvim/MARIE_KONDO.md": "/Users/nbr/repos/nikbrunner/dots/common/.config/nvim/MARIE_KONDO.md",
   "/Users/nbr/.config/nvim/lua/keymaps.lua": "/Users/nbr/repos/nikbrunner/dots/common/.config/nvim/lua/keymaps.lua",
