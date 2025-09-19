@@ -86,15 +86,6 @@ function Mini.files()
         end,
     })
 
-    -- Set focused directory as current working directory
-    local set_cwd = function()
-        local path = (MiniFiles.get_fs_entry() or {}).path
-        if path == nil then
-            return vim.notify("Cursor is not on valid entry")
-        end
-        vim.fn.chdir(vim.fs.dirname(path))
-    end
-
     -- Yank in register full path of entry under cursor
     local yank_path = function()
         local path = (MiniFiles.get_fs_entry() or {}).path
@@ -108,24 +99,43 @@ function Mini.files()
     local ui_open = function()
         vim.ui.open(MiniFiles.get_fs_entry().path)
     end
+    local map = vim.keymap.set
 
     vim.api.nvim_create_autocmd("User", {
         pattern = "MiniFilesBufferCreate",
         callback = function(args)
-            local b = args.data.buf_id
-            vim.keymap.set("n", ".", set_cwd, { buffer = b, desc = "Set cwd" })
-            vim.keymap.set("n", "gx", ui_open, { buffer = b, desc = "OS open" })
-            vim.keymap.set("n", "gy", yank_path, { buffer = b, desc = "Yank path" })
+            local bufid = args.data.buf_id
+
+            local function setBranch(path)
+                MiniFiles.set_branch({ vim.fn.expand(path) })
+            end
+
+            -- stylua: ignore start
+            map("n", "gx", ui_open, { buffer = bufid, desc = "OS open" })
+            map("n", "gy", yank_path, { buffer = bufid, desc = "Yank path" })
+
+            map("n", ".", function() setBranch(vim.fn.getcwd()) end, { buffer = bufid, desc = "Current working directory" })
+
+            map("n", "0", function() setBranch("$HOME/repos/nikbrunner/dots") end, { buffer = bufid, desc = "Dots" })
+            map("n", "1", function() setBranch("$HOME/repos/nikbrunner/notes") end, { buffer = bufid, desc = "Notes" })
+            map("n", "2", function() setBranch("$HOME/repos/nikbrunner/dcd-notes") end, { buffer = bufid, desc = "DCD Notes" })
+
+            map("n", "4", function() setBranch("$HOME/repos/black-atom-industries/core") end, { buffer = bufid, desc = "Black Atom - Core" })
+            map("n", "5", function() setBranch("$HOME/repos/black-atom-industries/nvim") end, { buffer = bufid, desc = "Black Atom - Neovim" })
+            map("n", "6", function() setBranch("$HOME/repos/black-atom-industries/radar.nvim") end, { buffer = bufid, desc = "Black Atom - Radar" })
+
+            map("n", "7", function() setBranch("$HOME/repos/dealercenter-digital/bc-desktop-client") end, { buffer = bufid, desc = "DCD Desktop Client" })
+            map("n", "8", function() setBranch("$HOME/repos/dealercenter-digital/bc-desktop-tools") end, { buffer = bufid, desc = "DCD Desktop Client" })
+            map("n", "9", function() setBranch("$HOME/repos/dealercenter-digital/bc-web-client-poc") end, { buffer = bufid, desc = "DCD Web Client" })
+            -- stylua: ignore end
         end,
     })
 
-    vim.keymap.set("n", "-", function()
-        MiniFiles.open(vim.api.nvim_buf_get_name(0))
-    end, { desc = "[E]xplorer" })
-
-    vim.keymap.set("n", "<leader>we", function()
-        MiniFiles.open(vim.api.nvim_buf_get_name(0))
-    end, { desc = "[E]xplorer" })
+    -- stylua: ignore start
+    map("n", "-", function() MiniFiles.open(vim.api.nvim_buf_get_name(0)) end, { desc = "[E]xplorer" })
+    map("n", "_", function() MiniFiles.open(vim.fn.getcwd()) end, { desc = "[E]xplorer" })
+    map("n", "<leader>we", function() MiniFiles.open(vim.api.nvim_buf_get_name(0)) end, { desc = "[E]xplorer" })
+    -- stylua: ignore end
 end
 
 function Mini.pick()
