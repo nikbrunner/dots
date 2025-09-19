@@ -1,7 +1,6 @@
 ---@type LazyPluginSpec
 return {
     "mistweaverco/kulala.nvim",
-    pin = true,
     ft = "http",
     ---@doc: [Setup Options | Kulala.nvim](https://kulala.mwco.app/docs/getting-started/setup-options/)
     opts = {
