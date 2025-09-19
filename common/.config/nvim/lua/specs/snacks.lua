@@ -572,10 +572,10 @@ return {
                 },
             },
             win = {
-                backdrop = false,
+                backdrop = true,
                 border = "solid",
-                width = 9999,
-                height = 9999,
+                width = 0.9,
+                height = 0.9,
                 wo = {
                     winhighlight = "Normal:NormalFloat,FloatBorder:Normal",
                 },
