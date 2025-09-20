@@ -239,7 +239,6 @@ function Mini.statusline()
         content = {
             active = function()
                 local m = require("mini.statusline")
-
                 local fnamemodify = vim.fn.fnamemodify
 
                 local project_name = function()
@@ -248,42 +247,9 @@ function Mini.statusline()
                     return parent_project_folder .. "/" .. current_project_folder
                 end
 
-                local word_count = function()
-                    if vim.bo.filetype == "markdown" then
-                        local words = vim.fn.wordcount().words
-                        return " " .. words .. "w"
-                    end
-                    return ""
-                end
-
                 local mode, mode_hl = m.section_mode({ trunc_width = 120 })
-
                 local git = m.section_git({ trunc_width = 75 })
-
-                local relative_filepath = function()
-                    local current_cols = vim.fn.winwidth(0)
-                    if current_cols > 120 then
-                        return vim.fn.fnamemodify(vim.fn.expand("%"), ":~:.") -- Filename with relative path
-                    else
-                        return vim.fn.expand("%:t") -- Just the filename
-                    end
-                end
-
                 local diagnostics = m.section_diagnostics({ trunc_width = 75 })
-                local viewport = "󰊉 " .. vim.o.lines .. ":W" .. vim.o.columns
-                local position = "󰩷 " .. vim.fn.line(".") .. ":" .. vim.fn.col(".")
-                local filetype = " " .. vim.bo.filetype
-
-                local black_atom_label = nil
-                local black_atom_meta = require("black-atom.api").get_meta()
-
-                if black_atom_meta then
-                    black_atom_label = black_atom_meta.label
-                end
-                local colorscheme_name = black_atom_label or vim.g.colors_name or "default"
-                local colorscheme = m.is_truncated(200) and "" or " " .. colorscheme_name
-
-                local dev_mode = m.is_truncated(125) and "" or "DEV_MODE: " .. (require("config").dev_mode and "ON" or "OFF")
 
                 return m.combine_groups({
                     { hl = mode_hl, strings = { mode } },
@@ -402,7 +368,6 @@ return {
         Mini.ai()
         Mini.statusline()
         Mini.icons()
-        Mini.extra()
         Mini.surround()
         Mini.clue()
         Mini.test()
