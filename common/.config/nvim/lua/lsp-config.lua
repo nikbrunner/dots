@@ -7,13 +7,24 @@ vim.diagnostic.config({
     update_in_insert = false,
     float = {
         border = "solid",
+        focus = false,
+        scope = "cursor",
+    },
+    jump = {
+        on_jump = vim.diagnostic.open_float,
     },
     signs = {
+        numhl = {
+            [Severity.ERROR] = "DiagnosticSignError",
+            [Severity.HINT] = "DiagnosticSignHint",
+            [Severity.INFO] = "DiagnosticSignInfo",
+            [Severity.WARN] = "DiagnosticSignWarn",
+        },
         text = {
-            [Severity.ERROR] = require("icons").diagnostics.Error,
-            [Severity.WARN] = require("icons").diagnostics.Warn,
-            [Severity.INFO] = require("icons").diagnostics.Info,
-            [Severity.HINT] = require("icons").diagnostics.Hint,
+            [Severity.ERROR] = "",
+            [Severity.HINT] = "",
+            [Severity.INFO] = "",
+            [Severity.WARN] = "",
         },
     },
 })

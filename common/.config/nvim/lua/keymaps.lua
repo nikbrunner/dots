@@ -47,34 +47,6 @@ function M.set_diagnostic_virtual_lines()
     })
 end
 
-function M.custom_jump(jumpCount, severity)
-    local auto_group_name = "custom_jump"
-
-    pcall(vim.api.nvim_del_augroup_by_name, auto_group_name) -- prevent autocmd for repeated jumps
-
-    vim.diagnostic.jump({
-        count = jumpCount,
-        severity = severity,
-        float = true,
-    })
-
-    -- M.set_diagnostic_virtual_lines()
-    vim.cmd("norm zz")
-    -- vim.diagnostic.open_float(nil, { focusable = true, source = "if_many" })
-    -- local auto_group = vim.api.nvim_create_augroup(auto_group_name, { clear = true })
-
-    -- vim.defer_fn(function() -- deferred to not trigger by jump itself
-    --     vim.api.nvim_create_autocmd("CursorMoved", {
-    --         once = true,
-    --         desc = "User(once): Reset diagnostics virtual lines",
-    --         group = auto_group,
-    --         callback = function()
-    --             M.set_diagnostic_virtual_text()
-    --         end,
-    --     })
-    -- end, 1)
-end
-
 -- =============================================================================
 -- Core Editor Behavior & Navigation
 -- =============================================================================
@@ -286,7 +258,6 @@ vim.api.nvim_create_autocmd("LspAttach", {
         M.map("n", "si", vim.lsp.buf.hover, o({ desc = "[I]nfo" }))
 
         -- LSP Diagnostics
-        -- M.map("n", "sp", vim.diagnostic.open_float, o({ desc = "[P]roblems (Float)" }))
         M.map("n", "sp", function()
             M.set_diagnostic_virtual_lines()
 
@@ -300,36 +271,6 @@ vim.api.nvim_create_autocmd("LspAttach", {
                 end,
             })
         end, o({ desc = "[P]roblems (Inline)" }))
-
-        -- vim.api.nvim_create_autocmd("CursorHold", {
-        --     group = vim.api.nvim_create_augroup("cursor-hold-diagnostics", {}),
-        --     desc = "User: On cursor hold, reset diagnostics virtual lines",
-        --     callback = function()
-        --         -- vim.diagnostic.open_float(nil, { focusable = true, source = "if_many" })
-        --         M.set_diagnostic_virtual_lines()
-        --     end,
-        -- })
-
-        -- Helper function to create diagnostic navigation mappings
-        local function create_diagnostic_mappings(key, severity_type, severity_value)
-            local severity_param = severity_value and { severity = severity_value } or nil
-
-            -- Previous diagnostic
-            M.map("n", "[" .. key, function()
-                M.custom_jump(-1, severity_param)
-            end, o({ desc = "[" .. severity_type .. "] Previous" }))
-
-            -- Next diagnostic
-            M.map("n", "]" .. key, function()
-                M.custom_jump(1, severity_param)
-            end, o({ desc = "[" .. severity_type .. "] Next" }))
-        end
-
-        -- Create mappings for diagnostic navigation (all, error, warning, hint)
-        create_diagnostic_mappings("d", "[D]iagnostic", nil)
-        create_diagnostic_mappings("e", "[E]rror", vim.diagnostic.severity.ERROR)
-        create_diagnostic_mappings("w", "[W]arning", vim.diagnostic.severity.WARN)
-        create_diagnostic_mappings("h", "[H]int", vim.diagnostic.severity.HINT)
 
         -- LSP Actions & Refactoring
         M.map("n", "sa", vim.lsp.buf.code_action, o({ desc = "[A]ction" })) -- Original was commented out

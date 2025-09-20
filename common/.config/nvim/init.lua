@@ -19,7 +19,7 @@ require("lib")
 require("keymaps")
 require("autocmd")
 require("neovide")
-require("lsp")
+require("lsp-config")
 
 require("lazy").setup("specs", {
     defaults = {
