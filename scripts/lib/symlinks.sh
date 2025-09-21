@@ -426,6 +426,17 @@ if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
         ((broken_links += STATS_BROKEN))
         ((missing_links += STATS_MISSING))
         ((wrong_target_links += STATS_WRONG_TARGET))
+    elif [[ "$CURRENT_OS" == "arch" && -d "$DOTS_DIR/arch" ]]; then
+        if [[ "$VERBOSE" = true ]]; then
+            process_symlinks "$DOTS_DIR/arch" "$HOME" "check" --verbose
+        else
+            process_symlinks "$DOTS_DIR/arch" "$HOME" "check"
+        fi
+        ((total_links += STATS_TOTAL))
+        ((valid_links += STATS_VALID))
+        ((broken_links += STATS_BROKEN))
+        ((missing_links += STATS_MISSING))
+        ((wrong_target_links += STATS_WRONG_TARGET))
     fi
 
     # Output stats in a parseable format

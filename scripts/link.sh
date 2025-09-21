@@ -115,6 +115,8 @@ if [[ "$CURRENT_OS" == "macos" && -d "$DOTS_DIR/macos" ]]; then
 	process_directory "$DOTS_DIR/macos" "$HOME" "macOS-specific"
 elif [[ "$CURRENT_OS" == "linux" && -d "$DOTS_DIR/linux" ]]; then
 	process_directory "$DOTS_DIR/linux" "$HOME" "Linux-specific"
+elif [[ "$CURRENT_OS" == "arch" && -d "$DOTS_DIR/arch" ]]; then
+	process_directory "$DOTS_DIR/arch" "$HOME" "Arch-specific"
 fi
 
 echo ""
