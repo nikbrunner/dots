@@ -44,7 +44,11 @@ get_theme_metadata() {
 # Update Neovim configuration
 update_nvim_theme() {
     local theme="$1"
-    sed -i '' "s/colorscheme = .*/colorscheme = \"$theme\",/" "$NVIM_CONFIG"
+    if [[ "$(uname)" == "Darwin" ]]; then
+        sed -i '' "s/colorscheme = .*/colorscheme = \"$theme\",/" "$NVIM_CONFIG"
+    else
+        sed -i "s/colorscheme = .*/colorscheme = \"$theme\",/" "$NVIM_CONFIG"
+    fi
 }
 
 # Update tmux configuration
@@ -52,13 +56,21 @@ update_tmux_theme() {
     local theme="$1"
     local collection="$2"
     local theme_path="~/repos/black-atom-industries/tmux/themes/$collection/${theme}.conf"
-    sed -i '' "s|source-file .*/black-atom-industries/tmux/themes/.*/.*\.conf|source-file $theme_path|" "$TMUX_CONFIG"
+    if [[ "$(uname)" == "Darwin" ]]; then
+        sed -i '' "s|source-file .*/black-atom-industries/tmux/themes/.*/.*\.conf|source-file $theme_path|" "$TMUX_CONFIG"
+    else
+        sed -i "s|source-file .*/black-atom-industries/tmux/themes/.*/.*\.conf|source-file $theme_path|" "$TMUX_CONFIG"
+    fi
 }
 
 # Update Ghostty configuration
 update_ghostty_theme() {
     local theme="$1"
-    sed -i '' "s/^theme = .*/theme = ${theme}.conf/" "$GHOSTTY_CONFIG"
+    if [[ "$(uname)" == "Darwin" ]]; then
+        sed -i '' "s/^theme = .*/theme = ${theme}.conf/" "$GHOSTTY_CONFIG"
+    else
+        sed -i "s/^theme = .*/theme = ${theme}.conf/" "$GHOSTTY_CONFIG"
+    fi
 }
 
 # Update Zed configuration
@@ -78,12 +90,22 @@ update_zed_theme() {
 # Update Git delta configuration
 update_delta_theme() {
     local appearance="$1"
-    if [[ "$appearance" == "dark" ]]; then
-        sed -i '' 's/^  light = true/  ; light = true/' "$GIT_CONFIG"
-        sed -i '' 's/^  ; dark = true/  dark = true/' "$GIT_CONFIG"
+    if [[ "$(uname)" == "Darwin" ]]; then
+        if [[ "$appearance" == "dark" ]]; then
+            sed -i '' 's/^  light = true/  ; light = true/' "$GIT_CONFIG"
+            sed -i '' 's/^  ; dark = true/  dark = true/' "$GIT_CONFIG"
+        else
+            sed -i '' 's/^  dark = true/  ; dark = true/' "$GIT_CONFIG"
+            sed -i '' 's/^  ; light = true/  light = true/' "$GIT_CONFIG"
+        fi
     else
-        sed -i '' 's/^  dark = true/  ; dark = true/' "$GIT_CONFIG"
-        sed -i '' 's/^  ; light = true/  light = true/' "$GIT_CONFIG"
+        if [[ "$appearance" == "dark" ]]; then
+            sed -i 's/^  light = true/  ; light = true/' "$GIT_CONFIG"
+            sed -i 's/^  ; dark = true/  dark = true/' "$GIT_CONFIG"
+        else
+            sed -i 's/^  dark = true/  ; dark = true/' "$GIT_CONFIG"
+            sed -i 's/^  ; light = true/  light = true/' "$GIT_CONFIG"
+        fi
     fi
 }
 
