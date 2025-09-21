@@ -54,13 +54,13 @@ echo ""
 # Get current OS
 CURRENT_OS=$(get_os)
 
-# Initialize manifest tracking
-init_manifest "$DOTS_DIR"
+# Initialize OS-specific manifest tracking
+init_manifest "$DOTS_DIR" "$CURRENT_OS"
 
 # Clean up broken symlinks BEFORE creating new ones
 echo "→ Cleaning broken symlinks..."
 
-cleanup_broken_symlinks "$DOTS_DIR" "$DRY_RUN" "$VERBOSE"
+cleanup_broken_symlinks "$DOTS_DIR" "$DRY_RUN" "$VERBOSE" "$CURRENT_OS"
 
 if [[ $CLEANUP_BROKEN_COUNT -eq 0 ]]; then
 	echo "✓ No broken symlinks found"
@@ -123,7 +123,7 @@ echo ""
 if [[ "$DRY_RUN" != true ]]; then
 	echo "→ Saving manifest..."
 	save_manifest
-	echo "✓ Manifest saved to .dots-manifest.json"
+	echo "✓ Manifest saved to .dots-manifest.$CURRENT_OS.json"
 fi
 
 echo "Symlink setup complete!"

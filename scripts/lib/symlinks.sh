@@ -15,7 +15,8 @@ MANIFEST_FILE=""
 # Initialize manifest tracking
 init_manifest() {
     local dots_dir="$1"
-    MANIFEST_FILE="$dots_dir/.dots-manifest.json"
+    local os="${2:-unknown}"
+    MANIFEST_FILE="$dots_dir/.dots-manifest.$os.json"
     MANIFEST_DATA="{}"
 }
 
@@ -47,7 +48,12 @@ add_to_manifest() {
 # Save manifest to file
 save_manifest() {
     if [[ -n "$MANIFEST_FILE" ]] && [[ -n "$MANIFEST_DATA" ]]; then
-        echo "$MANIFEST_DATA" > "$MANIFEST_FILE"
+        # Sort keys to prevent unnecessary diffs
+        if command -v jq &> /dev/null; then
+            echo "$MANIFEST_DATA" | jq --sort-keys '.' > "$MANIFEST_FILE"
+        else
+            echo "$MANIFEST_DATA" > "$MANIFEST_FILE"
+        fi
     fi
 }
 
@@ -276,14 +282,15 @@ process_symlinks() {
 }
 
 # Function to clean up broken symlinks using manifest
-# Usage: cleanup_broken_symlinks <dots_dir> <dry_run> <verbose>
+# Usage: cleanup_broken_symlinks <dots_dir> <dry_run> <verbose> <os>
 cleanup_broken_symlinks() {
     local dots_dir="$1"
     local dry_run="${2:-false}"
     local verbose="${3:-false}"
-    
+    local os="${4:-unknown}"
+
     local broken_count=0
-    local manifest_file="$dots_dir/.dots-manifest.json"
+    local manifest_file="$dots_dir/.dots-manifest.$os.json"
     
     # Check if manifest exists
     if [[ ! -f "$manifest_file" ]]; then
