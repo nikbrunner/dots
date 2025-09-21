@@ -23,18 +23,23 @@ init_manifest() {
 add_to_manifest() {
     local symlink="$1"
     local target="$2"
-    local escaped_symlink=$(printf '%s\n' "$symlink" | sed 's/[[\.*^$(){}?+|]/\\&/g')
-    local escaped_target=$(printf '%s\n' "$target" | sed 's/[[\.*^$(){}?+|]/\\&/g')
-    
+
+    # Convert absolute paths to ~/... format for cross-platform compatibility
+    local tilde_symlink="${symlink/$HOME/\~}"
+    local tilde_target="${target/$HOME/\~}"
+
+    local escaped_symlink=$(printf '%s\n' "$tilde_symlink" | sed 's/[[\.*^$(){}?+|]/\\&/g')
+    local escaped_target=$(printf '%s\n' "$tilde_target" | sed 's/[[\.*^$(){}?+|]/\\&/g')
+
     # Use jq if available, otherwise build JSON manually
     if command -v jq &> /dev/null; then
-        MANIFEST_DATA=$(echo "$MANIFEST_DATA" | jq --arg link "$symlink" --arg target "$target" '. + {($link): $target}')
+        MANIFEST_DATA=$(echo "$MANIFEST_DATA" | jq --arg link "$tilde_symlink" --arg target "$tilde_target" '. + {($link): $target}')
     else
         # Simple JSON building (not ideal for complex strings but should work for paths)
         if [[ "$MANIFEST_DATA" == "{}" ]]; then
-            MANIFEST_DATA="{\"$symlink\":\"$target\"}"
+            MANIFEST_DATA="{\"$tilde_symlink\":\"$tilde_target\"}"
         else
-            MANIFEST_DATA="${MANIFEST_DATA%}},\"$symlink\":\"$target\"}"
+            MANIFEST_DATA="${MANIFEST_DATA%}},\"$tilde_symlink\":\"$tilde_target\"}"
         fi
     fi
 }
@@ -310,32 +315,36 @@ with open('$manifest_file') as f:
     
     # Check each symlink in manifest
     while IFS='|' read -r symlink target; do
-        if [[ -L "$symlink" ]]; then
+        # Convert tilde paths back to absolute paths
+        local abs_symlink="${symlink/\~/$HOME}"
+        local abs_target="${target/\~/$HOME}"
+
+        if [[ -L "$abs_symlink" ]]; then
             # Check if symlink points to expected target and target exists
             local actual_target
-            actual_target=$(readlink "$symlink" 2>/dev/null)
-            
-            if [[ "$actual_target" != "$target" ]] || [[ ! -e "$target" ]]; then
+            actual_target=$(readlink "$abs_symlink" 2>/dev/null)
+
+            if [[ "$actual_target" != "$abs_target" ]] || [[ ! -e "$abs_target" ]]; then
                 # Symlink is broken or points to wrong target
                 if [[ "$dry_run" == true ]]; then
-                    if [[ ! -e "$target" ]]; then
-                        [[ "$verbose" == true ]] && echo "✗ [DRY] Would remove orphaned symlink: $symlink"
+                    if [[ ! -e "$abs_target" ]]; then
+                        [[ "$verbose" == true ]] && echo "✗ [DRY] Would remove orphaned symlink: $abs_symlink"
                     else
-                        [[ "$verbose" == true ]] && echo "✗ [DRY] Would remove wrong symlink: $symlink"
+                        [[ "$verbose" == true ]] && echo "✗ [DRY] Would remove wrong symlink: $abs_symlink"
                     fi
                 else
-                    if [[ ! -e "$target" ]]; then
-                        [[ "$verbose" == true ]] && echo "✗ Removing orphaned symlink: $symlink"
+                    if [[ ! -e "$abs_target" ]]; then
+                        [[ "$verbose" == true ]] && echo "✗ Removing orphaned symlink: $abs_symlink"
                     else
-                        [[ "$verbose" == true ]] && echo "✗ Removing wrong symlink: $symlink"
+                        [[ "$verbose" == true ]] && echo "✗ Removing wrong symlink: $abs_symlink"
                     fi
-                    rm "$symlink"
+                    rm "$abs_symlink"
                 fi
                 broken_count=$((broken_count + 1))
             fi
-        elif [[ -e "$symlink" ]]; then
+        elif [[ -e "$abs_symlink" ]]; then
             # File exists but is not a symlink (user might have replaced it)
-            [[ "$verbose" == true ]] && echo "⚠ Not a symlink (in manifest): $symlink"
+            [[ "$verbose" == true ]] && echo "⚠ Not a symlink (in manifest): $abs_symlink"
         fi
     done < "$temp_manifest"
     
