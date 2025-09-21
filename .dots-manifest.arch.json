@@ -1,4 +1,5 @@
 {
+  "~/.bashrc": "~/repos/nikbrunner/dots/arch/.bashrc",
   "~/.claude/CLAUDE.md": "~/repos/nikbrunner/dots/common/.claude/CLAUDE.md",
   "~/.claude/agents/implementation-architect.md": "~/repos/nikbrunner/dots/common/.claude/agents/implementation-architect.md",
   "~/.claude/agents/pr-reviewer.md": "~/repos/nikbrunner/dots/common/.claude/agents/pr-reviewer.md",
@@ -314,6 +315,7 @@
   "~/.config/zsh/lib/async.zsh": "~/repos/nikbrunner/dots/common/.config/zsh/lib/async.zsh",
   "~/.config/zsh/prompt.zsh": "~/repos/nikbrunner/dots/common/.config/zsh/prompt.zsh",
   "~/.gitconfig": "~/repos/nikbrunner/dots/common/.gitconfig",
+  "~/.gitconfig.local": "~/repos/nikbrunner/dots/arch/.gitconfig.local",
   "~/.gitignore": "~/repos/nikbrunner/dots/common/.gitignore",
   "~/.hushlogin": "~/repos/nikbrunner/dots/common/.hushlogin",
   "~/.ideavimrc": "~/repos/nikbrunner/dots/common/.ideavimrc",
@@ -321,6 +323,7 @@
   "~/.ssh/allowed_signers": "~/repos/nikbrunner/dots/common/.ssh/allowed_signers",
   "~/.vimrc": "~/repos/nikbrunner/dots/common/.vimrc",
   "~/.zshrc": "~/repos/nikbrunner/dots/common/.zshrc",
+  "~/README.md": "~/repos/nikbrunner/dots/arch/README.md",
   "~/bin/dots": "~/repos/nikbrunner/dots/common/bin/dots",
   "~/bin/foreach-npm-dir": "~/repos/nikbrunner/dots/common/bin/foreach-npm-dir",
   "~/bin/ghostty-reload": "~/repos/nikbrunner/dots/common/bin/ghostty-reload",
