@@ -5,8 +5,6 @@ vim.g.maplocalleader = "."
 
 vim.opt.mouse = "a"
 
-vim.opt.background = require("config").background
-
 vim.opt.clipboard = "unnamedplus"
 
 vim.opt.spelllang = "en_us,de_de"
@@ -73,6 +71,8 @@ vim.opt.wrap = false
 
 vim.opt.encoding = "utf-8"
 vim.opt.fileencoding = "utf-8"
+
+vim.opt.termguicolors = true
 
 vim.opt.guifont = { "JetBrainsMono Nerd Font", ":h16" }
 
