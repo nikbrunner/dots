@@ -36,10 +36,10 @@ function Mini.files()
         mappings = {
             show_help = "g?",
             close = "q",
-            go_in = "l",
+            go_in = "<CR>",
             go_in_plus = "<CR>",
-            go_out = "h",
-            go_out_plus = "H",
+            go_out = "-",
+            go_out_plus = "_",
             mark_goto = "'",
             mark_set = "m",
             reset = "<BS>",
