@@ -736,32 +736,58 @@ cmd_add() {
         return 1
     fi
 
-    # Copy the file
-    log_info "Copying file to dots repository..."
-    if ! cp "$source_path" "$dest_path"; then
-        log_error "Failed to copy file"
-        return 1
+    # Copy the file or directory
+    if [[ -d "$source_path" ]]; then
+        log_info "Copying directory to dots repository..."
+        if ! cp -r "$source_path" "$dest_path"; then
+            log_error "Failed to copy directory"
+            return 1
+        fi
+    else
+        log_info "Copying file to dots repository..."
+        if ! cp "$source_path" "$dest_path"; then
+            log_error "Failed to copy file"
+            return 1
+        fi
     fi
 
     # Remove original and create symlink
     log_info "Replacing original with symlink..."
-    if ! rm "$source_path"; then
-        log_error "Failed to remove original file"
-        # Clean up: remove the copied file
-        rm -f "$dest_path"
-        return 1
+    if [[ -d "$source_path" ]]; then
+        if ! rm -rf "$source_path"; then
+            log_error "Failed to remove original directory"
+            # Clean up: remove the copied directory
+            rm -rf "$dest_path"
+            return 1
+        fi
+    else
+        if ! rm "$source_path"; then
+            log_error "Failed to remove original file"
+            # Clean up: remove the copied file
+            rm -f "$dest_path"
+            return 1
+        fi
     fi
 
     # Create symlink
     if ! ln -s "$dest_path" "$source_path"; then
         log_error "Failed to create symlink"
-        # Try to restore original file
-        cp "$dest_path" "$source_path" 2>/dev/null || true
-        rm -f "$dest_path"
+        # Try to restore original file/directory
+        if [[ -d "$dest_path" ]]; then
+            cp -r "$dest_path" "$source_path" 2>/dev/null || true
+            rm -rf "$dest_path"
+        else
+            cp "$dest_path" "$source_path" 2>/dev/null || true
+            rm -f "$dest_path"
+        fi
         return 1
     fi
 
-    log_success "File successfully added to dots repository"
+    if [[ -d "$dest_path" ]]; then
+        log_success "Directory successfully added to dots repository"
+    else
+        log_success "File successfully added to dots repository"
+    fi
     log_success "Symlink created: $source_path → $dest_path"
 
     # Show git status
