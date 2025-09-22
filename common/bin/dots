@@ -82,6 +82,7 @@ show_usage() {
         echo ""
         gum style --foreground=4 --bold "Commands:"
         gum style --foreground=2 "  install      - Initial setup with symlinks and submodules [--dry-run]"
+        gum style --foreground=2 "  add          - Add file to dots repository and replace with symlink"
         gum style --foreground=2 "  link         - Update all symlinks (clean broken + create new) [--dry-run] [--no-backup] [--verbose]"
         gum style --foreground=2 "  sync         - Git pull + submodule updates"
         gum style --foreground=2 "  commit       - Open LazyGit for interactive committing"
@@ -106,6 +107,7 @@ show_usage() {
         echo ""
         echo "Commands:"
         echo "  install      - Initial setup with symlinks and submodules [--dry-run]"
+        echo "  add          - Add file to dots repository and replace with symlink"
         echo "  link         - Update all symlinks (clean broken + create new) [--dry-run] [--no-backup] [--verbose]"
         echo "  sync         - Git pull + submodule updates"
         echo "  commit       - Open LazyGit for interactive committing"
@@ -655,6 +657,122 @@ cmd_open() {
     "$editor" "$DOTS_DIR"
 }
 
+# Add command - add files to dots repository and replace with symlinks
+cmd_add() {
+    if [[ $# -lt 2 ]]; then
+        log_error "Usage: dots add <scope> <file_path>"
+        echo "       Adds file to dots repository and replaces with symlink"
+        echo "       Scope must be: common, macos, or linux"
+        return 1
+    fi
+
+    local scope="$1"
+    local source_path="$2"
+
+    # Validate scope
+    if [[ "$scope" != "common" && "$scope" != "macos" && "$scope" != "linux" ]]; then
+        log_error "Invalid scope: $scope"
+        echo "       Scope must be: common, macos, or linux"
+        return 1
+    fi
+
+    # Expand tilde in source path
+    if [[ "$source_path" =~ ^~ ]]; then
+        source_path="${source_path/#\~/$HOME}"
+    fi
+
+    # Convert to absolute path
+    if [[ ! "$source_path" = /* ]]; then
+        source_path="$(pwd)/$source_path"
+    fi
+
+    # Check if source file exists
+    if [[ ! -e "$source_path" ]]; then
+        log_error "Source file does not exist: $source_path"
+        return 1
+    fi
+
+    # Check if source file is already a symlink
+    if [[ -L "$source_path" ]]; then
+        log_error "Source file is already a symlink: $source_path"
+        return 1
+    fi
+
+    # Calculate relative path from home directory
+    local relative_path
+    if [[ "$source_path" == "$HOME"/* ]]; then
+        relative_path="${source_path#$HOME/}"
+        # Add leading dot for dotfiles
+        if [[ ! "$relative_path" =~ ^\..*$ && ! "$relative_path" =~ ^bin/.*$ && ! "$relative_path" =~ ^Library/.*$ ]]; then
+            relative_path=".$relative_path"
+        fi
+    else
+        log_error "File must be within home directory: $source_path"
+        return 1
+    fi
+
+    # Calculate destination path
+    local dest_path="$DOTS_DIR/$scope/$relative_path"
+    local dest_dir="$(dirname "$dest_path")"
+
+    log_info "Adding file to dots repository..."
+    echo "  Source: $source_path"
+    echo "  Destination: $dest_path"
+    echo "  Scope: $scope"
+    echo ""
+
+    # Create parent directories if needed
+    if [[ ! -d "$dest_dir" ]]; then
+        log_info "Creating parent directories: $dest_dir"
+        if ! mkdir -p "$dest_dir"; then
+            log_error "Failed to create parent directories"
+            return 1
+        fi
+    fi
+
+    # Check if destination already exists
+    if [[ -e "$dest_path" ]]; then
+        log_error "Destination already exists: $dest_path"
+        return 1
+    fi
+
+    # Copy the file
+    log_info "Copying file to dots repository..."
+    if ! cp "$source_path" "$dest_path"; then
+        log_error "Failed to copy file"
+        return 1
+    fi
+
+    # Remove original and create symlink
+    log_info "Replacing original with symlink..."
+    if ! rm "$source_path"; then
+        log_error "Failed to remove original file"
+        # Clean up: remove the copied file
+        rm -f "$dest_path"
+        return 1
+    fi
+
+    # Create symlink
+    if ! ln -s "$dest_path" "$source_path"; then
+        log_error "Failed to create symlink"
+        # Try to restore original file
+        cp "$dest_path" "$source_path" 2>/dev/null || true
+        rm -f "$dest_path"
+        return 1
+    fi
+
+    log_success "File successfully added to dots repository"
+    log_success "Symlink created: $source_path → $dest_path"
+
+    # Show git status
+    echo ""
+    log_section "Git status:"
+    git status --short | grep -E "^\\?\\?" | head -5
+
+    echo ""
+    log_info "Run 'dots commit' to commit this change"
+}
+
 # Remove command - remove files from git tracking but keep them locally
 cmd_remove() {
     if [[ $# -lt 1 ]]; then
@@ -752,6 +870,10 @@ case "${1:-}" in
 install)
     shift
     cmd_install "$@"
+    ;;
+add)
+    shift
+    cmd_add "$@"
     ;;
 link)
     shift
