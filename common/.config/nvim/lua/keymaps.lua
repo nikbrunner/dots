@@ -53,8 +53,15 @@ end
 
 -- Disable Ex mode mapping
 M.map("n", "Q", "<nop>", { desc = "Disable Ex Mode" })
+
 -- Disable suspend mapping
 -- M.map("n", "s", "<nop>", { desc = "Disable Suspend" })
+
+-- Restart
+M.map("n", "R", function()
+    vim.cmd.wa({ bang = true })
+    vim.cmd.restart()
+end, { desc = "Restart" })
 
 -- Escape clears search highlight, saves, hides notifier
 M.map("n", "<Esc>", function()
