@@ -161,8 +161,8 @@ M.specs = {
             enable = true, -- Enable this plugin (Can be enabled/disabled later via commands)
             max_lines = 2, -- How many lines the window should span. Values <= 0 mean no limit.
             multiline_threshold = 20, -- Maximum number of lines to show for a single context
-            trim_scope = "outer", -- Which context lines to discard if `max_lines` is exceeded. Choices: 'inner', 'outer'
-            zindex = 20, -- The Z-index of the context window
+            trim_scope = "inner", -- Which context lines to discard if `max_lines` is exceeded. Choices: 'inner', 'outer'
+            zindex = 5, -- The Z-index of the context window
             mode = "cursor", -- Line used to calculate context. Choices: 'cursor', 'topline'
             on_attach = function(bufnr)
                 local disabled_filetypes = { "markdown", "vim" }
