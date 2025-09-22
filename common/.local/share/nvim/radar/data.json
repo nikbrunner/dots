@@ -1,0 +1,57 @@
+{
+  "~/repos/nikbrunner/dots": {
+    "main": {
+      "locks": [
+        { "filename": "common/.config/nvim/lua/specs/mini.lua", "label": "1" }
+      ]
+    }
+  },
+  "~/repos/dealercenter-digital/bc-desktop-tools": {
+    "product-content-shimano-cues-2025": {
+      "locks": [
+        {
+          "filename": "product-content-shimano-cues-2025/cta.json",
+          "label": "1"
+        },
+        { "filename": "product-content-example/meta.json", "label": "2" }
+      ]
+    }
+  },
+  "~/repos/dealercenter-digital/bc-desktop-client": {
+    "master": {
+      "locks": [
+        {
+          "filename": "data/product-content-shimano-cues-2025/meta.json",
+          "label": "1"
+        },
+        {
+          "filename": "data/product-content-shimano-cues-2025/js/bikecenter-api-product.js",
+          "label": "2"
+        }
+      ]
+    }
+  },
+  "~/repos/dealercenter-digital/bc-web-client-poc/frontend": {
+    "bcd-8461-add-storybook": {
+      "locks": [{ "filename": ".storybook/preview.ts", "label": "1" }]
+    }
+  },
+  "~/repos/nikbrunner/dcd-notes": {
+    "main": {
+      "locks": [{ "filename": "Log/2025/2025.09.19 - Friday.md", "label": "1" }]
+    }
+  },
+  "~/repos/black-atom-industries/radar.nvim": {
+    "cleanup": { "locks": [{ "filename": "lua/radar/init.lua", "label": "1" }] }
+  },
+  "~/repos/dealercenter-digital/bc-web-client-poc": {
+    "bcd-8461-add-storybook": {
+      "locks": [
+        {
+          "filename": "frontend/src/components/Collapsible.stories.tsx",
+          "label": "1"
+        }
+      ]
+    }
+  }
+}

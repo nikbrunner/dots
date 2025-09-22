@@ -319,6 +319,7 @@
   "~/.gitignore": "~/repos/nikbrunner/dots/common/.gitignore",
   "~/.hushlogin": "~/repos/nikbrunner/dots/common/.hushlogin",
   "~/.ideavimrc": "~/repos/nikbrunner/dots/common/.ideavimrc",
+  "~/.local/share/nvim/radar/data.json": "~/repos/nikbrunner/dots/common/.local/share/nvim/radar/data.json",
   "~/.ripgreprc": "~/repos/nikbrunner/dots/common/.ripgreprc",
   "~/.ssh/allowed_signers": "~/repos/nikbrunner/dots/common/.ssh/allowed_signers",
   "~/.vimrc": "~/repos/nikbrunner/dots/common/.vimrc",
