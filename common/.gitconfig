@@ -1,7 +1,7 @@
 [user]
   name = nbr
   email = nikolaus.brunner@protonmail.ch
-	signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEcYYtJDOq9qqSe++B/fT01ADNK1gkDf5BvO7HenOr6z
+  signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEcYYtJDOq9qqSe++B/fT01ADNK1gkDf5BvO7HenOr6z
 
 [init]
   defaultBranch = main
@@ -18,12 +18,15 @@
   tool = vscode
   colorMoved = default
 
+[pull]
+  rebase = true
+
 [mergetool "vscode"]
   cmd = code --wait $MERGED
 
 [rebase]
-	autosquash = true
-	updateRefs = true
+  autosquash = true
+  updateRefs = true
 
 [diff]
   tool = vscode
@@ -31,12 +34,6 @@
 
 [difftool "vscode"]
   cmd = code --wait --diff $LOCAL $REMOTE
-
-[filter "lfs"]
-  clean = git-lfs clean -- %f
-  smudge = git-lfs smudge -- %f
-  process = git-lfs filter-process
-  required = true
 
 [delta]
   navigate = true
@@ -106,14 +103,14 @@
   p = push -u origin HEAD
 
 [gpg]
-	format = ssh
+  format = ssh
 
 [gpg "ssh"]
-	allowedSignersFile = ~/.ssh/allowed_signers
+  allowedSignersFile = ~/.ssh/allowed_signers
 
 [commit]
-	gpgsign = true
+  gpgsign = true
 
 # OS-specific includes (these files will contain platform-specific paths)
 [include]
-	path = ~/.gitconfig.local
+  path = ~/.gitconfig.local
