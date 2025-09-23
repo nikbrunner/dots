@@ -1,0 +1,52 @@
+common:
+  common/.claude/CLAUDE.md: ~/.claude/CLAUDE.md
+  common/.claude/agents: ~/.claude/agents
+  common/.claude/commands: ~/.claude/commands
+  common/.claude/settings.json: ~/.claude/settings.json
+  common/.config/.zsh/_git: ~/.config/.zsh/_git
+  common/.config/.zsh/git-completion.bash: ~/.config/.zsh/git-completion.bash
+  common/.config/atuin/config.toml: ~/.config/atuin/config.toml
+  common/.config/av/config.yaml: ~/.config/av/config.yaml
+  common/.config/bat/config: ~/.config/bat/config
+  common/.config/bob/config.json: ~/.config/bob/config.json
+  common/.config/gh/config.yml: ~/.config/gh/config.yml
+  common/.config/ghostty: ~/.config/ghostty
+  common/.config/kitty: ~/.config/kitty
+  common/.config/lazygit/config.yml: ~/.config/lazygit/config.yml
+  common/.config/mpd/mpd.conf: ~/.config/mpd/mpd.conf
+  common/.config/nvim: ~/.config/nvim
+  common/.config/nvim_mnml: ~/.config/nvim_mnml
+  common/.config/rmpc: ~/.config/rmpc
+  common/.config/tmux: ~/.config/tmux
+  common/.config/wezterm: ~/.config/wezterm
+  common/.config/yazi: ~/.config/yazi
+  common/.config/zed: ~/.config/zed
+  common/.config/zsh/lib/async.zsh: ~/.config/zsh/lib/async.zsh
+  common/.config/zsh/prompt.zsh: ~/.config/zsh/prompt.zsh
+  common/.gitconfig: ~/.gitconfig
+  common/.gitignore: ~/.gitignore
+  common/.hushlogin: ~/.hushlogin
+  common/.ideavimrc: ~/.ideavimrc
+  common/.local/share/nvim/radar: ~/.local/share/nvim/radar
+  common/.ripgreprc: ~/.ripgreprc
+  common/.ssh/allowed_signers: ~/.ssh/allowed_signers
+  common/.vimrc: ~/.vimrc
+  common/.zshrc: ~/.zshrc
+  common/bin/*: ~/bin
+  common/fonts.json: ~/fonts.json
+  common/themes.json: ~/themes.json
+
+macos:
+  macos/.config/karabiner: ~/.config/karabiner
+  macos/.gitconfig.local: ~/.gitconfig.local
+  macos/Brewfile: ~/Brewfile
+  macos/Library/Application Support/Claude/claude_desktop_config.json: ~/Library/Application Support/Claude/claude_desktop_config.json
+  macos/Library/LaunchAgents/com.pcloud.automount.plist: ~/Library/LaunchAgents/com.pcloud.automount.plist
+  macos/Library/LaunchAgents/homebrew.mxcl.mpd.plist: ~/Library/LaunchAgents/homebrew.mxcl.mpd.plist
+  macos/Library/Scripts/pcloud-auto-mount.applescript: ~/Library/Scripts/pcloud-auto-mount.applescript
+
+arch:
+  arch/.bashrc: ~/.bashrc
+  arch/.gitconfig.local: ~/.gitconfig.local
+  arch/README.md: ~/README.md
+

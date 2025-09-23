@@ -11,18 +11,22 @@ This is a symlink-based dotfiles management system designed to organize and depl
 ### Symlink System
 
 - Configuration files live in `~/repos/nikbrunner/dots/` but are symlinked to their standard locations
-- The `scripts/link.sh` script creates all symlinks with backup functionality
+- Symlinks are defined in a single `symlinks.yml` file with OS-specific sections
+- The `scripts/symlinks.sh` script creates all symlinks from the configuration with backup functionality
 - Running `dots link` automatically backs up existing files with timestamps before creating symlinks
+- Supports wildcard patterns (e.g., `"common/bin/*": "~/bin"`) for flexible file management
 
 ### Directory Structure
 
+- `symlinks.yml` - Symlinks configuration with OS-specific sections
 - `common/` - Cross-platform configuration files that mirror home directory structure
   - Root dotfiles (.zshrc, .gitconfig, etc.)
   - `.config/` directory with tool configurations
   - `bin/` directory with custom scripts
 - `macos/` - macOS-specific configurations that mirror home directory structure
 - `linux/` - Linux-specific configurations that mirror home directory structure
-- `scripts/` - Core management scripts (link.sh, detect-os.sh, submodules.sh)
+- `arch/` - Arch-specific configurations that mirror home directory structure
+- `scripts/` - Core management scripts (symlinks.sh, detect-os.sh, submodules.sh)
 
 ## Common Commands
 
@@ -64,17 +68,18 @@ dots test
 
 1. Add config files directly to the appropriate directory structure:
    - For cross-platform configs: Place in `common/` following home directory structure
-   - For OS-specific configs: Place in `macos/` or `linux/` following home directory structure
+   - For OS-specific configs: Place in `macos/` or `arch/` following home directory structure
    - Example: For a new tool config, create `common/.config/toolname/config`
-2. Run `dots link` to update all symlinks (this also removes any broken symlinks)
-3. Mappings are auto-generated when outdated - no manual updates needed
+2. Edit `symlinks.yml` to add the symlink entry in the appropriate OS section
+3. Run `dots link` to update all symlinks (this also removes any broken symlinks)
 4. Verify with `dots test` to ensure everything is working correctly
 
 ### Removing Configurations
 
-1. Delete the file from the repository (`common/`, `macos/`, or `linux/`)
-2. Run `dots link` to update symlinks (broken symlinks are automatically removed)
-3. The original symlink in your home directory will be cleaned up
+1. Delete the file from the repository (`common/`, `macos/`, or `arch/`)
+2. Remove the entry from `symlinks.yml`
+3. Run `dots link` to update symlinks (broken symlinks are automatically removed)
+4. The original symlink in your home directory will be cleaned up
 
 ### Renaming/Moving Configurations
 
@@ -87,33 +92,44 @@ dots test
 
 ## Symlink System
 
-The system uses direct directory traversal for precise file-level symlinks. All files in `common/`, `macos/`, and `linux/` directories are automatically discovered and symlinked.
+The system uses a unified YAML manifest where symlinks are explicitly defined with OS-specific sections. This provides precise control over what gets linked while eliminating duplication.
 
-### Symlink System
+### YAML Configuration with OS Sections
 
-- **File-level linking only**: Every file is individually symlinked (no directory symlinks)
-- **Direct traversal**: Files are discovered by scanning the source directories directly
+- **Unified file**: Single `symlinks.yml` file with `common`, `macos`, and `arch` sections
+- **Critical**: YAML section names must exactly match OS detection output (`macos`, `arch`, `common`)
+- **Processing order**: Always loads `common` first, then the detected OS section if it exists
+- **Shared common entries**: 85% of entries are identical and defined once
+- **Mixed linking**: Supports both directory-level and file-level symlinks
+- **Wildcard patterns**: Use patterns like `"common/bin/*": "~/bin"` to link individual files into existing directories
 - **Automatic parent directory creation**: Parent directories are created as needed when symlinking files
 
-### Common (Cross-platform) Files
+### Example YAML Structure
 
-- `common/.zshrc` → `~/.zshrc`
-- `common/.gitconfig` → `~/.gitconfig`
-- `common/.config/yazi/yazi.toml` → `~/.config/yazi/yazi.toml`
-- `common/.config/oh-my-posh/nbr.omp.json` → `~/.config/oh-my-posh/nbr.omp.json`
-- `common/bin/dots` → `~/bin/dots`
-- All files in `common/` are individually mapped and symlinked
+```yaml
+# macOS configuration
+macos:
+  # Common entries (34 shared)
+  "common/.config/nvim": "~/.config/nvim"
+  "common/bin/*": "~/bin"
+  # macOS-specific entries (7 unique)
+  "macos/Brewfile": "~/Brewfile"
 
-### macOS-specific Files
+# Arch configuration
+arch:
+  # Same 34 common entries
+  "common/.config/nvim": "~/.config/nvim"
+  "common/bin/*": "~/bin"
+  # Arch-specific entries (5 unique)
+  "arch/.bashrc": "~/.bashrc"
+```
 
-- `macos/.config/karabiner/karabiner.json` → `~/.config/karabiner/karabiner.json`
-- `macos/Library/Application Support/Claude/claude_desktop_config.json` → `~/Library/Application Support/Claude/claude_desktop_config.json`
-- `macos/Brewfile` → `~/Brewfile`
-- All files in `macos/` are individually mapped and symlinked
+### Benefits
 
-### Linux-specific Files
-
-- All files in `linux/` are individually mapped and symlinked (when on Linux systems)
+- **85% less duplication**: Common entries defined once instead of duplicated
+- **Single source of truth**: One file for all symlink configuration
+- **Easy to maintain**: Clear separation of common vs OS-specific entries
+- **YAML readability**: More human-readable than JSON
 
 ## Backup Files
 
@@ -144,13 +160,12 @@ Use `dots test` for overall system health checks and `dots link --dry-run` for d
 
 ## Recent Changes
 
-- **Complete Machine Setup**: `dots install` now provides full machine setup with automatic dependency installation
-- **Unified Dependency Management**: Cross-platform dependency installation for macOS (Homebrew) and Linux (Arch/pacman)
-- **Fixed Link Script**: Resolved hanging issues during symlink processing with improved file handling
-- **Simplified Dependencies**: All tools are now required (no essential/optional distinction)
-- **Cross-Platform Git Configuration**: OS-specific Git configs with conditional includes for 1Password paths
-- **Linux Compatibility**: Enhanced cross-platform support with OS detection and package manager abstraction
-- **Simplified Architecture**: Removed JSON mapping system in favor of direct directory traversal (~60% code reduction)
+- **Manual Configuration System**: Replaced auto-discovery with explicit `symlinks.yml` configuration file
+- **Wildcard Pattern Support**: Added support for patterns like `"common/bin/*"` for selective file linking
+- **Massive Code Reduction**: Removed ~810 lines of auto-discovery code
+- **74% Fewer Configuration Entries**: From 353 auto-discovered to 42 manually defined symlinks
+- **Complete Machine Setup**: `dots install` provides full machine setup with automatic dependency installation
+- **Cross-Platform Support**: Full support for macOS, Linux, and Arch Linux
 - **Enhanced Testing**: `dots test` includes shellcheck linting for script quality
 - **Regular Files**: nvim and wezterm configurations are now regular files in the repository (no longer submodules)
 
