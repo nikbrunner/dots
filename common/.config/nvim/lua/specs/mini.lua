@@ -51,6 +51,11 @@ function Mini.files()
         options = {
             use_as_default_explorer = false,
         },
+
+        windows = {
+            width_focus = 50,
+            width_nofocus = 50,
+        },
     })
 
     local map_split = function(buf_id, lhs, direction)
