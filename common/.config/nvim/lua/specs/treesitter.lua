@@ -92,6 +92,12 @@ M.specs = {
         config = function(_, opts)
             local configs = require("nvim-treesitter.configs")
 
+            -- Register the mdx filetype
+            vim.filetype.add({ extension = { mdx = "mdx" } })
+
+            -- Configure treesitter to use the markdown parser for mdx files
+            vim.treesitter.language.register("markdown", "mdx")
+
             configs.setup(opts)
         end,
     },

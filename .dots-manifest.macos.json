@@ -109,6 +109,8 @@
   "~/.config/nvim/.prettierrc": "~/repos/nikbrunner/dots/common/.config/nvim/.prettierrc",
   "~/.config/nvim/CLAUDE.md": "~/repos/nikbrunner/dots/common/.config/nvim/CLAUDE.md",
   "~/.config/nvim/README.md": "~/repos/nikbrunner/dots/common/.config/nvim/README.md",
+  "~/.config/nvim/after/queries/markdown/highlights.scm": "~/repos/nikbrunner/dots/common/.config/nvim/after/queries/markdown/highlights.scm",
+  "~/.config/nvim/after/queries/markdown/injections.scm": "~/repos/nikbrunner/dots/common/.config/nvim/after/queries/markdown/injections.scm",
   "~/.config/nvim/assets/v2.png": "~/repos/nikbrunner/dots/common/.config/nvim/assets/v2.png",
   "~/.config/nvim/colors/default.lua": "~/repos/nikbrunner/dots/common/.config/nvim/colors/default.lua",
   "~/.config/nvim/colors/habamax.lua": "~/repos/nikbrunner/dots/common/.config/nvim/colors/habamax.lua",
