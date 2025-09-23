@@ -1,4 +1,4 @@
-theme = black-atom-terra-fall-day.conf
+theme = black-atom-terra-fall-night.conf
 
 # custom-shader                      = ./shaders/crt-shader.glsl
 # custom-shader                      = ./shaders/bloom015.glsl
