@@ -119,6 +119,7 @@
   "~/.config/nvim/lsp/bashls.lua": "~/repos/nikbrunner/dots/common/.config/nvim/lsp/bashls.lua",
   "~/.config/nvim/lsp/biome.lua": "~/repos/nikbrunner/dots/common/.config/nvim/lsp/biome.lua",
   "~/.config/nvim/lsp/cssls.lua": "~/repos/nikbrunner/dots/common/.config/nvim/lsp/cssls.lua",
+  "~/.config/nvim/lsp/cssvariables.lua": "~/repos/nikbrunner/dots/common/.config/nvim/lsp/cssvariables.lua",
   "~/.config/nvim/lsp/denols.lua": "~/repos/nikbrunner/dots/common/.config/nvim/lsp/denols.lua",
   "~/.config/nvim/lsp/eslint.lua": "~/repos/nikbrunner/dots/common/.config/nvim/lsp/eslint.lua",
   "~/.config/nvim/lsp/gopls.lua": "~/repos/nikbrunner/dots/common/.config/nvim/lsp/gopls.lua",

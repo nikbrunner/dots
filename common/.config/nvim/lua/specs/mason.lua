@@ -5,6 +5,7 @@ local packages = {
     "astro-language-server",
     "bash-language-server",
     "css-lsp",
+    "css-variables-language-server",
     "gopls",
     "html-lsp",
     "json-lsp",
