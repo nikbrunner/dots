@@ -26,8 +26,8 @@
   },
   "theme": {
     "mode": "system",
-    "dark": "Black Atom — TER ∷ Fall Night",
-    "light": "Black Atom — TER ∷ Fall Day"
+    "dark": "Black Atom — MNM ∷ Mikado Dark",
+    "light": "Black Atom — STA ∷ Research"
   },
   "base_keymap": "VSCode",
   "vim_mode": true,

@@ -3,7 +3,7 @@ local M = {}
 ---@class VinConfig
 M.config = {
     ---@type BlackAtom.Theme.Key
-    colorscheme = "black-atom-terra-fall-night",
+    colorscheme = "black-atom-mnml-mikado-dark",
     dev_mode = true,
     open_previous_files_on_startup = false,
     open_neotree_on_startup = false,
