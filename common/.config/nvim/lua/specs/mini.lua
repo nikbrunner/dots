@@ -370,7 +370,7 @@ return {
     lazy = false,
     config = function()
         -- Mini.pick()
-        Mini.files()
+        -- Mini.files()
         -- Mini.visits()
         -- Mini.extra()
         Mini.ai()
