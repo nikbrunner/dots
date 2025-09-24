@@ -31,11 +31,11 @@
   },
   "base_keymap": "VSCode",
   "vim_mode": true,
-  "ui_font_family": "IosevkaTerm Nerd Font",
+  "ui_font_family": "TX-02",
   "ui_font_size": 20,
   "buffer_line_height": "comfortable",
   "buffer_font_size": 20,
-  "buffer_font_family": "IosevkaTerm Nerd Font",
+  "buffer_font_family": "TX-02",
   "buffer_font_weight": 400,
   "show_completions_on_input": true,
   "tabs": {
@@ -73,7 +73,7 @@
   "format_on_save": "on",
   "terminal": {
     "line_height": "standard",
-    "font_family": "IosevkaTerm Nerd Font",
+    "font_family": "TX-02",
     "working_directory": "current_project_directory"
   },
   "lsp": {
