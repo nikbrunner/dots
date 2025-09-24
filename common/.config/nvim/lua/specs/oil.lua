@@ -53,9 +53,11 @@ return {
             border = "solid",
         },
         keymaps = {
+            ["~"] = false,
             ["q"] = { "actions.close", mode = "n" },
-            ["mh"] = { "<cmd>edit $HOME<CR>", desc = "[H]ome" },
-            ["mr"] = { "<cmd>edit $HOME/repos<CR>", desc = "[R]epos" },
+            ["gh"] = { "<cmd>edit $HOME<CR>", desc = "[H]ome" },
+            ["gc"] = { "<cmd>edit $HOME/.config<CR>", desc = "[C]onfig" },
+            ["gr"] = { "<cmd>edit $HOME/repos<CR>", desc = "[R]epos" },
 
             ["0"] = { "<cmd>edit $HOME/repos/nikbrunner/dots<CR>", desc = "Dots" },
             ["1"] = { "<cmd>edit $HOME/repos/nikbrunner/notes<CR>", desc = "Notes" },
