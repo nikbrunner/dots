@@ -49,4 +49,4 @@ arch:
   arch/.bashrc: ~/.bashrc
   arch/.gitconfig.local: ~/.gitconfig.local
   arch/README.md: ~/README.md
-
+  arch/.config/hypr: ~/.config/hypr
