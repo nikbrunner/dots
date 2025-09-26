@@ -124,6 +124,5 @@ export NVM_DIR="$HOME/.config/nvm"
 eval "$(zoxide init bash)"
 
 # Atuin
-[ -f "$HOME/.atuin/bin/env" ] && . "$HOME/.atuin/bin/env"
-eval "$(atuin init bash)"
-
+# [ -f "$HOME/.atuin/bin/env" ] && . "$HOME/.atuin/bin/env"
+# eval "$(atuin init bash)"
