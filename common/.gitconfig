@@ -21,6 +21,9 @@
 [pull]
   rebase = true
 
+[fetch]
+  prune = true
+
 [mergetool "vscode"]
   cmd = code --wait $MERGED
 
