@@ -572,9 +572,9 @@ return {
                 },
             },
             win = {
-                backdrop = true,
+                backdrop = false,
                 border = "solid",
-                width = 0.9,
+                width = vim.o.columns,
                 height = 0.9,
             },
         },
