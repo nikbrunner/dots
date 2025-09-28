@@ -4,6 +4,7 @@ vim.opt.autoread = true
 vim.opt.clipboard = "unnamedplus"
 vim.opt.cmdheight = 1
 vim.opt.completeopt = { "fuzzy", "menuone", "noinsert", "popup", "preview" }
+vim.opt.autocompletedelay = 150
 vim.opt.cursorline = true
 vim.opt.fillchars = { foldopen = "", foldclose = "", fold = " ", foldsep = " " }
 vim.opt.foldcolumn = "1"
