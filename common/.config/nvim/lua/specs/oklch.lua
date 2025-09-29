@@ -18,7 +18,8 @@ return {
             ---@type 'background'|'foreground'|'virtual_left'|'virtual_eol'|'foreground+virtual_left'|'foreground+virtual_eol'
             style = "foreground+virtual_left",
             bold = true,
-            virtual_text = " ",
+            italic = false,
+            virtual_text = "  ",
         },
     },
 }
