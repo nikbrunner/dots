@@ -27,11 +27,6 @@ return {
         lazy = false,
         ---@module "radar"
         ---@type Radar.Config
-        opts = {
-            keys = {
-                prefix = "<space>",
-                lock = "<space>",
-            },
-        },
+        opts = {},
     },
 }
