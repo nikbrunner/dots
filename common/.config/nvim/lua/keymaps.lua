@@ -289,5 +289,11 @@ vim.api.nvim_create_autocmd("LspAttach", {
 
         -- LSP Signature Help (Insert mode)
         M.map("i", "<C-k>", vim.lsp.buf.signature_help, o({ desc = "Signature Help" }))
+
+        M.map("i", "<Tab>", function()
+            if not vim.lsp.inline_completion.get() then
+                return "<Tab>"
+            end
+        end, { expr = true, desc = "Accept the current inline completion" })
     end,
 })

@@ -6,6 +6,7 @@ local packages = {
     "bash-language-server",
     "css-lsp",
     "css-variables-language-server",
+    "copilot-language-server",
     "gopls",
     "html-lsp",
     "json-lsp",

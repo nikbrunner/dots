@@ -1,5 +1,7 @@
 local Severity = vim.diagnostic.severity
 
+vim.lsp.inline_completion.enable()
+
 vim.diagnostic.config({
     underline = false,
     virtual_text = true,
