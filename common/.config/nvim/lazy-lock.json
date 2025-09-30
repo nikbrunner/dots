@@ -27,6 +27,7 @@
   "oklch-color-picker.nvim": { "branch": "master", "commit": "ae318113cd7d0e4988b6b059327c2778911f1187" },
   "persistence.nvim": { "branch": "main", "commit": "166a79a55bfa7a4db3e26fc031b4d92af71d0b51" },
   "qmk.nvim": { "branch": "main", "commit": "3c804c1480991e4837514900b22b9358cfd64fa1" },
+  "sidekick.nvim": { "branch": "main", "commit": "d11ee7f7209d3417d1bc007f387b665db43117bc" },
   "snacks.nvim": { "branch": "main", "commit": "f6c06415a27bd63b038e0c624b11d272c300390f" },
   "treewalker.nvim": { "branch": "main", "commit": "51aedba5d460e777a1427a9a218aa6ca8bbbe66b" },
   "trouble.nvim": { "branch": "fix/decoration-provider-api", "commit": "7198b17ef9e1db39e76ddbae0509c1058aa5c321" },
