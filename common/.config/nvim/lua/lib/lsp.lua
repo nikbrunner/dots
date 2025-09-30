@@ -157,4 +157,35 @@ function M.open_log()
     end
 end
 
+function M.set_diagnostic_virtual_text()
+    vim.diagnostic.config({
+        virtual_lines = false,
+        virtual_text = { current_line = false },
+    })
+end
+
+function M.set_diagnostic_virtual_lines()
+    vim.diagnostic.config({
+        virtual_lines = { current_line = true },
+        virtual_text = false,
+    })
+end
+
+--- Helper function to open definition in a split (vertical if space allows)
+function M.goto_split_definition()
+    if vim.o.lines > 100 then
+        vim.cmd.split()
+    else
+        vim.cmd.vsplit()
+    end
+    vim.lsp.buf.definition()
+    vim.cmd("norm zz")
+end
+
+function M.goto_tab_definition()
+    vim.cmd.wincmd("T")
+    vim.lsp.buf.definition()
+    vim.cmd("norm zz")
+end
+
 return M

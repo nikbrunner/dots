@@ -1,7 +1,5 @@
 local Severity = vim.diagnostic.severity
 
-vim.lsp.inline_completion.enable()
-
 vim.diagnostic.config({
     underline = false,
     virtual_text = true,
@@ -41,5 +39,46 @@ vim.api.nvim_create_autocmd({ "BufReadPre", "BufNewFile" }, {
             end)
             :totable()
         vim.lsp.enable(server_configs)
+    end,
+})
+
+vim.api.nvim_create_autocmd("LspAttach", {
+    group = vim.api.nvim_create_augroup("UserLspConfig", {}),
+    callback = function(ev)
+        local lib = require("lib.lsp")
+        -- Enable completion triggered by <c-x><c-o>
+        vim.bo[ev.buf].omnifunc = "v:lua.vim.lsp.omnifunc"
+
+        -- Enable native inline completion
+        vim.lsp.inline_completion.enable()
+
+        -- LSP Diagnostics
+        vim.keymap.set("n", "sp", function()
+            lib.set_diagnostic_virtual_lines()
+
+            vim.api.nvim_create_autocmd("CursorMoved", {
+                group = vim.api.nvim_create_augroup("symbol-problems", {}),
+                desc = "User(once): Reset diagnostics virtual lines",
+                once = true,
+                callback = function()
+                    lib.set_diagnostic_virtual_text()
+                    return true
+                end,
+            })
+        end, { buffer = ev.buf, desc = "[P]roblems (Inline)" })
+
+        vim.keymap.set("n", "si", vim.lsp.buf.hover, { buffer = ev.buf, desc = "[I]nfo" })
+        vim.keymap.set("i", "<C-k>", vim.lsp.buf.signature_help, { buffer = ev.buf, desc = "Signature Help" })
+        vim.keymap.set("n", "sa", vim.lsp.buf.code_action, { buffer = ev.buf, desc = "[A]ction" })
+        vim.keymap.set("n", "sn", vim.lsp.buf.rename, { buffer = ev.buf, desc = "Re[n]ame" })
+
+        vim.keymap.set("n", "sV", lib.goto_split_definition, { buffer = ev.buf, desc = "[D]efinition in Split" })
+        vim.keymap.set("n", "sT", lib.goto_tab_definition, { buffer = ev.buf, desc = "[D]efinition in Tab" })
+
+        vim.keymap.set("i", "<Tab>", function()
+            if not vim.lsp.inline_completion.get() then
+                return "<Tab>"
+            end
+        end, { expr = true, desc = "Accept the current inline completion" })
     end,
 })

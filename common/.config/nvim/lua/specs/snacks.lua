@@ -205,6 +205,7 @@ function M.keys()
                 vim.notify("No PR found for branch: " .. current_branch, vim.log.levels.WARN)
             end
         end, desc = "[P]R" },
+        { "<leader><leader>",    function() Snacks.picker.smart() end, desc = "[D]ocument" },
         { "<leader>wd",          function() Snacks.picker.smart() end, desc = "[D]ocument" },
         { "<leader>wr",          function() Snacks.picker.recent({ filter = { cwd = true }}) end, desc = "[R]ecent Documents" },
         { "<leader>wt",          function() Snacks.picker.grep() end, desc = "[T]ext" },
