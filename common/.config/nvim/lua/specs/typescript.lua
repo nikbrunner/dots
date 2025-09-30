@@ -7,7 +7,7 @@ return {
             use_trouble_qflist = true,
         },
         keys = {
-            { "<leader>wp", "<cmd>TSC<CR>", desc = "[P]roblems" },
+            { "<leader>wP", "<cmd>TSC<CR>", desc = "[P]roblems" },
         },
     },
     {

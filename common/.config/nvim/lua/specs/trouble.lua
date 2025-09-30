@@ -55,7 +55,7 @@ M.spec = {
     },
     keys = {
         { "<leader>dp", "<cmd>Trouble diagnostics toggle  filter.buf=0<cr>", desc = "[P]roblems" },
-        -- { "<leader>wP", "<cmd>Trouble diagnostics toggle<cr>", desc = "[P]roblems" }, -- Handled via ./typescript.lua
+        { "<leader>wp", "<cmd>Trouble diagnostics toggle<cr>", desc = "[P]roblems" }, -- Handled via ./typescript.lua
         { "sR", "<cmd>Trouble lsp_references<cr>", desc = "[R]eferences" },
         { "sci", "<cmd>Trouble lsp_incoming_calls<cr>", desc = "[I]ncoming" },
         { "sco", "<cmd>Trouble lsp_outgoing_calls<cr>", desc = "[O]utgoing" },
