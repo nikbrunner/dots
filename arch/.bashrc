@@ -114,16 +114,15 @@ alias gbra='git_branch_switch -a'
 myip=$(ip route get 1.1.1.1 2>/dev/null | grep -oP 'src \K\S+' || echo "Not connected")
 
 # NVM ===================================================================
-set -h  # Re-enable hashing (omarchy disables it with set +h)
+set -h # Re-enable hashing (omarchy disables it with set +h)
 export NVM_DIR="$HOME/.config/nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"                   # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" # This loads nvm bash_completion
 
 # Initialize tools =======================================================
 # Zoxide
 eval "$(zoxide init bash)"
 
 # Atuin
-[ -f "$HOME/.atuin/bin/env" ] && . "$HOME/.atuin/bin/env"
-eval "$(atuin init bash)"
-
+# [ -f "$HOME/.atuin/bin/env" ] && . "$HOME/.atuin/bin/env"
+# eval "$(atuin init bash)"
