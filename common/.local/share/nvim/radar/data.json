@@ -78,6 +78,9 @@
           "label": "3"
         }
       ]
+    },
+    "manual-manifest-system": {
+      "locks": [{ "label": "1", "filename": "symlinks.yml" }]
     }
   }
 }
