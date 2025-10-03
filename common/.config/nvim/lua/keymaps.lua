@@ -211,3 +211,12 @@ vim.keymap.set("i", "<M-t>", function()
     local date = tostring(os.date("## [[%Y.%m.%d - %A]]"))
     vim.api.nvim_put({ date }, "c", true, true)
 end, { desc = "Insert current date" })
+
+-- German Umlauts in insert mode
+vim.keymap.set("i", "<M-a>", "ä", { desc = "Insert ä" })
+vim.keymap.set("i", "<M-A>", "Ä", { desc = "Insert Ä" })
+vim.keymap.set("i", "<M-o>", "ö", { desc = "Insert ö" })
+vim.keymap.set("i", "<M-O>", "Ö", { desc = "Insert Ö" })
+vim.keymap.set("i", "<M-u>", "ü", { desc = "Insert ü" })
+vim.keymap.set("i", "<M-U>", "Ü", { desc = "Insert Ü" })
+vim.keymap.set("i", "<M-s>", "ß", { desc = "Insert ß" })
