@@ -1,5 +1,3 @@
---- Delay: https://github.com/Saghen/blink.cmp/issues/619
-
 ---@doc https://cmp.saghen.dev/
 ---@type LazyPluginSpec
 return {
@@ -68,6 +66,7 @@ return {
             menu = {
                 border = "solid",
                 winblend = 10,
+                auto_show_delay_ms = 500,
                 draw = {
                     columns = {
                         { "kind_icon", gap = 1 },
