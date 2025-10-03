@@ -14,6 +14,27 @@
       "locks": [{ "filename": "src/routes/account/password.tsx", "label": "1" }]
     }
   },
+  "~/repos/nikbrunner/dots": {
+    "manual-manifest-system": {
+      "locks": [{ "filename": "symlinks.yml", "label": "1" }]
+    },
+    "main": {
+      "locks": [
+        { "filename": "common/.config/nvim/lua/specs/mini.lua", "label": "1" }
+      ]
+    }
+  },
+  "~/repos/dealercenter-digital/bc-desktop-tools": {
+    "product-content-shimano-cues-2025": {
+      "locks": [
+        {
+          "filename": "product-content-shimano-cues-2025/cta.json",
+          "label": "1"
+        },
+        { "filename": "product-content-example/meta.json", "label": "2" }
+      ]
+    }
+  },
   "~/repos/dealercenter-digital/bc-desktop-client": {
     "master": {
       "locks": [
@@ -28,45 +49,16 @@
       ]
     }
   },
-  "~/repos/nikbrunner/dots": {
-    "main": {
-      "locks": [
-        { "filename": "common/.config/nvim/lua/specs/mini.lua", "label": "1" }
-      ]
-    },
-    "manual-manifest-system": {
-      "locks": [{ "filename": "symlinks.yml", "label": "1" }]
-    }
-  },
   "~/repos/nikbrunner/dcd-notes": {
     "main": {
       "locks": [{ "filename": "Log/2025/2025.09.19 - Friday.md", "label": "1" }]
     }
   },
-  "~/repos/dealercenter-digital/bc-web-client-poc": {
-    "bcd-8461-add-storybook": {
-      "locks": [
-        {
-          "filename": "frontend/src/components/Collapsible.stories.tsx",
-          "label": "1"
-        }
-      ]
-    }
-  },
   "~/repos/black-atom-industries/radar.nvim": {
-    "main": { "locks": [{ "filename": "lua/radar/config.lua", "label": "1" }] },
-    "cleanup": { "locks": [{ "filename": "lua/radar/init.lua", "label": "1" }] }
-  },
-  "~/repos/dealercenter-digital/bc-desktop-tools": {
-    "product-content-shimano-cues-2025": {
-      "locks": [
-        {
-          "filename": "product-content-shimano-cues-2025/cta.json",
-          "label": "1"
-        },
-        { "filename": "product-content-example/meta.json", "label": "2" }
-      ]
-    }
+    "cleanup": {
+      "locks": [{ "filename": "lua/radar/init.lua", "label": "1" }]
+    },
+    "main": { "locks": [] }
   },
   "~/repos/dealercenter-digital/bc-web-client-poc/frontend/src/components/FormElement": {
     "bcd-8461-add-storybook": {
@@ -80,7 +72,17 @@
       ]
     },
     "manual-manifest-system": {
-      "locks": [{ "label": "1", "filename": "symlinks.yml" }]
+      "locks": [{ "filename": "symlinks.yml", "label": "1" }]
+    }
+  },
+  "~/repos/dealercenter-digital/bc-web-client-poc": {
+    "bcd-8461-add-storybook": {
+      "locks": [
+        {
+          "filename": "frontend/src/components/Collapsible.stories.tsx",
+          "label": "1"
+        }
+      ]
     }
   }
 }
