@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+
+# For each directory, execute a command
+# Usage: ford <command> [args...]
+
+if [[ $# -eq 0 ]]; then
+    echo "Usage: ford <command> [args...]"
+    echo "Executes the given command in each subdirectory of the current path"
+    exit 1
+fi
+
+# Find all directories (excluding hidden directories and common ignore patterns)
+for dir in */; do
+    # Remove trailing slash
+    dir="${dir%/}"
+
+    # Skip if not a directory
+    [[ ! -d "$dir" ]] && continue
+
+    echo "📂 Running command in $dir"
+
+    if ! (cd "$dir" && "$@"); then
+        echo "❌ Command failed (exit code: $?)"
+    fi
+    echo "--------------------------------------------------------------------------------"
+done
