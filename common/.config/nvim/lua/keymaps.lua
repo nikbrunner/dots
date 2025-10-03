@@ -160,7 +160,7 @@ M.map("n", "<leader>dl", "<cmd>e #<cr>", { desc = "[L]ast document" })
 -- Terminal Mode
 -- =============================================================================
 
-M.map("t", "<Esc>", "<C-\\><C-n>", { desc = "Exit Terminal" })
+M.map("t", "<Esc>", "<C-\\><C-n>", { desc = "Exit Terminal Mode" })
 
 -- =============================================================================
 -- Plugin & Tool Integrations
