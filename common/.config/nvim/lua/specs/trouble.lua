@@ -1,24 +1,13 @@
 ---@diagnostic disable: missing-fields
-local M = {}
-
 ---@type LazyPluginSpec
-M.spec = {
-    -- https://github.com/folke/trouble.nvim/pull/656
-    "h-michael/trouble.nvim",
+return {
+    "folke/trouble.nvim",
     event = "LspAttach",
-    branch = "fix/decoration-provider-api",
     ---@type trouble.Config
     opts = {
         focus = true,
         auto_close = true,
         indent_guides = false,
-
-        ---@type trouble.Window.opts
-        win = {
-            size = { height = 0.25 },
-            border = "solid",
-            title = "Trouble",
-        },
 
         ---@type table<string, trouble.Mode>
         modes = {
@@ -27,6 +16,7 @@ M.spec = {
                 win = {
                     type = "split",
                     position = "right",
+                    size = { width = 0.33 },
                 },
             },
 
@@ -87,5 +77,3 @@ M.spec = {
         },
     },
 }
-
-return M.spec
