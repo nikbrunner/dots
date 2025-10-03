@@ -219,15 +219,10 @@ function M.keys()
         -- Document
         { "<leader>dg",          function() Snacks.lazygit.log_file() end, desc = "[G]it" },
         { "<leader>dt",          function() Snacks.picker.lines() end, desc = "[T]ext" },
-        -- { "<leader>dp",          function() Snacks.picker.diagnostics_buffer() end, desc = "[P]roblems" },
-        { "<leader>ds",          function() Snacks.picker.lsp_symbols() end, desc = "[S]ymbols" },
+        -- { "<leader>ds",          function() Snacks.picker.lsp_symbols() end, desc = "[S]ymbols" },
         { "<leader>du",          function() Snacks.picker.undo() end, desc = "[U]ndo" },
         { "<leader>da",          M.find_associated_files, desc = "[A]ssociated Documents" },
 
-        -- Symbol
-        { "sd",                  function() Snacks.picker.lsp_definitions() end, desc = "[D]efintions" },
-        { "sr",                  function() Snacks.picker.lsp_references() end, desc = "[R]eferences" },
-        { "st",                  function() Snacks.picker.lsp_type_definitions() end, desc = "[T]ype Definitions" },
         { "sg",                  function() Snacks.git.blame_line() end, desc = "[G]it" },
     }
     -- stylua: ignore end

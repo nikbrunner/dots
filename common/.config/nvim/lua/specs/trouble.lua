@@ -1,3 +1,4 @@
+---@diagnostic disable: missing-fields
 local M = {}
 
 ---@type LazyPluginSpec
@@ -10,43 +11,32 @@ M.spec = {
     opts = {
         focus = true,
         auto_close = true,
-        follow = false, -- Follow the current item
+        indent_guides = false,
+
         ---@type trouble.Window.opts
         win = {
-            -- type = "float",
-            -- position = { 0.85, 0.5 },
             size = { height = 0.25 },
-            padding = { top = 1, left = 4 },
             border = "solid",
-            title = "",
+            title = "Trouble",
         },
+
         ---@type table<string, trouble.Mode>
         modes = {
-            diagnostics = {},
-            lsp = {
-                pinned = true,
-            },
-            symbols = {
-                focus = true,
+            lsp_document_symbols = {
                 ---@type trouble.Window.opts
                 win = {
-                    type = "float",
-                    position = { 0.85, 0.65 },
-                    size = { width = 0.35, height = 0.5 },
-                    padding = { top = 1, left = 4 },
-                    border = "solid",
-                    title = "",
+                    type = "split",
+                    position = "right",
                 },
             },
+
             lsp_defnitions = {
-                focus = true,
                 auto_jump = true, -- auto jump to the item when there's only one
                 auto_close = true,
             },
 
             lsp_references = {
-                focus = true,
-                auto_refresh = false, -- auto refresh when open
+                auto_refresh = true, -- auto refresh when open
                 params = {
                     include_declaration = false,
                 },
@@ -55,8 +45,14 @@ M.spec = {
     },
     keys = {
         { "<leader>dp", "<cmd>Trouble diagnostics toggle  filter.buf=0<cr>", desc = "[P]roblems" },
-        { "<leader>wp", "<cmd>Trouble diagnostics toggle<cr>", desc = "[P]roblems" }, -- Handled via ./typescript.lua
-        { "sR", "<cmd>Trouble lsp_references<cr>", desc = "[R]eferences" },
+        { "<leader>wp", "<cmd>Trouble diagnostics toggle<cr>", desc = "[P]roblems" },
+
+        { "sd", "<cmd>Trouble lsp_definitions<cr>", desc = "[R]eferences" },
+        { "st", "<cmd>Trouble lsp_type_definitions<cr>", desc = "[R]eferences" },
+        { "sr", "<cmd>Trouble lsp_references<cr>", desc = "[R]eferences" },
+
+        { "ds", "<cmd>Trouble lsp_document_symbols<cr>", desc = "[R]eferences" },
+
         { "sci", "<cmd>Trouble lsp_incoming_calls<cr>", desc = "[I]ncoming" },
         { "sco", "<cmd>Trouble lsp_outgoing_calls<cr>", desc = "[O]utgoing" },
         {
