@@ -9,34 +9,31 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +507 lua/specs/mini.lua
+badd +326 lua/specs/mini.lua
 badd +1 oil:///home/nbr/repos/nikbrunner/dots/common/.config/nvim/
-badd +34 lua/specs/trouble.lua
-badd +122 lua/options.lua
-badd +10 lua/specs/oil.lua
+badd +13 lua/specs/trouble.lua
+badd +150 lua/options.lua
+badd +34 lua/specs/oil.lua
+badd +197 lua/specs/snacks.lua
+badd +74 lua/specs/dropbar.lua
+badd +20 ~/.local/share/nvim/lazy/dropbar.nvim/lua/dropbar/api.lua
+badd +130 lua/specs/treesitter.lua
+badd +1 lua/specs/gitpad.lua
+badd +59 lua/lsp-config.lua
+badd +1 lua/specs
+badd +34 lua/specs/oklch.lua
+badd +29 ~/repos/nikbrunner/dots/common/.config/nvim/lua/lib/git.lua
+badd +20 ~/repos/nikbrunner/dots/common/.config/nvim/sessions/_home_nbr_repos_nikbrunner_dots_common_.config_nvim_main
+badd +0 lua/autocmd.lua
 argglobal
 %argdel
 $argadd oil:///home/nbr/repos/nikbrunner/dots/common/.config/nvim/
-edit lua/specs/mini.lua
-let s:save_splitbelow = &splitbelow
-let s:save_splitright = &splitright
-set splitbelow splitright
-wincmd _ | wincmd |
-vsplit
-1wincmd h
-wincmd w
-let &splitbelow = s:save_splitbelow
-let &splitright = s:save_splitright
-wincmd t
-let s:save_winminheight = &winminheight
-let s:save_winminwidth = &winminwidth
-set winminheight=0
-set winheight=1
-set winminwidth=0
-set winwidth=1
-wincmd =
+set stal=2
+tabnew +setlocal\ bufhidden=wipe
+tabrewind
+edit lua/specs/oklch.lua
 argglobal
-balt lua/specs/trouble.lua
+balt ~/repos/nikbrunner/dots/common/.config/nvim/lua/lib/git.lua
 setlocal keymap=
 setlocal noarabic
 setlocal autoindent
@@ -146,31 +143,15 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-9
-sil! normal! zo
-10
-sil! normal! zo
-355
-sil! normal! zo
-358
-sil! normal! zo
-396
-sil! normal! zo
-502
-sil! normal! zo
-let s:l = 507 - ((37 * winheight(0) + 24) / 49)
+let s:l = 36 - ((28 * winheight(0) + 16) / 32)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 507
-normal! 09|
-wincmd w
+keepjumps 36
+normal! 0
+tabnext
+edit lua/autocmd.lua
 argglobal
-if bufexists(fnamemodify("lua/specs/oil.lua", ":p")) | buffer lua/specs/oil.lua | else | edit lua/specs/oil.lua | endif
-if &buftype ==# 'terminal'
-  silent file lua/specs/oil.lua
-endif
-balt lua/specs/mini.lua
 setlocal keymap=
 setlocal noarabic
 setlocal autoindent
@@ -211,7 +192,7 @@ setlocal foldcolumn=0
 setlocal foldenable
 setlocal foldexpr=v:lua.vim.treesitter.foldexpr()
 setlocal foldignore=#
-setlocal foldlevel=99
+setlocal foldlevel=0
 setlocal foldmarker={{{,}}}
 setlocal foldmethod=indent
 setlocal foldminlines=1
@@ -280,25 +261,20 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-3
-sil! normal! zo
-let s:l = 10 - ((9 * winheight(0) + 24) / 49)
+let s:l = 121 - ((83 * winheight(0) + 16) / 32)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 10
-normal! 020|
-wincmd w
-wincmd =
-tabnext 1
+keepjumps 121
+normal! 02|
+tabnext 2
+set stal=1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
 endif
 unlet! s:wipebuf
 set winheight=1 winwidth=20
 let &shortmess = s:shortmess_save
-let &winminheight = s:save_winminheight
-let &winminwidth = s:save_winminwidth
 let s:sx = expand("<sfile>:p:r")."x.vim"
 if filereadable(s:sx)
   exe "source " . fnameescape(s:sx)
