@@ -429,6 +429,27 @@ function M.sessions()
         autowrite = true,
         directory = vim.fn.stdpath("config") .. "/sessions/",
         verbose = { read = true, write = true, delete = true },
+        hooks = {
+            pre = {
+                write = function()
+                    -- Delete buffers for non-existent files before writing session
+                    vim.iter(vim.api.nvim_list_bufs())
+                        :filter(function(bufnr)
+                            return vim.api.nvim_buf_is_valid(bufnr)
+                        end)
+                        :filter(function(bufnr)
+                            local bufPath = vim.api.nvim_buf_get_name(bufnr)
+                            local doesNotExist = vim.uv.fs_stat(bufPath) == nil
+                            local notSpecialBuffer = vim.bo[bufnr].buftype == ""
+                            local notNewBuffer = bufPath ~= ""
+                            return doesNotExist and notSpecialBuffer and notNewBuffer
+                        end)
+                        :each(function(bufnr)
+                            vim.api.nvim_buf_delete(bufnr, { force = true })
+                        end)
+                end,
+            },
+        },
     })
 
     vim.keymap.set("n", "<leader>ss", function()
