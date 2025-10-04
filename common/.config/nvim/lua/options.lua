@@ -64,45 +64,7 @@ vim.opt.cmdheight = 0
 vim.opt.pumheight = 30
 vim.opt.pumblend = 10
 
-function _G.get_winbar()
-    local filepath = vim.fn.expand("%:.")
-    if filepath == "" then
-        filepath = "[No Name]"
-    end
-
-    -- Get treesitter node at cursor
-    local ok, node = pcall(vim.treesitter.get_node)
-    if not ok or not node then
-        return filepath
-    end
-
-    local breadcrumbs = {}
-
-    -- Walk up the tree collecting named nodes
-    while node do
-        for child in node:iter_children() do
-            local child_type = child:type()
-            -- Look for name/identifier nodes
-            if child_type == "name" or child_type == "identifier" or child_type:match("_name$") then
-                local name = vim.treesitter.get_node_text(child, 0)
-                if name and name ~= "" then
-                    table.insert(breadcrumbs, 1, name)
-                    break
-                end
-            end
-        end
-
-        node = node:parent()
-    end
-
-    if #breadcrumbs > 0 then
-        return filepath .. " > " .. table.concat(breadcrumbs, " > ")
-    end
-
-    return filepath
-end
-
-vim.opt.winbar = "%{v:lua.get_winbar()}"
+vim.opt.winbar = "%!v:lua.require('lib.winbar').render()"
 
 vim.opt.showmode = false
 vim.opt.laststatus = 3
@@ -164,35 +126,4 @@ vim.api.nvim_create_autocmd("TermOpen", {
 --     },
 -- })
 
-function _G.my_tabline()
-    local current_tab = vim.fn.tabpagenr()
-    local current_win = vim.fn.tabpagewinnr(current_tab)
-    local parts = { "%#TabLine# " .. current_tab .. ":" .. vim.fn.tabpagenr("$") .. " %#TabLineFill#   " }
-
-    for i, bufnr in ipairs(vim.fn.tabpagebuflist(current_tab)) do
-        local bufname = vim.fn.bufname(bufnr)
-        local buftype = vim.fn.getbufvar(bufnr, "&buftype")
-        local filetype = vim.fn.getbufvar(bufnr, "&filetype")
-
-        -- Only include normal files, unnamed buffers, or help files
-        if buftype == "" or filetype == "help" then
-            -- Highlight and separator
-            local hl = i == current_win and "%#TabLineSel#" or "%#TabLine#"
-            table.insert(parts, " " .. hl .. " ")
-
-            -- Get filename
-            local filename = bufname ~= "" and vim.fn.fnamemodify(bufname, ":p:.") or "[No Name]"
-            if bufname ~= "" and string.match(filename, "^/") then
-                filename = vim.fn.fnamemodify(bufname, ":t")
-            end
-
-            -- Add modified indicator
-            local modified = vim.fn.getbufvar(bufnr, "&modified") == 1 and "●" or ""
-            table.insert(parts, filename .. modified .. " ")
-        end
-    end
-
-    return table.concat(parts) .. "%#TabLineFill#"
-end
-
-vim.o.tabline = "%!v:lua.my_tabline()"
+vim.o.tabline = "%!v:lua.require('lib.tabline').render()"
