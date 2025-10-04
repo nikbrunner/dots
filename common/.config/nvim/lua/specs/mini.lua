@@ -8,15 +8,15 @@ local M = {}
 M.win_config = {
     left_buf_corner = function()
         local height = math.floor(0.25 * vim.o.lines)
-        local width = math.floor(0.35 * vim.o.columns)
+        local width = math.floor(0.25 * vim.o.columns)
 
         return {
             relative = "win",
             height = height,
             border = "solid",
             width = width,
-            row = math.floor(vim.o.lines - 5),
-            col = 10,
+            row = math.floor(vim.o.lines - 3),
+            col = 7,
         }
     end,
     cursor = function()
@@ -222,12 +222,51 @@ function M.pick()
         })
     end
 
-    vim.keymap.set("n", "<leader>wd", MiniPick.registry.frecency, { desc = "Pick file" })
-    vim.keymap.set("n", "<leader><leader>", MiniPick.registry.frecency, { desc = "Pick file" })
-    -- vim.keymap.set("n", "<leader>ahp", "<cmd>Pick help<CR>", { desc = "[P]ages" })
-    vim.keymap.set("n", "<leader>ds", function()
-        require("mini.extra").pickers.lsp({ scope = "document_symbol" })
-    end, { desc = "[S]ymbols" })
+    local MiniExtra = require("mini.extra")
+    local map = vim.keymap.set
+
+    -- stylua: ignore start
+    -- General pickers
+    map("n", "<leader>.",           function() MiniPick.builtin.resume() end, { desc = "Resume Picker" })
+    map("n", "<leader>;",           function() MiniExtra.pickers.commands() end, { desc = "Commands" })
+    map("n", "<leader>:",           function() MiniExtra.pickers.history({ scope = ":" }) end, { desc = "Command History" })
+    map("n", "<leader>'",           function() MiniExtra.pickers.registers() end, { desc = "Registers" })
+
+    -- App
+    map("n", "<leader>wd",          MiniPick.registry.frecency, { desc = "[D]ocument" })
+    map("n", "<leader><leader>",    MiniPick.registry.frecency, { desc = "Pick file" })
+    map("n", "<leader>aa",          function() MiniExtra.pickers.commands() end, { desc = "[A]ctions" })
+    map("n", "<leader>as",          function() MiniPick.builtin.files(nil, { source = { cwd = vim.fn.expand("$HOME") .. "/repos/nikbrunner/dots" }}) end, { desc = "[S]ettings" })
+    map("n", "<leader>ar",          function() MiniExtra.pickers.oldfiles() end, { desc = "[R]ecent Documents (Anywhere)" })
+    map("n", "<leader>ak",          function() MiniExtra.pickers.keymaps() end, { desc = "[K]eymaps" })
+    map("n", "<leader>aj",          function() MiniExtra.pickers.list({ scope = "jump" }) end, { desc = "[J]umps" })
+    map("n", "<leader>ahp",         function() MiniPick.builtin.help() end, { desc = "[P]ages" })
+    map("n", "<leader>ahh",         function() MiniExtra.pickers.hl_groups() end, { desc = "[H]ightlights" })
+
+    -- NOTE: No direct equivalent in MiniPick
+    -- map("n", "<leader>aw",       function() Snacks.picker.projects() end, { desc = "[W]orkspace" })
+    -- map("n", "<leader>aW",       function() Snacks.picker.zoxide() end, { desc = "[W]orkspace (Zoxide)" })
+    -- map("n", "<leader>ad",       M.file_surfer, { desc = "[D]ocument" })
+    -- map("n", "<leader>at",       function() Snacks.picker.colorschemes() end, { desc = "[T]hemes" })
+    -- map("n", "<leader>ahm",      function() Snacks.picker.man() end, { desc = "[M]anuals" })
+
+    -- Workspace
+    map("n", "<leader>wgb",         function() MiniExtra.pickers.git_branches() end, { desc = "[B]ranches" })
+    map("n", "<leader>wr",          function() MiniExtra.pickers.oldfiles({ current_dir = true }) end, { desc = "[R]ecent Documents" })
+    map("n", "<leader>wt",          function() MiniPick.builtin.grep_live() end, { desc = "[T]ext" })
+    map("n", "<leader>ww",          function() MiniPick.builtin.grep({ pattern = vim.fn.expand("<cword>") }) end, { desc = "[W]ord" })
+    map("n", "<leader>wm",          function() MiniExtra.pickers.git_files({ scope = "modified" }) end, { desc = "[M]odified Documents" })
+    map("n", "<leader>wc",          function() MiniExtra.pickers.git_hunks() end, { desc = "[C]hanges" })
+    map("n", "<leader>ws",          function() MiniExtra.pickers.lsp({ scope = "workspace_symbol" }) end, { desc = "[S]ymbols" })
+
+    -- Document
+    map("n", "<leader>dt",          function() MiniExtra.pickers.buf_lines({ scope = "current" }) end, { desc = "[T]ext" })
+    map("n", "<leader>ds",          function() MiniExtra.pickers.lsp({ scope = "document_symbol" }) end, { desc = "[S]ymbols" })
+
+    -- NOTE: No direct equivalent in MiniPick (requires custom implementation)
+    -- map("n", "<leader>da",       M.find_associated_files, { desc = "[A]ssociated Documents" })
+    -- map("n", "<leader>du",       function() Snacks.picker.undo() end, { desc = "[U]ndo" })
+    -- stylua: ignore end
 end
 
 function M.extra()
@@ -465,7 +504,7 @@ return {
     lazy = false,
     config = function()
         M.pick()
-        -- Mini.files()
+        M.files()
         M.visits()
         M.extra()
         M.ai()
