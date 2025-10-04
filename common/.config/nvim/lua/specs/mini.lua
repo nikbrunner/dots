@@ -2,10 +2,10 @@
 --- https://github.com/JulesNP/nvim/blob/main/lua/plugins/mini.lua
 --- https://github.com/SylvanFranklin/.config/blob/main/nvim/init.lua
 
-local Mini = {}
+local M = {}
 
 -- https://github.com/echasnovski/mini.nvim/blob/2e38ed16c2ced64bcd576986ccad4b18e2006e18/doc/mini-pick.txt#L650-L660
-Mini.win_config = {
+M.win_config = {
     left_buf_corner = function()
         local height = math.floor(0.25 * vim.o.lines)
         local width = math.floor(0.35 * vim.o.columns)
@@ -29,7 +29,7 @@ Mini.win_config = {
     end,
 }
 
-function Mini.files()
+function M.files()
     local MiniFiles = require("mini.files")
 
     MiniFiles.setup({
@@ -146,7 +146,7 @@ function Mini.files()
     -- stylua: ignore end
 end
 
-function Mini.pick()
+function M.pick()
     local MiniPick = require("mini.pick")
     local MiniFuzzy = require("mini.fuzzy")
     local MiniVisits = require("mini.visits")
@@ -159,7 +159,7 @@ function Mini.pick()
             scroll_up = "<C-u>",
         },
         window = {
-            config = Mini.win_config.left_buf_corner,
+            config = M.win_config.left_buf_corner,
             prompt_caret = "█",
             prompt_prefix = "  ",
         },
@@ -222,27 +222,28 @@ function Mini.pick()
         })
     end
 
-    -- vim.keymap.set("n", "<leader>wd", MiniPick.registry.frecency, { desc = "Pick file" })
+    vim.keymap.set("n", "<leader>wd", MiniPick.registry.frecency, { desc = "Pick file" })
+    vim.keymap.set("n", "<leader><leader>", MiniPick.registry.frecency, { desc = "Pick file" })
     -- vim.keymap.set("n", "<leader>ahp", "<cmd>Pick help<CR>", { desc = "[P]ages" })
-    -- vim.keymap.set("n", "<leader>ds", function()
-    --     require("mini.extra").pickers.lsp({ scope = "document_symbol" })
-    -- end, { desc = "[S]ymbols" })
+    vim.keymap.set("n", "<leader>ds", function()
+        require("mini.extra").pickers.lsp({ scope = "document_symbol" })
+    end, { desc = "[S]ymbols" })
 end
 
-function Mini.extra()
+function M.extra()
     require("mini.extra").setup()
 end
 
-function Mini.visits()
+function M.visits()
     require("mini.visits").setup()
 end
 
-function Mini.ai()
+function M.ai()
     require("mini.ai").setup()
 end
 
 -- TODO: Clean up
-function Mini.statusline()
+function M.statusline()
     require("mini.statusline").setup({
         content = {
             active = function()
@@ -281,7 +282,7 @@ function Mini.statusline()
     })
 end
 
-function Mini.icons()
+function M.icons()
     require("mini.icons").setup({
         file = {
             [".eslintrc.js"] = { glyph = "󰱺", hl = "MiniIconsYellow" },
@@ -297,7 +298,7 @@ function Mini.icons()
     })
 end
 
-function Mini.surround()
+function M.surround()
     require("mini.surround").setup({
         mappings = {
             add = "Sa", -- Add surrounding in Normal and Visual modes
@@ -311,7 +312,7 @@ function Mini.surround()
     })
 end
 
-function Mini.clue()
+function M.clue()
     local MiniClue = require("mini.clue")
 
     MiniClue.setup({
@@ -349,6 +350,8 @@ function Mini.clue()
             { mode = "n", keys = "<Leader>w", desc = "[W]orkspace" },
             { mode = "n", keys = "<Leader>d", desc = "[D]ocument" },
             { mode = "n", keys = "<Leader>c", desc = "[C]ange" },
+            { mode = "n", keys = "<Leader>s", desc = "[S]ession" },
+            { mode = "n", keys = "<Leader>r", desc = "[R]equest" },
         },
         window = {
             config = {
@@ -359,8 +362,100 @@ function Mini.clue()
     })
 end
 
-function Mini.test()
+function M.test()
     require("mini.test").setup()
+end
+
+function M.get_session_name()
+    local name = string.gsub(vim.fn.getcwd(), "/", "_")
+    local branch = vim.trim(vim.fn.system("git branch --show-current"))
+    branch = string.gsub(branch, "/", "_") -- Add this line
+
+    if vim.v.shell_error == 0 and branch ~= "" then
+        return name .. "_" .. branch
+    else
+        return name
+    end
+end
+
+-- Directories that should auto-create sessions
+M.auto_create_session_dirs = {
+    vim.fn.expand("~/repos/"),
+}
+
+-- https://github.com/nvim-mini/mini.nvim/issues/987
+function M.sessions()
+    require("mini.sessions").setup({
+        -- Auto Load handled manually
+        autowrite = true,
+        directory = vim.fn.stdpath("config") .. "/sessions/",
+        verbose = { read = true, write = true, delete = true },
+    })
+
+    vim.keymap.set("n", "<leader>ss", function()
+        require("mini.sessions").write(M.get_session_name())
+    end, { desc = "[S]ave" })
+
+    vim.keymap.set("n", "<leader>sl", function()
+        require("mini.sessions").select("read")
+    end, { desc = "[L]ist" })
+
+    vim.keymap.set("n", "<leader>sd", function()
+        require("mini.sessions").select("delete", { force = true })
+    end, { desc = "[D]elete" })
+
+    -- no args, or if the only arg is the current directory
+    if vim.fn.argc(-1) == 0 then
+        -- Auto-load existing session on VimEnter event
+        vim.api.nvim_create_autocmd({ "VimEnter" }, {
+            nested = true,
+            callback = function()
+                local MS = require("mini.sessions")
+                local session_name = M.get_session_name()
+
+                if MS.detected[session_name] then
+                    MS.read(session_name)
+                end
+            end,
+        })
+
+        -- Auto-switch sessions on TermLeave event (like closing the lazygit terminal)
+        -- Currently this reacts to all term leave events, and not only when the snacks lazygit terminal closes
+        vim.api.nvim_create_autocmd({ "TermLeave", "VimResume" }, {
+            callback = function()
+                local MS = require("mini.sessions")
+                local session_name = M.get_session_name()
+
+                -- Load existing session or create new one
+                if MS.detected[session_name] then
+                    MS.read(session_name)
+                end
+            end,
+        })
+
+        -- Auto-create session on VimEnter for specified directories
+        vim.api.nvim_create_autocmd({ "VimLeave" }, {
+            callback = function()
+                local MS = require("mini.sessions")
+                local session_name = M.get_session_name()
+                local cwd = vim.fn.getcwd()
+
+                -- Check if cwd is in any of the auto_create_session_dirs
+                local should_auto_create = false
+                for _, dir in ipairs(M.auto_create_session_dirs) do
+                    if vim.startswith(cwd, dir) then
+                        should_auto_create = true
+                        break
+                    end
+                end
+
+                -- Only create if in specified dir and session doesn't exist
+                if should_auto_create and not MS.detected[session_name] then
+                    MS.write(session_name)
+                end
+            end,
+        })
+    end
 end
 
 ---@type LazyPluginSpec
@@ -369,15 +464,16 @@ return {
     version = "*",
     lazy = false,
     config = function()
-        -- Mini.pick()
+        M.pick()
         -- Mini.files()
-        -- Mini.visits()
-        -- Mini.extra()
-        Mini.ai()
-        Mini.statusline()
-        Mini.icons()
-        Mini.surround()
-        Mini.clue()
-        Mini.test()
+        M.visits()
+        M.extra()
+        M.ai()
+        M.statusline()
+        M.icons()
+        M.surround()
+        M.clue()
+        M.test()
+        M.sessions()
     end,
 }

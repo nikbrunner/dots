@@ -9,6 +9,8 @@ vim.opt.clipboard = "unnamedplus"
 
 vim.opt.spelllang = "en_us,de_de"
 
+vim.o.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions"
+
 vim.opt.cursorline = true
 vim.opt.cursorcolumn = false
 
