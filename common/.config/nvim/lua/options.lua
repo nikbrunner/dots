@@ -64,7 +64,45 @@ vim.opt.cmdheight = 0
 vim.opt.pumheight = 30
 vim.opt.pumblend = 10
 
-vim.opt.winbar = "%f"
+function _G.get_winbar()
+    local filepath = vim.fn.expand("%:.")
+    if filepath == "" then
+        filepath = "[No Name]"
+    end
+
+    -- Get treesitter node at cursor
+    local ok, node = pcall(vim.treesitter.get_node)
+    if not ok or not node then
+        return filepath
+    end
+
+    local breadcrumbs = {}
+
+    -- Walk up the tree collecting named nodes
+    while node do
+        for child in node:iter_children() do
+            local child_type = child:type()
+            -- Look for name/identifier nodes
+            if child_type == "name" or child_type == "identifier" or child_type:match("_name$") then
+                local name = vim.treesitter.get_node_text(child, 0)
+                if name and name ~= "" then
+                    table.insert(breadcrumbs, 1, name)
+                    break
+                end
+            end
+        end
+
+        node = node:parent()
+    end
+
+    if #breadcrumbs > 0 then
+        return filepath .. " > " .. table.concat(breadcrumbs, " > ")
+    end
+
+    return filepath
+end
+
+vim.opt.winbar = "%{v:lua.get_winbar()}"
 
 vim.opt.showmode = false
 vim.opt.laststatus = 3
