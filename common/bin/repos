@@ -7,11 +7,12 @@ REPOS_BASE_PATH="${REPOS_BASE_PATH:-$HOME/repos}"
 ENSURE_CLONED=(
     # Add repositories here, examples:
     # "git@github.com:username/repo.git"
-    # "https://github.com/username/repo.git"
     # "git@github.com:organization/*"  # Clone all repos from organization
+
     "git@github.com:nikbrunner/dots"
     "git@github.com:nikbrunner/notes"
     "git@github.com:nikbrunner/dcd-notes"
+    "git@github.com:nikbrunner/koyo"
     "git@github.com:black-atom-industries/*"
 )
 
