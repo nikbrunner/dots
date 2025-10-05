@@ -9,11 +9,11 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +42 frontend/src/routes/collections.\$slug.tsx
+badd +24 frontend/src/api/account/mutationFns.ts
 argglobal
 %argdel
 $argadd ./
-edit frontend/src/routes/collections.\$slug.tsx
+edit frontend/src/api/account/mutationFns.ts
 argglobal
 setlocal keymap=
 setlocal noarabic
@@ -46,8 +46,8 @@ setlocal cursorlineopt=both
 setlocal nodiff
 setlocal eventignorewin=
 setlocal expandtab
-if &filetype != 'typescriptreact'
-setlocal filetype=typescriptreact
+if &filetype != 'typescript'
+setlocal filetype=typescript
 endif
 setlocal fixendofline
 setlocal foldcolumn=0
@@ -69,7 +69,7 @@ setlocal includeexpr=
 setlocal indentexpr=GetTypescriptIndent()
 setlocal indentkeys=0{,0},0),0],0,,!^F,o,O,e
 setlocal noinfercase
-setlocal iskeyword=@,48-57,_,192-255,#,$
+setlocal iskeyword=@,48-57,_,192-255
 setlocal lhistory=10
 setlocal nolinebreak
 setlocal nolisp
@@ -91,22 +91,22 @@ setlocal norightleft
 setlocal rightleftcmd=search
 setlocal scrollback=-1
 setlocal noscrollbind
-setlocal shiftwidth=4
+setlocal shiftwidth=2
 setlocal signcolumn=yes
 setlocal nosmartindent
 setlocal nosmoothscroll
-setlocal softtabstop=4
+setlocal softtabstop=-1
 setlocal nospell
 setlocal spellcapcheck=[.?!]\\_[\\])'\"\\t\ ]\\+
 setlocal spellfile=
 setlocal spelllang=en_us,de_de
-setlocal spelloptions=
+setlocal spelloptions=noplainbuffer
 setlocal statuscolumn=%!v:lua.require'snacks.statuscolumn'.get()
 setlocal suffixesadd=.ts,.d.ts,.tsx,.js,.jsx,.cjs,.mjs
 setlocal noswapfile
 setlocal synmaxcol=3000
-if &syntax != 'typescriptreact'
-setlocal syntax=typescriptreact
+if &syntax != ''
+setlocal syntax=
 endif
 setlocal tabstop=4
 setlocal tagfunc=v:lua.vim.lsp.tagfunc
@@ -121,14 +121,14 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-35
+23
 sil! normal! zo
-let s:l = 42 - ((31 * winheight(0) + 19) / 38)
+let s:l = 24 - ((18 * winheight(0) + 17) / 35)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 42
-normal! 03|
+keepjumps 24
+normal! 0
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
