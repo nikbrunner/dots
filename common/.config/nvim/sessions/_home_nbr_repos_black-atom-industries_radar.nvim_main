@@ -9,8 +9,8 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +92 lua/radar/config.lua
-badd +6 lua/radar/api.lua
+badd +1 lua/radar/config.lua
+badd +9 lua/radar/api.lua
 argglobal
 %argdel
 edit lua/radar/config.lua
@@ -30,8 +30,8 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe 'vert 1resize ' . ((&columns * 111 + 111) / 223)
-exe 'vert 2resize ' . ((&columns * 111 + 111) / 223)
+exe 'vert 1resize ' . ((&columns * 122 + 122) / 244)
+exe 'vert 2resize ' . ((&columns * 121 + 122) / 244)
 argglobal
 setlocal keymap=
 setlocal noarabic
@@ -148,11 +148,11 @@ sil! normal! zo
 sil! normal! zo
 39
 sil! normal! zo
-let s:l = 92 - ((29 * winheight(0) + 16) / 32)
+let s:l = 94 - ((34 * winheight(0) + 17) / 35)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 92
+keepjumps 94
 normal! 0
 wincmd w
 argglobal
@@ -270,15 +270,16 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 4 - ((3 * winheight(0) + 16) / 32)
+let s:l = 9 - ((8 * winheight(0) + 17) / 35)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 4
+keepjumps 9
 normal! 010|
 wincmd w
-exe 'vert 1resize ' . ((&columns * 111 + 111) / 223)
-exe 'vert 2resize ' . ((&columns * 111 + 111) / 223)
+2wincmd w
+exe 'vert 1resize ' . ((&columns * 122 + 122) / 244)
+exe 'vert 2resize ' . ((&columns * 121 + 122) / 244)
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
