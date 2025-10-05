@@ -9,9 +9,9 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +25 ~/repos/black-atom-industries/core/src/themes/terra/black-atom-terra-fall-night.ts
-badd +96 ~/repos/black-atom-industries/core/src/themes/terra/syntax_dark.ts
-badd +37 src/themes/terra/ui_dark.ts
+badd +34 ~/repos/black-atom-industries/core/src/themes/terra/black-atom-terra-fall-night.ts
+badd +92 ~/repos/black-atom-industries/core/src/themes/terra/syntax_dark.ts
+badd +14 src/themes/terra/ui_dark.ts
 argglobal
 %argdel
 edit ~/repos/black-atom-industries/core/src/themes/terra/black-atom-terra-fall-night.ts
@@ -34,9 +34,9 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe 'vert 1resize ' . ((&columns * 86 + 129) / 258)
-exe 'vert 2resize ' . ((&columns * 85 + 129) / 258)
-exe 'vert 3resize ' . ((&columns * 85 + 129) / 258)
+exe 'vert 1resize ' . ((&columns * 74 + 111) / 223)
+exe 'vert 2resize ' . ((&columns * 74 + 111) / 223)
+exe 'vert 3resize ' . ((&columns * 73 + 111) / 223)
 argglobal
 balt ~/repos/black-atom-industries/core/src/themes/terra/syntax_dark.ts
 setlocal keymap=
@@ -145,12 +145,12 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 25 - ((18 * winheight(0) + 19) / 39)
+let s:l = 36 - ((26 * winheight(0) + 16) / 32)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 25
-normal! 014|
+keepjumps 36
+normal! 0
 wincmd w
 argglobal
 if bufexists(fnamemodify("~/repos/black-atom-industries/core/src/themes/terra/syntax_dark.ts", ":p")) | buffer ~/repos/black-atom-industries/core/src/themes/terra/syntax_dark.ts | else | edit ~/repos/black-atom-industries/core/src/themes/terra/syntax_dark.ts | endif
@@ -257,7 +257,6 @@ setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%{%v:lua.dropbar()%}
 setlocal winblend=0
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -271,11 +270,11 @@ sil! normal! zo
 sil! normal! zo
 73
 sil! normal! zo
-let s:l = 93 - ((29 * winheight(0) + 19) / 38)
+let s:l = 92 - ((23 * winheight(0) + 16) / 32)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 93
+keepjumps 92
 normal! 010|
 wincmd w
 argglobal
@@ -383,7 +382,6 @@ setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%{%v:lua.dropbar()%}
 setlocal winblend=0
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -395,16 +393,16 @@ setlocal wrapmargin=0
 sil! normal! zo
 5
 sil! normal! zo
-let s:l = 14 - ((10 * winheight(0) + 19) / 38)
+let s:l = 20 - ((14 * winheight(0) + 16) / 32)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 14
-normal! 032|
+keepjumps 20
+normal! 031|
 wincmd w
-exe 'vert 1resize ' . ((&columns * 86 + 129) / 258)
-exe 'vert 2resize ' . ((&columns * 85 + 129) / 258)
-exe 'vert 3resize ' . ((&columns * 85 + 129) / 258)
+exe 'vert 1resize ' . ((&columns * 74 + 111) / 223)
+exe 'vert 2resize ' . ((&columns * 74 + 111) / 223)
+exe 'vert 3resize ' . ((&columns * 73 + 111) / 223)
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf

@@ -3,19 +3,18 @@ let s:so_save = &g:so | let s:siso_save = &g:siso | setg so=0 siso=0 | setl so=-
 let v:this_session=expand("<sfile>:p")
 silent only
 silent tabonly
-cd ~/repos/black-atom-industries/radar.nvim
+cd ~/repos/black-atom-industries/nvim
 if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +92 lua/radar/config.lua
-badd +15 lua/radar/collision.lua
-badd +43 lua/radar/autocmd.lua
-badd +6 lua/radar/api.lua
+badd +198 lua/black-atom/themes/terra/black-atom-terra-fall-night.lua
+badd +3 black-atom-adapter.json
 argglobal
 %argdel
-edit lua/radar/config.lua
+$argadd ./
+edit lua/black-atom/themes/terra/black-atom-terra-fall-night.lua
 let s:save_splitbelow = &splitbelow
 let s:save_splitright = &splitright
 set splitbelow splitright
@@ -35,6 +34,7 @@ set winwidth=1
 exe 'vert 1resize ' . ((&columns * 111 + 111) / 223)
 exe 'vert 2resize ' . ((&columns * 111 + 111) / 223)
 argglobal
+balt black-atom-adapter.json
 setlocal keymap=
 setlocal noarabic
 setlocal autoindent
@@ -114,7 +114,7 @@ setlocal norightleft
 setlocal rightleftcmd=search
 setlocal scrollback=-1
 setlocal noscrollbind
-setlocal shiftwidth=2
+setlocal shiftwidth=4
 setlocal signcolumn=yes
 setlocal smartindent
 setlocal nosmoothscroll
@@ -133,7 +133,7 @@ setlocal syntax=
 endif
 setlocal tabstop=4
 setlocal tagfunc=v:lua.vim.lsp.tagfunc
-setlocal textwidth=0
+setlocal textwidth=120
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
@@ -144,25 +144,19 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-9
-sil! normal! zo
-37
-sil! normal! zo
-39
-sil! normal! zo
-let s:l = 92 - ((29 * winheight(0) + 16) / 32)
+let s:l = 198 - ((22 * winheight(0) + 16) / 32)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 92
+keepjumps 198
 normal! 0
 wincmd w
 argglobal
-if bufexists(fnamemodify("lua/radar/api.lua", ":p")) | buffer lua/radar/api.lua | else | edit lua/radar/api.lua | endif
+if bufexists(fnamemodify("black-atom-adapter.json", ":p")) | buffer black-atom-adapter.json | else | edit black-atom-adapter.json | endif
 if &buftype ==# 'terminal'
-  silent file lua/radar/api.lua
+  silent file black-atom-adapter.json
 endif
-balt lua/radar/autocmd.lua
+balt lua/black-atom/themes/terra/black-atom-terra-fall-night.lua
 setlocal keymap=
 setlocal noarabic
 setlocal autoindent
@@ -179,8 +173,8 @@ setlocal cinoptions=
 setlocal cinscopedecls=public,protected,private
 setlocal cinwords=if,else,while,do,for,switch
 setlocal colorcolumn=
-setlocal comments=:---,:--
-setlocal commentstring=--\ %s
+setlocal comments=
+setlocal commentstring=
 setlocal complete=.,w,b,u,t
 setlocal completefunc=
 setlocal completeslash=
@@ -191,12 +185,11 @@ setlocal nocursorbind
 setlocal nocursorcolumn
 setlocal cursorline
 setlocal cursorlineopt=both
-setlocal define=\\<function\\|\\<local\\%(\\s\\+function\\)\\=
 setlocal nodiff
 setlocal eventignorewin=
 setlocal expandtab
-if &filetype != 'lua'
-setlocal filetype=lua
+if &filetype != 'json'
+setlocal filetype=json
 endif
 setlocal fixendofline
 setlocal foldcolumn=0
@@ -211,13 +204,12 @@ setlocal foldnestmax=20
 setlocal foldtext=
 setlocal formatexpr=v:lua.require'conform'.formatexpr()
 setlocal formatlistpat=^\\s*\\d\\+[\\]:.)}\\t\ ]\\s*
-setlocal formatoptions=jcroql
+setlocal formatoptions=cqj
 setlocal iminsert=0
 setlocal imsearch=-1
-setlocal include=\\<\\%(\\%(do\\|load\\)file\\|require\\)\\s*(
-setlocal includeexpr=v:lua.require'vim._ftplugin.lua'.includeexpr(v:fname)
+setlocal includeexpr=
 setlocal indentexpr=nvim_treesitter#indent()
-setlocal indentkeys=0{,0},0),0],:,0#,!^F,o,O,e,0=end,0=until
+setlocal indentkeys=0{,0},0),0[,0],!^F,o,O,e
 setlocal noinfercase
 setlocal iskeyword=@,48-57,_,192-255
 setlocal lhistory=10
@@ -232,7 +224,6 @@ setlocal nrformats=bin,hex
 setlocal number
 setlocal numberwidth=4
 setlocal omnifunc=v:lua.vim.lsp.omnifunc
-setlocal path=,
 setlocal nopreserveindent
 setlocal nopreviewwindow
 setlocal quoteescape=\\
@@ -242,9 +233,9 @@ setlocal norightleft
 setlocal rightleftcmd=search
 setlocal scrollback=-1
 setlocal noscrollbind
-setlocal shiftwidth=2
+setlocal shiftwidth=4
 setlocal signcolumn=yes
-setlocal smartindent
+setlocal nosmartindent
 setlocal nosmoothscroll
 setlocal softtabstop=-1
 setlocal nospell
@@ -253,15 +244,15 @@ setlocal spellfile=
 setlocal spelllang=en_us,de_de
 setlocal spelloptions=noplainbuffer
 setlocal statuscolumn=%!v:lua.require'snacks.statuscolumn'.get()
-setlocal suffixesadd=.lua
+setlocal suffixesadd=
 setlocal noswapfile
 setlocal synmaxcol=3000
 if &syntax != ''
 setlocal syntax=
 endif
 setlocal tabstop=4
-setlocal tagfunc=v:lua.vim.lsp.tagfunc
-setlocal textwidth=0
+setlocal tagfunc=
+setlocal textwidth=120
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
@@ -272,12 +263,12 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 4 - ((3 * winheight(0) + 16) / 32)
+let s:l = 3 - ((2 * winheight(0) + 16) / 32)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 4
-normal! 010|
+keepjumps 3
+normal! 0
 wincmd w
 exe 'vert 1resize ' . ((&columns * 111 + 111) / 223)
 exe 'vert 2resize ' . ((&columns * 111 + 111) / 223)
