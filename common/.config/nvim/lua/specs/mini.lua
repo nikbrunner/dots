@@ -15,7 +15,7 @@ M.win_config = {
 
         local width
         if window_width >= 165 then
-            width = math.floor(0.4 * vim.o.columns)
+            width = math.floor(0.5 * vim.o.columns)
         else
             width = window_width - border_width
         end
