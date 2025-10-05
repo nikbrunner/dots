@@ -10,8 +10,6 @@ endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
 badd +92 lua/radar/config.lua
-badd +15 lua/radar/collision.lua
-badd +43 lua/radar/autocmd.lua
 badd +6 lua/radar/api.lua
 argglobal
 %argdel
@@ -162,7 +160,6 @@ if bufexists(fnamemodify("lua/radar/api.lua", ":p")) | buffer lua/radar/api.lua 
 if &buftype ==# 'terminal'
   silent file lua/radar/api.lua
 endif
-balt lua/radar/autocmd.lua
 setlocal keymap=
 setlocal noarabic
 setlocal autoindent
