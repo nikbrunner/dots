@@ -1,11 +1,22 @@
 #!/usr/bin/env bash
 
 # For each directory, execute a command
-# Usage: ford <command> [args...]
+# Usage: ford [--exclude dir1,dir2,...] <command> [args...]
+
+EXCLUDE_DIRS=()
+
+# Parse exclude flag
+if [[ "$1" == "--exclude" ]]; then
+    IFS=',' read -ra EXCLUDE_DIRS <<< "$2"
+    shift 2
+fi
 
 if [[ $# -eq 0 ]]; then
-    echo "Usage: ford <command> [args...]"
+    echo "Usage: ford [--exclude dir1,dir2,...] <command> [args...]"
     echo "Executes the given command in each subdirectory of the current path"
+    echo ""
+    echo "Options:"
+    echo "  --exclude  Comma-separated list of directories to skip"
     exit 1
 fi
 
@@ -16,6 +27,16 @@ for dir in */; do
 
     # Skip if not a directory
     [[ ! -d "$dir" ]] && continue
+
+    # Skip if in exclude list
+    skip=false
+    for exclude in "${EXCLUDE_DIRS[@]}"; do
+        if [[ "$dir" == "$exclude" ]]; then
+            skip=true
+            break
+        fi
+    done
+    [[ "$skip" == true ]] && continue
 
     echo "📂 Running command in $dir"
 
