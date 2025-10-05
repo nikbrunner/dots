@@ -21,7 +21,7 @@ return {
             function()
                 require("oklch-color-picker").pick_under_cursor()
             end,
-            desc = "Color pick under cursor",
+            desc = "[C]olor picker",
         },
     },
     ---@type oklch.Opts

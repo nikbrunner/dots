@@ -136,7 +136,7 @@ for i = 1, 9 do
         else
             vim.cmd(i .. "tabnext")
         end
-    end, { desc = WhichKeyIgnoreLabel }) -- Assuming WhichKeyIgnoreLabel is defined elsewhere
+    end, { desc = "Tab: " .. i }) -- Assuming WhichKeyIgnoreLabel is defined elsewhere
 end
 
 -- Resize splits using Shift + Arrow keys
@@ -212,11 +212,9 @@ vim.keymap.set("i", "<M-t>", function()
     vim.api.nvim_put({ date }, "c", true, true)
 end, { desc = "Insert current date" })
 
--- German Umlauts in insert mode
-vim.keymap.set("i", "<M-a>", "ä", { desc = "Insert ä" })
-vim.keymap.set("i", "<M-A>", "Ä", { desc = "Insert Ä" })
-vim.keymap.set("i", "<M-o>", "ö", { desc = "Insert ö" })
-vim.keymap.set("i", "<M-O>", "Ö", { desc = "Insert Ö" })
-vim.keymap.set("i", "<M-u>", "ü", { desc = "Insert ü" })
-vim.keymap.set("i", "<M-U>", "Ü", { desc = "Insert Ü" })
-vim.keymap.set("i", "<M-s>", "ß", { desc = "Insert ß" })
+vim.keymap.set("i", "<A-u>", "ü")
+vim.keymap.set("i", "<A-o>", "ö")
+vim.keymap.set("i", "<A-a>", "ä")
+vim.keymap.set("i", "<A-U>", "Ü")
+vim.keymap.set("i", "<A-O>", "Ö")
+vim.keymap.set("i", "<A-A>", "Ä")
