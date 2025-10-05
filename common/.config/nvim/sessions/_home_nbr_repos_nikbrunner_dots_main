@@ -3,18 +3,17 @@ let s:so_save = &g:so | let s:siso_save = &g:siso | setg so=0 siso=0 | setl so=-
 let v:this_session=expand("<sfile>:p")
 silent only
 silent tabonly
-cd ~/repos/black-atom-industries/radar.nvim
+cd ~/repos/nikbrunner/dots
 if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +74 lua/radar/config.lua
-badd +15 lua/radar/collision.lua
-badd +36 lua/radar/autocmd.lua
+badd +467 common/.config/nvim/lua/specs/mini.lua
+badd +15 common/bin/repos
 argglobal
 %argdel
-edit lua/radar/config.lua
+edit common/bin/repos
 let s:save_splitbelow = &splitbelow
 let s:save_splitright = &splitright
 set splitbelow splitright
@@ -34,6 +33,7 @@ set winwidth=1
 exe 'vert 1resize ' . ((&columns * 111 + 111) / 223)
 exe 'vert 2resize ' . ((&columns * 111 + 111) / 223)
 argglobal
+balt common/.config/nvim/lua/specs/mini.lua
 setlocal keymap=
 setlocal noarabic
 setlocal autoindent
@@ -50,8 +50,8 @@ setlocal cinoptions=
 setlocal cinscopedecls=public,protected,private
 setlocal cinwords=if,else,while,do,for,switch
 setlocal colorcolumn=
-setlocal comments=:---,:--
-setlocal commentstring=--\ %s
+setlocal comments=b:#
+setlocal commentstring=#\ %s
 setlocal complete=.,w,b,u,t
 setlocal completefunc=
 setlocal completeslash=
@@ -62,12 +62,12 @@ setlocal nocursorbind
 setlocal nocursorcolumn
 setlocal cursorline
 setlocal cursorlineopt=both
-setlocal define=\\<function\\|\\<local\\%(\\s\\+function\\)\\=
 setlocal nodiff
+setlocal errorformat=%f:%l:%c:\ %trror:\ %m\ [SC%n],%f:%l:%c:\ %tarning:\ %m\ [SC%n],%f:%l:%c:\ %tote:\ %m\ [SC%n],%-G%.%#
 setlocal eventignorewin=
 setlocal expandtab
-if &filetype != 'lua'
-setlocal filetype=lua
+if &filetype != 'sh'
+setlocal filetype=sh
 endif
 setlocal fixendofline
 setlocal foldcolumn=0
@@ -85,17 +85,18 @@ setlocal formatlistpat=^\\s*\\d\\+[\\]:.)}\\t\ ]\\s*
 setlocal formatoptions=jcroql
 setlocal iminsert=0
 setlocal imsearch=-1
-setlocal include=\\<\\%(\\%(do\\|load\\)file\\|require\\)\\s*(
-setlocal includeexpr=v:lua.require'vim._ftplugin.lua'.includeexpr(v:fname)
-setlocal indentexpr=nvim_treesitter#indent()
-setlocal indentkeys=0{,0},0),0],:,0#,!^F,o,O,e,0=end,0=until
+setlocal includeexpr=
+setlocal indentexpr=GetShIndent()
+setlocal indentkeys=0{,0},0),0],!^F,o,O,e,0=then,0=do,0=else,0=elif,0=fi,0=esac,0=done,0=end,),0=;;,0=;&,0=fin,0=fil,0=fip,0=fir,0=fix
 setlocal noinfercase
 setlocal iskeyword=@,48-57,_,192-255
+setlocal keywordprg=:ShKeywordPrg
 setlocal lhistory=10
 setlocal nolinebreak
 setlocal nolisp
 setlocal lispoptions=
 setlocal nolist
+setlocal makeprg=shellcheck\ -f\ gcc
 setlocal matchpairs=(:),{:},[:]
 setlocal modeline
 setlocal modifiable
@@ -103,7 +104,6 @@ setlocal nrformats=bin,hex
 setlocal number
 setlocal numberwidth=4
 setlocal omnifunc=v:lua.vim.lsp.omnifunc
-setlocal path=,
 setlocal nopreserveindent
 setlocal nopreviewwindow
 setlocal quoteescape=\\
@@ -113,9 +113,9 @@ setlocal norightleft
 setlocal rightleftcmd=search
 setlocal scrollback=-1
 setlocal noscrollbind
-setlocal shiftwidth=2
+setlocal shiftwidth=4
 setlocal signcolumn=yes
-setlocal smartindent
+setlocal nosmartindent
 setlocal nosmoothscroll
 setlocal softtabstop=-1
 setlocal nospell
@@ -124,7 +124,7 @@ setlocal spellfile=
 setlocal spelllang=en_us,de_de
 setlocal spelloptions=noplainbuffer
 setlocal statuscolumn=%!v:lua.require'snacks.statuscolumn'.get()
-setlocal suffixesadd=.lua
+setlocal suffixesadd=
 setlocal noswapfile
 setlocal synmaxcol=3000
 if &syntax != ''
@@ -143,19 +143,19 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 74 - ((28 * winheight(0) + 16) / 33)
+let s:l = 15 - ((14 * winheight(0) + 16) / 32)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 74
-normal! 0
+keepjumps 15
+normal! 05|
 wincmd w
 argglobal
-if bufexists(fnamemodify("lua/radar/autocmd.lua", ":p")) | buffer lua/radar/autocmd.lua | else | edit lua/radar/autocmd.lua | endif
+if bufexists(fnamemodify("common/.config/nvim/lua/specs/mini.lua", ":p")) | buffer common/.config/nvim/lua/specs/mini.lua | else | edit common/.config/nvim/lua/specs/mini.lua | endif
 if &buftype ==# 'terminal'
-  silent file lua/radar/autocmd.lua
+  silent file common/.config/nvim/lua/specs/mini.lua
 endif
-balt lua/radar/collision.lua
+balt common/bin/repos
 setlocal keymap=
 setlocal noarabic
 setlocal autoindent
@@ -196,7 +196,7 @@ setlocal foldcolumn=0
 setlocal foldenable
 setlocal foldexpr=v:lua.vim.treesitter.foldexpr()
 setlocal foldignore=#
-setlocal foldlevel=99
+setlocal foldlevel=0
 setlocal foldmarker={{{,}}}
 setlocal foldmethod=indent
 setlocal foldminlines=1
@@ -235,7 +235,7 @@ setlocal norightleft
 setlocal rightleftcmd=search
 setlocal scrollback=-1
 setlocal noscrollbind
-setlocal shiftwidth=2
+setlocal shiftwidth=4
 setlocal signcolumn=yes
 setlocal smartindent
 setlocal nosmoothscroll
@@ -265,17 +265,64 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-5
+150
 sil! normal! zo
-32
+427
 sil! normal! zo
-let s:l = 39 - ((26 * winheight(0) + 16) / 33)
+428
+sil! normal! zo
+433
+sil! normal! zo
+434
+sil! normal! zo
+435
+sil! normal! zo
+437
+sil! normal! zo
+438
+sil! normal! zo
+441
+sil! normal! zo
+448
+sil! normal! zo
+456
+sil! normal! zo
+460
+sil! normal! zo
+464
+sil! normal! zo
+469
+sil! normal! zo
+472
+sil! normal! zo
+474
+sil! normal! zo
+478
+sil! normal! zo
+486
+sil! normal! zo
+487
+sil! normal! zo
+492
+sil! normal! zo
+499
+sil! normal! zo
+500
+sil! normal! zo
+507
+sil! normal! zo
+508
+sil! normal! zo
+515
+sil! normal! zo
+let s:l = 472 - ((27 * winheight(0) + 16) / 32)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 39
-normal! 0
+keepjumps 472
+normal! 026|
 wincmd w
+2wincmd w
 exe 'vert 1resize ' . ((&columns * 111 + 111) / 223)
 exe 'vert 2resize ' . ((&columns * 111 + 111) / 223)
 tabnext 1

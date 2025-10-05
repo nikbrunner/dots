@@ -11,11 +11,15 @@ let s:shortmess_save = &shortmess
 set shortmess+=aoO
 badd +15 ~/repos/dealercenter-digital/bc-web-client-poc/frontend/src/components/cart/CartTotals.tsx
 badd +42 frontend/src/api/account/mutations.ts
-badd +101 frontend/src/api/account/mutationFns.ts
+badd +70 frontend/src/api/account/mutationFns.ts
+badd +1 ~/repos/dealercenter-digital/bc-web-client-poc/frontend/src/api/checkout
+badd +1 ~/repos/dealercenter-digital/bc-web-client-poc/frontend/src/api/collections
+badd +116 frontend/src/routes/collections.\$slug.tsx
 argglobal
 %argdel
-edit frontend/src/api/account/mutationFns.ts
+edit frontend/src/routes/collections.\$slug.tsx
 argglobal
+balt frontend/src/api/account/mutationFns.ts
 setlocal keymap=
 setlocal noarabic
 setlocal autoindent
@@ -47,8 +51,8 @@ setlocal cursorlineopt=both
 setlocal nodiff
 setlocal eventignorewin=
 setlocal expandtab
-if &filetype != 'typescript'
-setlocal filetype=typescript
+if &filetype != 'typescriptreact'
+setlocal filetype=typescriptreact
 endif
 setlocal fixendofline
 setlocal foldcolumn=0
@@ -115,7 +119,6 @@ setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%{%v:lua.dropbar()%}
 setlocal winblend=0
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -123,18 +126,24 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-23
+31
 sil! normal! zo
-24
+32
 sil! normal! zo
-25
+42
 sil! normal! zo
-let s:l = 103 - ((47 * winheight(0) + 24) / 49)
+49
+sil! normal! zo
+68
+sil! normal! zo
+71
+sil! normal! zo
+let s:l = 114 - ((25 * winheight(0) + 16) / 32)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 103
-normal! 04|
+keepjumps 114
+normal! 0
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
