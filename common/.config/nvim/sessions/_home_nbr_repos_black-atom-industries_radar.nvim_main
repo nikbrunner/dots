@@ -160,6 +160,7 @@ if bufexists(fnamemodify("lua/radar/api.lua", ":p")) | buffer lua/radar/api.lua 
 if &buftype ==# 'terminal'
   silent file lua/radar/api.lua
 endif
+balt lua/radar/config.lua
 setlocal keymap=
 setlocal noarabic
 setlocal autoindent

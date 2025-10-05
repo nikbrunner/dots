@@ -9,7 +9,7 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +443 lua/specs/mini.lua
+badd +149 lua/specs/mini.lua
 argglobal
 %argdel
 $argadd oil:///home/nbr/repos/nikbrunner/dots/common/.config/nvim/
@@ -124,18 +124,26 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-427
+43
+sil! normal! zo
+131
+sil! normal! zo
+133
 sil! normal! zo
 430
 sil! normal! zo
-431
+433
 sil! normal! zo
-let s:l = 441 - ((25 * winheight(0) + 16) / 32)
+434
+sil! normal! zo
+632
+sil! normal! zo
+let s:l = 149 - ((22 * winheight(0) + 17) / 35)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 441
-normal! 014|
+keepjumps 149
+normal! 0112|
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
