@@ -168,6 +168,7 @@ function M.keys()
         -- Workspace
         { "<leader>wgg",         function() Snacks.lazygit() end, desc = "[G]raph" },
         { "<leader>wgl",         function() Snacks.lazygit.log() end, desc = "[L]Log" },
+        { "<leader>wgr",         function() Snacks.gitbrowse() end, desc = "[R]emote" },
         { "<leader>wgp",         function()
             local current_branch = vim.fn.system("git branch --show-current"):gsub("%s+", "")
             if vim.v.shell_error ~= 0 then
