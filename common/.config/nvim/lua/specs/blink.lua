@@ -66,7 +66,7 @@ return {
             menu = {
                 border = "solid",
                 winblend = 10,
-                auto_show_delay_ms = 350,
+                auto_show_delay_ms = 250,
                 draw = {
                     columns = {
                         { "kind_icon", gap = 1 },
