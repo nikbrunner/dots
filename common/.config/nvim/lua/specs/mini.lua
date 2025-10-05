@@ -7,17 +7,26 @@ local M = {}
 -- https://github.com/echasnovski/mini.nvim/blob/2e38ed16c2ced64bcd576986ccad4b18e2006e18/doc/mini-pick.txt#L650-L660
 M.win_config = {
     left_buf_corner = function()
-        local height = math.floor(0.25 * vim.o.lines)
-        local current_window_width = "???"
-        local width = math.floor(0.45 * vim.o.columns)
+        local window_height = vim.api.nvim_win_get_height(0)
+        local height = math.floor(0.25 * window_height)
+
+        local window_width = vim.api.nvim_win_get_width(0)
+        local border_width = 2
+
+        local width
+        if window_width >= 165 then
+            width = math.floor(0.4 * vim.o.columns)
+        else
+            width = window_width - border_width
+        end
 
         return {
             relative = "win",
             height = height,
             border = "solid",
             width = width,
-            row = math.floor(vim.o.lines - 3),
-            col = 7,
+            row = math.floor(window_height - 1),
+            col = 0,
         }
     end,
     cursor = function()
