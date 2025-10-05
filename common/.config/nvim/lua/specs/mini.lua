@@ -285,7 +285,35 @@ function M.visits()
 end
 
 function M.ai()
-    require("mini.ai").setup()
+    local spec_treesitter = require("mini.ai").gen_spec.treesitter
+
+    require("mini.ai").setup({
+        custom_textobjects = {
+            -- Functions
+            f = spec_treesitter({ a = "@function.outer", i = "@function.inner" }),
+
+            -- Function calls
+            F = spec_treesitter({ a = "@call.outer", i = "@call.inner" }),
+
+            -- Arguments/parameters
+            a = spec_treesitter({ a = "@parameter.outer", i = "@parameter.inner" }),
+
+            -- Conditionals and loops
+            c = spec_treesitter({
+                a = { "@conditional.outer", "@loop.outer" },
+                i = { "@conditional.inner", "@loop.inner" },
+            }),
+        },
+        n_lines = 500, -- Increase search range
+    })
+
+    local map = vim.keymap.set
+    -- stylua: ignore start
+    map({ "n", "x", "o" }, "]f", function() require("mini.ai").move_cursor("left", "a", "f", { search_method = "next" }) end, { desc = "Next function start" })
+    map({ "n", "x", "o" }, "[f", function() require("mini.ai").move_cursor("left", "a", "f", { search_method = "prev" }) end, { desc = "Prev function start" })
+    map({ "n", "x", "o" }, "]F", function() require("mini.ai").move_cursor("right", "a", "f", { search_method = "next" }) end, { desc = "Next function end" })
+    map({ "n", "x", "o" }, "[F", function() require("mini.ai").move_cursor("right", "a", "f", { search_method = "prev" }) end, { desc = "Prev function end" })
+    -- stylua: ignore end
 end
 
 -- TODO: Clean up
@@ -374,6 +402,8 @@ function M.clue()
             { mode = "n", keys = "g" },
             { mode = "n", keys = "s" },
             { mode = "n", keys = "m" },
+            { mode = "n", keys = "c" },
+            { mode = "n", keys = "v" },
             { mode = "n", keys = "z" },
             { mode = "n", keys = '"' },
             { mode = "n", keys = " " },
@@ -629,6 +659,14 @@ function M.sessions()
     end
 end
 
+function M.git()
+    require("mini.git").setup()
+end
+
+function M.diff()
+    require("mini.diff").setup()
+end
+
 ---@type LazyPluginSpec
 return {
     "nvim-mini/mini.nvim",
@@ -647,5 +685,7 @@ return {
         M.clue()
         M.test()
         M.sessions()
+        M.git()
+        M.diff()
     end,
 }
