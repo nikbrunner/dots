@@ -30,19 +30,35 @@ vim.diagnostic.config({
 })
 
 -- Set up LSP servers.
+local function enable_lsp()
+    local server_configs = vim.iter(vim.api.nvim_get_runtime_file("lsp/*.lua", true))
+        :map(function(file)
+            return vim.fn.fnamemodify(file, ":t:r")
+        end)
+        :totable()
+    vim.lsp.enable(server_configs)
+end
+
+-- Normal startup: enable LSP on first buffer
 vim.api.nvim_create_autocmd({ "BufReadPre", "BufNewFile" }, {
     once = true,
     callback = function()
-        local server_configs = vim.iter(vim.api.nvim_get_runtime_file("lsp/*.lua", true))
-            :map(function(file)
-                return vim.fn.fnamemodify(file, ":t:r")
-            end)
-            :totable()
-        vim.lsp.enable(server_configs)
+        -- Skip if loading a session (vim sets g:SessionLoad during :source session.vim)
+        if vim.g.SessionLoad == 1 then
+            return
+        end
+        enable_lsp()
     end,
 })
 
+-- Session load: enable LSP after session finishes loading
+vim.api.nvim_create_autocmd("SessionLoadPost", {
+    once = true,
+    callback = enable_lsp,
+})
+
 vim.api.nvim_create_autocmd("LspAttach", {
+    nested = true,
     group = vim.api.nvim_create_augroup("UserLspConfig", {}),
     callback = function(ev)
         local lib = require("lib.lsp")

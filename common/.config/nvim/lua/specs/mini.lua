@@ -53,8 +53,16 @@ function M.files()
         },
 
         windows = {
+            -- Maximum number of windows to show side by side
+            max_number = 3,
+            -- Whether to show preview of file/directory under cursor
+            preview = true,
+            -- Width of focused window
             width_focus = 50,
-            width_nofocus = 50,
+            -- Width of non-focused window
+            width_nofocus = 25,
+            -- Width of preview window
+            width_preview = 65,
         },
     })
 
