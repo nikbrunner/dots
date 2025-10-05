@@ -1,2 +1,0 @@
-- https://www.reddit.com/r/neovim/comments/1nueuch/sidekicknvim_ai_cli_tools_and_copilots_next_edit/
-- https://github.com/stevearc/quicker.nvim
