@@ -464,8 +464,8 @@ function M.sessions()
         require("mini.sessions").select("delete", { force = true })
     end, { desc = "[D]elete" })
 
-    -- no args, or if the only arg is the current directory
-    if vim.fn.argc(-1) == 0 then
+    -- no args, or if the only arg is the current directory `nvim .`
+    if vim.fn.argc(-1) == 0 or (vim.fn.argc(-1) == 1 and vim.fn.argv(0) == ".") then
         -- Auto-load existing session on VimEnter event
         vim.api.nvim_create_autocmd({ "VimEnter" }, {
             nested = true,
