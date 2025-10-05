@@ -16,21 +16,14 @@ function M.map(mode, lhs, rhs, opts)
     vim.keymap.set(mode, lhs, rhs, opts)
 end
 
--- =============================================================================
--- Core Editor Behavior & Navigation
--- =============================================================================
-
 -- Disable Ex mode mapping
 M.map("n", "Q", "<nop>", { desc = "Disable Ex Mode" })
 
--- Disable suspend mapping
--- M.map("n", "s", "<nop>", { desc = "Disable Suspend" })
-
 -- Restart
-M.map("n", "R", function()
+M.map("n", "<leader>r", function()
     vim.cmd.wa({ bang = true })
     vim.cmd.restart()
-end, { desc = "Restart" })
+end, { desc = "[R]estart" })
 
 -- Escape clears search highlight, saves, hides notifier
 M.map("n", "<Esc>", function()
@@ -75,10 +68,6 @@ M.map("i", ",", ",<c-g>u", { desc = "Undo Comma" })
 M.map("i", ".", ".<c-g>u", { desc = "Undo Dot" })
 M.map("i", ";", ";<c-g>u", { desc = "Undo Semicolon" })
 
--- =============================================================================
--- Editing & Text Manipulation
--- =============================================================================
-
 -- Delete without yanking ("black hole register")
 M.map("n", "x", '"_x', { desc = "Delete without yanking" })
 
@@ -117,10 +106,6 @@ M.map({ "n", "v" }, "<leader>dyp", function()
     require("lib.copy").list_paths()
 end, { desc = "[P]ath" })
 
--- =============================================================================
--- Window, Tab, and Split Management
--- =============================================================================
-
 -- Navigate tabs
 M.map("n", "H", vim.cmd.tabprevious, { desc = "Previous Tab" })
 M.map("n", "L", vim.cmd.tabnext, { desc = "Next Tab" })
@@ -145,10 +130,6 @@ end
 -- M.map({ "n", "v", "x" }, "<S-Left>", "<cmd>vertical resize +5<cr>", { desc = "Resize Split Right" }) -- Note: Left arrow increases width to the right
 -- M.map({ "n", "v", "x" }, "<S-Right>", "<cmd>vertical resize -5<cr>", { desc = "Resize Split Left" }) -- Note: Right arrow decreases width from the right
 
--- =============================================================================
--- File & Session Management
--- =============================================================================
-
 -- Save and Quit
 M.map("n", "<C-s>", vim.cmd.wa, { desc = "Save" })
 M.map("n", "<C-q>", ":q!<CR>", { desc = "Quit" }) -- Force quit
@@ -156,15 +137,7 @@ M.map("n", "<C-q>", ":q!<CR>", { desc = "Quit" }) -- Force quit
 -- Open last edited file
 M.map("n", "<leader>dl", "<cmd>e #<cr>", { desc = "[L]ast document" })
 
--- =============================================================================
--- Terminal Mode
--- =============================================================================
-
 M.map("t", "<Esc>", "<C-\\><C-n>", { desc = "Exit Terminal Mode" })
-
--- =============================================================================
--- Plugin & Tool Integrations
--- =============================================================================
 
 -- Open current file in Zed editor at the current cursor position
 M.map("n", "<leader>z", function()
@@ -173,10 +146,7 @@ M.map("n", "<leader>z", function()
     local current_column = vim.fn.col(".")
 
     vim.cmd("silent !zed " .. current_file .. ":" .. current_line .. ":" .. current_column)
-end, { desc = "Open File in [Z]ed" })
-
--- Plugin management (Lazy)
-M.map("n", "<leader>ap", "<cmd>Lazy<CR>", { desc = "[P]lugins" })
+end, { desc = "[Z]ed" })
 
 -- Change directory to Git root
 M.map("n", "<leader>w.", function()
@@ -189,22 +159,13 @@ M.map("n", "<leader>w.", function()
     end
 end, { desc = "[.] Set Root" })
 
--- =============================================================================
--- LSP (Language Server Protocol) Related Mappings & Language Management
--- =============================================================================
-M.map("n", "<leader>als", "<cmd>Mason<CR>", { desc = "[S]ervers" })
-M.map("n", "<leader>alr", require("lib.lsp").restart, { desc = "[R]estart" })
+-- Plugins & Language Management
+M.map("n", "<leader>app", "<cmd>Lazy<CR>", { desc = "[P]lugins" })
+M.map("n", "<leader>als", "<cmd>Mason<CR>", { desc = "[S]erver" })
 M.map("n", "<leader>ali", require("lib.lsp").info, { desc = "[I]nfo" })
 M.map("n", "<leader>all", require("lib.lsp").open_log, { desc = "[L]og" })
 
--- Show cursor position and related info
-
 M.map("n", "sI", vim.show_pos, { desc = "[I]nspect Position" })
-
-vim.keymap.set("n", "<leader>t", function()
-    local date = tostring(os.date("## [[%Y.%m.%d - %A]]"))
-    vim.api.nvim_put({ date }, "l", true, true)
-end, { desc = "Insert current date" })
 
 -- For insert mode
 vim.keymap.set("i", "<M-t>", function()
@@ -212,6 +173,7 @@ vim.keymap.set("i", "<M-t>", function()
     vim.api.nvim_put({ date }, "c", true, true)
 end, { desc = "Insert current date" })
 
+-- German umlauts in insert mode
 vim.keymap.set("i", "<A-u>", "ü")
 vim.keymap.set("i", "<A-o>", "ö")
 vim.keymap.set("i", "<A-a>", "ä")

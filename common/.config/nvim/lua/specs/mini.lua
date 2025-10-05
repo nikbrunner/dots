@@ -154,7 +154,7 @@ function M.files()
             map("n", "6", function() setBranch("$HOME/repos/black-atom-industries/radar.nvim") end, { buffer = bufid, desc = "Black Atom - Radar" })
 
             map("n", "7", function() setBranch("$HOME/repos/dealercenter-digital/bc-desktop-client") end, { buffer = bufid, desc = "DCD Desktop Client" })
-            map("n", "8", function() setBranch("$HOME/repos/dealercenter-digital/bc-desktop-tools") end, { buffer = bufid, desc = "DCD Desktop Client" })
+            map("n", "8", function() setBranch("$HOME/repos/dealercenter-digital/bc-desktop-tools") end, { buffer = bufid, desc = "DCD Desktop Tools" })
             map("n", "9", function() setBranch("$HOME/repos/dealercenter-digital/bc-web-client-poc") end, { buffer = bufid, desc = "DCD Web Client" })
             -- stylua: ignore end
         end,
@@ -247,31 +247,21 @@ function M.pick()
     local map = vim.keymap.set
 
     -- stylua: ignore start
-    -- General pickers
+    map("n", "<leader><leader>",    MiniPick.registry.frecency, { desc = "Pick file" })
     map("n", "<leader>.",           function() MiniPick.builtin.resume() end, { desc = "Resume Picker" })
-    map("n", "<leader>;",           function() MiniExtra.pickers.commands() end, { desc = "Commands" })
-    map("n", "<leader>:",           function() MiniExtra.pickers.history({ scope = ":" }) end, { desc = "Command History" })
-    map("n", "<leader>'",           function() MiniExtra.pickers.registers() end, { desc = "Registers" })
 
     -- App
-    map("n", "<leader>wd",          MiniPick.registry.frecency, { desc = "[D]ocument" })
-    map("n", "<leader><leader>",    MiniPick.registry.frecency, { desc = "Pick file" })
+    map("n", "<leader>a'",           function() MiniExtra.pickers.registers() end, { desc = "Registers" })
     map("n", "<leader>aa",          function() MiniExtra.pickers.commands() end, { desc = "[A]ctions" })
-    map("n", "<leader>as",          function() MiniPick.builtin.files(nil, { source = { cwd = vim.fn.expand("$HOME") .. "/repos/nikbrunner/dots" }}) end, { desc = "[S]ettings" })
     map("n", "<leader>ar",          function() MiniExtra.pickers.oldfiles() end, { desc = "[R]ecent Documents (Anywhere)" })
     map("n", "<leader>ak",          function() MiniExtra.pickers.keymaps() end, { desc = "[K]eymaps" })
     map("n", "<leader>aj",          function() MiniExtra.pickers.list({ scope = "jump" }) end, { desc = "[J]umps" })
+    map("n", "<leader>asd",          function() MiniPick.builtin.files(nil, { source = { cwd = vim.fn.expand("$HOME") .. "/repos/nikbrunner/dots" }}) end, { desc = "[D]ocuments" })
     map("n", "<leader>ahp",         function() MiniPick.builtin.help() end, { desc = "[P]ages" })
     map("n", "<leader>ahh",         function() MiniExtra.pickers.hl_groups() end, { desc = "[H]ightlights" })
 
-    -- NOTE: No direct equivalent in MiniPick
-    -- map("n", "<leader>aw",       function() Snacks.picker.projects() end, { desc = "[W]orkspace" })
-    -- map("n", "<leader>aW",       function() Snacks.picker.zoxide() end, { desc = "[W]orkspace (Zoxide)" })
-    -- map("n", "<leader>ad",       M.file_surfer, { desc = "[D]ocument" })
-    -- map("n", "<leader>at",       function() Snacks.picker.colorschemes() end, { desc = "[T]hemes" })
-    -- map("n", "<leader>ahm",      function() Snacks.picker.man() end, { desc = "[M]anuals" })
-
     -- Workspace
+    map("n", "<leader>wd",           MiniPick.registry.frecency, { desc = "[D]ocument" })
     map("n", "<leader>wgb",         function() MiniExtra.pickers.git_branches() end, { desc = "[B]ranches" })
     map("n", "<leader>wr",          function() MiniExtra.pickers.oldfiles({ current_dir = true }) end, { desc = "[R]ecent Documents" })
     map("n", "<leader>wt",          function() MiniPick.builtin.grep_live() end, { desc = "[T]ext" })
@@ -283,10 +273,6 @@ function M.pick()
     -- Document
     map("n", "<leader>dt",          function() MiniExtra.pickers.buf_lines({ scope = "current" }) end, { desc = "[T]ext" })
     map("n", "<leader>ds",          function() MiniExtra.pickers.lsp({ scope = "document_symbol" }) end, { desc = "[S]ymbols" })
-
-    -- NOTE: No direct equivalent in MiniPick (requires custom implementation)
-    -- map("n", "<leader>da",       M.find_associated_files, { desc = "[A]ssociated Documents" })
-    -- map("n", "<leader>du",       function() Snacks.picker.undo() end, { desc = "[U]ndo" })
     -- stylua: ignore end
 end
 
@@ -381,7 +367,6 @@ function M.clue()
             { mode = "i", keys = "<C-r>" },
             { mode = "i", keys = "<C-x>" },
             { mode = "n", keys = "'" },
-            { mode = "n", keys = "<C-w>" },
             { mode = "n", keys = "<Leader>" },
             { mode = "n", keys = "[" },
             { mode = "n", keys = "]" },
@@ -406,18 +391,35 @@ function M.clue()
             MiniClue.gen_clues.registers(),
             MiniClue.gen_clues.windows(),
             MiniClue.gen_clues.z(),
-            { mode = "n", keys = "<Leader>a", desc = "[A]pp" },
-            { mode = "n", keys = "<Leader>w", desc = "[W]orkspace" },
-            { mode = "n", keys = "<Leader>d", desc = "[D]ocument" },
-            { mode = "n", keys = "<Leader>c", desc = "[C]ange" },
-            { mode = "n", keys = "<Leader>s", desc = "[S]ession" },
-            { mode = "n", keys = "<Leader>r", desc = "[R]equest" },
+            { mode = "n", keys = "<leader>a", desc = "[A]pp" },
+            { mode = "n", keys = "<leader>al", desc = "[L]anguages" },
+            { mode = "n", keys = "<leader>ah", desc = "[H]elp" },
+            { mode = "n", keys = "<leader>ap", desc = "[P]lugins" },
+            { mode = "n", keys = "<leader>as", desc = "[S]ettings" },
+            { mode = "n", keys = "<leader>ag", desc = "[G]it" },
+            { mode = "n", keys = "<leader>aso", desc = "[O]ptions" },
+
+            { mode = "n", keys = "<leader>w", desc = "[W]orkspace" },
+            { mode = "n", keys = "<leader>wg", desc = "[G]it" },
+
+            { mode = "n", keys = "<leader>d", desc = "[D]ocument" },
+            { mode = "n", keys = "<leader>dy", desc = "[Y]ank" },
+            { mode = "n", keys = "<leader>dg", desc = "[G]it" },
+
+            { mode = "n", keys = "sl", desc = "[L]og" },
+            { mode = "n", keys = "sc", desc = "[C]alls" },
+
+            { mode = "n", keys = "<leader>c", desc = "[C]ange" },
+
+            { mode = "n", keys = "<leader>s", desc = "[S]ession" },
+            { mode = "n", keys = "<leader>h", desc = "[H]ttp" },
+            { mode = "n", keys = "<leader>n", desc = "[N]otes" },
         },
         window = {
             config = {
-                width = math.floor(0.35 * vim.o.columns),
+                width = math.floor(0.25 * vim.o.columns),
             },
-            delay = 350,
+            delay = 0,
         },
     })
 end
@@ -491,11 +493,11 @@ function M.diff()
     end, { desc = "Git (Hunk)" })
 
     -- Buffer-level operations
-    map("n", "<leader>dvr", function()
+    map("n", "<leader>dgr", function()
         MiniDiff.do_hunks(0, "reset")
     end, { desc = "[R]evert changes" })
 
-    map("n", "<leader>dvs", function()
+    map("n", "<leader>dgs", function()
         MiniDiff.do_hunks(0, "apply")
     end, { desc = "[S]tage document" })
 end
@@ -536,8 +538,8 @@ function M.sessions()
                             local buftype = vim.bo[bufnr].buftype
                             local bufpath = vim.api.nvim_buf_get_name(bufnr)
 
-                            -- Delete if special buffer type (nofile, terminal, help, quickfix, etc.)
-                            if buftype ~= "" then
+                            -- Delete if special buffer type (but preserve help files)
+                            if buftype ~= "" and buftype ~= "help" then
                                 return true
                             end
 

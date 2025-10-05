@@ -155,41 +155,19 @@ end
 function M.keys()
     -- stylua: ignore start
     return {
-        -- Migrated to MiniPick
-        -- { "<leader>.",           function() Snacks.picker.resume() end, desc = "Resume Picker" },
-        -- { "<leader>;",           function() Snacks.picker.commands() end, desc = "Command History" },
-        -- { "<leader>:",           function() Snacks.picker.command_history() end, desc = "Command History" },
-        -- { "<leader>'",           function() Snacks.picker.registers() end, desc = "Registers" },
-        { "]]",                  function() Snacks.words.jump(vim.v.count1) end, desc = "Next Reference" },
-        { "[[",                  function() Snacks.words.jump(-vim.v.count1) end, desc = "Prev Reference" },
-        { "<F6>",                function() Snacks.dashboard.open() end, desc = "Dashboard" },
-
         -- App
         { "<leader>aw",          function() Snacks.picker.projects() end, desc = "[W]orkspace" },
         { "<leader>aW",          function() Snacks.picker.zoxide() end, desc = "[W]orkspace (Zoxide)" },
         { "<leader>ad",          M.file_surfer, desc = "[D]ocument" },
-        -- { "<leader>aa",          function() Snacks.picker.commands() end, desc = "[A]ctions" },
-        { "<leader>ag",          function() Snacks.lazygit() end, desc = "[G]it" },
-        -- { "<leader>as",          function() Snacks.picker.files({ cwd = vim.fn.expand("$HOME") .. "/repos/nikbrunner/dots" }) end, desc = "[S]ettings" },
         { "<leader>at",          function() Snacks.picker.colorschemes() end, desc = "[T]hemes" },
-        -- { "<leader>ar",          function() Snacks.picker.recent() end, desc = "[R]ecent Documents (Anywhere)" },
-
-        { "<leader>f",           function() Snacks.zen.zen() end, desc = "[F]ocus Mode" },
-        { "<leader>z",           function() Snacks.zen.zoom() end, desc = "[Z]oom Mode" },
-
+        { "<leader>ag",          function() Snacks.lazygit() end, desc = "[G]raph" },
+        { "<leader>af",          function() Snacks.zen.zen() end, desc = "[F]ocus Mode" },
+        { "<leader>az",          function() Snacks.zen.zoom() end, desc = "[Z]oom Mode" },
         { "<leader>an",          function() Snacks.notifier.show_history() end, desc = "[N]otifications" },
-        -- { "<leader>ak",          function() Snacks.picker.keymaps() end, desc = "[K]eymaps" },
-        -- { "<leader>aj",          function() Snacks.picker.jumps() end, desc = "[J]umps" },
-        -- { "<leader>ahp",         function() Snacks.picker.help() end, desc = "[P]ages" },
-        { "<leader>ahm",         function() Snacks.picker.man() end, desc = "[M]anuals" },
-        -- { "<leader>ahh",         function() Snacks.picker.highlights() end, desc = "[H]ightlights" },
-        { "<leader>aR",          function() Snacks.gitbrowse() end, desc = "Open in [R]emote" },
-        { "<leader>aN",          M.get_news, desc = "[N]ews",  },
 
         -- Workspace
         { "<leader>wgg",         function() Snacks.lazygit() end, desc = "[G]raph" },
         { "<leader>wgl",         function() Snacks.lazygit.log() end, desc = "[L]Log" },
-        -- { "<leader>wgb",         function() Snacks.picker.git_branches() end, desc = "[B]ranches" },
         { "<leader>wgp",         function()
             local current_branch = vim.fn.system("git branch --show-current"):gsub("%s+", "")
             if vim.v.shell_error ~= 0 then
@@ -206,21 +184,9 @@ function M.keys()
                 vim.notify("No PR found for branch: " .. current_branch, vim.log.levels.WARN)
             end
         end, desc = "[P]R" },
-        -- { "<leader><leader>",    function() Snacks.picker.smart() end, desc = "[D]ocument" },
-        -- { "<leader>wd",          function() Snacks.picker.smart() end, desc = "[D]ocument" },
-        -- { "<leader>wr",          function() Snacks.picker.recent({ filter = { cwd = true }}) end, desc = "[R]ecent Documents" },
-        -- { "<leader>wt",          function() Snacks.picker.grep() end, desc = "[T]ext" },
-        -- { "<leader>ww",          function() Snacks.picker.grep_word() end, desc = "[W]ord" },
-        -- { "<leader>wm",          function() Snacks.picker.git_status() end, desc = "[M]odified Documents" },
-        -- { "<leader>wc",          function() Snacks.picker.git_diff() end, desc = "[C]hanges" },
-        -- { "<leader>wp",          function() Snacks.picker.diagnostics() end, desc = "[P]roblems" },
-        -- { "<leader>ws",          function() Snacks.picker.lsp_workspace_symbols() end, desc = "[S]ymbols" },
 
-        -- TODO: <leader>dc [D]ocument [C]hanges -- git_diff but scope on current file
         -- Document
-        { "<leader>dg",          function() Snacks.lazygit.log_file() end, desc = "[G]it" },
-        -- { "<leader>dt",          function() Snacks.picker.lines() end, desc = "[T]ext" },
-        -- { "<leader>ds",          function() Snacks.picker.lsp_symbols() end, desc = "[S]ymbols" },
+        { "<leader>dgg",          function() Snacks.lazygit.log_file() end, desc = "[G]raph" },
         { "<leader>du",          function() Snacks.picker.undo() end, desc = "[U]ndo" },
         { "<leader>da",          M.find_associated_files, desc = "[A]ssociated Documents" },
 
@@ -634,16 +600,14 @@ return {
             pattern = "VeryLazy",
             callback = function()
                 -- stylua: ignore start
-                -- Snacks.toggle.dim():map("<leader>amd")
-                Snacks.toggle.line_number():map("<leader>aol")
-                Snacks.toggle.inlay_hints():map("<leader>aoh")
-                -- Snacks.toggle.diagnostics():map("<leader>aoD")
-                Snacks.toggle.treesitter():map("<leader>aoT")
-                Snacks.toggle.option("relativenumber", { name = "Relative Number" }):map("<leader>aoL")
-                Snacks.toggle.option("conceallevel", { off = 0, on = vim.o.conceallevel > 1 and vim.o.conceallevel or 3 }):map("<leader>aoc")
-                Snacks.toggle.option("background", { off = "light", on = "dark", name = "Dark Background" }):map("<leader>aob")
-                Snacks.toggle.option("spell", { name = "Spelling" }):map("<leader>aos")
-                Snacks.toggle.option("wrap", { name = "Wrap" }):map("<leader>aow")
+                Snacks.toggle.line_number():map("<leader>asol")
+                Snacks.toggle.inlay_hints():map("<leader>asoh")
+                Snacks.toggle.treesitter():map("<leader>asoT")
+                Snacks.toggle.option("relativenumber", { name = "Relative Number" }):map("<leader>asoL")
+                Snacks.toggle.option("conceallevel", { off = 0, on = vim.o.conceallevel > 1 and vim.o.conceallevel or 3 }):map("<leader>asoc")
+                Snacks.toggle.option("background", { off = "light", on = "dark", name = "Dark Background" }):map("<leader>asob")
+                Snacks.toggle.option("spell", { name = "Spelling" }):map("<leader>asos")
+                Snacks.toggle.option("wrap", { name = "Wrap" }):map("<leader>asow")
                 -- stylua: ignore end
             end,
         })
