@@ -142,6 +142,9 @@ function M.files()
 
             map("n", ".", function() setBranch(vim.fn.getcwd()) end, { buffer = bufid, desc = "Current working directory" })
 
+            map("n", "gh", function() setBranch("$HOME/") end, { buffer = bufid, desc = "Home", nowait = true })
+            map("n", "gc", function() setBranch("$HOME/.config") end, { buffer = bufid, desc = "Config", nowait = true })
+
             map("n", "0", function() setBranch("$HOME/repos/nikbrunner/dots") end, { buffer = bufid, desc = "Dots" })
             map("n", "1", function() setBranch("$HOME/repos/nikbrunner/notes") end, { buffer = bufid, desc = "Notes" })
             map("n", "2", function() setBranch("$HOME/repos/nikbrunner/dcd-notes") end, { buffer = bufid, desc = "DCD Notes" })
