@@ -140,10 +140,10 @@ for i = 1, 9 do
 end
 
 -- Resize splits using Shift + Arrow keys
-M.map({ "n", "v", "x" }, "<S-Down>", "<cmd>resize -2<cr>", { desc = "Resize Split Down" })
-M.map({ "n", "v", "x" }, "<S-Up>", "<cmd>resize +2<cr>", { desc = "Resize Split Up" })
-M.map({ "n", "v", "x" }, "<S-Left>", "<cmd>vertical resize +5<cr>", { desc = "Resize Split Right" }) -- Note: Left arrow increases width to the right
-M.map({ "n", "v", "x" }, "<S-Right>", "<cmd>vertical resize -5<cr>", { desc = "Resize Split Left" }) -- Note: Right arrow decreases width from the right
+-- M.map({ "n", "v", "x" }, "<S-Down>", "<cmd>resize -2<cr>", { desc = "Resize Split Down" })
+-- M.map({ "n", "v", "x" }, "<S-Up>", "<cmd>resize +2<cr>", { desc = "Resize Split Up" })
+-- M.map({ "n", "v", "x" }, "<S-Left>", "<cmd>vertical resize +5<cr>", { desc = "Resize Split Right" }) -- Note: Left arrow increases width to the right
+-- M.map({ "n", "v", "x" }, "<S-Right>", "<cmd>vertical resize -5<cr>", { desc = "Resize Split Left" }) -- Note: Right arrow decreases width from the right
 
 -- =============================================================================
 -- File & Session Management
