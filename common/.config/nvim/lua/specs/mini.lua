@@ -8,7 +8,8 @@ local M = {}
 M.win_config = {
     left_buf_corner = function()
         local height = math.floor(0.25 * vim.o.lines)
-        local width = math.floor(0.25 * vim.o.columns)
+        local current_window_width = "???"
+        local width = math.floor(0.45 * vim.o.columns)
 
         return {
             relative = "win",
@@ -440,17 +441,31 @@ function M.sessions()
         hooks = {
             pre = {
                 write = function()
-                    -- Delete buffers for non-existent files before writing session
+                    -- Delete ephemeral and non-visible buffers before writing session
                     vim.iter(vim.api.nvim_list_bufs())
                         :filter(function(bufnr)
                             return vim.api.nvim_buf_is_valid(bufnr)
                         end)
                         :filter(function(bufnr)
-                            local bufPath = vim.api.nvim_buf_get_name(bufnr)
-                            local doesNotExist = vim.uv.fs_stat(bufPath) == nil
-                            local notSpecialBuffer = vim.bo[bufnr].buftype == ""
-                            local notNewBuffer = bufPath ~= ""
-                            return doesNotExist and notSpecialBuffer and notNewBuffer
+                            local buftype = vim.bo[bufnr].buftype
+                            local bufpath = vim.api.nvim_buf_get_name(bufnr)
+
+                            -- Delete if special buffer type (nofile, terminal, help, quickfix, etc.)
+                            if buftype ~= "" then
+                                return true
+                            end
+
+                            -- Delete if file doesn't exist on disk (but not empty/new buffers)
+                            if bufpath ~= "" and vim.uv.fs_stat(bufpath) == nil then
+                                return true
+                            end
+
+                            -- Delete if buffer is not visible in any window
+                            if vim.fn.bufwinid(bufnr) == -1 then
+                                return true
+                            end
+
+                            return false
                         end)
                         :each(function(bufnr)
                             vim.api.nvim_buf_delete(bufnr, { force = true })
