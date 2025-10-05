@@ -423,6 +423,80 @@ function M.test()
     require("mini.test").setup()
 end
 
+function M.diff()
+    local MiniDiff = require("mini.diff")
+
+    MiniDiff.setup({
+        view = {
+            style = "sign",
+            signs = {
+                add = "▎",
+                change = "▎",
+                delete = "▎",
+            },
+        },
+        mappings = {
+            -- Disable defaults, using custom keymaps below
+            apply = "",
+            reset = "",
+            textobject = "gh", -- Keep textobject for use with custom mappings
+            goto_first = "",
+            goto_prev = "",
+            goto_next = "",
+            goto_last = "",
+        },
+    })
+
+    local map = vim.keymap.set
+
+    -- Navigation with centering (matching gitsigns [c / ]c)
+    map("n", "]c", function()
+        MiniDiff.goto_hunk("next")
+        vim.cmd("norm zz")
+    end, { desc = "Next Hunk" })
+
+    map("n", "[c", function()
+        MiniDiff.goto_hunk("prev")
+        vim.cmd("norm zz")
+    end, { desc = "Prev Hunk" })
+
+    -- Hunk operations - normal mode uses operator + textobject
+    map("n", "<leader>cs", function()
+        return MiniDiff.operator("apply") .. "gh"
+    end, { expr = true, remap = true, desc = "Stage Hunk" })
+
+    map("n", "<leader>cr", function()
+        return MiniDiff.operator("reset") .. "gh"
+    end, { expr = true, remap = true, desc = "Reset Hunk" })
+
+    -- Hunk operations - visual mode uses do_hunks with selection
+    map("v", "<leader>cs", function()
+        local start_line = vim.fn.line("'<")
+        local end_line = vim.fn.line("'>")
+        MiniDiff.do_hunks(0, "apply", { line_start = start_line, line_end = end_line })
+    end, { desc = "Stage Hunk" })
+
+    map("v", "<leader>cr", function()
+        local start_line = vim.fn.line("'<")
+        local end_line = vim.fn.line("'>")
+        MiniDiff.do_hunks(0, "reset", { line_start = start_line, line_end = end_line })
+    end, { desc = "Reset Hunk" })
+
+    -- Preview/overlay toggle
+    map({ "n", "v" }, "<leader>cg", function()
+        MiniDiff.toggle_overlay(0)
+    end, { desc = "Git (Hunk)" })
+
+    -- Buffer-level operations
+    map("n", "<leader>dvr", function()
+        MiniDiff.do_hunks(0, "reset")
+    end, { desc = "[R]evert changes" })
+
+    map("n", "<leader>dvs", function()
+        MiniDiff.do_hunks(0, "apply")
+    end, { desc = "[S]tage document" })
+end
+
 function M.get_session_name()
     local name = string.gsub(vim.fn.getcwd(), "/", "_")
     local branch = vim.trim(vim.fn.system("git branch --show-current"))
@@ -560,6 +634,7 @@ return {
         M.files()
         M.visits()
         M.extra()
+        M.diff()
         M.ai()
         M.statusline()
         M.icons()
