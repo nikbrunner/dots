@@ -44,16 +44,6 @@ return {
                     vim.log.levels.WARN,
                     { title = "Conform" }
                 )
-            else
-                vim.notify(
-                    string.format(
-                        "Found `prettier` config (%s), and will use `%s` for formatting",
-                        prettier_config,
-                        prettier_cmd
-                    ),
-                    vim.log.levels.INFO,
-                    { title = "Conform" }
-                )
             end
         end
 
@@ -63,8 +53,6 @@ return {
         if deno_config ~= nil then
             if not is_deno_available then
                 vim.notify("There is a deno config, but deno is not installed", vim.log.levels.WARN, { title = "Conform" })
-            else
-                vim.notify(string.format("Using %s for formatting", deno_cmd), vim.log.levels.INFO, { title = "Conform" })
             end
         end
 
@@ -74,8 +62,6 @@ return {
         if biome_config ~= nil then
             if not is_biome_available then
                 vim.notify("There is a biome config, but biome is not installed", vim.log.levels.WARN, { title = "Conform" })
-            else
-                vim.notify(string.format("Using %s for formatting", biome_cmd), vim.log.levels.INFO, { title = "Conform" })
             end
         end
 
