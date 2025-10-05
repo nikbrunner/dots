@@ -179,9 +179,7 @@ restart_neovim_instances() {
             # Moderate delay for restart to complete
             sleep 0.2
 
-            # Send session restore command using Lua
-            tmux send-keys -t "$pane" ':lua require("persistence").load()' 'Enter' 2>/dev/null
-            echo "✓"
+            # Session gets automatically restored via mini sessions
 
             # Minimal delay between panes
             sleep 0.1
@@ -306,4 +304,3 @@ main() {
 }
 
 main "$@"
-
