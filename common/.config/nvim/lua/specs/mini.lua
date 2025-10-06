@@ -695,6 +695,21 @@ function M.sessions()
     end
 end
 
+function M.hues()
+    require("mini.hues").setup({
+        background = "#11262d",
+        foreground = "#c0c8cc",
+        plugins = {
+            default = true,
+            ["echasnovski/mini.nvim"] = true,
+        },
+    })
+end
+
+function M.git()
+    require("mini.git").setup()
+end
+
 ---@type LazyPluginSpec
 return {
     "nvim-mini/mini.nvim",
@@ -705,6 +720,7 @@ return {
         M.files()
         M.visits()
         M.extra()
+        M.git()
         M.diff()
         M.ai()
         M.statusline()
@@ -713,5 +729,6 @@ return {
         M.clue()
         M.test()
         M.sessions()
+        M.hues()
     end,
 }
