@@ -697,7 +697,7 @@ end
 ---@type LazyPluginSpec
 return {
     "nvim-mini/mini.nvim",
-    version = "*",
+    version = false,
     lazy = false,
     config = function()
         M.pick()
