@@ -3,17 +3,17 @@ let s:so_save = &g:so | let s:siso_save = &g:siso | setg so=0 siso=0 | setl so=-
 let v:this_session=expand("<sfile>:p")
 silent only
 silent tabonly
-cd ~/repos/nikbrunner/dots/common/.config
+cd ~/repos/black-atom-industries/nvim
 if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +715 nvim/lua/specs/mini.lua
+badd +14 ~/repos/black-atom-industries/nvim/lua/black-atom/highlights/plugins/trouble.lua
 argglobal
 %argdel
-$argadd ./
-edit nvim/lua/specs/mini.lua
+$argadd .
+edit ~/repos/black-atom-industries/nvim/lua/black-atom/highlights/plugins/trouble.lua
 let s:save_splitbelow = &splitbelow
 let s:save_splitright = &splitright
 set splitbelow splitright
@@ -30,8 +30,8 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe 'vert 1resize ' . ((&columns * 116 + 117) / 234)
-exe 'vert 2resize ' . ((&columns * 117 + 117) / 234)
+exe 'vert 1resize ' . ((&columns * 117 + 117) / 234)
+exe 'vert 2resize ' . ((&columns * 116 + 117) / 234)
 argglobal
 setlocal keymap=
 setlocal noarabic
@@ -131,7 +131,7 @@ setlocal syntax=
 endif
 setlocal tabstop=4
 setlocal tagfunc=v:lua.vim.lsp.tagfunc
-setlocal textwidth=0
+setlocal textwidth=120
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
@@ -142,21 +142,21 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-281
+4
 sil! normal! zo
-719
+5
 sil! normal! zo
-let s:l = 715 - ((18 * winheight(0) + 19) / 39)
+let s:l = 14 - ((13 * winheight(0) + 19) / 39)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 715
-normal! 03|
+keepjumps 14
+normal! 08|
 wincmd w
 argglobal
 enew | setl bt=help
-help MiniJump@en
-balt nvim/lua/specs/mini.lua
+help trouble.nvim-trouble-colors@en
+balt ~/repos/black-atom-industries/nvim/lua/black-atom/highlights/plugins/trouble.lua
 let s:cpo_save=&cpo
 set cpo&vim
 nnoremap <buffer> <silent> q <Cmd>close
@@ -271,15 +271,15 @@ setlocal nowrap
 setlocal wrapmargin=0
 silent! normal! zE
 let &fdl = &fdl
-let s:l = 61 - ((34 * winheight(0) + 19) / 39)
+let s:l = 724 - ((15 * winheight(0) + 19) / 39)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 61
-normal! 048|
+keepjumps 724
+normal! 03|
 wincmd w
-exe 'vert 1resize ' . ((&columns * 116 + 117) / 234)
-exe 'vert 2resize ' . ((&columns * 117 + 117) / 234)
+exe 'vert 1resize ' . ((&columns * 117 + 117) / 234)
+exe 'vert 2resize ' . ((&columns * 116 + 117) / 234)
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
@@ -295,7 +295,6 @@ if filereadable(s:sx)
 endif
 let &g:so = s:so_save | let &g:siso = s:siso_save
 set hlsearch
-nohlsearch
 doautoall SessionLoadPost
 unlet SessionLoad
 " vim: set ft=vim :
