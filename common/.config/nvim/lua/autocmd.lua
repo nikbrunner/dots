@@ -121,7 +121,7 @@ auto("FocusGained", {
 })
 
 -- Check for external changes when entering buffer
-auto({"BufEnter", "FocusGained" }, {
+auto({ "BufEnter", "FocusGained" }, {
     group = auto_group("check_external_changes"),
     callback = function()
         vim.cmd("checktime")

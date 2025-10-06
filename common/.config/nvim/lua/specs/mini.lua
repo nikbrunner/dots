@@ -167,10 +167,107 @@ function M.files()
     -- stylua: ignore end
 end
 
-function M.pick()
-    local MiniPick = require("mini.pick")
+function M.smart_picker()
     local MiniFuzzy = require("mini.fuzzy")
     local MiniVisits = require("mini.visits")
+
+    local visit_paths = MiniVisits.list_paths()
+    local current_file = vim.fn.expand("%")
+    local cwd = vim.fn.getcwd()
+
+    -- Get alternative file for priority boost
+    local alt_file = vim.fn.expand("#")
+
+    -- Get oldfiles scoped to current working directory
+    local oldfiles = {}
+    for _, file in ipairs(vim.v.oldfiles) do
+        local abs_path = vim.fn.fnamemodify(file, ":p")
+        if vim.startswith(abs_path, cwd) then
+            table.insert(oldfiles, vim.fn.fnamemodify(file, ":."))
+        end
+    end
+
+    MiniPick.builtin.files(nil, {
+        source = {
+            match = function(stritems, indices, query)
+                -- Concatenate prompt to a single string
+                local prompt = vim.pesc(table.concat(query))
+
+                -- If ignorecase is on and there are no uppercase letters in prompt,
+                -- convert paths to lowercase for matching purposes
+                local convert_path = function(str)
+                    return str
+                end
+                if vim.o.ignorecase and string.find(prompt, "%u") == nil then
+                    convert_path = function(str)
+                        return string.lower(str)
+                    end
+                end
+
+                local current_file_cased = convert_path(current_file)
+                local alt_file_rel = alt_file ~= "" and vim.fn.fnamemodify(alt_file, ":.") or nil
+                local alt_file_cased = alt_file_rel and convert_path(alt_file_rel) or nil
+
+                -- Create lookup tables for priority files
+                local oldfiles_lookup = {}
+                for index, file_path in ipairs(oldfiles) do
+                    oldfiles_lookup[convert_path(file_path)] = index
+                end
+
+                local visits_lookup = {}
+                for index, path in ipairs(visit_paths) do
+                    local key = vim.fn.fnamemodify(path, ":.")
+                    visits_lookup[convert_path(key)] = index
+                end
+
+                local result = {}
+                for _, index in ipairs(indices) do
+                    local path = stritems[index]
+                    local path_cased = convert_path(path)
+                    local match_score = prompt == "" and 0 or MiniFuzzy.match(prompt, path).score
+
+                    if match_score >= 0 then
+                        local score
+
+                        -- Current file gets ranked last
+                        if path_cased == current_file_cased then
+                            score = 999999
+                        -- Alt file gets highest priority
+                        elseif alt_file_cased and path_cased == alt_file_cased then
+                            score = match_score - 10000
+                        -- Oldfiles get second priority
+                        elseif oldfiles_lookup[path_cased] then
+                            score = match_score - 1000 + oldfiles_lookup[path_cased]
+                        -- Visit paths get third priority
+                        elseif visits_lookup[path_cased] then
+                            score = match_score + visits_lookup[path_cased]
+                        -- Everything else
+                        else
+                            score = match_score + 100000
+                        end
+
+                        table.insert(result, {
+                            index = index,
+                            score = score,
+                        })
+                    end
+                end
+
+                table.sort(result, function(a, b)
+                    return a.score < b.score
+                end)
+
+                return vim.tbl_map(function(val)
+                    return val.index
+                end, result)
+            end,
+        },
+    })
+end
+
+function M.pick()
+    local MiniPick = require("mini.pick")
+    local MiniExtra = require("mini.extra")
 
     MiniPick.setup({
         mappings = {
@@ -186,93 +283,35 @@ function M.pick()
         },
     })
 
-    MiniPick.registry.frecency = function()
-        local visit_paths = MiniVisits.list_paths()
-        local current_file = vim.fn.expand("%")
-
-        MiniPick.builtin.files(nil, {
-            source = {
-                match = function(stritems, indices, query)
-                    -- Concatenate prompt to a single string
-                    local prompt = vim.pesc(table.concat(query))
-
-                    -- If ignorecase is on and there are no uppercase letters in prompt,
-                    -- convert paths to lowercase for matching purposes
-                    local convert_path = function(str)
-                        return str
-                    end
-                    if vim.o.ignorecase and string.find(prompt, "%u") == nil then
-                        convert_path = function(str)
-                            return string.lower(str)
-                        end
-                    end
-
-                    local current_file_cased = convert_path(current_file)
-                    local paths_length = #visit_paths
-
-                    -- Flip visit_paths so that paths are lookup keys for the index values
-                    local flipped_visits = {}
-                    for index, path in ipairs(visit_paths) do
-                        local key = vim.fn.fnamemodify(path, ":.")
-                        flipped_visits[convert_path(key)] = index - 1
-                    end
-
-                    local result = {}
-                    for _, index in ipairs(indices) do
-                        local path = stritems[index]
-                        local match_score = prompt == "" and 0 or MiniFuzzy.match(prompt, path).score
-                        if match_score >= 0 then
-                            local visit_score = flipped_visits[path] or paths_length
-                            table.insert(result, {
-                                index = index,
-                                -- Give current file high value so it's ranked last
-                                score = path == current_file_cased and 999999 or match_score + visit_score * 10,
-                            })
-                        end
-                    end
-
-                    table.sort(result, function(a, b)
-                        return a.score < b.score
-                    end)
-
-                    return vim.tbl_map(function(val)
-                        return val.index
-                    end, result)
-                end,
-            },
-        })
-    end
-
-    local MiniExtra = require("mini.extra")
-    local map = vim.keymap.set
+    MiniPick.registry.frecency = M.smart_picker
 
     -- stylua: ignore start
-    map("n", "<leader><leader>",    MiniPick.registry.frecency, { desc = "Pick file" })
-    map("n", "<leader>.",           function() MiniPick.builtin.resume() end, { desc = "Resume Picker" })
+    vim.keymap.set("n", "<leader><leader>",    MiniPick.registry.frecency, { desc = "Pick file" })
+    vim.keymap.set("n", "<leader>.",           function() MiniPick.builtin.resume() end, { desc = "Resume Picker" })
 
     -- App
-    map("n", "<leader>a'",           function() MiniExtra.pickers.registers() end, { desc = "Registers" })
-    map("n", "<leader>aa",          function() MiniExtra.pickers.commands() end, { desc = "[A]ctions" })
-    map("n", "<leader>ar",          function() MiniExtra.pickers.oldfiles() end, { desc = "[R]ecent Documents (Anywhere)" })
-    map("n", "<leader>ak",          function() MiniExtra.pickers.keymaps() end, { desc = "[K]eymaps" })
-    map("n", "<leader>aj",          function() MiniExtra.pickers.list({ scope = "jump" }) end, { desc = "[J]umps" })
-    map("n", "<leader>asd",          function() MiniPick.builtin.files(nil, { source = { cwd = vim.fn.expand("$HOME") .. "/repos/nikbrunner/dots" }}) end, { desc = "[D]ocuments" })
-    map("n", "<leader>ahp",         function() MiniPick.builtin.help() end, { desc = "[P]ages" })
-    map("n", "<leader>ahh",         function() MiniExtra.pickers.hl_groups() end, { desc = "[H]ightlights" })
+    vim.keymap.set("n", "<leader>a'",          function() MiniExtra.pickers.registers() end, { desc = "Registers" })
+    vim.keymap.set("n", "<leader>aa",          function() MiniExtra.pickers.commands() end, { desc = "[A]ctions" })
+    vim.keymap.set("n", "<leader>ar",          function() MiniExtra.pickers.oldfiles() end, { desc = "[R]ecent Documents (Anywhere)" })
+    vim.keymap.set("n", "<leader>ak",          function() MiniExtra.pickers.keymaps() end, { desc = "[K]eymaps" })
+    vim.keymap.set("n", "<leader>aj",          function() MiniExtra.pickers.list({ scope = "jump" }) end, { desc = "[J]umps" })
+    vim.keymap.set("n", "<leader>asd",         function() MiniPick.builtin.files(nil, { source = { cwd = vim.fn.expand("$HOME") .. "/repos/nikbrunner/dots" }}) end, { desc = "[D]ocuments" })
+    vim.keymap.set("n", "<leader>ahp",         function() MiniPick.builtin.help() end, { desc = "[P]ages" })
+    vim.keymap.set("n", "<leader>ahh",         function() MiniExtra.pickers.hl_groups() end, { desc = "[H]ightlights" })
 
     -- Workspace
-    map("n", "<leader>wd",           MiniPick.registry.frecency, { desc = "[D]ocument" })
-    map("n", "<leader>wgb",         function() MiniExtra.pickers.git_branches() end, { desc = "[B]ranches" })
-    map("n", "<leader>wr",          function() MiniExtra.pickers.oldfiles({ current_dir = true }) end, { desc = "[R]ecent Documents" })
-    map("n", "<leader>wt",          function() MiniPick.builtin.grep_live() end, { desc = "[T]ext" })
-    map("n", "<leader>ww",          function() MiniPick.builtin.grep({ pattern = vim.fn.expand("<cword>") }) end, { desc = "[W]ord" })
-    map("n", "<leader>wm",          function() MiniExtra.pickers.git_files({ scope = "modified" }) end, { desc = "[M]odified Documents" })
-    map("n", "<leader>wc",          function() MiniExtra.pickers.git_hunks() end, { desc = "[C]hanges" })
-    map("n", "<leader>ws",          function() MiniExtra.pickers.lsp({ scope = "workspace_symbol" }) end, { desc = "[S]ymbols" })
+    vim.keymap.set("n", "<leader>wd",          MiniPick.registry.frecency, { desc = "[D]ocument" })
+    vim.keymap.set("n", "<leader>wgb",         function() MiniExtra.pickers.git_branches() end, { desc = "[B]ranches" })
+    vim.keymap.set("n", "<leader>wr",          function() MiniExtra.pickers.oldfiles({ current_dir = true }) end, { desc = "[R]ecent Documents" })
+    vim.keymap.set("n", "<leader>wt",          function() MiniPick.builtin.grep_live() end, { desc = "[T]ext" })
+    vim.keymap.set("n", "<leader>ww",          function() MiniPick.builtin.grep({ pattern = vim.fn.expand("<cword>") }) end, { desc = "[W]ord" })
+    vim.keymap.set("n", "<leader>wm",          function() MiniExtra.pickers.git_files({ scope = "modified" }) end, { desc = "[M]odified Documents" })
+    vim.keymap.set("n", "<leader>wc",          function() MiniExtra.pickers.git_hunks() end, { desc = "[C]hanges" })
+    vim.keymap.set("n", "<leader>ws",          function() MiniExtra.pickers.lsp({ scope = "workspace_symbol" }) end, { desc = "[S]ymbols" })
 
     -- Document
-    map("n", "<leader>dt",          function() MiniExtra.pickers.buf_lines({ scope = "current" }) end, { desc = "[T]ext" })
-    map("n", "<leader>ds",          function() MiniExtra.pickers.lsp({ scope = "document_symbol" }) end, { desc = "[S]ymbols" })
+    vim.keymap.set("n", "<leader>dt",          function() MiniExtra.pickers.buf_lines({ scope = "current" }) end, { desc = "[T]ext" })
+    vim.keymap.set("n", "<leader>ds",          function() MiniExtra.pickers.lsp({ scope = "document_symbol" }) end, { desc = "[S]ymbols" })
     -- stylua: ignore end
 end
 
