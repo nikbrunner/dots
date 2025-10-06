@@ -37,6 +37,7 @@ export RIPGREP_CONFIG_PATH=$HOME/.ripgreprc
 
 # Globals ================================================================
 export EDITOR="nvim"
+export MANPAGER='nvim +Man!'
 
 export BC_OFFICE_LAN_IP=10.2.0.95
 export BC_OFFICE_WLAN_IP=10.2.0.109
