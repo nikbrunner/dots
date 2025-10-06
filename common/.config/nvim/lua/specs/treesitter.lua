@@ -5,21 +5,22 @@ M.specs = {
     {
         "nvim-treesitter/nvim-treesitter",
         build = ":TSUpdate",
-        branch = "master",
+        branch = "main",
         lazy = false,
+        config = function()
+            -- Register the mdx filetype
+            vim.filetype.add({ extension = { mdx = "mdx" } })
+
+            -- Configure treesitter to use the markdown parser for mdx files
+            vim.treesitter.language.register("markdown", "mdx")
+        end,
+    },
+
+    {
+        "MeanderingProgrammer/treesitter-modules.nvim",
+        lazy = false,
+        dependencies = { "nvim-treesitter/nvim-treesitter" },
         opts = {
-            highlight = {
-                enable = true,
-                ---@diagnostic disable-next-line: unused-local
-                disable = function(lang, bufnr)
-                    return vim.api.nvim_buf_line_count(bufnr) > 5000
-                end,
-                additional_vim_regex_highlighting = {},
-            },
-            indent = {
-                enable = true,
-                disable = { "typescript", "tsx", "javascript", "jsx" },
-            },
             auto_install = true,
             ensure_installed = {
                 "bash",
@@ -41,6 +42,14 @@ M.specs = {
                 "yaml",
                 "http",
             },
+            highlight = {
+                enable = true,
+                additional_vim_regex_highlighting = {},
+            },
+            indent = {
+                enable = false,
+                disable = { "typescript", "tsx", "javascript", "jsx" },
+            },
             incremental_selection = {
                 enable = true,
                 disable = { "vim", "qf" },
@@ -51,17 +60,13 @@ M.specs = {
                 },
             },
         },
-        config = function(_, opts)
-            local configs = require("nvim-treesitter.configs")
+    },
 
-            -- Register the mdx filetype
-            vim.filetype.add({ extension = { mdx = "mdx" } })
-
-            -- Configure treesitter to use the markdown parser for mdx files
-            vim.treesitter.language.register("markdown", "mdx")
-
-            configs.setup(opts)
-        end,
+    -- Only needed for its query files (.scm) - MiniAi uses these
+    {
+        "nvim-treesitter/nvim-treesitter-textobjects",
+        branch = "main",
+        lazy = false,
     },
 
     {
