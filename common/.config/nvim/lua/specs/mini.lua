@@ -591,9 +591,23 @@ function M.sessions()
         })
 
         -- Auto-switch sessions on TermLeave event (like closing the lazygit terminal)
-        -- Currently this reacts to all term leave events, and not only when the snacks lazygit terminal closes
         vim.api.nvim_create_autocmd({ "TermLeave", "VimResume" }, {
-            callback = function()
+            callback = function(event)
+                -- For TermLeave events, only proceed if it's a Snacks terminal
+                if event.event == "TermLeave" then
+                    local buf = event.buf or vim.api.nvim_get_current_buf()
+                    local is_snacks_terminal = vim.bo[buf].filetype == "snacks_terminal"
+
+                    if not is_snacks_terminal then
+                        return -- Skip fzf-lua and other non-Snacks terminals
+                    end
+                end
+
+                -- Don't load session if we're already in a session load
+                if vim.g.SessionLoad == 1 then
+                    return
+                end
+
                 local MS = require("mini.sessions")
                 local session_name = M.get_session_name()
 
