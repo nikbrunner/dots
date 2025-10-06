@@ -167,6 +167,18 @@ function M.files()
     -- stylua: ignore end
 end
 
+--- Smart file picker with intelligent prioritization
+---
+--- Combines multiple sources (alternative file, recent files, visited paths, all files)
+--- into a single picker with weighted scoring for better file navigation.
+---
+--- Priority order (lower score = higher priority):
+--- 1. Alternative file (#) - heavily prioritized for quick switching
+--- 2. Recent files (oldfiles) - files recently opened in cwd
+--- 3. Visited paths (mini.visits) - frequently accessed files
+--- 4. All other files - general fallback
+---
+--- Current file is always ranked last to avoid accidental re-selection.
 function M.smart_picker()
     local MiniFuzzy = require("mini.fuzzy")
     local MiniVisits = require("mini.visits")
