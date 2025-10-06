@@ -160,7 +160,7 @@ M.map("n", "<leader>w.", function()
 end, { desc = "[.] Set Root" })
 
 -- Plugins & Language Management
-M.map("n", "<leader>app", "<cmd>Lazy<CR>", { desc = "[P]lugins" })
+M.map("n", "<leader>ap", "<cmd>Lazy<CR>", { desc = "[P]lugins" })
 M.map("n", "<leader>als", "<cmd>Mason<CR>", { desc = "[S]erver" })
 M.map("n", "<leader>ali", require("lib.lsp").info, { desc = "[I]nfo" })
 M.map("n", "<leader>all", require("lib.lsp").open_log, { desc = "[L]og" })
