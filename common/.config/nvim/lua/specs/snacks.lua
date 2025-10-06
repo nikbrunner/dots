@@ -159,7 +159,6 @@ function M.keys()
         { "<leader>aw",          function() Snacks.picker.projects() end, desc = "[W]orkspace" },
         { "<leader>aW",          function() Snacks.picker.zoxide() end, desc = "[W]orkspace (Zoxide)" },
         { "<leader>ad",          M.file_surfer, desc = "[D]ocument" },
-        { "<leader>at",          function() Snacks.picker.colorschemes() end, desc = "[T]hemes" },
         { "<leader>ag",          function() Snacks.lazygit() end, desc = "[G]raph" },
         { "<leader>af",          function() Snacks.zen.zen() end, desc = "[F]ocus Mode" },
         { "<leader>az",          function() Snacks.zen.zoom() end, desc = "[Z]oom Mode" },
