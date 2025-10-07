@@ -79,12 +79,13 @@ suggest_folder() {
     
     local prompt="You are organizing music files. First, search the web for information about the artist '$artist_name' to understand their musical genre, style, and discography (including album names). Then use this information along with the metadata and existing folder structure to suggest where this music should go.
 
-CRITICAL OUTPUT FORMAT - Return EXACTLY ONE of these responses with NO additional text, explanations, or reasoning:
-1. An existing folder path (e.g., 'Artists/Pink Floyd' or 'Genres/Rock')
-2. A new folder suggestion prefixed with 'NEW:' (e.g., 'NEW:Artists/The Beatles')
-3. The word 'SKIP' if it should stay in Inbox
+CRITICAL OUTPUT FORMAT:
+Your response must be ONLY one of these formats with NOTHING else:
+- An existing folder path: Pop/Doja Cat
+- A new folder with NEW: prefix: NEW:Pop/Doja Cat
+- The word: SKIP
 
-DO NOT include explanations, reasoning, or additional text. Return ONLY the folder path or 'SKIP'.
+FORBIDDEN: Do NOT include ANY explanations, reasoning, sentences, or additional words. Your ENTIRE response must be ONLY the folder path or SKIP. No introduction, no reasoning, no conclusion. Just the path.
 
 Artist to research: $artist_name
 Music file: $filename
@@ -147,14 +148,28 @@ Output: Just the folder path or 'NEW:path' or 'SKIP', nothing else."
     
     # Clean up response and extract just the folder path
     suggestion=$(echo "$suggestion" | tr -d '\n\r' | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
-    
+
     # Extract folder suggestion from verbose AI response
-    # Look for patterns like "I recommend: Folder/Path" or "suggest: Folder/Path"
+    # Strategy: Try multiple extraction patterns in order of reliability
+
+    # Pattern 1: Look for "recommend: Path" or "suggest: Path"
     if [[ "$suggestion" =~ (recommend|suggest)[^:]*:[[:space:]]*([^[:space:]]+[^.,!]+) ]]; then
         suggestion="${BASH_REMATCH[2]}"
-        # Clean up any trailing punctuation or text
-        suggestion=$(echo "$suggestion" | sed 's/[.,!].*$//' | sed 's/The reasoning.*$//' | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
+        suggestion=$(echo "$suggestion" | sed 's/[.,!].*$//' | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
+    # Pattern 2: Look for NEW:Path/To/Folder at the end
+    elif [[ "$suggestion" =~ (NEW:[A-Za-z][A-Za-z0-9/_\ \-]+)$ ]]; then
+        suggestion="${BASH_REMATCH[1]}"
+    # Pattern 3: Look for Path/To/Folder pattern at the end (must contain at least one /)
+    elif [[ "$suggestion" =~ ([A-Za-z][A-Za-z0-9_\ \-]+/[A-Za-z0-9/_\ \-]+)$ ]]; then
+        suggestion="${BASH_REMATCH[1]}"
+    # Pattern 4: If response contains a clear path-like structure, extract last occurrence
+    elif [[ "$suggestion" =~ [A-Za-z][A-Za-z0-9_\ \-]+/[A-Za-z0-9/_\ \-]+ ]]; then
+        # Extract all potential paths and take the last one
+        suggestion=$(echo "$suggestion" | grep -oE '(NEW:)?[A-Za-z][A-Za-z0-9_\-]+(/[A-Za-z0-9_\-]+)+' | tail -1)
     fi
+
+    # Final cleanup
+    suggestion=$(echo "$suggestion" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
     
     echo "$suggestion"
 }
