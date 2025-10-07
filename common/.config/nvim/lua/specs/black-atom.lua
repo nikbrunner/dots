@@ -23,9 +23,8 @@ return {
     },
     {
         "black-atom-industries/radar.nvim",
-        -- dir = require("lib.config").get_repo_path("black-atom-industries/radar.nvim"),
+        dir = require("lib.config").get_repo_path("black-atom-industries/radar.nvim"),
         -- lazy = false,
-        enabled = false,
         event = "VimEnter",
         ---@module "radar"
         ---@type Radar.Config
