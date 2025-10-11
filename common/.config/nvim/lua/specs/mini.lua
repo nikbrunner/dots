@@ -710,6 +710,10 @@ function M.git()
     require("mini.git").setup()
 end
 
+function M.completion()
+    require("mini.completion").setup()
+end
+
 ---@type LazyPluginSpec
 return {
     "nvim-mini/mini.nvim",
@@ -729,6 +733,7 @@ return {
         M.clue()
         M.test()
         M.sessions()
+        M.completion()
         -- M.hues()
     end,
 }

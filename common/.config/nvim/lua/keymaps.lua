@@ -19,6 +19,21 @@ end
 -- Disable Ex mode mapping
 M.map("n", "Q", "<nop>", { desc = "Disable Ex Mode" })
 
+-- Accept first completion item with <C-y> even when not selected
+vim.keymap.set("i", "<C-y>", function()
+    local info = vim.fn.complete_info()
+    -- If item is already selected, accept it
+    if info.selected ~= -1 then
+        return "\25" -- <C-y>
+    end
+    -- If popup is visible but nothing selected, select first then accept
+    if info.pum_visible == 1 and #info.items > 0 then
+        return "\14\25" -- <C-n><C-y>
+    end
+    -- Otherwise, literal <C-y>
+    return "\25"
+end, { expr = true, desc = "Accept first completion item" })
+
 -- Restart
 M.map("n", "<leader>r", function()
     vim.cmd.wa({ bang = true })
