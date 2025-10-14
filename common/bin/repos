@@ -193,14 +193,64 @@ clone_single_repo() {
     fi
 }
 
+# Interactive repository selection and cloning
+interactive_add() {
+    # Check gh CLI
+    check_gh_cli || exit 1
+
+    # Get authenticated username
+    local username
+    username=$(gh api user --jq .login 2>/dev/null)
+
+    if [[ -z "$username" ]]; then
+        print_error "Failed to get GitHub username"
+        exit 1
+    fi
+
+    # Fetch all repos for the user
+    local all_repos
+    all_repos=$(get_github_repos "$username")
+
+    if [[ -z "$all_repos" ]]; then
+        print_error "No repositories found for user: $username"
+        exit 1
+    fi
+
+    # Get list of already cloned repos (just repo names)
+    local cloned_repos
+    cloned_repos=$(list_repos | sed 's|^.*/||')
+
+    # Filter out already cloned repos
+    local available_repos
+    available_repos=$(comm -23 <(echo "$all_repos" | sort) <(echo "$cloned_repos" | sort))
+
+    if [[ -z "$available_repos" ]]; then
+        print_success "All of your repositories are already cloned!"
+        exit 0
+    fi
+
+    # Use fzf to select a repo
+    local selected_repo
+    selected_repo=$(echo "$available_repos" | styled_fzf "Select repository to clone: ")
+
+    if [[ -z "$selected_repo" ]]; then
+        echo "No repository selected"
+        exit 0
+    fi
+
+    # Construct SSH URL and clone
+    local git_url="git@github.com:${username}/${selected_repo}.git"
+    clone_single_repo "$git_url" true
+}
+
 # Add a repository
 add_repo() {
     local git_url="$1"
 
     if [[ -z "$git_url" ]]; then
-        print_error "Please provide a git URL"
-        echo "Usage: repos add <git-url>"
-        exit 1
+        # No argument provided - use interactive mode
+        interactive_add
+        return
     fi
 
     clone_single_repo "$git_url" true
@@ -1069,7 +1119,7 @@ show_help() {
     echo ""
     style_header "Commands:"
     echo "  $(style_command "install")      - Guide through dependency installation"
-    echo "  $(style_command "add")          - Clone a repository to organized path"
+    echo "  $(style_command "add")          - Clone a repository [git-url] (interactive if no URL)"
     echo "  $(style_command "remove")       - Remove a repository (interactive)"
     echo "  $(style_command "open")         - Open a repository in tmux [repo-path]"
     echo "  $(style_command "find")         - Find and open files across all repositories"
@@ -1092,6 +1142,7 @@ show_help() {
     echo ""
     style_header "Examples:"
     echo "  repos install                                    # Check dependencies"
+    echo "  repos add                                        # Interactive repo selection"
     echo "  repos add git@github.com:username/repo.git       # Clone a repository"
     echo "  repos open nikbrunner/dots                       # Open specific repo directly"
     echo "  repos setup                                      # Clone all ENSURE_CLONED repos"
