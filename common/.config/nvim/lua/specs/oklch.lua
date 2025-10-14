@@ -33,7 +33,14 @@ return {
             style = "background",
             bold = true,
             italic = false,
-            virtual_text = "  ",
+            virtual_text = " ",
+        },
+        patterns = {
+            oklch_fn = {
+                priority = 5,
+                format = "raw_oklch",
+                "oklch%(()[%d.,%s]+()%)",
+            },
         },
     },
 }
