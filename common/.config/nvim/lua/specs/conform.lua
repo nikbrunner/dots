@@ -1,5 +1,15 @@
 local prettier_cmd = "prettierd"
-local prettier_configs = { ".prettierrc", ".prettierrc.json" }
+local prettier_configs = {
+    ".prettierrc",
+    ".prettierrc.json",
+    ".prettierrc.js",
+    ".prettierrc.cjs",
+    ".prettierrc.mjs",
+    "prettier.config.js",
+    "prettier.config.cjs",
+    "prettier.config.mjs",
+    "prettier.config.ts",
+}
 
 local deno_cmd = "deno_fmt"
 local deno_configs = { "deno.json", "deno.jsonc" }
@@ -66,22 +76,26 @@ return {
         end
 
         local function handle_shared_formatter()
-            -- NOTE: The `biome-check` command combines the `biome` and `biome-organize-imports` commands
-            -- https://github.com/kiyoon/conform.nvim/blob/f73ca2e94221d0374134b64c085d1847a6ed3593/lua/conform/formatters/biome-check.lua
-            -- https://github.com/kiyoon/conform.nvim/blob/f73ca2e94221d0374134b64c085d1847a6ed3593/lua/conform/formatters/biome.lua
-            -- https://github.com/kiyoon/conform.nvim/blob/f73ca2e94221d0374134b64c085d1847a6ed3593/lua/conform/formatters/biome-organize-imports.lua
+            -- NOTE: Priority order:
+            -- 1. Prettier (explicit formatting config)
+            -- 2. Deno (all-in-one tool for Deno projects)
+            -- 3. Biome (all-in-one tool, but in some projects only used for linting)
 
-            if biome_config ~= nil and is_biome_available then
-                -- return { "biome", "biome-organize-imports" }
-                return { "biome-check" }
+            if prettier_config ~= nil and is_prettier_available then
+                return { prettier_cmd, stop_after_first = true }
             end
 
             if deno_config ~= nil and is_deno_available then
                 return { "deno_fmt", stop_after_first = true }
             end
 
-            if prettier_config ~= nil and is_prettier_available then
-                return { prettier_cmd, stop_after_first = true }
+            -- NOTE: The `biome-check` command combines the `biome` and `biome-organize-imports` commands
+            -- https://github.com/kiyoon/conform.nvim/blob/f73ca2e94221d0374134b64c085d1847a6ed3593/lua/conform/formatters/biome-check.lua
+            -- https://github.com/kiyoon/conform.nvim/blob/f73ca2e94221d0374134b64c085d1847a6ed3593/lua/conform/formatters/biome.lua
+            -- https://github.com/kiyoon/conform.nvim/blob/f73ca2e94221d0374134b64c085d1847a6ed3593/lua/conform/formatters/biome-organize-imports.lua
+            if biome_config ~= nil and is_biome_available then
+                -- return { "biome", "biome-organize-imports" }
+                return { "biome-check" }
             end
 
             return {}
