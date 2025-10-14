@@ -83,6 +83,7 @@ sh ./obsidian/sync.sh
 ### Other Configs
 
 - [MariaSolOs/dotfiles](https://github.com/MariaSolOs/dotfiles/blob/main/.config/nvim/lsp/vtsls.lua)
+- [Alexis12119/nvim-config: Generalized and Personalized](https://github.com/Alexis12119/nvim-config)
 - [dotfiles/.config/nvim at mac · MariaSolOs/dotfiles](https://github.com/MariaSolOs/dotfiles/tree/mac/.config/nvim)
 - [0xsamrath/.dotfiles](https://github.com/0xsamrath/.dotfiles)
 - [LunarVim/nvim-basic-ide](https://github.com/LunarVim/nvim-basic-ide)
