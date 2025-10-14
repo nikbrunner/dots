@@ -74,7 +74,7 @@ return {
             group = lint_group,
             callback = function()
                 setup_linters()
-                pcall(lint.try_lint)
+                require("lint").try_lint(nil, { ignore_errors = true })
             end,
         })
     end,
