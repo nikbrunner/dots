@@ -53,67 +53,89 @@ return {
             ["<C-s>"] = false,
 
             ["q"] = { "actions.close", mode = "n" },
+
+            ["<C-v>"] = { "actions.select", opts = { vertical = true, close = true } },
+            ["<C-t>"] = { "actions.select", opts = { tab = true, close = true } },
+
             ["<C-h>"] = { "actions.show_help", mode = "n" },
 
+            ["<localleader><localleader>"] = {
+                function()
+                    print("TODO: jumpt back to buffer where we started oil from")
+                end,
+                desc = "Back to last buffer",
+            },
             ["<localleader>h"] = {
                 function()
                     require("oil").open(vim.fn.expand("$HOME"))
                 end,
-                desc = "[H]ome",
+                desc = "Home",
             },
             ["<localleader>c"] = {
                 function()
                     require("oil").open(vim.fn.expand("$HOME/.config"))
                 end,
-                desc = "[C]onfig",
+                desc = "Config",
             },
             ["<localleader>r"] = {
                 function()
                     require("oil").open(vim.fn.expand("$HOME/repos"))
                 end,
-                desc = "[R]epos",
+                desc = "Repos",
             },
 
             ["<localleader>0"] = {
                 function()
                     require("oil").open(vim.fn.expand("$HOME/repos/nikbrunner/dots"))
                 end,
-                desc = "Dots",
+                desc = "nbr - dots",
             },
             ["<localleader>1"] = {
                 function()
                     require("oil").open(vim.fn.expand("$HOME/repos/nikbrunner/notes"))
                 end,
-                desc = "Notes",
+                desc = "nbr - notes",
             },
             ["<localleader>2"] = {
                 function()
                     require("oil").open(vim.fn.expand("$HOME/repos/nikbrunner/dcd-notes"))
                 end,
-                desc = "DCD Notes",
+                desc = "DCD - Notes",
             },
 
             ["<localleader>4"] = {
                 function()
                     require("oil").open(vim.fn.expand("$HOME/repos/black-atom-industries/core"))
                 end,
-                desc = "BAI Core",
+                desc = "Black Atom - core",
+            },
+
+            ["<localleader>5"] = {
+                function()
+                    require("oil").open(vim.fn.expand("$HOME/repos/black-atom-industries/nvim"))
+                end,
+                desc = "Black Atom - nvim",
+            },
+
+            ["<localleader>6"] = {
+                function()
+                    require("oil").open(vim.fn.expand("$HOME/repos/black-atom-industries/radar.nvim"))
+                end,
+                desc = "Black Atom - radar.nvim",
             },
 
             ["<localleader>7"] = {
                 function()
                     require("oil").open(vim.fn.expand("$HOME/repos/dealercenter-digital/bc-desktop-client"))
                 end,
-                desc = "DCD Desktop Client",
+                desc = "DCD - BC Desktop Client",
             },
             ["<localleader>9"] = {
                 function()
                     require("oil").open(vim.fn.expand("$HOME/repos/dealercenter-digital/bc-web-client-poc"))
                 end,
-                desc = "DCD Web Client",
+                desc = "DCD - BC Web Client",
             },
-            ["<C-v>"] = { "actions.select", opts = { vertical = true, close = true } },
-            ["<C-t>"] = { "actions.select", opts = { tab = true, close = true } },
         },
     },
     keys = {
