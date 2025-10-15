@@ -20,21 +20,6 @@ function EditFromLazygit(file_path)
     end
 end
 
-function M.get_news()
-    require("snacks").win({
-        file = vim.api.nvim_get_runtime_file("doc/news.txt", false)[1],
-        width = 0.6,
-        height = 0.6,
-        wo = {
-            spell = false,
-            wrap = false,
-            signcolumn = "yes",
-            statuscolumn = " ",
-            conceallevel = 3,
-        },
-    })
-end
-
 function M.file_surfer()
     Snacks.picker.zoxide({
         confirm = function(picker, item)
@@ -69,73 +54,8 @@ function M.find_associated_files()
     })
 end
 
-function M.get_window_relative_flow_config()
-    local win = vim.api.nvim_get_current_win()
-    local win_config = vim.api.nvim_win_get_config(win)
-    local win_pos = vim.api.nvim_win_get_position(win)
-    local win_width = vim.api.nvim_win_get_width(win)
-    local win_height = vim.api.nvim_win_get_height(win)
-
-    -- Get editor dimensions
-    local editor_width = vim.o.columns
-    local editor_height = vim.o.lines
-
-    -- Calculate window position in editor coordinates
-    local win_col = win_pos[2]
-    local win_row = win_pos[1]
-
-    -- If it's a floating window, use its absolute position
-    if win_config.relative and win_config.relative ~= "" then
-        win_col = win_config.col or win_col
-        win_row = win_config.row or win_row
-    end
-
-    -- Calculate picker dimensions relative to current window
-    local picker_width = math.min(win_width - 4, math.floor(editor_width * 0.4)) -- Use window width but cap it
-    local picker_height = math.floor(win_height * 0.3) -- 30% of window height for bottom third
-
-    -- Position picker centered horizontally within the current window, in the bottom third
-    local target_col = win_col + math.floor((win_width - picker_width) / 2)
-    local target_row = win_row + math.floor(win_height * 0.67) -- Start at 67% down the window
-
-    -- Ensure picker doesn't go off screen
-    if target_col < 0 then
-        target_col = 0
-    end
-    if target_col + picker_width > editor_width then
-        target_col = editor_width - picker_width
-    end
-    if target_row < 0 then
-        target_row = 0
-    end
-    if target_row + picker_height > editor_height then
-        target_row = editor_height - picker_height
-    end
-
-    -- Return the proper layout structure that Snacks expects
-    return {
-        preview = "main",
-        layout = {
-            backdrop = false,
-            col = target_col,
-            width = picker_width,
-            min_width = 50,
-            row = target_row,
-            height = picker_height,
-            min_height = 10,
-            box = "vertical",
-            border = "solid",
-            title = "{title} {live} {flags}",
-            title_pos = "center",
-            { win = "preview", title = "{preview}", width = 0.6, border = "left" },
-            { win = "input", height = 1, border = "solid" },
-            { win = "list", border = "none" },
-        },
-    }
-end
-
---- Create a responsive left-bottom-corner layout matching mini.pick's left_buf_corner
-function M.get_left_buf_corner_config()
+-- Layouts: ~/.local/share/nvim/lazy/snacks.nvim/lua/snacks/picker/config/layouts.lua
+function M.smart_layout()
     local win = vim.api.nvim_get_current_win()
     local win_pos = vim.api.nvim_win_get_position(win)
     local win_width = vim.api.nvim_win_get_width(win)
@@ -145,36 +65,45 @@ function M.get_left_buf_corner_config()
     local border_width = 2
     local picker_height = math.floor(0.25 * win_height)
 
-    local picker_width
-    if win_width >= 165 then
-        picker_width = math.floor(0.5 * vim.o.columns)
-    else
-        picker_width = win_width - border_width
-    end
-
     -- Position at bottom-left of current window in editor coordinates
     local col = win_pos[2] -- Left edge of current window
     local row = win_pos[1] + win_height - picker_height - 1 -- Bottom of current window
 
-    return {
+    local shared_opts = {
         preview = "main",
         layout = {
-            backdrop = false,
-            col = col,
-            width = picker_width,
-            min_width = 50,
-            row = row,
-            height = picker_height,
-            min_height = 10,
             box = "vertical",
             border = "solid",
-            title = "{title} {live} {flags}",
-            title_pos = "center",
+            min_width = 50,
+            min_height = 10,
+            backdrop = false,
             { win = "preview", title = "{preview}", width = 0.6, border = "top" },
-            { win = "input", height = 1, border = "solid" },
+            { win = "input", height = 1, border = "single" },
             { win = "list", border = "none" },
         },
     }
+
+    if win_width >= 165 then
+        return vim.tbl_deep_extend("force", {
+            preview = "main",
+            layout = {
+                -- If we don't define col, its gets centered
+                width = 0.5,
+                row = row,
+                height = picker_height,
+            },
+        }, shared_opts)
+    else
+        return vim.tbl_deep_extend("force", {
+            preview = "main",
+            layout = {
+                col = col,
+                width = win_width - border_width,
+                row = row,
+                height = picker_height,
+            },
+        }, shared_opts)
+    end
 end
 
 function M.explorer()
@@ -275,26 +204,33 @@ return {
     ---@type snacks.Config
     opts = {
         bigfile = { enabled = true },
+
         statuscolumn = { enabled = true },
+
         debug = { enabled = true },
+
+        toggle = { enabled = true },
+
+        gitbrowse = { enabled = true },
+
+        input = { enabled = true },
+
+        scroll = { enabled = false },
+
         notifier = {
             enabled = true,
             margin = { top = 0, right = 0, bottom = 1, left = 1 },
             top_down = false,
             style = "minimal",
         },
-        toggle = { enabled = true },
-        gitbrowse = { enabled = true },
-        input = { enabled = true },
-        scroll = { enabled = false },
+
         -- https://github.com/folke/snacks.nvim/blob/main/lua/snacks/picker/config/defaults.lua
         picker = {
-            icons = {
-                files = {
-                    enabled = false,
-                },
-            },
             ui_select = true, -- replace `vim.ui.select` with the snacks picker
+            layout = function()
+                return M.smart_layout()
+            end,
+
             matcher = {
                 -- the bonusses below, possibly require string concatenation and path normalization,
                 -- so this can have a performance impact for large lists and increase memory usage
@@ -302,137 +238,21 @@ return {
                 frecency = true, -- frecency bonus
                 history_bonus = true,
             },
+
             formatters = {
                 file = {
                     filename_first = false, -- display filename before the file path
                     truncate = 80,
                 },
             },
+
             previewers = {
                 git = {
                     native = true, -- use native (terminal) or Neovim for previewing git diffs and commits
                 },
             },
-            layouts = {
-                default = {
-                    layout = {
-                        box = "vertical",
-                        width = 0.9,
-                        min_width = 120,
-                        height = 0.8,
-                        {
-                            box = "vertical",
-                            border = "solid",
-                            title = "{title} {live} {flags}",
-                            { win = "input", height = 1, border = "bottom" },
-                            { win = "list", border = "none" },
-                        },
-                        { win = "preview", title = "{preview}", border = "solid" },
-                    },
-                },
-                ivy = {
-                    layout = {
-                        box = "vertical",
-                        backdrop = false,
-                        row = -1,
-                        width = 0,
-                        height = 0.4,
-                        border = "solid",
-                        title = " {title} {live} {flags}",
-                        title_pos = "left",
-                        { win = "input", height = 1, border = "bottom" },
-                        {
-                            box = "horizontal",
-                            { win = "list", border = "none" },
-                            { win = "preview", title = "{preview}", width = 0.6, border = "left" },
-                        },
-                    },
-                },
-                float = {
-                    preview = "main",
-                    layout = {
-                        position = "float",
-                        width = 60,
-                        col = 0.15,
-                        min_width = 60,
-                        height = 0.85,
-                        min_height = 25,
-                        box = "vertical",
-                        border = "solid",
-                        title = "{title} {live} {flags}",
-                        title_pos = "center",
-                        { win = "input", height = 1, border = "bottom" },
-                        { win = "list", border = "none" },
-                        { win = "preview", title = "{preview}", width = 0.6, border = "left" },
-                    },
-                },
-                flow = {
-                    preview = "main",
-                    layout = {
-                        backdrop = false,
-                        col = 5,
-                        width = 0.35,
-                        min_width = 50,
-                        row = 0.65,
-                        height = 0.30,
-                        min_height = 10,
-                        box = "vertical",
-                        border = "solid",
-                        title = "{title} {live} {flags}",
-                        title_pos = "center",
-                        { win = "preview", title = "{preview}", width = 0.6, border = "left" },
-                        { win = "input", height = 1, border = "solid" },
-                        { win = "list", border = "none" },
-                    },
-                },
-                left_bottom_corner = {
-                    preview = "main",
-                    layout = {
-                        width = 0.5,
-                        min_width = 0.35,
-                        height = 0.35,
-                        min_height = 0.35,
-                        row = 0.5,
-                        col = 10,
-                        border = "solid",
-                        box = "vertical",
-                        title = "{title} {live} {flags}",
-                        title_pos = "center",
-                        { win = "preview", title = "{preview}", width = 0.6, border = "left" },
-                        { win = "input", height = 1, border = "solid" },
-                        { win = "list", border = "none" },
-                    },
-                },
-                left_buf_corner = M.get_left_buf_corner_config(),
-                sidebar_right = {
-                    preview = "main",
-                    layout = {
-                        backdrop = false,
-                        width = 40,
-                        min_width = 40,
-                        height = 0,
-                        position = "right",
-                        border = "none",
-                        box = "vertical",
-                        {
-                            win = "input",
-                            height = 1,
-                            border = "rounded",
-                            title = "{title} {live} {flags}",
-                            title_pos = "center",
-                        },
-                        { win = "list", border = "none" },
-                        { win = "preview", title = "{preview}", height = 0.4, border = "top" },
-                    },
-                },
-            },
 
             win = {
-                preview = {
-                    wo = {
-                        number = false,
-                    },
-                },
                 input = {
                     keys = {
                         ["<c-t>"] = { "edit_tab", mode = { "i", "n" } },
@@ -484,40 +304,28 @@ return {
                         },
                     },
                 },
+
                 buffers = {
                     current = false,
                 },
+
                 files = {
                     hidden = true,
-                    layout = {
-                        preset = "flow",
-                        border = "solid",
+                },
+
+                smart = {
+                    filter = {
+                        paths = {
+                            -- TODO: filter out current file
+                            [vim.fn.getcwd()] = false,
+                        },
                     },
                 },
-                ---@type snacks.picker.smart.Config
-                smart = {
-                    layout = function()
-                        return M.get_left_buf_corner_config()
-                    end,
-                },
-                ---TODO: filter out empty file
-                ---@type snacks.picker.recent.Config
-                recent = {
-                    layout = function()
-                        return M.get_window_relative_flow_config()
-                    end,
-                },
-                lines = {
-                    layout = function()
-                        return M.get_window_relative_flow_config()
-                    end,
-                },
+
                 lsp_references = {
                     pattern = "!import !default", -- Exclude Imports and Default Exports
-                    layout = function()
-                        return M.get_window_relative_flow_config()
-                    end,
                 },
+
                 lsp_symbols = {
                     finder = "lsp_symbols",
                     format = "lsp_symbol",
@@ -527,39 +335,20 @@ return {
                         markdown = true,
                         help = true,
                     },
-                    layout = function()
-                        return M.get_window_relative_flow_config()
-                    end,
                 },
-                lsp_workspace_symbols = {
-                    layout = function()
-                        return M.get_window_relative_flow_config()
-                    end,
-                },
-                diagnostics = {
-                    layout = function()
-                        return M.get_window_relative_flow_config()
-                    end,
-                },
-                diagnostics_buffer = {
-                    layout = function()
-                        return M.get_window_relative_flow_config()
-                    end,
-                },
+
                 git_status = {
                     preview = "git_status",
-                    layout = function()
-                        return M.get_left_buf_corner_config()
-                    end,
                 },
+
                 git_diff = {
-                    layout = function()
-                        return M.get_window_relative_flow_config()
-                    end,
+                    -- TODO: use delta preview
+                    -- preview = "git_status",
                 },
-                ---@type snacks.picker.projects.Config: snacks.picker.Config
+
                 projects = {
                     finder = "recent_projects",
+                    -- TODO: restore session
                     format = "file",
                     dev = {
                         "~/repos/nikbrunner/",
@@ -567,7 +356,7 @@ return {
                         "~/repos/black-atom-industries/",
                         "~/repos/bradtraversy/",
                         "~/repos/total-typescript/",
-                        "~/.local/share/nvim/lazy/",
+                        "~/.local/share/nvim/",
                     },
                 },
             },
