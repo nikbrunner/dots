@@ -22,8 +22,6 @@ return {
             autosave_changes = true,
         },
         win_options = {
-            number = false,
-            relativenumber = false,
             winbar = "%{v:lua.require('oil').get_current_dir()}",
         },
         float = {
@@ -51,23 +49,69 @@ return {
         },
         keymaps = {
             ["~"] = false,
-            ["q"] = { "actions.close", mode = "n" },
-            ["gh"] = { "<cmd>edit $HOME<CR>", desc = "[H]ome" },
-            ["gc"] = { "<cmd>edit $HOME/.config<CR>", desc = "[C]onfig" },
-            ["gr"] = { "<cmd>edit $HOME/repos<CR>", desc = "[R]epos" },
-
-            ["0"] = { "<cmd>edit $HOME/repos/nikbrunner/dots<CR>", desc = "Dots" },
-            ["1"] = { "<cmd>edit $HOME/repos/nikbrunner/notes<CR>", desc = "Notes" },
-            ["2"] = { "<cmd>edit $HOME/repos/nikbrunner/dcd-notes<CR>", desc = "DCD Notes" },
-
-            ["4"] = { "<cmd>edit $HOME/repos/black-atom-industries/core<CR>", desc = "BAI Core" },
-
-            ["7"] = { "<cmd>edit $HOME/repos/dealercenter-digital/bc-desktop-client<CR>", desc = "DCD Desktop Client" },
-            ["8"] = { "<cmd>edit $HOME/repos/dealercenter-digital/bc-web-client-poc<CR>", desc = "DCD Web Client" },
-
-            ["<C-h>"] = false,
             ["<C-l>"] = false,
             ["<C-s>"] = false,
+
+            ["q"] = { "actions.close", mode = "n" },
+            ["<C-h>"] = { "actions.show_help", mode = "n" },
+
+            ["<localleader>h"] = {
+                function()
+                    require("oil").open(vim.fn.expand("$HOME"))
+                end,
+                desc = "[H]ome",
+            },
+            ["<localleader>c"] = {
+                function()
+                    require("oil").open(vim.fn.expand("$HOME/.config"))
+                end,
+                desc = "[C]onfig",
+            },
+            ["<localleader>r"] = {
+                function()
+                    require("oil").open(vim.fn.expand("$HOME/repos"))
+                end,
+                desc = "[R]epos",
+            },
+
+            ["<localleader>0"] = {
+                function()
+                    require("oil").open(vim.fn.expand("$HOME/repos/nikbrunner/dots"))
+                end,
+                desc = "Dots",
+            },
+            ["<localleader>1"] = {
+                function()
+                    require("oil").open(vim.fn.expand("$HOME/repos/nikbrunner/notes"))
+                end,
+                desc = "Notes",
+            },
+            ["<localleader>2"] = {
+                function()
+                    require("oil").open(vim.fn.expand("$HOME/repos/nikbrunner/dcd-notes"))
+                end,
+                desc = "DCD Notes",
+            },
+
+            ["<localleader>4"] = {
+                function()
+                    require("oil").open(vim.fn.expand("$HOME/repos/black-atom-industries/core"))
+                end,
+                desc = "BAI Core",
+            },
+
+            ["<localleader>7"] = {
+                function()
+                    require("oil").open(vim.fn.expand("$HOME/repos/dealercenter-digital/bc-desktop-client"))
+                end,
+                desc = "DCD Desktop Client",
+            },
+            ["<localleader>9"] = {
+                function()
+                    require("oil").open(vim.fn.expand("$HOME/repos/dealercenter-digital/bc-web-client-poc"))
+                end,
+                desc = "DCD Web Client",
+            },
             ["<C-v>"] = { "actions.select", opts = { vertical = true, close = true } },
             ["<C-t>"] = { "actions.select", opts = { tab = true, close = true } },
         },
