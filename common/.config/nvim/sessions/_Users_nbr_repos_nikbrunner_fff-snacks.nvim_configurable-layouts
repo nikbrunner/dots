@@ -3,17 +3,17 @@ let s:so_save = &g:so | let s:siso_save = &g:siso | setg so=0 siso=0 | setl so=-
 let v:this_session=expand("<sfile>:p")
 silent only
 silent tabonly
-cd ~/repos/nikbrunner/dots/common/.config
+cd ~/repos/nikbrunner/fff-snacks.nvim
 if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +16 nvim/lua/specs/mini.lua
+badd +182 lua/fff-snacks.lua
 argglobal
 %argdel
 $argadd ./
-edit nvim/lua/specs/mini.lua
+edit lua/fff-snacks.lua
 argglobal
 setlocal keymap=
 setlocal noarabic
@@ -94,7 +94,7 @@ setlocal norightleft
 setlocal rightleftcmd=search
 setlocal scrollback=-1
 setlocal noscrollbind
-setlocal shiftwidth=4
+setlocal shiftwidth=2
 setlocal signcolumn=yes
 setlocal smartindent
 setlocal nosmoothscroll
@@ -124,15 +124,19 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-273
+123
 sil! normal! zo
-274
+128
 sil! normal! zo
-let s:l = 16 - ((15 * winheight(0) + 16) / 32)
+161
+sil! normal! zo
+163
+sil! normal! zo
+let s:l = 182 - ((34 * winheight(0) + 26) / 52)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 16
+keepjumps 182
 normal! 0
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'

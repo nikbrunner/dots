@@ -11,7 +11,8 @@ run() {
 
         # Use --multi to allow Tab selection, store results in array
         local selected=($(jq -r '.tasks | keys | .[]' "$config_file" 2>/dev/null | \
-            fzf --multi --header='Select deno tasks (Tab to select multiple, Enter to confirm):'))
+            fzf --multi --preview="jq -r '.tasks[\"{}\"]' $config_file" \
+            --header='Select deno tasks (Tab to select multiple, Enter to confirm):'))
 
         if [ ${#selected[@]} -gt 0 ]; then
             # Build command by prefixing each task with "deno task" and joining with &&
@@ -29,7 +30,8 @@ run() {
     elif [ -f "package.json" ]; then
         # npm project
         local selected=($(jq -r '.scripts | keys | .[]' package.json 2>/dev/null | \
-            fzf --multi --header='Select npm scripts (Tab to select multiple, Enter to confirm):'))
+            fzf --multi --preview="jq -r '.scripts[\"{}\"]' package.json" \
+            --header='Select npm scripts (Tab to select multiple, Enter to confirm):'))
 
         if [ ${#selected[@]} -gt 0 ]; then
             # Build command by prefixing each script with "npm run" and joining with &&

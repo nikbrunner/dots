@@ -9,11 +9,11 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +20 src/themes/terra/black-atom-terra-fall-night.ts
+badd +35 ~/repos/black-atom-industries/core/src/themes/jpn/black-atom-jpn-koyo-yoru.ts
 argglobal
 %argdel
 $argadd ./
-edit src/themes/terra/black-atom-terra-fall-night.ts
+edit ~/repos/black-atom-industries/core/src/themes/jpn/black-atom-jpn-koyo-yoru.ts
 argglobal
 setlocal keymap=
 setlocal noarabic
@@ -69,7 +69,7 @@ setlocal includeexpr=
 setlocal indentexpr=GetTypescriptIndent()
 setlocal indentkeys=0{,0},0),0],0,,!^F,o,O,e
 setlocal noinfercase
-setlocal iskeyword=@,48-57,_,192-255,$,#
+setlocal iskeyword=@,48-57,_,192-255
 setlocal lhistory=10
 setlocal nolinebreak
 setlocal nolisp
@@ -121,12 +121,12 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 20 - ((19 * winheight(0) + 19) / 39)
+let s:l = 35 - ((13 * winheight(0) + 18) / 36)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 20
-normal! 012|
+keepjumps 35
+normal! 0
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
