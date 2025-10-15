@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+
+# Detect project type and extract scripts
+if [ -f "deno.jsonc" ] || [ -f "deno.json" ]; then
+    # Deno project - prefer deno.jsonc if both exist
+    config_file=$([ -f "deno.jsonc" ] && echo "deno.jsonc" || echo "deno.json")
+
+    selected=$(jq -r '.tasks | keys | .[]' "$config_file" 2>/dev/null | fzf --header='Select a deno task to run:')
+
+    if [ -n "$selected" ]; then
+        deno task "$selected"
+    fi
+elif [ -f "package.json" ]; then
+    # npm project
+    selected=$(jq -r '.scripts | keys | .[]' package.json 2>/dev/null | fzf --header='Select an npm script to run:')
+
+    if [ -n "$selected" ]; then
+        npm run "$selected"
+    fi
+else
+    echo "No package.json or deno.json found in current directory!"
+    exit 1
+fi
