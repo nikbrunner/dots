@@ -198,6 +198,12 @@ end
 ---@type LazyPluginSpec
 return {
     "folke/snacks.nvim",
+    depdencies = {
+        {
+            "mbbill/undotree",
+            cmd = { "UndotreeToggle", "UndotreeShow", "UndotreeHide" },
+        },
+    },
     priority = 1000,
     pin = false,
     lazy = false,
@@ -241,7 +247,7 @@ return {
 
             formatters = {
                 file = {
-                    filename_first = false, -- display filename before the file path
+                    filename_first = true, -- display filename before the file path
                     truncate = 80,
                 },
             },
@@ -343,10 +349,6 @@ return {
 
                 git_status = {
                     preview = "git_status",
-                },
-
-                git_diff = {
-                    -- Uses the diff previewer by default, which we configured above
                 },
 
                 projects = {
