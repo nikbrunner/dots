@@ -317,6 +317,39 @@ function M.sessions()
         require("mini.sessions").select("delete", { force = true })
     end, { desc = "[D]elete" })
 
+    vim.keymap.set("n", "<leader>sc", function()
+        local sessions_dir = vim.fn.stdpath("config") .. "/sessions/"
+        local two_days_ago = os.time() - (2 * 24 * 60 * 60) -- 2 days in seconds
+        local deleted_count = 0
+
+        -- Scan sessions directory
+        local handle = vim.loop.fs_scandir(sessions_dir)
+        if handle then
+            while true do
+                local name, type = vim.loop.fs_scandir_next(handle)
+                if not name then
+                    break
+                end
+
+                if type == "file" then
+                    local filepath = sessions_dir .. name
+                    local stat = vim.loop.fs_stat(filepath)
+
+                    if stat and stat.mtime.sec < two_days_ago then
+                        vim.loop.fs_unlink(filepath)
+                        deleted_count = deleted_count + 1
+                    end
+                end
+            end
+        end
+
+        if deleted_count > 0 then
+            vim.notify(string.format("Cleaned up %d old session(s)", deleted_count), vim.log.levels.INFO)
+        else
+            vim.notify("No old sessions to clean up", vim.log.levels.INFO)
+        end
+    end, { desc = "[C]lean old" })
+
     -- no args, or if the only arg is the current directory `nvim .`
     if vim.fn.argc(-1) == 0 or (vim.fn.argc(-1) == 1 and vim.fn.argv(0) == ".") then
         -- Auto-load existing session on VimEnter event
