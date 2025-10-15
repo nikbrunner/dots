@@ -104,6 +104,7 @@ function M.clue()
             { mode = "n", keys = "s" },
             { mode = "n", keys = "m" },
             { mode = "n", keys = "z" },
+            { mode = "n", keys = "y" },
             { mode = "n", keys = "S" },
             { mode = "n", keys = '"' },
             -- { mode = "n", keys = " " },

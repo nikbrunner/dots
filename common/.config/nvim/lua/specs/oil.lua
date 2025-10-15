@@ -152,6 +152,60 @@ return {
                 end,
                 desc = "DCD - BC Web Client",
             },
+
+            -- Yank file paths
+            ["yn"] = {
+                function()
+                    local entry = require("oil").get_cursor_entry()
+                    if entry then
+                        local name = entry.name
+                        vim.fn.setreg("+", name)
+                        vim.notify("Copied filename: " .. name, vim.log.levels.INFO)
+                    end
+                end,
+                desc = "Yank filename",
+            },
+            ["yr"] = {
+                function()
+                    local oil = require("oil")
+                    local entry = oil.get_cursor_entry()
+                    if entry then
+                        local dir = oil.get_current_dir()
+                        local full_path = dir .. entry.name
+                        local relative_path = vim.fn.fnamemodify(full_path, ":~:.")
+                        vim.fn.setreg("+", relative_path)
+                        vim.notify("Copied relative path: " .. relative_path, vim.log.levels.INFO)
+                    end
+                end,
+                desc = "Yank relative path",
+            },
+            ["yh"] = {
+                function()
+                    local oil = require("oil")
+                    local entry = oil.get_cursor_entry()
+                    if entry then
+                        local dir = oil.get_current_dir()
+                        local full_path = dir .. entry.name
+                        local path_from_home = vim.fn.fnamemodify(full_path, ":~")
+                        vim.fn.setreg("+", path_from_home)
+                        vim.notify("Copied path from home: " .. path_from_home, vim.log.levels.INFO)
+                    end
+                end,
+                desc = "Yank path from home",
+            },
+            ["ya"] = {
+                function()
+                    local oil = require("oil")
+                    local entry = oil.get_cursor_entry()
+                    if entry then
+                        local dir = oil.get_current_dir()
+                        local full_path = dir .. entry.name
+                        vim.fn.setreg("+", full_path)
+                        vim.notify("Copied absolute path: " .. full_path, vim.log.levels.INFO)
+                    end
+                end,
+                desc = "Yank absolute path",
+            },
         },
     },
     keys = {
