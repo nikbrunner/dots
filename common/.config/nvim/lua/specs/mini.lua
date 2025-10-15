@@ -234,9 +234,20 @@ function M.diff()
 end
 
 function M.get_session_name()
-    local name = string.gsub(vim.fn.getcwd(), "/", "_")
+    local cwd = vim.fn.getcwd()
+    local home = vim.fn.expand("~")
+
+    -- Strip home directory to make portable across macOS/Linux
+    local name = cwd
+    if vim.startswith(cwd, home) then
+        name = string.sub(cwd, #home + 2) -- +2 to skip the trailing slash
+    end
+
+    -- Replace remaining slashes with underscores
+    name = string.gsub(name, "/", "_")
+
     local branch = vim.trim(vim.fn.system("git branch --show-current"))
-    branch = string.gsub(branch, "/", "_") -- Add this line
+    branch = string.gsub(branch, "/", "_")
 
     if vim.v.shell_error == 0 and branch ~= "" then
         return name .. "_" .. branch
