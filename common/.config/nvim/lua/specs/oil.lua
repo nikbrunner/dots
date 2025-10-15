@@ -50,6 +50,7 @@ return {
         keymaps = {
             ["~"] = false,
             ["<C-l>"] = false,
+            ["<C-h>"] = false,
             ["<C-s>"] = false,
 
             ["q"] = { "actions.close", mode = "n" },
@@ -57,14 +58,24 @@ return {
             ["<C-v>"] = { "actions.select", opts = { vertical = true, close = true } },
             ["<C-t>"] = { "actions.select", opts = { tab = true, close = true } },
 
-            ["<C-h>"] = { "actions.show_help", mode = "n" },
-
             ["<localleader><localleader>"] = {
                 function()
                     print("TODO: jumpt back to buffer where we started oil from")
                 end,
                 desc = "Back to last buffer",
             },
+
+            ["<leader><leader>"] = {
+                function()
+                    require("snacks.picker").files({
+                        cwd = require("oil").get_current_dir(),
+                    })
+                end,
+                mode = "n",
+                nowait = true,
+                desc = "Find files in the current directory",
+            },
+
             ["<localleader>h"] = {
                 function()
                     require("oil").open(vim.fn.expand("$HOME"))
@@ -83,7 +94,12 @@ return {
                 end,
                 desc = "Repos",
             },
-
+            ["<localleader>l"] = {
+                function()
+                    require("oil").open(vim.fn.expand("$HOME/.local/share/nvim/lazy"))
+                end,
+                desc = "Lazy Packages",
+            },
             ["<localleader>0"] = {
                 function()
                     require("oil").open(vim.fn.expand("$HOME/repos/nikbrunner/dots"))
