@@ -279,9 +279,6 @@ return {
             },
 
             sources = {
-                select = {
-                    layout = { preset = "flow" },
-                },
                 explorer = {
                     replace_netrw = true,
                     git_status = true,
@@ -290,13 +287,6 @@ return {
                     },
                     hidden = true,
                     ignored = true,
-                    layout = {
-                        preset = "float",
-                        preview = {
-                            main = true,
-                            enabled = false,
-                        },
-                    },
                     win = {
                         list = {
                             keys = {
