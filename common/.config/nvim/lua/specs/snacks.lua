@@ -134,6 +134,49 @@ function M.get_window_relative_flow_config()
     }
 end
 
+--- Create a responsive left-bottom-corner layout matching mini.pick's left_buf_corner
+function M.get_left_buf_corner_config()
+    local win = vim.api.nvim_get_current_win()
+    local win_pos = vim.api.nvim_win_get_position(win)
+    local win_width = vim.api.nvim_win_get_width(win)
+    local win_height = vim.api.nvim_win_get_height(win)
+
+    -- Calculate picker dimensions based on current window (matching mini.pick logic)
+    local border_width = 2
+    local picker_height = math.floor(0.25 * win_height)
+
+    local picker_width
+    if win_width >= 165 then
+        picker_width = math.floor(0.5 * vim.o.columns)
+    else
+        picker_width = win_width - border_width
+    end
+
+    -- Position at bottom-left of current window in editor coordinates
+    local col = win_pos[2] -- Left edge of current window
+    local row = win_pos[1] + win_height - picker_height - 1 -- Bottom of current window
+
+    return {
+        preview = "main",
+        layout = {
+            backdrop = false,
+            col = col,
+            width = picker_width,
+            min_width = 50,
+            row = row,
+            height = picker_height,
+            min_height = 10,
+            box = "vertical",
+            border = "solid",
+            title = "{title} {live} {flags}",
+            title_pos = "center",
+            { win = "preview", title = "{preview}", width = 0.6, border = "top" },
+            { win = "input", height = 1, border = "solid" },
+            { win = "list", border = "none" },
+        },
+    }
+end
+
 function M.explorer()
     local explorer_pickers = Snacks.picker.get({ source = "explorer" })
     for _, v in pairs(explorer_pickers) do
@@ -155,18 +198,44 @@ end
 function M.keys()
     -- stylua: ignore start
     return {
+        -- General
+        { "<leader>.",           function() Snacks.picker.resume() end, desc = "Resume Picker" },
+        { "<leader>;",           function() Snacks.picker.commands() end, desc = "Commands" },
+        { "<leader>:",           function() Snacks.picker.command_history() end, desc = "Command History" },
+        { "<leader>'",           function() Snacks.picker.registers() end, desc = "Registers" },
+
         -- App
         { "<leader>aw",          function() Snacks.picker.projects() end, desc = "[W]orkspace" },
         { "<leader>aW",          function() Snacks.picker.zoxide() end, desc = "[W]orkspace (Zoxide)" },
         { "<leader>ad",          M.file_surfer, desc = "[D]ocument" },
+        { "<leader>aa",          function() Snacks.picker.commands() end, desc = "[A]ctions" },
         { "<leader>ag",          function() Snacks.lazygit() end, desc = "[G]raph" },
+        { "<leader>asd",         function() Snacks.picker.files({ cwd = vim.fn.expand("$HOME") .. "/repos/nikbrunner/dots" }) end, desc = "[D]ots" },
+        { "<leader>at",          function() Snacks.picker.colorschemes() end, desc = "[T]hemes" },
+        { "<leader>ar",          function() Snacks.picker.recent() end, desc = "[R]ecent Documents (Anywhere)" },
         { "<leader>af",          function() Snacks.zen.zen() end, desc = "[F]ocus Mode" },
         { "<leader>az",          function() Snacks.zen.zoom() end, desc = "[Z]oom Mode" },
         { "<leader>an",          function() Snacks.notifier.show_history() end, desc = "[N]otifications" },
+        { "<leader>ak",          function() Snacks.picker.keymaps() end, desc = "[K]eymaps" },
+        { "<leader>aj",          function() Snacks.picker.jumps() end, desc = "[J]umps" },
+        { "<leader>ahp",         function() Snacks.picker.help() end, desc = "[P]ages" },
+        { "<leader>ahm",         function() Snacks.picker.man() end, desc = "[M]anuals" },
+        { "<leader>ahh",         function() Snacks.picker.highlights() end, desc = "[H]ightlights" },
+
 
         -- Workspace
+        { "<leader><leader>",    function() Snacks.picker.smart() end, desc = "[D]ocument" },
+        { "<leader>wd",          function() Snacks.picker.smart() end, desc = "[D]ocument" },
+        { "<leader>wr",          function() Snacks.picker.recent({ filter = { cwd = true }}) end, desc = "[R]ecent Documents" },
+        { "<leader>wt",          function() Snacks.picker.grep() end, desc = "[T]ext" },
+        { "<leader>ww",          function() Snacks.picker.grep_word() end, desc = "[W]ord" },
+        { "<leader>wm",          function() Snacks.picker.git_status() end, desc = "[M]odified Documents" },
+        { "<leader>wc",          function() Snacks.picker.git_diff() end, desc = "[C]hanges" },
+        { "<leader>wp",          function() Snacks.picker.diagnostics() end, desc = "[P]roblems" },
+        { "<leader>ws",          function() Snacks.picker.lsp_workspace_symbols() end, desc = "[S]ymbols" },
         { "<leader>wgg",         function() Snacks.lazygit() end, desc = "[G]raph" },
         { "<leader>wgl",         function() Snacks.lazygit.log() end, desc = "[L]Log" },
+        { "<leader>wgb",         function() Snacks.picker.git_branches() end, desc = "[B]ranches" },
         { "<leader>wgr",         function() Snacks.gitbrowse() end, desc = "[R]emote" },
         { "<leader>wgp",         function()
             local current_branch = vim.fn.system("git branch --show-current"):gsub("%s+", "")
@@ -186,7 +255,9 @@ function M.keys()
         end, desc = "[P]R" },
 
         -- Document
-        { "<leader>dgg",          function() Snacks.lazygit.log_file() end, desc = "[G]raph" },
+        { "<leader>dgg",         function() Snacks.lazygit.log_file() end, desc = "[G]raph" },
+        { "<leader>dt",          function() Snacks.picker.lines() end, desc = "[T]ext" },
+        { "<leader>ds",          function() Snacks.picker.lsp_symbols() end, desc = "[S]ymbols" },
         { "<leader>du",          function() Snacks.picker.undo() end, desc = "[U]ndo" },
         { "<leader>da",          M.find_associated_files, desc = "[A]ssociated Documents" },
 
@@ -332,6 +403,7 @@ return {
                         { win = "list", border = "none" },
                     },
                 },
+                left_buf_corner = M.get_left_buf_corner_config(),
                 sidebar_right = {
                     preview = "main",
                     layout = {
@@ -425,7 +497,7 @@ return {
                 ---@type snacks.picker.smart.Config
                 smart = {
                     layout = function()
-                        return M.get_window_relative_flow_config()
+                        return M.get_left_buf_corner_config()
                     end,
                 },
                 ---TODO: filter out empty file
@@ -477,7 +549,7 @@ return {
                 git_status = {
                     preview = "git_status",
                     layout = function()
-                        return M.get_window_relative_flow_config()
+                        return M.get_left_buf_corner_config()
                     end,
                 },
                 git_diff = {
