@@ -28,6 +28,7 @@
         "task::Spawn",
         { "task_name": "Open lazygit", "target": "center" }
       ],
+      ", ,": "file_finder::Toggle",
       ", w d": "file_finder::Toggle",
       ", w r": "tab_switcher::Toggle",
       ", w s": "project_symbols::Toggle",
