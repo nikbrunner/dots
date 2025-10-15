@@ -9,6 +9,7 @@ return {
         auto_close = true,
         auto_refresh = false,
         indent_guides = false,
+        follow = false,
 
         ---@type table<string, trouble.Mode>
         modes = {
@@ -27,7 +28,6 @@ return {
             },
 
             lsp_references = {
-                auto_refresh = true, -- auto refresh when open
                 params = {
                     include_declaration = false,
                 },
