@@ -9,11 +9,11 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +234 common/.config/nvim/lua/specs/mini.lua
+badd +310 ~/repos/nikbrunner/dots/common/.config/nvim/lua/specs/snacks.lua
 argglobal
 %argdel
 $argadd ./
-edit common/.config/nvim/lua/specs/mini.lua
+edit ~/repos/nikbrunner/dots/common/.config/nvim/lua/specs/snacks.lua
 argglobal
 setlocal keymap=
 setlocal noarabic
@@ -55,7 +55,7 @@ setlocal foldcolumn=0
 setlocal foldenable
 setlocal foldexpr=v:lua.vim.treesitter.foldexpr()
 setlocal foldignore=#
-setlocal foldlevel=0
+setlocal foldlevel=99
 setlocal foldmarker={{{,}}}
 setlocal foldmethod=indent
 setlocal foldminlines=1
@@ -124,12 +124,36 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 234 - ((194 * winheight(0) + 16) / 32)
+24
+sil! normal! zo
+24
+sil! normal! zc
+45
+sil! normal! zo
+45
+sil! normal! zc
+128
+sil! normal! zo
+130
+sil! normal! zo
+200
+sil! normal! zo
+206
+sil! normal! zo
+221
+sil! normal! zo
+260
+sil! normal! zo
+307
+sil! normal! zo
+308
+sil! normal! zo
+let s:l = 310 - ((21 * winheight(0) + 22) / 45)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 234
-normal! 0
+keepjumps 310
+normal! 053|
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
@@ -143,6 +167,7 @@ if filereadable(s:sx)
 endif
 let &g:so = s:so_save | let &g:siso = s:siso_save
 set hlsearch
+nohlsearch
 doautoall SessionLoadPost
 unlet SessionLoad
 " vim: set ft=vim :

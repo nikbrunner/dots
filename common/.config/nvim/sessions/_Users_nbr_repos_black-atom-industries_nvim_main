@@ -10,7 +10,7 @@ endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
 badd +37 lua/black-atom/lib/bg.lua
-badd +29 lua/black-atom/highlights/ui.lua
+badd +35 lua/black-atom/highlights/ui.lua
 argglobal
 %argdel
 $argadd ./
@@ -130,7 +130,7 @@ setlocal nowrap
 setlocal wrapmargin=0
 19
 sil! normal! zo
-let s:l = 37 - ((24 * winheight(0) + 23) / 46)
+let s:l = 37 - ((23 * winheight(0) + 22) / 44)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
@@ -157,9 +157,9 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe 'vert 1resize ' . ((&columns * 105 + 158) / 316)
-exe 'vert 2resize ' . ((&columns * 105 + 158) / 316)
-exe 'vert 3resize ' . ((&columns * 104 + 158) / 316)
+exe 'vert 1resize ' . ((&columns * 65 + 97) / 195)
+exe 'vert 2resize ' . ((&columns * 64 + 97) / 195)
+exe 'vert 3resize ' . ((&columns * 64 + 97) / 195)
 argglobal
 balt lua/black-atom/lib/bg.lua
 setlocal keymap=
@@ -277,7 +277,7 @@ sil! normal! zo
 sil! normal! zo
 11
 sil! normal! zo
-let s:l = 98 - ((36 * winheight(0) + 23) / 46)
+let s:l = 98 - ((34 * winheight(0) + 22) / 44)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
@@ -405,11 +405,11 @@ sil! normal! zo
 sil! normal! zo
 11
 sil! normal! zo
-let s:l = 29 - ((28 * winheight(0) + 23) / 46)
+let s:l = 35 - ((33 * winheight(0) + 22) / 44)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 29
+keepjumps 35
 normal! 0
 wincmd w
 argglobal
@@ -529,7 +529,7 @@ setlocal nowrap
 setlocal wrapmargin=0
 19
 sil! normal! zo
-let s:l = 37 - ((35 * winheight(0) + 23) / 46)
+let s:l = 37 - ((33 * winheight(0) + 22) / 44)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
@@ -537,9 +537,9 @@ keepjumps 37
 normal! 03|
 wincmd w
 2wincmd w
-exe 'vert 1resize ' . ((&columns * 105 + 158) / 316)
-exe 'vert 2resize ' . ((&columns * 105 + 158) / 316)
-exe 'vert 3resize ' . ((&columns * 104 + 158) / 316)
+exe 'vert 1resize ' . ((&columns * 65 + 97) / 195)
+exe 'vert 2resize ' . ((&columns * 64 + 97) / 195)
+exe 'vert 3resize ' . ((&columns * 64 + 97) / 195)
 tabnext 2
 set stal=1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
