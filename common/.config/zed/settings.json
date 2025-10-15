@@ -1,4 +1,10 @@
 {
+  "agent_buffer_font_size": 20.0,
+  "agent_ui_font_size": 20.0,
+  "telemetry": {
+    "diagnostics": false,
+    "metrics": false
+  },
   "agent": {
     "use_modifier_to_send": true,
     "default_profile": "write",
@@ -11,7 +17,7 @@
   "hide_mouse": "on_typing_and_movement",
   "icon_theme": "Catppuccin Macchiato",
   "edit_predictions": {
-    "mode": "subtle",
+    "mode": "eager",
     "enabled_in_text_threads": false
   },
   "ssh_connections": [
@@ -27,7 +33,7 @@
   "theme": {
     "mode": "system",
     "dark": "Black Atom — TER ∷ Fall Night",
-    "light": "Black Atom — JPN ∷ Koyo Hiru"
+    "light": "Black Atom — TER ∷ Fall Day"
   },
   "base_keymap": "VSCode",
   "vim_mode": true,
