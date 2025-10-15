@@ -248,7 +248,11 @@ return {
 
             previewers = {
                 git = {
-                    native = true, -- use native (terminal) or Neovim for previewing git diffs and commits
+                    builtin = false, -- use external git command with delta
+                },
+                diff = {
+                    builtin = false, -- use external delta command for diffs
+                    cmd = { "delta" },
                 },
             },
 
@@ -342,8 +346,7 @@ return {
                 },
 
                 git_diff = {
-                    -- TODO: use delta preview
-                    -- preview = "git_status",
+                    -- Uses the diff previewer by default, which we configured above
                 },
 
                 projects = {
