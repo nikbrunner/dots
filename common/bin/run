@@ -1,23 +1,51 @@
-#!/usr/bin/env bash
+#!/usr/bin/env zsh
 
-# Detect project type and extract scripts
-if [ -f "deno.jsonc" ] || [ -f "deno.json" ]; then
-    # Deno project - prefer deno.jsonc if both exist
-    config_file=$([ -f "deno.jsonc" ] && echo "deno.jsonc" || echo "deno.json")
+# This function builds a command string and places it in the zsh line buffer
+# so you can review and execute it yourself (adding it to history)
 
-    selected=$(jq -r '.tasks | keys | .[]' "$config_file" 2>/dev/null | fzf --header='Select a deno task to run:')
+run() {
+    # Detect project type and extract scripts
+    if [ -f "deno.jsonc" ] || [ -f "deno.json" ]; then
+        # Deno project - prefer deno.jsonc if both exist
+        config_file=$([ -f "deno.jsonc" ] && echo "deno.jsonc" || echo "deno.json")
 
-    if [ -n "$selected" ]; then
-        deno task "$selected"
+        # Use --multi to allow Tab selection, store results in array
+        local selected=($(jq -r '.tasks | keys | .[]' "$config_file" 2>/dev/null | \
+            fzf --multi --header='Select deno tasks (Tab to select multiple, Enter to confirm):'))
+
+        if [ ${#selected[@]} -gt 0 ]; then
+            # Build command by prefixing each task with "deno task" and joining with &&
+            local cmd=""
+            for task in "${selected[@]}"; do
+                if [ -z "$cmd" ]; then
+                    cmd="deno task $task"
+                else
+                    cmd="$cmd && deno task $task"
+                fi
+            done
+            # Place command in line buffer for user to execute
+            print -z "$cmd"
+        fi
+    elif [ -f "package.json" ]; then
+        # npm project
+        local selected=($(jq -r '.scripts | keys | .[]' package.json 2>/dev/null | \
+            fzf --multi --header='Select npm scripts (Tab to select multiple, Enter to confirm):'))
+
+        if [ ${#selected[@]} -gt 0 ]; then
+            # Build command by prefixing each script with "npm run" and joining with &&
+            local cmd=""
+            for script in "${selected[@]}"; do
+                if [ -z "$cmd" ]; then
+                    cmd="npm run $script"
+                else
+                    cmd="$cmd && npm run $script"
+                fi
+            done
+            # Place command in line buffer for user to execute
+            print -z "$cmd"
+        fi
+    else
+        echo "No package.json or deno.json found in current directory!"
+        return 1
     fi
-elif [ -f "package.json" ]; then
-    # npm project
-    selected=$(jq -r '.scripts | keys | .[]' package.json 2>/dev/null | fzf --header='Select an npm script to run:')
-
-    if [ -n "$selected" ]; then
-        npm run "$selected"
-    fi
-else
-    echo "No package.json or deno.json found in current directory!"
-    exit 1
-fi
+}

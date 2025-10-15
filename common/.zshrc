@@ -131,6 +131,10 @@ alias gbra='git_branch_switch -a'
 
 alias ,,="fzf -m --preview='bat --color=always {}' --bind 'enter:become(nvim {+}),ctrl-y:execute-silent(echo {} | pbcopy)+abort'"
 
+# Custom Script Functions ================================================
+# Source 'run' script to enable print -z functionality
+[ -f "$HOME/bin/run" ] && source "$HOME/bin/run"
+
 # Misc =================================================================
 # Get IP address (cross-platform)
 case "$OS" in
