@@ -5,6 +5,7 @@ M.config = {
     ---@type BlackAtom.Theme.Key
     colorscheme = "black-atom-terra-fall-night",
     dev_mode = true,
+    date_format = "%Y.%m.%d - %A",
     pathes = {
         repos = vim.fn.expand("~/repos"),
         config = {
