@@ -3,18 +3,33 @@ let s:so_save = &g:so | let s:siso_save = &g:siso | setg so=0 siso=0 | setl so=-
 let v:this_session=expand("<sfile>:p")
 silent only
 silent tabonly
-cd ~/repos/dealercenter-digital/bc-web-client-poc
+cd ~/repos/nikbrunner/notes
 if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +25 ~/repos/dealercenter-digital/bc-web-client-poc/frontend/src/components/Footer.stories.data.ts
+badd +13 ~/repos/nikbrunner/notes/02\ -\ Areas/Log/2025/10-October/2025.10.16\ -\ Thursday.md
 argglobal
 %argdel
 $argadd ./
-edit ~/repos/dealercenter-digital/bc-web-client-poc/frontend/src/components/Footer.stories.data.ts
+edit ~/repos/nikbrunner/notes/02\ -\ Areas/Log/2025/10-October/2025.10.16\ -\ Thursday.md
 argglobal
+let s:cpo_save=&cpo
+set cpo&vim
+nnoremap <buffer>  <Cmd>MarkdownToggleCheckbox
+nnoremap <buffer> ,niT <Cmd>MarkdownInsertTable
+vnoremap <buffer> ,nil s["]()<Cmd>normal! h<Cmd>startinsert<Cmd>lua require("markdown-tools.commands").prompt_and_insert_url()
+vmap <buffer> ,nii s*"*
+vmap <buffer> ,nih s=="==
+vmap <buffer> ,nib s**"**
+vnoremap <buffer> ,niH <Cmd>MarkdownHeader
+nnoremap <buffer> ,niH <Cmd>MarkdownHeader
+xnoremap <buffer> <silent> [[ :exe "normal! gv"|call search('\%(^#\{1,5\}\s\+\S\|^\S.*\n^[=-]\+$\)', "bsW")
+xnoremap <buffer> <silent> ]] :exe "normal! gv"|call search('\%(^#\{1,5\}\s\+\S\|^\S.*\n^[=-]\+$\)', "sW")
+nnoremap <buffer> <C-T> <Cmd>MarkdownToggleCheckbox
+let &cpo=s:cpo_save
+unlet s:cpo_save
 setlocal keymap=
 setlocal noarabic
 setlocal autoindent
@@ -31,8 +46,8 @@ setlocal cinoptions=
 setlocal cinscopedecls=public,protected,private
 setlocal cinwords=if,else,while,do,for,switch
 setlocal colorcolumn=
-setlocal comments=sO:*\ -,mO:*\ \ ,exO:*/,s1:/*,mb:*,ex:*/,://
-setlocal commentstring=//\ %s
+setlocal comments=fb:*,fb:-,fb:+,n:>
+setlocal commentstring=<!--\ %s\ -->
 setlocal complete=.,w,b,u,t
 setlocal completefunc=
 setlocal completeslash=
@@ -45,9 +60,9 @@ setlocal cursorline
 setlocal cursorlineopt=both
 setlocal nodiff
 setlocal eventignorewin=
-setlocal expandtab
-if &filetype != 'typescript'
-setlocal filetype=typescript
+setlocal noexpandtab
+if &filetype != 'markdown'
+setlocal filetype=markdown
 endif
 setlocal fixendofline
 setlocal foldcolumn=0
@@ -61,27 +76,27 @@ setlocal foldminlines=1
 setlocal foldnestmax=20
 setlocal foldtext=
 setlocal formatexpr=v:lua.require'conform'.formatexpr()
-setlocal formatlistpat=^\\s*\\d\\+[\\]:.)}\\t\ ]\\s*
-setlocal formatoptions=jcroql
+setlocal formatlistpat=^\\s*\\d\\+\\.\\s\\+\\|^\\s*[-*+]\\s\\+\\|^\\[^\\ze[^\\]]\\+\\]:\\&^.\\{4\\}
+setlocal formatoptions=jtcqln
 setlocal iminsert=0
 setlocal imsearch=-1
 setlocal includeexpr=
-setlocal indentexpr=GetTypescriptIndent()
-setlocal indentkeys=0{,0},0),0],0,,!^F,o,O,e
+setlocal indentexpr=nvim_treesitter#indent()
+setlocal indentkeys=0{,0},0),0],:,0#,!^F,o,O,e
 setlocal noinfercase
 setlocal iskeyword=@,48-57,_,192-255
 setlocal lhistory=10
-setlocal nolinebreak
+setlocal linebreak
 setlocal nolisp
 setlocal lispoptions=
 setlocal nolist
-setlocal matchpairs=(:),{:},[:]
+setlocal matchpairs=(:),{:},[:],<:>
 setlocal modeline
 setlocal modifiable
 setlocal nrformats=bin,hex
 setlocal number
 setlocal numberwidth=4
-setlocal omnifunc=
+setlocal omnifunc=v:lua.vim.lsp.omnifunc
 setlocal nopreserveindent
 setlocal nopreviewwindow
 setlocal quoteescape=\\
@@ -91,9 +106,9 @@ setlocal norightleft
 setlocal rightleftcmd=search
 setlocal scrollback=-1
 setlocal noscrollbind
-setlocal shiftwidth=2
+setlocal shiftwidth=4
 setlocal signcolumn=yes
-setlocal nosmartindent
+setlocal smartindent
 setlocal nosmoothscroll
 setlocal softtabstop=-1
 setlocal nospell
@@ -102,15 +117,15 @@ setlocal spellfile=
 setlocal spelllang=en_us,de_de
 setlocal spelloptions=noplainbuffer
 setlocal statuscolumn=%!v:lua.require'snacks.statuscolumn'.get()
-setlocal suffixesadd=.ts,.d.ts,.tsx,.js,.jsx,.cjs,.mjs
+setlocal suffixesadd=
 setlocal noswapfile
 setlocal synmaxcol=3000
 if &syntax != ''
 setlocal syntax=
 endif
 setlocal tabstop=4
-setlocal tagfunc=
-setlocal textwidth=0
+setlocal tagfunc=v:lua.vim.lsp.tagfunc
+setlocal textwidth=85
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
@@ -119,13 +134,13 @@ setlocal nowinfixbuf
 setlocal nowinfixheight
 setlocal nowinfixwidth
 setlocal winhighlight=
-setlocal nowrap
+setlocal wrap
 setlocal wrapmargin=0
-let s:l = 25 - ((24 * winheight(0) + 34) / 68)
+let s:l = 13 - ((12 * winheight(0) + 25) / 50)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 25
+keepjumps 13
 normal! 0
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
