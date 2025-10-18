@@ -43,10 +43,12 @@ end
 
 function M.find_associated_files()
     local current_filename = vim.fn.expand("%:t:r")
+    -- Extract base name before any suffixes like .stories, .test, .data, etc.
+    local base_name = current_filename:match("^([^.]+)") or current_filename
     local relative_filepath = vim.fn.fnamemodify(vim.fn.expand("%"), ":~:.") -- Get path relative to cwd
 
     Snacks.picker.files({
-        pattern = current_filename,
+        pattern = base_name,
         exclude = {
             ".git",
             relative_filepath,
@@ -54,8 +56,22 @@ function M.find_associated_files()
     })
 end
 
--- Layouts: ~/.local/share/nvim/lazy/snacks.nvim/lua/snacks/picker/config/layouts.lua
-function M.smart_layout()
+---@type snacks.picker.layout.Config
+M.shared_layout_opts = {
+    preview = "main",
+    layout = {
+        box = "vertical",
+        border = "solid",
+        min_width = 50,
+        min_height = 10,
+        backdrop = false,
+        { win = "preview", title = "{preview}", width = 0.6, border = "top" },
+        { win = "input", height = 1, border = "single" },
+        { win = "list", border = "none" },
+    },
+}
+
+function M.buffer_layout()
     local win = vim.api.nvim_get_current_win()
     local win_pos = vim.api.nvim_win_get_position(win)
     local win_width = vim.api.nvim_win_get_width(win)
@@ -69,40 +85,42 @@ function M.smart_layout()
     local col = win_pos[2] -- Left edge of current window
     local row = win_pos[1] + win_height - picker_height - 1 -- Bottom of current window
 
-    local shared_opts = {
-        preview = "main",
+    return vim.tbl_deep_extend("force", M.shared_layout_opts, {
         layout = {
-            box = "vertical",
-            border = "solid",
-            min_width = 50,
-            min_height = 10,
-            backdrop = false,
-            { win = "preview", title = "{preview}", width = 0.6, border = "top" },
-            { win = "input", height = 1, border = "single" },
-            { win = "list", border = "none" },
+            col = col,
+            width = win_width - border_width,
+            row = row,
+            height = picker_height,
         },
-    }
+    })
+end
+
+-- Layouts: ~/.local/share/nvim/lazy/snacks.nvim/lua/snacks/picker/config/layouts.lua
+function M.smart_layout()
+    local win = vim.api.nvim_get_current_win()
+    local win_pos = vim.api.nvim_win_get_position(win)
+    local win_width = vim.api.nvim_win_get_width(win)
+    local win_height = vim.api.nvim_win_get_height(win)
+
+    -- Calculate picker dimensions based on current window (matching mini.pick logic)
+    -- local border_width = 2
+    local picker_height = math.floor(0.25 * win_height)
+
+    -- Position at bottom-left of current window in editor coordinates
+    -- local col = win_pos[2] -- Left edge of current window
+    local row = win_pos[1] + win_height - picker_height - 1 -- Bottom of current window
 
     if win_width >= 165 then
-        return vim.tbl_deep_extend("force", {
-            preview = "main",
+        return vim.tbl_deep_extend("force", M.shared_layout_opts, {
             layout = {
                 -- If we don't define col, its gets centered
                 width = 0.5,
                 row = row,
                 height = picker_height,
             },
-        }, shared_opts)
+        })
     else
-        return vim.tbl_deep_extend("force", {
-            preview = "main",
-            layout = {
-                col = col,
-                width = win_width - border_width,
-                row = row,
-                height = picker_height,
-            },
-        }, shared_opts)
+        return M.buffer_layout()
     end
 end
 
@@ -185,7 +203,7 @@ function M.keys()
 
         -- Document
         { "<leader>dgg",         function() Snacks.lazygit.log_file() end, desc = "[G]raph" },
-        { "<leader>dt",          function() Snacks.picker.lines() end, desc = "[T]ext" },
+        { "<leader>dt",          function() Snacks.picker.lines({ layout = M.buffer_layout }) end, desc = "[T]ext" },
         { "<leader>ds",          function() Snacks.picker.lsp_symbols() end, desc = "[S]ymbols" },
         { "<leader>du",          function() Snacks.picker.undo() end, desc = "[U]ndo" },
         { "<leader>da",          M.find_associated_files, desc = "[A]ssociated Documents" },
