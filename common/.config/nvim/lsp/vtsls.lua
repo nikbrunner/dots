@@ -5,7 +5,7 @@
 local shared_jsts_settings = {
     suggest = { completeFunctionCalls = true },
     preferences = {
-        importModuleSpecifier = "relative",
+        importModuleSpecifier = "auto",
         includePackageJsonAutoImports = "off",
     },
     inlayHints = {
