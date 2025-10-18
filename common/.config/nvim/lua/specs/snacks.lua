@@ -1,25 +1,42 @@
 ---@diagnostic disable: assign-type-mismatch, missing-fields
 local M = {}
 
-function EditLineFromLazygit(file_path, line)
-    local path = vim.fn.expand("%:p")
-    if path == file_path then
-        vim.cmd(tostring(line))
-    else
+-- ============================================================================
+-- Lazygit Integration Functions
+-- ============================================================================
+
+---Edit a file at a specific line from Lazygit
+---@param file_path string The file path to edit
+---@param line number The line number to jump to
+---@return nil
+local function edit_line_from_lazygit(file_path, line)
+    local current_path = vim.fn.expand("%:p")
+    if current_path ~= file_path then
         vim.cmd("e " .. file_path)
-        vim.cmd(tostring(line))
+    end
+    vim.cmd(tostring(line))
+end
+
+---Edit a file from Lazygit
+---@param file_path string The file path to edit
+---@return nil
+local function edit_from_lazygit(file_path)
+    local current_path = vim.fn.expand("%:p")
+    if current_path ~= file_path then
+        vim.cmd("e " .. file_path)
     end
 end
 
-function EditFromLazygit(file_path)
-    local path = vim.fn.expand("%:p")
-    if path == file_path then
-        return
-    else
-        vim.cmd("e " .. file_path)
-    end
-end
+-- Make functions globally available for Lazygit integration
+_G.EditLineFromLazygit = edit_line_from_lazygit
+_G.EditFromLazygit = edit_from_lazygit
 
+-- ============================================================================
+-- Custom Picker Functions
+-- ============================================================================
+
+---Open a zoxide picker, then open files picker in the selected directory
+---@return nil
 function M.file_surfer()
     Snacks.picker.zoxide({
         confirm = function(picker, item)
@@ -28,24 +45,24 @@ function M.file_surfer()
             picker:close()
             vim.fn.chdir(cwd)
 
-            if item then
-                vim.schedule(function()
-                    Snacks.picker.files({
-                        filter = {
-                            cwd = cwd,
-                        },
-                    })
-                end)
-            end
+            vim.schedule(function()
+                Snacks.picker.files({
+                    filter = {
+                        cwd = cwd,
+                    },
+                })
+            end)
         end,
     })
 end
 
+---Find files associated with the current file (same base name)
+---Excludes suffixes like .stories, .test, .data, etc.
+---@return nil
 function M.find_associated_files()
     local current_filename = vim.fn.expand("%:t:r")
-    -- Extract base name before any suffixes like .stories, .test, .data, etc.
     local base_name = current_filename:match("^([^.]+)") or current_filename
-    local relative_filepath = vim.fn.fnamemodify(vim.fn.expand("%"), ":~:.") -- Get path relative to cwd
+    local relative_filepath = vim.fn.fnamemodify(vim.fn.expand("%"), ":~:.")
 
     Snacks.picker.files({
         pattern = base_name,
@@ -56,6 +73,11 @@ function M.find_associated_files()
     })
 end
 
+-- ============================================================================
+-- Layout Configurations
+-- ============================================================================
+
+---Shared layout options for pickers
 ---@type snacks.picker.layout.Config
 M.shared_layout_opts = {
     preview = "main",
@@ -71,19 +93,19 @@ M.shared_layout_opts = {
     },
 }
 
+---Get layout configuration for buffer-specific picker
+---Positions picker at bottom-left of current window
+---@return snacks.picker.layout.Config
 function M.buffer_layout()
     local win = vim.api.nvim_get_current_win()
     local win_pos = vim.api.nvim_win_get_position(win)
     local win_width = vim.api.nvim_win_get_width(win)
     local win_height = vim.api.nvim_win_get_height(win)
 
-    -- Calculate picker dimensions based on current window (matching mini.pick logic)
     local border_width = 2
     local picker_height = math.floor(0.25 * win_height)
-
-    -- Position at bottom-left of current window in editor coordinates
-    local col = win_pos[2] -- Left edge of current window
-    local row = win_pos[1] + win_height - picker_height - 1 -- Bottom of current window
+    local col = win_pos[2]
+    local row = win_pos[1] + win_height - picker_height - 1
 
     return vim.tbl_deep_extend("force", M.shared_layout_opts, {
         layout = {
@@ -95,25 +117,21 @@ function M.buffer_layout()
     })
 end
 
--- Layouts: ~/.local/share/nvim/lazy/snacks.nvim/lua/snacks/picker/config/layouts.lua
+---Get smart layout that adapts based on window width
+---Uses centered layout for wide windows (>= 165 cols), buffer layout otherwise
+---@return snacks.picker.layout.Config
 function M.smart_layout()
     local win = vim.api.nvim_get_current_win()
     local win_pos = vim.api.nvim_win_get_position(win)
     local win_width = vim.api.nvim_win_get_width(win)
     local win_height = vim.api.nvim_win_get_height(win)
 
-    -- Calculate picker dimensions based on current window (matching mini.pick logic)
-    -- local border_width = 2
     local picker_height = math.floor(0.25 * win_height)
-
-    -- Position at bottom-left of current window in editor coordinates
-    -- local col = win_pos[2] -- Left edge of current window
-    local row = win_pos[1] + win_height - picker_height - 1 -- Bottom of current window
+    local row = win_pos[1] + win_height - picker_height - 1
 
     if win_width >= 165 then
         return vim.tbl_deep_extend("force", M.shared_layout_opts, {
             layout = {
-                -- If we don't define col, its gets centered
                 width = 0.5,
                 row = row,
                 height = picker_height,
@@ -124,13 +142,19 @@ function M.smart_layout()
     end
 end
 
+-- ============================================================================
+-- Explorer Functions
+-- ============================================================================
+
+---Toggle or focus the file explorer
+---@return nil
 function M.explorer()
     local explorer_pickers = Snacks.picker.get({ source = "explorer" })
-    for _, v in pairs(explorer_pickers) do
-        if v:is_focused() then
-            v:close()
+    for _, picker in pairs(explorer_pickers) do
+        if picker:is_focused() then
+            picker:close()
         else
-            v:focus()
+            picker:focus()
         end
     end
     if #explorer_pickers == 0 then
@@ -138,10 +162,15 @@ function M.explorer()
     end
 end
 
---- https://github.com/folke/snacks.nvim/blob/main/lua/snacks/picker/config/defaults.lua
---- https://github.com/folke/snacks.nvim/blob/main/lua/snacks/picker/config/sources.lua
---- https://github.com/kaiphat/dotfiles/blob/master/nvim/lua/plugins/snacks.lua
+-- ============================================================================
+-- Keymaps
+-- ============================================================================
 
+---Get keymaps configuration for Snacks
+---@return table[]
+---@see https://github.com/folke/snacks.nvim/blob/main/lua/snacks/picker/config/defaults.lua
+---@see https://github.com/folke/snacks.nvim/blob/main/lua/snacks/picker/config/sources.lua
+---@see https://github.com/kaiphat/dotfiles/blob/master/nvim/lua/plugins/snacks.lua
 function M.keys()
     -- stylua: ignore start
     return {
@@ -212,6 +241,10 @@ function M.keys()
     }
     -- stylua: ignore end
 end
+
+-- ============================================================================
+-- Plugin Specification
+-- ============================================================================
 
 ---@type LazyPluginSpec
 return {
@@ -458,18 +491,6 @@ return {
     keys = M.keys(),
 
     init = function()
-        -- vim.api.nvim_create_autocmd("BufEnter", {
-        --     group = vim.api.nvim_create_augroup("snacks_explorer_start_directory", { clear = true }),
-        --     desc = "Start Snacks Explorer with directory",
-        --     once = true,
-        --     callback = function()
-        --         local dir = vim.fn.argv(0) --[[@as string]]
-        --         if dir ~= "" and vim.fn.isdirectory(dir) == 1 then
-        --             Snacks.picker.explorer({ cwd = dir })
-        --         end
-        --     end,
-        -- })
-
         vim.api.nvim_create_autocmd("User", {
             pattern = "VeryLazy",
             callback = function()
