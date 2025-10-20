@@ -97,7 +97,7 @@ vim.cmd("cabbrev Wq wq")
 vim.cmd("cabbrev Wa wa")
 
 -- Insert abbreviations for todays date (using expression register)
-vim.cmd('iabbrev dts <C-r>=strftime("%Y.%m.%d - %A")<CR>')
+vim.cmd('iabbrev dtd <C-r>=strftime("%Y.%m.%d - %A")<CR>')
 vim.cmd('iabbrev dtm <C-r>=strftime("%Y.%m - %B")<CR>')
 vim.cmd('iabbrev dtt <C-r>=strftime("%H:%M")<CR>')
 
