@@ -410,7 +410,7 @@ return {
 
         zen = {
             toggles = {
-                dim = false,
+                dim = true,
                 git_signs = false,
                 mini_diff_signs = false,
                 diagnostics = true,
@@ -461,13 +461,12 @@ return {
                 },
             },
             zen = {
-                width = 0.65,
+                width = 100,
                 backdrop = {
                     transparent = true,
-                    blend = 20,
+                    blend = 10,
                 },
                 wo = {
-                    number = false,
                     scrolloff = 999,
                 },
                 keys = {
