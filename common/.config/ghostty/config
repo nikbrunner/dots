@@ -10,7 +10,7 @@ theme = black-atom-terra-fall-night.conf
 # background-opacity                 = 0.9
 # background-blur                    = 65
 
-font-family = Iosevka T-84 Sans
+font-family = Iosevka T-84 Slab
 
 font-size                         = 16
 # font-thicken = true
