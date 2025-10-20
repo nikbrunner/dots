@@ -3,17 +3,17 @@ let s:so_save = &g:so | let s:siso_save = &g:siso | setg so=0 siso=0 | setl so=-
 let v:this_session=expand("<sfile>:p")
 silent only
 silent tabonly
-cd ~/repos/nikbrunner/notes
+cd ~/repos/nikbrunner/scarth-johnson
 if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +25 ~/repos/nikbrunner/notes/02\ -\ Areas/Log/2025/2025.10\ -\ October.md
+badd +412 ~/repos/nikbrunner/scarth-johnson/book_1/outline-v2.md
 argglobal
 %argdel
 $argadd ./
-edit ~/repos/nikbrunner/notes/02\ -\ Areas/Log/2025/2025.10\ -\ October.md
+edit ~/repos/nikbrunner/scarth-johnson/book_1/outline-v2.md
 argglobal
 let s:cpo_save=&cpo
 set cpo&vim
@@ -60,7 +60,7 @@ setlocal cursorline
 setlocal cursorlineopt=both
 setlocal nodiff
 setlocal eventignorewin=
-setlocal noexpandtab
+setlocal expandtab
 if &filetype != 'markdown'
 setlocal filetype=markdown
 endif
@@ -86,7 +86,7 @@ setlocal indentkeys=0{,0},0),0],:,0#,!^F,o,O,e
 setlocal noinfercase
 setlocal iskeyword=@,48-57,_,192-255
 setlocal lhistory=10
-setlocal nolinebreak
+setlocal linebreak
 setlocal nolisp
 setlocal lispoptions=
 setlocal nolist
@@ -106,7 +106,7 @@ setlocal norightleft
 setlocal rightleftcmd=search
 setlocal scrollback=-1
 setlocal noscrollbind
-setlocal shiftwidth=4
+setlocal shiftwidth=2
 setlocal signcolumn=yes
 setlocal smartindent
 setlocal nosmoothscroll
@@ -125,7 +125,7 @@ setlocal syntax=
 endif
 setlocal tabstop=4
 setlocal tagfunc=v:lua.vim.lsp.tagfunc
-setlocal textwidth=85
+setlocal textwidth=80
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
@@ -134,14 +134,18 @@ setlocal nowinfixbuf
 setlocal nowinfixheight
 setlocal nowinfixwidth
 setlocal winhighlight=
-setlocal nowrap
+setlocal wrap
 setlocal wrapmargin=0
-let s:l = 24 - ((23 * winheight(0) + 15) / 30)
+158
+sil! normal! zo
+158
+sil! normal! zo
+let s:l = 412 - ((25 * winheight(0) + 15) / 30)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 24
-normal! 010|
+keepjumps 412
+normal! 0
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf

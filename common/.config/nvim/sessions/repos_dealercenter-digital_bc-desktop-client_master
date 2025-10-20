@@ -9,10 +9,10 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +43 ~/repos/dealercenter-digital/bc-desktop-client/scripts/storybook/preview.ts
+badd +45 ~/repos/dealercenter-digital/bc-desktop-client/scripts/storybook/preview.ts
 argglobal
 %argdel
-$argadd .
+$argadd ./
 edit ~/repos/dealercenter-digital/bc-desktop-client/scripts/storybook/preview.ts
 let s:save_splitbelow = &splitbelow
 let s:save_splitright = &splitright

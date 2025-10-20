@@ -10,20 +10,17 @@ endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
 badd +77 ~/repos/dealercenter-digital/bc-web-client-poc/frontend/src/partials/account/OrderHistoryItem.stories.data.ts
-badd +130 src/partials/account/OrderHistoryItem.tsx
+badd +25 ~/repos/dealercenter-digital/bc-web-client-poc/frontend/src/components/Footer.stories.data.ts
 argglobal
 %argdel
 $argadd ./
-edit src/partials/account/OrderHistoryItem.tsx
+edit ~/repos/dealercenter-digital/bc-web-client-poc/frontend/src/components/Footer.stories.data.ts
 let s:save_splitbelow = &splitbelow
 let s:save_splitright = &splitright
 set splitbelow splitright
 wincmd _ | wincmd |
 vsplit
-wincmd _ | wincmd |
-vsplit
-2wincmd h
-wincmd w
+1wincmd h
 wincmd w
 let &splitbelow = s:save_splitbelow
 let &splitright = s:save_splitright
@@ -34,9 +31,8 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe 'vert 1resize ' . ((&columns * 116 + 174) / 349)
-exe 'vert 2resize ' . ((&columns * 116 + 174) / 349)
-exe 'vert 3resize ' . ((&columns * 115 + 174) / 349)
+exe 'vert 1resize ' . ((&columns * 144 + 144) / 288)
+exe 'vert 2resize ' . ((&columns * 143 + 144) / 288)
 argglobal
 setlocal keymap=
 setlocal noarabic
@@ -69,8 +65,8 @@ setlocal cursorlineopt=both
 setlocal nodiff
 setlocal eventignorewin=
 setlocal expandtab
-if &filetype != 'typescriptreact'
-setlocal filetype=typescriptreact
+if &filetype != 'typescript'
+setlocal filetype=typescript
 endif
 setlocal fixendofline
 setlocal foldcolumn=0
@@ -92,7 +88,7 @@ setlocal includeexpr=
 setlocal indentexpr=GetTypescriptIndent()
 setlocal indentkeys=0{,0},0),0],0,,!^F,o,O,e
 setlocal noinfercase
-setlocal iskeyword=@,48-57,_,192-255,#,$
+setlocal iskeyword=@,48-57,_,192-255
 setlocal lhistory=10
 setlocal nolinebreak
 setlocal nolisp
@@ -144,177 +140,18 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-22
-sil! normal! zo
-37
-sil! normal! zo
-38
-sil! normal! zo
-92
-sil! normal! zo
-93
-sil! normal! zo
-94
-sil! normal! zo
-95
-sil! normal! zo
-99
-sil! normal! zo
-100
-sil! normal! zo
-105
-sil! normal! zo
-let s:l = 130 - ((25 * winheight(0) + 26) / 52)
+let s:l = 25 - ((24 * winheight(0) + 21) / 43)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 130
-normal! $
-wincmd w
-argglobal
-if bufexists(fnamemodify("src/partials/account/OrderHistoryItem.tsx", ":p")) | buffer src/partials/account/OrderHistoryItem.tsx | else | edit src/partials/account/OrderHistoryItem.tsx | endif
-if &buftype ==# 'terminal'
-  silent file src/partials/account/OrderHistoryItem.tsx
-endif
-setlocal keymap=
-setlocal noarabic
-setlocal autoindent
-setlocal nobinary
-setlocal nobreakindent
-setlocal breakindentopt=
-setlocal bufhidden=
-setlocal buflisted
-setlocal buftype=
-setlocal busy=0
-setlocal nocindent
-setlocal cinkeys=0{,0},0),0],:,0#,!^F,o,O,e
-setlocal cinoptions=
-setlocal cinscopedecls=public,protected,private
-setlocal cinwords=if,else,while,do,for,switch
-setlocal colorcolumn=
-setlocal comments=sO:*\ -,mO:*\ \ ,exO:*/,s1:/*,mb:*,ex:*/,://
-setlocal commentstring=//\ %s
-setlocal complete=.,w,b,u,t
-setlocal completefunc=
-setlocal completeslash=
-setlocal concealcursor=
-setlocal conceallevel=0
-setlocal nocopyindent
-setlocal nocursorbind
-setlocal nocursorcolumn
-setlocal cursorline
-setlocal cursorlineopt=both
-setlocal nodiff
-setlocal eventignorewin=
-setlocal expandtab
-if &filetype != 'typescriptreact'
-setlocal filetype=typescriptreact
-endif
-setlocal fixendofline
-setlocal foldcolumn=0
-setlocal foldenable
-setlocal foldexpr=v:lua.vim.treesitter.foldexpr()
-setlocal foldignore=#
-setlocal foldlevel=99
-setlocal foldmarker={{{,}}}
-setlocal foldmethod=indent
-setlocal foldminlines=1
-setlocal foldnestmax=20
-setlocal foldtext=
-setlocal formatexpr=v:lua.require'conform'.formatexpr()
-setlocal formatlistpat=^\\s*\\d\\+[\\]:.)}\\t\ ]\\s*
-setlocal formatoptions=jcroql
-setlocal iminsert=0
-setlocal imsearch=-1
-setlocal includeexpr=
-setlocal indentexpr=GetTypescriptIndent()
-setlocal indentkeys=0{,0},0),0],0,,!^F,o,O,e
-setlocal noinfercase
-setlocal iskeyword=@,48-57,_,192-255,#,$
-setlocal lhistory=10
-setlocal nolinebreak
-setlocal nolisp
-setlocal lispoptions=
-setlocal nolist
-setlocal matchpairs=(:),{:},[:]
-setlocal modeline
-setlocal modifiable
-setlocal nrformats=bin,hex
-setlocal number
-setlocal numberwidth=4
-setlocal omnifunc=v:lua.vim.lsp.omnifunc
-setlocal nopreserveindent
-setlocal nopreviewwindow
-setlocal quoteescape=\\
-setlocal noreadonly
-setlocal relativenumber
-setlocal norightleft
-setlocal rightleftcmd=search
-setlocal scrollback=-1
-setlocal noscrollbind
-setlocal shiftwidth=2
-setlocal signcolumn=yes
-setlocal nosmartindent
-setlocal nosmoothscroll
-setlocal softtabstop=-1
-setlocal nospell
-setlocal spellcapcheck=[.?!]\\_[\\])'\"\\t\ ]\\+
-setlocal spellfile=
-setlocal spelllang=en_us,de_de
-setlocal spelloptions=noplainbuffer
-setlocal statuscolumn=%!v:lua.require'snacks.statuscolumn'.get()
-setlocal suffixesadd=.ts,.d.ts,.tsx,.js,.jsx,.cjs,.mjs
-setlocal noswapfile
-setlocal synmaxcol=3000
-if &syntax != ''
-setlocal syntax=
-endif
-setlocal tabstop=4
-setlocal tagfunc=v:lua.vim.lsp.tagfunc
-setlocal textwidth=0
-setlocal undofile
-setlocal varsofttabstop=
-setlocal vartabstop=
-setlocal winblend=0
-setlocal nowinfixbuf
-setlocal nowinfixheight
-setlocal nowinfixwidth
-setlocal winhighlight=
-setlocal nowrap
-setlocal wrapmargin=0
-22
-sil! normal! zo
-37
-sil! normal! zo
-38
-sil! normal! zo
-92
-sil! normal! zo
-93
-sil! normal! zo
-94
-sil! normal! zo
-95
-sil! normal! zo
-99
-sil! normal! zo
-100
-sil! normal! zo
-105
-sil! normal! zo
-let s:l = 105 - ((25 * winheight(0) + 26) / 52)
-if s:l < 1 | let s:l = 1 | endif
-keepjumps exe s:l
-normal! zt
-keepjumps 105
-normal! 022|
+keepjumps 25
+normal! 0
 wincmd w
 argglobal
 if bufexists(fnamemodify("~/repos/dealercenter-digital/bc-web-client-poc/frontend/src/partials/account/OrderHistoryItem.stories.data.ts", ":p")) | buffer ~/repos/dealercenter-digital/bc-web-client-poc/frontend/src/partials/account/OrderHistoryItem.stories.data.ts | else | edit ~/repos/dealercenter-digital/bc-web-client-poc/frontend/src/partials/account/OrderHistoryItem.stories.data.ts | endif
 if &buftype ==# 'terminal'
   silent file ~/repos/dealercenter-digital/bc-web-client-poc/frontend/src/partials/account/OrderHistoryItem.stories.data.ts
 endif
-balt src/partials/account/OrderHistoryItem.tsx
 setlocal keymap=
 setlocal noarabic
 setlocal autoindent
@@ -533,16 +370,15 @@ sil! normal! zo
 sil! normal! zo
 180
 sil! normal! zo
-let s:l = 84 - ((34 * winheight(0) + 26) / 52)
+let s:l = 84 - ((21 * winheight(0) + 21) / 43)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
 keepjumps 84
 normal! 026|
 wincmd w
-exe 'vert 1resize ' . ((&columns * 116 + 174) / 349)
-exe 'vert 2resize ' . ((&columns * 116 + 174) / 349)
-exe 'vert 3resize ' . ((&columns * 115 + 174) / 349)
+exe 'vert 1resize ' . ((&columns * 144 + 144) / 288)
+exe 'vert 2resize ' . ((&columns * 143 + 144) / 288)
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
