@@ -466,6 +466,76 @@ function M.git()
     })
 end
 
+function M.snippets()
+    require("mini.snippets").setup({
+        snippets = {
+            -- Date/time snippets
+            {
+                prefix = "dtd",
+                body = "${CURRENT_YEAR}.${CURRENT_MONTH}.${CURRENT_DATE} - ${CURRENT_DAY_NAME}",
+                desc = "Date (YYYY.MM.DD - Day)",
+            },
+            {
+                prefix = "dtdw",
+                body = "[[${CURRENT_YEAR}.${CURRENT_MONTH}.${CURRENT_DATE} - ${CURRENT_DAY_NAME}]]",
+                desc = "Date with wikilink (YYYY.MM.DD - Day)",
+            },
+            {
+                prefix = "dtm",
+                body = "${CURRENT_YEAR}.${CURRENT_MONTH} - ${CURRENT_MONTH_NAME}",
+                desc = "Month (YYYY.MM - Month)",
+            },
+            {
+                prefix = "dtmw",
+                body = "[[${CURRENT_YEAR}.${CURRENT_MONTH} - ${CURRENT_MONTH_NAME}]]",
+                desc = "Month with wikilink (YYYY.MM - Month)",
+            },
+            {
+                prefix = "dtt",
+                body = "${CURRENT_HOUR}:${CURRENT_MINUTE}",
+                desc = "Time (HH:MM)",
+            },
+
+            -- Markdown snippets
+            {
+                prefix = "mdc",
+                body = "<!-- $1 -->$0",
+                desc = "Markdown HTML comment",
+            },
+            {
+                prefix = "mdcode",
+                body = { "```$1", "$0", "```" },
+                desc = "Markdown code block",
+            },
+            {
+                prefix = "mdcodejs",
+                body = { "```javascript", "$0", "```" },
+                desc = "Markdown JavaScript code block",
+            },
+            {
+                prefix = "mdcodets",
+                body = { "```typescript", "$0", "```" },
+                desc = "Markdown TypeScript code block",
+            },
+            {
+                prefix = "mdcodelua",
+                body = { "```lua", "$0", "```" },
+                desc = "Markdown Lua code block",
+            },
+            {
+                prefix = "mdcodebash",
+                body = { "```bash", "$0", "```" },
+                desc = "Markdown Bash code block",
+            },
+        },
+        mappings = {
+            expand = "<C-j>",
+            jump_next = "<C-l>",
+            jump_prev = "<C-h>",
+        },
+    })
+end
+
 ---@type LazyPluginSpec
 return {
     "nvim-mini/mini.nvim",
@@ -483,6 +553,11 @@ return {
         M.clue()
         M.test()
         M.sessions()
+        M.snippets()
+
+        -- Start LSP server to show snippets in completion
+        require("mini.snippets").start_lsp_server()
+
         -- M.hues()
     end,
 }
