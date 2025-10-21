@@ -165,6 +165,14 @@ esac
 bindkey '^y' autosuggest-accept
 ZSH_AUTOSUGGEST_STRATEGY=(history completion)
 
+# Edit command line in $EDITOR
+autoload -Uz edit-command-line
+zle -N edit-command-line
+bindkey '^e' edit-command-line
+
+# Push current line to buffer, run another command, then restore
+bindkey '^g' push-line-or-edit
+
 # Atuin
 . "$HOME/.atuin/bin/env"
 eval "$(atuin init zsh)"
