@@ -107,9 +107,6 @@ history_filter = [
   "^ytdl",
   "^ytalbum",
   "^e",
-  "^nvim",
-  "^vim",
-  "^cd",
 ]
 
 ## prevent commands run with cwd matching any of these regexes from being written
