@@ -1,0 +1,32 @@
+{
+  "Date": {
+    "prefix": "today",
+    "body": "${CURRENT_YEAR}.${CURRENT_MONTH}.${CURRENT_DATE} - ${CURRENT_DAY_NAME}",
+    "description": "Date (YYYY.MM.DD - Day)"
+  },
+  "Date with wikilink": {
+    "prefix": "today-link",
+    "body": "[[${CURRENT_YEAR}.${CURRENT_MONTH}.${CURRENT_DATE} - ${CURRENT_DAY_NAME}]]",
+    "description": "Date with wikilink (YYYY.MM.DD - Day)"
+  },
+  "Date with header": {
+    "prefix": "today-header",
+    "body": "## ${CURRENT_YEAR}.${CURRENT_MONTH}.${CURRENT_DATE} - ${CURRENT_DAY_NAME}",
+    "description": "Date with wikilink (YYYY.MM.DD - Day)"
+  },
+  "Month": {
+    "prefix": "month",
+    "body": "${CURRENT_YEAR}.${CURRENT_MONTH} - ${CURRENT_MONTH_NAME}",
+    "description": "Month (YYYY.MM - Month)"
+  },
+  "Month with wikilink": {
+    "prefix": "month-link",
+    "body": "[[${CURRENT_YEAR}.${CURRENT_MONTH} - ${CURRENT_MONTH_NAME}]]",
+    "description": "Month with wikilink (YYYY.MM - Month)"
+  },
+  "Time": {
+    "prefix": "time",
+    "body": "${CURRENT_HOUR}:${CURRENT_MINUTE}",
+    "description": "Time (HH:MM)"
+  }
+}

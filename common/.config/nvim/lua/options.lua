@@ -96,11 +96,6 @@ vim.cmd("cabbrev Wqa wqa")
 vim.cmd("cabbrev Wq wq")
 vim.cmd("cabbrev Wa wa")
 
--- Insert abbreviations for todays date (using expression register)
-vim.cmd('iabbrev dtd <C-r>=strftime("%Y.%m.%d - %A")<CR>')
-vim.cmd('iabbrev dtm <C-r>=strftime("%Y.%m - %B")<CR>')
-vim.cmd('iabbrev dtt <C-r>=strftime("%H:%M")<CR>')
-
 vim.filetype.add({
     http = "http",
     -- I only needed this because barbecue vomits if i vist this file, because it thinks its lua

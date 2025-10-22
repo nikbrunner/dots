@@ -1,0 +1,32 @@
+{
+  "HTML Comment": {
+    "prefix": "mdc",
+    "body": "<!-- $1 -->$0",
+    "description": "Markdown HTML comment"
+  },
+  "Code block": {
+    "prefix": "mdcode",
+    "body": ["```$1", "$0", "```"],
+    "description": "Markdown code block"
+  },
+  "JavaScript code block": {
+    "prefix": "mdcodejs",
+    "body": ["```javascript", "$0", "```"],
+    "description": "Markdown JavaScript code block"
+  },
+  "TypeScript code block": {
+    "prefix": "mdcodets",
+    "body": ["```typescript", "$0", "```"],
+    "description": "Markdown TypeScript code block"
+  },
+  "Lua code block": {
+    "prefix": "mdcodelua",
+    "body": ["```lua", "$0", "```"],
+    "description": "Markdown Lua code block"
+  },
+  "Bash code block": {
+    "prefix": "mdcodebash",
+    "body": ["```bash", "$0", "```"],
+    "description": "Markdown Bash code block"
+  }
+}
