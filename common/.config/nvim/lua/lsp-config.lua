@@ -62,11 +62,6 @@ vim.api.nvim_create_autocmd("LspAttach", {
     group = vim.api.nvim_create_augroup("UserLspConfig", {}),
     callback = function(ev)
         local lib = require("lib.lsp")
-        -- Enable completion triggered by <c-x><c-o>
-        vim.bo[ev.buf].omnifunc = "v:lua.vim.lsp.omnifunc"
-
-        -- Enable native inline completion
-        vim.lsp.inline_completion.enable()
 
         -- LSP Diagnostics
         vim.keymap.set("n", "sp", function()
@@ -91,10 +86,13 @@ vim.api.nvim_create_autocmd("LspAttach", {
         vim.keymap.set("n", "sV", lib.goto_split_definition, { buffer = ev.buf, desc = "[D]efinition in Split" })
         vim.keymap.set("n", "sT", lib.goto_tab_definition, { buffer = ev.buf, desc = "[D]efinition in Tab" })
 
-        vim.keymap.set("i", "<Tab>", function()
-            if not vim.lsp.inline_completion.get() then
-                return "<Tab>"
-            end
-        end, { expr = true, desc = "Accept the current inline completion" })
+        -- Enable native inline completion
+        -- vim.lsp.inline_completion.enable()
+
+        -- vim.keymap.set("i", "<Tab>", function()
+        --     if not vim.lsp.inline_completion.get() then
+        --         return "<Tab>"
+        --     end
+        -- end, { expr = true, desc = "Accept the current inline completion" })
     end,
 })
