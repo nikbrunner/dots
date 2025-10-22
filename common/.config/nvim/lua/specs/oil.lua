@@ -58,13 +58,6 @@ return {
             ["<C-v>"] = { "actions.select", opts = { vertical = true, close = true } },
             ["<C-t>"] = { "actions.select", opts = { tab = true, close = true } },
 
-            ["<localleader><localleader>"] = {
-                function()
-                    print("TODO: jumpt back to buffer where we started oil from")
-                end,
-                desc = "Back to last buffer",
-            },
-
             ["<leader><leader>"] = {
                 function()
                     require("snacks.picker").files({
@@ -76,6 +69,12 @@ return {
                 desc = "Find files in the current directory",
             },
 
+            ["<localleader><localleader>"] = {
+                function()
+                    require("oil.actions").cd.callback()
+                end,
+                desc = "CD to current directory",
+            },
             ["<localleader>h"] = {
                 function()
                     require("oil").open(vim.fn.expand("$HOME"))
@@ -145,6 +144,12 @@ return {
                     require("oil").open(vim.fn.expand("$HOME/repos/dealercenter-digital/bc-desktop-client"))
                 end,
                 desc = "DCD - BC Desktop Client",
+            },
+            ["<localleader>8"] = {
+                function()
+                    require("oil").open(vim.fn.expand("$HOME/repos/dealercenter-digital/bc-desktop-tools"))
+                end,
+                desc = "DCD - BC Desktop Tools",
             },
             ["<localleader>9"] = {
                 function()
