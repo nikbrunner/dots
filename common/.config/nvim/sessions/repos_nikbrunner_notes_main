@@ -9,7 +9,7 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +25 ~/repos/nikbrunner/notes/02\ -\ Areas/Log/2025/2025.10\ -\ October.md
+badd +41 ~/repos/nikbrunner/notes/02\ -\ Areas/Log/2025/2025.10\ -\ October.md
 argglobal
 %argdel
 $argadd ./
@@ -136,12 +136,12 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 24 - ((23 * winheight(0) + 15) / 30)
+let s:l = 41 - ((23 * winheight(0) + 23) / 47)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 24
-normal! 010|
+keepjumps 41
+normal! 0
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf

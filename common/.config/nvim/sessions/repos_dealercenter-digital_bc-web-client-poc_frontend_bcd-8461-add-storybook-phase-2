@@ -9,30 +9,11 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +77 ~/repos/dealercenter-digital/bc-web-client-poc/frontend/src/partials/account/OrderHistoryItem.stories.data.ts
-badd +25 ~/repos/dealercenter-digital/bc-web-client-poc/frontend/src/components/Footer.stories.data.ts
+badd +19 ~/repos/dealercenter-digital/bc-web-client-poc/frontend/src/graphql/request.ts
 argglobal
 %argdel
 $argadd ./
-edit ~/repos/dealercenter-digital/bc-web-client-poc/frontend/src/components/Footer.stories.data.ts
-let s:save_splitbelow = &splitbelow
-let s:save_splitright = &splitright
-set splitbelow splitright
-wincmd _ | wincmd |
-vsplit
-1wincmd h
-wincmd w
-let &splitbelow = s:save_splitbelow
-let &splitright = s:save_splitright
-wincmd t
-let s:save_winminheight = &winminheight
-let s:save_winminwidth = &winminwidth
-set winminheight=0
-set winheight=1
-set winminwidth=0
-set winwidth=1
-exe 'vert 1resize ' . ((&columns * 144 + 144) / 288)
-exe 'vert 2resize ' . ((&columns * 143 + 144) / 288)
+edit ~/repos/dealercenter-digital/bc-web-client-poc/frontend/src/graphql/request.ts
 argglobal
 setlocal keymap=
 setlocal noarabic
@@ -140,245 +121,16 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 25 - ((24 * winheight(0) + 21) / 43)
+11
+sil! normal! zo
+13
+sil! normal! zo
+let s:l = 21 - ((20 * winheight(0) + 21) / 43)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 25
+keepjumps 21
 normal! 0
-wincmd w
-argglobal
-if bufexists(fnamemodify("~/repos/dealercenter-digital/bc-web-client-poc/frontend/src/partials/account/OrderHistoryItem.stories.data.ts", ":p")) | buffer ~/repos/dealercenter-digital/bc-web-client-poc/frontend/src/partials/account/OrderHistoryItem.stories.data.ts | else | edit ~/repos/dealercenter-digital/bc-web-client-poc/frontend/src/partials/account/OrderHistoryItem.stories.data.ts | endif
-if &buftype ==# 'terminal'
-  silent file ~/repos/dealercenter-digital/bc-web-client-poc/frontend/src/partials/account/OrderHistoryItem.stories.data.ts
-endif
-setlocal keymap=
-setlocal noarabic
-setlocal autoindent
-setlocal nobinary
-setlocal nobreakindent
-setlocal breakindentopt=
-setlocal bufhidden=
-setlocal buflisted
-setlocal buftype=
-setlocal busy=0
-setlocal nocindent
-setlocal cinkeys=0{,0},0),0],:,0#,!^F,o,O,e
-setlocal cinoptions=
-setlocal cinscopedecls=public,protected,private
-setlocal cinwords=if,else,while,do,for,switch
-setlocal colorcolumn=
-setlocal comments=sO:*\ -,mO:*\ \ ,exO:*/,s1:/*,mb:*,ex:*/,://
-setlocal commentstring=//\ %s
-setlocal complete=.,w,b,u,t
-setlocal completefunc=
-setlocal completeslash=
-setlocal concealcursor=
-setlocal conceallevel=0
-setlocal nocopyindent
-setlocal nocursorbind
-setlocal nocursorcolumn
-setlocal cursorline
-setlocal cursorlineopt=both
-setlocal nodiff
-setlocal eventignorewin=
-setlocal expandtab
-if &filetype != 'typescript'
-setlocal filetype=typescript
-endif
-setlocal fixendofline
-setlocal foldcolumn=0
-setlocal foldenable
-setlocal foldexpr=v:lua.vim.treesitter.foldexpr()
-setlocal foldignore=#
-setlocal foldlevel=0
-setlocal foldmarker={{{,}}}
-setlocal foldmethod=indent
-setlocal foldminlines=1
-setlocal foldnestmax=20
-setlocal foldtext=
-setlocal formatexpr=v:lua.require'conform'.formatexpr()
-setlocal formatlistpat=^\\s*\\d\\+[\\]:.)}\\t\ ]\\s*
-setlocal formatoptions=jcroql
-setlocal iminsert=0
-setlocal imsearch=-1
-setlocal includeexpr=
-setlocal indentexpr=GetTypescriptIndent()
-setlocal indentkeys=0{,0},0),0],0,,!^F,o,O,e
-setlocal noinfercase
-setlocal iskeyword=@,48-57,_,192-255,#,$
-setlocal lhistory=10
-setlocal nolinebreak
-setlocal nolisp
-setlocal lispoptions=
-setlocal nolist
-setlocal matchpairs=(:),{:},[:]
-setlocal modeline
-setlocal modifiable
-setlocal nrformats=bin,hex
-setlocal number
-setlocal numberwidth=4
-setlocal omnifunc=v:lua.vim.lsp.omnifunc
-setlocal nopreserveindent
-setlocal nopreviewwindow
-setlocal quoteescape=\\
-setlocal noreadonly
-setlocal relativenumber
-setlocal norightleft
-setlocal rightleftcmd=search
-setlocal scrollback=-1
-setlocal noscrollbind
-setlocal shiftwidth=2
-setlocal signcolumn=yes
-setlocal nosmartindent
-setlocal nosmoothscroll
-setlocal softtabstop=-1
-setlocal nospell
-setlocal spellcapcheck=[.?!]\\_[\\])'\"\\t\ ]\\+
-setlocal spellfile=
-setlocal spelllang=en_us,de_de
-setlocal spelloptions=noplainbuffer
-setlocal statuscolumn=%!v:lua.require'snacks.statuscolumn'.get()
-setlocal suffixesadd=.ts,.d.ts,.tsx,.js,.jsx,.cjs,.mjs
-setlocal noswapfile
-setlocal synmaxcol=3000
-if &syntax != ''
-setlocal syntax=
-endif
-setlocal tabstop=4
-setlocal tagfunc=v:lua.vim.lsp.tagfunc
-setlocal textwidth=0
-setlocal undofile
-setlocal varsofttabstop=
-setlocal vartabstop=
-setlocal winblend=0
-setlocal nowinfixbuf
-setlocal nowinfixheight
-setlocal nowinfixwidth
-setlocal winhighlight=
-setlocal nowrap
-setlocal wrapmargin=0
-15
-sil! normal! zo
-16
-sil! normal! zo
-17
-sil! normal! zo
-20
-sil! normal! zo
-21
-sil! normal! zo
-23
-sil! normal! zo
-28
-sil! normal! zo
-30
-sil! normal! zo
-35
-sil! normal! zo
-37
-sil! normal! zo
-46
-sil! normal! zo
-47
-sil! normal! zo
-50
-sil! normal! zo
-51
-sil! normal! zo
-53
-sil! normal! zo
-62
-sil! normal! zo
-63
-sil! normal! zo
-66
-sil! normal! zo
-67
-sil! normal! zo
-68
-sil! normal! zo
-69
-sil! normal! zo
-71
-sil! normal! zo
-76
-sil! normal! zo
-81
-sil! normal! zo
-83
-sil! normal! zo
-88
-sil! normal! zo
-90
-sil! normal! zo
-99
-sil! normal! zo
-100
-sil! normal! zo
-103
-sil! normal! zo
-104
-sil! normal! zo
-106
-sil! normal! zo
-111
-sil! normal! zo
-113
-sil! normal! zo
-122
-sil! normal! zo
-123
-sil! normal! zo
-126
-sil! normal! zo
-127
-sil! normal! zo
-128
-sil! normal! zo
-133
-sil! normal! zo
-134
-sil! normal! zo
-143
-sil! normal! zo
-144
-sil! normal! zo
-146
-sil! normal! zo
-150
-sil! normal! zo
-151
-sil! normal! zo
-152
-sil! normal! zo
-157
-sil! normal! zo
-158
-sil! normal! zo
-163
-sil! normal! zo
-164
-sil! normal! zo
-173
-sil! normal! zo
-174
-sil! normal! zo
-176
-sil! normal! zo
-177
-sil! normal! zo
-180
-sil! normal! zo
-let s:l = 84 - ((21 * winheight(0) + 21) / 43)
-if s:l < 1 | let s:l = 1 | endif
-keepjumps exe s:l
-normal! zt
-keepjumps 84
-normal! 026|
-wincmd w
-exe 'vert 1resize ' . ((&columns * 144 + 144) / 288)
-exe 'vert 2resize ' . ((&columns * 143 + 144) / 288)
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
@@ -386,8 +138,6 @@ endif
 unlet! s:wipebuf
 set winheight=1 winwidth=20
 let &shortmess = s:shortmess_save
-let &winminheight = s:save_winminheight
-let &winminwidth = s:save_winminwidth
 let s:sx = expand("<sfile>:p:r")."x.vim"
 if filereadable(s:sx)
   exe "source " . fnameescape(s:sx)
