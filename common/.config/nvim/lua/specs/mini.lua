@@ -128,7 +128,7 @@ function M.clue()
             { mode = "n", keys = "<leader>ap", desc = "[P]lugins" },
             { mode = "n", keys = "<leader>as", desc = "[S]ettings" },
             { mode = "n", keys = "<leader>ag", desc = "[G]it" },
-            { mode = "n", keys = "<leader>aso", desc = "[O]ptions" },
+            { mode = "n", keys = "<leader>ao", desc = "[O]ptions" },
 
             { mode = "n", keys = "<leader>w", desc = "[W]orkspace" },
             { mode = "n", keys = "<leader>wg", desc = "[G]it" },

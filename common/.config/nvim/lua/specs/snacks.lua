@@ -186,7 +186,7 @@ function M.keys()
         { "<leader>ad",          M.file_surfer, desc = "[D]ocument" },
         { "<leader>aa",          function() Snacks.picker.commands() end, desc = "[A]ctions" },
         { "<leader>ag",          function() Snacks.lazygit() end, desc = "[G]raph" },
-        { "<leader>asd",         function() Snacks.picker.files({ cwd = vim.fn.expand("$HOME") .. "/repos/nikbrunner/dots" }) end, desc = "[D]ots" },
+        { "<leader>as",         function() Snacks.picker.files({ cwd = vim.fn.expand("$HOME") .. "/repos/nikbrunner/dots" }) end, desc = "[D]ots" },
         { "<leader>at",          function() Snacks.picker.colorschemes() end, desc = "[T]hemes" },
         { "<leader>ar",          function() Snacks.picker.recent() end, desc = "[R]ecent Documents (Anywhere)" },
         { "<leader>af",          function() Snacks.zen.zen() end, desc = "[F]ocus Mode" },
@@ -494,14 +494,14 @@ return {
             pattern = "VeryLazy",
             callback = function()
                 -- stylua: ignore start
-                Snacks.toggle.line_number():map("<leader>asol")
-                Snacks.toggle.inlay_hints():map("<leader>asoh")
-                Snacks.toggle.treesitter():map("<leader>asoT")
-                Snacks.toggle.option("relativenumber", { name = "Relative Number" }):map("<leader>asoL")
-                Snacks.toggle.option("conceallevel", { off = 0, on = vim.o.conceallevel > 1 and vim.o.conceallevel or 3 }):map("<leader>asoc")
-                Snacks.toggle.option("background", { off = "light", on = "dark", name = "Dark Background" }):map("<leader>asob")
-                Snacks.toggle.option("spell", { name = "Spelling" }):map("<leader>asos")
-                Snacks.toggle.option("wrap", { name = "Wrap" }):map("<leader>asow")
+                Snacks.toggle.line_number():map("<leader>aol")
+                Snacks.toggle.inlay_hints():map("<leader>aoh")
+                Snacks.toggle.treesitter():map("<leader>aoT")
+                Snacks.toggle.option("relativenumber", { name = "Relative Number" }):map("<leader>aoL")
+                Snacks.toggle.option("conceallevel", { off = 0, on = vim.o.conceallevel > 1 and vim.o.conceallevel or 3 }):map("<leader>aoc")
+                Snacks.toggle.option("background", { off = "light", on = "dark", name = "Dark Background" }):map("<leader>aob")
+                Snacks.toggle.option("spell", { name = "Spelling" }):map("<leader>aos")
+                Snacks.toggle.option("wrap", { name = "Wrap" }):map("<leader>aow")
                 -- stylua: ignore end
             end,
         })
