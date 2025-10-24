@@ -3,6 +3,26 @@
 return {
     "folke/trouble.nvim",
     event = "LspAttach",
+    specs = {
+        "folke/snacks.nvim",
+        opts = function(_, opts)
+            return vim.tbl_deep_extend("force", opts or {}, {
+                picker = {
+                    actions = require("trouble.sources.snacks").actions,
+                    win = {
+                        input = {
+                            keys = {
+                                ["<c-q>"] = {
+                                    "trouble_open",
+                                    mode = { "n", "i" },
+                                },
+                            },
+                        },
+                    },
+                },
+            })
+        end,
+    },
     ---@type trouble.Config
     opts = {
         focus = true,
@@ -10,6 +30,14 @@ return {
         auto_refresh = false,
         indent_guides = false,
         follow = false,
+
+        ---@type trouble.Window.opts
+        win = {
+            title = "Trouble",
+            wo = {
+                winbar = "Trouble",
+            },
+        },
 
         ---@type table<string, trouble.Mode>
         modes = {
@@ -35,12 +63,15 @@ return {
         },
     },
     keys = {
-        { "<leader>dp", "<cmd>Trouble diagnostics toggle  filter.buf=0<cr>", desc = "[P]roblems" },
-        { "<leader>wp", "<cmd>Trouble diagnostics toggle<cr>", desc = "[P]roblems" },
+        -- { "<leader>dP", "<cmd>Trouble diagnostics toggle  filter.buf=0<cr>", desc = "[P]roblems" },
+        -- { "<leader>wp", "<cmd>Trouble diagnostics toggle<cr>", desc = "[P]roblems" },
 
         { "sd", "<cmd>Trouble lsp_definitions<cr>", desc = "[R]eferences" },
         { "st", "<cmd>Trouble lsp_type_definitions<cr>", desc = "[R]eferences" },
         { "sr", "<cmd>Trouble lsp_references<cr>", desc = "[R]eferences" },
+
+        { "<leader>xl", "<cmd>Trouble loclist toggle<cr>", desc = "Location List (Trouble)" },
+        { "<leader>xq", "<cmd>Trouble qflist toggle<cr>", desc = "Quickfix List (Trouble)" },
 
         { "sci", "<cmd>Trouble lsp_incoming_calls<cr>", desc = "[I]ncoming" },
         { "sco", "<cmd>Trouble lsp_outgoing_calls<cr>", desc = "[O]utgoing" },

@@ -234,6 +234,7 @@ function M.keys()
         -- Document
         { "<leader>dgg",         function() Snacks.lazygit.log_file() end, desc = "[G]raph" },
         { "<leader>dt",          function() Snacks.picker.lines({ layout = M.buffer_layout }) end, desc = "[T]ext" },
+        { "<leader>dp",          function() Snacks.picker.diagnostics_buffer({ layout = M.buffer_layout }) end, desc = "[P]roblems" },
         { "<leader>ds",          function() Snacks.picker.lsp_symbols() end, desc = "[S]ymbols" },
         { "<leader>du",          function() Snacks.picker.undo() end, desc = "[U]ndo" },
         { "<leader>da",          M.find_associated_files, desc = "[A]ssociated Documents" },
@@ -496,9 +497,9 @@ return {
             callback = function()
                 -- stylua: ignore start
                 Snacks.toggle.line_number():map("<leader>aol")
+                Snacks.toggle.option("relativenumber", { name = "Relative Number" }):map("<leader>aoL")
                 Snacks.toggle.inlay_hints():map("<leader>aoh")
                 Snacks.toggle.treesitter():map("<leader>aoT")
-                Snacks.toggle.option("relativenumber", { name = "Relative Number" }):map("<leader>aoL")
                 Snacks.toggle.option("conceallevel", { off = 0, on = vim.o.conceallevel > 1 and vim.o.conceallevel or 3 }):map("<leader>aoc")
                 Snacks.toggle.option("background", { off = "light", on = "dark", name = "Dark Background" }):map("<leader>aob")
                 Snacks.toggle.option("spell", { name = "Spelling" }):map("<leader>aos")
