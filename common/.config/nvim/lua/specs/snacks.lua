@@ -310,7 +310,7 @@ return {
                 },
                 diff = {
                     builtin = false, -- use external delta command for diffs
-                    cmd = { "delta" },
+                    cmd = { "delta", "--width", vim.o.columns }, -- explicit width since PTY is disabled when piping input
                 },
             },
 
