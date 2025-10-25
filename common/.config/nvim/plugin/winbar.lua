@@ -32,9 +32,34 @@ local function find_symbol_path(symbol_list, line, char, path)
     return false
 end
 
+local function get_relative_path(bufnr)
+    local file_path = vim.fn.bufname(bufnr)
+    if not file_path or file_path == "" then
+        return "[No Name]"
+    end
+
+    local relative_path
+    local clients = vim.lsp.get_clients({ bufnr = bufnr })
+
+    if #clients > 0 and clients[1].root_dir then
+        -- Get path relative to LSP root
+        local root_dir = clients[1].root_dir
+        relative_path = vim.fn.fnamemodify(file_path, ":~:.")
+        -- If the file is under the root_dir, make it relative to that
+        if vim.startswith(file_path, root_dir) then
+            relative_path = file_path:sub(#root_dir + 2) -- +2 to skip the trailing slash
+        end
+    else
+        -- Fallback to path relative to cwd
+        relative_path = vim.fn.fnamemodify(file_path, ":~:.")
+    end
+
+    return string.gsub(relative_path, "/", " > ")
+end
+
 local function lsp_callback(err, symbols, ctx, config)
     if err or not symbols then
-        vim.wo.winbar = ""
+        vim.wo.winbar = get_relative_path(ctx.bufnr)
         return
     end
 
@@ -42,27 +67,7 @@ local function lsp_callback(err, symbols, ctx, config)
     local cursor_line = pos[1] - 1
     local cursor_char = pos[2]
 
-    local file_path = vim.fn.bufname(ctx.bufnr)
-    if not file_path or file_path == "" then
-        vim.wo.winbar = "[No Name]"
-        return
-    end
-
-    local relative_path
-
-    local clients = vim.lsp.get_clients({ bufnr = ctx.bufnr })
-
-    if #clients > 0 and clients[1].root_dir then
-        local root_dir = clients[1].root_dir
-        if root_dir == nil then
-            relative_path = ""
-        else
-            relative_path = vim.fs.relpath(root_dir, file_path)
-            relative_path = string.gsub(relative_path, "/", " > ")
-        end
-    end
-
-    local breadcrumbs = { relative_path }
+    local breadcrumbs = { get_relative_path(ctx.bufnr) }
 
     find_symbol_path(symbols, cursor_line, cursor_char, breadcrumbs)
 
@@ -78,6 +83,11 @@ end
 local function breadcrumbs_set()
     local bufnr = vim.api.nvim_get_current_buf()
 
+    -- Skip Oil buffers (they have their own winbar)
+    if vim.bo[bufnr].filetype == "oil" then
+        return
+    end
+
     -- Check if any LSP client supports document symbols
     local clients = vim.lsp.get_clients({ bufnr = bufnr })
     local has_document_symbol = false
@@ -89,14 +99,15 @@ local function breadcrumbs_set()
         end
     end
 
+    -- If no document symbol support, just show the relative path
     if not has_document_symbol then
-        vim.wo.winbar = ""
+        vim.wo.winbar = get_relative_path(bufnr)
         return
     end
 
     local uri = vim.lsp.util.make_text_document_params(bufnr)["uri"]
     if not uri then
-        vim.print("Error: Could not get URI for buffer. Is it saved?")
+        vim.wo.winbar = get_relative_path(bufnr)
         return
     end
 
@@ -112,6 +123,8 @@ local breadcrumbs_augroup = vim.api.nvim_create_augroup("Breadcrumbs", { clear =
 
 vim.api.nvim_create_autocmd({ "CursorMoved" }, {
     group = breadcrumbs_augroup,
-    callback = breadcrumbs_set,
+    callback = function()
+        vim.schedule(breadcrumbs_set)
+    end,
     desc = "Set breadcrumbs.",
 })
