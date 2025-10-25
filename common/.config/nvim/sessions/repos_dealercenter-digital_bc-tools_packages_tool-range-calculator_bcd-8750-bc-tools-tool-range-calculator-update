@@ -8,17 +8,13 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 let s:shortmess_save = &shortmess
-if &shortmess =~ 'A'
-  set shortmess=aoOA
-else
-  set shortmess=aoO
-endif
-badd +60 src/pages/Home.tsx
-badd +6 src/types/ToolSettings.ts
+set shortmess+=aoO
+badd +51 ~/repos/dealercenter-digital/bc-tools/packages/tool-range-calculator/src/components/RangeCalculatorLayout/meta/RangeCalculatorLayout.story.tsx
+badd +15 ~/repos/dealercenter-digital/bc-tools/packages/tool-range-calculator/package.json
 argglobal
 %argdel
 $argadd ./
-edit src/pages/Home.tsx
+edit ~/repos/dealercenter-digital/bc-tools/packages/tool-range-calculator/src/components/RangeCalculatorLayout/meta/RangeCalculatorLayout.story.tsx
 let s:save_splitbelow = &splitbelow
 let s:save_splitright = &splitright
 set splitbelow splitright
@@ -35,8 +31,8 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe 'vert 1resize ' . ((&columns * 143 + 144) / 288)
-exe 'vert 2resize ' . ((&columns * 144 + 144) / 288)
+exe 'vert 1resize ' . ((&columns * 183 + 184) / 368)
+exe 'vert 2resize ' . ((&columns * 184 + 184) / 368)
 argglobal
 setlocal keymap=
 setlocal noarabic
@@ -47,6 +43,7 @@ setlocal breakindentopt=
 setlocal bufhidden=
 setlocal buflisted
 setlocal buftype=
+setlocal busy=0
 setlocal nocindent
 setlocal cinkeys=0{,0},0),0],:,0#,!^F,o,O,e
 setlocal cinoptions=
@@ -92,6 +89,7 @@ setlocal indentexpr=GetTypescriptIndent()
 setlocal indentkeys=0{,0},0),0],0,,!^F,o,O,e
 setlocal noinfercase
 setlocal iskeyword=@,48-57,_,192-255,#,$
+setlocal lhistory=10
 setlocal nolinebreak
 setlocal nolisp
 setlocal lispoptions=
@@ -142,42 +140,23 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
+46
+sil! normal! zo
 47
 sil! normal! zo
-59
-sil! normal! zo
-105
-sil! normal! zo
-106
-sil! normal! zo
-107
-sil! normal! zo
-108
-sil! normal! zo
-109
-sil! normal! zo
-145
-sil! normal! zo
-146
-sil! normal! zo
-150
-sil! normal! zo
-155
-sil! normal! zo
-156
-sil! normal! zo
-let s:l = 60 - ((20 * winheight(0) + 21) / 43)
+let s:l = 51 - ((44 * winheight(0) + 28) / 56)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 60
-normal! 069|
+keepjumps 51
+normal! 02|
 wincmd w
 argglobal
-if bufexists(fnamemodify("src/types/ToolSettings.ts", ":p")) | buffer src/types/ToolSettings.ts | else | edit src/types/ToolSettings.ts | endif
+if bufexists(fnamemodify("~/repos/dealercenter-digital/bc-tools/packages/tool-range-calculator/package.json", ":p")) | buffer ~/repos/dealercenter-digital/bc-tools/packages/tool-range-calculator/package.json | else | edit ~/repos/dealercenter-digital/bc-tools/packages/tool-range-calculator/package.json | endif
 if &buftype ==# 'terminal'
-  silent file src/types/ToolSettings.ts
+  silent file ~/repos/dealercenter-digital/bc-tools/packages/tool-range-calculator/package.json
 endif
+balt ~/repos/dealercenter-digital/bc-tools/packages/tool-range-calculator/src/components/RangeCalculatorLayout/meta/RangeCalculatorLayout.story.tsx
 setlocal keymap=
 setlocal noarabic
 setlocal autoindent
@@ -187,14 +166,15 @@ setlocal breakindentopt=
 setlocal bufhidden=
 setlocal buflisted
 setlocal buftype=
+setlocal busy=0
 setlocal nocindent
 setlocal cinkeys=0{,0},0),0],:,0#,!^F,o,O,e
 setlocal cinoptions=
 setlocal cinscopedecls=public,protected,private
 setlocal cinwords=if,else,while,do,for,switch
 setlocal colorcolumn=
-setlocal comments=sO:*\ -,mO:*\ \ ,exO:*/,s1:/*,mb:*,ex:*/,://
-setlocal commentstring=//\ %s
+setlocal comments=
+setlocal commentstring=
 setlocal complete=.,w,b,u,t
 setlocal completefunc=
 setlocal completeslash=
@@ -208,8 +188,8 @@ setlocal cursorlineopt=both
 setlocal nodiff
 setlocal eventignorewin=
 setlocal expandtab
-if &filetype != 'typescript'
-setlocal filetype=typescript
+if &filetype != 'json'
+setlocal filetype=json
 endif
 setlocal fixendofline
 setlocal foldcolumn=0
@@ -224,14 +204,15 @@ setlocal foldnestmax=20
 setlocal foldtext=
 setlocal formatexpr=v:lua.require'conform'.formatexpr()
 setlocal formatlistpat=^\\s*\\d\\+[\\]:.)}\\t\ ]\\s*
-setlocal formatoptions=jcroql
+setlocal formatoptions=cqj
 setlocal iminsert=0
 setlocal imsearch=-1
 setlocal includeexpr=
-setlocal indentexpr=GetTypescriptIndent()
-setlocal indentkeys=0{,0},0),0],0,,!^F,o,O,e
+setlocal indentexpr=nvim_treesitter#indent()
+setlocal indentkeys=0{,0},0),0[,0],!^F,o,O,e
 setlocal noinfercase
 setlocal iskeyword=@,48-57,_,192-255
+setlocal lhistory=10
 setlocal nolinebreak
 setlocal nolisp
 setlocal lispoptions=
@@ -263,14 +244,14 @@ setlocal spellfile=
 setlocal spelllang=en_us,de_de
 setlocal spelloptions=noplainbuffer
 setlocal statuscolumn=%!v:lua.require'snacks.statuscolumn'.get()
-setlocal suffixesadd=.ts,.d.ts,.tsx,.js,.jsx,.cjs,.mjs
+setlocal suffixesadd=
 setlocal noswapfile
 setlocal synmaxcol=3000
 if &syntax != ''
 setlocal syntax=
 endif
 setlocal tabstop=2
-setlocal tagfunc=v:lua.vim.lsp.tagfunc
+setlocal tagfunc=
 setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
@@ -282,18 +263,18 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-5
+2
 sil! normal! zo
-let s:l = 6 - ((5 * winheight(0) + 21) / 43)
+let s:l = 15 - ((14 * winheight(0) + 28) / 56)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 6
+keepjumps 15
 normal! 0
 wincmd w
 2wincmd w
-exe 'vert 1resize ' . ((&columns * 143 + 144) / 288)
-exe 'vert 2resize ' . ((&columns * 144 + 144) / 288)
+exe 'vert 1resize ' . ((&columns * 183 + 184) / 368)
+exe 'vert 2resize ' . ((&columns * 184 + 184) / 368)
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf

@@ -8,12 +8,8 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 let s:shortmess_save = &shortmess
-if &shortmess =~ 'A'
-  set shortmess=aoOA
-else
-  set shortmess=aoO
-endif
-badd +41 ~/repos/nikbrunner/dcd-notes/Rest\ Client/bc-desktop-client/env.http
+set shortmess+=aoO
+badd +4 ~/repos/nikbrunner/dcd-notes/Rest\ Client/bc-desktop-client/env.http
 argglobal
 %argdel
 $argadd ./
@@ -28,6 +24,7 @@ setlocal breakindentopt=
 setlocal bufhidden=
 setlocal buflisted
 setlocal buftype=
+setlocal busy=0
 setlocal nocindent
 setlocal cinkeys=0{,0},0),0],:,0#,!^F,o,O,e
 setlocal cinoptions=
@@ -73,6 +70,7 @@ setlocal indentexpr=
 setlocal indentkeys=0{,0},0),0],:,0#,!^F,o,O,e
 setlocal noinfercase
 setlocal iskeyword=@,48-57,_,192-255
+setlocal lhistory=10
 setlocal nolinebreak
 setlocal nolisp
 setlocal lispoptions=
@@ -125,11 +123,11 @@ setlocal nowrap
 setlocal wrapmargin=0
 40
 sil! normal! zo
-let s:l = 41 - ((38 * winheight(0) + 21) / 43)
+let s:l = 9 - ((8 * winheight(0) + 28) / 56)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 41
+keepjumps 9
 normal! 0
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'

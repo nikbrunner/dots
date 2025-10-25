@@ -9,8 +9,8 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +7 ~/repos/black-atom-industries/core/src/themes/terra/ui_dark.ts
-badd +6 ~/repos/black-atom-industries/core/src/themes/terra/ui_light.ts
+badd +15 ~/repos/black-atom-industries/core/src/themes/terra/ui_dark.ts
+badd +13 ~/repos/black-atom-industries/core/src/themes/terra/ui_light.ts
 argglobal
 %argdel
 $argadd ./
@@ -31,8 +31,8 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe 'vert 1resize ' . ((&columns * 116 + 117) / 234)
-exe 'vert 2resize ' . ((&columns * 117 + 117) / 234)
+exe 'vert 1resize ' . ((&columns * 194 + 195) / 390)
+exe 'vert 2resize ' . ((&columns * 195 + 195) / 390)
 argglobal
 setlocal keymap=
 setlocal noarabic
@@ -140,11 +140,11 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 15 - ((14 * winheight(0) + 19) / 39)
+let s:l = 18 - ((17 * winheight(0) + 29) / 59)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 15
+keepjumps 18
 normal! 0
 wincmd w
 argglobal
@@ -259,15 +259,20 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 10 - ((9 * winheight(0) + 19) / 39)
+5
+sil! normal! zo
+10
+sil! normal! zo
+let s:l = 13 - ((12 * winheight(0) + 29) / 59)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 10
+keepjumps 13
 normal! 0
 wincmd w
-exe 'vert 1resize ' . ((&columns * 116 + 117) / 234)
-exe 'vert 2resize ' . ((&columns * 117 + 117) / 234)
+2wincmd w
+exe 'vert 1resize ' . ((&columns * 194 + 195) / 390)
+exe 'vert 2resize ' . ((&columns * 195 + 195) / 390)
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
