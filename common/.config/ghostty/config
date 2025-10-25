@@ -4,13 +4,13 @@ theme = black-atom-terra-fall-night.conf
 # custom-shader                      = ./shaders/bloom015.glsl
 # custom-shader                      = ./shaders/bloom025.glsl
 # custom-shader                      = ./shaders/bloom050.glsl
-# custom-shader                      = ./shaders/cursor_trail.glsl
+custom-shader                      = ./shaders/cursor_trail.glsl
 # custom-shader                      = ./shaders/cursor_blaze_no_trail.glsl
 
 # background-opacity                 = 0.9
 # background-blur                    = 65
 
-font-family = Iosevka T-84 Sans
+font-family = Iosevka T-84 Slab
 
 font-size                         = 16
 # font-thicken = true
