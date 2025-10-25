@@ -446,8 +446,8 @@ return {
             win = {
                 backdrop = true,
                 border = "solid",
-                width = 0.9,
-                height = 0.9,
+                width = 0.9999,
+                height = 0.9999,
             },
         },
 
