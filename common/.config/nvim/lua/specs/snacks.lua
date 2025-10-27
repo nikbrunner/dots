@@ -250,7 +250,40 @@ end
 ---@type LazyPluginSpec
 return {
     "folke/snacks.nvim",
+
     lazy = false,
+
+    init = function()
+        vim.api.nvim_create_autocmd("User", {
+            pattern = "VeryLazy",
+            callback = function()
+                -- stylua: ignore start
+                Snacks.toggle.line_number():map("<leader>aol")
+                Snacks.toggle.option("relativenumber", { name = "Relative Number" }):map("<leader>aoL")
+                Snacks.toggle.inlay_hints():map("<leader>aoh")
+                Snacks.toggle.treesitter():map("<leader>aoT")
+                Snacks.toggle.option("conceallevel", { off = 0, on = vim.o.conceallevel > 1 and vim.o.conceallevel or 3 }):map("<leader>aoc")
+                Snacks.toggle.option("background", { off = "light", on = "dark", name = "Dark Background" }):map("<leader>aob")
+                Snacks.toggle.option("spell", { name = "Spelling" }):map("<leader>aos")
+                Snacks.toggle.option("wrap", { name = "Wrap" }):map("<leader>aow")
+                -- stylua: ignore end
+            end,
+        })
+
+        vim.api.nvim_create_autocmd("User", {
+            pattern = "SnacksTerminalClose",
+            callback = function()
+                -- Refresh gitsigns when terminal closes
+                vim.defer_fn(function()
+                    local ok, gitsigns = pcall(require, "gitsigns")
+                    if ok then
+                        gitsigns.refresh()
+                    end
+                end, 100)
+            end,
+        })
+    end,
+
     dependencies = {
         {
             "mbbill/undotree",
@@ -285,36 +318,29 @@ return {
             },
         },
     },
+
     ---@type snacks.Config
     opts = {
         bigfile = { enabled = true },
-
         statuscolumn = { enabled = true },
-
         debug = { enabled = true },
-
         toggle = { enabled = true },
-
         gitbrowse = { enabled = true },
-
         input = { enabled = true },
-
         scroll = { enabled = false },
-
         notifier = {
             enabled = true,
             margin = { top = 0, right = 0, bottom = 1, left = 1 },
             top_down = false,
             style = "minimal",
         },
-
-        -- https://github.com/folke/snacks.nvim/blob/main/lua/snacks/picker/config/defaults.lua
         picker = {
+            -- ~/.local/share/nvim/lazy/snacks.nvim/lua/snacks/picker/config/defaults.lua
+            --
             ui_select = true, -- replace `vim.ui.select` with the snacks picker
             layout = function()
                 return M.smart_layout()
             end,
-
             matcher = {
                 -- the bonusses below, possibly require string concatenation and path normalization,
                 -- so this can have a performance impact for large lists and increase memory usage
@@ -322,14 +348,12 @@ return {
                 frecency = true, -- frecency bonus
                 history_bonus = true,
             },
-
             formatters = {
                 file = {
                     filename_first = true, -- display filename before the file path
                     truncate = 80,
                 },
             },
-
             previewers = {
                 git = {
                     builtin = false, -- use external git command with delta
@@ -339,7 +363,6 @@ return {
                     cmd = { "delta", "--width", vim.o.columns }, -- explicit width since PTY is disabled when piping input
                 },
             },
-
             win = {
                 input = {
                     keys = {
@@ -355,7 +378,6 @@ return {
                     },
                 },
             },
-
             sources = {
                 explorer = {
                     replace_netrw = true,
@@ -382,25 +404,20 @@ return {
                         },
                     },
                 },
-
                 buffers = {
                     current = false,
                 },
-
                 files = {
                     hidden = true,
                 },
-
                 smart = {
                     multi = { "buffers", "recent", "files" },
                     sort = { fields = { "source_id" } }, -- source_id:asc, source_id:desc
                     filter = { cwd = true },
                 },
-
                 lsp_references = {
                     pattern = "!import !default", -- Exclude Imports and Default Exports
                 },
-
                 lsp_symbols = {
                     finder = "lsp_symbols",
                     format = "lsp_symbol",
@@ -411,11 +428,9 @@ return {
                         help = true,
                     },
                 },
-
                 git_status = {
                     preview = "git_status",
                 },
-
                 projects = {
                     finder = "recent_projects",
                     -- TODO: restore session
@@ -431,7 +446,6 @@ return {
                 },
             },
         },
-
         zen = {
             toggles = {
                 dim = true,
@@ -444,10 +458,7 @@ return {
                 show = { statusline = false, tabline = false },
             },
         },
-
-        ---@type snacks.words.Config
         words = { debounce = 100 },
-
         terminal = {
             win = {
                 border = "solid",
@@ -456,7 +467,6 @@ return {
                 },
             },
         },
-
         lazygit = {
             configure = true,
             config = {
@@ -472,7 +482,6 @@ return {
                 height = 0.9999,
             },
         },
-
         styles = {
             notification_history = {
                 border = "solid",
@@ -512,35 +521,4 @@ return {
     },
 
     keys = M.keys(),
-
-    init = function()
-        vim.api.nvim_create_autocmd("User", {
-            pattern = "VeryLazy",
-            callback = function()
-                -- stylua: ignore start
-                Snacks.toggle.line_number():map("<leader>aol")
-                Snacks.toggle.option("relativenumber", { name = "Relative Number" }):map("<leader>aoL")
-                Snacks.toggle.inlay_hints():map("<leader>aoh")
-                Snacks.toggle.treesitter():map("<leader>aoT")
-                Snacks.toggle.option("conceallevel", { off = 0, on = vim.o.conceallevel > 1 and vim.o.conceallevel or 3 }):map("<leader>aoc")
-                Snacks.toggle.option("background", { off = "light", on = "dark", name = "Dark Background" }):map("<leader>aob")
-                Snacks.toggle.option("spell", { name = "Spelling" }):map("<leader>aos")
-                Snacks.toggle.option("wrap", { name = "Wrap" }):map("<leader>aow")
-                -- stylua: ignore end
-            end,
-        })
-
-        vim.api.nvim_create_autocmd("User", {
-            pattern = "SnacksTerminalClose",
-            callback = function()
-                -- Refresh gitsigns when terminal closes
-                vim.defer_fn(function()
-                    local ok, gitsigns = pcall(require, "gitsigns")
-                    if ok then
-                        gitsigns.refresh()
-                    end
-                end, 100)
-            end,
-        })
-    end,
 }
