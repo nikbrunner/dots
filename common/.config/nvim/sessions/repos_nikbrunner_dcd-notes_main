@@ -9,7 +9,7 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +57 ~/repos/nikbrunner/dcd-notes/Log/2025/2025.10\ -\ October.md
+badd +70 ~/repos/nikbrunner/dcd-notes/Log/2025/2025.10\ -\ October.md
 argglobal
 %argdel
 $argadd ./
@@ -129,6 +129,7 @@ setlocal textwidth=85
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
+setlocal winbar=%#WinBarPath#Log%*\ %#WinBarSeparator#/%*\ %#WinBarPath#2025%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#2025.10\ -\ October.md%*
 setlocal winblend=0
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -136,12 +137,12 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal wrap
 setlocal wrapmargin=0
-let s:l = 57 - ((28 * winheight(0) + 28) / 56)
+let s:l = 70 - ((25 * winheight(0) + 23) / 47)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 57
-normal! 0
+keepjumps 70
+normal! 058|
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
