@@ -23,7 +23,7 @@ local function find_symbol_path(symbol_list, line, char, path)
     end
 
     for _, symbol in ipairs(symbol_list) do
-        if range_contains_pos(symbol.range, line, char) then
+        if symbol.range and range_contains_pos(symbol.range, line, char) then
             table.insert(path, symbol.name)
             find_symbol_path(symbol.children, line, char, path)
             return true
@@ -54,12 +54,32 @@ local function get_relative_path(bufnr)
         relative_path = vim.fn.fnamemodify(file_path, ":~:.")
     end
 
-    return string.gsub(relative_path, "/", " > ")
+    local parts = vim.split(relative_path, "/", { plain = true })
+    local highlighted_parts = {}
+
+    for i, part in ipairs(parts) do
+        if i == #parts then
+            -- Highlight the filename
+            table.insert(highlighted_parts, "%#WinBarFilename#" .. part .. "%*")
+        else
+            -- Highlight directory parts
+            table.insert(highlighted_parts, "%#WinBarPath#" .. part .. "%*")
+        end
+    end
+
+    return table.concat(highlighted_parts, " %#WinBarSeparator#/%* ")
 end
 
-local function lsp_callback(err, symbols, ctx, config)
+local function lsp_callback(err, symbols, ctx)
     if err or not symbols then
         vim.wo.winbar = get_relative_path(ctx.bufnr)
+        return
+    end
+
+    -- Check if window is wide enough for winbar
+    local win_width = vim.api.nvim_win_get_width(0)
+    if win_width < 60 then
+        vim.wo.winbar = ""
         return
     end
 
@@ -67,24 +87,47 @@ local function lsp_callback(err, symbols, ctx, config)
     local cursor_line = pos[1] - 1
     local cursor_char = pos[2]
 
-    local breadcrumbs = { get_relative_path(ctx.bufnr) }
+    local path_part = get_relative_path(ctx.bufnr)
+    local symbol_breadcrumbs = {}
 
-    find_symbol_path(symbols, cursor_line, cursor_char, breadcrumbs)
+    find_symbol_path(symbols, cursor_line, cursor_char, symbol_breadcrumbs)
 
-    local breadcrumb_string = table.concat(breadcrumbs, " > ")
+    -- Build the winbar with different separators
+    local winbar_parts = { path_part }
 
-    if breadcrumb_string ~= "" then
+    if #symbol_breadcrumbs > 0 then
+        -- Add highlighted symbols with different separator
+        for _, symbol in ipairs(symbol_breadcrumbs) do
+            table.insert(winbar_parts, "%#WinBarSymbol#" .. symbol .. "%*")
+        end
+        local breadcrumb_string = winbar_parts[1]
+            .. " %#WinBarSeparator##%* "
+            .. table.concat(vim.list_slice(winbar_parts, 2), " %#WinBarSeparator##%* ")
         vim.wo.winbar = breadcrumb_string
     else
-        vim.wo.winbar = " "
+        vim.wo.winbar = path_part
     end
 end
 
 local function breadcrumbs_set()
     local bufnr = vim.api.nvim_get_current_buf()
 
+    -- Check if window is wide enough for winbar
+    local win_width = vim.api.nvim_win_get_width(0)
+    if win_width < 60 then
+        vim.wo.winbar = ""
+        return
+    end
+
     -- Skip Oil buffers (they have their own winbar)
     if vim.bo[bufnr].filetype == "oil" then
+        return
+    end
+
+    -- Skip unnamed buffers
+    local file_path = vim.fn.bufname(bufnr)
+    if not file_path or file_path == "" then
+        vim.wo.winbar = ""
         return
     end
 
