@@ -290,8 +290,19 @@ function M.sessions()
                                 return true
                             end
 
-                            -- Delete if buffer is not visible in any window
-                            if vim.fn.bufwinid(bufnr) == -1 then
+                            -- Delete if buffer is not in any tabpage's window list
+                            local buffer_in_tabpage = false
+                            for _, tabpage in ipairs(vim.api.nvim_list_tabpages()) do
+                                for _, win in ipairs(vim.api.nvim_tabpage_list_wins(tabpage)) do
+                                    if vim.api.nvim_win_get_buf(win) == bufnr then
+                                        buffer_in_tabpage = true
+                                        break
+                                    end
+                                end
+                                if buffer_in_tabpage then break end
+                            end
+
+                            if not buffer_in_tabpage then
                                 return true
                             end
 
