@@ -28,6 +28,10 @@ return {
         event = "VimEnter",
         ---@module "radar"
         ---@type Radar.Config
-        opts = {},
+        opts = {
+            radar = {
+                grid_size = { width = math.floor(vim.o.columns * 0.6), height = math.floor(vim.o.lines * 0.3) },
+            },
+        },
     },
 }
