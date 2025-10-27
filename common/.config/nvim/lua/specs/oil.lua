@@ -51,12 +51,12 @@ return {
             ["~"] = false,
             ["<C-l>"] = false,
             ["<C-h>"] = false,
-            ["<C-s>"] = false,
 
             ["q"] = { "actions.close", mode = "n" },
 
             ["<C-v>"] = { "actions.select", opts = { vertical = true, close = true } },
             ["<C-t>"] = { "actions.select", opts = { tab = true, close = true } },
+            ["<C-s>"] = { "actions.select", opts = { horizontal = true, close = true } },
 
             ["<leader><leader>"] = {
                 function()
