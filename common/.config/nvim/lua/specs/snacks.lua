@@ -200,21 +200,20 @@ function M.keys()
 
 
         -- Workspace
-        { "<leader><leader>",    function() Snacks.picker.smart() end, desc = "[D]ocument" },
-        { "<leader>wd",          function() Snacks.picker.smart() end, desc = "[D]ocument" },
+        -- Main File Finding is handled via fff.nvim & fff-snacks.nvim (<leader><leader> & <leader>wd)
+        { "<leader>we",          M.explorer, desc = "[E]xplorer" },
         { "<leader>wr",          function() Snacks.picker.recent({ filter = { cwd = true }}) end, desc = "[R]ecent Documents" },
         { "<leader>wm",          function() Snacks.picker.git_status() end, desc = "[M]odified Documents" },
+        { "<leader>wc",          function() Snacks.picker.git_diff() end, desc = "[C]hanges" },
         { "<leader>wt",          function() Snacks.picker.grep() end, desc = "[T]ext" },
         { "<leader>ww",          function() Snacks.picker.grep_word() end, desc = "[W]ord" },
         { "<leader>wp",          function() Snacks.picker.diagnostics() end, desc = "[P]roblems" },
         { "<leader>ws",          function() Snacks.picker.lsp_workspace_symbols() end, desc = "[S]ymbols" },
-        { "<leader>wgm",          function() Snacks.picker.git_status() end, desc = "[M]odified Documents" },
-        { "<leader>wgg",         function() Snacks.lazygit() end, desc = "[G]raph" },
-        { "<leader>wgc",          function() Snacks.picker.git_diff() end, desc = "[C]hanges" },
-        { "<leader>wgl",         function() Snacks.lazygit.log() end, desc = "[L]Log" },
-        { "<leader>wgb",         function() Snacks.picker.git_branches() end, desc = "[B]ranches" },
-        { "<leader>wgr",         function() Snacks.gitbrowse() end, desc = "[R]emote" },
-        { "<leader>wgp",         function()
+        { "<leader>wg",         function() Snacks.lazygit() end, desc = "[G]raph" },
+        { "<leader>wl",         function() Snacks.lazygit.log() end, desc = "[L]Log" },
+        { "<leader>wb",         function() Snacks.picker.git_branches() end, desc = "[B]ranches" },
+        { "<leader>wb",         function() Snacks.gitbrowse() end, desc = "[R]emote" },
+        { "<leader>wp",         function()
             local current_branch = vim.fn.system("git branch --show-current"):gsub("%s+", "")
             if vim.v.shell_error ~= 0 then
                 vim.notify("Not in a git repository", vim.log.levels.ERROR)
@@ -232,7 +231,7 @@ function M.keys()
         end, desc = "[P]R" },
 
         -- Document
-        { "<leader>dgg",         function() Snacks.lazygit.log_file() end, desc = "[G]raph" },
+        { "<leader>dg",         function() Snacks.lazygit.log_file() end, desc = "[G]raph" },
         { "<leader>dt",          function() Snacks.picker.lines({ layout = M.buffer_layout }) end, desc = "[T]ext" },
         { "<leader>dp",          function() Snacks.picker.diagnostics_buffer({ layout = M.buffer_layout }) end, desc = "[P]roblems" },
         { "<leader>ds",          function() Snacks.picker.lsp_symbols() end, desc = "[S]ymbols" },
@@ -251,15 +250,41 @@ end
 ---@type LazyPluginSpec
 return {
     "folke/snacks.nvim",
-    depdencies = {
+    lazy = false,
+    dependencies = {
         {
             "mbbill/undotree",
             cmd = { "UndotreeToggle", "UndotreeShow", "UndotreeHide" },
         },
+        {
+            "dmtrKovalenko/fff.nvim",
+            lazy = false,
+            build = function()
+                require("fff.download").download_or_build_binary()
+            end,
+            opts = {
+                debug = {
+                    enabled = true, -- we expect your collaboration at least during the beta
+                    show_scores = true, -- to help us optimize the scoring system, feel free to share your scores!
+                },
+            },
+        },
+        {
+            "madmaxieee/fff-snacks.nvim",
+            dir = require("lib.config").get_repo_path("nikbrunner/fff-snacks.nvim"),
+            dependencies = { "dmtrKovalenko/fff.nvim", "folke/snacks.nvim" },
+            cmd = "FFFSnacks",
+            keys = {
+                { "<leader><leader>", "<CMD>FFFSnacks<CR>", desc = "Find Files" },
+                { "<leader>wd", "<CMD>FFFSnacks<CR>", desc = "[D]ocument" },
+            },
+            opts = {
+                layout = function()
+                    return M.smart_layout()
+                end,
+            },
+        },
     },
-    priority = 1000,
-    pin = false,
-    lazy = false,
     ---@type snacks.Config
     opts = {
         bigfile = { enabled = true },
@@ -367,12 +392,9 @@ return {
                 },
 
                 smart = {
-                    filter = {
-                        paths = {
-                            -- TODO: filter out current file
-                            [vim.fn.getcwd()] = false,
-                        },
-                    },
+                    multi = { "buffers", "recent", "files" },
+                    sort = { fields = { "source_id" } }, -- source_id:asc, source_id:desc
+                    filter = { cwd = true },
                 },
 
                 lsp_references = {
