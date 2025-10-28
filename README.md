@@ -72,6 +72,7 @@ cd ~/repos/nikbrunner/dots
 ```
 
 This will:
+
 - Install all required dependencies (git, zsh, tmux, neovim, fzf, ripgrep, etc.)
 - Configure system settings (default shell, Git signing)
 - Create all symlinks
@@ -229,6 +230,7 @@ When you run `dots link`:
 4. **Backs up conflicts**: If a real file exists where a symlink should go, it's backed up with a timestamp (unless `--no-backup` is used)
 
 **Manual Configuration Benefits**:
+
 - Explicit control over what gets symlinked
 - Mix directory and file-level symlinks as needed
 - Wildcard patterns for selective file linking
@@ -246,12 +248,12 @@ Place OS-specific files in `macos/`, `linux/`, or `arch/` following the home dir
 
 **Important**: The YAML section names must match the OS detection output:
 
-| Detected OS | YAML Section | Description |
-|-------------|--------------|-------------|
-| `macos` | `macos:` | macOS systems |
-| `arch` | `arch:` | Arch Linux systems |
-| `linux` | `common:` only | Other Linux distributions (no dedicated section) |
-| `common` | `common:` | Always processed on all platforms |
+| Detected OS | YAML Section   | Description                                      |
+| ----------- | -------------- | ------------------------------------------------ |
+| `macos`     | `macos:`       | macOS systems                                    |
+| `arch`      | `arch:`        | Arch Linux systems                               |
+| `linux`     | `common:` only | Other Linux distributions (no dedicated section) |
+| `common`    | `common:`      | Always processed on all platforms                |
 
 The system always processes the `common` section first, then adds the platform-specific section if it exists. OS detection is handled by `scripts/detect-os.sh`.
 
@@ -262,14 +264,17 @@ The terminal configuration supports switching between WezTerm and tmux as multip
 **Switching multiplexers:**
 
 To use **tmux as multiplexer**:
+
 1. In `~/.config/wezterm/keymaps.lua`: Comment out the multiplexer bindings (lines 48-51)
 2. In `~/.config/tmux/keymaps.conf`: Uncomment the source line (line 27)
 
 To use **WezTerm as multiplexer** (default):
-1. In `~/.config/wezterm/keymaps.lua`: Ensure multiplexer bindings are uncommented 
+
+1. In `~/.config/wezterm/keymaps.lua`: Ensure multiplexer bindings are uncommented
 2. In `~/.config/tmux/keymaps.conf`: Ensure the source line is commented out
 
 **How it works:**
+
 - WezTerm loads multiplexer keybindings when uncommented, providing full session/window/pane management
 - tmux loads multiplexer keybindings when uncommented, handling session/window/pane management
 - Both configurations provide the same keybinding experience for navigation and management
