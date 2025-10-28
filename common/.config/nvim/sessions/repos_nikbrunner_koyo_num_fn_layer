@@ -9,27 +9,12 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +0 ~/repos/nikbrunner/koyo/README.md
+badd +48 ~/repos/nikbrunner/koyo/qmk/crkbd/src/keymap.c
 argglobal
 %argdel
 $argadd ./
-edit ~/repos/nikbrunner/koyo/README.md
+edit ~/repos/nikbrunner/koyo/qmk/crkbd/src/keymap.c
 argglobal
-let s:cpo_save=&cpo
-set cpo&vim
-nnoremap <buffer>  <Cmd>MarkdownToggleCheckbox
-nnoremap <buffer> ,niT <Cmd>MarkdownInsertTable
-vnoremap <buffer> ,nil s["]()<Cmd>normal! h<Cmd>startinsert<Cmd>lua require("markdown-tools.commands").prompt_and_insert_url()
-vmap <buffer> ,nii s*"*
-vmap <buffer> ,nih s=="==
-vmap <buffer> ,nib s**"**
-vnoremap <buffer> ,niH <Cmd>MarkdownHeader
-nnoremap <buffer> ,niH <Cmd>MarkdownHeader
-xnoremap <buffer> <silent> [[ :exe "normal! gv"|call search('\%(^#\{1,5\}\s\+\S\|^\S.*\n^[=-]\+$\)', "bsW")
-xnoremap <buffer> <silent> ]] :exe "normal! gv"|call search('\%(^#\{1,5\}\s\+\S\|^\S.*\n^[=-]\+$\)', "sW")
-nnoremap <buffer> <C-T> <Cmd>MarkdownToggleCheckbox
-let &cpo=s:cpo_save
-unlet s:cpo_save
 setlocal keymap=
 setlocal noarabic
 setlocal autoindent
@@ -40,14 +25,14 @@ setlocal bufhidden=
 setlocal buflisted
 setlocal buftype=
 setlocal busy=0
-setlocal nocindent
+setlocal cindent
 setlocal cinkeys=0{,0},0),0],:,0#,!^F,o,O,e
 setlocal cinoptions=
 setlocal cinscopedecls=public,protected,private
 setlocal cinwords=if,else,while,do,for,switch
 setlocal colorcolumn=
-setlocal comments=fb:*,fb:-,fb:+,n:>
-setlocal commentstring=<!--\ %s\ -->
+setlocal comments=sO:*\ -,mO:*\ \ ,exO:*/,s1:/*,mb:*,ex:*/,:///,://
+setlocal commentstring=//\ %s
 setlocal complete=.,w,b,u,t
 setlocal completefunc=
 setlocal completeslash=
@@ -58,11 +43,12 @@ setlocal nocursorbind
 setlocal nocursorcolumn
 setlocal cursorline
 setlocal cursorlineopt=both
+setlocal define=^\\s*#\\s*define
 setlocal nodiff
 setlocal eventignorewin=
 setlocal expandtab
-if &filetype != 'markdown'
-setlocal filetype=markdown
+if &filetype != 'c'
+setlocal filetype=c
 endif
 setlocal fixendofline
 setlocal foldcolumn=0
@@ -76,21 +62,22 @@ setlocal foldminlines=1
 setlocal foldnestmax=20
 setlocal foldtext=
 setlocal formatexpr=v:lua.require'conform'.formatexpr()
-setlocal formatlistpat=^\\s*\\d\\+\\.\\s\\+\\|^\\s*[-*+]\\s\\+\\|^\\[^\\ze[^\\]]\\+\\]:\\&^.\\{4\\}
-setlocal formatoptions=jtcqln
+setlocal formatlistpat=^\\s*\\d\\+[\\]:.)}\\t\ ]\\s*
+setlocal formatoptions=jcroql
 setlocal iminsert=0
 setlocal imsearch=-1
+setlocal include=^\\s*#\\s*include
 setlocal includeexpr=
 setlocal indentexpr=nvim_treesitter#indent()
 setlocal indentkeys=0{,0},0),0],:,0#,!^F,o,O,e
 setlocal noinfercase
 setlocal iskeyword=@,48-57,_,192-255
 setlocal lhistory=10
-setlocal linebreak
+setlocal nolinebreak
 setlocal nolisp
 setlocal lispoptions=
 setlocal nolist
-setlocal matchpairs=(:),{:},[:],<:>
+setlocal matchpairs=(:),{:},[:]
 setlocal modeline
 setlocal modifiable
 setlocal nrformats=bin,hex
@@ -124,24 +111,24 @@ if &syntax != ''
 setlocal syntax=
 endif
 setlocal tabstop=4
-setlocal tagfunc=v:lua.vim.lsp.tagfunc
-setlocal textwidth=100
+setlocal tagfunc=
+setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarFilename#README.md%*
+setlocal winbar=%#WinBarPath#qmk%*\ %#WinBarSeparator#/%*\ %#WinBarPath#crkbd%*\ %#WinBarSeparator#/%*\ %#WinBarPath#src%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#keymap.c%*
 setlocal winblend=0
 setlocal nowinfixbuf
 setlocal nowinfixheight
 setlocal nowinfixwidth
 setlocal winhighlight=
-setlocal wrap
+setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 204 - ((37 * winheight(0) + 23) / 47)
+let s:l = 46 - ((35 * winheight(0) + 25) / 50)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 204
+keepjumps 46
 normal! 0
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'

@@ -9,7 +9,7 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +63 ~/repos/nikbrunner/notes/02\ -\ Areas/Log/2025/2025.10\ -\ October.md
+badd +72 ~/repos/nikbrunner/notes/02\ -\ Areas/Log/2025/2025.10\ -\ October.md
 argglobal
 %argdel
 $argadd ./
@@ -21,10 +21,11 @@ nnoremap <buffer>  <Cmd>MarkdownToggleCheckbox
 nnoremap <buffer> ,niT <Cmd>MarkdownInsertTable
 vnoremap <buffer> ,nil s["]()<Cmd>normal! h<Cmd>startinsert<Cmd>lua require("markdown-tools.commands").prompt_and_insert_url()
 vmap <buffer> ,nii s*"*
-vmap <buffer> ,nih s=="==
-vmap <buffer> ,nib s**"**
 vnoremap <buffer> ,niH <Cmd>MarkdownHeader
 nnoremap <buffer> ,niH <Cmd>MarkdownHeader
+vmap <buffer> ,nib s**"**
+vmap <buffer> ,nih s=="==
+nnoremap <buffer> ,nih <Cmd>MarkdownHeader
 xnoremap <buffer> <silent> [[ :exe "normal! gv"|call search('\%(^#\{1,5\}\s\+\S\|^\S.*\n^[=-]\+$\)', "bsW")
 xnoremap <buffer> <silent> ]] :exe "normal! gv"|call search('\%(^#\{1,5\}\s\+\S\|^\S.*\n^[=-]\+$\)', "sW")
 nnoremap <buffer> <C-T> <Cmd>MarkdownToggleCheckbox
@@ -137,12 +138,12 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 63 - ((35 * winheight(0) + 23) / 47)
+let s:l = 72 - ((33 * winheight(0) + 25) / 51)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 63
-normal! 015|
+keepjumps 72
+normal! 0
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
