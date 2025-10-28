@@ -10,7 +10,7 @@ custom-shader                      = ./shaders/cursor_trail.glsl
 # background-opacity                 = 0.9
 # background-blur                    = 65
 
-font-family = JetBrainsMono Nerd Font
+font-family = TX-02
 
 font-size                         = 16
 # font-thicken = true
