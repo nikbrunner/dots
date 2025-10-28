@@ -9,7 +9,7 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +48 ~/repos/nikbrunner/koyo/qmk/crkbd/src/keymap.c
+badd +46 ~/repos/nikbrunner/koyo/qmk/crkbd/src/keymap.c
 argglobal
 %argdel
 $argadd ./
@@ -84,6 +84,7 @@ setlocal nrformats=bin,hex
 setlocal number
 setlocal numberwidth=4
 setlocal omnifunc=v:lua.vim.lsp.omnifunc
+setlocal path=.,,
 setlocal nopreserveindent
 setlocal nopreviewwindow
 setlocal quoteescape=\\
@@ -124,7 +125,7 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 46 - ((35 * winheight(0) + 25) / 50)
+let s:l = 46 - ((33 * winheight(0) + 23) / 47)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
