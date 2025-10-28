@@ -63,8 +63,8 @@ return {
         },
     },
     keys = {
-        -- { "<leader>dP", "<cmd>Trouble diagnostics toggle  filter.buf=0<cr>", desc = "[P]roblems" },
-        -- { "<leader>wp", "<cmd>Trouble diagnostics toggle<cr>", desc = "[P]roblems" },
+        { "<leader>dP", "<cmd>Trouble diagnostics toggle  filter.buf=0<cr>", desc = "[P]roblems" },
+        { "<leader>wP", "<cmd>Trouble diagnostics toggle<cr>", desc = "[P]roblems" },
 
         { "sd", "<cmd>Trouble lsp_definitions<cr>", desc = "[R]eferences" },
         { "st", "<cmd>Trouble lsp_type_definitions<cr>", desc = "[R]eferences" },

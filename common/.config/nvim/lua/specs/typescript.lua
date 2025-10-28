@@ -2,7 +2,7 @@ return {
     {
         "dmmulroy/tsc.nvim",
         event = "LspAttach",
-        cmd = { "TSC" },
+        cmd = { "Compile" },
         opts = {
             use_trouble_qflist = true,
             flags = {
@@ -10,7 +10,7 @@ return {
             },
         },
         keys = {
-            { "<leader>wP", "<cmd>TSC<CR>", desc = "[P]roblems" },
+            -- { "<leader>wP", "<cmd>TSC<CR>", desc = "[P]roblems" },
         },
     },
     {
