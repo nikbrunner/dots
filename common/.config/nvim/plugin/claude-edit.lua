@@ -372,10 +372,8 @@ regenerate_code = function(new_instruction)
         -- Clean up response
         refactored_code = refactored_code:gsub("^```%w*\n", ""):gsub("\n```$", "")
 
-        local new_lines = {}
-        for line in refactored_code:gmatch("[^\n]+") do
-            table.insert(new_lines, line)
-        end
+        -- Split lines preserving empty lines
+        local new_lines = vim.split(refactored_code, "\n", { plain = true })
 
         -- Update buffer with new code
         update_buffer_content(diff_state.right_bufnr, new_lines)
@@ -392,15 +390,27 @@ local function claude_edit()
         return
     end
 
-    -- Get visual selection
-    local start_line = vim.fn.line("'<")
-    local end_line = vim.fn.line("'>")
     local source_bufnr = vim.api.nvim_get_current_buf()
-    local lines = vim.api.nvim_buf_get_lines(source_bufnr, start_line - 1, end_line, false)
+    local start_line, end_line, lines
+
+    -- Check if we're in visual mode or normal mode
+    local mode = vim.fn.mode()
+    if mode == "v" or mode == "V" or mode == "\22" then
+        -- Visual mode - use selection
+        start_line = vim.fn.line("'<")
+        end_line = vim.fn.line("'>")
+        lines = vim.api.nvim_buf_get_lines(source_bufnr, start_line - 1, end_line, false)
+    else
+        -- Normal mode - use entire file
+        start_line = 1
+        end_line = vim.fn.line("$")
+        lines = vim.api.nvim_buf_get_lines(source_bufnr, 0, -1, false)
+    end
+
     local original_code = table.concat(lines, "\n")
 
     if original_code == "" then
-        vim.notify("No code selected", vim.log.levels.WARN)
+        vim.notify("No code to refactor", vim.log.levels.WARN)
         return
     end
 
@@ -432,11 +442,8 @@ local function claude_edit()
             -- Clean up response (remove markdown code blocks if present)
             refactored_code = refactored_code:gsub("^```%w*\n", ""):gsub("\n```$", "")
 
-            -- Split the refactored code into lines
-            local new_lines = {}
-            for line in refactored_code:gmatch("[^\n]+") do
-                table.insert(new_lines, line)
-            end
+            -- Split lines preserving empty lines
+            local new_lines = vim.split(refactored_code, "\n", { plain = true })
 
             if #new_lines == 0 then
                 update_buffer_content(buf, { "", "❌ No code generated!" })
@@ -455,7 +462,8 @@ end
 
 vim.api.nvim_create_user_command("ClaudeEdit", function()
     claude_edit()
-end, { range = true, desc = "Refactor selected code using Claude AI" })
+end, { range = true, desc = "Refactor code using Claude AI" })
 
--- Keybinding: <C-g> in visual mode
-vim.keymap.set("v", "<C-g>", ":ClaudeEdit<CR>", { desc = "Claude Edit: Refactor selected code" })
+-- Keybindings
+vim.keymap.set("v", "<C-g>", ":ClaudeEdit<CR>", { desc = "Claude Edit: Refactor selection" })
+vim.keymap.set("n", "<C-g>", ":ClaudeEdit<CR>", { desc = "Claude Edit: Refactor entire file" })
