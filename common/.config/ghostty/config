@@ -1,4 +1,4 @@
-theme = black-atom-stations-engineering.conf
+theme = black-atom-mnml-mikado-dark.conf
 
 # custom-shader                      = ./shaders/crt-shader.glsl
 # custom-shader                      = ./shaders/bloom015.glsl
@@ -10,7 +10,7 @@ custom-shader                      = ./shaders/cursor_trail.glsl
 # background-opacity                 = 0.9
 # background-blur                    = 65
 
-font-family = TX-02
+font-family = JetBrainsMono Nerd Font
 
 font-size                         = 16
 # font-thicken = true
