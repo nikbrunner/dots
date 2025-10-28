@@ -76,13 +76,6 @@ local function lsp_callback(err, symbols, ctx)
         return
     end
 
-    -- Check if window is wide enough for winbar
-    local win_width = vim.api.nvim_win_get_width(0)
-    if win_width < 60 then
-        vim.wo.winbar = ""
-        return
-    end
-
     local pos = vim.api.nvim_win_get_cursor(0)
     local cursor_line = pos[1] - 1
     local cursor_char = pos[2]
@@ -112,13 +105,6 @@ end
 local function breadcrumbs_set()
     local bufnr = vim.api.nvim_get_current_buf()
 
-    -- Check if window is wide enough for winbar
-    local win_width = vim.api.nvim_win_get_width(0)
-    if win_width < 60 then
-        vim.wo.winbar = ""
-        return
-    end
-
     -- Skip Oil buffers (they have their own winbar)
     if vim.bo[bufnr].filetype == "oil" then
         return
@@ -128,6 +114,14 @@ local function breadcrumbs_set()
     local file_path = vim.fn.bufname(bufnr)
     if not file_path or file_path == "" then
         vim.wo.winbar = ""
+        return
+    end
+
+    -- Check if window is wide enough for LSP symbols
+    local win_width = vim.api.nvim_win_get_width(0)
+    if win_width < 80 then
+        -- Just show the relative path for narrow windows
+        vim.wo.winbar = get_relative_path(bufnr)
         return
     end
 
