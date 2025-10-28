@@ -26,21 +26,38 @@ shorten_path() {
     echo "$path" | sed "s|^$HOME|~|"
 }
 
-# Get the most recent conversation message for a project
+# Get the Nth most recent conversation message for a project
 get_conversation_title() {
     local project_path=$1
-    local title=$(grep -F "\"$project_path\"" ~/.claude/history.jsonl 2>/dev/null | tail -1 | jq -r '.display // ""' 2>/dev/null)
+    local index=${2:-1}  # Default to 1st most recent
 
-    if [[ -n "$title" && "$title" != "null" ]]; then
-        # Remove newlines and replace with space
-        title=$(echo "$title" | tr '\n' ' ' | tr -s ' ')
+    # Convert project path to the format used by Claude Code
+    # e.g., /Users/nbr/repos/nikbrunner/dots -> -Users-nbr-repos-nikbrunner-dots
+    local project_hash=$(echo "$project_path" | sed 's|/|-|g')
+    local project_dir="$HOME/.claude/projects/$project_hash"
 
-        # Truncate to 100 chars and add ellipsis if needed
-        if [[ ${#title} -gt 100 ]]; then
-            echo "${title:0:97}..."
-        else
-            echo "$title"
-        fi
+    if [[ ! -d "$project_dir" ]]; then
+        echo ""
+        return
+    fi
+
+    # Get the Nth most recent conversation file (excluding agent files)
+    # Sort by modification time (newest first)
+    local conv_file=$(find "$project_dir" -name "*.jsonl" -not -name "agent-*" -type f -exec stat -f "%m %N" {} \; 2>/dev/null | sort -rn | sed -n "${index}p" | awk '{print $2}')
+
+    if [[ -z "$conv_file" ]]; then
+        echo ""
+        return
+    fi
+
+    # Extract last meaningful user message from the conversation
+    # Skip system messages (starting with <, Caveat:, or [)
+    local message=$(grep -E '"type":"user"' "$conv_file" 2>/dev/null | jq -r 'select(.message.content | type == "string") | .message.content' 2>/dev/null | grep -vE '^Caveat:|^<|^\[' | tail -1 | head -c 100)
+
+    if [[ -n "$message" && "$message" != "null" ]]; then
+        # Clean up the message
+        message=$(echo "$message" | tr '\n' ' ' | tr -s ' ')
+        echo "$message"
     else
         echo ""
     fi
@@ -78,6 +95,7 @@ main() {
     # Build list for fzf
     declare -a entries
     declare -A target_map
+    declare -A project_counters  # Track conversation index per project
 
     while IFS= read -r line; do
         pid=$(echo "$line" | awk '{print $2}')
@@ -95,21 +113,22 @@ main() {
         target=$(get_tmux_target "$full_tty")
         [[ -z "$target" ]] && continue
 
-        # Extract session name for display
-        session=$(echo "$target" | cut -d: -f1)
-
         # Get activity indicator
         indicator=$(get_activity_indicator "$cpu")
 
-        # Get conversation title
-        title=$(get_conversation_title "$cwd")
+        # Increment counter for this project to get unique conversation per instance
+        project_counters["$cwd"]=$((${project_counters["$cwd"]:-0} + 1))
+        index=${project_counters["$cwd"]}
 
-        # Format: indicator session cwd [title]
+        # Get conversation title with index (1 = most recent, 2 = second most recent, etc.)
+        title=$(get_conversation_title "$cwd" "$index")
+
+        # Format: indicator cwd [title]
         short_cwd=$(shorten_path "$cwd")
         if [[ -n "$title" ]]; then
-            entry="$indicator  $(printf '%-35s' "$session")  $(printf '%-50s' "$short_cwd")  $title"
+            entry="$indicator  $(printf '%-50s' "$short_cwd")  $title"
         else
-            entry="$indicator  $(printf '%-35s' "$session")  $short_cwd"
+            entry="$indicator  $(printf '%-50s' "$short_cwd")"
         fi
         entries+=("$entry")
         target_map["$entry"]="$target"
