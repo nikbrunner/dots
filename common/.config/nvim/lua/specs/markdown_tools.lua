@@ -25,10 +25,10 @@ return {
         -- Keymappings for shortcuts. Set to `false` or `""` to disable.
         keymaps = {
             -- Use <leader>ni prefix for markdown insert operations
-            insert_header = "<leader>niH", -- Header
+            insert_header = "<leader>nih", -- Header
             insert_code_block = "<leader>nic", -- Code block
             insert_bold = "<leader>nib", -- Bold
-            insert_highlight = "<leader>nih", -- Highlight
+            insert_highlight = "<leader>niH", -- Highlight
             insert_italic = "<leader>nii", -- Italic
             insert_link = "<leader>nil", -- Link
             insert_table = "<leader>niT", -- Table
