@@ -304,6 +304,8 @@ return {
                 require("fff.download").download_or_build_binary()
             end,
             opts = {
+                max_results = 400,
+                max_threads = 8,
                 debug = {
                     enabled = true, -- we expect your collaboration at least during the beta
                     show_scores = true, -- to help us optimize the scoring system, feel free to share your scores!
@@ -314,15 +316,25 @@ return {
             "madmaxieee/fff-snacks.nvim",
             dir = require("lib.config").get_repo_path("nikbrunner/fff-snacks.nvim"),
             dependencies = { "dmtrKovalenko/fff.nvim", "folke/snacks.nvim" },
-            cmd = "FFFSnacks",
             keys = {
                 { "<leader><leader>", "<CMD>FFFSnacks<CR>", desc = "Find Files" },
                 { "<leader>wd", "<CMD>FFFSnacks<CR>", desc = "[D]ocument" },
             },
+            ---@module "fff-snacks"
+            ---@type fff-snacks.Config
             opts = {
                 layout = function()
                     return M.smart_layout()
                 end,
+                git_icons = {
+                    added = " ",
+                    modified = " ",
+                    untracked = "󰎔 ",
+                    deleted = " ",
+                    ignored = " ",
+                    renamed = " ",
+                    clean = "  ",
+                },
             },
         },
     },
