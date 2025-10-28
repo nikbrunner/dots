@@ -5,6 +5,9 @@ return {
         cmd = { "TSC" },
         opts = {
             use_trouble_qflist = true,
+            flags = {
+                skipLibCheck = true,
+            },
         },
         keys = {
             { "<leader>wP", "<cmd>TSC<CR>", desc = "[P]roblems" },
