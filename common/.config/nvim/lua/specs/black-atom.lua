@@ -32,7 +32,7 @@ return {
             radar = {
                 winblend = 10,
                 border = "double",
-                grid_size = { width = math.floor(vim.o.columns * 0.8), height = math.floor(vim.o.lines * 0.3) },
+                grid_size = { width = math.floor(vim.o.columns * 0.8), height = math.floor(vim.o.lines * 0.5) },
             },
         },
     },
