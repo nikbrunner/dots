@@ -9,5 +9,8 @@
   "alwaysThinkingEnabled": true,
   "feedbackSurveyState": {
     "lastShownTime": 1754313915132
+  },
+  "enabledPlugins": {
+    "superpowers@superpowers-marketplace": true
   }
 }
