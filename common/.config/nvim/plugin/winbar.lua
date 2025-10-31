@@ -119,7 +119,7 @@ local function breadcrumbs_set()
 
     -- Check if window is wide enough for LSP symbols
     local win_width = vim.api.nvim_win_get_width(0)
-    if win_width < 80 then
+    if win_width < 150 then
         -- Just show the relative path for narrow windows
         vim.wo.winbar = get_relative_path(bufnr)
         return
