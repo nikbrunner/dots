@@ -9,7 +9,7 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +47 ~/repos/nikbrunner/koyo/qmk/crkbd/src/keymap.c
+badd +51 ~/repos/nikbrunner/koyo/qmk/crkbd/src/keymap.c
 argglobal
 %argdel
 $argadd ./
@@ -83,7 +83,7 @@ setlocal modifiable
 setlocal nrformats=bin,hex
 setlocal number
 setlocal numberwidth=4
-setlocal omnifunc=v:lua.vim.lsp.omnifunc
+setlocal omnifunc=
 setlocal path=.,,
 setlocal nopreserveindent
 setlocal nopreviewwindow

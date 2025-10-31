@@ -9,8 +9,8 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +29 ~/repos/black-atom-industries/core/src/themes/mnml/black-atom-mnml-mikado-dark.ts
-badd +16 ~/repos/black-atom-industries/core/src/themes/mnml/syntax_dark.ts
+badd +39 ~/repos/black-atom-industries/core/src/themes/mnml/black-atom-mnml-mikado-dark.ts
+badd +17 ~/repos/black-atom-industries/core/src/themes/mnml/syntax_dark.ts
 argglobal
 %argdel
 $argadd ./
@@ -31,8 +31,8 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe 'vert 1resize ' . ((&columns * 91 + 91) / 183)
-exe 'vert 2resize ' . ((&columns * 91 + 91) / 183)
+exe 'vert 1resize ' . ((&columns * 184 + 184) / 368)
+exe 'vert 2resize ' . ((&columns * 183 + 184) / 368)
 argglobal
 setlocal keymap=
 setlocal noarabic
@@ -133,7 +133,7 @@ setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#src%*\ %#WinBarSeparator#/%*\ %#WinBarPath#themes%*\ %#WinBarSeparator#/%*\ %#WinBarPath#mnml%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#black-atom-mnml-mikado-dark.ts%*\ %#WinBarSeparator##%*\ %#WinBarSymbol#primaries%*
+setlocal winbar=%#WinBarPath#src%*\ %#WinBarSeparator#/%*\ %#WinBarPath#themes%*\ %#WinBarSeparator#/%*\ %#WinBarPath#mnml%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#black-atom-mnml-mikado-dark.ts%*
 setlocal winblend=0
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -141,11 +141,11 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 33 - ((19 * winheight(0) + 25) / 51)
+let s:l = 39 - ((28 * winheight(0) + 28) / 56)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 33
+keepjumps 39
 normal! 0
 wincmd w
 argglobal
@@ -253,7 +253,7 @@ setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#src%*\ %#WinBarSeparator#/%*\ %#WinBarPath#themes%*\ %#WinBarSeparator#/%*\ %#WinBarPath#mnml%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#syntax_dark.ts%*\ %#WinBarSeparator##%*\ %#WinBarSymbol#default%*\ %#WinBarSeparator##%*\ %#WinBarSymbol#property%*\ %#WinBarSeparator##%*\ %#WinBarSymbol#default%*
+setlocal winbar=%#WinBarPath#src%*\ %#WinBarSeparator#/%*\ %#WinBarPath#themes%*\ %#WinBarSeparator#/%*\ %#WinBarPath#mnml%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#syntax_dark.ts%*\ %#WinBarSeparator##%*\ %#WinBarSymbol#default%*\ %#WinBarSeparator##%*\ %#WinBarSymbol#string%*
 setlocal winblend=0
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -265,15 +265,15 @@ setlocal wrapmargin=0
 sil! normal! zo
 9
 sil! normal! zo
-let s:l = 16 - ((13 * winheight(0) + 25) / 51)
+let s:l = 19 - ((17 * winheight(0) + 28) / 56)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 16
-normal! 033|
+keepjumps 19
+normal! 010|
 wincmd w
-exe 'vert 1resize ' . ((&columns * 91 + 91) / 183)
-exe 'vert 2resize ' . ((&columns * 91 + 91) / 183)
+exe 'vert 1resize ' . ((&columns * 184 + 184) / 368)
+exe 'vert 2resize ' . ((&columns * 183 + 184) / 368)
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
