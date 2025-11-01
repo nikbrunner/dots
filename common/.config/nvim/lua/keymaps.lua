@@ -110,20 +110,6 @@ end, { desc = "[P]ath" })
 M.map("n", "H", vim.cmd.tabprevious, { desc = "Previous Tab" })
 M.map("n", "L", vim.cmd.tabnext, { desc = "Next Tab" })
 
--- Go to tab number (creates new tab if needed)
-for i = 1, 9 do
-    M.map("n", "<leader>" .. i, function()
-        local existing_tab_count = vim.fn.tabpagenr("$")
-
-        if existing_tab_count < i then
-            vim.cmd("tablast")
-            vim.cmd("tabnew")
-        else
-            vim.cmd(i .. "tabnext")
-        end
-    end, { desc = "Tab: " .. i }) -- Assuming WhichKeyIgnoreLabel is defined elsewhere
-end
-
 -- Resize splits using Shift + Arrow keys
 -- M.map({ "n", "v", "x" }, "<S-Down>", "<cmd>resize -2<cr>", { desc = "Resize Split Down" })
 -- M.map({ "n", "v", "x" }, "<S-Up>", "<cmd>resize +2<cr>", { desc = "Resize Split Up" })
