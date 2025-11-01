@@ -187,10 +187,12 @@ function M.keys()
         { "<leader>ad",          M.file_surfer, desc = "[D]ocument" },
         { "<leader>aa",          function() Snacks.picker.commands() end, desc = "[A]ctions" },
         { "<leader>agg",          function() Snacks.lazygit() end, desc = "[G]raph" },
-        { "<leader>agi",          function() Snacks.picker.gh_issue() end, desc = "GitHub Issues (open)" },
-        { "<leader>agI",          function() Snacks.picker.gh_issue({ state = "all" }) end, desc = "GitHub Issues (all)" },
-        { "<leader>agp",          function() Snacks.picker.gh_pr() end, desc = "GitHub Pull Requests (open)" },
-        { "<leader>agP",          function() Snacks.picker.gh_pr({ state = "all" }) end, desc = "GitHub Pull Requests (all)" },
+        { "<leader>agi",          function() Snacks.picker.gh_issue() end, desc = "GitHub [I]ssues (open)" },
+        { "<leader>agI",          function() Snacks.picker.gh_issue({ state = "all" }) end, desc = "GitHub [I]ssues (all)" },
+        { "<leader>agp",          function() Snacks.picker.gh_pr() end, desc = "GitHub [P]ull Requests (open)" },
+        { "<leader>agP",          function() Snacks.picker.gh_pr({ state = "all" }) end, desc = "GitHub [P]ull Requests (all)" },
+        { "<leader>agb",          function() Snacks.picker.git_branches() end, desc = "[B]ranches" },
+        { "<leader>agh",          function() Snacks.picker.git_log() end, desc = "[H]istory" },
         { "<leader>as",          function() Snacks.picker.files({ cwd = vim.fn.expand("$HOME") .. "/repos/nikbrunner/dots" }) end, desc = "[D]ots" },
         { "<leader>at",          function() Snacks.picker.colorschemes() end, desc = "[T]hemes" },
         { "<leader>ar",          function() Snacks.picker.recent() end, desc = "[R]ecent Documents (Anywhere)" },
@@ -236,7 +238,8 @@ function M.keys()
         end, desc = "[P]R" },
 
         -- Document
-        { "<leader>dg",         function() Snacks.lazygit.log_file() end, desc = "[G]raph" },
+        { "<leader>dgg",         function() Snacks.lazygit.log_file() end, desc = "[G]raph" },
+        { "<leader>dgh",         function() Snacks.picker.git_log_file() end, desc = "[H]istory" },
         { "<leader>dt",          function() Snacks.picker.lines({ layout = M.buffer_layout }) end, desc = "[T]ext" },
         { "<leader>dc",          function()
             local file = vim.fn.expand("%")
@@ -251,7 +254,8 @@ function M.keys()
         { "<leader>du",          function() Snacks.picker.undo() end, desc = "[U]ndo" },
         { "<leader>da",          M.find_associated_files, desc = "[A]ssociated Documents" },
 
-        { "sg",                  function() Snacks.git.blame_line() end, desc = "[G]it" },
+        { "sgb",                  function() Snacks.git.blame_line() end, desc = "[B]lame" },
+        { "sgh",                  function() Snacks.picker.git_log_line() end, desc = "[H]istory" },
     }
     -- stylua: ignore end
 end
