@@ -15,7 +15,7 @@ M.specs = {
                 disable = function(lang, bufnr)
                     return vim.api.nvim_buf_line_count(bufnr) > 5000
                 end,
-                additional_vim_regex_highlighting = {},
+                additional_vim_regex_highlighting = false,
             },
             indent = {
                 enable = true,
