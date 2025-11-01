@@ -353,7 +353,19 @@ return {
         gitbrowse = { enabled = true },
         input = { enabled = true },
         scroll = { enabled = false },
-        gh = { enabled = true },
+        gh = {
+            wo = {
+                -- I had to disable conceallevel because this has led to a bug
+                conceallevel = 0,
+                winhighlight = require("snacks").util.winhl({
+                    Normal = "Normal",
+                    NormalFloat = "NormalFloat",
+                    FloatBorder = "FloatBorder",
+                    FloatTitle = "FloatTitle",
+                    FloatFooter = "FloatFooter",
+                }),
+            },
+        },
         notifier = {
             enabled = true,
             margin = { top = 0, right = 0, bottom = 1, left = 1 },
@@ -454,15 +466,10 @@ return {
                         help = true,
                     },
                 },
-                git_status = {
-                    preview = "git_status",
-                },
-                gh_pr = {},
-                gh_issues = {},
-                gh_diff = {},
-                gh_labels = {},
-                gh_issue_labels = {},
-                gh_reactions = {},
+                git_status = { preview = "git_status" },
+                gh_pr = { layout = { preset = "default" } },
+                gh_issue = { layout = { preset = "default" } },
+                gh_diff = { layout = { preset = "default" } },
                 projects = {
                     finder = "recent_projects",
                     -- TODO: restore session
