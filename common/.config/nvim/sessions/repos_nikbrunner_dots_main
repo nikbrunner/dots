@@ -8,13 +8,9 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 let s:shortmess_save = &shortmess
-if &shortmess =~ 'A'
-  set shortmess=aoOA
-else
-  set shortmess=aoO
-endif
-badd +294 ~/repos/nikbrunner/dots/common/.config/nvim/lua/specs/snacks.lua
-badd +1 ~/repos/nikbrunner/dots/common/.config/nvim/lua/specs/treesitter.lua
+set shortmess+=aoO
+badd +6 ~/repos/nikbrunner/dots/common/.config/nvim/lua/specs/snacks.lua
+badd +9 ~/repos/nikbrunner/dots/common/.config/nvim/lua/specs/treesitter.lua
 argglobal
 %argdel
 edit ~/repos/nikbrunner/dots/common/.config/nvim/lua/specs/snacks.lua
@@ -34,8 +30,8 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe 'vert 1resize ' . ((&columns * 117 + 117) / 234)
-exe 'vert 2resize ' . ((&columns * 116 + 117) / 234)
+exe 'vert 1resize ' . ((&columns * 220 + 221) / 442)
+exe 'vert 2resize ' . ((&columns * 221 + 221) / 442)
 argglobal
 setlocal keymap=
 setlocal noarabic
@@ -46,6 +42,7 @@ setlocal breakindentopt=
 setlocal bufhidden=
 setlocal buflisted
 setlocal buftype=
+setlocal busy=0
 setlocal nocindent
 setlocal cinkeys=0{,0},0),0],:,0#,!^F,o,O,e
 setlocal cinoptions=
@@ -89,10 +86,11 @@ setlocal iminsert=0
 setlocal imsearch=-1
 setlocal include=\\<\\%(\\%(do\\|load\\)file\\|require\\)\\s*(
 setlocal includeexpr=v:lua.require'vim._ftplugin.lua'.includeexpr(v:fname)
-setlocal indentexpr=nvim_treesitter#indent()
+setlocal indentexpr=GetLuaIndent()
 setlocal indentkeys=0{,0},0),0],:,0#,!^F,o,O,e,0=end,0=until
 setlocal noinfercase
 setlocal iskeyword=@,48-57,_,192-255
+setlocal lhistory=10
 setlocal nolinebreak
 setlocal nolisp
 setlocal lispoptions=
@@ -103,7 +101,7 @@ setlocal modifiable
 setlocal nrformats=bin,hex
 setlocal number
 setlocal numberwidth=4
-setlocal omnifunc=v:lua.vim.lsp.omnifunc
+setlocal omnifunc=v:lua.vim.lua_omnifunc
 setlocal path=,
 setlocal nopreserveindent
 setlocal nopreviewwindow
@@ -203,119 +201,69 @@ sil! normal! zo
 sil! normal! zo
 349
 sil! normal! zo
+357
+sil! normal! zo
 358
 sil! normal! zo
-364
+370
 sil! normal! zo
-368
+376
 sil! normal! zo
-371
+383
 sil! normal! zo
-378
+390
 sil! normal! zo
-379
+396
 sil! normal! zo
-384
+405
 sil! normal! zo
-385
+406
 sil! normal! zo
-388
-sil! normal! zo
-393
-sil! normal! zo
-394
-sil! normal! zo
-395
-sil! normal! zo
-402
-sil! normal! zo
-403
-sil! normal! zo
-408
-sil! normal! zo
-409
-sil! normal! zo
-412
-sil! normal! zo
-417
-sil! normal! zo
-418
-sil! normal! zo
-419
-sil! normal! zo
-426
-sil! normal! zo
-427
-sil! normal! zo
-409
+406
 sil! normal! zc
-434
+420
 sil! normal! zo
-437
+421
 sil! normal! zo
-440
+429
 sil! normal! zo
-445
-sil! normal! zo
-448
+438
 sil! normal! zo
 452
 sil! normal! zo
-458
+460
 sil! normal! zo
-467
+474
 sil! normal! zo
-471
+478
 sil! normal! zo
-482
+489
 sil! normal! zo
-483
-sil! normal! zo
-490
-sil! normal! zo
-495
-sil! normal! zo
-496
-sil! normal! zo
-498
+502
 sil! normal! zo
 503
 sil! normal! zo
-505
-sil! normal! zo
-506
-sil! normal! zo
-511
+510
 sil! normal! zo
 518
 sil! normal! zo
-519
-sil! normal! zo
-522
-sil! normal! zo
-524
+525
 sil! normal! zo
 529
 sil! normal! zo
-531
-sil! normal! zo
-535
+536
 sil! normal! zo
 538
 sil! normal! zo
-539
-sil! normal! zo
 542
 sil! normal! zo
-543
+545
 sil! normal! zo
-546
-sil! normal! zo
-let s:l = 294 - ((26 * winheight(0) + 19) / 39)
+let s:l = 6 - ((5 * winheight(0) + 34) / 68)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 294
+keepjumps 6
 normal! 013|
 wincmd w
 argglobal
@@ -333,6 +281,7 @@ setlocal breakindentopt=
 setlocal bufhidden=
 setlocal buflisted
 setlocal buftype=
+setlocal busy=0
 setlocal nocindent
 setlocal cinkeys=0{,0},0),0],:,0#,!^F,o,O,e
 setlocal cinoptions=
@@ -380,6 +329,7 @@ setlocal indentexpr=nvim_treesitter#indent()
 setlocal indentkeys=0{,0},0),0],:,0#,!^F,o,O,e,0=end,0=until
 setlocal noinfercase
 setlocal iskeyword=@,48-57,_,192-255
+setlocal lhistory=10
 setlocal nolinebreak
 setlocal nolisp
 setlocal lispoptions=
@@ -390,7 +340,7 @@ setlocal modifiable
 setlocal nrformats=bin,hex
 setlocal number
 setlocal numberwidth=4
-setlocal omnifunc=v:lua.vim.lsp.omnifunc
+setlocal omnifunc=v:lua.vim.lua_omnifunc
 setlocal path=,
 setlocal nopreserveindent
 setlocal nopreviewwindow
@@ -424,7 +374,7 @@ setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#common%*\ %#WinBarSeparator#/%*\ %#WinBarPath#.config%*\ %#WinBarSeparator#/%*\ %#WinBarPath#nvim%*\ %#WinBarSeparator#/%*\ %#WinBarPath#lua%*\ %#WinBarSeparator#/%*\ %#WinBarPath#specs%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#treesitter.lua%*
+setlocal winbar=%#WinBarPath#common%*\ %#WinBarSeparator#/%*\ %#WinBarPath#.config%*\ %#WinBarSeparator#/%*\ %#WinBarPath#nvim%*\ %#WinBarSeparator#/%*\ %#WinBarPath#lua%*\ %#WinBarSeparator#/%*\ %#WinBarPath#specs%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#treesitter.lua%*\ %#WinBarSeparator##%*\ %#WinBarSymbol#M.specs%*\ %#WinBarSeparator##%*\ %#WinBarSymbol#[1]%*\ %#WinBarSeparator##%*\ %#WinBarSymbol#opts%*
 setlocal winblend=0
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -432,15 +382,20 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 1 - ((0 * winheight(0) + 19) / 39)
+5
+sil! normal! zo
+6
+sil! normal! zo
+let s:l = 11 - ((10 * winheight(0) + 34) / 68)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 1
-normal! 0
+keepjumps 11
+normal! 016|
 wincmd w
-exe 'vert 1resize ' . ((&columns * 117 + 117) / 234)
-exe 'vert 2resize ' . ((&columns * 116 + 117) / 234)
+2wincmd w
+exe 'vert 1resize ' . ((&columns * 220 + 221) / 442)
+exe 'vert 2resize ' . ((&columns * 221 + 221) / 442)
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
@@ -456,7 +411,6 @@ if filereadable(s:sx)
 endif
 let &g:so = s:so_save | let &g:siso = s:siso_save
 set hlsearch
-nohlsearch
 doautoall SessionLoadPost
 unlet SessionLoad
 " vim: set ft=vim :
