@@ -9,10 +9,8 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +119 ~/repos/dealercenter-digital/bc-desktop-client/src/client/commons/components/ProductTile/meta/ProductTile.story.tsx
-badd +106 src/client/commons/components/ProductTile/ProductTile.scss
-badd +20 ~/repos/dealercenter-digital/bc-desktop-client/src/client/commons/styles/_config.scss
 badd +25 ~/repos/dealercenter-digital/bc-desktop-client/docs/mobile.md
+badd +173 ~/repos/dealercenter-digital/bc-desktop-client/docs/color-system-v2-implementation-plan.md
 argglobal
 %argdel
 $argadd ./
@@ -143,38 +141,30 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal wrap
 setlocal wrapmargin=0
-let s:l = 35 - ((34 * winheight(0) + 29) / 58)
+let s:l = 35 - ((27 * winheight(0) + 23) / 46)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
 keepjumps 35
 normal! 0
 tabnext
-edit src/client/commons/components/ProductTile/ProductTile.scss
-let s:save_splitbelow = &splitbelow
-let s:save_splitright = &splitright
-set splitbelow splitright
-wincmd _ | wincmd |
-vsplit
-wincmd _ | wincmd |
-vsplit
-2wincmd h
-wincmd w
-wincmd w
-let &splitbelow = s:save_splitbelow
-let &splitright = s:save_splitright
-wincmd t
-let s:save_winminheight = &winminheight
-let s:save_winminwidth = &winminwidth
-set winminheight=0
-set winheight=1
-set winminwidth=0
-set winwidth=1
-exe 'vert 1resize ' . ((&columns * 129 + 195) / 390)
-exe 'vert 2resize ' . ((&columns * 129 + 195) / 390)
-exe 'vert 3resize ' . ((&columns * 130 + 195) / 390)
+edit ~/repos/dealercenter-digital/bc-desktop-client/docs/color-system-v2-implementation-plan.md
 argglobal
-balt ~/repos/dealercenter-digital/bc-desktop-client/src/client/commons/components/ProductTile/meta/ProductTile.story.tsx
+let s:cpo_save=&cpo
+set cpo&vim
+nnoremap <buffer>  <Cmd>MarkdownToggleCheckbox
+nnoremap <buffer> ,niT <Cmd>MarkdownInsertTable
+vnoremap <buffer> ,nil s["]()<Cmd>normal! h<Cmd>startinsert<Cmd>lua require("markdown-tools.commands").prompt_and_insert_url()
+vmap <buffer> ,nii s*"*
+vmap <buffer> ,niH s=="==
+vmap <buffer> ,nib s**"**
+vnoremap <buffer> ,nih <Cmd>MarkdownHeader
+nnoremap <buffer> ,nih <Cmd>MarkdownHeader
+xnoremap <buffer> <silent> [[ :exe "normal! gv"|call search('\%(^#\{1,5\}\s\+\S\|^\S.*\n^[=-]\+$\)', "bsW")
+xnoremap <buffer> <silent> ]] :exe "normal! gv"|call search('\%(^#\{1,5\}\s\+\S\|^\S.*\n^[=-]\+$\)', "sW")
+nnoremap <buffer> <C-T> <Cmd>MarkdownToggleCheckbox
+let &cpo=s:cpo_save
+unlet s:cpo_save
 setlocal keymap=
 setlocal noarabic
 setlocal autoindent
@@ -191,138 +181,8 @@ setlocal cinoptions=
 setlocal cinscopedecls=public,protected,private
 setlocal cinwords=if,else,while,do,for,switch
 setlocal colorcolumn=
-setlocal comments=s1:/*,mb:*,ex:*/,://
-setlocal commentstring=//\ %s
-setlocal complete=.,w,b,u,t
-setlocal completefunc=
-setlocal completeslash=
-setlocal concealcursor=
-setlocal conceallevel=0
-setlocal nocopyindent
-setlocal nocursorbind
-setlocal nocursorcolumn
-setlocal cursorline
-setlocal cursorlineopt=both
-setlocal define=^\\C\\v\\s*%(\\@function|\\@mixin|\\=)|^\\s*%(\\$[[:alnum:]-]+:|[%.][:alnum:]-]+\\s*%(\\{|$))@=
-setlocal nodiff
-setlocal eventignorewin=
-setlocal expandtab
-if &filetype != 'scss'
-setlocal filetype=scss
-endif
-setlocal fixendofline
-setlocal foldcolumn=0
-setlocal foldenable
-setlocal foldexpr=v:lua.vim.treesitter.foldexpr()
-setlocal foldignore=#
-setlocal foldlevel=99
-setlocal foldmarker={{{,}}}
-setlocal foldmethod=indent
-setlocal foldminlines=1
-setlocal foldnestmax=20
-setlocal foldtext=
-setlocal formatexpr=v:lua.require'conform'.formatexpr()
-setlocal formatlistpat=^\\s*\\d\\+[\\]:.)}\\t\ ]\\s*
-setlocal formatoptions=tcqj
-setlocal iminsert=0
-setlocal imsearch=-1
-setlocal include=^\\s*@import\\s\\+\\%(url(\\)\\=[\"']\\=
-setlocal includeexpr=SassIncludeExpr(v:fname)
-setlocal indentexpr=nvim_treesitter#indent()
-setlocal indentkeys=0{,0},!^F,o,O
-setlocal noinfercase
-setlocal iskeyword=@,48-57,_,192-255
-setlocal lhistory=10
-setlocal nolinebreak
-setlocal nolisp
-setlocal lispoptions=
-setlocal nolist
-setlocal matchpairs=(:),{:},[:]
-setlocal modeline
-setlocal modifiable
-setlocal nrformats=bin,hex
-setlocal number
-setlocal numberwidth=4
-setlocal omnifunc=csscomplete#CompleteCSS
-setlocal nopreserveindent
-setlocal nopreviewwindow
-setlocal quoteescape=\\
-setlocal noreadonly
-setlocal relativenumber
-setlocal norightleft
-setlocal rightleftcmd=search
-setlocal scrollback=-1
-setlocal noscrollbind
-setlocal shiftwidth=2
-setlocal signcolumn=yes
-setlocal nosmartindent
-setlocal nosmoothscroll
-setlocal softtabstop=-1
-setlocal nospell
-setlocal spellcapcheck=[.?!]\\_[\\])'\"\\t\ ]\\+
-setlocal spellfile=
-setlocal spelllang=en_us,de_de
-setlocal spelloptions=noplainbuffer
-setlocal statuscolumn=%!v:lua.require'snacks.statuscolumn'.get()
-setlocal suffixesadd=.sass,.scss,.css
-setlocal noswapfile
-setlocal synmaxcol=3000
-if &syntax != ''
-setlocal syntax=
-endif
-setlocal tabstop=2
-setlocal tagfunc=v:lua.vim.lsp.tagfunc
-setlocal textwidth=0
-setlocal undofile
-setlocal varsofttabstop=
-setlocal vartabstop=
-setlocal winbar=%#WinBarPath#src%*\ %#WinBarSeparator#/%*\ %#WinBarPath#client%*\ %#WinBarSeparator#/%*\ %#WinBarPath#commons%*\ %#WinBarSeparator#/%*\ %#WinBarPath#components%*\ %#WinBarSeparator#/%*\ %#WinBarPath#ProductTile%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#ProductTile.scss%*
-setlocal winblend=0
-setlocal nowinfixbuf
-setlocal nowinfixheight
-setlocal nowinfixwidth
-setlocal winhighlight=
-setlocal nowrap
-setlocal wrapmargin=0
-2
-sil! normal! zo
-85
-sil! normal! zo
-179
-sil! normal! zo
-184
-sil! normal! zo
-let s:l = 106 - ((38 * winheight(0) + 29) / 58)
-if s:l < 1 | let s:l = 1 | endif
-keepjumps exe s:l
-normal! zt
-keepjumps 106
-normal! 0
-wincmd w
-argglobal
-if bufexists(fnamemodify("~/repos/dealercenter-digital/bc-desktop-client/src/client/commons/components/ProductTile/meta/ProductTile.story.tsx", ":p")) | buffer ~/repos/dealercenter-digital/bc-desktop-client/src/client/commons/components/ProductTile/meta/ProductTile.story.tsx | else | edit ~/repos/dealercenter-digital/bc-desktop-client/src/client/commons/components/ProductTile/meta/ProductTile.story.tsx | endif
-if &buftype ==# 'terminal'
-  silent file ~/repos/dealercenter-digital/bc-desktop-client/src/client/commons/components/ProductTile/meta/ProductTile.story.tsx
-endif
-balt ~/repos/dealercenter-digital/bc-desktop-client/src/client/commons/styles/_config.scss
-setlocal keymap=
-setlocal noarabic
-setlocal autoindent
-setlocal nobinary
-setlocal nobreakindent
-setlocal breakindentopt=
-setlocal bufhidden=
-setlocal buflisted
-setlocal buftype=
-setlocal busy=0
-setlocal nocindent
-setlocal cinkeys=0{,0},0),0],:,0#,!^F,o,O,e
-setlocal cinoptions=
-setlocal cinscopedecls=public,protected,private
-setlocal cinwords=if,else,while,do,for,switch
-setlocal colorcolumn=
-setlocal comments=sO:*\ -,mO:*\ \ ,exO:*/,s1:/*,mb:*,ex:*/,://
-setlocal commentstring=//\ %s
+setlocal comments=fb:*,fb:-,fb:+,n:>
+setlocal commentstring=<!--\ %s\ -->
 setlocal complete=.,w,b,u,t
 setlocal completefunc=
 setlocal completeslash=
@@ -336,8 +196,8 @@ setlocal cursorlineopt=both
 setlocal nodiff
 setlocal eventignorewin=
 setlocal expandtab
-if &filetype != 'typescriptreact'
-setlocal filetype=typescriptreact
+if &filetype != 'markdown'
+setlocal filetype=markdown
 endif
 setlocal fixendofline
 setlocal foldcolumn=0
@@ -351,21 +211,21 @@ setlocal foldminlines=1
 setlocal foldnestmax=20
 setlocal foldtext=
 setlocal formatexpr=v:lua.require'conform'.formatexpr()
-setlocal formatlistpat=^\\s*\\d\\+[\\]:.)}\\t\ ]\\s*
-setlocal formatoptions=jcroql
+setlocal formatlistpat=^\\s*\\d\\+\\.\\s\\+\\|^\\s*[-*+]\\s\\+\\|^\\[^\\ze[^\\]]\\+\\]:\\&^.\\{4\\}
+setlocal formatoptions=jtcqln
 setlocal iminsert=0
 setlocal imsearch=-1
 setlocal includeexpr=
-setlocal indentexpr=GetTypescriptIndent()
-setlocal indentkeys=0{,0},0),0],0,,!^F,o,O,e
+setlocal indentexpr=nvim_treesitter#indent()
+setlocal indentkeys=0{,0},0),0],:,0#,!^F,o,O,e
 setlocal noinfercase
-setlocal iskeyword=@,48-57,_,192-255,#,$
+setlocal iskeyword=@,48-57,_,192-255
 setlocal lhistory=10
-setlocal nolinebreak
+setlocal linebreak
 setlocal nolisp
 setlocal lispoptions=
 setlocal nolist
-setlocal matchpairs=(:),{:},[:]
+setlocal matchpairs=(:),{:},[:],<:>
 setlocal modeline
 setlocal modifiable
 setlocal nrformats=bin,hex
@@ -383,7 +243,7 @@ setlocal scrollback=-1
 setlocal noscrollbind
 setlocal shiftwidth=2
 setlocal signcolumn=yes
-setlocal nosmartindent
+setlocal smartindent
 setlocal nosmoothscroll
 setlocal softtabstop=-1
 setlocal nospell
@@ -392,7 +252,7 @@ setlocal spellfile=
 setlocal spelllang=en_us,de_de
 setlocal spelloptions=noplainbuffer
 setlocal statuscolumn=%!v:lua.require'snacks.statuscolumn'.get()
-setlocal suffixesadd=.ts,.d.ts,.tsx,.js,.jsx,.cjs,.mjs
+setlocal suffixesadd=
 setlocal noswapfile
 setlocal synmaxcol=3000
 if &syntax != ''
@@ -400,152 +260,24 @@ setlocal syntax=
 endif
 setlocal tabstop=2
 setlocal tagfunc=v:lua.vim.lsp.tagfunc
-setlocal textwidth=0
+setlocal textwidth=120
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#src%*\ %#WinBarSeparator#/%*\ %#WinBarPath#client%*\ %#WinBarSeparator#/%*\ %#WinBarPath#commons%*\ %#WinBarSeparator#/%*\ %#WinBarPath#components%*\ %#WinBarSeparator#/%*\ %#WinBarPath#ProductTile%*\ %#WinBarSeparator#/%*\ %#WinBarPath#meta%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#ProductTile.story.tsx%*
+setlocal winbar=%#WinBarPath#docs%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#color-system-v2-implementation-plan.md%*
 setlocal winblend=0
 setlocal nowinfixbuf
 setlocal nowinfixheight
 setlocal nowinfixwidth
 setlocal winhighlight=
-setlocal nowrap
+setlocal wrap
 setlocal wrapmargin=0
-let s:l = 119 - ((51 * winheight(0) + 29) / 58)
+let s:l = 28 - ((25 * winheight(0) + 23) / 46)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 119
+keepjumps 28
 normal! 0
-wincmd w
-argglobal
-if bufexists(fnamemodify("~/repos/dealercenter-digital/bc-desktop-client/src/client/commons/styles/_config.scss", ":p")) | buffer ~/repos/dealercenter-digital/bc-desktop-client/src/client/commons/styles/_config.scss | else | edit ~/repos/dealercenter-digital/bc-desktop-client/src/client/commons/styles/_config.scss | endif
-if &buftype ==# 'terminal'
-  silent file ~/repos/dealercenter-digital/bc-desktop-client/src/client/commons/styles/_config.scss
-endif
-balt ~/repos/dealercenter-digital/bc-desktop-client/src/client/commons/components/ProductTile/meta/ProductTile.story.tsx
-setlocal keymap=
-setlocal noarabic
-setlocal autoindent
-setlocal nobinary
-setlocal nobreakindent
-setlocal breakindentopt=
-setlocal bufhidden=
-setlocal buflisted
-setlocal buftype=
-setlocal busy=0
-setlocal nocindent
-setlocal cinkeys=0{,0},0),0],:,0#,!^F,o,O,e
-setlocal cinoptions=
-setlocal cinscopedecls=public,protected,private
-setlocal cinwords=if,else,while,do,for,switch
-setlocal colorcolumn=
-setlocal comments=s1:/*,mb:*,ex:*/,://
-setlocal commentstring=//\ %s
-setlocal complete=.,w,b,u,t
-setlocal completefunc=
-setlocal completeslash=
-setlocal concealcursor=
-setlocal conceallevel=0
-setlocal nocopyindent
-setlocal nocursorbind
-setlocal nocursorcolumn
-setlocal cursorline
-setlocal cursorlineopt=both
-setlocal define=^\\C\\v\\s*%(\\@function|\\@mixin|\\=)|^\\s*%(\\$[[:alnum:]-]+:|[%.][:alnum:]-]+\\s*%(\\{|$))@=
-setlocal nodiff
-setlocal eventignorewin=
-setlocal expandtab
-if &filetype != 'scss'
-setlocal filetype=scss
-endif
-setlocal fixendofline
-setlocal foldcolumn=0
-setlocal foldenable
-setlocal foldexpr=v:lua.vim.treesitter.foldexpr()
-setlocal foldignore=#
-setlocal foldlevel=99
-setlocal foldmarker={{{,}}}
-setlocal foldmethod=indent
-setlocal foldminlines=1
-setlocal foldnestmax=20
-setlocal foldtext=
-setlocal formatexpr=v:lua.require'conform'.formatexpr()
-setlocal formatlistpat=^\\s*\\d\\+[\\]:.)}\\t\ ]\\s*
-setlocal formatoptions=tcqj
-setlocal iminsert=0
-setlocal imsearch=-1
-setlocal include=^\\s*@import\\s\\+\\%(url(\\)\\=[\"']\\=
-setlocal includeexpr=SassIncludeExpr(v:fname)
-setlocal indentexpr=nvim_treesitter#indent()
-setlocal indentkeys=0{,0},!^F,o,O
-setlocal noinfercase
-setlocal iskeyword=@,48-57,_,192-255
-setlocal lhistory=10
-setlocal nolinebreak
-setlocal nolisp
-setlocal lispoptions=
-setlocal nolist
-setlocal matchpairs=(:),{:},[:]
-setlocal modeline
-setlocal modifiable
-setlocal nrformats=bin,hex
-setlocal number
-setlocal numberwidth=4
-setlocal omnifunc=csscomplete#CompleteCSS
-setlocal nopreserveindent
-setlocal nopreviewwindow
-setlocal quoteescape=\\
-setlocal noreadonly
-setlocal relativenumber
-setlocal norightleft
-setlocal rightleftcmd=search
-setlocal scrollback=-1
-setlocal noscrollbind
-setlocal shiftwidth=2
-setlocal signcolumn=yes
-setlocal nosmartindent
-setlocal nosmoothscroll
-setlocal softtabstop=-1
-setlocal nospell
-setlocal spellcapcheck=[.?!]\\_[\\])'\"\\t\ ]\\+
-setlocal spellfile=
-setlocal spelllang=en_us,de_de
-setlocal spelloptions=noplainbuffer
-setlocal statuscolumn=%!v:lua.require'snacks.statuscolumn'.get()
-setlocal suffixesadd=.sass,.scss,.css
-setlocal noswapfile
-setlocal synmaxcol=3000
-if &syntax != ''
-setlocal syntax=
-endif
-setlocal tabstop=2
-setlocal tagfunc=v:lua.vim.lsp.tagfunc
-setlocal textwidth=0
-setlocal undofile
-setlocal varsofttabstop=
-setlocal vartabstop=
-setlocal winbar=%#WinBarPath#src%*\ %#WinBarSeparator#/%*\ %#WinBarPath#client%*\ %#WinBarSeparator#/%*\ %#WinBarPath#commons%*\ %#WinBarSeparator#/%*\ %#WinBarPath#styles%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#_config.scss%*
-setlocal winblend=0
-setlocal nowinfixbuf
-setlocal nowinfixheight
-setlocal nowinfixwidth
-setlocal winhighlight=
-setlocal nowrap
-setlocal wrapmargin=0
-9
-sil! normal! zo
-let s:l = 112 - ((37 * winheight(0) + 29) / 58)
-if s:l < 1 | let s:l = 1 | endif
-keepjumps exe s:l
-normal! zt
-keepjumps 112
-normal! 09|
-wincmd w
-exe 'vert 1resize ' . ((&columns * 129 + 195) / 390)
-exe 'vert 2resize ' . ((&columns * 129 + 195) / 390)
-exe 'vert 3resize ' . ((&columns * 130 + 195) / 390)
 tabnext 2
 set stal=1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
@@ -554,8 +286,6 @@ endif
 unlet! s:wipebuf
 set winheight=1 winwidth=20
 let &shortmess = s:shortmess_save
-let &winminheight = s:save_winminheight
-let &winminwidth = s:save_winminwidth
 let s:sx = expand("<sfile>:p:r")."x.vim"
 if filereadable(s:sx)
   exe "source " . fnameescape(s:sx)

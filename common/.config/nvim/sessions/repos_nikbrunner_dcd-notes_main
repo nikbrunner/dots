@@ -9,8 +9,8 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +89 ~/repos/nikbrunner/dcd-notes/Log/2025/2025.10\ -\ October.md
-badd +16 ~/repos/nikbrunner/dcd-notes/gitpad/bc-desktop-client/bcd-3270-product-tile-renovation-branchpad.md
+badd +108 ~/repos/nikbrunner/dcd-notes/Log/2025/2025.10\ -\ October.md
+badd +1 ~/repos/nikbrunner/dcd-notes/Templates/Issue\ Template.md
 argglobal
 %argdel
 $argadd ./
@@ -31,10 +31,9 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe 'vert 1resize ' . ((&columns * 171 + 171) / 342)
-exe 'vert 2resize ' . ((&columns * 170 + 171) / 342)
+exe 'vert 1resize ' . ((&columns * 143 + 144) / 288)
+exe 'vert 2resize ' . ((&columns * 144 + 144) / 288)
 argglobal
-balt ~/repos/nikbrunner/dcd-notes/gitpad/bc-desktop-client/bcd-3270-product-tile-renovation-branchpad.md
 let s:cpo_save=&cpo
 set cpo&vim
 nnoremap <buffer>  <Cmd>MarkdownToggleCheckbox
@@ -158,17 +157,17 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal wrap
 setlocal wrapmargin=0
-let s:l = 89 - ((12 * winheight(0) + 25) / 50)
+let s:l = 108 - ((56 * winheight(0) + 38) / 76)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 89
-normal! 021|
+keepjumps 108
+normal! 0
 wincmd w
 argglobal
-if bufexists(fnamemodify("~/repos/nikbrunner/dcd-notes/gitpad/bc-desktop-client/bcd-3270-product-tile-renovation-branchpad.md", ":p")) | buffer ~/repos/nikbrunner/dcd-notes/gitpad/bc-desktop-client/bcd-3270-product-tile-renovation-branchpad.md | else | edit ~/repos/nikbrunner/dcd-notes/gitpad/bc-desktop-client/bcd-3270-product-tile-renovation-branchpad.md | endif
+if bufexists(fnamemodify("~/repos/nikbrunner/dcd-notes/Templates/Issue\ Template.md", ":p")) | buffer ~/repos/nikbrunner/dcd-notes/Templates/Issue\ Template.md | else | edit ~/repos/nikbrunner/dcd-notes/Templates/Issue\ Template.md | endif
 if &buftype ==# 'terminal'
-  silent file ~/repos/nikbrunner/dcd-notes/gitpad/bc-desktop-client/bcd-3270-product-tile-renovation-branchpad.md
+  silent file ~/repos/nikbrunner/dcd-notes/Templates/Issue\ Template.md
 endif
 balt ~/repos/nikbrunner/dcd-notes/Log/2025/2025.10\ -\ October.md
 let s:cpo_save=&cpo
@@ -262,7 +261,7 @@ setlocal norightleft
 setlocal rightleftcmd=search
 setlocal scrollback=-1
 setlocal noscrollbind
-setlocal shiftwidth=4
+setlocal shiftwidth=2
 setlocal signcolumn=yes
 setlocal smartindent
 setlocal nosmoothscroll
@@ -279,13 +278,13 @@ setlocal synmaxcol=3000
 if &syntax != ''
 setlocal syntax=
 endif
-setlocal tabstop=8
+setlocal tabstop=4
 setlocal tagfunc=v:lua.vim.lsp.tagfunc
 setlocal textwidth=85
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#gitpad%*\ %#WinBarSeparator#/%*\ %#WinBarPath#bc-desktop-client%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#bcd-3270-product-tile-renovation-branchpad.md%*
+setlocal winbar=%#WinBarPath#Templates%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#Issue\ Template.md%*
 setlocal winblend=0
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -293,16 +292,16 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal wrap
 setlocal wrapmargin=0
-let s:l = 16 - ((15 * winheight(0) + 25) / 50)
+let s:l = 1 - ((0 * winheight(0) + 38) / 76)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 16
+keepjumps 1
 normal! 0
 wincmd w
 2wincmd w
-exe 'vert 1resize ' . ((&columns * 171 + 171) / 342)
-exe 'vert 2resize ' . ((&columns * 170 + 171) / 342)
+exe 'vert 1resize ' . ((&columns * 143 + 144) / 288)
+exe 'vert 2resize ' . ((&columns * 144 + 144) / 288)
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
