@@ -180,13 +180,18 @@ function M.keys()
         { "<leader>:",           function() Snacks.picker.command_history() end, desc = "Command History" },
         { "<leader>'",           function() Snacks.picker.registers() end, desc = "Registers" },
 
+
         -- App
         { "<leader>aw",          function() Snacks.picker.projects() end, desc = "[W]orkspace" },
         { "<leader>aW",          function() Snacks.picker.zoxide() end, desc = "[W]orkspace (Zoxide)" },
         { "<leader>ad",          M.file_surfer, desc = "[D]ocument" },
         { "<leader>aa",          function() Snacks.picker.commands() end, desc = "[A]ctions" },
-        { "<leader>ag",          function() Snacks.lazygit() end, desc = "[G]raph" },
-        { "<leader>as",         function() Snacks.picker.files({ cwd = vim.fn.expand("$HOME") .. "/repos/nikbrunner/dots" }) end, desc = "[D]ots" },
+        { "<leader>agg",          function() Snacks.lazygit() end, desc = "[G]raph" },
+        { "<leader>agi",          function() Snacks.picker.gh_issue() end, desc = "GitHub Issues (open)" },
+        { "<leader>agI",          function() Snacks.picker.gh_issue({ state = "all" }) end, desc = "GitHub Issues (all)" },
+        { "<leader>agp",          function() Snacks.picker.gh_pr() end, desc = "GitHub Pull Requests (open)" },
+        { "<leader>agP",          function() Snacks.picker.gh_pr({ state = "all" }) end, desc = "GitHub Pull Requests (all)" },
+        { "<leader>as",          function() Snacks.picker.files({ cwd = vim.fn.expand("$HOME") .. "/repos/nikbrunner/dots" }) end, desc = "[D]ots" },
         { "<leader>at",          function() Snacks.picker.colorschemes() end, desc = "[T]hemes" },
         { "<leader>ar",          function() Snacks.picker.recent() end, desc = "[R]ecent Documents (Anywhere)" },
         { "<leader>af",          function() Snacks.zen.zen() end, desc = "[F]ocus Mode" },
@@ -348,6 +353,7 @@ return {
         gitbrowse = { enabled = true },
         input = { enabled = true },
         scroll = { enabled = false },
+        gh = { enabled = true },
         notifier = {
             enabled = true,
             margin = { top = 0, right = 0, bottom = 1, left = 1 },
@@ -451,6 +457,12 @@ return {
                 git_status = {
                     preview = "git_status",
                 },
+                gh_pr = {},
+                gh_issues = {},
+                gh_diff = {},
+                gh_labels = {},
+                gh_issue_labels = {},
+                gh_reactions = {},
                 projects = {
                     finder = "recent_projects",
                     -- TODO: restore session
