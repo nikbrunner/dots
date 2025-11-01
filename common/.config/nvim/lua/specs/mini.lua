@@ -85,76 +85,6 @@ function M.surround()
     })
 end
 
-function M.clue()
-    local MiniClue = require("mini.clue")
-
-    MiniClue.setup({
-        triggers = {
-            { mode = "c", keys = "<C-r>" },
-            { mode = "i", keys = "<C-r>" },
-            { mode = "i", keys = "<C-x>" },
-            { mode = "n", keys = "<C-w>" },
-            { mode = "n", keys = "'" },
-            { mode = "n", keys = "<leader>" },
-            { mode = "n", keys = "<localleader>" },
-            { mode = "n", keys = "[" },
-            { mode = "n", keys = "]" },
-            { mode = "n", keys = "`" },
-            { mode = "n", keys = "g" },
-            { mode = "n", keys = "s" },
-            { mode = "n", keys = "m" },
-            { mode = "n", keys = "z" },
-            { mode = "n", keys = "y" },
-            { mode = "n", keys = "S" },
-            { mode = "n", keys = '"' },
-            -- { mode = "n", keys = " " },
-            { mode = "x", keys = "'" },
-            { mode = "x", keys = "<Leader>" },
-            { mode = "x", keys = "`" },
-            { mode = "x", keys = "g" },
-            { mode = "x", keys = "z" },
-            { mode = "x", keys = '"' },
-        },
-        clues = {
-            MiniClue.gen_clues.builtin_completion(),
-            MiniClue.gen_clues.g(),
-            MiniClue.gen_clues.marks(),
-            MiniClue.gen_clues.registers(),
-            MiniClue.gen_clues.windows(),
-            MiniClue.gen_clues.z(),
-            { mode = "n", keys = "<leader>a", desc = "[A]pp" },
-            { mode = "n", keys = "<leader>al", desc = "[L]anguages" },
-            { mode = "n", keys = "<leader>ah", desc = "[H]elp" },
-            { mode = "n", keys = "<leader>ap", desc = "[P]lugins" },
-            { mode = "n", keys = "<leader>as", desc = "[S]ettings" },
-            { mode = "n", keys = "<leader>ag", desc = "[G]it" },
-            { mode = "n", keys = "<leader>ao", desc = "[O]ptions" },
-
-            { mode = "n", keys = "<leader>w", desc = "[W]orkspace" },
-            { mode = "n", keys = "<leader>wg", desc = "[G]it" },
-
-            { mode = "n", keys = "<leader>d", desc = "[D]ocument" },
-            { mode = "n", keys = "<leader>dy", desc = "[Y]ank" },
-            { mode = "n", keys = "<leader>dg", desc = "[G]it" },
-
-            { mode = "n", keys = "sl", desc = "[L]og" },
-            { mode = "n", keys = "sc", desc = "[C]alls" },
-
-            { mode = "n", keys = "<leader>c", desc = "[C]ange" },
-
-            { mode = "n", keys = "<leader>s", desc = "[S]ession" },
-            { mode = "n", keys = "<leader>h", desc = "[H]ttp" },
-            { mode = "n", keys = "<leader>n", desc = "[N]otes" },
-        },
-        window = {
-            config = {
-                width = math.floor(0.25 * vim.o.columns),
-            },
-            delay = 0,
-        },
-    })
-end
-
 function M.test()
     require("mini.test").setup()
 end
@@ -299,7 +229,9 @@ function M.sessions()
                                         break
                                     end
                                 end
-                                if buffer_in_tabpage then break end
+                                if buffer_in_tabpage then
+                                    break
+                                end
                             end
 
                             if not buffer_in_tabpage then
@@ -511,7 +443,6 @@ return {
         M.statusline()
         M.icons()
         M.surround()
-        M.clue()
         M.test()
         M.sessions()
         M.snippets()
