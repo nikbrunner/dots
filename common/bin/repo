@@ -49,6 +49,8 @@ call_claude_api() {
     local prompt="$1"
     local model="$2"
     local max_tokens="$3"
+    local max_retries=3
+    local retry_delay=2
 
     local json_payload
     json_payload=$(jq -n \
@@ -67,33 +69,71 @@ call_claude_api() {
         }')
 
     local response
-    if has_gum; then
-        response=$(gum spin --spinner dot --title "Generating with $model..." -- \
-            curl -s -X POST "https://api.anthropic.com/v1/messages" \
-            -H "x-api-key: $ANTHROPIC_API_KEY" \
-            -H "anthropic-version: $API_VERSION" \
-            -H "content-type: application/json" \
-            -d "$json_payload")
-    else
-        echo "Generating with $model..."
-        response=$(curl -s -X POST "https://api.anthropic.com/v1/messages" \
-            -H "x-api-key: $ANTHROPIC_API_KEY" \
-            -H "anthropic-version: $API_VERSION" \
-            -H "content-type: application/json" \
-            -d "$json_payload")
-    fi
+    local attempt=1
 
-    # Extract the response text
-    local result
-    result=$(echo "$response" | jq -r '.content[0].text' 2>/dev/null | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
+    while [ $attempt -le $max_retries ]; do
+        if has_gum && [ $attempt -eq 1 ]; then
+            response=$(gum spin --spinner dot --title "Generating with $model..." -- \
+                curl -s -X POST "https://api.anthropic.com/v1/messages" \
+                -H "x-api-key: $ANTHROPIC_API_KEY" \
+                -H "anthropic-version: $API_VERSION" \
+                -H "content-type: application/json" \
+                -d "$json_payload")
+        else
+            if [ $attempt -gt 1 ]; then
+                echo "Retrying (attempt $attempt/$max_retries)..."
+            else
+                echo "Generating with $model..."
+            fi
+            response=$(curl -s -X POST "https://api.anthropic.com/v1/messages" \
+                -H "x-api-key: $ANTHROPIC_API_KEY" \
+                -H "anthropic-version: $API_VERSION" \
+                -H "content-type: application/json" \
+                -d "$json_payload")
+        fi
 
-    if [ -z "$result" ] || [ "$result" = "null" ]; then
-        echo "Error: Failed to generate response"
-        echo "Response: $response"
-        return 1
-    fi
+        # Check for API errors first
+        local error_type
+        error_type=$(echo "$response" | jq -r '.error.type' 2>/dev/null)
 
-    echo "$result"
+        if [ "$error_type" != "null" ] && [ -n "$error_type" ]; then
+            local error_message
+            error_message=$(echo "$response" | jq -r '.error.message' 2>/dev/null)
+
+            # Retry on overloaded errors
+            if [ "$error_type" = "overloaded_error" ]; then
+                if [ $attempt -lt $max_retries ]; then
+                    echo "API is overloaded, waiting ${retry_delay}s before retry..." >&2
+                    sleep $retry_delay
+                    retry_delay=$((retry_delay * 2)) # Exponential backoff
+                    attempt=$((attempt + 1))
+                    continue
+                else
+                    echo "Error: API is overloaded after $max_retries attempts" >&2
+                    echo "Please try again in a few moments" >&2
+                    return 1
+                fi
+            else
+                echo "Error: $error_type - $error_message" >&2
+                return 1
+            fi
+        fi
+
+        # Extract the response text
+        local result
+        result=$(echo "$response" | jq -r '.content[0].text' 2>/dev/null | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
+
+        if [ -z "$result" ] || [ "$result" = "null" ]; then
+            echo "Error: Failed to generate response" >&2
+            echo "Response: $response" >&2
+            return 1
+        fi
+
+        echo "$result"
+        return 0
+    done
+
+    return 1
 }
 
 call_claude_code() {
