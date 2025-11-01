@@ -357,13 +357,6 @@ return {
             wo = {
                 -- I had to disable conceallevel because this has led to a bug
                 conceallevel = 0,
-                winhighlight = require("snacks").util.winhl({
-                    Normal = "Normal",
-                    NormalFloat = "NormalFloat",
-                    FloatBorder = "FloatBorder",
-                    FloatTitle = "FloatTitle",
-                    FloatFooter = "FloatFooter",
-                }),
             },
         },
         notifier = {
