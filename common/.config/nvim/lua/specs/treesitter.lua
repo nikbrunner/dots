@@ -6,6 +6,7 @@ M.specs = {
         "nvim-treesitter/nvim-treesitter",
         build = ":TSUpdate",
         branch = "master",
+        commit = "64f4755",
         lazy = false,
         opts = {
             highlight = {
