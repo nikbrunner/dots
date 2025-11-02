@@ -22,7 +22,7 @@
   "oil.nvim": { "branch": "master", "commit": "7e1cd7703ff2924d7038476dcbc04b950203b902" },
   "oklch-color-picker.nvim": { "branch": "master", "commit": "5ecc00741f6b7159af2d468c14e87a17715ab4c4" },
   "qmk.nvim": { "branch": "main", "commit": "3c804c1480991e4837514900b22b9358cfd64fa1" },
-  "snacks.nvim": { "branch": "main", "commit": "6f60105302fcae45524a5b6232beb52829e93e3f" },
+  "snacks.nvim": { "branch": "main", "commit": "78046eb4817e30e216d2456c84005d5264aad67f" },
   "supermaven-nvim": { "branch": "main", "commit": "07d20fce48a5629686aefb0a7cd4b25e33947d50" },
   "treewalker.nvim": { "branch": "main", "commit": "5895593a4bccadd0a91988cbd3fe0908508e7451" },
   "trouble.nvim": { "branch": "main", "commit": "bd67efe408d4816e25e8491cc5ad4088e708a69a" },

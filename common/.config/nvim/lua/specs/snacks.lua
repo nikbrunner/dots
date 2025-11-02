@@ -73,6 +73,41 @@ function M.find_associated_files()
     })
 end
 
+---Show jumps for the current buffer only
+---@return nil
+function M.buffer_jumps()
+    local current_buf = vim.api.nvim_get_current_buf()
+    local current_file = vim.api.nvim_buf_get_name(current_buf)
+
+    Snacks.picker({
+        prompt = "Buffer Jumps",
+        layout = M.buffer_layout,
+        format = "file",
+        main = { current = true },
+        finder = function()
+            local jumps = vim.fn.getjumplist()[1]
+            local items = {}
+
+            -- Filter to only current buffer and build items
+            for _, jump in ipairs(jumps) do
+                local buf = jump.bufnr and vim.api.nvim_buf_is_valid(jump.bufnr) and jump.bufnr or 0
+                if buf == current_buf and jump.lnum > 0 then
+                    local line = vim.api.nvim_buf_get_lines(buf, jump.lnum - 1, jump.lnum, false)[1]
+                    table.insert(items, 1, {
+                        buf = buf,
+                        line = line,
+                        text = table.concat({ current_file, line }, " "),
+                        file = current_file,
+                        pos = { jump.lnum, jump.col },
+                    })
+                end
+            end
+
+            return items
+        end,
+    })
+end
+
 -- ============================================================================
 -- Layout Configurations
 -- ============================================================================
@@ -186,6 +221,7 @@ function M.keys()
         { "<leader>aW",          function() Snacks.picker.zoxide() end, desc = "[W]orkspace (Zoxide)" },
         { "<leader>ad",          M.file_surfer, desc = "[D]ocument" },
         { "<leader>aa",          function() Snacks.picker.commands() end, desc = "[A]ctions" },
+
         { "<leader>agg",          function() Snacks.lazygit() end, desc = "[G]raph" },
         { "<leader>agi",          function() Snacks.picker.gh_issue() end, desc = "GitHub [I]ssues (open)" },
         { "<leader>agI",          function() Snacks.picker.gh_issue({ state = "all" }) end, desc = "GitHub [I]ssues (all)" },
@@ -193,6 +229,7 @@ function M.keys()
         { "<leader>agP",          function() Snacks.picker.gh_pr({ state = "all" }) end, desc = "GitHub [P]ull Requests (all)" },
         { "<leader>agb",          function() Snacks.picker.git_branches() end, desc = "[B]ranches" },
         { "<leader>agh",          function() Snacks.picker.git_log() end, desc = "[H]istory" },
+
         { "<leader>as",          function() Snacks.picker.files({ cwd = vim.fn.expand("$HOME") .. "/repos/nikbrunner/dots" }) end, desc = "[D]ots" },
         { "<leader>at",          function() Snacks.picker.colorschemes() end, desc = "[T]hemes" },
         { "<leader>ar",          function() Snacks.picker.recent() end, desc = "[R]ecent Documents (Anywhere)" },
@@ -200,7 +237,6 @@ function M.keys()
         { "<leader>az",          function() Snacks.zen.zoom() end, desc = "[Z]oom Mode" },
         { "<leader>an",          function() Snacks.notifier.show_history() end, desc = "[N]otifications" },
         { "<leader>ak",          function() Snacks.picker.keymaps() end, desc = "[K]eymaps" },
-        { "<leader>aj",          function() Snacks.picker.jumps() end, desc = "[J]umps" },
         { "<leader>ahp",         function() Snacks.picker.help() end, desc = "[P]ages" },
         { "<leader>ahm",         function() Snacks.picker.man() end, desc = "[M]anuals" },
         { "<leader>ahh",         function() Snacks.picker.highlights() end, desc = "[H]ightlights" },
@@ -210,6 +246,7 @@ function M.keys()
         -- Main File Finding is handled via fff.nvim & fff-snacks.nvim (<leader><leader> & <leader>wd)
         { "<leader>we",          M.explorer, desc = "[E]xplorer" },
         { "<leader>wr",          function() Snacks.picker.recent({ filter = { cwd = true }}) end, desc = "[R]ecent Documents" },
+        { "<leader>wj",          function() Snacks.picker.jumps() end, desc = "[J]umps" },
         { "<leader>wm",          function() Snacks.picker.git_status() end, desc = "[M]odified Documents" },
         { "<leader>wc",          function() Snacks.picker.git_diff() end, desc = "[C]hanges" },
         { "<leader>wt",          function() Snacks.picker.grep() end, desc = "[T]ext" },
@@ -220,24 +257,9 @@ function M.keys()
         { "<leader>wl",         function() Snacks.lazygit.log() end, desc = "[L]Log" },
         { "<leader>wb",         function() Snacks.picker.git_branches() end, desc = "[B]ranches" },
         { "<leader>wb",         function() Snacks.gitbrowse() end, desc = "[R]emote" },
-        { "<leader>wp",         function()
-            local current_branch = vim.fn.system("git branch --show-current"):gsub("%s+", "")
-            if vim.v.shell_error ~= 0 then
-                vim.notify("Not in a git repository", vim.log.levels.ERROR)
-                return
-            end
-
-            local pr_result = vim.fn.system("gh pr view --json url -q '.url' 2>/dev/null")
-            if vim.v.shell_error == 0 and pr_result:match("^https://") then
-                local pr_url = pr_result:gsub("%s+", "")
-                vim.fn.system("open " .. pr_url)
-                vim.notify("Opening PR: " .. pr_url, vim.log.levels.INFO)
-            else
-                vim.notify("No PR found for branch: " .. current_branch, vim.log.levels.WARN)
-            end
-        end, desc = "[P]R" },
 
         -- Document
+        { "<leader>dj",          M.buffer_jumps, desc = "[J]umps" },
         { "<leader>dgg",         function() Snacks.lazygit.log_file() end, desc = "[G]raph" },
         { "<leader>dgh",         function() Snacks.picker.git_log_file() end, desc = "[H]istory" },
         { "<leader>dt",          function() Snacks.picker.lines({ layout = M.buffer_layout }) end, desc = "[T]ext" },
@@ -267,7 +289,7 @@ end
 ---@type LazyPluginSpec
 return {
     "folke/snacks.nvim",
-
+    priority = 1000,
     lazy = false,
 
     init = function()
