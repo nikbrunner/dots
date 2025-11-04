@@ -264,13 +264,16 @@ function M.keys()
         { "<leader>dgg",         function() Snacks.lazygit.log_file() end, desc = "[G]raph" },
         { "<leader>dgh",         function() Snacks.picker.git_log_file() end, desc = "[H]istory" },
         { "<leader>dt",          function() Snacks.picker.lines({ layout = M.buffer_layout }) end, desc = "[T]ext" },
-        { "<leader>dc",          function()
-            local file = vim.fn.expand("%")
-            if file ~= "" then
-                Snacks.picker.git_diff({ cmd_args = { "--", file } })
-            else
-                vim.notify("No file in current buffer", vim.log.levels.WARN)
-            end
+        { "<leader>dc", function()
+              local file = vim.fn.expand("%")
+              if file ~= "" then
+                  Snacks.picker.git_diff({
+                      cmd_args = { "--", file },
+                      staged = false  -- Only show unstaged changes
+                  })
+              else
+                  vim.notify("No file in current buffer", vim.log.levels.WARN)
+              end
         end, desc = "[C]hanges" },
         { "<leader>dp",          function() Snacks.picker.diagnostics_buffer({ layout = M.buffer_layout }) end, desc = "[P]roblems" },
         { "<leader>ds",          function() Snacks.picker.lsp_symbols() end, desc = "[S]ymbols" },
