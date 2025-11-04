@@ -32,6 +32,9 @@
   tool = vscode
   colorMoved = default
 
+[push]
+  autoSetupRemote = true
+
 [difftool "vscode"]
   cmd = code --wait --diff $LOCAL $REMOTE
 
