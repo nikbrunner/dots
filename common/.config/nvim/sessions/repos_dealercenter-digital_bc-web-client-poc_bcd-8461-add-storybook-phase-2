@@ -9,11 +9,11 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +125 ~/repos/dealercenter-digital/bc-web-client-poc/frontend/src/routes/collections.\$slug.tsx
+badd +53 ~/repos/dealercenter-digital/bc-web-client-poc/frontend/src/components/Button.tsx
 argglobal
 %argdel
 $argadd ./
-edit ~/repos/dealercenter-digital/bc-web-client-poc/frontend/src/routes/collections.\$slug.tsx
+edit ~/repos/dealercenter-digital/bc-web-client-poc/frontend/src/components/Button.tsx
 argglobal
 setlocal keymap=
 setlocal noarabic
@@ -114,7 +114,7 @@ setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#frontend%*\ %#WinBarSeparator#/%*\ %#WinBarPath#src%*\ %#WinBarSeparator#/%*\ %#WinBarPath#routes%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#collections.$slug.tsx%*
+setlocal winbar=%#WinBarPath#frontend%*\ %#WinBarSeparator#/%*\ %#WinBarPath#src%*\ %#WinBarSeparator#/%*\ %#WinBarPath#components%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#Button.tsx%*
 setlocal winblend=0
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -122,14 +122,12 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-96
-sil! normal! zo
-let s:l = 125 - ((34 * winheight(0) + 23) / 46)
+let s:l = 53 - ((36 * winheight(0) + 25) / 51)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 125
-normal! 0
+keepjumps 53
+normal! 030|
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf

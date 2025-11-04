@@ -9,11 +9,11 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +92 ~/repos/nikbrunner/fff-snacks.nvim/README.md
+badd +14 ~/repos/nikbrunner/fff-snacks.nvim/CLAUDE.md
 argglobal
 %argdel
 $argadd ./
-edit ~/repos/nikbrunner/fff-snacks.nvim/README.md
+edit ~/repos/nikbrunner/fff-snacks.nvim/CLAUDE.md
 argglobal
 let s:cpo_save=&cpo
 set cpo&vim
@@ -21,10 +21,10 @@ nnoremap <buffer>  <Cmd>MarkdownToggleCheckbox
 nnoremap <buffer> ,niT <Cmd>MarkdownInsertTable
 vnoremap <buffer> ,nil s["]()<Cmd>normal! h<Cmd>startinsert<Cmd>lua require("markdown-tools.commands").prompt_and_insert_url()
 vmap <buffer> ,nii s*"*
-vmap <buffer> ,nih s=="==
+vmap <buffer> ,niH s=="==
 vmap <buffer> ,nib s**"**
-vnoremap <buffer> ,niH <Cmd>MarkdownHeader
-nnoremap <buffer> ,niH <Cmd>MarkdownHeader
+vnoremap <buffer> ,nih <Cmd>MarkdownHeader
+nnoremap <buffer> ,nih <Cmd>MarkdownHeader
 xnoremap <buffer> <silent> [[ :exe "normal! gv"|call search('\%(^#\{1,5\}\s\+\S\|^\S.*\n^[=-]\+$\)', "bsW")
 xnoremap <buffer> <silent> ]] :exe "normal! gv"|call search('\%(^#\{1,5\}\s\+\S\|^\S.*\n^[=-]\+$\)', "sW")
 nnoremap <buffer> <C-T> <Cmd>MarkdownToggleCheckbox
@@ -129,7 +129,7 @@ setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarFilename#README.md%*
+setlocal winbar=%#WinBarFilename#CLAUDE.md%*
 setlocal winblend=0
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -137,15 +137,11 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal wrap
 setlocal wrapmargin=0
-30
-sil! normal! zo
-36
-sil! normal! zo
-let s:l = 92 - ((42 * winheight(0) + 23) / 47)
+let s:l = 14 - ((13 * winheight(0) + 23) / 47)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 92
+keepjumps 14
 normal! 0
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'

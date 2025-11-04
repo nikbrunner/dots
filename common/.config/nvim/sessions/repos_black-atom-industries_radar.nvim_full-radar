@@ -10,7 +10,7 @@ endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
 badd +23 ~/repos/black-atom-industries/radar.nvim/lua/radar/keys.lua
-badd +34 ~/repos/black-atom-industries/radar.nvim/lua/radar/config.lua
+badd +39 ~/repos/black-atom-industries/radar.nvim/lua/radar/config.lua
 argglobal
 %argdel
 edit ~/repos/black-atom-industries/radar.nvim/lua/radar/config.lua
@@ -30,8 +30,8 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe 'vert 1resize ' . ((&columns * 158 + 158) / 316)
-exe 'vert 2resize ' . ((&columns * 157 + 158) / 316)
+exe 'vert 1resize ' . ((&columns * 208 + 207) / 415)
+exe 'vert 2resize ' . ((&columns * 206 + 207) / 415)
 argglobal
 setlocal keymap=
 setlocal noarabic
@@ -135,7 +135,7 @@ setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#lua%*\ %#WinBarSeparator#/%*\ %#WinBarPath#radar%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#config.lua%*\ %#WinBarSeparator##%*\ %#WinBarSymbol#M.default%*\ %#WinBarSeparator##%*\ %#WinBarSymbol#radar%*
+setlocal winbar=%#WinBarPath#lua%*\ %#WinBarSeparator#/%*\ %#WinBarPath#radar%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#config.lua%*
 setlocal winblend=0
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -143,11 +143,11 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 34 - ((28 * winheight(0) + 23) / 47)
+let s:l = 39 - ((38 * winheight(0) + 32) / 64)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 34
+keepjumps 39
 normal! 0
 wincmd w
 argglobal
@@ -155,6 +155,7 @@ if bufexists(fnamemodify("~/repos/black-atom-industries/radar.nvim/lua/radar/key
 if &buftype ==# 'terminal'
   silent file ~/repos/black-atom-industries/radar.nvim/lua/radar/keys.lua
 endif
+balt ~/repos/black-atom-industries/radar.nvim/lua/radar/config.lua
 setlocal keymap=
 setlocal noarabic
 setlocal autoindent
@@ -267,15 +268,15 @@ setlocal nowrap
 setlocal wrapmargin=0
 7
 sil! normal! zo
-let s:l = 23 - ((18 * winheight(0) + 23) / 47)
+let s:l = 23 - ((22 * winheight(0) + 32) / 64)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
 keepjumps 23
 normal! 0
 wincmd w
-exe 'vert 1resize ' . ((&columns * 158 + 158) / 316)
-exe 'vert 2resize ' . ((&columns * 157 + 158) / 316)
+exe 'vert 1resize ' . ((&columns * 208 + 207) / 415)
+exe 'vert 2resize ' . ((&columns * 206 + 207) / 415)
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
