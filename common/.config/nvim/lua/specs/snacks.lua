@@ -245,6 +245,7 @@ function M.keys()
         -- Workspace
         -- Main File Finding is handled via fff.nvim & fff-snacks.nvim (<leader><leader> & <leader>wd)
         { "<leader>we",          M.explorer, desc = "[E]xplorer" },
+        { "<leader>wd",          function() Snacks.picker.files({ filter = { cwd = true }}) end, desc = "[R]ecent Documents" },
         { "<leader>wr",          function() Snacks.picker.recent({ filter = { cwd = true }}) end, desc = "[R]ecent Documents" },
         { "<leader>wj",          function() Snacks.picker.jumps() end, desc = "[J]umps" },
         { "<leader>wm",          function() Snacks.picker.git_status() end, desc = "[M]odified Documents" },
@@ -289,7 +290,6 @@ end
 ---@type LazyPluginSpec
 return {
     "folke/snacks.nvim",
-    priority = 1000,
     lazy = false,
 
     init = function()
@@ -349,7 +349,6 @@ return {
             dependencies = { "dmtrKovalenko/fff.nvim", "folke/snacks.nvim" },
             keys = {
                 { "<leader><leader>", "<CMD>FFFSnacks<CR>", desc = "Find Files" },
-                { "<leader>wd", "<CMD>FFFSnacks<CR>", desc = "[D]ocument" },
             },
             ---@module "fff-snacks"
             ---@type fff-snacks.Config
@@ -536,8 +535,8 @@ return {
             win = {
                 backdrop = true,
                 border = "solid",
-                width = 0.9999,
-                height = 0.9999,
+                width = vim.o.columns * 1,
+                height = 0.9,
             },
         },
         styles = {
