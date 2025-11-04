@@ -34,6 +34,13 @@ return {
             bold = true,
             italic = false,
             virtual_text = " ",
+            ignore_ft = { --
+                "blink-cmp-menu",
+                "snacks_picker_input",
+                "snacks_picker_list",
+                "snacks_picker_preview",
+                "markdown.gh",
+            },
         },
         patterns = {
             oklch_fn = {
