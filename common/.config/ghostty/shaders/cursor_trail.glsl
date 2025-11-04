@@ -70,11 +70,18 @@ vec2 getRectangleCenter(vec4 rectangle) {
     return vec2(rectangle.x + (rectangle.z / 2.), rectangle.y - (rectangle.w / 2.));
 }
 
-const vec4 TRAIL_COLOR = vec4(1.0, 0.725, 0.161, 1.0); // yellow
+// const vec4 TRAIL_COLOR = vec4(1.0, 0.725, 0.161, 1.0);
+// const vec4 TRAIL_COLOR = vec4(0.196, 0.180, 0.133, 1.0);
+const vec4 TRAIL_COLOR = vec4(0.851, 0.467, 0.341, 1.0);
+
+// const vec4 TRAIL_COLOR_ACCENT = vec4(1.0, 0.5, 0., 1.0);
+// const vec4 TRAIL_COLOR_ACCENT = vec4(0.467, 0.443, 0.384, 1.0);
+const vec4 TRAIL_COLOR_ACCENT = vec4(0.902, 0.549, 0.431, 1.0);
+
+
 const vec4 CURRENT_CURSOR_COLOR = TRAIL_COLOR;
 const vec4 PREVIOUS_CURSOR_COLOR = TRAIL_COLOR;
-const vec4 TRAIL_COLOR_ACCENT = vec4(1.0, 0.5, 0., 1.0); // orange
-const float DURATION = 0.75;
+const float DURATION = 0.5;
 const float OPACITY = .2;
 
 void mainImage(out vec4 fragColor, in vec2 fragCoord)
