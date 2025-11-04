@@ -19,7 +19,22 @@ return {
     -- https://github.com/vunguyentuan/vscode-css-variables/blob/763a564df763f17aceb5f3d6070e0b444a2f47ff/packages/css-variables-language-server/src/CSSVariableManager.ts#L31-L50
     settings = {
         cssVariables = {
-            lookupFiles = { "**/*.less", "**/*.scss", "**/*.sass", "**/*.css" },
+            lookupFiles = {
+                "**/*.less",
+                "**/*.scss",
+                "**/*.sass",
+                "**/*.css",
+                "node_modules/open-props/open-props.min.css",
+                "node_modules/open-props/sizes.min.css",
+                "node_modules/open-props/easings.min.css",
+                "node_modules/open-props/animations.min.css",
+                "node_modules/open-props/gradients.min.css",
+                "node_modules/open-props/normalize.min.css",
+                "node_modules/open-props/normalize.light.min.css",
+                "node_modules/open-props/normalize.dark.min.css",
+                "node_modules/open-props/buttons.min.css",
+                "node_modules/open-props/indigo.min.css",
+            },
             blacklistFolders = {
                 "**/.cache",
                 "**/.DS_Store",
