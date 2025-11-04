@@ -6,11 +6,11 @@
     "command": "npx -y ccstatusline@latest",
     "padding": 0
   },
+  "enabledPlugins": {
+    "superpowers@superpowers-marketplace": true
+  },
   "alwaysThinkingEnabled": true,
   "feedbackSurveyState": {
     "lastShownTime": 1754313915132
-  },
-  "enabledPlugins": {
-    "superpowers@superpowers-marketplace": true
   }
 }
