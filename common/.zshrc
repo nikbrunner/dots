@@ -38,15 +38,6 @@ export RIPGREP_CONFIG_PATH=$HOME/.ripgreprc
 # Globals ================================================================
 export EDITOR="nvim"
 export MANPAGER='nvim +Man!'
-
-export BC_OFFICE_LAN_IP=10.2.0.95
-export BC_OFFICE_WLAN_IP=10.2.0.109
-export BC_OFFICE_ST=67S3033
-
-export BC_HOME_WLAN_IP=192.168.2.109
-export BC_HOME_ST=4WSMH53
-export BC_HOME_IP=192.168.2.107
-
 export BAT_THEME="base16"
 
 # Aliases ================================================================
