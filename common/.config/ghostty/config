@@ -5,7 +5,7 @@ custom-shader                      = ./shaders/cursor_trail.glsl
 # background-opacity                 = 0.9
 # background-blur                    = 35
 
-font-family = Iosevka T-84 Slab
+font-family = TX-02 Condensed
 
 font-size                         = 16
 font-thicken                    = false
