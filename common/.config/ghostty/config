@@ -1,4 +1,4 @@
-theme = black-atom-terra-fall-night.conf
+theme = black-atom-mnml-mono-light.conf
 
 custom-shader                      = ./shaders/cursor_trail.glsl
 
