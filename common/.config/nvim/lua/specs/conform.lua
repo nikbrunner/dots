@@ -116,7 +116,7 @@ return {
                 json = handle_shared_formatter,
                 typescript = handle_shared_formatter,
                 typescriptreact = handle_shared_formatter,
-                css = { prettier_cmd },
+                css = handle_shared_formatter,
                 scss = { prettier_cmd },
                 graphql = { prettier_cmd },
                 html = { prettier_cmd },
