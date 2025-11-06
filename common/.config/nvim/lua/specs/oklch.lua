@@ -40,6 +40,7 @@ return {
                 "snacks_picker_list",
                 "snacks_picker_preview",
                 "markdown.gh",
+                "lazy",
             },
         },
         patterns = {
