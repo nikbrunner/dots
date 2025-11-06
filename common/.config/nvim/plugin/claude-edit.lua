@@ -393,15 +393,19 @@ local function claude_edit()
     local source_bufnr = vim.api.nvim_get_current_buf()
     local start_line, end_line, lines
 
-    -- Check if we're in visual mode or normal mode
-    local mode = vim.fn.mode()
-    if mode == "v" or mode == "V" or mode == "\22" then
-        -- Visual mode - use selection
-        start_line = vim.fn.line("'<")
-        end_line = vim.fn.line("'>")
+    -- Check if we have a visual selection (marks persist after exiting visual mode)
+    local mark_start = vim.fn.line("'<")
+    local mark_end = vim.fn.line("'>")
+    local current_line = vim.fn.line(".")
+
+    -- If marks exist and are valid (not at line 1 which is the default), use them
+    if mark_start > 0 and mark_end > 0 and mark_start <= mark_end and not (mark_start == 1 and mark_end == 1 and current_line ~= 1) then
+        -- Visual selection - use marks
+        start_line = mark_start
+        end_line = mark_end
         lines = vim.api.nvim_buf_get_lines(source_bufnr, start_line - 1, end_line, false)
     else
-        -- Normal mode - use entire file
+        -- No visual selection - use entire file
         start_line = 1
         end_line = vim.fn.line("$")
         lines = vim.api.nvim_buf_get_lines(source_bufnr, 0, -1, false)
