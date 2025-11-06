@@ -110,6 +110,7 @@ return {
                 end
             end,
             formatters_by_ft = {
+                astro = handle_shared_formatter,
                 javascript = handle_shared_formatter,
                 javascriptreact = handle_shared_formatter,
                 markdown = handle_shared_formatter,
