@@ -390,8 +390,8 @@ return {
         notifier = {
             enabled = true,
             margin = { top = 0, right = 0, bottom = 1, left = 1 },
-            top_down = false,
-            style = "minimal",
+            -- top_down = false,
+            style = "compact",
         },
         picker = {
             -- ~/.local/share/nvim/lazy/snacks.nvim/lua/snacks/picker/config/defaults.lua
@@ -442,7 +442,7 @@ return {
                     replace_netrw = true,
                     git_status = true,
                     jump = {
-                        close = true,
+                        close = false,
                     },
                     hidden = true,
                     ignored = true,
@@ -538,7 +538,7 @@ return {
             win = {
                 backdrop = true,
                 border = "solid",
-                width = vim.o.columns * 1,
+                width = vim.o.columns,
                 height = 0.9,
             },
         },
@@ -557,7 +557,7 @@ return {
                 width = 125,
                 backdrop = {
                     transparent = true,
-                    blend = 10,
+                    blend = 20,
                 },
                 wo = {
                     scrolloff = 999,
