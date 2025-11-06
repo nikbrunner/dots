@@ -190,12 +190,50 @@ local function call_claude_api(prompt, model, max_tokens, callback)
     end
 end
 
-local function generate_refactored_code(code, instruction, model, callback)
+local function generate_refactored_code(code, instruction, model, callback, full_file_context, start_line, end_line)
     model = model or DEFAULT_MODEL
 
-    -- Build the prompt
-    local prompt = string.format(
-        [[Generate refactored code based on the instruction below.
+    -- Build the prompt with optional context
+    local prompt
+    if full_file_context and start_line and end_line then
+        prompt = string.format(
+            [[Generate refactored code based on the instruction below.
+
+CRITICAL: Return ONLY the refactored code for lines %d-%d. Do not include ANY explanations, analysis, commentary, markdown code blocks, or additional text. Just output the code and nothing else.
+
+Requirements:
+- Preserve the original code's style and formatting conventions
+- Only make changes requested in the instruction
+- Return valid, runnable code for the selected lines only
+- Use the full file context to understand imports, types, and related code
+- NO explanations, NO analysis, NO commentary, NO markdown formatting
+
+Full file for context:
+```
+%s
+```
+
+Lines to refactor (%d-%d):
+```
+%s
+```
+
+Instruction: %s
+
+Output: Just the refactored code for lines %d-%d, nothing more.]],
+            start_line,
+            end_line,
+            full_file_context,
+            start_line,
+            end_line,
+            code,
+            instruction,
+            start_line,
+            end_line
+        )
+    else
+        prompt = string.format(
+            [[Generate refactored code based on the instruction below.
 
 CRITICAL: Return ONLY the refactored code. Do not include ANY explanations, analysis, commentary, markdown code blocks, or additional text. Just output the code and nothing else.
 
@@ -213,9 +251,10 @@ Original code:
 Instruction: %s
 
 Output: Just the refactored code, nothing more.]],
-        code,
-        instruction
-    )
+            code,
+            instruction
+        )
+    end
 
     -- Generate using appropriate method based on configuration
     if AI_BACKEND == "claude-code" and has_claude_code() then
@@ -238,6 +277,7 @@ local diff_state = {
     source_bufnr = nil,
     right_bufnr = nil,
     win_id = nil,
+    full_file_context = nil,
 }
 
 -- Forward declarations for circular dependencies
@@ -270,6 +310,7 @@ local function apply_changes(should_close_window)
         source_bufnr = nil,
         right_bufnr = nil,
         win_id = nil,
+        full_file_context = nil,
     }
 end
 
@@ -363,21 +404,29 @@ regenerate_code = function(new_instruction)
     update_buffer_content(diff_state.right_bufnr, { "", "⏳ Regenerating code...", "" })
 
     -- Generate new refactored code (async)
-    generate_refactored_code(original_code, diff_state.instruction, nil, function(refactored_code, error_msg)
-        if not refactored_code then
-            update_buffer_content(diff_state.right_bufnr, { "", "❌ Failed to regenerate:", "", error_msg or "Unknown error" })
-            return
-        end
+    generate_refactored_code(
+        original_code,
+        diff_state.instruction,
+        nil,
+        function(refactored_code, error_msg)
+            if not refactored_code then
+                update_buffer_content(diff_state.right_bufnr, { "", "❌ Failed to regenerate:", "", error_msg or "Unknown error" })
+                return
+            end
 
-        -- Clean up response
-        refactored_code = refactored_code:gsub("^```%w*\n", ""):gsub("\n```$", "")
+            -- Clean up response
+            refactored_code = refactored_code:gsub("^```%w*\n", ""):gsub("\n```$", "")
 
-        -- Split lines preserving empty lines
-        local new_lines = vim.split(refactored_code, "\n", { plain = true })
+            -- Split lines preserving empty lines
+            local new_lines = vim.split(refactored_code, "\n", { plain = true })
 
-        -- Update buffer with new code
-        update_buffer_content(diff_state.right_bufnr, new_lines)
-    end)
+            -- Update buffer with new code
+            update_buffer_content(diff_state.right_bufnr, new_lines)
+        end,
+        diff_state.full_file_context,
+        diff_state.start_line,
+        diff_state.end_line
+    )
 end
 
 -- ========================================================================
@@ -392,6 +441,7 @@ local function claude_edit()
 
     local source_bufnr = vim.api.nvim_get_current_buf()
     local start_line, end_line, lines
+    local is_selection = false
 
     -- Check if we have a visual selection (marks persist after exiting visual mode)
     local mark_start = vim.fn.line("'<")
@@ -404,11 +454,13 @@ local function claude_edit()
         start_line = mark_start
         end_line = mark_end
         lines = vim.api.nvim_buf_get_lines(source_bufnr, start_line - 1, end_line, false)
+        is_selection = true
     else
         -- No visual selection - use entire file
         start_line = 1
         end_line = vim.fn.line("$")
         lines = vim.api.nvim_buf_get_lines(source_bufnr, 0, -1, false)
+        is_selection = false
     end
 
     local original_code = table.concat(lines, "\n")
@@ -416,6 +468,13 @@ local function claude_edit()
     if original_code == "" then
         vim.notify("No code to refactor", vim.log.levels.WARN)
         return
+    end
+
+    -- Get full file for context if we have a selection
+    local full_file_context = nil
+    if is_selection then
+        local all_lines = vim.api.nvim_buf_get_lines(source_bufnr, 0, -1, false)
+        full_file_context = table.concat(all_lines, "\n")
     end
 
     -- Prompt user for instruction
@@ -431,32 +490,41 @@ local function claude_edit()
         diff_state.start_line = start_line
         diff_state.end_line = end_line
         diff_state.source_bufnr = source_bufnr
+        diff_state.full_file_context = full_file_context
 
         -- Create split immediately with loading message
         local buf, win = create_split_buffer()
         update_buffer_content(buf, { "", "⏳ Generating refactored code...", "" })
 
         -- Generate refactored code asynchronously
-        generate_refactored_code(original_code, instruction, nil, function(refactored_code, error_msg)
-            if not refactored_code then
-                update_buffer_content(buf, { "", "❌ Failed to generate code:", "", error_msg or "Unknown error" })
-                return
-            end
+        generate_refactored_code(
+            original_code,
+            instruction,
+            nil,
+            function(refactored_code, error_msg)
+                if not refactored_code then
+                    update_buffer_content(buf, { "", "❌ Failed to generate code:", "", error_msg or "Unknown error" })
+                    return
+                end
 
-            -- Clean up response (remove markdown code blocks if present)
-            refactored_code = refactored_code:gsub("^```%w*\n", ""):gsub("\n```$", "")
+                -- Clean up response (remove markdown code blocks if present)
+                refactored_code = refactored_code:gsub("^```%w*\n", ""):gsub("\n```$", "")
 
-            -- Split lines preserving empty lines
-            local new_lines = vim.split(refactored_code, "\n", { plain = true })
+                -- Split lines preserving empty lines
+                local new_lines = vim.split(refactored_code, "\n", { plain = true })
 
-            if #new_lines == 0 then
-                update_buffer_content(buf, { "", "❌ No code generated!" })
-                return
-            end
+                if #new_lines == 0 then
+                    update_buffer_content(buf, { "", "❌ No code generated!" })
+                    return
+                end
 
-            -- Update split with refactored code
-            update_buffer_content(buf, new_lines)
-        end)
+                -- Update split with refactored code
+                update_buffer_content(buf, new_lines)
+            end,
+            full_file_context,
+            start_line,
+            end_line
+        )
     end)
 end
 
