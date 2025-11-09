@@ -5,6 +5,7 @@ return {
     ---@doc: [Setup Options | Kulala.nvim](https://kulala.mwco.app/docs/getting-started/setup-options/)
     opts = {
         default_env = "local",
+        kulala_keymaps_prefix = ".",
     },
     keys = function()
         local kulala = require("kulala")
