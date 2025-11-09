@@ -9,11 +9,11 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +51 ~/repos/nikbrunner/koyo/qmk/crkbd/src/keymap.c
+badd +26 ~/repos/nikbrunner/koyo/qmk/moonlander/src/keymap.c
 argglobal
 %argdel
 $argadd ./
-edit ~/repos/nikbrunner/koyo/qmk/crkbd/src/keymap.c
+edit ~/repos/nikbrunner/koyo/qmk/moonlander/src/keymap.c
 argglobal
 setlocal keymap=
 setlocal noarabic
@@ -83,8 +83,7 @@ setlocal modifiable
 setlocal nrformats=bin,hex
 setlocal number
 setlocal numberwidth=4
-setlocal omnifunc=
-setlocal path=.,,
+setlocal omnifunc=v:lua.vim.lsp.omnifunc
 setlocal nopreserveindent
 setlocal nopreviewwindow
 setlocal quoteescape=\\
@@ -94,7 +93,7 @@ setlocal norightleft
 setlocal rightleftcmd=search
 setlocal scrollback=-1
 setlocal noscrollbind
-setlocal shiftwidth=4
+setlocal shiftwidth=2
 setlocal signcolumn=yes
 setlocal smartindent
 setlocal nosmoothscroll
@@ -117,7 +116,7 @@ setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#qmk%*\ %#WinBarSeparator#/%*\ %#WinBarPath#crkbd%*\ %#WinBarSeparator#/%*\ %#WinBarPath#src%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#keymap.c%*
+setlocal winbar=%#WinBarPath#qmk%*\ %#WinBarSeparator#/%*\ %#WinBarPath#moonlander%*\ %#WinBarSeparator#/%*\ %#WinBarPath#src%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#keymap.c%*
 setlocal winblend=0
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -125,12 +124,52 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 51 - ((35 * winheight(0) + 21) / 43)
+41
+sil! normal! zo
+46
+sil! normal! zo
+46
+sil! normal! zo
+46
+sil! normal! zo
+46
+sil! normal! zo
+46
+sil! normal! zo
+46
+sil! normal! zo
+46
+sil! normal! zo
+46
+sil! normal! zo
+46
+sil! normal! zo
+46
+sil! normal! zo
+46
+sil! normal! zo
+46
+sil! normal! zo
+46
+sil! normal! zo
+46
+sil! normal! zo
+46
+sil! normal! zo
+46
+sil! normal! zo
+46
+sil! normal! zo
+46
+sil! normal! zo
+157
+sil! normal! zo
+let s:l = 53 - ((47 * winheight(0) + 31) / 63)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 51
-normal! 0
+keepjumps 53
+normal! 029|
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf

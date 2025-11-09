@@ -9,8 +9,8 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +23 ~/repos/black-atom-industries/ghostty/themes/mnml/black-atom-mnml-mono-light.conf
-badd +13 ~/repos/black-atom-industries/ghostty/themes/mnml/collection.template.conf
+badd +31 ~/repos/black-atom-industries/ghostty/themes/mnml/black-atom-mnml-mono-light.conf
+badd +38 ~/repos/black-atom-industries/ghostty/themes/mnml/collection.template.conf
 argglobal
 %argdel
 $argadd ./
@@ -31,8 +31,8 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe 'vert 1resize ' . ((&columns * 157 + 158) / 316)
-exe 'vert 2resize ' . ((&columns * 158 + 158) / 316)
+exe 'vert 1resize ' . ((&columns * 184 + 184) / 368)
+exe 'vert 2resize ' . ((&columns * 183 + 184) / 368)
 argglobal
 balt ~/repos/black-atom-industries/ghostty/themes/mnml/black-atom-mnml-mono-light.conf
 setlocal keymap=
@@ -142,12 +142,12 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 13 - ((12 * winheight(0) + 25) / 51)
+let s:l = 38 - ((37 * winheight(0) + 31) / 63)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 13
-normal! 024|
+keepjumps 38
+normal! 038|
 wincmd w
 argglobal
 if bufexists(fnamemodify("~/repos/black-atom-industries/ghostty/themes/mnml/black-atom-mnml-mono-light.conf", ":p")) | buffer ~/repos/black-atom-industries/ghostty/themes/mnml/black-atom-mnml-mono-light.conf | else | edit ~/repos/black-atom-industries/ghostty/themes/mnml/black-atom-mnml-mono-light.conf | endif
@@ -262,16 +262,16 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 23 - ((22 * winheight(0) + 25) / 51)
+let s:l = 31 - ((30 * winheight(0) + 31) / 63)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 23
+keepjumps 31
 normal! 0
 wincmd w
 2wincmd w
-exe 'vert 1resize ' . ((&columns * 157 + 158) / 316)
-exe 'vert 2resize ' . ((&columns * 158 + 158) / 316)
+exe 'vert 1resize ' . ((&columns * 184 + 184) / 368)
+exe 'vert 2resize ' . ((&columns * 183 + 184) / 368)
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
