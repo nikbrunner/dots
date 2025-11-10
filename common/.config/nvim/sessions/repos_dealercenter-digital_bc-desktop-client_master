@@ -12,7 +12,7 @@ set shortmess+=aoO
 badd +1 ~/repos/dealercenter-digital/bc-desktop-client/src/client/commons/components/ProductTitle/ProductTitle.tsx
 badd +69 ~/repos/dealercenter-digital/bc-desktop-client/src/client/commons/components/TabBarPageLayout/TabBarPageLayout.scss
 badd +65 src/client/commons/components/ProductTitle/ProductTitle.scss
-badd +55 src/client/commons/components/ProductTitle/meta/ProductTitle.story.tsx
+badd +58 src/client/commons/components/ProductTitle/meta/ProductTitle.story.tsx
 argglobal
 %argdel
 $argadd ./
@@ -39,9 +39,9 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe 'vert 1resize ' . ((&columns * 95 + 144) / 288)
-exe 'vert 2resize ' . ((&columns * 95 + 144) / 288)
-exe 'vert 3resize ' . ((&columns * 96 + 144) / 288)
+exe 'vert 1resize ' . ((&columns * 26 + 40) / 80)
+exe 'vert 2resize ' . ((&columns * 26 + 40) / 80)
+exe 'vert 3resize ' . ((&columns * 26 + 40) / 80)
 argglobal
 balt src/client/commons/components/ProductTitle/meta/ProductTitle.story.tsx
 setlocal keymap=
@@ -151,15 +151,15 @@ setlocal nowinfixwidth
 setlocal winhighlight=Normal:Normal
 setlocal nowrap
 setlocal wrapmargin=0
-28
-sil! normal! zo
-29
-sil! normal! zo
 30
+sil! normal! zo
+37
+sil! normal! zo
+39
 sil! normal! zo
 40
 sil! normal! zo
-let s:l = 49 - ((21 * winheight(0) + 24) / 48)
+let s:l = 49 - ((9 * winheight(0) + 10) / 21)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
@@ -279,12 +279,12 @@ setlocal nowinfixwidth
 setlocal winhighlight=Normal:Normal
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 55 - ((13 * winheight(0) + 24) / 48)
+let s:l = 61 - ((7 * winheight(0) + 10) / 21)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 55
-normal! 017|
+keepjumps 61
+normal! 0
 wincmd w
 argglobal
 if bufexists(fnamemodify("src/client/commons/components/ProductTitle/ProductTitle.scss", ":p")) | buffer src/client/commons/components/ProductTitle/ProductTitle.scss | else | edit src/client/commons/components/ProductTitle/ProductTitle.scss | endif
@@ -403,9 +403,9 @@ setlocal nowrap
 setlocal wrapmargin=0
 2
 sil! normal! zo
-77
+76
 sil! normal! zo
-let s:l = 93 - ((25 * winheight(0) + 24) / 48)
+let s:l = 93 - ((11 * winheight(0) + 10) / 21)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
@@ -413,9 +413,9 @@ keepjumps 93
 normal! 0
 wincmd w
 2wincmd w
-exe 'vert 1resize ' . ((&columns * 95 + 144) / 288)
-exe 'vert 2resize ' . ((&columns * 95 + 144) / 288)
-exe 'vert 3resize ' . ((&columns * 96 + 144) / 288)
+exe 'vert 1resize ' . ((&columns * 26 + 40) / 80)
+exe 'vert 2resize ' . ((&columns * 26 + 40) / 80)
+exe 'vert 3resize ' . ((&columns * 26 + 40) / 80)
 tabnext
 edit ~/repos/dealercenter-digital/bc-desktop-client/src/client/commons/components/TabBarPageLayout/TabBarPageLayout.scss
 argglobal
@@ -531,7 +531,7 @@ setlocal nowrap
 setlocal wrapmargin=0
 2
 sil! normal! zo
-let s:l = 73 - ((25 * winheight(0) + 24) / 48)
+let s:l = 73 - ((11 * winheight(0) + 10) / 21)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
