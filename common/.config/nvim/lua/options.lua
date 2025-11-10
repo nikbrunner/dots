@@ -94,24 +94,6 @@ vim.cmd("cabbrev Wqa wqa")
 vim.cmd("cabbrev Wq wq")
 vim.cmd("cabbrev Wa wa")
 
-vim.filetype.add({
-    http = "http",
-    -- I only needed this because barbecue vomits if i vist this file, because it thinks its lua
-    filename = {
-        [".luacheckrc"] = ".luacheckrc",
-    },
-})
-
--- For terminals disable numbers and relative numbers
-vim.api.nvim_create_autocmd("TermOpen", {
-    group = vim.api.nvim_create_augroup("term-options", { clear = true }),
-    callback = function()
-        vim.opt.number = false
-        vim.opt.relativenumber = false
-        vim.opt.signcolumn = "no"
-    end,
-})
-
 if vim.fn.has("nvim-0.12") == 1 then
     -- :h vim._extui
     require("vim._extui").enable({
