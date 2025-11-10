@@ -13,14 +13,13 @@ gui:
     # Border color of focused window
     activeBorderColor:
       - "#ff8833"
+      # See https://github.com/jesseduffield/lazygit/blob/master/docs/Config.md#highlighting-the-selected-line
+      # selectedLineBgColor:
+      # - black
 
-    # See https://github.com/jesseduffield/lazygit/blob/master/docs/Config.md#highlighting-the-selected-line
-    # selectedLineBgColor:
-    # - black
-
-    # Default text color
-    # defaultFgColor:
-    #   - default
+      # Default text color
+      # defaultFgColor:
+      #   - default
   authorColors:
     "nbr": "#ff8833"
     "*": default
@@ -64,9 +63,9 @@ git:
     terra-core.nvim:
       - pattern: "^feature/dev-(\\d{3}).*"
         replace: "DEV-$1 "
-  paging:
-    colorArg: always
-    pager: delta --paging=never
+  pagers:
+    - colorArg: always
+      pager: delta --paging=never
   merging:
     # only applicable to unix users
     manualCommit: false
