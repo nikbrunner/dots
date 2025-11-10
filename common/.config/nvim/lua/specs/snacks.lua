@@ -108,6 +108,38 @@ function M.buffer_jumps()
     })
 end
 
+---Show buffers and recent files from current working directory
+---Includes terminal buffers (unlike smart picker which filters them out)
+---@return nil
+function M.buffers_and_recent()
+    Snacks.picker({
+        multi = { "buffers", "recent" },
+        format = "buffer",
+        matcher = {
+            frecency = true,
+            sort_empty = true,
+            cwd_bonus = true,
+        },
+        sort = { fields = { "source_id", "score:desc", "frecency:desc" } },
+        sources = {
+            buffers = {
+                finder = "buffers",
+                format = "buffer",
+                hidden = false,
+                unloaded = true,
+                current = true,
+                sort_lastused = true,
+                -- Don't filter by cwd for buffers (allows terminal buffers)
+                filter = {},
+            },
+            recent = {
+                -- Only apply cwd filter to recent files
+                filter = { cwd = true },
+            },
+        },
+    })
+end
+
 -- ============================================================================
 -- Layout Configurations
 -- ============================================================================
@@ -255,7 +287,7 @@ function M.keys()
         -- Main File Finding is handled via fff.nvim & fff-snacks.nvim (<leader><leader> & <leader>wd)
         { "<leader>we",          M.explorer, desc = "[E]xplorer" },
         { "<leader>wd",          function() Snacks.picker.files({ filter = { cwd = true }}) end, desc = "[R]ecent Documents" },
-        { "<leader>wr",          function() Snacks.picker.recent({ filter = { cwd = true }}) end, desc = "[R]ecent Documents" },
+        { "<leader>wr",          M.buffers_and_recent, desc = "[R]ecent Documents" },
         { "<leader>wj",          function() Snacks.picker.jumps() end, desc = "[J]umps" },
         { "<leader>wm",          function() Snacks.picker.git_status() end, desc = "[M]odified Documents" },
         { "<leader>wc",          function() Snacks.picker.git_diff() end, desc = "[C]hanges" },
