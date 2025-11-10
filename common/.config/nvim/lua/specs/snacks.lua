@@ -227,6 +227,15 @@ function M.keys()
         { "<leader>agI",          function() Snacks.picker.gh_issue({ state = "all" }) end, desc = "GitHub [I]ssues (all)" },
         { "<leader>agp",          function() Snacks.picker.gh_pr() end, desc = "GitHub [P]ull Requests (open)" },
         { "<leader>agP",          function() Snacks.picker.gh_pr({ state = "all" }) end, desc = "GitHub [P]ull Requests (all)" },
+        { "<leader>agd",          function()
+            local state = require("state")
+            if state:has_gh_context() then
+                local ctx = state:get_gh_context()
+                Snacks.picker.gh_diff(ctx)
+            else
+                vim.notify("No PR detected on current branch", vim.log.levels.WARN)
+            end
+        end, desc = "GitHub [D]iff (current PR)" },
         { "<leader>agb",          function() Snacks.picker.git_branches() end, desc = "[B]ranches" },
         { "<leader>agh",          function() Snacks.picker.git_log() end, desc = "[H]istory" },
 
@@ -324,6 +333,54 @@ return {
                 end, 100)
             end,
         })
+
+        vim.api.nvim_create_autocmd("User", {
+            pattern = "VeryLazy",
+            callback = function()
+                -- Detect GitHub PR context asynchronously
+                vim.defer_fn(function()
+                    local state = require("state")
+
+                    -- First get the PR number
+                    vim.system({ "gh", "pr", "view", "--json", "number" }, { text = true }, function(pr_result)
+                        vim.schedule(function()
+                            if pr_result.code == 0 and pr_result.stdout then
+                                local pr_ok, pr_data = pcall(vim.json.decode, pr_result.stdout)
+                                if pr_ok and pr_data.number then
+                                    -- Then get the repo info
+                                    vim.system(
+                                        { "gh", "repo", "view", "--json", "owner,name" },
+                                        { text = true },
+                                        function(repo_result)
+                                            vim.schedule(function()
+                                                if repo_result.code == 0 and repo_result.stdout then
+                                                    local repo_ok, repo_data = pcall(vim.json.decode, repo_result.stdout)
+                                                    if repo_ok and repo_data.owner and repo_data.name then
+                                                        local repo =
+                                                            string.format("%s/%s", repo_data.owner.login, repo_data.name)
+
+                                                        -- Update state
+                                                        state:set("gh_current_pr", pr_data.number)
+                                                        state:set("gh_current_repo", repo)
+
+                                                        -- Notify user
+                                                        Snacks.notify(
+                                                            string.format("PR #%d ready (%s)", pr_data.number, repo),
+                                                            { title = "GitHub", level = "info" }
+                                                        )
+                                                    end
+                                                end
+                                            end)
+                                        end
+                                    )
+                                end
+                            end
+                            -- Silent failure if no PR on branch or gh CLI error
+                        end)
+                    end)
+                end, 1000) -- 1 second delay after VeryLazy
+            end,
+        })
     end,
 
     dependencies = {
@@ -382,6 +439,13 @@ return {
         input = { enabled = true },
         scroll = { enabled = false },
         gh = {
+            keys = {
+                select = { "<cr>", "gh_actions", desc = "Select Action" },
+                edit = { "e", "gh_edit", desc = "Edit" },
+                comment = { "a", "gh_comment", desc = "Add Comment" },
+                close = { "q", "gh_close", desc = "Close" },
+                reopen = { "o", "gh_reopen", desc = "Reopen" },
+            },
             wo = {
                 -- I had to disable conceallevel because this has led to a bug
                 conceallevel = 0,
@@ -488,8 +552,8 @@ return {
                     },
                 },
                 git_status = { preview = "git_status" },
-                gh_pr = { layout = { preset = "default" } },
-                gh_issue = { layout = { preset = "default" } },
+                -- gh_pr = { layout = { preset = "default" } },
+                -- gh_issue = { layout = { preset = "default" } },
                 gh_diff = { layout = { preset = "default" } },
                 projects = {
                     finder = "recent_projects",
