@@ -70,6 +70,9 @@ function M.find_associated_files()
             ".git",
             relative_filepath,
         },
+        matcher = {
+            ignorecase = true,
+        },
     })
 end
 
@@ -138,6 +141,77 @@ function M.buffers_and_recent()
             },
         },
     })
+end
+
+---Toggle or focus the file explorer
+---@return nil
+function M.explorer()
+    local explorer_pickers = Snacks.picker.get({ source = "explorer" })
+    for _, picker in pairs(explorer_pickers) do
+        if picker:is_focused() then
+            picker:close()
+        else
+            picker:focus()
+        end
+    end
+    if #explorer_pickers == 0 then
+        Snacks.picker.explorer()
+    end
+end
+
+function M.git_diff_in_file()
+    local file = vim.fn.expand("%")
+    if file ~= "" then
+        Snacks.picker.git_diff({
+            cmd_args = { "--", file },
+            staged = false, -- Only show unstaged changes
+        })
+    else
+        vim.notify("No file in current buffer", vim.log.levels.WARN)
+    end
+end
+
+function M.gh_pr_diff()
+    local state = require("state")
+    if state:has_gh_context() then
+        local ctx = state:get_gh_context()
+        Snacks.picker.gh_diff({
+            repo = ctx.repo,
+            pr = ctx.pr,
+        })
+    else
+        vim.notify("No PR detected on current branch", vim.log.levels.WARN)
+    end
+end
+
+function M.gh_pr_buffer()
+    local state = require("state")
+    if state:has_gh_context() then
+        local ctx = state:get_gh_context()
+        vim.cmd.edit("gh://" .. ctx.repo .. "/pr/" .. ctx.pr)
+    else
+        vim.notify("No PR detected on current branch", vim.log.levels.WARN)
+    end
+end
+
+function M.gh_pr_browse()
+    vim.ui.select({ "all", "closed", "merged", "open" }, {
+        prompt = "GitHub Pull Requests",
+    }, function(choice)
+        if choice then
+            Snacks.picker.gh_pr({ state = choice })
+        end
+    end)
+end
+
+function M.gh_issue_browse()
+    vim.ui.select({ "all", "closed", "open" }, {
+        prompt = "GitHub Issues",
+    }, function(choice)
+        if choice then
+            Snacks.picker.gh_issue({ state = choice })
+        end
+    end)
 end
 
 -- ============================================================================
@@ -210,26 +284,6 @@ function M.smart_layout()
 end
 
 -- ============================================================================
--- Explorer Functions
--- ============================================================================
-
----Toggle or focus the file explorer
----@return nil
-function M.explorer()
-    local explorer_pickers = Snacks.picker.get({ source = "explorer" })
-    for _, picker in pairs(explorer_pickers) do
-        if picker:is_focused() then
-            picker:close()
-        else
-            picker:focus()
-        end
-    end
-    if #explorer_pickers == 0 then
-        Snacks.picker.explorer()
-    end
-end
-
--- ============================================================================
 -- Keymaps
 -- ============================================================================
 
@@ -247,30 +301,12 @@ function M.keys()
         { "<leader>:",           function() Snacks.picker.command_history() end, desc = "Command History" },
         { "<leader>'",           function() Snacks.picker.registers() end, desc = "Registers" },
 
-
         -- App
         { "<leader>aw",          function() Snacks.picker.projects() end, desc = "[W]orkspace" },
         { "<leader>aW",          function() Snacks.picker.zoxide() end, desc = "[W]orkspace (Zoxide)" },
         { "<leader>ad",          M.file_surfer, desc = "[D]ocument" },
         { "<leader>aa",          function() Snacks.picker.commands() end, desc = "[A]ctions" },
-
-        { "<leader>agg",          function() Snacks.lazygit() end, desc = "[G]raph" },
-        { "<leader>agi",          function() Snacks.picker.gh_issue() end, desc = "GitHub [I]ssues (open)" },
-        { "<leader>agI",          function() Snacks.picker.gh_issue({ state = "all" }) end, desc = "GitHub [I]ssues (all)" },
-        { "<leader>agp",          function() Snacks.picker.gh_pr() end, desc = "GitHub [P]ull Requests (open)" },
-        { "<leader>agP",          function() Snacks.picker.gh_pr({ state = "all" }) end, desc = "GitHub [P]ull Requests (all)" },
-        { "<leader>agd",          function()
-            local state = require("state")
-            if state:has_gh_context() then
-                local ctx = state:get_gh_context()
-                Snacks.picker.gh_diff(ctx)
-            else
-                vim.notify("No PR detected on current branch", vim.log.levels.WARN)
-            end
-        end, desc = "GitHub [D]iff (current PR)" },
-        { "<leader>agb",          function() Snacks.picker.git_branches() end, desc = "[B]ranches" },
-        { "<leader>agh",          function() Snacks.picker.git_log() end, desc = "[H]istory" },
-
+        { "<leader>ag",          function() Snacks.lazygit() end, desc = "[G]it" },
         { "<leader>as",          function() Snacks.picker.files({ cwd = vim.fn.expand("$HOME") .. "/repos/nikbrunner/dots" }) end, desc = "[D]ots" },
         { "<leader>at",          function() Snacks.picker.colorschemes() end, desc = "[T]hemes" },
         { "<leader>ar",          function() Snacks.picker.recent() end, desc = "[R]ecent Documents (Anywhere)" },
@@ -295,32 +331,28 @@ function M.keys()
         { "<leader>ww",          function() Snacks.picker.grep_word() end, desc = "[W]ord" },
         { "<leader>wp",          function() Snacks.picker.diagnostics() end, desc = "[P]roblems" },
         { "<leader>ws",          function() Snacks.picker.lsp_workspace_symbols() end, desc = "[S]ymbols" },
-        { "<leader>wg",         function() Snacks.lazygit() end, desc = "[G]raph" },
-        { "<leader>wl",         function() Snacks.lazygit.log() end, desc = "[L]Log" },
-        { "<leader>wb",         function() Snacks.picker.git_branches() end, desc = "[B]ranches" },
-        { "<leader>wb",         function() Snacks.gitbrowse() end, desc = "[R]emote" },
+        { "<leader>wgh",         function() Snacks.picker.git_log() end, desc = "[H]istory" },
+        { "<leader>wgH",         function() Snacks.lazygit.log() end, desc = "[H]istory (Lazygit)" },
+        { "<leader>wgr",         function() Snacks.gitbrowse() end, desc = "[R]emote" },
+        { "<leader>wgs",         function() Snacks.lazygit() end, desc = "[S]tatus" },
+        { "<leader>wgb",         function() Snacks.picker.git_branches() end, desc = "[B]ranches" },
+        { "<leader>wgi",         M.gh_issue_browse, desc = "[I]ssues" },
+        { "<leader>wgp",         M.gh_pr_browse, desc = "[P]ull Requests" },
+        { "<leader>wgc",         M.gh_pr_diff, desc = "[C]hanges (current PR)" },
+        { "<leader>wgd",         M.gh_pr_buffer, desc = "[D]escription (current PR)" },
 
         -- Document
-        { "<leader>dj",          M.buffer_jumps, desc = "[J]umps" },
-        { "<leader>dgg",         function() Snacks.lazygit.log_file() end, desc = "[G]raph" },
-        { "<leader>dgh",         function() Snacks.picker.git_log_file() end, desc = "[H]istory" },
         { "<leader>dt",          function() Snacks.picker.lines({ layout = M.buffer_layout }) end, desc = "[T]ext" },
-        { "<leader>dc", function()
-              local file = vim.fn.expand("%")
-              if file ~= "" then
-                  Snacks.picker.git_diff({
-                      cmd_args = { "--", file },
-                      staged = false  -- Only show unstaged changes
-                  })
-              else
-                  vim.notify("No file in current buffer", vim.log.levels.WARN)
-              end
-        end, desc = "[C]hanges" },
+        { "<leader>dj",          M.buffer_jumps, desc = "[J]umps" },
+        { "<leader>dc",          M.git_diff_in_file, desc = "[C]hanges" },
+        { "<leader>da",          M.find_associated_files, desc = "[A]ssociated Documents" },
         { "<leader>dp",          function() Snacks.picker.diagnostics_buffer({ layout = M.buffer_layout }) end, desc = "[P]roblems" },
         { "<leader>ds",          function() Snacks.picker.lsp_symbols() end, desc = "[S]ymbols" },
         { "<leader>du",          function() Snacks.picker.undo() end, desc = "[U]ndo" },
-        { "<leader>da",          M.find_associated_files, desc = "[A]ssociated Documents" },
+        { "<leader>dgh",         function() Snacks.picker.git_log_file() end, desc = "[H]istory" },
+        { "<leader>dgH",         function() Snacks.lazygit.log_file() end, desc = "[H]istory (Lazygit)" },
 
+        -- Symbols
         { "sgb",                  function() Snacks.git.blame_line() end, desc = "[B]lame" },
         { "sgh",                  function() Snacks.picker.git_log_line() end, desc = "[H]istory" },
     }
@@ -491,8 +523,25 @@ return {
         },
         picker = {
             -- ~/.local/share/nvim/lazy/snacks.nvim/lua/snacks/picker/config/defaults.lua
-            --
             ui_select = true, -- replace `vim.ui.select` with the snacks picker
+            layouts = {
+                gh_diff = {
+                    layout = {
+                        box = "horizontal",
+                        width = 0,
+                        min_width = 120,
+                        height = 0,
+                        {
+                            box = "vertical",
+                            border = true,
+                            title = "{title} {live} {flags}",
+                            { win = "input", height = 1, border = "bottom" },
+                            { win = "list", border = "none" },
+                        },
+                        { win = "preview", title = "{preview}", border = true, width = 0.66 },
+                    },
+                },
+            },
             layout = function()
                 return M.smart_layout()
             end,
@@ -584,9 +633,7 @@ return {
                     },
                 },
                 git_status = { preview = "git_status" },
-                -- gh_pr = { layout = { preset = "default" } },
-                -- gh_issue = { layout = { preset = "default" } },
-                gh_diff = { layout = { preset = "default" } },
+                gh_diff = { layout = { preset = "gh_diff" } },
                 projects = {
                     finder = "recent_projects",
                     -- TODO: restore session
@@ -634,8 +681,8 @@ return {
             win = {
                 backdrop = true,
                 border = "solid",
-                width = vim.o.columns,
-                height = 0.9,
+                width = 0,
+                height = 0,
             },
         },
         styles = {

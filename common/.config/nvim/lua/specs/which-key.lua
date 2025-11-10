@@ -42,12 +42,12 @@ return {
 
             -- Workspace groups
             { "<leader>w", group = "[W]orkspace", icon = "󰉋" },
-            { "<leader>wg", group = "[G]it", icon = "" },
+            { "<leader>wg", group = "[G]it", icon = "󰊢" },
 
             -- Document groups
             { "<leader>d", group = "[D]ocument", icon = "󰈙" },
             { "<leader>dy", group = "[Y]ank", icon = "󰆏" },
-            { "<leader>dg", group = "[G]it", icon = "" },
+            { "<leader>dg", group = "[G]it", icon = "󰊢" },
 
             -- Operator-pending groups (for s prefix)
             { "sl", group = "[L]og", icon = "󰦪" },
