@@ -114,6 +114,7 @@ setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
+setlocal winbar=%#WinBarPath#example-tool%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#api.html%*
 setlocal winblend=0
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -121,7 +122,7 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 128 - ((30 * winheight(0) + 19) / 39)
+let s:l = 128 - ((42 * winheight(0) + 27) / 55)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt

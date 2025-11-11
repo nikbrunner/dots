@@ -9,14 +9,11 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +50 ~/repos/dealercenter-digital/bc-desktop-client/src/client/kiosk/libs/queries/use-network-status.ts
+badd +9 ~/repos/dealercenter-digital/bc-desktop-client/src/client/kiosk/container/Settings/BrandActivationPage.tsx
 argglobal
 %argdel
 $argadd ./
-set stal=2
-tabnew +setlocal\ bufhidden=wipe
-tabrewind
-edit ~/repos/dealercenter-digital/bc-desktop-client/src/client/kiosk/libs/queries/use-network-status.ts
+edit ~/repos/dealercenter-digital/bc-desktop-client/src/client/kiosk/container/Settings/BrandActivationPage.tsx
 argglobal
 setlocal keymap=
 setlocal noarabic
@@ -49,8 +46,8 @@ setlocal cursorlineopt=both
 setlocal nodiff
 setlocal eventignorewin=
 setlocal expandtab
-if &filetype != 'typescript'
-setlocal filetype=typescript
+if &filetype != 'typescriptreact'
+setlocal filetype=typescriptreact
 endif
 setlocal fixendofline
 setlocal foldcolumn=0
@@ -59,7 +56,7 @@ setlocal foldexpr=v:lua.vim.treesitter.foldexpr()
 setlocal foldignore=#
 setlocal foldlevel=99
 setlocal foldmarker={{{,}}}
-setlocal foldmethod=indent
+setlocal foldmethod=expr
 setlocal foldminlines=1
 setlocal foldnestmax=20
 setlocal foldtext=
@@ -72,7 +69,7 @@ setlocal includeexpr=
 setlocal indentexpr=GetTypescriptIndent()
 setlocal indentkeys=0{,0},0),0],0,,!^F,o,O,e
 setlocal noinfercase
-setlocal iskeyword=@,48-57,_,192-255
+setlocal iskeyword=@,48-57,_,192-255,#,$
 setlocal lhistory=10
 setlocal nolinebreak
 setlocal nolisp
@@ -117,7 +114,7 @@ setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#src%*\ %#WinBarSeparator#/%*\ %#WinBarPath#client%*\ %#WinBarSeparator#/%*\ %#WinBarPath#kiosk%*\ %#WinBarSeparator#/%*\ %#WinBarPath#libs%*\ %#WinBarSeparator#/%*\ %#WinBarPath#queries%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#use-network-status.ts%*\ %#WinBarSeparator##%*\ %#WinBarSymbol#useNetworkStatus%*
+setlocal winbar=%#WinBarPath#src%*\ %#WinBarSeparator#/%*\ %#WinBarPath#client%*\ %#WinBarSeparator#/%*\ %#WinBarPath#kiosk%*\ %#WinBarSeparator#/%*\ %#WinBarPath#container%*\ %#WinBarSeparator#/%*\ %#WinBarPath#Settings%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#BrandActivationPage.tsx%*
 setlocal winblend=0
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -125,139 +122,19 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 50 - ((45 * winheight(0) + 25) / 51)
+50
+sil! normal! zo
+231
+sil! normal! zo
+232
+sil! normal! zo
+let s:l = 31 - ((30 * winheight(0) + 27) / 54)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 50
+keepjumps 31
 normal! 0
-tabnext
-argglobal
-enew | setl bt=help
-help snacks.nvim-gh-usage@en
-let s:cpo_save=&cpo
-set cpo&vim
-nnoremap <buffer> <silent> q <Cmd>close
-let &cpo=s:cpo_save
-unlet s:cpo_save
-setlocal keymap=
-setlocal noarabic
-setlocal autoindent
-setlocal nobinary
-setlocal nobreakindent
-setlocal breakindentopt=
-setlocal bufhidden=
-setlocal nobuflisted
-setlocal buftype=help
-setlocal busy=0
-setlocal nocindent
-setlocal cinkeys=0{,0},0),0],:,0#,!^F,o,O,e
-setlocal cinoptions=
-setlocal cinscopedecls=public,protected,private
-setlocal cinwords=if,else,while,do,for,switch
-setlocal colorcolumn=
-setlocal comments=
-setlocal commentstring=
-setlocal complete=.,w,b,u,t
-setlocal completefunc=
-setlocal completeslash=
-setlocal concealcursor=nc
-setlocal conceallevel=2
-setlocal nocopyindent
-setlocal nocursorbind
-setlocal nocursorcolumn
-setlocal cursorline
-setlocal cursorlineopt=both
-setlocal nodiff
-setlocal eventignorewin=
-setlocal noexpandtab
-if &filetype != 'help'
-setlocal filetype=help
-endif
-setlocal fixendofline
-setlocal foldcolumn=0
-setlocal nofoldenable
-setlocal foldexpr=v:lua.vim.treesitter.foldexpr()
-setlocal foldignore=#
-setlocal foldlevel=99
-setlocal foldmarker={{{,}}}
-setlocal foldmethod=manual
-setlocal foldminlines=1
-setlocal foldnestmax=20
-setlocal foldtext=
-setlocal formatexpr=v:lua.require'conform'.formatexpr()
-setlocal formatlistpat=^\\s*\\d\\+[\\]:.)}\\t\ ]\\s*
-setlocal formatoptions=jtcroql
-setlocal iminsert=0
-setlocal imsearch=-1
-setlocal includeexpr=
-setlocal indentexpr=
-setlocal indentkeys=0{,0},0),0],:,0#,!^F,o,O,e
-setlocal noinfercase
-setlocal iskeyword=!-~,^*,^|,^\",192-255
-setlocal keywordprg=:help
-setlocal lhistory=10
-setlocal nolinebreak
-setlocal nolisp
-setlocal lispoptions=
-setlocal nolist
-setlocal matchpairs=(:),{:},[:]
-setlocal modeline
-setlocal nomodifiable
-setlocal nrformats=bin,hex
-setlocal nonumber
-setlocal numberwidth=4
-setlocal omnifunc=s:HelpComplete
-setlocal nopreserveindent
-setlocal nopreviewwindow
-setlocal quoteescape=\\
-setlocal readonly
-setlocal norelativenumber
-setlocal norightleft
-setlocal rightleftcmd=search
-setlocal scrollback=-1
-setlocal noscrollbind
-setlocal shiftwidth=4
-setlocal signcolumn=yes
-setlocal smartindent
-setlocal nosmoothscroll
-setlocal softtabstop=4
-setlocal nospell
-setlocal spellcapcheck=[.?!]\\_[\\])'\"\\t\ ]\\+
-setlocal spellfile=
-setlocal spelllang=en_us,de_de
-setlocal spelloptions=noplainbuffer
-setlocal statuscolumn=%!v:lua.require'snacks.statuscolumn'.get()
-setlocal suffixesadd=
-setlocal noswapfile
-setlocal synmaxcol=3000
-if &syntax != ''
-setlocal syntax=
-endif
-setlocal tabstop=8
-setlocal tagfunc=
-setlocal textwidth=78
-setlocal undofile
-setlocal varsofttabstop=
-setlocal vartabstop=
-setlocal winbar=%#WinBarPath#~%*\ %#WinBarSeparator#/%*\ %#WinBarPath#.local%*\ %#WinBarSeparator#/%*\ %#WinBarPath#share%*\ %#WinBarSeparator#/%*\ %#WinBarPath#nvim%*\ %#WinBarSeparator#/%*\ %#WinBarPath#lazy%*\ %#WinBarSeparator#/%*\ %#WinBarPath#snacks.nvim%*\ %#WinBarSeparator#/%*\ %#WinBarPath#doc%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#snacks.nvim-gh.txt%*
-setlocal winblend=0
-setlocal nowinfixbuf
-setlocal nowinfixheight
-setlocal nowinfixwidth
-setlocal winhighlight=
-setlocal nowrap
-setlocal wrapmargin=0
-silent! normal! zE
-let &fdl = &fdl
-let s:l = 102 - ((16 * winheight(0) + 25) / 51)
-if s:l < 1 | let s:l = 1 | endif
-keepjumps exe s:l
-normal! zt
-keepjumps 102
-normal! 039|
 tabnext 1
-set stal=1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
 endif
