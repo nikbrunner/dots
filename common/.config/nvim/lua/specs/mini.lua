@@ -149,16 +149,16 @@ function M.diff()
     end, { desc = "Reset Hunk" })
 
     -- Preview/overlay toggle
-    map({ "n", "v" }, "<leader>cg", function()
+    map({ "n", "v" }, "<leader>cv", function()
         MiniDiff.toggle_overlay(0)
-    end, { desc = "Git (Hunk)" })
+    end, { desc = "Version (Hunk Preview)" })
 
     -- Buffer-level operations
-    map("n", "<leader>dgr", function()
+    map("n", "<leader>dvr", function()
         MiniDiff.do_hunks(0, "reset")
     end, { desc = "[R]evert changes" })
 
-    map("n", "<leader>dgs", function()
+    map("n", "<leader>dvs", function()
         MiniDiff.do_hunks(0, "apply")
     end, { desc = "[S]tage document" })
 end

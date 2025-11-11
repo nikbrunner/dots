@@ -305,7 +305,7 @@ function M.keys()
         { "<leader>aa",          function() Snacks.picker.commands() end, desc = "[A]ctions" },
         { "<leader>ad",          M.file_surfer, desc = "[D]ocument" },
         { "<leader>af",          function() Snacks.zen.zen() end, desc = "[F]ocus Mode" },
-        { "<leader>ag",          function() Snacks.lazygit() end, desc = "[G]it" },
+        { "<leader>av",          function() Snacks.lazygit() end, desc = "[V]ersion" },
         { "<leader>ahh",         function() Snacks.picker.highlights() end, desc = "[H]ightlights" },
         { "<leader>ahk",          function() Snacks.picker.keymaps() end, desc = "[K]eymaps" },
         { "<leader>ahm",         function() Snacks.picker.man() end, desc = "[M]anuals" },
@@ -331,21 +331,21 @@ function M.keys()
         { "<leader>ww",          function() Snacks.picker.grep_word() end, desc = "[W]ord" },
         { "<leader>wp",          function() Snacks.picker.diagnostics() end, desc = "[P]roblems" },
         { "<leader>ws",          function() Snacks.picker.lsp_workspace_symbols() end, desc = "[S]ymbols" },
-        { "<leader>wgh",         function() Snacks.picker.git_log() end, desc = "[H]istory" },
-        { "<leader>wgH",         function() Snacks.lazygit.log() end, desc = "[H]istory (Lazygit)" },
-        { "<leader>wgr",         function() Snacks.gitbrowse() end, desc = "[R]emote" },
-        { "<leader>wgs",         function() Snacks.lazygit() end, desc = "[S]tatus" },
-        { "<leader>wgb",         function() Snacks.picker.git_branches() end, desc = "[B]ranches" },
-        { "<leader>wgib",         M.gh_issue_browse, desc = "[B]rowse Issues" },
-        { "<leader>wgpc",         M.gh_pr_diff, desc = "[C]hanges (current PR)" },
-        { "<leader>wgpd",         M.gh_pr_buffer, desc = "[D]escription (current PR)" },
-        { "<leader>wgpb",         M.gh_pr_browse, desc = "[B]rowse Pull Requests" },
+        { "<leader>wvh",         function() Snacks.picker.git_log() end, desc = "[H]istory" },
+        { "<leader>wvH",         function() Snacks.lazygit.log() end, desc = "[H]istory (Lazygit)" },
+        { "<leader>wvr",         function() Snacks.gitbrowse() end, desc = "[R]emote" },
+        { "<leader>wvs",         function() Snacks.lazygit() end, desc = "[S]tatus" },
+        { "<leader>wvb",         function() Snacks.picker.git_branches() end, desc = "[B]ranches" },
+        { "<leader>wvib",         M.gh_issue_browse, desc = "[B]rowse Issues" },
+        { "<leader>wvpc",         M.gh_pr_diff, desc = "[C]hanges (current PR)" },
+        { "<leader>wvpd",         M.gh_pr_buffer, desc = "[D]escription (current PR)" },
+        { "<leader>wvpb",         M.gh_pr_browse, desc = "[B]rowse Pull Requests" },
 
         -- Document
         { "<leader>da",          M.find_associated_files, desc = "[A]ssociated Documents" },
         { "<leader>dc",          M.git_diff_in_file, desc = "[C]hanges" },
-        { "<leader>dgh",         function() Snacks.picker.git_log_file() end, desc = "[H]istory" },
-        { "<leader>dgH",         function() Snacks.lazygit.log_file() end, desc = "[H]istory (Lazygit)" },
+        { "<leader>dvh",         function() Snacks.picker.git_log_file() end, desc = "[H]istory" },
+        { "<leader>dvH",         function() Snacks.lazygit.log_file() end, desc = "[H]istory (Lazygit)" },
         { "<leader>dj",          M.buffer_jumps, desc = "[J]umps" },
         { "<leader>dp",          function() Snacks.picker.diagnostics_buffer({ layout = M.buffer_layout }) end, desc = "[P]roblems" },
         { "<leader>ds",          function() Snacks.picker.lsp_symbols() end, desc = "[S]ymbols" },
@@ -353,8 +353,8 @@ function M.keys()
         { "<leader>du",          function() Snacks.picker.undo() end, desc = "[U]ndo" },
 
         -- Symbols
-        { "sgb",                  function() Snacks.git.blame_line() end, desc = "[B]lame" },
-        { "sgh",                  function() Snacks.picker.git_log_line() end, desc = "[H]istory" },
+        { "svb",                  function() Snacks.git.blame_line() end, desc = "[B]lame" },
+        { "svh",                  function() Snacks.picker.git_log_line() end, desc = "[H]istory" },
     }
     -- stylua: ignore end
 end

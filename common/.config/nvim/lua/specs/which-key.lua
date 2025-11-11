@@ -37,19 +37,19 @@ return {
             { "<leader>ah", group = "[H]elp", icon = "󰋖" },
             { "<leader>ap", group = "[P]lugins", icon = "󰏖" },
             { "<leader>as", group = "[S]ettings", icon = "" },
-            { "<leader>ag", group = "[G]it", icon = "" },
+            { "<leader>av", group = "[V]ersion", icon = "󰊢" },
             { "<leader>ao", group = "[O]ptions", icon = "" },
 
             -- Workspace groups
             { "<leader>w", group = "[W]orkspace", icon = "󰉋" },
-            { "<leader>wg", group = "[G]it", icon = "󰊢" },
-            { "<leader>wgi", group = "[I]ssues", icon = "" },
-            { "<leader>wgp", group = "[P]ull Requests", icon = "" },
+            { "<leader>wv", group = "[V]ersion", icon = "󰊢" },
+            { "<leader>wvi", group = "[I]ssues", icon = "" },
+            { "<leader>wvp", group = "[P]ull Requests", icon = "" },
 
             -- Document groups
             { "<leader>d", group = "[D]ocument", icon = "󰈙" },
             { "<leader>dy", group = "[Y]ank", icon = "󰆏" },
-            { "<leader>dg", group = "[G]it", icon = "󰊢" },
+            { "<leader>dv", group = "[V]ersion", icon = "󰊢" },
 
             -- Operator-pending groups (for s prefix)
             { "sl", group = "[L]og", icon = "󰦪" },
