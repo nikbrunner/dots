@@ -337,9 +337,9 @@ function M.keys()
         { "<leader>wgs",         function() Snacks.lazygit() end, desc = "[S]tatus" },
         { "<leader>wgb",         function() Snacks.picker.git_branches() end, desc = "[B]ranches" },
         { "<leader>wgi",         M.gh_issue_browse, desc = "[I]ssues" },
-        { "<leader>wgp",         M.gh_pr_browse, desc = "[P]ull Requests" },
-        { "<leader>wgc",         M.gh_pr_diff, desc = "[C]hanges (current PR)" },
-        { "<leader>wgd",         M.gh_pr_buffer, desc = "[D]escription (current PR)" },
+        { "<leader>wgpb",         M.gh_pr_browse, desc = "[P]ull Requests" },
+        { "<leader>wgpc",         M.gh_pr_diff, desc = "[C]hanges (current PR)" },
+        { "<leader>wgpd",         M.gh_pr_buffer, desc = "[D]escription (current PR)" },
 
         -- Document
         { "<leader>dt",          function() Snacks.picker.lines({ layout = M.buffer_layout }) end, desc = "[T]ext" },
