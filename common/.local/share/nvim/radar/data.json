@@ -1,172 +1,272 @@
 {
-  "~/repos/nikbrunner/notes": {
-    "main": {
-      "locks": [
-        {
-          "label": "1",
-          "filename": "02 - Areas/Log/2025/2025.11 - November.md"
-        },
-        { "label": "2", "filename": "01 - Projects/New Job Nik/Log.md" }
-      ]
-    }
-  },
-  "~/repos/nikbrunner/nbr.haus": {
-    "main": { "locks": [{ "label": "1", "filename": "src/pages/index.astro" }] }
-  },
-  "~/repos/nikbrunner/dots": {
-    "main": {
-      "locks": [
-        { "label": "1", "filename": "common/.config/nvim/lua/specs/mini.lua" },
-        { "label": "2", "filename": "common/.config/nvim/CHANGELOG.md" },
-        {
-          "label": "3",
-          "filename": "/Users/nbr/.local/share/nvim/lazy/snacks.nvim/lua/snacks/gh/init.lua"
-        }
-      ]
-    }
-  },
-  "~/repos/dealercenter-digital/bc-tools": {
-    "master": {
-      "locks": [
-        {
-          "label": "1",
-          "filename": "packages/tool-range-calculator/src/routes/index.tsx"
-        },
-        {
-          "label": "2",
-          "filename": "packages/tool-range-calculator/src/pages/Home.tsx"
-        }
-      ]
-    }
-  },
-  "~/repos/dealercenter-digital/bc-desktop-client": {
-    "redux-toolkit": {
-      "locks": [
-        { "label": "1", "filename": "src/client/kiosk/state/store.ts" },
-        { "label": "2", "filename": "src/client/mobile/state/store.ts" }
-      ]
+  "version": 1,
+  "projects": {
+    "~/repos/dealercenter-digital/bc-tools/packages/tool-range-calculator": {
+      "bcd-8750-bc-tools-tool-range-calculator-update": {
+        "locks": [
+          {
+            "label": "1",
+            "filename": "src/pages/Home.tsx"
+          },
+          {
+            "label": "2",
+            "filename": "src/data/sliders.ts"
+          },
+          {
+            "label": "3",
+            "filename": "/Users/nbr/repos/dealercenter-digital/bc-tools/types/bikeCenterToolApi.d.ts"
+          },
+          {
+            "label": "4",
+            "filename": "src/types/ToolSettings.ts"
+          },
+          {
+            "label": "5",
+            "filename": "src/data/batteries.ts"
+          },
+          {
+            "label": "6",
+            "filename": "src/types/Batteries.ts"
+          },
+          {
+            "label": "7",
+            "filename": "src/resources/translations/batteries.json"
+          },
+          {
+            "label": "8",
+            "filename": "/Users/nbr/repos/dealercenter-digital/bc-tools/packages/ui/src/libs/hooks/use-initialize-tool-api.ts"
+          }
+        ],
+        "lastAccessed": 1762859777
+      }
     },
-    "bcd-3168-fix-setup-fails-without-internet": {
-      "locks": [
-        {
-          "label": "1",
-          "filename": "src/client/kiosk/container/Settings/BrandActivationPage.tsx"
-        }
-      ]
+    "~/repos/black-atom-industries/website": {
+      "main": {
+        "locks": [
+          {
+            "label": "1",
+            "filename": "src/styles.css"
+          },
+          {
+            "label": "2",
+            "filename": "src/routes/index.module.css"
+          },
+          {
+            "label": "3",
+            "filename": "src/components/Section.module.css"
+          }
+        ],
+        "lastAccessed": 1762859777
+      }
     },
-    "master": {
-      "locks": [
-        {
-          "label": "1",
-          "filename": "data/product-content-shimano-cues-2025/meta.json"
-        },
-        {
-          "label": "2",
-          "filename": "data/product-content-shimano-cues-2025/js/bikecenter-api-product.js"
-        }
-      ]
+    "~/repos/dealercenter-digital/bc-web-client-poc/frontend": {
+      "bcd-8461-add-storybook": {
+        "locks": [
+          {
+            "label": "1",
+            "filename": ".storybook/main.ts"
+          },
+          {
+            "label": "2",
+            "filename": ".storybook/preview.ts"
+          },
+          {
+            "label": "3",
+            "filename": "oil:///Users/nbr/repos/dealercenter-digital/bc-web-client-poc/frontend/src/components/"
+          }
+        ],
+        "lastAccessed": 1762859777
+      },
+      "bcd-8680-update-deps": {
+        "locks": [
+          {
+            "label": "1",
+            "filename": "src/routes/account/password.tsx"
+          }
+        ],
+        "lastAccessed": 1762859777
+      },
+      "bcd-8461-add-storybook-phase-2": {
+        "locks": [
+          {
+            "label": "1",
+            "filename": "src/partials/account/OrderHistoryItem.tsx"
+          },
+          {
+            "label": "2",
+            "filename": "src/partials/account/OrderHistoryItem.stories.tsx"
+          },
+          {
+            "label": "3",
+            "filename": "src/partials/account/OrderHistoryItem.stories.data.ts"
+          },
+          {
+            "label": "4",
+            "filename": "src/graphql/codegen.ts"
+          }
+        ],
+        "lastAccessed": 1762859777
+      }
     },
-    "bcd-7856-rework-idle-timeout-handling": {
-      "locks": [
-        {
-          "label": "1",
-          "filename": "src/client/kiosk/container/App/AppLifecycles.tsx"
-        }
-      ]
-    }
-  },
-  "~/repos/dealercenter-digital/bc-web-client-poc": {
-    "bcd-8461-add-storybook-phase-2": {
-      "locks": [
-        {
-          "label": "1",
-          "filename": "frontend/src/components/Footer.stories.data.ts"
-        }
-      ]
-    }
-  },
-  "~/repos/dealercenter-digital/bc-tools/packages/tool-range-calculator": {
-    "bcd-8750-bc-tools-tool-range-calculator-update": {
-      "locks": [
-        { "label": "1", "filename": "src/pages/Home.tsx" },
-        { "label": "2", "filename": "src/data/sliders.ts" },
-        {
-          "label": "3",
-          "filename": "/Users/nbr/repos/dealercenter-digital/bc-tools/types/bikeCenterToolApi.d.ts"
-        },
-        { "label": "4", "filename": "src/types/ToolSettings.ts" },
-        { "label": "5", "filename": "src/data/batteries.ts" },
-        { "label": "6", "filename": "src/types/Batteries.ts" },
-        {
-          "label": "7",
-          "filename": "src/resources/translations/batteries.json"
-        },
-        {
-          "label": "8",
-          "filename": "/Users/nbr/repos/dealercenter-digital/bc-tools/packages/ui/src/libs/hooks/use-initialize-tool-api.ts"
-        }
-      ]
-    }
-  },
-  "~/repos/nikbrunner/dcd-notes": {
-    "main": {
-      "locks": [{ "label": "1", "filename": "Log/2025/2025.11 - November.md" }]
-    }
-  },
-  "~/repos/black-atom-industries/radar.nvim": {
-    "full-radar": {
-      "locks": [
-        { "label": "1", "filename": "lua/radar/config.lua" },
-        { "label": "2", "filename": "Makefile" },
-        { "label": "3", "filename": "lua/radar/ui/radar.lua" }
-      ]
+    "~/repos/nikbrunner/nbr.haus": {
+      "main": {
+        "locks": [
+          {
+            "label": "1",
+            "filename": "src/pages/index.astro"
+          }
+        ],
+        "lastAccessed": 1762859777
+      }
     },
-    "main": {
-      "locks": [
-        { "label": "1", "filename": "lua/radar/ui/mini_radar.lua" },
-        { "label": "2", "filename": "lua/radar/config.lua" }
-      ]
-    }
-  },
-  "~/repos/dealercenter-digital/bc-web-client-poc/frontend": {
-    "bcd-8680-update-deps": {
-      "locks": [{ "label": "1", "filename": "src/routes/account/password.tsx" }]
+    "~/repos/black-atom-industries/radar.nvim": {
+      "full-radar": {
+        "locks": [
+          {
+            "label": "1",
+            "filename": "lua/radar/config.lua"
+          },
+          {
+            "label": "2",
+            "filename": "Makefile"
+          },
+          {
+            "label": "3",
+            "filename": "lua/radar/ui/radar.lua"
+          }
+        ],
+        "lastAccessed": 1762860912
+      },
+      "main": {
+        "locks": [
+          {
+            "label": "1",
+            "filename": "lua/radar/ui/mini_radar.lua"
+          },
+          {
+            "label": "2",
+            "filename": "lua/radar/config.lua"
+          }
+        ],
+        "lastAccessed": 1762859777
+      }
     },
-    "bcd-8461-add-storybook-phase-2": {
-      "locks": [
-        {
-          "label": "1",
-          "filename": "src/partials/account/OrderHistoryItem.tsx"
-        },
-        {
-          "label": "2",
-          "filename": "src/partials/account/OrderHistoryItem.stories.tsx"
-        },
-        {
-          "label": "3",
-          "filename": "src/partials/account/OrderHistoryItem.stories.data.ts"
-        },
-        { "label": "4", "filename": "src/graphql/codegen.ts" }
-      ]
+    "~/repos/dealercenter-digital/bc-web-client-poc": {
+      "bcd-8461-add-storybook-phase-2": {
+        "locks": [
+          {
+            "label": "1",
+            "filename": "frontend/src/components/Footer.stories.data.ts"
+          }
+        ],
+        "lastAccessed": 1762859777
+      }
     },
-    "bcd-8461-add-storybook": {
-      "locks": [
-        { "label": "1", "filename": ".storybook/main.ts" },
-        { "label": "2", "filename": ".storybook/preview.ts" },
-        {
-          "label": "3",
-          "filename": "oil:///Users/nbr/repos/dealercenter-digital/bc-web-client-poc/frontend/src/components/"
-        }
-      ]
-    }
-  },
-  "~/repos/black-atom-industries/website": {
-    "main": {
-      "locks": [
-        { "label": "1", "filename": "src/styles.css" },
-        { "label": "2", "filename": "src/routes/index.module.css" },
-        { "label": "3", "filename": "src/components/Section.module.css" }
-      ]
+    "~/repos/nikbrunner/notes": {
+      "main": {
+        "locks": [
+          {
+            "label": "1",
+            "filename": "02 - Areas/Log/2025/2025.11 - November.md"
+          },
+          {
+            "label": "2",
+            "filename": "01 - Projects/New Job Nik/Log.md"
+          }
+        ],
+        "lastAccessed": 1762859777
+      }
+    },
+    "~/repos/nikbrunner/dcd-notes": {
+      "main": {
+        "locks": [
+          {
+            "label": "1",
+            "filename": "Log/2025/2025.11 - November.md"
+          }
+        ],
+        "lastAccessed": 1762859777
+      }
+    },
+    "~/repos/dealercenter-digital/bc-desktop-client": {
+      "redux-toolkit": {
+        "locks": [
+          {
+            "label": "1",
+            "filename": "src/client/kiosk/state/store.ts"
+          },
+          {
+            "label": "2",
+            "filename": "src/client/mobile/state/store.ts"
+          }
+        ],
+        "lastAccessed": 1762859777
+      },
+      "bcd-7856-rework-idle-timeout-handling": {
+        "locks": [
+          {
+            "label": "1",
+            "filename": "src/client/kiosk/container/App/AppLifecycles.tsx"
+          }
+        ],
+        "lastAccessed": 1762860722
+      },
+      "bcd-3168-fix-setup-fails-without-internet": {
+        "locks": [
+          {
+            "label": "1",
+            "filename": "src/client/kiosk/container/Settings/BrandActivationPage.tsx"
+          }
+        ],
+        "lastAccessed": 1762859777
+      },
+      "master": {
+        "locks": [
+          {
+            "label": "1",
+            "filename": "data/product-content-shimano-cues-2025/meta.json"
+          },
+          {
+            "label": "2",
+            "filename": "data/product-content-shimano-cues-2025/js/bikecenter-api-product.js"
+          }
+        ],
+        "lastAccessed": 1762859777
+      }
+    },
+    "~/repos/dealercenter-digital/bc-tools": {
+      "master": {
+        "locks": [
+          {
+            "label": "1",
+            "filename": "packages/tool-range-calculator/src/routes/index.tsx"
+          },
+          {
+            "label": "2",
+            "filename": "packages/tool-range-calculator/src/pages/Home.tsx"
+          }
+        ],
+        "lastAccessed": 1762859777
+      }
+    },
+    "~/repos/nikbrunner/dots": {
+      "main": {
+        "locks": [
+          {
+            "label": "1",
+            "filename": "common/.config/nvim/lua/specs/mini.lua"
+          },
+          {
+            "label": "2",
+            "filename": "common/.config/nvim/CHANGELOG.md"
+          },
+          {
+            "label": "3",
+            "filename": "/Users/nbr/.local/share/nvim/lazy/snacks.nvim/lua/snacks/gh/init.lua"
+          }
+        ],
+        "lastAccessed": 1762861504
+      }
     }
   }
 }
