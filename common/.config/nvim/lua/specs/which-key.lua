@@ -43,6 +43,7 @@ return {
             -- Workspace groups
             { "<leader>w", group = "[W]orkspace", icon = "󰉋" },
             { "<leader>wg", group = "[G]it", icon = "󰊢" },
+            { "<leader>wgi", group = "[I]ssues", icon = "" },
             { "<leader>wgp", group = "[P]ull Requests", icon = "" },
 
             -- Document groups

@@ -336,10 +336,10 @@ function M.keys()
         { "<leader>wgr",         function() Snacks.gitbrowse() end, desc = "[R]emote" },
         { "<leader>wgs",         function() Snacks.lazygit() end, desc = "[S]tatus" },
         { "<leader>wgb",         function() Snacks.picker.git_branches() end, desc = "[B]ranches" },
-        { "<leader>wgi",         M.gh_issue_browse, desc = "[I]ssues" },
-        { "<leader>wgpb",         M.gh_pr_browse, desc = "[P]ull Requests" },
+        { "<leader>wgib",         M.gh_issue_browse, desc = "[B]rowse Issues" },
         { "<leader>wgpc",         M.gh_pr_diff, desc = "[C]hanges (current PR)" },
         { "<leader>wgpd",         M.gh_pr_buffer, desc = "[D]escription (current PR)" },
+        { "<leader>wgpb",         M.gh_pr_browse, desc = "[B]rowse Pull Requests" },
 
         -- Document
         { "<leader>dt",          function() Snacks.picker.lines({ layout = M.buffer_layout }) end, desc = "[T]ext" },
