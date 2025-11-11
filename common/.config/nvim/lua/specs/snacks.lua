@@ -116,7 +116,7 @@ end
 ---@return nil
 function M.buffers_and_recent()
     Snacks.picker({
-        multi = { "buffers", "recent" },
+        multi = { "recent", "buffers" },
         format = "buffer",
         matcher = {
             frecency = true,
@@ -129,8 +129,8 @@ function M.buffers_and_recent()
                 finder = "buffers",
                 format = "buffer",
                 hidden = false,
-                unloaded = true,
-                current = true,
+                unloaded = false,
+                current = false,
                 sort_lastused = true,
                 -- Don't filter by cwd for buffers (allows terminal buffers)
                 filter = {},
@@ -302,21 +302,21 @@ function M.keys()
         { "<leader>'",           function() Snacks.picker.registers() end, desc = "Registers" },
 
         -- App
-        { "<leader>aw",          function() Snacks.picker.projects() end, desc = "[W]orkspace" },
-        { "<leader>aW",          function() Snacks.picker.zoxide() end, desc = "[W]orkspace (Zoxide)" },
-        { "<leader>ad",          M.file_surfer, desc = "[D]ocument" },
         { "<leader>aa",          function() Snacks.picker.commands() end, desc = "[A]ctions" },
+        { "<leader>ad",          M.file_surfer, desc = "[D]ocument" },
+        { "<leader>af",          function() Snacks.zen.zen() end, desc = "[F]ocus Mode" },
         { "<leader>ag",          function() Snacks.lazygit() end, desc = "[G]it" },
+        { "<leader>ahh",         function() Snacks.picker.highlights() end, desc = "[H]ightlights" },
+        { "<leader>ahk",          function() Snacks.picker.keymaps() end, desc = "[K]eymaps" },
+        { "<leader>ahm",         function() Snacks.picker.man() end, desc = "[M]anuals" },
+        { "<leader>ahp",         function() Snacks.picker.help() end, desc = "[P]ages" },
+        { "<leader>an",          function() Snacks.notifier.show_history() end, desc = "[N]otifications" },
+        { "<leader>ar",          function() Snacks.picker.recent() end, desc = "[R]ecent Documents (Anywhere)" },
         { "<leader>as",          function() Snacks.picker.files({ cwd = vim.fn.expand("$HOME") .. "/repos/nikbrunner/dots" }) end, desc = "[D]ots" },
         { "<leader>at",          function() Snacks.picker.colorschemes() end, desc = "[T]hemes" },
-        { "<leader>ar",          function() Snacks.picker.recent() end, desc = "[R]ecent Documents (Anywhere)" },
-        { "<leader>af",          function() Snacks.zen.zen() end, desc = "[F]ocus Mode" },
+        { "<leader>aw",          function() Snacks.picker.projects() end, desc = "[W]orkspace" },
+        { "<leader>aW",          function() Snacks.picker.zoxide() end, desc = "[W]orkspace (Zoxide)" },
         { "<leader>az",          function() Snacks.zen.zoom() end, desc = "[Z]oom Mode" },
-        { "<leader>an",          function() Snacks.notifier.show_history() end, desc = "[N]otifications" },
-        { "<leader>ak",          function() Snacks.picker.keymaps() end, desc = "[K]eymaps" },
-        { "<leader>ahp",         function() Snacks.picker.help() end, desc = "[P]ages" },
-        { "<leader>ahm",         function() Snacks.picker.man() end, desc = "[M]anuals" },
-        { "<leader>ahh",         function() Snacks.picker.highlights() end, desc = "[H]ightlights" },
 
 
         -- Workspace
@@ -342,15 +342,15 @@ function M.keys()
         { "<leader>wgpb",         M.gh_pr_browse, desc = "[B]rowse Pull Requests" },
 
         -- Document
-        { "<leader>dt",          function() Snacks.picker.lines({ layout = M.buffer_layout }) end, desc = "[T]ext" },
-        { "<leader>dj",          M.buffer_jumps, desc = "[J]umps" },
-        { "<leader>dc",          M.git_diff_in_file, desc = "[C]hanges" },
         { "<leader>da",          M.find_associated_files, desc = "[A]ssociated Documents" },
-        { "<leader>dp",          function() Snacks.picker.diagnostics_buffer({ layout = M.buffer_layout }) end, desc = "[P]roblems" },
-        { "<leader>ds",          function() Snacks.picker.lsp_symbols() end, desc = "[S]ymbols" },
-        { "<leader>du",          function() Snacks.picker.undo() end, desc = "[U]ndo" },
+        { "<leader>dc",          M.git_diff_in_file, desc = "[C]hanges" },
         { "<leader>dgh",         function() Snacks.picker.git_log_file() end, desc = "[H]istory" },
         { "<leader>dgH",         function() Snacks.lazygit.log_file() end, desc = "[H]istory (Lazygit)" },
+        { "<leader>dj",          M.buffer_jumps, desc = "[J]umps" },
+        { "<leader>dp",          function() Snacks.picker.diagnostics_buffer({ layout = M.buffer_layout }) end, desc = "[P]roblems" },
+        { "<leader>ds",          function() Snacks.picker.lsp_symbols() end, desc = "[S]ymbols" },
+        { "<leader>dt",          function() Snacks.picker.lines({ layout = M.buffer_layout }) end, desc = "[T]ext" },
+        { "<leader>du",          function() Snacks.picker.undo() end, desc = "[U]ndo" },
 
         -- Symbols
         { "sgb",                  function() Snacks.git.blame_line() end, desc = "[B]lame" },
