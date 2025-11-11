@@ -70,9 +70,6 @@ return {
         { "st", "<cmd>Trouble lsp_type_definitions<cr>", desc = "[R]eferences" },
         { "sr", "<cmd>Trouble lsp_references<cr>", desc = "[R]eferences" },
 
-        { "<leader>xl", "<cmd>Trouble loclist toggle<cr>", desc = "Location List (Trouble)" },
-        { "<leader>xq", "<cmd>Trouble qflist toggle<cr>", desc = "Quickfix List (Trouble)" },
-
         { "sci", "<cmd>Trouble lsp_incoming_calls<cr>", desc = "[I]ncoming" },
         { "sco", "<cmd>Trouble lsp_outgoing_calls<cr>", desc = "[O]utgoing" },
         {
