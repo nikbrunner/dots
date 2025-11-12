@@ -1,0 +1,65 @@
+#!/usr/bin/env bash
+
+# Check if running inside tmux
+if [[ -z "$TMUX" ]]; then
+    echo "Error: tmux-session-picker must be run from within tmux"
+    exit 1
+fi
+
+# Check dependencies
+if ! command -v fzf &>/dev/null; then
+    echo "Error: fzf is not installed"
+    exit 1
+fi
+
+# Get current session name
+current_session=$(tmux display-message -p '#S')
+
+# Get all other sessions (excluding current)
+sessions=$(tmux list-sessions -F '#S' 2>/dev/null | grep -v "^${current_session}$")
+
+# Exit gracefully if no other sessions
+if [[ -z "$sessions" ]]; then
+    echo "No other sessions available"
+    exit 0
+fi
+
+# Launch fzf with session picker
+result=$(echo "$sessions" | fzf \
+    --border-label="┃ tmux sessions ┃" \
+    --prompt="Switch to: " \
+    --header="Enter: switch/create | Ctrl-X: kill | Esc: cancel" \
+    --print-query \
+    --expect=ctrl-x)
+
+# Parse fzf output
+# Line 1: The query string (what user typed)
+# Line 2: The key pressed (empty for enter, "ctrl-x" for ctrl-x)
+# Line 3: The selected item (if any)
+query=$(echo "$result" | sed -n '1p')
+key=$(echo "$result" | sed -n '2p')
+selection=$(echo "$result" | sed -n '3p')
+
+# Exit if no action taken (user pressed Esc without typing anything)
+if [[ -z "$key" && -z "$selection" && -z "$query" ]]; then
+    exit 0
+fi
+
+# Handle kill action (Ctrl-X)
+if [[ "$key" == "ctrl-x" ]]; then
+    if [[ -n "$selection" ]]; then
+        tmux kill-session -t "$selection"
+        echo "Killed session: $selection"
+    fi
+    exit 0
+fi
+
+# Handle switch/create action (Enter)
+if [[ -n "$selection" ]]; then
+    # Session was selected from list - switch to it
+    tmux switch-client -t "$selection"
+elif [[ -n "$query" ]]; then
+    # User typed a new name - create and switch to new session
+    tmux new-session -d -s "$query" -c "$HOME"
+    tmux switch-client -t "$query"
+fi
