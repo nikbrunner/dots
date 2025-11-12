@@ -12,6 +12,49 @@ if ! command -v fzf &>/dev/null; then
     exit 1
 fi
 
+# Function to pick a window from a session
+pick_window() {
+    local session="$1"
+
+    # Get windows for the session
+    local windows
+    windows=$(tmux list-windows -t "$session" -F '#I: #W' 2>/dev/null)
+
+    if [[ -z "$windows" ]]; then
+        echo "No windows found in session: $session"
+        return 1
+    fi
+
+    # Launch fzf for window selection
+    local result
+    result=$(echo "$windows" | fzf \
+        --border-label="┃ $session windows ┃" \
+        --prompt="Select window: " \
+        --header="Enter: switch | Ctrl-X: kill | Esc: back" \
+        --expect=ctrl-x)
+
+    local key=$(echo "$result" | sed -n '1p')
+    local window_selection=$(echo "$result" | sed -n '2p')
+
+    # Exit if no selection
+    if [[ -z "$window_selection" ]]; then
+        return 0
+    fi
+
+    # Extract window index (first field before colon)
+    local window_index=$(echo "$window_selection" | cut -d':' -f1 | xargs)
+
+    # Handle kill action
+    if [[ "$key" == "ctrl-x" ]]; then
+        tmux kill-window -t "${session}:${window_index}"
+        echo "Killed window: $window_selection"
+        return 0
+    fi
+
+    # Handle switch action
+    tmux switch-client -t "${session}:${window_index}"
+}
+
 # Get current session name
 current_session=$(tmux display-message -p '#S')
 
@@ -28,13 +71,13 @@ fi
 result=$(echo "$sessions" | fzf \
     --border-label="┃ tmux sessions ┃" \
     --prompt="Switch to: " \
-    --header="Enter: switch/create | Ctrl-X: kill | Esc: cancel" \
+    --header="Enter: switch/create | Ctrl-O: windows | Ctrl-X: kill | Esc: cancel" \
     --print-query \
-    --expect=ctrl-x)
+    --expect=ctrl-x,ctrl-o)
 
 # Parse fzf output
 # Line 1: The query string (what user typed)
-# Line 2: The key pressed (empty for enter, "ctrl-x" for ctrl-x)
+# Line 2: The key pressed (empty for enter, "ctrl-x" for ctrl-x, "ctrl-o" for ctrl-o)
 # Line 3: The selected item (if any)
 query=$(echo "$result" | sed -n '1p')
 key=$(echo "$result" | sed -n '2p')
@@ -42,6 +85,14 @@ selection=$(echo "$result" | sed -n '3p')
 
 # Exit if no action taken (user pressed Esc without typing anything)
 if [[ -z "$key" && -z "$selection" && -z "$query" ]]; then
+    exit 0
+fi
+
+# Handle window picker action (Ctrl-O)
+if [[ "$key" == "ctrl-o" ]]; then
+    if [[ -n "$selection" ]]; then
+        pick_window "$selection"
+    fi
     exit 0
 fi
 
