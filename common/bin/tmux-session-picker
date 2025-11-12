@@ -12,6 +12,42 @@ if ! command -v fzf &>/dev/null; then
     exit 1
 fi
 
+# Function to pick a pane from a window
+pick_pane() {
+    local session="$1"
+    local window_index="$2"
+
+    # Get panes for the window
+    local panes
+    panes=$(tmux list-panes -t "${session}:${window_index}" -F '#P: #{pane_current_command}' 2>/dev/null)
+
+    if [[ -z "$panes" ]]; then
+        echo "No panes found in window: ${session}:${window_index}"
+        return 1
+    fi
+
+    # Launch fzf for pane selection
+    local result
+    result=$(echo "$panes" | fzf \
+        --border-label="┃ ${session}:${window_index} panes ┃" \
+        --prompt="Select pane: " \
+        --header="Enter: switch | Esc: back")
+
+    local pane_selection=$(echo "$result")
+
+    # Exit if no selection
+    if [[ -z "$pane_selection" ]]; then
+        return 0
+    fi
+
+    # Extract pane index (first field before colon)
+    local pane_index=$(echo "$pane_selection" | cut -d':' -f1 | xargs)
+
+    # Switch to the pane
+    tmux switch-client -t "${session}:${window_index}"
+    tmux select-pane -t "${session}:${window_index}.${pane_index}"
+}
+
 # Function to pick a window from a session
 pick_window() {
     local session="$1"
@@ -30,8 +66,8 @@ pick_window() {
     result=$(echo "$windows" | fzf \
         --border-label="┃ $session windows ┃" \
         --prompt="Select window: " \
-        --header="Enter: switch | Ctrl-X: kill | Esc: back" \
-        --expect=ctrl-x)
+        --header="Enter: switch | Ctrl-O: panes | Ctrl-X: kill | Esc: back" \
+        --expect=ctrl-x,ctrl-o)
 
     local key=$(echo "$result" | sed -n '1p')
     local window_selection=$(echo "$result" | sed -n '2p')
@@ -43,6 +79,12 @@ pick_window() {
 
     # Extract window index (first field before colon)
     local window_index=$(echo "$window_selection" | cut -d':' -f1 | xargs)
+
+    # Handle pane picker action (Ctrl-O)
+    if [[ "$key" == "ctrl-o" ]]; then
+        pick_pane "$session" "$window_index"
+        return 0
+    fi
 
     # Handle kill action
     if [[ "$key" == "ctrl-x" ]]; then
