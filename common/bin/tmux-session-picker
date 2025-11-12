@@ -109,6 +109,14 @@ if [[ -z "$sessions" ]]; then
     exit 0
 fi
 
+# Get last session from tmux option and put it first if it exists
+last_session=$(tmux show-option -gqv @last_session)
+if [[ -n "$last_session" ]] && echo "$sessions" | grep -q "^${last_session}$"; then
+    # Remove last session from list and prepend it
+    sessions=$(echo "$sessions" | grep -v "^${last_session}$")
+    sessions="${last_session}"$'\n'"${sessions}"
+fi
+
 # Launch fzf with session picker
 result=$(echo "$sessions" | fzf \
     --border-label="┃ tmux sessions ┃" \
