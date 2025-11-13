@@ -308,7 +308,7 @@ function M.keys()
         { "<leader>ahh",         function() Snacks.picker.highlights() end, desc = "[H]ightlights" },
         { "<leader>ahk",          function() Snacks.picker.keymaps() end, desc = "[K]eymaps" },
         { "<leader>ahm",         function() Snacks.picker.man() end, desc = "[M]anuals" },
-        { "<leader>ahp",         function() Snacks.picker.help() end, desc = "[P]ages" },
+        { "<leader>aht",         function() Snacks.picker.help() end, desc = "[T]ags" },
         { "<leader>an",          function() Snacks.notifier.show_history() end, desc = "[N]otifications" },
         { "<leader>ar",          function() Snacks.picker.recent() end, desc = "[R]ecent Documents (Anywhere)" },
         { "<leader>as",          function() Snacks.picker.files({ cwd = vim.fn.expand("$HOME") .. "/repos/nikbrunner/dots" }) end, desc = "[D]ots" },
