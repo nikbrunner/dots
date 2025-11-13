@@ -1,4 +1,7 @@
 {
+  "sticky_scroll": {
+    "enabled": true
+  },
   "agent_buffer_font_size": 20.0,
   "agent_ui_font_size": 20.0,
   "telemetry": {
@@ -33,7 +36,7 @@
   "theme": {
     "mode": "system",
     "dark": "Black Atom — MNM ∷ Mono Dark",
-    "light": "Black Atom — MNM ∷ Mono Light"
+    "light": "Black Atom — MNM ∷ 47 Light"
   },
   "base_keymap": "VSCode",
   "vim_mode": true,
