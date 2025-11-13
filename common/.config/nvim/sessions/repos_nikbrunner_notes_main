@@ -9,9 +9,9 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +83 02\ -\ Areas/Log/2025/2025.11\ -\ November.md
+badd +87 02\ -\ Areas/Log/2025/2025.11\ -\ November.md
 badd +66 ~/repos/nikbrunner/notes/01\ -\ Projects/New\ Job\ Nik/New\ Job\ Log.md
-badd +11 ~/repos/nikbrunner/notes/01\ -\ Projects/New\ Job\ Nik/Website\ Content.md
+badd +24 ~/repos/nikbrunner/notes/01\ -\ Projects/New\ Job\ Nik/Website\ Content.md
 argglobal
 %argdel
 $argadd ./
@@ -35,9 +35,9 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe 'vert 1resize ' . ((&columns * 122 + 184) / 368)
-exe 'vert 2resize ' . ((&columns * 122 + 184) / 368)
-exe 'vert 3resize ' . ((&columns * 122 + 184) / 368)
+exe 'vert 1resize ' . ((&columns * 66 + 100) / 200)
+exe 'vert 2resize ' . ((&columns * 66 + 100) / 200)
+exe 'vert 3resize ' . ((&columns * 66 + 100) / 200)
 argglobal
 let s:cpo_save=&cpo
 set cpo&vim
@@ -161,11 +161,11 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal wrap
 setlocal wrapmargin=0
-let s:l = 83 - ((35 * winheight(0) + 31) / 63)
+let s:l = 87 - ((36 * winheight(0) + 29) / 58)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 83
+keepjumps 87
 normal! 0
 wincmd w
 argglobal
@@ -296,12 +296,12 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal wrap
 setlocal wrapmargin=0
-let s:l = 61 - ((28 * winheight(0) + 31) / 63)
+let s:l = 64 - ((29 * winheight(0) + 29) / 58)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 61
-normal! 013|
+keepjumps 64
+normal! 03|
 wincmd w
 argglobal
 if bufexists(fnamemodify("~/repos/nikbrunner/notes/01\ -\ Projects/New\ Job\ Nik/Website\ Content.md", ":p")) | buffer ~/repos/nikbrunner/notes/01\ -\ Projects/New\ Job\ Nik/Website\ Content.md | else | edit ~/repos/nikbrunner/notes/01\ -\ Projects/New\ Job\ Nik/Website\ Content.md | endif
@@ -431,16 +431,17 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal wrap
 setlocal wrapmargin=0
-let s:l = 14 - ((13 * winheight(0) + 31) / 63)
+let s:l = 24 - ((22 * winheight(0) + 29) / 58)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 14
-normal! 0
+keepjumps 24
+normal! 019|
 wincmd w
-exe 'vert 1resize ' . ((&columns * 122 + 184) / 368)
-exe 'vert 2resize ' . ((&columns * 122 + 184) / 368)
-exe 'vert 3resize ' . ((&columns * 122 + 184) / 368)
+3wincmd w
+exe 'vert 1resize ' . ((&columns * 66 + 100) / 200)
+exe 'vert 2resize ' . ((&columns * 66 + 100) / 200)
+exe 'vert 3resize ' . ((&columns * 66 + 100) / 200)
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
