@@ -3,18 +3,18 @@ let s:so_save = &g:so | let s:siso_save = &g:siso | setg so=0 siso=0 | setl so=-
 let v:this_session=expand("<sfile>:p")
 silent only
 silent tabonly
-cd ~/repos/dealercenter-digital/bc-desktop-client
+cd ~/repos/nikbrunner/awdcs
 if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +159 ~/repos/dealercenter-digital/bc-desktop-client/src/client/kiosk/container/App/AppLifecycles.tsx
-badd +33 ~/repos/dealercenter-digital/bc-desktop-client/src/client/commons/config/config-KIOSK.ts
+badd +1 ~/repos/nikbrunner/awdcs/website/src/components/KeymapExplorer.tsx
+badd +68 ~/repos/nikbrunner/awdcs/website/src/components/ScopeCard.module.css
 argglobal
 %argdel
 $argadd ./
-edit ~/repos/dealercenter-digital/bc-desktop-client/src/client/kiosk/container/App/AppLifecycles.tsx
+edit ~/repos/nikbrunner/awdcs/website/src/components/KeymapExplorer.tsx
 let s:save_splitbelow = &splitbelow
 let s:save_splitright = &splitright
 set splitbelow splitright
@@ -31,8 +31,8 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe 'vert 1resize ' . ((&columns * 143 + 144) / 288)
-exe 'vert 2resize ' . ((&columns * 144 + 144) / 288)
+exe 'vert 1resize ' . ((&columns * 78 + 79) / 158)
+exe 'vert 2resize ' . ((&columns * 79 + 79) / 158)
 argglobal
 setlocal keymap=
 setlocal noarabic
@@ -88,7 +88,7 @@ setlocal includeexpr=
 setlocal indentexpr=GetTypescriptIndent()
 setlocal indentkeys=0{,0},0),0],0,,!^F,o,O,e
 setlocal noinfercase
-setlocal iskeyword=@,48-57,_,192-255,$,#
+setlocal iskeyword=@,48-57,_,192-255
 setlocal lhistory=10
 setlocal nolinebreak
 setlocal nolisp
@@ -110,7 +110,7 @@ setlocal norightleft
 setlocal rightleftcmd=search
 setlocal scrollback=-1
 setlocal noscrollbind
-setlocal shiftwidth=2
+setlocal shiftwidth=4
 setlocal signcolumn=yes
 setlocal nosmartindent
 setlocal nosmoothscroll
@@ -127,13 +127,13 @@ setlocal synmaxcol=3000
 if &syntax != ''
 setlocal syntax=
 endif
-setlocal tabstop=2
+setlocal tabstop=4
 setlocal tagfunc=v:lua.vim.lsp.tagfunc
 setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#src%*\ %#WinBarSeparator#/%*\ %#WinBarPath#client%*\ %#WinBarSeparator#/%*\ %#WinBarPath#kiosk%*\ %#WinBarSeparator#/%*\ %#WinBarPath#container%*\ %#WinBarSeparator#/%*\ %#WinBarPath#App%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#AppLifecycles.tsx%*
+setlocal winbar=%#WinBarPath#website%*\ %#WinBarSeparator#/%*\ %#WinBarPath#src%*\ %#WinBarSeparator#/%*\ %#WinBarPath#components%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#KeymapExplorer.tsx%*
 setlocal winblend=0
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -141,23 +141,33 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-137
+10
 sil! normal! zo
-144
+11
 sil! normal! zo
-let s:l = 163 - ((42 * winheight(0) + 24) / 49)
+12
+sil! normal! zo
+13
+sil! normal! zo
+14
+sil! normal! zo
+15
+sil! normal! zo
+16
+sil! normal! zo
+let s:l = 18 - ((17 * winheight(0) + 16) / 33)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 163
-normal! 015|
+keepjumps 18
+normal! 030|
 wincmd w
 argglobal
-if bufexists(fnamemodify("~/repos/dealercenter-digital/bc-desktop-client/src/client/commons/config/config-KIOSK.ts", ":p")) | buffer ~/repos/dealercenter-digital/bc-desktop-client/src/client/commons/config/config-KIOSK.ts | else | edit ~/repos/dealercenter-digital/bc-desktop-client/src/client/commons/config/config-KIOSK.ts | endif
+if bufexists(fnamemodify("~/repos/nikbrunner/awdcs/website/src/components/ScopeCard.module.css", ":p")) | buffer ~/repos/nikbrunner/awdcs/website/src/components/ScopeCard.module.css | else | edit ~/repos/nikbrunner/awdcs/website/src/components/ScopeCard.module.css | endif
 if &buftype ==# 'terminal'
-  silent file ~/repos/dealercenter-digital/bc-desktop-client/src/client/commons/config/config-KIOSK.ts
+  silent file ~/repos/nikbrunner/awdcs/website/src/components/ScopeCard.module.css
 endif
-balt ~/repos/dealercenter-digital/bc-desktop-client/src/client/kiosk/container/App/AppLifecycles.tsx
+balt ~/repos/nikbrunner/awdcs/website/src/components/KeymapExplorer.tsx
 setlocal keymap=
 setlocal noarabic
 setlocal autoindent
@@ -174,8 +184,8 @@ setlocal cinoptions=
 setlocal cinscopedecls=public,protected,private
 setlocal cinwords=if,else,while,do,for,switch
 setlocal colorcolumn=
-setlocal comments=sO:*\ -,mO:*\ \ ,exO:*/,s1:/*,mb:*,ex:*/,://
-setlocal commentstring=//\ %s
+setlocal comments=s1:/*,mb:*,ex:*/
+setlocal commentstring=/*\ %s\ */
 setlocal complete=.,w,b,u,t
 setlocal completefunc=
 setlocal completeslash=
@@ -189,8 +199,8 @@ setlocal cursorlineopt=both
 setlocal nodiff
 setlocal eventignorewin=
 setlocal expandtab
-if &filetype != 'typescript'
-setlocal filetype=typescript
+if &filetype != 'css'
+setlocal filetype=css
 endif
 setlocal fixendofline
 setlocal foldcolumn=0
@@ -208,11 +218,12 @@ setlocal formatlistpat=^\\s*\\d\\+[\\]:.)}\\t\ ]\\s*
 setlocal formatoptions=jcroql
 setlocal iminsert=0
 setlocal imsearch=-1
+setlocal include=^\\s*@import\\s\\+\\%(url(\\)\\=
 setlocal includeexpr=
-setlocal indentexpr=GetTypescriptIndent()
-setlocal indentkeys=0{,0},0),0],0,,!^F,o,O,e
+setlocal indentexpr=nvim_treesitter#indent()
+setlocal indentkeys=0{,0},!^F,o,O
 setlocal noinfercase
-setlocal iskeyword=@,48-57,_,192-255,$,#
+setlocal iskeyword=@,48-57,_,192-255,-
 setlocal lhistory=10
 setlocal nolinebreak
 setlocal nolisp
@@ -234,7 +245,7 @@ setlocal norightleft
 setlocal rightleftcmd=search
 setlocal scrollback=-1
 setlocal noscrollbind
-setlocal shiftwidth=2
+setlocal shiftwidth=4
 setlocal signcolumn=yes
 setlocal nosmartindent
 setlocal nosmoothscroll
@@ -245,19 +256,19 @@ setlocal spellfile=
 setlocal spelllang=en_us,de_de
 setlocal spelloptions=noplainbuffer
 setlocal statuscolumn=%!v:lua.require'snacks.statuscolumn'.get()
-setlocal suffixesadd=.ts,.d.ts,.tsx,.js,.jsx,.cjs,.mjs
+setlocal suffixesadd=
 setlocal noswapfile
 setlocal synmaxcol=3000
 if &syntax != ''
 setlocal syntax=
 endif
-setlocal tabstop=2
+setlocal tabstop=4
 setlocal tagfunc=v:lua.vim.lsp.tagfunc
 setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#src%*\ %#WinBarSeparator#/%*\ %#WinBarPath#client%*\ %#WinBarSeparator#/%*\ %#WinBarPath#commons%*\ %#WinBarSeparator#/%*\ %#WinBarPath#config%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#config-KIOSK.ts%*
+setlocal winbar=%#WinBarPath#website%*\ %#WinBarSeparator#/%*\ %#WinBarPath#src%*\ %#WinBarSeparator#/%*\ %#WinBarPath#components%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#ScopeCard.module.css%*
 setlocal winblend=0
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -265,20 +276,16 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-33
-sil! normal! zo
-34
-sil! normal! zo
-let s:l = 41 - ((8 * winheight(0) + 24) / 49)
+let s:l = 68 - ((16 * winheight(0) + 16) / 33)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 41
+keepjumps 68
 normal! 0
 wincmd w
 2wincmd w
-exe 'vert 1resize ' . ((&columns * 143 + 144) / 288)
-exe 'vert 2resize ' . ((&columns * 144 + 144) / 288)
+exe 'vert 1resize ' . ((&columns * 78 + 79) / 158)
+exe 'vert 2resize ' . ((&columns * 79 + 79) / 158)
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf

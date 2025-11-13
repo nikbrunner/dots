@@ -9,7 +9,7 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +41 Log/2025/2025.11\ -\ November.md
+badd +50 Log/2025/2025.11\ -\ November.md
 argglobal
 %argdel
 $argadd ./
@@ -52,7 +52,7 @@ setlocal complete=.,w,b,u,t
 setlocal completefunc=
 setlocal completeslash=
 setlocal concealcursor=
-setlocal conceallevel=0
+setlocal conceallevel=3
 setlocal nocopyindent
 setlocal nocursorbind
 setlocal nocursorcolumn
@@ -137,12 +137,12 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal wrap
 setlocal wrapmargin=0
-let s:l = 43 - ((42 * winheight(0) + 29) / 58)
+let s:l = 50 - ((42 * winheight(0) + 27) / 55)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 43
-normal! 012|
+keepjumps 50
+normal! 0
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
