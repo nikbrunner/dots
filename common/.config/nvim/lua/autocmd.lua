@@ -4,6 +4,18 @@ local function auto_group(name)
     return vim.api.nvim_create_augroup("nvim_" .. name, { clear = true })
 end
 
+-- Clean up old ShaDa temp files on startup
+-- These accumulate when Neovim crashes or is force-killed during writes
+-- Once all 26 slots (a-z) are full, ShaDa writes fail with E138 error
+auto("VimEnter", {
+    group = auto_group("shada_cleanup"),
+    callback = function()
+        local shada_dir = vim.fn.stdpath("state") .. "/shada"
+        local cmd = string.format("find %s -name 'main.shada.tmp.*' -mtime +7 -delete", shada_dir)
+        vim.fn.system(cmd)
+    end,
+})
+
 -- Close these filetypes with <Esc> & q in normal mode
 auto("FileType", {
     group = auto_group("quit_mapping"),
