@@ -23,10 +23,6 @@ return {
         }
     end,
 
-    on_attach = function()
-        vim.notify("Attached to Deno LSP", vim.log.levels.INFO, { title = "Deno LSP" })
-    end,
-
     -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/configs.md#denols
     settings = {
         deno = {
