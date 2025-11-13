@@ -36,7 +36,7 @@
   "theme": {
     "mode": "system",
     "dark": "Black Atom — MNM ∷ Mono Dark",
-    "light": "Black Atom — MNM ∷ 47 Light"
+    "light": "Black Atom — MNM ∷ Mono Light"
   },
   "base_keymap": "VSCode",
   "vim_mode": true,
