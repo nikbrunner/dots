@@ -110,10 +110,10 @@ M.specs = {
             { mode = { "n", "v" }, "<Left>", "<CMD>Treewalker Left<CR>" },
             { mode = { "n", "v" }, "<Right>", "<CMD>Treewalker Right<CR>" },
 
-            { mode = { "n", "v" }, "<S-Up>", "<CMD>Treewalker SwapUp<CR>" },
-            { mode = { "n", "v" }, "<S-Down>", "<CMD>Treewalker SwapDown<CR>" },
-            { mode = { "n", "v" }, "<S-Left>", "<CMD>Treewalker SwapLeft<CR>" },
-            { mode = { "n", "v" }, "<S-Right>", "<CMD>Treewalker SwapRight<CR>" },
+            -- { mode = { "n", "v" }, "<S-Up>", "<CMD>Treewalker SwapUp<CR>" },
+            -- { mode = { "n", "v" }, "<S-Down>", "<CMD>Treewalker SwapDown<CR>" },
+            -- { mode = { "n", "v" }, "<S-Left>", "<CMD>Treewalker SwapLeft<CR>" },
+            -- { mode = { "n", "v" }, "<S-Right>", "<CMD>Treewalker SwapRight<CR>" },
         },
     },
 }
