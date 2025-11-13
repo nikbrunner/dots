@@ -305,7 +305,6 @@ function M.keys()
         { "<leader>aa",          function() Snacks.picker.commands() end, desc = "[A]ctions" },
         { "<leader>ad",          M.file_surfer, desc = "[D]ocument" },
         { "<leader>af",          function() Snacks.zen.zen() end, desc = "[F]ocus Mode" },
-        { "<leader>av",          function() Snacks.lazygit() end, desc = "[V]ersion" },
         { "<leader>ahh",         function() Snacks.picker.highlights() end, desc = "[H]ightlights" },
         { "<leader>ahk",          function() Snacks.picker.keymaps() end, desc = "[K]eymaps" },
         { "<leader>ahm",         function() Snacks.picker.man() end, desc = "[M]anuals" },
@@ -323,7 +322,7 @@ function M.keys()
         -- Main File Finding is handled via fff.nvim & fff-snacks.nvim (<leader><leader> & <leader>wd)
         { "<leader>we",          M.explorer, desc = "[E]xplorer" },
         { "<leader>wd",          function() Snacks.picker.files({ filter = { cwd = true }}) end, desc = "[R]ecent Documents" },
-        { "<leader>wr",          M.buffers_and_recent, desc = "[R]ecent Documents" },
+        { "<leader>wr",          function() Snacks.picker.recent() end, desc = "[R]ecent Documents" },
         { "<leader>wj",          function() Snacks.picker.jumps() end, desc = "[J]umps" },
         { "<leader>wm",          function() Snacks.picker.git_status() end, desc = "[M]odified Documents" },
         { "<leader>wc",          function() Snacks.picker.git_diff() end, desc = "[C]hanges" },
@@ -334,11 +333,11 @@ function M.keys()
         { "<leader>wvh",         function() Snacks.picker.git_log() end, desc = "[H]istory" },
         { "<leader>wvH",         function() Snacks.lazygit.log() end, desc = "[H]istory (Lazygit)" },
         { "<leader>wvr",         function() Snacks.gitbrowse() end, desc = "[R]emote" },
-        { "<leader>wvs",         function() Snacks.lazygit() end, desc = "[S]tatus" },
+        { "<leader>wvc",         function() Snacks.lazygit() end, desc = "[C]ontrol" },
         { "<leader>wvb",         function() Snacks.picker.git_branches() end, desc = "[B]ranches" },
         { "<leader>wvib",         M.gh_issue_browse, desc = "[B]rowse Issues" },
-        { "<leader>wvpc",         M.gh_pr_diff, desc = "[C]hanges (current PR)" },
-        { "<leader>wvpd",         M.gh_pr_buffer, desc = "[D]escription (current PR)" },
+        { "<leader>wvpm",         M.gh_pr_diff, desc = "[M]odifications in current PR" },
+        { "<leader>wvpd",         M.gh_pr_buffer, desc = "[D]escription of current PR" },
         { "<leader>wvpb",         M.gh_pr_browse, desc = "[B]rowse Pull Requests" },
 
         -- Document
@@ -355,6 +354,7 @@ function M.keys()
         -- Symbols
         { "svb",                  function() Snacks.git.blame_line() end, desc = "[B]lame" },
         { "svh",                  function() Snacks.picker.git_log_line() end, desc = "[H]istory" },
+        { "sr",                   function() Snacks.picker.lsp_references() end, desc = "[R]eferences" },
     }
     -- stylua: ignore end
 end
@@ -454,6 +454,7 @@ return {
         },
         {
             "dmtrKovalenko/fff.nvim",
+            pin = true,
             lazy = false,
             build = function()
                 require("fff.download").download_or_build_binary()
