@@ -322,7 +322,7 @@ function M.keys()
         -- Main File Finding is handled via fff.nvim & fff-snacks.nvim (<leader><leader> & <leader>wd)
         { "<leader>we",          M.explorer, desc = "[E]xplorer" },
         { "<leader>wd",          function() Snacks.picker.files({ filter = { cwd = true }}) end, desc = "[R]ecent Documents" },
-        { "<leader>wr",          function() Snacks.picker.recent() end, desc = "[R]ecent Documents" },
+        { "<leader>wr",          function() Snacks.picker.recent({ filter = { cwd = true }}) end, desc = "[R]ecent Documents" },
         { "<leader>wj",          function() Snacks.picker.jumps() end, desc = "[J]umps" },
         { "<leader>wm",          function() Snacks.picker.git_status() end, desc = "[M]odified Documents" },
         { "<leader>wc",          function() Snacks.picker.git_diff() end, desc = "[C]hanges" },
