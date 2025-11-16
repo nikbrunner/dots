@@ -6,13 +6,13 @@
       "collection": "stations"
     },
     "black-atom-stations-research": {
-      "display_name": "Black Atom — STA ∷ Research", 
+      "display_name": "Black Atom — STA ∷ Research",
       "appearance": "light",
       "collection": "stations"
     },
     "black-atom-stations-operations": {
       "display_name": "Black Atom — STA ∷ Operations",
-      "appearance": "dark", 
+      "appearance": "dark",
       "collection": "stations"
     },
     "black-atom-stations-medical": {
@@ -36,7 +36,7 @@
       "collection": "jpn"
     },
     "black-atom-jpn-murasaki-yoru": {
-      "display_name": "Black Atom — JPN ∷ Murasaki Yoru", 
+      "display_name": "Black Atom — JPN ∷ Murasaki Yoru",
       "appearance": "dark",
       "collection": "jpn"
     },
@@ -62,7 +62,7 @@
     },
     "black-atom-terra-summer-day": {
       "display_name": "Black Atom — TER ∷ Summer Day",
-      "appearance": "light", 
+      "appearance": "light",
       "collection": "terra"
     },
     "black-atom-terra-summer-night": {
@@ -95,13 +95,13 @@
       "appearance": "light",
       "collection": "north"
     },
-    "black-atom-mnml-mono-dark": {
-      "display_name": "Black Atom — MNM ∷ Mono Dark",
+    "black-atom-mnml-clay-dark": {
+      "display_name": "Black Atom — MNM ∷ Clay Dark",
       "appearance": "dark",
       "collection": "mnml"
     },
-    "black-atom-mnml-mono-light": {
-      "display_name": "Black Atom — MNM ∷ Mono Light",
+    "black-atom-mnml-clay-light": {
+      "display_name": "Black Atom — MNM ∷ Clay Light",
       "appearance": "light",
       "collection": "mnml"
     },
@@ -117,7 +117,7 @@
     },
     "black-atom-mnml-mikado-dark": {
       "display_name": "Black Atom — MNM ∷ Mikado Dark",
-      "appearance": "dark", 
+      "appearance": "dark",
       "collection": "mnml"
     },
     "black-atom-mnml-mikado-light": {
@@ -146,7 +146,7 @@
       "update_method": "source_file",
       "base_paths": {
         "stations": "~/repos/black-atom-industries/tmux/themes/stations",
-        "jpn": "~/repos/black-atom-industries/tmux/themes/jpn", 
+        "jpn": "~/repos/black-atom-industries/tmux/themes/jpn",
         "terra": "~/repos/black-atom-industries/tmux/themes/terra",
         "north": "~/repos/black-atom-industries/tmux/themes/north",
         "mnml": "~/repos/black-atom-industries/tmux/themes/mnml"
@@ -162,3 +162,4 @@
     }
   }
 }
+
