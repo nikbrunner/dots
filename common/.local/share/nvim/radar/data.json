@@ -49,7 +49,7 @@
             "label": "3"
           }
         ],
-        "lastAccessed": 1763065237
+        "lastAccessed": 1763068207
       }
     },
     "~/repos/dealercenter-digital/bc-desktop-client": {
@@ -72,7 +72,20 @@
             "label": "4"
           }
         ],
-        "lastAccessed": 1763065237
+        "lastAccessed": 1763118170
+      },
+      "bcd-8880-use-periodic-licence-check": {
+        "locks": [
+          {
+            "filename": "src/client/kiosk/libs/hooks/use-periodic-license-check.ts",
+            "label": "1"
+          },
+          {
+            "filename": "src/client/commons/libs/hooks/use-interval.ts",
+            "label": "2"
+          }
+        ],
+        "lastAccessed": 1763225365
       },
       "master": {
         "locks": [
@@ -85,7 +98,7 @@
             "label": "2"
           }
         ],
-        "lastAccessed": 1762859777
+        "lastAccessed": 1763127739
       },
       "redux-toolkit": {
         "locks": [
@@ -163,7 +176,7 @@
             "label": "1"
           }
         ],
-        "lastAccessed": 1762879532
+        "lastAccessed": 1763225365
       }
     },
     "~/repos/dealercenter-digital/bc-web-client-poc/frontend": {
@@ -223,7 +236,7 @@
             "label": "1"
           }
         ],
-        "lastAccessed": 1763047852
+        "lastAccessed": 1763225365
       }
     },
     "~/repos/nikbrunner/dots": {
@@ -242,18 +255,18 @@
             "label": "3"
           }
         ],
-        "lastAccessed": 1763065900
+        "lastAccessed": 1763225366
       }
     },
     "~/repos/nikbrunner/nbr.haus": {
       "main": {
         "locks": [
           {
-            "filename": "src/pages/index.astro",
+            "filename": "src/routes/index.tsx",
             "label": "1"
           }
         ],
-        "lastAccessed": 1763065238
+        "lastAccessed": 1763308343
       }
     },
     "~/repos/nikbrunner/notes": {
@@ -268,7 +281,7 @@
             "label": "2"
           }
         ],
-        "lastAccessed": 1763065238
+        "lastAccessed": 1763225366
       }
     }
   }
