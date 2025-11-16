@@ -1,11 +1,11 @@
-theme = black-atom-mnml-mono-dark.conf
+theme = black-atom-mnml-clay-dark.conf
 
 custom-shader                      = ./shaders/cursor_trail.glsl
 
 # background-opacity                 = 0.9
 # background-blur                    = 35
 
-font-family = TX-02 Condensed
+font-family = TX-02
 
 font-size                         = 16
 font-thicken                    = false
