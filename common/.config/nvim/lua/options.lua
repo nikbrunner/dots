@@ -93,6 +93,7 @@ vim.opt.splitright = true
 vim.cmd("cabbrev Wqa wqa")
 vim.cmd("cabbrev Wq wq")
 vim.cmd("cabbrev Wa wa")
+vim.cmd("cabbrev git Git")
 
 if vim.fn.has("nvim-0.12") == 1 then
     -- :h vim._extui
