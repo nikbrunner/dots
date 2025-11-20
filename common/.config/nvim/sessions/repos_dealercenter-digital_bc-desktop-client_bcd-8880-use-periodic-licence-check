@@ -9,11 +9,11 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +32 ~/repos/dealercenter-digital/bc-desktop-client/src/client/kiosk/libs/hooks/../../../commons/libs/hooks/use-interval.ts
+badd +13 src/client/kiosk/libs/hooks/use-periodic-license-check.ts
 argglobal
 %argdel
 $argadd ./
-edit ~/repos/dealercenter-digital/bc-desktop-client/src/client/kiosk/libs/hooks/../../../commons/libs/hooks/use-interval.ts
+edit src/client/kiosk/libs/hooks/use-periodic-license-check.ts
 argglobal
 setlocal keymap=
 setlocal noarabic
@@ -69,7 +69,7 @@ setlocal includeexpr=
 setlocal indentexpr=GetTypescriptIndent()
 setlocal indentkeys=0{,0},0),0],0,,!^F,o,O,e
 setlocal noinfercase
-setlocal iskeyword=@,48-57,_,192-255,$,#
+setlocal iskeyword=@,48-57,_,192-255,#,$
 setlocal lhistory=10
 setlocal nolinebreak
 setlocal nolisp
@@ -114,7 +114,7 @@ setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#src%*\ %#WinBarSeparator#/%*\ %#WinBarPath#client%*\ %#WinBarSeparator#/%*\ %#WinBarPath#kiosk%*\ %#WinBarSeparator#/%*\ %#WinBarPath#libs%*\ %#WinBarSeparator#/%*\ %#WinBarPath#hooks%*\ %#WinBarSeparator#/%*\ %#WinBarPath#..%*\ %#WinBarSeparator#/%*\ %#WinBarPath#..%*\ %#WinBarSeparator#/%*\ %#WinBarPath#..%*\ %#WinBarSeparator#/%*\ %#WinBarPath#commons%*\ %#WinBarSeparator#/%*\ %#WinBarPath#libs%*\ %#WinBarSeparator#/%*\ %#WinBarPath#hooks%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#use-interval.ts%*\ %#WinBarSeparator##%*\ %#WinBarSymbol#useInterval%*
+setlocal winbar=%#WinBarPath#src%*\ %#WinBarSeparator#/%*\ %#WinBarPath#client%*\ %#WinBarSeparator#/%*\ %#WinBarPath#kiosk%*\ %#WinBarSeparator#/%*\ %#WinBarPath#libs%*\ %#WinBarSeparator#/%*\ %#WinBarPath#hooks%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#use-periodic-license-check.ts%*
 setlocal winblend=0
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -122,12 +122,20 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 32 - ((31 * winheight(0) + 23) / 47)
+23
+sil! normal! zo
+28
+sil! normal! zo
+29
+sil! normal! zo
+30
+sil! normal! zo
+let s:l = 15 - ((14 * winheight(0) + 27) / 55)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 32
-normal! 03|
+keepjumps 15
+normal! 02|
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf

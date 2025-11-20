@@ -9,8 +9,8 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +88 02\ -\ Areas/Log/2025/2025.11\ -\ November.md
-badd +67 ~/repos/nikbrunner/notes/01\ -\ Projects/New\ Job\ Nik/New\ Job\ Log.md
+badd +106 ~/repos/nikbrunner/notes/01\ -\ Projects/New\ Job\ Nik/New\ Job\ Log.md
+badd +127 02\ -\ Areas/Log/2025/2025.11\ -\ November.md
 argglobal
 %argdel
 $argadd ./
@@ -31,19 +31,20 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe 'vert 1resize ' . ((&columns * 137 + 138) / 276)
-exe 'vert 2resize ' . ((&columns * 138 + 138) / 276)
+exe 'vert 1resize ' . ((&columns * 132 + 132) / 265)
+exe 'vert 2resize ' . ((&columns * 132 + 132) / 265)
 argglobal
+balt ~/repos/nikbrunner/notes/01\ -\ Projects/New\ Job\ Nik/New\ Job\ Log.md
 let s:cpo_save=&cpo
 set cpo&vim
 nnoremap <buffer>  <Cmd>MarkdownToggleCheckbox
-nnoremap <buffer> ,niT <Cmd>MarkdownInsertTable
-vnoremap <buffer> ,nil s["]()<Cmd>normal! h<Cmd>startinsert<Cmd>lua require("markdown-tools.commands").prompt_and_insert_url()
-vmap <buffer> ,nii s*"*
-vmap <buffer> ,niH s=="==
-vmap <buffer> ,nib s**"**
-vnoremap <buffer> ,nih <Cmd>MarkdownHeader
 nnoremap <buffer> ,nih <Cmd>MarkdownHeader
+vnoremap <buffer> ,nih <Cmd>MarkdownHeader
+vmap <buffer> ,nib s**"**
+vmap <buffer> ,niH s=="==
+vmap <buffer> ,nii s*"*
+vnoremap <buffer> ,nil s["]()<Cmd>normal! h<Cmd>startinsert<Cmd>lua require("markdown-tools.commands").prompt_and_insert_url()
+nnoremap <buffer> ,niT <Cmd>MarkdownInsertTable
 xnoremap <buffer> <silent> [[ :exe "normal! gv"|call search('\%(^#\{1,5\}\s\+\S\|^\S.*\n^[=-]\+$\)', "bsW")
 xnoremap <buffer> <silent> ]] :exe "normal! gv"|call search('\%(^#\{1,5\}\s\+\S\|^\S.*\n^[=-]\+$\)', "sW")
 nnoremap <buffer> <C-T> <Cmd>MarkdownToggleCheckbox
@@ -88,7 +89,7 @@ setlocal foldcolumn=0
 setlocal foldenable
 setlocal foldexpr=v:lua.vim.treesitter.foldexpr()
 setlocal foldignore=#
-setlocal foldlevel=99
+setlocal foldlevel=0
 setlocal foldmarker={{{,}}}
 setlocal foldmethod=indent
 setlocal foldminlines=1
@@ -115,7 +116,7 @@ setlocal modifiable
 setlocal nrformats=bin,hex
 setlocal number
 setlocal numberwidth=4
-setlocal omnifunc=htmlcomplete#CompleteTags
+setlocal omnifunc=v:lua.vim.lsp.omnifunc
 setlocal nopreserveindent
 setlocal nopreviewwindow
 setlocal quoteescape=\\
@@ -156,12 +157,14 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal wrap
 setlocal wrapmargin=0
-let s:l = 88 - ((24 * winheight(0) + 23) / 47)
+118
+sil! normal! zo
+let s:l = 121 - ((23 * winheight(0) + 22) / 44)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 88
-normal! 0
+keepjumps 121
+normal! 021|
 wincmd w
 argglobal
 if bufexists(fnamemodify("~/repos/nikbrunner/notes/01\ -\ Projects/New\ Job\ Nik/New\ Job\ Log.md", ":p")) | buffer ~/repos/nikbrunner/notes/01\ -\ Projects/New\ Job\ Nik/New\ Job\ Log.md | else | edit ~/repos/nikbrunner/notes/01\ -\ Projects/New\ Job\ Nik/New\ Job\ Log.md | endif
@@ -172,13 +175,13 @@ balt 02\ -\ Areas/Log/2025/2025.11\ -\ November.md
 let s:cpo_save=&cpo
 set cpo&vim
 nnoremap <buffer>  <Cmd>MarkdownToggleCheckbox
-nnoremap <buffer> ,niT <Cmd>MarkdownInsertTable
-vnoremap <buffer> ,nil s["]()<Cmd>normal! h<Cmd>startinsert<Cmd>lua require("markdown-tools.commands").prompt_and_insert_url()
-vmap <buffer> ,nii s*"*
-vmap <buffer> ,niH s=="==
-vmap <buffer> ,nib s**"**
-vnoremap <buffer> ,nih <Cmd>MarkdownHeader
 nnoremap <buffer> ,nih <Cmd>MarkdownHeader
+vnoremap <buffer> ,nih <Cmd>MarkdownHeader
+vmap <buffer> ,nib s**"**
+vmap <buffer> ,niH s=="==
+vmap <buffer> ,nii s*"*
+vnoremap <buffer> ,nil s["]()<Cmd>normal! h<Cmd>startinsert<Cmd>lua require("markdown-tools.commands").prompt_and_insert_url()
+nnoremap <buffer> ,niT <Cmd>MarkdownInsertTable
 xnoremap <buffer> <silent> [[ :exe "normal! gv"|call search('\%(^#\{1,5\}\s\+\S\|^\S.*\n^[=-]\+$\)', "bsW")
 xnoremap <buffer> <silent> ]] :exe "normal! gv"|call search('\%(^#\{1,5\}\s\+\S\|^\S.*\n^[=-]\+$\)', "sW")
 nnoremap <buffer> <C-T> <Cmd>MarkdownToggleCheckbox
@@ -291,16 +294,15 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal wrap
 setlocal wrapmargin=0
-let s:l = 67 - ((28 * winheight(0) + 23) / 47)
+let s:l = 101 - ((29 * winheight(0) + 22) / 44)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 67
-normal! 016|
+keepjumps 101
+normal! 019|
 wincmd w
-2wincmd w
-exe 'vert 1resize ' . ((&columns * 137 + 138) / 276)
-exe 'vert 2resize ' . ((&columns * 138 + 138) / 276)
+exe 'vert 1resize ' . ((&columns * 132 + 132) / 265)
+exe 'vert 2resize ' . ((&columns * 132 + 132) / 265)
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf

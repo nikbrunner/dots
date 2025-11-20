@@ -9,11 +9,11 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +536 ~/repos/dealercenter-digital/bc-desktop-client/src/client/kiosk/container/App/AppLifecycles.tsx
+badd +94 ~/repos/dealercenter-digital/bc-desktop-client/src/client/commons/libs/queries/use-active-brands.ts
 argglobal
 %argdel
 $argadd ./
-edit ~/repos/dealercenter-digital/bc-desktop-client/src/client/kiosk/container/App/AppLifecycles.tsx
+edit ~/repos/dealercenter-digital/bc-desktop-client/src/client/commons/libs/queries/use-active-brands.ts
 argglobal
 setlocal keymap=
 setlocal noarabic
@@ -46,15 +46,15 @@ setlocal cursorlineopt=both
 setlocal nodiff
 setlocal eventignorewin=
 setlocal expandtab
-if &filetype != 'typescriptreact'
-setlocal filetype=typescriptreact
+if &filetype != 'typescript'
+setlocal filetype=typescript
 endif
 setlocal fixendofline
 setlocal foldcolumn=0
 setlocal foldenable
 setlocal foldexpr=v:lua.vim.treesitter.foldexpr()
 setlocal foldignore=#
-setlocal foldlevel=0
+setlocal foldlevel=99
 setlocal foldmarker={{{,}}}
 setlocal foldmethod=indent
 setlocal foldminlines=1
@@ -69,7 +69,7 @@ setlocal includeexpr=
 setlocal indentexpr=GetTypescriptIndent()
 setlocal indentkeys=0{,0},0),0],0,,!^F,o,O,e
 setlocal noinfercase
-setlocal iskeyword=@,48-57,_,192-255
+setlocal iskeyword=@,48-57,_,192-255,$,#
 setlocal lhistory=10
 setlocal nolinebreak
 setlocal nolisp
@@ -114,7 +114,7 @@ setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#src%*\ %#WinBarSeparator#/%*\ %#WinBarPath#client%*\ %#WinBarSeparator#/%*\ %#WinBarPath#kiosk%*\ %#WinBarSeparator#/%*\ %#WinBarPath#container%*\ %#WinBarSeparator#/%*\ %#WinBarPath#App%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#AppLifecycles.tsx%*\ %#WinBarSeparator##%*\ %#WinBarSymbol#AppLifecycles%*
+setlocal winbar=%#WinBarPath#src%*\ %#WinBarSeparator#/%*\ %#WinBarPath#client%*\ %#WinBarSeparator#/%*\ %#WinBarPath#commons%*\ %#WinBarSeparator#/%*\ %#WinBarPath#libs%*\ %#WinBarSeparator#/%*\ %#WinBarPath#queries%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#use-active-brands.ts%*\ %#WinBarSeparator##%*\ %#WinBarSymbol#useAddActiveBrands%*
 setlocal winblend=0
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -122,13 +122,19 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-460
+64
 sil! normal! zo
-let s:l = 538 - ((420 * winheight(0) + 27) / 55)
+67
+sil! normal! zo
+80
+sil! normal! zo
+83
+sil! normal! zo
+let s:l = 96 - ((35 * winheight(0) + 22) / 44)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 538
+keepjumps 96
 normal! 0
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
@@ -143,7 +149,6 @@ if filereadable(s:sx)
 endif
 let &g:so = s:so_save | let &g:siso = s:siso_save
 set hlsearch
-nohlsearch
 doautoall SessionLoadPost
 unlet SessionLoad
 " vim: set ft=vim :

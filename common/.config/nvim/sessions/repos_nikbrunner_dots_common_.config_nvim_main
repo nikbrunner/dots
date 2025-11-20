@@ -10,13 +10,13 @@ endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
 badd +11 common/.config/ghostty/config
-badd +35 common/.config/tmux/keymaps.conf
+badd +0 ~/repos/nikbrunner/dots/common/.zshrc
 argglobal
 %argdel
 set stal=2
 tabnew +setlocal\ bufhidden=wipe
 tabrewind
-edit common/.config/tmux/keymaps.conf
+edit ~/repos/nikbrunner/dots/common/.zshrc
 argglobal
 setlocal keymap=
 setlocal noarabic
@@ -47,10 +47,11 @@ setlocal nocursorcolumn
 setlocal cursorline
 setlocal cursorlineopt=both
 setlocal nodiff
+setlocal errorformat=%f:\ line\ %l:\ %m,%-G%.%#
 setlocal eventignorewin=
 setlocal expandtab
-if &filetype != 'conf'
-setlocal filetype=conf
+if &filetype != 'zsh'
+setlocal filetype=zsh
 endif
 setlocal fixendofline
 setlocal foldcolumn=0
@@ -69,15 +70,17 @@ setlocal formatoptions=jcroql
 setlocal iminsert=0
 setlocal imsearch=-1
 setlocal includeexpr=
-setlocal indentexpr=
-setlocal indentkeys=0{,0},0),0],:,0#,!^F,o,O,e
+setlocal indentexpr=GetShIndent()
+setlocal indentkeys=0{,0},0),0],!^F,o,O,e,0=then,0=do,0=else,0=elif,0=fi,0=esac,0=done,0=end,),0=;;,0=;&,0=fin,0=fil,0=fip,0=fir,0=fix
 setlocal noinfercase
 setlocal iskeyword=@,48-57,_,192-255
+setlocal keywordprg=:ZshKeywordPrg
 setlocal lhistory=10
 setlocal nolinebreak
 setlocal nolisp
 setlocal lispoptions=
 setlocal nolist
+setlocal makeprg=zsh\ -n\ --\ %:S
 setlocal matchpairs=(:),{:},[:]
 setlocal modeline
 setlocal modifiable
@@ -96,9 +99,9 @@ setlocal scrollback=-1
 setlocal noscrollbind
 setlocal shiftwidth=4
 setlocal signcolumn=yes
-setlocal smartindent
+setlocal nosmartindent
 setlocal nosmoothscroll
-setlocal softtabstop=4
+setlocal softtabstop=-1
 setlocal nospell
 setlocal spellcapcheck=[.?!]\\_[\\])'\"\\t\ ]\\+
 setlocal spellfile=
@@ -108,16 +111,16 @@ setlocal statuscolumn=%!v:lua.require'snacks.statuscolumn'.get()
 setlocal suffixesadd=
 setlocal noswapfile
 setlocal synmaxcol=3000
-if &syntax != 'conf'
-setlocal syntax=conf
+if &syntax != 'zsh'
+setlocal syntax=zsh
 endif
-setlocal tabstop=4
-setlocal tagfunc=
+setlocal tabstop=8
+setlocal tagfunc=v:lua.vim.lsp.tagfunc
 setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#common%*\ %#WinBarSeparator#/%*\ %#WinBarPath#.config%*\ %#WinBarSeparator#/%*\ %#WinBarPath#tmux%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#keymaps.conf%*
+setlocal winbar=%#WinBarPath#common%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#.zshrc%*
 setlocal winblend=0
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -125,11 +128,11 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 35 - ((34 * winheight(0) + 31) / 63)
+let s:l = 54 - ((24 * winheight(0) + 32) / 64)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 35
+keepjumps 54
 normal! 0
 tabnext
 edit common/.config/ghostty/config
@@ -241,7 +244,7 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 19 - ((5 * winheight(0) + 31) / 63)
+let s:l = 19 - ((5 * winheight(0) + 32) / 64)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
@@ -261,6 +264,7 @@ if filereadable(s:sx)
 endif
 let &g:so = s:so_save | let &g:siso = s:siso_save
 set hlsearch
+nohlsearch
 doautoall SessionLoadPost
 unlet SessionLoad
 " vim: set ft=vim :
