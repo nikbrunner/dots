@@ -78,7 +78,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
             })
         end, { buffer = ev.buf, desc = "[P]roblems (Inline)" })
 
-        vim.keymap.set("n", "si", vim.lsp.buf.hover, { buffer = ev.buf, desc = "[I]nfo" })
+        vim.keymap.set("n", "sh", vim.lsp.buf.hover, { buffer = ev.buf, desc = "[H]over Info" })
         vim.keymap.set("i", "<C-k>", vim.lsp.buf.signature_help, { buffer = ev.buf, desc = "Signature Help" })
         vim.keymap.set("n", "sa", vim.lsp.buf.code_action, { buffer = ev.buf, desc = "[A]ction" })
         vim.keymap.set("n", "sn", vim.lsp.buf.rename, { buffer = ev.buf, desc = "Re[n]ame" })
