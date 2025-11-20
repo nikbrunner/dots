@@ -178,3 +178,6 @@ export PURE_GIT_UP_ARROW=
 export PURE_GIT_DOWN_ARROW=
 
 source <(av completion zsh)
+
+# Added by Antigravity
+export PATH="/Users/nbr/.antigravity/antigravity/bin:$PATH"
