@@ -60,6 +60,24 @@ M.spec = {
                 })
             end,
         })
+
+        vim.api.nvim_create_autocmd("BufEnter", {
+            desc = "Format Voyager koyo keymap",
+            group = group,
+            pattern = "*nikbrunner/koyo/qmk/voyager/src/keymap.c",
+            callback = function()
+                setup({
+                    name = "LAYOUT_voyager",
+                    layout = {
+                        "x x x x x x _ x x x x x x",
+                        "x x x x x x _ x x x x x x",
+                        "x x x x x x _ x x x x x x",
+                        "x x x x x x _ x x x x x x",
+                        "_ _ _ _ x x _ x x _ _ _ _",
+                    },
+                })
+            end,
+        })
     end,
 }
 
