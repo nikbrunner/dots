@@ -69,6 +69,7 @@ return {
         { "sd", "<cmd>Trouble lsp_definitions<cr>", desc = "[R]eferences" },
         { "st", "<cmd>Trouble lsp_type_definitions<cr>", desc = "[R]eferences" },
         { "sR", "<cmd>Trouble lsp_references<cr>", desc = "[R]eferences" },
+        { "sI", "<cmd>Trouble lsp_implementations<cr>", desc = "[I]mplementations" },
 
         { "sci", "<cmd>Trouble lsp_incoming_calls<cr>", desc = "[I]ncoming" },
         { "sco", "<cmd>Trouble lsp_outgoing_calls<cr>", desc = "[O]utgoing" },

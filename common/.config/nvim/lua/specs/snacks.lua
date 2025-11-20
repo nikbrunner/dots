@@ -355,6 +355,7 @@ function M.keys()
         { "svb",                  function() Snacks.git.blame_line() end, desc = "[B]lame" },
         { "svh",                  function() Snacks.picker.git_log_line() end, desc = "[H]istory" },
         { "sr",                   function() Snacks.picker.lsp_references() end, desc = "[R]eferences" },
+        { "si",                   function() Snacks.picker.lsp_implementations() end, desc = "[I]mplementations" },
     }
     -- stylua: ignore end
 end
