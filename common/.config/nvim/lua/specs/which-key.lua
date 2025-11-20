@@ -12,6 +12,7 @@ return {
         -- Manual triggers for builtin keys (which-key won't auto-trigger on existing keymaps)
         triggers = {
             { "<auto>", mode = "nxso" }, -- Auto triggers for non-builtin keys
+            { "<localleader>", mode = { "n", "v" } }, -- Substitute (builtin)
             { "s", mode = { "n", "v" } }, -- Substitute (builtin)
             { "S", mode = { "n", "v" } }, -- Substitute line (builtin)
             { "g", mode = { "n", "v" } }, -- Various motions (builtin)
