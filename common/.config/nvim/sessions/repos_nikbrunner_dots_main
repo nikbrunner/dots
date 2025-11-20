@@ -12,7 +12,7 @@ set shortmess+=aoO
 badd +384 ~/repos/nikbrunner/dots/common/.config/nvim/lua/specs/snacks.lua
 badd +20 ~/repos/nikbrunner/dots/common/.config/nvim/lua/specs/gitpad.lua
 badd +41 ~/repos/nikbrunner/dots/common/.config/nvim/lsp/vtsls.lua
-badd +200 ~/repos/nikbrunner/dots/common/.config/nvim/lua/specs/oil.lua
+badd +213 ~/repos/nikbrunner/dots/common/.config/nvim/lua/specs/oil.lua
 argglobal
 %argdel
 set stal=2
@@ -280,12 +280,12 @@ sil! normal! zo
 sil! normal! zo
 51
 sil! normal! zo
-let s:l = 209 - ((30 * winheight(0) + 21) / 43)
+let s:l = 213 - ((34 * winheight(0) + 21) / 43)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 209
-normal! 022|
+keepjumps 213
+normal! 010|
 wincmd w
 2wincmd w
 exe 'vert 1resize ' . ((&columns * 132 + 132) / 265)

@@ -12,8 +12,8 @@ set shortmess+=aoO
 badd +14 ~/repos/dealercenter-digital/bc-desktop-client/src/client/commons/components/ProductTileSlider/ProductTileSlider.tsx
 badd +1 ~/repos/dealercenter-digital/bc-desktop-client/src/client/commons/components/ProductTileSlider/meta/ProductTileSlider.story.tsx
 badd +6 ~/repos/dealercenter-digital/bc-desktop-client/src/client/commons/components/ProductTileSlider/ProductTileSlider.scss
-badd +67 ~/repos/dealercenter-digital/bc-desktop-client/src/client/commons/components/Balloon/meta/Balloon.story.tsx
-badd +47 ~/repos/nikbrunner/dcd-notes/GitPad/bc-desktop-client/bcd-8796-promote-brands-branchpad.md
+badd +65 ~/repos/dealercenter-digital/bc-desktop-client/src/client/commons/components/Balloon/meta/Balloon.story.tsx
+badd +45 ~/repos/nikbrunner/dcd-notes/GitPad/bc-desktop-client/bcd-8796-promote-brands-branchpad.md
 argglobal
 %argdel
 $argadd ./
@@ -140,7 +140,7 @@ setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#src%*\ %#WinBarSeparator#/%*\ %#WinBarPath#client%*\ %#WinBarSeparator#/%*\ %#WinBarPath#commons%*\ %#WinBarSeparator#/%*\ %#WinBarPath#components%*\ %#WinBarSeparator#/%*\ %#WinBarPath#Balloon%*\ %#WinBarSeparator#/%*\ %#WinBarPath#meta%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#Balloon.story.tsx%*\ %#WinBarSeparator##%*\ %#WinBarSymbol#ArrowPositionTopRight%*
+setlocal winbar=%#WinBarPath#src%*\ %#WinBarSeparator#/%*\ %#WinBarPath#client%*\ %#WinBarSeparator#/%*\ %#WinBarPath#commons%*\ %#WinBarSeparator#/%*\ %#WinBarPath#components%*\ %#WinBarSeparator#/%*\ %#WinBarPath#Balloon%*\ %#WinBarSeparator#/%*\ %#WinBarPath#meta%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#Balloon.story.tsx%*
 setlocal winblend=0
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -148,11 +148,11 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 67 - ((35 * winheight(0) + 21) / 43)
+let s:l = 65 - ((33 * winheight(0) + 21) / 43)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 67
+keepjumps 65
 normal! 0
 wincmd w
 argglobal
@@ -284,14 +284,13 @@ setlocal nowinfixwidth
 setlocal winhighlight=Normal:GitpadFloat,FloatBorder:GitpadFloatBorder,FloatTitle:GitpadFloatTitle
 setlocal wrap
 setlocal wrapmargin=0
-let s:l = 47 - ((37 * winheight(0) + 21) / 43)
+let s:l = 48 - ((38 * winheight(0) + 21) / 43)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 47
-normal! 0
+keepjumps 48
+normal! 074|
 wincmd w
-2wincmd w
 exe 'vert 1resize ' . ((&columns * 132 + 132) / 265)
 exe 'vert 2resize ' . ((&columns * 132 + 132) / 265)
 tabnext

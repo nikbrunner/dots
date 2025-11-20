@@ -10,7 +10,7 @@ endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
 badd +106 ~/repos/nikbrunner/notes/01\ -\ Projects/New\ Job\ Nik/New\ Job\ Log.md
-badd +127 02\ -\ Areas/Log/2025/2025.11\ -\ November.md
+badd +119 02\ -\ Areas/Log/2025/2025.11\ -\ November.md
 argglobal
 %argdel
 $argadd ./
@@ -38,13 +38,13 @@ balt ~/repos/nikbrunner/notes/01\ -\ Projects/New\ Job\ Nik/New\ Job\ Log.md
 let s:cpo_save=&cpo
 set cpo&vim
 nnoremap <buffer>  <Cmd>MarkdownToggleCheckbox
-nnoremap <buffer> ,nih <Cmd>MarkdownHeader
-vnoremap <buffer> ,nih <Cmd>MarkdownHeader
-vmap <buffer> ,nib s**"**
-vmap <buffer> ,niH s=="==
-vmap <buffer> ,nii s*"*
-vnoremap <buffer> ,nil s["]()<Cmd>normal! h<Cmd>startinsert<Cmd>lua require("markdown-tools.commands").prompt_and_insert_url()
 nnoremap <buffer> ,niT <Cmd>MarkdownInsertTable
+vnoremap <buffer> ,nil s["]()<Cmd>normal! h<Cmd>startinsert<Cmd>lua require("markdown-tools.commands").prompt_and_insert_url()
+vmap <buffer> ,nii s*"*
+vmap <buffer> ,niH s=="==
+vmap <buffer> ,nib s**"**
+vnoremap <buffer> ,nih <Cmd>MarkdownHeader
+nnoremap <buffer> ,nih <Cmd>MarkdownHeader
 xnoremap <buffer> <silent> [[ :exe "normal! gv"|call search('\%(^#\{1,5\}\s\+\S\|^\S.*\n^[=-]\+$\)', "bsW")
 xnoremap <buffer> <silent> ]] :exe "normal! gv"|call search('\%(^#\{1,5\}\s\+\S\|^\S.*\n^[=-]\+$\)', "sW")
 nnoremap <buffer> <C-T> <Cmd>MarkdownToggleCheckbox
@@ -159,12 +159,12 @@ setlocal wrap
 setlocal wrapmargin=0
 118
 sil! normal! zo
-let s:l = 121 - ((23 * winheight(0) + 22) / 44)
+let s:l = 119 - ((21 * winheight(0) + 22) / 44)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 121
-normal! 021|
+keepjumps 119
+normal! 020|
 wincmd w
 argglobal
 if bufexists(fnamemodify("~/repos/nikbrunner/notes/01\ -\ Projects/New\ Job\ Nik/New\ Job\ Log.md", ":p")) | buffer ~/repos/nikbrunner/notes/01\ -\ Projects/New\ Job\ Nik/New\ Job\ Log.md | else | edit ~/repos/nikbrunner/notes/01\ -\ Projects/New\ Job\ Nik/New\ Job\ Log.md | endif
@@ -175,13 +175,13 @@ balt 02\ -\ Areas/Log/2025/2025.11\ -\ November.md
 let s:cpo_save=&cpo
 set cpo&vim
 nnoremap <buffer>  <Cmd>MarkdownToggleCheckbox
-nnoremap <buffer> ,nih <Cmd>MarkdownHeader
-vnoremap <buffer> ,nih <Cmd>MarkdownHeader
-vmap <buffer> ,nib s**"**
-vmap <buffer> ,niH s=="==
-vmap <buffer> ,nii s*"*
-vnoremap <buffer> ,nil s["]()<Cmd>normal! h<Cmd>startinsert<Cmd>lua require("markdown-tools.commands").prompt_and_insert_url()
 nnoremap <buffer> ,niT <Cmd>MarkdownInsertTable
+vnoremap <buffer> ,nil s["]()<Cmd>normal! h<Cmd>startinsert<Cmd>lua require("markdown-tools.commands").prompt_and_insert_url()
+vmap <buffer> ,nii s*"*
+vmap <buffer> ,niH s=="==
+vmap <buffer> ,nib s**"**
+vnoremap <buffer> ,nih <Cmd>MarkdownHeader
+nnoremap <buffer> ,nih <Cmd>MarkdownHeader
 xnoremap <buffer> <silent> [[ :exe "normal! gv"|call search('\%(^#\{1,5\}\s\+\S\|^\S.*\n^[=-]\+$\)', "bsW")
 xnoremap <buffer> <silent> ]] :exe "normal! gv"|call search('\%(^#\{1,5\}\s\+\S\|^\S.*\n^[=-]\+$\)', "sW")
 nnoremap <buffer> <C-T> <Cmd>MarkdownToggleCheckbox

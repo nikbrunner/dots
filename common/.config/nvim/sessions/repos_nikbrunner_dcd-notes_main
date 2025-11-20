@@ -169,6 +169,7 @@ if bufexists(fnamemodify("~/repos/nikbrunner/dcd-notes/gitpad/bc-desktop-client/
 if &buftype ==# 'terminal'
   silent file ~/repos/nikbrunner/dcd-notes/gitpad/bc-desktop-client/bcd-8796-promote-brands-branchpad.md
 endif
+balt Log/2025/2025.11\ -\ November.md
 let s:cpo_save=&cpo
 set cpo&vim
 nnoremap <buffer>  <Cmd>MarkdownToggleCheckbox
