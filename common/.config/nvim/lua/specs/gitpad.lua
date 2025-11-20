@@ -13,7 +13,7 @@ M.spec = {
         return {
             title = "Vinpad",
             border = "rounded",
-            window_type = "floating", -- Options are 'floating' or 'split'
+            window_type = "split", -- Options are 'floating' or 'split'
             dir = dir .. "/GitPad",
             on_attach = function(bufnr)
                 vim.api.nvim_buf_set_keymap(bufnr, "n", "q", "<Cmd>wq<CR>", { noremap = true, silent = true })
