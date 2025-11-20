@@ -138,28 +138,27 @@ return {
                 end,
                 desc = "Black Atom - radar.nvim",
             },
-
             ["<localleader>7"] = {
+                function()
+                    require("oil").open(vim.fn.expand("$HOME/repos/nikbrunner/nbr.haus"))
+                end,
+                desc = "nikbrunner - nbr.haus",
+            },
+            ["<localleader>8"] = {
+                function()
+                    require("oil").open(vim.fn.expand("$HOME/repos/nikbrunner/koyo"))
+                end,
+                desc = "nikbrunner - koyo",
+            },
+            ["<localleader>9"] = {
                 function()
                     require("oil").open(vim.fn.expand("$HOME/repos/dealercenter-digital/bc-desktop-client"))
                 end,
                 desc = "DCD - BC Desktop Client",
             },
-            ["<localleader>8"] = {
-                function()
-                    require("oil").open(vim.fn.expand("$HOME/repos/dealercenter-digital/bc-desktop-tools"))
-                end,
-                desc = "DCD - BC Desktop Tools",
-            },
-            ["<localleader>9"] = {
-                function()
-                    require("oil").open(vim.fn.expand("$HOME/repos/dealercenter-digital/bc-web-client-poc"))
-                end,
-                desc = "DCD - BC Web Client",
-            },
 
             -- Yank file paths
-            ["yn"] = {
+            ["<leader>yn"] = {
                 function()
                     local entry = require("oil").get_cursor_entry()
                     if entry then
@@ -170,7 +169,7 @@ return {
                 end,
                 desc = "Yank filename",
             },
-            ["yr"] = {
+            ["<leader>yr"] = {
                 function()
                     local oil = require("oil")
                     local entry = oil.get_cursor_entry()
@@ -184,7 +183,7 @@ return {
                 end,
                 desc = "Yank relative path",
             },
-            ["yh"] = {
+            ["<leader>yh"] = {
                 function()
                     local oil = require("oil")
                     local entry = oil.get_cursor_entry()
@@ -198,7 +197,7 @@ return {
                 end,
                 desc = "Yank path from home",
             },
-            ["ya"] = {
+            ["<leader>ya"] = {
                 function()
                     local oil = require("oil")
                     local entry = oil.get_cursor_entry()
