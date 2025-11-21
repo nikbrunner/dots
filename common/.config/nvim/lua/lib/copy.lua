@@ -1,6 +1,6 @@
 local M = {}
 
-local function copy(path)
+function M.copy(path)
     vim.fn.setreg("+", path)
     vim.notify('Copied "' .. path .. '" to the clipboard!', vim.log.levels.INFO)
 end
@@ -73,7 +73,7 @@ M.list_paths = function()
             },
         },
         confirm = function(picker, item)
-            copy(item.preview.text)
+            M.copy(item.preview.text)
             vim.notify_once("Copied '" .. item.preview.text .. "' to the clipboard!", vim.log.levels.INFO)
             picker:close()
         end,

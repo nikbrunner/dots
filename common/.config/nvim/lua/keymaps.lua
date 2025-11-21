@@ -101,10 +101,30 @@ M.map("n", "<leader>dya", function()
     vim.fn.setpos(".", current_pos)
 end, { desc = "[A]ll" })
 
--- Yank current file path(s) (uses lib function)
+M.map({ "n", "v" }, "<leader>dyn", function()
+    local copyLib = require("lib.copy")
+    copyLib.copy(copyLib.file_name())
+end, { desc = "[N]ame" })
+
+M.map({ "n", "v" }, "<leader>dyr", function()
+    local copyLib = require("lib.copy")
+    copyLib.copy(copyLib.get_current_relative_path(false))
+end, { desc = "[R]elative" })
+
+M.map({ "n", "v" }, "<leader>dyR", function()
+    local copyLib = require("lib.copy")
+    copyLib.copy(copyLib.get_current_relative_path(true))
+end, { desc = "[R]elative /w Line Number" })
+
 M.map({ "n", "v" }, "<leader>dyp", function()
-    require("lib.copy").list_paths()
-end, { desc = "[P]ath" })
+    local copyLib = require("lib.copy")
+    copyLib.copy(copyLib.full_path_from_home())
+end, { desc = "[P]ath (Home)" })
+
+M.map({ "n", "v" }, "<leader>dya", function()
+    local copyLib = require("lib.copy")
+    copyLib.copy(copyLib.full_path())
+end, { desc = "[P]ath (Absolute)" })
 
 -- Navigate tabs
 M.map("n", "H", vim.cmd.tabprevious, { desc = "Previous Tab" })
