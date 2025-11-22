@@ -333,7 +333,7 @@ function M.keys()
         { "<leader>wvh",         function() Snacks.picker.git_log() end, desc = "[H]istory" },
         { "<leader>wvH",         function() Snacks.lazygit.log() end, desc = "[H]istory (Lazygit)" },
         { "<leader>wvr",         function() Snacks.gitbrowse() end, desc = "[R]emote" },
-        { "<leader>wvc",         function() Snacks.lazygit() end, desc = "[C]ontrol" },
+        { "<leader>wvs",         function() Snacks.lazygit() end, desc = "[S]tatus" },
         { "<leader>wvb",         function() Snacks.picker.git_branches() end, desc = "[B]ranches" },
         { "<leader>wvib",         M.gh_issue_browse, desc = "[B]rowse Issues" },
         { "<leader>wvpm",         M.gh_pr_diff, desc = "[M]odifications in current PR" },
