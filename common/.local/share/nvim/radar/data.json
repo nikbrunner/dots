@@ -32,34 +32,46 @@
             "label": "3"
           }
         ],
-        "lastAccessed": 1763068207
+        "lastAccessed": 1763659015
       }
     },
     "~/repos/dealercenter-digital/bc-desktop-client": {
       "bcd-8796-promote-brands": {
         "locks": [
           {
-            "filename": "src/client/kiosk/container/Settings/BrandActivationPage.tsx",
+            "filename": "/Users/nbr/repos/nikbrunner/dcd-notes/gitpad/bc-desktop-client/bcd-8796-promote-brands-branchpad.md",
             "label": "1"
           },
           {
-            "filename": "/Users/nbr/repos/nikbrunner/dcd-notes/gitpad/bc-desktop-client/bcd-8796-promote-brands-branchpad.md",
+            "filename": "gh://dealercenter-digital/bc-desktop-client/pr/4145",
             "label": "2"
           },
           {
-            "filename": "gh://dealercenter-digital/bc-desktop-client/pr/4145",
+            "filename": "src/client/kiosk/container/Settings/BrandActivationPage.tsx",
             "label": "3"
           },
           {
-            "filename": "src/commons/types/brand.ts",
+            "filename": "src/client/kiosk/container/Settings/partials/IgnoreBrandPromotionModalPartial.tsx",
             "label": "4"
           },
           {
-            "filename": "data/bergamont-bikes/brand.json",
+            "filename": "data/brands/brands.json",
             "label": "5"
+          },
+          {
+            "filename": "data-store/brands.json",
+            "label": "6"
+          },
+          {
+            "filename": "src/system-services/content/brands-tool.ts",
+            "label": "7"
+          },
+          {
+            "filename": "src/system-services/content/brands-service.ts",
+            "label": "8"
           }
         ],
-        "lastAccessed": 1763647902
+        "lastAccessed": 1764086732
       },
       "master": {
         "locks": [],
@@ -201,7 +213,7 @@
             "label": "1"
           }
         ],
-        "lastAccessed": 1763631213
+        "lastAccessed": 1764092095
       }
     },
     "~/repos/nikbrunner/dots": {
@@ -220,7 +232,7 @@
             "label": "3"
           }
         ],
-        "lastAccessed": 1763631213
+        "lastAccessed": 1764072086
       }
     },
     "~/repos/nikbrunner/nbr.haus": {
@@ -231,7 +243,7 @@
             "label": "1"
           }
         ],
-        "lastAccessed": 1763631214
+        "lastAccessed": 1763909070
       }
     },
     "~/repos/nikbrunner/notes": {
@@ -246,7 +258,27 @@
             "label": "2"
           }
         ],
-        "lastAccessed": 1763631214
+        "lastAccessed": 1764087905
+      }
+    },
+    "~/repos/nikbrunner/wichtel-app": {
+      "customize-design": {
+        "locks": [
+          {
+            "filename": "ROADMAP.md",
+            "label": "1"
+          }
+        ],
+        "lastAccessed": 1764090557
+      },
+      "main": {
+        "locks": [
+          {
+            "filename": "TODO.md",
+            "label": "1"
+          }
+        ],
+        "lastAccessed": 1764095210
       }
     }
   }
