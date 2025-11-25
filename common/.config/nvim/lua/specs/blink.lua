@@ -30,11 +30,11 @@ return {
             preset = "default",
         },
         sources = {
-            default = { "lazydev", "lsp", "path", "snippets", "buffer" },
-            per_filetype = {
-                codecompanion = { "codecompanion" },
-            },
+            default = { "lazydev", "lsp", "buffer", "path", "snippets" },
             providers = {
+                -- By default, the buffer source will only show when the LSP source is disabled or
+                -- returns no items. You may always show the buffer source via:
+                lsp = { fallbacks = {} },
                 lazydev = {
                     name = "LazyDev",
                     module = "lazydev.integrations.blink",
