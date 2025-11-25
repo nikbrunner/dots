@@ -3,18 +3,18 @@ let s:so_save = &g:so | let s:siso_save = &g:siso | setg so=0 siso=0 | setl so=-
 let v:this_session=expand("<sfile>:p")
 silent only
 silent tabonly
-cd ~/repos/nikbrunner/dcd-notes
+cd ~/repos/nikbrunner/wichtel-app
 if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +93 ~/repos/nikbrunner/dcd-notes/gitpad/bc-desktop-client/bcd-8796-promote-brands-branchpad.md
-badd +77 Log/2025/2025.11\ -\ November.md
+badd +79 ~/repos/nikbrunner/wichtel-app/src/components/EventListItem.tsx
+badd +26 ~/repos/nikbrunner/wichtel-app/src/components/EventDateBadge.tsx
 argglobal
 %argdel
 $argadd ./
-edit Log/2025/2025.11\ -\ November.md
+edit ~/repos/nikbrunner/wichtel-app/src/components/EventListItem.tsx
 let s:save_splitbelow = &splitbelow
 let s:save_splitright = &splitright
 set splitbelow splitright
@@ -31,25 +31,9 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe 'vert 1resize ' . ((&columns * 143 + 144) / 288)
-exe 'vert 2resize ' . ((&columns * 144 + 144) / 288)
+exe 'vert 1resize ' . ((&columns * 116 + 116) / 233)
+exe 'vert 2resize ' . ((&columns * 116 + 116) / 233)
 argglobal
-balt ~/repos/nikbrunner/dcd-notes/gitpad/bc-desktop-client/bcd-8796-promote-brands-branchpad.md
-let s:cpo_save=&cpo
-set cpo&vim
-nnoremap <buffer>  <Cmd>MarkdownToggleCheckbox
-nnoremap <buffer> ,niT <Cmd>MarkdownInsertTable
-vnoremap <buffer> ,nil s["]()<Cmd>normal! h<Cmd>startinsert<Cmd>lua require("markdown-tools.commands").prompt_and_insert_url()
-vmap <buffer> ,nii s*"*
-vmap <buffer> ,niH s=="==
-vmap <buffer> ,nib s**"**
-vnoremap <buffer> ,nih <Cmd>MarkdownHeader
-nnoremap <buffer> ,nih <Cmd>MarkdownHeader
-xnoremap <buffer> <silent> [[ :exe "normal! gv"|call search('\%(^#\{1,5\}\s\+\S\|^\S.*\n^[=-]\+$\)', "bsW")
-xnoremap <buffer> <silent> ]] :exe "normal! gv"|call search('\%(^#\{1,5\}\s\+\S\|^\S.*\n^[=-]\+$\)', "sW")
-nnoremap <buffer> <C-T> <Cmd>MarkdownToggleCheckbox
-let &cpo=s:cpo_save
-unlet s:cpo_save
 setlocal keymap=
 setlocal noarabic
 setlocal autoindent
@@ -66,8 +50,8 @@ setlocal cinoptions=
 setlocal cinscopedecls=public,protected,private
 setlocal cinwords=if,else,while,do,for,switch
 setlocal colorcolumn=
-setlocal comments=fb:*,fb:-,fb:+,n:>
-setlocal commentstring=<!--\ %s\ -->
+setlocal comments=sO:*\ -,mO:*\ \ ,exO:*/,s1:/*,mb:*,ex:*/,://
+setlocal commentstring=//\ %s
 setlocal complete=.,w,b,u,t
 setlocal completefunc=
 setlocal completeslash=
@@ -80,9 +64,9 @@ setlocal cursorline
 setlocal cursorlineopt=both
 setlocal nodiff
 setlocal eventignorewin=
-setlocal noexpandtab
-if &filetype != 'markdown'
-setlocal filetype=markdown
+setlocal expandtab
+if &filetype != 'typescriptreact'
+setlocal filetype=typescriptreact
 endif
 setlocal fixendofline
 setlocal foldcolumn=0
@@ -96,27 +80,27 @@ setlocal foldminlines=1
 setlocal foldnestmax=20
 setlocal foldtext=
 setlocal formatexpr=v:lua.require'conform'.formatexpr()
-setlocal formatlistpat=^\\s*\\d\\+\\.\\s\\+\\|^\\s*[-*+]\\s\\+\\|^\\[^\\ze[^\\]]\\+\\]:\\&^.\\{4\\}
-setlocal formatoptions=jtcqln
+setlocal formatlistpat=^\\s*\\d\\+[\\]:.)}\\t\ ]\\s*
+setlocal formatoptions=jcroql
 setlocal iminsert=0
 setlocal imsearch=-1
 setlocal includeexpr=
-setlocal indentexpr=nvim_treesitter#indent()
-setlocal indentkeys=0{,0},0),0],:,0#,!^F,o,O,e
+setlocal indentexpr=GetTypescriptIndent()
+setlocal indentkeys=0{,0},0),0],0,,!^F,o,O,e
 setlocal noinfercase
 setlocal iskeyword=@,48-57,_,192-255
 setlocal lhistory=10
-setlocal linebreak
+setlocal nolinebreak
 setlocal nolisp
 setlocal lispoptions=
 setlocal nolist
-setlocal matchpairs=(:),{:},[:],<:>
+setlocal matchpairs=(:),{:},[:]
 setlocal modeline
 setlocal modifiable
 setlocal nrformats=bin,hex
 setlocal number
 setlocal numberwidth=4
-setlocal omnifunc=v:lua.vim.lsp.omnifunc
+setlocal omnifunc=
 setlocal nopreserveindent
 setlocal nopreviewwindow
 setlocal quoteescape=\\
@@ -126,9 +110,9 @@ setlocal norightleft
 setlocal rightleftcmd=search
 setlocal scrollback=-1
 setlocal noscrollbind
-setlocal shiftwidth=4
+setlocal shiftwidth=2
 setlocal signcolumn=yes
-setlocal smartindent
+setlocal nosmartindent
 setlocal nosmoothscroll
 setlocal softtabstop=-1
 setlocal nospell
@@ -137,54 +121,52 @@ setlocal spellfile=
 setlocal spelllang=en_us,de_de
 setlocal spelloptions=noplainbuffer
 setlocal statuscolumn=%!v:lua.require'snacks.statuscolumn'.get()
-setlocal suffixesadd=
+setlocal suffixesadd=.ts,.d.ts,.tsx,.js,.jsx,.cjs,.mjs
 setlocal noswapfile
 setlocal synmaxcol=3000
 if &syntax != ''
 setlocal syntax=
 endif
-setlocal tabstop=8
-setlocal tagfunc=v:lua.vim.lsp.tagfunc
-setlocal textwidth=85
+setlocal tabstop=4
+setlocal tagfunc=
+setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#Log%*\ %#WinBarSeparator#/%*\ %#WinBarPath#2025%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#2025.11\ -\ November.md%*
+setlocal winbar=%#WinBarPath#src%*\ %#WinBarSeparator#/%*\ %#WinBarPath#components%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#EventListItem.tsx%*
 setlocal winblend=0
 setlocal nowinfixbuf
 setlocal nowinfixheight
 setlocal nowinfixwidth
 setlocal winhighlight=
-setlocal wrap
+setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 76 - ((24 * winheight(0) + 24) / 49)
+18
+sil! normal! zo
+63
+sil! normal! zo
+64
+sil! normal! zo
+65
+sil! normal! zo
+67
+sil! normal! zo
+69
+sil! normal! zo
+70
+sil! normal! zo
+let s:l = 79 - ((39 * winheight(0) + 31) / 63)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 76
+keepjumps 79
 normal! 0
 wincmd w
 argglobal
-if bufexists(fnamemodify("~/repos/nikbrunner/dcd-notes/gitpad/bc-desktop-client/bcd-8796-promote-brands-branchpad.md", ":p")) | buffer ~/repos/nikbrunner/dcd-notes/gitpad/bc-desktop-client/bcd-8796-promote-brands-branchpad.md | else | edit ~/repos/nikbrunner/dcd-notes/gitpad/bc-desktop-client/bcd-8796-promote-brands-branchpad.md | endif
+if bufexists(fnamemodify("~/repos/nikbrunner/wichtel-app/src/components/EventDateBadge.tsx", ":p")) | buffer ~/repos/nikbrunner/wichtel-app/src/components/EventDateBadge.tsx | else | edit ~/repos/nikbrunner/wichtel-app/src/components/EventDateBadge.tsx | endif
 if &buftype ==# 'terminal'
-  silent file ~/repos/nikbrunner/dcd-notes/gitpad/bc-desktop-client/bcd-8796-promote-brands-branchpad.md
+  silent file ~/repos/nikbrunner/wichtel-app/src/components/EventDateBadge.tsx
 endif
-balt Log/2025/2025.11\ -\ November.md
-let s:cpo_save=&cpo
-set cpo&vim
-nnoremap <buffer>  <Cmd>MarkdownToggleCheckbox
-nnoremap <buffer> ,niT <Cmd>MarkdownInsertTable
-vnoremap <buffer> ,nil s["]()<Cmd>normal! h<Cmd>startinsert<Cmd>lua require("markdown-tools.commands").prompt_and_insert_url()
-vmap <buffer> ,nii s*"*
-vmap <buffer> ,niH s=="==
-vmap <buffer> ,nib s**"**
-vnoremap <buffer> ,nih <Cmd>MarkdownHeader
-nnoremap <buffer> ,nih <Cmd>MarkdownHeader
-xnoremap <buffer> <silent> [[ :exe "normal! gv"|call search('\%(^#\{1,5\}\s\+\S\|^\S.*\n^[=-]\+$\)', "bsW")
-xnoremap <buffer> <silent> ]] :exe "normal! gv"|call search('\%(^#\{1,5\}\s\+\S\|^\S.*\n^[=-]\+$\)', "sW")
-nnoremap <buffer> <C-T> <Cmd>MarkdownToggleCheckbox
-let &cpo=s:cpo_save
-unlet s:cpo_save
 setlocal keymap=
 setlocal noarabic
 setlocal autoindent
@@ -201,8 +183,8 @@ setlocal cinoptions=
 setlocal cinscopedecls=public,protected,private
 setlocal cinwords=if,else,while,do,for,switch
 setlocal colorcolumn=
-setlocal comments=fb:*,fb:-,fb:+,n:>
-setlocal commentstring=<!--\ %s\ -->
+setlocal comments=sO:*\ -,mO:*\ \ ,exO:*/,s1:/*,mb:*,ex:*/,://
+setlocal commentstring=//\ %s
 setlocal complete=.,w,b,u,t
 setlocal completefunc=
 setlocal completeslash=
@@ -215,9 +197,9 @@ setlocal cursorline
 setlocal cursorlineopt=both
 setlocal nodiff
 setlocal eventignorewin=
-setlocal noexpandtab
-if &filetype != 'markdown'
-setlocal filetype=markdown
+setlocal expandtab
+if &filetype != 'typescriptreact'
+setlocal filetype=typescriptreact
 endif
 setlocal fixendofline
 setlocal foldcolumn=0
@@ -231,27 +213,27 @@ setlocal foldminlines=1
 setlocal foldnestmax=20
 setlocal foldtext=
 setlocal formatexpr=v:lua.require'conform'.formatexpr()
-setlocal formatlistpat=^\\s*\\d\\+\\.\\s\\+\\|^\\s*[-*+]\\s\\+\\|^\\[^\\ze[^\\]]\\+\\]:\\&^.\\{4\\}
-setlocal formatoptions=jtcqln
+setlocal formatlistpat=^\\s*\\d\\+[\\]:.)}\\t\ ]\\s*
+setlocal formatoptions=jcroql
 setlocal iminsert=0
 setlocal imsearch=-1
 setlocal includeexpr=
-setlocal indentexpr=nvim_treesitter#indent()
-setlocal indentkeys=0{,0},0),0],:,0#,!^F,o,O,e
+setlocal indentexpr=GetTypescriptIndent()
+setlocal indentkeys=0{,0},0),0],0,,!^F,o,O,e
 setlocal noinfercase
-setlocal iskeyword=@,48-57,_,192-255
+setlocal iskeyword=@,48-57,_,192-255,$,#
 setlocal lhistory=10
-setlocal linebreak
+setlocal nolinebreak
 setlocal nolisp
 setlocal lispoptions=
 setlocal nolist
-setlocal matchpairs=(:),{:},[:],<:>
+setlocal matchpairs=(:),{:},[:]
 setlocal modeline
 setlocal modifiable
 setlocal nrformats=bin,hex
 setlocal number
 setlocal numberwidth=4
-setlocal omnifunc=htmlcomplete#CompleteTags
+setlocal omnifunc=
 setlocal nopreserveindent
 setlocal nopreviewwindow
 setlocal quoteescape=\\
@@ -261,9 +243,9 @@ setlocal norightleft
 setlocal rightleftcmd=search
 setlocal scrollback=-1
 setlocal noscrollbind
-setlocal shiftwidth=4
+setlocal shiftwidth=2
 setlocal signcolumn=yes
-setlocal smartindent
+setlocal nosmartindent
 setlocal nosmoothscroll
 setlocal softtabstop=-1
 setlocal nospell
@@ -272,36 +254,37 @@ setlocal spellfile=
 setlocal spelllang=en_us,de_de
 setlocal spelloptions=noplainbuffer
 setlocal statuscolumn=%!v:lua.require'snacks.statuscolumn'.get()
-setlocal suffixesadd=
+setlocal suffixesadd=.ts,.d.ts,.tsx,.js,.jsx,.cjs,.mjs
 setlocal noswapfile
 setlocal synmaxcol=3000
 if &syntax != ''
 setlocal syntax=
 endif
-setlocal tabstop=8
-setlocal tagfunc=v:lua.vim.lsp.tagfunc
-setlocal textwidth=85
+setlocal tabstop=4
+setlocal tagfunc=
+setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#gitpad%*\ %#WinBarSeparator#/%*\ %#WinBarPath#bc-desktop-client%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#bcd-8796-promote-brands-branchpad.md%*
+setlocal winbar=%#WinBarPath#src%*\ %#WinBarSeparator#/%*\ %#WinBarPath#components%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#EventDateBadge.tsx%*
 setlocal winblend=0
 setlocal nowinfixbuf
 setlocal nowinfixheight
 setlocal nowinfixwidth
 setlocal winhighlight=
-setlocal wrap
+setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 109 - ((39 * winheight(0) + 24) / 49)
+10
+sil! normal! zo
+let s:l = 27 - ((26 * winheight(0) + 31) / 63)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 109
+keepjumps 27
 normal! 0
 wincmd w
-2wincmd w
-exe 'vert 1resize ' . ((&columns * 143 + 144) / 288)
-exe 'vert 2resize ' . ((&columns * 144 + 144) / 288)
+exe 'vert 1resize ' . ((&columns * 116 + 116) / 233)
+exe 'vert 2resize ' . ((&columns * 116 + 116) / 233)
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
@@ -317,7 +300,6 @@ if filereadable(s:sx)
 endif
 let &g:so = s:so_save | let &g:siso = s:siso_save
 set hlsearch
-nohlsearch
 doautoall SessionLoadPost
 unlet SessionLoad
 " vim: set ft=vim :

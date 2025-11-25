@@ -9,11 +9,11 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +47 ~/repos/nikbrunner/dcd-notes/Rest\ Client/bc-desktop-client/env.http
+badd +6 ~/repos/nikbrunner/dcd-notes/Rest\ Client/bc-desktop-client/restart.http
 argglobal
 %argdel
 $argadd ./
-edit ~/repos/nikbrunner/dcd-notes/Rest\ Client/bc-desktop-client/env.http
+edit ~/repos/nikbrunner/dcd-notes/Rest\ Client/bc-desktop-client/restart.http
 argglobal
 setlocal keymap=
 setlocal noarabic
@@ -81,7 +81,7 @@ setlocal modifiable
 setlocal nrformats=bin,hex
 setlocal number
 setlocal numberwidth=4
-setlocal omnifunc=v:lua.vim.lsp.omnifunc
+setlocal omnifunc=
 setlocal nopreserveindent
 setlocal nopreviewwindow
 setlocal quoteescape=\\
@@ -114,7 +114,7 @@ setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarFilename#env.http%*
+setlocal winbar=%#WinBarFilename#restart.http%*
 setlocal winblend=0
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -122,11 +122,11 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 47 - ((27 * winheight(0) + 16) / 33)
+let s:l = 6 - ((5 * winheight(0) + 27) / 55)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 47
+keepjumps 6
 normal! 0
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
