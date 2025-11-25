@@ -1,10 +1,25 @@
 #!/usr/bin/env bash
 
+# Layout configuration
+TMUX_LAYOUT="${TMUX_LAYOUT:-ide}"
+TMUX_LAYOUTS_DIR="${TMUX_LAYOUTS_DIR:-$HOME/.config/tmux/layouts}"
+
 # Check if running inside tmux
 if [[ -z "$TMUX" ]]; then
     echo "Error: tmux-session-picker must be run from within tmux"
     exit 1
 fi
+
+# Apply layout to a session
+apply_layout() {
+    local session_name="$1"
+    local working_dir="$2"
+    local layout_script="${TMUX_LAYOUTS_DIR}/${TMUX_LAYOUT}.sh"
+
+    if [[ -n "$TMUX_LAYOUT" && -x "$layout_script" ]]; then
+        "$layout_script" "$session_name" "$working_dir"
+    fi
+}
 
 # Check dependencies
 if ! command -v fzf &>/dev/null; then
@@ -162,5 +177,6 @@ if [[ -n "$selection" ]]; then
 elif [[ -n "$query" ]]; then
     # User typed a new name - create and switch to new session
     tmux new-session -d -s "$query" -c "$HOME"
+    apply_layout "$query" "$HOME"
     tmux switch-client -t "$query"
 fi

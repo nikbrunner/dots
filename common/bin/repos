@@ -2,6 +2,8 @@
 
 # Configuration
 REPOS_BASE_PATH="${REPOS_BASE_PATH:-$HOME/repos}"
+TMUX_LAYOUT="${TMUX_LAYOUT:-ide}"
+TMUX_LAYOUTS_DIR="${TMUX_LAYOUTS_DIR:-$HOME/.config/tmux/layouts}"
 
 # List of repositories to ensure are cloned
 ENSURE_CLONED=(
@@ -334,11 +336,20 @@ open_repo() {
             tmux attach-session -t "$session_name"
         fi
     else
+        # Create new session
+        tmux new-session -d -s "$session_name" -c "$repo_path"
+
+        # Apply layout if configured and layout script exists
+        local layout_script="${TMUX_LAYOUTS_DIR}/${TMUX_LAYOUT}.sh"
+        if [[ -n "$TMUX_LAYOUT" && -x "$layout_script" ]]; then
+            "$layout_script" "$session_name" "$repo_path"
+        fi
+
+        # Switch to or attach the session
         if [[ -n "$TMUX" ]]; then
-            tmux new-session -d -s "$session_name" -c "$repo_path"
             tmux switch-client -t "$session_name"
         else
-            tmux new-session -s "$session_name" -c "$repo_path"
+            tmux attach-session -t "$session_name"
         fi
     fi
 }
@@ -1136,6 +1147,8 @@ show_help() {
     style_header "Environment Variables:"
     echo "  $(style_option "REPOS_BASE_PATH")  - Override repository base path (default: ~/repos)"
     echo "  $(style_option "PARALLEL_JOBS")    - Number of parallel clone jobs (default: 4)"
+    echo "  $(style_option "TMUX_LAYOUT")      - Layout to apply on new sessions (default: ide)"
+    echo "  $(style_option "TMUX_LAYOUTS_DIR") - Directory containing layout scripts (default: ~/.config/tmux/layouts)"
     echo ""
     style_header "Current Configuration:"
     echo "  Repository base path: $(style_path "$REPOS_BASE_PATH")"
