@@ -116,10 +116,10 @@ M.map({ "n", "v" }, "<leader>dyR", function()
     copyLib.copy(copyLib.get_current_relative_path(true))
 end, { desc = "[R]elative /w Line Number" })
 
-M.map({ "n", "v" }, "<leader>dyp", function()
+M.map({ "n", "v" }, "<leader>dyh", function()
     local copyLib = require("lib.copy")
     copyLib.copy(copyLib.full_path_from_home())
-end, { desc = "[P]ath (Home)" })
+end, { desc = "[H]ome" })
 
 M.map({ "n", "v" }, "<leader>dya", function()
     local copyLib = require("lib.copy")
