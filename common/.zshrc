@@ -170,12 +170,12 @@ bindkey '^g' push-line-or-edit
 . "$HOME/.atuin/bin/env"
 eval "$(atuin init zsh)"
 
-# Prompt
-fpath+=("$(brew --prefix)/share/zsh/site-functions")
-autoload -U promptinit; promptinit
-prompt pure
-export PURE_GIT_UP_ARROW=
-export PURE_GIT_DOWN_ARROW=
+# Minimal Prompt (gray path, green branch, $ symbol)
+autoload -Uz vcs_info
+precmd() { vcs_info }
+zstyle ':vcs_info:git:*' formats ' %F{green}%b%f'
+setopt PROMPT_SUBST
+PROMPT='%F{gray}%~%f${vcs_info_msg_0_} $ '
 
 source <(av completion zsh)
 
