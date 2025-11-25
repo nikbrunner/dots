@@ -161,13 +161,12 @@ if [[ "$key" == "ctrl-o" ]]; then
     exit 0
 fi
 
-# Handle kill action (Ctrl-X)
+# Handle kill action (Ctrl-X) - re-run picker after kill
 if [[ "$key" == "ctrl-x" ]]; then
     if [[ -n "$selection" ]]; then
         tmux kill-session -t "$selection"
-        echo "Killed session: $selection"
     fi
-    exit 0
+    exec "$0"
 fi
 
 # Handle switch/create action (Enter)
