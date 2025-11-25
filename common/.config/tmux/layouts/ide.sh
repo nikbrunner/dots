@@ -30,8 +30,8 @@ tmux send-keys -t "${session_name}:1.2" "nvim" Enter
 # Start claude in the left pane (pane 1)
 tmux send-keys -t "${session_name}:1.1" "claude" Enter
 
-# In bottom-right pane (pane 3): run nvm use if .nvmrc exists
-tmux send-keys -t "${session_name}:1.3" "[[ -f .nvmrc ]] && nvm use" Enter
+# In bottom-right pane (pane 3): run nvm use if .nvmrc exists, then clear
+tmux send-keys -t "${session_name}:1.3" "[[ -f .nvmrc ]] && nvm use; clear" Enter
 
 # Focus the left pane (claude) - pane 1
 tmux select-pane -t "${session_name}:1.1"
