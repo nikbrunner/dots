@@ -55,7 +55,6 @@ alias start="repos open nikbrunner/dots"
 alias lazyvim="NVIM_APPNAME=lazyvim nvim"
 alias gdl="gallery-dl"
 alias npmu="npm-upgrade"
-alias start="tmux new -s dots -c ~/.config/nvim && rr"
 alias scratch="$EDITOR $HOME/scratchpad.md"
 alias ydl=yt-dlp --audio-format mp3 --embed-thumbnail --embed-metadata --extract-audio
 
@@ -175,7 +174,8 @@ autoload -Uz vcs_info
 precmd() { vcs_info }
 zstyle ':vcs_info:git:*' formats ' %F{green}%b%f'
 setopt PROMPT_SUBST
-PROMPT='%F{gray}%~%f${vcs_info_msg_0_} $ '
+PROMPT='%F{gray}%~%f${vcs_info_msg_0_}
+$ '
 
 source <(av completion zsh)
 

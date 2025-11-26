@@ -131,4 +131,4 @@ eval "$(zoxide init bash)"
 __git_branch() {
     git branch 2>/dev/null | grep '^\*' | cut -d' ' -f2
 }
-PS1='\[\e[90m\]\w\[\e[0m\]$(__git_branch | sed "s/.*/\[\e[32m\] &\[\e[0m\]/") $ '
+PS1='\[\e[90m\]\w\[\e[0m\]$(__git_branch | sed "s/.*/\[\e[32m\] &\[\e[0m\]/")\n$ '
