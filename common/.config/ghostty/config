@@ -1,4 +1,4 @@
-theme = black-atom-stations-operations.conf
+theme = black-atom-terra-fall-night.conf
 
 custom-shader                      = ./shaders/cursor_trail.glsl
 

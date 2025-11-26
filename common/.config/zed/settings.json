@@ -35,8 +35,8 @@
   },
   "theme": {
     "mode": "system",
-    "dark": "Black Atom — STA ∷ Operations",
-    "light": "Black Atom — MNM ∷ Clay Light"
+    "dark": "Black Atom — TER ∷ Fall Night",
+    "light": "Black Atom — TER ∷ Fall Day"
   },
   "base_keymap": "VSCode",
   "vim_mode": true,
