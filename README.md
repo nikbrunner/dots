@@ -23,6 +23,7 @@ A clean, organized dotfiles repository using symlinks for easy management and de
 - [How It Works](#how-it-works)
   - [OS-Specific Configurations](#os-specific-configurations)
   - [Multiplexer Configuration](#multiplexer-configuration)
+- [Black Atom Theme Integration](#black-atom-theme-integration)
 - [Submodules](#submodules)
 - [Development](#development)
 - [Dependencies](#dependencies)
@@ -120,6 +121,7 @@ The `dots` command provides a unified interface for managing your dotfiles:
 | `dots sub-add`    | Add new submodule                                                                  | `<url> <path>`                          |
 | `dots sub-commit` | Commit submodule hash updates                                                      | -                                       |
 | `dots sub-status` | Show status of all submodules                                                      | -                                       |
+| `dots theme-link` | Create relative symlinks for Black Atom themes                                     | `--dry-run`                             |
 | `dots test`       | Run comprehensive system tests (repository structure, OS detection, symlinks, etc) | -                                       |
 
 #### `repos` - Repository Manager
@@ -279,6 +281,52 @@ To use **WezTerm as multiplexer** (default):
 - tmux loads multiplexer keybindings when uncommented, handling session/window/pane management
 - Both configurations provide the same keybinding experience for navigation and management
 - Simple comment/uncomment approach works reliably across all platforms and desktop environments
+
+## Black Atom Theme Integration
+
+This dotfiles system integrates with [Black Atom Industries](https://github.com/black-atom-industries) theme adapters. The theme files in this repository are **symlinks** pointing to the Black Atom adapter repos, not copies of the actual theme files.
+
+**Architecture:**
+
+```
+~/.config/ghostty/themes/black-atom-*.conf
+        ↓ (symlink via dots link)
+~/repos/nikbrunner/dots/common/.config/ghostty/themes/black-atom-*.conf
+        ↓ (relative symlink via dots theme-link)
+~/repos/black-atom-industries/ghostty/themes/**/*.conf
+```
+
+This two-layer approach means:
+1. Your home directory links to dots (managed by `dots link`)
+2. Dots links to Black Atom repos (managed by `dots theme-link`)
+
+**Why relative symlinks?**
+
+The symlinks inside dots use **relative paths** (e.g., `../../../../../../black-atom-industries/ghostty/...`) so they work on any machine as long as both repos are cloned to the same relative locations.
+
+**Commands:**
+
+```bash
+# Preview what theme symlinks would be created
+dots theme-link --dry-run
+
+# Create/recreate all theme symlinks with correct relative paths
+dots theme-link
+```
+
+**When to run `dots theme-link`:**
+
+- After cloning this repo on a new machine
+- If theme symlinks become absolute (git will show them as modified)
+- After adding new themes to Black Atom adapter repos
+
+**Supported adapters:**
+
+| Adapter  | Source                                              | Dots Location                          |
+| -------- | --------------------------------------------------- | -------------------------------------- |
+| Ghostty  | `~/repos/black-atom-industries/ghostty/themes/`     | `common/.config/ghostty/themes/`       |
+| WezTerm  | `~/repos/black-atom-industries/wezterm/themes/`     | `common/.config/wezterm/colors/`       |
+| Zed      | `~/repos/black-atom-industries/zed/themes/`         | `common/.config/zed/themes/`           |
 
 ## Submodules
 

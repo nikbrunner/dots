@@ -97,6 +97,7 @@ show_usage() {
         gum style --foreground=2 "  open         - Open dots directory with \$EDITOR"
         gum style --foreground=2 "  remove       - Remove path from git tracking (keep files locally)"
         gum style --foreground=2 "  theme        - Interactive theme selector for all development tools [--debug]"
+        gum style --foreground=2 "  theme-link   - Create relative symlinks for Black Atom themes [--dry-run]"
         gum style --foreground=2 "  font         - Interactive font selector for terminal applications"
         echo ""
     else
@@ -122,6 +123,7 @@ show_usage() {
         echo "  open         - Open dots directory with \$EDITOR"
         echo "  remove       - Remove path from git tracking (keep files locally)"
         echo "  theme        - Interactive theme selector for all development tools [--debug]"
+        echo "  theme-link   - Create relative symlinks for Black Atom themes [--dry-run]"
         echo "  font         - Interactive font selector for terminal applications"
         echo ""
     fi
@@ -772,6 +774,10 @@ theme)
     # Return to original directory before running pick-theme
     cd "$ORIGINAL_PWD"
     exec pick-theme "$@"
+    ;;
+theme-link)
+    shift
+    "$DOTS_DIR/scripts/theme-link.sh" "$@"
     ;;
 font)
     # Return to original directory before running pick-font
