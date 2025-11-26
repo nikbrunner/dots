@@ -175,7 +175,7 @@ precmd() { vcs_info }
 zstyle ':vcs_info:git:*' formats ' %F{green}%b%f'
 setopt PROMPT_SUBST
 PROMPT='%F{gray}%~%f${vcs_info_msg_0_}
-$ '
+%F{yellow}$%f '
 
 source <(av completion zsh)
 
