@@ -82,36 +82,9 @@ export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 eval "$(fzf --zsh)"
 
 # Git Branch Switcher ====================================================
-git_branch_switch() {
-    local branches
-    local target
-
-    if [[ "$1" == "-a" || "$1" == "--all" ]]; then
-        # Show all branches (local and remote)
-        branches=$(git branch -a | grep -v HEAD | sed "s/.* //")
-    else
-        # Show only local branches
-        branches=$(git branch | sed "s/.* //")
-    fi
-
-    target=$(echo "$branches" | fzf --ansi --preview-window=top:70% \
-        --preview="git -c color.ui=always log -n 50 --graph --color=always \
-        --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' {}")
-
-    if [[ -n "$target" ]]; then
-        if [[ "$target" == remotes/* ]]; then
-            git checkout --track "${target#remotes/}"
-        else
-            git checkout "$target"
-        fi
-    fi
-}
-
-# Alias for switching local Git branches using fzf
-alias gbr='git_branch_switch'
-
-# Alias for switching all (including remote) Git branches using fzf
-alias gbra='git_branch_switch -a'
+# Use branch-picker script from ~/bin
+# Ctrl-R inside fzf toggles between local and remote branches
+alias gbr='branch-picker'
 
 alias ,,="fzf -m --preview='bat --color=always {}' --bind 'enter:become(nvim {+}),ctrl-y:execute-silent(echo {} | pbcopy)+abort'"
 
