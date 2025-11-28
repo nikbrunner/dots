@@ -137,7 +137,7 @@ setlocal wrapmargin=0
 sil! normal! zo
 9
 sil! normal! zo
-let s:l = 31 - ((21 * winheight(0) + 19) / 38)
+let s:l = 31 - ((28 * winheight(0) + 25) / 51)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
@@ -167,10 +167,10 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe 'vert 1resize ' . ((&columns * 54 + 108) / 216)
-exe 'vert 2resize ' . ((&columns * 54 + 108) / 216)
-exe 'vert 3resize ' . ((&columns * 51 + 108) / 216)
-exe 'vert 4resize ' . ((&columns * 54 + 108) / 216)
+exe 'vert 1resize ' . ((&columns * 62 + 124) / 249)
+exe 'vert 2resize ' . ((&columns * 62 + 124) / 249)
+exe 'vert 3resize ' . ((&columns * 60 + 124) / 249)
+exe 'vert 4resize ' . ((&columns * 62 + 124) / 249)
 argglobal
 setlocal keymap=
 setlocal noarabic
@@ -279,7 +279,7 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 49 - ((26 * winheight(0) + 19) / 38)
+let s:l = 49 - ((35 * winheight(0) + 25) / 51)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
@@ -399,7 +399,7 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 3 - ((0 * winheight(0) + 19) / 38)
+let s:l = 3 - ((0 * winheight(0) + 25) / 51)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
@@ -521,7 +521,7 @@ setlocal nowrap
 setlocal wrapmargin=0
 5
 sil! normal! zo
-let s:l = 9 - ((4 * winheight(0) + 19) / 38)
+let s:l = 9 - ((5 * winheight(0) + 25) / 51)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
@@ -643,17 +643,17 @@ setlocal nowrap
 setlocal wrapmargin=0
 5
 sil! normal! zo
-let s:l = 11 - ((5 * winheight(0) + 19) / 38)
+let s:l = 11 - ((7 * winheight(0) + 25) / 51)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
 keepjumps 11
 normal! 05|
 wincmd w
-exe 'vert 1resize ' . ((&columns * 54 + 108) / 216)
-exe 'vert 2resize ' . ((&columns * 54 + 108) / 216)
-exe 'vert 3resize ' . ((&columns * 51 + 108) / 216)
-exe 'vert 4resize ' . ((&columns * 54 + 108) / 216)
+exe 'vert 1resize ' . ((&columns * 62 + 124) / 249)
+exe 'vert 2resize ' . ((&columns * 62 + 124) / 249)
+exe 'vert 3resize ' . ((&columns * 60 + 124) / 249)
+exe 'vert 4resize ' . ((&columns * 62 + 124) / 249)
 tabnext
 edit ~/repos/black-atom-industries/core/src/themes/mnml/black-atom-mnml-clay-light.ts
 let s:save_splitbelow = &splitbelow
@@ -675,9 +675,9 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe 'vert 1resize ' . ((&columns * 72 + 108) / 216)
-exe 'vert 2resize ' . ((&columns * 70 + 108) / 216)
-exe 'vert 3resize ' . ((&columns * 72 + 108) / 216)
+exe 'vert 1resize ' . ((&columns * 83 + 124) / 249)
+exe 'vert 2resize ' . ((&columns * 81 + 124) / 249)
+exe 'vert 3resize ' . ((&columns * 83 + 124) / 249)
 argglobal
 setlocal keymap=
 setlocal noarabic
@@ -786,7 +786,7 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 41 - ((24 * winheight(0) + 19) / 38)
+let s:l = 41 - ((32 * winheight(0) + 25) / 51)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
@@ -908,7 +908,7 @@ setlocal nowrap
 setlocal wrapmargin=0
 12
 sil! normal! zo
-let s:l = 67 - ((33 * winheight(0) + 19) / 38)
+let s:l = 67 - ((44 * winheight(0) + 25) / 51)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
@@ -1034,7 +1034,7 @@ sil! normal! zo
 sil! normal! zo
 77
 sil! normal! zo
-let s:l = 101 - ((27 * winheight(0) + 19) / 38)
+let s:l = 101 - ((36 * winheight(0) + 25) / 51)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
@@ -1042,9 +1042,9 @@ keepjumps 101
 normal! 0
 wincmd w
 2wincmd w
-exe 'vert 1resize ' . ((&columns * 72 + 108) / 216)
-exe 'vert 2resize ' . ((&columns * 70 + 108) / 216)
-exe 'vert 3resize ' . ((&columns * 72 + 108) / 216)
+exe 'vert 1resize ' . ((&columns * 83 + 124) / 249)
+exe 'vert 2resize ' . ((&columns * 81 + 124) / 249)
+exe 'vert 3resize ' . ((&columns * 83 + 124) / 249)
 tabnext 3
 set stal=1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'

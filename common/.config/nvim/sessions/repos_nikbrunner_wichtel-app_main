@@ -9,12 +9,12 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +77 ~/repos/nikbrunner/wichtel-app/src/components/EventListItem.tsx
 badd +26 ~/repos/nikbrunner/wichtel-app/src/components/EventDateBadge.tsx
+badd +23 ~/repos/nikbrunner/wichtel-app/src/utils/supabase.ts
 argglobal
 %argdel
 $argadd ./
-edit ~/repos/nikbrunner/wichtel-app/src/components/EventListItem.tsx
+edit ~/repos/nikbrunner/wichtel-app/src/utils/supabase.ts
 let s:save_splitbelow = &splitbelow
 let s:save_splitright = &splitright
 set splitbelow splitright
@@ -31,8 +31,8 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe 'vert 1resize ' . ((&columns * 116 + 116) / 233)
-exe 'vert 2resize ' . ((&columns * 116 + 116) / 233)
+exe 'vert 1resize ' . ((&columns * 136 + 136) / 273)
+exe 'vert 2resize ' . ((&columns * 136 + 136) / 273)
 argglobal
 setlocal keymap=
 setlocal noarabic
@@ -65,8 +65,8 @@ setlocal cursorlineopt=both
 setlocal nodiff
 setlocal eventignorewin=
 setlocal expandtab
-if &filetype != 'typescriptreact'
-setlocal filetype=typescriptreact
+if &filetype != 'typescript'
+setlocal filetype=typescript
 endif
 setlocal fixendofline
 setlocal foldcolumn=0
@@ -133,7 +133,7 @@ setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#src%*\ %#WinBarSeparator#/%*\ %#WinBarPath#components%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#EventListItem.tsx%*
+setlocal winbar=%#WinBarPath#src%*\ %#WinBarSeparator#/%*\ %#WinBarPath#utils%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#supabase.ts%*
 setlocal winblend=0
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -141,32 +141,19 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-18
-sil! normal! zo
-63
-sil! normal! zo
-64
-sil! normal! zo
-65
-sil! normal! zo
-67
-sil! normal! zo
-69
-sil! normal! zo
-70
-sil! normal! zo
-let s:l = 79 - ((39 * winheight(0) + 31) / 63)
+let s:l = 23 - ((17 * winheight(0) + 23) / 46)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 79
-normal! 0
+keepjumps 23
+normal! 015|
 wincmd w
 argglobal
 if bufexists(fnamemodify("~/repos/nikbrunner/wichtel-app/src/components/EventDateBadge.tsx", ":p")) | buffer ~/repos/nikbrunner/wichtel-app/src/components/EventDateBadge.tsx | else | edit ~/repos/nikbrunner/wichtel-app/src/components/EventDateBadge.tsx | endif
 if &buftype ==# 'terminal'
   silent file ~/repos/nikbrunner/wichtel-app/src/components/EventDateBadge.tsx
 endif
+balt ~/repos/nikbrunner/wichtel-app/src/utils/supabase.ts
 setlocal keymap=
 setlocal noarabic
 setlocal autoindent
@@ -266,7 +253,7 @@ setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#src%*\ %#WinBarSeparator#/%*\ %#WinBarPath#components%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#EventDateBadge.tsx%*
+setlocal winbar=%#WinBarPath#src%*\ %#WinBarSeparator#/%*\ %#WinBarPath#components%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#EventDateBadge.tsx%*\ %#WinBarSeparator##%*\ %#WinBarSymbol#EventDateBadge%*
 setlocal winblend=0
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -276,15 +263,15 @@ setlocal nowrap
 setlocal wrapmargin=0
 10
 sil! normal! zo
-let s:l = 27 - ((26 * winheight(0) + 31) / 63)
+let s:l = 27 - ((19 * winheight(0) + 23) / 46)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
 keepjumps 27
 normal! 0
 wincmd w
-exe 'vert 1resize ' . ((&columns * 116 + 116) / 233)
-exe 'vert 2resize ' . ((&columns * 116 + 116) / 233)
+exe 'vert 1resize ' . ((&columns * 136 + 136) / 273)
+exe 'vert 2resize ' . ((&columns * 136 + 136) / 273)
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
@@ -300,6 +287,7 @@ if filereadable(s:sx)
 endif
 let &g:so = s:so_save | let &g:siso = s:siso_save
 set hlsearch
+nohlsearch
 doautoall SessionLoadPost
 unlet SessionLoad
 " vim: set ft=vim :

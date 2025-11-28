@@ -9,7 +9,7 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +343 ~/repos/nikbrunner/koyo/qmk/voyager/src/keymap.c
+badd +97 ~/repos/nikbrunner/koyo/qmk/voyager/src/keymap.c
 argglobal
 %argdel
 $argadd ./
@@ -163,27 +163,57 @@ sil! normal! zo
 sil! normal! zo
 40
 sil! normal! zo
-40
+97
 sil! normal! zo
-327
+97
 sil! normal! zo
-330
+97
 sil! normal! zo
-331
+97
 sil! normal! zo
-334
+97
 sil! normal! zo
-337
+97
 sil! normal! zo
-340
+97
 sil! normal! zo
-343
+97
 sil! normal! zo
-let s:l = 343 - ((69 * winheight(0) + 24) / 49)
+97
+sil! normal! zo
+97
+sil! normal! zo
+97
+sil! normal! zo
+97
+sil! normal! zo
+97
+sil! normal! zo
+97
+sil! normal! zo
+97
+sil! normal! zo
+97
+sil! normal! zo
+97
+sil! normal! zo
+97
+sil! normal! zo
+97
+sil! normal! zo
+325
+sil! normal! zo
+335
+sil! normal! zo
+338
+sil! normal! zo
+342
+sil! normal! zo
+let s:l = 97 - ((36 * winheight(0) + 26) / 52)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 343
+keepjumps 97
 normal! 0
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'

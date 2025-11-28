@@ -3,18 +3,18 @@ let s:so_save = &g:so | let s:siso_save = &g:siso | setg so=0 siso=0 | setl so=-
 let v:this_session=expand("<sfile>:p")
 silent only
 silent tabonly
-cd ~/repos/dealercenter-digital/bc-desktop-client
+cd ~/repos/black-atom-industries/zed
 if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +136 ~/repos/dealercenter-digital/bc-desktop-client/src/system-services/content/brands-tool.ts
-badd +137 ~/repos/dealercenter-digital/bc-desktop-client/src/client/kiosk/container/Settings/BrandActivationPage.tsx
+badd +224 ~/repos/dealercenter-digital/bc-desktop-client/src/client/commons/components/Tooltip/meta/Tooltip.story.tsx
+badd +136 ~/repos/dealercenter-digital/bc-desktop-client/src/client/commons/components/Tooltip/Tooltip.tsx
 argglobal
 %argdel
 $argadd ./
-edit ~/repos/dealercenter-digital/bc-desktop-client/src/system-services/content/brands-tool.ts
+edit ~/repos/dealercenter-digital/bc-desktop-client/src/client/commons/components/Tooltip/meta/Tooltip.story.tsx
 let s:save_splitbelow = &splitbelow
 let s:save_splitright = &splitright
 set splitbelow splitright
@@ -31,8 +31,8 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe 'vert 1resize ' . ((&columns * 161 + 161) / 322)
-exe 'vert 2resize ' . ((&columns * 160 + 161) / 322)
+exe 'vert 1resize ' . ((&columns * 123 + 123) / 246)
+exe 'vert 2resize ' . ((&columns * 122 + 123) / 246)
 argglobal
 setlocal keymap=
 setlocal noarabic
@@ -65,8 +65,8 @@ setlocal cursorlineopt=both
 setlocal nodiff
 setlocal eventignorewin=
 setlocal expandtab
-if &filetype != 'typescript'
-setlocal filetype=typescript
+if &filetype != 'typescriptreact'
+setlocal filetype=typescriptreact
 endif
 setlocal fixendofline
 setlocal foldcolumn=0
@@ -133,7 +133,7 @@ setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#src%*\ %#WinBarSeparator#/%*\ %#WinBarPath#system-services%*\ %#WinBarSeparator#/%*\ %#WinBarPath#content%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#brands-tool.ts%*\ %#WinBarSeparator##%*\ %#WinBarSymbol#createBrandsTool%*\ %#WinBarSeparator##%*\ %#WinBarSymbol#getBrands%*
+setlocal winbar=%#WinBarPath#~%*\ %#WinBarSeparator#/%*\ %#WinBarPath#repos%*\ %#WinBarSeparator#/%*\ %#WinBarPath#dealercenter-digital%*\ %#WinBarSeparator#/%*\ %#WinBarPath#bc-desktop-client%*\ %#WinBarSeparator#/%*\ %#WinBarPath#src%*\ %#WinBarSeparator#/%*\ %#WinBarPath#client%*\ %#WinBarSeparator#/%*\ %#WinBarPath#commons%*\ %#WinBarSeparator#/%*\ %#WinBarPath#components%*\ %#WinBarSeparator#/%*\ %#WinBarPath#Tooltip%*\ %#WinBarSeparator#/%*\ %#WinBarPath#meta%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#Tooltip.story.tsx%*
 setlocal winblend=0
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -141,29 +141,19 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-45
-sil! normal! zo
-102
-sil! normal! zo
-109
-sil! normal! zo
-110
-sil! normal! zo
-133
-sil! normal! zo
-let s:l = 141 - ((87 * winheight(0) + 29) / 59)
+let s:l = 224 - ((53 * winheight(0) + 24) / 49)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 141
+keepjumps 224
 normal! 0
 wincmd w
 argglobal
-if bufexists(fnamemodify("~/repos/dealercenter-digital/bc-desktop-client/src/client/kiosk/container/Settings/BrandActivationPage.tsx", ":p")) | buffer ~/repos/dealercenter-digital/bc-desktop-client/src/client/kiosk/container/Settings/BrandActivationPage.tsx | else | edit ~/repos/dealercenter-digital/bc-desktop-client/src/client/kiosk/container/Settings/BrandActivationPage.tsx | endif
+if bufexists(fnamemodify("~/repos/dealercenter-digital/bc-desktop-client/src/client/commons/components/Tooltip/Tooltip.tsx", ":p")) | buffer ~/repos/dealercenter-digital/bc-desktop-client/src/client/commons/components/Tooltip/Tooltip.tsx | else | edit ~/repos/dealercenter-digital/bc-desktop-client/src/client/commons/components/Tooltip/Tooltip.tsx | endif
 if &buftype ==# 'terminal'
-  silent file ~/repos/dealercenter-digital/bc-desktop-client/src/client/kiosk/container/Settings/BrandActivationPage.tsx
+  silent file ~/repos/dealercenter-digital/bc-desktop-client/src/client/commons/components/Tooltip/Tooltip.tsx
 endif
-balt ~/repos/dealercenter-digital/bc-desktop-client/src/system-services/content/brands-tool.ts
+balt ~/repos/dealercenter-digital/bc-desktop-client/src/client/commons/components/Tooltip/meta/Tooltip.story.tsx
 setlocal keymap=
 setlocal noarabic
 setlocal autoindent
@@ -218,7 +208,7 @@ setlocal includeexpr=
 setlocal indentexpr=GetTypescriptIndent()
 setlocal indentkeys=0{,0},0),0],0,,!^F,o,O,e
 setlocal noinfercase
-setlocal iskeyword=@,48-57,_,192-255
+setlocal iskeyword=@,48-57,_,192-255,#,$
 setlocal lhistory=10
 setlocal nolinebreak
 setlocal nolisp
@@ -263,7 +253,7 @@ setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#src%*\ %#WinBarSeparator#/%*\ %#WinBarPath#client%*\ %#WinBarSeparator#/%*\ %#WinBarPath#kiosk%*\ %#WinBarSeparator#/%*\ %#WinBarPath#container%*\ %#WinBarSeparator#/%*\ %#WinBarPath#Settings%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#BrandActivationPage.tsx%*\ %#WinBarSeparator##%*\ %#WinBarSymbol#BrandActivationPage%*\ %#WinBarSeparator##%*\ %#WinBarSymbol#handleAddBrand%*\ %#WinBarSeparator##%*\ %#WinBarSymbol#onSuccess%*
+setlocal winbar=%#WinBarPath#src%*\ %#WinBarSeparator#/%*\ %#WinBarPath#client%*\ %#WinBarSeparator#/%*\ %#WinBarPath#commons%*\ %#WinBarSeparator#/%*\ %#WinBarPath#components%*\ %#WinBarSeparator#/%*\ %#WinBarPath#Tooltip%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#Tooltip.tsx%*
 setlocal winblend=0
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -271,17 +261,27 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-68
+40
 sil! normal! zo
-let s:l = 152 - ((44 * winheight(0) + 29) / 59)
+42
+sil! normal! zo
+47
+sil! normal! zo
+58
+sil! normal! zo
+124
+sil! normal! zo
+127
+sil! normal! zo
+let s:l = 136 - ((25 * winheight(0) + 24) / 49)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 152
-normal! 08|
+keepjumps 136
+normal! 03|
 wincmd w
-exe 'vert 1resize ' . ((&columns * 161 + 161) / 322)
-exe 'vert 2resize ' . ((&columns * 160 + 161) / 322)
+exe 'vert 1resize ' . ((&columns * 123 + 123) / 246)
+exe 'vert 2resize ' . ((&columns * 122 + 123) / 246)
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf

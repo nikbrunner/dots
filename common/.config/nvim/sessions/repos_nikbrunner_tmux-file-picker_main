@@ -9,7 +9,7 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +131 ~/repos/nikbrunner/tmux-file-picker/README.md
+badd +69 ~/repos/nikbrunner/tmux-file-picker/README.md
 argglobal
 %argdel
 $argadd ./
@@ -137,11 +137,11 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal wrap
 setlocal wrapmargin=0
-let s:l = 131 - ((45 * winheight(0) + 25) / 51)
+let s:l = 69 - ((24 * winheight(0) + 30) / 61)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 131
+keepjumps 69
 normal! 0
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
