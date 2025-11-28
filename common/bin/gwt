@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# wk - Git worktree manager with AI-powered branch naming
+# gwt - Git worktree manager with AI-powered branch naming
 
 set -euo pipefail
 
@@ -376,7 +376,7 @@ parse_create_args() {
             ;;
         -*)
             print_error "Unknown option: $1"
-            echo "Use 'wk create --help' for usage information"
+            echo "Use 'gwt create --help' for usage information"
             exit 1
             ;;
         *)
@@ -411,7 +411,7 @@ wk_create() {
 
     if [ -z "$BRANCH_NAME" ]; then
         print_error "No branch name or description provided"
-        echo "Use 'wk create --help' for usage information"
+        echo "Use 'gwt create --help' for usage information"
         exit 1
     fi
 
@@ -850,12 +850,12 @@ show_help() {
 
     echo " ╭────────────────────────────────────────╮ "
     echo " │                                        │ "
-    echo " │  wk - Git worktree manager             │ "
+    echo " │  gwt - Git worktree manager            │ "
     echo " │                                        │ "
     echo " ╰────────────────────────────────────────╯ "
     echo ""
 
-    style_header "Usage: wk <command> [options]"
+    style_header "Usage: gwt <command> [options]"
     echo ""
     style_header "Commands:"
     echo "  $(style_command "create")    - Create a new worktree as sibling directory"
@@ -865,12 +865,12 @@ show_help() {
     echo "  $(style_command "help")      - Show this help message"
     echo ""
     style_header "Examples:"
-    echo "  wk create feature-xyz              # Create with exact branch name"
-    echo "  wk create -s \"fix login bug\"       # AI-generate branch name"
-    echo "  wk create -sy \"BCD-123 feature\"    # AI + auto-confirm"
-    echo "  wk list                            # Show all worktrees"
-    echo "  wk switch                          # Interactive worktree picker"
-    echo "  wk remove                          # Interactive removal"
+    echo "  gwt create feature-xyz              # Create with exact branch name"
+    echo "  gwt create -s \"fix login bug\"       # AI-generate branch name"
+    echo "  gwt create -sy \"BCD-123 feature\"    # AI + auto-confirm"
+    echo "  gwt list                            # Show all worktrees"
+    echo "  gwt switch                          # Interactive worktree picker"
+    echo "  gwt remove                          # Interactive removal"
     echo ""
     style_header "Worktree Placement:"
     echo "  Worktrees are created as sibling directories:"
@@ -908,7 +908,7 @@ help | --help | -h | "")
     ;;
 *)
     print_error "Unknown command: $1"
-    echo "Use 'wk help' for usage information"
+    echo "Use 'gwt help' for usage information"
     exit 1
     ;;
 esac
