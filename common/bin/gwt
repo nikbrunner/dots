@@ -889,6 +889,53 @@ show_help() {
 # Main Command Dispatcher
 # ========================================================================
 
+# Interactive menu when no command given
+show_menu() {
+    validate_git_repo
+
+    local commands=(
+        "create:Create a new worktree"
+        "list:List all worktrees"
+        "switch:Switch to another worktree"
+        "remove:Remove a worktree"
+        "help:Show help"
+    )
+
+    local selected
+    if has_gum; then
+        selected=$(printf '%s\n' "${commands[@]}" | cut -d: -f1 | gum choose --header="gwt - Select command:")
+    elif has_fzf; then
+        selected=$(printf '%s\n' "${commands[@]}" | fzf --prompt="gwt> " --delimiter=":" --with-nth=1 | cut -d: -f1)
+    else
+        echo "gwt - Git worktree manager"
+        echo ""
+        echo "Commands:"
+        for i in "${!commands[@]}"; do
+            local cmd="${commands[$i]%%:*}"
+            local desc="${commands[$i]#*:}"
+            echo "  $((i+1))) $cmd - $desc"
+        done
+        echo ""
+        echo -n "Select (1-${#commands[@]}): "
+        read -r choice
+        if [[ "$choice" =~ ^[0-9]+$ ]] && [ "$choice" -ge 1 ] && [ "$choice" -le ${#commands[@]} ]; then
+            selected="${commands[$((choice-1))]%%:*}"
+        fi
+    fi
+
+    if [ -z "$selected" ]; then
+        exit 0
+    fi
+
+    case "$selected" in
+        create) wk_create ;;
+        list) wk_list ;;
+        switch) wk_switch ;;
+        remove) wk_remove ;;
+        help) show_help ;;
+    esac
+}
+
 case "${1:-}" in
 create)
     shift
@@ -903,8 +950,11 @@ switch | sw)
 remove | rm)
     wk_remove
     ;;
-help | --help | -h | "")
+help | --help | -h)
     show_help
+    ;;
+"")
+    show_menu
     ;;
 *)
     print_error "Unknown command: $1"
