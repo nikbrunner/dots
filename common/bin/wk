@@ -1,0 +1,914 @@
+#!/usr/bin/env bash
+# wk - Git worktree manager with AI-powered branch naming
+
+set -euo pipefail
+
+# ========================================================================
+# Configuration
+# ========================================================================
+
+# AI backend selection: "claude-code" or "api"
+AI_BACKEND="api"
+
+MODEL_OPTIONS=(
+    "claude-opus-4-5-20251101"
+    "claude-sonnet-4-5-20250929"
+    "claude-haiku-4-5-20251001"
+)
+
+DEFAULT_MODEL="claude-haiku-4-5-20251001"
+MAX_TOKENS_BRANCH=256
+API_VERSION="2023-06-01"
+
+# Colors for output
+GREEN='\033[0;32m'
+RED='\033[0;31m'
+YELLOW='\033[0;33m'
+CYAN='\033[0;36m'
+NC='\033[0m'
+
+# Tmux layout configuration
+TMUX_LAYOUT="${TMUX_LAYOUT:-ide}"
+TMUX_LAYOUTS_DIR="${TMUX_LAYOUTS_DIR:-$HOME/.config/tmux/layouts}"
+
+# ========================================================================
+# Shared Functions
+# ========================================================================
+
+print_success() {
+    echo -e "${GREEN}✓ $1${NC}"
+}
+
+print_error() {
+    echo -e "${RED}✗ $1${NC}"
+}
+
+print_warning() {
+    echo -e "${YELLOW}⚠ $1${NC}"
+}
+
+print_info() {
+    echo -e "${CYAN}→ $1${NC}"
+}
+
+has_claude_code() {
+    command -v claude &>/dev/null
+}
+
+has_gum() {
+    command -v gum &>/dev/null
+}
+
+has_fzf() {
+    command -v fzf &>/dev/null
+}
+
+validate_git_repo() {
+    if ! git rev-parse --git-dir &>/dev/null; then
+        print_error "Not in a git repository"
+        exit 1
+    fi
+}
+
+# Get the root directory of the current git repo
+get_repo_root() {
+    git rev-parse --show-toplevel 2>/dev/null
+}
+
+# Get the base name of the repo (without worktree suffix)
+get_base_repo_name() {
+    local repo_root
+    repo_root=$(get_repo_root)
+    local repo_name
+    repo_name=$(basename "$repo_root")
+
+    # Check if this is a worktree by looking for the main worktree
+    local git_common_dir
+    git_common_dir=$(git rev-parse --git-common-dir 2>/dev/null)
+
+    if [[ "$git_common_dir" != "$(git rev-parse --git-dir 2>/dev/null)" ]]; then
+        # This is a worktree, get the main repo name
+        local main_worktree
+        main_worktree=$(git worktree list --porcelain | grep -m1 '^worktree ' | sed 's/^worktree //')
+        repo_name=$(basename "$main_worktree")
+    fi
+
+    echo "$repo_name"
+}
+
+# Get the parent directory of the repo
+get_repo_parent() {
+    local repo_root
+    repo_root=$(get_repo_root)
+    dirname "$repo_root"
+}
+
+# Get current branch name
+get_current_branch() {
+    git rev-parse --abbrev-ref HEAD 2>/dev/null
+}
+
+# Sanitize branch name
+sanitize_branch_name() {
+    echo "$1" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9-]/-/g' | sed 's/--*/-/g' | sed 's/^-//;s/-$//'
+}
+
+# Get tmux session name from path
+get_session_name() {
+    echo "$1" | tr '/:.' '-'
+}
+
+call_claude_api() {
+    local prompt="$1"
+    local model="$2"
+    local max_tokens="$3"
+    local max_retries=3
+    local retry_delay=2
+
+    local json_payload
+    json_payload=$(jq -n \
+        --arg prompt "$prompt" \
+        --arg model "$model" \
+        --arg max_tokens "$max_tokens" \
+        '{
+            model: $model,
+            max_tokens: ($max_tokens | tonumber),
+            messages: [
+                {
+                    role: "user",
+                    content: $prompt
+                }
+            ]
+        }')
+
+    local response
+    local attempt=1
+
+    while [ $attempt -le $max_retries ]; do
+        if has_gum && [ $attempt -eq 1 ]; then
+            response=$(gum spin --spinner dot --title "Generating with $model..." -- \
+                curl -s -X POST "https://api.anthropic.com/v1/messages" \
+                -H "x-api-key: $ANTHROPIC_API_KEY" \
+                -H "anthropic-version: $API_VERSION" \
+                -H "content-type: application/json" \
+                -d "$json_payload")
+        else
+            if [ $attempt -gt 1 ]; then
+                echo "Retrying (attempt $attempt/$max_retries)..."
+            else
+                echo "Generating with $model..."
+            fi
+            response=$(curl -s -X POST "https://api.anthropic.com/v1/messages" \
+                -H "x-api-key: $ANTHROPIC_API_KEY" \
+                -H "anthropic-version: $API_VERSION" \
+                -H "content-type: application/json" \
+                -d "$json_payload")
+        fi
+
+        local error_type
+        error_type=$(echo "$response" | jq -r '.error.type' 2>/dev/null)
+
+        if [ "$error_type" != "null" ] && [ -n "$error_type" ]; then
+            local error_message
+            error_message=$(echo "$response" | jq -r '.error.message' 2>/dev/null)
+
+            if [ "$error_type" = "overloaded_error" ]; then
+                if [ $attempt -lt $max_retries ]; then
+                    echo "API is overloaded, waiting ${retry_delay}s before retry..." >&2
+                    sleep $retry_delay
+                    retry_delay=$((retry_delay * 2))
+                    attempt=$((attempt + 1))
+                    continue
+                else
+                    echo "Error: API is overloaded after $max_retries attempts" >&2
+                    return 1
+                fi
+            else
+                echo "Error: $error_type - $error_message" >&2
+                return 1
+            fi
+        fi
+
+        local result
+        result=$(echo "$response" | jq -r '.content[0].text' 2>/dev/null | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
+
+        if [ -z "$result" ] || [ "$result" = "null" ]; then
+            echo "Error: Failed to generate response" >&2
+            return 1
+        fi
+
+        echo "$result"
+        return 0
+    done
+
+    return 1
+}
+
+call_claude_code() {
+    local prompt="$1"
+    local model="$2"
+
+    local result
+    result=$(claude --model "$model" --print "$prompt" 2>&1)
+    local exit_code=$?
+
+    if [ $exit_code -ne 0 ]; then
+        echo "Error: Claude Code failed (exit code: $exit_code)" >&2
+        return 1
+    fi
+
+    result=$(echo "$result" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
+
+    if [ -z "$result" ]; then
+        echo "Error: Claude Code returned empty response" >&2
+        return 1
+    fi
+
+    echo "$result"
+}
+
+check_ai_availability() {
+    if ! has_claude_code && [ -z "${ANTHROPIC_API_KEY:-}" ]; then
+        print_error "Neither Claude Code nor ANTHROPIC_API_KEY is available."
+        echo "Please either:"
+        echo "  1. Install Claude Code: https://claude.ai/code"
+        echo "  2. Set ANTHROPIC_API_KEY to your Anthropic API key"
+        exit 1
+    fi
+}
+
+generate_branch_name() {
+    local input="$1"
+    local selected_model=${2:-$DEFAULT_MODEL}
+
+    local prompt="Generate a git branch name for: \"$input\"
+
+CRITICAL: Return ONLY the branch name. No explanations, no analysis, no additional text. Just the branch name and nothing else.
+
+Requirements:
+- The branch name must be in english and lowercase letters, numbers, hyphens only
+- Lowercase letters, numbers, hyphens only
+- Under 50 characters
+- Include issue numbers (BCD-1234) as prefix if present
+- Replace spaces with hyphens
+
+Examples:
+- \"Fix login bug\" → \"fix-login-bug\"
+- \"BCD-1234 add dashboard\" → \"bcd-1234-add-dashboard\"
+
+Output: Just the branch name, nothing more."
+
+    if [ "$AI_BACKEND" = "claude-code" ] && has_claude_code; then
+        if ! branch_name=$(call_claude_code "$prompt" "$selected_model"); then
+            return 1
+        fi
+    else
+        if ! branch_name=$(call_claude_api "$prompt" "$selected_model" "$MAX_TOKENS_BRANCH"); then
+            return 1
+        fi
+    fi
+
+    # Clean up and sanitize
+    branch_name=$(echo "$branch_name" | sed 's/^["'"'"']//;s/["'"'"']$//' | tr -d '\n\r')
+    branch_name=$(sanitize_branch_name "$branch_name")
+
+    echo "$branch_name"
+}
+
+# Select branch with gum/fzf
+select_base_branch() {
+    local current_branch
+    current_branch=$(get_current_branch)
+
+    if has_gum; then
+        local choice
+        choice=$(gum choose "Current branch ($current_branch)" "Select branch...")
+
+        if [[ "$choice" == "Current branch"* ]]; then
+            echo "$current_branch"
+        else
+            # Show branch picker
+            local branches
+            branches=$(git branch -a --format='%(refname:short)' | sed 's|^origin/||' | sort -u | grep -v '^HEAD$')
+            echo "$branches" | gum filter --placeholder="Select base branch..."
+        fi
+    elif has_fzf; then
+        echo -n "Use current branch '$current_branch'? (Y/n) "
+        read -r use_current
+        if [[ "$use_current" != "n" && "$use_current" != "N" ]]; then
+            echo "$current_branch"
+        else
+            git branch -a --format='%(refname:short)' | sed 's|^origin/||' | sort -u | grep -v '^HEAD$' | fzf --prompt="Select base branch: "
+        fi
+    else
+        echo -n "Use current branch '$current_branch'? (Y/n) "
+        read -r use_current
+        if [[ "$use_current" != "n" && "$use_current" != "N" ]]; then
+            echo "$current_branch"
+        else
+            echo "Available branches:"
+            git branch -a --format='%(refname:short)' | sed 's|^origin/||' | sort -u | grep -v '^HEAD$' | nl
+            echo -n "Enter branch number or name: "
+            read -r branch_input
+            echo "$branch_input"
+        fi
+    fi
+}
+
+# Open directory in tmux session
+open_in_tmux() {
+    local dir_path="$1"
+    local dir_name
+    dir_name=$(basename "$dir_path")
+
+    local session_name
+    session_name=$(get_session_name "$dir_name")
+
+    if tmux has-session -t "$session_name" 2>/dev/null; then
+        if [[ -n "${TMUX:-}" ]]; then
+            tmux switch-client -t "$session_name"
+        else
+            tmux attach-session -t "$session_name"
+        fi
+    else
+        tmux new-session -d -s "$session_name" -c "$dir_path"
+
+        local layout_script="${TMUX_LAYOUTS_DIR}/${TMUX_LAYOUT}.sh"
+        if [[ -n "$TMUX_LAYOUT" && -x "$layout_script" ]]; then
+            "$layout_script" "$session_name" "$dir_path"
+        fi
+
+        if [[ -n "${TMUX:-}" ]]; then
+            tmux switch-client -t "$session_name"
+        else
+            tmux attach-session -t "$session_name"
+        fi
+    fi
+}
+
+# ========================================================================
+# Create Command
+# ========================================================================
+
+parse_create_args() {
+    SMART_FLAG=false
+    YES_FLAG=false
+    BRANCH_NAME=""
+
+    while [[ $# -gt 0 ]]; do
+        case $1 in
+        -s | --smart)
+            SMART_FLAG=true
+            shift
+            ;;
+        -y | --yes)
+            YES_FLAG=true
+            shift
+            ;;
+        -sy | -ys)
+            SMART_FLAG=true
+            YES_FLAG=true
+            shift
+            ;;
+        -h | --help)
+            show_create_help
+            exit 0
+            ;;
+        -*)
+            print_error "Unknown option: $1"
+            echo "Use 'wk create --help' for usage information"
+            exit 1
+            ;;
+        *)
+            BRANCH_NAME="$*"
+            break
+            ;;
+        esac
+    done
+}
+
+show_create_help() {
+    cat <<EOF
+Usage: wk create [OPTIONS] <name|description>
+
+Create a new git worktree as a sibling directory.
+
+Options:
+  -s, --smart    Use AI to generate branch name from description
+  -y, --yes      Skip confirmations (use current branch as base)
+  -h, --help     Show this help message
+
+Examples:
+  wk create bcd-9865-new-feature          # Create with exact name
+  wk create -s "BCD-8907 fix toast bug"   # AI-generate branch name
+  wk create -sy "add dashboard feature"   # AI + auto-confirm
+EOF
+}
+
+wk_create() {
+    validate_git_repo
+    parse_create_args "$@"
+
+    if [ -z "$BRANCH_NAME" ]; then
+        print_error "No branch name or description provided"
+        echo "Use 'wk create --help' for usage information"
+        exit 1
+    fi
+
+    local branch_name="$BRANCH_NAME"
+
+    # Generate branch name with AI if -s flag
+    if [ "$SMART_FLAG" = true ]; then
+        check_ai_availability
+
+        print_info "Generating branch name..."
+        if ! branch_name=$(generate_branch_name "$BRANCH_NAME"); then
+            exit 1
+        fi
+
+        echo ""
+        if has_gum; then
+            gum format -t template <<EOF
+{{ Color "2" "" "Generated branch name:" }} {{ Color "6" "" "$branch_name" }}
+EOF
+        else
+            echo "Generated branch name: $branch_name"
+        fi
+        echo ""
+
+        if [ "$YES_FLAG" = false ]; then
+            if has_gum; then
+                if ! gum confirm "Use this branch name?"; then
+                    echo "Cancelled"
+                    exit 0
+                fi
+            else
+                echo -n "Use this branch name? (Y/n) "
+                read -r confirm
+                if [[ "$confirm" == "n" || "$confirm" == "N" ]]; then
+                    echo "Cancelled"
+                    exit 0
+                fi
+            fi
+        fi
+    fi
+
+    # Select base branch
+    local base_branch
+    if [ "$YES_FLAG" = true ]; then
+        base_branch=$(get_current_branch)
+        print_info "Using current branch as base: $base_branch"
+    else
+        echo ""
+        print_info "Select base branch for worktree:"
+        base_branch=$(select_base_branch)
+        if [ -z "$base_branch" ]; then
+            print_error "No branch selected"
+            exit 1
+        fi
+    fi
+
+    # Calculate paths
+    local repo_root
+    repo_root=$(get_repo_root)
+    local base_name
+    base_name=$(get_base_repo_name)
+    local parent_dir
+    parent_dir=$(get_repo_parent)
+    local worktree_path="$parent_dir/${base_name}-${branch_name}"
+
+    echo ""
+    print_info "Creating worktree:"
+    echo "  Branch: $branch_name"
+    echo "  Base: $base_branch"
+    echo "  Path: $worktree_path"
+    echo ""
+
+    # Check if worktree path already exists
+    if [ -d "$worktree_path" ]; then
+        print_error "Directory already exists: $worktree_path"
+        exit 1
+    fi
+
+    # Check if branch already exists
+    if git show-ref --verify --quiet "refs/heads/$branch_name"; then
+        print_warning "Branch '$branch_name' already exists, using existing branch"
+        if ! git worktree add "$worktree_path" "$branch_name"; then
+            print_error "Failed to create worktree"
+            exit 1
+        fi
+    else
+        # Create worktree with new branch
+        if ! git worktree add -b "$branch_name" "$worktree_path" "$base_branch"; then
+            print_error "Failed to create worktree"
+            exit 1
+        fi
+    fi
+
+    echo ""
+    print_success "Worktree created successfully!"
+    echo ""
+    echo "  Path: $worktree_path"
+    echo "  Branch: $branch_name"
+    echo ""
+
+    # Ask to open in tmux
+    if has_gum; then
+        if gum confirm "Open in tmux?"; then
+            open_in_tmux "$worktree_path"
+        fi
+    else
+        echo -n "Open in tmux? (Y/n) "
+        read -r open_tmux
+        if [[ "$open_tmux" != "n" && "$open_tmux" != "N" ]]; then
+            open_in_tmux "$worktree_path"
+        fi
+    fi
+}
+
+# ========================================================================
+# List Command
+# ========================================================================
+
+wk_list() {
+    validate_git_repo
+
+    local current_path
+    current_path=$(get_repo_root)
+
+    echo ""
+    if has_gum; then
+        gum style --foreground=4 --bold "Worktrees:"
+    else
+        echo "Worktrees:"
+    fi
+    echo ""
+
+    git worktree list --porcelain | while read -r line; do
+        if [[ "$line" == "worktree "* ]]; then
+            local wt_path="${line#worktree }"
+            local wt_name
+            wt_name=$(basename "$wt_path")
+
+            # Read next lines for branch info
+            read -r branch_line
+            local branch=""
+            if [[ "$branch_line" == "branch "* ]]; then
+                branch="${branch_line#branch refs/heads/}"
+            elif [[ "$branch_line" == "detached" ]]; then
+                branch="(detached)"
+            fi
+
+            # Check if bare
+            read -r bare_line || bare_line=""
+            local bare_marker=""
+            if [[ "$bare_line" == "bare" ]]; then
+                bare_marker=" [bare]"
+            fi
+
+            # Check if current
+            local current_marker=""
+            if [[ "$wt_path" == "$current_path" ]]; then
+                current_marker=" *"
+            fi
+
+            if has_gum; then
+                if [[ -n "$current_marker" ]]; then
+                    gum style --foreground=2 "  $wt_name ($branch)$bare_marker$current_marker"
+                else
+                    echo "  $wt_name ($branch)$bare_marker"
+                fi
+            else
+                echo "  $wt_name ($branch)$bare_marker$current_marker"
+            fi
+        fi
+    done
+    echo ""
+}
+
+# ========================================================================
+# Switch Command
+# ========================================================================
+
+wk_switch() {
+    validate_git_repo
+
+    local base_name
+    base_name=$(get_base_repo_name)
+    local parent_dir
+    parent_dir=$(get_repo_parent)
+    local current_path
+    current_path=$(get_repo_root)
+
+    # Find all sibling directories matching base repo name
+    local siblings=()
+    while IFS= read -r -d '' dir; do
+        siblings+=("$dir")
+    done < <(find "$parent_dir" -maxdepth 1 -type d -name "${base_name}*" -print0 2>/dev/null | sort -z)
+
+    if [ ${#siblings[@]} -eq 0 ]; then
+        print_error "No related worktrees found"
+        exit 1
+    fi
+
+    # Build display list
+    local display_items=()
+    for dir in "${siblings[@]}"; do
+        local dir_name
+        dir_name=$(basename "$dir")
+        local marker=""
+        if [[ "$dir" == "$current_path" ]]; then
+            marker=" (current)"
+        fi
+
+        # Try to get branch name if it's a git repo
+        local branch=""
+        if [[ -d "$dir/.git" ]] || [[ -f "$dir/.git" ]]; then
+            branch=$(cd "$dir" && git rev-parse --abbrev-ref HEAD 2>/dev/null || echo "")
+            if [[ -n "$branch" ]]; then
+                branch=" [$branch]"
+            fi
+        fi
+
+        display_items+=("$dir_name$branch$marker")
+    done
+
+    # Show picker
+    local selected
+    if has_gum; then
+        selected=$(printf '%s\n' "${display_items[@]}" | gum filter --placeholder="Select worktree...")
+    elif has_fzf; then
+        selected=$(printf '%s\n' "${display_items[@]}" | fzf --prompt="Select worktree: ")
+    else
+        echo "Available worktrees:"
+        for i in "${!display_items[@]}"; do
+            echo "  $((i+1))) ${display_items[$i]}"
+        done
+        echo -n "Select (1-${#display_items[@]}): "
+        read -r choice
+        if [[ "$choice" =~ ^[0-9]+$ ]] && [ "$choice" -ge 1 ] && [ "$choice" -le ${#display_items[@]} ]; then
+            selected="${display_items[$((choice-1))]}"
+        fi
+    fi
+
+    if [ -z "$selected" ]; then
+        echo "No selection made"
+        exit 0
+    fi
+
+    # Extract directory name (remove branch and marker info)
+    local selected_name
+    selected_name=$(echo "$selected" | sed 's/ \[.*$//' | sed 's/ (current)$//')
+    local selected_path="$parent_dir/$selected_name"
+
+    if [[ "$selected_path" == "$current_path" ]]; then
+        print_info "Already in this worktree"
+        exit 0
+    fi
+
+    if [ ! -d "$selected_path" ]; then
+        print_error "Directory not found: $selected_path"
+        exit 1
+    fi
+
+    print_info "Opening $selected_name in tmux..."
+    open_in_tmux "$selected_path"
+}
+
+# ========================================================================
+# Remove Command
+# ========================================================================
+
+wk_remove() {
+    validate_git_repo
+
+    local current_path
+    current_path=$(get_repo_root)
+
+    # Get list of worktrees (excluding current)
+    local worktrees=()
+    local worktree_paths=()
+
+    while read -r line; do
+        if [[ "$line" == "worktree "* ]]; then
+            local wt_path="${line#worktree }"
+
+            # Skip current worktree
+            if [[ "$wt_path" == "$current_path" ]]; then
+                # Skip branch line
+                read -r _
+                continue
+            fi
+
+            local wt_name
+            wt_name=$(basename "$wt_path")
+
+            # Read branch info
+            read -r branch_line
+            local branch=""
+            if [[ "$branch_line" == "branch "* ]]; then
+                branch="${branch_line#branch refs/heads/}"
+            fi
+
+            worktrees+=("$wt_name ($branch)")
+            worktree_paths+=("$wt_path:$branch")
+        fi
+    done < <(git worktree list --porcelain)
+
+    if [ ${#worktrees[@]} -eq 0 ]; then
+        print_info "No other worktrees to remove"
+        exit 0
+    fi
+
+    # Show picker
+    local selected
+    if has_gum; then
+        selected=$(printf '%s\n' "${worktrees[@]}" | gum filter --placeholder="Select worktree to remove...")
+    elif has_fzf; then
+        selected=$(printf '%s\n' "${worktrees[@]}" | fzf --prompt="Select worktree to remove: ")
+    else
+        echo "Worktrees:"
+        for i in "${!worktrees[@]}"; do
+            echo "  $((i+1))) ${worktrees[$i]}"
+        done
+        echo -n "Select (1-${#worktrees[@]}): "
+        read -r choice
+        if [[ "$choice" =~ ^[0-9]+$ ]] && [ "$choice" -ge 1 ] && [ "$choice" -le ${#worktrees[@]} ]; then
+            selected="${worktrees[$((choice-1))]}"
+        fi
+    fi
+
+    if [ -z "$selected" ]; then
+        echo "No selection made"
+        exit 0
+    fi
+
+    # Find the path and branch for selected worktree
+    local selected_path=""
+    local selected_branch=""
+    for i in "${!worktrees[@]}"; do
+        if [[ "${worktrees[$i]}" == "$selected" ]]; then
+            local entry="${worktree_paths[$i]}"
+            selected_path="${entry%:*}"
+            selected_branch="${entry#*:}"
+            break
+        fi
+    done
+
+    if [ -z "$selected_path" ]; then
+        print_error "Could not find worktree path"
+        exit 1
+    fi
+
+    echo ""
+    print_warning "About to remove:"
+    echo "  Path: $selected_path"
+    echo "  Branch: $selected_branch"
+    echo ""
+
+    # Confirm removal
+    if has_gum; then
+        if ! gum confirm "Remove this worktree?"; then
+            echo "Cancelled"
+            exit 0
+        fi
+    else
+        echo -n "Remove this worktree? (y/N) "
+        read -r confirm
+        if [[ "$confirm" != "y" && "$confirm" != "Y" ]]; then
+            echo "Cancelled"
+            exit 0
+        fi
+    fi
+
+    # Kill tmux session if exists
+    local session_name
+    session_name=$(get_session_name "$(basename "$selected_path")")
+    if tmux has-session -t "$session_name" 2>/dev/null; then
+        tmux kill-session -t "$session_name"
+        print_info "Killed tmux session: $session_name"
+    fi
+
+    # Remove worktree
+    if git worktree remove "$selected_path" --force; then
+        print_success "Worktree removed"
+    else
+        print_error "Failed to remove worktree"
+        exit 1
+    fi
+
+    # Ask about branch deletion
+    echo ""
+    if has_gum; then
+        if gum confirm "Also delete branch '$selected_branch'?"; then
+            if git branch -D "$selected_branch"; then
+                print_success "Branch '$selected_branch' deleted"
+            else
+                print_warning "Could not delete branch (may be checked out elsewhere)"
+            fi
+        fi
+    else
+        echo -n "Also delete branch '$selected_branch'? (y/N) "
+        read -r delete_branch
+        if [[ "$delete_branch" == "y" || "$delete_branch" == "Y" ]]; then
+            if git branch -D "$selected_branch"; then
+                print_success "Branch '$selected_branch' deleted"
+            else
+                print_warning "Could not delete branch (may be checked out elsewhere)"
+            fi
+        fi
+    fi
+}
+
+# ========================================================================
+# Help System
+# ========================================================================
+
+show_help() {
+    local git_status="$(command -v git &>/dev/null && echo "✓" || echo "✗")"
+    local gum_status="$(command -v gum &>/dev/null && echo "✓" || echo "◦")"
+    local fzf_status="$(command -v fzf &>/dev/null && echo "✓" || echo "◦")"
+    local tmux_status="$(command -v tmux &>/dev/null && echo "✓" || echo "◦")"
+    local claude_status="$(has_claude_code && echo "✓" || echo "◦")"
+    local api_status="$([ -n "${ANTHROPIC_API_KEY:-}" ] && echo "✓" || echo "◦")"
+
+    style_header() {
+        if has_gum; then
+            gum style --foreground=4 --bold "$1"
+        else
+            echo -e "\033[1;34m$1\033[0m"
+        fi
+    }
+
+    style_command() {
+        if has_gum; then
+            gum style --foreground=2 "$1"
+        else
+            echo -e "\033[32m$1\033[0m"
+        fi
+    }
+
+    echo " ╭────────────────────────────────────────╮ "
+    echo " │                                        │ "
+    echo " │  wk - Git worktree manager             │ "
+    echo " │                                        │ "
+    echo " ╰────────────────────────────────────────╯ "
+    echo ""
+
+    style_header "Usage: wk <command> [options]"
+    echo ""
+    style_header "Commands:"
+    echo "  $(style_command "create")    - Create a new worktree as sibling directory"
+    echo "  $(style_command "list")      - List all worktrees for current repo"
+    echo "  $(style_command "switch")    - Switch to another worktree (opens in tmux)"
+    echo "  $(style_command "remove")    - Remove a worktree"
+    echo "  $(style_command "help")      - Show this help message"
+    echo ""
+    style_header "Examples:"
+    echo "  wk create feature-xyz              # Create with exact branch name"
+    echo "  wk create -s \"fix login bug\"       # AI-generate branch name"
+    echo "  wk create -sy \"BCD-123 feature\"    # AI + auto-confirm"
+    echo "  wk list                            # Show all worktrees"
+    echo "  wk switch                          # Interactive worktree picker"
+    echo "  wk remove                          # Interactive removal"
+    echo ""
+    style_header "Worktree Placement:"
+    echo "  Worktrees are created as sibling directories:"
+    echo "  repo-name/ -> repo-name-branch-name/"
+    echo ""
+    style_header "Requirements:"
+    echo "  $git_status git (required)"
+    echo "  $tmux_status tmux (for switch command)"
+    echo "  $gum_status gum (optional, enhanced UX)"
+    echo "  $fzf_status fzf (optional, fallback picker)"
+    echo "  $claude_status Claude Code (for -s flag)"
+    echo "  $api_status ANTHROPIC_API_KEY (alternative for -s flag)"
+}
+
+# ========================================================================
+# Main Command Dispatcher
+# ========================================================================
+
+case "${1:-}" in
+create)
+    shift
+    wk_create "$@"
+    ;;
+list | ls)
+    wk_list
+    ;;
+switch | sw)
+    wk_switch
+    ;;
+remove | rm)
+    wk_remove
+    ;;
+help | --help | -h | "")
+    show_help
+    ;;
+*)
+    print_error "Unknown command: $1"
+    echo "Use 'wk help' for usage information"
+    exit 1
+    ;;
+esac
