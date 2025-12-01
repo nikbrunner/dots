@@ -328,8 +328,8 @@ open_repo() {
     local session_name
     session_name=$(get_session_name "$selected")
 
-    # Check if session already exists
-    if tmux has-session -t "$session_name" 2>/dev/null; then
+    # Check if session already exists (exact match, not prefix match)
+    if tmux list-sessions -F "#{session_name}" 2>/dev/null | grep -qx "$session_name"; then
         if [[ -n "$TMUX" ]]; then
             tmux switch-client -t "$session_name"
         else
