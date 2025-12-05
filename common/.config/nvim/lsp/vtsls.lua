@@ -6,8 +6,9 @@ local shared_jsts_settings = {
     suggest = { completeFunctionCalls = true },
     preferences = {
         -- importModuleSpecifierPreference [string] Supported values: 'shortest', 'project-relative', 'relative', 'non-relative'. Default: 'shortest'
-        importModuleSpecifier = "shortest",
+        importModuleSpecifier = "relative",
         includePackageJsonAutoImports = "off",
+        preferTypeOnlyAutoImports = true,
     },
     inlayHints = {
         functionLikeReturnTypes = { enabled = true },
