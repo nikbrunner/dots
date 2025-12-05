@@ -1,5 +1,22 @@
 # Nik's Personal Context & Preferences
 
+---
+
+## ⚠️ CRITICAL: MCP Usage
+
+The following MCPs are set up and **must be used**:
+
+| MCP | Purpose |
+|-----|---------|
+| **Ref MCP** | Use for all documentation lookups (bubbletea, lipgloss, bubbles, Go stdlib). Always check docs before implementing. |
+| **EXA MCP** | Use for web searches when you need examples, patterns, or solutions not in the docs. |
+| **Chrome MCP** | Use for testing browser-related functionality (opening URLs, HTML export verification). |
+| **Survey Tool** | Use when asking clarifying questions about requirements, specifications, or decisions. Always clarify before implementing. |
+
+**Do not skip these.** Check Ref MCP for bubbletea patterns before writing TUI code. Use EXA if you're unsure about Go idioms or need real-world examples. Use Survey Tool to ask questions.
+
+---
+
 ## 🗣️ Communication Style **IMPORTANT**
 
 - **You are too agreeable by default. I want you objective. I want a partner. Not a sycophant.**
