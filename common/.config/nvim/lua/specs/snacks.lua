@@ -32,6 +32,60 @@ _G.EditLineFromLazygit = edit_line_from_lazygit
 _G.EditFromLazygit = edit_from_lazygit
 
 -- ============================================================================
+-- GitHub PR Context Detection
+-- ============================================================================
+
+-- Track the last known branch to avoid redundant checks
+local last_head_name = nil
+
+---Detect GitHub PR context for the current branch
+---Updates state with PR number and repo if a PR exists
+---@return nil
+local function detect_gh_pr_context()
+    local state = require("state")
+
+    -- Clear previous context
+    state:set("gh_current_pr", nil)
+    state:set("gh_current_repo", nil)
+
+    -- Get the git root directory for the current buffer
+    local git_root = vim.fs.root(0, ".git")
+    if not git_root then
+        return
+    end
+
+    vim.system({ "gh", "pr", "view", "--json", "number" }, { text = true, cwd = git_root }, function(pr_result)
+        vim.schedule(function()
+            if pr_result.code == 0 and pr_result.stdout then
+                local pr_ok, pr_data = pcall(vim.json.decode, pr_result.stdout)
+                if pr_ok and pr_data.number then
+                    vim.system(
+                        { "gh", "repo", "view", "--json", "owner,name" },
+                        { text = true, cwd = git_root },
+                        function(repo_result)
+                            vim.schedule(function()
+                                if repo_result.code == 0 and repo_result.stdout then
+                                    local repo_ok, repo_data = pcall(vim.json.decode, repo_result.stdout)
+                                    if repo_ok and repo_data.owner and repo_data.name then
+                                        local repo = string.format("%s/%s", repo_data.owner.login, repo_data.name)
+                                        state:set("gh_current_pr", pr_data.number)
+                                        state:set("gh_current_repo", repo)
+                                        Snacks.notify(
+                                            string.format("PR #%d ready (%s)", pr_data.number, repo),
+                                            { title = "GitHub", level = "info" }
+                                        )
+                                    end
+                                end
+                            end)
+                        end
+                    )
+                end
+            end
+        end)
+    end)
+end
+
+-- ============================================================================
 -- Custom Picker Functions
 -- ============================================================================
 
@@ -399,51 +453,24 @@ return {
             end,
         })
 
+        -- Detect PR context on branch change (via mini.git)
         vim.api.nvim_create_autocmd("User", {
-            pattern = "VeryLazy",
+            pattern = "MiniGitUpdated",
+            callback = function(data)
+                local buf_data = vim.b[data.buf].minigit_summary
+                if buf_data and buf_data.head_name then
+                    if buf_data.head_name ~= last_head_name then
+                        last_head_name = buf_data.head_name
+                        vim.defer_fn(detect_gh_pr_context, 500)
+                    end
+                end
+            end,
+        })
+
+        -- Detect PR context on startup and directory change
+        vim.api.nvim_create_autocmd({ "VimEnter", "DirChanged" }, {
             callback = function()
-                -- Detect GitHub PR context asynchronously
-                vim.defer_fn(function()
-                    local state = require("state")
-
-                    -- First get the PR number
-                    vim.system({ "gh", "pr", "view", "--json", "number" }, { text = true }, function(pr_result)
-                        vim.schedule(function()
-                            if pr_result.code == 0 and pr_result.stdout then
-                                local pr_ok, pr_data = pcall(vim.json.decode, pr_result.stdout)
-                                if pr_ok and pr_data.number then
-                                    -- Then get the repo info
-                                    vim.system(
-                                        { "gh", "repo", "view", "--json", "owner,name" },
-                                        { text = true },
-                                        function(repo_result)
-                                            vim.schedule(function()
-                                                if repo_result.code == 0 and repo_result.stdout then
-                                                    local repo_ok, repo_data = pcall(vim.json.decode, repo_result.stdout)
-                                                    if repo_ok and repo_data.owner and repo_data.name then
-                                                        local repo =
-                                                            string.format("%s/%s", repo_data.owner.login, repo_data.name)
-
-                                                        -- Update state
-                                                        state:set("gh_current_pr", pr_data.number)
-                                                        state:set("gh_current_repo", repo)
-
-                                                        -- Notify user
-                                                        Snacks.notify(
-                                                            string.format("PR #%d ready (%s)", pr_data.number, repo),
-                                                            { title = "GitHub", level = "info" }
-                                                        )
-                                                    end
-                                                end
-                                            end)
-                                        end
-                                    )
-                                end
-                            end
-                            -- Silent failure if no PR on branch or gh CLI error
-                        end)
-                    end)
-                end, 1000) -- 1 second delay after VeryLazy
+                vim.defer_fn(detect_gh_pr_context, 500)
             end,
         })
     end,
