@@ -31,11 +31,22 @@ done
 # Check arguments
 if [ $# -eq 0 ]; then
     echo "Usage: ytdl <URL>"
+    echo "       ytdl open"
     echo "Downloads music from YouTube/YouTube Music with embedded cover art"
     echo "Automatically handles:"
     echo "  • Single songs → Downloads to Inbox/"
     echo "  • Albums/Playlists → Downloads to Inbox/[Album Name]/"
+    echo ""
+    echo "Commands:"
+    echo "  open    Open the music directory in Finder"
     exit 1
+fi
+
+# Handle 'open' command
+if [ "$1" = "open" ]; then
+    echo -e "${BLUE}📂 Opening: $MUSIC_DIR${NC}"
+    open "$MUSIC_DIR"
+    exit 0
 fi
 
 URL="$1"
