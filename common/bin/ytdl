@@ -88,22 +88,39 @@ fi
 echo -e "${BLUE}⬇️  Downloading...${NC}"
 
 # Download with metadata and thumbnails
-if ! yt-dlp \
-    -x \
-    --audio-format mp3 \
-    --audio-quality 0 \
-    --embed-metadata \
-    --add-metadata \
-    --write-thumbnail \
-    --convert-thumbnails jpg \
-    -o "$OUTPUT_TEMPLATE" \
-    "$URL"; then
-    echo -e "${RED}❌ Error: Download failed${NC}"
-    echo -e "${YELLOW}This might be due to:${NC}"
-    echo -e "${YELLOW}  • Region restrictions${NC}"
-    echo -e "${YELLOW}  • Unavailable content${NC}"
-    echo -e "${YELLOW}  • Private/deleted videos${NC}"
-    exit 1
+# For playlists, use --ignore-errors to continue past unavailable videos
+if [ "$IS_PLAYLIST" = true ]; then
+    # Playlists: continue on errors, we'll check for downloaded files after
+    yt-dlp \
+        --ignore-errors \
+        -x \
+        --audio-format mp3 \
+        --audio-quality 0 \
+        --embed-metadata \
+        --add-metadata \
+        --write-thumbnail \
+        --convert-thumbnails jpg \
+        -o "$OUTPUT_TEMPLATE" \
+        "$URL"
+else
+    # Single tracks: fail if download fails
+    if ! yt-dlp \
+        -x \
+        --audio-format mp3 \
+        --audio-quality 0 \
+        --embed-metadata \
+        --add-metadata \
+        --write-thumbnail \
+        --convert-thumbnails jpg \
+        -o "$OUTPUT_TEMPLATE" \
+        "$URL"; then
+        echo -e "${RED}❌ Error: Download failed${NC}"
+        echo -e "${YELLOW}This might be due to:${NC}"
+        echo -e "${YELLOW}  • Region restrictions${NC}"
+        echo -e "${YELLOW}  • Unavailable content${NC}"
+        echo -e "${YELLOW}  • Private/deleted videos${NC}"
+        exit 1
+    fi
 fi
 
 # Process downloaded files
@@ -192,10 +209,18 @@ if [ "$IS_PLAYLIST" = true ]; then
     fi
     
     # Summary
-    TRACK_COUNT=$(find "$FINAL_DIR" -name "*.mp3" | wc -l)
+    DOWNLOADED_COUNT=$(find "$FINAL_DIR" -name "*.mp3" | wc -l | tr -d ' ')
     echo -e "${GREEN}✅ Album downloaded successfully!${NC}"
     echo -e "${GREEN}   Location: $FINAL_DIR${NC}"
-    echo -e "${GREEN}   Tracks: $TRACK_COUNT${NC}"
+    echo -e "${GREEN}   Tracks: $DOWNLOADED_COUNT${NC}"
+
+    # Report skipped tracks if we know the expected count
+    if [ -n "$TRACK_COUNT" ] && [ "$TRACK_COUNT" != "NA" ]; then
+        SKIPPED=$((TRACK_COUNT - DOWNLOADED_COUNT))
+        if [ "$SKIPPED" -gt 0 ]; then
+            echo -e "${YELLOW}   Skipped: $SKIPPED (unavailable/private/deleted)${NC}"
+        fi
+    fi
     
 else
     # Handle single track
