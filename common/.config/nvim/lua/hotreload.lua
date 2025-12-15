@@ -37,7 +37,7 @@ local find_buffer_by_filepath = function(filepath)
 end
 
 -- Register handler for file changes in watched directory
-require("custom.directory-watcher").registerOnChangeHandler("hotreload", function(filepath, events)
+require("directory-watcher").registerOnChangeHandler("hotreload", function(filepath, events)
     if not should_check() then
         return
     end

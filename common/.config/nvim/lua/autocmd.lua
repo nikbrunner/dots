@@ -1,5 +1,7 @@
 local auto = vim.api.nvim_create_autocmd
 
+require("hotreload").setup()
+
 local function auto_group(name)
     return vim.api.nvim_create_augroup("nvim_" .. name, { clear = true })
 end
