@@ -12,7 +12,7 @@ fi
 
 session_name="_popup_${current_session}"
 
-if ! tmux has-session -t "$session_name" 2>/dev/null; then
+if ! tmux list-sessions -F "#{session_name}" 2>/dev/null | grep -qx "$session_name"; then
     tmux new-session -d -s "$session_name"
     tmux set -t "$session_name" status off
 fi
