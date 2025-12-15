@@ -479,6 +479,36 @@
       "name": "bc-web-client",
       "parentId": "455fc749-0df7-403c-bc31-8b414746adb4",
       "pinned": false
+    },
+    {
+      "id": "4035e599-bf30-4d23-b6da-732392594fbd",
+      "name": "TanStack",
+      "parentId": "d247d348-8d31-4399-adb9-cd37e79d9f50",
+      "pinned": false
+    },
+    {
+      "id": "f8a1daa4-51aa-45df-b5f8-0f2b6fc39bcd",
+      "name": "Porn",
+      "parentId": "f4589a26-5e98-480b-aa72-05e79df66610",
+      "pinned": false
+    },
+    {
+      "id": "0f70b766-61c8-489c-8dbb-6a2ab8e1684a",
+      "name": "Articles",
+      "parentId": "0407735c-e964-4be7-944b-ec817d0fe1e9",
+      "pinned": false
+    },
+    {
+      "id": "1b54f93f-ca07-4c21-9b0b-6df8587981a4",
+      "name": "MCP",
+      "parentId": "0407735c-e964-4be7-944b-ec817d0fe1e9",
+      "pinned": false
+    },
+    {
+      "id": "2f8afa17-35fc-4f08-8f2f-cad398b33eb2",
+      "name": "Dev",
+      "parentId": "ca8dd93b-1d7c-4de0-ba39-e71b3cab0e9b",
+      "pinned": false
     }
   ],
   "bookmarks": [
@@ -546,7 +576,7 @@
       "id": "3e4b3849-c5e0-4fc7-b91f-b2a4b5d0a6c9",
       "title": "owallb/mason-auto-install.nvim: Automatically install Mason packages on demand based on file types.",
       "url": "https://github.com/owallb/mason-auto-install.nvim",
-      "folderId": "105021bb-efd2-4230-ac10-b48d60625da5",
+      "folderId": "1b04fa2e-46b2-45cd-a80a-ea95eb663ed2",
       "tags": [],
       "createdAt": "2025-11-23T07:35:10+01:00",
       "visitedAt": null,
@@ -609,16 +639,6 @@
       "folderId": "105021bb-efd2-4230-ac10-b48d60625da5",
       "tags": [],
       "createdAt": "2025-08-03T19:18:52+02:00",
-      "visitedAt": null,
-      "pinned": false
-    },
-    {
-      "id": "03f83c14-b968-4328-9859-871f87e3e69f",
-      "title": "Lela Sohna (@santeseleila) • Instagram photos and videos",
-      "url": "https://www.instagram.com/santeseleila/",
-      "folderId": "105021bb-efd2-4230-ac10-b48d60625da5",
-      "tags": [],
-      "createdAt": "2025-11-22T14:01:09+01:00",
       "visitedAt": null,
       "pinned": false
     },
@@ -719,16 +739,6 @@
       "folderId": "105021bb-efd2-4230-ac10-b48d60625da5",
       "tags": [],
       "createdAt": "2025-11-01T08:37:02+01:00",
-      "visitedAt": null,
-      "pinned": false
-    },
-    {
-      "id": "404a4b53-5a65-4766-b0a3-65bb33bfe785",
-      "title": "We built Wallper - live 4K wallpapers for macOS, now fully native on Tahoe 26 : r/MacOS",
-      "url": "https://www.reddit.com/r/MacOS/comments/1ok810b/we_built_wallper_live_4k_wallpapers_for_macos_now/",
-      "folderId": "105021bb-efd2-4230-ac10-b48d60625da5",
-      "tags": [],
-      "createdAt": "2025-10-30T20:47:39+01:00",
       "visitedAt": null,
       "pinned": false
     },
@@ -1050,7 +1060,7 @@
       "tags": [],
       "createdAt": "2025-11-22T15:06:22+01:00",
       "visitedAt": null,
-      "pinned": false
+      "pinned": true
     },
     {
       "id": "039d1cfb-1a17-46bc-bf24-848fca1e510d",
@@ -1059,7 +1069,7 @@
       "folderId": "ca8dd93b-1d7c-4de0-ba39-e71b3cab0e9b",
       "tags": [],
       "createdAt": "2025-11-22T15:06:29+01:00",
-      "visitedAt": null,
+      "visitedAt": "2025-12-06T21:48:16.416263+01:00",
       "pinned": false
     },
     {
@@ -1099,17 +1109,7 @@
       "folderId": "941849e1-0a68-4433-b75b-75129a5f9dfc",
       "tags": [],
       "createdAt": "2025-12-04T23:44:19+01:00",
-      "visitedAt": null,
-      "pinned": false
-    },
-    {
-      "id": "439c95d2-f071-4569-8972-f2ff6cd25c17",
-      "title": "Spectre - Ghostty Config Generator",
-      "url": "https://spectre-ghostty-config.vercel.app/",
-      "folderId": "941849e1-0a68-4433-b75b-75129a5f9dfc",
-      "tags": [],
-      "createdAt": "2025-12-04T22:03:36+01:00",
-      "visitedAt": null,
+      "visitedAt": "2025-12-06T22:12:34.126586+01:00",
       "pinned": false
     },
     {
@@ -1159,7 +1159,7 @@
       "folderId": "941849e1-0a68-4433-b75b-75129a5f9dfc",
       "tags": [],
       "createdAt": "2025-09-24T07:58:23+02:00",
-      "visitedAt": null,
+      "visitedAt": "2025-12-06T22:07:00.528117+01:00",
       "pinned": false
     },
     {
@@ -3319,7 +3319,7 @@
       "folderId": "941849e1-0a68-4433-b75b-75129a5f9dfc",
       "tags": [],
       "createdAt": "2025-03-14T17:18:24+01:00",
-      "visitedAt": null,
+      "visitedAt": "2025-12-06T22:12:54.729751+01:00",
       "pinned": false
     },
     {
@@ -14013,16 +14013,6 @@
       "pinned": false
     },
     {
-      "id": "edf9af2e-bc09-4184-b9e2-7df14ed2e3ef",
-      "title": "GitHub - nikbrunner/react-gg: Learning repository for the react.gg course",
-      "url": "https://github.com/nikbrunner/react-gg",
-      "folderId": "18be1432-68ff-4c53-83d1-41db171839e8",
-      "tags": [],
-      "createdAt": "2025-05-17T11:16:43+02:00",
-      "visitedAt": null,
-      "pinned": false
-    },
-    {
       "id": "6f5b7b07-9743-449e-8bc1-02de8bb49894",
       "title": "Gravel",
       "url": "https://www.cannondale.com/de-de/bikes/road/gravel",
@@ -16379,17 +16369,7 @@
       "folderId": "72723aff-1ab3-4ed1-b1ae-572178aafe75",
       "tags": [],
       "createdAt": "2025-11-24T15:16:44+01:00",
-      "visitedAt": null,
-      "pinned": false
-    },
-    {
-      "id": "ea4dd040-c5fe-4987-9f07-efc5b1022adb",
-      "title": "reddit",
-      "url": "https://www.reddit.com/",
-      "folderId": "72723aff-1ab3-4ed1-b1ae-572178aafe75",
-      "tags": [],
-      "createdAt": "2025-11-22T15:06:25+01:00",
-      "visitedAt": null,
+      "visitedAt": "2025-12-06T12:10:21.885827+01:00",
       "pinned": false
     },
     {
@@ -17703,56 +17683,6 @@
       "pinned": false
     },
     {
-      "id": "16500301-570f-42ea-962a-1a2d703e38dc",
-      "title": "Home | Exa API",
-      "url": "https://dashboard.exa.ai/home",
-      "folderId": "0407735c-e964-4be7-944b-ec817d0fe1e9",
-      "tags": [],
-      "createdAt": "2025-11-25T09:37:06+01:00",
-      "visitedAt": null,
-      "pinned": false
-    },
-    {
-      "id": "b427582e-ad84-4ae6-becc-9c039518bd1e",
-      "title": "Ref MCP",
-      "url": "https://ref.tools/install",
-      "folderId": "0407735c-e964-4be7-944b-ec817d0fe1e9",
-      "tags": [],
-      "createdAt": "2025-11-25T09:33:31+01:00",
-      "visitedAt": null,
-      "pinned": false
-    },
-    {
-      "id": "939a9cee-475e-4232-9d0d-60cb61cc75b8",
-      "title": "ref.tools",
-      "url": "https://ref.tools/dashboard",
-      "folderId": "0407735c-e964-4be7-944b-ec817d0fe1e9",
-      "tags": [],
-      "createdAt": "2025-11-24T15:26:33+01:00",
-      "visitedAt": null,
-      "pinned": false
-    },
-    {
-      "id": "03afbc59-bad0-469f-80bf-3face1512b80",
-      "title": "Desire to Pop",
-      "url": "https://tante.cc/2025/11/23/desire-to-pop/",
-      "folderId": "0407735c-e964-4be7-944b-ec817d0fe1e9",
-      "tags": [],
-      "createdAt": "2025-11-24T10:39:44+01:00",
-      "visitedAt": null,
-      "pinned": false
-    },
-    {
-      "id": "9308878d-b7a2-4161-b567-9c5bf0e20b45",
-      "title": "MCP Server Directory: 6480+ updated daily | PulseMCP",
-      "url": "https://www.pulsemcp.com/servers",
-      "folderId": "0407735c-e964-4be7-944b-ec817d0fe1e9",
-      "tags": [],
-      "createdAt": "2025-11-22T16:39:34+01:00",
-      "visitedAt": null,
-      "pinned": false
-    },
-    {
       "id": "47325ad8-328b-45ab-9c74-9986fb082c93",
       "title": "Claude",
       "url": "https://claude.ai/new",
@@ -18869,7 +18799,7 @@
       "folderId": "455fc749-0df7-403c-bc31-8b414746adb4",
       "tags": [],
       "createdAt": "2025-11-22T17:01:25+01:00",
-      "visitedAt": null,
+      "visitedAt": "2025-12-07T22:46:08.678467+01:00",
       "pinned": false
     },
     {
@@ -18889,7 +18819,7 @@
       "folderId": "455fc749-0df7-403c-bc31-8b414746adb4",
       "tags": [],
       "createdAt": "2025-11-22T17:01:33+01:00",
-      "visitedAt": null,
+      "visitedAt": "2025-12-08T09:48:53.461839+01:00",
       "pinned": false
     },
     {
@@ -19110,6 +19040,178 @@
       "tags": [],
       "createdAt": "2025-05-28T14:43:22+02:00",
       "visitedAt": null,
+      "pinned": false
+    },
+    {
+      "id": "bec6dd18-52ca-452b-b4a7-15c632988cb0",
+      "title": "https://tanstack.com/ai/latest",
+      "url": "https://tanstack.com/ai/latest",
+      "folderId": "1d824798-cc01-42fc-9828-29146a5e3db4",
+      "tags": [],
+      "createdAt": "2025-12-05T19:41:57.278834+01:00",
+      "visitedAt": null,
+      "pinned": false
+    },
+    {
+      "id": "30032400-91de-4b66-a3c3-a2cb45f5b949",
+      "title": "TanStack AI",
+      "url": "https://tanstack.com/ai/latest/docs/",
+      "folderId": "4035e599-bf30-4d23-b6da-732392594fbd",
+      "tags": [
+        "ai",
+        "tanstack",
+        "documentation"
+      ],
+      "createdAt": "2025-12-05T19:51:38.990218+01:00",
+      "visitedAt": "2025-12-05T19:52:06.94732+01:00",
+      "pinned": false
+    },
+    {
+      "id": "a9f893ef-2f33-4193-a448-f8b63f09ed35",
+      "title": "TanStack Router",
+      "url": "https://tanstack.com/router/latest/docs/",
+      "folderId": "4035e599-bf30-4d23-b6da-732392594fbd",
+      "tags": [
+        "ai",
+        "tanstack",
+        "documentation"
+      ],
+      "createdAt": "2025-12-05T19:52:12.418038+01:00",
+      "visitedAt": "2025-12-05T19:52:20.892701+01:00",
+      "pinned": false
+    },
+    {
+      "id": "e302147a-441c-493f-8851-88a4a70cc9d2",
+      "title": "Lela Sohna (@santeseleila) • Instagram photos and videos",
+      "url": "https://www.instagram.com/santeseleila/",
+      "folderId": "f8a1daa4-51aa-45df-b5f8-0f2b6fc39bcd",
+      "tags": [],
+      "createdAt": "2025-12-06T11:59:41.198876+01:00",
+      "visitedAt": "2025-12-06T19:15:09.320943+01:00",
+      "pinned": false
+    },
+    {
+      "id": "c834937c-77b8-46dc-a4fe-d81e76da15d2",
+      "title": "Spectre Ghostty Terminal Config Editor",
+      "url": "https://spectre-ghostty-config.vercel.app/editor",
+      "folderId": "d247d348-8d31-4399-adb9-cd37e79d9f50",
+      "tags": [
+        "terminals",
+        "config"
+      ],
+      "createdAt": "2025-12-06T12:05:33.356364+01:00",
+      "visitedAt": null,
+      "pinned": false
+    },
+    {
+      "id": "ae80ced7-0e60-490b-92b7-d744d46f1e0e",
+      "title": "Desire to Pop",
+      "url": "https://tante.cc/2025/11/23/desire-to-pop/",
+      "folderId": "0f70b766-61c8-489c-8dbb-6a2ab8e1684a",
+      "tags": [],
+      "createdAt": "2025-12-06T12:10:58.942529+01:00",
+      "visitedAt": null,
+      "pinned": false
+    },
+    {
+      "id": "8d797e53-a52e-47d0-9fb7-75bc675bd359",
+      "title": "Exa MCP",
+      "url": "https://dashboard.exa.ai/home",
+      "folderId": "1b54f93f-ca07-4c21-9b0b-6df8587981a4",
+      "tags": [
+        "mcp"
+      ],
+      "createdAt": "2025-12-06T12:11:43.840519+01:00",
+      "visitedAt": null,
+      "pinned": false
+    },
+    {
+      "id": "77f65693-9c15-4f19-b57a-2d8775187b39",
+      "title": "ref.tools MCP",
+      "url": "https://ref.tools/dashboard",
+      "folderId": "1b54f93f-ca07-4c21-9b0b-6df8587981a4",
+      "tags": [
+        "mcp"
+      ],
+      "createdAt": "2025-12-06T12:11:41.563001+01:00",
+      "visitedAt": null,
+      "pinned": false
+    },
+    {
+      "id": "ed88a846-c7e7-42ef-920f-5d1d357a69d4",
+      "title": "Pulse MCP Directory",
+      "url": "https://www.pulsemcp.com/servers",
+      "folderId": "1b54f93f-ca07-4c21-9b0b-6df8587981a4",
+      "tags": [
+        "mcp"
+      ],
+      "createdAt": "2025-12-06T12:11:38.892582+01:00",
+      "visitedAt": null,
+      "pinned": false
+    },
+    {
+      "id": "c717b9ba-1aa2-4d44-9467-72765667c3b7",
+      "title": "How Claude Opus Gave Me a Perfect Tmux Setup - Hadi Javeedred",
+      "url": "https://www.hadijaveed.me/2025/12/05/how-claude-opus-gave-me-perfect-tmux-setup/",
+      "folderId": "941849e1-0a68-4433-b75b-75129a5f9dfc",
+      "tags": [
+        "config",
+        "ai",
+        "documentation"
+      ],
+      "createdAt": "2025-12-06T21:21:47.014992+01:00",
+      "visitedAt": null,
+      "pinned": false
+    },
+    {
+      "id": "0e15e566-d7b6-497c-99a7-788e96b6cec7",
+      "title": "PR - Review Requested",
+      "url": "https://github.com/pulls/review-requested",
+      "folderId": "2f8afa17-35fc-4f08-8f2f-cad398b33eb2",
+      "tags": [],
+      "createdAt": "2025-12-08T09:55:10.726994+01:00",
+      "visitedAt": "2025-12-08T09:55:14.791466+01:00",
+      "pinned": false
+    },
+    {
+      "id": "bceb5b98-e43c-466e-affb-b92a3998e495",
+      "title": "Hubba Maxim Neovim - Dark Colorscheme",
+      "url": "https://www.reddit.com/r/neovim/comments/1pheflg/hubbamaxnvim_a_dark_neovim_colorscheme_based_on/",
+      "folderId": "941849e1-0a68-4433-b75b-75129a5f9dfc",
+      "tags": [
+        "neovim",
+        "colorscheme",
+        "design"
+      ],
+      "createdAt": "2025-12-08T17:15:18.718546+01:00",
+      "visitedAt": null,
+      "pinned": false
+    },
+    {
+      "id": "7d59b043-c706-449c-b6a1-8cc9b9834294",
+      "title": "The Monospace Web - Typography and Design Resources",
+      "url": "https://owickstrom.github.io/the-monospace-web/",
+      "folderId": "941849e1-0a68-4433-b75b-75129a5f9dfc",
+      "tags": [
+        "design",
+        "typography",
+        "web"
+      ],
+      "createdAt": "2025-12-08T19:14:54.138594+01:00",
+      "visitedAt": null,
+      "pinned": false
+    },
+    {
+      "id": "ee7c7c2f-f7fe-4bc9-b215-37105ce6ae29",
+      "title": "German with Sammy - TikTok",
+      "url": "https://www.tiktok.com/@germanwithsammy",
+      "folderId": "f8a1daa4-51aa-45df-b5f8-0f2b6fc39bcd",
+      "tags": [
+        "social",
+        "language learning"
+      ],
+      "createdAt": "2025-12-12T10:06:59.105119+01:00",
+      "visitedAt": "2025-12-12T10:12:51.55588+01:00",
       "pinned": false
     }
   ]
