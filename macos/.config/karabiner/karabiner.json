@@ -9,9 +9,20 @@
                 },
                 "rules": [
                     {
-                        "description": "Change caps_lock to left_control if pressed with other keys, change caps_lock to escape if pressed alone.",
+                        "description": "Caps Lock to Control/Escape (Internal Keyboard)",
                         "manipulators": [
                             {
+                                "conditions": [
+                                    {
+                                        "identifiers": [
+                                            {
+                                                "product_id": 834,
+                                                "vendor_id": 1452
+                                            }
+                                        ],
+                                        "type": "device_if"
+                                    }
+                                ],
                                 "from": {
                                     "key_code": "caps_lock",
                                     "modifiers": { "optional": ["any"] }
@@ -23,9 +34,20 @@
                         ]
                     },
                     {
-                        "description": "Right Cmd: HYPER on Hold / Backspace on Tab",
+                        "description": "Right Cmd: HYPER on Hold / Backspace on Tap (Internal Keyboard)",
                         "manipulators": [
                             {
+                                "conditions": [
+                                    {
+                                        "identifiers": [
+                                            {
+                                                "product_id": 834,
+                                                "vendor_id": 1452
+                                            }
+                                        ],
+                                        "type": "device_if"
+                                    }
+                                ],
                                 "from": {
                                     "key_code": "right_command",
                                     "modifiers": {}
@@ -95,13 +117,18 @@
                         ]
                     },
                     {
-                        "description": "Right Opt: MEH on Hold",
+                        "description": "Right Opt: MEH on Hold (Internal Keyboard)",
                         "manipulators": [
                             {
                                 "conditions": [
                                     {
-                                        "identifiers": [{ "vendor_id": 12951 }],
-                                        "type": "device_unless"
+                                        "identifiers": [
+                                            {
+                                                "product_id": 834,
+                                                "vendor_id": 1452
+                                            }
+                                        ],
+                                        "type": "device_if"
                                     }
                                 ],
                                 "from": {
@@ -119,9 +146,20 @@
                         ]
                     },
                     {
-                        "description": "Change Fn + h/j/k/l to Arrows",
+                        "description": "Fn + h/j/k/l to Arrows (Internal Keyboard)",
                         "manipulators": [
                             {
+                                "conditions": [
+                                    {
+                                        "identifiers": [
+                                            {
+                                                "product_id": 834,
+                                                "vendor_id": 1452
+                                            }
+                                        ],
+                                        "type": "device_if"
+                                    }
+                                ],
                                 "from": {
                                     "key_code": "h",
                                     "modifiers": {
@@ -133,6 +171,17 @@
                                 "type": "basic"
                             },
                             {
+                                "conditions": [
+                                    {
+                                        "identifiers": [
+                                            {
+                                                "product_id": 834,
+                                                "vendor_id": 1452
+                                            }
+                                        ],
+                                        "type": "device_if"
+                                    }
+                                ],
                                 "from": {
                                     "key_code": "j",
                                     "modifiers": {
@@ -144,6 +193,17 @@
                                 "type": "basic"
                             },
                             {
+                                "conditions": [
+                                    {
+                                        "identifiers": [
+                                            {
+                                                "product_id": 834,
+                                                "vendor_id": 1452
+                                            }
+                                        ],
+                                        "type": "device_if"
+                                    }
+                                ],
                                 "from": {
                                     "key_code": "k",
                                     "modifiers": {
@@ -155,6 +215,17 @@
                                 "type": "basic"
                             },
                             {
+                                "conditions": [
+                                    {
+                                        "identifiers": [
+                                            {
+                                                "product_id": 834,
+                                                "vendor_id": 1452
+                                            }
+                                        ],
+                                        "type": "device_if"
+                                    }
+                                ],
                                 "from": {
                                     "key_code": "l",
                                     "modifiers": {
@@ -163,6 +234,19 @@
                                     }
                                 },
                                 "to": [{ "key_code": "right_arrow" }],
+                                "type": "basic"
+                            }
+                        ]
+                    },
+                    {
+                        "description": "Ctrl-[ sends Escape (all keyboards)",
+                        "manipulators": [
+                            {
+                                "from": {
+                                    "key_code": "open_bracket",
+                                    "modifiers": { "mandatory": ["control"] }
+                                },
+                                "to": [{ "key_code": "escape" }],
                                 "type": "basic"
                             }
                         ]
@@ -256,7 +340,7 @@
                         "product_id": 417,
                         "vendor_id": 13364
                     },
-                    "ignore": true
+                    "ignore_vendor_events": true
                 },
                 {
                     "identifiers": {
@@ -320,7 +404,8 @@
                         "is_keyboard": true,
                         "product_id": 6519,
                         "vendor_id": 12951
-                    }
+                    },
+                    "ignore": true
                 }
             ],
             "fn_function_keys": [
