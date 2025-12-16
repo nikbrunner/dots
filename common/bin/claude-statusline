@@ -12,18 +12,18 @@ duration_ms=$(echo "$input" | jq -r '.cost.total_duration_ms // 0')
 transcript=$(echo "$input" | jq -r '.transcript_path // ""')
 context_max=$(echo "$input" | jq -r '.context_window.context_window_size // 1')
 
-# Calculate actual context from current_usage (cache = what's in context window)
+# Calculate actual context from current_usage
+# Formula from ccstatusline: input_tokens + cache_read + cache_creation
+input_tok=$(echo "$input" | jq -r '.context_window.current_usage.input_tokens // 0')
 cache_read=$(echo "$input" | jq -r '.context_window.current_usage.cache_read_input_tokens // 0')
 cache_create=$(echo "$input" | jq -r '.context_window.current_usage.cache_creation_input_tokens // 0')
-context_used=$((cache_read + cache_create))
+context_used=$((input_tok + cache_read + cache_create))
 
 # Count compactions from transcript
-# First "type":"summary" is the conversation title, so subtract 1
+# Look for compact_boundary entries (actual compaction events)
 compactions=0
 if [ -n "$transcript" ] && [ -f "$transcript" ]; then
-    summary_count=$(grep -c '"type":"summary"' "$transcript" 2>/dev/null || echo "0")
-    # Subtract 1 for the title entry
-    compactions=$((summary_count > 0 ? summary_count - 1 : 0))
+    compactions=$(grep -c '"subtype":"compact_boundary"' "$transcript" 2>/dev/null || echo "0")
 fi
 
 # Format duration (ms to human readable)
@@ -53,13 +53,13 @@ if [ "$context_max" -gt 0 ] 2>/dev/null; then
     [ "$percent" -gt 0 ] && [ "$filled" -eq 0 ] && filled=1
     empty=$((bar_width - filled))
 
-    # Color based on usage: green < 50%, yellow 50-80%, red > 80%
+    # Color based on usage: green < 50%, yellow 50-75%, red > 75% (reserve zone)
     if [ "$percent" -lt 50 ]; then
         color="\033[32m"  # green
-    elif [ "$percent" -lt 80 ]; then
+    elif [ "$percent" -lt 75 ]; then
         color="\033[33m"  # yellow
     else
-        color="\033[31m"  # red
+        color="\033[31m"  # red - reserve zone
     fi
 
     bar="${color}"
@@ -68,7 +68,12 @@ if [ "$context_max" -gt 0 ] 2>/dev/null; then
     for ((i=0; i<empty; i++)); do bar+="░"; done
     bar+="\033[0m"
 
-    context_display=" ${bar} ${percent}%"
+    # Add reserve indicator when past 75% (usable threshold)
+    if [ "$percent" -ge 75 ]; then
+        context_display=" ${bar} ${percent}% \033[31m⛽\033[0m"
+    else
+        context_display=" ${bar} ${percent}%"
+    fi
 fi
 
 # Separator
