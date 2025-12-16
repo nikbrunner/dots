@@ -1,19 +1,6 @@
 {
   "$schema": "https://json.schemastore.org/claude-code-settings.json",
   "includeCoAuthoredBy": false,
-  "model": "opus",
-  "statusLine": {
-    "type": "command",
-    "command": "npx -y ccstatusline@latest",
-    "padding": 0
-  },
-  "enabledPlugins": {
-    "superpowers@superpowers-marketplace": true
-  },
-  "alwaysThinkingEnabled": false,
-  "feedbackSurveyState": {
-    "lastShownTime": 1754313915132
-  },
   "permissions": {
     "allow": [
       "Bash(cat:*)",
@@ -57,31 +44,23 @@
       "WebSearch",
       "mcp__Ref__ref_read_url",
       "mcp__Ref__ref_search_documentation",
-      "mcp__chrome-devtools__click",
-      "mcp__chrome-devtools__close_page",
-      "mcp__chrome-devtools__emulate",
-      "mcp__chrome-devtools__evaluate_script",
-      "mcp__chrome-devtools__fill",
-      "mcp__chrome-devtools__fill_form",
-      "mcp__chrome-devtools__get_console_message",
-      "mcp__chrome-devtools__list_console_messages",
-      "mcp__chrome-devtools__list_pages",
-      "mcp__chrome-devtools__navigate_page",
-      "mcp__chrome-devtools__new_page",
-      "mcp__chrome-devtools__press_key",
-      "mcp__chrome-devtools__resize_page",
-      "mcp__chrome-devtools__take_screenshot",
-      "mcp__chrome-devtools__take_snapshot",
-      "mcp__chrome-devtools__wait_for",
+      "mcp__chrome-devtools__*",
       "mcp__exa__get_code_context_exa",
-      "mcp__supabase__apply_migration"
-      "mcp__supabase__execute_sql",
-      "mcp__supabase__get_logs",
-      "mcp__supabase__get_project_url",
-      "mcp__supabase__list_migrations",
-      "mcp__supabase__list_tables",
+      "mcp__supabase__*"
     ],
     "deny": [],
     "ask": []
   },
+  "model": "opus",
+  "enabledPlugins": {
+    "superpowers@superpowers-marketplace": true
+  },
+  "alwaysThinkingEnabled": true,
+  "feedbackSurveyState": {
+    "lastShownTime": 1754313915132
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "~/bin/claude-statusline"
+  }
 }
