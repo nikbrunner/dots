@@ -5,14 +5,70 @@
 -- Configuration
 -- ============================================================================
 
+-- ============================================================================
+-- Model Definitions
+-- ============================================================================
+
+-- Available models and their capabilities
+-- See: https://inference-docs.cerebras.ai/api-reference/models/list-models
+local models = {
+    -- Standard API models (free tier)
+    ["qwen-3-32b"] = {
+        name = "Qwen3 32B",
+        available = true,
+        fim = false,
+        pricing = { input = 0.20, output = 0.20 },
+        docs = "https://inference-docs.cerebras.ai/models/qwen-3-32b",
+    },
+    ["qwen-3-235b-a22b-instruct-2507"] = {
+        name = "Qwen3 235B Instruct",
+        available = true,
+        fim = false,
+        pricing = { input = 0.60, output = 1.20 },
+        docs = "https://inference-docs.cerebras.ai/models/qwen-3-235b-2507",
+    },
+    ["llama-3.3-70b"] = {
+        name = "Llama 3.3 70B",
+        available = true,
+        fim = false,
+        pricing = { input = 0.20, output = 0.20 },
+        docs = "https://inference-docs.cerebras.ai/models/llama-3.3-70b",
+    },
+    ["llama3.1-8b"] = {
+        name = "Llama 3.1 8B",
+        available = true,
+        fim = false,
+        pricing = { input = 0.10, output = 0.10 },
+        docs = "https://inference-docs.cerebras.ai/models/llama-3.1-8b",
+    },
+    -- Cerebras Code subscription models ($50-200/month)
+    ["qwen-3-coder-480b"] = {
+        name = "Qwen3 Coder 480B",
+        available = false, -- requires Cerebras Code subscription
+        fim = true,
+        fim_tokens = {
+            prefix = "<|fim_prefix|>",
+            suffix = "<|fim_suffix|>",
+            middle = "<|fim_middle|>",
+        },
+        pricing = { input = 2.00, output = 2.00 },
+        docs = "https://www.cerebras.ai/blog/qwen3-coder-480b-is-live-on-cerebras",
+    },
+}
+
+-- ============================================================================
+-- Configuration
+-- ============================================================================
+
 local config = {
     enabled = true,
     debounce_ms = 150,
-    max_context_lines = 50,
-    model = "qwen-3-235b-a22b-instruct-2507",
+    max_context_lines = 200, -- lines before cursor (nil = full file)
+    max_file_size = 100000, -- 100KB limit (skip files larger than this)
+    model = "qwen-3-235b-a22b-instruct-2507", -- see models table above
     max_tokens = 128,
     temperature = 0.2,
-    stop_sequences = { "\n", "```", "---" },  -- Stop at newline to prefer single-line completions
+    stop_sequences = { "\n", "```", "---" }, -- Stop at newline to prefer single-line completions
     keymaps = {
         accept = "<Tab>",
         accept_word = "<S-Tab>",
@@ -342,23 +398,37 @@ local function get_context()
     local row = cursor[1]
     local col = cursor[2]
 
+    -- Get model capabilities
+    local model_info = models[config.model] or {}
+    local use_fim = model_info.fim and model_info.fim_tokens
+
     -- Get file info
     local filepath = vim.api.nvim_buf_get_name(buf)
     local filetype = vim.bo[buf].filetype
     local filename = vim.fn.fnamemodify(filepath, ":t")
 
-    -- Get lines before cursor (up to max_context_lines)
-    local start_line = math.max(1, row - config.max_context_lines)
-    local lines_before = vim.api.nvim_buf_get_lines(buf, start_line - 1, row - 1, false)
+    -- Get all lines in buffer
+    local total_lines = vim.api.nvim_buf_line_count(buf)
+    local all_lines = vim.api.nvim_buf_get_lines(buf, 0, total_lines, false)
 
-    -- Get current line up to cursor
-    local current_line = vim.api.nvim_get_current_line()
+    -- Check file size limit
+    local total_size = 0
+    for _, line in ipairs(all_lines) do
+        total_size = total_size + #line + 1 -- +1 for newline
+    end
+    if total_size > config.max_file_size then
+        return nil -- Skip large files
+    end
+
+    -- Get current line
+    local current_line = all_lines[row] or ""
     local line_before_cursor = current_line:sub(1, col)
+    local line_after_cursor = current_line:sub(col + 1)
 
-    -- Build prompt with file context
-    local prompt_parts = {}
+    -- Build prefix (lines before cursor)
+    local prefix_lines = {}
 
-    -- Add file header comment based on filetype
+    -- Determine file header comment style
     local comment_prefix = "--"
     if filetype == "python" or filetype == "sh" or filetype == "bash" or filetype == "zsh" then
         comment_prefix = "#"
@@ -376,19 +446,42 @@ local function get_context()
         comment_prefix = "//"
     end
 
+    -- Add file header
     if filename and filename ~= "" then
-        table.insert(prompt_parts, comment_prefix .. " File: " .. filename)
+        table.insert(prefix_lines, comment_prefix .. " File: " .. filename)
     end
 
-    -- Add context lines
-    for _, line in ipairs(lines_before) do
-        table.insert(prompt_parts, line)
+    -- Add lines before cursor
+    local start_line = 1
+    if config.max_context_lines then
+        start_line = math.max(1, row - config.max_context_lines)
+    end
+
+    for i = start_line, row - 1 do
+        table.insert(prefix_lines, all_lines[i])
     end
 
     -- Add current line up to cursor
-    table.insert(prompt_parts, line_before_cursor)
+    table.insert(prefix_lines, line_before_cursor)
 
-    return table.concat(prompt_parts, "\n")
+    local prefix = table.concat(prefix_lines, "\n")
+
+    -- If model supports FIM, include suffix with proper tokens
+    if use_fim then
+        local suffix_lines = {}
+        table.insert(suffix_lines, line_after_cursor)
+        for i = row + 1, total_lines do
+            table.insert(suffix_lines, all_lines[i])
+        end
+        local suffix = table.concat(suffix_lines, "\n")
+
+        local tokens = model_info.fim_tokens
+        -- FIM format: <|fim_prefix|>{prefix}<|fim_suffix|>{suffix}<|fim_middle|>
+        return tokens.prefix .. prefix .. tokens.suffix .. suffix .. tokens.middle
+    end
+
+    -- Non-FIM models: just return prefix
+    return prefix
 end
 
 -- ============================================================================
@@ -506,8 +599,23 @@ local function setup()
     vim.api.nvim_create_user_command("CerebrasStatus", function()
         local status = config.enabled and "enabled" or "disabled"
         local has_key = has_api_key() and "set" or "NOT SET"
+        local model_info = models[config.model] or {}
+        local model_name = model_info.name or config.model
+        local fim_status = model_info.fim and "yes" or "no"
+        local pricing = model_info.pricing
+                and string.format("$%.2f/$%.2f per M tokens", model_info.pricing.input, model_info.pricing.output)
+            or "unknown"
+
         vim.notify(
-            string.format("Cerebras Completion: %s\nAPI Key: %s\nModel: %s", status, has_key, config.model),
+            string.format(
+                "Cerebras Completion: %s\nAPI Key: %s\nModel: %s (%s)\nFIM: %s\nPricing: %s",
+                status,
+                has_key,
+                model_name,
+                config.model,
+                fim_status,
+                pricing
+            ),
             vim.log.levels.INFO
         )
     end, { desc = "Show Cerebras completion status" })
