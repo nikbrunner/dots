@@ -404,29 +404,24 @@ regenerate_code = function(new_instruction)
     update_buffer_content(diff_state.right_bufnr, { "", "⏳ Regenerating code...", "" })
 
     -- Generate new refactored code (async)
-    generate_refactored_code(
-        original_code,
-        diff_state.instruction,
-        nil,
-        function(refactored_code, error_msg)
-            if not refactored_code then
-                update_buffer_content(diff_state.right_bufnr, { "", "❌ Failed to regenerate:", "", error_msg or "Unknown error" })
-                return
-            end
+    generate_refactored_code(original_code, diff_state.instruction, nil, function(refactored_code, error_msg)
+        if not refactored_code then
+            update_buffer_content(
+                diff_state.right_bufnr,
+                { "", "❌ Failed to regenerate:", "", error_msg or "Unknown error" }
+            )
+            return
+        end
 
-            -- Clean up response
-            refactored_code = refactored_code:gsub("^```%w*\n", ""):gsub("\n```$", "")
+        -- Clean up response
+        refactored_code = refactored_code:gsub("^```%w*\n", ""):gsub("\n```$", "")
 
-            -- Split lines preserving empty lines
-            local new_lines = vim.split(refactored_code, "\n", { plain = true })
+        -- Split lines preserving empty lines
+        local new_lines = vim.split(refactored_code, "\n", { plain = true })
 
-            -- Update buffer with new code
-            update_buffer_content(diff_state.right_bufnr, new_lines)
-        end,
-        diff_state.full_file_context,
-        diff_state.start_line,
-        diff_state.end_line
-    )
+        -- Update buffer with new code
+        update_buffer_content(diff_state.right_bufnr, new_lines)
+    end, diff_state.full_file_context, diff_state.start_line, diff_state.end_line)
 end
 
 -- ========================================================================
@@ -449,7 +444,12 @@ local function claude_edit()
     local current_line = vim.fn.line(".")
 
     -- If marks exist and are valid (not at line 1 which is the default), use them
-    if mark_start > 0 and mark_end > 0 and mark_start <= mark_end and not (mark_start == 1 and mark_end == 1 and current_line ~= 1) then
+    if
+        mark_start > 0
+        and mark_end > 0
+        and mark_start <= mark_end
+        and not (mark_start == 1 and mark_end == 1 and current_line ~= 1)
+    then
         -- Visual selection - use marks
         start_line = mark_start
         end_line = mark_end
@@ -497,34 +497,26 @@ local function claude_edit()
         update_buffer_content(buf, { "", "⏳ Generating refactored code...", "" })
 
         -- Generate refactored code asynchronously
-        generate_refactored_code(
-            original_code,
-            instruction,
-            nil,
-            function(refactored_code, error_msg)
-                if not refactored_code then
-                    update_buffer_content(buf, { "", "❌ Failed to generate code:", "", error_msg or "Unknown error" })
-                    return
-                end
+        generate_refactored_code(original_code, instruction, nil, function(refactored_code, error_msg)
+            if not refactored_code then
+                update_buffer_content(buf, { "", "❌ Failed to generate code:", "", error_msg or "Unknown error" })
+                return
+            end
 
-                -- Clean up response (remove markdown code blocks if present)
-                refactored_code = refactored_code:gsub("^```%w*\n", ""):gsub("\n```$", "")
+            -- Clean up response (remove markdown code blocks if present)
+            refactored_code = refactored_code:gsub("^```%w*\n", ""):gsub("\n```$", "")
 
-                -- Split lines preserving empty lines
-                local new_lines = vim.split(refactored_code, "\n", { plain = true })
+            -- Split lines preserving empty lines
+            local new_lines = vim.split(refactored_code, "\n", { plain = true })
 
-                if #new_lines == 0 then
-                    update_buffer_content(buf, { "", "❌ No code generated!" })
-                    return
-                end
+            if #new_lines == 0 then
+                update_buffer_content(buf, { "", "❌ No code generated!" })
+                return
+            end
 
-                -- Update split with refactored code
-                update_buffer_content(buf, new_lines)
-            end,
-            full_file_context,
-            start_line,
-            end_line
-        )
+            -- Update split with refactored code
+            update_buffer_content(buf, new_lines)
+        end, full_file_context, start_line, end_line)
     end)
 end
 
@@ -537,5 +529,5 @@ vim.api.nvim_create_user_command("ClaudeEdit", function()
 end, { range = true, desc = "Refactor code using Claude AI" })
 
 -- Keybindings
-vim.keymap.set("v", "<C-g>", ":ClaudeEdit<CR>", { desc = "Claude Edit: Refactor selection" })
-vim.keymap.set("n", "<C-g>", ":ClaudeEdit<CR>", { desc = "Claude Edit: Refactor entire file" })
+-- vim.keymap.set("v", "<C-g>", ":ClaudeEdit<CR>", { desc = "Claude Edit: Refactor selection" })
+-- vim.keymap.set("n", "<C-g>", ":ClaudeEdit<CR>", { desc = "Claude Edit: Refactor entire file" })
