@@ -23,6 +23,8 @@ case "$(uname -s)" in
         ;;
 esac
 
+set -a; source ~/.env; set +a
+
 # Cross-Platform Path Exports ===========================================
 export PATH=$HOME/bin:/usr/local/bin:$PATH
 export PATH=$HOME/.local/bin:$PATH
@@ -32,6 +34,7 @@ export PATH=$HOME/Applications:$PATH
 export PATH=/usr/bin/python:$PATH
 export PATH=/usr/bin/python3:$PATH
 export PATH=$HOME/.deno/bin:$PATH
+export PATH=$HOME/go/bin:$PATH
 export XDG_CONFIG_HOME="$HOME/.config" # Because of https://github.com/jesseduffield/lazygit/blob/master/docs/Config.md#user-config
 export RIPGREP_CONFIG_PATH=$HOME/.ripgreprc
 
@@ -75,7 +78,7 @@ function y() {
 
 # fzf ====================================================================
 export FZF_DEFAULT_COMMAND='rg --files --hidden --follow --no-ignore-vcs'
-export FZF_DEFAULT_OPTS="--bind='ctrl-e:execute(echo {+} | xargs -o nvim)' --reverse --no-separator --no-info --no-scrollbar --border=bold --border-label-pos=3 --padding=1,5 --color=bg+:gray,fg+:white,gutter:-1,border:yellow,prompt:cyan,pointer:yellow,marker:cyan,spinner:green,header:blue,label:yellow,query:magenta --highlight-line --prompt='  ' --ansi"
+export FZF_DEFAULT_OPTS="--bind='ctrl-e:execute(echo {+} | xargs -o nvim)' --reverse --no-separator --no-info --no-scrollbar --border=bold --border-label-pos=3 --padding=1,5 --color=gutter:-1,border:yellow,prompt:cyan,pointer:yellow,marker:cyan,spinner:green,header:blue,label:yellow,query:magenta --highlight-line --prompt='  ' --ansi"
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
