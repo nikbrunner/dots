@@ -63,7 +63,8 @@ local models = {
 local config = {
     enabled = true,
     debounce_ms = 150,
-    max_context_lines = 200, -- lines before cursor (nil = full file)
+    max_context_lines = 100, -- lines before cursor (nil = full file)
+    include_suffix = false, -- EXPERIMENTAL: unreliable without FIM-trained model
     max_file_size = 100000, -- 100KB limit (skip files larger than this)
     model = "qwen-3-235b-a22b-instruct-2507", -- see models table above
     max_tokens = 128,
@@ -155,6 +156,14 @@ local function render_ghost_text(completion_text)
     local row = cursor[1] - 1
     local col = cursor[2]
 
+    -- Check if cursor is at an indent position (only whitespace before cursor)
+    local current_line = vim.api.nvim_get_current_line()
+    local before_cursor = current_line:sub(1, col)
+    if before_cursor:match("^%s*$") and completion_text:match("^%s") then
+        -- Strip leading whitespace from completion to avoid double indent in preview
+        completion_text = completion_text:gsub("^%s+", "")
+    end
+
     -- Split completion into lines
     local lines = vim.split(completion_text, "\n", { plain = true })
     local first_line = lines[1] or ""
@@ -217,13 +226,19 @@ local function accept_completion(full)
         local current_line = vim.api.nvim_get_current_line()
         local before_cursor = current_line:sub(1, col)
 
-        -- If line before cursor is only whitespace and completion doesn't start
-        -- with whitespace, this is likely a dedent (like "end" in Lua).
-        -- Clear the line's whitespace so completion goes to proper indent level.
-        if before_cursor:match("^%s*$") and not text_to_insert:match("^%s") then
-            col = 0
-            vim.api.nvim_set_current_line(current_line:sub(col + 1))
-            current_line = vim.api.nvim_get_current_line()
+        -- Handle indentation when cursor is at an indent position
+        if before_cursor:match("^%s*$") then
+            if text_to_insert:match("^%s") then
+                -- Completion has leading whitespace but we're already indented
+                -- Strip the completion's leading whitespace to avoid double indent
+                text_to_insert = text_to_insert:gsub("^%s+", "")
+            else
+                -- Completion doesn't start with whitespace (like "end" or "}")
+                -- This is likely a dedent - clear line's whitespace
+                col = 0
+                vim.api.nvim_set_current_line(current_line:sub(col + 1))
+                current_line = vim.api.nvim_get_current_line()
+            end
         end
 
         -- Handle multiline insertion
@@ -323,13 +338,16 @@ local function request_completion(prompt, callback)
         max_tokens = config.max_tokens,
         temperature = config.temperature,
         stop = config.stop_sequences,
+        stream = true, -- Enable streaming
     })
 
-    local result_lines = {}
+    local accumulated_text = ""
+    local buffer = "" -- Buffer for incomplete SSE lines
 
     state.pending_job = vim.fn.jobstart({
         "curl",
         "-s",
+        "-N", -- Disable buffering for streaming
         "-X",
         "POST",
         "https://api.cerebras.ai/v1/completions",
@@ -341,42 +359,86 @@ local function request_completion(prompt, callback)
         payload,
     }, {
         on_stdout = function(_, data)
-            if data then
-                for _, line in ipairs(data) do
-                    if line ~= "" then
-                        table.insert(result_lines, line)
-                    end
+            if not data then
+                return
+            end
+
+            -- Neovim splits output by newlines, so data is an array of lines
+            for _, line in ipairs(data) do
+                -- Handle incomplete lines by buffering
+                if buffer ~= "" then
+                    line = buffer .. line
+                    buffer = ""
                 end
+
+                -- Skip empty lines
+                if line == "" then
+                    goto continue
+                end
+
+                -- Parse SSE data line
+                if line:match("^data: ") then
+                    local json_str = line:sub(7) -- Remove "data: " prefix
+
+                    if json_str == "[DONE]" then
+                        goto continue
+                    end
+
+                    local ok, json_data = pcall(vim.fn.json_decode, json_str)
+                    if ok and json_data.choices and json_data.choices[1] then
+                        local token = json_data.choices[1].text or ""
+
+                        if token ~= "" then
+                            accumulated_text = accumulated_text .. token
+
+                            -- Check for stop sequences
+                            local should_stop = false
+                            for _, stop_seq in ipairs(config.stop_sequences) do
+                                if accumulated_text:find(stop_seq, 1, true) then
+                                    -- Trim at stop sequence
+                                    local stop_pos = accumulated_text:find(stop_seq, 1, true)
+                                    accumulated_text = accumulated_text:sub(1, stop_pos - 1)
+                                    should_stop = true
+                                    break
+                                end
+                            end
+
+                            -- Update ghost text with accumulated tokens
+                            vim.schedule(function()
+                                if is_insert_mode() then
+                                    render_ghost_text(accumulated_text)
+                                end
+                            end)
+
+                            if should_stop then
+                                -- Cancel the job since we hit a stop sequence
+                                if state.pending_job then
+                                    vim.fn.jobstop(state.pending_job)
+                                end
+                                return
+                            end
+                        end
+                    end
+                elseif not line:match("^%s*$") then
+                    -- Incomplete line, buffer it
+                    buffer = line
+                end
+
+                ::continue::
             end
         end,
         on_exit = function(_, exit_code)
             state.pending_job = nil
 
             vim.schedule(function()
-                if exit_code ~= 0 then
+                if exit_code ~= 0 and exit_code ~= 143 then -- 143 = killed by SIGTERM (normal cancel)
                     callback(nil, "API call failed (exit code: " .. exit_code .. ")")
                     return
                 end
 
-                local response = table.concat(result_lines, "\n")
-                local ok, json_response = pcall(vim.fn.json_decode, response)
-
-                if not ok then
-                    callback(nil, "Failed to parse response")
-                    return
-                end
-
-                -- Check for error in response
-                if json_response.error then
-                    callback(nil, json_response.error.message or "API error")
-                    return
-                end
-
-                -- Extract completion text
-                if json_response.choices and json_response.choices[1] and json_response.choices[1].text then
-                    callback(json_response.choices[1].text)
-                else
-                    callback(nil, "No completion in response")
+                -- Final callback with accumulated text
+                if accumulated_text ~= "" then
+                    callback(accumulated_text)
                 end
             end)
         end,
@@ -466,7 +528,7 @@ local function get_context()
 
     local prefix = table.concat(prefix_lines, "\n")
 
-    -- If model supports FIM, include suffix with proper tokens
+    -- If model supports FIM, use proper FIM tokens
     if use_fim then
         local suffix_lines = {}
         table.insert(suffix_lines, line_after_cursor)
@@ -480,7 +542,29 @@ local function get_context()
         return tokens.prefix .. prefix .. tokens.suffix .. suffix .. tokens.middle
     end
 
-    -- Non-FIM models: just return prefix
+    -- Non-FIM models: include suffix with cursor marker if configured
+    if config.include_suffix then
+        local suffix_lines = {}
+        table.insert(suffix_lines, line_after_cursor)
+
+        -- Use same max_context_lines for suffix
+        local end_line = total_lines
+        if config.max_context_lines then
+            end_line = math.min(total_lines, row + config.max_context_lines)
+        end
+
+        for i = row + 1, end_line do
+            table.insert(suffix_lines, all_lines[i])
+        end
+
+        local suffix = table.concat(suffix_lines, "\n")
+        if suffix ~= "" then
+            -- Use a simple cursor marker that the model can understand
+            return prefix .. "█" .. suffix
+        end
+    end
+
+    -- Default: just return prefix
     return prefix
 end
 
