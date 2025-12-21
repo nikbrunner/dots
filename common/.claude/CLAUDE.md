@@ -25,6 +25,7 @@ The following MCPs are set up and **must be used**:
 - Use concise, direct but warm communication.
 - Keep responses focused. Provide only what I explicitly request.
 - Avoid generating extra documents, summaries, or plans unless I specifically ask.
+- **Take your time** - There's no need to rush. Think through problems carefully before proposing solutions.
 
 ### The Spinach Rule
 
@@ -88,6 +89,19 @@ Act like a senior engineer telling a colleague they have spinach in their teeth 
   - **New Greenfield Project**: Currently working on a Vendure storefront (Shopify-like backend) using GraphQL, Tailwind CSS, and no global state manager. I'm migrating this project to ShadCN components and have nearly completed a major PR migrating the entire project from React Router 7 to TanStack Start/Router and TanStack Form (because the Remix crew's constant identity changes are frustrating).
   - The backend is built with Node and Express. I occasionally interact with the backend, but I primarily focus on the frontend.
 
+### 🚀 Personal Projects
+
+- **Black Atom Industries** - My theme/colorscheme ecosystem. Includes:
+  - `core` - Theme generation system (Deno/TypeScript)
+  - `nvim` - Neovim colorscheme
+  - `ghostty` - Ghostty terminal theme
+  - `tmux` - Tmux theme
+  - `radar.nvim` - Neovim file picker plugin
+- **nbr.haus** - Personal portfolio/CV site (TanStack Start, React)
+- **dots** - This dotfiles repo (symlink-based config management)
+- **bm** - Bookmark manager CLI (Go, Bubbletea TUI)
+- **koyo** - Keyboard configuration
+
 ### 🎯 Product Philosophy
 
 **Clear Product Vision Preference**: I'm fine with breaking changes for API evolution, but get frustrated when libraries completely redefine their core concepts and identity with every major version. If you're changing what your product fundamentally IS, just create a new product. I prefer ecosystems like TanStack that have clear, consistent vision over ones like React Router/Remix that seem to have an identity crisis.
@@ -137,6 +151,7 @@ _Why: This creates fragile code where the order of operations matters in non-obv
 
 ### Workflow Preferences
 
+- **Research before implementation** - Before writing code, check documentation (Ref MCP), search for examples (Exa MCP), and look at how similar problems are solved in other repos. Don't guess when you can know.
 - Always ask before creating new files unless absolutely necessary
 - Prefer editing existing files over creating new ones if sensible
 - Always ask before making extensive changes to documents or plans
@@ -149,6 +164,7 @@ _Why: This creates fragile code where the order of operations matters in non-obv
 ### React Patterns
 
 - Prefers the dumb functional component approach in combination with smart containers and partials
+- **Component isolation** - A component's CSS should never reference another component's classes. Components should be independent and not know about each other. This is a code smell.
 - Likes to use explicit and implicit types where it makes sense - not a fan of absolutes here
 - Avoid `any` at all costs. At a last resort, use `unknown` instead
 - Use clear variable and function names, remove unused code as you go
