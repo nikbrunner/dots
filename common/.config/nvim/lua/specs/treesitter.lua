@@ -41,6 +41,7 @@ M.specs = {
                 "vimdoc",
                 "yaml",
                 "http",
+                "kulala_http",
             },
             incremental_selection = {
                 enable = true,
