@@ -57,69 +57,38 @@ echo -e "${BLUE}🔍 Analyzing URL...${NC}"
 # Simple detection: check if URL contains "playlist" or "album"
 if [[ "$URL" =~ playlist|album|list= ]]; then
     IS_PLAYLIST=true
+
+    # Check if music-organize is available
+    if ! command -v music-organize &>/dev/null; then
+        echo -e "${RED}Error: music-organize is required for playlist downloads.${NC}"
+        exit 1
+    fi
+
+    # Get playlist info for display
     echo -e "${YELLOW}⏳ Detecting playlist information...${NC}"
-
-    # Get playlist title using a simple extraction
     PLAYLIST_INFO=$(yt-dlp --playlist-items 1 --print "%(playlist)s|%(playlist_count)s" "$URL" 2>/dev/null || echo "")
-
     if [ -n "$PLAYLIST_INFO" ] && [ "$PLAYLIST_INFO" != "NA|NA" ]; then
         PLAYLIST_TITLE=$(echo "$PLAYLIST_INFO" | cut -d'|' -f1)
         TRACK_COUNT=$(echo "$PLAYLIST_INFO" | cut -d'|' -f2)
-
-        # Remove common YouTube Music prefixes
         PLAYLIST_TITLE=${PLAYLIST_TITLE#"Album - "}
         PLAYLIST_TITLE=${PLAYLIST_TITLE#"Playlist - "}
         PLAYLIST_TITLE=${PLAYLIST_TITLE#"Single - "}
         PLAYLIST_TITLE=${PLAYLIST_TITLE#"EP - "}
-
-        # Clean album name for filesystem
-        CLEAN_ALBUM_NAME="$PLAYLIST_TITLE"
-        CLEAN_ALBUM_NAME=${CLEAN_ALBUM_NAME//\//-} # Replace / with -
-
         echo -e "${GREEN}📀 Detected: $PLAYLIST_TITLE${NC}"
         [ -n "$TRACK_COUNT" ] && [ "$TRACK_COUNT" != "NA" ] && echo -e "${GREEN}   Tracks: $TRACK_COUNT${NC}"
     else
-        PLAYLIST_TITLE=""
         TRACK_COUNT=""
-        CLEAN_ALBUM_NAME="Unknown Playlist"
-        echo -e "${GREEN}📀 Detected playlist/album${NC}"
     fi
 
-    # Determine final destination
-    FINAL_DIR="$INBOX_DIR/$CLEAN_ALBUM_NAME"
+    # Download first track to temp for metadata/organization
+    TEMP_DIR=$(mktemp -d)
+    trap 'rm -rf "$TEMP_DIR"' EXIT
 
     echo ""
-    echo -e "${BLUE}Save to:${NC} $FINAL_DIR"
-    read -r -p "$(echo -e "${YELLOW}[Enter to confirm, or type new name]: ${NC}")" NEW_NAME
-
-    if [ -n "$NEW_NAME" ]; then
-        CLEAN_ALBUM_NAME="$NEW_NAME"
-        FINAL_DIR="$INBOX_DIR/$CLEAN_ALBUM_NAME"
-    fi
-
-    # Create the directory
-    mkdir -p "$FINAL_DIR"
-
-    # Set up cleanup trap - remove directory if empty on failure
-    cleanup() {
-        if [ "$DOWNLOAD_SUCCESS" = false ]; then
-            # Only remove if no mp3 files were downloaded
-            if [ -d "$FINAL_DIR" ] && [ "$(find "$FINAL_DIR" -name '*.mp3' | wc -l)" -eq 0 ]; then
-                echo -e "${YELLOW}Cleaning up empty directory...${NC}"
-                rmdir "$FINAL_DIR" 2>/dev/null || true
-            fi
-        fi
-    }
-    trap cleanup EXIT
-
-    echo ""
-    echo -e "${BLUE}⬇️  Downloading to: $FINAL_DIR${NC}"
-
-    # Download directly to final location
-    OUTPUT_TEMPLATE="$FINAL_DIR/%(playlist_index)02d - %(title)s.%(ext)s"
+    echo -e "${BLUE}⬇️  Downloading first track for organization...${NC}"
 
     yt-dlp \
-        --ignore-errors \
+        --playlist-items 1 \
         -x \
         --audio-format mp3 \
         --audio-quality 0 \
@@ -127,36 +96,91 @@ if [[ "$URL" =~ playlist|album|list= ]]; then
         --add-metadata \
         --write-thumbnail \
         --convert-thumbnails jpg \
-        -o "$OUTPUT_TEMPLATE" \
+        -o "$TEMP_DIR/%(title)s.%(ext)s" \
         "$URL" || true
 
-    # Check if any files were downloaded
-    DOWNLOADED_COUNT=$(find "$FINAL_DIR" -name "*.mp3" 2>/dev/null | wc -l | tr -d ' ')
+    FIRST_MP3=$(find "$TEMP_DIR" -name "*.mp3" | head -1)
+    FIRST_JPG=$(find "$TEMP_DIR" -name "*.jpg" | head -1)
 
-    if [ "$DOWNLOADED_COUNT" -eq 0 ]; then
-        echo -e "${RED}❌ Error: No files were downloaded${NC}"
-        echo -e "${YELLOW}The album/playlist might be unavailable or region-restricted${NC}"
+    if [ -z "$FIRST_MP3" ]; then
+        echo -e "${RED}❌ Error: Failed to download first track${NC}"
         exit 1
+    fi
+
+    # Embed cover art in first track before organizing
+    if [ -n "$FIRST_JPG" ]; then
+        eyeD3 --add-image="$FIRST_JPG:FRONT_COVER" --preserve-file-times "$FIRST_MP3" &>/dev/null || true
+    fi
+
+    echo ""
+    echo -e "${BLUE}🤖 Starting AI organization...${NC}"
+    ORGANIZE_OUTPUT=$(music-organize "$FIRST_MP3")
+    FINAL_DIR=$(echo "$ORGANIZE_OUTPUT" | grep "^FINAL_DIR:" | cut -d: -f2-)
+
+    if [ -z "$FINAL_DIR" ]; then
+        echo -e "${RED}❌ Error: Could not determine final location${NC}"
+        exit 1
+    fi
+
+    echo -e "${GREEN}   Final location: $FINAL_DIR${NC}"
+
+    # Get album name from final directory for metadata
+    CLEAN_ALBUM_NAME=$(basename "$FINAL_DIR")
+
+    # Rename first track to include track number
+    FIRST_TRACK_NAME=$(basename "$FIRST_MP3")
+    FINAL_FIRST_TRACK="$FINAL_DIR/$FIRST_TRACK_NAME"
+    if [ -f "$FINAL_FIRST_TRACK" ]; then
+        NEW_NAME="01 - $FIRST_TRACK_NAME"
+        mv "$FINAL_FIRST_TRACK" "$FINAL_DIR/$NEW_NAME" 2>/dev/null || true
+    fi
+
+    # Download remaining tracks if there are more
+    if [ -n "$TRACK_COUNT" ] && [ "$TRACK_COUNT" != "NA" ] && [ "$TRACK_COUNT" -gt 1 ]; then
+        echo ""
+        echo -e "${BLUE}⬇️  Downloading remaining $((TRACK_COUNT - 1)) tracks to: $FINAL_DIR${NC}"
+
+        yt-dlp \
+            --ignore-errors \
+            --playlist-items 2- \
+            -x \
+            --audio-format mp3 \
+            --audio-quality 0 \
+            --embed-metadata \
+            --add-metadata \
+            --write-thumbnail \
+            --convert-thumbnails jpg \
+            -o "$FINAL_DIR/%(playlist_index)02d - %(title)s.%(ext)s" \
+            "$URL" || true
     fi
 
     DOWNLOAD_SUCCESS=true
 
-    # Find album cover (largest jpg)
+    # Count downloaded files
+    DOWNLOADED_COUNT=$(find "$FINAL_DIR" -name "*.mp3" 2>/dev/null | wc -l | tr -d ' ')
+
+    if [ "$DOWNLOADED_COUNT" -eq 0 ]; then
+        echo -e "${RED}❌ Error: No files were downloaded${NC}"
+        exit 1
+    fi
+
+    # Find album cover (largest jpg) and embed in all tracks
     ALBUM_COVER=$(find "$FINAL_DIR" -name "*.jpg" -type f -exec ls -S {} + 2>/dev/null | head -1 || echo "")
+    # Also check temp dir for cover if none in final dir
+    if [ -z "$ALBUM_COVER" ] && [ -n "$FIRST_JPG" ] && [ -f "$FIRST_JPG" ]; then
+        cp "$FIRST_JPG" "$FINAL_DIR/cover.jpg"
+        ALBUM_COVER="$FINAL_DIR/cover.jpg"
+    fi
 
     if [ -n "$ALBUM_COVER" ]; then
         echo ""
         echo -e "${BLUE}🎨 Embedding album art...${NC}"
 
-        # Process MP3 files
         while IFS= read -r -d '' mp3; do
             if [ -f "$mp3" ]; then
                 echo -e "   ${YELLOW}Processing: $(basename "$mp3")${NC}"
-
-                # Extract track number from filename
                 TRACK_NUM=$(basename "$mp3" | grep -o '^[0-9]\+' || echo "")
 
-                # Embed cover art
                 if [ -n "$TRACK_NUM" ]; then
                     eyeD3 --add-image="$ALBUM_COVER:FRONT_COVER" \
                         --track="$TRACK_NUM" \
@@ -249,28 +273,18 @@ else
             echo -e "${YELLOW}⚠️  Warning: Failed to embed cover art${NC}"
     fi
 
-    # Move to inbox
-    mkdir -p "$INBOX_DIR"
-    echo -e "${BLUE}📦 Moving to: $INBOX_DIR${NC}"
-    mv "$MP3_FILE" "$INBOX_DIR/"
-
     DOWNLOAD_SUCCESS=true
 
-    echo -e "${GREEN}✅ Track downloaded successfully!${NC}"
-    echo -e "${GREEN}   Location: $INBOX_DIR/$(basename "$MP3_FILE")${NC}"
-fi
-
-# Automatically organize if music-organize is available
-if command -v music-organize &>/dev/null; then
-    echo ""
-    echo -e "${BLUE}🤖 Starting AI organization...${NC}"
-
-    if [ "$IS_PLAYLIST" = true ]; then
-        ORGANIZE_TARGET="$FINAL_DIR"
+    # Use music-organize if available, otherwise move to inbox
+    if command -v music-organize &>/dev/null; then
+        echo ""
+        echo -e "${BLUE}🤖 Starting AI organization...${NC}"
+        music-organize "$MP3_FILE"
     else
-        ORGANIZE_TARGET="$INBOX_DIR/$(basename "$MP3_FILE")"
+        mkdir -p "$INBOX_DIR"
+        echo -e "${BLUE}📦 Moving to: $INBOX_DIR${NC}"
+        mv "$MP3_FILE" "$INBOX_DIR/"
+        echo -e "${GREEN}✅ Track downloaded successfully!${NC}"
+        echo -e "${GREEN}   Location: $INBOX_DIR/$(basename "$MP3_FILE")${NC}"
     fi
-
-    echo ""
-    music-organize "$ORGANIZE_TARGET"
 fi
