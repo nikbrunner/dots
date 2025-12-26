@@ -297,6 +297,7 @@ This dotfiles system integrates with [Black Atom Industries](https://github.com/
 ```
 
 This two-layer approach means:
+
 1. Your home directory links to dots (managed by `dots link`)
 2. Dots links to Black Atom repos (managed by `dots theme-link`)
 
@@ -322,11 +323,11 @@ dots theme-link
 
 **Supported adapters:**
 
-| Adapter  | Source                                              | Dots Location                          |
-| -------- | --------------------------------------------------- | -------------------------------------- |
-| Ghostty  | `~/repos/black-atom-industries/ghostty/themes/`     | `common/.config/ghostty/themes/`       |
-| WezTerm  | `~/repos/black-atom-industries/wezterm/themes/`     | `common/.config/wezterm/colors/`       |
-| Zed      | `~/repos/black-atom-industries/zed/themes/`         | `common/.config/zed/themes/`           |
+| Adapter | Source                                          | Dots Location                    |
+| ------- | ----------------------------------------------- | -------------------------------- |
+| Ghostty | `~/repos/black-atom-industries/ghostty/themes/` | `common/.config/ghostty/themes/` |
+| WezTerm | `~/repos/black-atom-industries/wezterm/themes/` | `common/.config/wezterm/colors/` |
+| Zed     | `~/repos/black-atom-industries/zed/themes/`     | `common/.config/zed/themes/`     |
 
 ## Submodules
 
