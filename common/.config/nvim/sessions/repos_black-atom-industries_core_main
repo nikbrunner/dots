@@ -9,11 +9,11 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +21 ~/repos/black-atom-industries/core/src/themes/terra/black-atom-terra-fall-night.ts
+badd +23 ~/repos/black-atom-industries/core/src/themes/terra/black-atom-terra-fall-night.ts
 badd +1 ~/repos/black-atom-industries/core/src/themes/terra/black-atom-terra-fall-day.ts
 badd +9 ~/repos/black-atom-industries/core/src/themes/terra/ui_dark.ts
 badd +11 ~/repos/black-atom-industries/core/src/themes/terra/ui_light.ts
-badd +31 ~/repos/black-atom-industries/core/src/themes/mnml/black-atom-mnml-eink-light.ts
+badd +42 ~/repos/black-atom-industries/core/src/themes/mnml/black-atom-mnml-eink-light.ts
 badd +38 ~/repos/black-atom-industries/core/src/themes/mnml/black-atom-mnml-eink-dark.ts
 badd +1 ~/repos/black-atom-industries/core/src/types/theme.ts
 badd +37 ~/repos/black-atom-industries/core/src/themes/mnml/ui_dark.ts
@@ -1054,12 +1054,12 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 22 - ((21 * winheight(0) + 22) / 44)
+let s:l = 30 - ((29 * winheight(0) + 22) / 44)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 22
-normal! 019|
+keepjumps 30
+normal! 0
 wincmd w
 argglobal
 if bufexists(fnamemodify("~/repos/black-atom-industries/core/src/themes/mnml/black-atom-mnml-eink-dark.ts", ":p")) | buffer ~/repos/black-atom-industries/core/src/themes/mnml/black-atom-mnml-eink-dark.ts | else | edit ~/repos/black-atom-industries/core/src/themes/mnml/black-atom-mnml-eink-dark.ts | endif
