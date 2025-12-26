@@ -1144,98 +1144,61 @@ cleanup_repos() {
 
 # Show help
 show_help() {
-    # Check which tools are installed for dynamic status
-    local git_status="$(command -v git &>/dev/null && echo "✓" || echo "✗")"
-    local fzf_status="$(command -v fzf &>/dev/null && echo "✓" || echo "✗")"
-    local tmux_status="$(command -v tmux &>/dev/null && echo "✓" || echo "✗")"
-    local jq_status="$(command -v jq &>/dev/null && echo "✓" || echo "✗")"
-    local gum_status="$(command -v gum &>/dev/null && echo "✓" || echo "◦")"
-    local gh_status="$(command -v gh &>/dev/null && echo "✓" || echo "◦")"
+    # Check which tools are installed
+    local git_s fzf_s tmux_s jq_s gum_s gh_s
+    command -v git &>/dev/null && git_s="✓" || git_s="✗"
+    command -v fzf &>/dev/null && fzf_s="✓" || fzf_s="✗"
+    command -v tmux &>/dev/null && tmux_s="✓" || tmux_s="✗"
+    command -v jq &>/dev/null && jq_s="✓" || jq_s="✗"
+    command -v gum &>/dev/null && gum_s="✓" || gum_s="◦"
+    command -v gh &>/dev/null && gh_s="✓" || gh_s="◦"
 
-    # Color functions using gum when available, fallback to ANSI
-    style_header() {
-        if command -v gum >/dev/null 2>&1; then
-            gum style --foreground=4 --bold "$1"
-        else
-            echo -e "\033[1;34m$1\033[0m"
-        fi
-    }
+    printf ' ╭────────────────────────────────────────╮
+ │                                        │
+ │  repos - Minimal repository manager    │
+ │                                        │
+ ╰────────────────────────────────────────╯
 
-    style_command() {
-        if command -v gum >/dev/null 2>&1; then
-            gum style --foreground=2 "$1"
-        else
-            echo -e "\033[32m$1\033[0m"
-        fi
-    }
+\033[1;34mUsage: repos <command> [options]\033[0m
 
-    style_option() {
-        if command -v gum >/dev/null 2>&1; then
-            gum style --foreground=3 "$1"
-        else
-            echo -e "\033[33m$1\033[0m"
-        fi
-    }
+\033[1;34mCommands:\033[0m
+  \033[32minit\033[0m         - Create default config file
+  \033[32minstall\033[0m      - Guide through dependency installation
+  \033[32madd\033[0m          - Clone a repository [git-url] (interactive if no URL)
+  \033[32mremove\033[0m       - Remove a repository (interactive)
+  \033[32mopen\033[0m         - Open a repository in tmux [repo-path]
+  \033[32mfind\033[0m         - Find and open files across all repositories
+  \033[32mconfig\033[0m       - Edit the repos script configuration
+  \033[32mstatus\033[0m       - Show git status for all repositories [\033[33m--clean\033[0m]
+  \033[32mcleanup\033[0m      - Interactive cleanup workflow for dirty repositories
+  \033[32msetup\033[0m        - Clone all repositories from config
+  \033[32mhelp\033[0m         - Show this help message
 
-    style_path() {
-        if command -v gum >/dev/null 2>&1; then
-            gum style --foreground=6 "$1"
-        else
-            echo -e "\033[36m$1\033[0m"
-        fi
-    }
+\033[1;34mCurrent Configuration:\033[0m
+  Config file: \033[36m%s\033[0m
+  Repository base path: \033[36m%s\033[0m
 
-    echo " ╭────────────────────────────────────────╮ "
-    echo " │                                        │ "
-    echo " │  repos - Minimal repository manager    │ "
-    echo " │                                        │ "
-    echo " ╰────────────────────────────────────────╯ "
-    echo "                                            "
-    echo ""
+\033[1;34mExamples:\033[0m
+  repos init                                       # Create config file
+  repos install                                    # Check dependencies
+  repos add                                        # Interactive repo selection
+  repos add git@github.com:username/repo.git       # Clone a repository
+  repos open nikbrunner/dots                       # Open specific repo directly
+  repos setup                                      # Clone all repos from config
+  repos status --clean                             # Show only dirty repositories
 
-    style_header "Usage: repos <command> [options]"
-    echo ""
-    style_header "Commands:"
-    echo "  $(style_command "init")         - Create default config file"
-    echo "  $(style_command "install")      - Guide through dependency installation"
-    echo "  $(style_command "add")          - Clone a repository [git-url] (interactive if no URL)"
-    echo "  $(style_command "remove")       - Remove a repository (interactive)"
-    echo "  $(style_command "open")         - Open a repository in tmux [repo-path]"
-    echo "  $(style_command "find")         - Find and open files across all repositories"
-    echo "  $(style_command "config")       - Edit the repos script configuration"
-    if command -v gum >/dev/null 2>&1; then
-        echo "  $(style_command "status")       - Show git status for all repositories [$(gum style --foreground=3 -- "--clean")]"
-    else
-        echo "  $(style_command "status")       - Show git status for all repositories [\033[33m--clean\033[0m]"
-    fi
-    echo "  $(style_command "cleanup")      - Interactive cleanup workflow for dirty repositories"
-    echo "  $(style_command "setup")        - Clone all repositories from config"
-    echo "  $(style_command "help")         - Show this help message"
-    echo ""
-    style_header "Current Configuration:"
-    echo "  Config file: $(style_path "$CONFIG_FILE")"
-    echo "  Repository base path: $(style_path "$REPOS_BASE_PATH")"
-    echo ""
-    style_header "Examples:"
-    echo "  repos init                                       # Create config file"
-    echo "  repos install                                    # Check dependencies"
-    echo "  repos add                                        # Interactive repo selection"
-    echo "  repos add git@github.com:username/repo.git       # Clone a repository"
-    echo "  repos open nikbrunner/dots                       # Open specific repo directly"
-    echo "  repos setup                                      # Clone all repos from config"
-    echo "  repos status --clean                             # Show only dirty repositories"
-    echo ""
-    style_header "Config File (ensure_cloned):"
-    echo "  Add repositories to ensure_cloned array in config file:"
-    echo "  - Individual repos: \"git@github.com:username/repo.git\""
-    echo "  - All repos from user/org: \"git@github.com:organization/*\""
-    echo ""
-    style_header "Requirements:"
-    echo "  $git_status git, $fzf_status fzf, $tmux_status tmux, $jq_status jq (required)"
-    echo "  $gum_status gum (optional, for enhanced confirmations)"
-    echo "  $gh_status GitHub CLI (gh) for wildcard patterns"
-    echo "    Install: https://cli.github.com/"
-    echo "    Authenticate: gh auth login"
+\033[1;34mConfig File (ensure_cloned):\033[0m
+  Add repositories to ensure_cloned array in config file:
+  - Individual repos: "git@github.com:username/repo.git"
+  - All repos from user/org: "git@github.com:organization/*"
+
+\033[1;34mRequirements:\033[0m
+  %s git, %s fzf, %s tmux, %s jq (required)
+  %s gum (optional, for enhanced confirmations)
+  %s GitHub CLI (gh) for wildcard patterns
+    Install: https://cli.github.com/
+    Authenticate: gh auth login
+' "$CONFIG_FILE" "$REPOS_BASE_PATH" "$git_s" "$fzf_s" "$tmux_s" "$jq_s" "$gum_s" "$gh_s"
 }
 
 # Initialize - check dependencies
