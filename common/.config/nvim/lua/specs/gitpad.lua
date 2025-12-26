@@ -5,6 +5,7 @@ local M = {}
 ---@type LazyPluginSpec
 M.spec = {
     "yujinyuz/gitpad.nvim",
+    enabled = false,
     opts = function()
         local cwd = vim.fn.getcwd()
         local does_include = string.find(cwd, "dealercenter-digital", 1, true)
