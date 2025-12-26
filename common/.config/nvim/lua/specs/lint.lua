@@ -33,6 +33,7 @@ return {
                 ".eslintrc.json",
                 ".eslintrc.yaml",
                 "eslint.config.mjs",
+                "eslint.config.mts",
                 "eslint.config.js",
                 "eslint.config.cjs",
                 "eslint.config.json",
