@@ -1,0 +1,13 @@
+{
+  "repos_base_path": "~/repos",
+  "parallel_jobs": 4,
+  "tmux_layout": "ide",
+  "tmux_layouts_dir": "~/.config/tmux/layouts",
+  "ensure_cloned": [
+    "git@github.com:nikbrunner/dots",
+    "git@github.com:nikbrunner/notes",
+    "git@github.com:nikbrunner/dcd-notes",
+    "git@github.com:nikbrunner/koyo",
+    "git@github.com:black-atom-industries/*"
+  ]
+}

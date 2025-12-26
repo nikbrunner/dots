@@ -16,6 +16,7 @@ common:
   common/.config/mpd/mpd.conf: ~/.config/mpd/mpd.conf
   common/.config/nvim: ~/.config/nvim
   common/.config/nvim_mnml: ~/.config/nvim_mnml
+  common/.config/repos: ~/.config/repos
   common/.config/rmpc: ~/.config/rmpc
   common/.config/tmux: ~/.config/tmux
   common/.config/wezterm: ~/.config/wezterm

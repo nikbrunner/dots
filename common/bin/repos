@@ -1,25 +1,13 @@
 #!/usr/bin/env bash
 
 # Configuration
-REPOS_BASE_PATH="${REPOS_BASE_PATH:-$HOME/repos}"
-TMUX_LAYOUT="${TMUX_LAYOUT:-ide}"
-TMUX_LAYOUTS_DIR="${TMUX_LAYOUTS_DIR:-$HOME/.config/tmux/layouts}"
+CONFIG_FILE="${XDG_CONFIG_HOME:-$HOME/.config}/repos/config.json"
 
-# List of repositories to ensure are cloned
-ENSURE_CLONED=(
-    # Add repositories here, examples:
-    # "git@github.com:username/repo.git"
-    # "git@github.com:organization/*"  # Clone all repos from organization
-
-    "git@github.com:nikbrunner/dots"
-    "git@github.com:nikbrunner/notes"
-    "git@github.com:nikbrunner/dcd-notes"
-    "git@github.com:nikbrunner/koyo"
-    "git@github.com:black-atom-industries/*"
-)
-
-# Default parallel clone jobs
-DEFAULT_PARALLEL_JOBS=4
+# Defaults (can be overridden by config file, then by env vars)
+_DEFAULT_REPOS_BASE_PATH="$HOME/repos"
+_DEFAULT_PARALLEL_JOBS=4
+_DEFAULT_TMUX_LAYOUT="ide"
+_DEFAULT_TMUX_LAYOUTS_DIR="$HOME/.config/tmux/layouts"
 
 # Colors for output
 GREEN='\033[0;32m'
@@ -40,6 +28,81 @@ print_warning() {
     echo -e "${YELLOW}⚠ $1${NC}"
 }
 
+# Load configuration from JSON file
+# Precedence: env vars > config file > defaults
+load_config() {
+    # Start with defaults
+    local cfg_repos_path="$_DEFAULT_REPOS_BASE_PATH"
+    local cfg_parallel_jobs="$_DEFAULT_PARALLEL_JOBS"
+    local cfg_tmux_layout="$_DEFAULT_TMUX_LAYOUT"
+    local cfg_tmux_layouts_dir="$_DEFAULT_TMUX_LAYOUTS_DIR"
+
+    # Load from config file if it exists
+    if [[ -f "$CONFIG_FILE" ]]; then
+        local val
+
+        val=$(jq -r '.repos_base_path // empty' "$CONFIG_FILE" 2>/dev/null)
+        [[ -n "$val" ]] && cfg_repos_path="${val/#\~/$HOME}"
+
+        val=$(jq -r '.parallel_jobs // empty' "$CONFIG_FILE" 2>/dev/null)
+        [[ -n "$val" ]] && cfg_parallel_jobs="$val"
+
+        val=$(jq -r '.tmux_layout // empty' "$CONFIG_FILE" 2>/dev/null)
+        [[ -n "$val" ]] && cfg_tmux_layout="$val"
+
+        val=$(jq -r '.tmux_layouts_dir // empty' "$CONFIG_FILE" 2>/dev/null)
+        [[ -n "$val" ]] && cfg_tmux_layouts_dir="${val/#\~/$HOME}"
+    fi
+
+    # Apply with env var overrides (env vars take highest precedence)
+    REPOS_BASE_PATH="${REPOS_BASE_PATH:-$cfg_repos_path}"
+    DEFAULT_PARALLEL_JOBS="${PARALLEL_JOBS:-$cfg_parallel_jobs}"
+    TMUX_LAYOUT="${TMUX_LAYOUT:-$cfg_tmux_layout}"
+    TMUX_LAYOUTS_DIR="${TMUX_LAYOUTS_DIR:-$cfg_tmux_layouts_dir}"
+}
+
+# Get repositories to ensure are cloned from config
+get_ensure_cloned() {
+    if [[ ! -f "$CONFIG_FILE" ]]; then
+        return 1
+    fi
+    jq -r '.ensure_cloned[]? // empty' "$CONFIG_FILE" 2>/dev/null
+}
+
+# Create default configuration file
+init_config() {
+    local config_dir
+    config_dir=$(dirname "$CONFIG_FILE")
+
+    if [[ -f "$CONFIG_FILE" ]]; then
+        print_warning "Config file already exists: $CONFIG_FILE"
+        if ! confirm_action "Overwrite existing config?"; then
+            echo "Aborted."
+            return 1
+        fi
+    fi
+
+    mkdir -p "$config_dir"
+
+    cat > "$CONFIG_FILE" << 'EOF'
+{
+  "repos_base_path": "~/repos",
+  "parallel_jobs": 4,
+  "tmux_layout": "ide",
+  "tmux_layouts_dir": "~/.config/tmux/layouts",
+  "ensure_cloned": [
+    "git@github.com:username/repo.git"
+  ]
+}
+EOF
+
+    print_success "Created config file: $CONFIG_FILE"
+    echo "Edit it to add your repositories and customize settings."
+}
+
+# Initialize configuration - call early
+load_config
+
 # Check if gum is available (only used for confirmations)
 has_gum() {
     command -v gum &>/dev/null
@@ -49,7 +112,7 @@ has_gum() {
 check_dependencies() {
     local missing_deps=()
 
-    for cmd in git fzf tmux; do
+    for cmd in git fzf tmux jq; do
         if ! command -v "$cmd" &>/dev/null; then
             missing_deps+=("$cmd")
         fi
@@ -365,7 +428,7 @@ install_deps() {
     local missing_optional=()
 
     # Check required dependencies
-    for cmd in git fzf tmux; do
+    for cmd in git fzf tmux jq; do
         if ! command -v "$cmd" &>/dev/null; then
             missing_required+=("$cmd")
         else
@@ -407,22 +470,22 @@ install_deps() {
         case "$(uname)" in
         Darwin)
             echo "macOS installation (using Homebrew):"
-            echo "  brew install git fzf tmux"
+            echo "  brew install git fzf tmux jq"
             ;;
         Linux)
             # Detect Linux distribution
             if command -v apt &>/dev/null; then
                 echo "Ubuntu/Debian installation:"
-                echo "  sudo apt update && sudo apt install git fzf tmux"
+                echo "  sudo apt update && sudo apt install git fzf tmux jq"
             elif command -v yum &>/dev/null; then
                 echo "CentOS/RHEL installation:"
-                echo "  sudo yum install git fzf tmux"
+                echo "  sudo yum install git fzf tmux jq"
             elif command -v pacman &>/dev/null; then
                 echo "Arch Linux installation:"
-                echo "  sudo pacman -S git fzf tmux"
+                echo "  sudo pacman -S git fzf tmux jq"
             else
                 echo "Linux installation (check your package manager):"
-                echo "  Install: git fzf tmux"
+                echo "  Install: git fzf tmux jq"
             fi
             ;;
         *)
@@ -782,19 +845,27 @@ parallel_clone() {
 export -f parallel_clone parse_git_url print_success print_error
 export REPOS_BASE_PATH
 
-# Setup repositories from ENSURE_CLONED list
+# Setup repositories from config file
 setup_repos() {
     local parallel_jobs="${PARALLEL_JOBS:-$DEFAULT_PARALLEL_JOBS}"
 
-    if [[ ${#ENSURE_CLONED[@]} -eq 0 ]]; then
-        print_error "No repositories defined in ENSURE_CLONED variable"
-        echo "Edit this script and add repositories to the ENSURE_CLONED array"
+    # Load repos from config
+    local ensure_cloned=()
+    if ! mapfile -t ensure_cloned < <(get_ensure_cloned); then
+        print_error "Config file not found: $CONFIG_FILE"
+        echo "Run 'repos init' to create a default config file."
+        exit 1
+    fi
+
+    if [[ ${#ensure_cloned[@]} -eq 0 ]]; then
+        print_error "No repositories defined in config file"
+        echo "Edit $CONFIG_FILE and add repositories to ensure_cloned array."
         exit 1
     fi
 
     # Check if any wildcard patterns exist that would need gh CLI
     local has_wildcards=false
-    for pattern in "${ENSURE_CLONED[@]}"; do
+    for pattern in "${ensure_cloned[@]}"; do
         if [[ "$pattern" == *"/*" ]]; then
             has_wildcards=true
             break
@@ -808,7 +879,7 @@ setup_repos() {
     local clone_urls=()
 
     # First, expand all patterns to get actual URLs
-    for repo_pattern in "${ENSURE_CLONED[@]}"; do
+    for repo_pattern in "${ensure_cloned[@]}"; do
         # Skip comments and empty lines
         [[ "$repo_pattern" =~ ^[[:space:]]*# ]] && continue
         [[ -z "$repo_pattern" ]] && continue
@@ -1082,6 +1153,7 @@ show_help() {
     local git_status="$(command -v git &>/dev/null && echo "✓" || echo "✗")"
     local fzf_status="$(command -v fzf &>/dev/null && echo "✓" || echo "✗")"
     local tmux_status="$(command -v tmux &>/dev/null && echo "✓" || echo "✗")"
+    local jq_status="$(command -v jq &>/dev/null && echo "✓" || echo "✗")"
     local gum_status="$(command -v gum &>/dev/null && echo "✓" || echo "◦")"
     local gh_status="$(command -v gh &>/dev/null && echo "✓" || echo "◦")"
 
@@ -1129,6 +1201,7 @@ show_help() {
     style_header "Usage: repos <command> [options]"
     echo ""
     style_header "Commands:"
+    echo "  $(style_command "init")         - Create default config file"
     echo "  $(style_command "install")      - Guide through dependency installation"
     echo "  $(style_command "add")          - Clone a repository [git-url] (interactive if no URL)"
     echo "  $(style_command "remove")       - Remove a repository (interactive)"
@@ -1141,7 +1214,7 @@ show_help() {
         echo "  $(style_command "status")       - Show git status for all repositories [\033[33m--clean\033[0m]"
     fi
     echo "  $(style_command "cleanup")      - Interactive cleanup workflow for dirty repositories"
-    echo "  $(style_command "setup")        - Clone all repositories from ENSURE_CLONED list"
+    echo "  $(style_command "setup")        - Clone all repositories from config"
     echo "  $(style_command "help")         - Show this help message"
     echo ""
     style_header "Environment Variables:"
@@ -1151,24 +1224,26 @@ show_help() {
     echo "  $(style_option "TMUX_LAYOUTS_DIR") - Directory containing layout scripts (default: ~/.config/tmux/layouts)"
     echo ""
     style_header "Current Configuration:"
+    echo "  Config file: $(style_path "$CONFIG_FILE")"
     echo "  Repository base path: $(style_path "$REPOS_BASE_PATH")"
     echo ""
     style_header "Examples:"
+    echo "  repos init                                       # Create config file"
     echo "  repos install                                    # Check dependencies"
     echo "  repos add                                        # Interactive repo selection"
     echo "  repos add git@github.com:username/repo.git       # Clone a repository"
     echo "  repos open nikbrunner/dots                       # Open specific repo directly"
-    echo "  repos setup                                      # Clone all ENSURE_CLONED repos"
+    echo "  repos setup                                      # Clone all repos from config"
     echo "  repos status --clean                             # Show only dirty repositories"
-    echo "  PARALLEL_JOBS=8 repos setup                     # Clone with 8 parallel jobs"
+    echo "  PARALLEL_JOBS=8 repos setup                      # Clone with 8 parallel jobs"
     echo ""
-    style_header "Setup Wildcard Support:"
-    echo "  Edit the ENSURE_CLONED variable in this script to include:"
+    style_header "Config File (ensure_cloned):"
+    echo "  Add repositories to ensure_cloned array in config file:"
     echo "  - Individual repos: \"git@github.com:username/repo.git\""
     echo "  - All repos from user/org: \"git@github.com:organization/*\""
     echo ""
     style_header "Requirements:"
-    echo "  $git_status git, $fzf_status fzf, $tmux_status tmux (required)"
+    echo "  $git_status git, $fzf_status fzf, $tmux_status tmux, $jq_status jq (required)"
     echo "  $gum_status gum (optional, for enhanced confirmations)"
     echo "  $gh_status GitHub CLI (gh) for wildcard patterns"
     echo "    Install: https://cli.github.com/"
@@ -1180,6 +1255,9 @@ check_dependencies
 
 # Main command handler
 case "${1:-}" in
+init)
+    init_config
+    ;;
 install)
     install_deps
     ;;
