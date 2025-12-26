@@ -119,14 +119,14 @@ Output: Just the folder path or 'NEW:path' or 'SKIP', nothing else."
 
     local suggestion
     if command -v claude &>/dev/null; then
-        suggestion=$(claude --model claude-sonnet-4-20250514 --print "$prompt" 2>&1)
+        suggestion=$(claude --model claude-haiku-4-5-20251001 --print "$prompt" 2>&1)
     else
         # Use API call similar to repo script
         local json_payload
         json_payload=$(jq -n \
             --arg prompt "$prompt" \
             '{
-                model: "claude-sonnet-4-20250514",
+                model: "claude-haiku-4-5-20251001",
                 max_tokens: 100,
                 messages: [
                     {
@@ -263,6 +263,7 @@ process_file() {
             fi
             mv "$file" "$MUSIC_DIR/$target_folder/"
             echo -e "${GREEN}✓ Moved to: $target_folder${NC}"
+            echo "FINAL_DIR:$MUSIC_DIR/$target_folder"
             ;;
             
         "Browse existing folders")
@@ -271,13 +272,16 @@ process_file() {
                 if [ -n "$selected_folder" ]; then
                     mv "$file" "$MUSIC_DIR/$selected_folder/"
                     echo -e "${GREEN}✓ Moved to: $selected_folder${NC}"
+                    echo "FINAL_DIR:$MUSIC_DIR/$selected_folder"
                 else
                     echo -e "${YELLOW}→ Keeping in Inbox${NC}"
+                    echo "FINAL_DIR:$INBOX_DIR"
                 fi
             else
                 echo "Existing folders:"
                 echo "$existing_folders" | nl
                 echo -e "${YELLOW}→ Manual selection not available without gum${NC}"
+                echo "FINAL_DIR:$INBOX_DIR"
             fi
             ;;
             
@@ -288,8 +292,10 @@ process_file() {
                     mkdir -p "$MUSIC_DIR/$custom_folder"
                     mv "$file" "$MUSIC_DIR/$custom_folder/"
                     echo -e "${GREEN}✓ Moved to: $custom_folder${NC}"
+                    echo "FINAL_DIR:$MUSIC_DIR/$custom_folder"
                 else
                     echo -e "${YELLOW}→ Keeping in Inbox${NC}"
+                    echo "FINAL_DIR:$INBOX_DIR"
                 fi
             else
                 read -p "Enter folder path: " custom_folder
@@ -297,14 +303,17 @@ process_file() {
                     mkdir -p "$MUSIC_DIR/$custom_folder"
                     mv "$file" "$MUSIC_DIR/$custom_folder/"
                     echo -e "${GREEN}✓ Moved to: $custom_folder${NC}"
+                    echo "FINAL_DIR:$MUSIC_DIR/$custom_folder"
                 else
                     echo -e "${YELLOW}→ Keeping in Inbox${NC}"
+                    echo "FINAL_DIR:$INBOX_DIR"
                 fi
             fi
             ;;
-            
+
         "Keep in Inbox" | *)
             echo -e "${YELLOW}→ Keeping in Inbox${NC}"
+            echo "FINAL_DIR:$INBOX_DIR"
             ;;
     esac
     echo
@@ -403,24 +412,28 @@ process_directory() {
             fi
             mv "$dir" "$MUSIC_DIR/$target_folder/"
             echo -e "${GREEN}✓ Moved to: $target_folder${NC}"
+            echo "FINAL_DIR:$MUSIC_DIR/$target_folder/$(basename "$dir")"
             ;;
-            
+
         "Browse existing folders")
             if command -v gum &>/dev/null; then
                 local selected_folder=$(echo "$existing_folders" | gum filter --placeholder "Search folders...")
                 if [ -n "$selected_folder" ]; then
                     mv "$dir" "$MUSIC_DIR/$selected_folder/"
                     echo -e "${GREEN}✓ Moved to: $selected_folder${NC}"
+                    echo "FINAL_DIR:$MUSIC_DIR/$selected_folder/$(basename "$dir")"
                 else
                     echo -e "${YELLOW}→ Keeping in Inbox${NC}"
+                    echo "FINAL_DIR:$dir"
                 fi
             else
                 echo "Existing folders:"
                 echo "$existing_folders" | nl
                 echo -e "${YELLOW}→ Manual selection not available without gum${NC}"
+                echo "FINAL_DIR:$dir"
             fi
             ;;
-            
+
         "Create custom folder")
             if command -v gum &>/dev/null; then
                 local custom_folder=$(gum input --placeholder "Enter folder path (e.g., Artists/New Artist)")
@@ -428,8 +441,10 @@ process_directory() {
                     mkdir -p "$MUSIC_DIR/$custom_folder"
                     mv "$dir" "$MUSIC_DIR/$custom_folder/"
                     echo -e "${GREEN}✓ Moved to: $custom_folder${NC}"
+                    echo "FINAL_DIR:$MUSIC_DIR/$custom_folder/$(basename "$dir")"
                 else
                     echo -e "${YELLOW}→ Keeping in Inbox${NC}"
+                    echo "FINAL_DIR:$dir"
                 fi
             else
                 read -p "Enter folder path: " custom_folder
@@ -437,14 +452,17 @@ process_directory() {
                     mkdir -p "$MUSIC_DIR/$custom_folder"
                     mv "$dir" "$MUSIC_DIR/$custom_folder/"
                     echo -e "${GREEN}✓ Moved to: $custom_folder${NC}"
+                    echo "FINAL_DIR:$MUSIC_DIR/$custom_folder/$(basename "$dir")"
                 else
                     echo -e "${YELLOW}→ Keeping in Inbox${NC}"
+                    echo "FINAL_DIR:$dir"
                 fi
             fi
             ;;
-            
+
         "Keep in Inbox" | *)
             echo -e "${YELLOW}→ Keeping in Inbox${NC}"
+            echo "FINAL_DIR:$dir"
             ;;
     esac
     echo
