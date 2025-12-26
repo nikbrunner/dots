@@ -13,7 +13,7 @@
             "label": "2"
           }
         ],
-        "lastAccessed": 1762878796
+        "lastAccessed": 1765717327
       }
     },
     "~/repos/black-atom-industries/website": {
@@ -71,11 +71,71 @@
             "label": "8"
           }
         ],
-        "lastAccessed": 1764258862
+        "lastAccessed": 1765113337
+      },
+      "bcd-8870-brand-presentation": {
+        "locks": [
+          {
+            "filename": "src/client/kiosk/container/Settings/BrandActivationPage.tsx",
+            "label": "1"
+          },
+          {
+            "filename": "src/client/kiosk/container/Settings/partials/BrandActivationModalPartial.tsx",
+            "label": "2"
+          },
+          {
+            "filename": "src/client/commons/components/BrandTile/BrandTile.tsx",
+            "label": "3"
+          },
+          {
+            "filename": "src/client/commons/components/BrandTile/BrandTile.scss",
+            "label": "4"
+          },
+          {
+            "filename": "src/client/commons/components/BrandTile/meta/BrandTile.story.tsx",
+            "label": "5"
+          }
+        ],
+        "lastAccessed": 1765878470
+      },
+      "bcd-8880-make-use-license-check-even-simpler": {
+        "locks": [
+          {
+            "filename": "src/client/kiosk/libs/hooks/use-license-check.ts",
+            "label": "1"
+          }
+        ],
+        "lastAccessed": 1764949470
+      },
+      "bcd-8953-fix-initial-keyboard-render-flicker": {
+        "locks": [
+          {
+            "filename": "src/client/kiosk/electron/keyboard-window.ts",
+            "label": "1"
+          },
+          {
+            "filename": "src/client/kiosk/renderer-keyboard.tsx",
+            "label": "2"
+          }
+        ],
+        "lastAccessed": 1765539093
+      },
+      "bcd-8953-prevent-keyboard-layout-shift": {
+        "locks": [
+          {
+            "filename": "src/client/commons/components/KeyboardLayout/KeyboardLayout.tsx",
+            "label": "1"
+          },
+          {
+            "filename": "src/client/kiosk/container/App/App.tsx",
+            "label": "2"
+          }
+        ],
+        "lastAccessed": 1765453630
       },
       "master": {
         "locks": [],
-        "lastAccessed": 1764327880
+        "lastAccessed": 1765972231
       },
       "redux-toolkit": {
         "locks": [
@@ -88,7 +148,18 @@
             "label": "2"
           }
         ],
-        "lastAccessed": 1762859777
+        "lastAccessed": 1765909600
+      }
+    },
+    "~/repos/dealercenter-digital/bc-desktop-client-bcd-8796-rework-brands-tool": {
+      "bcd-8796-rework-brands-tool": {
+        "locks": [
+          {
+            "filename": "src/client/commons/libs/queries/use-brands.ts",
+            "label": "1"
+          }
+        ],
+        "lastAccessed": 1764684442
       }
     },
     "~/repos/dealercenter-digital/bc-desktop-client-bcd-8908-update-december-wallpapers": {
@@ -114,7 +185,7 @@
             "label": "2"
           }
         ],
-        "lastAccessed": 1762861806
+        "lastAccessed": 1765794690
       }
     },
     "~/repos/dealercenter-digital/bc-tools/packages/tool-range-calculator": {
@@ -164,7 +235,7 @@
             "label": "1"
           }
         ],
-        "lastAccessed": 1763492338
+        "lastAccessed": 1765963729
       }
     },
     "~/repos/dealercenter-digital/bc-web-client-poc/frontend": {
@@ -224,7 +295,7 @@
             "label": "1"
           }
         ],
-        "lastAccessed": 1764343109
+        "lastAccessed": 1765713758
       }
     },
     "~/repos/nikbrunner/dots": {
@@ -243,7 +314,7 @@
             "label": "3"
           }
         ],
-        "lastAccessed": 1764343109
+        "lastAccessed": 1766765636
       }
     },
     "~/repos/nikbrunner/nbr.haus": {
@@ -254,14 +325,14 @@
             "label": "1"
           }
         ],
-        "lastAccessed": 1764188114
+        "lastAccessed": 1766495843
       }
     },
     "~/repos/nikbrunner/notes": {
       "main": {
         "locks": [
           {
-            "filename": "02 - Areas/Log/2025/2025.11 - November.md",
+            "filename": "02 - Areas/Log/2025/2025.12 - December.md",
             "label": "1"
           },
           {
@@ -269,7 +340,7 @@
             "label": "2"
           }
         ],
-        "lastAccessed": 1764343109
+        "lastAccessed": 1766755228
       }
     },
     "~/repos/nikbrunner/wichtel-app": {
@@ -285,11 +356,11 @@
       "main": {
         "locks": [
           {
-            "filename": "TODO.md",
+            "filename": "ROADMAP.md",
             "label": "1"
           }
         ],
-        "lastAccessed": 1764343110
+        "lastAccessed": 1766419031
       }
     }
   }
