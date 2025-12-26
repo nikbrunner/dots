@@ -20,7 +20,9 @@ common:
   common/.config/tmux: ~/.config/tmux
   common/.config/wezterm: ~/.config/wezterm
   common/.config/yazi: ~/.config/yazi
+  common/.config/yt-dlp/config: ~/.config/yt-dlp/config
   common/.config/zed: ~/.config/zed
+  common/.config/bm: ~/.config/bm
   common/.config/zsh/lib/async.zsh: ~/.config/zsh/lib/async.zsh
   common/.config/zsh/prompt.zsh: ~/.config/zsh/prompt.zsh
   common/.gitconfig: ~/.gitconfig

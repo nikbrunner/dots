@@ -1,0 +1,2 @@
+# Use Helium browser cookies for YouTube authentication
+--cookies-from-browser "chromium:/Users/nbr/Library/Application Support/net.imput.helium/Profile 2"
