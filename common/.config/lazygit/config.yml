@@ -15,7 +15,7 @@ gui:
       - "#ff8833"
       # See https://github.com/jesseduffield/lazygit/blob/master/docs/Config.md#highlighting-the-selected-line
       # selectedLineBgColor:
-      # - black
+      # - reverse
 
       # Default text color
       # defaultFgColor:
@@ -30,7 +30,7 @@ gui:
   # stuff relating to the UI
   scrollHeight: 10 # how many lines you scroll by
   scrollPastBottom: true # enable scrolling past the bottom
-  sidePanelWidth: 0.2 # number from 0 to 1
+  sidePanelWidth: 0.33 # number from 0 to 1
   expandFocusedSidePanel: true
   mainPanelSplitMode: flexible # one of 'horizontal' | 'flexible' | 'vertical'
   portraitMode: auto # one of 'auto' | 'never' | 'always'
