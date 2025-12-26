@@ -3,18 +3,32 @@ let s:so_save = &g:so | let s:siso_save = &g:siso | setg so=0 siso=0 | setl so=-
 let v:this_session=expand("<sfile>:p")
 silent only
 silent tabonly
-cd ~/repos/dealercenter-digital/bc-desktop-client
+cd ~/repos/nikbrunner/notes/02\ -\ Areas/Log/2025/12-December
 if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +38 ~/repos/dealercenter-digital/bc-desktop-client/src/client/commons/libs/queries/use-active-brands.ts
+badd +10 ~/repos/nikbrunner/notes/02\ -\ Areas/Log/2025/12\ -\ December/2025.12.26\ -\ Friday.md
 argglobal
 %argdel
-$argadd ./
-edit ~/repos/dealercenter-digital/bc-desktop-client/src/client/commons/libs/queries/use-active-brands.ts
+edit ~/repos/nikbrunner/notes/02\ -\ Areas/Log/2025/12\ -\ December/2025.12.26\ -\ Friday.md
 argglobal
+let s:cpo_save=&cpo
+set cpo&vim
+nnoremap <buffer>  <Cmd>MarkdownToggleCheckbox
+nnoremap <buffer> ,niT <Cmd>MarkdownInsertTable
+vnoremap <buffer> ,nil s["]()<Cmd>normal! h<Cmd>startinsert<Cmd>lua require("markdown-tools.commands").prompt_and_insert_url()
+vmap <buffer> ,nii s*"*
+vmap <buffer> ,niH s=="==
+vmap <buffer> ,nib s**"**
+vnoremap <buffer> ,nih <Cmd>MarkdownHeader
+nnoremap <buffer> ,nih <Cmd>MarkdownHeader
+xnoremap <buffer> <silent> [[ :exe "normal! gv"|call search('\%(^#\{1,5\}\s\+\S\|^\S.*\n^[=-]\+$\)', "bsW")
+xnoremap <buffer> <silent> ]] :exe "normal! gv"|call search('\%(^#\{1,5\}\s\+\S\|^\S.*\n^[=-]\+$\)', "sW")
+nnoremap <buffer> <C-T> <Cmd>MarkdownToggleCheckbox
+let &cpo=s:cpo_save
+unlet s:cpo_save
 setlocal keymap=
 setlocal noarabic
 setlocal autoindent
@@ -31,8 +45,8 @@ setlocal cinoptions=
 setlocal cinscopedecls=public,protected,private
 setlocal cinwords=if,else,while,do,for,switch
 setlocal colorcolumn=
-setlocal comments=sO:*\ -,mO:*\ \ ,exO:*/,s1:/*,mb:*,ex:*/,://
-setlocal commentstring=//\ %s
+setlocal comments=fb:*,fb:-,fb:+,n:>
+setlocal commentstring=<!--\ %s\ -->
 setlocal complete=.,w,b,u,t
 setlocal completefunc=
 setlocal completeslash=
@@ -46,8 +60,8 @@ setlocal cursorlineopt=both
 setlocal nodiff
 setlocal eventignorewin=
 setlocal expandtab
-if &filetype != 'typescript'
-setlocal filetype=typescript
+if &filetype != 'markdown'
+setlocal filetype=markdown
 endif
 setlocal fixendofline
 setlocal foldcolumn=0
@@ -56,32 +70,32 @@ setlocal foldexpr=v:lua.vim.treesitter.foldexpr()
 setlocal foldignore=#
 setlocal foldlevel=99
 setlocal foldmarker={{{,}}}
-setlocal foldmethod=expr
+setlocal foldmethod=indent
 setlocal foldminlines=1
 setlocal foldnestmax=20
 setlocal foldtext=
 setlocal formatexpr=v:lua.require'conform'.formatexpr()
-setlocal formatlistpat=^\\s*\\d\\+[\\]:.)}\\t\ ]\\s*
-setlocal formatoptions=jcroql
+setlocal formatlistpat=^\\s*\\d\\+\\.\\s\\+\\|^\\s*[-*+]\\s\\+\\|^\\[^\\ze[^\\]]\\+\\]:\\&^.\\{4\\}
+setlocal formatoptions=jtcqln
 setlocal iminsert=0
 setlocal imsearch=-1
 setlocal includeexpr=
-setlocal indentexpr=GetTypescriptIndent()
-setlocal indentkeys=0{,0},0),0],0,,!^F,o,O,e
+setlocal indentexpr=nvim_treesitter#indent()
+setlocal indentkeys=0{,0},0),0],:,0#,!^F,o,O,e
 setlocal noinfercase
 setlocal iskeyword=@,48-57,_,192-255
 setlocal lhistory=10
-setlocal nolinebreak
+setlocal linebreak
 setlocal nolisp
 setlocal lispoptions=
 setlocal nolist
-setlocal matchpairs=(:),{:},[:]
+setlocal matchpairs=(:),{:},[:],<:>
 setlocal modeline
 setlocal modifiable
 setlocal nrformats=bin,hex
 setlocal number
 setlocal numberwidth=4
-setlocal omnifunc=v:lua.vim.lsp.omnifunc
+setlocal omnifunc=htmlcomplete#CompleteTags
 setlocal nopreserveindent
 setlocal nopreviewwindow
 setlocal quoteescape=\\
@@ -93,7 +107,7 @@ setlocal scrollback=-1
 setlocal noscrollbind
 setlocal shiftwidth=2
 setlocal signcolumn=yes
-setlocal nosmartindent
+setlocal smartindent
 setlocal nosmoothscroll
 setlocal softtabstop=-1
 setlocal nospell
@@ -102,33 +116,31 @@ setlocal spellfile=
 setlocal spelllang=en_us,de_de
 setlocal spelloptions=noplainbuffer
 setlocal statuscolumn=%!v:lua.require'snacks.statuscolumn'.get()
-setlocal suffixesadd=.ts,.d.ts,.tsx,.js,.jsx,.cjs,.mjs
+setlocal suffixesadd=
 setlocal noswapfile
 setlocal synmaxcol=3000
 if &syntax != ''
 setlocal syntax=
 endif
-setlocal tabstop=2
+setlocal tabstop=4
 setlocal tagfunc=v:lua.vim.lsp.tagfunc
-setlocal textwidth=0
+setlocal textwidth=85
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#src%*\ %#WinBarSeparator#/%*\ %#WinBarPath#client%*\ %#WinBarSeparator#/%*\ %#WinBarPath#commons%*\ %#WinBarSeparator#/%*\ %#WinBarPath#libs%*\ %#WinBarSeparator#/%*\ %#WinBarPath#queries%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#use-active-brands.ts%*\ %#WinBarSeparator##%*\ %#WinBarSymbol#useAddActiveBrand%*
+setlocal winbar=%#WinBarPath#~%*\ %#WinBarSeparator#/%*\ %#WinBarPath#repos%*\ %#WinBarSeparator#/%*\ %#WinBarPath#nikbrunner%*\ %#WinBarSeparator#/%*\ %#WinBarPath#notes%*\ %#WinBarSeparator#/%*\ %#WinBarPath#02\ -\ Areas%*\ %#WinBarSeparator#/%*\ %#WinBarPath#Log%*\ %#WinBarSeparator#/%*\ %#WinBarPath#2025%*\ %#WinBarSeparator#/%*\ %#WinBarPath#12\ -\ December%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#2025.12.26\ -\ Friday.md%*
 setlocal winblend=0
 setlocal nowinfixbuf
 setlocal nowinfixheight
 setlocal nowinfixwidth
 setlocal winhighlight=
-setlocal nowrap
+setlocal wrap
 setlocal wrapmargin=0
-20
-sil! normal! zo
-let s:l = 69 - ((49 * winheight(0) + 30) / 61)
+let s:l = 10 - ((9 * winheight(0) + 29) / 58)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 69
+keepjumps 10
 normal! 0
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'

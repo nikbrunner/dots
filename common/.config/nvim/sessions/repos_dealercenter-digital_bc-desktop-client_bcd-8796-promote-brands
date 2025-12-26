@@ -9,30 +9,11 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +136 ~/repos/dealercenter-digital/bc-desktop-client/src/system-services/content/brands-tool.ts
-badd +137 ~/repos/dealercenter-digital/bc-desktop-client/src/client/kiosk/container/Settings/BrandActivationPage.tsx
+badd +27 ~/repos/dealercenter-digital/bc-desktop-client/src/client/kiosk/libs/hooks/use-license-check.ts
 argglobal
 %argdel
 $argadd ./
-edit ~/repos/dealercenter-digital/bc-desktop-client/src/system-services/content/brands-tool.ts
-let s:save_splitbelow = &splitbelow
-let s:save_splitright = &splitright
-set splitbelow splitright
-wincmd _ | wincmd |
-vsplit
-1wincmd h
-wincmd w
-let &splitbelow = s:save_splitbelow
-let &splitright = s:save_splitright
-wincmd t
-let s:save_winminheight = &winminheight
-let s:save_winminwidth = &winminwidth
-set winminheight=0
-set winheight=1
-set winminwidth=0
-set winwidth=1
-exe 'vert 1resize ' . ((&columns * 161 + 161) / 322)
-exe 'vert 2resize ' . ((&columns * 160 + 161) / 322)
+edit ~/repos/dealercenter-digital/bc-desktop-client/src/client/kiosk/libs/hooks/use-license-check.ts
 argglobal
 setlocal keymap=
 setlocal noarabic
@@ -67,136 +48,6 @@ setlocal eventignorewin=
 setlocal expandtab
 if &filetype != 'typescript'
 setlocal filetype=typescript
-endif
-setlocal fixendofline
-setlocal foldcolumn=0
-setlocal foldenable
-setlocal foldexpr=v:lua.vim.treesitter.foldexpr()
-setlocal foldignore=#
-setlocal foldlevel=0
-setlocal foldmarker={{{,}}}
-setlocal foldmethod=indent
-setlocal foldminlines=1
-setlocal foldnestmax=20
-setlocal foldtext=
-setlocal formatexpr=v:lua.require'conform'.formatexpr()
-setlocal formatlistpat=^\\s*\\d\\+[\\]:.)}\\t\ ]\\s*
-setlocal formatoptions=jcroql
-setlocal iminsert=0
-setlocal imsearch=-1
-setlocal includeexpr=
-setlocal indentexpr=GetTypescriptIndent()
-setlocal indentkeys=0{,0},0),0],0,,!^F,o,O,e
-setlocal noinfercase
-setlocal iskeyword=@,48-57,_,192-255,#,$
-setlocal lhistory=10
-setlocal nolinebreak
-setlocal nolisp
-setlocal lispoptions=
-setlocal nolist
-setlocal matchpairs=(:),{:},[:]
-setlocal modeline
-setlocal modifiable
-setlocal nrformats=bin,hex
-setlocal number
-setlocal numberwidth=4
-setlocal omnifunc=v:lua.vim.lsp.omnifunc
-setlocal nopreserveindent
-setlocal nopreviewwindow
-setlocal quoteescape=\\
-setlocal noreadonly
-setlocal relativenumber
-setlocal norightleft
-setlocal rightleftcmd=search
-setlocal scrollback=-1
-setlocal noscrollbind
-setlocal shiftwidth=2
-setlocal signcolumn=yes
-setlocal nosmartindent
-setlocal nosmoothscroll
-setlocal softtabstop=-1
-setlocal nospell
-setlocal spellcapcheck=[.?!]\\_[\\])'\"\\t\ ]\\+
-setlocal spellfile=
-setlocal spelllang=en_us,de_de
-setlocal spelloptions=noplainbuffer
-setlocal statuscolumn=%!v:lua.require'snacks.statuscolumn'.get()
-setlocal suffixesadd=.ts,.d.ts,.tsx,.js,.jsx,.cjs,.mjs
-setlocal noswapfile
-setlocal synmaxcol=3000
-if &syntax != ''
-setlocal syntax=
-endif
-setlocal tabstop=2
-setlocal tagfunc=v:lua.vim.lsp.tagfunc
-setlocal textwidth=0
-setlocal undofile
-setlocal varsofttabstop=
-setlocal vartabstop=
-setlocal winbar=%#WinBarPath#src%*\ %#WinBarSeparator#/%*\ %#WinBarPath#system-services%*\ %#WinBarSeparator#/%*\ %#WinBarPath#content%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#brands-tool.ts%*\ %#WinBarSeparator##%*\ %#WinBarSymbol#createBrandsTool%*\ %#WinBarSeparator##%*\ %#WinBarSymbol#getBrands%*
-setlocal winblend=0
-setlocal nowinfixbuf
-setlocal nowinfixheight
-setlocal nowinfixwidth
-setlocal winhighlight=
-setlocal nowrap
-setlocal wrapmargin=0
-45
-sil! normal! zo
-102
-sil! normal! zo
-109
-sil! normal! zo
-110
-sil! normal! zo
-133
-sil! normal! zo
-let s:l = 141 - ((87 * winheight(0) + 29) / 59)
-if s:l < 1 | let s:l = 1 | endif
-keepjumps exe s:l
-normal! zt
-keepjumps 141
-normal! 0
-wincmd w
-argglobal
-if bufexists(fnamemodify("~/repos/dealercenter-digital/bc-desktop-client/src/client/kiosk/container/Settings/BrandActivationPage.tsx", ":p")) | buffer ~/repos/dealercenter-digital/bc-desktop-client/src/client/kiosk/container/Settings/BrandActivationPage.tsx | else | edit ~/repos/dealercenter-digital/bc-desktop-client/src/client/kiosk/container/Settings/BrandActivationPage.tsx | endif
-if &buftype ==# 'terminal'
-  silent file ~/repos/dealercenter-digital/bc-desktop-client/src/client/kiosk/container/Settings/BrandActivationPage.tsx
-endif
-balt ~/repos/dealercenter-digital/bc-desktop-client/src/system-services/content/brands-tool.ts
-setlocal keymap=
-setlocal noarabic
-setlocal autoindent
-setlocal nobinary
-setlocal nobreakindent
-setlocal breakindentopt=
-setlocal bufhidden=
-setlocal buflisted
-setlocal buftype=
-setlocal busy=0
-setlocal nocindent
-setlocal cinkeys=0{,0},0),0],:,0#,!^F,o,O,e
-setlocal cinoptions=
-setlocal cinscopedecls=public,protected,private
-setlocal cinwords=if,else,while,do,for,switch
-setlocal colorcolumn=
-setlocal comments=sO:*\ -,mO:*\ \ ,exO:*/,s1:/*,mb:*,ex:*/,://
-setlocal commentstring=//\ %s
-setlocal complete=.,w,b,u,t
-setlocal completefunc=
-setlocal completeslash=
-setlocal concealcursor=
-setlocal conceallevel=0
-setlocal nocopyindent
-setlocal nocursorbind
-setlocal nocursorcolumn
-setlocal cursorline
-setlocal cursorlineopt=both
-setlocal nodiff
-setlocal eventignorewin=
-setlocal expandtab
-if &filetype != 'typescriptreact'
-setlocal filetype=typescriptreact
 endif
 setlocal fixendofline
 setlocal foldcolumn=0
@@ -263,7 +114,7 @@ setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#src%*\ %#WinBarSeparator#/%*\ %#WinBarPath#client%*\ %#WinBarSeparator#/%*\ %#WinBarPath#kiosk%*\ %#WinBarSeparator#/%*\ %#WinBarPath#container%*\ %#WinBarSeparator#/%*\ %#WinBarPath#Settings%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#BrandActivationPage.tsx%*\ %#WinBarSeparator##%*\ %#WinBarSymbol#BrandActivationPage%*\ %#WinBarSeparator##%*\ %#WinBarSymbol#handleAddBrand%*\ %#WinBarSeparator##%*\ %#WinBarSymbol#onSuccess%*
+setlocal winbar=%#WinBarPath#src%*\ %#WinBarSeparator#/%*\ %#WinBarPath#client%*\ %#WinBarSeparator#/%*\ %#WinBarPath#kiosk%*\ %#WinBarSeparator#/%*\ %#WinBarPath#libs%*\ %#WinBarSeparator#/%*\ %#WinBarPath#hooks%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#use-license-check.ts%*\ %#WinBarSeparator##%*\ %#WinBarSymbol#usePeriodicLicenseCheck%*\ %#WinBarSeparator##%*\ %#WinBarSymbol#refetchInterval%*
 setlocal winblend=0
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -271,17 +122,12 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-68
-sil! normal! zo
-let s:l = 152 - ((44 * winheight(0) + 29) / 59)
+let s:l = 32 - ((31 * winheight(0) + 26) / 52)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 152
-normal! 08|
-wincmd w
-exe 'vert 1resize ' . ((&columns * 161 + 161) / 322)
-exe 'vert 2resize ' . ((&columns * 160 + 161) / 322)
+keepjumps 32
+normal! 017|
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
@@ -289,8 +135,6 @@ endif
 unlet! s:wipebuf
 set winheight=1 winwidth=20
 let &shortmess = s:shortmess_save
-let &winminheight = s:save_winminheight
-let &winminwidth = s:save_winminwidth
 let s:sx = expand("<sfile>:p:r")."x.vim"
 if filereadable(s:sx)
   exe "source " . fnameescape(s:sx)

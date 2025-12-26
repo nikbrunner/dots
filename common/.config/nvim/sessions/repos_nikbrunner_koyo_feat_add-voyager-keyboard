@@ -9,11 +9,11 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +97 ~/repos/nikbrunner/koyo/qmk/voyager/src/keymap.c
+badd +8 ~/repos/nikbrunner/koyo/qmk/voyager/src/config.h
 argglobal
 %argdel
 $argadd ./
-edit ~/repos/nikbrunner/koyo/qmk/voyager/src/keymap.c
+edit ~/repos/nikbrunner/koyo/qmk/voyager/src/config.h
 argglobal
 setlocal keymap=
 setlocal noarabic
@@ -47,15 +47,15 @@ setlocal define=^\\s*#\\s*define
 setlocal nodiff
 setlocal eventignorewin=
 setlocal expandtab
-if &filetype != 'c'
-setlocal filetype=c
+if &filetype != 'cpp'
+setlocal filetype=cpp
 endif
 setlocal fixendofline
 setlocal foldcolumn=0
 setlocal foldenable
 setlocal foldexpr=v:lua.vim.treesitter.foldexpr()
 setlocal foldignore=#
-setlocal foldlevel=0
+setlocal foldlevel=99
 setlocal foldmarker={{{,}}}
 setlocal foldmethod=indent
 setlocal foldminlines=1
@@ -84,7 +84,6 @@ setlocal nrformats=bin,hex
 setlocal number
 setlocal numberwidth=4
 setlocal omnifunc=v:lua.vim.lsp.omnifunc
-setlocal path=.,,
 setlocal nopreserveindent
 setlocal nopreviewwindow
 setlocal quoteescape=\\
@@ -117,7 +116,7 @@ setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#qmk%*\ %#WinBarSeparator#/%*\ %#WinBarPath#voyager%*\ %#WinBarSeparator#/%*\ %#WinBarPath#src%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#keymap.c%*
+setlocal winbar=%#WinBarPath#qmk%*\ %#WinBarSeparator#/%*\ %#WinBarPath#voyager%*\ %#WinBarSeparator#/%*\ %#WinBarPath#src%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#config.h%*
 setlocal winblend=0
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -125,95 +124,11 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-16
-sil! normal! zo
-40
-sil! normal! zo
-40
-sil! normal! zo
-40
-sil! normal! zo
-40
-sil! normal! zo
-40
-sil! normal! zo
-40
-sil! normal! zo
-40
-sil! normal! zo
-40
-sil! normal! zo
-40
-sil! normal! zo
-40
-sil! normal! zo
-40
-sil! normal! zo
-40
-sil! normal! zo
-40
-sil! normal! zo
-40
-sil! normal! zo
-40
-sil! normal! zo
-40
-sil! normal! zo
-40
-sil! normal! zo
-40
-sil! normal! zo
-97
-sil! normal! zo
-97
-sil! normal! zo
-97
-sil! normal! zo
-97
-sil! normal! zo
-97
-sil! normal! zo
-97
-sil! normal! zo
-97
-sil! normal! zo
-97
-sil! normal! zo
-97
-sil! normal! zo
-97
-sil! normal! zo
-97
-sil! normal! zo
-97
-sil! normal! zo
-97
-sil! normal! zo
-97
-sil! normal! zo
-97
-sil! normal! zo
-97
-sil! normal! zo
-97
-sil! normal! zo
-97
-sil! normal! zo
-97
-sil! normal! zo
-325
-sil! normal! zo
-335
-sil! normal! zo
-338
-sil! normal! zo
-342
-sil! normal! zo
-let s:l = 97 - ((36 * winheight(0) + 26) / 52)
+let s:l = 8 - ((7 * winheight(0) + 17) / 35)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 97
+keepjumps 8
 normal! 0
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
