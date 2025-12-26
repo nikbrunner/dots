@@ -127,11 +127,7 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-133
-sil! normal! zo
-133
-sil! normal! zo
-let s:l = 87 - ((62 * winheight(0) + 38) / 76)
+let s:l = 87 - ((46 * winheight(0) + 28) / 57)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
@@ -155,8 +151,8 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe 'vert 1resize ' . ((&columns * 194 + 195) / 390)
-exe 'vert 2resize ' . ((&columns * 195 + 195) / 390)
+exe 'vert 1resize ' . ((&columns * 125 + 125) / 251)
+exe 'vert 2resize ' . ((&columns * 125 + 125) / 251)
 argglobal
 setlocal keymap=
 setlocal noarabic
@@ -265,7 +261,7 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 5 - ((4 * winheight(0) + 38) / 76)
+let s:l = 5 - ((4 * winheight(0) + 28) / 57)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
@@ -377,7 +373,7 @@ setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#src%*\ %#WinBarSeparator#/%*\ %#WinBarPath#components%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#SpecCard.tsx%*\ %#WinBarSeparator##%*\ %#WinBarSymbol#SpecCard%*
+setlocal winbar=%#WinBarPath#src%*\ %#WinBarSeparator#/%*\ %#WinBarPath#components%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#SpecCard.tsx%*
 setlocal winblend=0
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -385,7 +381,7 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 14 - ((13 * winheight(0) + 38) / 76)
+let s:l = 14 - ((13 * winheight(0) + 28) / 57)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
@@ -393,8 +389,8 @@ keepjumps 14
 normal! 0
 wincmd w
 2wincmd w
-exe 'vert 1resize ' . ((&columns * 194 + 195) / 390)
-exe 'vert 2resize ' . ((&columns * 195 + 195) / 390)
+exe 'vert 1resize ' . ((&columns * 125 + 125) / 251)
+exe 'vert 2resize ' . ((&columns * 125 + 125) / 251)
 tabnext 2
 set stal=1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
