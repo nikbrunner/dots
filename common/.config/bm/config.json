@@ -1,0 +1,7 @@
+{
+  "quickAddFolder": "Read Later",
+  "cullExcludeDomains": [
+    "github.com",
+    "gitlab.com"
+  ]
+}

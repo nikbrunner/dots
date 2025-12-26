@@ -1,3 +1,6 @@
 node_modules
 common/.config/zed/prompts/
 **/.DS_Store
+common/.config/bm/cull-cache.json
+common/.config/bm/organize-cache.json
+common/.config/bm/sort-cache.json
