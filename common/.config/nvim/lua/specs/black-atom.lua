@@ -14,6 +14,10 @@ return {
                 diagnostics = {
                     background = true,
                 },
+                syntax = {
+                    comments = { italic = false },
+                    variables = {},
+                },
             },
         },
         config = function(_, opts)
