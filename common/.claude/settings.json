@@ -52,15 +52,48 @@
     "ask": []
   },
   "model": "opus",
+  "statusLine": {
+    "type": "command",
+    "command": "~/bin/claude-statusline"
+  },
   "enabledPlugins": {
-    "superpowers@superpowers-marketplace": true
+    "superpowers@superpowers-marketplace": true,
+    "lua-lsp@claude-plugins-official": true
   },
   "alwaysThinkingEnabled": true,
   "feedbackSurveyState": {
     "lastShownTime": 1754313915132
   },
-  "statusLine": {
-    "type": "command",
-    "command": "~/bin/claude-statusline"
+  "hooks": {
+    "PreToolUse": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.config/tmux/plugins/tmux-claude-status/hooks/better-hook.sh PreToolUse"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.config/tmux/plugins/tmux-claude-status/hooks/better-hook.sh Stop"
+          }
+        ]
+      }
+    ],
+    "Notification": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.config/tmux/plugins/tmux-claude-status/hooks/better-hook.sh Notification"
+          }
+        ]
+      }
+    ]
   }
 }
