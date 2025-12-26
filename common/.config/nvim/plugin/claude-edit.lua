@@ -529,5 +529,5 @@ vim.api.nvim_create_user_command("ClaudeEdit", function()
 end, { range = true, desc = "Refactor code using Claude AI" })
 
 -- Keybindings
--- vim.keymap.set("v", "<C-g>", ":ClaudeEdit<CR>", { desc = "Claude Edit: Refactor selection" })
--- vim.keymap.set("n", "<C-g>", ":ClaudeEdit<CR>", { desc = "Claude Edit: Refactor entire file" })
+vim.keymap.set("v", "<C-g>", ":ClaudeEdit<CR>", { desc = "Claude Edit: Refactor selection" })
+vim.keymap.set("n", "<C-g>", ":ClaudeEdit<CR>", { desc = "Claude Edit: Refactor entire file" })
