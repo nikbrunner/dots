@@ -3,7 +3,7 @@
 # Configuration
 CONFIG_FILE="${XDG_CONFIG_HOME:-$HOME/.config}/repos/config.json"
 
-# Defaults (can be overridden by config file, then by env vars)
+# Defaults (can be overridden by config file)
 _DEFAULT_REPOS_BASE_PATH="$HOME/repos"
 _DEFAULT_PARALLEL_JOBS=4
 _DEFAULT_TMUX_LAYOUT="ide"
@@ -28,37 +28,28 @@ print_warning() {
     echo -e "${YELLOW}⚠ $1${NC}"
 }
 
-# Load configuration from JSON file
-# Precedence: env vars > config file > defaults
+# Load configuration (config file > defaults)
 load_config() {
-    # Start with defaults
-    local cfg_repos_path="$_DEFAULT_REPOS_BASE_PATH"
-    local cfg_parallel_jobs="$_DEFAULT_PARALLEL_JOBS"
-    local cfg_tmux_layout="$_DEFAULT_TMUX_LAYOUT"
-    local cfg_tmux_layouts_dir="$_DEFAULT_TMUX_LAYOUTS_DIR"
+    REPOS_BASE_PATH="$_DEFAULT_REPOS_BASE_PATH"
+    DEFAULT_PARALLEL_JOBS="$_DEFAULT_PARALLEL_JOBS"
+    TMUX_LAYOUT="$_DEFAULT_TMUX_LAYOUT"
+    TMUX_LAYOUTS_DIR="$_DEFAULT_TMUX_LAYOUTS_DIR"
 
-    # Load from config file if it exists
     if [[ -f "$CONFIG_FILE" ]]; then
         local val
 
         val=$(jq -r '.repos_base_path // empty' "$CONFIG_FILE" 2>/dev/null)
-        [[ -n "$val" ]] && cfg_repos_path="${val/#\~/$HOME}"
+        [[ -n "$val" ]] && REPOS_BASE_PATH="${val/#\~/$HOME}"
 
         val=$(jq -r '.parallel_jobs // empty' "$CONFIG_FILE" 2>/dev/null)
-        [[ -n "$val" ]] && cfg_parallel_jobs="$val"
+        [[ -n "$val" ]] && DEFAULT_PARALLEL_JOBS="$val"
 
         val=$(jq -r '.tmux_layout // empty' "$CONFIG_FILE" 2>/dev/null)
-        [[ -n "$val" ]] && cfg_tmux_layout="$val"
+        [[ -n "$val" ]] && TMUX_LAYOUT="$val"
 
         val=$(jq -r '.tmux_layouts_dir // empty' "$CONFIG_FILE" 2>/dev/null)
-        [[ -n "$val" ]] && cfg_tmux_layouts_dir="${val/#\~/$HOME}"
+        [[ -n "$val" ]] && TMUX_LAYOUTS_DIR="${val/#\~/$HOME}"
     fi
-
-    # Apply with env var overrides (env vars take highest precedence)
-    REPOS_BASE_PATH="${REPOS_BASE_PATH:-$cfg_repos_path}"
-    DEFAULT_PARALLEL_JOBS="${PARALLEL_JOBS:-$cfg_parallel_jobs}"
-    TMUX_LAYOUT="${TMUX_LAYOUT:-$cfg_tmux_layout}"
-    TMUX_LAYOUTS_DIR="${TMUX_LAYOUTS_DIR:-$cfg_tmux_layouts_dir}"
 }
 
 # Get repositories to ensure are cloned from config
@@ -847,15 +838,19 @@ export REPOS_BASE_PATH
 
 # Setup repositories from config file
 setup_repos() {
-    local parallel_jobs="${PARALLEL_JOBS:-$DEFAULT_PARALLEL_JOBS}"
+    local parallel_jobs="$DEFAULT_PARALLEL_JOBS"
 
     # Load repos from config
-    local ensure_cloned=()
-    if ! mapfile -t ensure_cloned < <(get_ensure_cloned); then
+    if [[ ! -f "$CONFIG_FILE" ]]; then
         print_error "Config file not found: $CONFIG_FILE"
         echo "Run 'repos init' to create a default config file."
         exit 1
     fi
+
+    local ensure_cloned=()
+    while IFS= read -r line; do
+        [[ -n "$line" ]] && ensure_cloned+=("$line")
+    done < <(get_ensure_cloned)
 
     if [[ ${#ensure_cloned[@]} -eq 0 ]]; then
         print_error "No repositories defined in config file"
@@ -1217,12 +1212,6 @@ show_help() {
     echo "  $(style_command "setup")        - Clone all repositories from config"
     echo "  $(style_command "help")         - Show this help message"
     echo ""
-    style_header "Environment Variables:"
-    echo "  $(style_option "REPOS_BASE_PATH")  - Override repository base path (default: ~/repos)"
-    echo "  $(style_option "PARALLEL_JOBS")    - Number of parallel clone jobs (default: 4)"
-    echo "  $(style_option "TMUX_LAYOUT")      - Layout to apply on new sessions (default: ide)"
-    echo "  $(style_option "TMUX_LAYOUTS_DIR") - Directory containing layout scripts (default: ~/.config/tmux/layouts)"
-    echo ""
     style_header "Current Configuration:"
     echo "  Config file: $(style_path "$CONFIG_FILE")"
     echo "  Repository base path: $(style_path "$REPOS_BASE_PATH")"
@@ -1235,7 +1224,6 @@ show_help() {
     echo "  repos open nikbrunner/dots                       # Open specific repo directly"
     echo "  repos setup                                      # Clone all repos from config"
     echo "  repos status --clean                             # Show only dirty repositories"
-    echo "  PARALLEL_JOBS=8 repos setup                      # Clone with 8 parallel jobs"
     echo ""
     style_header "Config File (ensure_cloned):"
     echo "  Add repositories to ensure_cloned array in config file:"
