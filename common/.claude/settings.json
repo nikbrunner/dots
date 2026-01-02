@@ -1,6 +1,70 @@
 {
   "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "alwaysThinkingEnabled": true,
+  "enabledPlugins": {
+    "clangd-lsp@claude-plugins-official": true,
+    "lua-lsp@claude-plugins-official": true,
+    "superpowers@superpowers-marketplace": true
+  },
+  "feedbackSurveyState": {
+    "lastShownTime": 1754313915132
+  },
+  "hooks": {
+    "Notification": [
+      {
+        "hooks": [
+          {
+            "command": "~/.local/bin/tmux-session-picker-hook Notification",
+            "type": "command"
+          }
+        ]
+      }
+    ],
+    "PreCompact": [
+      {
+        "hooks": [
+          {
+            "command": "bd prime",
+            "type": "command"
+          }
+        ],
+        "matcher": ""
+      }
+    ],
+    "PreToolUse": [
+      {
+        "hooks": [
+          {
+            "command": "~/.local/bin/tmux-session-picker-hook PreToolUse",
+            "type": "command"
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "command": "bd prime",
+            "type": "command"
+          }
+        ],
+        "matcher": ""
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "command": "~/.local/bin/tmux-session-picker-hook Stop",
+            "type": "command"
+          }
+        ]
+      }
+    ]
+  },
   "includeCoAuthoredBy": false,
+  "model": "opus",
   "permissions": {
     "allow": [
       "Bash(cat:*)",
@@ -48,52 +112,11 @@
       "mcp__exa__get_code_context_exa",
       "mcp__supabase__*"
     ],
-    "deny": [],
-    "ask": []
+    "ask": [],
+    "deny": []
   },
-  "model": "opus",
   "statusLine": {
-    "type": "command",
-    "command": "~/bin/claude-statusline"
-  },
-  "enabledPlugins": {
-    "superpowers@superpowers-marketplace": true,
-    "lua-lsp@claude-plugins-official": true
-  },
-  "alwaysThinkingEnabled": true,
-  "feedbackSurveyState": {
-    "lastShownTime": 1754313915132
-  },
-  "hooks": {
-    "PreToolUse": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "~/.config/tmux/plugins/tmux-claude-status/hooks/better-hook.sh PreToolUse"
-          }
-        ]
-      }
-    ],
-    "Stop": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "~/.config/tmux/plugins/tmux-claude-status/hooks/better-hook.sh Stop"
-          }
-        ]
-      }
-    ],
-    "Notification": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "~/.config/tmux/plugins/tmux-claude-status/hooks/better-hook.sh Notification"
-          }
-        ]
-      }
-    ]
+    "command": "~/bin/claude-statusline",
+    "type": "command"
   }
 }
