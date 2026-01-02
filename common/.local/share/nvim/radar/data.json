@@ -13,7 +13,7 @@
             "label": "2"
           }
         ],
-        "lastAccessed": 1765717327
+        "lastAccessed": 1767112935
       }
     },
     "~/repos/black-atom-industries/website": {
@@ -314,7 +314,7 @@
             "label": "3"
           }
         ],
-        "lastAccessed": 1766766275
+        "lastAccessed": 1767278905
       }
     },
     "~/repos/nikbrunner/nbr.haus": {
@@ -323,9 +323,22 @@
           {
             "filename": "src/routes/index.tsx",
             "label": "1"
+          },
+          {
+            "filename": "src/routes/cv/index.tsx",
+            "label": "2"
           }
         ],
-        "lastAccessed": 1766495843
+        "lastAccessed": 1767362055
+      },
+      "rework-structure": {
+        "locks": [
+          {
+            "filename": "src/routes/cv/index.tsx",
+            "label": "1"
+          }
+        ],
+        "lastAccessed": 1766845702
       }
     },
     "~/repos/nikbrunner/notes": {
@@ -340,7 +353,7 @@
             "label": "2"
           }
         ],
-        "lastAccessed": 1766755228
+        "lastAccessed": 1767278906
       }
     },
     "~/repos/nikbrunner/wichtel-app": {
