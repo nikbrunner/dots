@@ -5,7 +5,6 @@ local M = {}
 ---@type LazyPluginSpec
 M.spec = {
     "yujinyuz/gitpad.nvim",
-    enabled = false,
     opts = function()
         local cwd = vim.fn.getcwd()
         local does_include = string.find(cwd, "dealercenter-digital", 1, true)
@@ -30,21 +29,21 @@ M.spec = {
     end,
     keys = {
         {
-            "<leader>np",
+            "<leader>ngp",
             function()
                 require("gitpad").toggle_gitpad()
             end,
             desc = "Project notes",
         },
         {
-            "<leader>nb",
+            "<leader>ngb",
             function()
                 require("gitpad").toggle_gitpad_branch()
             end,
             desc = "Branch notes",
         },
         {
-            "<leader>nf",
+            "<leader>ngf",
             function()
                 local filename = vim.fn.expand("%:p") -- or just use vim.fn.bufname()
                 if filename == "" then
