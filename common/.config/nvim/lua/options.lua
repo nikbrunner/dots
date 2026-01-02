@@ -5,6 +5,9 @@ vim.g.maplocalleader = "."
 
 vim.opt.mouse = "a"
 
+-- Load project-specific .nvim.lua files (run `:trust` to allow execution)
+vim.o.exrc = true
+
 vim.opt.clipboard = "unnamedplus"
 
 vim.opt.spelllang = "en_us,de_de"
