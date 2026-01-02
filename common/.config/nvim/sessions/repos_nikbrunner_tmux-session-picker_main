@@ -9,7 +9,7 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +148 ~/repos/nikbrunner/tmux-session-picker/tmux-session-picker
+badd +155 ~/repos/nikbrunner/tmux-session-picker/tmux-session-picker
 argglobal
 %argdel
 edit ~/repos/nikbrunner/tmux-session-picker/tmux-session-picker
@@ -124,15 +124,15 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-46
+64
 sil! normal! zo
-82
+71
 sil! normal! zo
-let s:l = 148 - ((46 * winheight(0) + 26) / 52)
+let s:l = 155 - ((44 * winheight(0) + 26) / 52)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 148
+keepjumps 155
 normal! 0
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'

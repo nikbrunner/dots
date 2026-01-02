@@ -12,7 +12,7 @@ set shortmess+=aoO
 badd +28 ~/repos/black-atom-industries/ghostty/themes/mnml/collection.template.conf
 badd +1 ~/repos/black-atom-industries/ghostty/themes/terra/black-atom-terra-fall-day.conf
 badd +14 ~/repos/black-atom-industries/ghostty/themes/terra/collection.template.conf
-badd +19 ~/repos/black-atom-industries/ghostty/themes/mnml/black-atom-mnml-eink-light.conf
+badd +3 ~/repos/black-atom-industries/ghostty/themes/default/collection.template.conf
 argglobal
 %argdel
 $argadd ./
@@ -39,10 +39,10 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe 'vert 1resize ' . ((&columns * 64 + 130) / 261)
-exe 'vert 2resize ' . ((&columns * 64 + 130) / 261)
-exe 'vert 3resize ' . ((&columns * 66 + 130) / 261)
-exe 'vert 4resize ' . ((&columns * 64 + 130) / 261)
+exe 'vert 1resize ' . ((&columns * 77 + 155) / 311)
+exe 'vert 2resize ' . ((&columns * 77 + 155) / 311)
+exe 'vert 3resize ' . ((&columns * 77 + 155) / 311)
+exe 'vert 4resize ' . ((&columns * 77 + 155) / 311)
 argglobal
 setlocal keymap=
 setlocal noarabic
@@ -151,17 +151,17 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 28 - ((22 * winheight(0) + 23) / 46)
+let s:l = 28 - ((27 * winheight(0) + 25) / 51)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
 keepjumps 28
-normal! 0
+normal! 037|
 wincmd w
 argglobal
-if bufexists(fnamemodify("~/repos/black-atom-industries/ghostty/themes/mnml/black-atom-mnml-eink-light.conf", ":p")) | buffer ~/repos/black-atom-industries/ghostty/themes/mnml/black-atom-mnml-eink-light.conf | else | edit ~/repos/black-atom-industries/ghostty/themes/mnml/black-atom-mnml-eink-light.conf | endif
+if bufexists(fnamemodify("~/repos/black-atom-industries/ghostty/themes/default/collection.template.conf", ":p")) | buffer ~/repos/black-atom-industries/ghostty/themes/default/collection.template.conf | else | edit ~/repos/black-atom-industries/ghostty/themes/default/collection.template.conf | endif
 if &buftype ==# 'terminal'
-  silent file ~/repos/black-atom-industries/ghostty/themes/mnml/black-atom-mnml-eink-light.conf
+  silent file ~/repos/black-atom-industries/ghostty/themes/default/collection.template.conf
 endif
 balt ~/repos/black-atom-industries/ghostty/themes/mnml/collection.template.conf
 setlocal keymap=
@@ -263,7 +263,7 @@ setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#themes%*\ %#WinBarSeparator#/%*\ %#WinBarPath#mnml%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#black-atom-mnml-eink-light.conf%*
+setlocal winbar=%#WinBarPath#themes%*\ %#WinBarSeparator#/%*\ %#WinBarPath#default%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#collection.template.conf%*
 setlocal winblend=0
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -271,11 +271,11 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 19 - ((18 * winheight(0) + 23) / 46)
+let s:l = 8 - ((7 * winheight(0) + 25) / 51)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 19
+keepjumps 8
 normal! 0
 wincmd w
 argglobal
@@ -391,12 +391,12 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 15 - ((13 * winheight(0) + 23) / 46)
+let s:l = 30 - ((29 * winheight(0) + 25) / 51)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 15
-normal! 0
+keepjumps 30
+normal! 09|
 wincmd w
 argglobal
 if bufexists(fnamemodify("~/repos/black-atom-industries/ghostty/themes/terra/black-atom-terra-fall-day.conf", ":p")) | buffer ~/repos/black-atom-industries/ghostty/themes/terra/black-atom-terra-fall-day.conf | else | edit ~/repos/black-atom-industries/ghostty/themes/terra/black-atom-terra-fall-day.conf | endif
@@ -511,18 +511,17 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 3 - ((2 * winheight(0) + 23) / 46)
+let s:l = 3 - ((2 * winheight(0) + 25) / 51)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
 keepjumps 3
 normal! 0
 wincmd w
-2wincmd w
-exe 'vert 1resize ' . ((&columns * 64 + 130) / 261)
-exe 'vert 2resize ' . ((&columns * 64 + 130) / 261)
-exe 'vert 3resize ' . ((&columns * 66 + 130) / 261)
-exe 'vert 4resize ' . ((&columns * 64 + 130) / 261)
+exe 'vert 1resize ' . ((&columns * 77 + 155) / 311)
+exe 'vert 2resize ' . ((&columns * 77 + 155) / 311)
+exe 'vert 3resize ' . ((&columns * 77 + 155) / 311)
+exe 'vert 4resize ' . ((&columns * 77 + 155) / 311)
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
