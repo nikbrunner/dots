@@ -1,5 +1,25 @@
 {
   "themes": {
+    "black-atom-default-dark": {
+      "display_name": "Black Atom — Dark",
+      "appearance": "dark",
+      "collection": "default"
+    },
+    "black-atom-default-dark-dimmed": {
+      "display_name": "Black Atom — Dark Dimmed",
+      "appearance": "dark",
+      "collection": "default"
+    },
+    "black-atom-default-light": {
+      "display_name": "Black Atom — Light",
+      "appearance": "light",
+      "collection": "default"
+    },
+    "black-atom-default-light-dimmed": {
+      "display_name": "Black Atom — Light Dimmed",
+      "appearance": "light",
+      "collection": "default"
+    },
     "black-atom-stations-engineering": {
       "display_name": "Black Atom — STA ∷ Engineering",
       "appearance": "dark",
@@ -80,21 +100,6 @@
       "appearance": "dark",
       "collection": "terra"
     },
-    "black-atom-north-night": {
-      "display_name": "Black Atom — NORTH ∷ Night",
-      "appearance": "dark",
-      "collection": "north"
-    },
-    "black-atom-north-dark-night": {
-      "display_name": "Black Atom — NORTH ∷ Dark Night",
-      "appearance": "dark",
-      "collection": "north"
-    },
-    "black-atom-north-day": {
-      "display_name": "Black Atom — NORTH ∷ Day",
-      "appearance": "light",
-      "collection": "north"
-    },
     "black-atom-mnml-clay-dark": {
       "display_name": "Black Atom — MNM ∷ Clay Dark",
       "appearance": "dark",
@@ -160,10 +165,10 @@
       "config_path": "~/repos/nikbrunner/dots/common/.config/tmux/themes.conf",
       "update_method": "source_file",
       "base_paths": {
+        "default": "~/repos/black-atom-industries/tmux/themes/default",
         "stations": "~/repos/black-atom-industries/tmux/themes/stations",
         "jpn": "~/repos/black-atom-industries/tmux/themes/jpn",
         "terra": "~/repos/black-atom-industries/tmux/themes/terra",
-        "north": "~/repos/black-atom-industries/tmux/themes/north",
         "mnml": "~/repos/black-atom-industries/tmux/themes/mnml"
       }
     },
