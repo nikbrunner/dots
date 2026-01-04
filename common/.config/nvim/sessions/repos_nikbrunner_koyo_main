@@ -3,19 +3,19 @@ let s:so_save = &g:so | let s:siso_save = &g:siso | setg so=0 siso=0 | setl so=-
 let v:this_session=expand("<sfile>:p")
 silent only
 silent tabonly
-cd ~/repos/nikbrunner/nbr.haus
+cd ~/repos/nikbrunner/koyo
 if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +6 ~/repos/nikbrunner/nbr.haus/src/components/ControlPanel/ControlPanelExpanded.css
-badd +167 ~/repos/nikbrunner/nbr.haus/src/styles/global.css
-badd +68 ~/repos/nikbrunner/nbr.haus/src/hooks/useDynamicSections.ts
+badd +39 ~/repos/nikbrunner/koyo/qmk/voyager/src/config.h
+badd +7 ~/repos/nikbrunner/koyo/qmk/moonlander/src/config.h
+badd +1 ~/repos/nikbrunner/koyo/qmk/crkbd/src/config.h
 argglobal
 %argdel
 $argadd ./
-edit ~/repos/nikbrunner/nbr.haus/src/hooks/useDynamicSections.ts
+edit ~/repos/nikbrunner/koyo/qmk/voyager/src/config.h
 let s:save_splitbelow = &splitbelow
 let s:save_splitright = &splitright
 set splitbelow splitright
@@ -35,9 +35,9 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe 'vert 1resize ' . ((&columns * 69 + 103) / 207)
-exe 'vert 2resize ' . ((&columns * 68 + 103) / 207)
-exe 'vert 3resize ' . ((&columns * 68 + 103) / 207)
+exe 'vert 1resize ' . ((&columns * 97 + 146) / 292)
+exe 'vert 2resize ' . ((&columns * 97 + 146) / 292)
+exe 'vert 3resize ' . ((&columns * 96 + 146) / 292)
 argglobal
 setlocal keymap=
 setlocal noarabic
@@ -49,13 +49,13 @@ setlocal bufhidden=
 setlocal buflisted
 setlocal buftype=
 setlocal busy=0
-setlocal nocindent
+setlocal cindent
 setlocal cinkeys=0{,0},0),0],:,0#,!^F,o,O,e
 setlocal cinoptions=
 setlocal cinscopedecls=public,protected,private
 setlocal cinwords=if,else,while,do,for,switch
 setlocal colorcolumn=
-setlocal comments=sO:*\ -,mO:*\ \ ,exO:*/,s1:/*,mb:*,ex:*/,://
+setlocal comments=sO:*\ -,mO:*\ \ ,exO:*/,s1:/*,mb:*,ex:*/,:///,://
 setlocal commentstring=//\ %s
 setlocal complete=.,w,b,u,t
 setlocal completefunc=
@@ -67,11 +67,12 @@ setlocal nocursorbind
 setlocal nocursorcolumn
 setlocal cursorline
 setlocal cursorlineopt=both
+setlocal define=^\\s*#\\s*define
 setlocal nodiff
 setlocal eventignorewin=
 setlocal expandtab
-if &filetype != 'typescript'
-setlocal filetype=typescript
+if &filetype != 'cpp'
+setlocal filetype=cpp
 endif
 setlocal fixendofline
 setlocal foldcolumn=0
@@ -89,9 +90,10 @@ setlocal formatlistpat=^\\s*\\d\\+[\\]:.)}\\t\ ]\\s*
 setlocal formatoptions=jcroql
 setlocal iminsert=0
 setlocal imsearch=-1
+setlocal include=^\\s*#\\s*include
 setlocal includeexpr=
-setlocal indentexpr=GetTypescriptIndent()
-setlocal indentkeys=0{,0},0),0],0,,!^F,o,O,e
+setlocal indentexpr=nvim_treesitter#indent()
+setlocal indentkeys=0{,0},0),0],:,0#,!^F,o,O,e
 setlocal noinfercase
 setlocal iskeyword=@,48-57,_,192-255
 setlocal lhistory=10
@@ -105,7 +107,8 @@ setlocal modifiable
 setlocal nrformats=bin,hex
 setlocal number
 setlocal numberwidth=4
-setlocal omnifunc=v:lua.vim.lsp.omnifunc
+setlocal omnifunc=ccomplete#Complete
+setlocal path=.,,
 setlocal nopreserveindent
 setlocal nopreviewwindow
 setlocal quoteescape=\\
@@ -115,9 +118,9 @@ setlocal norightleft
 setlocal rightleftcmd=search
 setlocal scrollback=-1
 setlocal noscrollbind
-setlocal shiftwidth=2
+setlocal shiftwidth=4
 setlocal signcolumn=yes
-setlocal nosmartindent
+setlocal smartindent
 setlocal nosmoothscroll
 setlocal softtabstop=-1
 setlocal nospell
@@ -126,19 +129,19 @@ setlocal spellfile=
 setlocal spelllang=en_us,de_de
 setlocal spelloptions=noplainbuffer
 setlocal statuscolumn=%!v:lua.require'snacks.statuscolumn'.get()
-setlocal suffixesadd=.ts,.d.ts,.tsx,.js,.jsx,.cjs,.mjs
+setlocal suffixesadd=
 setlocal noswapfile
 setlocal synmaxcol=3000
 if &syntax != ''
 setlocal syntax=
 endif
 setlocal tabstop=4
-setlocal tagfunc=v:lua.vim.lsp.tagfunc
+setlocal tagfunc=
 setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#src%*\ %#WinBarSeparator#/%*\ %#WinBarPath#hooks%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#useDynamicSections.ts%*
+setlocal winbar=%#WinBarPath#qmk%*\ %#WinBarSeparator#/%*\ %#WinBarPath#voyager%*\ %#WinBarSeparator#/%*\ %#WinBarPath#src%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#config.h%*
 setlocal winblend=0
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -146,23 +149,19 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-19
-sil! normal! zo
-24
-sil! normal! zo
-let s:l = 68 - ((4 * winheight(0) + 18) / 37)
+let s:l = 39 - ((38 * winheight(0) + 30) / 60)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 68
+keepjumps 39
 normal! 0
 wincmd w
 argglobal
-if bufexists(fnamemodify("~/repos/nikbrunner/nbr.haus/src/components/ControlPanel/ControlPanelExpanded.css", ":p")) | buffer ~/repos/nikbrunner/nbr.haus/src/components/ControlPanel/ControlPanelExpanded.css | else | edit ~/repos/nikbrunner/nbr.haus/src/components/ControlPanel/ControlPanelExpanded.css | endif
+if bufexists(fnamemodify("~/repos/nikbrunner/koyo/qmk/moonlander/src/config.h", ":p")) | buffer ~/repos/nikbrunner/koyo/qmk/moonlander/src/config.h | else | edit ~/repos/nikbrunner/koyo/qmk/moonlander/src/config.h | endif
 if &buftype ==# 'terminal'
-  silent file ~/repos/nikbrunner/nbr.haus/src/components/ControlPanel/ControlPanelExpanded.css
+  silent file ~/repos/nikbrunner/koyo/qmk/moonlander/src/config.h
 endif
-balt ~/repos/nikbrunner/nbr.haus/src/hooks/useDynamicSections.ts
+balt ~/repos/nikbrunner/koyo/qmk/voyager/src/config.h
 setlocal keymap=
 setlocal noarabic
 setlocal autoindent
@@ -173,14 +172,14 @@ setlocal bufhidden=
 setlocal buflisted
 setlocal buftype=
 setlocal busy=0
-setlocal nocindent
+setlocal cindent
 setlocal cinkeys=0{,0},0),0],:,0#,!^F,o,O,e
 setlocal cinoptions=
 setlocal cinscopedecls=public,protected,private
 setlocal cinwords=if,else,while,do,for,switch
 setlocal colorcolumn=
-setlocal comments=s1:/*,mb:*,ex:*/
-setlocal commentstring=/*\ %s\ */
+setlocal comments=sO:*\ -,mO:*\ \ ,exO:*/,s1:/*,mb:*,ex:*/,:///,://
+setlocal commentstring=//\ %s
 setlocal complete=.,w,b,u,t
 setlocal completefunc=
 setlocal completeslash=
@@ -191,11 +190,12 @@ setlocal nocursorbind
 setlocal nocursorcolumn
 setlocal cursorline
 setlocal cursorlineopt=both
+setlocal define=^\\s*#\\s*define
 setlocal nodiff
 setlocal eventignorewin=
 setlocal expandtab
-if &filetype != 'css'
-setlocal filetype=css
+if &filetype != 'cpp'
+setlocal filetype=cpp
 endif
 setlocal fixendofline
 setlocal foldcolumn=0
@@ -213,12 +213,12 @@ setlocal formatlistpat=^\\s*\\d\\+[\\]:.)}\\t\ ]\\s*
 setlocal formatoptions=jcroql
 setlocal iminsert=0
 setlocal imsearch=-1
-setlocal include=^\\s*@import\\s\\+\\%(url(\\)\\=
+setlocal include=^\\s*#\\s*include
 setlocal includeexpr=
 setlocal indentexpr=nvim_treesitter#indent()
-setlocal indentkeys=0{,0},!^F,o,O
+setlocal indentkeys=0{,0},0),0],:,0#,!^F,o,O,e
 setlocal noinfercase
-setlocal iskeyword=@,48-57,_,192-255,-
+setlocal iskeyword=@,48-57,_,192-255
 setlocal lhistory=10
 setlocal nolinebreak
 setlocal nolisp
@@ -230,7 +230,8 @@ setlocal modifiable
 setlocal nrformats=bin,hex
 setlocal number
 setlocal numberwidth=4
-setlocal omnifunc=v:lua.vim.lsp.omnifunc
+setlocal omnifunc=ccomplete#Complete
+setlocal path=.,,
 setlocal nopreserveindent
 setlocal nopreviewwindow
 setlocal quoteescape=\\
@@ -240,11 +241,11 @@ setlocal norightleft
 setlocal rightleftcmd=search
 setlocal scrollback=-1
 setlocal noscrollbind
-setlocal shiftwidth=2
+setlocal shiftwidth=4
 setlocal signcolumn=yes
-setlocal nosmartindent
+setlocal smartindent
 setlocal nosmoothscroll
-setlocal softtabstop=-1
+setlocal softtabstop=4
 setlocal nospell
 setlocal spellcapcheck=[.?!]\\_[\\])'\"\\t\ ]\\+
 setlocal spellfile=
@@ -258,12 +259,12 @@ if &syntax != ''
 setlocal syntax=
 endif
 setlocal tabstop=4
-setlocal tagfunc=v:lua.vim.lsp.tagfunc
+setlocal tagfunc=
 setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#src%*\ %#WinBarSeparator#/%*\ %#WinBarPath#components%*\ %#WinBarSeparator#/%*\ %#WinBarPath#ControlPanel%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#ControlPanelExpanded.css%*
+setlocal winbar=%#WinBarPath#qmk%*\ %#WinBarSeparator#/%*\ %#WinBarPath#moonlander%*\ %#WinBarSeparator#/%*\ %#WinBarPath#src%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#config.h%*
 setlocal winblend=0
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -271,23 +272,19 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-2
-sil! normal! zo
-4
-sil! normal! zo
-let s:l = 4 - ((0 * winheight(0) + 18) / 37)
+let s:l = 49 - ((6 * winheight(0) + 30) / 60)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 4
-normal! 031|
+keepjumps 49
+normal! 0
 wincmd w
 argglobal
-if bufexists(fnamemodify("~/repos/nikbrunner/nbr.haus/src/styles/global.css", ":p")) | buffer ~/repos/nikbrunner/nbr.haus/src/styles/global.css | else | edit ~/repos/nikbrunner/nbr.haus/src/styles/global.css | endif
+if bufexists(fnamemodify("~/repos/nikbrunner/koyo/qmk/crkbd/src/config.h", ":p")) | buffer ~/repos/nikbrunner/koyo/qmk/crkbd/src/config.h | else | edit ~/repos/nikbrunner/koyo/qmk/crkbd/src/config.h | endif
 if &buftype ==# 'terminal'
-  silent file ~/repos/nikbrunner/nbr.haus/src/styles/global.css
+  silent file ~/repos/nikbrunner/koyo/qmk/crkbd/src/config.h
 endif
-balt ~/repos/nikbrunner/nbr.haus/src/components/ControlPanel/ControlPanelExpanded.css
+balt ~/repos/nikbrunner/koyo/qmk/voyager/src/config.h
 setlocal keymap=
 setlocal noarabic
 setlocal autoindent
@@ -298,14 +295,14 @@ setlocal bufhidden=
 setlocal buflisted
 setlocal buftype=
 setlocal busy=0
-setlocal nocindent
+setlocal cindent
 setlocal cinkeys=0{,0},0),0],:,0#,!^F,o,O,e
 setlocal cinoptions=
 setlocal cinscopedecls=public,protected,private
 setlocal cinwords=if,else,while,do,for,switch
 setlocal colorcolumn=
-setlocal comments=s1:/*,mb:*,ex:*/
-setlocal commentstring=/*\ %s\ */
+setlocal comments=sO:*\ -,mO:*\ \ ,exO:*/,s1:/*,mb:*,ex:*/,:///,://
+setlocal commentstring=//\ %s
 setlocal complete=.,w,b,u,t
 setlocal completefunc=
 setlocal completeslash=
@@ -316,11 +313,12 @@ setlocal nocursorbind
 setlocal nocursorcolumn
 setlocal cursorline
 setlocal cursorlineopt=both
+setlocal define=^\\s*#\\s*define
 setlocal nodiff
 setlocal eventignorewin=
 setlocal expandtab
-if &filetype != 'css'
-setlocal filetype=css
+if &filetype != 'cpp'
+setlocal filetype=cpp
 endif
 setlocal fixendofline
 setlocal foldcolumn=0
@@ -338,12 +336,12 @@ setlocal formatlistpat=^\\s*\\d\\+[\\]:.)}\\t\ ]\\s*
 setlocal formatoptions=jcroql
 setlocal iminsert=0
 setlocal imsearch=-1
-setlocal include=^\\s*@import\\s\\+\\%(url(\\)\\=
+setlocal include=^\\s*#\\s*include
 setlocal includeexpr=
 setlocal indentexpr=nvim_treesitter#indent()
-setlocal indentkeys=0{,0},!^F,o,O
+setlocal indentkeys=0{,0},0),0],:,0#,!^F,o,O,e
 setlocal noinfercase
-setlocal iskeyword=@,48-57,_,192-255,-
+setlocal iskeyword=@,48-57,_,192-255
 setlocal lhistory=10
 setlocal nolinebreak
 setlocal nolisp
@@ -355,7 +353,8 @@ setlocal modifiable
 setlocal nrformats=bin,hex
 setlocal number
 setlocal numberwidth=4
-setlocal omnifunc=v:lua.vim.lsp.omnifunc
+setlocal omnifunc=ccomplete#Complete
+setlocal path=.,,
 setlocal nopreserveindent
 setlocal nopreviewwindow
 setlocal quoteescape=\\
@@ -365,9 +364,9 @@ setlocal norightleft
 setlocal rightleftcmd=search
 setlocal scrollback=-1
 setlocal noscrollbind
-setlocal shiftwidth=2
+setlocal shiftwidth=4
 setlocal signcolumn=yes
-setlocal nosmartindent
+setlocal smartindent
 setlocal nosmoothscroll
 setlocal softtabstop=-1
 setlocal nospell
@@ -383,12 +382,12 @@ if &syntax != ''
 setlocal syntax=
 endif
 setlocal tabstop=4
-setlocal tagfunc=v:lua.vim.lsp.tagfunc
+setlocal tagfunc=
 setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#src%*\ %#WinBarSeparator#/%*\ %#WinBarPath#styles%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#global.css%*
+setlocal winbar=%#WinBarPath#qmk%*\ %#WinBarSeparator#/%*\ %#WinBarPath#crkbd%*\ %#WinBarSeparator#/%*\ %#WinBarPath#src%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#config.h%*
 setlocal winblend=0
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -396,24 +395,22 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-78
-sil! normal! zo
-let s:l = 163 - ((19 * winheight(0) + 18) / 37)
+let s:l = 8 - ((7 * winheight(0) + 30) / 60)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 163
-normal! 03|
+keepjumps 8
+normal! 0
 wincmd w
-exe 'vert 1resize ' . ((&columns * 69 + 103) / 207)
-exe 'vert 2resize ' . ((&columns * 68 + 103) / 207)
-exe 'vert 3resize ' . ((&columns * 68 + 103) / 207)
+exe 'vert 1resize ' . ((&columns * 97 + 146) / 292)
+exe 'vert 2resize ' . ((&columns * 97 + 146) / 292)
+exe 'vert 3resize ' . ((&columns * 96 + 146) / 292)
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
 endif
 unlet! s:wipebuf
-set winheight=1 winwidth=1
+set winheight=1 winwidth=20
 let &shortmess = s:shortmess_save
 let &winminheight = s:save_winminheight
 let &winminwidth = s:save_winminwidth

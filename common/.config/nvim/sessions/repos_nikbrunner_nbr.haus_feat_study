@@ -9,22 +9,18 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +6 ~/repos/nikbrunner/nbr.haus/src/components/ControlPanel/ControlPanelExpanded.css
-badd +167 ~/repos/nikbrunner/nbr.haus/src/styles/global.css
-badd +68 ~/repos/nikbrunner/nbr.haus/src/hooks/useDynamicSections.ts
+badd +6 ~/repos/nikbrunner/nbr.haus/src/components/Typo/Typo.Lead.css
+badd +106 ~/repos/nikbrunner/nbr.haus/src/partials/ControlPanel.tsx
 argglobal
 %argdel
 $argadd ./
-edit ~/repos/nikbrunner/nbr.haus/src/hooks/useDynamicSections.ts
+edit ~/repos/nikbrunner/nbr.haus/src/partials/ControlPanel.tsx
 let s:save_splitbelow = &splitbelow
 let s:save_splitright = &splitright
 set splitbelow splitright
 wincmd _ | wincmd |
 vsplit
-wincmd _ | wincmd |
-vsplit
-2wincmd h
-wincmd w
+1wincmd h
 wincmd w
 let &splitbelow = s:save_splitbelow
 let &splitright = s:save_splitright
@@ -35,9 +31,8 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe 'vert 1resize ' . ((&columns * 69 + 103) / 207)
-exe 'vert 2resize ' . ((&columns * 68 + 103) / 207)
-exe 'vert 3resize ' . ((&columns * 68 + 103) / 207)
+exe 'vert 1resize ' . ((&columns * 195 + 195) / 390)
+exe 'vert 2resize ' . ((&columns * 194 + 195) / 390)
 argglobal
 setlocal keymap=
 setlocal noarabic
@@ -70,8 +65,8 @@ setlocal cursorlineopt=both
 setlocal nodiff
 setlocal eventignorewin=
 setlocal expandtab
-if &filetype != 'typescript'
-setlocal filetype=typescript
+if &filetype != 'typescriptreact'
+setlocal filetype=typescriptreact
 endif
 setlocal fixendofline
 setlocal foldcolumn=0
@@ -93,7 +88,7 @@ setlocal includeexpr=
 setlocal indentexpr=GetTypescriptIndent()
 setlocal indentkeys=0{,0},0),0],0,,!^F,o,O,e
 setlocal noinfercase
-setlocal iskeyword=@,48-57,_,192-255
+setlocal iskeyword=@,48-57,_,192-255,#,$
 setlocal lhistory=10
 setlocal nolinebreak
 setlocal nolisp
@@ -138,7 +133,7 @@ setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#src%*\ %#WinBarSeparator#/%*\ %#WinBarPath#hooks%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#useDynamicSections.ts%*
+setlocal winbar=%#WinBarPath#src%*\ %#WinBarSeparator#/%*\ %#WinBarPath#partials%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#ControlPanel.tsx%*\ %#WinBarSeparator##%*\ %#WinBarSymbol#ControlPanel%*
 setlocal winblend=0
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -146,23 +141,101 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-19
+34
 sil! normal! zo
-24
+103
 sil! normal! zo
-let s:l = 68 - ((4 * winheight(0) + 18) / 37)
+104
+sil! normal! zo
+110
+sil! normal! zo
+117
+sil! normal! zo
+118
+sil! normal! zo
+126
+sil! normal! zo
+130
+sil! normal! zo
+135
+sil! normal! zo
+144
+sil! normal! zo
+146
+sil! normal! zo
+147
+sil! normal! zo
+149
+sil! normal! zo
+150
+sil! normal! zo
+151
+sil! normal! zo
+152
+sil! normal! zo
+153
+sil! normal! zo
+171
+sil! normal! zo
+172
+sil! normal! zo
+173
+sil! normal! zo
+174
+sil! normal! zo
+177
+sil! normal! zo
+178
+sil! normal! zo
+189
+sil! normal! zo
+198
+sil! normal! zo
+205
+sil! normal! zo
+222
+sil! normal! zo
+223
+sil! normal! zo
+224
+sil! normal! zo
+225
+sil! normal! zo
+226
+sil! normal! zo
+234
+sil! normal! zo
+248
+sil! normal! zo
+249
+sil! normal! zo
+250
+sil! normal! zo
+262
+sil! normal! zo
+263
+sil! normal! zo
+264
+sil! normal! zo
+276
+sil! normal! zo
+277
+sil! normal! zo
+278
+sil! normal! zo
+let s:l = 105 - ((32 * winheight(0) + 32) / 65)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 68
+keepjumps 105
 normal! 0
 wincmd w
 argglobal
-if bufexists(fnamemodify("~/repos/nikbrunner/nbr.haus/src/components/ControlPanel/ControlPanelExpanded.css", ":p")) | buffer ~/repos/nikbrunner/nbr.haus/src/components/ControlPanel/ControlPanelExpanded.css | else | edit ~/repos/nikbrunner/nbr.haus/src/components/ControlPanel/ControlPanelExpanded.css | endif
+if bufexists(fnamemodify("~/repos/nikbrunner/nbr.haus/src/components/Typo/Typo.Lead.css", ":p")) | buffer ~/repos/nikbrunner/nbr.haus/src/components/Typo/Typo.Lead.css | else | edit ~/repos/nikbrunner/nbr.haus/src/components/Typo/Typo.Lead.css | endif
 if &buftype ==# 'terminal'
-  silent file ~/repos/nikbrunner/nbr.haus/src/components/ControlPanel/ControlPanelExpanded.css
+  silent file ~/repos/nikbrunner/nbr.haus/src/components/Typo/Typo.Lead.css
 endif
-balt ~/repos/nikbrunner/nbr.haus/src/hooks/useDynamicSections.ts
+balt ~/repos/nikbrunner/nbr.haus/src/partials/ControlPanel.tsx
 setlocal keymap=
 setlocal noarabic
 setlocal autoindent
@@ -230,7 +303,7 @@ setlocal modifiable
 setlocal nrformats=bin,hex
 setlocal number
 setlocal numberwidth=4
-setlocal omnifunc=v:lua.vim.lsp.omnifunc
+setlocal omnifunc=csscomplete#CompleteCSS
 setlocal nopreserveindent
 setlocal nopreviewwindow
 setlocal quoteescape=\\
@@ -263,7 +336,7 @@ setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#src%*\ %#WinBarSeparator#/%*\ %#WinBarPath#components%*\ %#WinBarSeparator#/%*\ %#WinBarPath#ControlPanel%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#ControlPanelExpanded.css%*
+setlocal winbar=%#WinBarPath#src%*\ %#WinBarSeparator#/%*\ %#WinBarPath#components%*\ %#WinBarSeparator#/%*\ %#WinBarPath#Typo%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#Typo.Lead.css%*\ %#WinBarSeparator##%*\ %#WinBarSymbol#.Typo-Lead%*
 setlocal winblend=0
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -271,143 +344,16 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-2
-sil! normal! zo
-4
-sil! normal! zo
-let s:l = 4 - ((0 * winheight(0) + 18) / 37)
+let s:l = 6 - ((5 * winheight(0) + 32) / 65)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 4
-normal! 031|
+keepjumps 6
+normal! 0
 wincmd w
-argglobal
-if bufexists(fnamemodify("~/repos/nikbrunner/nbr.haus/src/styles/global.css", ":p")) | buffer ~/repos/nikbrunner/nbr.haus/src/styles/global.css | else | edit ~/repos/nikbrunner/nbr.haus/src/styles/global.css | endif
-if &buftype ==# 'terminal'
-  silent file ~/repos/nikbrunner/nbr.haus/src/styles/global.css
-endif
-balt ~/repos/nikbrunner/nbr.haus/src/components/ControlPanel/ControlPanelExpanded.css
-setlocal keymap=
-setlocal noarabic
-setlocal autoindent
-setlocal nobinary
-setlocal nobreakindent
-setlocal breakindentopt=
-setlocal bufhidden=
-setlocal buflisted
-setlocal buftype=
-setlocal busy=0
-setlocal nocindent
-setlocal cinkeys=0{,0},0),0],:,0#,!^F,o,O,e
-setlocal cinoptions=
-setlocal cinscopedecls=public,protected,private
-setlocal cinwords=if,else,while,do,for,switch
-setlocal colorcolumn=
-setlocal comments=s1:/*,mb:*,ex:*/
-setlocal commentstring=/*\ %s\ */
-setlocal complete=.,w,b,u,t
-setlocal completefunc=
-setlocal completeslash=
-setlocal concealcursor=
-setlocal conceallevel=0
-setlocal nocopyindent
-setlocal nocursorbind
-setlocal nocursorcolumn
-setlocal cursorline
-setlocal cursorlineopt=both
-setlocal nodiff
-setlocal eventignorewin=
-setlocal expandtab
-if &filetype != 'css'
-setlocal filetype=css
-endif
-setlocal fixendofline
-setlocal foldcolumn=0
-setlocal foldenable
-setlocal foldexpr=v:lua.vim.treesitter.foldexpr()
-setlocal foldignore=#
-setlocal foldlevel=99
-setlocal foldmarker={{{,}}}
-setlocal foldmethod=indent
-setlocal foldminlines=1
-setlocal foldnestmax=20
-setlocal foldtext=
-setlocal formatexpr=v:lua.require'conform'.formatexpr()
-setlocal formatlistpat=^\\s*\\d\\+[\\]:.)}\\t\ ]\\s*
-setlocal formatoptions=jcroql
-setlocal iminsert=0
-setlocal imsearch=-1
-setlocal include=^\\s*@import\\s\\+\\%(url(\\)\\=
-setlocal includeexpr=
-setlocal indentexpr=nvim_treesitter#indent()
-setlocal indentkeys=0{,0},!^F,o,O
-setlocal noinfercase
-setlocal iskeyword=@,48-57,_,192-255,-
-setlocal lhistory=10
-setlocal nolinebreak
-setlocal nolisp
-setlocal lispoptions=
-setlocal nolist
-setlocal matchpairs=(:),{:},[:]
-setlocal modeline
-setlocal modifiable
-setlocal nrformats=bin,hex
-setlocal number
-setlocal numberwidth=4
-setlocal omnifunc=v:lua.vim.lsp.omnifunc
-setlocal nopreserveindent
-setlocal nopreviewwindow
-setlocal quoteescape=\\
-setlocal noreadonly
-setlocal relativenumber
-setlocal norightleft
-setlocal rightleftcmd=search
-setlocal scrollback=-1
-setlocal noscrollbind
-setlocal shiftwidth=2
-setlocal signcolumn=yes
-setlocal nosmartindent
-setlocal nosmoothscroll
-setlocal softtabstop=-1
-setlocal nospell
-setlocal spellcapcheck=[.?!]\\_[\\])'\"\\t\ ]\\+
-setlocal spellfile=
-setlocal spelllang=en_us,de_de
-setlocal spelloptions=noplainbuffer
-setlocal statuscolumn=%!v:lua.require'snacks.statuscolumn'.get()
-setlocal suffixesadd=
-setlocal noswapfile
-setlocal synmaxcol=3000
-if &syntax != ''
-setlocal syntax=
-endif
-setlocal tabstop=4
-setlocal tagfunc=v:lua.vim.lsp.tagfunc
-setlocal textwidth=0
-setlocal undofile
-setlocal varsofttabstop=
-setlocal vartabstop=
-setlocal winbar=%#WinBarPath#src%*\ %#WinBarSeparator#/%*\ %#WinBarPath#styles%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#global.css%*
-setlocal winblend=0
-setlocal nowinfixbuf
-setlocal nowinfixheight
-setlocal nowinfixwidth
-setlocal winhighlight=
-setlocal nowrap
-setlocal wrapmargin=0
-78
-sil! normal! zo
-let s:l = 163 - ((19 * winheight(0) + 18) / 37)
-if s:l < 1 | let s:l = 1 | endif
-keepjumps exe s:l
-normal! zt
-keepjumps 163
-normal! 03|
-wincmd w
-exe 'vert 1resize ' . ((&columns * 69 + 103) / 207)
-exe 'vert 2resize ' . ((&columns * 68 + 103) / 207)
-exe 'vert 3resize ' . ((&columns * 68 + 103) / 207)
+2wincmd w
+exe 'vert 1resize ' . ((&columns * 195 + 195) / 390)
+exe 'vert 2resize ' . ((&columns * 194 + 195) / 390)
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf

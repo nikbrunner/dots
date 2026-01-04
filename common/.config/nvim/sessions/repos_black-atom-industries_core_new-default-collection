@@ -20,12 +20,12 @@ badd +30 ~/repos/black-atom-industries/core/src/themes/mnml/black-atom-mnml-oran
 badd +11 ~/repos/black-atom-industries/core/src/themes/mnml/syntax_light.ts
 badd +51 ~/repos/black-atom-industries/core/src/themes/terra/black-atom-terra-winter-day.ts
 badd +1 ./
-badd +47 ~/repos/black-atom-industries/core/src/themes/default/black-atom-default-dark.ts
-badd +46 ~/repos/black-atom-industries/core/src/themes/default/black-atom-default-light-dimmed.ts
-badd +15 ~/repos/black-atom-industries/core/src/themes/default/black-atom-default-dark-dimmed.ts
-badd +11 ~/repos/black-atom-industries/core/src/themes/default/feedback_light.ts
-badd +3 ~/repos/black-atom-industries/core/src/themes/default/feedback_dark.ts
-badd +38 ~/repos/black-atom-industries/core/src/themes/default/black-atom-default-light.ts
+badd +31 ~/repos/black-atom-industries/core/src/themes/default/black-atom-default-dark.ts
+badd +36 ~/repos/black-atom-industries/core/src/themes/default/black-atom-default-light-dimmed.ts
+badd +26 ~/repos/black-atom-industries/core/src/themes/default/black-atom-default-dark-dimmed.ts
+badd +24 ~/repos/black-atom-industries/core/src/themes/default/black-atom-default-light.ts
+badd +44 ~/repos/black-atom-industries/core/src/themes/default/ui_dark.ts
+badd +52 ~/repos/black-atom-industries/core/src/themes/default/ui_light.ts
 argglobal
 %argdel
 $argadd ./
@@ -59,9 +59,9 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe 'vert 1resize ' . ((&columns * 72 + 146) / 292)
+exe 'vert 1resize ' . ((&columns * 73 + 146) / 292)
 exe 'vert 2resize ' . ((&columns * 72 + 146) / 292)
-exe 'vert 3resize ' . ((&columns * 73 + 146) / 292)
+exe 'vert 3resize ' . ((&columns * 72 + 146) / 292)
 exe 'vert 4resize ' . ((&columns * 72 + 146) / 292)
 argglobal
 balt ~/repos/black-atom-industries/core/src/types/theme.ts
@@ -172,12 +172,12 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 47 - ((6 * winheight(0) + 26) / 52)
+let s:l = 31 - ((18 * winheight(0) + 24) / 49)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 47
-normal! 02|
+keepjumps 31
+normal! 017|
 wincmd w
 argglobal
 if bufexists(fnamemodify("~/repos/black-atom-industries/core/src/themes/default/black-atom-default-dark-dimmed.ts", ":p")) | buffer ~/repos/black-atom-industries/core/src/themes/default/black-atom-default-dark-dimmed.ts | else | edit ~/repos/black-atom-industries/core/src/themes/default/black-atom-default-dark-dimmed.ts | endif
@@ -292,11 +292,11 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 21 - ((11 * winheight(0) + 26) / 52)
+let s:l = 29 - ((18 * winheight(0) + 24) / 49)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 21
+keepjumps 29
 normal! 019|
 wincmd w
 argglobal
@@ -412,11 +412,11 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 55 - ((40 * winheight(0) + 26) / 52)
+let s:l = 34 - ((17 * winheight(0) + 24) / 49)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 55
+keepjumps 34
 normal! 0
 wincmd w
 argglobal
@@ -532,20 +532,19 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 43 - ((0 * winheight(0) + 26) / 52)
+let s:l = 36 - ((21 * winheight(0) + 24) / 49)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 43
+keepjumps 36
 normal! 0
 wincmd w
-3wincmd w
-exe 'vert 1resize ' . ((&columns * 72 + 146) / 292)
+exe 'vert 1resize ' . ((&columns * 73 + 146) / 292)
 exe 'vert 2resize ' . ((&columns * 72 + 146) / 292)
-exe 'vert 3resize ' . ((&columns * 73 + 146) / 292)
+exe 'vert 3resize ' . ((&columns * 72 + 146) / 292)
 exe 'vert 4resize ' . ((&columns * 72 + 146) / 292)
 tabnext
-edit ~/repos/black-atom-industries/core/src/themes/default/feedback_light.ts
+edit ~/repos/black-atom-industries/core/src/themes/default/ui_dark.ts
 let s:save_splitbelow = &splitbelow
 let s:save_splitright = &splitright
 set splitbelow splitright
@@ -565,7 +564,6 @@ set winwidth=1
 exe 'vert 1resize ' . ((&columns * 146 + 146) / 292)
 exe 'vert 2resize ' . ((&columns * 145 + 146) / 292)
 argglobal
-balt ~/repos/black-atom-industries/core/src/themes/default/black-atom-default-light-dimmed.ts
 setlocal keymap=
 setlocal noarabic
 setlocal autoindent
@@ -665,7 +663,7 @@ setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#src%*\ %#WinBarSeparator#/%*\ %#WinBarPath#themes%*\ %#WinBarSeparator#/%*\ %#WinBarPath#default%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#feedback_light.ts%*\ %#WinBarSeparator##%*\ %#WinBarSymbol#default%*
+setlocal winbar=%#WinBarPath#src%*\ %#WinBarSeparator#/%*\ %#WinBarPath#themes%*\ %#WinBarSeparator#/%*\ %#WinBarPath#default%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#ui_dark.ts%*
 setlocal winblend=0
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -673,19 +671,23 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 11 - ((10 * winheight(0) + 26) / 52)
+10
+sil! normal! zo
+37
+sil! normal! zo
+let s:l = 44 - ((34 * winheight(0) + 24) / 49)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 11
-normal! 024|
+keepjumps 44
+normal! 021|
 wincmd w
 argglobal
-if bufexists(fnamemodify("~/repos/black-atom-industries/core/src/themes/default/feedback_dark.ts", ":p")) | buffer ~/repos/black-atom-industries/core/src/themes/default/feedback_dark.ts | else | edit ~/repos/black-atom-industries/core/src/themes/default/feedback_dark.ts | endif
+if bufexists(fnamemodify("~/repos/black-atom-industries/core/src/themes/default/ui_light.ts", ":p")) | buffer ~/repos/black-atom-industries/core/src/themes/default/ui_light.ts | else | edit ~/repos/black-atom-industries/core/src/themes/default/ui_light.ts | endif
 if &buftype ==# 'terminal'
-  silent file ~/repos/black-atom-industries/core/src/themes/default/feedback_dark.ts
+  silent file ~/repos/black-atom-industries/core/src/themes/default/ui_light.ts
 endif
-balt ~/repos/black-atom-industries/core/src/themes/default/feedback_light.ts
+balt ~/repos/black-atom-industries/core/src/themes/default/ui_dark.ts
 setlocal keymap=
 setlocal noarabic
 setlocal autoindent
@@ -785,7 +787,7 @@ setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#src%*\ %#WinBarSeparator#/%*\ %#WinBarPath#themes%*\ %#WinBarSeparator#/%*\ %#WinBarPath#default%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#feedback_dark.ts%*
+setlocal winbar=%#WinBarPath#src%*\ %#WinBarSeparator#/%*\ %#WinBarPath#themes%*\ %#WinBarSeparator#/%*\ %#WinBarPath#default%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#ui_light.ts%*
 setlocal winblend=0
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -793,13 +795,18 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 4 - ((3 * winheight(0) + 26) / 52)
+10
+sil! normal! zo
+37
+sil! normal! zo
+let s:l = 52 - ((39 * winheight(0) + 24) / 49)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 4
+keepjumps 52
 normal! 0
 wincmd w
+2wincmd w
 exe 'vert 1resize ' . ((&columns * 146 + 146) / 292)
 exe 'vert 2resize ' . ((&columns * 145 + 146) / 292)
 tabnext
@@ -938,7 +945,7 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 18 - ((9 * winheight(0) + 26) / 52)
+let s:l = 18 - ((8 * winheight(0) + 24) / 49)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
@@ -1058,7 +1065,7 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 3 - ((0 * winheight(0) + 26) / 52)
+let s:l = 3 - ((0 * winheight(0) + 24) / 49)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
@@ -1180,7 +1187,7 @@ setlocal nowrap
 setlocal wrapmargin=0
 5
 sil! normal! zo
-let s:l = 9 - ((2 * winheight(0) + 26) / 52)
+let s:l = 9 - ((2 * winheight(0) + 24) / 49)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
@@ -1302,7 +1309,7 @@ setlocal nowrap
 setlocal wrapmargin=0
 5
 sil! normal! zo
-let s:l = 11 - ((0 * winheight(0) + 26) / 52)
+let s:l = 11 - ((0 * winheight(0) + 24) / 49)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
@@ -1445,7 +1452,7 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 282 - ((6 * winheight(0) + 26) / 52)
+let s:l = 282 - ((6 * winheight(0) + 24) / 49)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
@@ -1565,7 +1572,7 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 51 - ((0 * winheight(0) + 26) / 52)
+let s:l = 51 - ((0 * winheight(0) + 24) / 49)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
@@ -1685,7 +1692,7 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 43 - ((5 * winheight(0) + 26) / 52)
+let s:l = 43 - ((5 * winheight(0) + 24) / 49)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
@@ -1806,7 +1813,7 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 1 - ((0 * winheight(0) + 26) / 52)
+let s:l = 1 - ((0 * winheight(0) + 24) / 49)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
@@ -1945,7 +1952,7 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 36 - ((6 * winheight(0) + 26) / 52)
+let s:l = 36 - ((6 * winheight(0) + 24) / 49)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
@@ -2065,7 +2072,7 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 30 - ((5 * winheight(0) + 26) / 52)
+let s:l = 30 - ((5 * winheight(0) + 24) / 49)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
@@ -2189,7 +2196,7 @@ setlocal wrapmargin=0
 sil! normal! zo
 9
 sil! normal! zo
-let s:l = 13 - ((6 * winheight(0) + 26) / 52)
+let s:l = 13 - ((6 * winheight(0) + 24) / 49)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
@@ -2199,7 +2206,7 @@ wincmd w
 exe 'vert 1resize ' . ((&columns * 97 + 146) / 292)
 exe 'vert 2resize ' . ((&columns * 97 + 146) / 292)
 exe 'vert 3resize ' . ((&columns * 96 + 146) / 292)
-tabnext 1
+tabnext 2
 set stal=1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf

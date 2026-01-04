@@ -9,7 +9,7 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +28 ~/repos/black-atom-industries/ghostty/themes/mnml/collection.template.conf
+badd +11 ~/repos/black-atom-industries/ghostty/themes/mnml/collection.template.conf
 badd +1 ~/repos/black-atom-industries/ghostty/themes/terra/black-atom-terra-fall-day.conf
 badd +14 ~/repos/black-atom-industries/ghostty/themes/terra/collection.template.conf
 badd +3 ~/repos/black-atom-industries/ghostty/themes/default/collection.template.conf
@@ -39,10 +39,10 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe 'vert 1resize ' . ((&columns * 77 + 155) / 311)
-exe 'vert 2resize ' . ((&columns * 77 + 155) / 311)
-exe 'vert 3resize ' . ((&columns * 77 + 155) / 311)
-exe 'vert 4resize ' . ((&columns * 77 + 155) / 311)
+exe 'vert 1resize ' . ((&columns * 62 + 124) / 248)
+exe 'vert 2resize ' . ((&columns * 61 + 124) / 248)
+exe 'vert 3resize ' . ((&columns * 61 + 124) / 248)
+exe 'vert 4resize ' . ((&columns * 61 + 124) / 248)
 argglobal
 setlocal keymap=
 setlocal noarabic
@@ -151,12 +151,12 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 28 - ((27 * winheight(0) + 25) / 51)
+let s:l = 11 - ((10 * winheight(0) + 25) / 51)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 28
-normal! 037|
+keepjumps 11
+normal! 0
 wincmd w
 argglobal
 if bufexists(fnamemodify("~/repos/black-atom-industries/ghostty/themes/default/collection.template.conf", ":p")) | buffer ~/repos/black-atom-industries/ghostty/themes/default/collection.template.conf | else | edit ~/repos/black-atom-industries/ghostty/themes/default/collection.template.conf | endif
@@ -396,7 +396,7 @@ if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
 keepjumps 30
-normal! 09|
+normal! 08|
 wincmd w
 argglobal
 if bufexists(fnamemodify("~/repos/black-atom-industries/ghostty/themes/terra/black-atom-terra-fall-day.conf", ":p")) | buffer ~/repos/black-atom-industries/ghostty/themes/terra/black-atom-terra-fall-day.conf | else | edit ~/repos/black-atom-industries/ghostty/themes/terra/black-atom-terra-fall-day.conf | endif
@@ -518,10 +518,10 @@ normal! zt
 keepjumps 3
 normal! 0
 wincmd w
-exe 'vert 1resize ' . ((&columns * 77 + 155) / 311)
-exe 'vert 2resize ' . ((&columns * 77 + 155) / 311)
-exe 'vert 3resize ' . ((&columns * 77 + 155) / 311)
-exe 'vert 4resize ' . ((&columns * 77 + 155) / 311)
+exe 'vert 1resize ' . ((&columns * 62 + 124) / 248)
+exe 'vert 2resize ' . ((&columns * 61 + 124) / 248)
+exe 'vert 3resize ' . ((&columns * 61 + 124) / 248)
+exe 'vert 4resize ' . ((&columns * 61 + 124) / 248)
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
