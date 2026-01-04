@@ -61,6 +61,9 @@ return {
         preferred_link_style = "wiki",
         ui = {
             enable = true,
+            -- Empty hl_groups prevents obsidian.nvim from overriding colorscheme highlights
+            -- See: https://github.com/epwalsh/obsidian.nvim/issues/755
+            hl_groups = {},
         },
     },
     config = function(_, opts)
