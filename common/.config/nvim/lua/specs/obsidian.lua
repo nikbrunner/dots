@@ -59,7 +59,9 @@ return {
             name = "snacks.pick",
         },
         preferred_link_style = "wiki",
-        ui = { enable = false },
+        ui = {
+            enable = true,
+        },
     },
     config = function(_, opts)
         require("obsidian").setup(opts)

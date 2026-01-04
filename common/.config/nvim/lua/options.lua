@@ -29,7 +29,7 @@ vim.opt.autoindent = true
 
 vim.o.winborder = "solid"
 
-vim.o.conceallevel = 0
+vim.o.conceallevel = 2
 
 vim.opt.jumpoptions = "stack"
 
