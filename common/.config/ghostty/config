@@ -2,7 +2,7 @@
 # https://github.com/imrajyavardhan12/spectre-ghostty-config
 
 # Colors
-theme = black-atom-default-dark-dimmed.conf
+theme = black-atom-mnml-clay-light.conf
 bold-is-bright = true
 
 # Advanced
@@ -12,7 +12,7 @@ adjust-cursor-thickness = 3
 adjust-underline-position = 3
 
 # Fonts
-font-family = TX-02
+font-family = TX-02 Condensed
 font-size = 16
 
 # Window
