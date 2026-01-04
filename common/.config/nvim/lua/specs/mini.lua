@@ -433,9 +433,23 @@ end
 -- MiniPick Configuration
 -- ============================================================================
 
--- Window configuration for picker (bottom-left of current window)
+-- Window configuration for picker
 M.win_config = {
-    left_buf_corner = function()
+    -- Small picker in bottom-left corner of editor
+    left_corner = function()
+        return {
+            relative = "editor",
+            anchor = "SW",
+            height = math.floor(0.25 * vim.o.lines),
+            width = math.floor(0.4 * vim.o.columns),
+            border = "solid",
+            row = vim.o.lines - 1,
+            col = 0,
+        }
+    end,
+
+    -- Picker at bottom of current buffer window
+    buf_bottom = function()
         local window_height = vim.api.nvim_win_get_height(0)
         local height = math.floor(0.25 * window_height)
 
@@ -583,7 +597,7 @@ function M.pick()
             scroll_up = "<C-u>",
         },
         window = {
-            config = M.win_config.left_buf_corner,
+            config = M.win_config.buf_bottom,
             prompt_caret = "█",
             prompt_prefix = "  ",
         },
