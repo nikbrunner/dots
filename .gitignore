@@ -4,3 +4,5 @@ common/.config/zed/prompts/
 common/.config/bm/cull-cache.json
 common/.config/bm/organize-cache.json
 common/.config/bm/sort-cache.json
+common/.config/bm/*.db-shm
+common/.config/bm/*.db-wal
