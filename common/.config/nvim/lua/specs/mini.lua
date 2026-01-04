@@ -686,6 +686,16 @@ function M.files()
         },
     })
 
+    -- Override global winborder for MiniFiles
+    vim.api.nvim_create_autocmd("User", {
+        pattern = "MiniFilesWindowOpen",
+        callback = function(args)
+            local config = vim.api.nvim_win_get_config(args.data.win_id)
+            config.border = "single"
+            vim.api.nvim_win_set_config(args.data.win_id, config)
+        end,
+    })
+
     -- Split keymaps
     local map_split = function(buf_id, lhs, direction)
         local rhs = function()
