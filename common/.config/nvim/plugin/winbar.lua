@@ -102,11 +102,17 @@ local function lsp_callback(err, symbols, ctx)
     end
 end
 
+local ignore_filetypes = {
+    "minifiles",
+    "oil",
+}
+
 local function breadcrumbs_set()
     local bufnr = vim.api.nvim_get_current_buf()
+    local ft = vim.bo[bufnr].filetype
 
-    -- Skip Oil buffers (they have their own winbar)
-    if vim.bo[bufnr].filetype == "oil" then
+    -- Skip special buffers that have their own winbar
+    if vim.tbl_contains(ignore_filetypes, ft) then
         return
     end
 
