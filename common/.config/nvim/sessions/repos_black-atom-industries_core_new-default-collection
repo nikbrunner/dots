@@ -9,34 +9,38 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +18 ~/repos/black-atom-industries/core/src/themes/terra/black-atom-terra-fall-night.ts
-badd +1 ~/repos/black-atom-industries/core/src/themes/terra/black-atom-terra-fall-day.ts
-badd +9 ~/repos/black-atom-industries/core/src/themes/terra/ui_dark.ts
-badd +11 ~/repos/black-atom-industries/core/src/themes/terra/ui_light.ts
-badd +282 ~/repos/black-atom-industries/core/src/types/theme.ts
-badd +37 ~/repos/black-atom-industries/core/src/themes/mnml/ui_dark.ts
-badd +36 ~/repos/black-atom-industries/core/src/themes/mnml/black-atom-mnml-orange-light.ts
-badd +30 ~/repos/black-atom-industries/core/src/themes/mnml/black-atom-mnml-orange-dark.ts
-badd +11 ~/repos/black-atom-industries/core/src/themes/mnml/syntax_light.ts
-badd +51 ~/repos/black-atom-industries/core/src/themes/terra/black-atom-terra-winter-day.ts
-badd +1 ./
-badd +31 ~/repos/black-atom-industries/core/src/themes/default/black-atom-default-dark.ts
-badd +36 ~/repos/black-atom-industries/core/src/themes/default/black-atom-default-light-dimmed.ts
-badd +26 ~/repos/black-atom-industries/core/src/themes/default/black-atom-default-dark-dimmed.ts
-badd +24 ~/repos/black-atom-industries/core/src/themes/default/black-atom-default-light.ts
-badd +44 ~/repos/black-atom-industries/core/src/themes/default/ui_dark.ts
-badd +52 ~/repos/black-atom-industries/core/src/themes/default/ui_light.ts
+badd +18 src/themes/terra/black-atom-terra-fall-night.ts
+badd +1 src/themes/terra/black-atom-terra-fall-day.ts
+badd +9 src/themes/terra/ui_dark.ts
+badd +11 src/themes/terra/ui_light.ts
+badd +282 src/types/theme.ts
+badd +37 src/themes/mnml/ui_dark.ts
+badd +36 src/themes/mnml/black-atom-mnml-orange-light.ts
+badd +30 src/themes/mnml/black-atom-mnml-orange-dark.ts
+badd +11 src/themes/mnml/syntax_light.ts
+badd +51 src/themes/terra/black-atom-terra-winter-day.ts
+badd +1 ~/repos/black-atom-industries/core
+badd +31 src/themes/default/black-atom-default-dark.ts
+badd +36 src/themes/default/black-atom-default-light-dimmed.ts
+badd +26 src/themes/default/black-atom-default-dark-dimmed.ts
+badd +24 src/themes/default/black-atom-default-light.ts
+badd +44 src/themes/default/ui_dark.ts
+badd +54 src/themes/default/ui_light.ts
+badd +25 src/themes/mnml/black-atom-mnml-clay-light.ts
+badd +41 src/themes/mnml/ui_light.ts
+badd +19 src/themes/mnml/black-atom-mnml-clay-dark.ts
 argglobal
 %argdel
-$argadd ./
+$argadd ~/repos/black-atom-industries/core
 set stal=2
 tabnew +setlocal\ bufhidden=wipe
 tabnew +setlocal\ bufhidden=wipe
 tabnew +setlocal\ bufhidden=wipe
 tabnew +setlocal\ bufhidden=wipe
 tabnew +setlocal\ bufhidden=wipe
+tabnew +setlocal\ bufhidden=wipe
 tabrewind
-edit ~/repos/black-atom-industries/core/src/themes/default/black-atom-default-dark.ts
+edit src/themes/default/black-atom-default-dark.ts
 let s:save_splitbelow = &splitbelow
 let s:save_splitright = &splitright
 set splitbelow splitright
@@ -59,12 +63,12 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe 'vert 1resize ' . ((&columns * 73 + 146) / 292)
-exe 'vert 2resize ' . ((&columns * 72 + 146) / 292)
-exe 'vert 3resize ' . ((&columns * 72 + 146) / 292)
-exe 'vert 4resize ' . ((&columns * 72 + 146) / 292)
+exe 'vert 1resize ' . ((&columns * 69 + 138) / 277)
+exe 'vert 2resize ' . ((&columns * 68 + 138) / 277)
+exe 'vert 3resize ' . ((&columns * 69 + 138) / 277)
+exe 'vert 4resize ' . ((&columns * 68 + 138) / 277)
 argglobal
-balt ~/repos/black-atom-industries/core/src/types/theme.ts
+balt src/types/theme.ts
 setlocal keymap=
 setlocal noarabic
 setlocal autoindent
@@ -172,7 +176,7 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 31 - ((18 * winheight(0) + 24) / 49)
+let s:l = 31 - ((18 * winheight(0) + 25) / 50)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
@@ -180,11 +184,11 @@ keepjumps 31
 normal! 017|
 wincmd w
 argglobal
-if bufexists(fnamemodify("~/repos/black-atom-industries/core/src/themes/default/black-atom-default-dark-dimmed.ts", ":p")) | buffer ~/repos/black-atom-industries/core/src/themes/default/black-atom-default-dark-dimmed.ts | else | edit ~/repos/black-atom-industries/core/src/themes/default/black-atom-default-dark-dimmed.ts | endif
+if bufexists(fnamemodify("src/themes/default/black-atom-default-dark-dimmed.ts", ":p")) | buffer src/themes/default/black-atom-default-dark-dimmed.ts | else | edit src/themes/default/black-atom-default-dark-dimmed.ts | endif
 if &buftype ==# 'terminal'
-  silent file ~/repos/black-atom-industries/core/src/themes/default/black-atom-default-dark-dimmed.ts
+  silent file src/themes/default/black-atom-default-dark-dimmed.ts
 endif
-balt ~/repos/black-atom-industries/core/src/themes/default/black-atom-default-dark.ts
+balt src/themes/default/black-atom-default-dark.ts
 setlocal keymap=
 setlocal noarabic
 setlocal autoindent
@@ -292,7 +296,7 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 29 - ((18 * winheight(0) + 24) / 49)
+let s:l = 29 - ((18 * winheight(0) + 25) / 50)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
@@ -300,11 +304,11 @@ keepjumps 29
 normal! 019|
 wincmd w
 argglobal
-if bufexists(fnamemodify("~/repos/black-atom-industries/core/src/themes/default/black-atom-default-light-dimmed.ts", ":p")) | buffer ~/repos/black-atom-industries/core/src/themes/default/black-atom-default-light-dimmed.ts | else | edit ~/repos/black-atom-industries/core/src/themes/default/black-atom-default-light-dimmed.ts | endif
+if bufexists(fnamemodify("src/themes/default/black-atom-default-light-dimmed.ts", ":p")) | buffer src/themes/default/black-atom-default-light-dimmed.ts | else | edit src/themes/default/black-atom-default-light-dimmed.ts | endif
 if &buftype ==# 'terminal'
-  silent file ~/repos/black-atom-industries/core/src/themes/default/black-atom-default-light-dimmed.ts
+  silent file src/themes/default/black-atom-default-light-dimmed.ts
 endif
-balt ~/repos/black-atom-industries/core/src/themes/default/black-atom-default-dark.ts
+balt src/themes/default/black-atom-default-dark.ts
 setlocal keymap=
 setlocal noarabic
 setlocal autoindent
@@ -412,7 +416,7 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 34 - ((17 * winheight(0) + 24) / 49)
+let s:l = 34 - ((17 * winheight(0) + 25) / 50)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
@@ -420,11 +424,11 @@ keepjumps 34
 normal! 0
 wincmd w
 argglobal
-if bufexists(fnamemodify("~/repos/black-atom-industries/core/src/themes/default/black-atom-default-light.ts", ":p")) | buffer ~/repos/black-atom-industries/core/src/themes/default/black-atom-default-light.ts | else | edit ~/repos/black-atom-industries/core/src/themes/default/black-atom-default-light.ts | endif
+if bufexists(fnamemodify("src/themes/default/black-atom-default-light.ts", ":p")) | buffer src/themes/default/black-atom-default-light.ts | else | edit src/themes/default/black-atom-default-light.ts | endif
 if &buftype ==# 'terminal'
-  silent file ~/repos/black-atom-industries/core/src/themes/default/black-atom-default-light.ts
+  silent file src/themes/default/black-atom-default-light.ts
 endif
-balt ~/repos/black-atom-industries/core/src/themes/default/black-atom-default-light-dimmed.ts
+balt src/themes/default/black-atom-default-light-dimmed.ts
 setlocal keymap=
 setlocal noarabic
 setlocal autoindent
@@ -532,19 +536,19 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 36 - ((21 * winheight(0) + 24) / 49)
+let s:l = 36 - ((21 * winheight(0) + 25) / 50)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
 keepjumps 36
 normal! 0
 wincmd w
-exe 'vert 1resize ' . ((&columns * 73 + 146) / 292)
-exe 'vert 2resize ' . ((&columns * 72 + 146) / 292)
-exe 'vert 3resize ' . ((&columns * 72 + 146) / 292)
-exe 'vert 4resize ' . ((&columns * 72 + 146) / 292)
+exe 'vert 1resize ' . ((&columns * 69 + 138) / 277)
+exe 'vert 2resize ' . ((&columns * 68 + 138) / 277)
+exe 'vert 3resize ' . ((&columns * 69 + 138) / 277)
+exe 'vert 4resize ' . ((&columns * 68 + 138) / 277)
 tabnext
-edit ~/repos/black-atom-industries/core/src/themes/default/ui_dark.ts
+edit src/themes/default/ui_dark.ts
 let s:save_splitbelow = &splitbelow
 let s:save_splitright = &splitright
 set splitbelow splitright
@@ -561,8 +565,8 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe 'vert 1resize ' . ((&columns * 146 + 146) / 292)
-exe 'vert 2resize ' . ((&columns * 145 + 146) / 292)
+exe 'vert 1resize ' . ((&columns * 138 + 138) / 277)
+exe 'vert 2resize ' . ((&columns * 138 + 138) / 277)
 argglobal
 setlocal keymap=
 setlocal noarabic
@@ -675,7 +679,7 @@ setlocal wrapmargin=0
 sil! normal! zo
 37
 sil! normal! zo
-let s:l = 44 - ((34 * winheight(0) + 24) / 49)
+let s:l = 44 - ((35 * winheight(0) + 25) / 50)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
@@ -683,11 +687,11 @@ keepjumps 44
 normal! 021|
 wincmd w
 argglobal
-if bufexists(fnamemodify("~/repos/black-atom-industries/core/src/themes/default/ui_light.ts", ":p")) | buffer ~/repos/black-atom-industries/core/src/themes/default/ui_light.ts | else | edit ~/repos/black-atom-industries/core/src/themes/default/ui_light.ts | endif
+if bufexists(fnamemodify("src/themes/default/ui_light.ts", ":p")) | buffer src/themes/default/ui_light.ts | else | edit src/themes/default/ui_light.ts | endif
 if &buftype ==# 'terminal'
-  silent file ~/repos/black-atom-industries/core/src/themes/default/ui_light.ts
+  silent file src/themes/default/ui_light.ts
 endif
-balt ~/repos/black-atom-industries/core/src/themes/default/ui_dark.ts
+balt src/themes/default/ui_dark.ts
 setlocal keymap=
 setlocal noarabic
 setlocal autoindent
@@ -799,18 +803,404 @@ setlocal wrapmargin=0
 sil! normal! zo
 37
 sil! normal! zo
-let s:l = 52 - ((39 * winheight(0) + 24) / 49)
+let s:l = 52 - ((40 * winheight(0) + 25) / 50)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
 keepjumps 52
 normal! 0
 wincmd w
-2wincmd w
-exe 'vert 1resize ' . ((&columns * 146 + 146) / 292)
-exe 'vert 2resize ' . ((&columns * 145 + 146) / 292)
+exe 'vert 1resize ' . ((&columns * 138 + 138) / 277)
+exe 'vert 2resize ' . ((&columns * 138 + 138) / 277)
 tabnext
-edit ~/repos/black-atom-industries/core/src/themes/terra/black-atom-terra-fall-night.ts
+edit src/themes/mnml/black-atom-mnml-clay-light.ts
+let s:save_splitbelow = &splitbelow
+let s:save_splitright = &splitright
+set splitbelow splitright
+wincmd _ | wincmd |
+vsplit
+wincmd _ | wincmd |
+vsplit
+2wincmd h
+wincmd w
+wincmd w
+let &splitbelow = s:save_splitbelow
+let &splitright = s:save_splitright
+wincmd t
+let s:save_winminheight = &winminheight
+let s:save_winminwidth = &winminwidth
+set winminheight=0
+set winheight=1
+set winminwidth=0
+set winwidth=1
+exe 'vert 1resize ' . ((&columns * 92 + 138) / 277)
+exe 'vert 2resize ' . ((&columns * 92 + 138) / 277)
+exe 'vert 3resize ' . ((&columns * 91 + 138) / 277)
+argglobal
+balt src/themes/default/ui_dark.ts
+setlocal keymap=
+setlocal noarabic
+setlocal autoindent
+setlocal nobinary
+setlocal nobreakindent
+setlocal breakindentopt=
+setlocal bufhidden=
+setlocal buflisted
+setlocal buftype=
+setlocal busy=0
+setlocal nocindent
+setlocal cinkeys=0{,0},0),0],:,0#,!^F,o,O,e
+setlocal cinoptions=
+setlocal cinscopedecls=public,protected,private
+setlocal cinwords=if,else,while,do,for,switch
+setlocal colorcolumn=
+setlocal comments=sO:*\ -,mO:*\ \ ,exO:*/,s1:/*,mb:*,ex:*/,://
+setlocal commentstring=//\ %s
+setlocal complete=.,w,b,u,t
+setlocal completefunc=
+setlocal completeslash=
+setlocal concealcursor=
+setlocal conceallevel=2
+setlocal nocopyindent
+setlocal nocursorbind
+setlocal nocursorcolumn
+setlocal cursorline
+setlocal cursorlineopt=both
+setlocal nodiff
+setlocal eventignorewin=
+setlocal expandtab
+if &filetype != 'typescript'
+setlocal filetype=typescript
+endif
+setlocal fixendofline
+setlocal foldcolumn=0
+setlocal foldenable
+setlocal foldexpr=v:lua.vim.treesitter.foldexpr()
+setlocal foldignore=#
+setlocal foldlevel=99
+setlocal foldmarker={{{,}}}
+setlocal foldmethod=indent
+setlocal foldminlines=1
+setlocal foldnestmax=20
+setlocal foldtext=
+setlocal formatexpr=v:lua.require'conform'.formatexpr()
+setlocal formatlistpat=^\\s*\\d\\+[\\]:.)}\\t\ ]\\s*
+setlocal formatoptions=jcroql
+setlocal iminsert=0
+setlocal imsearch=-1
+setlocal includeexpr=
+setlocal indentexpr=GetTypescriptIndent()
+setlocal indentkeys=0{,0},0),0],0,,!^F,o,O,e
+setlocal noinfercase
+setlocal iskeyword=@,48-57,_,192-255,$,#
+setlocal lhistory=10
+setlocal nolinebreak
+setlocal nolisp
+setlocal lispoptions=
+setlocal nolist
+setlocal matchpairs=(:),{:},[:]
+setlocal modeline
+setlocal modifiable
+setlocal nrformats=bin,hex
+setlocal number
+setlocal numberwidth=4
+setlocal omnifunc=v:lua.vim.lsp.omnifunc
+setlocal nopreserveindent
+setlocal nopreviewwindow
+setlocal quoteescape=\\
+setlocal noreadonly
+setlocal relativenumber
+setlocal norightleft
+setlocal rightleftcmd=search
+setlocal scrollback=-1
+setlocal noscrollbind
+setlocal shiftwidth=4
+setlocal signcolumn=yes
+setlocal nosmartindent
+setlocal nosmoothscroll
+setlocal softtabstop=-1
+setlocal nospell
+setlocal spellcapcheck=[.?!]\\_[\\])'\"\\t\ ]\\+
+setlocal spellfile=
+setlocal spelllang=en_us,de_de
+setlocal spelloptions=noplainbuffer
+setlocal statuscolumn=%!v:lua.require'snacks.statuscolumn'.get()
+setlocal suffixesadd=.ts,.d.ts,.tsx,.js,.jsx,.cjs,.mjs
+setlocal noswapfile
+setlocal synmaxcol=3000
+if &syntax != ''
+setlocal syntax=
+endif
+setlocal tabstop=4
+setlocal tagfunc=v:lua.vim.lsp.tagfunc
+setlocal textwidth=0
+setlocal undofile
+setlocal varsofttabstop=
+setlocal vartabstop=
+setlocal winbar=%#WinBarPath#src%*\ %#WinBarSeparator#/%*\ %#WinBarPath#themes%*\ %#WinBarSeparator#/%*\ %#WinBarPath#mnml%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#black-atom-mnml-clay-light.ts%*
+setlocal winblend=0
+setlocal nowinfixbuf
+setlocal nowinfixheight
+setlocal nowinfixwidth
+setlocal winhighlight=
+setlocal nowrap
+setlocal wrapmargin=0
+let s:l = 25 - ((24 * winheight(0) + 25) / 50)
+if s:l < 1 | let s:l = 1 | endif
+keepjumps exe s:l
+normal! zt
+keepjumps 25
+normal! 026|
+wincmd w
+argglobal
+if bufexists(fnamemodify("src/themes/mnml/black-atom-mnml-clay-dark.ts", ":p")) | buffer src/themes/mnml/black-atom-mnml-clay-dark.ts | else | edit src/themes/mnml/black-atom-mnml-clay-dark.ts | endif
+if &buftype ==# 'terminal'
+  silent file src/themes/mnml/black-atom-mnml-clay-dark.ts
+endif
+balt src/themes/mnml/black-atom-mnml-clay-light.ts
+setlocal keymap=
+setlocal noarabic
+setlocal autoindent
+setlocal nobinary
+setlocal nobreakindent
+setlocal breakindentopt=
+setlocal bufhidden=
+setlocal buflisted
+setlocal buftype=
+setlocal busy=0
+setlocal nocindent
+setlocal cinkeys=0{,0},0),0],:,0#,!^F,o,O,e
+setlocal cinoptions=
+setlocal cinscopedecls=public,protected,private
+setlocal cinwords=if,else,while,do,for,switch
+setlocal colorcolumn=
+setlocal comments=sO:*\ -,mO:*\ \ ,exO:*/,s1:/*,mb:*,ex:*/,://
+setlocal commentstring=//\ %s
+setlocal complete=.,w,b,u,t
+setlocal completefunc=
+setlocal completeslash=
+setlocal concealcursor=
+setlocal conceallevel=2
+setlocal nocopyindent
+setlocal nocursorbind
+setlocal nocursorcolumn
+setlocal cursorline
+setlocal cursorlineopt=both
+setlocal nodiff
+setlocal eventignorewin=
+setlocal expandtab
+if &filetype != 'typescript'
+setlocal filetype=typescript
+endif
+setlocal fixendofline
+setlocal foldcolumn=0
+setlocal foldenable
+setlocal foldexpr=v:lua.vim.treesitter.foldexpr()
+setlocal foldignore=#
+setlocal foldlevel=99
+setlocal foldmarker={{{,}}}
+setlocal foldmethod=indent
+setlocal foldminlines=1
+setlocal foldnestmax=20
+setlocal foldtext=
+setlocal formatexpr=v:lua.require'conform'.formatexpr()
+setlocal formatlistpat=^\\s*\\d\\+[\\]:.)}\\t\ ]\\s*
+setlocal formatoptions=jcroql
+setlocal iminsert=0
+setlocal imsearch=-1
+setlocal includeexpr=
+setlocal indentexpr=GetTypescriptIndent()
+setlocal indentkeys=0{,0},0),0],0,,!^F,o,O,e
+setlocal noinfercase
+setlocal iskeyword=@,48-57,_,192-255,$,#
+setlocal lhistory=10
+setlocal nolinebreak
+setlocal nolisp
+setlocal lispoptions=
+setlocal nolist
+setlocal matchpairs=(:),{:},[:]
+setlocal modeline
+setlocal modifiable
+setlocal nrformats=bin,hex
+setlocal number
+setlocal numberwidth=4
+setlocal omnifunc=v:lua.vim.lsp.omnifunc
+setlocal nopreserveindent
+setlocal nopreviewwindow
+setlocal quoteescape=\\
+setlocal noreadonly
+setlocal relativenumber
+setlocal norightleft
+setlocal rightleftcmd=search
+setlocal scrollback=-1
+setlocal noscrollbind
+setlocal shiftwidth=4
+setlocal signcolumn=yes
+setlocal nosmartindent
+setlocal nosmoothscroll
+setlocal softtabstop=-1
+setlocal nospell
+setlocal spellcapcheck=[.?!]\\_[\\])'\"\\t\ ]\\+
+setlocal spellfile=
+setlocal spelllang=en_us,de_de
+setlocal spelloptions=noplainbuffer
+setlocal statuscolumn=%!v:lua.require'snacks.statuscolumn'.get()
+setlocal suffixesadd=.ts,.d.ts,.tsx,.js,.jsx,.cjs,.mjs
+setlocal noswapfile
+setlocal synmaxcol=3000
+if &syntax != ''
+setlocal syntax=
+endif
+setlocal tabstop=4
+setlocal tagfunc=v:lua.vim.lsp.tagfunc
+setlocal textwidth=0
+setlocal undofile
+setlocal varsofttabstop=
+setlocal vartabstop=
+setlocal winbar=%#WinBarPath#src%*\ %#WinBarSeparator#/%*\ %#WinBarPath#themes%*\ %#WinBarSeparator#/%*\ %#WinBarPath#mnml%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#black-atom-mnml-clay-dark.ts%*
+setlocal winblend=0
+setlocal nowinfixbuf
+setlocal nowinfixheight
+setlocal nowinfixwidth
+setlocal winhighlight=
+setlocal nowrap
+setlocal wrapmargin=0
+let s:l = 24 - ((23 * winheight(0) + 25) / 50)
+if s:l < 1 | let s:l = 1 | endif
+keepjumps exe s:l
+normal! zt
+keepjumps 24
+normal! 0
+wincmd w
+argglobal
+if bufexists(fnamemodify("src/themes/mnml/ui_light.ts", ":p")) | buffer src/themes/mnml/ui_light.ts | else | edit src/themes/mnml/ui_light.ts | endif
+if &buftype ==# 'terminal'
+  silent file src/themes/mnml/ui_light.ts
+endif
+balt src/themes/mnml/black-atom-mnml-clay-light.ts
+setlocal keymap=
+setlocal noarabic
+setlocal autoindent
+setlocal nobinary
+setlocal nobreakindent
+setlocal breakindentopt=
+setlocal bufhidden=
+setlocal buflisted
+setlocal buftype=
+setlocal busy=0
+setlocal nocindent
+setlocal cinkeys=0{,0},0),0],:,0#,!^F,o,O,e
+setlocal cinoptions=
+setlocal cinscopedecls=public,protected,private
+setlocal cinwords=if,else,while,do,for,switch
+setlocal colorcolumn=
+setlocal comments=sO:*\ -,mO:*\ \ ,exO:*/,s1:/*,mb:*,ex:*/,://
+setlocal commentstring=//\ %s
+setlocal complete=.,w,b,u,t
+setlocal completefunc=
+setlocal completeslash=
+setlocal concealcursor=
+setlocal conceallevel=2
+setlocal nocopyindent
+setlocal nocursorbind
+setlocal nocursorcolumn
+setlocal cursorline
+setlocal cursorlineopt=both
+setlocal nodiff
+setlocal eventignorewin=
+setlocal expandtab
+if &filetype != 'typescript'
+setlocal filetype=typescript
+endif
+setlocal fixendofline
+setlocal foldcolumn=0
+setlocal foldenable
+setlocal foldexpr=v:lua.vim.treesitter.foldexpr()
+setlocal foldignore=#
+setlocal foldlevel=99
+setlocal foldmarker={{{,}}}
+setlocal foldmethod=indent
+setlocal foldminlines=1
+setlocal foldnestmax=20
+setlocal foldtext=
+setlocal formatexpr=v:lua.require'conform'.formatexpr()
+setlocal formatlistpat=^\\s*\\d\\+[\\]:.)}\\t\ ]\\s*
+setlocal formatoptions=jcroql
+setlocal iminsert=0
+setlocal imsearch=-1
+setlocal includeexpr=
+setlocal indentexpr=GetTypescriptIndent()
+setlocal indentkeys=0{,0},0),0],0,,!^F,o,O,e
+setlocal noinfercase
+setlocal iskeyword=@,48-57,_,192-255
+setlocal lhistory=10
+setlocal nolinebreak
+setlocal nolisp
+setlocal lispoptions=
+setlocal nolist
+setlocal matchpairs=(:),{:},[:]
+setlocal modeline
+setlocal modifiable
+setlocal nrformats=bin,hex
+setlocal number
+setlocal numberwidth=4
+setlocal omnifunc=v:lua.vim.lsp.omnifunc
+setlocal nopreserveindent
+setlocal nopreviewwindow
+setlocal quoteescape=\\
+setlocal noreadonly
+setlocal relativenumber
+setlocal norightleft
+setlocal rightleftcmd=search
+setlocal scrollback=-1
+setlocal noscrollbind
+setlocal shiftwidth=4
+setlocal signcolumn=yes
+setlocal nosmartindent
+setlocal nosmoothscroll
+setlocal softtabstop=-1
+setlocal nospell
+setlocal spellcapcheck=[.?!]\\_[\\])'\"\\t\ ]\\+
+setlocal spellfile=
+setlocal spelllang=en_us,de_de
+setlocal spelloptions=noplainbuffer
+setlocal statuscolumn=%!v:lua.require'snacks.statuscolumn'.get()
+setlocal suffixesadd=.ts,.d.ts,.tsx,.js,.jsx,.cjs,.mjs
+setlocal noswapfile
+setlocal synmaxcol=3000
+if &syntax != ''
+setlocal syntax=
+endif
+setlocal tabstop=4
+setlocal tagfunc=v:lua.vim.lsp.tagfunc
+setlocal textwidth=0
+setlocal undofile
+setlocal varsofttabstop=
+setlocal vartabstop=
+setlocal winbar=%#WinBarPath#src%*\ %#WinBarSeparator#/%*\ %#WinBarPath#themes%*\ %#WinBarSeparator#/%*\ %#WinBarPath#mnml%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#ui_light.ts%*
+setlocal winblend=0
+setlocal nowinfixbuf
+setlocal nowinfixheight
+setlocal nowinfixwidth
+setlocal winhighlight=
+setlocal nowrap
+setlocal wrapmargin=0
+9
+sil! normal! zo
+36
+sil! normal! zo
+let s:l = 45 - ((44 * winheight(0) + 25) / 50)
+if s:l < 1 | let s:l = 1 | endif
+keepjumps exe s:l
+normal! zt
+keepjumps 45
+normal! 033|
+wincmd w
+exe 'vert 1resize ' . ((&columns * 92 + 138) / 277)
+exe 'vert 2resize ' . ((&columns * 92 + 138) / 277)
+exe 'vert 3resize ' . ((&columns * 91 + 138) / 277)
+tabnext
+edit src/themes/terra/black-atom-terra-fall-night.ts
 let s:save_splitbelow = &splitbelow
 let s:save_splitright = &splitright
 set splitbelow splitright
@@ -833,10 +1223,10 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe 'vert 1resize ' . ((&columns * 73 + 146) / 292)
-exe 'vert 2resize ' . ((&columns * 72 + 146) / 292)
-exe 'vert 3resize ' . ((&columns * 72 + 146) / 292)
-exe 'vert 4resize ' . ((&columns * 72 + 146) / 292)
+exe 'vert 1resize ' . ((&columns * 69 + 138) / 277)
+exe 'vert 2resize ' . ((&columns * 68 + 138) / 277)
+exe 'vert 3resize ' . ((&columns * 69 + 138) / 277)
+exe 'vert 4resize ' . ((&columns * 68 + 138) / 277)
 argglobal
 setlocal keymap=
 setlocal noarabic
@@ -945,7 +1335,7 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 18 - ((8 * winheight(0) + 24) / 49)
+let s:l = 18 - ((8 * winheight(0) + 25) / 50)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
@@ -953,11 +1343,11 @@ keepjumps 18
 normal! 0
 wincmd w
 argglobal
-if bufexists(fnamemodify("~/repos/black-atom-industries/core/src/themes/terra/black-atom-terra-fall-day.ts", ":p")) | buffer ~/repos/black-atom-industries/core/src/themes/terra/black-atom-terra-fall-day.ts | else | edit ~/repos/black-atom-industries/core/src/themes/terra/black-atom-terra-fall-day.ts | endif
+if bufexists(fnamemodify("src/themes/terra/black-atom-terra-fall-day.ts", ":p")) | buffer src/themes/terra/black-atom-terra-fall-day.ts | else | edit src/themes/terra/black-atom-terra-fall-day.ts | endif
 if &buftype ==# 'terminal'
-  silent file ~/repos/black-atom-industries/core/src/themes/terra/black-atom-terra-fall-day.ts
+  silent file src/themes/terra/black-atom-terra-fall-day.ts
 endif
-balt ~/repos/black-atom-industries/core/src/themes/terra/black-atom-terra-fall-night.ts
+balt src/themes/terra/black-atom-terra-fall-night.ts
 setlocal keymap=
 setlocal noarabic
 setlocal autoindent
@@ -1065,7 +1455,7 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 3 - ((0 * winheight(0) + 24) / 49)
+let s:l = 3 - ((0 * winheight(0) + 25) / 50)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
@@ -1073,11 +1463,11 @@ keepjumps 3
 normal! 0
 wincmd w
 argglobal
-if bufexists(fnamemodify("~/repos/black-atom-industries/core/src/themes/terra/ui_dark.ts", ":p")) | buffer ~/repos/black-atom-industries/core/src/themes/terra/ui_dark.ts | else | edit ~/repos/black-atom-industries/core/src/themes/terra/ui_dark.ts | endif
+if bufexists(fnamemodify("src/themes/terra/ui_dark.ts", ":p")) | buffer src/themes/terra/ui_dark.ts | else | edit src/themes/terra/ui_dark.ts | endif
 if &buftype ==# 'terminal'
-  silent file ~/repos/black-atom-industries/core/src/themes/terra/ui_dark.ts
+  silent file src/themes/terra/ui_dark.ts
 endif
-balt ~/repos/black-atom-industries/core/src/themes/terra/black-atom-terra-fall-day.ts
+balt src/themes/terra/black-atom-terra-fall-day.ts
 setlocal keymap=
 setlocal noarabic
 setlocal autoindent
@@ -1187,7 +1577,7 @@ setlocal nowrap
 setlocal wrapmargin=0
 5
 sil! normal! zo
-let s:l = 9 - ((2 * winheight(0) + 24) / 49)
+let s:l = 9 - ((2 * winheight(0) + 25) / 50)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
@@ -1195,11 +1585,11 @@ keepjumps 9
 normal! 05|
 wincmd w
 argglobal
-if bufexists(fnamemodify("~/repos/black-atom-industries/core/src/themes/terra/ui_light.ts", ":p")) | buffer ~/repos/black-atom-industries/core/src/themes/terra/ui_light.ts | else | edit ~/repos/black-atom-industries/core/src/themes/terra/ui_light.ts | endif
+if bufexists(fnamemodify("src/themes/terra/ui_light.ts", ":p")) | buffer src/themes/terra/ui_light.ts | else | edit src/themes/terra/ui_light.ts | endif
 if &buftype ==# 'terminal'
-  silent file ~/repos/black-atom-industries/core/src/themes/terra/ui_light.ts
+  silent file src/themes/terra/ui_light.ts
 endif
-balt ~/repos/black-atom-industries/core/src/themes/terra/ui_dark.ts
+balt src/themes/terra/ui_dark.ts
 setlocal keymap=
 setlocal noarabic
 setlocal autoindent
@@ -1309,19 +1699,19 @@ setlocal nowrap
 setlocal wrapmargin=0
 5
 sil! normal! zo
-let s:l = 11 - ((0 * winheight(0) + 24) / 49)
+let s:l = 11 - ((0 * winheight(0) + 25) / 50)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
 keepjumps 11
 normal! 05|
 wincmd w
-exe 'vert 1resize ' . ((&columns * 73 + 146) / 292)
-exe 'vert 2resize ' . ((&columns * 72 + 146) / 292)
-exe 'vert 3resize ' . ((&columns * 72 + 146) / 292)
-exe 'vert 4resize ' . ((&columns * 72 + 146) / 292)
+exe 'vert 1resize ' . ((&columns * 69 + 138) / 277)
+exe 'vert 2resize ' . ((&columns * 68 + 138) / 277)
+exe 'vert 3resize ' . ((&columns * 69 + 138) / 277)
+exe 'vert 4resize ' . ((&columns * 68 + 138) / 277)
 tabnext
-edit ~/repos/black-atom-industries/core/src/types/theme.ts
+edit src/types/theme.ts
 let s:save_splitbelow = &splitbelow
 let s:save_splitright = &splitright
 set splitbelow splitright
@@ -1341,9 +1731,9 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe 'vert 1resize ' . ((&columns * 97 + 146) / 292)
-exe 'vert 2resize ' . ((&columns * 97 + 146) / 292)
-exe 'vert 3resize ' . ((&columns * 96 + 146) / 292)
+exe 'vert 1resize ' . ((&columns * 92 + 138) / 277)
+exe 'vert 2resize ' . ((&columns * 92 + 138) / 277)
+exe 'vert 3resize ' . ((&columns * 91 + 138) / 277)
 argglobal
 setlocal keymap=
 setlocal noarabic
@@ -1452,7 +1842,7 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 282 - ((6 * winheight(0) + 24) / 49)
+let s:l = 282 - ((6 * winheight(0) + 25) / 50)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
@@ -1460,11 +1850,11 @@ keepjumps 282
 normal! 018|
 wincmd w
 argglobal
-if bufexists(fnamemodify("~/repos/black-atom-industries/core/src/themes/terra/black-atom-terra-winter-day.ts", ":p")) | buffer ~/repos/black-atom-industries/core/src/themes/terra/black-atom-terra-winter-day.ts | else | edit ~/repos/black-atom-industries/core/src/themes/terra/black-atom-terra-winter-day.ts | endif
+if bufexists(fnamemodify("src/themes/terra/black-atom-terra-winter-day.ts", ":p")) | buffer src/themes/terra/black-atom-terra-winter-day.ts | else | edit src/themes/terra/black-atom-terra-winter-day.ts | endif
 if &buftype ==# 'terminal'
-  silent file ~/repos/black-atom-industries/core/src/themes/terra/black-atom-terra-winter-day.ts
+  silent file src/themes/terra/black-atom-terra-winter-day.ts
 endif
-balt ~/repos/black-atom-industries/core/src/types/theme.ts
+balt src/types/theme.ts
 setlocal keymap=
 setlocal noarabic
 setlocal autoindent
@@ -1572,7 +1962,7 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 51 - ((0 * winheight(0) + 24) / 49)
+let s:l = 51 - ((0 * winheight(0) + 25) / 50)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
@@ -1580,11 +1970,11 @@ keepjumps 51
 normal! 0
 wincmd w
 argglobal
-if bufexists(fnamemodify("~/repos/black-atom-industries/core/src/themes/mnml/ui_dark.ts", ":p")) | buffer ~/repos/black-atom-industries/core/src/themes/mnml/ui_dark.ts | else | edit ~/repos/black-atom-industries/core/src/themes/mnml/ui_dark.ts | endif
+if bufexists(fnamemodify("src/themes/mnml/ui_dark.ts", ":p")) | buffer src/themes/mnml/ui_dark.ts | else | edit src/themes/mnml/ui_dark.ts | endif
 if &buftype ==# 'terminal'
-  silent file ~/repos/black-atom-industries/core/src/themes/mnml/ui_dark.ts
+  silent file src/themes/mnml/ui_dark.ts
 endif
-balt ~/repos/black-atom-industries/core/src/types/theme.ts
+balt src/types/theme.ts
 setlocal keymap=
 setlocal noarabic
 setlocal autoindent
@@ -1692,20 +2082,20 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 43 - ((5 * winheight(0) + 24) / 49)
+let s:l = 43 - ((5 * winheight(0) + 25) / 50)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
 keepjumps 43
 normal! 0
 wincmd w
-exe 'vert 1resize ' . ((&columns * 97 + 146) / 292)
-exe 'vert 2resize ' . ((&columns * 97 + 146) / 292)
-exe 'vert 3resize ' . ((&columns * 96 + 146) / 292)
+exe 'vert 1resize ' . ((&columns * 92 + 138) / 277)
+exe 'vert 2resize ' . ((&columns * 92 + 138) / 277)
+exe 'vert 3resize ' . ((&columns * 91 + 138) / 277)
 tabnext
-edit ./
+edit ~/repos/black-atom-industries/core
 argglobal
-balt ~/repos/black-atom-industries/core/src/themes/terra/black-atom-terra-winter-day.ts
+balt src/themes/terra/black-atom-terra-winter-day.ts
 setlocal keymap=
 setlocal noarabic
 setlocal autoindent
@@ -1813,14 +2203,14 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 1 - ((0 * winheight(0) + 24) / 49)
+let s:l = 1 - ((0 * winheight(0) + 25) / 50)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
 keepjumps 1
 normal! 0
 tabnext
-edit ~/repos/black-atom-industries/core/src/themes/mnml/black-atom-mnml-orange-light.ts
+edit src/themes/mnml/black-atom-mnml-orange-light.ts
 let s:save_splitbelow = &splitbelow
 let s:save_splitright = &splitright
 set splitbelow splitright
@@ -1840,11 +2230,11 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe 'vert 1resize ' . ((&columns * 97 + 146) / 292)
-exe 'vert 2resize ' . ((&columns * 97 + 146) / 292)
-exe 'vert 3resize ' . ((&columns * 96 + 146) / 292)
+exe 'vert 1resize ' . ((&columns * 92 + 138) / 277)
+exe 'vert 2resize ' . ((&columns * 92 + 138) / 277)
+exe 'vert 3resize ' . ((&columns * 91 + 138) / 277)
 argglobal
-balt ~/repos/black-atom-industries/core/src/themes/mnml/ui_dark.ts
+balt src/themes/mnml/ui_dark.ts
 setlocal keymap=
 setlocal noarabic
 setlocal autoindent
@@ -1952,7 +2342,7 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 36 - ((6 * winheight(0) + 24) / 49)
+let s:l = 36 - ((6 * winheight(0) + 25) / 50)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
@@ -1960,11 +2350,11 @@ keepjumps 36
 normal! 032|
 wincmd w
 argglobal
-if bufexists(fnamemodify("~/repos/black-atom-industries/core/src/themes/mnml/black-atom-mnml-orange-dark.ts", ":p")) | buffer ~/repos/black-atom-industries/core/src/themes/mnml/black-atom-mnml-orange-dark.ts | else | edit ~/repos/black-atom-industries/core/src/themes/mnml/black-atom-mnml-orange-dark.ts | endif
+if bufexists(fnamemodify("src/themes/mnml/black-atom-mnml-orange-dark.ts", ":p")) | buffer src/themes/mnml/black-atom-mnml-orange-dark.ts | else | edit src/themes/mnml/black-atom-mnml-orange-dark.ts | endif
 if &buftype ==# 'terminal'
-  silent file ~/repos/black-atom-industries/core/src/themes/mnml/black-atom-mnml-orange-dark.ts
+  silent file src/themes/mnml/black-atom-mnml-orange-dark.ts
 endif
-balt ~/repos/black-atom-industries/core/src/themes/mnml/black-atom-mnml-orange-light.ts
+balt src/themes/mnml/black-atom-mnml-orange-light.ts
 setlocal keymap=
 setlocal noarabic
 setlocal autoindent
@@ -2072,7 +2462,7 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 30 - ((5 * winheight(0) + 24) / 49)
+let s:l = 30 - ((5 * winheight(0) + 25) / 50)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
@@ -2080,11 +2470,11 @@ keepjumps 30
 normal! 019|
 wincmd w
 argglobal
-if bufexists(fnamemodify("~/repos/black-atom-industries/core/src/themes/mnml/syntax_light.ts", ":p")) | buffer ~/repos/black-atom-industries/core/src/themes/mnml/syntax_light.ts | else | edit ~/repos/black-atom-industries/core/src/themes/mnml/syntax_light.ts | endif
+if bufexists(fnamemodify("src/themes/mnml/syntax_light.ts", ":p")) | buffer src/themes/mnml/syntax_light.ts | else | edit src/themes/mnml/syntax_light.ts | endif
 if &buftype ==# 'terminal'
-  silent file ~/repos/black-atom-industries/core/src/themes/mnml/syntax_light.ts
+  silent file src/themes/mnml/syntax_light.ts
 endif
-balt ~/repos/black-atom-industries/core/src/themes/mnml/black-atom-mnml-orange-dark.ts
+balt src/themes/mnml/black-atom-mnml-orange-dark.ts
 setlocal keymap=
 setlocal noarabic
 setlocal autoindent
@@ -2196,17 +2586,17 @@ setlocal wrapmargin=0
 sil! normal! zo
 9
 sil! normal! zo
-let s:l = 13 - ((6 * winheight(0) + 24) / 49)
+let s:l = 13 - ((6 * winheight(0) + 25) / 50)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
 keepjumps 13
 normal! 0
 wincmd w
-exe 'vert 1resize ' . ((&columns * 97 + 146) / 292)
-exe 'vert 2resize ' . ((&columns * 97 + 146) / 292)
-exe 'vert 3resize ' . ((&columns * 96 + 146) / 292)
-tabnext 2
+exe 'vert 1resize ' . ((&columns * 92 + 138) / 277)
+exe 'vert 2resize ' . ((&columns * 92 + 138) / 277)
+exe 'vert 3resize ' . ((&columns * 91 + 138) / 277)
+tabnext 3
 set stal=1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf

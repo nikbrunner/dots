@@ -9,10 +9,10 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +28 ~/repos/black-atom-industries/nvim/lua/black-atom/highlights/ui.lua
+badd +28 lua/black-atom/highlights/ui.lua
 argglobal
 %argdel
-edit ~/repos/black-atom-industries/nvim/lua/black-atom/highlights/ui.lua
+edit lua/black-atom/highlights/ui.lua
 argglobal
 setlocal keymap=
 setlocal noarabic
@@ -36,7 +36,7 @@ setlocal complete=.,w,b,u,t
 setlocal completefunc=
 setlocal completeslash=
 setlocal concealcursor=
-setlocal conceallevel=0
+setlocal conceallevel=2
 setlocal nocopyindent
 setlocal nocursorbind
 setlocal nocursorcolumn
@@ -116,7 +116,7 @@ setlocal textwidth=120
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#lua%*\ %#WinBarSeparator#/%*\ %#WinBarPath#black-atom%*\ %#WinBarSeparator#/%*\ %#WinBarPath#highlights%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#ui.lua%*\ %#WinBarSeparator##%*\ %#WinBarSymbol#return%*\ %#WinBarSeparator##%*\ %#WinBarSymbol#map%*\ %#WinBarSeparator##%*\ %#WinBarSymbol#highlights_map%*\ %#WinBarSeparator##%*\ %#WinBarSymbol#lCursor%*\ %#WinBarSeparator##%*\ %#WinBarSymbol#link%*
+setlocal winbar=%#WinBarPath#lua%*\ %#WinBarSeparator#/%*\ %#WinBarPath#black-atom%*\ %#WinBarSeparator#/%*\ %#WinBarPath#highlights%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#ui.lua%*
 setlocal winblend=0
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -130,12 +130,12 @@ sil! normal! zo
 sil! normal! zo
 11
 sil! normal! zo
-let s:l = 30 - ((28 * winheight(0) + 25) / 51)
+let s:l = 28 - ((23 * winheight(0) + 25) / 51)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 30
-normal! 0
+keepjumps 28
+normal! 040|
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
