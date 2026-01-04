@@ -442,7 +442,7 @@ M.win_config = {
             anchor = "SW",
             height = math.floor(0.25 * vim.o.lines),
             width = math.floor(0.4 * vim.o.columns),
-            border = "solid",
+            border = "single",
             row = vim.o.lines - 1,
             col = 0,
         }
@@ -831,6 +831,86 @@ function M.files()
     -- stylua: ignore end
 end
 
+-- ============================================================================
+-- MiniClue Configuration
+-- ============================================================================
+
+function M.clue()
+    local MiniClue = require("mini.clue")
+
+    MiniClue.setup({
+        triggers = {
+            { mode = "c", keys = "<C-r>" },
+            { mode = "i", keys = "<C-r>" },
+            { mode = "i", keys = "<C-x>" },
+            { mode = "n", keys = "<C-w>" },
+            { mode = "n", keys = "'" },
+            { mode = "n", keys = "<leader>" },
+            { mode = "n", keys = "<localleader>" },
+            { mode = "n", keys = "[" },
+            { mode = "n", keys = "]" },
+            { mode = "n", keys = "`" },
+            { mode = "n", keys = "g" },
+            { mode = "n", keys = "s" },
+            { mode = "n", keys = "m" },
+            { mode = "n", keys = "z" },
+            { mode = "n", keys = "y" },
+            { mode = "n", keys = "S" },
+            { mode = "n", keys = '"' },
+            { mode = "x", keys = "'" },
+            { mode = "x", keys = "<leader>" },
+            { mode = "x", keys = "`" },
+            { mode = "x", keys = "g" },
+            { mode = "x", keys = "z" },
+            { mode = "x", keys = '"' },
+        },
+        clues = {
+            MiniClue.gen_clues.builtin_completion(),
+            MiniClue.gen_clues.g(),
+            MiniClue.gen_clues.marks(),
+            MiniClue.gen_clues.registers(),
+            MiniClue.gen_clues.windows(),
+            MiniClue.gen_clues.z(),
+
+            -- App
+            { mode = "n", keys = "<leader>a", desc = "[A]pp" },
+            { mode = "n", keys = "<leader>al", desc = "[L]anguages" },
+            { mode = "n", keys = "<leader>ah", desc = "[H]elp" },
+            { mode = "n", keys = "<leader>ap", desc = "[P]lugins" },
+            { mode = "n", keys = "<leader>ao", desc = "[O]ptions" },
+
+            -- Workspace
+            { mode = "n", keys = "<leader>w", desc = "[W]orkspace" },
+            { mode = "n", keys = "<leader>wv", desc = "[V]ersion" },
+            { mode = "n", keys = "<leader>wvi", desc = "[I]ssues" },
+            { mode = "n", keys = "<leader>wvp", desc = "[P]ull Requests" },
+
+            -- Document
+            { mode = "n", keys = "<leader>d", desc = "[D]ocument" },
+            { mode = "n", keys = "<leader>dy", desc = "[Y]ank" },
+            { mode = "n", keys = "<leader>dv", desc = "[V]ersion" },
+
+            -- Symbol
+            { mode = "n", keys = "sl", desc = "[L]og" },
+            { mode = "n", keys = "sc", desc = "[C]alls" },
+            { mode = "n", keys = "sv", desc = "[V]ersion" },
+
+            -- Other
+            { mode = "n", keys = "<leader>c", desc = "[C]hange" },
+            { mode = "n", keys = "<leader>s", desc = "[S]ession" },
+            { mode = "n", keys = "<leader>h", desc = "[H]ttp" },
+            { mode = "n", keys = "<leader>n", desc = "[N]otes" },
+            { mode = "n", keys = "<leader>x", desc = "Trouble/Quickfix" },
+        },
+        window = {
+            config = {
+                width = math.floor(0.25 * vim.o.columns),
+            },
+            delay = 0,
+        },
+    })
+end
+
 ---@type LazyPluginSpec
 return {
     "nvim-mini/mini.nvim",
@@ -841,6 +921,7 @@ return {
         M.extra()
         M.pick()
         M.files()
+        M.clue()
         M.git()
         M.diff()
         M.ai()
