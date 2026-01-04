@@ -28,6 +28,22 @@ The following MCPs are set up and **must be used**:
 
 See https://github.com/steveyegge/beads for full documentation.
 
+### ⚠️ Beads Commit Workflow
+
+**Do NOT create separate commits for beads updates.** When closing an issue with `bd close`, include the `.beads/` changes in the same commit as the related code changes. One atomic commit per logical unit of work.
+
+```bash
+# ✅ Correct: Bundle beads with code
+bd close <id>
+git add src/feature.ts .beads/
+git commit -m "feat: implement feature X"
+
+# ❌ Wrong: Separate beads commit
+git commit -m "feat: implement feature X"
+bd close <id>
+git commit -m "chore: update beads"  # NO - adds noise to git history
+```
+
 ---
 
 ## 👤 Personal Context
