@@ -9,8 +9,8 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +9 01\ -\ Projects/New\ Job\ Nik/Coverletters/Superchat\ -\ Senior\ Frontend\ Engineer.md
-badd +19 ~/repos/nikbrunner/notes/02\ -\ Areas/Log/2026/01\ -\ January/2026.01.04\ -\ Sunday.md
+badd +24 ~/repos/nikbrunner/notes/02\ -\ Areas/Log/2026/01\ -\ January/2026.01.04\ -\ Sunday.md
+badd +1 01\ -\ Projects/New\ Job\ Nik/Coverletters/Superchat\ -\ Senior\ Frontend\ Engineer.md
 argglobal
 %argdel
 $argadd ~/repos/nikbrunner/notes/02\ -\ Areas/Log/2026/01\ -\ January/2026.01.04\ -\ Sunday.md
@@ -34,6 +34,7 @@ set winwidth=1
 exe 'vert 1resize ' . ((&columns * 143 + 143) / 287)
 exe 'vert 2resize ' . ((&columns * 143 + 143) / 287)
 argglobal
+balt 01\ -\ Projects/New\ Job\ Nik/Coverletters/Superchat\ -\ Senior\ Frontend\ Engineer.md
 let s:cpo_save=&cpo
 set cpo&vim
 nnoremap <buffer>  <Cmd>MarkdownToggleCheckbox
@@ -71,7 +72,7 @@ setlocal complete=.,w,b,u,t
 setlocal completefunc=
 setlocal completeslash=
 setlocal concealcursor=
-setlocal conceallevel=2
+setlocal conceallevel=0
 setlocal nocopyindent
 setlocal nocursorbind
 setlocal nocursorcolumn
@@ -156,12 +157,12 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal wrap
 setlocal wrapmargin=0
-let s:l = 19 - ((18 * winheight(0) + 32) / 65)
+let s:l = 24 - ((23 * winheight(0) + 32) / 65)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 19
-normal! 0
+keepjumps 24
+normal! 026|
 wincmd w
 argglobal
 if bufexists(fnamemodify("01\ -\ Projects/New\ Job\ Nik/Coverletters/Superchat\ -\ Senior\ Frontend\ Engineer.md", ":p")) | buffer 01\ -\ Projects/New\ Job\ Nik/Coverletters/Superchat\ -\ Senior\ Frontend\ Engineer.md | else | edit 01\ -\ Projects/New\ Job\ Nik/Coverletters/Superchat\ -\ Senior\ Frontend\ Engineer.md | endif
@@ -172,13 +173,13 @@ balt ~/repos/nikbrunner/notes/02\ -\ Areas/Log/2026/01\ -\ January/2026.01.04\ -
 let s:cpo_save=&cpo
 set cpo&vim
 nnoremap <buffer>  <Cmd>MarkdownToggleCheckbox
-nnoremap <buffer> ,niT <Cmd>MarkdownInsertTable
-vnoremap <buffer> ,nil s["]()<Cmd>normal! h<Cmd>startinsert<Cmd>lua require("markdown-tools.commands").prompt_and_insert_url()
-vmap <buffer> ,nii s*"*
-vmap <buffer> ,niH s=="==
-vmap <buffer> ,nib s**"**
-vnoremap <buffer> ,nih <Cmd>MarkdownHeader
 nnoremap <buffer> ,nih <Cmd>MarkdownHeader
+vnoremap <buffer> ,nih <Cmd>MarkdownHeader
+vmap <buffer> ,nib s**"**
+vmap <buffer> ,niH s=="==
+vmap <buffer> ,nii s*"*
+vnoremap <buffer> ,nil s["]()<Cmd>normal! h<Cmd>startinsert<Cmd>lua require("markdown-tools.commands").prompt_and_insert_url()
+nnoremap <buffer> ,niT <Cmd>MarkdownInsertTable
 xnoremap <buffer> <silent> [[ :exe "normal! gv"|call search('\%(^#\{1,5\}\s\+\S\|^\S.*\n^[=-]\+$\)', "bsW")
 xnoremap <buffer> <silent> ]] :exe "normal! gv"|call search('\%(^#\{1,5\}\s\+\S\|^\S.*\n^[=-]\+$\)', "sW")
 nnoremap <buffer> <C-T> <Cmd>MarkdownToggleCheckbox
@@ -291,11 +292,11 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal wrap
 setlocal wrapmargin=0
-let s:l = 12 - ((11 * winheight(0) + 32) / 65)
+let s:l = 23 - ((22 * winheight(0) + 32) / 65)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 12
+keepjumps 23
 normal! 0
 wincmd w
 exe 'vert 1resize ' . ((&columns * 143 + 143) / 287)
