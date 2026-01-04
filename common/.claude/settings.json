@@ -47,6 +47,10 @@
           {
             "command": "bd prime",
             "type": "command"
+          },
+          {
+            "command": "~/.local/bin/tmux-session-picker-hook SessionStart",
+            "type": "command"
           }
         ],
         "matcher": ""
