@@ -605,6 +605,62 @@ function M.pick()
 
     MiniPick.registry.frecency = M.smart_picker
 
+    -- Custom picker: modified + untracked files (all changed files) with diff preview
+    MiniPick.registry.git_changed = function()
+        local git_root = vim.fn.systemlist("git rev-parse --show-toplevel")[1]
+        if vim.v.shell_error ~= 0 then
+            vim.notify("Not in a git repository", vim.log.levels.ERROR)
+            return
+        end
+
+        local modified = vim.fn.systemlist("git ls-files --modified")
+        local untracked = vim.fn.systemlist("git ls-files --others --exclude-standard")
+
+        local items = {}
+        local status_lookup = {}
+        local seen = {}
+
+        for _, file in ipairs(modified) do
+            if not seen[file] then
+                seen[file] = true
+                table.insert(items, file)
+                status_lookup[file] = "modified"
+            end
+        end
+
+        for _, file in ipairs(untracked) do
+            if not seen[file] then
+                seen[file] = true
+                table.insert(items, file)
+                status_lookup[file] = "untracked"
+            end
+        end
+
+        MiniPick.start({
+            source = {
+                items = items,
+                name = "Git Changed",
+                cwd = git_root,
+                preview = function(buf_id, item)
+                    local lines
+                    if status_lookup[item] == "modified" then
+                        lines = vim.fn.systemlist({ "git", "-C", git_root, "diff", "--", item })
+                    else
+                        -- Untracked: show as new file diff
+                        lines = vim.fn.systemlist({ "git", "-C", git_root, "diff", "--no-index", "/dev/null", item })
+                    end
+
+                    if #lines == 0 then
+                        lines = { "No diff available" }
+                    end
+
+                    vim.api.nvim_buf_set_lines(buf_id, 0, -1, false, lines)
+                    vim.bo[buf_id].filetype = "diff"
+                end,
+            },
+        })
+    end
+
     -- Use MiniPick for vim.ui.select
     vim.ui.select = MiniPick.ui_select
 
@@ -632,7 +688,7 @@ function M.pick()
     map("n", "<leader>wr",          function() MiniExtra.pickers.oldfiles({ current_dir = true }) end, { desc = "[R]ecent Documents" })
     map("n", "<leader>wt",          function() MiniPick.builtin.grep_live() end, { desc = "[T]ext" })
     map("n", "<leader>ww",          function() MiniPick.builtin.grep({ pattern = vim.fn.expand("<cword>") }) end, { desc = "[W]ord" })
-    map("n", "<leader>wm",          function() MiniExtra.pickers.git_files({ scope = "modified" }) end, { desc = "[M]odified Documents" })
+    map("n", "<leader>wm",          MiniPick.registry.git_changed, { desc = "[M]odified Documents" })
     map("n", "<leader>wc",          function() MiniExtra.pickers.git_hunks() end, { desc = "[C]hanges" })
     map("n", "<leader>ws",          function() MiniExtra.pickers.lsp({ scope = "workspace_symbol" }) end, { desc = "[S]ymbols" })
     map("n", "<leader>wvb",         function() MiniExtra.pickers.git_branches() end, { desc = "[B]ranches" })
