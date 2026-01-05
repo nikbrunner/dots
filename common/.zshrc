@@ -26,8 +26,7 @@ esac
 set -a; source ~/.env; set +a
 
 # Cross-Platform Path Exports ===========================================
-export PATH=$HOME/bin:/usr/local/bin:$PATH
-export PATH=$HOME/.local/bin:$PATH
+export PATH=$HOME/.local/bin:/usr/local/bin:$PATH
 export PATH=$HOME/.local/share/bob/nvim-bin:$PATH
 export PATH=$HOME/.cargo/bin:$PATH
 export PATH=$HOME/Applications:$PATH
@@ -94,7 +93,7 @@ alias ,,="fzf -m --preview='bat --color=always {}' --bind 'enter:become(nvim {+}
 
 # Custom Script Functions ================================================
 # Source 'run' script to enable print -z functionality
-[ -f "$HOME/bin/run" ] && source "$HOME/bin/run"
+[ -f "$HOME/.local/bin/run" ] && source "$HOME/.local/bin/run"
 
 # Misc =================================================================
 # Get IP address (cross-platform)

@@ -14,7 +14,7 @@ This is a symlink-based dotfiles management system designed to organize and depl
 - Symlinks are defined in a single `symlinks.yml` file with OS-specific sections
 - The `scripts/symlinks.sh` script creates all symlinks from the configuration with backup functionality
 - Running `dots link` automatically backs up existing files with timestamps before creating symlinks
-- Supports wildcard patterns (e.g., `"common/bin/*": "~/bin"`) for flexible file management
+- Supports wildcard patterns (e.g., `"common/.local/bin/*": "~/.local/bin"`) for flexible file management
 
 ### Directory Structure
 
@@ -22,7 +22,7 @@ This is a symlink-based dotfiles management system designed to organize and depl
 - `common/` - Cross-platform configuration files that mirror home directory structure
   - Root dotfiles (.zshrc, .gitconfig, etc.)
   - `.config/` directory with tool configurations
-  - `bin/` directory with custom scripts
+  - `.local/bin/` directory with custom scripts
 - `macos/` - macOS-specific configurations that mirror home directory structure
 - `linux/` - Linux-specific configurations that mirror home directory structure
 - `arch/` - Arch-specific configurations that mirror home directory structure
@@ -84,10 +84,10 @@ dots test
 ### Renaming/Moving Configurations
 
 1. Rename or move the file within the repository
-   - Example: `mv common/bin/ide common/bin/tmux-layout-ide`
+   - Example: `mv common/.local/bin/ide common/.local/bin/tmux-layout-ide`
 2. Run `dots link` to update everything:
-   - The old symlink (`~/bin/ide`) is automatically removed
-   - A new symlink (`~/bin/tmux-layout-ide`) is created
+   - The old symlink (`~/.local/bin/ide`) is automatically removed
+   - A new symlink (`~/.local/bin/tmux-layout-ide`) is created
 3. No manual cleanup needed - it just works!
 
 ## Symlink System
@@ -101,7 +101,7 @@ The system uses a unified YAML manifest where symlinks are explicitly defined wi
 - **Processing order**: Always loads `common` first, then the detected OS section if it exists
 - **Shared common entries**: 85% of entries are identical and defined once
 - **Mixed linking**: Supports both directory-level and file-level symlinks
-- **Wildcard patterns**: Use patterns like `"common/bin/*": "~/bin"` to link individual files into existing directories
+- **Wildcard patterns**: Use patterns like `"common/.local/bin/*": "~/.local/bin"` to link individual files into existing directories
 - **Automatic parent directory creation**: Parent directories are created as needed when symlinking files
 
 ### Example YAML Structure
@@ -111,7 +111,7 @@ The system uses a unified YAML manifest where symlinks are explicitly defined wi
 macos:
   # Common entries (34 shared)
   "common/.config/nvim": "~/.config/nvim"
-  "common/bin/*": "~/bin"
+  "common/.local/bin/*": "~/.local/bin"
   # macOS-specific entries (7 unique)
   "macos/Brewfile": "~/Brewfile"
 
@@ -119,7 +119,7 @@ macos:
 arch:
   # Same 34 common entries
   "common/.config/nvim": "~/.config/nvim"
-  "common/bin/*": "~/bin"
+  "common/.local/bin/*": "~/.local/bin"
   # Arch-specific entries (5 unique)
   "arch/.bashrc": "~/.bashrc"
 ```
@@ -161,7 +161,7 @@ Use `dots test` for overall system health checks and `dots link --dry-run` for d
 ## Recent Changes
 
 - **Manual Configuration System**: Replaced auto-discovery with explicit `symlinks.yml` configuration file
-- **Wildcard Pattern Support**: Added support for patterns like `"common/bin/*"` for selective file linking
+- **Wildcard Pattern Support**: Added support for patterns like `"common/.local/bin/*"` for selective file linking
 - **Massive Code Reduction**: Removed ~810 lines of auto-discovery code
 - **74% Fewer Configuration Entries**: From 353 auto-discovered to 42 manually defined symlinks
 - **Complete Machine Setup**: `dots install` provides full machine setup with automatic dependency installation

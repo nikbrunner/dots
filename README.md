@@ -37,7 +37,7 @@ This dotfiles system uses a unified YAML configuration for symlink management:
 - Configuration files live in this repository organized by platform
 - Symlinks are defined in a single `symlinks.yml` file with OS-specific sections
 - Running `dots link` updates everything automatically (removes broken symlinks + creates new ones)
-- Supports wildcard patterns for flexible file management (e.g., `"common/bin/*": "~/bin"`)
+- Supports wildcard patterns for flexible file management (e.g., `"common/.local/bin/*": "~/.local/bin"`)
 - Eliminates duplication with shared common entries across platforms
 
 ## Structure
@@ -181,11 +181,11 @@ Unified repository operations with optional AI assistance:
 1. **Rename the file** in the repository:
    ```bash
    # Example: Rename a script
-   mv common/bin/old-name common/bin/new-name
+   mv common/.local/bin/old-name common/.local/bin/new-name
    ```
 2. **Update symlinks**: `dots link`
-   - Old symlink (`~/bin/old-name`) is automatically removed
-   - New symlink (`~/bin/new-name`) is created
+   - Old symlink (`~/.local/bin/old-name`) is automatically removed
+   - New symlink (`~/.local/bin/new-name`) is created
 3. **Commit changes**: `dots commit`
 
 #### Editing Configurations
@@ -216,7 +216,7 @@ The `dots test` command validates the entire system (repository structure, OS de
 
 #### Other Notable Commands
 
-- Various helper scripts in `~/bin/` for development workflows
+- Various helper scripts in `~/.local/bin/` for development workflows
 - Platform-specific utilities and configurations
 
 ## How It Works
@@ -228,7 +228,7 @@ When you run `dots link`:
 3. **Processes entries**: Creates symlinks as defined in the configuration:
    - Directory symlinks for entire directories
    - File symlinks for individual files
-   - Wildcard expansion for patterns like `"common/bin/*": "~/bin"`
+   - Wildcard expansion for patterns like `"common/.local/bin/*": "~/.local/bin"`
 4. **Backs up conflicts**: If a real file exists where a symlink should go, it's backed up with a timestamp (unless `--no-backup` is used)
 
 **Manual Configuration Benefits**:

@@ -126,7 +126,7 @@
     "deny": []
   },
   "statusLine": {
-    "command": "~/bin/claude-statusline",
+    "command": "~/.local/bin/claude-statusline",
     "type": "command"
   }
 }

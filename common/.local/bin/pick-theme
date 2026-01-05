@@ -131,7 +131,7 @@ reload_tmux() {
 }
 
 # Source shared Ghostty reload function
-source "$DOTS_DIR/common/bin/ghostty-reload"
+source "$DOTS_DIR/common/.local/bin/ghostty-reload"
 
 # Restart Neovim instances and restore sessions (tmux-aware)
 restart_neovim_instances() {

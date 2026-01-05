@@ -34,7 +34,7 @@ update_zed_font() {
 }
 
 # Source shared Ghostty reload function
-source "$HOME/repos/nikbrunner/dots/common/bin/ghostty-reload"
+source "$HOME/repos/nikbrunner/dots/common/.local/bin/ghostty-reload"
 
 main() {
     # Check if required files exist
