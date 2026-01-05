@@ -9,27 +9,12 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +23 ~/repos/nikbrunner/nbr.haus/src/content/coverletters/example-corp.md
+badd +36 package.json
 argglobal
 %argdel
 $argadd ./
-edit ~/repos/nikbrunner/nbr.haus/src/content/coverletters/example-corp.md
+edit package.json
 argglobal
-let s:cpo_save=&cpo
-set cpo&vim
-nnoremap <buffer>  <Cmd>MarkdownToggleCheckbox
-nnoremap <buffer> ,niT <Cmd>MarkdownInsertTable
-vnoremap <buffer> ,nil s["]()<Cmd>normal! h<Cmd>startinsert<Cmd>lua require("markdown-tools.commands").prompt_and_insert_url()
-vmap <buffer> ,nii s*"*
-vmap <buffer> ,niH s=="==
-vmap <buffer> ,nib s**"**
-vnoremap <buffer> ,nih <Cmd>MarkdownHeader
-nnoremap <buffer> ,nih <Cmd>MarkdownHeader
-xnoremap <buffer> <silent> [[ :exe "normal! gv"|call search('\%(^#\{1,5\}\s\+\S\|^\S.*\n^[=-]\+$\)', "bsW")
-xnoremap <buffer> <silent> ]] :exe "normal! gv"|call search('\%(^#\{1,5\}\s\+\S\|^\S.*\n^[=-]\+$\)', "sW")
-nnoremap <buffer> <C-T> <Cmd>MarkdownToggleCheckbox
-let &cpo=s:cpo_save
-unlet s:cpo_save
 setlocal keymap=
 setlocal noarabic
 setlocal autoindent
@@ -46,13 +31,13 @@ setlocal cinoptions=
 setlocal cinscopedecls=public,protected,private
 setlocal cinwords=if,else,while,do,for,switch
 setlocal colorcolumn=
-setlocal comments=fb:*,fb:-,fb:+,n:>
-setlocal commentstring=<!--\ %s\ -->
+setlocal comments=
+setlocal commentstring=
 setlocal complete=.,w,b,u,t
 setlocal completefunc=
 setlocal completeslash=
 setlocal concealcursor=
-setlocal conceallevel=2
+setlocal conceallevel=0
 setlocal nocopyindent
 setlocal nocursorbind
 setlocal nocursorcolumn
@@ -61,8 +46,8 @@ setlocal cursorlineopt=both
 setlocal nodiff
 setlocal eventignorewin=
 setlocal expandtab
-if &filetype != 'markdown'
-setlocal filetype=markdown
+if &filetype != 'json'
+setlocal filetype=json
 endif
 setlocal fixendofline
 setlocal foldcolumn=0
@@ -76,21 +61,21 @@ setlocal foldminlines=1
 setlocal foldnestmax=20
 setlocal foldtext=
 setlocal formatexpr=v:lua.require'conform'.formatexpr()
-setlocal formatlistpat=^\\s*\\d\\+\\.\\s\\+\\|^\\s*[-*+]\\s\\+\\|^\\[^\\ze[^\\]]\\+\\]:\\&^.\\{4\\}
-setlocal formatoptions=jtcqln
+setlocal formatlistpat=^\\s*\\d\\+[\\]:.)}\\t\ ]\\s*
+setlocal formatoptions=cqj
 setlocal iminsert=0
 setlocal imsearch=-1
 setlocal includeexpr=
 setlocal indentexpr=nvim_treesitter#indent()
-setlocal indentkeys=0{,0},0),0],:,0#,!^F,o,O,e
+setlocal indentkeys=0{,0},0),0[,0],!^F,o,O,e
 setlocal noinfercase
 setlocal iskeyword=@,48-57,_,192-255
 setlocal lhistory=10
-setlocal linebreak
+setlocal nolinebreak
 setlocal nolisp
 setlocal lispoptions=
 setlocal nolist
-setlocal matchpairs=(:),{:},[:],<:>
+setlocal matchpairs=(:),{:},[:]
 setlocal modeline
 setlocal modifiable
 setlocal nrformats=bin,hex
@@ -106,11 +91,11 @@ setlocal norightleft
 setlocal rightleftcmd=search
 setlocal scrollback=-1
 setlocal noscrollbind
-setlocal shiftwidth=4
+setlocal shiftwidth=2
 setlocal signcolumn=yes
-setlocal smartindent
+setlocal nosmartindent
 setlocal nosmoothscroll
-setlocal softtabstop=4
+setlocal softtabstop=-1
 setlocal nospell
 setlocal spellcapcheck=[.?!]\\_[\\])'\"\\t\ ]\\+
 setlocal spellfile=
@@ -124,25 +109,27 @@ if &syntax != ''
 setlocal syntax=
 endif
 setlocal tabstop=4
-setlocal tagfunc=v:lua.vim.lsp.tagfunc
+setlocal tagfunc=
 setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#src%*\ %#WinBarSeparator#/%*\ %#WinBarPath#content%*\ %#WinBarSeparator#/%*\ %#WinBarPath#coverletters%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#example-corp.md%*
+setlocal winbar=%#WinBarFilename#package.json%*
 setlocal winblend=0
 setlocal nowinfixbuf
 setlocal nowinfixheight
 setlocal nowinfixwidth
 setlocal winhighlight=
-setlocal wrap
+setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 23 - ((22 * winheight(0) + 32) / 65)
+2
+sil! normal! zo
+let s:l = 39 - ((29 * winheight(0) + 18) / 37)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 23
-normal! 0
+keepjumps 39
+normal! 026|
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf

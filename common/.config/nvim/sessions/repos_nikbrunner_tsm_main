@@ -3,17 +3,16 @@ let s:so_save = &g:so | let s:siso_save = &g:siso | setg so=0 siso=0 | setl so=-
 let v:this_session=expand("<sfile>:p")
 silent only
 silent tabonly
-cd ~/repos/nikbrunner/nbr.haus
+cd ~/repos/nikbrunner/tsm
 if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +23 ~/repos/nikbrunner/nbr.haus/src/content/coverletters/example-corp.md
+badd +114 AGENTS.md
 argglobal
 %argdel
-$argadd ./
-edit ~/repos/nikbrunner/nbr.haus/src/content/coverletters/example-corp.md
+edit AGENTS.md
 argglobal
 let s:cpo_save=&cpo
 set cpo&vim
@@ -52,7 +51,7 @@ setlocal complete=.,w,b,u,t
 setlocal completefunc=
 setlocal completeslash=
 setlocal concealcursor=
-setlocal conceallevel=2
+setlocal conceallevel=0
 setlocal nocopyindent
 setlocal nocursorbind
 setlocal nocursorcolumn
@@ -96,7 +95,7 @@ setlocal modifiable
 setlocal nrformats=bin,hex
 setlocal number
 setlocal numberwidth=4
-setlocal omnifunc=v:lua.vim.lsp.omnifunc
+setlocal omnifunc=htmlcomplete#CompleteTags
 setlocal nopreserveindent
 setlocal nopreviewwindow
 setlocal quoteescape=\\
@@ -106,11 +105,11 @@ setlocal norightleft
 setlocal rightleftcmd=search
 setlocal scrollback=-1
 setlocal noscrollbind
-setlocal shiftwidth=4
+setlocal shiftwidth=2
 setlocal signcolumn=yes
 setlocal smartindent
 setlocal nosmoothscroll
-setlocal softtabstop=4
+setlocal softtabstop=-1
 setlocal nospell
 setlocal spellcapcheck=[.?!]\\_[\\])'\"\\t\ ]\\+
 setlocal spellfile=
@@ -129,7 +128,7 @@ setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#src%*\ %#WinBarSeparator#/%*\ %#WinBarPath#content%*\ %#WinBarSeparator#/%*\ %#WinBarPath#coverletters%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#example-corp.md%*
+setlocal winbar=%#WinBarFilename#AGENTS.md%*
 setlocal winblend=0
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -137,18 +136,18 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal wrap
 setlocal wrapmargin=0
-let s:l = 23 - ((22 * winheight(0) + 32) / 65)
+let s:l = 119 - ((45 * winheight(0) + 25) / 51)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 23
+keepjumps 119
 normal! 0
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
 endif
 unlet! s:wipebuf
-set winheight=1 winwidth=1
+set winheight=1 winwidth=20
 let &shortmess = s:shortmess_save
 let s:sx = expand("<sfile>:p:r")."x.vim"
 if filereadable(s:sx)

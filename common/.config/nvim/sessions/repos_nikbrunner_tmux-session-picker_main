@@ -9,10 +9,10 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +9 ~/.claude/settings.json
+badd +62 .claude/settings.json
 argglobal
 %argdel
-edit ~/.claude/settings.json
+edit .claude/settings.json
 argglobal
 setlocal keymap=
 setlocal noarabic
@@ -36,7 +36,7 @@ setlocal complete=.,w,b,u,t
 setlocal completefunc=
 setlocal completeslash=
 setlocal concealcursor=
-setlocal conceallevel=2
+setlocal conceallevel=0
 setlocal nocopyindent
 setlocal nocursorbind
 setlocal nocursorcolumn
@@ -113,7 +113,7 @@ setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#~%*\ %#WinBarSeparator#/%*\ %#WinBarPath#.claude%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#settings.json%*\ %#WinBarSeparator##%*\ %#WinBarSymbol#feedbackSurveyState%*
+setlocal winbar=%#WinBarPath#.claude%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#settings.json%*\ %#WinBarSeparator##%*\ %#WinBarSymbol#permissions%*\ %#WinBarSeparator##%*\ %#WinBarSymbol#allow%*
 setlocal winblend=0
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -123,14 +123,12 @@ setlocal nowrap
 setlocal wrapmargin=0
 2
 sil! normal! zo
-13
-sil! normal! zo
-let s:l = 9 - ((8 * winheight(0) + 25) / 51)
+let s:l = 62 - ((28 * winheight(0) + 18) / 37)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 9
-normal! 015|
+keepjumps 62
+normal! 04|
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
