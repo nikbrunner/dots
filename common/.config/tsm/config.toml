@@ -24,3 +24,6 @@ repos_dirs = ["~/repos"]
 
 # Maximum visible items in scrollable lists
 # max_visible_items = 10
+
+# Default directory for new sessions created with C-n
+# default_session_dir = "~"
