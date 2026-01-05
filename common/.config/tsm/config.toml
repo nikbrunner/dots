@@ -1,0 +1,14 @@
+# tsm configuration
+# Environment variables override these settings
+
+# Layout script name to apply when creating new sessions
+layout = "ide"
+
+# Directory containing layout scripts
+layout_dir = "~/.config/tmux/layouts"
+
+# Enable Claude Code status integration
+claude_status_enabled = true
+
+# Directory for status cache files
+# cache_dir = "~/.cache/tsm"
