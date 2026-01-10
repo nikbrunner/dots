@@ -9,11 +9,11 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +23 ~/repos/nikbrunner/notes/02\ -\ Areas/Log/2026/01\ -\ January/2026.01.04\ -\ Sunday.md
+badd +176 ~/repos/nikbrunner/notes/.claude/commands/proj/job-search.md
 argglobal
 %argdel
 $argadd ~/repos/nikbrunner/notes/02\ -\ Areas/Log/2026/01\ -\ January/2026.01.05\ -\ Monday.md
-edit ~/repos/nikbrunner/notes/02\ -\ Areas/Log/2026/01\ -\ January/2026.01.04\ -\ Sunday.md
+edit ~/repos/nikbrunner/notes/.claude/commands/proj/job-search.md
 argglobal
 let s:cpo_save=&cpo
 set cpo&vim
@@ -129,7 +129,7 @@ setlocal textwidth=85
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#02\ -\ Areas%*\ %#WinBarSeparator#/%*\ %#WinBarPath#Log%*\ %#WinBarSeparator#/%*\ %#WinBarPath#2026%*\ %#WinBarSeparator#/%*\ %#WinBarPath#01\ -\ January%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#2026.01.04\ -\ Sunday.md%*
+setlocal winbar=%#WinBarPath#.claude%*\ %#WinBarSeparator#/%*\ %#WinBarPath#commands%*\ %#WinBarSeparator#/%*\ %#WinBarPath#proj%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#job-search.md%*
 setlocal winblend=0
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -137,11 +137,11 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal wrap
 setlocal wrapmargin=0
-let s:l = 23 - ((22 * winheight(0) + 20) / 41)
+let s:l = 167 - ((23 * winheight(0) + 23) / 47)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 23
+keepjumps 167
 normal! 0
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
