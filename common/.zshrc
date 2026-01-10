@@ -142,8 +142,8 @@ bindkey '^e' edit-command-line
 bindkey '^g' push-line-or-edit
 
 # Atuin
-. "$HOME/.atuin/bin/env"
-eval "$(atuin init zsh)"
+[[ -f "$HOME/.atuin/bin/env" ]] && . "$HOME/.atuin/bin/env"
+command -v atuin &>/dev/null && eval "$(atuin init zsh)"
 
 # Minimal Prompt (gray path, green branch, red job count, yellow $)
 autoload -Uz vcs_info
@@ -153,7 +153,5 @@ setopt PROMPT_SUBST
 PROMPT='%F{gray}%~%f${vcs_info_msg_0_}%(1j. %F{red}[%j]%f.)
 %F{yellow}$%f '
 
-source <(av completion zsh)
-
-# Added by Antigravity
-export PATH="/Users/nbr/.antigravity/antigravity/bin:$PATH"
+# Aviator CLI (macOS only)
+command -v av &>/dev/null && source <(av completion zsh)

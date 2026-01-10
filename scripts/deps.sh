@@ -39,6 +39,7 @@ declare -a REQUIRED_DEPS=(
     "whatsapp:WhatsApp messaging"
     "nvm:Node Version Manager"
     "docker:Container platform"
+    "av:Aviator CLI for stacked PRs"
 )
 
 # Detect operating system
@@ -244,6 +245,7 @@ get_package_name() {
         slack) echo "--cask slack" ;;
         whatsapp) echo "--cask whatsapp" ;;
         docker) echo "--cask docker" ;;
+        av) echo "aviator-co/tap/av" ;;
         *) echo "$dep" ;;
         esac
         ;;
@@ -283,6 +285,7 @@ get_package_name() {
         slack) echo "slack-desktop" ;;
         whatsapp) echo "zapzap" ;;
         docker) echo "docker" ;;
+        av) echo "av-cli-bin" ;;
         *) echo "$dep" ;;
         esac
         ;;
