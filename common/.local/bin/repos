@@ -52,12 +52,36 @@ load_config() {
     fi
 }
 
-# Get repositories to ensure are cloned from config
+# Get repositories to ensure are cloned from config (as JSON array)
 get_ensure_cloned() {
     if [[ ! -f "$CONFIG_FILE" ]]; then
         return 1
     fi
-    jq -r '.ensure_cloned[]? // empty' "$CONFIG_FILE" 2>/dev/null
+    jq -c '.ensure_cloned[]? // empty' "$CONFIG_FILE" 2>/dev/null
+}
+
+# Extract URL from ensure_cloned entry (handles both string and object formats)
+# Usage: get_entry_url <entry>
+get_entry_url() {
+    local entry="$1"
+    if [[ "$entry" == "{"* ]]; then
+        # It's a JSON object, extract url field
+        echo "$entry" | jq -r '.url // empty'
+    else
+        # It's a plain string (remove quotes if present)
+        echo "$entry" | tr -d '"'
+    fi
+}
+
+# Extract postClone command from ensure_cloned entry
+# Usage: get_entry_post_clone <entry>
+get_entry_post_clone() {
+    local entry="$1"
+    if [[ "$entry" == "{"* ]]; then
+        # It's a JSON object, extract postClone field
+        echo "$entry" | jq -r '.postClone // empty'
+    fi
+    # Plain strings don't have postClone
 }
 
 # Create default configuration file
@@ -858,10 +882,15 @@ setup_repos() {
         exit 1
     fi
 
+    # Track postClone commands by URL
+    declare -A post_clone_cmds
+
     # Check if any wildcard patterns exist that would need gh CLI
     local has_wildcards=false
-    for pattern in "${ensure_cloned[@]}"; do
-        if [[ "$pattern" == *"/*" ]]; then
+    for entry in "${ensure_cloned[@]}"; do
+        local url
+        url=$(get_entry_url "$entry")
+        if [[ "$url" == *"/*" ]]; then
             has_wildcards=true
             break
         fi
@@ -874,15 +903,27 @@ setup_repos() {
     local clone_urls=()
 
     # First, expand all patterns to get actual URLs
-    for repo_pattern in "${ensure_cloned[@]}"; do
+    for entry in "${ensure_cloned[@]}"; do
         # Skip comments and empty lines
-        [[ "$repo_pattern" =~ ^[[:space:]]*# ]] && continue
-        [[ -z "$repo_pattern" ]] && continue
+        [[ "$entry" =~ ^[[:space:]]*# ]] && continue
+        [[ -z "$entry" ]] && continue
+
+        # Extract URL from entry (handles both string and object formats)
+        local repo_url
+        repo_url=$(get_entry_url "$entry")
+        [[ -z "$repo_url" ]] && continue
+
+        # Store postClone command if present
+        local post_clone
+        post_clone=$(get_entry_post_clone "$entry")
+        if [[ -n "$post_clone" ]]; then
+            post_clone_cmds["$repo_url"]="$post_clone"
+        fi
 
         # Check if it's a wildcard pattern
-        if [[ "$repo_pattern" == *"/*" ]]; then
+        if [[ "$repo_url" == *"/*" ]]; then
             # Extract organization/user from wildcard pattern
-            local base_url="${repo_pattern%/*}"
+            local base_url="${repo_url%/*}"
             local org_user
 
             if [[ "$base_url" =~ git@.*:(.+)$ ]]; then
@@ -890,7 +931,7 @@ setup_repos() {
             elif [[ "$base_url" =~ https?://.*github\.com/(.+)$ ]]; then
                 org_user="${BASH_REMATCH[1]}"
             else
-                print_error "Invalid wildcard pattern: $repo_pattern"
+                print_error "Invalid wildcard pattern: $repo_url"
                 continue
             fi
 
@@ -911,7 +952,7 @@ setup_repos() {
             done <<<"$repos"
         else
             # Single repository
-            clone_urls+=("$repo_pattern")
+            clone_urls+=("$repo_url")
         fi
     done
 
@@ -966,6 +1007,28 @@ setup_repos() {
     echo "  Cloned: $cloned"
     echo "  Skipped: $skipped"
     echo "  Failed: $failed"
+
+    # Run postClone commands for repos that have them
+    if [[ ${#post_clone_cmds[@]} -gt 0 ]]; then
+        echo
+        echo "Running postClone commands..."
+        for repo_url in "${!post_clone_cmds[@]}"; do
+            local post_clone_cmd="${post_clone_cmds[$repo_url]}"
+            local repo_path
+            repo_path=$(parse_git_url "$repo_url")
+            repo_path="$REPOS_BASE_PATH/$repo_path"
+
+            if [[ -d "$repo_path" ]]; then
+                echo
+                echo "→ Running postClone for $(basename "$repo_path"): $post_clone_cmd"
+                if (cd "$repo_path" && eval "$post_clone_cmd"); then
+                    print_success "postClone completed for $(basename "$repo_path")"
+                else
+                    print_error "postClone failed for $(basename "$repo_path")"
+                fi
+            fi
+        done
+    fi
 }
 
 # Interactive cleanup workflow using lazygit for repositories with changes
@@ -1189,8 +1252,9 @@ show_help() {
 
 \033[1;34mConfig File (ensure_cloned):\033[0m
   Add repositories to ensure_cloned array in config file:
-  - Individual repos: "git@github.com:username/repo.git"
-  - All repos from user/org: "git@github.com:organization/*"
+  - Simple: "git@github.com:username/repo.git"
+  - With postClone: {"url": "git@github.com:user/repo", "postClone": "./install.sh"}
+  - Wildcard: "git@github.com:organization/*"
 
 \033[1;34mRequirements:\033[0m
   %s git, %s fzf, %s tmux, %s jq (required)
