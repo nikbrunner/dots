@@ -16,6 +16,7 @@ declare -a REQUIRED_DEPS=(
     "delta:Enhanced git diff"
     "lazygit:Interactive git interface"
     "eza:Modern ls replacement"
+    "yazi:Terminal file manager"
     "zoxide:Smart directory jumper"
     "gum:Enhanced CLI prompts"
     "gh:GitHub CLI"
@@ -149,6 +150,9 @@ check_dependency() {
     bluetui)
         command -v bluetui &>/dev/null
         ;;
+    yazi)
+        command -v yazi &>/dev/null
+        ;;
     gallery-dl)
         command -v gallery-dl &>/dev/null
         ;;
@@ -256,6 +260,7 @@ get_package_name() {
         delta) echo "git-delta" ;;
         lazygit) echo "lazygit" ;;
         eza) echo "eza" ;;
+        yazi) echo "yazi" ;;
         zoxide) echo "zoxide" ;;
         gum) echo "gum" ;;
         gh) echo "gh" ;;
@@ -305,6 +310,7 @@ get_package_name() {
         delta) echo "git-delta" ;;
         lazygit) echo "lazygit" ;;
         eza) echo "eza" ;;
+        yazi) echo "yazi" ;;
         zoxide) echo "zoxide" ;;
         gum) echo "gum" ;;
         gh) echo "github-cli" ;;
