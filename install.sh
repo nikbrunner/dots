@@ -209,9 +209,6 @@ if [[ "$SKIP_DEPS" == false ]] && [[ "$(get_os)" == "arch" ]]; then
 			else
 				echo -e "${GREEN}✓${NC} blueman-applet already running"
 			fi
-			echo ""
-			echo -e "${YELLOW}💡 Tip:${NC} Add 'blueman-applet &' to your compositor autostart"
-			echo "   For niri: Add to ~/.config/niri/config.kdl spawn-at-startup"
 		fi
 	fi
 fi
