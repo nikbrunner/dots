@@ -119,7 +119,9 @@ fi
 
 # 6. Create symlinks
 echo -e "${YELLOW}→${NC} Creating symlinks..."
-"$SCRIPT_DIR/scripts/link.sh" "$@"
+SYMLINK_ARGS=()
+[[ "$DRY_RUN" == true ]] && SYMLINK_ARGS+=("--dry-run")
+"$SCRIPT_DIR/scripts/symlinks.sh" "${SYMLINK_ARGS[@]}"
 
 # 7. Set up dots command
 if [[ "$DRY_RUN" == true ]]; then

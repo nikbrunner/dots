@@ -31,6 +31,7 @@ declare -a REQUIRED_DEPS=(
     "mpc:Music Player Daemon client"
     "atuin:Magical shell history"
     "yq:YAML processor"
+    "rust:Rust programming language and Cargo"
 )
 
 # Detect operating system
@@ -115,6 +116,9 @@ check_dependency() {
     gallery-dl)
         command -v gallery-dl &>/dev/null
         ;;
+    rust)
+        command -v cargo &>/dev/null
+        ;;
     *)
         command -v "$dep" &>/dev/null
         ;;
@@ -187,6 +191,7 @@ get_package_name() {
         mpc) echo "mpc" ;;
         atuin) echo "atuin" ;;
         yq) echo "yq" ;;
+        rust) echo "rust" ;;
         *) echo "$dep" ;;
         esac
         ;;
@@ -218,7 +223,8 @@ get_package_name() {
         mpd) echo "mpd" ;;
         mpc) echo "mpc" ;;
         atuin) echo "atuin" ;;
-        yq) echo "yq-go" ;;
+        yq) echo "go-yq" ;;
+        rust) echo "rust" ;;
         *) echo "$dep" ;;
         esac
         ;;
@@ -420,14 +426,20 @@ configure_system() {
         echo "  Current shell: $current_shell"
         echo "  Target shell: $zsh_path"
 
-        if command -v chsh &>/dev/null; then
+        if [[ "$os" == "macos" ]]; then
+            # macOS: use chsh (will prompt for password)
             if chsh -s "$zsh_path"; then
                 echo "✅ Default shell changed to zsh (logout/login required)"
             else
                 echo "❌ Failed to change shell - you may need to run manually: chsh -s $zsh_path"
             fi
         else
-            echo "⚠️  chsh not available - manually run: chsh -s $zsh_path"
+            # Linux: use sudo usermod (uses sudo auth, already used for package install)
+            if sudo usermod -s "$zsh_path" "$USER"; then
+                echo "✅ Default shell changed to zsh (logout/login required)"
+            else
+                echo "❌ Failed to change shell - you may need to run manually: sudo usermod -s $zsh_path $USER"
+            fi
         fi
     else
         echo "✅ zsh already set as default shell ($current_shell)"
