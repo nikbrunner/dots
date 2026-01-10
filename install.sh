@@ -197,6 +197,36 @@ if [[ "$SKIP_DEPS" == false ]] && [[ "$DRY_RUN" == false ]]; then
 	fi
 fi
 
+# 10. Offer to run repos setup
+REPOS_CONFIG="${XDG_CONFIG_HOME:-$HOME/.config}/repos/config.json"
+if [[ "$DRY_RUN" == false ]] && [[ -f "$REPOS_CONFIG" ]]; then
+	echo ""
+	echo -e "${BLUE}📦 Phase 6: Repository Setup${NC}"
+	echo "Found repos config at: $REPOS_CONFIG"
+	echo ""
+	if command -v gum &> /dev/null; then
+		if gum confirm "Run 'repos setup' to clone your repositories?"; then
+			echo ""
+			"$SCRIPT_DIR/common/.local/bin/repos" setup
+		else
+			echo -e "${YELLOW}→${NC} Skipped. Run 'repos setup' later to clone repositories."
+		fi
+	else
+		echo -n "Run 'repos setup' to clone your repositories? (y/N) "
+		read -r run_repos_setup
+		if [[ "$run_repos_setup" == "y" || "$run_repos_setup" == "Y" ]]; then
+			echo ""
+			"$SCRIPT_DIR/common/.local/bin/repos" setup
+		else
+			echo -e "${YELLOW}→${NC} Skipped. Run 'repos setup' later to clone repositories."
+		fi
+	fi
+elif [[ "$DRY_RUN" == true ]] && [[ -f "$REPOS_CONFIG" ]]; then
+	echo ""
+	echo -e "${BLUE}📦 Phase 6: Repository Setup${NC}"
+	echo -e "${YELLOW}→${NC} [DRY] Would offer to run 'repos setup' to clone repositories"
+fi
+
 # Success message
 echo ""
 if [[ "$DRY_RUN" == true ]]; then
