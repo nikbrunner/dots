@@ -2,7 +2,7 @@
 # https://github.com/imrajyavardhan12/spectre-ghostty-config
 
 # Colors
-theme = black-atom-terra-summer-night.conf
+theme = black-atom-terra-winter-night.conf
 bold-is-bright = true
 
 # Advanced
