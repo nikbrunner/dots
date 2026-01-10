@@ -82,6 +82,7 @@ show_usage() {
         echo ""
         gum style --foreground=4 --bold "Commands:"
         gum style --foreground=2 "  install      - Initial setup with symlinks and submodules [--dry-run]"
+        gum style --foreground=2 "  deps         - Install/check dependencies [check|install|validate]"
         gum style --foreground=2 "  link         - Update all symlinks (clean broken + create new) [--dry-run] [--no-backup] [--verbose]"
         gum style --foreground=2 "  sync         - Git pull + submodule updates"
         gum style --foreground=2 "  commit       - Open LazyGit for interactive committing"
@@ -107,7 +108,7 @@ show_usage() {
         echo ""
         echo "Commands:"
         echo "  install      - Initial setup with symlinks and submodules [--dry-run]"
-        echo "  add          - Add file to dots repository and replace with symlink"
+        echo "  deps         - Install/check dependencies [check|install|validate]"
         echo "  link         - Update all symlinks (clean broken + create new) [--dry-run] [--no-backup] [--verbose]"
         echo "  sync         - Git pull + submodule updates"
         echo "  commit       - Open LazyGit for interactive committing"
@@ -133,6 +134,45 @@ show_usage() {
 cmd_install() {
     echo "→ Running installation..."
     "$DOTS_DIR/install.sh" "$@"
+}
+
+# Deps command - install/check dependencies only
+cmd_deps() {
+    # Source deps.sh to get access to functions
+    # shellcheck disable=SC1091
+    source "$DOTS_DIR/scripts/deps.sh"
+
+    case "${1:-}" in
+        check)
+            log_info "Checking dependencies..."
+            echo ""
+            local missing
+            missing=$(check_all_dependencies "${REQUIRED_DEPS[@]}")
+            if [[ -z "$missing" ]]; then
+                log_success "All dependencies installed"
+            else
+                log_warning "Missing dependencies:"
+                echo "$missing" | while read -r dep; do
+                    echo "  - $dep"
+                done
+            fi
+            ;;
+        install|"")
+            log_info "Installing dependencies..."
+            echo ""
+            install_all_dependencies
+            ;;
+        validate)
+            validate_dependencies
+            ;;
+        *)
+            echo "Usage: dots deps [check|install|validate]"
+            echo ""
+            echo "  check    - Show missing dependencies"
+            echo "  install  - Install all missing dependencies (default)"
+            echo "  validate - Verify all dependencies are working"
+            ;;
+    esac
 }
 
 # Link command
@@ -721,6 +761,10 @@ case "${1:-}" in
 install)
     shift
     cmd_install "$@"
+    ;;
+deps)
+    shift
+    cmd_deps "$@"
     ;;
 link)
     shift
