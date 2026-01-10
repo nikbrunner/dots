@@ -67,7 +67,7 @@ dots/
 **Complete Machine Setup** (recommended):
 
 ```bash
-git clone https://github.com/nikbrunner/dots.git ~/repos/nikbrunner/dots
+git clone git@github.com:nikbrunner/dots.git ~/repos/nikbrunner/dots
 cd ~/repos/nikbrunner/dots
 ./install.sh
 ```
