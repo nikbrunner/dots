@@ -182,10 +182,44 @@ if [[ "$SKIP_DEPS" == false ]]; then
 	fi
 fi
 
-# 9. Validate installation
+# 9. Bluetooth Setup (Arch only)
+if [[ "$SKIP_DEPS" == false ]] && [[ "$(get_os)" == "arch" ]]; then
+	echo ""
+	echo -e "${BLUE}🔵 Phase 5.5: Bluetooth Setup${NC}"
+	if [[ "$DRY_RUN" == true ]]; then
+		echo -e "${YELLOW}→${NC} [DRY] Would enable bluetooth.service"
+		echo -e "${YELLOW}→${NC} [DRY] Would start blueman-applet"
+	else
+		# Enable bluetooth service
+		if ! systemctl is-enabled bluetooth &>/dev/null; then
+			echo -e "${YELLOW}→${NC} Enabling bluetooth service..."
+			sudo systemctl enable --now bluetooth
+			echo -e "${GREEN}✓${NC} Bluetooth service enabled"
+		else
+			echo -e "${GREEN}✓${NC} Bluetooth service already enabled"
+		fi
+
+		# Start blueman-applet if not running
+		if command -v blueman-applet &>/dev/null; then
+			if ! pgrep -x blueman-applet &>/dev/null; then
+				echo -e "${YELLOW}→${NC} Starting blueman-applet..."
+				blueman-applet &
+				disown
+				echo -e "${GREEN}✓${NC} blueman-applet started"
+			else
+				echo -e "${GREEN}✓${NC} blueman-applet already running"
+			fi
+			echo ""
+			echo -e "${YELLOW}💡 Tip:${NC} Add 'blueman-applet &' to your compositor autostart"
+			echo "   For niri: Add to ~/.config/niri/config.kdl spawn-at-startup"
+		fi
+	fi
+fi
+
+# 10. Validate installation
 if [[ "$SKIP_DEPS" == false ]] && [[ "$DRY_RUN" == false ]]; then
 	echo ""
-	echo -e "${BLUE}🧪 Phase 4: Validation${NC}"
+	echo -e "${BLUE}🧪 Phase 6: Validation${NC}"
 	if validate_dependencies; then
 		echo -e "${GREEN}✓${NC} Testing dots command..."
 		if command -v dots &> /dev/null; then
@@ -196,10 +230,10 @@ if [[ "$SKIP_DEPS" == false ]] && [[ "$DRY_RUN" == false ]]; then
 	fi
 fi
 
-# 10. GitHub Authentication
+# 11. GitHub Authentication
 if [[ "$DRY_RUN" == false ]] && command -v gh &> /dev/null; then
 	echo ""
-	echo -e "${BLUE}🔐 Phase 6: GitHub Authentication${NC}"
+	echo -e "${BLUE}🔐 Phase 7: GitHub Authentication${NC}"
 	if gh auth status &> /dev/null; then
 		echo -e "${GREEN}✓${NC} Already authenticated with GitHub"
 	else
@@ -222,15 +256,15 @@ if [[ "$DRY_RUN" == false ]] && command -v gh &> /dev/null; then
 	fi
 elif [[ "$DRY_RUN" == true ]] && command -v gh &> /dev/null; then
 	echo ""
-	echo -e "${BLUE}🔐 Phase 6: GitHub Authentication${NC}"
+	echo -e "${BLUE}🔐 Phase 7: GitHub Authentication${NC}"
 	echo -e "${YELLOW}→${NC} [DRY] Would check GitHub authentication status"
 fi
 
-# 11. Offer to run repos setup
+# 12. Offer to run repos setup
 REPOS_CONFIG="${XDG_CONFIG_HOME:-$HOME/.config}/repos/config.json"
 if [[ "$DRY_RUN" == false ]] && [[ -f "$REPOS_CONFIG" ]]; then
 	echo ""
-	echo -e "${BLUE}📦 Phase 7: Repository Setup${NC}"
+	echo -e "${BLUE}📦 Phase 8: Repository Setup${NC}"
 	echo "Found repos config at: $REPOS_CONFIG"
 	echo ""
 	if command -v gum &> /dev/null; then
@@ -252,7 +286,7 @@ if [[ "$DRY_RUN" == false ]] && [[ -f "$REPOS_CONFIG" ]]; then
 	fi
 elif [[ "$DRY_RUN" == true ]] && [[ -f "$REPOS_CONFIG" ]]; then
 	echo ""
-	echo -e "${BLUE}📦 Phase 7: Repository Setup${NC}"
+	echo -e "${BLUE}📦 Phase 8: Repository Setup${NC}"
 	echo -e "${YELLOW}→${NC} [DRY] Would offer to run 'repos setup' to clone repositories"
 fi
 
