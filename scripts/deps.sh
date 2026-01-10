@@ -352,6 +352,15 @@ install_dependency() {
         return 1
         ;;
     esac
+
+    # Post-install: create claude symlink on Arch (package installs to /usr/bin)
+    if [[ "$dep" == "claude-code" ]] && [[ "$(detect_os)" == "arch" ]]; then
+        if [[ -f "/usr/bin/claude" ]] && [[ ! -e "$HOME/.local/bin/claude" ]]; then
+            mkdir -p "$HOME/.local/bin"
+            ln -s /usr/bin/claude "$HOME/.local/bin/claude"
+            echo "✅ Created claude symlink at ~/.local/bin/claude"
+        fi
+    fi
 }
 
 # Check all dependencies and return list of missing ones
