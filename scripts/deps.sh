@@ -38,6 +38,7 @@ declare -a REQUIRED_DEPS=(
     "slack:Slack messaging"
     "whatsapp:WhatsApp messaging"
     "nvm:Node Version Manager"
+    "docker:Container platform"
 )
 
 # Detect operating system
@@ -242,6 +243,7 @@ get_package_name() {
         signal) echo "--cask signal" ;;
         slack) echo "--cask slack" ;;
         whatsapp) echo "--cask whatsapp" ;;
+        docker) echo "--cask docker" ;;
         *) echo "$dep" ;;
         esac
         ;;
@@ -280,6 +282,7 @@ get_package_name() {
         signal) echo "signal-desktop" ;;
         slack) echo "slack-desktop" ;;
         whatsapp) echo "zapzap" ;;
+        docker) echo "docker" ;;
         *) echo "$dep" ;;
         esac
         ;;
