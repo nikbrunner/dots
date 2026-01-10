@@ -42,6 +42,7 @@ declare -a REQUIRED_DEPS=(
     "docker:Container platform"
     "av:Aviator CLI for stacked PRs"
     "paru:AUR helper (Arch only)"
+    "zed-preview:Zed editor preview build"
 )
 
 # Detect operating system
@@ -125,6 +126,9 @@ check_dependency() {
         ;;
     paru)
         command -v paru &>/dev/null
+        ;;
+    zed-preview)
+        command -v zed &>/dev/null
         ;;
     gallery-dl)
         command -v gallery-dl &>/dev/null
@@ -253,6 +257,7 @@ get_package_name() {
         docker) echo "--cask docker" ;;
         av) echo "aviator-co/tap/av" ;;
         paru) echo "" ;; # Arch only
+        zed-preview) echo "--cask zed@preview" ;;
         *) echo "$dep" ;;
         esac
         ;;
@@ -295,6 +300,7 @@ get_package_name() {
         docker) echo "docker" ;;
         av) echo "av-cli-bin" ;;
         paru) echo "paru" ;;
+        zed-preview) echo "zed-preview-bin" ;;
         *) echo "$dep" ;;
         esac
         ;;
