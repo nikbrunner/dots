@@ -5,11 +5,15 @@
       "main": {
         "locks": [
           {
-            "filename": "lua/radar/config.lua",
+            "filename": "lua/radar/ui/mini_radar.lua",
             "label": "1"
+          },
+          {
+            "filename": "lua/radar/config.lua",
+            "label": "2"
           }
         ],
-        "lastAccessed": 1767801128
+        "lastAccessed": 1767540531
       }
     },
     "~/repos/black-atom-industries/website": {
@@ -32,15 +36,6 @@
       }
     },
     "~/repos/dealercenter-digital/bc-desktop-client": {
-      "bcd-7671-resolve-state-core-env": {
-        "locks": [
-          {
-            "filename": "gh://dealercenter-digital/bc-desktop-client/pr/4238",
-            "label": "1"
-          }
-        ],
-        "lastAccessed": 1767797811
-      },
       "bcd-8796-promote-brands": {
         "locks": [
           {
@@ -138,26 +133,9 @@
         ],
         "lastAccessed": 1765453630
       },
-      "bcd-8985-refactor-mixpanel-tracking-middleware": {
-        "locks": [
-          {
-            "filename": "bcd-8985-refactor-mixpanel-tracking-middleware.md",
-            "label": "1"
-          },
-          {
-            "filename": "src/client/kiosk/store/store.ts",
-            "label": "2"
-          },
-          {
-            "filename": "src/client/mobile/store/store.ts",
-            "label": "3"
-          }
-        ],
-        "lastAccessed": 1767971279
-      },
       "master": {
         "locks": [],
-        "lastAccessed": 1767973221
+        "lastAccessed": 1765972231
       },
       "redux-toolkit": {
         "locks": [
@@ -317,7 +295,7 @@
             "label": "1"
           }
         ],
-        "lastAccessed": 1767973221
+        "lastAccessed": 1765713758
       }
     },
     "~/repos/nikbrunner/dots": {
@@ -336,7 +314,7 @@
             "label": "3"
           }
         ],
-        "lastAccessed": 1768051380
+        "lastAccessed": 1768049547
       }
     },
     "~/repos/nikbrunner/nbr.haus": {
@@ -351,7 +329,7 @@
             "label": "2"
           }
         ],
-        "lastAccessed": 1767973222
+        "lastAccessed": 1767627158
       },
       "rework-structure": {
         "locks": [
@@ -375,7 +353,7 @@
             "label": "2"
           }
         ],
-        "lastAccessed": 1767948223
+        "lastAccessed": 1767625577
       }
     },
     "~/repos/nikbrunner/wichtel-app": {
