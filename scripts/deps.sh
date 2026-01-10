@@ -43,6 +43,9 @@ declare -a REQUIRED_DEPS=(
     "av:Aviator CLI for stacked PRs"
     "paru:AUR helper (Arch only)"
     "zed-preview:Zed editor preview build"
+    "bluez:Bluetooth protocol stack (Arch only)"
+    "bluez-utils:Bluetooth utilities (Arch only)"
+    "blueman:Bluetooth manager GUI (Arch only)"
 )
 
 # Detect operating system
@@ -129,6 +132,15 @@ check_dependency() {
         ;;
     zed-preview)
         command -v zed &>/dev/null
+        ;;
+    bluez)
+        check_package_installed "bluez"
+        ;;
+    bluez-utils)
+        check_package_installed "bluez-utils"
+        ;;
+    blueman)
+        command -v blueman-manager &>/dev/null
         ;;
     gallery-dl)
         command -v gallery-dl &>/dev/null
@@ -258,6 +270,9 @@ get_package_name() {
         av) echo "aviator-co/tap/av" ;;
         paru) echo "" ;; # Arch only
         zed-preview) echo "--cask zed@preview" ;;
+        bluez) echo "" ;;      # Arch only
+        bluez-utils) echo "" ;; # Arch only
+        blueman) echo "" ;;     # Arch only
         *) echo "$dep" ;;
         esac
         ;;
@@ -301,6 +316,9 @@ get_package_name() {
         av) echo "av-cli-bin" ;;
         paru) echo "paru" ;;
         zed-preview) echo "zed-preview-bin" ;;
+        bluez) echo "bluez" ;;
+        bluez-utils) echo "bluez-utils" ;;
+        blueman) echo "blueman" ;;
         *) echo "$dep" ;;
         esac
         ;;
@@ -383,6 +401,15 @@ install_dependency() {
             mkdir -p "$HOME/.local/bin"
             ln -s /usr/bin/claude "$HOME/.local/bin/claude"
             echo "✅ Created claude symlink at ~/.local/bin/claude"
+        fi
+    fi
+
+    # Post-install: enable bluetooth service for bluez
+    if [[ "$dep" == "bluez" ]] && [[ "$(detect_os)" == "arch" ]]; then
+        if ! systemctl is-enabled bluetooth &>/dev/null; then
+            echo "🔵 Enabling bluetooth service..."
+            sudo systemctl enable --now bluetooth
+            echo "✅ Bluetooth service enabled"
         fi
     fi
 }
