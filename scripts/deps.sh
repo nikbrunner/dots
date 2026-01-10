@@ -33,6 +33,7 @@ declare -a REQUIRED_DEPS=(
     "yq:YAML processor"
     "rust:Rust programming language and Cargo"
     "go:Go programming language"
+    "deno:JavaScript/TypeScript runtime"
     "claude-code:AI coding assistant CLI"
     "claude-desktop:Claude desktop application"
     "signal:Signal private messenger"
@@ -152,6 +153,12 @@ check_dependency() {
     rust)
         command -v cargo &>/dev/null
         ;;
+    go)
+        command -v go &>/dev/null
+        ;;
+    deno)
+        command -v deno &>/dev/null
+        ;;
     claude-code)
         command -v claude &>/dev/null
         ;;
@@ -265,6 +272,7 @@ get_package_name() {
         yq) echo "yq" ;;
         rust) echo "rust" ;;
         go) echo "go" ;;
+        deno) echo "deno" ;;
         claude-code) echo "claude-code" ;;
         claude-desktop) echo "--cask claude" ;;
         signal) echo "--cask signal" ;;
@@ -312,6 +320,7 @@ get_package_name() {
         yq) echo "go-yq" ;;
         rust) echo "rust" ;;
         go) echo "go" ;;
+        deno) echo "deno" ;;
         claude-code) echo "claude-code" ;;
         claude-desktop) echo "claude-desktop-native" ;;
         signal) echo "signal-desktop" ;;
