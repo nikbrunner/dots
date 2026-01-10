@@ -133,7 +133,8 @@ check_dependency() {
         command -v paru &>/dev/null
         ;;
     zed-preview)
-        command -v zed &>/dev/null
+        # Binary is 'zed' on macOS, 'zeditor' on Arch (to avoid conflicts)
+        command -v zed &>/dev/null || command -v zeditor &>/dev/null
         ;;
     bluez)
         check_package_installed "bluez"
