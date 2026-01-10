@@ -54,3 +54,4 @@ arch:
   arch/.gitconfig.local: ~/.gitconfig.local
   arch/README.md: ~/README.md
   arch/.config/hypr: ~/.config/hypr
+  arch/.config/niri: ~/.config/niri
