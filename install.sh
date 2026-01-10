@@ -84,7 +84,6 @@ if [[ "$DRY_RUN" == true ]]; then
 	echo "  • Set zsh as default shell"
 	echo "  • Configure Git SSH signing"
 	echo "  • Install TPM (Tmux Plugin Manager)"
-	echo "  • Install NVM (Linux only)"
 else
 	if [[ "$SKIP_DEPS" == false ]]; then
 		configure_system

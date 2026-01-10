@@ -32,6 +32,12 @@ declare -a REQUIRED_DEPS=(
     "atuin:Magical shell history"
     "yq:YAML processor"
     "rust:Rust programming language and Cargo"
+    "claude-code:AI coding assistant CLI"
+    "claude-desktop:Claude desktop application"
+    "signal:Signal private messenger"
+    "slack:Slack messaging"
+    "whatsapp:WhatsApp messaging"
+    "nvm:Node Version Manager"
 )
 
 # Detect operating system
@@ -119,6 +125,45 @@ check_dependency() {
     rust)
         command -v cargo &>/dev/null
         ;;
+    claude-code)
+        command -v claude &>/dev/null
+        ;;
+    claude-desktop)
+        # Check for app on macOS or package on Linux
+        if [[ "$(uname)" == "Darwin" ]]; then
+            [[ -d "/Applications/Claude.app" ]]
+        else
+            check_package_installed "claude-desktop-native"
+        fi
+        ;;
+    signal)
+        # Check for app on macOS or package on Linux
+        if [[ "$(uname)" == "Darwin" ]]; then
+            [[ -d "/Applications/Signal.app" ]]
+        else
+            check_package_installed "signal-desktop"
+        fi
+        ;;
+    slack)
+        # Check for app on macOS or package on Linux
+        if [[ "$(uname)" == "Darwin" ]]; then
+            [[ -d "/Applications/Slack.app" ]]
+        else
+            check_package_installed "slack-desktop"
+        fi
+        ;;
+    whatsapp)
+        # Check for app on macOS or package on Linux
+        if [[ "$(uname)" == "Darwin" ]]; then
+            [[ -d "/Applications/WhatsApp.app" ]]
+        else
+            check_package_installed "zapzap"
+        fi
+        ;;
+    nvm)
+        # NVM is installed to ~/.nvm
+        [[ -d "$HOME/.nvm" ]] || [[ -d "${XDG_CONFIG_HOME:-$HOME/.config}/nvm" ]]
+        ;;
     *)
         command -v "$dep" &>/dev/null
         ;;
@@ -192,6 +237,11 @@ get_package_name() {
         atuin) echo "atuin" ;;
         yq) echo "yq" ;;
         rust) echo "rust" ;;
+        claude-code) echo "claude-code" ;;
+        claude-desktop) echo "--cask claude" ;;
+        signal) echo "--cask signal" ;;
+        slack) echo "--cask slack" ;;
+        whatsapp) echo "--cask whatsapp" ;;
         *) echo "$dep" ;;
         esac
         ;;
@@ -225,6 +275,11 @@ get_package_name() {
         atuin) echo "atuin" ;;
         yq) echo "go-yq" ;;
         rust) echo "rust" ;;
+        claude-code) echo "claude-code" ;;
+        claude-desktop) echo "claude-desktop-native" ;;
+        signal) echo "signal-desktop" ;;
+        slack) echo "slack-desktop" ;;
+        whatsapp) echo "zapzap" ;;
         *) echo "$dep" ;;
         esac
         ;;
@@ -239,6 +294,32 @@ install_dependency() {
     local dep="$1"
     local pkg_manager
     local package_name
+
+    # Special case for nvm - installed via script
+    if [[ "$dep" == "nvm" ]]; then
+        echo "📦 Installing nvm..."
+        if command -v curl &>/dev/null; then
+            curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash
+            # Source nvm to make it available immediately
+            export NVM_DIR="${XDG_CONFIG_HOME:-$HOME}/.nvm"
+            [[ -s "$NVM_DIR/nvm.sh" ]] && \. "$NVM_DIR/nvm.sh"
+            # Also check ~/.nvm for default install location
+            [[ -s "$HOME/.nvm/nvm.sh" ]] && \. "$HOME/.nvm/nvm.sh"
+            echo "✅ NVM installed"
+            # Install latest LTS Node.js
+            if command -v nvm &>/dev/null; then
+                echo "📦 Installing Node.js LTS via nvm..."
+                nvm install --lts
+                nvm use --lts
+                nvm alias default lts/*
+                echo "✅ Node.js LTS installed"
+            fi
+            return 0
+        else
+            echo "❌ curl not available - cannot install nvm"
+            return 1
+        fi
+    fi
 
     pkg_manager=$(get_package_manager)
     package_name=$(get_package_name "$dep")
@@ -481,17 +562,6 @@ configure_system() {
         fi
     else
         echo "✅ TPM already installed"
-    fi
-
-    # Install NVM on Linux if not present
-    if [[ "$os" == "arch" ]] && [[ ! -d "$HOME/.nvm" ]]; then
-        echo "📦 Installing NVM for Node.js management..."
-        if command -v curl &>/dev/null; then
-            curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
-            echo "✅ NVM installed - reload shell to use"
-        else
-            echo "⚠️  curl not available - install NVM manually"
-        fi
     fi
 
     echo "✅ System configuration complete!"
