@@ -983,10 +983,11 @@ return {
     version = false,
     lazy = false,
     config = function()
+        -- M.hues()
         M.visits()
         M.extra()
-        M.pick()
-        M.files()
+        -- M.pick()
+        -- M.files()
         M.clue()
         M.git()
         M.diff()
@@ -997,10 +998,7 @@ return {
         M.test()
         M.sessions()
         M.snippets()
-
         -- Start LSP server to show snippets in completion
         require("mini.snippets").start_lsp_server()
-
-        -- M.hues()
     end,
 }
