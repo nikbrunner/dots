@@ -32,6 +32,7 @@ declare -a REQUIRED_DEPS=(
     "atuin:Magical shell history"
     "yq:YAML processor"
     "rust:Rust programming language and Cargo"
+    "go:Go programming language"
     "claude-code:AI coding assistant CLI"
     "claude-desktop:Claude desktop application"
     "signal:Signal private messenger"
@@ -239,6 +240,7 @@ get_package_name() {
         atuin) echo "atuin" ;;
         yq) echo "yq" ;;
         rust) echo "rust" ;;
+        go) echo "go" ;;
         claude-code) echo "claude-code" ;;
         claude-desktop) echo "--cask claude" ;;
         signal) echo "--cask signal" ;;
@@ -279,6 +281,7 @@ get_package_name() {
         atuin) echo "atuin" ;;
         yq) echo "go-yq" ;;
         rust) echo "rust" ;;
+        go) echo "go" ;;
         claude-code) echo "claude-code" ;;
         claude-desktop) echo "claude-desktop-native" ;;
         signal) echo "signal-desktop" ;;
