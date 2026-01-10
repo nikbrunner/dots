@@ -196,11 +196,41 @@ if [[ "$SKIP_DEPS" == false ]] && [[ "$DRY_RUN" == false ]]; then
 	fi
 fi
 
-# 10. Offer to run repos setup
+# 10. GitHub Authentication
+if [[ "$DRY_RUN" == false ]] && command -v gh &> /dev/null; then
+	echo ""
+	echo -e "${BLUE}🔐 Phase 6: GitHub Authentication${NC}"
+	if gh auth status &> /dev/null; then
+		echo -e "${GREEN}✓${NC} Already authenticated with GitHub"
+	else
+		echo "GitHub CLI is not authenticated."
+		if command -v gum &> /dev/null; then
+			if gum confirm "Run 'gh auth login' to authenticate?"; then
+				gh auth login
+			else
+				echo -e "${YELLOW}→${NC} Skipped. Run 'gh auth login' later."
+			fi
+		else
+			echo -n "Run 'gh auth login' to authenticate? (y/N) "
+			read -r run_gh_auth
+			if [[ "$run_gh_auth" == "y" || "$run_gh_auth" == "Y" ]]; then
+				gh auth login
+			else
+				echo -e "${YELLOW}→${NC} Skipped. Run 'gh auth login' later."
+			fi
+		fi
+	fi
+elif [[ "$DRY_RUN" == true ]] && command -v gh &> /dev/null; then
+	echo ""
+	echo -e "${BLUE}🔐 Phase 6: GitHub Authentication${NC}"
+	echo -e "${YELLOW}→${NC} [DRY] Would check GitHub authentication status"
+fi
+
+# 11. Offer to run repos setup
 REPOS_CONFIG="${XDG_CONFIG_HOME:-$HOME/.config}/repos/config.json"
 if [[ "$DRY_RUN" == false ]] && [[ -f "$REPOS_CONFIG" ]]; then
 	echo ""
-	echo -e "${BLUE}📦 Phase 6: Repository Setup${NC}"
+	echo -e "${BLUE}📦 Phase 7: Repository Setup${NC}"
 	echo "Found repos config at: $REPOS_CONFIG"
 	echo ""
 	if command -v gum &> /dev/null; then
@@ -222,7 +252,7 @@ if [[ "$DRY_RUN" == false ]] && [[ -f "$REPOS_CONFIG" ]]; then
 	fi
 elif [[ "$DRY_RUN" == true ]] && [[ -f "$REPOS_CONFIG" ]]; then
 	echo ""
-	echo -e "${BLUE}📦 Phase 6: Repository Setup${NC}"
+	echo -e "${BLUE}📦 Phase 7: Repository Setup${NC}"
 	echo -e "${YELLOW}→${NC} [DRY] Would offer to run 'repos setup' to clone repositories"
 fi
 
