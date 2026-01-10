@@ -1,7 +1,7 @@
 {
   "repos_base_path": "~/repos",
   "parallel_jobs": 4,
-  "tmux_layout": "ide",
+  "tmux_layout": "dev",
   "tmux_layouts_dir": "~/.config/tmux/layouts",
   "ensure_cloned": [
     "git@github.com:nikbrunner/dots",
