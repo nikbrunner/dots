@@ -64,7 +64,37 @@ dots/
 
 ## Installation
 
-**Complete Machine Setup** (recommended):
+### Prerequisites
+
+Before cloning, set up SSH access to GitHub via 1Password:
+
+**macOS:**
+```bash
+# Install Homebrew
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+# Install 1Password
+brew install --cask 1password
+```
+
+**Arch Linux (EndeavourOS):**
+```bash
+# Install paru (AUR helper)
+sudo pacman -S --needed base-devel git
+git clone https://aur.archlinux.org/paru.git /tmp/paru
+cd /tmp/paru && makepkg -si
+
+# Install 1Password
+paru -S 1password
+```
+
+**Then configure 1Password SSH:**
+1. Open 1Password and sign in
+2. Add your SSH key (or create one: **+ New Item → SSH Key**)
+3. Enable the SSH agent: **Settings → Developer → SSH Agent**
+4. Verify: `ssh -T git@github.com` should show "Hi username!"
+
+### Complete Machine Setup
 
 ```bash
 git clone git@github.com:nikbrunner/dots.git ~/repos/nikbrunner/dots
