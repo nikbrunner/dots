@@ -41,6 +41,7 @@ declare -a REQUIRED_DEPS=(
     "nvm:Node Version Manager"
     "docker:Container platform"
     "av:Aviator CLI for stacked PRs"
+    "paru:AUR helper (Arch only)"
 )
 
 # Detect operating system
@@ -121,6 +122,9 @@ check_dependency() {
     1password)
         # Use package manager to check if installed
         check_package_installed "1password"
+        ;;
+    paru)
+        command -v paru &>/dev/null
         ;;
     gallery-dl)
         command -v gallery-dl &>/dev/null
@@ -248,6 +252,7 @@ get_package_name() {
         whatsapp) echo "--cask whatsapp" ;;
         docker) echo "--cask docker" ;;
         av) echo "aviator-co/tap/av" ;;
+        paru) echo "" ;; # Arch only
         *) echo "$dep" ;;
         esac
         ;;
@@ -289,6 +294,7 @@ get_package_name() {
         whatsapp) echo "zapzap" ;;
         docker) echo "docker" ;;
         av) echo "av-cli-bin" ;;
+        paru) echo "paru" ;;
         *) echo "$dep" ;;
         esac
         ;;
@@ -336,6 +342,12 @@ install_dependency() {
     if [[ -z "$pkg_manager" ]]; then
         echo "❌ No supported package manager found"
         return 1
+    fi
+
+    # Skip if package not available for this OS
+    if [[ -z "$package_name" ]]; then
+        echo "⏭️  Skipping $dep (not available for this OS)"
+        return 0
     fi
 
     echo "📦 Installing $dep..."
