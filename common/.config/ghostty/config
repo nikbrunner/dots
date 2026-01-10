@@ -23,6 +23,9 @@ window-inherit-working-directory = true
 unfocused-split-opacity = 1
 window-inherit-font-size = true
 window-theme = system
+window-decoration = none
+
+# background-opacity = 0.8
 
 # Cursor
 cursor-style-blink = false
@@ -37,6 +40,7 @@ macos-icon = paper
 
 # Application
 link-url = true
+link-previews = true
 maximize = true
 
 # Mouse
