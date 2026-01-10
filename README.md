@@ -79,13 +79,8 @@ brew install --cask 1password
 
 **Arch Linux (EndeavourOS):**
 ```bash
-# Install paru (AUR helper)
-sudo pacman -S --needed base-devel git
-git clone https://aur.archlinux.org/paru.git /tmp/paru
-cd /tmp/paru && makepkg -si
-
-# Install 1Password
-paru -S 1password
+# yay is pre-installed on EndeavourOS
+yay -S 1password
 ```
 
 **Then configure 1Password SSH:**
