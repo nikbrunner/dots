@@ -46,6 +46,7 @@ declare -a REQUIRED_DEPS=(
     "bluez:Bluetooth protocol stack (Arch only)"
     "bluez-utils:Bluetooth utilities (Arch only)"
     "blueman:Bluetooth manager GUI (Arch only)"
+    "bluetui:Bluetooth TUI manager (Arch only)"
 )
 
 # Detect operating system
@@ -141,6 +142,9 @@ check_dependency() {
         ;;
     blueman)
         command -v blueman-manager &>/dev/null
+        ;;
+    bluetui)
+        command -v bluetui &>/dev/null
         ;;
     gallery-dl)
         command -v gallery-dl &>/dev/null
@@ -273,6 +277,7 @@ get_package_name() {
         bluez) echo "" ;;      # Arch only
         bluez-utils) echo "" ;; # Arch only
         blueman) echo "" ;;     # Arch only
+        bluetui) echo "" ;;     # Arch only
         *) echo "$dep" ;;
         esac
         ;;
@@ -319,6 +324,7 @@ get_package_name() {
         bluez) echo "bluez" ;;
         bluez-utils) echo "bluez-utils" ;;
         blueman) echo "blueman" ;;
+        bluetui) echo "bluetui" ;;
         *) echo "$dep" ;;
         esac
         ;;
