@@ -11,6 +11,7 @@
     { "url": "git@github.com:nikbrunner/tsm", "postClone": "./install.sh" },
     { "url": "git@github.com:nikbrunner/bm", "postClone": "make install" },
     { "url": "git@github.com:nikbrunner/tmux-file-picker", "postClone": "chmod +x tmux-file-picker && ln -sf \"$(pwd)/tmux-file-picker\" ~/.local/bin/tmux-file-picker" },
+    { "url": "git@github.com:nikbrunner/fonts", "postClone": "./install.sh" },
     "git@github.com:black-atom-industries/*"
   ]
 }
