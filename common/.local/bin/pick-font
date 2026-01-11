@@ -27,6 +27,45 @@ update_ghostty_font() {
     fi
 }
 
+# Update Ghostty config with the bold font variant
+update_ghostty_bold_font() {
+    local selected_font="$1"
+    local bold_font
+    local bold_style
+
+    # Look up bold variant from config.json (two options: boldStyle or bold)
+    bold_style=$(jq -r --arg name "$selected_font" '.fonts[] | select(.name == $name) | .boldStyle // empty' "$FONTS_JSON")
+    bold_font=$(jq -r --arg name "$selected_font" '.fonts[] | select(.name == $name) | .bold // empty' "$FONTS_JSON")
+
+    # Remove any existing bold config lines first
+    if [[ "$(uname)" == "Darwin" ]]; then
+        sed -i '' '/^font-family-bold[[:space:]]*=/d' "$GHOSTTY_CONFIG"
+        sed -i '' '/^font-style-bold[[:space:]]*=/d' "$GHOSTTY_CONFIG"
+    else
+        sed -i '/^font-family-bold[[:space:]]*=/d' "$GHOSTTY_CONFIG"
+        sed -i '/^font-style-bold[[:space:]]*=/d' "$GHOSTTY_CONFIG"
+    fi
+
+    # Add the appropriate bold config
+    if [[ -n "$bold_style" ]]; then
+        # Use font-style-bold (for Nerd Fonts etc.)
+        if [[ "$(uname)" == "Darwin" ]]; then
+            sed -i '' "/^font-family[[:space:]]*=/a\\
+font-style-bold = ${bold_style}" "$GHOSTTY_CONFIG"
+        else
+            sed -i "/^font-family[[:space:]]*=/a font-style-bold = ${bold_style}" "$GHOSTTY_CONFIG"
+        fi
+    elif [[ -n "$bold_font" ]]; then
+        # Use font-family-bold (for TX-02 etc.)
+        if [[ "$(uname)" == "Darwin" ]]; then
+            sed -i '' "/^font-family[[:space:]]*=/a\\
+font-family-bold = ${bold_font}" "$GHOSTTY_CONFIG"
+        else
+            sed -i "/^font-family[[:space:]]*=/a font-family-bold = ${bold_font}" "$GHOSTTY_CONFIG"
+        fi
+    fi
+}
+
 # Update Zed config with the selected font
 update_zed_font() {
     local selected_font="$1"
@@ -70,38 +109,47 @@ main() {
         exit 1
     fi
 
-    # Get available fonts from JSON
-    fonts=$(jq -r '.fonts[].name' "$FONTS_JSON")
+    # Get available fonts from JSON (label -> name mapping)
     current_font=$(get_current_font)
 
-    if [[ -z "$fonts" ]]; then
+    # Get current label from name
+    current_label=$(jq -r --arg name "$current_font" '.fonts[] | select(.name == $name) | .label // .name' "$FONTS_JSON")
+
+    # Get all labels for fzf display
+    labels=$(jq -r '.fonts[].label' "$FONTS_JSON")
+
+    if [[ -z "$labels" ]]; then
         echo "No fonts found in $FONTS_JSON"
         exit 1
     fi
 
     # Show current font
-    echo "Current font: $current_font"
+    echo "Current font: $current_label"
     echo
 
-    # Use fzf to select fon
-    selected_font=$(echo "$fonts" | fzf \
+    # Use fzf to select font by label
+    selected_label=$(echo "$labels" | fzf \
         --border-label="┃ pick-font ┃" \
         --prompt="Select font: " \
-        --header="Current: $current_font")
+        --header="Current: $current_label")
 
-    if [[ -n "$selected_font" ]]; then
+    # Get the actual font name from the selected label
+    selected_font=$(jq -r --arg label "$selected_label" '.fonts[] | select(.label == $label) | .name' "$FONTS_JSON")
+
+    if [[ -n "$selected_font" && "$selected_font" != "null" ]]; then
         if [[ "$selected_font" == "$current_font" ]]; then
-            echo "Font unchanged: $selected_font"
+            echo "Font unchanged: $selected_label"
         else
             # Update both Ghostty and Zed
             update_ghostty_font "$selected_font"
+            update_ghostty_bold_font "$selected_font"
             update_zed_font "$selected_font"
-            
-            echo "Font updated to: $selected_font"
+
+            echo "Font updated to: $selected_label"
             echo "Updated configurations:"
-            echo "  ✓ Ghostty"
+            echo "  ✓ Ghostty (regular + bold)"
             echo "  ✓ Zed"
-            
+
             # Reload Ghostty automatically
             reload_ghostty
         fi
