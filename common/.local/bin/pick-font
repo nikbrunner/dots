@@ -30,12 +30,10 @@ update_ghostty_font() {
 # Update Ghostty config with the bold font variant
 update_ghostty_bold_font() {
     local selected_font="$1"
-    local bold_font
-    local bold_style
+    local bold
 
-    # Look up bold variant from config.json (two options: boldStyle or bold)
-    bold_style=$(jq -r --arg name "$selected_font" '.fonts[] | select(.name == $name) | .boldStyle // empty' "$FONTS_JSON")
-    bold_font=$(jq -r --arg name "$selected_font" '.fonts[] | select(.name == $name) | .bold // empty' "$FONTS_JSON")
+    # Look up bold variant from config.json
+    bold=$(jq -r --arg name "$selected_font" '.fonts[] | select(.name == $name) | .bold // empty' "$FONTS_JSON")
 
     # Remove any existing bold config lines first
     if [[ "$(uname)" == "Darwin" ]]; then
@@ -46,22 +44,26 @@ update_ghostty_bold_font() {
         sed -i '/^font-style-bold[[:space:]]*=/d' "$GHOSTTY_CONFIG"
     fi
 
-    # Add the appropriate bold config
-    if [[ -n "$bold_style" ]]; then
-        # Use font-style-bold (for Nerd Fonts etc.)
+    # Skip if no bold configured
+    [[ -z "$bold" ]] && return
+
+    # Auto-detect: simple style names (Bold, SemiBold, Medium, etc.) use font-style-bold
+    # Full font family names use font-family-bold
+    if [[ "$bold" =~ ^(Bold|SemiBold|Medium|Regular|Light|ExtraBold|Black|Thin)$ ]]; then
+        # Style name → font-style-bold
         if [[ "$(uname)" == "Darwin" ]]; then
             sed -i '' "/^font-family[[:space:]]*=/a\\
-font-style-bold = ${bold_style}" "$GHOSTTY_CONFIG"
+font-style-bold = ${bold}" "$GHOSTTY_CONFIG"
         else
-            sed -i "/^font-family[[:space:]]*=/a font-style-bold = ${bold_style}" "$GHOSTTY_CONFIG"
+            sed -i "/^font-family[[:space:]]*=/a font-style-bold = ${bold}" "$GHOSTTY_CONFIG"
         fi
-    elif [[ -n "$bold_font" ]]; then
-        # Use font-family-bold (for TX-02 etc.)
+    else
+        # Full font name → font-family-bold
         if [[ "$(uname)" == "Darwin" ]]; then
             sed -i '' "/^font-family[[:space:]]*=/a\\
-font-family-bold = ${bold_font}" "$GHOSTTY_CONFIG"
+font-family-bold = ${bold}" "$GHOSTTY_CONFIG"
         else
-            sed -i "/^font-family[[:space:]]*=/a font-family-bold = ${bold_font}" "$GHOSTTY_CONFIG"
+            sed -i "/^font-family[[:space:]]*=/a font-family-bold = ${bold}" "$GHOSTTY_CONFIG"
         fi
     fi
 }
