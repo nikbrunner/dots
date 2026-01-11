@@ -3,7 +3,7 @@
 
 # Colors
 theme = black-atom-mnml-osman-light.conf
-bold-is-bright = true
+bold-is-bright = false
 
 # Advanced
 # custom-shader = ./shaders/cursor_trail.glsl
@@ -12,7 +12,8 @@ adjust-cursor-thickness = 3
 adjust-underline-position = 3
 
 # Fonts
-font-family = TX-02 Condensed
+font-family = ComicCodeLigatures Nerd Font
+font-style-bold = Bold
 font-size = 14
 
 # Window
