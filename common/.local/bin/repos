@@ -278,34 +278,31 @@ interactive_add() {
     # Check gh CLI
     check_gh_cli || exit 1
 
-    # Get authenticated username
-    local username
-    username=$(gh api user --jq .login 2>/dev/null)
-
-    if [[ -z "$username" ]]; then
-        print_error "Failed to get GitHub username"
-        exit 1
-    fi
-
-    # Fetch all repos for the user
+    # Fetch all repos the user has access to (personal + org)
     local all_repos
-    all_repos=$(get_github_repos "$username")
+    if has_gum; then
+        all_repos=$(gum spin --spinner dot --title "Fetching accessible repositories..." -- \
+            gh api /user/repos --paginate --jq '.[].full_name' 2>/dev/null)
+    else
+        echo "Fetching accessible repositories..."
+        all_repos=$(gh api /user/repos --paginate --jq '.[].full_name' 2>/dev/null)
+    fi
 
     if [[ -z "$all_repos" ]]; then
-        print_error "No repositories found for user: $username"
+        print_error "No accessible repositories found"
         exit 1
     fi
 
-    # Get list of already cloned repos (just repo names)
+    # Get list of already cloned repos (owner/repo format)
     local cloned_repos
-    cloned_repos=$(list_repos | sed 's|^.*/||')
+    cloned_repos=$(list_repos)
 
     # Filter out already cloned repos
     local available_repos
     available_repos=$(comm -23 <(echo "$all_repos" | sort) <(echo "$cloned_repos" | sort))
 
     if [[ -z "$available_repos" ]]; then
-        print_success "All of your repositories are already cloned!"
+        print_success "All accessible repositories are already cloned!"
         exit 0
     fi
 
@@ -318,8 +315,8 @@ interactive_add() {
         exit 0
     fi
 
-    # Construct SSH URL and clone
-    local git_url="git@github.com:${username}/${selected_repo}.git"
+    # Construct SSH URL and clone (selected_repo is owner/repo format)
+    local git_url="git@github.com:${selected_repo}.git"
     clone_single_repo "$git_url" true
 }
 
