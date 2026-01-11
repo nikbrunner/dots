@@ -48,8 +48,8 @@
   syntax-theme = base16-256
 
   # https://github.com/jesseduffield/lazygit/issues/4550
-  ; dark = true
-  light = true
+  dark = true
+  ; light = true
 
 [pager]
   diff = delta
