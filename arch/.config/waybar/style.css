@@ -31,6 +31,10 @@ window#waybar {
     font-weight: bold;
 }
 
+#custom-vpn {
+    color: #0f0;
+}
+
 #tray > .needs-attention {
     background: #fff;
     color: #000;

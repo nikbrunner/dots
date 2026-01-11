@@ -13,7 +13,11 @@
         "clock"
     ],
     "modules-right": [
+        "mpd",
         "pulseaudio",
+        "pulseaudio#microphone",
+        "bluetooth",
+        "custom/vpn",
         "network",
         "disk",
         "cpu",
@@ -31,17 +35,55 @@
         "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>"
     },
 
+    "mpd": {
+        "format": "[MPD:{stateIcon} {title}]",
+        "format-stopped": "[MPD:OFF]",
+        "format-disconnected": "",
+        "state-icons": {
+            "paused": "PAUSE",
+            "playing": "PLAY"
+        },
+        "max-length": 30,
+        "tooltip-format": "{artist} - {album} - {title}"
+    },
+
     "pulseaudio": {
-        "format": "[VOL:{volume}%]",
-        "format-muted": "[VOL:MUTE]",
+        "format": "[OUT:{volume}%]",
+        "format-muted": "[OUT:MUTE]",
         "on-click": "pavucontrol"
     },
 
+    "pulseaudio#microphone": {
+        "format": "{format_source}",
+        "format-source": "[MIC:{source_volume}%]",
+        "format-source-muted": "[MIC:MUTE]",
+        "on-click": "pavucontrol -t 4"
+    },
+
+    "bluetooth": {
+        "format": "[BT:{status}]",
+        "format-connected": "[BT:{device_alias}]",
+        "format-connected-battery": "[BT:{device_alias} {device_battery_percentage}%]",
+        "format-disabled": "",
+        "format-off": "",
+        "tooltip-format": "{controller_alias}\n{num_connections} connected",
+        "tooltip-format-connected": "{controller_alias}\n{num_connections} connected\n\n{device_enumerate}",
+        "tooltip-format-enumerate-connected": "{device_alias}",
+        "tooltip-format-enumerate-connected-battery": "{device_alias}\t{device_battery_percentage}%",
+        "on-click": "ghostty -e bluetui"
+    },
+
+    "custom/vpn": {
+        "exec": "ip link show proton0 2>/dev/null && echo '[VPN:ON]' || echo ''",
+        "interval": 5,
+        "tooltip": false
+    },
+
     "network": {
-        "format-ethernet": "[NET:ETH]",
-        "format-wifi": "[NET:{signalStrength}%]",
+        "format-ethernet": "[ETH:{ipaddr}]",
+        "format-wifi": "[WIFI:{ipaddr}]",
         "format-disconnected": "[NET:OFF]",
-        "tooltip-format": "{ifname}: {ipaddr}"
+        "tooltip-format": "{ifname}: {ipaddr}/{cidr}\nGateway: {gwaddr}"
     },
 
     "disk": {
