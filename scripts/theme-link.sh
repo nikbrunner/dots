@@ -131,6 +131,8 @@ echo ""
 process_adapter "wezterm" "toml" "common/.config/wezterm/colors"
 echo ""
 process_adapter "zed" "json" "common/.config/zed/themes"
+echo ""
+process_adapter "niri" "kdl" "arch/.config/niri/themes"
 
 echo ""
 if [[ "$DRY_RUN" == "true" ]]; then
