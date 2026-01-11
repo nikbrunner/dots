@@ -1,7 +1,7 @@
 # Wallpaper configuration for pick-wallpaper
 
 # Folder for rotation (updated by pick-wallpaper folder)
-path: /home/nbr/repos/nikbrunner/wallpapers/jpn
+path: /home/nbr/repos/nikbrunner/wallpapers/black
 # Rotation interval in seconds (1800 = 30min, 3600 = 1h)
 interval: 15
 # swww transition type
