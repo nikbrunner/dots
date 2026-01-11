@@ -19,7 +19,12 @@ get_current_font() {
 # Update Ghostty config with the selected font
 update_ghostty_font() {
     local selected_font="$1"
-    sed -i '' "s/^font-family[[:space:]]*=.*/font-family = ${selected_font}/" "$GHOSTTY_CONFIG"
+    # sed -i syntax differs between macOS and Linux
+    if [[ "$(uname)" == "Darwin" ]]; then
+        sed -i '' "s/^font-family[[:space:]]*=.*/font-family = ${selected_font}/" "$GHOSTTY_CONFIG"
+    else
+        sed -i "s/^font-family[[:space:]]*=.*/font-family = ${selected_font}/" "$GHOSTTY_CONFIG"
+    fi
 }
 
 # Update Zed config with the selected font
