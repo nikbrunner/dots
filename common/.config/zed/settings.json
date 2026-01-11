@@ -40,7 +40,7 @@
   },
   "theme": {
     "mode": "system",
-    "dark": "Black Atom — MNM ∷ Clay Dark",
+    "dark": "Black Atom — Dark",
     "light": "Black Atom — MNM ∷ Osman Light"
   },
   "base_keymap": "VSCode",
