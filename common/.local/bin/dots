@@ -202,7 +202,13 @@ cmd_sync() {
 
         if command -v gum >/dev/null 2>&1; then
             local choice
-            choice=$(gum choose "Stash changes and continue" "Commit first (opens lazygit)" "Cancel sync")
+            choice=$(gum choose \
+                "Stash changes and continue" \
+                "Commit first (lazygit)" \
+                "Smart commit (AI)" \
+                "Git cleanup (Claude)" \
+                "Skip to push" \
+                "Cancel sync")
             case "$choice" in
                 "Stash changes and continue")
                     log_info "Stashing local changes..."
@@ -214,13 +220,52 @@ cmd_sync() {
                         return 1
                     fi
                     ;;
-                "Commit first (opens lazygit)")
+                "Commit first (lazygit)")
                     cmd_commit
                     # After commit, check if there are still changes
                     if ! git diff-index --quiet HEAD --; then
                         log_error "Still have uncommitted changes. Sync cancelled."
                         return 1
                     fi
+                    ;;
+                "Smart commit (AI)")
+                    log_info "Running smart commit..."
+                    if command -v repo >/dev/null 2>&1; then
+                        repo commit -s -y
+                        if ! git diff-index --quiet HEAD --; then
+                            log_error "Still have uncommitted changes. Sync cancelled."
+                            return 1
+                        fi
+                    else
+                        log_error "'repo' command not found"
+                        return 1
+                    fi
+                    ;;
+                "Git cleanup (Claude)")
+                    log_info "Running git cleanup with Claude..."
+                    if command -v claude >/dev/null 2>&1; then
+                        claude -p "$DOTS_DIR/common/.claude/commands/dots/git-cleanup.md"
+                        if ! git diff-index --quiet HEAD --; then
+                            log_error "Still have uncommitted changes. Sync cancelled."
+                            return 1
+                        fi
+                    else
+                        log_error "'claude' command not found"
+                        return 1
+                    fi
+                    ;;
+                "Skip to push")
+                    log_warning "Skipping uncommitted changes..."
+                    echo ""
+                    if [[ -n $(git log @{u}.. 2>/dev/null) ]]; then
+                        local commit_count
+                        commit_count=$(git rev-list --count @{u}.. 2>/dev/null)
+                        log_info "Found $commit_count local commit(s) to push"
+                        do_push false
+                    else
+                        log_success "Nothing to push"
+                    fi
+                    return 0
                     ;;
                 *)
                     log_info "Sync cancelled"
