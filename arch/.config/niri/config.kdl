@@ -130,7 +130,7 @@ overview {
 // https://yalter.github.io/niri/Configuration:-Layout
 layout {
     // Set gaps around windows in logical pixels.
-    gaps 64
+    gaps 128
 
     // When to center a column when changing focus, options are:
     // - "never", default behavior, focusing an off-screen column will keep at the left
@@ -218,10 +218,10 @@ layout {
         softness 0
 
         // Spread expands the shadow.
-        spread 0
+        spread 20
 
         // Offset moves the shadow relative to the window.
-        offset x=40 y=40
+        offset x=20 y=20
     }
 
     // Struts shrink the area occupied by windows, similarly to layer-shell panels.
@@ -230,10 +230,10 @@ layout {
     // Top and bottom struts will simply add outer gaps in addition to the area occupied by
     // layer-shell panels and regular gaps.
     struts {
-        // left 64
-        // right 64
-        // top 64
-        // bottom 64
+        // left 32
+        // right 32
+        // top 32
+        // bottom 32
     }
 }
 
@@ -323,10 +323,10 @@ window-rule {
 
 // Example: enable rounded corners for all windows.
 // (This example rule is commented out with a "/-" in front.)
-window-rule {
-    geometry-corner-radius 12
-    clip-to-geometry true
-}
+// window-rule {
+//     geometry-corner-radius 12
+//     clip-to-geometry true
+// }
 
 binds {
     // Keys consist of modifiers separated by + signs, followed by an XKB key name
