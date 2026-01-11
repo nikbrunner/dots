@@ -1,5 +1,5 @@
 {
-  "buffer_font_family": "Iosevka Nerd Font",
+  "buffer_font_family": "TX-02 Condensed",
   "which_key": {
     "delay_ms": 250,
     "enabled": true
@@ -40,7 +40,7 @@
   },
   "theme": {
     "mode": "system",
-    "dark": "Black Atom — STA ∷ Engineering",
+    "dark": "Black Atom — MNM ∷ Clay Dark",
     "light": "Black Atom — MNM ∷ Osman Light"
   },
   "base_keymap": "VSCode",
@@ -86,7 +86,7 @@
   "terminal": {
     "line_height": "standard",
     "working_directory": "current_project_directory",
-    "font_family": "Iosevka Nerd Font"
+    "font_family": "TX-02 Condensed"
   },
   "lsp": {
     "vtsls": {
@@ -187,5 +187,5 @@
       }
     }
   },
-  "ui_font_family": "Iosevka Nerd Font"
+  "ui_font_family": "TX-02 Condensed"
 }
