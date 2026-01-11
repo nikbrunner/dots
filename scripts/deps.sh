@@ -31,6 +31,7 @@ declare -a REQUIRED_DEPS=(
     "mpc:Music Player Daemon client"
     "atuin:Magical shell history"
     "yq:YAML processor"
+    "jq:JSON processor"
     "rust:Rust programming language and Cargo"
     "go:Go programming language"
     "deno:JavaScript/TypeScript runtime"
@@ -271,6 +272,7 @@ get_package_name() {
         mpc) echo "mpc" ;;
         atuin) echo "atuin" ;;
         yq) echo "yq" ;;
+        jq) echo "jq" ;;
         rust) echo "rust" ;;
         go) echo "go" ;;
         deno) echo "deno" ;;
@@ -319,6 +321,7 @@ get_package_name() {
         mpc) echo "mpc" ;;
         atuin) echo "atuin" ;;
         yq) echo "go-yq" ;;
+        jq) echo "jq" ;;
         rust) echo "rust" ;;
         go) echo "go" ;;
         deno) echo "deno" ;;

@@ -257,7 +257,29 @@ elif [[ "$DRY_RUN" == true ]] && command -v gh &> /dev/null; then
 	echo -e "${YELLOW}→${NC} [DRY] Would check GitHub authentication status"
 fi
 
-# 12. Offer to run repos setup
+# 12. Claude Code MCP Setup
+if [[ "$SKIP_DEPS" == false ]] && command -v claude &> /dev/null && command -v jq &> /dev/null; then
+	echo ""
+	echo -e "${BLUE}🔌 Phase 7.5: Claude Code MCP Setup${NC}"
+	if [[ "$DRY_RUN" == true ]]; then
+		"$SCRIPT_DIR/scripts/claude-mcp.sh" --dry-run
+	else
+		# Check if required env vars are set
+		if [[ -n "$EXA_API_KEY" ]] || [[ -n "$REF_API_KEY" ]]; then
+			"$SCRIPT_DIR/scripts/claude-mcp.sh"
+		else
+			echo -e "${YELLOW}⚠️${NC} MCP API keys not set in environment"
+			echo "  Set EXA_API_KEY and REF_API_KEY, then run: dots mcp"
+			echo "  Or run manually: $SCRIPT_DIR/scripts/claude-mcp.sh"
+		fi
+	fi
+elif [[ "$DRY_RUN" == true ]] && command -v claude &> /dev/null; then
+	echo ""
+	echo -e "${BLUE}🔌 Phase 7.5: Claude Code MCP Setup${NC}"
+	echo -e "${YELLOW}→${NC} [DRY] Would configure MCP servers for Claude Code"
+fi
+
+# 13. Offer to run repos setup
 REPOS_CONFIG="${XDG_CONFIG_HOME:-$HOME/.config}/repos/config.json"
 if [[ "$DRY_RUN" == false ]] && [[ -f "$REPOS_CONFIG" ]]; then
 	echo ""

@@ -60,7 +60,57 @@ dots sub-status
 
 # Run comprehensive system tests
 dots test
+
+# Configure Claude Code MCP servers
+dots mcp [--dry-run] [--force]
 ```
+
+## Claude Code MCP Setup
+
+MCP (Model Context Protocol) servers extend Claude Code's capabilities. This dotfiles repo includes a managed MCP configuration system.
+
+### Configuration Files
+
+- `common/.claude/mcp-servers.json` - MCP server definitions (no secrets)
+- `common/.claude/settings.json` - Claude Code settings (hooks, permissions)
+- `scripts/claude-mcp.sh` - Setup script for configuring MCPs
+
+### Available MCP Servers
+
+| Server | Purpose | Requires |
+|--------|---------|----------|
+| exa | Web search via Exa AI | `EXA_API_KEY` |
+| Ref | Documentation lookup | `REF_API_KEY` |
+| chrome-devtools | Browser automation | None |
+
+### Setup
+
+1. Set your API keys as environment variables (add to `.zshrc`):
+   ```bash
+   export EXA_API_KEY='your-exa-api-key'
+   export REF_API_KEY='your-ref-api-key'
+   ```
+
+2. Run the MCP setup:
+   ```bash
+   dots mcp
+   ```
+
+3. Verify with Claude Code:
+   ```bash
+   claude mcp list
+   ```
+
+### Options
+
+- `dots mcp --dry-run` - Preview what would be configured
+- `dots mcp --force` - Re-add servers even if they already exist
+
+### Notes
+
+- MCP servers are stored in `~/.claude.json` (user scope)
+- The `~/.claude.json` file is NOT synced via dotfiles (contains machine-specific state)
+- Only the MCP definitions are synced; setup is done fresh on each machine
 
 ## Managing Configurations
 
@@ -160,6 +210,7 @@ Use `dots test` for overall system health checks and `dots link --dry-run` for d
 
 ## Recent Changes
 
+- **Claude Code MCP Setup**: Added `dots mcp` command to configure MCP servers across machines
 - **Manual Configuration System**: Replaced auto-discovery with explicit `symlinks.yml` configuration file
 - **Wildcard Pattern Support**: Added support for patterns like `"common/.local/bin/*"` for selective file linking
 - **Massive Code Reduction**: Removed ~810 lines of auto-discovery code

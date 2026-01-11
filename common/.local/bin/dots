@@ -100,6 +100,7 @@ show_usage() {
         gum style --foreground=2 "  theme        - Interactive theme selector for all development tools [--debug]"
         gum style --foreground=2 "  theme-link   - Create relative symlinks for Black Atom themes [--dry-run]"
         gum style --foreground=2 "  font         - Interactive font selector for terminal applications"
+        gum style --foreground=2 "  mcp          - Configure Claude Code MCP servers [--dry-run] [--force]"
         echo ""
     else
         echo "dots - Dotfiles management command"
@@ -126,6 +127,7 @@ show_usage() {
         echo "  theme        - Interactive theme selector for all development tools [--debug]"
         echo "  theme-link   - Create relative symlinks for Black Atom themes [--dry-run]"
         echo "  font         - Interactive font selector for terminal applications"
+        echo "  mcp          - Configure Claude Code MCP servers [--dry-run] [--force]"
         echo ""
     fi
 }
@@ -173,6 +175,11 @@ cmd_deps() {
             echo "  validate - Verify all dependencies are working"
             ;;
     esac
+}
+
+# MCP command - configure Claude Code MCP servers
+cmd_mcp() {
+    "$DOTS_DIR/scripts/claude-mcp.sh" "$@"
 }
 
 # Link command
@@ -827,6 +834,10 @@ font)
     # Return to original directory before running pick-font
     cd "$ORIGINAL_PWD"
     exec pick-font "$@"
+    ;;
+mcp)
+    shift
+    cmd_mcp "$@"
     ;;
 *)
     show_usage

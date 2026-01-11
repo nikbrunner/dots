@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "MCP server definitions for Claude Code. API keys are read from environment variables.",
+  "servers": {
+    "exa": {
+      "description": "Web search using Exa AI",
+      "transport": "stdio",
+      "command": "npx",
+      "args": ["-y", "exa-mcp-server"],
+      "env": {
+        "EXA_API_KEY": "${EXA_API_KEY}"
+      }
+    },
+    "Ref": {
+      "description": "Documentation lookup via Ref.tools",
+      "transport": "http",
+      "url": "https://api.ref.tools/mcp",
+      "headers": {
+        "x-ref-api-key": "${REF_API_KEY}"
+      }
+    },
+    "chrome-devtools": {
+      "description": "Browser automation and debugging",
+      "transport": "stdio",
+      "command": "npx",
+      "args": ["chrome-devtools-mcp@latest"]
+    }
+  }
+}
