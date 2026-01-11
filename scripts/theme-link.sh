@@ -133,6 +133,8 @@ echo ""
 process_adapter "zed" "json" "common/.config/zed/themes"
 echo ""
 process_adapter "niri" "kdl" "arch/.config/niri/themes"
+echo ""
+process_adapter "waybar" "css" "arch/.config/waybar/themes"
 
 echo ""
 if [[ "$DRY_RUN" == "true" ]]; then

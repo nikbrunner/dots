@@ -16,6 +16,8 @@ GHOSTTY_CONFIG="$DOTS_DIR/common/.config/ghostty/config"
 GIT_CONFIG="$DOTS_DIR/common/.gitconfig"
 ZED_CONFIG="$DOTS_DIR/common/.config/zed/settings.json"
 NIRI_THEME_LINK="$DOTS_DIR/arch/.config/niri/theme.kdl"
+WAYBAR_STYLE="$HOME/.config/waybar/style.css"
+WAYBAR_THEMES_DIR="$HOME/.config/waybar/themes"
 
 # Get current theme from nvim config
 get_current_theme() {
@@ -120,6 +122,17 @@ update_niri_theme() {
     if [[ -d "$(dirname "$NIRI_THEME_LINK")" ]]; then
         ln -sf "$theme_source" "$NIRI_THEME_LINK"
         echo "niri theme updated"
+    fi
+}
+
+# Update Waybar theme (Linux/Wayland only)
+update_waybar_theme() {
+    local theme="$1"
+
+    # Only update if waybar themes directory exists
+    if [[ -d "$WAYBAR_THEMES_DIR" ]]; then
+        ln -sf "themes/${theme}.css" "$WAYBAR_STYLE"
+        echo "waybar theme updated"
     fi
 }
 
@@ -229,6 +242,7 @@ apply_theme() {
     update_zed_theme "$theme" "$appearance"
     update_delta_theme "$appearance"
     update_niri_theme "$theme" "$collection"
+    update_waybar_theme "$theme"
     update_macos_appearance "$appearance"
 
     # Brief pause to let file changes and system appearance settle
