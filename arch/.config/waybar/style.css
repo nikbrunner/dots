@@ -1,44 +1,37 @@
-/* Waybar styles - minimal base for Black Atom theming */
-
 * {
     font-family: "Iosevka Nerd Font", monospace;
-    font-size: 14px;
+    font-size: 18px;
+    border: none;
+    border-radius: 0;
+    min-height: 0;
+    padding: 2px;
 }
 
 window#waybar {
-    background-color: transparent;
-    color: #cdd6f4;
+    background-color: #000;
+    color: #fff;
 }
 
 #workspaces button {
-    padding: 0 8px;
-    color: #6c7086;
+    padding: 0 6px;
+    color: #fff;
     background: transparent;
-    border: none;
-    border-radius: 0;
 }
 
 #workspaces button.focused {
-    color: #cdd6f4;
+    color: #000;
+    background: #fff;
 }
 
 #workspaces button:hover {
-    background: rgba(255, 255, 255, 0.1);
+    background: #222;
 }
 
-#clock,
-#pulseaudio,
-#network,
-#cpu,
-#memory,
-#tray {
-    padding: 0 10px;
-}
-
-#tray > .passive {
-    -gtk-icon-effect: dim;
+#clock {
+    font-weight: bold;
 }
 
 #tray > .needs-attention {
-    -gtk-icon-effect: highlight;
+    background: #fff;
+    color: #000;
 }

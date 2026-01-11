@@ -1,9 +1,9 @@
-// Waybar config for niri
+// Waybar config for niri - brutalist
 {
     "layer": "top",
     "position": "top",
-    "height": 30,
-    "spacing": 4,
+    "height": 24,
+    "spacing": 0,
     "reload_style_on_change": true,
 
     "modules-left": [
@@ -15,51 +15,50 @@
     "modules-right": [
         "pulseaudio",
         "network",
+        "disk",
         "cpu",
         "memory",
         "tray"
     ],
 
     "niri/workspaces": {
-        "format": "{index}: {icon}",
-        "format-icons": {
-            "focused": "●",
-            "default": "○"
-        }
+        "format": "{index}"
     },
 
     "clock": {
         "format": "{:%H:%M}",
-        "format-alt": "{:%Y-%m-%d %H:%M}",
+        "format-alt": "{:%Y-%m-%d}",
         "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>"
     },
 
     "pulseaudio": {
-        "format": "{volume}% {icon}",
-        "format-muted": "",
-        "format-icons": {
-            "default": ["", "", ""]
-        },
+        "format": "[VOL:{volume}%]",
+        "format-muted": "[VOL:MUTE]",
         "on-click": "pavucontrol"
     },
 
     "network": {
-        "format-ethernet": "",
-        "format-wifi": "{signalStrength}% ",
-        "format-disconnected": "",
+        "format-ethernet": "[NET:ETH]",
+        "format-wifi": "[NET:{signalStrength}%]",
+        "format-disconnected": "[NET:OFF]",
         "tooltip-format": "{ifname}: {ipaddr}"
     },
 
+    "disk": {
+        "format": "[DISK:{percentage_used}%]",
+        "path": "/"
+    },
+
     "cpu": {
-        "format": "{usage}% ",
+        "format": "[CPU:{usage}%]",
         "tooltip": false
     },
 
     "memory": {
-        "format": "{}% "
+        "format": "[MEM:{percentage}%]"
     },
 
     "tray": {
-        "spacing": 10
+        "spacing": 8
     }
 }
