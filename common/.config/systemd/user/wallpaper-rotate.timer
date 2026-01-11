@@ -1,0 +1,10 @@
+[Unit]
+Description=Rotate wallpaper periodically
+
+[Timer]
+OnBootSec=1min
+OnUnitActiveSec=15s
+Unit=wallpaper-rotate.service
+
+[Install]
+WantedBy=timers.target

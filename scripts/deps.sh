@@ -50,6 +50,11 @@ declare -a REQUIRED_DEPS=(
     "bluez-utils:Bluetooth utilities (Arch only)"
     "blueman:Bluetooth manager GUI (Arch only)"
     "bluetui:Bluetooth TUI manager (Arch only)"
+    "swww:Wayland wallpaper daemon (Arch only)"
+    "chafa:Terminal image viewer (Arch only)"
+    "niri:Scrollable tiling Wayland compositor (Arch only)"
+    "waybar:Wayland bar (Arch only)"
+    "fuzzel:Wayland application launcher (Arch only)"
 )
 
 # Detect operating system
@@ -149,6 +154,21 @@ check_dependency() {
         ;;
     bluetui)
         command -v bluetui &>/dev/null
+        ;;
+    swww)
+        command -v swww &>/dev/null
+        ;;
+    chafa)
+        command -v chafa &>/dev/null
+        ;;
+    niri)
+        command -v niri &>/dev/null
+        ;;
+    waybar)
+        command -v waybar &>/dev/null
+        ;;
+    fuzzel)
+        command -v fuzzel &>/dev/null
         ;;
     yazi)
         command -v yazi &>/dev/null
@@ -294,6 +314,11 @@ get_package_name() {
         bluez-utils) echo "" ;; # Arch only
         blueman) echo "" ;;     # Arch only
         bluetui) echo "" ;;     # Arch only
+        swww) echo "" ;;        # Arch only
+        chafa) echo "" ;;       # Arch only
+        niri) echo "" ;;        # Arch only
+        waybar) echo "" ;;      # Arch only
+        fuzzel) echo "" ;;      # Arch only
         *) echo "$dep" ;;
         esac
         ;;
@@ -344,6 +369,11 @@ get_package_name() {
         bluez-utils) echo "bluez-utils" ;;
         blueman) echo "blueman" ;;
         bluetui) echo "bluetui" ;;
+        swww) echo "swww" ;;
+        chafa) echo "chafa" ;;
+        niri) echo "niri" ;;
+        waybar) echo "waybar" ;;
+        fuzzel) echo "fuzzel" ;;
         *) echo "$dep" ;;
         esac
         ;;

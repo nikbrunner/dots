@@ -126,7 +126,7 @@ overview {
 // https://yalter.github.io/niri/Configuration:-Layout
 layout {
     // Set gaps around windows in logical pixels.
-    gaps 32
+    gaps 64
 
     // When to center a column when changing focus, options are:
     // - "never", default behavior, focusing an off-screen column will keep at the left
@@ -287,6 +287,10 @@ spawn-at-startup "waybar"
 
 // Bluetooth manager applet
 spawn-at-startup "blueman-applet"
+
+// Wallpaper daemon
+spawn-at-startup "swww-daemon"
+spawn-at-startup "pick-wallpaper" "restore"
 
 // To run a shell command (with variables, pipes, etc.), use spawn-sh-at-startup:
 // spawn-sh-at-startup "qs -c ~/source/qs/MyAwesomeShell"

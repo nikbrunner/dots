@@ -1,0 +1,347 @@
+#!/bin/bash
+
+# pick-wallpaper - Wallpaper manager for swww
+# Supports single wallpaper or folder rotation with fzf picker
+
+set -euo pipefail
+
+CONFIG_FILE="$HOME/.config/wallpaper/config.yml"
+CACHE_FILE="$HOME/.cache/wallpaper/current"
+WALLPAPERS_ROOT="$HOME/repos/nikbrunner/wallpapers"
+TIMER_FILE="$HOME/.config/systemd/user/wallpaper-rotate.timer"
+
+# Ensure cache directory exists
+mkdir -p "$(dirname "$CACHE_FILE")"
+
+# Config values (loaded by load_config)
+WALLPAPER_PATH=""
+INTERVAL=""
+TRANSITION=""
+TRANSITION_DURATION=""
+
+# Load config from TOML
+load_config() {
+    if [[ ! -f "$CONFIG_FILE" ]]; then
+        echo "Error: Config file not found at $CONFIG_FILE"
+        exit 1
+    fi
+
+    if ! command -v yq &>/dev/null; then
+        echo "Error: yq is required for config parsing"
+        exit 1
+    fi
+
+    WALLPAPER_PATH=$(yq '.path' "$CONFIG_FILE")
+    INTERVAL=$(yq '.interval' "$CONFIG_FILE")
+    TRANSITION=$(yq '.transition' "$CONFIG_FILE")
+    TRANSITION_DURATION=$(yq '.transition_duration' "$CONFIG_FILE")
+}
+
+# Check if swww daemon is running, start if not
+ensure_daemon() {
+    if ! pgrep -x swww-daemon > /dev/null; then
+        swww-daemon &
+        sleep 0.5
+    fi
+}
+
+# Set wallpaper with swww
+set_wallpaper() {
+    local image="$1"
+
+    if [[ ! -f "$image" ]]; then
+        echo "Error: Image not found: $image"
+        exit 1
+    fi
+
+    ensure_daemon
+
+    swww img "$image" \
+        --transition-type "${TRANSITION:-fade}" \
+        --transition-duration "${TRANSITION_DURATION:-2}"
+
+    # Cache current wallpaper
+    echo "$image" > "$CACHE_FILE"
+    echo "Wallpaper set: $(basename "$image")"
+}
+
+# Get random image from folder (avoiding current wallpaper)
+get_random_image() {
+    local folder="$1"
+    local current=""
+
+    if [[ -f "$CACHE_FILE" ]]; then
+        current=$(cat "$CACHE_FILE")
+    fi
+
+    local images
+    images=$(find "$folder" -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" -o -iname "*.webp" -o -iname "*.gif" \))
+
+    # If we have more than one image, exclude the current one
+    if [[ -n "$current" ]] && [[ $(echo "$images" | wc -l) -gt 1 ]]; then
+        echo "$images" | grep -v "^${current}$" | shuf -n 1
+    else
+        echo "$images" | shuf -n 1
+    fi
+}
+
+# Preview command for fzf (uses chafa if available)
+get_preview_cmd() {
+    local root="$1"
+    if command -v chafa &>/dev/null; then
+        echo "chafa --size=80x40 --symbols=block+border '$root/{}'"
+    else
+        echo "echo 'Install chafa for image preview'; echo ''; echo '$root/{}'"
+    fi
+}
+
+# Interactive picker with fzf - pick a single image from all wallpapers
+pick_interactive() {
+    if [[ ! -d "$WALLPAPERS_ROOT" ]]; then
+        echo "Error: Wallpapers folder not found: $WALLPAPERS_ROOT"
+        exit 1
+    fi
+
+    # Get current wallpaper for header
+    local current=""
+    if [[ -f "$CACHE_FILE" ]]; then
+        current=$(cat "$CACHE_FILE")
+        current=${current#"$WALLPAPERS_ROOT/"}
+    fi
+
+    local preview_cmd
+    preview_cmd=$(get_preview_cmd "$WALLPAPERS_ROOT")
+
+    local selected
+    selected=$(find "$WALLPAPERS_ROOT" -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" -o -iname "*.webp" -o -iname "*.gif" \) -not -path "*/.git/*" -printf "%P\n" | sort | fzf \
+        --border-label="┃ pick-wallpaper ┃" \
+        --prompt="Select wallpaper: " \
+        --header="Current: ${current:-none}" \
+        --preview "$preview_cmd" \
+        --preview-window=right:50%)
+
+    if [[ -n "$selected" ]]; then
+        # Stop rotation when manually picking a wallpaper
+        if systemctl --user is-active wallpaper-rotate.timer &>/dev/null; then
+            stop_timer
+        fi
+        set_wallpaper "$WALLPAPERS_ROOT/$selected"
+    else
+        echo "No wallpaper selected"
+    fi
+}
+
+# Convert seconds to systemd time format
+seconds_to_systemd_time() {
+    local seconds="$1"
+    if (( seconds >= 3600 && seconds % 3600 == 0 )); then
+        echo "$((seconds / 3600))h"
+    elif (( seconds >= 60 && seconds % 60 == 0 )); then
+        echo "$((seconds / 60))min"
+    else
+        echo "${seconds}s"
+    fi
+}
+
+# Sync timer with config interval
+sync_timer() {
+    load_config
+    local interval_str
+    interval_str=$(seconds_to_systemd_time "$INTERVAL")
+
+    mkdir -p "$(dirname "$TIMER_FILE")"
+    cat > "$TIMER_FILE" << EOF
+[Unit]
+Description=Rotate wallpaper periodically
+
+[Timer]
+OnBootSec=1min
+OnUnitActiveSec=$interval_str
+Unit=wallpaper-rotate.service
+
+[Install]
+WantedBy=timers.target
+EOF
+
+    systemctl --user daemon-reload
+    echo "Timer interval: $interval_str"
+}
+
+# Start/restart the rotation timer
+start_timer() {
+    sync_timer
+    systemctl --user restart wallpaper-rotate.timer
+    systemctl --user enable wallpaper-rotate.timer 2>/dev/null
+    echo "Rotation started"
+}
+
+# Stop the rotation timer
+stop_timer() {
+    systemctl --user stop wallpaper-rotate.timer 2>/dev/null || true
+    systemctl --user disable wallpaper-rotate.timer 2>/dev/null || true
+    echo "Rotation stopped"
+}
+
+# Update config file with new path
+update_config_path() {
+    local new_path="$1"
+    yq -i ".path = \"$new_path\"" "$CONFIG_FILE"
+}
+
+# Interactive folder picker - pick a folder for rotation
+pick_folder() {
+    if [[ ! -d "$WALLPAPERS_ROOT" ]]; then
+        echo "Error: Wallpapers folder not found: $WALLPAPERS_ROOT"
+        exit 1
+    fi
+
+    load_config
+    local current_folder="${WALLPAPER_PATH#"$WALLPAPERS_ROOT/"}"
+
+    local selected
+    selected=$(find "$WALLPAPERS_ROOT" -mindepth 1 -type d -not -path "*/.git*" -printf "%P\n" | sort | fzf \
+        --border-label="┃ pick-wallpaper folder ┃" \
+        --prompt="Select folder for rotation: " \
+        --header="Current: ${current_folder}" \
+        --preview "echo 'Images:' && find '$WALLPAPERS_ROOT/{}' -maxdepth 1 -type f \( -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.png' -o -iname '*.webp' \) | wc -l && echo '' && ls -1 '$WALLPAPERS_ROOT/{}' | grep -E '\.(jpg|jpeg|png|webp|gif)$' | head -15" \
+        --preview-window=right:40%)
+
+    if [[ -n "$selected" ]]; then
+        local new_path="$WALLPAPERS_ROOT/$selected"
+        update_config_path "$new_path"
+        echo "Folder: $selected"
+        start_timer
+        next_wallpaper
+    else
+        echo "No folder selected"
+    fi
+}
+
+# Apply next random wallpaper
+next_wallpaper() {
+    load_config
+    local image
+    image=$(get_random_image "$WALLPAPER_PATH")
+    if [[ -n "$image" ]]; then
+        set_wallpaper "$image"
+    else
+        echo "Error: No images found in $WALLPAPER_PATH"
+        exit 1
+    fi
+}
+
+# Restore last wallpaper (for startup)
+restore() {
+    ensure_daemon
+    if [[ -f "$CACHE_FILE" ]]; then
+        local last
+        last=$(cat "$CACHE_FILE")
+        if [[ -f "$last" ]]; then
+            set_wallpaper "$last"
+            return
+        fi
+    fi
+    next_wallpaper
+}
+
+# Show current status
+status() {
+    load_config
+    local interval_str
+    interval_str=$(seconds_to_systemd_time "$INTERVAL")
+
+    echo "Folder: ${WALLPAPER_PATH#"$WALLPAPERS_ROOT/"}"
+    echo "Interval: $interval_str"
+    echo ""
+    if [[ -f "$CACHE_FILE" ]]; then
+        local current
+        current=$(cat "$CACHE_FILE")
+        echo "Current: ${current#"$WALLPAPERS_ROOT/"}"
+    fi
+    echo ""
+    if systemctl --user is-active wallpaper-rotate.timer &>/dev/null; then
+        echo "Rotation: active"
+        systemctl --user list-timers wallpaper-rotate.timer --no-pager 2>/dev/null | tail -2 | head -1
+    else
+        echo "Rotation: stopped"
+    fi
+}
+
+# Show help
+help() {
+    cat << 'EOF'
+pick-wallpaper - Wallpaper manager for swww
+
+USAGE
+    pick-wallpaper [command]
+
+COMMANDS
+    (none)    Interactive picker - select a single wallpaper
+    folder    Select a folder for rotation (starts timer automatically)
+    next      Apply next random wallpaper from folder
+    stop      Stop rotation timer
+    restart   Restart timer (after config changes)
+    status    Show current configuration
+    help      Show this help
+
+CONFIGURATION
+    Edit ~/.config/wallpaper/config.yml:
+
+    path: /path/to/wallpapers/folder
+    interval: 1800               # seconds (30 min)
+    transition: fade             # swww transition type
+    transition_duration: 2       # seconds
+
+EXAMPLES
+    pick-wallpaper                  # Pick a single wallpaper
+    pick-wallpaper folder           # Pick folder, start 30min rotation
+    pick-wallpaper next             # Skip to next wallpaper
+    pick-wallpaper stop             # Stop rotation
+
+DEPENDENCIES
+    swww, fzf, yq, chafa (optional for preview)
+EOF
+}
+
+# Main
+main() {
+    case "${1:-}" in
+        -h|--help|help)
+            help
+            ;;
+        folder)
+            pick_folder
+            ;;
+        next)
+            next_wallpaper
+            ;;
+        stop)
+            stop_timer
+            ;;
+        restart)
+            start_timer
+            ;;
+        status)
+            status
+            ;;
+        # Hidden commands for internal use
+        restore)
+            restore
+            ;;
+        apply)
+            # Alias for next (backwards compat with timer)
+            next_wallpaper
+            ;;
+        "")
+            load_config
+            pick_interactive
+            ;;
+        *)
+            echo "Unknown command: $1"
+            echo "Run 'pick-wallpaper help' for usage"
+            exit 1
+            ;;
+    esac
+}
+
+main "$@"

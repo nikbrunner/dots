@@ -25,6 +25,7 @@ common:
   common/.config/zed: ~/.config/zed
   common/.config/bm: ~/.config/bm
   common/.config/tsm: ~/.config/tsm
+  common/.config/wallpaper: ~/.config/wallpaper
   common/.config/zsh/lib/async.zsh: ~/.config/zsh/lib/async.zsh
   common/.config/zsh/prompt.zsh: ~/.config/zsh/prompt.zsh
   common/.gitconfig: ~/.gitconfig
@@ -55,3 +56,5 @@ arch:
   arch/README.md: ~/README.md
   arch/.config/hypr: ~/.config/hypr
   arch/.config/niri: ~/.config/niri
+  common/.config/systemd/user/wallpaper-rotate.service: ~/.config/systemd/user/wallpaper-rotate.service
+  common/.config/systemd/user/wallpaper-rotate.timer: ~/.config/systemd/user/wallpaper-rotate.timer

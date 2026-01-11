@@ -1,0 +1,11 @@
+# Wallpaper configuration for pick-wallpaper
+
+# Folder for rotation (updated by pick-wallpaper folder)
+path: /home/nbr/repos/nikbrunner/wallpapers/jpn
+# Rotation interval in seconds (1800 = 30min, 3600 = 1h)
+interval: 15
+# swww transition type
+# Options: simple, fade, left, right, top, bottom, wipe, wave, grow, center, any, outer, random
+transition: fade
+# Transition duration in seconds
+transition_duration: 2
