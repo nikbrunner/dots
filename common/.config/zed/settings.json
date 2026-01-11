@@ -1,5 +1,5 @@
 {
-  "buffer_font_family": "TX-02",
+  "buffer_font_family": "Iosevka Nerd Font",
   "which_key": {
     "delay_ms": 250,
     "enabled": true
@@ -85,7 +85,8 @@
   "format_on_save": "on",
   "terminal": {
     "line_height": "standard",
-    "working_directory": "current_project_directory"
+    "working_directory": "current_project_directory",
+    "font_family": "Iosevka Nerd Font"
   },
   "lsp": {
     "vtsls": {
@@ -185,5 +186,6 @@
         }
       }
     }
-  }
+  },
+  "ui_font_family": "Iosevka Nerd Font"
 }

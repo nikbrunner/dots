@@ -12,8 +12,8 @@ adjust-cursor-thickness = 3
 adjust-underline-position = 3
 
 # Fonts
-font-family = TX-02 Condensed
-font-size = 16
+font-family = Iosevka Nerd Font
+font-size = 14
 
 # Window
 window-padding-x = 20
