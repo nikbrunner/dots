@@ -23,7 +23,7 @@ case "$(uname -s)" in
         ;;
 esac
 
-[[ -f ~/.env ]] && { set -a; source ~/.env; set +a; }
+[[ -r ~/.env ]] && { set -a; source ~/.env; set +a; }
 
 # Cross-Platform Path Exports ===========================================
 export PATH=$HOME/.local/bin:/usr/local/bin:$PATH

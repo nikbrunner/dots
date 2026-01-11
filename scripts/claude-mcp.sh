@@ -94,8 +94,9 @@ add_stdio_server() {
     local cmd_args=()
     cmd_args+=("--scope" "user")
     cmd_args+=("--transport" "stdio")
+    cmd_args+=("$name")
 
-    # Parse environment variables from JSON
+    # Parse environment variables from JSON (must come after name, before --)
     if [[ -n "$env_json" && "$env_json" != "null" ]]; then
         while IFS='=' read -r key val; do
             # Check if value is an env var reference (${VAR_NAME})
@@ -114,7 +115,6 @@ add_stdio_server() {
         done < <(echo "$env_json" | jq -r 'to_entries | .[] | "\(.key)=\(.value)"')
     fi
 
-    cmd_args+=("$name")
     cmd_args+=("--")
     cmd_args+=("$command")
 
@@ -144,8 +144,10 @@ add_http_server() {
     local cmd_args=()
     cmd_args+=("--scope" "user")
     cmd_args+=("--transport" "http")
+    cmd_args+=("$name")
+    cmd_args+=("$url")
 
-    # Parse headers from JSON
+    # Parse headers from JSON (must come after name and url)
     if [[ -n "$headers_json" && "$headers_json" != "null" ]]; then
         while IFS='=' read -r key val; do
             # Check if value is an env var reference (${VAR_NAME})
@@ -163,9 +165,6 @@ add_http_server() {
             fi
         done < <(echo "$headers_json" | jq -r 'to_entries | .[] | "\(.key)=\(.value)"')
     fi
-
-    cmd_args+=("$name")
-    cmd_args+=("$url")
 
     if [[ "$DRY_RUN" == true ]]; then
         echo -e "${YELLOW}[DRY]${NC} Would run: claude mcp add ${cmd_args[*]}"
