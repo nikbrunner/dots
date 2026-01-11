@@ -376,6 +376,32 @@ cmd_sync() {
             cmd_link
         fi
     fi
+
+    # Push local commits if any
+    echo ""
+    if [[ -n $(git log @{u}.. 2>/dev/null) ]]; then
+        local commit_count
+        commit_count=$(git rev-list --count @{u}.. 2>/dev/null)
+        log_info "Found $commit_count local commit(s) to push"
+
+        if command -v gum >/dev/null 2>&1; then
+            if gum confirm "Push to remote?"; then
+                do_push false
+            else
+                log_info "Skipped push. Run 'dots push' later."
+            fi
+        else
+            echo -n "Push to remote? (Y/n) "
+            read -r do_push_choice
+            if [[ "$do_push_choice" != "n" && "$do_push_choice" != "N" ]]; then
+                do_push false
+            else
+                log_info "Skipped push. Run 'dots push' later."
+            fi
+        fi
+    else
+        log_success "Already up to date with remote"
+    fi
 }
 
 # Shared push function
