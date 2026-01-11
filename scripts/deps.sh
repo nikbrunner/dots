@@ -37,6 +37,7 @@ declare -a REQUIRED_DEPS=(
     "go:Go programming language"
     "deno:JavaScript/TypeScript runtime"
     "claude-code:AI coding assistant CLI"
+    "beads:Git-backed issue tracker for coding agents"
     "claude-desktop:Claude desktop application"
     "signal:Signal private messenger"
     "slack:Slack messaging"
@@ -48,7 +49,6 @@ declare -a REQUIRED_DEPS=(
     "zed-preview:Zed editor preview build"
     "bluez:Bluetooth protocol stack (Arch only)"
     "bluez-utils:Bluetooth utilities (Arch only)"
-    "blueman:Bluetooth manager GUI (Arch only)"
     "bluetui:Bluetooth TUI manager (Arch only)"
     "swww:Wayland wallpaper daemon (Arch only)"
     "chafa:Terminal image viewer (Arch only)"
@@ -149,9 +149,6 @@ check_dependency() {
     bluez-utils)
         check_package_installed "bluez-utils"
         ;;
-    blueman)
-        command -v blueman-manager &>/dev/null
-        ;;
     bluetui)
         command -v bluetui &>/dev/null
         ;;
@@ -187,6 +184,9 @@ check_dependency() {
         ;;
     claude-code)
         command -v claude &>/dev/null
+        ;;
+    beads)
+        command -v bd &>/dev/null
         ;;
     claude-desktop)
         # Check for app on macOS or package on Linux
@@ -302,6 +302,7 @@ get_package_name() {
         go) echo "go" ;;
         deno) echo "deno" ;;
         claude-code) echo "claude-code" ;;
+        beads) echo "steveyegge/beads/bd" ;;
         claude-desktop) echo "--cask claude" ;;
         signal) echo "--cask signal" ;;
         slack) echo "--cask slack" ;;
@@ -312,7 +313,6 @@ get_package_name() {
         zed-preview) echo "--cask zed@preview" ;;
         bluez) echo "" ;;      # Arch only
         bluez-utils) echo "" ;; # Arch only
-        blueman) echo "" ;;     # Arch only
         bluetui) echo "" ;;     # Arch only
         swww) echo "" ;;        # Arch only
         chafa) echo "" ;;       # Arch only
@@ -357,6 +357,7 @@ get_package_name() {
         go) echo "go" ;;
         deno) echo "deno" ;;
         claude-code) echo "claude-code" ;;
+        beads) echo "beads-bin" ;;
         claude-desktop) echo "claude-desktop-native" ;;
         signal) echo "signal-desktop" ;;
         slack) echo "slack-desktop" ;;
@@ -367,7 +368,6 @@ get_package_name() {
         zed-preview) echo "zed-preview-bin" ;;
         bluez) echo "bluez" ;;
         bluez-utils) echo "bluez-utils" ;;
-        blueman) echo "blueman" ;;
         bluetui) echo "bluetui" ;;
         swww) echo "swww" ;;
         chafa) echo "chafa" ;;
