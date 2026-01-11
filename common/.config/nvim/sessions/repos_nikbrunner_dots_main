@@ -12,7 +12,7 @@ set shortmess+=aoO
 badd +32 common/.config/nvim/lua/options.lua
 badd +70 common/.config/nvim/lua/specs/obsidian.lua
 badd +14 common/.config/nvim/ftplugin/markdown.lua
-badd +40 common/.config/ghostty/config
+badd +25 common/.config/ghostty/config
 argglobal
 %argdel
 set stal=2
@@ -38,9 +38,9 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe 'vert 1resize ' . ((&columns * 38 + 57) / 115)
-exe 'vert 2resize ' . ((&columns * 38 + 57) / 115)
-exe 'vert 3resize ' . ((&columns * 37 + 57) / 115)
+exe 'vert 1resize ' . ((&columns * 97 + 146) / 293)
+exe 'vert 2resize ' . ((&columns * 97 + 146) / 293)
+exe 'vert 3resize ' . ((&columns * 97 + 146) / 293)
 argglobal
 setlocal keymap=
 setlocal noarabic
@@ -152,7 +152,7 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 32 - ((4 * winheight(0) + 18) / 36)
+let s:l = 32 - ((9 * winheight(0) + 37) / 75)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
@@ -275,7 +275,7 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 70 - ((0 * winheight(0) + 18) / 36)
+let s:l = 70 - ((0 * winheight(0) + 37) / 75)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
@@ -398,16 +398,16 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 14 - ((13 * winheight(0) + 18) / 36)
+let s:l = 14 - ((13 * winheight(0) + 37) / 75)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
 keepjumps 14
 normal! 0
 wincmd w
-exe 'vert 1resize ' . ((&columns * 38 + 57) / 115)
-exe 'vert 2resize ' . ((&columns * 38 + 57) / 115)
-exe 'vert 3resize ' . ((&columns * 37 + 57) / 115)
+exe 'vert 1resize ' . ((&columns * 97 + 146) / 293)
+exe 'vert 2resize ' . ((&columns * 97 + 146) / 293)
+exe 'vert 3resize ' . ((&columns * 97 + 146) / 293)
 tabnext
 edit common/.config/ghostty/config
 argglobal
@@ -518,11 +518,11 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 20 - ((19 * winheight(0) + 18) / 36)
+let s:l = 25 - ((24 * winheight(0) + 37) / 75)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 20
+keepjumps 25
 normal! 0
 tabnext 2
 set stal=1
