@@ -15,6 +15,7 @@ TMUX_CONFIG="$DOTS_DIR/common/.config/tmux/tmux.conf"
 GHOSTTY_CONFIG="$DOTS_DIR/common/.config/ghostty/config"
 GIT_CONFIG="$DOTS_DIR/common/.gitconfig"
 ZED_CONFIG="$DOTS_DIR/common/.config/zed/settings.json"
+NIRI_THEME_LINK="$DOTS_DIR/arch/.config/niri/theme.kdl"
 
 # Get current theme from nvim config
 get_current_theme() {
@@ -106,6 +107,19 @@ update_delta_theme() {
             sed -i 's/^  dark = true/  ; dark = true/' "$GIT_CONFIG"
             sed -i 's/^  ; light = true/  light = true/' "$GIT_CONFIG"
         fi
+    fi
+}
+
+# Update Niri theme (Linux/Wayland only)
+update_niri_theme() {
+    local theme="$1"
+    local collection="$2"
+    local theme_source="$HOME/repos/black-atom-industries/niri/themes/$collection/${theme}.kdl"
+
+    # Only update if niri config directory exists (Linux/Wayland only)
+    if [[ -d "$(dirname "$NIRI_THEME_LINK")" ]]; then
+        ln -sf "$theme_source" "$NIRI_THEME_LINK"
+        echo "niri theme updated"
     fi
 }
 
@@ -214,6 +228,7 @@ apply_theme() {
     update_ghostty_theme "$theme"
     update_zed_theme "$theme" "$appearance"
     update_delta_theme "$appearance"
+    update_niri_theme "$theme" "$collection"
     update_macos_appearance "$appearance"
 
     # Brief pause to let file changes and system appearance settle
