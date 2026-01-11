@@ -25,7 +25,7 @@ badd +20 src/themes/default/black-atom-default-light-dimmed.ts
 badd +20 src/themes/default/black-atom-default-dark-dimmed.ts
 badd +20 src/themes/default/black-atom-default-light.ts
 badd +28 src/themes/default/ui_dark.ts
-badd +36 src/themes/default/ui_light.ts
+badd +38 src/themes/default/ui_light.ts
 badd +35 src/themes/mnml/black-atom-mnml-clay-light.ts
 badd +41 src/themes/mnml/ui_light.ts
 badd +19 src/themes/mnml/black-atom-mnml-clay-dark.ts
@@ -813,11 +813,11 @@ setlocal wrapmargin=0
 sil! normal! zo
 37
 sil! normal! zo
-let s:l = 38 - ((37 * winheight(0) + 23) / 47)
+let s:l = 40 - ((39 * winheight(0) + 23) / 47)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 38
+keepjumps 40
 normal! 0
 wincmd w
 argglobal
