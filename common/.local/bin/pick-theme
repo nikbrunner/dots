@@ -120,7 +120,7 @@ update_niri_theme() {
 
     # Only update if niri config directory exists (Linux/Wayland only)
     if [[ -d "$(dirname "$NIRI_THEME_LINK")" ]]; then
-        ln -sf "$theme_source" "$NIRI_THEME_LINK"
+        ln -sfr "$theme_source" "$NIRI_THEME_LINK"
         echo "niri theme updated"
     fi
 }
