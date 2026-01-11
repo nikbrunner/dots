@@ -9,8 +9,8 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +332 ~/repos/nikbrunner/dots/arch/.config/niri/config.kdl
-badd +18 ~/repos/nikbrunner/dots/arch/.config/niri/theme.kdl
+badd +24 ~/repos/nikbrunner/dots/arch/.config/niri/theme.kdl
+badd +0 ~/repos/nikbrunner/dots/common/.config/tmux/tmux.conf
 argglobal
 %argdel
 edit ~/repos/nikbrunner/dots/arch/.config/niri/theme.kdl
@@ -30,8 +30,8 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe 'vert 1resize ' . ((&columns * 144 + 144) / 289)
-exe 'vert 2resize ' . ((&columns * 144 + 144) / 289)
+exe 'vert 1resize ' . ((&columns * 119 + 120) / 240)
+exe 'vert 2resize ' . ((&columns * 120 + 120) / 240)
 argglobal
 setlocal keymap=
 setlocal noarabic
@@ -140,7 +140,7 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 24 - ((23 * winheight(0) + 23) / 46)
+let s:l = 24 - ((23 * winheight(0) + 20) / 41)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
@@ -148,9 +148,9 @@ keepjumps 24
 normal! 0
 wincmd w
 argglobal
-if bufexists(fnamemodify("~/repos/nikbrunner/dots/arch/.config/niri/config.kdl", ":p")) | buffer ~/repos/nikbrunner/dots/arch/.config/niri/config.kdl | else | edit ~/repos/nikbrunner/dots/arch/.config/niri/config.kdl | endif
+if bufexists(fnamemodify("~/repos/nikbrunner/dots/common/.config/tmux/tmux.conf", ":p")) | buffer ~/repos/nikbrunner/dots/common/.config/tmux/tmux.conf | else | edit ~/repos/nikbrunner/dots/common/.config/tmux/tmux.conf | endif
 if &buftype ==# 'terminal'
-  silent file ~/repos/nikbrunner/dots/arch/.config/niri/config.kdl
+  silent file ~/repos/nikbrunner/dots/common/.config/tmux/tmux.conf
 endif
 setlocal keymap=
 setlocal noarabic
@@ -168,8 +168,8 @@ setlocal cinoptions=
 setlocal cinscopedecls=public,protected,private
 setlocal cinwords=if,else,while,do,for,switch
 setlocal colorcolumn=
-setlocal comments=://
-setlocal commentstring=//\ %s
+setlocal comments=:#
+setlocal commentstring=#\ %s
 setlocal complete=.,w,b,u,t
 setlocal completefunc=
 setlocal completeslash=
@@ -183,8 +183,8 @@ setlocal cursorlineopt=both
 setlocal nodiff
 setlocal eventignorewin=
 setlocal expandtab
-if &filetype != 'kdl'
-setlocal filetype=kdl
+if &filetype != 'tmux'
+setlocal filetype=tmux
 endif
 setlocal fixendofline
 setlocal foldcolumn=0
@@ -199,11 +199,11 @@ setlocal foldnestmax=20
 setlocal foldtext=
 setlocal formatexpr=v:lua.require'conform'.formatexpr()
 setlocal formatlistpat=^\\s*\\d\\+[\\]:.)}\\t\ ]\\s*
-setlocal formatoptions=cqj
+setlocal formatoptions=tcqj
 setlocal iminsert=0
 setlocal imsearch=-1
 setlocal includeexpr=
-setlocal indentexpr=nvim_treesitter#indent()
+setlocal indentexpr=
 setlocal indentkeys=0{,0},0),0],:,0#,!^F,o,O,e
 setlocal noinfercase
 setlocal iskeyword=@,48-57,_,192-255
@@ -251,7 +251,7 @@ setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#arch%*\ %#WinBarSeparator#/%*\ %#WinBarPath#.config%*\ %#WinBarSeparator#/%*\ %#WinBarPath#niri%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#config.kdl%*
+setlocal winbar=%#WinBarPath#common%*\ %#WinBarSeparator#/%*\ %#WinBarPath#.config%*\ %#WinBarSeparator#/%*\ %#WinBarPath#tmux%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#tmux.conf%*
 setlocal winblend=0
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -259,16 +259,16 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 332 - ((23 * winheight(0) + 23) / 46)
+let s:l = 29 - ((22 * winheight(0) + 20) / 41)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 332
-normal! 0
+keepjumps 29
+normal! 05|
 wincmd w
 2wincmd w
-exe 'vert 1resize ' . ((&columns * 144 + 144) / 289)
-exe 'vert 2resize ' . ((&columns * 144 + 144) / 289)
+exe 'vert 1resize ' . ((&columns * 119 + 120) / 240)
+exe 'vert 2resize ' . ((&columns * 120 + 120) / 240)
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf

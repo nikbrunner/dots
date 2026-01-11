@@ -25,7 +25,7 @@ badd +20 src/themes/default/black-atom-default-light-dimmed.ts
 badd +20 src/themes/default/black-atom-default-dark-dimmed.ts
 badd +20 src/themes/default/black-atom-default-light.ts
 badd +28 src/themes/default/ui_dark.ts
-badd +38 src/themes/default/ui_light.ts
+badd +40 src/themes/default/ui_light.ts
 badd +35 src/themes/mnml/black-atom-mnml-clay-light.ts
 badd +41 src/themes/mnml/ui_light.ts
 badd +19 src/themes/mnml/black-atom-mnml-clay-dark.ts
@@ -65,10 +65,10 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe 'vert 1resize ' . ((&columns * 80 + 160) / 321)
-exe 'vert 2resize ' . ((&columns * 79 + 160) / 321)
-exe 'vert 3resize ' . ((&columns * 80 + 160) / 321)
-exe 'vert 4resize ' . ((&columns * 79 + 160) / 321)
+exe 'vert 1resize ' . ((&columns * 62 + 125) / 251)
+exe 'vert 2resize ' . ((&columns * 62 + 125) / 251)
+exe 'vert 3resize ' . ((&columns * 62 + 125) / 251)
+exe 'vert 4resize ' . ((&columns * 62 + 125) / 251)
 argglobal
 balt src/types/theme.ts
 setlocal keymap=
@@ -178,7 +178,7 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 29 - ((20 * winheight(0) + 23) / 47)
+let s:l = 29 - ((15 * winheight(0) + 18) / 37)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
@@ -298,7 +298,7 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 20 - ((14 * winheight(0) + 23) / 47)
+let s:l = 20 - ((11 * winheight(0) + 18) / 37)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
@@ -418,7 +418,7 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 28 - ((20 * winheight(0) + 23) / 47)
+let s:l = 28 - ((15 * winheight(0) + 18) / 37)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
@@ -538,17 +538,17 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 20 - ((14 * winheight(0) + 23) / 47)
+let s:l = 20 - ((11 * winheight(0) + 18) / 37)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
 keepjumps 20
 normal! 0
 wincmd w
-exe 'vert 1resize ' . ((&columns * 80 + 160) / 321)
-exe 'vert 2resize ' . ((&columns * 79 + 160) / 321)
-exe 'vert 3resize ' . ((&columns * 80 + 160) / 321)
-exe 'vert 4resize ' . ((&columns * 79 + 160) / 321)
+exe 'vert 1resize ' . ((&columns * 62 + 125) / 251)
+exe 'vert 2resize ' . ((&columns * 62 + 125) / 251)
+exe 'vert 3resize ' . ((&columns * 62 + 125) / 251)
+exe 'vert 4resize ' . ((&columns * 62 + 125) / 251)
 tabnext
 edit src/themes/default/ui_dark.ts
 let s:save_splitbelow = &splitbelow
@@ -573,10 +573,10 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe 'vert 1resize ' . ((&columns * 79 + 160) / 321)
-exe 'vert 2resize ' . ((&columns * 80 + 160) / 321)
-exe 'vert 3resize ' . ((&columns * 80 + 160) / 321)
-exe 'vert 4resize ' . ((&columns * 79 + 160) / 321)
+exe 'vert 1resize ' . ((&columns * 62 + 125) / 251)
+exe 'vert 2resize ' . ((&columns * 62 + 125) / 251)
+exe 'vert 3resize ' . ((&columns * 62 + 125) / 251)
+exe 'vert 4resize ' . ((&columns * 62 + 125) / 251)
 argglobal
 setlocal keymap=
 setlocal noarabic
@@ -689,7 +689,7 @@ setlocal wrapmargin=0
 sil! normal! zo
 37
 sil! normal! zo
-let s:l = 28 - ((21 * winheight(0) + 23) / 47)
+let s:l = 28 - ((16 * winheight(0) + 18) / 37)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
@@ -813,7 +813,7 @@ setlocal wrapmargin=0
 sil! normal! zo
 37
 sil! normal! zo
-let s:l = 40 - ((39 * winheight(0) + 23) / 47)
+let s:l = 40 - ((31 * winheight(0) + 18) / 37)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
@@ -937,7 +937,7 @@ setlocal wrapmargin=0
 sil! normal! zo
 15
 sil! normal! zo
-let s:l = 75 - ((24 * winheight(0) + 23) / 47)
+let s:l = 75 - ((19 * winheight(0) + 18) / 37)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
@@ -1061,7 +1061,7 @@ setlocal wrapmargin=0
 sil! normal! zo
 15
 sil! normal! zo
-let s:l = 84 - ((15 * winheight(0) + 23) / 47)
+let s:l = 84 - ((12 * winheight(0) + 18) / 37)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
@@ -1069,10 +1069,10 @@ keepjumps 84
 normal! 017|
 wincmd w
 2wincmd w
-exe 'vert 1resize ' . ((&columns * 79 + 160) / 321)
-exe 'vert 2resize ' . ((&columns * 80 + 160) / 321)
-exe 'vert 3resize ' . ((&columns * 80 + 160) / 321)
-exe 'vert 4resize ' . ((&columns * 79 + 160) / 321)
+exe 'vert 1resize ' . ((&columns * 62 + 125) / 251)
+exe 'vert 2resize ' . ((&columns * 62 + 125) / 251)
+exe 'vert 3resize ' . ((&columns * 62 + 125) / 251)
+exe 'vert 4resize ' . ((&columns * 62 + 125) / 251)
 tabnext
 edit src/themes/mnml/black-atom-mnml-clay-light.ts
 let s:save_splitbelow = &splitbelow
@@ -1094,9 +1094,9 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe 'vert 1resize ' . ((&columns * 107 + 160) / 321)
-exe 'vert 2resize ' . ((&columns * 106 + 160) / 321)
-exe 'vert 3resize ' . ((&columns * 106 + 160) / 321)
+exe 'vert 1resize ' . ((&columns * 83 + 125) / 251)
+exe 'vert 2resize ' . ((&columns * 83 + 125) / 251)
+exe 'vert 3resize ' . ((&columns * 83 + 125) / 251)
 argglobal
 balt src/themes/default/ui_dark.ts
 setlocal keymap=
@@ -1206,7 +1206,7 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 35 - ((25 * winheight(0) + 23) / 47)
+let s:l = 35 - ((20 * winheight(0) + 18) / 37)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
@@ -1326,7 +1326,7 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 24 - ((0 * winheight(0) + 23) / 47)
+let s:l = 24 - ((0 * winheight(0) + 18) / 37)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
@@ -1450,16 +1450,16 @@ setlocal wrapmargin=0
 sil! normal! zo
 36
 sil! normal! zo
-let s:l = 45 - ((32 * winheight(0) + 23) / 47)
+let s:l = 45 - ((7 * winheight(0) + 18) / 37)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
 keepjumps 45
 normal! 033|
 wincmd w
-exe 'vert 1resize ' . ((&columns * 107 + 160) / 321)
-exe 'vert 2resize ' . ((&columns * 106 + 160) / 321)
-exe 'vert 3resize ' . ((&columns * 106 + 160) / 321)
+exe 'vert 1resize ' . ((&columns * 83 + 125) / 251)
+exe 'vert 2resize ' . ((&columns * 83 + 125) / 251)
+exe 'vert 3resize ' . ((&columns * 83 + 125) / 251)
 tabnext
 edit src/themes/terra/black-atom-terra-fall-night.ts
 let s:save_splitbelow = &splitbelow
@@ -1484,10 +1484,10 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe 'vert 1resize ' . ((&columns * 80 + 160) / 321)
-exe 'vert 2resize ' . ((&columns * 79 + 160) / 321)
-exe 'vert 3resize ' . ((&columns * 80 + 160) / 321)
-exe 'vert 4resize ' . ((&columns * 79 + 160) / 321)
+exe 'vert 1resize ' . ((&columns * 62 + 125) / 251)
+exe 'vert 2resize ' . ((&columns * 62 + 125) / 251)
+exe 'vert 3resize ' . ((&columns * 62 + 125) / 251)
+exe 'vert 4resize ' . ((&columns * 62 + 125) / 251)
 argglobal
 setlocal keymap=
 setlocal noarabic
@@ -1596,7 +1596,7 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 18 - ((7 * winheight(0) + 23) / 47)
+let s:l = 18 - ((5 * winheight(0) + 18) / 37)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
@@ -1716,7 +1716,7 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 3 - ((0 * winheight(0) + 23) / 47)
+let s:l = 3 - ((0 * winheight(0) + 18) / 37)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
@@ -1838,7 +1838,7 @@ setlocal nowrap
 setlocal wrapmargin=0
 5
 sil! normal! zo
-let s:l = 9 - ((2 * winheight(0) + 23) / 47)
+let s:l = 9 - ((2 * winheight(0) + 18) / 37)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
@@ -1960,17 +1960,17 @@ setlocal nowrap
 setlocal wrapmargin=0
 5
 sil! normal! zo
-let s:l = 11 - ((0 * winheight(0) + 23) / 47)
+let s:l = 11 - ((0 * winheight(0) + 18) / 37)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
 keepjumps 11
 normal! 05|
 wincmd w
-exe 'vert 1resize ' . ((&columns * 80 + 160) / 321)
-exe 'vert 2resize ' . ((&columns * 79 + 160) / 321)
-exe 'vert 3resize ' . ((&columns * 80 + 160) / 321)
-exe 'vert 4resize ' . ((&columns * 79 + 160) / 321)
+exe 'vert 1resize ' . ((&columns * 62 + 125) / 251)
+exe 'vert 2resize ' . ((&columns * 62 + 125) / 251)
+exe 'vert 3resize ' . ((&columns * 62 + 125) / 251)
+exe 'vert 4resize ' . ((&columns * 62 + 125) / 251)
 tabnext
 edit src/types/theme.ts
 let s:save_splitbelow = &splitbelow
@@ -1992,9 +1992,9 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe 'vert 1resize ' . ((&columns * 107 + 160) / 321)
-exe 'vert 2resize ' . ((&columns * 106 + 160) / 321)
-exe 'vert 3resize ' . ((&columns * 106 + 160) / 321)
+exe 'vert 1resize ' . ((&columns * 83 + 125) / 251)
+exe 'vert 2resize ' . ((&columns * 83 + 125) / 251)
+exe 'vert 3resize ' . ((&columns * 83 + 125) / 251)
 argglobal
 setlocal keymap=
 setlocal noarabic
@@ -2103,7 +2103,7 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 282 - ((5 * winheight(0) + 23) / 47)
+let s:l = 282 - ((4 * winheight(0) + 18) / 37)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
@@ -2223,7 +2223,7 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 51 - ((0 * winheight(0) + 23) / 47)
+let s:l = 51 - ((0 * winheight(0) + 18) / 37)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
@@ -2343,16 +2343,16 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 43 - ((5 * winheight(0) + 23) / 47)
+let s:l = 43 - ((4 * winheight(0) + 18) / 37)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
 keepjumps 43
 normal! 0
 wincmd w
-exe 'vert 1resize ' . ((&columns * 107 + 160) / 321)
-exe 'vert 2resize ' . ((&columns * 106 + 160) / 321)
-exe 'vert 3resize ' . ((&columns * 106 + 160) / 321)
+exe 'vert 1resize ' . ((&columns * 83 + 125) / 251)
+exe 'vert 2resize ' . ((&columns * 83 + 125) / 251)
+exe 'vert 3resize ' . ((&columns * 83 + 125) / 251)
 tabnext
 edit ~/repos/black-atom-industries/core
 argglobal
@@ -2464,7 +2464,7 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 1 - ((0 * winheight(0) + 23) / 47)
+let s:l = 1 - ((0 * winheight(0) + 18) / 37)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
@@ -2491,9 +2491,9 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe 'vert 1resize ' . ((&columns * 107 + 160) / 321)
-exe 'vert 2resize ' . ((&columns * 106 + 160) / 321)
-exe 'vert 3resize ' . ((&columns * 106 + 160) / 321)
+exe 'vert 1resize ' . ((&columns * 83 + 125) / 251)
+exe 'vert 2resize ' . ((&columns * 83 + 125) / 251)
+exe 'vert 3resize ' . ((&columns * 83 + 125) / 251)
 argglobal
 balt src/themes/mnml/ui_dark.ts
 setlocal keymap=
@@ -2603,7 +2603,7 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 36 - ((5 * winheight(0) + 23) / 47)
+let s:l = 36 - ((4 * winheight(0) + 18) / 37)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
@@ -2723,7 +2723,7 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 30 - ((5 * winheight(0) + 23) / 47)
+let s:l = 30 - ((4 * winheight(0) + 18) / 37)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
@@ -2847,16 +2847,16 @@ setlocal wrapmargin=0
 sil! normal! zo
 9
 sil! normal! zo
-let s:l = 13 - ((5 * winheight(0) + 23) / 47)
+let s:l = 13 - ((4 * winheight(0) + 18) / 37)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
 keepjumps 13
 normal! 0
 wincmd w
-exe 'vert 1resize ' . ((&columns * 107 + 160) / 321)
-exe 'vert 2resize ' . ((&columns * 106 + 160) / 321)
-exe 'vert 3resize ' . ((&columns * 106 + 160) / 321)
+exe 'vert 1resize ' . ((&columns * 83 + 125) / 251)
+exe 'vert 2resize ' . ((&columns * 83 + 125) / 251)
+exe 'vert 3resize ' . ((&columns * 83 + 125) / 251)
 tabnext 2
 set stal=1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
