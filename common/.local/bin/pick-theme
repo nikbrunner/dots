@@ -16,7 +16,7 @@ GHOSTTY_CONFIG="$DOTS_DIR/common/.config/ghostty/config"
 GIT_CONFIG="$DOTS_DIR/common/.gitconfig"
 ZED_CONFIG="$DOTS_DIR/common/.config/zed/settings.json"
 NIRI_THEME_LINK="$DOTS_DIR/arch/.config/niri/theme.kdl"
-WAYBAR_STYLE="$HOME/.config/waybar/style.css"
+WAYBAR_THEME="$HOME/.config/waybar/theme.css"
 WAYBAR_THEMES_DIR="$HOME/.config/waybar/themes"
 
 # Get current theme from nvim config
@@ -131,7 +131,7 @@ update_waybar_theme() {
 
     # Only update if waybar themes directory exists
     if [[ -d "$WAYBAR_THEMES_DIR" ]]; then
-        ln -sf "themes/${theme}.css" "$WAYBAR_STYLE"
+        ln -sf "themes/${theme}.css" "$WAYBAR_THEME"
         echo "waybar theme updated"
     fi
 }
