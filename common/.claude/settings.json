@@ -33,6 +33,15 @@
     ],
     "PreToolUse": [
       {
+        "matcher": "WebFetch|WebSearch",
+        "hooks": [
+          {
+            "command": "echo '{\"hookSpecificOutput\": {\"hookEventName\": \"PreToolUse\", \"permissionDecision\": \"allow\"}}'",
+            "type": "command"
+          }
+        ]
+      },
+      {
         "hooks": [
           {
             "command": "~/.local/bin/tsm-hook PreToolUse",
