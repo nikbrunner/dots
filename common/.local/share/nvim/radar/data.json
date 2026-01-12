@@ -13,7 +13,7 @@
             "label": "2"
           }
         ],
-        "lastAccessed": 1767540531
+        "lastAccessed": 1768209747
       }
     },
     "~/repos/black-atom-industries/website": {
@@ -132,6 +132,15 @@
           }
         ],
         "lastAccessed": 1765453630
+      },
+      "bcd-8985-outsourse-mixpanel-middleware": {
+        "locks": [
+          {
+            "filename": "src/client/commons/store/middlewares/tracking.ts",
+            "label": "1"
+          }
+        ],
+        "lastAccessed": 1768215464
       },
       "master": {
         "locks": [],
@@ -314,7 +323,7 @@
             "label": "3"
           }
         ],
-        "lastAccessed": 1768155381
+        "lastAccessed": 1768209750
       }
     },
     "~/repos/nikbrunner/nbr.haus": {

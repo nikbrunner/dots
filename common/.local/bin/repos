@@ -1365,6 +1365,7 @@ leave_repos() {
             "Commit with AI"
             "Save as WIP"
             "Cleanup with Claude"
+            "Discard changes"
             "Push without committing"
             "Skip this repo"
             "Stop walkthrough"
@@ -1380,16 +1381,17 @@ leave_repos() {
                 echo "  [$i] $action"
                 ((i++))
             done
-            echo -n "Choice (1-7): "
+            echo -n "Choice (1-8): "
             read -r choice
             case "$choice" in
                 1) selected_action="Review in LazyGit" ;;
                 2) selected_action="Commit with AI" ;;
                 3) selected_action="Save as WIP" ;;
                 4) selected_action="Cleanup with Claude" ;;
-                5) selected_action="Push without committing" ;;
-                6) selected_action="Skip this repo" ;;
-                7) selected_action="Stop walkthrough" ;;
+                5) selected_action="Discard changes" ;;
+                6) selected_action="Push without committing" ;;
+                7) selected_action="Skip this repo" ;;
+                8) selected_action="Stop walkthrough" ;;
                 *) selected_action="Skip this repo" ;;
             esac
         fi
@@ -1423,6 +1425,25 @@ leave_repos() {
                     processed_repos+=("$repo")
                 else
                     print_error "'claude' command not found"
+                fi
+                ;;
+            "Discard changes")
+                if has_gum; then
+                    if gum confirm "Discard ALL changes in $repo?" --default=false; then
+                        (cd "$repo_path" && git checkout . && git clean -fd)
+                        print_success "Changes discarded"
+                    else
+                        echo "Cancelled"
+                    fi
+                else
+                    echo -n "Discard ALL changes in $repo? (y/N) "
+                    read -r confirm_discard
+                    if [[ "$confirm_discard" == "y" || "$confirm_discard" == "Y" ]]; then
+                        (cd "$repo_path" && git checkout . && git clean -fd)
+                        print_success "Changes discarded"
+                    else
+                        echo "Cancelled"
+                    fi
                 fi
                 ;;
             "Push without committing")
