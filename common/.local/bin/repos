@@ -207,6 +207,96 @@ styled_fzf() {
     fzf "${fzf_args[@]}"
 }
 
+# Get repo sync status (ahead/behind remote)
+get_repo_sync_status() {
+    local repo_path="$1"
+
+    # Check if upstream is configured
+    if ! git -C "$repo_path" rev-parse --abbrev-ref '@{u}' &>/dev/null; then
+        echo "no upstream"
+        return
+    fi
+
+    local ahead behind
+    ahead=$(git -C "$repo_path" rev-list --count '@{u}..' 2>/dev/null || echo "0")
+    behind=$(git -C "$repo_path" rev-list --count '..@{u}' 2>/dev/null || echo "0")
+
+    if [[ "$ahead" -eq 0 && "$behind" -eq 0 ]]; then
+        echo "up to date"
+    elif [[ "$ahead" -gt 0 && "$behind" -gt 0 ]]; then
+        echo "↑$ahead ↓$behind"
+    elif [[ "$ahead" -gt 0 ]]; then
+        echo "↑$ahead ahead"
+    else
+        echo "↓$behind behind"
+    fi
+}
+
+# Display formatted repo status block
+show_repo_status() {
+    local repo="$1"
+    local repo_path="$REPOS_BASE_PATH/$repo"
+
+    echo "────────────────────────────────────────────────"
+    echo -e "${YELLOW}${repo}${NC}"
+    echo "────────────────────────────────────────────────"
+
+    # Show git status
+    (cd "$repo_path" && git status --short)
+
+    # Show sync status
+    local sync_status
+    sync_status=$(get_repo_sync_status "$repo_path")
+    if [[ "$sync_status" != "up to date" && "$sync_status" != "no upstream" ]]; then
+        echo ""
+        echo -e "${BLUE}${sync_status}${NC}"
+    elif [[ "$sync_status" == "no upstream" ]]; then
+        echo ""
+        echo -e "${YELLOW}⚠ no upstream configured${NC}"
+    fi
+
+    echo "────────────────────────────────────────────────"
+}
+
+# Parallel pull helper function
+parallel_pull() {
+    local repo="$1"
+    local repo_path="$REPOS_BASE_PATH/$repo"
+
+    # Check if it's a git repo
+    if [[ ! -d "$repo_path/.git" ]]; then
+        echo "SKIP:$repo:not a git repo"
+        return 0
+    fi
+
+    # Check if upstream is configured
+    if ! git -C "$repo_path" rev-parse --abbrev-ref '@{u}' &>/dev/null; then
+        echo "SKIP:$repo:no upstream"
+        return 0
+    fi
+
+    # Check if already up to date
+    git -C "$repo_path" fetch --quiet 2>/dev/null
+    local behind
+    behind=$(git -C "$repo_path" rev-list --count '..@{u}' 2>/dev/null || echo "0")
+
+    if [[ "$behind" -eq 0 ]]; then
+        echo "UP-TO-DATE:$repo"
+        return 0
+    fi
+
+    # Try to pull
+    if git -C "$repo_path" pull --quiet 2>/dev/null; then
+        echo "OK:$repo:$behind commits"
+    else
+        echo "CONFLICT:$repo"
+        return 1
+    fi
+}
+
+export -f parallel_pull get_repo_sync_status
+export REPOS_BASE_PATH
+
 # Parse git URL to extract username and repo name
 parse_git_url() {
     local url="$1"
@@ -1202,6 +1292,332 @@ cleanup_repos() {
     print_success "Cleanup completed!"
 }
 
+# Leave workflow - end of day sync
+leave_repos() {
+    local repos
+    repos=$(list_repos)
+
+    if [[ -z "$repos" ]]; then
+        print_error "No repositories found"
+        exit 1
+    fi
+
+    echo "Scanning repositories..."
+    echo
+
+    # Build queue of repos needing attention
+    local dirty_repos=()
+    local repos_to_push=()
+
+    while IFS= read -r repo; do
+        [[ -z "$repo" ]] && continue
+
+        local repo_path="$REPOS_BASE_PATH/$repo"
+
+        # Skip non-git directories
+        if [[ ! -d "$repo_path/.git" ]]; then
+            continue
+        fi
+
+        # Check for uncommitted changes
+        local status_output
+        status_output=$(cd "$repo_path" && git status --porcelain 2>/dev/null)
+
+        # Check for unpushed commits
+        local ahead=0
+        if git -C "$repo_path" rev-parse --abbrev-ref '@{u}' &>/dev/null; then
+            ahead=$(git -C "$repo_path" rev-list --count '@{u}..' 2>/dev/null || echo "0")
+        fi
+
+        if [[ -n "$status_output" ]]; then
+            dirty_repos+=("$repo")
+        elif [[ "$ahead" -gt 0 ]]; then
+            repos_to_push+=("$repo")
+        fi
+    done <<< "$repos"
+
+    # Check if there's anything to do
+    if [[ ${#dirty_repos[@]} -eq 0 && ${#repos_to_push[@]} -eq 0 ]]; then
+        print_success "All repositories are clean and synced!"
+        return 0
+    fi
+
+    echo "Found ${#dirty_repos[@]} repos with uncommitted changes"
+    echo "Found ${#repos_to_push[@]} repos with unpushed commits"
+    echo
+
+    # Process dirty repos interactively
+    local current=1
+    local total=${#dirty_repos[@]}
+    local processed_repos=()
+
+    for repo in "${dirty_repos[@]}"; do
+        local repo_path="$REPOS_BASE_PATH/$repo"
+
+        echo
+        echo "[$current/$total]"
+        show_repo_status "$repo"
+        echo
+
+        # Menu options
+        local actions=(
+            "Review in LazyGit"
+            "Commit with AI"
+            "Save as WIP"
+            "Cleanup with Claude"
+            "Push without committing"
+            "Skip this repo"
+            "Stop walkthrough"
+        )
+
+        local selected_action
+        if has_gum; then
+            selected_action=$(printf '%s\n' "${actions[@]}" | gum choose --header "What would you like to do?")
+        else
+            echo "Options:"
+            local i=1
+            for action in "${actions[@]}"; do
+                echo "  [$i] $action"
+                ((i++))
+            done
+            echo -n "Choice (1-7): "
+            read -r choice
+            case "$choice" in
+                1) selected_action="Review in LazyGit" ;;
+                2) selected_action="Commit with AI" ;;
+                3) selected_action="Save as WIP" ;;
+                4) selected_action="Cleanup with Claude" ;;
+                5) selected_action="Push without committing" ;;
+                6) selected_action="Skip this repo" ;;
+                7) selected_action="Stop walkthrough" ;;
+                *) selected_action="Skip this repo" ;;
+            esac
+        fi
+
+        case "$selected_action" in
+            "Review in LazyGit")
+                (cd "$repo_path" && lazygit)
+                processed_repos+=("$repo")
+                ;;
+            "Commit with AI")
+                echo "Running smart commit..."
+                if command -v repo &>/dev/null; then
+                    (cd "$repo_path" && repo commit -s -y)
+                    processed_repos+=("$repo")
+                else
+                    print_error "'repo' command not found"
+                fi
+                ;;
+            "Save as WIP")
+                local timestamp
+                timestamp=$(date "+%Y-%m-%d %H:%M")
+                (cd "$repo_path" && git add -A && git commit -m "wip: checkpoint ($timestamp)")
+                print_success "WIP commit created"
+                processed_repos+=("$repo")
+                ;;
+            "Cleanup with Claude")
+                echo "Running git cleanup with Claude..."
+                if command -v claude &>/dev/null; then
+                    local dots_dir="${DOTS_DIR:-$HOME/repos/nikbrunner/dots}"
+                    (cd "$repo_path" && claude -p "$dots_dir/common/.claude/commands/dots/git-cleanup.md")
+                    processed_repos+=("$repo")
+                else
+                    print_error "'claude' command not found"
+                fi
+                ;;
+            "Push without committing")
+                echo "Skipping commit, will push later..."
+                ;;
+            "Skip this repo")
+                echo "Skipping..."
+                ;;
+            "Stop walkthrough")
+                echo "Stopping walkthrough"
+                break
+                ;;
+        esac
+
+        ((current++))
+    done
+
+    # Collect all repos that need pushing
+    echo
+    echo "Checking for repos to push..."
+
+    local all_to_push=()
+    for repo in "${processed_repos[@]}" "${repos_to_push[@]}"; do
+        local repo_path="$REPOS_BASE_PATH/$repo"
+        if git -C "$repo_path" rev-parse --abbrev-ref '@{u}' &>/dev/null; then
+            local ahead
+            ahead=$(git -C "$repo_path" rev-list --count '@{u}..' 2>/dev/null || echo "0")
+            if [[ "$ahead" -gt 0 ]]; then
+                # Avoid duplicates
+                if [[ ! " ${all_to_push[*]} " =~ " ${repo} " ]]; then
+                    all_to_push+=("$repo")
+                fi
+            fi
+        fi
+    done
+
+    if [[ ${#all_to_push[@]} -eq 0 ]]; then
+        echo
+        print_success "Nothing to push!"
+        return 0
+    fi
+
+    echo
+    echo "Repos ready to push:"
+    for repo in "${all_to_push[@]}"; do
+        local repo_path="$REPOS_BASE_PATH/$repo"
+        local ahead
+        ahead=$(git -C "$repo_path" rev-list --count '@{u}..' 2>/dev/null || echo "0")
+        echo "  • $repo (↑$ahead)"
+    done
+    echo
+
+    if has_gum; then
+        if gum confirm "Push all ${#all_to_push[@]} repos?"; then
+            for repo in "${all_to_push[@]}"; do
+                local repo_path="$REPOS_BASE_PATH/$repo"
+                echo "Pushing $repo..."
+                if git -C "$repo_path" push 2>/dev/null; then
+                    print_success "$repo pushed"
+                else
+                    print_error "$repo push failed"
+                fi
+            done
+        else
+            echo "Push cancelled"
+        fi
+    else
+        echo -n "Push all ${#all_to_push[@]} repos? (y/N) "
+        read -r do_push
+        if [[ "$do_push" == "y" || "$do_push" == "Y" ]]; then
+            for repo in "${all_to_push[@]}"; do
+                local repo_path="$REPOS_BASE_PATH/$repo"
+                echo "Pushing $repo..."
+                if git -C "$repo_path" push 2>/dev/null; then
+                    print_success "$repo pushed"
+                else
+                    print_error "$repo push failed"
+                fi
+            done
+        else
+            echo "Push cancelled"
+        fi
+    fi
+
+    echo
+    print_success "Leave workflow complete!"
+}
+
+# Arrive workflow - start of day sync
+arrive_repos() {
+    local interactive=false
+    if [[ "$1" == "-i" || "$1" == "--interactive" ]]; then
+        interactive=true
+    fi
+
+    local repos
+    repos=$(list_repos)
+
+    if [[ -z "$repos" ]]; then
+        print_error "No repositories found"
+        exit 1
+    fi
+
+    echo "Pulling all repositories..."
+    echo
+
+    # Collect repos into array
+    local repo_list=()
+    while IFS= read -r repo; do
+        [[ -z "$repo" ]] && continue
+        local repo_path="$REPOS_BASE_PATH/$repo"
+        # Only include git repos
+        if [[ -d "$repo_path/.git" ]]; then
+            repo_list+=("$repo")
+        fi
+    done <<< "$repos"
+
+    local total=${#repo_list[@]}
+    echo "Found $total git repositories"
+    echo
+
+    # Pull repos with visible progress
+    local ok_count=0
+    local up_to_date_count=0
+    local conflict_count=0
+    local skip_count=0
+    local current=1
+    local conflict_repos=()
+
+    for repo in "${repo_list[@]}"; do
+        echo -n "[$current/$total] $repo... "
+        local result
+        result=$(parallel_pull "$repo")
+
+        case "$result" in
+            OK:*)
+                print_success "updated"
+                ((ok_count++))
+                ;;
+            UP-TO-DATE:*)
+                echo "up to date"
+                ((up_to_date_count++))
+                ;;
+            CONFLICT:*)
+                print_error "conflict!"
+                ((conflict_count++))
+                conflict_repos+=("$repo")
+                ;;
+            SKIP:*)
+                print_warning "skipped (${result#SKIP:*:})"
+                ((skip_count++))
+                ;;
+        esac
+        ((current++))
+    done
+
+    # Summary
+    echo
+    echo "────────────────────────────────────────────────"
+    echo -e "${YELLOW}Summary${NC}"
+    echo "────────────────────────────────────────────────"
+    echo "  Total repositories: $total"
+    [[ $ok_count -gt 0 ]] && print_success "Updated: $ok_count"
+    [[ $up_to_date_count -gt 0 ]] && echo "  Already up to date: $up_to_date_count"
+    [[ $skip_count -gt 0 ]] && print_warning "Skipped: $skip_count"
+
+    # List conflicted repos
+    if [[ ${#conflict_repos[@]} -gt 0 ]]; then
+        echo
+        print_error "Conflicts (${#conflict_repos[@]}):"
+        for repo in "${conflict_repos[@]}"; do
+            echo -e "  ${RED}• $repo${NC}"
+        done
+
+        # Offer to open lazygit for each
+        echo
+        for repo in "${conflict_repos[@]}"; do
+            if has_gum; then
+                if gum confirm "Open LazyGit for $repo?"; then
+                    (cd "$REPOS_BASE_PATH/$repo" && lazygit)
+                fi
+            else
+                echo -n "Open LazyGit for $repo? (y/N) "
+                read -r open_lg
+                if [[ "$open_lg" == "y" || "$open_lg" == "Y" ]]; then
+                    (cd "$REPOS_BASE_PATH/$repo" && lazygit)
+                fi
+            fi
+        done
+    fi
+
+    echo
+    print_success "Arrive workflow complete!"
+}
+
 # Show help
 show_help() {
     # Check which tools are installed
@@ -1231,6 +1647,8 @@ show_help() {
   \033[32mconfig\033[0m       - Edit the repos script configuration
   \033[32mstatus\033[0m       - Show git status for all repositories [\033[33m--clean\033[0m]
   \033[32mcleanup\033[0m      - Interactive cleanup workflow for dirty repositories
+  \033[32mleave\033[0m        - End of day: commit and push all dirty repos
+  \033[32marrive\033[0m       - Start of day: pull all repos [\033[33m-i\033[0m for interactive]
   \033[32msetup\033[0m        - Clone all repositories from config
   \033[32mhelp\033[0m         - Show this help message
 
@@ -1246,6 +1664,9 @@ show_help() {
   repos open nikbrunner/dots                       # Open specific repo directly
   repos setup                                      # Clone all repos from config
   repos status --clean                             # Show only dirty repositories
+  repos leave                                      # End of day sync workflow
+  repos arrive                                     # Pull all repos (parallel)
+  repos arrive -i                                  # Pull with interactive conflict handling
 
 \033[1;34mConfig File (ensure_cloned):\033[0m
   Add repositories to ensure_cloned array in config file:
@@ -1293,6 +1714,13 @@ status)
     ;;
 cleanup)
     cleanup_repos
+    ;;
+leave)
+    leave_repos
+    ;;
+arrive)
+    shift
+    arrive_repos "$@"
     ;;
 setup)
     setup_repos
