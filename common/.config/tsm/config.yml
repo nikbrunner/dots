@@ -2,28 +2,32 @@
 # Environment variables override these settings
 
 # Layout script name to apply when creating new sessions
-layout = "dev"
+layout: dev
 
 # Directory containing layout scripts
-layout_dir = "~/.config/tmux/layouts"
+layout_dir: ~/.config/tmux/layouts
 
 # Enable Claude Code status integration
-claude_status_enabled = true
+claude_status_enabled: true
+
+# Enable git status indicator (shows dirty/ahead/behind for repos)
+git_status_enabled: true
 
 # Directory for status cache files
-# cache_dir = "~/.cache/tsm"
+# cache_dir: ~/.cache/tsm
 
 # Base directories for project picker (C-p)
 # Supports multiple paths - all will be scanned
-project_dirs = ["~/repos"]
+project_dirs:
+  - ~/repos
 # Example with multiple paths:
-# project_dirs = ["~/repos", "~/work", "~/personal"]
+# project_dirs:
+#   - ~/repos
+#   - ~/work
+#   - ~/personal
 
 # Scan depth for project directories (2 = owner/repo structure)
-# project_depth = 2
-
-# Maximum visible items in scrollable lists
-# max_visible_items = 10
+# project_depth: 2
 
 # Default directory for new sessions created with C-n
-default_session_dir = "~/repos"
+default_session_dir: ~/repos
