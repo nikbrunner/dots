@@ -1362,7 +1362,7 @@ leave_repos() {
         # Menu options
         local actions=(
             "Review in LazyGit"
-            "Commit with AI"
+            "Stage all and commit with AI"
             "Save as WIP"
             "Cleanup with Claude"
             "Discard changes"
@@ -1385,7 +1385,7 @@ leave_repos() {
             read -r choice
             case "$choice" in
                 1) selected_action="Review in LazyGit" ;;
-                2) selected_action="Commit with AI" ;;
+                2) selected_action="Stage all and commit with AI" ;;
                 3) selected_action="Save as WIP" ;;
                 4) selected_action="Cleanup with Claude" ;;
                 5) selected_action="Discard changes" ;;
@@ -1401,10 +1401,10 @@ leave_repos() {
                 (cd "$repo_path" && lazygit)
                 processed_repos+=("$repo")
                 ;;
-            "Commit with AI")
-                echo "Running smart commit..."
+            "Stage all and commit with AI")
+                echo "Staging all and running smart commit..."
                 if command -v repo &>/dev/null; then
-                    (cd "$repo_path" && repo commit -s -y)
+                    (cd "$repo_path" && git add -A && repo commit -s -y)
                     processed_repos+=("$repo")
                 else
                     print_error "'repo' command not found"
