@@ -9,12 +9,11 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +31 ~/repos/nikbrunner/dcd-notes/Log/2026.01.09\ -\ Friday.md
+badd +29 ~/repos/nikbrunner/dcd-notes/Log/2026.01.09\ -\ Friday.md
 argglobal
 %argdel
 edit ~/repos/nikbrunner/dcd-notes/Log/2026.01.09\ -\ Friday.md
 argglobal
-balt ~/repos/nikbrunner/dcd-notes/Log/2026.01.09\ -\ Friday.md
 let s:cpo_save=&cpo
 set cpo&vim
 nnoremap <buffer>  <Cmd>MarkdownToggleCheckbox
@@ -144,7 +143,7 @@ if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
 keepjumps 29
-normal! 0201|
+normal! 0
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
