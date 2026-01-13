@@ -14,7 +14,7 @@
       {
         "hooks": [
           {
-            "command": "~/.local/bin/tsm-hook Notification",
+            "command": "~/.local/bin/helm-hook Notification",
             "type": "command"
           }
         ]
@@ -44,7 +44,7 @@
       {
         "hooks": [
           {
-            "command": "~/.local/bin/tsm-hook PreToolUse",
+            "command": "~/.local/bin/helm-hook PreToolUse",
             "type": "command"
           }
         ]
@@ -58,7 +58,7 @@
             "type": "command"
           },
           {
-            "command": "~/.local/bin/tsm-hook SessionStart",
+            "command": "~/.local/bin/helm-hook SessionStart",
             "type": "command"
           }
         ],
@@ -69,7 +69,7 @@
       {
         "hooks": [
           {
-            "command": "~/.local/bin/tsm-hook Stop",
+            "command": "~/.local/bin/helm-hook Stop",
             "type": "command"
           }
         ]
@@ -79,7 +79,7 @@
       {
         "hooks": [
           {
-            "command": "~/.local/bin/tsm-hook SessionEnd",
+            "command": "~/.local/bin/helm-hook SessionEnd",
             "type": "command"
           }
         ]
