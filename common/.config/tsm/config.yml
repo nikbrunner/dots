@@ -34,22 +34,5 @@ default_session_dir: ~/repos
 
 # Lazygit popup dimensions (C-g)
 lazygit_popup:
-  width: 90%
+  width: 100%
   height: 90%
-
-# Quick-access session bookmarks (slots 1-9)
-# Note: Editing bookmarks in TUI will reformat this file
-bookmarks:
-  - path: ~/repos/nikbrunner/dots
-
-  - path: ~/repos/nikbrunner/notes
-  - path: ~/repos/nikbrunner/dcd-notes
-  - path: ~/repos/nikbrunner/scarth-johnson
-
-  - path: ~/repos/black-atom-industries/core
-  - path: ~/repos/black-atom-industries/nvim
-  - path: ~/repos/black-atom-industries/radar.nvim
-
-  - path: ~/repos/nikbrunner/nbr.haus
-  - path: ~/repos/nikbrunner/tsm
-  - path: ~/repos/dealercenter-digital/bc-desktop-client
