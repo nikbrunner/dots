@@ -11,5 +11,10 @@
         "OBSIDIAN_HOST": "https://127.0.0.1:27124/"
       }
     }
+  },
+  "preferences": {
+    "localAgentModeTrustedFolders": [
+      "/Users/nbr/repos/nikbrunner/notes"
+    ]
   }
 }
