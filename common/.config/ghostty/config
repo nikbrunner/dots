@@ -2,7 +2,7 @@
 # https://github.com/imrajyavardhan12/spectre-ghostty-config
 
 # Colors
-theme = black-atom-default-dark.conf
+theme = black-atom-terra-fall-day.conf
 bold-is-bright = false
 
 # Advanced
@@ -14,12 +14,6 @@ adjust-underline-position = 3
 # Fonts
 font-family = TX-02 Condensed
 font-family-bold = TX-02 Bold Condensed
-font-size = 14
-
-# Window
-window-padding-x = 20
-window-padding-y = 10
-window-vsync = true
 window-inherit-working-directory = true
 unfocused-split-opacity = 1
 window-inherit-font-size = true
