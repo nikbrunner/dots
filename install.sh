@@ -309,6 +309,28 @@ elif [[ "$DRY_RUN" == true ]] && [[ -f "$REPOS_CONFIG" ]]; then
 	echo -e "${YELLOW}→${NC} [DRY] Would offer to run 'repos setup' to clone repositories"
 fi
 
+# 14. Fonts Setup (after repos are cloned)
+FONTS_REPO="$HOME/repos/nikbrunner/fonts"
+if [[ -d "$FONTS_REPO" ]]; then
+	echo ""
+	echo -e "${BLUE}🔤 Phase 9: Fonts Setup${NC}"
+	if [[ "$DRY_RUN" == true ]]; then
+		echo -e "${YELLOW}→${NC} [DRY] Would install fonts from $FONTS_REPO"
+		echo -e "${YELLOW}→${NC} [DRY] Would symlink pick-font to ~/.local/bin"
+	else
+		# Install fonts
+		if [[ -x "$FONTS_REPO/install.sh" ]]; then
+			"$FONTS_REPO/install.sh"
+		fi
+		# Symlink pick-font
+		if [[ -x "$FONTS_REPO/pick-font" ]]; then
+			mkdir -p "$HOME/.local/bin"
+			ln -sf "$FONTS_REPO/pick-font" "$HOME/.local/bin/pick-font"
+			echo -e "${GREEN}✓${NC} pick-font symlinked to ~/.local/bin"
+		fi
+	fi
+fi
+
 # Success message
 echo ""
 if [[ "$DRY_RUN" == true ]]; then
