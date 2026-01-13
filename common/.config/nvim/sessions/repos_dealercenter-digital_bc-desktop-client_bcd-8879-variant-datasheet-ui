@@ -13,8 +13,7 @@ badd +28 ~/repos/dealercenter-digital/bc-desktop-client/src/client/commons/store
 badd +47 ~/repos/dealercenter-digital/bc-desktop-client/src/client/commons/store/slices/modal.ts
 badd +122 ~/repos/dealercenter-digital/bc-desktop-client/src/client/commons/container/App/PrintModalPartial.tsx
 badd +51 ~/repos/dealercenter-digital/bc-desktop-client/src/client/commons/libs/services/print-service/print.ts
-badd +59 ~/repos/dealercenter-digital/bc-desktop-client/src/client/commons/container/partials/PricePartials.tsx
-badd +68 ~/repos/dealercenter-digital/bc-desktop-client/./scripts/setup_fake_wawi.sh
+badd +1 ~/repos/dealercenter-digital/bc-desktop-client/scripts/availabilities/output/famowa-availabilities.csv
 argglobal
 %argdel
 $argadd ./
@@ -39,8 +38,8 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe 'vert 1resize ' . ((&columns * 144 + 144) / 288)
-exe 'vert 2resize ' . ((&columns * 143 + 144) / 288)
+exe 'vert 1resize ' . ((&columns * 125 + 125) / 251)
+exe 'vert 2resize ' . ((&columns * 125 + 125) / 251)
 argglobal
 setlocal keymap=
 setlocal noarabic
@@ -149,7 +148,7 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 28 - ((19 * winheight(0) + 24) / 48)
+let s:l = 28 - ((18 * winheight(0) + 23) / 46)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
@@ -273,15 +272,15 @@ setlocal wrapmargin=0
 sil! normal! zo
 30
 sil! normal! zo
-let s:l = 89 - ((40 * winheight(0) + 24) / 48)
+let s:l = 89 - ((38 * winheight(0) + 23) / 46)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
 keepjumps 89
 normal! 05|
 wincmd w
-exe 'vert 1resize ' . ((&columns * 144 + 144) / 288)
-exe 'vert 2resize ' . ((&columns * 143 + 144) / 288)
+exe 'vert 1resize ' . ((&columns * 125 + 125) / 251)
+exe 'vert 2resize ' . ((&columns * 125 + 125) / 251)
 tabnext
 edit ~/repos/dealercenter-digital/bc-desktop-client/src/client/commons/container/App/PrintModalPartial.tsx
 let s:save_splitbelow = &splitbelow
@@ -300,8 +299,8 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe 'vert 1resize ' . ((&columns * 144 + 144) / 288)
-exe 'vert 2resize ' . ((&columns * 143 + 144) / 288)
+exe 'vert 1resize ' . ((&columns * 125 + 125) / 251)
+exe 'vert 2resize ' . ((&columns * 125 + 125) / 251)
 argglobal
 setlocal keymap=
 setlocal noarabic
@@ -424,7 +423,7 @@ sil! normal! zo
 sil! normal! zo
 120
 sil! normal! zo
-let s:l = 122 - ((25 * winheight(0) + 24) / 48)
+let s:l = 122 - ((24 * winheight(0) + 23) / 46)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
@@ -491,7 +490,7 @@ setlocal includeexpr=
 setlocal indentexpr=GetTypescriptIndent()
 setlocal indentkeys=0{,0},0),0],0,,!^F,o,O,e
 setlocal noinfercase
-setlocal iskeyword=@,48-57,_,192-255,$,#
+setlocal iskeyword=@,48-57,_,192-255,#,$
 setlocal lhistory=10
 setlocal nolinebreak
 setlocal nolisp
@@ -544,35 +543,17 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 51 - ((0 * winheight(0) + 24) / 48)
+let s:l = 51 - ((0 * winheight(0) + 23) / 46)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
 keepjumps 51
 normal! 014|
 wincmd w
-exe 'vert 1resize ' . ((&columns * 144 + 144) / 288)
-exe 'vert 2resize ' . ((&columns * 143 + 144) / 288)
+exe 'vert 1resize ' . ((&columns * 125 + 125) / 251)
+exe 'vert 2resize ' . ((&columns * 125 + 125) / 251)
 tabnext
-edit ~/repos/dealercenter-digital/bc-desktop-client/./scripts/setup_fake_wawi.sh
-let s:save_splitbelow = &splitbelow
-let s:save_splitright = &splitright
-set splitbelow splitright
-wincmd _ | wincmd |
-vsplit
-1wincmd h
-wincmd w
-let &splitbelow = s:save_splitbelow
-let &splitright = s:save_splitright
-wincmd t
-let s:save_winminheight = &winminheight
-let s:save_winminwidth = &winminwidth
-set winminheight=0
-set winheight=1
-set winminwidth=0
-set winwidth=1
-exe 'vert 1resize ' . ((&columns * 144 + 144) / 288)
-exe 'vert 2resize ' . ((&columns * 143 + 144) / 288)
+edit ~/repos/dealercenter-digital/bc-desktop-client/scripts/availabilities/output/famowa-availabilities.csv
 argglobal
 setlocal keymap=
 setlocal noarabic
@@ -590,8 +571,8 @@ setlocal cinoptions=
 setlocal cinscopedecls=public,protected,private
 setlocal cinwords=if,else,while,do,for,switch
 setlocal colorcolumn=
-setlocal comments=b:#
-setlocal commentstring=#\ %s
+setlocal comments=s1:/*,mb:*,ex:*/,://,b:#,:%,:XCOMM,n:>,fb:-,fb:â€¢
+setlocal commentstring=
 setlocal complete=.,w,b,u,t
 setlocal completefunc=
 setlocal completeslash=
@@ -603,11 +584,10 @@ setlocal nocursorcolumn
 setlocal cursorline
 setlocal cursorlineopt=both
 setlocal nodiff
-setlocal errorformat=%f:%l:%c:\ %trror:\ %m\ [SC%n],%f:%l:%c:\ %tarning:\ %m\ [SC%n],%f:%l:%c:\ %tote:\ %m\ [SC%n],%-G%.%#
 setlocal eventignorewin=
 setlocal expandtab
-if &filetype != 'sh'
-setlocal filetype=sh
+if &filetype != 'csv'
+setlocal filetype=csv
 endif
 setlocal fixendofline
 setlocal foldcolumn=0
@@ -616,27 +596,25 @@ setlocal foldexpr=v:lua.vim.treesitter.foldexpr()
 setlocal foldignore=#
 setlocal foldlevel=99
 setlocal foldmarker={{{,}}}
-setlocal foldmethod=expr
+setlocal foldmethod=indent
 setlocal foldminlines=1
 setlocal foldnestmax=20
 setlocal foldtext=
 setlocal formatexpr=v:lua.require'conform'.formatexpr()
 setlocal formatlistpat=^\\s*\\d\\+[\\]:.)}\\t\ ]\\s*
-setlocal formatoptions=jcroql
+setlocal formatoptions=tcqj
 setlocal iminsert=0
 setlocal imsearch=-1
 setlocal includeexpr=
-setlocal indentexpr=GetShIndent()
-setlocal indentkeys=0{,0},0),0],!^F,o,O,e,0=then,0=do,0=else,0=elif,0=fi,0=esac,0=done,0=end,),0=;;,0=;&,0=fin,0=fil,0=fip,0=fir,0=fix
+setlocal indentexpr=
+setlocal indentkeys=0{,0},0),0],:,0#,!^F,o,O,e
 setlocal noinfercase
 setlocal iskeyword=@,48-57,_,192-255
-setlocal keywordprg=:ShKeywordPrg
 setlocal lhistory=10
 setlocal nolinebreak
 setlocal nolisp
 setlocal lispoptions=
 setlocal nolist
-setlocal makeprg=shellcheck\ -f\ gcc
 setlocal matchpairs=(:),{:},[:]
 setlocal modeline
 setlocal modifiable
@@ -655,7 +633,7 @@ setlocal scrollback=-1
 setlocal noscrollbind
 setlocal shiftwidth=2
 setlocal signcolumn=yes
-setlocal nosmartindent
+setlocal smartindent
 setlocal nosmoothscroll
 setlocal softtabstop=-1
 setlocal nospell
@@ -671,12 +649,12 @@ if &syntax != ''
 setlocal syntax=
 endif
 setlocal tabstop=2
-setlocal tagfunc=v:lua.vim.lsp.tagfunc
+setlocal tagfunc=
 setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#.%*\ %#WinBarSeparator#/%*\ %#WinBarPath#scripts%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#setup_fake_wawi.sh%*
+setlocal winbar=%#WinBarPath#scripts%*\ %#WinBarSeparator#/%*\ %#WinBarPath#availabilities%*\ %#WinBarSeparator#/%*\ %#WinBarPath#output%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#famowa-availabilities.csv%*
 setlocal winblend=0
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -684,136 +662,12 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 71 - ((30 * winheight(0) + 24) / 48)
+let s:l = 3 - ((2 * winheight(0) + 23) / 46)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 71
-normal! 0
-wincmd w
-argglobal
-if bufexists(fnamemodify("~/repos/dealercenter-digital/bc-desktop-client/src/client/commons/container/partials/PricePartials.tsx", ":p")) | buffer ~/repos/dealercenter-digital/bc-desktop-client/src/client/commons/container/partials/PricePartials.tsx | else | edit ~/repos/dealercenter-digital/bc-desktop-client/src/client/commons/container/partials/PricePartials.tsx | endif
-if &buftype ==# 'terminal'
-  silent file ~/repos/dealercenter-digital/bc-desktop-client/src/client/commons/container/partials/PricePartials.tsx
-endif
-setlocal keymap=
-setlocal noarabic
-setlocal autoindent
-setlocal nobinary
-setlocal nobreakindent
-setlocal breakindentopt=
-setlocal bufhidden=
-setlocal buflisted
-setlocal buftype=
-setlocal busy=0
-setlocal nocindent
-setlocal cinkeys=0{,0},0),0],:,0#,!^F,o,O,e
-setlocal cinoptions=
-setlocal cinscopedecls=public,protected,private
-setlocal cinwords=if,else,while,do,for,switch
-setlocal colorcolumn=
-setlocal comments=sO:*\ -,mO:*\ \ ,exO:*/,s1:/*,mb:*,ex:*/,://
-setlocal commentstring=//\ %s
-setlocal complete=.,w,b,u,t
-setlocal completefunc=
-setlocal completeslash=
-setlocal concealcursor=
-setlocal conceallevel=0
-setlocal nocopyindent
-setlocal nocursorbind
-setlocal nocursorcolumn
-setlocal cursorline
-setlocal cursorlineopt=both
-setlocal nodiff
-setlocal eventignorewin=
-setlocal expandtab
-if &filetype != 'typescriptreact'
-setlocal filetype=typescriptreact
-endif
-setlocal fixendofline
-setlocal foldcolumn=0
-setlocal foldenable
-setlocal foldexpr=v:lua.vim.treesitter.foldexpr()
-setlocal foldignore=#
-setlocal foldlevel=99
-setlocal foldmarker={{{,}}}
-setlocal foldmethod=expr
-setlocal foldminlines=1
-setlocal foldnestmax=20
-setlocal foldtext=
-setlocal formatexpr=v:lua.require'conform'.formatexpr()
-setlocal formatlistpat=^\\s*\\d\\+[\\]:.)}\\t\ ]\\s*
-setlocal formatoptions=jcroql
-setlocal iminsert=0
-setlocal imsearch=-1
-setlocal includeexpr=
-setlocal indentexpr=GetTypescriptIndent()
-setlocal indentkeys=0{,0},0),0],0,,!^F,o,O,e
-setlocal noinfercase
-setlocal iskeyword=@,48-57,_,192-255
-setlocal lhistory=10
-setlocal nolinebreak
-setlocal nolisp
-setlocal lispoptions=
-setlocal nolist
-setlocal matchpairs=(:),{:},[:]
-setlocal modeline
-setlocal modifiable
-setlocal nrformats=bin,hex
-setlocal number
-setlocal numberwidth=4
-setlocal omnifunc=v:lua.vim.lsp.omnifunc
-setlocal nopreserveindent
-setlocal nopreviewwindow
-setlocal quoteescape=\\
-setlocal noreadonly
-setlocal relativenumber
-setlocal norightleft
-setlocal rightleftcmd=search
-setlocal scrollback=-1
-setlocal noscrollbind
-setlocal shiftwidth=2
-setlocal signcolumn=yes
-setlocal nosmartindent
-setlocal nosmoothscroll
-setlocal softtabstop=-1
-setlocal nospell
-setlocal spellcapcheck=[.?!]\\_[\\])'\"\\t\ ]\\+
-setlocal spellfile=
-setlocal spelllang=en_us,de_de
-setlocal spelloptions=noplainbuffer
-setlocal statuscolumn=%!v:lua.require'snacks.statuscolumn'.get()
-setlocal suffixesadd=.ts,.d.ts,.tsx,.js,.jsx,.cjs,.mjs
-setlocal noswapfile
-setlocal synmaxcol=3000
-if &syntax != ''
-setlocal syntax=
-endif
-setlocal tabstop=2
-setlocal tagfunc=v:lua.vim.lsp.tagfunc
-setlocal textwidth=0
-setlocal undofile
-setlocal varsofttabstop=
-setlocal vartabstop=
-setlocal winbar=%#WinBarPath#src%*\ %#WinBarSeparator#/%*\ %#WinBarPath#client%*\ %#WinBarSeparator#/%*\ %#WinBarPath#commons%*\ %#WinBarSeparator#/%*\ %#WinBarPath#container%*\ %#WinBarSeparator#/%*\ %#WinBarPath#partials%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#PricePartials.tsx%*
-setlocal winblend=0
-setlocal nowinfixbuf
-setlocal nowinfixheight
-setlocal nowinfixwidth
-setlocal winhighlight=
-setlocal nowrap
-setlocal wrapmargin=0
-17
-sil! normal! zo
-let s:l = 62 - ((43 * winheight(0) + 24) / 48)
-if s:l < 1 | let s:l = 1 | endif
-keepjumps exe s:l
-normal! zt
-keepjumps 62
-normal! 023|
-wincmd w
-exe 'vert 1resize ' . ((&columns * 144 + 144) / 288)
-exe 'vert 2resize ' . ((&columns * 143 + 144) / 288)
+keepjumps 3
+normal! 040|
 tabnext 3
 set stal=1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
