@@ -129,6 +129,7 @@
       "mcp__Ref__ref_search_documentation",
       "mcp__chrome-devtools__*",
       "mcp__exa__*",
+      "mcp__linear__*",
       "mcp__supabase__*"
     ],
     "ask": [],

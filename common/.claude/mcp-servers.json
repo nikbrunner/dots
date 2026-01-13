@@ -24,6 +24,11 @@
       "transport": "stdio",
       "command": "npx",
       "args": ["chrome-devtools-mcp@latest"]
+    },
+    "linear": {
+      "description": "Linear issue tracking (OAuth - run /mcp to authenticate)",
+      "transport": "http",
+      "url": "https://mcp.linear.app/mcp"
     }
   }
 }
