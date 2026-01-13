@@ -38,7 +38,6 @@ common:
   common/.vimrc: ~/.vimrc
   common/.zshrc: ~/.zshrc
   common/.local/bin/*: ~/.local/bin
-  common/fonts.json: ~/fonts.json
   common/themes.json: ~/themes.json
 
 macos:
