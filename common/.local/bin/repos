@@ -1297,7 +1297,7 @@ leave_repos() {
         local actions=(
             "Review in LazyGit"
             "Stage all and commit with AI"
-            "Save as WIP"
+            "Backup with timestamp"
             "Cleanup with Claude"
             "Discard changes"
             "Push without committing"
@@ -1320,7 +1320,7 @@ leave_repos() {
             case "$choice" in
                 1) selected_action="Review in LazyGit" ;;
                 2) selected_action="Stage all and commit with AI" ;;
-                3) selected_action="Save as WIP" ;;
+                3) selected_action="Backup with timestamp" ;;
                 4) selected_action="Cleanup with Claude" ;;
                 5) selected_action="Discard changes" ;;
                 6) selected_action="Push without committing" ;;
@@ -1344,11 +1344,11 @@ leave_repos() {
                     print_error "'repo' command not found"
                 fi
                 ;;
-            "Save as WIP")
+            "Backup with timestamp")
                 local timestamp
                 timestamp=$(date "+%Y-%m-%d %H:%M")
-                (cd "$repo_path" && git add -A && git commit -m "wip: checkpoint ($timestamp)")
-                print_success "WIP commit created"
+                (cd "$repo_path" && git add -A && git commit -m "backup: $timestamp")
+                print_success "Backup commit created"
                 processed_repos+=("$repo")
                 ;;
             "Cleanup with Claude")
