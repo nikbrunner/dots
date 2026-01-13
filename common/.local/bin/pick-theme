@@ -114,11 +114,14 @@ update_delta_theme() {
 
 # Update Niri theme (Linux/Wayland only)
 update_niri_theme() {
+    # Skip on macOS - niri is Linux/Wayland only
+    [[ "$(uname)" == "Darwin" ]] && return 0
+
     local theme="$1"
     local collection="$2"
     local theme_source="$HOME/repos/black-atom-industries/niri/themes/$collection/${theme}.kdl"
 
-    # Only update if niri config directory exists (Linux/Wayland only)
+    # Only update if niri config directory exists
     if [[ -d "$(dirname "$NIRI_THEME_LINK")" ]]; then
         ln -sfr "$theme_source" "$NIRI_THEME_LINK"
         echo "niri theme updated"
@@ -127,6 +130,9 @@ update_niri_theme() {
 
 # Update Waybar theme (Linux/Wayland only)
 update_waybar_theme() {
+    # Skip on macOS - waybar is Linux/Wayland only
+    [[ "$(uname)" == "Darwin" ]] && return 0
+
     local theme="$1"
 
     # Only update if waybar themes directory exists
