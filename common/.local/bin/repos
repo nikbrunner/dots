@@ -1366,6 +1366,7 @@ leave_repos() {
                     if gum confirm "Discard ALL changes in $repo?" --default=false; then
                         (cd "$repo_path" && git checkout . && git clean -fd)
                         print_success "Changes discarded"
+                        processed_repos+=("$repo")
                     else
                         echo "Cancelled"
                     fi
@@ -1375,6 +1376,7 @@ leave_repos() {
                     if [[ "$confirm_discard" == "y" || "$confirm_discard" == "Y" ]]; then
                         (cd "$repo_path" && git checkout . && git clean -fd)
                         print_success "Changes discarded"
+                        processed_repos+=("$repo")
                     else
                         echo "Cancelled"
                     fi
@@ -1382,6 +1384,7 @@ leave_repos() {
                 ;;
             "Push without committing")
                 echo "Skipping commit, will push later..."
+                processed_repos+=("$repo")
                 ;;
             "Skip this repo")
                 echo "Skipping..."
