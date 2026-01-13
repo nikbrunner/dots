@@ -6,8 +6,6 @@ CONFIG_FILE="${XDG_CONFIG_HOME:-$HOME/.config}/repos/config.json"
 # Defaults (can be overridden by config file)
 _DEFAULT_REPOS_BASE_PATH="$HOME/repos"
 _DEFAULT_PARALLEL_JOBS=4
-_DEFAULT_TMUX_LAYOUT="ide"
-_DEFAULT_TMUX_LAYOUTS_DIR="$HOME/.config/tmux/layouts"
 
 # Colors for output
 GREEN='\033[0;32m'
@@ -32,8 +30,6 @@ print_warning() {
 load_config() {
     REPOS_BASE_PATH="$_DEFAULT_REPOS_BASE_PATH"
     DEFAULT_PARALLEL_JOBS="$_DEFAULT_PARALLEL_JOBS"
-    TMUX_LAYOUT="$_DEFAULT_TMUX_LAYOUT"
-    TMUX_LAYOUTS_DIR="$_DEFAULT_TMUX_LAYOUTS_DIR"
 
     if [[ -f "$CONFIG_FILE" ]]; then
         local val
@@ -43,12 +39,6 @@ load_config() {
 
         val=$(jq -r '.parallel_jobs // empty' "$CONFIG_FILE" 2>/dev/null)
         [[ -n "$val" ]] && DEFAULT_PARALLEL_JOBS="$val"
-
-        val=$(jq -r '.tmux_layout // empty' "$CONFIG_FILE" 2>/dev/null)
-        [[ -n "$val" ]] && TMUX_LAYOUT="$val"
-
-        val=$(jq -r '.tmux_layouts_dir // empty' "$CONFIG_FILE" 2>/dev/null)
-        [[ -n "$val" ]] && TMUX_LAYOUTS_DIR="${val/#\~/$HOME}"
     fi
 }
 
@@ -103,8 +93,6 @@ init_config() {
 {
   "repos_base_path": "~/repos",
   "parallel_jobs": 4,
-  "tmux_layout": "ide",
-  "tmux_layouts_dir": "~/.config/tmux/layouts",
   "ensure_cloned": [
     "git@github.com:username/repo.git"
   ]
@@ -462,60 +450,6 @@ remove_repo() {
         fi
     else
         echo "Removal cancelled"
-    fi
-}
-
-# Open a repository in tmux
-open_repo() {
-    local selected="$1"
-
-    # If no argument provided, use interactive selection
-    if [[ -z "$selected" ]]; then
-        selected=$(select_repo "Select repository to open: ")
-
-        if [[ -z "$selected" ]]; then
-            echo "No repository selected"
-            exit 0
-        fi
-    fi
-
-    # Check if the repository exists
-    local repo_path="$REPOS_BASE_PATH/$selected"
-    if [[ ! -d "$repo_path" ]]; then
-        print_error "Repository not found: $selected"
-        echo "Available repositories:"
-        list_repos | head -10
-        echo "..."
-        echo "Use 'repos open' without arguments for interactive selection"
-        exit 1
-    fi
-
-    local session_name
-    session_name=$(get_session_name "$selected")
-
-    # Check if session already exists (exact match, not prefix match)
-    if tmux list-sessions -F "#{session_name}" 2>/dev/null | grep -qx "$session_name"; then
-        if [[ -n "$TMUX" ]]; then
-            tmux switch-client -t "$session_name"
-        else
-            tmux attach-session -t "$session_name"
-        fi
-    else
-        # Create new session
-        tmux new-session -d -s "$session_name" -c "$repo_path"
-
-        # Apply layout if configured and layout script exists
-        local layout_script="${TMUX_LAYOUTS_DIR}/${TMUX_LAYOUT}.sh"
-        if [[ -n "$TMUX_LAYOUT" && -x "$layout_script" ]]; then
-            "$layout_script" "$session_name" "$repo_path"
-        fi
-
-        # Switch to or attach the session
-        if [[ -n "$TMUX" ]]; then
-            tmux switch-client -t "$session_name"
-        else
-            tmux attach-session -t "$session_name"
-        fi
     fi
 }
 
@@ -1663,7 +1597,6 @@ show_help() {
   \033[32minstall\033[0m      - Guide through dependency installation
   \033[32madd\033[0m          - Clone a repository [git-url] (interactive if no URL)
   \033[32mremove\033[0m       - Remove a repository (interactive)
-  \033[32mopen\033[0m         - Open a repository in tmux [repo-path]
   \033[32mfind\033[0m         - Find and open files across all repositories
   \033[32mconfig\033[0m       - Edit the repos script configuration
   \033[32mstatus\033[0m       - Show git status for all repositories [\033[33m--clean\033[0m]
@@ -1682,7 +1615,6 @@ show_help() {
   repos install                                    # Check dependencies
   repos add                                        # Interactive repo selection
   repos add git@github.com:username/repo.git       # Clone a repository
-  repos open nikbrunner/dots                       # Open specific repo directly
   repos setup                                      # Clone all repos from config
   repos status --clean                             # Show only dirty repositories
   repos leave                                      # End of day sync workflow
@@ -1720,9 +1652,6 @@ add)
     ;;
 remove)
     remove_repo
-    ;;
-open)
-    open_repo "$2"
     ;;
 find)
     find_files
