@@ -2,8 +2,13 @@
 # https://github.com/imrajyavardhan12/spectre-ghostty-config
 
 # Colors
-theme = black-atom-default-dark-dimmed.conf
+theme = black-atom-mnml-mikado-dark.conf
 bold-is-bright = false
+
+# Window
+window-padding-x = 25
+window-padding-y = 15
+window-vsync = true
 
 # Advanced
 # custom-shader = ./shaders/cursor_trail.glsl
@@ -12,6 +17,7 @@ adjust-cursor-thickness = 3
 adjust-underline-position = 3
 
 # Fonts
+font-size = 14
 font-family = TX-02 Condensed
 font-family-bold = TX-02 Bold Condensed
 window-inherit-working-directory = true
