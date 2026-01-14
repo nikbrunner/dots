@@ -1378,27 +1378,46 @@ leave_repos() {
         show_repo_status "$repo"
         echo
 
-        # Menu options - add dots-specific options if this is the dots repo
+        # Auto-offer dots chores if this is the dots repo
+        if is_dots_repo "$repo_path"; then
+            local run_chores=false
+            if has_gum; then
+                gum confirm "Run dots chores? (theme/sessions/radar)" && run_chores=true
+            else
+                echo -n "Run dots chores? (theme/sessions/radar) (Y/n) "
+                read -r confirm_chores
+                [[ "$confirm_chores" != "n" && "$confirm_chores" != "N" ]] && run_chores=true
+            fi
+
+            if [[ "$run_chores" == true ]]; then
+                echo "Running dots chores..."
+                dots_commit_theme "$repo_path"
+                dots_commit_sessions "$repo_path"
+                dots_commit_radar "$repo_path"
+
+                # Re-check if there are remaining changes
+                local remaining
+                remaining=$(git -C "$repo_path" status --porcelain 2>/dev/null)
+                if [[ -z "$remaining" ]]; then
+                    print_success "Dots repo is clean!"
+                    processed_repos+=("$repo")
+                    ((current++))
+                    continue
+                fi
+
+                echo
+                echo "Remaining changes:"
+                show_repo_status "$repo"
+                echo
+            fi
+        fi
+
+        # Standard menu options
         local actions=(
             "Review in LazyGit"
             "Stage all and commit with AI"
             "Backup with timestamp"
             "Cleanup with Claude"
-        )
-
-        local is_dots=false
-        if is_dots_repo "$repo_path"; then
-            is_dots=true
-            actions+=(
-                "─── Dots ───"
-                "Commit theme changes"
-                "Commit session changes"
-                "Commit radar changes"
-                "Commit all dots chores"
-            )
-        fi
-
-        actions+=(
             "─────────"
             "Discard changes"
             "Push without committing"
@@ -1413,7 +1432,7 @@ leave_repos() {
             echo "Options:"
             local i=1
             for action in "${actions[@]}"; do
-                if [[ "$action" == "───"* || "$action" == "─────────" ]]; then
+                if [[ "$action" == "─────────" ]]; then
                     echo "  $action"
                 else
                     echo "  [$i] $action"
@@ -1422,10 +1441,9 @@ leave_repos() {
             done
             echo -n "Choice: "
             read -r choice
-            # Map choice number to action (skip separator lines)
             local j=0
             for action in "${actions[@]}"; do
-                if [[ "$action" != "───"* && "$action" != "─────────" ]]; then
+                if [[ "$action" != "─────────" ]]; then
                     ((j++))
                     if [[ "$j" == "$choice" ]]; then
                         selected_action="$action"
@@ -1466,22 +1484,6 @@ leave_repos() {
                 else
                     print_error "'claude' command not found"
                 fi
-                ;;
-            "Commit theme changes")
-                dots_commit_theme "$repo_path" && processed_repos+=("$repo")
-                ;;
-            "Commit session changes")
-                dots_commit_sessions "$repo_path" && processed_repos+=("$repo")
-                ;;
-            "Commit radar changes")
-                dots_commit_radar "$repo_path" && processed_repos+=("$repo")
-                ;;
-            "Commit all dots chores")
-                echo "Committing all dots chores..."
-                dots_commit_theme "$repo_path"
-                dots_commit_sessions "$repo_path"
-                dots_commit_radar "$repo_path"
-                processed_repos+=("$repo")
                 ;;
             "Discard changes")
                 if has_gum; then
