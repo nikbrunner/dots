@@ -10,6 +10,7 @@ Creates a properly formatted BCD issue following the project's issue template.
 ## What do you need an issue for?
 
 Please provide:
+
 - **Topic/Feature**: What should this issue address?
 - **Context**: Any additional context, requirements, or details
 - **Format**: You can give me:
@@ -23,39 +24,46 @@ Please provide:
 This is the issue template I'll use:
 
 ```markdown
-# bc-web-client: [Title]
+# <repository>: [Title]
 
 ## Scope & Acceptance Criteria
-* *Outline the criteria that need to be met for the feature to be considered complete and functional. This should include both functional and non-functional requirements.*
+
+- _Outline the criteria that need to be met for the feature to be considered complete and functional. This should include both functional and non-functional requirements._
 
 ## Out of Scope (optional)
-* *What should be excluded from this issue? Link the issue if there are some.*
+
+- _What should be excluded from this issue? Link the issue if there are some._
 
 ## Description (optional)
-* *Explain the problem, feature, or idea that this issue involves.*
-* *Think about the problem. Can you split this problem into sub-issues?*
-* *Does the description contain all the information so another person can work on this issue?*
-* *Optional: Check the designs, are all components available? Do you need to create new components?*
-* *Do we need to discuss this issue, solution, or problem together? (side-effects, global component or architecture changes like hooks, etc.) -> Assign the discuss label*
-* *Add the appropriate tags to the issue (e.g. Mobile Frontend or Infrastructure)*
-* *Is this issue billable? In doubt: yes.* 
+
+- _Explain the problem, feature, or idea that this issue involves._
+- _Think about the problem. Can you split this problem into sub-issues?_
+- _Does the description contain all the information so another person can work on this issue?_
+- _Optional: Check the designs, are all components available? Do you need to create new components?_
+- _Do we need to discuss this issue, solution, or problem together? (side-effects, global component or architecture changes like hooks, etc.) -> Assign the discuss label_
+- _Add the appropriate tags to the issue (e.g. Mobile Frontend or Infrastructure)_
+- _Is this issue billable? In doubt: yes._
 
 ## Tests (optional)
-* *Do these issues have side effects and do they also need to be tested?*
-* *Do we need to add a unit test?*
-* *Future: Do we need a storybook integration test?*
+
+- _Do these issues have side effects and do they also need to be tested?_
+- _Do we need to add a unit test?_
+- _Future: Do we need a storybook integration test?_
 
 ## Steps to reproduce (optional)
-* *Describe how to reproduce the issue/bug*
-* *Add the version of the software component which behaves faulty* 
+
+- _Describe how to reproduce the issue/bug_
+- _Add the version of the software component which behaves faulty_
 
 ## Post-Merge Tasks (optional)
-* *Describe open points that have to be completed after the merge of the changes, e.g. release software or post to support.*
-* *Consider a follow-up issue, if the task description does not fit in one sentence.*
+
+- _Describe open points that have to be completed after the merge of the changes, e.g. release software or post to support._
+- _Consider a follow-up issue, if the task description does not fit in one sentence._
 
 ## Resources & References (optional)
-* *Link your work in non-GitHub locations, if you assign the to verify label. (e.g. Sketch or links to a framework documentation)*
-* *Link relevant other issues*
+
+- _Link your work in non-GitHub locations, if you assign the to verify label. (e.g. Sketch or links to a framework documentation)_
+- _Link relevant other issues_
 ```
 
 ## Process
