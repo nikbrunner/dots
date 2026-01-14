@@ -9,14 +9,16 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +28 ~/repos/dealercenter-digital/bc-desktop-client/src/client/commons/store/middlewares/tracking.ts
+badd +34 ~/repos/dealercenter-digital/bc-desktop-client/src/client/commons/store/middlewares/tracking.ts
 badd +47 ~/repos/dealercenter-digital/bc-desktop-client/src/client/commons/store/slices/modal.ts
 badd +122 ~/repos/dealercenter-digital/bc-desktop-client/src/client/commons/container/App/PrintModalPartial.tsx
 badd +51 ~/repos/dealercenter-digital/bc-desktop-client/src/client/commons/libs/services/print-service/print.ts
+badd +229 ~/repos/dealercenter-digital/bc-desktop-client/README.md
 argglobal
 %argdel
 $argadd ./
 set stal=2
+tabnew +setlocal\ bufhidden=wipe
 tabnew +setlocal\ bufhidden=wipe
 tabrewind
 edit ~/repos/dealercenter-digital/bc-desktop-client/src/client/commons/store/middlewares/tracking.ts
@@ -36,8 +38,8 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe 'vert 1resize ' . ((&columns * 96 + 96) / 193)
-exe 'vert 2resize ' . ((&columns * 96 + 96) / 193)
+exe 'vert 1resize ' . ((&columns * 194 + 194) / 389)
+exe 'vert 2resize ' . ((&columns * 194 + 194) / 389)
 argglobal
 setlocal keymap=
 setlocal noarabic
@@ -105,7 +107,7 @@ setlocal modifiable
 setlocal nrformats=bin,hex
 setlocal number
 setlocal numberwidth=4
-setlocal omnifunc=v:lua.vim.lsp.omnifunc
+setlocal omnifunc=
 setlocal nopreserveindent
 setlocal nopreviewwindow
 setlocal quoteescape=\\
@@ -133,7 +135,7 @@ if &syntax != ''
 setlocal syntax=
 endif
 setlocal tabstop=2
-setlocal tagfunc=v:lua.vim.lsp.tagfunc
+setlocal tagfunc=
 setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
@@ -225,7 +227,7 @@ setlocal modifiable
 setlocal nrformats=bin,hex
 setlocal number
 setlocal numberwidth=4
-setlocal omnifunc=v:lua.vim.lsp.omnifunc
+setlocal omnifunc=
 setlocal nopreserveindent
 setlocal nopreviewwindow
 setlocal quoteescape=\\
@@ -253,7 +255,7 @@ if &syntax != ''
 setlocal syntax=
 endif
 setlocal tabstop=2
-setlocal tagfunc=v:lua.vim.lsp.tagfunc
+setlocal tagfunc=
 setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
@@ -277,8 +279,8 @@ normal! zt
 keepjumps 89
 normal! 05|
 wincmd w
-exe 'vert 1resize ' . ((&columns * 96 + 96) / 193)
-exe 'vert 2resize ' . ((&columns * 96 + 96) / 193)
+exe 'vert 1resize ' . ((&columns * 194 + 194) / 389)
+exe 'vert 2resize ' . ((&columns * 194 + 194) / 389)
 tabnext
 edit ~/repos/dealercenter-digital/bc-desktop-client/src/client/commons/container/App/PrintModalPartial.tsx
 let s:save_splitbelow = &splitbelow
@@ -297,8 +299,8 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe 'vert 1resize ' . ((&columns * 96 + 96) / 193)
-exe 'vert 2resize ' . ((&columns * 96 + 96) / 193)
+exe 'vert 1resize ' . ((&columns * 194 + 194) / 389)
+exe 'vert 2resize ' . ((&columns * 194 + 194) / 389)
 argglobal
 setlocal keymap=
 setlocal noarabic
@@ -366,7 +368,7 @@ setlocal modifiable
 setlocal nrformats=bin,hex
 setlocal number
 setlocal numberwidth=4
-setlocal omnifunc=v:lua.vim.lsp.omnifunc
+setlocal omnifunc=
 setlocal nopreserveindent
 setlocal nopreviewwindow
 setlocal quoteescape=\\
@@ -394,7 +396,7 @@ if &syntax != ''
 setlocal syntax=
 endif
 setlocal tabstop=2
-setlocal tagfunc=v:lua.vim.lsp.tagfunc
+setlocal tagfunc=
 setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
@@ -500,7 +502,7 @@ setlocal modifiable
 setlocal nrformats=bin,hex
 setlocal number
 setlocal numberwidth=4
-setlocal omnifunc=v:lua.vim.lsp.omnifunc
+setlocal omnifunc=
 setlocal nopreserveindent
 setlocal nopreviewwindow
 setlocal quoteescape=\\
@@ -528,7 +530,7 @@ if &syntax != ''
 setlocal syntax=
 endif
 setlocal tabstop=2
-setlocal tagfunc=v:lua.vim.lsp.tagfunc
+setlocal tagfunc=
 setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
@@ -548,9 +550,140 @@ normal! zt
 keepjumps 51
 normal! 014|
 wincmd w
-exe 'vert 1resize ' . ((&columns * 96 + 96) / 193)
-exe 'vert 2resize ' . ((&columns * 96 + 96) / 193)
-tabnext 2
+exe 'vert 1resize ' . ((&columns * 194 + 194) / 389)
+exe 'vert 2resize ' . ((&columns * 194 + 194) / 389)
+tabnext
+edit ~/repos/dealercenter-digital/bc-desktop-client/README.md
+argglobal
+let s:cpo_save=&cpo
+set cpo&vim
+nnoremap <buffer>  <Cmd>MarkdownToggleCheckbox
+nnoremap <buffer> ,niT <Cmd>MarkdownInsertTable
+vnoremap <buffer> ,nil s["]()<Cmd>normal! h<Cmd>startinsert<Cmd>lua require("markdown-tools.commands").prompt_and_insert_url()
+vmap <buffer> ,nii s*"*
+vmap <buffer> ,niH s=="==
+vmap <buffer> ,nib s**"**
+vnoremap <buffer> ,nih <Cmd>MarkdownHeader
+nnoremap <buffer> ,nih <Cmd>MarkdownHeader
+xnoremap <buffer> <silent> [[ :exe "normal! gv"|call search('\%(^#\{1,5\}\s\+\S\|^\S.*\n^[=-]\+$\)', "bsW")
+xnoremap <buffer> <silent> ]] :exe "normal! gv"|call search('\%(^#\{1,5\}\s\+\S\|^\S.*\n^[=-]\+$\)', "sW")
+nnoremap <buffer> <C-T> <Cmd>MarkdownToggleCheckbox
+let &cpo=s:cpo_save
+unlet s:cpo_save
+setlocal keymap=
+setlocal noarabic
+setlocal autoindent
+setlocal nobinary
+setlocal nobreakindent
+setlocal breakindentopt=
+setlocal bufhidden=
+setlocal buflisted
+setlocal buftype=
+setlocal busy=0
+setlocal nocindent
+setlocal cinkeys=0{,0},0),0],:,0#,!^F,o,O,e
+setlocal cinoptions=
+setlocal cinscopedecls=public,protected,private
+setlocal cinwords=if,else,while,do,for,switch
+setlocal colorcolumn=
+setlocal comments=fb:*,fb:-,fb:+,n:>
+setlocal commentstring=<!--\ %s\ -->
+setlocal complete=.,w,b,u,t
+setlocal completefunc=
+setlocal completeslash=
+setlocal concealcursor=
+setlocal conceallevel=0
+setlocal nocopyindent
+setlocal nocursorbind
+setlocal nocursorcolumn
+setlocal cursorline
+setlocal cursorlineopt=both
+setlocal nodiff
+setlocal eventignorewin=
+setlocal expandtab
+if &filetype != 'markdown'
+setlocal filetype=markdown
+endif
+setlocal fixendofline
+setlocal foldcolumn=0
+setlocal foldenable
+setlocal foldexpr=v:lua.vim.treesitter.foldexpr()
+setlocal foldignore=#
+setlocal foldlevel=99
+setlocal foldmarker={{{,}}}
+setlocal foldmethod=indent
+setlocal foldminlines=1
+setlocal foldnestmax=20
+setlocal foldtext=
+setlocal formatexpr=v:lua.require'conform'.formatexpr()
+setlocal formatlistpat=^\\s*\\d\\+\\.\\s\\+\\|^\\s*[-*+]\\s\\+\\|^\\[^\\ze[^\\]]\\+\\]:\\&^.\\{4\\}
+setlocal formatoptions=jtcqln
+setlocal iminsert=0
+setlocal imsearch=-1
+setlocal includeexpr=
+setlocal indentexpr=nvim_treesitter#indent()
+setlocal indentkeys=0{,0},0),0],:,0#,!^F,o,O,e
+setlocal noinfercase
+setlocal iskeyword=@,48-57,_,192-255
+setlocal lhistory=10
+setlocal linebreak
+setlocal nolisp
+setlocal lispoptions=
+setlocal nolist
+setlocal matchpairs=(:),{:},[:],<:>
+setlocal modeline
+setlocal modifiable
+setlocal nrformats=bin,hex
+setlocal number
+setlocal numberwidth=4
+setlocal omnifunc=htmlcomplete#CompleteTags
+setlocal nopreserveindent
+setlocal nopreviewwindow
+setlocal quoteescape=\\
+setlocal noreadonly
+setlocal relativenumber
+setlocal norightleft
+setlocal rightleftcmd=search
+setlocal scrollback=-1
+setlocal noscrollbind
+setlocal shiftwidth=2
+setlocal signcolumn=yes
+setlocal smartindent
+setlocal nosmoothscroll
+setlocal softtabstop=-1
+setlocal nospell
+setlocal spellcapcheck=[.?!]\\_[\\])'\"\\t\ ]\\+
+setlocal spellfile=
+setlocal spelllang=en_us,de_de
+setlocal spelloptions=noplainbuffer
+setlocal statuscolumn=%!v:lua.require'snacks.statuscolumn'.get()
+setlocal suffixesadd=
+setlocal noswapfile
+setlocal synmaxcol=3000
+if &syntax != ''
+setlocal syntax=
+endif
+setlocal tabstop=4
+setlocal tagfunc=
+setlocal textwidth=120
+setlocal undofile
+setlocal varsofttabstop=
+setlocal vartabstop=
+setlocal winbar=%#WinBarFilename#README.md%*
+setlocal winblend=0
+setlocal nowinfixbuf
+setlocal nowinfixheight
+setlocal nowinfixwidth
+setlocal winhighlight=
+setlocal wrap
+setlocal wrapmargin=0
+let s:l = 229 - ((31 * winheight(0) + 32) / 64)
+if s:l < 1 | let s:l = 1 | endif
+keepjumps exe s:l
+normal! zt
+keepjumps 229
+normal! 0
+tabnext 3
 set stal=1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf

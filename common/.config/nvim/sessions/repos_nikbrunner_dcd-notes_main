@@ -138,7 +138,7 @@ setlocal wrap
 setlocal wrapmargin=0
 25
 sil! normal! zo
-let s:l = 29 - ((28 * winheight(0) + 18) / 37)
+let s:l = 29 - ((28 * winheight(0) + 32) / 65)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt

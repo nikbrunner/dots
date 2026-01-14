@@ -9,11 +9,11 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +4 ~/repos/nikbrunner/dcd-notes/Rest\ Client/bc-desktop-client/brands.http
+badd +4 ~/repos/nikbrunner/dcd-notes/Rest\ Client/bc-desktop-client/env.http
 argglobal
 %argdel
 $argadd ./
-edit ~/repos/nikbrunner/dcd-notes/Rest\ Client/bc-desktop-client/brands.http
+edit ~/repos/nikbrunner/dcd-notes/Rest\ Client/bc-desktop-client/env.http
 argglobal
 setlocal keymap=
 setlocal noarabic
@@ -45,7 +45,7 @@ setlocal cursorline
 setlocal cursorlineopt=both
 setlocal nodiff
 setlocal eventignorewin=
-setlocal noexpandtab
+setlocal expandtab
 if &filetype != 'http'
 setlocal filetype=http
 endif
@@ -91,7 +91,7 @@ setlocal norightleft
 setlocal rightleftcmd=search
 setlocal scrollback=-1
 setlocal noscrollbind
-setlocal shiftwidth=8
+setlocal shiftwidth=2
 setlocal signcolumn=yes
 setlocal smartindent
 setlocal nosmoothscroll
@@ -108,13 +108,13 @@ setlocal synmaxcol=3000
 if &syntax != ''
 setlocal syntax=
 endif
-setlocal tabstop=8
+setlocal tabstop=4
 setlocal tagfunc=
 setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarFilename#brands.http%*
+setlocal winbar=%#WinBarFilename#env.http%*\ %#WinBarSeparator##%*\ %#WinBarSymbol#GET\ http://{{hostname}}:{{port}}/service/env%*\ %#WinBarSeparator##%*\ %#WinBarSymbol#GET%*
 setlocal winblend=0
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -122,12 +122,14 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 4 - ((3 * winheight(0) + 24) / 49)
+40
+sil! normal! zo
+let s:l = 4 - ((3 * winheight(0) + 32) / 65)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
 keepjumps 4
-normal! 0
+normal! 019|
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
