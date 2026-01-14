@@ -1226,6 +1226,91 @@ cleanup_repos() {
     print_success "Cleanup completed!"
 }
 
+# Dots repo helper: check if repo is the dots repo
+is_dots_repo() {
+    local repo_path="$1"
+    [[ -f "$repo_path/common/.config/ghostty/config" ]] && [[ -f "$repo_path/symlinks.yml" ]]
+}
+
+# Dots repo helper: commit theme changes
+dots_commit_theme() {
+    local repo_path="$1"
+    local theme_files=(
+        "common/.config/ghostty/config"
+        "common/.config/nvim/lua/config.lua"
+        "common/.config/tmux/tmux.conf"
+        "common/.config/zed/settings.json"
+    )
+
+    # Check if any theme files have changes
+    local has_changes=false
+    for file in "${theme_files[@]}"; do
+        if [[ -n $(git -C "$repo_path" status --porcelain "$file" 2>/dev/null) ]]; then
+            has_changes=true
+            break
+        fi
+    done
+
+    if [[ "$has_changes" == false ]]; then
+        echo "No theme changes to commit"
+        return 1
+    fi
+
+    # Extract theme name from nvim config diff or current value
+    local theme_name
+    theme_name=$(git -C "$repo_path" diff "common/.config/nvim/lua/config.lua" 2>/dev/null | grep '+.*colorscheme' | sed 's/.*"\(.*\)".*/\1/')
+    if [[ -z "$theme_name" ]]; then
+        theme_name=$(grep 'colorscheme = ' "$repo_path/common/.config/nvim/lua/config.lua" | sed 's/.*"\(.*\)".*/\1/')
+    fi
+
+    if [[ -z "$theme_name" ]]; then
+        theme_name="unknown"
+    fi
+
+    # Stage and commit
+    (cd "$repo_path" && git add "${theme_files[@]}" && git commit -m "chore(themes): switch to $theme_name")
+    print_success "Theme commit created: $theme_name"
+}
+
+# Dots repo helper: commit session changes (with cleanup)
+dots_commit_sessions() {
+    local repo_path="$1"
+    local sessions_dir="$repo_path/common/.config/nvim/sessions"
+
+    # Clean up old sessions (older than 2 days)
+    local deleted_count
+    deleted_count=$(find "$sessions_dir" -type f -mtime +2 -delete -print 2>/dev/null | wc -l | tr -d ' ')
+    if [[ "$deleted_count" -gt 0 ]]; then
+        echo "Cleaned up $deleted_count old session(s)"
+    fi
+
+    # Check if any session files have changes
+    if [[ -z $(git -C "$repo_path" status --porcelain "common/.config/nvim/sessions/" 2>/dev/null) ]]; then
+        echo "No session changes to commit"
+        return 1
+    fi
+
+    # Stage and commit
+    (cd "$repo_path" && git add "common/.config/nvim/sessions/" && git commit -m "chore(nvim): update sessions")
+    print_success "Sessions commit created"
+}
+
+# Dots repo helper: commit radar changes
+dots_commit_radar() {
+    local repo_path="$1"
+    local radar_file="common/.local/share/nvim/radar/data.json"
+
+    # Check if radar file has changes
+    if [[ -z $(git -C "$repo_path" status --porcelain "$radar_file" 2>/dev/null) ]]; then
+        echo "No radar changes to commit"
+        return 1
+    fi
+
+    # Stage and commit
+    (cd "$repo_path" && git add "$radar_file" && git commit -m "chore(nvim): update radar data")
+    print_success "Radar commit created"
+}
+
 # Leave workflow - end of day sync
 leave_repos() {
     local repos
@@ -1293,12 +1378,28 @@ leave_repos() {
         show_repo_status "$repo"
         echo
 
-        # Menu options
+        # Menu options - add dots-specific options if this is the dots repo
         local actions=(
             "Review in LazyGit"
             "Stage all and commit with AI"
             "Backup with timestamp"
             "Cleanup with Claude"
+        )
+
+        local is_dots=false
+        if is_dots_repo "$repo_path"; then
+            is_dots=true
+            actions+=(
+                "─── Dots ───"
+                "Commit theme changes"
+                "Commit session changes"
+                "Commit radar changes"
+                "Commit all dots chores"
+            )
+        fi
+
+        actions+=(
+            "─────────"
             "Discard changes"
             "Push without committing"
             "Skip this repo"
@@ -1312,22 +1413,27 @@ leave_repos() {
             echo "Options:"
             local i=1
             for action in "${actions[@]}"; do
-                echo "  [$i] $action"
-                ((i++))
+                if [[ "$action" == "───"* || "$action" == "─────────" ]]; then
+                    echo "  $action"
+                else
+                    echo "  [$i] $action"
+                    ((i++))
+                fi
             done
-            echo -n "Choice (1-8): "
+            echo -n "Choice: "
             read -r choice
-            case "$choice" in
-                1) selected_action="Review in LazyGit" ;;
-                2) selected_action="Stage all and commit with AI" ;;
-                3) selected_action="Backup with timestamp" ;;
-                4) selected_action="Cleanup with Claude" ;;
-                5) selected_action="Discard changes" ;;
-                6) selected_action="Push without committing" ;;
-                7) selected_action="Skip this repo" ;;
-                8) selected_action="Stop walkthrough" ;;
-                *) selected_action="Skip this repo" ;;
-            esac
+            # Map choice number to action (skip separator lines)
+            local j=0
+            for action in "${actions[@]}"; do
+                if [[ "$action" != "───"* && "$action" != "─────────" ]]; then
+                    ((j++))
+                    if [[ "$j" == "$choice" ]]; then
+                        selected_action="$action"
+                        break
+                    fi
+                fi
+            done
+            [[ -z "$selected_action" ]] && selected_action="Skip this repo"
         fi
 
         case "$selected_action" in
@@ -1360,6 +1466,22 @@ leave_repos() {
                 else
                     print_error "'claude' command not found"
                 fi
+                ;;
+            "Commit theme changes")
+                dots_commit_theme "$repo_path" && processed_repos+=("$repo")
+                ;;
+            "Commit session changes")
+                dots_commit_sessions "$repo_path" && processed_repos+=("$repo")
+                ;;
+            "Commit radar changes")
+                dots_commit_radar "$repo_path" && processed_repos+=("$repo")
+                ;;
+            "Commit all dots chores")
+                echo "Committing all dots chores..."
+                dots_commit_theme "$repo_path"
+                dots_commit_sessions "$repo_path"
+                dots_commit_radar "$repo_path"
+                processed_repos+=("$repo")
                 ;;
             "Discard changes")
                 if has_gum; then
