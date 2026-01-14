@@ -36,4 +36,5 @@ Commit: `chore(nvim): update radar data`
 
 ## After Completion
 
-Report how many commits were created and if any uncommitted changes remain.
+1. Report how many commits were created and if any uncommitted changes remain.
+2. If commits were created, offer to push to remote.
