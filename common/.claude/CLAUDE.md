@@ -12,37 +12,37 @@ The following MCPs are set up and **must be used**:
 | **EXA MCP**     | Use for web searches when you need examples, patterns, or solutions not in the docs.                                       |
 | **Chrome MCP**  | Use for testing browser-related functionality (opening URLs, HTML export verification).                                    |
 | **Survey Tool** | Use when asking clarifying questions about requirements, specifications, or decisions. Always clarify before implementing. |
+| **Linear MCP**  | Black Atom issue tracking. Use `/bai/status` to see issues, `/bai/create` to file new ones.                                 |
 
 **Do not skip these.** Check Ref MCP for bubbletea patterns before writing TUI code. Use EXA if you're unsure about Go idioms or need real-world examples. Use Survey Tool to ask questions.
 
 ---
 
-## 🔗 Beads Issue Tracker
+## 🔗 Black Atom Industries (Linear)
 
-**Beads (`bd`)** is a git-backed issue tracker injected via SessionStart hooks. Use it to:
+**Linear** is the source of truth for Black Atom issue tracking. Use the `/bai/*` skills:
 
-- Track discovered work and file issues as you go
-- Manage dependencies between tasks
-- Find ready work with `bd ready`
-- Maintain focus across sessions
+| Command | Purpose |
+|---------|---------|
+| `/bai/status` | Show my assigned issues by status |
+| `/bai/ready` | Show issues ready to work (no blockers) |
+| `/bai/create` | Create a new issue (default: Development team) |
+| `/bai/update` | Update status, relations, add comments |
+| `/bai/close` | Mark issue as done |
+| `/bai/review` | Review and clean up active issues |
 
-See https://github.com/steveyegge/beads for full documentation.
+### Context
 
-### ⚠️ Beads Commit Workflow
+- **Workspace**: Black Atom Industries
+- **Teams**: Development (default), Design, Operations, Website
+- **Projects**: Black Atom - 1.0 (active), Black Atom - Core Creator (backlog)
 
-**Do NOT create separate commits for beads updates.** When closing an issue with `bd close`, include the `.beads/` changes in the same commit as the related code changes. One atomic commit per logical unit of work.
+### Workflow
 
-```bash
-# ✅ Correct: Bundle beads with code
-bd close <id>
-git add src/feature.ts .beads/
-git commit -m "feat: implement feature X"
-
-# ❌ Wrong: Separate beads commit
-git commit -m "feat: implement feature X"
-bd close <id>
-git commit -m "chore: update beads"  # NO - adds noise to git history
-```
+1. Check `/bai/ready` to see what's available to work on
+2. When starting work, update issue to "In Progress" with `/bai/update`
+3. When done, close with `/bai/close`
+4. Reference issue IDs in commits: `fix: resolve contrast issue [DEV-123]`
 
 ---
 

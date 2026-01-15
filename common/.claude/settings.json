@@ -20,17 +20,6 @@
         ]
       }
     ],
-    "PreCompact": [
-      {
-        "hooks": [
-          {
-            "command": "bd prime",
-            "type": "command"
-          }
-        ],
-        "matcher": ""
-      }
-    ],
     "PreToolUse": [
       {
         "matcher": "WebFetch|WebSearch",
@@ -53,10 +42,6 @@
     "SessionStart": [
       {
         "hooks": [
-          {
-            "command": "bd prime",
-            "type": "command"
-          },
           {
             "command": "~/.local/bin/helm-hook SessionStart",
             "type": "command"
