@@ -903,8 +903,9 @@ setup_repos() {
         exit 1
     fi
 
-    # Track postClone commands by URL
+    # Track postClone commands by URL (associative array for lookup, regular array for order)
     declare -A post_clone_cmds
+    local post_clone_order=()
 
     # Check if any wildcard patterns exist that would need gh CLI
     local has_wildcards=false
@@ -934,11 +935,12 @@ setup_repos() {
         repo_url=$(get_entry_url "$entry")
         [[ -z "$repo_url" ]] && continue
 
-        # Store postClone command if present
+        # Store postClone command if present (preserving config order)
         local post_clone
         post_clone=$(get_entry_post_clone "$entry")
         if [[ -n "$post_clone" ]]; then
             post_clone_cmds["$repo_url"]="$post_clone"
+            post_clone_order+=("$repo_url")
         fi
 
         # Check if it's a wildcard pattern
@@ -1029,11 +1031,11 @@ setup_repos() {
     echo "  Skipped: $skipped"
     echo "  Failed: $failed"
 
-    # Run postClone commands for repos that have them
-    if [[ ${#post_clone_cmds[@]} -gt 0 ]]; then
+    # Run postClone commands for repos that have them (in config order)
+    if [[ ${#post_clone_order[@]} -gt 0 ]]; then
         echo
         echo "Running postClone commands..."
-        for repo_url in "${!post_clone_cmds[@]}"; do
+        for repo_url in "${post_clone_order[@]}"; do
             local post_clone_cmd="${post_clone_cmds[$repo_url]}"
             local repo_path
             repo_path=$(parse_git_url "$repo_url")
@@ -1041,7 +1043,9 @@ setup_repos() {
 
             if [[ -d "$repo_path" ]]; then
                 echo
-                echo "→ Running postClone for $(basename "$repo_path"): $post_clone_cmd"
+                echo "────────────────────────────────────────────────"
+                echo -e "${YELLOW}$(basename "$repo_path")${NC} → $post_clone_cmd"
+                echo "────────────────────────────────────────────────"
                 if (cd "$repo_path" && eval "$post_clone_cmd"); then
                     print_success "postClone completed for $(basename "$repo_path")"
                 else

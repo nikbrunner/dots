@@ -11,13 +11,10 @@
     "git@github.com:nikbrunner/nbr.haus",
     "git@github.com:nikbrunner/fff-snacks.nvim",
     "git@github.com:nikbrunner/wallpapers",
-    { "url": "git@github.com:nikbrunner/helm", "postClone": "./install.sh" },
+    { "url": "git@github.com:black-atom-industries/helm", "postClone": "make install" },
     { "url": "git@github.com:nikbrunner/bm", "postClone": "make install" },
-    {
-      "url": "git@github.com:nikbrunner/tmux-file-picker",
-      "postClone": "chmod +x tmux-file-picker && ln -sf \"$(pwd)/tmux-file-picker\" ~/.local/bin/tmux-file-picker"
-    },
-    { "url": "git@github.com:nikbrunner/fonts", "postClone": "./install.sh" },
-    "git@github.com:black-atom-industries/*"
+    { "url": "git@github.com:nikbrunner/tmux-file-picker", "postClone": "make install" },
+    "git@github.com:black-atom-industries/*",
+    { "url": "git@github.com:nikbrunner/fonts", "postClone": "./install.sh" }
   ]
 }
