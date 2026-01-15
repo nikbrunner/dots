@@ -40,8 +40,8 @@
   },
   "theme": {
     "mode": "system",
-    "dark": "Black Atom — MNM ∷ Mikado Dark",
-    "light": "Black Atom — TER ∷ Fall Day"
+    "dark": "Black Atom — TER ∷ Winter Night",
+    "light": "Black Atom — STA ∷ Medical"
   },
   "base_keymap": "VSCode",
   "vim_mode": true,
