@@ -142,6 +142,15 @@ update_waybar_theme() {
     fi
 }
 
+# Reload Waybar stylesheet (Linux/Wayland only)
+reload_waybar() {
+    [[ "$(uname)" == "Darwin" ]] && return 0
+
+    if pgrep -x waybar >/dev/null 2>&1; then
+        killall -SIGUSR2 waybar 2>/dev/null && echo "waybar styles reloaded"
+    fi
+}
+
 # Update macOS system appearance
 update_macos_appearance() {
     local appearance="$1"
@@ -260,6 +269,7 @@ apply_theme() {
     echo "tmux reload completed"
     reload_ghostty
     echo "ghostty reload completed"
+    reload_waybar
 
     # Brief pause before Neovim restarts
     sleep 0.1
