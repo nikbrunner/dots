@@ -48,6 +48,7 @@ Examples:
 5. Create with `mcp__linear__create_issue`:
    - `title`: from arguments
    - `team`: determined team ID
+   - `assignee`: "me" (always assign to Nik)
    - `project`: if specified or suggested
    - `priority`: if specified
    - `blocks` / `blockedBy` / `relatedTo`: if dependencies identified
