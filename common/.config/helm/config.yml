@@ -1,4 +1,4 @@
-# tsm configuration
+# helm configuration
 # Environment variables override these settings
 
 # Layout script name to apply when creating new sessions
@@ -14,7 +14,7 @@ claude_status_enabled: true
 git_status_enabled: true
 
 # Directory for status cache files
-# cache_dir: ~/.cache/tsm
+# cache_dir: ~/.cache/helm
 
 # Base directories for project picker (C-p)
 # Supports multiple paths - all will be scanned
