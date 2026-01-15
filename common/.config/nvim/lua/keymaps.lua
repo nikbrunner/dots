@@ -20,7 +20,7 @@ end
 M.map("n", "Q", "<nop>", { desc = "Disable Ex Mode" })
 
 -- Restart
-M.map("n", "<leader>r", function()
+M.map("n", "<leader>R", function()
     vim.cmd.wa({ bang = true })
     vim.cmd.restart()
 end, { desc = "[R]estart" })
