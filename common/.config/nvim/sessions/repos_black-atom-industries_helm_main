@@ -9,7 +9,7 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +28 ~/repos/black-atom-industries/helm/internal/ui/colors.go
+badd +104 ~/repos/black-atom-industries/helm/internal/ui/colors.go
 argglobal
 %argdel
 set stal=2
@@ -181,7 +181,7 @@ setlocal includeexpr=
 setlocal indentexpr=nvim_treesitter#indent()
 setlocal indentkeys=0{,0},0),0],:,0#,!^F,o,O,e,<:>,0=},0=)
 setlocal noinfercase
-setlocal iskeyword=@,48-57,_,192-255
+setlocal iskeyword=@,48-57,_,192-255,.
 setlocal keywordprg=:GoKeywordPrg
 setlocal lhistory=10
 setlocal nolinebreak
@@ -235,12 +235,14 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 28 - ((27 * winheight(0) + 32) / 64)
+77
+sil! normal! zo
+let s:l = 104 - ((38 * winheight(0) + 21) / 42)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 28
-normal! 05|
+keepjumps 104
+normal! 024|
 tabnext 2
 set stal=1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
