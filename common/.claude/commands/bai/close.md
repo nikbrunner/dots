@@ -1,6 +1,6 @@
 ---
 description: Close a Black Atom issue
-allowed-tools: ["mcp__linear__update_issue", "mcp__linear__create_comment", "mcp__linear__list_issue_statuses", "mcp__linear__get_issue"]
+allowed-tools: ["mcp__linear__update_issue", "mcp__linear__create_comment", "mcp__linear__list_issue_statuses", "mcp__linear__get_issue", "AskUserQuestion"]
 ---
 
 # Black Atom Close

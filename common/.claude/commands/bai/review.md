@@ -1,6 +1,6 @@
 ---
 description: Review and clean up Black Atom issues
-allowed-tools: ["mcp__linear__list_issues", "mcp__linear__get_issue", "mcp__linear__update_issue", "mcp__linear__create_comment", "mcp__linear__list_issue_statuses"]
+allowed-tools: ["mcp__linear__list_issues", "mcp__linear__get_issue", "mcp__linear__update_issue", "mcp__linear__create_comment", "mcp__linear__list_issue_statuses", "AskUserQuestion"]
 ---
 
 # Black Atom Review
@@ -43,7 +43,7 @@ Examples:
    Actions: [Keep] [Update] [Close] [Skip]
    ```
 
-4. Ask user for action:
+4. Use `AskUserQuestion` tool for each issue:
    - **Keep**: No changes
    - **Update**: Change status, priority, relations, or add comment
    - **Close**: Mark done or canceled with reason

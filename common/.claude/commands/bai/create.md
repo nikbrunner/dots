@@ -1,6 +1,6 @@
 ---
 description: Create a new Black Atom Industries issue
-allowed-tools: ["mcp__linear__create_issue", "mcp__linear__list_teams", "mcp__linear__list_projects", "mcp__linear__list_issue_labels", "mcp__linear__list_issues"]
+allowed-tools: ["mcp__linear__create_issue", "mcp__linear__list_teams", "mcp__linear__list_projects", "mcp__linear__list_issue_labels", "mcp__linear__list_issues", "AskUserQuestion"]
 ---
 
 # Black Atom Create
@@ -38,7 +38,7 @@ Examples:
    - Use **Operations** for release/infra work
    - **Push back** if team choice seems wrong for the content
 
-3. Ask for missing info if needed:
+3. Use `AskUserQuestion` tool for missing info:
    - Priority (0-4): 0=none, 1=urgent, 2=high, 3=normal, 4=low
    - Project (suggest Black Atom - 1.0 for most work)
    - Labels (optional)
