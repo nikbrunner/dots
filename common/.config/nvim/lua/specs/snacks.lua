@@ -680,7 +680,7 @@ return {
         },
         zen = {
             toggles = {
-                dim = true,
+                dim = false,
                 git_signs = false,
                 mini_diff_signs = false,
                 diagnostics = true,
@@ -726,7 +726,7 @@ return {
                 },
             },
             zen = {
-                width = 125,
+                width = 165,
                 backdrop = {
                     transparent = true,
                     blend = 20,
