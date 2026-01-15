@@ -1526,24 +1526,32 @@ leave_repos() {
         ((current++))
     done
 
-    # Collect all repos that need pushing
+    # Collect all repos that need pushing by re-scanning everything
+    # (not just processed repos - initial detection might have missed some)
     echo
     echo "Checking for repos to push..."
 
     local all_to_push=()
-    for repo in "${processed_repos[@]}" "${repos_to_push[@]}"; do
+    while IFS= read -r repo; do
+        [[ -z "$repo" ]] && continue
         local repo_path="$REPOS_BASE_PATH/$repo"
+
+        # Skip non-git directories
+        if [[ ! -d "$repo_path/.git" ]]; then
+            continue
+        fi
+
+        # Check if upstream is configured and we have unpushed commits
         if git -C "$repo_path" rev-parse --abbrev-ref '@{u}' &>/dev/null; then
+            # Fetch to ensure tracking refs are current
+            git -C "$repo_path" fetch --quiet 2>/dev/null
             local ahead
-            ahead=$(git -C "$repo_path" rev-list --count '@{u}..' 2>/dev/null || echo "0")
-            if [[ "$ahead" -gt 0 ]]; then
-                # Avoid duplicates
-                if [[ ! " ${all_to_push[*]} " =~ " ${repo} " ]]; then
-                    all_to_push+=("$repo")
-                fi
+            ahead=$(git -C "$repo_path" rev-list --count '@{u}..' 2>/dev/null)
+            if [[ -n "$ahead" && "$ahead" -gt 0 ]]; then
+                all_to_push+=("$repo")
             fi
         fi
-    done
+    done <<< "$(list_repos)"
 
     if [[ ${#all_to_push[@]} -eq 0 ]]; then
         echo
