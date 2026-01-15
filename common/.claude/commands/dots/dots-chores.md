@@ -1,6 +1,6 @@
 # Dots Chores
 
-Commit routine dots repo changes: themes, sessions, and radar data.
+Commit routine dots repo changes: themes, sessions, radar data, and bookmarks.
 
 ## Instructions
 
@@ -33,6 +33,12 @@ Then commit remaining session changes: `chore(nvim): update sessions`
 File: `common/.local/share/nvim/radar/data.json`
 
 Commit: `chore(nvim): update radar data`
+
+### 4. Bookmarks Changes
+
+File: `common/.config/bm/bookmarks.db`
+
+Commit: `chore(bm): update bookmarks`
 
 ## After Completion
 
