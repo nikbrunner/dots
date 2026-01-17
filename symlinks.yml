@@ -55,6 +55,7 @@ arch:
   arch/README.md: ~/README.md
   arch/.config/hypr: ~/.config/hypr
   arch/.config/niri: ~/.config/niri
+  arch/.config/satty: ~/.config/satty
   arch/.config/waybar: ~/.config/waybar
   common/.config/systemd/user/wallpaper-rotate.service: ~/.config/systemd/user/wallpaper-rotate.service
   common/.config/systemd/user/wallpaper-rotate.timer: ~/.config/systemd/user/wallpaper-rotate.timer

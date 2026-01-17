@@ -14,6 +14,7 @@ input {
     keyboard {
         repeat-delay 200
         repeat-rate 50
+
         xkb {
             // You can set rules, model, layout, variant and options.
             // For more information, see xkeyboard-config(7).
@@ -130,7 +131,7 @@ overview {
 // https://yalter.github.io/niri/Configuration:-Layout
 layout {
     // Set gaps around windows in logical pixels.
-    gaps 128
+    gaps 64
 
     // When to center a column when changing focus, options are:
     // - "never", default behavior, focusing an off-screen column will keep at the left
@@ -194,7 +195,7 @@ layout {
         // If you enable the border, you probably want to disable the focus ring.
         off
 
-        width 8
+        width 20
 
         // Gradients can use a few different interpolation color spaces.
         // active-gradient from="#e5989b" to="#ffb4a2" angle=45 relative-to="workspace-view" in="oklch longer hue"
@@ -251,6 +252,9 @@ spawn-at-startup "blueman-applet"
 // Wallpaper daemon
 spawn-at-startup "swww-daemon"
 spawn-at-startup "pick-wallpaper" "restore"
+
+// Clipboard manager (cliphist)
+spawn-at-startup "wl-paste" "--watch" "cliphist" "store"
 
 // To run a shell command (with variables, pipes, etc.), use spawn-sh-at-startup:
 // spawn-sh-at-startup "qs -c ~/source/qs/MyAwesomeShell"
@@ -347,6 +351,9 @@ binds {
     Mod+Return hotkey-overlay-title="Open a Terminal: ghostty" { spawn "ghostty"; }
     Mod+Semicolon hotkey-overlay-title="Run an Application: fuzzel" { spawn "fuzzel"; }
     Super+Alt+L hotkey-overlay-title="Lock the Screen: swaylock" { spawn "swaylock"; }
+
+    // Clipboard history (cliphist + fuzzel) - HYPR+V (Ctrl+Shift+Alt+Super)
+    Ctrl+Shift+Alt+Mod+V hotkey-overlay-title="Clipboard History" { spawn-sh "cliphist list | fuzzel -d -w 80 -l 15 | cliphist decode | wl-copy"; }
 
     // Use spawn-sh to run a shell command. Do this if you need pipes, multiple commands, etc.
     // Note: the entire command goes as a single argument. It's passed verbatim to `sh -c`.
@@ -581,9 +588,13 @@ binds {
     // Mod+Space       { switch-layout "next"; }
     // Mod+Shift+Space { switch-layout "prev"; }
 
-    Print { screenshot; }
-    Ctrl+Print { screenshot-screen; }
-    Alt+Print { screenshot-window; }
+    // Screenshots using grim + slurp + satty (native Wayland)
+    // Mod+Shift+1: Full screen → Satty
+    // Mod+Shift+2: Focused window → Satty
+    // Mod+Shift+3: Select area → Satty
+    Mod+Shift+1 { spawn-sh "grim - | satty -f -"; }
+    Mod+Shift+2 { spawn-sh "niri msg action screenshot-window --write-to-disk=false && wl-paste | satty -f -"; }
+    Mod+Shift+3 { spawn-sh "grim -g \"$(slurp)\" - | satty -f -"; }
 
     // Applications such as remote-desktop clients and software KVM switches may
     // request that niri stops processing the keyboard shortcuts defined here

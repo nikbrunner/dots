@@ -1,0 +1,10 @@
+[general]
+# Use wl-copy for Wayland clipboard
+copy-command = "wl-copy"
+
+# Save screenshots to Pictures/Screenshots
+output-filename = "~/Pictures/Screenshots/satty-%Y%m%d-%H%M%S.png"
+
+# Exit after first action (copy or save)
+early-exit = true
+initial-tool = "pointer"

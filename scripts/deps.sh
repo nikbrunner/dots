@@ -55,6 +55,10 @@ declare -a REQUIRED_DEPS=(
     "niri:Scrollable tiling Wayland compositor (Arch only)"
     "waybar:Wayland bar (Arch only)"
     "fuzzel:Wayland application launcher (Arch only)"
+    "grim:Screenshot tool for wlroots compositors (Arch only)"
+    "slurp:Select region for screenshots (Arch only)"
+    "satty:Screenshot annotation tool (Arch only)"
+    "cliphist:Clipboard manager for Wayland (Arch only)"
 )
 
 # Detect operating system
@@ -166,6 +170,18 @@ check_dependency() {
         ;;
     fuzzel)
         command -v fuzzel &>/dev/null
+        ;;
+    grim)
+        command -v grim &>/dev/null
+        ;;
+    slurp)
+        command -v slurp &>/dev/null
+        ;;
+    satty)
+        command -v satty &>/dev/null
+        ;;
+    cliphist)
+        command -v cliphist &>/dev/null
         ;;
     yazi)
         command -v yazi &>/dev/null
@@ -319,6 +335,10 @@ get_package_name() {
         niri) echo "" ;;        # Arch only
         waybar) echo "" ;;      # Arch only
         fuzzel) echo "" ;;      # Arch only
+        grim) echo "" ;;        # Arch only
+        slurp) echo "" ;;       # Arch only
+        satty) echo "" ;;       # Arch only
+        cliphist) echo "" ;;    # Arch only
         *) echo "$dep" ;;
         esac
         ;;
@@ -374,6 +394,10 @@ get_package_name() {
         niri) echo "niri" ;;
         waybar) echo "waybar" ;;
         fuzzel) echo "fuzzel" ;;
+        grim) echo "grim" ;;
+        slurp) echo "slurp" ;;
+        satty) echo "satty" ;;
+        cliphist) echo "cliphist" ;;
         *) echo "$dep" ;;
         esac
         ;;
