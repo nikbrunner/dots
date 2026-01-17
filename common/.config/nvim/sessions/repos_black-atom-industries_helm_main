@@ -235,9 +235,7 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-77
-sil! normal! zo
-let s:l = 104 - ((44 * winheight(0) + 24) / 49)
+let s:l = 104 - ((36 * winheight(0) + 21) / 42)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
