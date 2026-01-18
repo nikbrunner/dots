@@ -32,7 +32,8 @@ window#waybar {
 }
 
 #clock {
-    font-weight: bold;
+    font-weight: 900;
+    letter-spacing: 2px;
 }
 
 #custom-vpn {

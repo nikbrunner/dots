@@ -8,11 +8,15 @@
 include "theme.kdl"
 
 // Named workspaces - these always exist, even when empty
-workspace "Web"
-workspace "Term"
-workspace "Notes"
-workspace "Chat"
-workspace "Games"
+workspace "01:WEB"
+workspace "02:TERM"
+workspace "03:NOTE"
+workspace "04:CHAT"
+workspace "05:GAME"
+workspace "06"
+workspace "07"
+workspace "08"
+workspace "09"
 
 // Input device configuration.
 // Find the full list of options on the wiki:
@@ -348,7 +352,7 @@ window-rule {
     match app-id=r#"zen$"#
     match app-id=r#"chromium"#
     match app-id=r#"brave"#
-    open-on-workspace "Web"
+    open-on-workspace "01:WEB"
 }
 
 window-rule {
@@ -356,12 +360,12 @@ window-rule {
     match app-id=r#"wezterm"#
     match app-id="Alacritty"
     match app-id="kitty"
-    open-on-workspace "Term"
+    open-on-workspace "02:TERM"
 }
 
 window-rule {
     match app-id=r#"obsidian"#
-    open-on-workspace "Notes"
+    open-on-workspace "03:NOTE"
 }
 
 window-rule {
@@ -370,7 +374,7 @@ window-rule {
     match app-id=r#"signal"#
     match app-id=r#"telegram"#
     match app-id=r#"element"#
-    open-on-workspace "Chat"
+    open-on-workspace "04:CHAT"
 }
 
 window-rule {
@@ -379,7 +383,7 @@ window-rule {
     match app-id=r#"battle.net"#
     match app-id=r#"wow"#
     match app-id=r#"wowclassic"#
-    open-on-workspace "Games"
+    open-on-workspace "05:GAME"
 }
 
 // Hide annoying Wine/Proton explorer.exe helper window
@@ -404,7 +408,7 @@ binds {
     Mod+Shift+Slash { show-hotkey-overlay; }
 
     // Suggested binds for running programs: terminal, app launcher, screen locker.
-    Ctrl+Shift+Alt+Mod+Space hotkey-overlay-title="Focus/Open Terminal" { spawn-sh "niri msg windows | grep -q ghostty && niri msg action focus-workspace Term || ghostty"; }
+    Ctrl+Shift+Alt+Mod+Space hotkey-overlay-title="Focus/Open Terminal" { spawn-sh "niri msg windows | grep -q ghostty && niri msg action focus-workspace 02:TERM || ghostty"; }
     Mod+Semicolon hotkey-overlay-title="Run an Application: fuzzel" { spawn "fuzzel"; }
     Super+Alt+L hotkey-overlay-title="Lock the Screen: swaylock" { spawn "swaylock"; }
 
@@ -563,24 +567,24 @@ binds {
     //
     // For example, with 2 workspaces + 1 empty, indices 3, 4, 5 and so on
     // will all refer to the 3rd workspace.
-    Mod+1 { focus-workspace "Web"; }
-    Mod+2 { focus-workspace "Term"; }
-    Mod+3 { focus-workspace "Notes"; }
-    Mod+4 { focus-workspace "Chat"; }
-    Mod+5 { focus-workspace "Games"; }
-    Mod+6 { focus-workspace 6; }
-    Mod+7 { focus-workspace 7; }
-    Mod+8 { focus-workspace 8; }
-    Mod+9 { focus-workspace 9; }
-    Mod+Ctrl+1 { move-column-to-workspace "Web"; }
-    Mod+Ctrl+2 { move-column-to-workspace "Term"; }
-    Mod+Ctrl+3 { move-column-to-workspace "Notes"; }
-    Mod+Ctrl+4 { move-column-to-workspace "Chat"; }
-    Mod+Ctrl+5 { move-column-to-workspace "Games"; }
-    Mod+Ctrl+6 { move-column-to-workspace 6; }
-    Mod+Ctrl+7 { move-column-to-workspace 7; }
-    Mod+Ctrl+8 { move-column-to-workspace 8; }
-    Mod+Ctrl+9 { move-column-to-workspace 9; }
+    Mod+1 { focus-workspace "01:WEB"; }
+    Mod+2 { focus-workspace "02:TERM"; }
+    Mod+3 { focus-workspace "03:NOTE"; }
+    Mod+4 { focus-workspace "04:CHAT"; }
+    Mod+5 { focus-workspace "05:GAME"; }
+    Mod+6 { focus-workspace "06"; }
+    Mod+7 { focus-workspace "07"; }
+    Mod+8 { focus-workspace "08"; }
+    Mod+9 { focus-workspace "09"; }
+    Mod+Ctrl+1 { move-column-to-workspace "01:WEB"; }
+    Mod+Ctrl+2 { move-column-to-workspace "02:TERM"; }
+    Mod+Ctrl+3 { move-column-to-workspace "03:NOTE"; }
+    Mod+Ctrl+4 { move-column-to-workspace "04:CHAT"; }
+    Mod+Ctrl+5 { move-column-to-workspace "05:GAME"; }
+    Mod+Ctrl+6 { move-column-to-workspace "06"; }
+    Mod+Ctrl+7 { move-column-to-workspace "07"; }
+    Mod+Ctrl+8 { move-column-to-workspace "08"; }
+    Mod+Ctrl+9 { move-column-to-workspace "09"; }
 
     // Alternatively, there are commands to move just a single window:
     // Mod+Ctrl+1 { move-window-to-workspace 1; }
