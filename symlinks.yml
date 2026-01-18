@@ -50,6 +50,7 @@ macos:
   macos/Library/Scripts/pcloud-auto-mount.applescript: ~/Library/Scripts/pcloud-auto-mount.applescript
 
 arch:
+  arch/.config/gamemode.ini: ~/.config/gamemode.ini
   arch/.config/mimeapps.list: ~/.config/mimeapps.list
   arch/.gitconfig.local: ~/.gitconfig.local
   arch/.local/bin/*: ~/.local/bin

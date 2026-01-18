@@ -60,6 +60,8 @@ declare -a REQUIRED_DEPS=(
     "satty:Screenshot annotation tool (Arch only)"
     "cliphist:Clipboard manager for Wayland (Arch only)"
     "wtype:Wayland keyboard input simulator (Arch only)"
+    "gamemode:Feral GameMode for gaming optimizations (Arch only)"
+    "lib32-gamemode:32-bit GameMode support (Arch only)"
 )
 
 # Detect operating system
@@ -186,6 +188,12 @@ check_dependency() {
         ;;
     wtype)
         command -v wtype &>/dev/null
+        ;;
+    gamemode)
+        command -v gamemoded &>/dev/null
+        ;;
+    lib32-gamemode)
+        check_package_installed "lib32-gamemode"
         ;;
     yazi)
         command -v yazi &>/dev/null
@@ -344,6 +352,8 @@ get_package_name() {
         satty) echo "" ;;       # Arch only
         cliphist) echo "" ;;    # Arch only
         wtype) echo "" ;;       # Arch only
+        gamemode) echo "" ;;    # Arch only
+        lib32-gamemode) echo "" ;; # Arch only
         *) echo "$dep" ;;
         esac
         ;;
@@ -404,6 +414,8 @@ get_package_name() {
         satty) echo "satty" ;;
         cliphist) echo "cliphist" ;;
         wtype) echo "wtype" ;;
+        gamemode) echo "gamemode" ;;
+        lib32-gamemode) echo "lib32-gamemode" ;;
         *) echo "$dep" ;;
         esac
         ;;
