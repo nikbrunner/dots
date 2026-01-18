@@ -59,6 +59,7 @@ declare -a REQUIRED_DEPS=(
     "slurp:Select region for screenshots (Arch only)"
     "satty:Screenshot annotation tool (Arch only)"
     "cliphist:Clipboard manager for Wayland (Arch only)"
+    "wtype:Wayland keyboard input simulator (Arch only)"
 )
 
 # Detect operating system
@@ -182,6 +183,9 @@ check_dependency() {
         ;;
     cliphist)
         command -v cliphist &>/dev/null
+        ;;
+    wtype)
+        command -v wtype &>/dev/null
         ;;
     yazi)
         command -v yazi &>/dev/null
@@ -339,6 +343,7 @@ get_package_name() {
         slurp) echo "" ;;       # Arch only
         satty) echo "" ;;       # Arch only
         cliphist) echo "" ;;    # Arch only
+        wtype) echo "" ;;       # Arch only
         *) echo "$dep" ;;
         esac
         ;;
@@ -398,6 +403,7 @@ get_package_name() {
         slurp) echo "slurp" ;;
         satty) echo "satty" ;;
         cliphist) echo "cliphist" ;;
+        wtype) echo "wtype" ;;
         *) echo "$dep" ;;
         esac
         ;;
