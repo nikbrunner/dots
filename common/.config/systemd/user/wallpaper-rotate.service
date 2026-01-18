@@ -1,6 +1,0 @@
-[Unit]
-Description=Rotate wallpaper
-
-[Service]
-Type=oneshot
-ExecStart=%h/.local/bin/pick-wallpaper apply
