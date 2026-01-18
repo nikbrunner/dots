@@ -265,7 +265,7 @@ spawn-at-startup "blueman-applet"
 
 // Wallpaper daemon
 spawn-at-startup "swww-daemon"
-spawn-at-startup "pick-wallpaper" "restore"
+spawn-at-startup "waypaper" "--restore"
 
 // Clipboard manager (cliphist)
 spawn-at-startup "wl-paste" "--watch" "cliphist" "store"
@@ -392,6 +392,12 @@ window-rule {
     open-floating false
 }
 
+// Waypaper - open as floating
+window-rule {
+    match app-id="waypaper"
+    open-floating true
+}
+
 binds {
     // Keys consist of modifiers separated by + signs, followed by an XKB key name
     // in the end. To find an XKB name for a particular key, you may use a program
@@ -411,6 +417,9 @@ binds {
     Ctrl+Shift+Alt+Mod+Space hotkey-overlay-title="Focus/Open Terminal" { spawn-sh "niri msg windows | grep -q ghostty && niri msg action focus-workspace 02:TERM || ghostty"; }
     Mod+Semicolon hotkey-overlay-title="Run an Application: fuzzel" { spawn "fuzzel"; }
     Super+Alt+L hotkey-overlay-title="Lock the Screen: swaylock" { spawn "swaylock"; }
+
+    // Wallpaper picker
+    Mod+Shift+W hotkey-overlay-title="Wallpaper Picker" { spawn "waypaper"; }
 
     // Clipboard history (cliphist + fuzzel) - HYPR+V (Ctrl+Shift+Alt+Super)
     Ctrl+Shift+Alt+Mod+V hotkey-overlay-title="Clipboard History" { spawn-sh "cliphist list | fuzzel -d -w 80 -l 15 | cliphist decode | wl-copy"; }
