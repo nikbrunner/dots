@@ -32,7 +32,6 @@ is_protected() {
 if is_protected; then
     # Show confirmation dialog
     CHOICE=$(printf "No\nYes" | fuzzel --dmenu --prompt "Close $TITLE? ")
-
     if [[ "$CHOICE" == "Yes" ]]; then
         niri msg action close-window
     fi

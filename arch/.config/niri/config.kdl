@@ -464,7 +464,7 @@ binds {
     Mod+O repeat=false { toggle-overview; }
 
     // Use script for close with confirmation on protected apps (games, etc.)
-    Mod+Q repeat=false { spawn "niri-close-window"; }
+    Mod+Q repeat=false { spawn-sh "~/.local/bin/niri-close-window"; }
 
     Mod+Left  { focus-column-left; }
     Mod+Down  { focus-window-down; }
