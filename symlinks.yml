@@ -51,7 +51,6 @@ macos:
 
 arch:
   arch/.config/mimeapps.list: ~/.config/mimeapps.list
-  arch/.bashrc: ~/.bashrc
   arch/.gitconfig.local: ~/.gitconfig.local
   arch/.local/bin/*: ~/.local/bin
   arch/README.md: ~/README.md
