@@ -2,12 +2,12 @@
 @import "theme.css";
 
 * {
-    font-family: "Iosevka Nerd Font", monospace;
-    font-size: 18px;
+    font-family: "TX-02 ExtraCondensed", monospace;
+    font-size: 25px;
     border: none;
     border-radius: 0;
     min-height: 0;
-    padding: 2px;
+    padding: 5px;
 }
 
 window#waybar {
@@ -19,7 +19,7 @@ window#waybar {
     padding: 0 6px;
     color: @ba-fg-subtle;
     background: transparent;
-    font-weight: 900;
+    /* font-weight: 900; */
 }
 
 #workspaces button.focused {
@@ -32,7 +32,7 @@ window#waybar {
 }
 
 #clock {
-    font-weight: 900;
+    /* font-weight: 900; */
     letter-spacing: 2px;
 }
 
