@@ -463,7 +463,8 @@ binds {
     // or do a four-finger swipe up on a touchpad.
     Mod+O repeat=false { toggle-overview; }
 
-    Mod+Q repeat=false { close-window; }
+    // Use script for close with confirmation on protected apps (games, etc.)
+    Mod+Q repeat=false { spawn "niri-close-window"; }
 
     Mod+Left  { focus-column-left; }
     Mod+Down  { focus-window-down; }

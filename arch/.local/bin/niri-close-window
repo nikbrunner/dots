@@ -1,0 +1,42 @@
+#!/usr/bin/env bash
+# Close window with confirmation for protected apps (games, etc.)
+
+# Get focused window info
+WINDOW_INFO=$(niri msg focused-window 2>/dev/null)
+APP_ID=$(echo "$WINDOW_INFO" | grep "App ID:" | sed 's/.*App ID: "\(.*\)"/\1/')
+TITLE=$(echo "$WINDOW_INFO" | grep "Title:" | sed 's/.*Title: "\(.*\)"/\1/')
+
+# Protected app patterns (case-insensitive regex)
+PROTECTED_APPS=(
+    "\.exe$"
+    "wine"
+    "battle.net"
+    "wow"
+    "steam_app"
+)
+
+# Check if current app is protected
+is_protected() {
+    local app_lower="${APP_ID,,}"
+    local title_lower="${TITLE,,}"
+
+    for pattern in "${PROTECTED_APPS[@]}"; do
+        if [[ "$app_lower" =~ $pattern ]] || [[ "$title_lower" =~ $pattern ]]; then
+            return 0
+        fi
+    done
+    return 1
+}
+
+# Main logic
+if is_protected; then
+    # Show confirmation dialog
+    CHOICE=$(printf "No\nYes" | fuzzel --dmenu --prompt "Close $TITLE? ")
+
+    if [[ "$CHOICE" == "Yes" ]]; then
+        niri msg action close-window
+    fi
+else
+    # Not protected, close immediately
+    niri msg action close-window
+fi
