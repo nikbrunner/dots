@@ -81,3 +81,7 @@ Report what was done:
 - Dependency removed from deps.sh: yes/no
 - Symlink removed: yes/no
 - Config copied back: yes/no
+
+## Maintenance Note
+
+After running `dots link`, check for errors about missing sources. If any exist, there are stale entries in `symlinks.yml` that should be removed. This can happen when files are deleted manually without using this skill.
