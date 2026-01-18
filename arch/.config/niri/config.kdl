@@ -7,6 +7,13 @@
 // Niri will live-reload when this file changes
 include "theme.kdl"
 
+// Named workspaces - these always exist, even when empty
+workspace "Web"
+workspace "Term"
+workspace "Notes"
+workspace "Chat"
+workspace "Games"
+
 // Input device configuration.
 // Find the full list of options on the wiki:
 // https://yalter.github.io/niri/Configuration:-Input
@@ -243,6 +250,9 @@ layout {
 // which may be more convenient to use.
 // See the binds section below for more spawn examples.
 
+// 1Password (start early so SSH agent and secrets are available)
+spawn-at-startup "1password" "--silent"
+
 // This line starts waybar, a commonly used bar for Wayland compositors.
 spawn-at-startup "waybar"
 
@@ -332,6 +342,43 @@ window-rule {
 //     clip-to-geometry true
 // }
 
+// Workspace assignments
+window-rule {
+    match app-id=r#"firefox$"#
+    match app-id=r#"zen$"#
+    match app-id=r#"chromium"#
+    match app-id=r#"brave"#
+    open-on-workspace "Web"
+}
+
+window-rule {
+    match app-id="ghostty"
+    match app-id=r#"wezterm"#
+    match app-id="Alacritty"
+    match app-id="kitty"
+    open-on-workspace "Term"
+}
+
+window-rule {
+    match app-id=r#"obsidian"#
+    open-on-workspace "Notes"
+}
+
+window-rule {
+    match app-id=r#"discord"#
+    match app-id=r#"slack"#
+    match app-id=r#"signal"#
+    match app-id=r#"telegram"#
+    match app-id=r#"element"#
+    open-on-workspace "Chat"
+}
+
+window-rule {
+    match app-id=r#"steam"#
+    match app-id=r#"lutris"#
+    open-on-workspace "Games"
+}
+
 binds {
     // Keys consist of modifiers separated by + signs, followed by an XKB key name
     // in the end. To find an XKB name for a particular key, you may use a program
@@ -354,6 +401,10 @@ binds {
 
     // Clipboard history (cliphist + fuzzel) - HYPR+V (Ctrl+Shift+Alt+Super)
     Ctrl+Shift+Alt+Mod+V hotkey-overlay-title="Clipboard History" { spawn-sh "cliphist list | fuzzel -d -w 80 -l 15 | cliphist decode | wl-copy"; }
+
+    // macOS-style copy/paste (works in terminals too)
+    Mod+C repeat=false { spawn "macos-copy-paste" "copy"; }
+    Mod+V repeat=false { spawn "macos-copy-paste" "paste"; }
 
     // Use spawn-sh to run a shell command. Do this if you need pipes, multiple commands, etc.
     // Note: the entire command goes as a single argument. It's passed verbatim to `sh -c`.
@@ -503,24 +554,16 @@ binds {
     //
     // For example, with 2 workspaces + 1 empty, indices 3, 4, 5 and so on
     // will all refer to the 3rd workspace.
-    Mod+1 { focus-workspace 1; }
-    Mod+2 { focus-workspace 2; }
-    Mod+3 { focus-workspace 3; }
-    Mod+4 { focus-workspace 4; }
-    Mod+5 { focus-workspace 5; }
-    Mod+6 { focus-workspace 6; }
-    Mod+7 { focus-workspace 7; }
-    Mod+8 { focus-workspace 8; }
-    Mod+9 { focus-workspace 9; }
-    Mod+Ctrl+1 { move-column-to-workspace 1; }
-    Mod+Ctrl+2 { move-column-to-workspace 2; }
-    Mod+Ctrl+3 { move-column-to-workspace 3; }
-    Mod+Ctrl+4 { move-column-to-workspace 4; }
-    Mod+Ctrl+5 { move-column-to-workspace 5; }
-    Mod+Ctrl+6 { move-column-to-workspace 6; }
-    Mod+Ctrl+7 { move-column-to-workspace 7; }
-    Mod+Ctrl+8 { move-column-to-workspace 8; }
-    Mod+Ctrl+9 { move-column-to-workspace 9; }
+    Mod+1 { focus-workspace "Web"; }
+    Mod+2 { focus-workspace "Term"; }
+    Mod+3 { focus-workspace "Notes"; }
+    Mod+4 { focus-workspace "Chat"; }
+    Mod+5 { focus-workspace "Games"; }
+    Mod+Ctrl+1 { move-column-to-workspace "Web"; }
+    Mod+Ctrl+2 { move-column-to-workspace "Term"; }
+    Mod+Ctrl+3 { move-column-to-workspace "Notes"; }
+    Mod+Ctrl+4 { move-column-to-workspace "Chat"; }
+    Mod+Ctrl+5 { move-column-to-workspace "Games"; }
 
     // Alternatively, there are commands to move just a single window:
     // Mod+Ctrl+1 { move-window-to-workspace 1; }
@@ -551,10 +594,10 @@ binds {
     // Makes the column "fill the rest of the space".
     Mod+Ctrl+F { expand-column-to-available-width; }
 
-    Mod+C { center-column; }
+    Mod+Shift+C { center-column; }
 
     // Center all fully visible columns on screen.
-    Mod+Ctrl+C { center-visible-columns; }
+    Mod+Shift+Ctrl+C { center-visible-columns; }
 
     // Finer width adjustments.
     // This command can also:
@@ -572,8 +615,9 @@ binds {
     Mod+Shift+Equal { set-window-height "+10%"; }
 
     // Move the focused window between the floating and the tiling layout.
-    Mod+V       { toggle-window-floating; }
-    Mod+Shift+V { switch-focus-between-floating-and-tiling; }
+    // Move window between floating and tiling layout
+    Mod+T       { toggle-window-floating; }
+    Mod+Shift+T { switch-focus-between-floating-and-tiling; }
 
     // Toggle tabbed column display mode.
     // Windows in this column will appear as vertical tabs,
