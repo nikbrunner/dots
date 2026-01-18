@@ -83,6 +83,7 @@ setlocal nrformats=bin,hex
 setlocal number
 setlocal numberwidth=4
 setlocal omnifunc=v:lua.vim.lsp.omnifunc
+setlocal path=.,/usr/include,,
 setlocal nopreserveindent
 setlocal nopreviewwindow
 setlocal quoteescape=\\
@@ -127,11 +128,45 @@ setlocal wrapmargin=0
 sil! normal! zo
 113
 sil! normal! zo
-let s:l = 119 - ((37 * winheight(0) + 24) / 49)
+113
+sil! normal! zo
+113
+sil! normal! zo
+113
+sil! normal! zo
+113
+sil! normal! zo
+113
+sil! normal! zo
+113
+sil! normal! zo
+113
+sil! normal! zo
+113
+sil! normal! zo
+113
+sil! normal! zo
+113
+sil! normal! zo
+113
+sil! normal! zo
+113
+sil! normal! zo
+113
+sil! normal! zo
+113
+sil! normal! zo
+113
+sil! normal! zo
+113
+sil! normal! zo
+113
+sil! normal! zo
+let s:l = 142 - ((38 * winheight(0) + 22) / 45)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 119
+keepjumps 142
 normal! 0
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
