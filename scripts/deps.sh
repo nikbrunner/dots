@@ -64,6 +64,7 @@ declare -a REQUIRED_DEPS=(
     "lib32-gamemode:32-bit GameMode support (Arch only)"
     "obsidian:Knowledge base and note-taking app"
     "helium-browser:Private, fast browser with ad-blocking"
+    "luarocks:Lua package manager"
 )
 
 # Detect operating system
@@ -373,6 +374,7 @@ get_package_name() {
         lib32-gamemode) echo "" ;; # Arch only
         obsidian) echo "--cask obsidian" ;;
         helium-browser) echo "--cask helium-browser" ;;
+        luarocks) echo "luarocks" ;;
         *) echo "$dep" ;;
         esac
         ;;
@@ -437,6 +439,7 @@ get_package_name() {
         lib32-gamemode) echo "lib32-gamemode" ;;
         obsidian) echo "obsidian" ;;
         helium-browser) echo "helium-browser-bin" ;;
+        luarocks) echo "luarocks" ;;
         *) echo "$dep" ;;
         esac
         ;;
