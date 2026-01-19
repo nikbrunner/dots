@@ -691,13 +691,13 @@ binds {
     // Mod+Space       { switch-layout "next"; }
     // Mod+Shift+Space { switch-layout "prev"; }
 
-    // Screenshots using grim + slurp + satty (native Wayland)
+    // Screenshots using niri native + satty
     // Mod+Shift+1: Full screen → Satty
     // Mod+Shift+2: Focused window → Satty
     // Mod+Shift+3: Select area → Satty
-    Mod+Shift+1 { spawn-sh "grim - | satty -f -"; }
+    Mod+Shift+1 { spawn-sh "niri msg action screenshot-screen --write-to-disk=false && wl-paste | satty -f -"; }
     Mod+Shift+2 { spawn-sh "niri msg action screenshot-window --write-to-disk=false && wl-paste | satty -f -"; }
-    Mod+Shift+3 { spawn-sh "grim -g \"$(slurp)\" - | satty -f -"; }
+    Mod+Shift+3 { spawn-sh "niri msg action screenshot && wl-paste | satty -f -"; }
 
     // Applications such as remote-desktop clients and software KVM switches may
     // request that niri stops processing the keyboard shortcuts defined here
