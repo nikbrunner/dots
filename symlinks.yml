@@ -52,6 +52,7 @@ macos:
 arch:
   arch/.config/zsh/os.zsh: ~/.config/zsh/os.zsh
   arch/.config/clipse: ~/.config/clipse
+  arch/.config/fuzzel: ~/.config/fuzzel
   arch/.config/gamemode.ini: ~/.config/gamemode.ini
   arch/.config/mimeapps.list: ~/.config/mimeapps.list
   arch/.gitconfig.local: ~/.gitconfig.local
