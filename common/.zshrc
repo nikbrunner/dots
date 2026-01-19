@@ -3,6 +3,14 @@
 
 [[ -r ~/.env ]] && { set -a; source ~/.env; set +a; }
 
+# Git completion (fpath must be set before compinit in os.zsh) ===========
+zstyle ':completion:*:*:git:*' script ~/.config/.zsh/git-completion.bash
+fpath=(~/.config/.zsh $fpath)
+
+# OS-Specific Configuration (must be early for Homebrew PATH) ===========
+# Sources Homebrew paths, NVM, plugins, myip, and OS-specific functions
+[[ -f ~/.config/zsh/os.zsh ]] && source ~/.config/zsh/os.zsh
+
 # Cross-Platform Path Exports ===========================================
 export PATH=$HOME/.local/bin:/usr/local/bin:$PATH
 export PATH=$HOME/.local/share/bob/nvim-bin:$PATH
@@ -75,16 +83,7 @@ alias ,,="fzf -m --preview='bat --color=always {}' --bind 'enter:become(nvim {+}
 # Source 'run' script to enable print -z functionality
 [ -f "$HOME/.local/bin/run" ] && source "$HOME/.local/bin/run"
 
-# Git completion =========================================================
-zstyle ':completion:*:*:git:*' script ~/.config/.zsh/git-completion.bash
-fpath=(~/.config/.zsh $fpath)
-autoload -Uz compinit && compinit
-
 eval "$(zoxide init zsh --cmd cd)"
-
-# OS-Specific Configuration ==============================================
-# Sources Homebrew paths, NVM, plugins, myip, and OS-specific functions
-[[ -f ~/.config/zsh/os.zsh ]] && source ~/.config/zsh/os.zsh
 
 # Plugin Configuration (after plugins loaded by os.zsh) ==================
 bindkey '^y' autosuggest-accept

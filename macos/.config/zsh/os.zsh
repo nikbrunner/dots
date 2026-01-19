@@ -15,6 +15,9 @@ export NVM_DIR=$HOME/.nvm
 # IP Address =================================================================
 myip=$(ipconfig getifaddr en0 2>/dev/null || echo "Not connected")
 
+# ZSH Completion (must be before plugins that use compdef) ===================
+autoload -Uz compinit && compinit
+
 # ZSH Plugins (Homebrew) =====================================================
 source "$(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
 source "$(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
