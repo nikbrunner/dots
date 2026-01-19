@@ -30,8 +30,8 @@
     },
 
     "clock": {
-        "format": "[{:%H:%M %Z}]",
-        "format-alt": "[{:%Y.%m.%d}]",
+        "format": "[{:%a %Y.%m.%d :: %H:%M %Z}]",
+        "format-alt": "[{:%A %Y.%m.%d :: %H:%M %Z}]",
         "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>"
     },
 
