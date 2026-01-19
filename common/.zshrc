@@ -80,7 +80,7 @@ zstyle ':completion:*:*:git:*' script ~/.config/.zsh/git-completion.bash
 fpath=(~/.config/.zsh $fpath)
 autoload -Uz compinit && compinit
 
-eval "$(zoxide init zsh)"
+eval "$(zoxide init zsh --cmd cd)"
 
 # OS-Specific Configuration ==============================================
 # Sources Homebrew paths, NVM, plugins, myip, and OS-specific functions
