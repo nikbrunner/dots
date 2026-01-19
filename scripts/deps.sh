@@ -58,7 +58,7 @@ declare -a REQUIRED_DEPS=(
     "grim:Screenshot tool for wlroots compositors (Arch only)"
     "slurp:Select region for screenshots (Arch only)"
     "satty:Screenshot annotation tool (Arch only)"
-    "cliphist:Clipboard manager for Wayland (Arch only)"
+    "clipse:TUI clipboard manager with image support (Arch only)"
     "wtype:Wayland keyboard input simulator (Arch only)"
     "gamemode:Feral GameMode for gaming optimizations (Arch only)"
     "lib32-gamemode:32-bit GameMode support (Arch only)"
@@ -185,8 +185,8 @@ check_dependency() {
     satty)
         command -v satty &>/dev/null
         ;;
-    cliphist)
-        command -v cliphist &>/dev/null
+    clipse)
+        command -v clipse &>/dev/null
         ;;
     wtype)
         command -v wtype &>/dev/null
@@ -266,7 +266,7 @@ check_dependency() {
         if [[ "$(uname)" == "Darwin" ]]; then
             [[ -d "/Applications/Helium.app" ]]
         else
-            command -v helium &>/dev/null
+            command -v helium-browser &>/dev/null
         fi
         ;;
     *)
@@ -367,7 +367,7 @@ get_package_name() {
         grim) echo "" ;;        # Arch only
         slurp) echo "" ;;       # Arch only
         satty) echo "" ;;       # Arch only
-        cliphist) echo "" ;;    # Arch only
+        clipse) echo "" ;;      # Arch only
         wtype) echo "" ;;       # Arch only
         gamemode) echo "" ;;    # Arch only
         lib32-gamemode) echo "" ;; # Arch only
@@ -431,7 +431,7 @@ get_package_name() {
         grim) echo "grim" ;;
         slurp) echo "slurp" ;;
         satty) echo "satty" ;;
-        cliphist) echo "cliphist" ;;
+        clipse) echo "clipse" ;;
         wtype) echo "wtype" ;;
         gamemode) echo "gamemode" ;;
         lib32-gamemode) echo "lib32-gamemode" ;;

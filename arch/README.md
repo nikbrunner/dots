@@ -8,6 +8,8 @@
 - [ ] Exit Menu
 - [ ] Better Browser
 - [ ] Emoji Picker
+- [ ] Better Clipboard (clipse: enable Kitty graphics protocol for image preview)
+- [ ] Remove niri/dms
 - [ ] Refocus existing terminal if it's open
 - [ ] Obsidian / Notes Setup
 - [ ] Improve Niri Keybinds

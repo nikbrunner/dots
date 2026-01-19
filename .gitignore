@@ -6,3 +6,5 @@ common/.config/bm/organize-cache.json
 common/.config/bm/sort-cache.json
 common/.config/bm/*.db-shm
 common/.config/bm/*.db-wal
+arch/.config/clipse/clipboard_history.json
+arch/.config/clipse/clipse.log
