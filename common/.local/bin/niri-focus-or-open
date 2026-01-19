@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+# Focus an existing window by app-id pattern, or launch the app if not found.
+# If multiple windows match, focuses the most recently used one.
+#
+# Usage: niri-focus-or-open <app-id-pattern> <launch-command> [args...]
+#
+# Examples:
+#   niri-focus-or-open ghostty ghostty
+#   niri-focus-or-open helium helium-browser
+#   niri-focus-or-open "firefox$" firefox
+
+set -euo pipefail
+
+if [[ $# -lt 2 ]]; then
+    echo "Usage: niri-focus-or-open <app-id-pattern> <launch-command> [args...]" >&2
+    exit 1
+fi
+
+app_pattern="$1"
+shift
+launch_cmd=("$@")
+
+# Find matching window with most recent focus_timestamp
+# Returns "id:is_focused" or empty if no match
+result=$(niri msg -j windows | jq -r --arg pattern "$app_pattern" '
+    [.[] | select(.app_id | test($pattern))]
+    | sort_by(.focus_timestamp.secs, .focus_timestamp.nanos)
+    | reverse
+    | first
+    | "\(.id):\(.is_focused)"
+' 2>/dev/null) || result=""
+
+if [[ -n "$result" && "$result" != "null:null" ]]; then
+    window_id="${result%%:*}"
+    is_focused="${result##*:}"
+
+    # Skip focus call if already focused
+    if [[ "$is_focused" != "true" ]]; then
+        niri msg action focus-window --id "$window_id"
+    fi
+else
+    exec "${launch_cmd[@]}"
+fi
