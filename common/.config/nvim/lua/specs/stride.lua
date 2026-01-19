@@ -7,6 +7,6 @@ return {
     },
     event = "InsertEnter",
     opts = {
-        mode = "both", -- "completion", "refactor", or "both"
+        mode = "refactor", -- "completion", "refactor", or "both"
     },
 }

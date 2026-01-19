@@ -17,7 +17,6 @@ end
 M.spec = {
     "supermaven-inc/supermaven-nvim",
     event = "InsertEnter",
-    enabled = false,
     opts = {
         keymaps = {
             accept_suggestion = "<Tab>",
