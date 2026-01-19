@@ -3,9 +3,9 @@
   "maxHistory": 100,
   "allowDuplicates": false,
   "imageDisplay": {
-    "type": "basic",
-    "scaleX": 9,
-    "scaleY": 9,
+    "type": "kitty",
+    "scaleX": 200,
+    "scaleY": 100,
     "heightCut": 2
   }
 }
