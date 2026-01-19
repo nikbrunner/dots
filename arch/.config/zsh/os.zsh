@@ -2,6 +2,9 @@
 # Arch Linux-specific ZSH configuration
 # Sourced from ~/.zshrc
 
+# Default Applications =======================================================
+export BROWSER="helium"
+
 # NVM (official script) ======================================================
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
