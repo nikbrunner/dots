@@ -19,7 +19,6 @@
   "mini.nvim": { "branch": "main", "commit": "dce9bc4e19d02d5c37fe71c16f40f8a5536b0386" },
   "nui.nvim": { "branch": "main", "commit": "de740991c12411b663994b2860f1a4fd0937c130" },
   "nvim-lint": { "branch": "master", "commit": "baf7c91c2b868b12446df511d4cdddc98e9bf66e" },
-  "nvim-stride": { "branch": "main", "commit": "82ad0d995fb162db646aafe2cfbc2eb5f7938438" },
   "nvim-treesitter": { "branch": "master", "commit": "42fc28ba918343ebfd5565147a42a26580579482" },
   "nvim-ts-autotag": { "branch": "main", "commit": "c4ca798ab95b316a768d51eaaaee48f64a4a46bc" },
   "obsidian.nvim": { "branch": "main", "commit": "66af69a357ec1db5fe2d264f83a18db039a1e6f8" },
