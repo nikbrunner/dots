@@ -154,6 +154,19 @@
         ],
         "lastAccessed": 1765453630
       },
+      "bcd-8981-bc-desktop-client-verfgbarkeitsfilter-soll-auch-bei-nur-veloconnect-funktionieren": {
+        "locks": [
+          {
+            "filename": "PR-REVIEW-4291.md",
+            "label": "1"
+          },
+          {
+            "filename": "src/client/commons/container/ProductFinder/AvailabilityFilterModalPartial.tsx",
+            "label": "2"
+          }
+        ],
+        "lastAccessed": 1768839008
+      },
       "bcd-8985-outsourse-mixpanel-middleware": {
         "locks": [
           {
@@ -344,7 +357,7 @@
             "label": "3"
           }
         ],
-        "lastAccessed": 1768818121
+        "lastAccessed": 1768831050
       }
     },
     "~/repos/nikbrunner/nbr.haus": {
