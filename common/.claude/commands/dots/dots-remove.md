@@ -31,7 +31,7 @@ Search for the entry in `symlinks.yml` and identify:
 Ask for confirmation:
 - Remove from symlinks.yml? (always yes for this operation)
 - Delete the file from dots repo? (ask - user might want to keep it)
-- Remove related dependency from deps.sh? (ask if applicable)
+- Remove related dependency? (ask if applicable, use `/dots/deps-manage remove`)
 
 ### 4. Remove from symlinks.yml
 
@@ -59,12 +59,9 @@ rm "$DOTS_DIR/<section>/<path>"
 rmdir --ignore-fail-on-non-empty -p "$(dirname "$DOTS_DIR/<section>/<path>")"
 ```
 
-### 7. Optionally Remove from deps.sh
+### 7. Optionally Remove Dependency
 
-If removing a dependency:
-1. Remove from `REQUIRED_DEPS` array
-2. Remove `check_dependency` case
-3. Remove `get_package_name` cases
+If removing a dependency, use the `/dots/deps-manage remove <package>` skill.
 
 ### 8. Clean Up
 
@@ -78,7 +75,7 @@ dots link
 Report what was done:
 - Removed from symlinks.yml: yes/no
 - File deleted from repo: yes/no
-- Dependency removed from deps.sh: yes/no
+- Dependency removed: yes/no
 - Symlink removed: yes/no
 - Config copied back: yes/no
 

@@ -611,10 +611,11 @@ status_repos() {
     echo "Checking status of all repositories..."
     echo
 
-    # Group repositories by owner using associative arrays
-    declare -A owner_repos
-    declare -A owner_dirty_repos
-    declare -A owner_non_git_repos
+    # Use temp files for grouping (bash 3.2 compatible)
+    local tmp_dir="/tmp/repos_status_$$"
+    mkdir -p "$tmp_dir"
+    trap "rm -rf '$tmp_dir'" EXIT
+
     local total_repos=0
     local total_dirty_repos=0
     local total_non_git=0
@@ -628,7 +629,7 @@ status_repos() {
 
         # Check if it's a git repository
         if [[ ! -d "$repo_path/.git" ]]; then
-            owner_non_git_repos["$owner"]+="$repo "
+            echo "$repo" >> "$tmp_dir/non_git_$owner"
             ((total_non_git++))
             continue
         fi
@@ -638,56 +639,70 @@ status_repos() {
         status_output=$(cd "$repo_path" && git status --porcelain 2>/dev/null)
 
         if [[ -n "$status_output" ]]; then
-            owner_dirty_repos["$owner"]+="$repo "
+            echo "$repo" >> "$tmp_dir/dirty_$owner"
             ((total_dirty_repos++))
         else
-            owner_repos["$owner"]+="$repo "
+            echo "$repo" >> "$tmp_dir/clean_$owner"
         fi
     done <<<"$repos"
 
     # Show results grouped by owner
     local has_any_issues=false
 
-    for owner in $(printf '%s\n' "${!owner_dirty_repos[@]}" "${!owner_non_git_repos[@]}" | sort -u); do
-        local dirty_repos="${owner_dirty_repos[$owner]}"
-        local non_git_repos="${owner_non_git_repos[$owner]}"
+    # Get unique owners with issues
+    local owners_with_issues=()
+    local f
+    for f in "$tmp_dir"/dirty_* "$tmp_dir"/non_git_*; do
+        [[ -e "$f" ]] || continue
+        local owner="${f##*_}"
+        # Add to array if not already present
+        local found=false
+        for o in "${owners_with_issues[@]}"; do
+            [[ "$o" == "$owner" ]] && found=true && break
+        done
+        [[ "$found" == false ]] && owners_with_issues+=("$owner")
+    done
 
-        if [[ -n "$dirty_repos" || -n "$non_git_repos" ]]; then
-            has_any_issues=true
-            echo -e "${YELLOW}=== $owner ===${NC}"
+    # Sort owners
+    IFS=$'\n' owners_with_issues=($(printf '%s\n' "${owners_with_issues[@]}" | sort))
+    unset IFS
 
-            # Show non-git directories first
-            if [[ -n "$non_git_repos" ]]; then
-                for repo in $non_git_repos; do
-                    print_warning "$repo is not a git repository"
-                done
+    for owner in "${owners_with_issues[@]}"; do
+        has_any_issues=true
+        echo -e "${YELLOW}=== $owner ===${NC}"
+
+        # Show non-git directories first
+        if [[ -f "$tmp_dir/non_git_$owner" ]]; then
+            while IFS= read -r repo; do
+                print_warning "$repo is not a git repository"
+            done < "$tmp_dir/non_git_$owner"
+            echo
+        fi
+
+        # Show dirty repositories
+        if [[ -f "$tmp_dir/dirty_$owner" ]]; then
+            while IFS= read -r repo; do
+                local repo_path="$REPOS_BASE_PATH/$repo"
+                echo -e "${YELLOW}$repo${NC}"
+                (cd "$repo_path" && git status --short)
                 echo
-            fi
-
-            # Show dirty repositories
-            if [[ -n "$dirty_repos" ]]; then
-                for repo in $dirty_repos; do
-                    local repo_path="$REPOS_BASE_PATH/$repo"
-                    echo -e "${YELLOW}$repo${NC}"
-                    (cd "$repo_path" && git status --short)
-                    echo
-                done
-            fi
+            done < "$tmp_dir/dirty_$owner"
         fi
     done
 
     # Show clean repositories if not --clean flag
     if [[ "$clean_only" == false ]]; then
         local has_clean=false
-        for owner in $(printf '%s\n' "${!owner_repos[@]}" | sort); do
-            local clean_repos="${owner_repos[$owner]}"
-            if [[ -n "$clean_repos" ]]; then
-                if [[ "$has_clean" == false ]]; then
-                    echo -e "${GREEN}=== Clean Repositories ===${NC}"
-                    has_clean=true
-                fi
-                echo -e "${GREEN}$owner:${NC} $(echo $clean_repos | wc -w | tr -d ' ') repositories"
+        for f in "$tmp_dir"/clean_*; do
+            [[ -e "$f" ]] || continue
+            local owner="${f##*_}"
+            if [[ "$has_clean" == false ]]; then
+                echo -e "${GREEN}=== Clean Repositories ===${NC}"
+                has_clean=true
             fi
+            local count
+            count=$(wc -l < "$f" | tr -d ' ')
+            echo -e "${GREEN}$owner:${NC} $count repositories"
         done
         [[ "$has_clean" == true ]] && echo
     fi
@@ -702,11 +717,11 @@ status_repos() {
     fi
     if [[ $total_non_git -gt 0 ]]; then
         print_warning "Non-git directories: $total_non_git"
-        for owner in $(printf '%s\n' "${!owner_non_git_repos[@]}" | sort); do
-            local non_git_repos_list="${owner_non_git_repos[$owner]}"
-            for repo in $non_git_repos_list; do
+        for f in "$tmp_dir"/non_git_*; do
+            [[ -e "$f" ]] || continue
+            while IFS= read -r repo; do
                 echo "  • $repo"
-            done
+            done < "$f"
         done
     fi
 
@@ -903,9 +918,9 @@ setup_repos() {
         exit 1
     fi
 
-    # Track postClone commands by URL (associative array for lookup, regular array for order)
-    declare -A post_clone_cmds
-    local post_clone_order=()
+    # Track postClone commands (parallel arrays - bash 3.2 compatible)
+    local post_clone_urls=()
+    local post_clone_commands=()
 
     # Check if any wildcard patterns exist that would need gh CLI
     local has_wildcards=false
@@ -939,8 +954,8 @@ setup_repos() {
         local post_clone
         post_clone=$(get_entry_post_clone "$entry")
         if [[ -n "$post_clone" ]]; then
-            post_clone_cmds["$repo_url"]="$post_clone"
-            post_clone_order+=("$repo_url")
+            post_clone_urls+=("$repo_url")
+            post_clone_commands+=("$post_clone")
         fi
 
         # Check if it's a wildcard pattern
@@ -1032,11 +1047,12 @@ setup_repos() {
     echo "  Failed: $failed"
 
     # Run postClone commands for repos that have them (in config order)
-    if [[ ${#post_clone_order[@]} -gt 0 ]]; then
+    if [[ ${#post_clone_urls[@]} -gt 0 ]]; then
         echo
         echo "Running postClone commands..."
-        for repo_url in "${post_clone_order[@]}"; do
-            local post_clone_cmd="${post_clone_cmds[$repo_url]}"
+        for i in "${!post_clone_urls[@]}"; do
+            local repo_url="${post_clone_urls[$i]}"
+            local post_clone_cmd="${post_clone_commands[$i]}"
             local repo_path
             repo_path=$(parse_git_url "$repo_url")
             repo_path="$REPOS_BASE_PATH/$repo_path"

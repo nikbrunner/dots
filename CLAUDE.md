@@ -116,7 +116,7 @@ Run `dots theme-link` to create/update relative symlinks to Black Atom repos.
 - `common/.local/bin/dots` - Main CLI implementation
 - `scripts/symlinks.sh` - Symlink creation logic
 - `scripts/detect-os.sh` - OS detection (`macos`, `arch`, `linux`)
-- `scripts/deps.sh` - Dependency installation
+- `scripts/deps/` - Dependency management (install.sh dispatcher, macos.sh, arch.sh)
 
 ## Environment Variables
 

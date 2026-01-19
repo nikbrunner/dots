@@ -47,13 +47,8 @@ Keep entries alphabetically sorted within each section.
 ### 5. Ask About Dependencies
 
 If this config is for a specific tool/package, ask:
-- Should this tool be added to `deps.sh`?
-- If yes, get the package name for each OS
-
-If adding to deps.sh:
-1. Add to `REQUIRED_DEPS` array with description
-2. Add `check_dependency` case if needed
-3. Add `get_package_name` cases for macos and arch
+- Should this tool be added as a dependency?
+- If yes, use the `/dots/deps-manage` skill to add it
 
 ### 6. Create Symlink
 

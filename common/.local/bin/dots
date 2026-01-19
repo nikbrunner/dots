@@ -140,39 +140,26 @@ cmd_install() {
 
 # Deps command - install/check dependencies only
 cmd_deps() {
-    # Source deps.sh to get access to functions
-    # shellcheck disable=SC1091
-    source "$DOTS_DIR/scripts/deps.sh"
-
-    case "${1:-}" in
+    case "${1:-install}" in
         check)
             log_info "Checking dependencies..."
             echo ""
-            local missing
-            missing=$(check_all_dependencies "${REQUIRED_DEPS[@]}")
-            if [[ -z "$missing" ]]; then
-                log_success "All dependencies installed"
-            else
-                log_warning "Missing dependencies:"
-                echo "$missing" | while read -r dep; do
-                    echo "  - $dep"
-                done
-            fi
+            "$DOTS_DIR/scripts/deps/install.sh" check
             ;;
-        install|"")
+        install)
             log_info "Installing dependencies..."
             echo ""
-            install_all_dependencies
+            "$DOTS_DIR/scripts/deps/install.sh" install
             ;;
-        validate)
-            validate_dependencies
+        list)
+            "$DOTS_DIR/scripts/deps/install.sh" list
             ;;
         *)
-            echo "Usage: dots deps [check|install|validate]"
+            echo "Usage: dots deps [check|install|list]"
             echo ""
-            echo "  check    - Show missing dependencies"
-            echo "  install  - Install all missing dependencies (default)"
-            echo "  validate - Verify all dependencies are working"
+            echo "  check   - Show dependency status"
+            echo "  install - Install all missing dependencies (default)"
+            echo "  list    - List all dependencies for current OS"
             ;;
     esac
 }

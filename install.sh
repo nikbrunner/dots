@@ -36,7 +36,7 @@ done
 # shellcheck disable=SC1091
 source "$SCRIPT_DIR/scripts/detect-os.sh"
 # shellcheck disable=SC1091
-source "$SCRIPT_DIR/scripts/deps.sh"
+source "$SCRIPT_DIR/scripts/deps/install.sh"
 
 echo -e "${BLUE}╔══════════════════════════════════════╗${NC}"
 echo -e "${BLUE}║    Dots Complete Machine Setup       ║${NC}"
@@ -65,7 +65,7 @@ if [[ "$SKIP_DEPS" == false ]]; then
 		echo -e "${YELLOW}→${NC} [DRY] Would install all required dependencies"
 		echo "  Required: git, zsh, tmux, neovim, fzf, ripgrep, fd, bat, delta, lazygit, eza, zoxide, gum, gh, 1password, 1password-cli"
 	else
-		if ! install_all_dependencies; then
+		if ! install_all; then
 			echo -e "${RED}❌ Failed to install dependencies${NC}"
 			echo "You can skip dependency installation with: ./install.sh --no-deps"
 			exit 1
