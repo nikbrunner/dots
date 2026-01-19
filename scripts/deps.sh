@@ -62,6 +62,8 @@ declare -a REQUIRED_DEPS=(
     "wtype:Wayland keyboard input simulator (Arch only)"
     "gamemode:Feral GameMode for gaming optimizations (Arch only)"
     "lib32-gamemode:32-bit GameMode support (Arch only)"
+    "obsidian:Knowledge base and note-taking app"
+    "helium-browser:Private, fast browser with ad-blocking"
 )
 
 # Detect operating system
@@ -252,6 +254,21 @@ check_dependency() {
         # NVM is installed to ~/.nvm
         [[ -d "$HOME/.nvm" ]] || [[ -d "${XDG_CONFIG_HOME:-$HOME/.config}/nvm" ]]
         ;;
+    obsidian)
+        # Check for app on macOS or package on Linux
+        if [[ "$(uname)" == "Darwin" ]]; then
+            [[ -d "/Applications/Obsidian.app" ]]
+        else
+            check_package_installed "obsidian"
+        fi
+        ;;
+    helium-browser)
+        if [[ "$(uname)" == "Darwin" ]]; then
+            [[ -d "/Applications/Helium.app" ]]
+        else
+            command -v helium &>/dev/null
+        fi
+        ;;
     *)
         command -v "$dep" &>/dev/null
         ;;
@@ -354,6 +371,8 @@ get_package_name() {
         wtype) echo "" ;;       # Arch only
         gamemode) echo "" ;;    # Arch only
         lib32-gamemode) echo "" ;; # Arch only
+        obsidian) echo "--cask obsidian" ;;
+        helium-browser) echo "--cask helium-browser" ;;
         *) echo "$dep" ;;
         esac
         ;;
@@ -416,6 +435,8 @@ get_package_name() {
         wtype) echo "wtype" ;;
         gamemode) echo "gamemode" ;;
         lib32-gamemode) echo "lib32-gamemode" ;;
+        obsidian) echo "obsidian" ;;
+        helium-browser) echo "helium-browser-bin" ;;
         *) echo "$dep" ;;
         esac
         ;;
