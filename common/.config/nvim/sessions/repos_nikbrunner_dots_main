@@ -9,10 +9,10 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +495 ~/repos/nikbrunner/dots/arch/.config/niri/config.kdl
+badd +1 ~/repos/nikbrunner/dots/arch/.config/niri/config.kdl
 badd +5 ~/repos/nikbrunner/dots/arch/.config/clipse/config.json
 badd +23 ~/repos/nikbrunner/dots/common/.config/ghostty/config
-badd +26 ~/repos/nikbrunner/dots/common/.config/nvim/lua/specs/mason.lua
+badd +29 ~/repos/nikbrunner/dots/common/.config/nvim/lua/specs/mason.lua
 argglobal
 %argdel
 set stal=2
@@ -38,9 +38,9 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe 'vert 1resize ' . ((&columns * 99 + 150) / 300)
-exe 'vert 2resize ' . ((&columns * 99 + 150) / 300)
-exe 'vert 3resize ' . ((&columns * 100 + 150) / 300)
+exe 'vert 1resize ' . ((&columns * 56 + 84) / 169)
+exe 'vert 2resize ' . ((&columns * 55 + 84) / 169)
+exe 'vert 3resize ' . ((&columns * 56 + 84) / 169)
 argglobal
 balt ~/repos/nikbrunner/dots/arch/.config/clipse/config.json
 setlocal keymap=
@@ -150,7 +150,7 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 495 - ((33 * winheight(0) + 24) / 49)
+let s:l = 495 - ((31 * winheight(0) + 23) / 46)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
@@ -272,7 +272,7 @@ setlocal nowrap
 setlocal wrapmargin=0
 2
 sil! normal! zo
-let s:l = 5 - ((4 * winheight(0) + 24) / 49)
+let s:l = 5 - ((4 * winheight(0) + 23) / 46)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
@@ -392,16 +392,16 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 23 - ((22 * winheight(0) + 24) / 49)
+let s:l = 23 - ((21 * winheight(0) + 23) / 46)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
 keepjumps 23
 normal! 0
 wincmd w
-exe 'vert 1resize ' . ((&columns * 99 + 150) / 300)
-exe 'vert 2resize ' . ((&columns * 99 + 150) / 300)
-exe 'vert 3resize ' . ((&columns * 100 + 150) / 300)
+exe 'vert 1resize ' . ((&columns * 56 + 84) / 169)
+exe 'vert 2resize ' . ((&columns * 55 + 84) / 169)
+exe 'vert 3resize ' . ((&columns * 56 + 84) / 169)
 tabnext
 edit ~/repos/nikbrunner/dots/common/.config/nvim/lua/specs/mason.lua
 argglobal
@@ -508,7 +508,7 @@ setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#common%*\ %#WinBarSeparator#/%*\ %#WinBarPath#.config%*\ %#WinBarSeparator#/%*\ %#WinBarPath#nvim%*\ %#WinBarSeparator#/%*\ %#WinBarPath#lua%*\ %#WinBarSeparator#/%*\ %#WinBarPath#specs%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#mason.lua%*
+setlocal winbar=%#WinBarPath#common%*\ %#WinBarSeparator#/%*\ %#WinBarPath#.config%*\ %#WinBarSeparator#/%*\ %#WinBarPath#nvim%*\ %#WinBarSeparator#/%*\ %#WinBarPath#lua%*\ %#WinBarSeparator#/%*\ %#WinBarPath#specs%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#mason.lua%*\ %#WinBarSeparator##%*\ %#WinBarSymbol#setup_install_notification%*
 setlocal winblend=0
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -516,11 +516,11 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 26 - ((13 * winheight(0) + 24) / 48)
+let s:l = 29 - ((15 * winheight(0) + 23) / 46)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 26
+keepjumps 29
 normal! 0
 tabnext 2
 set stal=1
@@ -538,6 +538,7 @@ if filereadable(s:sx)
 endif
 let &g:so = s:so_save | let &g:siso = s:siso_save
 set hlsearch
+nohlsearch
 doautoall SessionLoadPost
 unlet SessionLoad
 " vim: set ft=vim :
