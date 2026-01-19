@@ -9,7 +9,7 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +1 ~/repos/black-atom-industries/ghostty/themes/default/collection.template.conf
+badd +23 ~/repos/black-atom-industries/ghostty/themes/default/collection.template.conf
 argglobal
 %argdel
 edit ~/repos/black-atom-industries/ghostty/themes/default/collection.template.conf
@@ -121,11 +121,11 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 1 - ((0 * winheight(0) + 21) / 43)
+let s:l = 23 - ((22 * winheight(0) + 37) / 75)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 1
+keepjumps 23
 normal! 0
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
