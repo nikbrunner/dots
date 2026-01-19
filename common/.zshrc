@@ -1,27 +1,5 @@
-# OS Detection ===========================================================
-case "$(uname -s)" in
-    Darwin)
-        # macOS-specific configuration
-        OS="macos"
-        # HomeBrew
-        brew_path="/opt/homebrew/bin"
-        brew_opt_path="/opt/homebrew/opt"
-        export PATH=${brew_path}:${PATH}
-        export PATH=${brew_opt_path}/python@3.10/bin/python3:$PATH
-
-        # NVM (Homebrew)
-        export NVM_DIR=$HOME/.nvm
-        [ -s "${brew_opt_path}/nvm/nvm.sh" ] && . "${brew_opt_path}/nvm/nvm.sh"
-        ;;
-    Linux)
-        # Linux-specific configuration
-        OS="linux"
-        # NVM (official script installation)
-        export NVM_DIR="$HOME/.nvm"
-        [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-        [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
-        ;;
-esac
+# shellcheck shell=bash
+# Note: This is zsh config. Many shellcheck warnings are false positives.
 
 [[ -r ~/.env ]] && { set -a; source ~/.env; set +a; }
 
@@ -97,17 +75,6 @@ alias ,,="fzf -m --preview='bat --color=always {}' --bind 'enter:become(nvim {+}
 # Source 'run' script to enable print -z functionality
 [ -f "$HOME/.local/bin/run" ] && source "$HOME/.local/bin/run"
 
-# Misc =================================================================
-# Get IP address (cross-platform)
-case "$OS" in
-    macos)
-        myip=$(ipconfig getifaddr en0 2>/dev/null || echo "Not connected")
-        ;;
-    linux)
-        myip=$(ip route get 1.1.1.1 2>/dev/null | grep -oP 'src \K\S+' || echo "Not connected")
-        ;;
-esac
-
 # Git completion =========================================================
 zstyle ':completion:*:*:git:*' script ~/.config/.zsh/git-completion.bash
 fpath=(~/.config/.zsh $fpath)
@@ -115,23 +82,11 @@ autoload -Uz compinit && compinit
 
 eval "$(zoxide init zsh)"
 
-# OS-Specific Plugin Loading ============================================
-case "$OS" in
-    macos)
-        # macOS (Homebrew)
-        source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-        source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-        ;;
-    linux)
-        # Linux (system packages)
-        [ -f /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh ] && \
-            source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
-        [ -f /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ] && \
-            source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-        ;;
-esac
+# OS-Specific Configuration ==============================================
+# Sources Homebrew paths, NVM, plugins, myip, and OS-specific functions
+[[ -f ~/.config/zsh/os.zsh ]] && source ~/.config/zsh/os.zsh
 
-# bind Ctrl-y to accept autosuggestion
+# Plugin Configuration (after plugins loaded by os.zsh) ==================
 bindkey '^y' autosuggest-accept
 ZSH_AUTOSUGGEST_STRATEGY=(history completion)
 
@@ -149,11 +104,8 @@ command -v atuin &>/dev/null && eval "$(atuin init zsh)"
 
 # Minimal Prompt (gray path, green branch, red job count, yellow $)
 autoload -Uz vcs_info
-precmd() { vcs_info }
+precmd() { vcs_info; }
 zstyle ':vcs_info:git:*' formats ' %F{green}%b%f'
 setopt PROMPT_SUBST
 PROMPT='%F{gray}%~%f${vcs_info_msg_0_}%(1j. %F{red}[%j]%f.)
 %F{yellow}$%f '
-
-# Aviator CLI (macOS only)
-command -v av &>/dev/null && source <(av completion zsh)

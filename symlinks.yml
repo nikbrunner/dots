@@ -40,6 +40,7 @@ common:
   common/themes.json: ~/themes.json
 
 macos:
+  macos/.config/zsh/os.zsh: ~/.config/zsh/os.zsh
   macos/.config/karabiner: ~/.config/karabiner
   macos/.gitconfig.local: ~/.gitconfig.local
   macos/Brewfile: ~/Brewfile
@@ -49,6 +50,7 @@ macos:
   macos/Library/Scripts/pcloud-auto-mount.applescript: ~/Library/Scripts/pcloud-auto-mount.applescript
 
 arch:
+  arch/.config/zsh/os.zsh: ~/.config/zsh/os.zsh
   arch/.config/gamemode.ini: ~/.config/gamemode.ini
   arch/.config/mimeapps.list: ~/.config/mimeapps.list
   arch/.gitconfig.local: ~/.gitconfig.local
