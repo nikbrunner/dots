@@ -110,7 +110,7 @@
 
 [gpg "ssh"]
   allowedSignersFile = ~/.ssh/allowed_signers
-	program = /opt/1Password/op-ssh-sign
+  program = /opt/1Password/op-ssh-sign
 
 [commit]
   gpgsign = true
