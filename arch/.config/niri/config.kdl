@@ -442,6 +442,7 @@ binds {
     // Suggested binds for running programs: terminal, app launcher, screen locker.
     Ctrl+Shift+Alt+Mod+Space hotkey-overlay-title="Focus/Open Terminal" { spawn-sh "~/.local/bin/niri-focus-or-open ghostty ghostty"; }
     Ctrl+Shift+Alt+Mod+W hotkey-overlay-title="Focus/Open Browser" { spawn-sh "~/.local/bin/niri-focus-or-open helium helium-browser"; }
+    Ctrl+Shift+Alt+Mod+N hotkey-overlay-title="Focus/Open Notes" { spawn-sh "~/.local/bin/niri-focus-or-open obsidian obsidian"; }
     Ctrl+Shift+Alt+Mod+Semicolon hotkey-overlay-title="Run an Application: fuzzel" { spawn "fuzzel"; }
     Ctrl+Shift+Alt+Mod+A hotkey-overlay-title="Activity" { spawn-sh "btop"; }
 
