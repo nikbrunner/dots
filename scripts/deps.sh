@@ -509,6 +509,27 @@ install_dependency() {
             echo "✅ Bluetooth service enabled"
         fi
     fi
+
+    # Post-install: configure Docker (add user to group, enable service)
+    if [[ "$dep" == "docker" ]]; then
+        # Add user to docker group if not already in it
+        if ! groups "$USER" | grep -q '\bdocker\b'; then
+            echo "🐳 Adding $USER to docker group..."
+            sudo usermod -aG docker "$USER"
+            echo "✅ Added to docker group (logout/login required for effect)"
+        fi
+
+        # Enable and start docker service
+        if ! systemctl is-enabled docker &>/dev/null; then
+            echo "🐳 Enabling docker service..."
+            sudo systemctl enable --now docker
+            echo "✅ Docker service enabled and started"
+        elif ! systemctl is-active docker &>/dev/null; then
+            echo "🐳 Starting docker service..."
+            sudo systemctl start docker
+            echo "✅ Docker service started"
+        fi
+    fi
 }
 
 # Check all dependencies and return list of missing ones
@@ -722,6 +743,31 @@ configure_system() {
         fi
     else
         echo "✅ TPM already installed"
+    fi
+
+    # Configure Docker (if installed)
+    if command -v docker &>/dev/null; then
+        # Add user to docker group if not already in it
+        if ! groups "$USER" | grep -q '\bdocker\b'; then
+            echo "🐳 Adding $USER to docker group..."
+            sudo usermod -aG docker "$USER"
+            echo "✅ Added to docker group (logout/login required for effect)"
+        else
+            echo "✅ Already in docker group"
+        fi
+
+        # Enable and start docker service
+        if ! systemctl is-enabled docker &>/dev/null; then
+            echo "🐳 Enabling docker service..."
+            sudo systemctl enable --now docker
+            echo "✅ Docker service enabled and started"
+        elif ! systemctl is-active docker &>/dev/null; then
+            echo "🐳 Starting docker service..."
+            sudo systemctl start docker
+            echo "✅ Docker service started"
+        else
+            echo "✅ Docker service already running"
+        fi
     fi
 
     echo "✅ System configuration complete!"
