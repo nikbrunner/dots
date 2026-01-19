@@ -8,11 +8,11 @@
 include "theme.kdl"
 
 // Named workspaces - these always exist, even when empty
-workspace "01:WEB"
-workspace "02:TERM"
-workspace "03:NOTE"
-workspace "04:CHAT"
-workspace "05:GAME"
+workspace "01"
+workspace "02"
+workspace "03"
+workspace "04"
+workspace "05"
 workspace "06"
 workspace "07"
 workspace "08"
@@ -359,7 +359,7 @@ window-rule {
     match app-id=r#"chromium"#
     match app-id=r#"brave"#
     match app-id=r#"helium"#
-    open-on-workspace "01:WEB"
+    open-on-workspace "01"
 }
 
 window-rule {
@@ -369,12 +369,12 @@ window-rule {
     match app-id="kitty"
     exclude title="bm"
     exclude title="clipse"
-    open-on-workspace "02:TERM"
+    open-on-workspace "02"
 }
 
 window-rule {
     match app-id=r#"obsidian"#
-    open-on-workspace "03:NOTE"
+    open-on-workspace "03"
 }
 
 window-rule {
@@ -383,7 +383,7 @@ window-rule {
     match app-id=r#"signal"#
     match app-id=r#"telegram"#
     match app-id=r#"element"#
-    open-on-workspace "04:CHAT"
+    open-on-workspace "04"
 }
 
 window-rule {
@@ -392,14 +392,14 @@ window-rule {
     match app-id=r#"battle.net"#
     match app-id=r#"wow"#
     match app-id=r#"wowclassic"#
-    open-on-workspace "05:GAME"
+    open-on-workspace "05"
 }
 
 // Hide annoying Wine/Proton explorer.exe helper window
 window-rule {
     match app-id="explorer.exe" title=""
     open-floating false
-    open-on-workspace "05:GAME"
+    open-on-workspace "05"
 }
 
 // Waypaper - open as floating
@@ -412,8 +412,8 @@ window-rule {
 window-rule {
     match title="clipse"
     open-floating true
-    default-column-width { fixed 1440; }
-    default-window-height { fixed 500; }
+    default-column-width { fixed 1000; }
+    default-window-height { fixed 1000; }
 }
 
 // Bookmark manager (bm) - open as floating
@@ -440,8 +440,8 @@ binds {
     Mod+Shift+Slash { show-hotkey-overlay; }
 
     // Suggested binds for running programs: terminal, app launcher, screen locker.
-    Ctrl+Shift+Alt+Mod+Space hotkey-overlay-title="Focus/Open Terminal" { spawn-sh "niri msg windows | grep -q ghostty && niri msg action focus-workspace 02:TERM || ghostty"; }
-    Ctrl+Shift+Alt+Mod+W hotkey-overlay-title="Focus/Open Browser" { spawn-sh "niri msg windows | grep -q 'App ID: \"helium\"' && niri msg action focus-workspace 01:WEB || helium-browser"; }
+    Ctrl+Shift+Alt+Mod+Space hotkey-overlay-title="Focus/Open Terminal" { spawn-sh "niri msg windows | grep -q ghostty && niri msg action focus-workspace 02 || ghostty"; }
+    Ctrl+Shift+Alt+Mod+W hotkey-overlay-title="Focus/Open Browser" { spawn-sh "niri msg windows | grep -q 'App ID: \"helium\"' && niri msg action focus-workspace 01 || helium-browser"; }
     Ctrl+Shift+Alt+Mod+Semicolon hotkey-overlay-title="Run an Application: fuzzel" { spawn "fuzzel"; }
     Super+Alt+L hotkey-overlay-title="Lock the Screen: swaylock" { spawn "swaylock"; }
 
@@ -605,20 +605,20 @@ binds {
     //
     // For example, with 2 workspaces + 1 empty, indices 3, 4, 5 and so on
     // will all refer to the 3rd workspace.
-    Mod+1 { focus-workspace "01:WEB"; }
-    Mod+2 { focus-workspace "02:TERM"; }
-    Mod+3 { focus-workspace "03:NOTE"; }
-    Mod+4 { focus-workspace "04:CHAT"; }
-    Mod+5 { focus-workspace "05:GAME"; }
+    Mod+1 { focus-workspace "01"; }
+    Mod+2 { focus-workspace "02"; }
+    Mod+3 { focus-workspace "03"; }
+    Mod+4 { focus-workspace "04"; }
+    Mod+5 { focus-workspace "05"; }
     Mod+6 { focus-workspace "06"; }
     Mod+7 { focus-workspace "07"; }
     Mod+8 { focus-workspace "08"; }
     Mod+9 { focus-workspace "09"; }
-    Mod+Ctrl+1 { move-column-to-workspace "01:WEB"; }
-    Mod+Ctrl+2 { move-column-to-workspace "02:TERM"; }
-    Mod+Ctrl+3 { move-column-to-workspace "03:NOTE"; }
-    Mod+Ctrl+4 { move-column-to-workspace "04:CHAT"; }
-    Mod+Ctrl+5 { move-column-to-workspace "05:GAME"; }
+    Mod+Ctrl+1 { move-column-to-workspace "01"; }
+    Mod+Ctrl+2 { move-column-to-workspace "02"; }
+    Mod+Ctrl+3 { move-column-to-workspace "03"; }
+    Mod+Ctrl+4 { move-column-to-workspace "04"; }
+    Mod+Ctrl+5 { move-column-to-workspace "05"; }
     Mod+Ctrl+6 { move-column-to-workspace "06"; }
     Mod+Ctrl+7 { move-column-to-workspace "07"; }
     Mod+Ctrl+8 { move-column-to-workspace "08"; }
