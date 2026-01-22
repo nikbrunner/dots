@@ -1621,12 +1621,76 @@ leave_repos() {
     print_success "Leave workflow complete!"
 }
 
+# Hard reset a repo to match remote
+fullreset_repo() {
+    local repo_path="$1"
+    local branch
+    branch=$(git -C "$repo_path" rev-parse --abbrev-ref HEAD)
+
+    # Fetch latest
+    git -C "$repo_path" fetch --all --quiet 2>/dev/null
+
+    # Reset to upstream
+    if git -C "$repo_path" reset --hard "@{u}" 2>/dev/null; then
+        return 0
+    else
+        return 1
+    fi
+}
+
+# Get repo sync state: "clean" | "behind" | "diverged" | "dirty" | "dirty+behind" | "ahead"
+get_repo_state() {
+    local repo_path="$1"
+
+    # Check for uncommitted changes
+    local dirty=""
+    if [[ -n $(git -C "$repo_path" status --porcelain 2>/dev/null) ]]; then
+        dirty="dirty"
+    fi
+
+    # Check if upstream is configured
+    if ! git -C "$repo_path" rev-parse --abbrev-ref '@{u}' &>/dev/null; then
+        echo "no-upstream"
+        return
+    fi
+
+    local ahead behind
+    ahead=$(git -C "$repo_path" rev-list --count '@{u}..' 2>/dev/null || echo "0")
+    behind=$(git -C "$repo_path" rev-list --count '..@{u}' 2>/dev/null || echo "0")
+
+    if [[ -n "$dirty" ]]; then
+        if [[ "$behind" -gt 0 ]]; then
+            echo "dirty+behind:$ahead:$behind"
+        else
+            echo "dirty:$ahead:$behind"
+        fi
+    elif [[ "$ahead" -gt 0 && "$behind" -gt 0 ]]; then
+        echo "diverged:$ahead:$behind"
+    elif [[ "$ahead" -gt 0 ]]; then
+        echo "ahead:$ahead:$behind"
+    elif [[ "$behind" -gt 0 ]]; then
+        echo "behind:$ahead:$behind"
+    else
+        echo "clean:0:0"
+    fi
+}
+
 # Arrive workflow - start of day sync
 arrive_repos() {
-    local interactive=false
-    if [[ "$1" == "-i" || "$1" == "--interactive" ]]; then
-        interactive=true
-    fi
+    local hard_reset=false
+
+    # Parse flags
+    while [[ $# -gt 0 ]]; do
+        case "$1" in
+            --hard)
+                hard_reset=true
+                shift
+                ;;
+            *)
+                shift
+                ;;
+        esac
+    done
 
     local repos
     repos=$(list_repos)
@@ -1654,35 +1718,131 @@ arrive_repos() {
     echo "Found $total git repositories"
     echo
 
-    # Pull repos with visible progress
+    # Sync repos with visible progress
     local ok_count=0
     local up_to_date_count=0
-    local conflict_count=0
+    local reset_count=0
     local skip_count=0
     local current=1
-    local conflict_repos=()
+    local skipped_repos=()
 
     for repo in "${repo_list[@]}"; do
-        echo -n "[$current/$total] $repo... "
-        local result
-        result=$(parallel_pull "$repo")
+        local repo_path="$REPOS_BASE_PATH/$repo"
 
-        case "$result" in
-            OK:*)
-                print_success "updated"
-                ((ok_count++))
-                ;;
-            UP-TO-DATE:*)
-                echo "up to date"
+        # Fetch first to get accurate state
+        git -C "$repo_path" fetch --quiet 2>/dev/null
+
+        local state_info
+        state_info=$(get_repo_state "$repo_path")
+        local state="${state_info%%:*}"
+        local counts="${state_info#*:}"
+        local ahead="${counts%%:*}"
+        local behind="${counts#*:}"
+
+        echo -n "[$current/$total] $repo "
+
+        case "$state" in
+            clean)
+                echo "✓ up to date"
                 ((up_to_date_count++))
                 ;;
-            CONFLICT:*)
-                print_error "conflict!"
-                ((conflict_count++))
-                conflict_repos+=("$repo")
+            behind)
+                # Simple case - just pull
+                echo -n "(↓$behind) pulling... "
+                if git -C "$repo_path" pull --quiet 2>/dev/null; then
+                    print_success "updated"
+                    ((ok_count++))
+                else
+                    print_error "pull failed"
+                    skipped_repos+=("$repo")
+                    ((skip_count++))
+                fi
                 ;;
-            SKIP:*)
-                print_warning "skipped (${result#SKIP:*:})"
+            ahead)
+                # Local commits not on remote - nothing to pull
+                echo -e "${YELLOW}↑$ahead ahead${NC} (nothing to pull)"
+                ((up_to_date_count++))
+                ;;
+            diverged)
+                echo -e "${YELLOW}diverged${NC} (↑$ahead ↓$behind)"
+                if [[ "$hard_reset" == true ]]; then
+                    echo -n "  → resetting to remote... "
+                    if fullreset_repo "$repo_path"; then
+                        print_success "reset"
+                        ((reset_count++))
+                    else
+                        print_error "reset failed"
+                        skipped_repos+=("$repo")
+                        ((skip_count++))
+                    fi
+                else
+                    local do_reset=false
+                    if has_gum; then
+                        gum confirm "  Reset to remote? (discards $ahead local commits)" && do_reset=true
+                    else
+                        echo -n "  Reset to remote? (discards $ahead local commits) (y/N) "
+                        read -r confirm_reset
+                        [[ "$confirm_reset" == "y" || "$confirm_reset" == "Y" ]] && do_reset=true
+                    fi
+
+                    if [[ "$do_reset" == true ]]; then
+                        echo -n "  → resetting... "
+                        if fullreset_repo "$repo_path"; then
+                            print_success "reset"
+                            ((reset_count++))
+                        else
+                            print_error "reset failed"
+                            skipped_repos+=("$repo")
+                            ((skip_count++))
+                        fi
+                    else
+                        echo "  → skipped"
+                        skipped_repos+=("$repo")
+                        ((skip_count++))
+                    fi
+                fi
+                ;;
+            dirty|dirty+behind)
+                echo -e "${YELLOW}dirty${NC} (uncommitted changes)"
+                if [[ "$hard_reset" == true ]]; then
+                    echo -n "  → resetting to remote... "
+                    if fullreset_repo "$repo_path"; then
+                        print_success "reset"
+                        ((reset_count++))
+                    else
+                        print_error "reset failed"
+                        skipped_repos+=("$repo")
+                        ((skip_count++))
+                    fi
+                else
+                    local do_reset=false
+                    if has_gum; then
+                        gum confirm "  Reset to remote? (discards uncommitted changes)" --default=false && do_reset=true
+                    else
+                        echo -n "  Reset to remote? (discards uncommitted changes) (y/N) "
+                        read -r confirm_reset
+                        [[ "$confirm_reset" == "y" || "$confirm_reset" == "Y" ]] && do_reset=true
+                    fi
+
+                    if [[ "$do_reset" == true ]]; then
+                        echo -n "  → resetting... "
+                        if fullreset_repo "$repo_path"; then
+                            print_success "reset"
+                            ((reset_count++))
+                        else
+                            print_error "reset failed"
+                            skipped_repos+=("$repo")
+                            ((skip_count++))
+                        fi
+                    else
+                        echo "  → skipped"
+                        skipped_repos+=("$repo")
+                        ((skip_count++))
+                    fi
+                fi
+                ;;
+            no-upstream)
+                print_warning "no upstream"
                 ((skip_count++))
                 ;;
         esac
@@ -1695,32 +1855,17 @@ arrive_repos() {
     echo -e "${YELLOW}Summary${NC}"
     echo "────────────────────────────────────────────────"
     echo "  Total repositories: $total"
-    [[ $ok_count -gt 0 ]] && print_success "Updated: $ok_count"
+    [[ $ok_count -gt 0 ]] && print_success "Pulled: $ok_count"
+    [[ $reset_count -gt 0 ]] && print_success "Reset: $reset_count"
     [[ $up_to_date_count -gt 0 ]] && echo "  Already up to date: $up_to_date_count"
     [[ $skip_count -gt 0 ]] && print_warning "Skipped: $skip_count"
 
-    # List conflicted repos
-    if [[ ${#conflict_repos[@]} -gt 0 ]]; then
+    # List skipped repos
+    if [[ ${#skipped_repos[@]} -gt 0 ]]; then
         echo
-        print_error "Conflicts (${#conflict_repos[@]}):"
-        for repo in "${conflict_repos[@]}"; do
-            echo -e "  ${RED}• $repo${NC}"
-        done
-
-        # Offer to open lazygit for each
-        echo
-        for repo in "${conflict_repos[@]}"; do
-            if has_gum; then
-                if gum confirm "Open LazyGit for $repo?"; then
-                    (cd "$REPOS_BASE_PATH/$repo" && lazygit)
-                fi
-            else
-                echo -n "Open LazyGit for $repo? (y/N) "
-                read -r open_lg
-                if [[ "$open_lg" == "y" || "$open_lg" == "Y" ]]; then
-                    (cd "$REPOS_BASE_PATH/$repo" && lazygit)
-                fi
-            fi
+        print_warning "Skipped repos:"
+        for repo in "${skipped_repos[@]}"; do
+            echo "  • $repo"
         done
     fi
 
@@ -1757,7 +1902,7 @@ show_help() {
   \033[32mstatus\033[0m       - Show git status for all repositories [\033[33m--clean\033[0m]
   \033[32mcleanup\033[0m      - Interactive cleanup workflow for dirty repositories
   \033[32mleave\033[0m        - End of day: commit and push all dirty repos
-  \033[32marrive\033[0m       - Start of day: pull all repos [\033[33m-i\033[0m for interactive]
+  \033[32marrive\033[0m       - Start of day: sync all repos [\033[33m--hard\033[0m to force reset]
   \033[32msetup\033[0m        - Clone all repositories from config
   \033[32mhelp\033[0m         - Show this help message
 
@@ -1773,8 +1918,8 @@ show_help() {
   repos setup                                      # Clone all repos from config
   repos status --clean                             # Show only dirty repositories
   repos leave                                      # End of day sync workflow
-  repos arrive                                     # Pull all repos (parallel)
-  repos arrive -i                                  # Pull with interactive conflict handling
+  repos arrive                                     # Sync repos (prompts for diverged)
+  repos arrive --hard                              # Reset all repos to remote state
 
 \033[1;34mConfig File (ensure_cloned):\033[0m
   Add repositories to ensure_cloned array in config file:
