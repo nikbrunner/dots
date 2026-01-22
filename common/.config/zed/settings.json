@@ -40,7 +40,7 @@
   },
   "theme": {
     "mode": "system",
-    "dark": "Black Atom — TER ∷ Fall Night",
+    "dark": "Black Atom — Dark Dimmed",
     "light": "Black Atom — Light Dimmed"
   },
   "base_keymap": "VSCode",
