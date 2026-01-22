@@ -3,25 +3,21 @@
 
 * {
     font-family: "TX-02 Condensed", monospace;
-    font-size: 15px;
-    font-weight: 900;
-    border: none;
-    border-radius: 0;
-    min-height: 0;
+    font-size: 16px;
     padding: 5px;
 }
 
 window#waybar {
     background-color: @ba-bg-panel;
     color: @ba-fg-default;
-    border-radius: 15px;
+    font-weight: 900;
 }
 
 #workspaces button {
     background: transparent;
     color: @ba-fg-subtle;
-    padding: 0 4px;
-    border-radius: 5px;
+    padding: 0 2px;
+    margin-right: 4px;
 }
 
 #workspaces button.focused {
