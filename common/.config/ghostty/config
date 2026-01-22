@@ -42,7 +42,7 @@ macos-icon = paper
 # Application
 link-url = true
 link-previews = true
-maximize = true
+# maximize = true
 
 # Mouse
 mouse-hide-while-typing = true
