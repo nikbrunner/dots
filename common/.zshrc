@@ -41,12 +41,12 @@ alias tn="tmux new"
 alias ta="tmux attach"
 alias tk="tmux kill-server"
 alias zj="zellij"
-alias start="helm bookmark 1"
+alias start="helm bookmark 0"
 alias lazyvim="NVIM_APPNAME=lazyvim nvim"
 alias gdl="gallery-dl"
 alias npmu="npm-upgrade"
 alias scratch="$EDITOR $HOME/scratchpad.md"
-alias ydl=yt-dlp --audio-format mp3 --embed-thumbnail --embed-metadata --extract-audio
+alias ydl='yt-dlp --audio-format mp3 --embed-thumbnail --embed-metadata --extract-audio'
 alias groot='cd "$(git rev-parse --show-toplevel 2>/dev/null)" || echo "I am not Groot (not in a git repo)"'
 
 alias :q=exit
@@ -83,7 +83,7 @@ alias ,,="fzf -m --preview='bat --color=always {}' --bind 'enter:become(nvim {+}
 # Source 'run' script to enable print -z functionality
 [ -f "$HOME/.local/bin/run" ] && source "$HOME/.local/bin/run"
 
-eval "$(zoxide init zsh --cmd cd)"
+eval "$(zoxide init zsh)"
 
 # Plugin Configuration (after plugins loaded by os.zsh) ==================
 bindkey '^y' autosuggest-accept
