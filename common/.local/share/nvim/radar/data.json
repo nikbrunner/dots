@@ -13,7 +13,7 @@
             "label": "2"
           }
         ],
-        "lastAccessed": 1768209747
+        "lastAccessed": 1768920288
       }
     },
     "~/repos/black-atom-industries/website": {
@@ -154,18 +154,31 @@
         ],
         "lastAccessed": 1765453630
       },
+      "bcd-8981-availability-filter-veloconnect": {
+        "locks": [
+          {
+            "filename": "src/client/commons/container/ProductFinder/AvailabilityFilterModalPartial.tsx",
+            "label": "1"
+          }
+        ],
+        "lastAccessed": 1768900826
+      },
       "bcd-8981-bc-desktop-client-verfgbarkeitsfilter-soll-auch-bei-nur-veloconnect-funktionieren": {
         "locks": [
           {
-            "filename": "PR-REVIEW-4291.md",
+            "filename": "src/client/commons/container/ProductFinder/AvailabilityFilterModalPartial.tsx",
             "label": "1"
           },
           {
-            "filename": "src/client/commons/container/ProductFinder/AvailabilityFilterModalPartial.tsx",
+            "filename": "src/client/kiosk/container/Settings/Assortment/AssortmentIndexPage.tsx",
             "label": "2"
+          },
+          {
+            "filename": "note.md",
+            "label": "3"
           }
         ],
-        "lastAccessed": 1768839008
+        "lastAccessed": 1769021655
       },
       "bcd-8985-outsourse-mixpanel-middleware": {
         "locks": [
@@ -338,7 +351,7 @@
             "label": "1"
           }
         ],
-        "lastAccessed": 1768469229
+        "lastAccessed": 1768900556
       }
     },
     "~/repos/nikbrunner/dots": {
@@ -357,7 +370,7 @@
             "label": "3"
           }
         ],
-        "lastAccessed": 1768847699
+        "lastAccessed": 1769079458
       }
     },
     "~/repos/nikbrunner/nbr.haus": {
@@ -372,7 +385,7 @@
             "label": "2"
           }
         ],
-        "lastAccessed": 1768572142
+        "lastAccessed": 1769021656
       },
       "rework-structure": {
         "locks": [
@@ -396,7 +409,7 @@
             "label": "2"
           }
         ],
-        "lastAccessed": 1768847336
+        "lastAccessed": 1769021657
       }
     },
     "~/repos/nikbrunner/wichtel-app": {
