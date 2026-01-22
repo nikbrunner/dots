@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+# Power menu for niri using fuzzel
+
+set -euo pipefail
+
+options=(
+    "Lock"
+    "Logout"
+    "Suspend"
+    "Reboot"
+    "Shutdown"
+)
+
+choice=$(printf '%s\n' "${options[@]}" | fuzzel --dmenu --prompt "Power Menu: ")
+
+case "$choice" in
+"Lock")
+    hyprlock
+    ;;
+"Logout")
+    niri msg action quit
+    ;;
+"Suspend")
+    systemctl suspend
+    ;;
+"Reboot")
+    systemctl reboot
+    ;;
+"Shutdown")
+    systemctl poweroff
+    ;;
+esac
