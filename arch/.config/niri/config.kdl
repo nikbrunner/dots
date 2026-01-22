@@ -718,6 +718,10 @@ binds {
 
     // Power menu with lock, logout, suspend, reboot, shutdown options
     Mod+Shift+E { spawn-sh "niri-power-menu"; }
+
+    // Reload niri config and waybar
+    Mod+Ctrl+Shift+R { spawn-sh "killall waybar; niri msg action reload-config; waybar &"; }
+
     Ctrl+Alt+Delete { quit; }
 
     // Powers off the monitors. To turn them back on, do any input like
