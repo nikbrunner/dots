@@ -3,16 +3,17 @@ let s:so_save = &g:so | let s:siso_save = &g:siso | setg so=0 siso=0 | setl so=-
 let v:this_session=expand("<sfile>:p")
 silent only
 silent tabonly
-cd ~/repos/nikbrunner/dots
+cd ~/repos/nikbrunner/dcd-notes/Rest\ Client
 if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +45 ~/repos/nikbrunner/dots/common/.zshrc
+badd +55 bc-desktop-client/content.http
 argglobal
 %argdel
-edit ~/repos/nikbrunner/dots/common/.zshrc
+$argadd ./
+edit bc-desktop-client/content.http
 argglobal
 setlocal keymap=
 setlocal noarabic
@@ -43,11 +44,10 @@ setlocal nocursorcolumn
 setlocal cursorline
 setlocal cursorlineopt=both
 setlocal nodiff
-setlocal errorformat=%f:\ line\ %l:\ %m,%-G%.%#
 setlocal eventignorewin=
 setlocal noexpandtab
-if &filetype != 'zsh'
-setlocal filetype=zsh
+if &filetype != 'http'
+setlocal filetype=http
 endif
 setlocal fixendofline
 setlocal foldcolumn=0
@@ -62,21 +62,19 @@ setlocal foldnestmax=20
 setlocal foldtext=
 setlocal formatexpr=v:lua.require'conform'.formatexpr()
 setlocal formatlistpat=^\\s*\\d\\+[\\]:.)}\\t\ ]\\s*
-setlocal formatoptions=jcroql
+setlocal formatoptions=tcqj
 setlocal iminsert=0
 setlocal imsearch=-1
 setlocal includeexpr=
-setlocal indentexpr=GetShIndent()
-setlocal indentkeys=0{,0},0),0],!^F,o,O,e,0=then,0=do,0=else,0=elif,0=fi,0=esac,0=done,0=end,),0=;;,0=;&,0=fin,0=fil,0=fip,0=fir,0=fix
+setlocal indentexpr=
+setlocal indentkeys=0{,0},0),0],:,0#,!^F,o,O,e
 setlocal noinfercase
 setlocal iskeyword=@,48-57,_,192-255
-setlocal keywordprg=:ZshKeywordPrg
 setlocal lhistory=10
 setlocal nolinebreak
 setlocal nolisp
 setlocal lispoptions=
 setlocal nolist
-setlocal makeprg=zsh\ -n\ --\ %:S
 setlocal matchpairs=(:),{:},[:]
 setlocal modeline
 setlocal modifiable
@@ -95,28 +93,28 @@ setlocal scrollback=-1
 setlocal noscrollbind
 setlocal shiftwidth=0
 setlocal signcolumn=yes
-setlocal nosmartindent
+setlocal smartindent
 setlocal nosmoothscroll
 setlocal softtabstop=-1
 setlocal nospell
 setlocal spellcapcheck=[.?!]\\_[\\])'\"\\t\ ]\\+
 setlocal spellfile=
 setlocal spelllang=en_us,de_de
-setlocal spelloptions=
+setlocal spelloptions=noplainbuffer
 setlocal statuscolumn=%!v:lua.require'snacks.statuscolumn'.get()
 setlocal suffixesadd=
 setlocal noswapfile
 setlocal synmaxcol=3000
-if &syntax != 'zsh'
-setlocal syntax=zsh
+if &syntax != ''
+setlocal syntax=
 endif
 setlocal tabstop=4
-setlocal tagfunc=v:lua.vim.lsp.tagfunc
+setlocal tagfunc=
 setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#common%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#.zshrc%*
+setlocal winbar=%#WinBarPath#bc-desktop-client%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#content.http%*
 setlocal winblend=0
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -124,11 +122,11 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 45 - ((22 * winheight(0) + 21) / 43)
+let s:l = 55 - ((24 * winheight(0) + 23) / 46)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 45
+keepjumps 55
 normal! 0
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'

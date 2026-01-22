@@ -3,158 +3,27 @@ let s:so_save = &g:so | let s:siso_save = &g:siso | setg so=0 siso=0 | setl so=-
 let v:this_session=expand("<sfile>:p")
 silent only
 silent tabonly
-cd ~/repos/dealercenter-digital/bc-desktop-client
+cd ~/repos/nikbrunner/nbr.haus
 if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +490 ~/repos/dealercenter-digital/bc-desktop-client/docs/release/bicycle.md
-badd +315 ~/repos/dealercenter-digital/bc-desktop-client/src/client/kiosk/container/Settings/VeloconnectPage.tsx
-badd +76 ~/repos/dealercenter-digital/bc-desktop-client/src/client/commons/libs/hooks/use-assortment.ts
+badd +9 ~/repos/nikbrunner/nbr.haus/src/components/Section.css
+badd +21 ~/repos/nikbrunner/nbr.haus/src/components/Section.tsx
+badd +1 src/components/Typo/Typo.H3.css
 argglobal
 %argdel
-set stal=2
-tabnew +setlocal\ bufhidden=wipe
-tabrewind
-edit ~/repos/dealercenter-digital/bc-desktop-client/docs/release/bicycle.md
-argglobal
-let s:cpo_save=&cpo
-set cpo&vim
-nnoremap <buffer>  <Cmd>MarkdownToggleCheckbox
-nnoremap <buffer> ,niT <Cmd>MarkdownInsertTable
-vnoremap <buffer> ,nil s["]()<Cmd>normal! h<Cmd>startinsert<Cmd>lua require("markdown-tools.commands").prompt_and_insert_url()
-vmap <buffer> ,nii s*"*
-vmap <buffer> ,niH s=="==
-vmap <buffer> ,nib s**"**
-vnoremap <buffer> ,nih <Cmd>MarkdownHeader
-nnoremap <buffer> ,nih <Cmd>MarkdownHeader
-xnoremap <buffer> <silent> [[ :exe "normal! gv"|call search('\%(^#\{1,5\}\s\+\S\|^\S.*\n^[=-]\+$\)', "bsW")
-xnoremap <buffer> <silent> ]] :exe "normal! gv"|call search('\%(^#\{1,5\}\s\+\S\|^\S.*\n^[=-]\+$\)', "sW")
-nnoremap <buffer> <C-T> <Cmd>MarkdownToggleCheckbox
-let &cpo=s:cpo_save
-unlet s:cpo_save
-setlocal keymap=
-setlocal noarabic
-setlocal autoindent
-setlocal nobinary
-setlocal nobreakindent
-setlocal breakindentopt=
-setlocal bufhidden=
-setlocal buflisted
-setlocal buftype=
-setlocal busy=0
-setlocal nocindent
-setlocal cinkeys=0{,0},0),0],:,0#,!^F,o,O,e
-setlocal cinoptions=
-setlocal cinscopedecls=public,protected,private
-setlocal cinwords=if,else,while,do,for,switch
-setlocal colorcolumn=
-setlocal comments=fb:*,fb:-,fb:+,n:>
-setlocal commentstring=<!--\ %s\ -->
-setlocal complete=.,w,b,u,t
-setlocal completefunc=
-setlocal completeslash=
-setlocal concealcursor=
-setlocal conceallevel=0
-setlocal nocopyindent
-setlocal nocursorbind
-setlocal nocursorcolumn
-setlocal cursorline
-setlocal cursorlineopt=both
-setlocal nodiff
-setlocal eventignorewin=
-setlocal expandtab
-if &filetype != 'markdown'
-setlocal filetype=markdown
-endif
-setlocal fixendofline
-setlocal foldcolumn=0
-setlocal foldenable
-setlocal foldexpr=v:lua.vim.treesitter.foldexpr()
-setlocal foldignore=#
-setlocal foldlevel=99
-setlocal foldmarker={{{,}}}
-setlocal foldmethod=indent
-setlocal foldminlines=1
-setlocal foldnestmax=20
-setlocal foldtext=
-setlocal formatexpr=v:lua.require'conform'.formatexpr()
-setlocal formatlistpat=^\\s*\\d\\+\\.\\s\\+\\|^\\s*[-*+]\\s\\+\\|^\\[^\\ze[^\\]]\\+\\]:\\&^.\\{4\\}
-setlocal formatoptions=jtcqln
-setlocal iminsert=0
-setlocal imsearch=-1
-setlocal includeexpr=
-setlocal indentexpr=nvim_treesitter#indent()
-setlocal indentkeys=0{,0},0),0],:,0#,!^F,o,O,e
-setlocal noinfercase
-setlocal iskeyword=@,48-57,_,192-255
-setlocal lhistory=10
-setlocal linebreak
-setlocal nolisp
-setlocal lispoptions=
-setlocal nolist
-setlocal matchpairs=(:),{:},[:],<:>
-setlocal modeline
-setlocal modifiable
-setlocal nrformats=bin,hex
-setlocal number
-setlocal numberwidth=4
-setlocal omnifunc=htmlcomplete#CompleteTags
-setlocal nopreserveindent
-setlocal nopreviewwindow
-setlocal quoteescape=\\
-setlocal noreadonly
-setlocal relativenumber
-setlocal norightleft
-setlocal rightleftcmd=search
-setlocal scrollback=-1
-setlocal noscrollbind
-setlocal shiftwidth=2
-setlocal signcolumn=yes
-setlocal smartindent
-setlocal nosmoothscroll
-setlocal softtabstop=-1
-setlocal nospell
-setlocal spellcapcheck=[.?!]\\_[\\])'\"\\t\ ]\\+
-setlocal spellfile=
-setlocal spelllang=en_us,de_de
-setlocal spelloptions=noplainbuffer
-setlocal statuscolumn=%!v:lua.require'snacks.statuscolumn'.get()
-setlocal suffixesadd=
-setlocal noswapfile
-setlocal synmaxcol=3000
-if &syntax != ''
-setlocal syntax=
-endif
-setlocal tabstop=4
-setlocal tagfunc=v:lua.vim.lsp.tagfunc
-setlocal textwidth=120
-setlocal undofile
-setlocal varsofttabstop=
-setlocal vartabstop=
-setlocal winbar=%#WinBarPath#docs%*\ %#WinBarSeparator#/%*\ %#WinBarPath#release%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#bicycle.md%*
-setlocal winblend=0
-setlocal nowinfixbuf
-setlocal nowinfixheight
-setlocal nowinfixwidth
-setlocal winhighlight=
-setlocal wrap
-setlocal wrapmargin=0
-let s:l = 479 - ((32 * winheight(0) + 23) / 46)
-if s:l < 1 | let s:l = 1 | endif
-keepjumps exe s:l
-normal! zt
-keepjumps 479
-normal! 014|
-tabnext
-edit ~/repos/dealercenter-digital/bc-desktop-client/src/client/kiosk/container/Settings/VeloconnectPage.tsx
+edit ~/repos/nikbrunner/nbr.haus/src/components/Section.tsx
 let s:save_splitbelow = &splitbelow
 let s:save_splitright = &splitright
 set splitbelow splitright
 wincmd _ | wincmd |
 vsplit
-1wincmd h
+wincmd _ | wincmd |
+vsplit
+2wincmd h
+wincmd w
 wincmd w
 let &splitbelow = s:save_splitbelow
 let &splitright = s:save_splitright
@@ -165,8 +34,9 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe 'vert 1resize ' . ((&columns * 133 + 133) / 267)
-exe 'vert 2resize ' . ((&columns * 133 + 133) / 267)
+exe 'vert 1resize ' . ((&columns * 115 + 174) / 348)
+exe 'vert 2resize ' . ((&columns * 115 + 174) / 348)
+exe 'vert 3resize ' . ((&columns * 116 + 174) / 348)
 argglobal
 setlocal keymap=
 setlocal noarabic
@@ -222,7 +92,7 @@ setlocal includeexpr=
 setlocal indentexpr=GetTypescriptIndent()
 setlocal indentkeys=0{,0},0),0],0,,!^F,o,O,e
 setlocal noinfercase
-setlocal iskeyword=@,48-57,_,192-255,$,#
+setlocal iskeyword=@,48-57,_,192-255
 setlocal lhistory=10
 setlocal nolinebreak
 setlocal nolisp
@@ -261,13 +131,13 @@ setlocal synmaxcol=3000
 if &syntax != ''
 setlocal syntax=
 endif
-setlocal tabstop=2
+setlocal tabstop=4
 setlocal tagfunc=v:lua.vim.lsp.tagfunc
 setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#src%*\ %#WinBarSeparator#/%*\ %#WinBarPath#client%*\ %#WinBarSeparator#/%*\ %#WinBarPath#kiosk%*\ %#WinBarSeparator#/%*\ %#WinBarPath#container%*\ %#WinBarSeparator#/%*\ %#WinBarPath#Settings%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#VeloconnectPage.tsx%*
+setlocal winbar=%#WinBarPath#src%*\ %#WinBarSeparator#/%*\ %#WinBarPath#components%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#Section.tsx%*\ %#WinBarSeparator##%*\ %#WinBarSymbol#Section%*
 setlocal winblend=0
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -275,47 +145,23 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-51
+14
 sil! normal! zo
-195
+18
 sil! normal! zo
-196
-sil! normal! zo
-197
-sil! normal! zo
-222
-sil! normal! zo
-223
-sil! normal! zo
-227
-sil! normal! zo
-236
-sil! normal! zo
-237
-sil! normal! zo
-254
-sil! normal! zo
-255
-sil! normal! zo
-256
-sil! normal! zo
-305
-sil! normal! zo
-306
-sil! normal! zo
-let s:l = 315 - ((30 * winheight(0) + 23) / 46)
+let s:l = 21 - ((20 * winheight(0) + 29) / 58)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 315
-normal! 061|
+keepjumps 21
+normal! 014|
 wincmd w
 argglobal
-if bufexists(fnamemodify("~/repos/dealercenter-digital/bc-desktop-client/src/client/commons/libs/hooks/use-assortment.ts", ":p")) | buffer ~/repos/dealercenter-digital/bc-desktop-client/src/client/commons/libs/hooks/use-assortment.ts | else | edit ~/repos/dealercenter-digital/bc-desktop-client/src/client/commons/libs/hooks/use-assortment.ts | endif
+if bufexists(fnamemodify("~/repos/nikbrunner/nbr.haus/src/components/Section.css", ":p")) | buffer ~/repos/nikbrunner/nbr.haus/src/components/Section.css | else | edit ~/repos/nikbrunner/nbr.haus/src/components/Section.css | endif
 if &buftype ==# 'terminal'
-  silent file ~/repos/dealercenter-digital/bc-desktop-client/src/client/commons/libs/hooks/use-assortment.ts
+  silent file ~/repos/nikbrunner/nbr.haus/src/components/Section.css
 endif
-balt ~/repos/dealercenter-digital/bc-desktop-client/src/client/kiosk/container/Settings/VeloconnectPage.tsx
+balt ~/repos/nikbrunner/nbr.haus/src/components/Section.tsx
 setlocal keymap=
 setlocal noarabic
 setlocal autoindent
@@ -332,8 +178,8 @@ setlocal cinoptions=
 setlocal cinscopedecls=public,protected,private
 setlocal cinwords=if,else,while,do,for,switch
 setlocal colorcolumn=
-setlocal comments=sO:*\ -,mO:*\ \ ,exO:*/,s1:/*,mb:*,ex:*/,://
-setlocal commentstring=//\ %s
+setlocal comments=s1:/*,mb:*,ex:*/
+setlocal commentstring=/*\ %s\ */
 setlocal complete=.,w,b,u,t
 setlocal completefunc=
 setlocal completeslash=
@@ -347,8 +193,8 @@ setlocal cursorlineopt=both
 setlocal nodiff
 setlocal eventignorewin=
 setlocal expandtab
-if &filetype != 'typescript'
-setlocal filetype=typescript
+if &filetype != 'css'
+setlocal filetype=css
 endif
 setlocal fixendofline
 setlocal foldcolumn=0
@@ -366,11 +212,12 @@ setlocal formatlistpat=^\\s*\\d\\+[\\]:.)}\\t\ ]\\s*
 setlocal formatoptions=jcroql
 setlocal iminsert=0
 setlocal imsearch=-1
+setlocal include=^\\s*@import\\s\\+\\%(url(\\)\\=
 setlocal includeexpr=
-setlocal indentexpr=GetTypescriptIndent()
-setlocal indentkeys=0{,0},0),0],0,,!^F,o,O,e
+setlocal indentexpr=nvim_treesitter#indent()
+setlocal indentkeys=0{,0},!^F,o,O
 setlocal noinfercase
-setlocal iskeyword=@,48-57,_,192-255,#,$
+setlocal iskeyword=@,48-57,_,192-255,-
 setlocal lhistory=10
 setlocal nolinebreak
 setlocal nolisp
@@ -403,19 +250,19 @@ setlocal spellfile=
 setlocal spelllang=en_us,de_de
 setlocal spelloptions=noplainbuffer
 setlocal statuscolumn=%!v:lua.require'snacks.statuscolumn'.get()
-setlocal suffixesadd=.ts,.d.ts,.tsx,.js,.jsx,.cjs,.mjs
+setlocal suffixesadd=
 setlocal noswapfile
 setlocal synmaxcol=3000
 if &syntax != ''
 setlocal syntax=
 endif
-setlocal tabstop=2
+setlocal tabstop=4
 setlocal tagfunc=v:lua.vim.lsp.tagfunc
 setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#src%*\ %#WinBarSeparator#/%*\ %#WinBarPath#client%*\ %#WinBarSeparator#/%*\ %#WinBarPath#commons%*\ %#WinBarSeparator#/%*\ %#WinBarPath#libs%*\ %#WinBarSeparator#/%*\ %#WinBarPath#hooks%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#use-assortment.ts%*
+setlocal winbar=%#WinBarPath#src%*\ %#WinBarSeparator#/%*\ %#WinBarPath#components%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#Section.css%*
 setlocal winblend=0
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -423,26 +270,139 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-16
-sil! normal! zo
-61
-sil! normal! zo
-69
-sil! normal! zo
-77
-sil! normal! zo
-let s:l = 84 - ((32 * winheight(0) + 23) / 46)
+let s:l = 9 - ((8 * winheight(0) + 29) / 58)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 84
+keepjumps 9
+normal! 0
+wincmd w
+argglobal
+if bufexists(fnamemodify("src/components/Typo/Typo.H3.css", ":p")) | buffer src/components/Typo/Typo.H3.css | else | edit src/components/Typo/Typo.H3.css | endif
+if &buftype ==# 'terminal'
+  silent file src/components/Typo/Typo.H3.css
+endif
+balt ~/repos/nikbrunner/nbr.haus/src/components/Section.tsx
+setlocal keymap=
+setlocal noarabic
+setlocal autoindent
+setlocal nobinary
+setlocal nobreakindent
+setlocal breakindentopt=
+setlocal bufhidden=
+setlocal buflisted
+setlocal buftype=
+setlocal busy=0
+setlocal nocindent
+setlocal cinkeys=0{,0},0),0],:,0#,!^F,o,O,e
+setlocal cinoptions=
+setlocal cinscopedecls=public,protected,private
+setlocal cinwords=if,else,while,do,for,switch
+setlocal colorcolumn=
+setlocal comments=s1:/*,mb:*,ex:*/
+setlocal commentstring=/*\ %s\ */
+setlocal complete=.,w,b,u,t
+setlocal completefunc=
+setlocal completeslash=
+setlocal concealcursor=
+setlocal conceallevel=0
+setlocal nocopyindent
+setlocal nocursorbind
+setlocal nocursorcolumn
+setlocal cursorline
+setlocal cursorlineopt=both
+setlocal nodiff
+setlocal eventignorewin=
+setlocal expandtab
+if &filetype != 'css'
+setlocal filetype=css
+endif
+setlocal fixendofline
+setlocal foldcolumn=0
+setlocal foldenable
+setlocal foldexpr=v:lua.vim.treesitter.foldexpr()
+setlocal foldignore=#
+setlocal foldlevel=99
+setlocal foldmarker={{{,}}}
+setlocal foldmethod=indent
+setlocal foldminlines=1
+setlocal foldnestmax=20
+setlocal foldtext=
+setlocal formatexpr=v:lua.require'conform'.formatexpr()
+setlocal formatlistpat=^\\s*\\d\\+[\\]:.)}\\t\ ]\\s*
+setlocal formatoptions=jcroql
+setlocal iminsert=0
+setlocal imsearch=-1
+setlocal include=^\\s*@import\\s\\+\\%(url(\\)\\=
+setlocal includeexpr=
+setlocal indentexpr=nvim_treesitter#indent()
+setlocal indentkeys=0{,0},!^F,o,O
+setlocal noinfercase
+setlocal iskeyword=@,48-57,_,192-255,-
+setlocal lhistory=10
+setlocal nolinebreak
+setlocal nolisp
+setlocal lispoptions=
+setlocal nolist
+setlocal matchpairs=(:),{:},[:]
+setlocal modeline
+setlocal modifiable
+setlocal nrformats=bin,hex
+setlocal number
+setlocal numberwidth=4
+setlocal omnifunc=v:lua.vim.lsp.omnifunc
+setlocal nopreserveindent
+setlocal nopreviewwindow
+setlocal quoteescape=\\
+setlocal noreadonly
+setlocal relativenumber
+setlocal norightleft
+setlocal rightleftcmd=search
+setlocal scrollback=-1
+setlocal noscrollbind
+setlocal shiftwidth=2
+setlocal signcolumn=yes
+setlocal nosmartindent
+setlocal nosmoothscroll
+setlocal softtabstop=-1
+setlocal nospell
+setlocal spellcapcheck=[.?!]\\_[\\])'\"\\t\ ]\\+
+setlocal spellfile=
+setlocal spelllang=en_us,de_de
+setlocal spelloptions=noplainbuffer
+setlocal statuscolumn=%!v:lua.require'snacks.statuscolumn'.get()
+setlocal suffixesadd=
+setlocal noswapfile
+setlocal synmaxcol=3000
+if &syntax != ''
+setlocal syntax=
+endif
+setlocal tabstop=4
+setlocal tagfunc=v:lua.vim.lsp.tagfunc
+setlocal textwidth=0
+setlocal undofile
+setlocal varsofttabstop=
+setlocal vartabstop=
+setlocal winbar=%#WinBarPath#src%*\ %#WinBarSeparator#/%*\ %#WinBarPath#components%*\ %#WinBarSeparator#/%*\ %#WinBarPath#Typo%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#Typo.H3.css%*
+setlocal winblend=0
+setlocal nowinfixbuf
+setlocal nowinfixheight
+setlocal nowinfixwidth
+setlocal winhighlight=
+setlocal nowrap
+setlocal wrapmargin=0
+let s:l = 12 - ((11 * winheight(0) + 29) / 58)
+if s:l < 1 | let s:l = 1 | endif
+keepjumps exe s:l
+normal! zt
+keepjumps 12
 normal! 0
 wincmd w
 2wincmd w
-exe 'vert 1resize ' . ((&columns * 133 + 133) / 267)
-exe 'vert 2resize ' . ((&columns * 133 + 133) / 267)
-tabnext 2
-set stal=1
+exe 'vert 1resize ' . ((&columns * 115 + 174) / 348)
+exe 'vert 2resize ' . ((&columns * 115 + 174) / 348)
+exe 'vert 3resize ' . ((&columns * 116 + 174) / 348)
+tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
 endif
