@@ -9,11 +9,11 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +828 ~/repos/nikbrunner/notes/03\ -\ Resources/Dev/Linux/Linux\ Handbook.md
+badd +0 ~/repos/nikbrunner/notes/02\ -\ Areas/Log/2026/01\ -\ January/2026.01.23\ -\ Friday.md
 argglobal
 %argdel
 $argadd ~/repos/nikbrunner/notes/02\ -\ Areas/Log/2026/01\ -\ January/2026.01.05\ -\ Monday.md
-edit ~/repos/nikbrunner/notes/03\ -\ Resources/Dev/Linux/Linux\ Handbook.md
+edit ~/repos/nikbrunner/notes/02\ -\ Areas/Log/2026/01\ -\ January/2026.01.23\ -\ Friday.md
 argglobal
 let s:cpo_save=&cpo
 set cpo&vim
@@ -69,7 +69,7 @@ setlocal foldcolumn=0
 setlocal foldenable
 setlocal foldexpr=v:lua.vim.treesitter.foldexpr()
 setlocal foldignore=#
-setlocal foldlevel=0
+setlocal foldlevel=99
 setlocal foldmarker={{{,}}}
 setlocal foldmethod=indent
 setlocal foldminlines=1
@@ -123,13 +123,13 @@ setlocal synmaxcol=3000
 if &syntax != ''
 setlocal syntax=
 endif
-setlocal tabstop=4
+setlocal tabstop=8
 setlocal tagfunc=v:lua.vim.lsp.tagfunc
 setlocal textwidth=85
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#03\ -\ Resources%*\ %#WinBarSeparator#/%*\ %#WinBarPath#Dev%*\ %#WinBarSeparator#/%*\ %#WinBarPath#Linux%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#Linux\ Handbook.md%*
+setlocal winbar=%#WinBarPath#02\ -\ Areas%*\ %#WinBarSeparator#/%*\ %#WinBarPath#Log%*\ %#WinBarSeparator#/%*\ %#WinBarPath#2026%*\ %#WinBarSeparator#/%*\ %#WinBarPath#01\ -\ January%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#2026.01.23\ -\ Friday.md%*
 setlocal winblend=0
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -137,11 +137,11 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal wrap
 setlocal wrapmargin=0
-let s:l = 828 - ((28 * winheight(0) + 24) / 49)
+let s:l = 16 - ((15 * winheight(0) + 22) / 45)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 828
+keepjumps 16
 normal! 0
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
