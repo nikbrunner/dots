@@ -9,7 +9,7 @@ include "theme.kdl"
 
 // Extend PATH so spawn-sh can find scripts in ~/.local/bin
 environment {
-    PATH "/home/nbr/.local/bin:/usr/local/bin:/usr/bin:/bin"
+    PATH "/home/nbr/.local/bin:/usr/local/bin:/usr/bin:/bin:/home/nbr/go/bin"
 }
 
 // Named workspaces - these always exist, even when empty
@@ -153,7 +153,7 @@ overview {
 // https://yalter.github.io/niri/Configuration:-Layout
 layout {
     // Set gaps around windows in logical pixels.
-    gaps 32
+    gaps 15
 
     // When to center a column when changing focus, options are:
     // - "never", default behavior, focusing an off-screen column will keep at the left
@@ -180,7 +180,7 @@ layout {
     // preset-window-heights { }
 
     // You can change the default width of the new windows.
-    default-column-width { proportion 0.35; }
+    default-column-width { proportion 0.66667; }
     // If you leave the brackets empty, the windows themselves will decide their initial width.
     // default-column-width {}
 
@@ -217,7 +217,7 @@ layout {
         // If you enable the border, you probably want to disable the focus ring.
         on
 
-        width 20
+        width 15
 
         // Gradients can use a few different interpolation color spaces.
         // active-gradient from="#e5989b" to="#ffb4a2" angle=45 relative-to="workspace-view" in="oklch longer hue"
@@ -271,9 +271,6 @@ spawn-at-startup "1password" "--silent"
 // This line starts waybar, a commonly used bar for Wayland compositors.
 spawn-at-startup "waybar"
 
-// Bluetooth manager applet
-spawn-at-startup "blueman-applet"
-
 // Wallpaper daemon
 spawn-at-startup "swww-daemon"
 spawn-at-startup "waypaper" "--restore"
@@ -286,7 +283,7 @@ spawn-at-startup "clipse" "-listen"
 
 hotkey-overlay {
     // Uncomment this line to disable the "Important Hotkeys" pop-up at startup.
-    // skip-at-startup
+    skip-at-startup
 }
 
 // Uncomment this line to ask the clients to omit their client-side decorations if possible.
@@ -446,20 +443,19 @@ binds {
 
     // Suggested binds for running programs: terminal, app launcher, screen locker.
     Ctrl+Shift+Alt+Mod+Space hotkey-overlay-title="Focus/Open Terminal" { spawn-sh "niri-focus-or-open ghostty ghostty"; }
+    Mod+Space hotkey-overlay-title="Open Terminal" { spawn "ghostty"; } // TODO: Always open in the current workspace
+     
+    Ctrl+Shift+Alt+Mod+Semicolon hotkey-overlay-title="Run an Application: fuzzel" { spawn "fuzzel"; }
     Ctrl+Shift+Alt+Mod+W hotkey-overlay-title="Focus/Open Browser" { spawn-sh "niri-focus-or-open helium helium-browser"; }
     Ctrl+Shift+Alt+Mod+N hotkey-overlay-title="Focus/Open Notes" { spawn-sh "niri-focus-or-open obsidian obsidian"; }
-    Ctrl+Shift+Alt+Mod+Semicolon hotkey-overlay-title="Run an Application: fuzzel" { spawn "fuzzel"; }
-    Ctrl+Shift+Alt+Mod+A hotkey-overlay-title="Activity" { spawn-sh "btop"; }
+    Ctrl+Shift+Alt+Mod+A hotkey-overlay-title="Activity" { spawn "ghostty" "-e" "btop"; }
+    Ctrl+Shift+Alt+Mod+B hotkey-overlay-title="Bookmarks" { spawn "ghostty" "--title=bm" "-e" "bm" ; }
+    Ctrl+Shift+Alt+Mod+V hotkey-overlay-title="Clipboard History" { spawn "ghostty" "--title=clipse" "--maximize=false" "-e" "clipse"; }
 
     Super+Alt+L hotkey-overlay-title="Lock the Screen: hyprlock" { spawn "hyprlock"; }
 
     // Wallpaper picker
     Mod+Shift+W hotkey-overlay-title="Wallpaper Picker" { spawn "waypaper"; }
-
-    Ctrl+Shift+Alt+Mod+B hotkey-overlay-title="Bookmarks" { spawn "ghostty" "--title=bm" "--maximize=false" "-e" "/home/nbr/go/bin/bm"; }
-
-    // Clipboard history (clipse TUI) - HYPR+V (Ctrl+Shift+Alt+Super)
-    Ctrl+Shift+Alt+Mod+V hotkey-overlay-title="Clipboard History" { spawn "ghostty" "--title=clipse" "--maximize=false" "-e" "clipse"; }
 
     // macOS-style copy/paste/cut (works in terminals too)
     Mod+C repeat=false { spawn-sh "macos-copy-paste copy"; }
@@ -720,7 +716,7 @@ binds {
     Mod+Shift+E { spawn-sh "niri-power-menu"; }
 
     // Reload niri config and waybar
-    Mod+Ctrl+Shift+R { spawn-sh "killall waybar; niri msg action reload-config; waybar &"; }
+    Ctrl+Alt+Shift+R { spawn-sh "killall waybar; niri msg action reload-config; waybar &"; }
 
     Ctrl+Alt+Delete { quit; }
 
