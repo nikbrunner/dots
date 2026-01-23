@@ -50,6 +50,7 @@ macos:
   macos/Library/Scripts/pcloud-auto-mount.applescript: ~/Library/Scripts/pcloud-auto-mount.applescript
 
 arch:
+  arch/.local/share/applications/*: ~/.local/share/applications
   arch/.config/zsh/os.zsh: ~/.config/zsh/os.zsh
   arch/.config/clipse: ~/.config/clipse
   arch/.config/fuzzel: ~/.config/fuzzel

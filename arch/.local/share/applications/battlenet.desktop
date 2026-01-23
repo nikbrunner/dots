@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=Battle.net
+Comment=Blizzard Battle.net Launcher
+Exec=lutris lutris:rungame/battlenet
+Icon=lutris_battlenet
+Type=Application
+Categories=Game;
