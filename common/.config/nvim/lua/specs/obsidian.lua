@@ -1,3 +1,6 @@
+-- Force English locale for date formatting (prevents German month/day names)
+os.setlocale("C", "time")
+
 ---@type LazyPluginSpec
 return {
     "obsidian-nvim/obsidian.nvim",
