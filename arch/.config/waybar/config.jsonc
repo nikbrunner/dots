@@ -5,32 +5,36 @@
     "height": 35,
     // "width": 35,
     // "margin-top": 2,
-    // "margin-left": 25,
-    // "margin-right": 25,
+    "margin-left": 15,
+    "margin-right": 15,
+    "margin-bottom": 15,
     "spacing": 5,
     "reload_style_on_change": true,
 
     "modules-left": [
-        "niri/workspaces"
-    ],
-    "modules-center": [
-        "clock"
-    ],
-    "modules-right": [
-        "mpd",
+        "username@hostname",
         "pulseaudio",
         "pulseaudio#microphone",
         "bluetooth",
-        "custom/vpn",
         "network",
-        "disk",
+        "custom/vpn"
+    ],
+    "modules-center": [
+        "niri/workspaces"
+    ],
+    "modules-right": [
         "cpu",
+        "disk",
         "memory",
-        "tray"
+        "clock"
     ],
 
     "niri/workspaces": {
         "format": "{name}"
+    },
+
+    "username@hostname": {
+        "format": "{username}@{hostname}"
     },
 
     "clock": {
@@ -104,7 +108,4 @@
         "format": "[MEM:{percentage}%]"
     },
 
-    "tray": {
-        "spacing": 8
-    }
 }
