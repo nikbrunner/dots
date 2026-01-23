@@ -3,7 +3,7 @@
 # Sourced from ~/.zshrc
 
 # Default Applications =======================================================
-export BROWSER="helium"
+export BROWSER="helium-browser"
 
 # NVM (official script) ======================================================
 export NVM_DIR="$HOME/.nvm"
