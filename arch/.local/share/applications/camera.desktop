@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=Camera
+Comment=Open USB camera viewer
+Exec=camera
+Icon=camera-video
+Terminal=false
+Type=Application
+Categories=AudioVideo;Video;
