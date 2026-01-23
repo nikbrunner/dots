@@ -12,20 +12,21 @@
     "reload_style_on_change": true,
 
     "modules-left": [
-        "username@hostname",
+        "user",
         "pulseaudio",
-        "pulseaudio#microphone",
+        // "pulseaudio#microphone",
         "bluetooth",
         "network",
-        "custom/vpn"
+        "custom/vpn",
+        "cpu",
+        "disk",
+        "memory",
     ],
     "modules-center": [
         "niri/workspaces"
     ],
     "modules-right": [
-        "cpu",
-        "disk",
-        "memory",
+        "tray",
         "clock"
     ],
 
@@ -33,8 +34,8 @@
         "format": "{name}"
     },
 
-    "username@hostname": {
-        "format": "{username}@{hostname}"
+    "user": {
+        "format": "[{user} ↑{work_H}:{work_M}]"
     },
 
     "clock": {
@@ -108,4 +109,8 @@
         "format": "[MEM:{percentage}%]"
     },
 
+    "tray": {
+        "icon-size": 18,
+        "spacing": 8
+    }
 }
