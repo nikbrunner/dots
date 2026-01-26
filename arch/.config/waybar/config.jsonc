@@ -5,22 +5,22 @@
     "height": 35,
     // "width": 35,
     // "margin-top": 2,
-    "margin-left": 15,
-    "margin-right": 15,
-    "margin-bottom": 15,
+    "margin-left": 30,
+    "margin-right": 30,
+    "margin-bottom": 30,
     "spacing": 5,
     "reload_style_on_change": true,
 
     "modules-left": [
         "user",
         "pulseaudio",
-        // "pulseaudio#microphone",
+        "pulseaudio#microphone",
         "bluetooth",
         "network",
         "custom/vpn",
         "cpu",
         "disk",
-        "memory",
+        "memory"
     ],
     "modules-center": [
         "niri/workspaces"

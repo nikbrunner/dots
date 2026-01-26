@@ -2,42 +2,44 @@
 @import "theme.css";
 
 * {
-    font-family: "TX-02 Condensed", monospace;
-    font-size: 16px;
-    padding: 5px;
+  font-family: "TX-02 Condensed", monospace;
+  font-size: 16px;
+  padding: 5px;
 }
 
 window#waybar {
-    background-color: @ba-bg-panel;
-    color: @ba-fg-default;
-    font-weight: 900;
+  background-color: @ba-bg-panel;
+  color: @ba-fg-default;
+  font-weight: 900;
+  border: 5px solid @ba-fg-accent;
 }
 
 #workspaces button {
-    background: transparent;
-    color: @ba-fg-subtle;
-    padding: 0 2px;
-    margin-right: 4px;
+  background: transparent;
+  color: @ba-fg-subtle;
+  padding: 0 2px;
+  margin-right: 4px;
+  border-radius: 0px;
 }
 
 #workspaces button.focused {
-    background: @ba-fg-accent;
-    color: @ba-fg-contrast;
+  background: @ba-fg-accent;
+  color: @ba-fg-contrast;
 }
 
 #workspaces button:hover {
-    background: @ba-bg-hover;
+  background: @ba-bg-hover;
 }
 
 #clock {
-    color: @ba-fg-accent;
+  color: @ba-fg-accent;
 }
 
 #custom-vpn {
-    color: @ba-green;
+  color: @ba-green;
 }
 
 #tray > .needs-attention {
-    background: @ba-fg-default;
-    color: @ba-bg-default;
+  background: @ba-fg-default;
+  color: @ba-bg-default;
 }
