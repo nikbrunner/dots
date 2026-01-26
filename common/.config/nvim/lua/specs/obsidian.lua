@@ -31,6 +31,21 @@ return {
                 name = "notes",
                 path = "~/repos/nikbrunner/notes",
             },
+            {
+                name = "dcd-notes",
+                path = "~/repos/nikbrunner/dcd-notes",
+                overrides = {
+                    notes_subdir = "Inbox",
+                    daily_notes = {
+                        folder = "Log",
+                        date_format = "%Y/%Y.%m.%d - %A",
+                        template = "Daily Note.md",
+                    },
+                    templates = {
+                        folder = "Templates",
+                    },
+                },
+            },
         },
         notes_subdir = "00 - Inbox",
         daily_notes = {
