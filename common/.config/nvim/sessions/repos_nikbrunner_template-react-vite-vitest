@@ -3,18 +3,14 @@ let s:so_save = &g:so | let s:siso_save = &g:siso | setg so=0 siso=0 | setl so=-
 let v:this_session=expand("<sfile>:p")
 silent only
 silent tabonly
-cd ~/repos/black-atom-industries/helm
+cd ~/repos/nikbrunner/template-react-vite-vitest
 if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +104 ~/repos/black-atom-industries/helm/internal/ui/colors.go
 argglobal
 %argdel
-set stal=2
-tabnew +setlocal\ bufhidden=wipe
-tabrewind
 argglobal
 enew
 setlocal keymap=
@@ -123,126 +119,7 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-tabnext
-edit ~/repos/black-atom-industries/helm/internal/ui/colors.go
-argglobal
-setlocal keymap=
-setlocal noarabic
-setlocal autoindent
-setlocal nobinary
-setlocal nobreakindent
-setlocal breakindentopt=
-setlocal bufhidden=
-setlocal buflisted
-setlocal buftype=
-setlocal busy=0
-setlocal nocindent
-setlocal cinkeys=0{,0},0),0],:,0#,!^F,o,O,e
-setlocal cinoptions=
-setlocal cinscopedecls=public,protected,private
-setlocal cinwords=if,else,while,do,for,switch
-setlocal colorcolumn=
-setlocal comments=s1:/*,mb:*,ex:*/,://
-setlocal commentstring=//\ %s
-setlocal complete=.,w,b,u,t
-setlocal completefunc=
-setlocal completeslash=
-setlocal concealcursor=
-setlocal conceallevel=0
-setlocal nocopyindent
-setlocal nocursorbind
-setlocal nocursorcolumn
-setlocal cursorline
-setlocal cursorlineopt=both
-setlocal nodiff
-setlocal eventignorewin=
-setlocal noexpandtab
-if &filetype != 'go'
-setlocal filetype=go
-endif
-setlocal fixendofline
-setlocal foldcolumn=0
-setlocal foldenable
-setlocal foldexpr=v:lua.vim.treesitter.foldexpr()
-setlocal foldignore=#
-setlocal foldlevel=99
-setlocal foldmarker={{{,}}}
-setlocal foldmethod=indent
-setlocal foldminlines=1
-setlocal foldnestmax=20
-setlocal foldtext=
-setlocal formatexpr=v:lua.require'conform'.formatexpr()
-setlocal formatlistpat=^\\s*\\d\\+[\\]:.)}\\t\ ]\\s*
-setlocal formatoptions=cqj
-setlocal formatprg=gofmt
-setlocal iminsert=0
-setlocal imsearch=-1
-setlocal includeexpr=
-setlocal indentexpr=nvim_treesitter#indent()
-setlocal indentkeys=0{,0},0),0],:,0#,!^F,o,O,e,<:>,0=},0=)
-setlocal noinfercase
-setlocal iskeyword=@,48-57,_,192-255,.
-setlocal keywordprg=:GoKeywordPrg
-setlocal lhistory=10
-setlocal nolinebreak
-setlocal nolisp
-setlocal lispoptions=
-setlocal nolist
-setlocal matchpairs=(:),{:},[:]
-setlocal modeline
-setlocal modifiable
-setlocal nrformats=bin,hex
-setlocal number
-setlocal numberwidth=4
-setlocal omnifunc=v:lua.vim.lsp.omnifunc
-setlocal nopreserveindent
-setlocal nopreviewwindow
-setlocal quoteescape=\\
-setlocal noreadonly
-setlocal relativenumber
-setlocal norightleft
-setlocal rightleftcmd=search
-setlocal scrollback=-1
-setlocal noscrollbind
-setlocal shiftwidth=0
-setlocal signcolumn=yes
-setlocal smartindent
-setlocal nosmoothscroll
-setlocal softtabstop=-1
-setlocal nospell
-setlocal spellcapcheck=[.?!]\\_[\\])'\"\\t\ ]\\+
-setlocal spellfile=
-setlocal spelllang=en_us,de_de
-setlocal spelloptions=noplainbuffer
-setlocal statuscolumn=%!v:lua.require'snacks.statuscolumn'.get()
-setlocal suffixesadd=
-setlocal noswapfile
-setlocal synmaxcol=3000
-if &syntax != ''
-setlocal syntax=
-endif
-setlocal tabstop=4
-setlocal tagfunc=v:lua.vim.lsp.tagfunc
-setlocal textwidth=0
-setlocal undofile
-setlocal varsofttabstop=
-setlocal vartabstop=
-setlocal winbar=%#WinBarPath#internal%*\ %#WinBarSeparator#/%*\ %#WinBarPath#ui%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#colors.go%*
-setlocal winblend=0
-setlocal nowinfixbuf
-setlocal nowinfixheight
-setlocal nowinfixwidth
-setlocal winhighlight=
-setlocal nowrap
-setlocal wrapmargin=0
-let s:l = 104 - ((38 * winheight(0) + 22) / 45)
-if s:l < 1 | let s:l = 1 | endif
-keepjumps exe s:l
-normal! zt
-keepjumps 104
-normal! 0
-tabnext 2
-set stal=1
+tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
 endif

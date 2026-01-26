@@ -3,18 +3,16 @@ let s:so_save = &g:so | let s:siso_save = &g:siso | setg so=0 siso=0 | setl so=-
 let v:this_session=expand("<sfile>:p")
 silent only
 silent tabonly
-cd ~/repos/nikbrunner/dcd-notes/Rest\ Client
+cd ~/repos/dealercenter-digital/bc-web-client-poc
 if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +55 bc-desktop-client/content.http
 argglobal
 %argdel
-$argadd ./
-edit bc-desktop-client/content.http
 argglobal
+enew
 setlocal keymap=
 setlocal noarabic
 setlocal autoindent
@@ -31,8 +29,8 @@ setlocal cinoptions=
 setlocal cinscopedecls=public,protected,private
 setlocal cinwords=if,else,while,do,for,switch
 setlocal colorcolumn=
-setlocal comments=:#
-setlocal commentstring=#\ %s
+setlocal comments=s1:/*,mb:*,ex:*/,://,b:#,:%,:XCOMM,n:>,fb:-,fb:â€¢
+setlocal commentstring=
 setlocal complete=.,w,b,u,t
 setlocal completefunc=
 setlocal completeslash=
@@ -45,9 +43,9 @@ setlocal cursorline
 setlocal cursorlineopt=both
 setlocal nodiff
 setlocal eventignorewin=
-setlocal noexpandtab
-if &filetype != 'http'
-setlocal filetype=http
+setlocal expandtab
+if &filetype != ''
+setlocal filetype=
 endif
 setlocal fixendofline
 setlocal foldcolumn=0
@@ -91,16 +89,16 @@ setlocal norightleft
 setlocal rightleftcmd=search
 setlocal scrollback=-1
 setlocal noscrollbind
-setlocal shiftwidth=0
+setlocal shiftwidth=4
 setlocal signcolumn=yes
 setlocal smartindent
 setlocal nosmoothscroll
-setlocal softtabstop=-1
+setlocal softtabstop=4
 setlocal nospell
 setlocal spellcapcheck=[.?!]\\_[\\])'\"\\t\ ]\\+
 setlocal spellfile=
 setlocal spelllang=en_us,de_de
-setlocal spelloptions=noplainbuffer
+setlocal spelloptions=
 setlocal statuscolumn=%!v:lua.require'snacks.statuscolumn'.get()
 setlocal suffixesadd=
 setlocal noswapfile
@@ -114,7 +112,6 @@ setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#bc-desktop-client%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#content.http%*
 setlocal winblend=0
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -122,12 +119,6 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 55 - ((24 * winheight(0) + 23) / 46)
-if s:l < 1 | let s:l = 1 | endif
-keepjumps exe s:l
-normal! zt
-keepjumps 55
-normal! 0
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf

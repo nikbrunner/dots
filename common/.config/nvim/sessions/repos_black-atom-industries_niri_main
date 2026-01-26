@@ -3,16 +3,16 @@ let s:so_save = &g:so | let s:siso_save = &g:siso | setg so=0 siso=0 | setl so=-
 let v:this_session=expand("<sfile>:p")
 silent only
 silent tabonly
-cd ~/repos/black-atom-industries/radar.nvim
+cd ~/repos/black-atom-industries/niri
 if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +13 ~/repos/black-atom-industries/radar.nvim/lua/radar/config.lua
+badd +13 ~/repos/black-atom-industries/niri/themes/default/collection.template.kdl
 argglobal
 %argdel
-edit ~/repos/black-atom-industries/radar.nvim/lua/radar/config.lua
+edit ~/repos/black-atom-industries/niri/themes/default/collection.template.kdl
 argglobal
 setlocal keymap=
 setlocal noarabic
@@ -30,8 +30,8 @@ setlocal cinoptions=
 setlocal cinscopedecls=public,protected,private
 setlocal cinwords=if,else,while,do,for,switch
 setlocal colorcolumn=
-setlocal comments=:---,:--
-setlocal commentstring=--\ %s
+setlocal comments=://
+setlocal commentstring=//\ %s
 setlocal complete=.,w,b,u,t
 setlocal completefunc=
 setlocal completeslash=
@@ -42,12 +42,11 @@ setlocal nocursorbind
 setlocal nocursorcolumn
 setlocal cursorline
 setlocal cursorlineopt=both
-setlocal define=\\<function\\|\\<local\\%(\\s\\+function\\)\\=
 setlocal nodiff
 setlocal eventignorewin=
 setlocal expandtab
-if &filetype != 'lua'
-setlocal filetype=lua
+if &filetype != 'kdl'
+setlocal filetype=kdl
 endif
 setlocal fixendofline
 setlocal foldcolumn=0
@@ -62,13 +61,12 @@ setlocal foldnestmax=20
 setlocal foldtext=
 setlocal formatexpr=v:lua.require'conform'.formatexpr()
 setlocal formatlistpat=^\\s*\\d\\+[\\]:.)}\\t\ ]\\s*
-setlocal formatoptions=jcroql
+setlocal formatoptions=cqj
 setlocal iminsert=0
 setlocal imsearch=-1
-setlocal include=\\<\\%(\\%(do\\|load\\)file\\|require\\)\\s*(
-setlocal includeexpr=v:lua.require'vim._ftplugin.lua'.includeexpr(v:fname)
+setlocal includeexpr=
 setlocal indentexpr=nvim_treesitter#indent()
-setlocal indentkeys=0{,0},0),0],:,0#,!^F,o,O,e,0=end,0=until
+setlocal indentkeys=0{,0},0),0],:,0#,!^F,o,O,e
 setlocal noinfercase
 setlocal iskeyword=@,48-57,_,192-255
 setlocal lhistory=10
@@ -82,8 +80,7 @@ setlocal modifiable
 setlocal nrformats=bin,hex
 setlocal number
 setlocal numberwidth=4
-setlocal omnifunc=v:lua.vim.lsp.omnifunc
-setlocal path=,
+setlocal omnifunc=
 setlocal nopreserveindent
 setlocal nopreviewwindow
 setlocal quoteescape=\\
@@ -93,7 +90,7 @@ setlocal norightleft
 setlocal rightleftcmd=search
 setlocal scrollback=-1
 setlocal noscrollbind
-setlocal shiftwidth=2
+setlocal shiftwidth=4
 setlocal signcolumn=yes
 setlocal smartindent
 setlocal nosmoothscroll
@@ -104,19 +101,19 @@ setlocal spellfile=
 setlocal spelllang=en_us,de_de
 setlocal spelloptions=noplainbuffer
 setlocal statuscolumn=%!v:lua.require'snacks.statuscolumn'.get()
-setlocal suffixesadd=.lua
+setlocal suffixesadd=
 setlocal noswapfile
 setlocal synmaxcol=3000
 if &syntax != ''
 setlocal syntax=
 endif
 setlocal tabstop=4
-setlocal tagfunc=v:lua.vim.lsp.tagfunc
+setlocal tagfunc=
 setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#lua%*\ %#WinBarSeparator#/%*\ %#WinBarPath#radar%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#config.lua%*\ %#WinBarSeparator##%*\ %#WinBarSymbol#M.default%*\ %#WinBarSeparator##%*\ %#WinBarSymbol#keys%*\ %#WinBarSeparator##%*\ %#WinBarSymbol#line%*
+setlocal winbar=%#WinBarPath#themes%*\ %#WinBarSeparator#/%*\ %#WinBarPath#default%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#collection.template.kdl%*
 setlocal winblend=0
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -124,15 +121,13 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-5
+13
 sil! normal! zo
-6
-sil! normal! zo
-let s:l = 20 - ((19 * winheight(0) + 29) / 58)
+let s:l = 19 - ((18 * winheight(0) + 22) / 44)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 20
+keepjumps 19
 normal! 0
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
