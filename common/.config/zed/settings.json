@@ -40,8 +40,8 @@
   },
   "theme": {
     "mode": "system",
-    "dark": "Black Atom — MNM ∷ Clay Dark",
-    "light": "Black Atom — JPN ∷ Koyo Hiru"
+    "dark": "Black Atom — Dark Dimmed",
+    "light": "Black Atom — Light Dimmed"
   },
   "base_keymap": "VSCode",
   "vim_mode": true,
