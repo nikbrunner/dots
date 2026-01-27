@@ -1,6 +1,6 @@
 # Dots Chores
 
-Commit routine dots repo changes: themes, sessions, radar data, and bookmarks.
+Commit routine dots repo changes: themes, sessions, radar data, lazy-lock, and bookmarks.
 
 ## Instructions
 
@@ -34,7 +34,13 @@ File: `common/.local/share/nvim/radar/data.json`
 
 Commit: `chore(nvim): update radar data`
 
-### 4. Bookmarks Changes
+### 4. Lazy Lock Changes
+
+File: `common/.config/nvim/lazy-lock.json`
+
+Commit: `chore(nvim): update lazy-lock`
+
+### 5. Bookmarks Changes
 
 File: `common/.config/bm/bookmarks.db`
 
