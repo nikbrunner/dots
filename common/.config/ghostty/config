@@ -2,7 +2,7 @@
 # https://github.com/imrajyavardhan12/spectre-ghostty-config
 
 # Colors
-theme = black-atom-jpn-koyo-yoru.conf
+theme = black-atom-mnml-eink-dark.conf
 bold-is-bright = false
 
 # Window

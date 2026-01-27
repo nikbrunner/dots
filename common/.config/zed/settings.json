@@ -40,7 +40,7 @@
   },
   "theme": {
     "mode": "system",
-    "dark": "Black Atom — JPN ∷ Koyo Yoru",
+    "dark": "Black Atom — MNM ∷ E-ink Dark",
     "light": "Black Atom — JPN ∷ Koyo Hiru"
   },
   "base_keymap": "VSCode",
