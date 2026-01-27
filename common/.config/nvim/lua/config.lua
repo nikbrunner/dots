@@ -3,7 +3,7 @@ local M = {}
 ---@class VinConfig
 M.config = {
     ---@type BlackAtom.Theme.Key
-    colorscheme = "black-atom-default-light-dimmed",
+    colorscheme = "black-atom-jpn-koyo-yoru",
     dev_mode = true,
     date_format = "%Y.%m.%d - %A",
     pathes = {
