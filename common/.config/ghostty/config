@@ -18,8 +18,8 @@ adjust-underline-position = 3
 
 # Fonts
 font-size = 14
-font-family = TX-02 Condensed
-font-family-bold = TX-02 Bold Condensed
+font-family = Lilex Nerd Font
+font-style-bold = Bold
 window-inherit-working-directory = true
 unfocused-split-opacity = 1
 window-inherit-font-size = true
