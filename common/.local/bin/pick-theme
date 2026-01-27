@@ -18,6 +18,8 @@ ZED_CONFIG="$DOTS_DIR/common/.config/zed/settings.json"
 NIRI_THEME_LINK="$DOTS_DIR/arch/.config/niri/theme.kdl"
 WAYBAR_THEME="$HOME/.config/waybar/theme.css"
 WAYBAR_THEMES_DIR="$HOME/.config/waybar/themes"
+LAZYGIT_CONFIG="$DOTS_DIR/common/.config/lazygit/config.yml"
+LAZYGIT_THEMES_DIR="$DOTS_DIR/common/.config/lazygit/themes"
 
 # Get current theme from nvim config
 get_current_theme() {
@@ -142,6 +144,28 @@ update_waybar_theme() {
     fi
 }
 
+# Update lazygit theme (requires yq)
+update_lazygit_theme() {
+    local theme="$1"
+    local theme_file="$LAZYGIT_THEMES_DIR/${theme}.yml"
+
+    if ! command -v yq >/dev/null 2>&1; then
+        echo "yq not installed, skipping lazygit theme update"
+        return 0
+    fi
+
+    if [[ ! -f "$theme_file" ]]; then
+        echo "lazygit theme not found: $theme_file"
+        return 0
+    fi
+
+    # Use yq load() to properly merge YAML structures
+    yq -i ".gui.theme = load(\"$theme_file\").gui.theme" "$LAZYGIT_CONFIG"
+    yq -i ".gui.authorColors = load(\"$theme_file\").gui.authorColors" "$LAZYGIT_CONFIG"
+
+    echo "lazygit theme updated"
+}
+
 # Reload Waybar stylesheet (Linux/Wayland only)
 reload_waybar() {
     [[ "$(uname)" == "Darwin" ]] && return 0
@@ -258,6 +282,7 @@ apply_theme() {
     update_delta_theme "$appearance"
     update_niri_theme "$theme" "$collection"
     update_waybar_theme "$theme"
+    update_lazygit_theme "$theme"
     update_macos_appearance "$appearance"
 
     # Brief pause to let file changes and system appearance settle

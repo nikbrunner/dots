@@ -700,7 +700,7 @@ return {
             },
         },
         lazygit = {
-            configure = true,
+            configure = false, -- Theme managed by pick-theme via Black Atom adapter
             config = {
                 os = {
                     edit = "nvim --server $NVIM --remote-send '<cmd>close<cr><cmd>lua EditFromLazygit({{filename}})<CR>'",

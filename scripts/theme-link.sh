@@ -135,6 +135,8 @@ echo ""
 process_adapter "niri" "kdl" "arch/.config/niri/themes"
 echo ""
 process_adapter "waybar" "css" "arch/.config/waybar/themes"
+echo ""
+process_adapter "lazygit" "yml" "common/.config/lazygit/themes"
 
 echo ""
 if [[ "$DRY_RUN" == "true" ]]; then

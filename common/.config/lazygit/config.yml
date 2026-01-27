@@ -9,20 +9,29 @@ os:
   openDirInEditor: "nvim {{dir}}"
 promptToReturnFromSubprocess: false
 gui:
+  # Theme colors managed by pick-theme
   theme:
-    # Border color of focused window
     activeBorderColor:
-      - "#ff8833"
-      # See https://github.com/jesseduffield/lazygit/blob/master/docs/Config.md#highlighting-the-selected-line
-      # selectedLineBgColor:
-      # - reverse
-
-      # Default text color
-      # defaultFgColor:
-      #   - default
+      - "#ea9d34"
+      - bold
+    inactiveBorderColor:
+      - "#a88aa8"
+    optionsTextColor:
+      - "#9175a3"
+    selectedLineBgColor:
+      - "#eedcc5"
+    cherryPickedCommitBgColor:
+      - "#eedcc5"
+    cherryPickedCommitFgColor:
+      - "#ea9d34"
+    unstagedChangesColor:
+      - "#db7070"
+    defaultFgColor:
+      - "#3a2e3a"
+    searchingActiveBorderColor:
+      - "#ea9d34"
   authorColors:
-    "nbr": "#ff8833"
-    "*": default
+    "*": "#f0a274"
   branchColors:
     "main": "#e74c3c"
     "master": "#e74c3c"
