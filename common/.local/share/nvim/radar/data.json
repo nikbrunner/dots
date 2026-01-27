@@ -189,9 +189,22 @@
         ],
         "lastAccessed": 1768215464
       },
+      "eslint-hooks": {
+        "locks": [
+          {
+            "filename": "gh://dealercenter-digital/bc-desktop-client/pr/4242",
+            "label": "1"
+          },
+          {
+            "filename": "PR-4242-REVIEW.md",
+            "label": "2"
+          }
+        ],
+        "lastAccessed": 1769435288
+      },
       "master": {
         "locks": [],
-        "lastAccessed": 1768741351
+        "lastAccessed": 1769542449
       },
       "redux-toolkit": {
         "locks": [
@@ -370,7 +383,7 @@
             "label": "3"
           }
         ],
-        "lastAccessed": 1769413535
+        "lastAccessed": 1769542450
       }
     },
     "~/repos/nikbrunner/nbr.haus": {
@@ -409,7 +422,7 @@
             "label": "2"
           }
         ],
-        "lastAccessed": 1769413540
+        "lastAccessed": 1769449063
       }
     },
     "~/repos/nikbrunner/wichtel-app": {
