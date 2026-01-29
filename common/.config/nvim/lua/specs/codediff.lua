@@ -6,9 +6,15 @@ return {
         event = "VeryLazy",
         keys = {
             -- Workspace level
-            { "<leader>wvD", "<cmd>CodeDiff<cr>", desc = "Workspace [D]iff (CodeDiff)" },
+            { "<leader>wvd", "<cmd>CodeDiff<cr>", desc = "Workspace [D]iff to `master` (CodeDiff)" },
+            { "<leader>wvD", "<cmd>CodeDiff master<cr>", desc = "Workspace [D]iff (CodeDiff)" },
+
+            -- Document level
+            { "<leader>dvd", "<cmd>CodeDiff file HEAD<cr>", desc = "Document [D]iff (CodeDiff)" },
+            { "<leader>dvD", "<cmd>CodeDiff file master<cr>", desc = "Document [D]iff (CodeDiff)" },
+
             {
-                "<leader>wvB",
+                "<leader>wvb",
                 function()
                     vim.ui.input({ prompt = "Compare against branch: " }, function(branch)
                         if branch and branch ~= "" then
@@ -18,15 +24,16 @@ return {
                 end,
                 desc = "Compare [B]ranch (CodeDiff)",
             },
-            { "<leader>wvM", "<cmd>CodeDiff merge<cr>", desc = "[M]erge conflicts (CodeDiff)" },
 
-            -- Document level
-            { "<leader>dvD", "<cmd>CodeDiff file HEAD<cr>", desc = "Document [D]iff (CodeDiff)" },
+            { "<leader>wvpm", "<cmd>CodeDiff merge<cr>", desc = "[M]erge conflicts (CodeDiff)" },
         },
-        opts = {},
+        opts = {
+            char_brightness = 1, -- disable auto-adjustment
+        },
     },
     {
-        "georgeguimaraes/review.nvim",
+        "nikbrunner/review.nvim",
+        dir = require("lib.config").get_repo_path("nikbrunner/review.nvim"),
         dependencies = {
             "esmuellert/codediff.nvim",
             "MunifTanjim/nui.nvim",
@@ -34,8 +41,7 @@ return {
         event = "VeryLazy",
         cmd = "Review",
         keys = {
-            { "<leader>wvr", "<cmd>Review<cr>", desc = "[R]eview diff (review.nvim)" },
-            { "<leader>wvR", "<cmd>Review commits<cr>", desc = "[R]eview commits (review.nvim)" },
+            { "<leader>wvpr", "<cmd>Review<cr>", desc = "[R]eview diff (review.nvim)" },
         },
         opts = {},
     },
