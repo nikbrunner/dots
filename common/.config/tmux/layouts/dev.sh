@@ -34,7 +34,7 @@ apply_layout() {
     # Window 1: claude (already exists as window 1)
     tmux rename-window -t "${session_name}:1" "claude"
     tmux split-window -h -t "${session_name}:1" -c "$working_dir" -l 50%
-    tmux send-keys -t "${session_name}:1.1" "claude" Enter
+    tmux send-keys -t "${session_name}:1.1" "[[ -f .nvmrc ]] && nvm use; claude" Enter
     tmux send-keys -t "${session_name}:1.2" "[[ -f .nvmrc ]] && nvm use; clear" Enter
 
     # Window 2: code
@@ -61,7 +61,7 @@ else
     layout_commands="
         tmux rename-window -t '${session_name}:1' 'claude'
         tmux split-window -h -t '${session_name}:1' -c '${working_dir}' -l 50%
-        tmux send-keys -t '${session_name}:1.1' 'claude' Enter
+        tmux send-keys -t '${session_name}:1.1' '[[ -f .nvmrc ]] && nvm use; claude' Enter
         tmux send-keys -t '${session_name}:1.2' '[[ -f .nvmrc ]] && nvm use; clear' Enter
         tmux new-window -t '${session_name}' -n 'code' -c '${working_dir}'
         tmux send-keys -t '${session_name}:2' 'nvim' Enter
