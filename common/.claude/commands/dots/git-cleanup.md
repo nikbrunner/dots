@@ -4,38 +4,57 @@ You are an expert at organizing git commits following semantic commit convention
 
 ## Instructions
 
-1. **Analyze the current state**:
-   - Run `git status` to see all changes
-   - Run `git log --oneline -10` to understand existing commit message conventions
-   - Check `git diff --name-only` to see all modified files
+### 1. Analyze the current state
 
-2. **Commit strategy - prefer single-file commits**:
-   - **Default to one file per commit** unless files are tightly related
-   - Only group files together when they have direct dependencies or are part of the same feature
-   - Single-file changes should always be their own commits (even small ones)
-   - New features should be separate from refactoring
-   - Configuration files for different tools should never be in the same commit
+- Run `git status` to see all changes
+- Run `git log --oneline -10` to understand existing commit message conventions
+- Check `git diff --name-only` to see all modified files
 
-3. **Follow semantic commit conventions**:
-   - Use prefixes like `feat:`, `fix:`, `refactor:`, `chore:`, `docs:`
-   - Include scope in parentheses when helpful: `feat(nvim):`, `fix(tmux):`
-   - Write clear, concise commit messages
-   - Avoid bullet points unless absolutely necessary (prefer single-purpose commits)
+### 2. Handle routine "chores" first
 
-4. **Process systematically**:
-   - Stage and commit one logical group at a time
-   - Use `git add <specific-files>` to stage only related changes
-   - Write meaningful commit messages that explain what and why
-   - Verify with `git status` after each commit
+Check if any of these routine patterns apply and handle them first using `/dots:dots-chores` conventions:
 
-5. **Handle special cases**:
-   - New configuration files should be `feat:` commits
-   - Bug fixes should be `fix:` commits  
-   - Code cleanup/reorganization should be `refactor:` commits
-   - Documentation changes should be `docs:` commits
-   - Dependency updates should be `chore:` commits
+| Pattern | Files | Commit Message |
+|---------|-------|----------------|
+| Theme changes | `ghostty/config`, `nvim/lua/config.lua`, `tmux/tmux.conf`, `zed/settings.json` | `chore(themes): switch to <theme-name>` |
+| Sessions | `nvim/sessions/*` | Clean old sessions first, then `chore(nvim): update sessions` |
+| Radar data | `nvim/radar/data.json` | `chore(nvim): update radar data` |
+| Lazy lock | `nvim/lazy-lock.json` | `chore(nvim): update lazy-lock` |
+| Bookmarks | `bm/bookmarks.db` | `chore(bm): update bookmarks` |
 
-## Example commit message formats:
+For theme changes, extract the theme name:
+```bash
+grep 'colorscheme = ' common/.config/nvim/lua/config.lua | sed 's/.*"\(.*\)".*/\1/'
+```
+
+For sessions, clean up old ones first:
+```bash
+find common/.config/nvim/sessions -type f -mtime +2 -delete -print
+```
+
+### 3. Handle remaining changes
+
+For non-routine changes, use single-file commits unless files are tightly related:
+
+- **Default to one file per commit** unless files have direct dependencies
+- Configuration files for different tools should never be in the same commit
+- New features should be separate from refactoring
+
+### 4. Follow semantic commit conventions
+
+- Use prefixes: `feat:`, `fix:`, `refactor:`, `chore:`, `docs:`
+- Include scope when helpful: `feat(nvim):`, `fix(tmux):`
+- Write clear, concise commit messages
+
+### 5. Handle special cases
+
+- New configuration files → `feat:` commits
+- Bug fixes → `fix:` commits
+- Code cleanup/reorganization → `refactor:` commits
+- Documentation changes → `docs:` commits
+- Dependency updates → `chore:` commits
+
+## Example commit message formats
 
 **Single file (preferred):**
 ```
@@ -44,13 +63,9 @@ feat(nvim): add date insertion keymaps
 
 **Multiple related files (only when necessary):**
 ```
-feat(themes): add black-atom-mnml-mikado colorscheme
-
-- Add dark and light variants for multiple terminals
-- Consistent color palette across applications
+feat(nvim): use local review.nvim fork with improved keymaps
 ```
 
 ## Your goal
-Create clean, atomic commits that make the git history easy to understand and navigate. Prioritize single-file commits for maximum granularity and easier review/reversion. Only group files when they are truly interdependent.
 
-Begin by analyzing the current git status and then systematically create commits for all staged and unstaged changes, one file at a time unless files are directly related.
+Create clean, atomic commits that make the git history easy to understand and navigate. Handle routine chores first using established patterns, then process remaining changes one file at a time unless truly interdependent.
