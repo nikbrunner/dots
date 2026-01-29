@@ -30,8 +30,8 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe 'vert 1resize ' . ((&columns * 116 + 116) / 233)
-exe 'vert 2resize ' . ((&columns * 116 + 116) / 233)
+exe 'vert 1resize ' . ((&columns * 102 + 102) / 205)
+exe 'vert 2resize ' . ((&columns * 102 + 102) / 205)
 argglobal
 setlocal keymap=
 setlocal noarabic
@@ -140,7 +140,7 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 26 - ((25 * winheight(0) + 21) / 43)
+let s:l = 26 - ((23 * winheight(0) + 19) / 39)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
@@ -152,6 +152,7 @@ if bufexists(fnamemodify("perf-branch.log", ":p")) | buffer perf-branch.log | el
 if &buftype ==# 'terminal'
   silent file perf-branch.log
 endif
+balt perf-master.log
 setlocal keymap=
 setlocal noarabic
 setlocal autoindent
@@ -218,7 +219,7 @@ setlocal modifiable
 setlocal nrformats=bin,hex
 setlocal number
 setlocal numberwidth=4
-setlocal omnifunc=
+setlocal omnifunc=v:lua.vim.lsp.omnifunc
 setlocal nopreserveindent
 setlocal nopreviewwindow
 setlocal quoteescape=\\
@@ -259,16 +260,16 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 39 - ((38 * winheight(0) + 21) / 43)
+let s:l = 40 - ((35 * winheight(0) + 19) / 39)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 39
+keepjumps 40
 normal! 032|
 wincmd w
 2wincmd w
-exe 'vert 1resize ' . ((&columns * 116 + 116) / 233)
-exe 'vert 2resize ' . ((&columns * 116 + 116) / 233)
+exe 'vert 1resize ' . ((&columns * 102 + 102) / 205)
+exe 'vert 2resize ' . ((&columns * 102 + 102) / 205)
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
