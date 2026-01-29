@@ -36,6 +36,27 @@
       }
     },
     "~/repos/dealercenter-digital/bc-desktop-client": {
+      "bcd-7783-replace-usefetchdata-with-usequery": {
+        "locks": [
+          {
+            "filename": "src/client/commons/libs/queries/use-veloconnect-endpoint.ts",
+            "label": "1"
+          },
+          {
+            "filename": "src/client/commons/libs/queries/use-veloconnect-endpoints.ts",
+            "label": "2"
+          },
+          {
+            "filename": "src/system-services/veloconnect/veloconnect-tool.ts",
+            "label": "3"
+          },
+          {
+            "filename": "src/client/commons/container/ProductDetails/VariantsContentPartial.tsx",
+            "label": "4"
+          }
+        ],
+        "lastAccessed": 1769698260
+      },
       "bcd-8796-promote-brands": {
         "locks": [
           {
