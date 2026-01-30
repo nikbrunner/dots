@@ -11,7 +11,7 @@ let s:shortmess_save = &shortmess
 set shortmess+=aoO
 badd +750 debug/highlights_debug_map.txt
 badd +92 lua/black-atom/highlights/ui.lua
-badd +47 lua/black-atom/highlights/lsp.lua
+badd +41 ~/repos/black-atom-industries/nvim/lua/black-atom/config.lua
 argglobal
 %argdel
 edit lua/black-atom/highlights/ui.lua
@@ -156,11 +156,10 @@ keepjumps 92
 normal! 0
 wincmd w
 argglobal
-if bufexists(fnamemodify("lua/black-atom/highlights/lsp.lua", ":p")) | buffer lua/black-atom/highlights/lsp.lua | else | edit lua/black-atom/highlights/lsp.lua | endif
+if bufexists(fnamemodify("~/repos/black-atom-industries/nvim/lua/black-atom/config.lua", ":p")) | buffer ~/repos/black-atom-industries/nvim/lua/black-atom/config.lua | else | edit ~/repos/black-atom-industries/nvim/lua/black-atom/config.lua | endif
 if &buftype ==# 'terminal'
-  silent file lua/black-atom/highlights/lsp.lua
+  silent file ~/repos/black-atom-industries/nvim/lua/black-atom/config.lua
 endif
-balt lua/black-atom/highlights/ui.lua
 setlocal keymap=
 setlocal noarabic
 setlocal autoindent
@@ -263,7 +262,7 @@ setlocal textwidth=120
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#lua%*\ %#WinBarSeparator#/%*\ %#WinBarPath#black-atom%*\ %#WinBarSeparator#/%*\ %#WinBarPath#highlights%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#lsp.lua%*
+setlocal winbar=%#WinBarPath#lua%*\ %#WinBarSeparator#/%*\ %#WinBarPath#black-atom%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#config.lua%*
 setlocal winblend=0
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -271,24 +270,21 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-3
+5
 sil! normal! zo
-4
-sil! normal! zo
-10
-sil! normal! zo
-let s:l = 27 - ((26 * winheight(0) + 25) / 51)
+let s:l = 11 - ((10 * winheight(0) + 25) / 51)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 27
-normal! 016|
+keepjumps 11
+normal! 0
 wincmd w
 argglobal
 if bufexists(fnamemodify("debug/highlights_debug_map.txt", ":p")) | buffer debug/highlights_debug_map.txt | else | edit debug/highlights_debug_map.txt | endif
 if &buftype ==# 'terminal'
   silent file debug/highlights_debug_map.txt
 endif
+balt lua/black-atom/highlights/ui.lua
 setlocal keymap=
 setlocal noarabic
 setlocal autoindent
@@ -396,7 +392,7 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 761 - ((7 * winheight(0) + 25) / 51)
+let s:l = 761 - ((25 * winheight(0) + 25) / 51)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt

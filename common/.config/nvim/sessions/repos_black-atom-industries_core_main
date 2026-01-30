@@ -9,8 +9,10 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +10 src/themes/mnml/create-ui-light.ts
-badd +9 src/themes/mnml/black-atom-mnml-osman-light.ts
+badd +56 src/themes/mnml/black-atom-mnml-osman-light.ts
+badd +59 ~/repos/black-atom-industries/core/src/themes/default/black-atom-default-dark-dimmed.ts
+badd +5 ~/repos/black-atom-industries/core/src/themes/default/feedback-dark.ts
+badd +13 src/themes/default/create-ui-dark.ts
 argglobal
 %argdel
 $argadd ~/repos/black-atom-industries/core/
@@ -20,7 +22,13 @@ let s:save_splitright = &splitright
 set splitbelow splitright
 wincmd _ | wincmd |
 vsplit
-1wincmd h
+wincmd _ | wincmd |
+vsplit
+wincmd _ | wincmd |
+vsplit
+3wincmd h
+wincmd w
+wincmd w
 wincmd w
 let &splitbelow = s:save_splitbelow
 let &splitright = s:save_splitright
@@ -31,8 +39,10 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe 'vert 1resize ' . ((&columns * 157 + 157) / 315)
-exe 'vert 2resize ' . ((&columns * 157 + 157) / 315)
+exe 'vert 1resize ' . ((&columns * 78 + 157) / 315)
+exe 'vert 2resize ' . ((&columns * 78 + 157) / 315)
+exe 'vert 3resize ' . ((&columns * 78 + 157) / 315)
+exe 'vert 4resize ' . ((&columns * 78 + 157) / 315)
 argglobal
 setlocal keymap=
 setlocal noarabic
@@ -149,10 +159,11 @@ keepjumps 56
 normal! 0
 wincmd w
 argglobal
-if bufexists(fnamemodify("src/themes/mnml/create-ui-light.ts", ":p")) | buffer src/themes/mnml/create-ui-light.ts | else | edit src/themes/mnml/create-ui-light.ts | endif
+if bufexists(fnamemodify("~/repos/black-atom-industries/core/src/themes/default/black-atom-default-dark-dimmed.ts", ":p")) | buffer ~/repos/black-atom-industries/core/src/themes/default/black-atom-default-dark-dimmed.ts | else | edit ~/repos/black-atom-industries/core/src/themes/default/black-atom-default-dark-dimmed.ts | endif
 if &buftype ==# 'terminal'
-  silent file src/themes/mnml/create-ui-light.ts
+  silent file ~/repos/black-atom-industries/core/src/themes/default/black-atom-default-dark-dimmed.ts
 endif
+balt ~/repos/black-atom-industries/core/src/themes/default/feedback-dark.ts
 setlocal keymap=
 setlocal noarabic
 setlocal autoindent
@@ -252,7 +263,7 @@ setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#src%*\ %#WinBarSeparator#/%*\ %#WinBarPath#themes%*\ %#WinBarSeparator#/%*\ %#WinBarPath#mnml%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#create-ui-light.ts%*\ %#WinBarSeparator##%*\ %#WinBarSymbol#default%*
+setlocal winbar=%#WinBarPath#src%*\ %#WinBarSeparator#/%*\ %#WinBarPath#themes%*\ %#WinBarSeparator#/%*\ %#WinBarPath#default%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#black-atom-default-dark-dimmed.ts%*
 setlocal winblend=0
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -260,18 +271,260 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-9
+45
 sil! normal! zo
-let s:l = 12 - ((11 * winheight(0) + 25) / 51)
+let s:l = 31 - ((24 * winheight(0) + 25) / 51)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 12
+keepjumps 31
+normal! 035|
+wincmd w
+argglobal
+if bufexists(fnamemodify("~/repos/black-atom-industries/core/src/themes/default/feedback-dark.ts", ":p")) | buffer ~/repos/black-atom-industries/core/src/themes/default/feedback-dark.ts | else | edit ~/repos/black-atom-industries/core/src/themes/default/feedback-dark.ts | endif
+if &buftype ==# 'terminal'
+  silent file ~/repos/black-atom-industries/core/src/themes/default/feedback-dark.ts
+endif
+balt ~/repos/black-atom-industries/core/src/themes/default/black-atom-default-dark-dimmed.ts
+setlocal keymap=
+setlocal noarabic
+setlocal autoindent
+setlocal nobinary
+setlocal nobreakindent
+setlocal breakindentopt=
+setlocal bufhidden=
+setlocal buflisted
+setlocal buftype=
+setlocal busy=0
+setlocal nocindent
+setlocal cinkeys=0{,0},0),0],:,0#,!^F,o,O,e
+setlocal cinoptions=
+setlocal cinscopedecls=public,protected,private
+setlocal cinwords=if,else,while,do,for,switch
+setlocal colorcolumn=
+setlocal comments=sO:*\ -,mO:*\ \ ,exO:*/,s1:/*,mb:*,ex:*/,://
+setlocal commentstring=//\ %s
+setlocal complete=.,w,b,u,t
+setlocal completefunc=
+setlocal completeslash=
+setlocal concealcursor=
+setlocal conceallevel=0
+setlocal nocopyindent
+setlocal nocursorbind
+setlocal nocursorcolumn
+setlocal cursorline
+setlocal cursorlineopt=both
+setlocal nodiff
+setlocal eventignorewin=
+setlocal expandtab
+if &filetype != 'typescript'
+setlocal filetype=typescript
+endif
+setlocal fixendofline
+setlocal foldcolumn=0
+setlocal foldenable
+setlocal foldexpr=v:lua.vim.treesitter.foldexpr()
+setlocal foldignore=#
+setlocal foldlevel=99
+setlocal foldmarker={{{,}}}
+setlocal foldmethod=indent
+setlocal foldminlines=1
+setlocal foldnestmax=20
+setlocal foldtext=
+setlocal formatexpr=v:lua.require'conform'.formatexpr()
+setlocal formatlistpat=^\\s*\\d\\+[\\]:.)}\\t\ ]\\s*
+setlocal formatoptions=jcroql
+setlocal iminsert=0
+setlocal imsearch=-1
+setlocal includeexpr=
+setlocal indentexpr=GetTypescriptIndent()
+setlocal indentkeys=0{,0},0),0],0,,!^F,o,O,e
+setlocal noinfercase
+setlocal iskeyword=@,48-57,_,192-255
+setlocal lhistory=10
+setlocal nolinebreak
+setlocal nolisp
+setlocal lispoptions=
+setlocal nolist
+setlocal matchpairs=(:),{:},[:]
+setlocal modeline
+setlocal modifiable
+setlocal nrformats=bin,hex
+setlocal number
+setlocal numberwidth=4
+setlocal omnifunc=v:lua.vim.lsp.omnifunc
+setlocal nopreserveindent
+setlocal nopreviewwindow
+setlocal quoteescape=\\
+setlocal noreadonly
+setlocal relativenumber
+setlocal norightleft
+setlocal rightleftcmd=search
+setlocal scrollback=-1
+setlocal noscrollbind
+setlocal shiftwidth=4
+setlocal signcolumn=yes
+setlocal nosmartindent
+setlocal nosmoothscroll
+setlocal softtabstop=-1
+setlocal nospell
+setlocal spellcapcheck=[.?!]\\_[\\])'\"\\t\ ]\\+
+setlocal spellfile=
+setlocal spelllang=en_us,de_de
+setlocal spelloptions=noplainbuffer
+setlocal statuscolumn=%!v:lua.require'snacks.statuscolumn'.get()
+setlocal suffixesadd=.ts,.d.ts,.tsx,.js,.jsx,.cjs,.mjs
+setlocal noswapfile
+setlocal synmaxcol=3000
+if &syntax != ''
+setlocal syntax=
+endif
+setlocal tabstop=4
+setlocal tagfunc=v:lua.vim.lsp.tagfunc
+setlocal textwidth=0
+setlocal undofile
+setlocal varsofttabstop=
+setlocal vartabstop=
+setlocal winbar=%#WinBarPath#src%*\ %#WinBarSeparator#/%*\ %#WinBarPath#themes%*\ %#WinBarSeparator#/%*\ %#WinBarPath#default%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#feedback-dark.ts%*
+setlocal winblend=0
+setlocal nowinfixbuf
+setlocal nowinfixheight
+setlocal nowinfixwidth
+setlocal winhighlight=
+setlocal nowrap
+setlocal wrapmargin=0
+let s:l = 5 - ((4 * winheight(0) + 25) / 51)
+if s:l < 1 | let s:l = 1 | endif
+keepjumps exe s:l
+normal! zt
+keepjumps 5
+normal! 07|
+wincmd w
+argglobal
+if bufexists(fnamemodify("src/themes/default/create-ui-dark.ts", ":p")) | buffer src/themes/default/create-ui-dark.ts | else | edit src/themes/default/create-ui-dark.ts | endif
+if &buftype ==# 'terminal'
+  silent file src/themes/default/create-ui-dark.ts
+endif
+balt ~/repos/black-atom-industries/core/src/themes/default/black-atom-default-dark-dimmed.ts
+setlocal keymap=
+setlocal noarabic
+setlocal autoindent
+setlocal nobinary
+setlocal nobreakindent
+setlocal breakindentopt=
+setlocal bufhidden=
+setlocal buflisted
+setlocal buftype=
+setlocal busy=0
+setlocal nocindent
+setlocal cinkeys=0{,0},0),0],:,0#,!^F,o,O,e
+setlocal cinoptions=
+setlocal cinscopedecls=public,protected,private
+setlocal cinwords=if,else,while,do,for,switch
+setlocal colorcolumn=
+setlocal comments=sO:*\ -,mO:*\ \ ,exO:*/,s1:/*,mb:*,ex:*/,://
+setlocal commentstring=//\ %s
+setlocal complete=.,w,b,u,t
+setlocal completefunc=
+setlocal completeslash=
+setlocal concealcursor=
+setlocal conceallevel=0
+setlocal nocopyindent
+setlocal nocursorbind
+setlocal nocursorcolumn
+setlocal cursorline
+setlocal cursorlineopt=both
+setlocal nodiff
+setlocal eventignorewin=
+setlocal expandtab
+if &filetype != 'typescript'
+setlocal filetype=typescript
+endif
+setlocal fixendofline
+setlocal foldcolumn=0
+setlocal foldenable
+setlocal foldexpr=v:lua.vim.treesitter.foldexpr()
+setlocal foldignore=#
+setlocal foldlevel=99
+setlocal foldmarker={{{,}}}
+setlocal foldmethod=indent
+setlocal foldminlines=1
+setlocal foldnestmax=20
+setlocal foldtext=
+setlocal formatexpr=v:lua.require'conform'.formatexpr()
+setlocal formatlistpat=^\\s*\\d\\+[\\]:.)}\\t\ ]\\s*
+setlocal formatoptions=jcroql
+setlocal iminsert=0
+setlocal imsearch=-1
+setlocal includeexpr=
+setlocal indentexpr=GetTypescriptIndent()
+setlocal indentkeys=0{,0},0),0],0,,!^F,o,O,e
+setlocal noinfercase
+setlocal iskeyword=@,48-57,_,192-255
+setlocal lhistory=10
+setlocal nolinebreak
+setlocal nolisp
+setlocal lispoptions=
+setlocal nolist
+setlocal matchpairs=(:),{:},[:]
+setlocal modeline
+setlocal modifiable
+setlocal nrformats=bin,hex
+setlocal number
+setlocal numberwidth=4
+setlocal omnifunc=v:lua.vim.lsp.omnifunc
+setlocal nopreserveindent
+setlocal nopreviewwindow
+setlocal quoteescape=\\
+setlocal noreadonly
+setlocal relativenumber
+setlocal norightleft
+setlocal rightleftcmd=search
+setlocal scrollback=-1
+setlocal noscrollbind
+setlocal shiftwidth=4
+setlocal signcolumn=yes
+setlocal nosmartindent
+setlocal nosmoothscroll
+setlocal softtabstop=-1
+setlocal nospell
+setlocal spellcapcheck=[.?!]\\_[\\])'\"\\t\ ]\\+
+setlocal spellfile=
+setlocal spelllang=en_us,de_de
+setlocal spelloptions=noplainbuffer
+setlocal statuscolumn=%!v:lua.require'snacks.statuscolumn'.get()
+setlocal suffixesadd=.ts,.d.ts,.tsx,.js,.jsx,.cjs,.mjs
+setlocal noswapfile
+setlocal synmaxcol=3000
+if &syntax != ''
+setlocal syntax=
+endif
+setlocal tabstop=4
+setlocal tagfunc=v:lua.vim.lsp.tagfunc
+setlocal textwidth=0
+setlocal undofile
+setlocal varsofttabstop=
+setlocal vartabstop=
+setlocal winbar=%#WinBarPath#src%*\ %#WinBarSeparator#/%*\ %#WinBarPath#themes%*\ %#WinBarSeparator#/%*\ %#WinBarPath#default%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#create-ui-dark.ts%*
+setlocal winblend=0
+setlocal nowinfixbuf
+setlocal nowinfixheight
+setlocal nowinfixwidth
+setlocal winhighlight=
+setlocal nowrap
+setlocal wrapmargin=0
+let s:l = 14 - ((13 * winheight(0) + 25) / 51)
+if s:l < 1 | let s:l = 1 | endif
+keepjumps exe s:l
+normal! zt
+keepjumps 14
 normal! 0
 wincmd w
-2wincmd w
-exe 'vert 1resize ' . ((&columns * 157 + 157) / 315)
-exe 'vert 2resize ' . ((&columns * 157 + 157) / 315)
+4wincmd w
+exe 'vert 1resize ' . ((&columns * 78 + 157) / 315)
+exe 'vert 2resize ' . ((&columns * 78 + 157) / 315)
+exe 'vert 3resize ' . ((&columns * 78 + 157) / 315)
+exe 'vert 4resize ' . ((&columns * 78 + 157) / 315)
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
