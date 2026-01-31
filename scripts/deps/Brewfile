@@ -1,0 +1,57 @@
+# Core tools
+brew "git"
+brew "zsh"
+brew "tmux"
+brew "bob"
+brew "fzf"
+brew "ripgrep"
+brew "fd"
+brew "bat"
+brew "git-delta"
+brew "lazygit"
+brew "eza"
+brew "yazi"
+brew "zoxide"
+brew "gum"
+brew "gh"
+cask "ghostty"
+brew "luarocks"
+
+# Shell enhancements
+brew "zsh-autosuggestions"
+brew "zsh-syntax-highlighting"
+brew "atuin"
+
+# Media tools
+brew "gallery-dl"
+brew "yt-dlp"
+brew "ffmpeg"
+brew "eye-d3"
+brew "mpd"
+brew "mpc"
+
+# Data processing
+brew "yq"
+brew "jq"
+
+# Languages & runtimes
+brew "rust"
+brew "go"
+brew "deno"
+
+# AI & dev tools
+cask "claude-code"
+tap "aviator-co/tap"
+brew "aviator-co/tap/av"
+
+# Cask apps
+cask "raycast"
+cask "1password"
+cask "claude"
+cask "signal"
+cask "slack"
+cask "whatsapp"
+cask "docker-desktop"
+cask "zed@preview"
+cask "obsidian"
+cask "helium-browser"

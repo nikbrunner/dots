@@ -88,25 +88,22 @@ configure_system() {
 
 # Validate all dependencies (returns exit code)
 validate_dependencies() {
-    echo "🧪 Validating installation..."
-    local failed=()
-
-    for dep in "${DEPS[@]}"; do
-        if ! check_dep "$dep"; then
-            failed+=("$dep")
-        fi
-    done
+    echo "Validating installation..."
 
     # Check nvm
     if ! [[ -d "$HOME/.nvm" ]] && ! [[ -d "${XDG_CONFIG_HOME:-$HOME/.config}/nvm" ]]; then
-        failed+=("nvm")
+        echo "nvm: missing"
+    else
+        echo "nvm: installed"
     fi
 
-    if [[ ${#failed[@]} -eq 0 ]]; then
-        echo "✅ All dependencies functional!"
+    # Check brew bundle
+    if brew bundle check --file="$DEPS_DIR/Brewfile" &>/dev/null; then
+        echo "All brew packages installed!"
         return 0
     else
-        echo "❌ Missing: ${failed[*]}"
+        echo "Some brew packages missing"
+        brew bundle check --file="$DEPS_DIR/Brewfile"
         return 1
     fi
 }
@@ -116,7 +113,7 @@ if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
     case "${1:-install}" in
         check)     check_all ;;
         install)   install_all ;;
-        list)      printf '%s\n' "${DEPS[@]}" ;;
+        list)      echo "nvm"; grep -E '^(brew|cask)' "$DEPS_DIR/Brewfile" | sed 's/.*"\(.*\)".*/\1/' ;;
         configure) configure_system ;;
         validate)  validate_dependencies ;;
         *)         echo "Usage: $0 [check|install|list|configure|validate]"; exit 1 ;;
