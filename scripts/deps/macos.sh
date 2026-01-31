@@ -20,6 +20,7 @@ DEPS=(
     zoxide
     gum
     gh
+    ghostty
     luarocks
 
     # Shell enhancements
@@ -31,7 +32,7 @@ DEPS=(
     gallery-dl
     yt-dlp
     ffmpeg
-    eyed3
+    eye-d3
     mpd
     mpc
 
@@ -49,6 +50,7 @@ DEPS=(
     "aviator-co/tap/av"
 
     # Cask apps
+    "--cask raycast"
     "--cask 1password"
     "--cask claude"
     "--cask signal"
