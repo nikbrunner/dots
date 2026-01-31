@@ -41,6 +41,7 @@ brew "deno"
 
 # AI & dev tools
 cask "claude-code"
+brew "opencode"
 tap "aviator-co/tap"
 brew "aviator-co/tap/av"
 
