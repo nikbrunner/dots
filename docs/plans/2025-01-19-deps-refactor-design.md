@@ -3,6 +3,7 @@
 ## Problem
 
 The current `scripts/deps.sh` is 800+ lines mixing all platforms together:
+
 - Single `REQUIRED_DEPS` array with "Arch only" comments
 - Complex `get_package_name()` case statements for each OS
 - Filtering logic via empty-string returns
@@ -86,12 +87,12 @@ check_all() {
 
 Only 4 packages need post-install:
 
-| Package | Action | Platform |
-|---------|--------|----------|
-| claude-code | Symlink to ~/.local/bin | Arch |
-| bluez | Enable bluetooth service | Arch |
-| docker | Add user to group + enable service | Arch |
-| nvm | Curl script install + Node LTS | Both |
+| Package     | Action                             | Platform |
+| ----------- | ---------------------------------- | -------- |
+| claude-code | Symlink to ~/.local/bin            | Arch     |
+| bluez       | Enable bluetooth service           | Arch     |
+| docker      | Add user to group + enable service | Arch     |
+| nvm         | Curl script install + Node LTS     | Both     |
 
 These stay inline in the OS files - not worth separate files.
 
@@ -100,6 +101,7 @@ These stay inline in the OS files - not worth separate files.
 Interactive skill for adding/removing dependencies:
 
 **Add flow:**
+
 1. Which OS? (macos / arch / both)
 2. Package name for each OS
 3. Custom check command needed?
@@ -107,6 +109,7 @@ Interactive skill for adding/removing dependencies:
 5. Add to file(s)
 
 **Remove flow:**
+
 1. Search both files
 2. Confirm removal
 3. Remove from file(s)
