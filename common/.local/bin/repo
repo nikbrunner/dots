@@ -34,10 +34,6 @@ has_claude_code() {
     command -v claude &>/dev/null
 }
 
-has_gum() {
-    command -v gum &>/dev/null
-}
-
 validate_git_repo() {
     if ! git rev-parse --git-dir &>/dev/null; then
         echo "Error: Not in a git repository"
@@ -72,25 +68,16 @@ call_claude_api() {
     local attempt=1
 
     while [ $attempt -le $max_retries ]; do
-        if has_gum && [ $attempt -eq 1 ]; then
-            response=$(gum spin --spinner dot --title "Generating with $model..." -- \
-                curl -s -X POST "https://api.anthropic.com/v1/messages" \
-                -H "x-api-key: $ANTHROPIC_API_KEY" \
-                -H "anthropic-version: $API_VERSION" \
-                -H "content-type: application/json" \
-                -d "$json_payload")
+        if [ $attempt -gt 1 ]; then
+            echo "Retrying (attempt $attempt/$max_retries)..."
         else
-            if [ $attempt -gt 1 ]; then
-                echo "Retrying (attempt $attempt/$max_retries)..."
-            else
-                echo "Generating with $model..."
-            fi
-            response=$(curl -s -X POST "https://api.anthropic.com/v1/messages" \
-                -H "x-api-key: $ANTHROPIC_API_KEY" \
-                -H "anthropic-version: $API_VERSION" \
-                -H "content-type: application/json" \
-                -d "$json_payload")
+            echo "Generating with $model..."
         fi
+        response=$(curl -s -X POST "https://api.anthropic.com/v1/messages" \
+            -H "x-api-key: $ANTHROPIC_API_KEY" \
+            -H "anthropic-version: $API_VERSION" \
+            -H "content-type: application/json" \
+            -d "$json_payload")
 
         # Check for API errors first
         local error_type
@@ -393,28 +380,8 @@ repo_commit() {
     # Check for staged changes
     if [ -z "$(git diff --staged)" ]; then
         echo "No staged changes found."
-        echo ""
-        if has_gum && gum confirm "Open lazygit to stage changes?"; then
-            lazygit
-
-            # Check again after lazygit exits
-            if [ -z "$(git diff --staged)" ]; then
-                echo ""
-                echo "Still no staged changes. Exiting."
-                exit 1
-            fi
-            echo ""
-            if has_gum; then
-                gum format -t emoji <<EOF
-:white_check_mark: Staged changes detected!
-EOF
-            else
-                echo "Staged changes detected!"
-            fi
-        else
-            echo "Please stage your changes first."
-            exit 1
-        fi
+        echo "Please stage your changes first."
+        exit 1
     fi
 
     # Generate initial commit message
@@ -430,83 +397,50 @@ EOF
 
     # Display the generated message
     echo ""
-    if has_gum; then
-        if [ "$AI_BACKEND" = "claude-code" ] && has_claude_code; then
-            gum format -t template <<EOF
-{{ Color "2" "" "Generated commit message" }} {{ Color "15" "9" " 󰱫 Claude Code ($current_model) " }}
-EOF
-        else
-            gum format -t template <<EOF
-{{ Color "2" "" "Generated commit message" }} {{ Color "15" "9" " 󰣩 $current_model " }}
-EOF
-        fi
+    if [ "$AI_BACKEND" = "claude-code" ] && has_claude_code; then
+        echo "Generated commit message (Claude Code - $current_model):"
     else
-        echo "Generated commit message:"
+        echo "Generated commit message ($current_model):"
     fi
-    echo ""
     echo "----------------------------------------"
-    if has_gum; then
-        echo "$commit_message" | gum format
-    else
-        echo "$commit_message"
-    fi
+    echo "$commit_message"
     echo "----------------------------------------"
     echo ""
 
     # Handle user confirmation based on flags
     if [ "$YES_FLAG" = true ]; then
         # Auto-confirm
-        if has_gum; then
-            gum format -t emoji ':rocket: Auto-committing (--yes flag)...'
-        else
-            echo "Auto-committing..."
-        fi
+        echo "Auto-committing (--yes flag)..."
         git commit -m "$commit_message"
         echo ""
-        if has_gum; then
-            gum format -t emoji ':sparkles: Changes committed successfully!'
-        else
-            echo "Changes committed successfully!"
-        fi
+        echo "Changes committed successfully!"
     else
         # Interactive loop for regeneration
         while true; do
-            if has_gum; then
-                action=$(gum choose "Commit" "Regenerate" "Edit" "Cancel")
-            else
-                echo "Options:"
-                echo "1) Commit"
-                echo "2) Regenerate"
-                echo "3) Edit"
-                echo "4) Cancel"
-                read -r -p "Choose an option (1-4): " choice
-                case "$choice" in
-                1) action="Commit" ;;
-                2) action="Regenerate" ;;
-                3) action="Edit" ;;
-                4) action="Cancel" ;;
-                *)
-                    echo "Invalid choice"
-                    continue
-                    ;;
-                esac
-            fi
+            echo "Options:"
+            echo "1) Commit"
+            echo "2) Regenerate"
+            echo "3) Edit"
+            echo "4) Cancel"
+            read -r -p "Choose an option (1-4): " choice
+            case "$choice" in
+            1) action="Commit" ;;
+            2) action="Regenerate" ;;
+            3) action="Edit" ;;
+            4) action="Cancel" ;;
+            *)
+                echo "Invalid choice"
+                continue
+                ;;
+            esac
 
             case "$action" in
             "Commit")
                 echo ""
-                if has_gum; then
-                    gum format -t emoji ':floppy_disk: Committing changes...'
-                else
-                    echo "Committing changes..."
-                fi
+                echo "Committing changes..."
                 git commit -m "$commit_message"
                 echo ""
-                if has_gum; then
-                    gum format -t emoji ':sparkles: Changes committed successfully!'
-                else
-                    echo "Changes committed successfully!"
-                fi
+                echo "Changes committed successfully!"
                 break
                 ;;
             "Edit")
@@ -523,18 +457,10 @@ EOF
                     rm -f "$TEMP_FILE"
 
                     echo ""
-                    if has_gum; then
-                        gum format -t emoji ':memo: Committing with edited message...'
-                    else
-                        echo "Committing with edited message..."
-                    fi
+                    echo "Committing with edited message..."
                     git commit -m "$edited_message"
                     echo ""
-                    if has_gum; then
-                        gum format -t emoji ':sparkles: Changes committed successfully!'
-                    else
-                        echo "Changes committed successfully!"
-                    fi
+                    echo "Changes committed successfully!"
                     break
                 else
                     rm -f "$TEMP_FILE"
@@ -545,45 +471,28 @@ EOF
             "Regenerate")
                 echo ""
                 echo "Select model for regeneration:"
-                if has_gum; then
-                    selected_model=$(printf '%s\n' "${MODEL_OPTIONS[@]}" | gum choose | awk '{print $1}')
+                for i in "${!MODEL_OPTIONS[@]}"; do
+                    echo "$((i + 1))) ${MODEL_OPTIONS[$i]}"
+                done
+                read -r -p "Choose model (1-${#MODEL_OPTIONS[@]}): " model_choice
+                if [[ "$model_choice" =~ ^[0-9]+$ ]] && [ "$model_choice" -ge 1 ] && [ "$model_choice" -le ${#MODEL_OPTIONS[@]} ]; then
+                    selected_model=$(echo "${MODEL_OPTIONS[$((model_choice - 1))]}" | awk '{print $1}')
                 else
-                    for i in "${!MODEL_OPTIONS[@]}"; do
-                        echo "$((i + 1))) ${MODEL_OPTIONS[$i]}"
-                    done
-                    read -r -p "Choose model (1-${#MODEL_OPTIONS[@]}): " model_choice
-                    if [[ "$model_choice" =~ ^[0-9]+$ ]] && [ "$model_choice" -ge 1 ] && [ "$model_choice" -le ${#MODEL_OPTIONS[@]} ]; then
-                        selected_model=$(echo "${MODEL_OPTIONS[$((model_choice - 1))]}" | awk '{print $1}')
-                    else
-                        echo "Invalid choice, using default model"
-                        selected_model="$DEFAULT_MODEL"
-                    fi
+                    echo "Invalid choice, using default model"
+                    selected_model="$DEFAULT_MODEL"
                 fi
 
                 current_model="$selected_model"
                 if commit_message=$(generate_commit_message "$selected_model"); then
                     # Display the new message
                     echo ""
-                    if has_gum; then
-                        if [ "$AI_BACKEND" = "claude-code" ] && has_claude_code; then
-                            gum format -t template <<EOF
-{{ Color "2" "" "Generated commit message" }} {{ Color "15" "4" " 󰱫 Claude Code ($current_model) " }}
-EOF
-                        else
-                            gum format -t template <<EOF
-{{ Color "2" "" "Generated commit message" }} {{ Color "15" "4" " $current_model " }}
-EOF
-                        fi
+                    if [ "$AI_BACKEND" = "claude-code" ] && has_claude_code; then
+                        echo "Generated commit message (Claude Code - $current_model):"
                     else
-                        echo "Generated commit message:"
+                        echo "Generated commit message ($current_model):"
                     fi
-                    echo ""
                     echo "----------------------------------------"
-                    if has_gum; then
-                        echo "$commit_message" | gum format
-                    else
-                        echo "$commit_message"
-                    fi
+                    echo "$commit_message"
                     echo "----------------------------------------"
                     echo ""
                 else
@@ -606,23 +515,13 @@ handle_push_after_commit() {
     # Handle push - either from flag or ask after commit
     if [ "$PUSH_FLAG" = true ]; then
         echo ""
-        if has_gum; then
-            gum format -t emoji ':outbox_tray: Pushing to remote...'
-        else
-            echo "Pushing to remote..."
-        fi
+        echo "Pushing to remote..."
 
         if [ "$FORCE_FLAG" = true ]; then
             # Force push directly
             git push --force-with-lease
             echo ""
-            if has_gum; then
-                gum format -t template <<EOF
-{{ Bold (Color "2" "" "🎉 All done!") }} {{ Color "7" "" "Changes committed and pushed successfully!" }}
-EOF
-            else
-                echo "All done! Changes committed and pushed successfully!"
-            fi
+            echo "All done! Changes committed and pushed successfully!"
             echo ""
         else
             # Try regular push
@@ -632,16 +531,11 @@ EOF
                 echo "Push failed:"
                 echo "$push_output"
                 echo ""
-                if has_gum && gum confirm "Force push with --force-with-lease?"; then
+                read -r -p "Force push with --force-with-lease? (y/n): " confirm
+                if [ "$confirm" = "y" ] || [ "$confirm" = "Y" ]; then
                     git push --force-with-lease
                     echo ""
-                    if has_gum; then
-                        gum format -t template <<EOF
-{{ Bold (Color "2" "" "🎉 All done!") }} {{ Color "7" "" "Changes committed and pushed successfully!" }}
-EOF
-                    else
-                        echo "All done! Changes committed and pushed successfully!"
-                    fi
+                    echo "All done! Changes committed and pushed successfully!"
                     echo ""
                 else
                     echo "Push cancelled."
@@ -649,20 +543,15 @@ EOF
                 fi
             else
                 echo ""
-                if has_gum; then
-                    gum format -t template <<EOF
-{{ Bold (Color "2" "" "🎉 All done!") }} {{ Color "7" "" "Changes committed and pushed successfully!" }}
-EOF
-                else
-                    echo "All done! Changes committed and pushed successfully!"
-                fi
+                echo "All done! Changes committed and pushed successfully!"
                 echo ""
             fi
         fi
     else
-        # Ask to push after commit (unless -y flag was used alone)
+        # Ask to push after commit
         echo ""
-        if has_gum && gum confirm "Push to remote?"; then
+        read -r -p "Push to remote? (y/n): " confirm
+        if [ "$confirm" = "y" ] || [ "$confirm" = "Y" ]; then
             # Try regular push
             push_output=""
             if ! push_output=$(git push 2>&1); then
@@ -670,16 +559,11 @@ EOF
                 echo "Push failed:"
                 echo "$push_output"
                 echo ""
-                if gum confirm "Force push with --force-with-lease?"; then
+                read -r -p "Force push with --force-with-lease? (y/n): " force_confirm
+                if [ "$force_confirm" = "y" ] || [ "$force_confirm" = "Y" ]; then
                     git push --force-with-lease
                     echo ""
-                    if has_gum; then
-                        gum format -t template <<EOF
-{{ Bold (Color "2" "" "🎉 All done!") }} {{ Color "7" "" "Changes committed and pushed successfully!" }}
-EOF
-                    else
-                        echo "All done! Changes committed and pushed successfully!"
-                    fi
+                    echo "All done! Changes committed and pushed successfully!"
                     echo ""
                 else
                     echo "Push cancelled."
@@ -687,24 +571,12 @@ EOF
                 fi
             else
                 echo ""
-                if has_gum; then
-                    gum format -t template <<EOF
-{{ Bold (Color "2" "" "🎉 All done!") }} {{ Color "7" "" "Changes committed and pushed successfully!" }}
-EOF
-                else
-                    echo "All done! Changes committed and pushed successfully!"
-                fi
+                echo "All done! Changes committed and pushed successfully!"
                 echo ""
             fi
         else
             echo ""
-            if has_gum; then
-                gum format -t template <<EOF
-{{ Bold (Color "2" "" "🎆 All done!") }} {{ Color "7" "" "Changes committed successfully!" }}
-EOF
-            else
-                echo "All done! Changes committed successfully!"
-            fi
+            echo "All done! Changes committed successfully!"
             echo ""
         fi
     fi
@@ -790,8 +662,8 @@ Requirements:
 - Replace spaces with hyphens
 
 Examples:
-- \"Fix login bug\" → \"fix-login-bug\"
-- \"BCD-1234 add dashboard\" → \"bcd-1234-add-dashboard\"
+- \"Fix login bug\" -> \"fix-login-bug\"
+- \"BCD-1234 add dashboard\" -> \"bcd-1234-add-dashboard\"
 
 Output: Just the branch name, nothing more."
 
@@ -852,42 +724,24 @@ repo_branch() {
 
     # Display the generated branch name
     echo ""
-    if has_gum; then
-        if [ "$AI_BACKEND" = "claude-code" ] && has_claude_code; then
-            gum format -t template <<EOF
-{{ Color "2" "" "Generated branch name" }} {{ Color "15" "9" " 󰱫 Claude Code ($current_model) " }}
-EOF
-        else
-            gum format -t template <<EOF
-{{ Color "2" "" "Generated branch name" }} {{ Color "15" "9" " 󰣩 $current_model " }}
-EOF
-        fi
-        echo ""
-        echo "----------------------------------------"
-        echo "$branch_name" | gum format
-        echo "----------------------------------------"
-        echo ""
+    if [ "$AI_BACKEND" = "claude-code" ] && has_claude_code; then
+        echo "Generated branch name (Claude Code - $current_model):"
     else
-        echo "Generated branch name: $branch_name"
-        echo ""
+        echo "Generated branch name ($current_model):"
     fi
+    echo "----------------------------------------"
+    echo "$branch_name"
+    echo "----------------------------------------"
+    echo ""
 
     # Handle user confirmation based on flags
     if [ "$YES_FLAG" = true ]; then
         # Auto-create branch
-        if has_gum; then
-            gum format -t emoji ':seedling: Auto-creating branch (--yes flag)...'
-        else
-            echo "Creating branch..."
-        fi
+        echo "Auto-creating branch (--yes flag)..."
 
         if git switch -c "$branch_name"; then
             echo ""
-            if has_gum; then
-                gum format -t emoji ':sparkles: Branch created and switched successfully!'
-            else
-                echo "Branch '$branch_name' created and switched successfully!"
-            fi
+            echo "Branch '$branch_name' created and switched successfully!"
         else
             echo "Failed to create branch '$branch_name'"
             exit 1
@@ -895,41 +749,29 @@ EOF
     else
         # Interactive loop for regeneration
         while true; do
-            if has_gum; then
-                action=$(gum choose "Create Branch" "Regenerate" "Cancel")
-            else
-                echo "Options:"
-                echo "1) Create Branch"
-                echo "2) Regenerate"
-                echo "3) Cancel"
-                read -r -p "Choose an option (1-3): " choice
-                case "$choice" in
-                1) action="Create Branch" ;;
-                2) action="Regenerate" ;;
-                3) action="Cancel" ;;
-                *)
-                    echo "Invalid choice"
-                    continue
-                    ;;
-                esac
-            fi
+            echo "Options:"
+            echo "1) Create Branch"
+            echo "2) Regenerate"
+            echo "3) Cancel"
+            read -r -p "Choose an option (1-3): " choice
+            case "$choice" in
+            1) action="Create Branch" ;;
+            2) action="Regenerate" ;;
+            3) action="Cancel" ;;
+            *)
+                echo "Invalid choice"
+                continue
+                ;;
+            esac
 
             case "$action" in
             "Create Branch")
                 echo ""
-                if has_gum; then
-                    gum format -t emoji ':seedling: Creating branch...'
-                else
-                    echo "Creating branch..."
-                fi
+                echo "Creating branch..."
 
                 if git switch -c "$branch_name"; then
                     echo ""
-                    if has_gum; then
-                        gum format -t emoji ':sparkles: Branch created and switched successfully!'
-                    else
-                        echo "Branch '$branch_name' created and switched successfully!"
-                    fi
+                    echo "Branch '$branch_name' created and switched successfully!"
                     break
                 else
                     echo "Failed to create branch '$branch_name'"
@@ -939,44 +781,30 @@ EOF
             "Regenerate")
                 echo ""
                 echo "Select model for regeneration:"
-                if has_gum; then
-                    selected_model=$(printf '%s\n' "${MODEL_OPTIONS[@]}" | gum choose | awk '{print $1}')
+                for i in "${!MODEL_OPTIONS[@]}"; do
+                    echo "$((i + 1))) ${MODEL_OPTIONS[$i]}"
+                done
+                read -r -p "Choose model (1-${#MODEL_OPTIONS[@]}): " model_choice
+                if [[ "$model_choice" =~ ^[0-9]+$ ]] && [ "$model_choice" -ge 1 ] && [ "$model_choice" -le ${#MODEL_OPTIONS[@]} ]; then
+                    selected_model=$(echo "${MODEL_OPTIONS[$((model_choice - 1))]}" | awk '{print $1}')
                 else
-                    for i in "${!MODEL_OPTIONS[@]}"; do
-                        echo "$((i + 1))) ${MODEL_OPTIONS[$i]}"
-                    done
-                    read -r -p "Choose model (1-${#MODEL_OPTIONS[@]}): " model_choice
-                    if [[ "$model_choice" =~ ^[0-9]+$ ]] && [ "$model_choice" -ge 1 ] && [ "$model_choice" -le ${#MODEL_OPTIONS[@]} ]; then
-                        selected_model=$(echo "${MODEL_OPTIONS[$((model_choice - 1))]}" | awk '{print $1}')
-                    else
-                        echo "Invalid choice, using default model"
-                        selected_model="$DEFAULT_MODEL"
-                    fi
+                    echo "Invalid choice, using default model"
+                    selected_model="$DEFAULT_MODEL"
                 fi
 
                 current_model="$selected_model"
                 if branch_name=$(generate_branch_name "$BRANCH_NAME" "$selected_model"); then
                     # Display the new branch name
                     echo ""
-                    if has_gum; then
-                        if [ "$AI_BACKEND" = "claude-code" ] && has_claude_code; then
-                            gum format -t template <<EOF
-{{ Color "2" "" "Generated branch name" }} {{ Color "15" "4" " 󰱫 Claude Code ($current_model) " }}
-EOF
-                        else
-                            gum format -t template <<EOF
-{{ Color "2" "" "Generated branch name" }} {{ Color "15" "4" " $current_model " }}
-EOF
-                        fi
-                        echo ""
-                        echo "----------------------------------------"
-                        echo "$branch_name" | gum format
-                        echo "----------------------------------------"
-                        echo ""
+                    if [ "$AI_BACKEND" = "claude-code" ] && has_claude_code; then
+                        echo "Generated branch name (Claude Code - $current_model):"
                     else
-                        echo "Generated branch name: $branch_name"
-                        echo ""
+                        echo "Generated branch name ($current_model):"
                     fi
+                    echo "----------------------------------------"
+                    echo "$branch_name"
+                    echo "----------------------------------------"
+                    echo ""
                 else
                     echo "Failed to regenerate. Using previous name."
                 fi
@@ -997,59 +825,47 @@ EOF
 show_help() {
     # Check which tools are installed
     local git_s lazygit_s claude_s api_s claude_txt api_txt
-    command -v git &>/dev/null && git_s="✓" || git_s="✗"
-    command -v lazygit &>/dev/null && lazygit_s="✓" || lazygit_s="◦"
-    has_claude_code && claude_s="✓" || claude_s="◦"
-    [ -n "${ANTHROPIC_API_KEY:-}" ] && api_s="✓" || api_s="◦"
+    command -v git &>/dev/null && git_s="[x]" || git_s="[ ]"
+    command -v lazygit &>/dev/null && lazygit_s="[x]" || lazygit_s="[ ]"
+    has_claude_code && claude_s="[x]" || claude_s="[ ]"
+    [ -n "${ANTHROPIC_API_KEY:-}" ] && api_s="[x]" || api_s="[ ]"
     has_claude_code && claude_txt="Available (preferred)" || claude_txt="Not installed"
     [ -n "${ANTHROPIC_API_KEY:-}" ] && api_txt="Set" || api_txt="Not set"
 
-    printf ' ╭────────────────────────────────────────╮
- │                                        │
- │  repo - AI-powered repository ops      │
- │                                        │
- ╰────────────────────────────────────────╯
+    cat <<EOF
+repo - AI-powered repository operations
 
-\033[1;34mUsage: repo <command> [options]\033[0m
+Usage: repo <command> [options]
 
-\033[1;34mCommands:\033[0m
-  \033[32mcommit\033[0m    - Commit changes (manual or AI-powered)
-  \033[32mbranch\033[0m    - Create branches (manual or AI-powered)
-  \033[32mhelp\033[0m      - Show this help message
+Commands:
+  commit    - Commit changes (manual or AI-powered)
+  branch    - Create branches (manual or AI-powered)
+  help      - Show this help message
 
-\033[1;34mManual Operations \033[35m(Fast & Simple)\033[0m\033[1;34m:\033[0m
-  repo commit                                  # Open lazygit for manual commit
-  repo branch "feature-xyz"                    # Create branch with exact name
+Manual Operations (Fast & Simple):
+  repo commit                        # Open lazygit for manual commit
+  repo branch "feature-xyz"          # Create branch with exact name
 
-\033[1;34mAI-Powered Operations \033[35m(Smart Mode)\033[0m\033[1;34m:\033[0m
-  repo commit \033[33m-s\033[0m                               # Generate commit message with AI
-  repo commit \033[33m-s\033[0m \033[33m-y\033[0m                            # AI commit with auto-confirm
-  repo commit \033[33m-s\033[0m \033[33m-yp\033[0m                           # AI commit, auto-confirm, and push
-  repo branch \033[33m-s\033[0m "fix bug"                     # Generate branch name with AI
-  repo branch \033[33m-s\033[0m \033[33m-y\033[0m "BCD-123"                  # AI branch with auto-create
+AI-Powered Operations (Smart Mode):
+  repo commit -s                     # Generate commit message with AI
+  repo commit -s -y                  # AI commit with auto-confirm
+  repo commit -s -yp                 # AI commit, auto-confirm, and push
+  repo branch -s "fix bug"           # Generate branch name with AI
+  repo branch -s -y "BCD-123"        # AI branch with auto-create
 
-\033[1;34mExamples:\033[0m
-  # Quick manual workflow
-  repo commit                                  # Opens lazygit immediately
-  repo branch hotfix-123                       # Creates branch instantly
+Environment:
+  Claude Code: $claude_txt
+  ANTHROPIC_API_KEY: $api_txt
 
-  # AI-assisted workflow
-  repo commit -s                               # Generate commit message
-  repo branch -s "implement user dashboard"   # Generate branch name
+Requirements:
+  $git_s git (required)
+  $lazygit_s lazygit (required for manual commits)
+  $claude_s Claude Code (preferred for AI features)
+  $api_s ANTHROPIC_API_KEY (alternative for AI features)
 
-\033[1;34mEnvironment:\033[0m
-  Claude Code: \033[36m%s\033[0m
-  ANTHROPIC_API_KEY: \033[36m%s\033[0m
-
-\033[1;34mRequirements:\033[0m
-  %s git (required)
-  %s lazygit (required for manual commits)
-  %s Claude Code (preferred for AI features)
-  %s ANTHROPIC_API_KEY (alternative for AI features)
-
-\033[35mFor AI features, you need either Claude Code or ANTHROPIC_API_KEY.\033[0m
-Learn more: \033[36mhttps://claude.ai/code\033[0m
-' "$claude_txt" "$api_txt" "$git_s" "$lazygit_s" "$claude_s" "$api_s"
+For AI features, you need either Claude Code or ANTHROPIC_API_KEY.
+Learn more: https://claude.ai/code
+EOF
 }
 
 # ========================================================================
