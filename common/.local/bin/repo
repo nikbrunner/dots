@@ -12,9 +12,9 @@ set -euo pipefail
 AI_BACKEND="api"
 
 MODEL_OPTIONS=(
-    "claude-opus-4-5-20251101"
-    "claude-sonnet-4-5-20250929"
-    "claude-haiku-4-5-20251001"
+	"claude-opus-4-5-20251101"
+	"claude-sonnet-4-5-20250929"
+	"claude-haiku-4-5-20251001"
 )
 
 # Default model - using fastest/cheapest for API usage
@@ -31,29 +31,29 @@ SUMMARY_LENGTH=72
 # ========================================================================
 
 has_claude_code() {
-    command -v claude &>/dev/null
+	command -v claude &>/dev/null
 }
 
 validate_git_repo() {
-    if ! git rev-parse --git-dir &>/dev/null; then
-        echo "Error: Not in a git repository"
-        exit 1
-    fi
+	if ! git rev-parse --git-dir &>/dev/null; then
+		echo "Error: Not in a git repository"
+		exit 1
+	fi
 }
 
 call_claude_api() {
-    local prompt="$1"
-    local model="$2"
-    local max_tokens="$3"
-    local max_retries=3
-    local retry_delay=2
+	local prompt="$1"
+	local model="$2"
+	local max_tokens="$3"
+	local max_retries=3
+	local retry_delay=2
 
-    local json_payload
-    json_payload=$(jq -n \
-        --arg prompt "$prompt" \
-        --arg model "$model" \
-        --arg max_tokens "$max_tokens" \
-        '{
+	local json_payload
+	json_payload=$(jq -n \
+		--arg prompt "$prompt" \
+		--arg model "$model" \
+		--arg max_tokens "$max_tokens" \
+		'{
             model: $model,
             max_tokens: ($max_tokens | tonumber),
             messages: [
@@ -64,98 +64,98 @@ call_claude_api() {
             ]
         }')
 
-    local response
-    local attempt=1
+	local response
+	local attempt=1
 
-    while [ $attempt -le $max_retries ]; do
-        if [ $attempt -gt 1 ]; then
-            echo "Retrying (attempt $attempt/$max_retries)..."
-        else
-            echo "Generating with $model..."
-        fi
-        response=$(curl -s -X POST "https://api.anthropic.com/v1/messages" \
-            -H "x-api-key: $ANTHROPIC_API_KEY" \
-            -H "anthropic-version: $API_VERSION" \
-            -H "content-type: application/json" \
-            -d "$json_payload")
+	while [ $attempt -le $max_retries ]; do
+		if [ $attempt -gt 1 ]; then
+			echo "Retrying (attempt $attempt/$max_retries)..."
+		else
+			echo "Generating with $model..."
+		fi
+		response=$(curl -s -X POST "https://api.anthropic.com/v1/messages" \
+			-H "x-api-key: $ANTHROPIC_API_KEY" \
+			-H "anthropic-version: $API_VERSION" \
+			-H "content-type: application/json" \
+			-d "$json_payload")
 
-        # Check for API errors first
-        local error_type
-        error_type=$(echo "$response" | jq -r '.error.type' 2>/dev/null)
+		# Check for API errors first
+		local error_type
+		error_type=$(echo "$response" | jq -r '.error.type' 2>/dev/null)
 
-        if [ "$error_type" != "null" ] && [ -n "$error_type" ]; then
-            local error_message
-            error_message=$(echo "$response" | jq -r '.error.message' 2>/dev/null)
+		if [ "$error_type" != "null" ] && [ -n "$error_type" ]; then
+			local error_message
+			error_message=$(echo "$response" | jq -r '.error.message' 2>/dev/null)
 
-            # Retry on overloaded errors
-            if [ "$error_type" = "overloaded_error" ]; then
-                if [ $attempt -lt $max_retries ]; then
-                    echo "API is overloaded, waiting ${retry_delay}s before retry..." >&2
-                    sleep $retry_delay
-                    retry_delay=$((retry_delay * 2)) # Exponential backoff
-                    attempt=$((attempt + 1))
-                    continue
-                else
-                    echo "Error: API is overloaded after $max_retries attempts" >&2
-                    echo "Please try again in a few moments" >&2
-                    return 1
-                fi
-            else
-                echo "Error: $error_type - $error_message" >&2
-                return 1
-            fi
-        fi
+			# Retry on overloaded errors
+			if [ "$error_type" = "overloaded_error" ]; then
+				if [ $attempt -lt $max_retries ]; then
+					echo "API is overloaded, waiting ${retry_delay}s before retry..." >&2
+					sleep $retry_delay
+					retry_delay=$((retry_delay * 2)) # Exponential backoff
+					attempt=$((attempt + 1))
+					continue
+				else
+					echo "Error: API is overloaded after $max_retries attempts" >&2
+					echo "Please try again in a few moments" >&2
+					return 1
+				fi
+			else
+				echo "Error: $error_type - $error_message" >&2
+				return 1
+			fi
+		fi
 
-        # Extract the response text
-        local result
-        result=$(echo "$response" | jq -r '.content[0].text' 2>/dev/null | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
+		# Extract the response text
+		local result
+		result=$(echo "$response" | jq -r '.content[0].text' 2>/dev/null | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
 
-        if [ -z "$result" ] || [ "$result" = "null" ]; then
-            echo "Error: Failed to generate response" >&2
-            echo "Response: $response" >&2
-            return 1
-        fi
+		if [ -z "$result" ] || [ "$result" = "null" ]; then
+			echo "Error: Failed to generate response" >&2
+			echo "Response: $response" >&2
+			return 1
+		fi
 
-        echo "$result"
-        return 0
-    done
+		echo "$result"
+		return 0
+	done
 
-    return 1
+	return 1
 }
 
 call_claude_code() {
-    local prompt="$1"
-    local model="$2"
+	local prompt="$1"
+	local model="$2"
 
-    local result
-    result=$(claude --model "$model" --print "$prompt" 2>&1)
-    local exit_code=$?
+	local result
+	result=$(claude --model "$model" --print "$prompt" 2>&1)
+	local exit_code=$?
 
-    if [ $exit_code -ne 0 ]; then
-        echo "Error: Claude Code failed (exit code: $exit_code)" >&2
-        echo "Output: $result" >&2
-        return 1
-    fi
+	if [ $exit_code -ne 0 ]; then
+		echo "Error: Claude Code failed (exit code: $exit_code)" >&2
+		echo "Output: $result" >&2
+		return 1
+	fi
 
-    # Clean up the response
-    result=$(echo "$result" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
+	# Clean up the response
+	result=$(echo "$result" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
 
-    if [ -z "$result" ]; then
-        echo "Error: Claude Code returned empty response" >&2
-        return 1
-    fi
+	if [ -z "$result" ]; then
+		echo "Error: Claude Code returned empty response" >&2
+		return 1
+	fi
 
-    echo "$result"
+	echo "$result"
 }
 
 check_ai_availability() {
-    if ! has_claude_code && [ -z "$ANTHROPIC_API_KEY" ]; then
-        echo "Neither Claude Code nor ANTHROPIC_API_KEY is available."
-        echo "Please either:"
-        echo "  1. Install Claude Code: https://claude.ai/code"
-        echo "  2. Set ANTHROPIC_API_KEY to your Anthropic API key"
-        exit 1
-    fi
+	if ! has_claude_code && [ -z "$ANTHROPIC_API_KEY" ]; then
+		echo "Neither Claude Code nor ANTHROPIC_API_KEY is available."
+		echo "Please either:"
+		echo "  1. Install Claude Code: https://claude.ai/code"
+		echo "  2. Set ANTHROPIC_API_KEY to your Anthropic API key"
+		exit 1
+	fi
 }
 
 # ========================================================================
@@ -163,105 +163,105 @@ check_ai_availability() {
 # ========================================================================
 
 parse_commit_args() {
-    SMART_FLAG=false
-    YES_FLAG=false
-    PUSH_FLAG=false
-    FORCE_FLAG=false
+	SMART_FLAG=false
+	YES_FLAG=false
+	PUSH_FLAG=false
+	FORCE_FLAG=false
 
-    while [[ $# -gt 0 ]]; do
-        case $1 in
-        -s | --smart)
-            SMART_FLAG=true
-            shift
-            ;;
-        -y | --yes)
-            YES_FLAG=true
-            shift
-            ;;
-        -p | --push)
-            PUSH_FLAG=true
-            shift
-            ;;
-        -f | --force)
-            FORCE_FLAG=true
-            shift
-            ;;
-        -sy | -ys)
-            SMART_FLAG=true
-            YES_FLAG=true
-            shift
-            ;;
-        -sp | -ps)
-            SMART_FLAG=true
-            PUSH_FLAG=true
-            shift
-            ;;
-        -sf | -fs)
-            SMART_FLAG=true
-            FORCE_FLAG=true
-            shift
-            ;;
-        -yp | -py)
-            YES_FLAG=true
-            PUSH_FLAG=true
-            shift
-            ;;
-        -yf | -fy)
-            YES_FLAG=true
-            FORCE_FLAG=true
-            shift
-            ;;
-        -pf | -fp)
-            PUSH_FLAG=true
-            FORCE_FLAG=true
-            shift
-            ;;
-        -syp | -spy | -ysp | -yps | -psy | -pys)
-            SMART_FLAG=true
-            YES_FLAG=true
-            PUSH_FLAG=true
-            shift
-            ;;
-        -syf | -sfy | -ysf | -yfs | -fsy | -fys)
-            SMART_FLAG=true
-            YES_FLAG=true
-            FORCE_FLAG=true
-            shift
-            ;;
-        -spf | -sfp | -psf | -pfs | -fsp | -fps)
-            SMART_FLAG=true
-            PUSH_FLAG=true
-            FORCE_FLAG=true
-            shift
-            ;;
-        -ypf | -yfp | -pyf | -pfy | -fyp | -fpy)
-            YES_FLAG=true
-            PUSH_FLAG=true
-            FORCE_FLAG=true
-            shift
-            ;;
-        -sypf | -syfp | -spyf | -spfy | -sfyp | -sfpy | -yspf | -ysfp | -ypfs | -ypsf | -yfsp | -yfps | -psyf | -psfy | -pyfs | -pysf | -pfsy | -pfys | -fsyp | -fspy | -fypf | -fyps | -fpsy | -fpys)
-            SMART_FLAG=true
-            YES_FLAG=true
-            PUSH_FLAG=true
-            FORCE_FLAG=true
-            shift
-            ;;
-        -h | --help)
-            show_commit_help
-            exit 0
-            ;;
-        *)
-            echo "Unknown option: $1"
-            echo "Use 'repo commit --help' for usage information"
-            exit 1
-            ;;
-        esac
-    done
+	while [[ $# -gt 0 ]]; do
+		case $1 in
+		-s | --smart)
+			SMART_FLAG=true
+			shift
+			;;
+		-y | --yes)
+			YES_FLAG=true
+			shift
+			;;
+		-p | --push)
+			PUSH_FLAG=true
+			shift
+			;;
+		-f | --force)
+			FORCE_FLAG=true
+			shift
+			;;
+		-sy | -ys)
+			SMART_FLAG=true
+			YES_FLAG=true
+			shift
+			;;
+		-sp | -ps)
+			SMART_FLAG=true
+			PUSH_FLAG=true
+			shift
+			;;
+		-sf | -fs)
+			SMART_FLAG=true
+			FORCE_FLAG=true
+			shift
+			;;
+		-yp | -py)
+			YES_FLAG=true
+			PUSH_FLAG=true
+			shift
+			;;
+		-yf | -fy)
+			YES_FLAG=true
+			FORCE_FLAG=true
+			shift
+			;;
+		-pf | -fp)
+			PUSH_FLAG=true
+			FORCE_FLAG=true
+			shift
+			;;
+		-syp | -spy | -ysp | -yps | -psy | -pys)
+			SMART_FLAG=true
+			YES_FLAG=true
+			PUSH_FLAG=true
+			shift
+			;;
+		-syf | -sfy | -ysf | -yfs | -fsy | -fys)
+			SMART_FLAG=true
+			YES_FLAG=true
+			FORCE_FLAG=true
+			shift
+			;;
+		-spf | -sfp | -psf | -pfs | -fsp | -fps)
+			SMART_FLAG=true
+			PUSH_FLAG=true
+			FORCE_FLAG=true
+			shift
+			;;
+		-ypf | -yfp | -pyf | -pfy | -fyp | -fpy)
+			YES_FLAG=true
+			PUSH_FLAG=true
+			FORCE_FLAG=true
+			shift
+			;;
+		-sypf | -syfp | -spyf | -spfy | -sfyp | -sfpy | -yspf | -ysfp | -ypfs | -ypsf | -yfsp | -yfps | -psyf | -psfy | -pyfs | -pysf | -pfsy | -pfys | -fsyp | -fspy | -fypf | -fyps | -fpsy | -fpys)
+			SMART_FLAG=true
+			YES_FLAG=true
+			PUSH_FLAG=true
+			FORCE_FLAG=true
+			shift
+			;;
+		-h | --help)
+			show_commit_help
+			exit 0
+			;;
+		*)
+			echo "Unknown option: $1"
+			echo "Use 'repo commit --help' for usage information"
+			exit 1
+			;;
+		esac
+	done
 }
 
 show_commit_help() {
-    cat <<EOF
+	cat <<EOF
 Usage: repo commit [OPTIONS]
 
 Repository commit operations with optional AI assistance.
@@ -285,22 +285,22 @@ EOF
 }
 
 generate_commit_message() {
-    local selected_model=${1:-$DEFAULT_MODEL}
+	local selected_model=${1:-$DEFAULT_MODEL}
 
-    # Get staged diff
-    local git_diff
-    git_diff=$(git diff --staged)
+	# Get staged diff
+	local git_diff
+	git_diff=$(git diff --staged)
 
-    # Get current branch
-    local current_branch
-    current_branch=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
+	# Get current branch
+	local current_branch
+	current_branch=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
 
-    # Get last commit messages from current branch
-    local commit_messages
-    commit_messages=$(git log -n "$HISTORY_COUNT" --format='%s%n%b' HEAD 2>/dev/null)
+	# Get last commit messages from current branch
+	local commit_messages
+	commit_messages=$(git log -n "$HISTORY_COUNT" --format='%s%n%b' HEAD 2>/dev/null)
 
-    # Build the prompt
-    local prompt="Generate a conventional commit message for the git diff below.
+	# Build the prompt
+	local prompt="Generate a conventional commit message for the git diff below.
 
 CRITICAL: Return ONLY the commit message. Do not include ANY explanations, analysis, commentary, or additional text. Do not describe what you see in the diff. Just output the commit message and nothing else.
 
@@ -312,274 +312,274 @@ Requirements:
 
 Output format: Just the commit message, nothing more."
 
-    # Add previous commits if available
-    if [ -n "$commit_messages" ] && [[ ! "$commit_messages" =~ fatal ]]; then
-        prompt="$prompt
+	# Add previous commits if available
+	if [ -n "$commit_messages" ] && [[ ! "$commit_messages" =~ fatal ]]; then
+		prompt="$prompt
 
 Previous commits in this feature branch (most recent first):
 \`\`\`
 $commit_messages
 \`\`\`
 Ensure consistency with these commits. Adhere to the $SUMMARY_LENGTH-character summary rule."
-    fi
+	fi
 
-    # Add staged changes
-    prompt="$prompt
+	# Add staged changes
+	prompt="$prompt
 
 Changes to commit:
 \`\`\`
 $git_diff
 \`\`\`"
 
-    # Check for issue ID in branch name
-    local issue_id
-    issue_id=$(echo "$current_branch" | grep -oE '^bcd-([0-9]{4})' | sed 's/bcd-//')
-    if [ -n "$issue_id" ]; then
-        prompt="$prompt
+	# Check for issue ID in branch name
+	local issue_id
+	issue_id=$(echo "$current_branch" | grep -oE '^bcd-([0-9]{4})' | sed 's/bcd-//')
+	if [ -n "$issue_id" ]; then
+		prompt="$prompt
 
 Please prefix the summary line with the following issue ID: BCD-$issue_id
 
 Example: BCD-$issue_id feat: some new feature"
-    fi
+	fi
 
-    # Generate using appropriate method based on configuration
-    if [ "$AI_BACKEND" = "claude-code" ] && has_claude_code; then
-        if ! commit_message=$(call_claude_code "$prompt" "$selected_model"); then
-            return 1
-        fi
-    else
-        if ! commit_message=$(call_claude_api "$prompt" "$selected_model" "$MAX_TOKENS_COMMIT"); then
-            return 1
-        fi
-    fi
+	# Generate using appropriate method based on configuration
+	if [ "$AI_BACKEND" = "claude-code" ] && has_claude_code; then
+		if ! commit_message=$(call_claude_code "$prompt" "$selected_model"); then
+			return 1
+		fi
+	else
+		if ! commit_message=$(call_claude_api "$prompt" "$selected_model" "$MAX_TOKENS_COMMIT"); then
+			return 1
+		fi
+	fi
 
-    # Clean up the response
-    commit_message=$(echo "$commit_message" | sed 's/^["'"'"']//;s/["'"'"']$//' | tr -d '\r')
+	# Clean up the response
+	commit_message=$(echo "$commit_message" | sed 's/^["'"'"']//;s/["'"'"']$//' | tr -d '\r')
 
-    echo "$commit_message"
+	echo "$commit_message"
 }
 
 repo_commit() {
-    validate_git_repo
-    parse_commit_args "$@"
+	validate_git_repo
+	parse_commit_args "$@"
 
-    if [ "$SMART_FLAG" = false ]; then
-        # Manual commit - open lazygit
-        if command -v lazygit &>/dev/null; then
-            exec lazygit
-        else
-            echo "Error: lazygit is not installed"
-            echo "Install with: brew install lazygit"
-            exit 1
-        fi
-    fi
+	if [ "$SMART_FLAG" = false ]; then
+		# Manual commit - open lazygit
+		if command -v lazygit &>/dev/null; then
+			exec lazygit
+		else
+			echo "Error: lazygit is not installed"
+			echo "Install with: brew install lazygit"
+			exit 1
+		fi
+	fi
 
-    # Smart commit mode
-    check_ai_availability
+	# Smart commit mode
+	check_ai_availability
 
-    # Check for staged changes
-    if [ -z "$(git diff --staged)" ]; then
-        echo "No staged changes found."
-        echo "Please stage your changes first."
-        exit 1
-    fi
+	# Check for staged changes
+	if [ -z "$(git diff --staged)" ]; then
+		echo "No staged changes found."
+		echo "Please stage your changes first."
+		exit 1
+	fi
 
-    # Generate initial commit message
-    current_model="$DEFAULT_MODEL"
-    if [ "$AI_BACKEND" = "claude-code" ] && has_claude_code; then
-        echo "Generating commit message with Claude Code..."
-    else
-        echo "Generating commit message with API..."
-    fi
-    if ! commit_message=$(generate_commit_message); then
-        exit 1
-    fi
+	# Generate initial commit message
+	current_model="$DEFAULT_MODEL"
+	if [ "$AI_BACKEND" = "claude-code" ] && has_claude_code; then
+		echo "Generating commit message with Claude Code..."
+	else
+		echo "Generating commit message with API..."
+	fi
+	if ! commit_message=$(generate_commit_message); then
+		exit 1
+	fi
 
-    # Display the generated message
-    echo ""
-    if [ "$AI_BACKEND" = "claude-code" ] && has_claude_code; then
-        echo "Generated commit message (Claude Code - $current_model):"
-    else
-        echo "Generated commit message ($current_model):"
-    fi
-    echo "----------------------------------------"
-    echo "$commit_message"
-    echo "----------------------------------------"
-    echo ""
+	# Display the generated message
+	echo ""
+	if [ "$AI_BACKEND" = "claude-code" ] && has_claude_code; then
+		echo "Generated commit message (Claude Code - $current_model):"
+	else
+		echo "Generated commit message ($current_model):"
+	fi
+	echo "----------------------------------------"
+	echo "$commit_message"
+	echo "----------------------------------------"
+	echo ""
 
-    # Handle user confirmation based on flags
-    if [ "$YES_FLAG" = true ]; then
-        # Auto-confirm
-        echo "Auto-committing (--yes flag)..."
-        git commit -m "$commit_message"
-        echo ""
-        echo "Changes committed successfully!"
-    else
-        # Interactive loop for regeneration
-        while true; do
-            echo "Options:"
-            echo "1) Commit"
-            echo "2) Regenerate"
-            echo "3) Edit"
-            echo "4) Cancel"
-            read -r -p "Choose an option (1-4): " choice
-            case "$choice" in
-            1) action="Commit" ;;
-            2) action="Regenerate" ;;
-            3) action="Edit" ;;
-            4) action="Cancel" ;;
-            *)
-                echo "Invalid choice"
-                continue
-                ;;
-            esac
+	# Handle user confirmation based on flags
+	if [ "$YES_FLAG" = true ]; then
+		# Auto-confirm
+		echo "Auto-committing (--yes flag)..."
+		git commit -m "$commit_message"
+		echo ""
+		echo "Changes committed successfully!"
+	else
+		# Interactive loop for regeneration
+		while true; do
+			echo "Options:"
+			echo "1) Commit"
+			echo "2) Regenerate"
+			echo "3) Edit"
+			echo "4) Cancel"
+			read -r -p "Choose an option (1-4): " choice
+			case "$choice" in
+			1) action="Commit" ;;
+			2) action="Regenerate" ;;
+			3) action="Edit" ;;
+			4) action="Cancel" ;;
+			*)
+				echo "Invalid choice"
+				continue
+				;;
+			esac
 
-            case "$action" in
-            "Commit")
-                echo ""
-                echo "Committing changes..."
-                git commit -m "$commit_message"
-                echo ""
-                echo "Changes committed successfully!"
-                break
-                ;;
-            "Edit")
-                # Create temp file with commit message
-                TEMP_FILE=$(mktemp)
-                echo "$commit_message" >"$TEMP_FILE"
+			case "$action" in
+			"Commit")
+				echo ""
+				echo "Committing changes..."
+				git commit -m "$commit_message"
+				echo ""
+				echo "Changes committed successfully!"
+				break
+				;;
+			"Edit")
+				# Create temp file with commit message
+				TEMP_FILE=$(mktemp)
+				echo "$commit_message" >"$TEMP_FILE"
 
-                # Open in nvim for editing
-                nvim "$TEMP_FILE"
+				# Open in nvim for editing
+				nvim "$TEMP_FILE"
 
-                # Check if file still exists and has content
-                if [ -s "$TEMP_FILE" ]; then
-                    edited_message=$(cat "$TEMP_FILE")
-                    rm -f "$TEMP_FILE"
+				# Check if file still exists and has content
+				if [ -s "$TEMP_FILE" ]; then
+					edited_message=$(cat "$TEMP_FILE")
+					rm -f "$TEMP_FILE"
 
-                    echo ""
-                    echo "Committing with edited message..."
-                    git commit -m "$edited_message"
-                    echo ""
-                    echo "Changes committed successfully!"
-                    break
-                else
-                    rm -f "$TEMP_FILE"
-                    echo "Commit cancelled (empty message)."
-                    exit 1
-                fi
-                ;;
-            "Regenerate")
-                echo ""
-                echo "Select model for regeneration:"
-                for i in "${!MODEL_OPTIONS[@]}"; do
-                    echo "$((i + 1))) ${MODEL_OPTIONS[$i]}"
-                done
-                read -r -p "Choose model (1-${#MODEL_OPTIONS[@]}): " model_choice
-                if [[ "$model_choice" =~ ^[0-9]+$ ]] && [ "$model_choice" -ge 1 ] && [ "$model_choice" -le ${#MODEL_OPTIONS[@]} ]; then
-                    selected_model=$(echo "${MODEL_OPTIONS[$((model_choice - 1))]}" | awk '{print $1}')
-                else
-                    echo "Invalid choice, using default model"
-                    selected_model="$DEFAULT_MODEL"
-                fi
+					echo ""
+					echo "Committing with edited message..."
+					git commit -m "$edited_message"
+					echo ""
+					echo "Changes committed successfully!"
+					break
+				else
+					rm -f "$TEMP_FILE"
+					echo "Commit cancelled (empty message)."
+					exit 1
+				fi
+				;;
+			"Regenerate")
+				echo ""
+				echo "Select model for regeneration:"
+				for i in "${!MODEL_OPTIONS[@]}"; do
+					echo "$((i + 1))) ${MODEL_OPTIONS[$i]}"
+				done
+				read -r -p "Choose model (1-${#MODEL_OPTIONS[@]}): " model_choice
+				if [[ "$model_choice" =~ ^[0-9]+$ ]] && [ "$model_choice" -ge 1 ] && [ "$model_choice" -le ${#MODEL_OPTIONS[@]} ]; then
+					selected_model=$(echo "${MODEL_OPTIONS[$((model_choice - 1))]}" | awk '{print $1}')
+				else
+					echo "Invalid choice, using default model"
+					selected_model="$DEFAULT_MODEL"
+				fi
 
-                current_model="$selected_model"
-                if commit_message=$(generate_commit_message "$selected_model"); then
-                    # Display the new message
-                    echo ""
-                    if [ "$AI_BACKEND" = "claude-code" ] && has_claude_code; then
-                        echo "Generated commit message (Claude Code - $current_model):"
-                    else
-                        echo "Generated commit message ($current_model):"
-                    fi
-                    echo "----------------------------------------"
-                    echo "$commit_message"
-                    echo "----------------------------------------"
-                    echo ""
-                else
-                    echo "Failed to regenerate. Using previous message."
-                fi
-                ;;
-            "Cancel")
-                echo "Commit cancelled."
-                exit 1
-                ;;
-            esac
-        done
-    fi
+				current_model="$selected_model"
+				if commit_message=$(generate_commit_message "$selected_model"); then
+					# Display the new message
+					echo ""
+					if [ "$AI_BACKEND" = "claude-code" ] && has_claude_code; then
+						echo "Generated commit message (Claude Code - $current_model):"
+					else
+						echo "Generated commit message ($current_model):"
+					fi
+					echo "----------------------------------------"
+					echo "$commit_message"
+					echo "----------------------------------------"
+					echo ""
+				else
+					echo "Failed to regenerate. Using previous message."
+				fi
+				;;
+			"Cancel")
+				echo "Commit cancelled."
+				exit 1
+				;;
+			esac
+		done
+	fi
 
-    # Handle push
-    handle_push_after_commit
+	# Handle push
+	handle_push_after_commit
 }
 
 handle_push_after_commit() {
-    # Handle push - either from flag or ask after commit
-    if [ "$PUSH_FLAG" = true ]; then
-        echo ""
-        echo "Pushing to remote..."
+	# Handle push - either from flag or ask after commit
+	if [ "$PUSH_FLAG" = true ]; then
+		echo ""
+		echo "Pushing to remote..."
 
-        if [ "$FORCE_FLAG" = true ]; then
-            # Force push directly
-            git push --force-with-lease
-            echo ""
-            echo "All done! Changes committed and pushed successfully!"
-            echo ""
-        else
-            # Try regular push
-            push_output=""
-            if ! push_output=$(git push 2>&1); then
-                echo ""
-                echo "Push failed:"
-                echo "$push_output"
-                echo ""
-                read -r -p "Force push with --force-with-lease? (y/n): " confirm
-                if [ "$confirm" = "y" ] || [ "$confirm" = "Y" ]; then
-                    git push --force-with-lease
-                    echo ""
-                    echo "All done! Changes committed and pushed successfully!"
-                    echo ""
-                else
-                    echo "Push cancelled."
-                    exit 1
-                fi
-            else
-                echo ""
-                echo "All done! Changes committed and pushed successfully!"
-                echo ""
-            fi
-        fi
-    else
-        # Ask to push after commit
-        echo ""
-        read -r -p "Push to remote? (y/n): " confirm
-        if [ "$confirm" = "y" ] || [ "$confirm" = "Y" ]; then
-            # Try regular push
-            push_output=""
-            if ! push_output=$(git push 2>&1); then
-                echo ""
-                echo "Push failed:"
-                echo "$push_output"
-                echo ""
-                read -r -p "Force push with --force-with-lease? (y/n): " force_confirm
-                if [ "$force_confirm" = "y" ] || [ "$force_confirm" = "Y" ]; then
-                    git push --force-with-lease
-                    echo ""
-                    echo "All done! Changes committed and pushed successfully!"
-                    echo ""
-                else
-                    echo "Push cancelled."
-                    exit 1
-                fi
-            else
-                echo ""
-                echo "All done! Changes committed and pushed successfully!"
-                echo ""
-            fi
-        else
-            echo ""
-            echo "All done! Changes committed successfully!"
-            echo ""
-        fi
-    fi
+		if [ "$FORCE_FLAG" = true ]; then
+			# Force push directly
+			git push --force-with-lease
+			echo ""
+			echo "All done! Changes committed and pushed successfully!"
+			echo ""
+		else
+			# Try regular push
+			push_output=""
+			if ! push_output=$(git push 2>&1); then
+				echo ""
+				echo "Push failed:"
+				echo "$push_output"
+				echo ""
+				read -r -p "Force push with --force-with-lease? (y/n): " confirm
+				if [ "$confirm" = "y" ] || [ "$confirm" = "Y" ]; then
+					git push --force-with-lease
+					echo ""
+					echo "All done! Changes committed and pushed successfully!"
+					echo ""
+				else
+					echo "Push cancelled."
+					exit 1
+				fi
+			else
+				echo ""
+				echo "All done! Changes committed and pushed successfully!"
+				echo ""
+			fi
+		fi
+	else
+		# Ask to push after commit
+		echo ""
+		read -r -p "Push to remote? (y/n): " confirm
+		if [ "$confirm" = "y" ] || [ "$confirm" = "Y" ]; then
+			# Try regular push
+			push_output=""
+			if ! push_output=$(git push 2>&1); then
+				echo ""
+				echo "Push failed:"
+				echo "$push_output"
+				echo ""
+				read -r -p "Force push with --force-with-lease? (y/n): " force_confirm
+				if [ "$force_confirm" = "y" ] || [ "$force_confirm" = "Y" ]; then
+					git push --force-with-lease
+					echo ""
+					echo "All done! Changes committed and pushed successfully!"
+					echo ""
+				else
+					echo "Push cancelled."
+					exit 1
+				fi
+			else
+				echo ""
+				echo "All done! Changes committed and pushed successfully!"
+				echo ""
+			fi
+		else
+			echo ""
+			echo "All done! Changes committed successfully!"
+			echo ""
+		fi
+	fi
 }
 
 # ========================================================================
@@ -587,45 +587,45 @@ handle_push_after_commit() {
 # ========================================================================
 
 parse_branch_args() {
-    SMART_FLAG=false
-    YES_FLAG=false
-    BRANCH_NAME=""
+	SMART_FLAG=false
+	YES_FLAG=false
+	BRANCH_NAME=""
 
-    while [[ $# -gt 0 ]]; do
-        case $1 in
-        -s | --smart)
-            SMART_FLAG=true
-            shift
-            ;;
-        -y | --yes)
-            YES_FLAG=true
-            shift
-            ;;
-        -sy | -ys)
-            SMART_FLAG=true
-            YES_FLAG=true
-            shift
-            ;;
-        -h | --help)
-            show_branch_help
-            exit 0
-            ;;
-        -*)
-            echo "Unknown option: $1"
-            echo "Use 'repo branch --help' for usage information"
-            exit 1
-            ;;
-        *)
-            # Collect remaining args as branch name/description
-            BRANCH_NAME="$*"
-            break
-            ;;
-        esac
-    done
+	while [[ $# -gt 0 ]]; do
+		case $1 in
+		-s | --smart)
+			SMART_FLAG=true
+			shift
+			;;
+		-y | --yes)
+			YES_FLAG=true
+			shift
+			;;
+		-sy | -ys)
+			SMART_FLAG=true
+			YES_FLAG=true
+			shift
+			;;
+		-h | --help)
+			show_branch_help
+			exit 0
+			;;
+		-*)
+			echo "Unknown option: $1"
+			echo "Use 'repo branch --help' for usage information"
+			exit 1
+			;;
+		*)
+			# Collect remaining args as branch name/description
+			BRANCH_NAME="$*"
+			break
+			;;
+		esac
+	done
 }
 
 show_branch_help() {
-    cat <<EOF
+	cat <<EOF
 Usage: repo branch [OPTIONS] <name or description>
 
 Repository branch operations with optional AI assistance.
@@ -646,11 +646,11 @@ EOF
 }
 
 generate_branch_name() {
-    local input="$1"
-    local selected_model=${2:-$DEFAULT_MODEL}
+	local input="$1"
+	local selected_model=${2:-$DEFAULT_MODEL}
 
-    # Build the prompt
-    local prompt="Generate a git branch name for: \"$input\"
+	# Build the prompt
+	local prompt="Generate a git branch name for: \"$input\"
 
 CRITICAL: Return ONLY the branch name. No explanations, no analysis, no additional text. Just the branch name and nothing else.
 
@@ -667,155 +667,155 @@ Examples:
 
 Output: Just the branch name, nothing more."
 
-    # Generate using appropriate method based on configuration
-    if [ "$AI_BACKEND" = "claude-code" ] && has_claude_code; then
-        if ! branch_name=$(call_claude_code "$prompt" "$selected_model"); then
-            return 1
-        fi
-    else
-        if ! branch_name=$(call_claude_api "$prompt" "$selected_model" "$MAX_TOKENS_BRANCH"); then
-            return 1
-        fi
-    fi
+	# Generate using appropriate method based on configuration
+	if [ "$AI_BACKEND" = "claude-code" ] && has_claude_code; then
+		if ! branch_name=$(call_claude_code "$prompt" "$selected_model"); then
+			return 1
+		fi
+	else
+		if ! branch_name=$(call_claude_api "$prompt" "$selected_model" "$MAX_TOKENS_BRANCH"); then
+			return 1
+		fi
+	fi
 
-    # Clean up the branch name (remove quotes, extra spaces, etc.)
-    branch_name=$(echo "$branch_name" | sed 's/^["'"'"']//;s/["'"'"']$//' | tr -d '\n\r')
+	# Clean up the branch name (remove quotes, extra spaces, etc.)
+	branch_name=$(echo "$branch_name" | sed 's/^["'"'"']//;s/["'"'"']$//' | tr -d '\n\r')
 
-    echo "$branch_name"
+	echo "$branch_name"
 }
 
 repo_branch() {
-    validate_git_repo
-    parse_branch_args "$@"
+	validate_git_repo
+	parse_branch_args "$@"
 
-    if [ -z "$BRANCH_NAME" ]; then
-        echo "Error: No branch name or description provided"
-        echo "Use 'repo branch --help' for usage information"
-        exit 1
-    fi
+	if [ -z "$BRANCH_NAME" ]; then
+		echo "Error: No branch name or description provided"
+		echo "Use 'repo branch --help' for usage information"
+		exit 1
+	fi
 
-    if [ "$SMART_FLAG" = false ]; then
-        # Manual branch creation - use exact name
-        branch_name="$BRANCH_NAME"
+	if [ "$SMART_FLAG" = false ]; then
+		# Manual branch creation - use exact name
+		branch_name="$BRANCH_NAME"
 
-        echo "Creating branch: $branch_name"
-        if git switch -c "$branch_name"; then
-            echo "Branch '$branch_name' created and switched successfully!"
-        else
-            echo "Failed to create branch '$branch_name'"
-            exit 1
-        fi
-        return
-    fi
+		echo "Creating branch: $branch_name"
+		if git switch -c "$branch_name"; then
+			echo "Branch '$branch_name' created and switched successfully!"
+		else
+			echo "Failed to create branch '$branch_name'"
+			exit 1
+		fi
+		return
+	fi
 
-    # Smart branch mode
-    check_ai_availability
+	# Smart branch mode
+	check_ai_availability
 
-    # Generate initial branch name
-    current_model="$DEFAULT_MODEL"
-    if [ "$AI_BACKEND" = "claude-code" ] && has_claude_code; then
-        echo "Generating branch name with Claude Code..."
-    else
-        echo "Generating branch name..."
-    fi
-    if ! branch_name=$(generate_branch_name "$BRANCH_NAME"); then
-        exit 1
-    fi
+	# Generate initial branch name
+	current_model="$DEFAULT_MODEL"
+	if [ "$AI_BACKEND" = "claude-code" ] && has_claude_code; then
+		echo "Generating branch name with Claude Code..."
+	else
+		echo "Generating branch name..."
+	fi
+	if ! branch_name=$(generate_branch_name "$BRANCH_NAME"); then
+		exit 1
+	fi
 
-    # Display the generated branch name
-    echo ""
-    if [ "$AI_BACKEND" = "claude-code" ] && has_claude_code; then
-        echo "Generated branch name (Claude Code - $current_model):"
-    else
-        echo "Generated branch name ($current_model):"
-    fi
-    echo "----------------------------------------"
-    echo "$branch_name"
-    echo "----------------------------------------"
-    echo ""
+	# Display the generated branch name
+	echo ""
+	if [ "$AI_BACKEND" = "claude-code" ] && has_claude_code; then
+		echo "Generated branch name (Claude Code - $current_model):"
+	else
+		echo "Generated branch name ($current_model):"
+	fi
+	echo "----------------------------------------"
+	echo "$branch_name"
+	echo "----------------------------------------"
+	echo ""
 
-    # Handle user confirmation based on flags
-    if [ "$YES_FLAG" = true ]; then
-        # Auto-create branch
-        echo "Auto-creating branch (--yes flag)..."
+	# Handle user confirmation based on flags
+	if [ "$YES_FLAG" = true ]; then
+		# Auto-create branch
+		echo "Auto-creating branch (--yes flag)..."
 
-        if git switch -c "$branch_name"; then
-            echo ""
-            echo "Branch '$branch_name' created and switched successfully!"
-        else
-            echo "Failed to create branch '$branch_name'"
-            exit 1
-        fi
-    else
-        # Interactive loop for regeneration
-        while true; do
-            echo "Options:"
-            echo "1) Create Branch"
-            echo "2) Regenerate"
-            echo "3) Cancel"
-            read -r -p "Choose an option (1-3): " choice
-            case "$choice" in
-            1) action="Create Branch" ;;
-            2) action="Regenerate" ;;
-            3) action="Cancel" ;;
-            *)
-                echo "Invalid choice"
-                continue
-                ;;
-            esac
+		if git switch -c "$branch_name"; then
+			echo ""
+			echo "Branch '$branch_name' created and switched successfully!"
+		else
+			echo "Failed to create branch '$branch_name'"
+			exit 1
+		fi
+	else
+		# Interactive loop for regeneration
+		while true; do
+			echo "Options:"
+			echo "1) Create Branch"
+			echo "2) Regenerate"
+			echo "3) Cancel"
+			read -r -p "Choose an option (1-3): " choice
+			case "$choice" in
+			1) action="Create Branch" ;;
+			2) action="Regenerate" ;;
+			3) action="Cancel" ;;
+			*)
+				echo "Invalid choice"
+				continue
+				;;
+			esac
 
-            case "$action" in
-            "Create Branch")
-                echo ""
-                echo "Creating branch..."
+			case "$action" in
+			"Create Branch")
+				echo ""
+				echo "Creating branch..."
 
-                if git switch -c "$branch_name"; then
-                    echo ""
-                    echo "Branch '$branch_name' created and switched successfully!"
-                    break
-                else
-                    echo "Failed to create branch '$branch_name'"
-                    exit 1
-                fi
-                ;;
-            "Regenerate")
-                echo ""
-                echo "Select model for regeneration:"
-                for i in "${!MODEL_OPTIONS[@]}"; do
-                    echo "$((i + 1))) ${MODEL_OPTIONS[$i]}"
-                done
-                read -r -p "Choose model (1-${#MODEL_OPTIONS[@]}): " model_choice
-                if [[ "$model_choice" =~ ^[0-9]+$ ]] && [ "$model_choice" -ge 1 ] && [ "$model_choice" -le ${#MODEL_OPTIONS[@]} ]; then
-                    selected_model=$(echo "${MODEL_OPTIONS[$((model_choice - 1))]}" | awk '{print $1}')
-                else
-                    echo "Invalid choice, using default model"
-                    selected_model="$DEFAULT_MODEL"
-                fi
+				if git switch -c "$branch_name"; then
+					echo ""
+					echo "Branch '$branch_name' created and switched successfully!"
+					break
+				else
+					echo "Failed to create branch '$branch_name'"
+					exit 1
+				fi
+				;;
+			"Regenerate")
+				echo ""
+				echo "Select model for regeneration:"
+				for i in "${!MODEL_OPTIONS[@]}"; do
+					echo "$((i + 1))) ${MODEL_OPTIONS[$i]}"
+				done
+				read -r -p "Choose model (1-${#MODEL_OPTIONS[@]}): " model_choice
+				if [[ "$model_choice" =~ ^[0-9]+$ ]] && [ "$model_choice" -ge 1 ] && [ "$model_choice" -le ${#MODEL_OPTIONS[@]} ]; then
+					selected_model=$(echo "${MODEL_OPTIONS[$((model_choice - 1))]}" | awk '{print $1}')
+				else
+					echo "Invalid choice, using default model"
+					selected_model="$DEFAULT_MODEL"
+				fi
 
-                current_model="$selected_model"
-                if branch_name=$(generate_branch_name "$BRANCH_NAME" "$selected_model"); then
-                    # Display the new branch name
-                    echo ""
-                    if [ "$AI_BACKEND" = "claude-code" ] && has_claude_code; then
-                        echo "Generated branch name (Claude Code - $current_model):"
-                    else
-                        echo "Generated branch name ($current_model):"
-                    fi
-                    echo "----------------------------------------"
-                    echo "$branch_name"
-                    echo "----------------------------------------"
-                    echo ""
-                else
-                    echo "Failed to regenerate. Using previous name."
-                fi
-                ;;
-            "Cancel")
-                echo "Branch creation cancelled."
-                exit 1
-                ;;
-            esac
-        done
-    fi
+				current_model="$selected_model"
+				if branch_name=$(generate_branch_name "$BRANCH_NAME" "$selected_model"); then
+					# Display the new branch name
+					echo ""
+					if [ "$AI_BACKEND" = "claude-code" ] && has_claude_code; then
+						echo "Generated branch name (Claude Code - $current_model):"
+					else
+						echo "Generated branch name ($current_model):"
+					fi
+					echo "----------------------------------------"
+					echo "$branch_name"
+					echo "----------------------------------------"
+					echo ""
+				else
+					echo "Failed to regenerate. Using previous name."
+				fi
+				;;
+			"Cancel")
+				echo "Branch creation cancelled."
+				exit 1
+				;;
+			esac
+		done
+	fi
 }
 
 # ========================================================================
@@ -823,16 +823,16 @@ repo_branch() {
 # ========================================================================
 
 show_help() {
-    # Check which tools are installed
-    local git_s lazygit_s claude_s api_s claude_txt api_txt
-    command -v git &>/dev/null && git_s="[x]" || git_s="[ ]"
-    command -v lazygit &>/dev/null && lazygit_s="[x]" || lazygit_s="[ ]"
-    has_claude_code && claude_s="[x]" || claude_s="[ ]"
-    [ -n "${ANTHROPIC_API_KEY:-}" ] && api_s="[x]" || api_s="[ ]"
-    has_claude_code && claude_txt="Available (preferred)" || claude_txt="Not installed"
-    [ -n "${ANTHROPIC_API_KEY:-}" ] && api_txt="Set" || api_txt="Not set"
+	# Check which tools are installed
+	local git_s lazygit_s claude_s api_s claude_txt api_txt
+	command -v git &>/dev/null && git_s="[x]" || git_s="[ ]"
+	command -v lazygit &>/dev/null && lazygit_s="[x]" || lazygit_s="[ ]"
+	has_claude_code && claude_s="[x]" || claude_s="[ ]"
+	[ -n "${ANTHROPIC_API_KEY:-}" ] && api_s="[x]" || api_s="[ ]"
+	has_claude_code && claude_txt="Available (preferred)" || claude_txt="Not installed"
+	[ -n "${ANTHROPIC_API_KEY:-}" ] && api_txt="Set" || api_txt="Not set"
 
-    cat <<EOF
+	cat <<EOF
 repo - AI-powered repository operations
 
 Usage: repo <command> [options]
@@ -874,19 +874,19 @@ EOF
 
 case "${1:-}" in
 commit)
-    shift
-    repo_commit "$@"
-    ;;
+	shift
+	repo_commit "$@"
+	;;
 branch)
-    shift
-    repo_branch "$@"
-    ;;
+	shift
+	repo_branch "$@"
+	;;
 help | --help | -h | "")
-    show_help
-    ;;
+	show_help
+	;;
 *)
-    echo "Unknown command: $1"
-    echo "Use 'repo help' for usage information"
-    exit 1
-    ;;
+	echo "Unknown command: $1"
+	echo "Use 'repo help' for usage information"
+	exit 1
+	;;
 esac

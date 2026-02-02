@@ -12,8 +12,8 @@
 set -euo pipefail
 
 if [[ $# -lt 2 ]]; then
-    echo "Usage: niri-focus-or-open <app-id-pattern> <launch-command> [args...]" >&2
-    exit 1
+	echo "Usage: niri-focus-or-open <app-id-pattern> <launch-command> [args...]" >&2
+	exit 1
 fi
 
 app_pattern="$1"
@@ -31,13 +31,13 @@ result=$(niri msg -j windows | jq -r --arg pattern "$app_pattern" '
 ' 2>/dev/null) || result=""
 
 if [[ -n "$result" && "$result" != "null:null" ]]; then
-    window_id="${result%%:*}"
-    is_focused="${result##*:}"
+	window_id="${result%%:*}"
+	is_focused="${result##*:}"
 
-    # Skip focus call if already focused
-    if [[ "$is_focused" != "true" ]]; then
-        niri msg action focus-window --id "$window_id"
-    fi
+	# Skip focus call if already focused
+	if [[ "$is_focused" != "true" ]]; then
+		niri msg action focus-window --id "$window_id"
+	fi
 else
-    exec "${launch_cmd[@]}"
+	exec "${launch_cmd[@]}"
 fi

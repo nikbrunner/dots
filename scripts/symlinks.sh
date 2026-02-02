@@ -488,4 +488,3 @@ else
     echo "Some errors occurred during symlink creation."
     exit 1
 fi
-

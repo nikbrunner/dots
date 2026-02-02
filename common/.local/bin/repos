@@ -15,81 +15,81 @@ NC='\033[0m' # No Color
 
 # Helper functions
 print_success() {
-    echo -e "${GREEN}✓ $1${NC}"
+	echo -e "${GREEN}✓ $1${NC}"
 }
 
 print_error() {
-    echo -e "${RED}✗ $1${NC}"
+	echo -e "${RED}✗ $1${NC}"
 }
 
 print_warning() {
-    echo -e "${YELLOW}⚠ $1${NC}"
+	echo -e "${YELLOW}⚠ $1${NC}"
 }
 
 # Load configuration (config file > defaults)
 load_config() {
-    REPOS_BASE_PATH="$_DEFAULT_REPOS_BASE_PATH"
-    DEFAULT_PARALLEL_JOBS="$_DEFAULT_PARALLEL_JOBS"
+	REPOS_BASE_PATH="$_DEFAULT_REPOS_BASE_PATH"
+	DEFAULT_PARALLEL_JOBS="$_DEFAULT_PARALLEL_JOBS"
 
-    if [[ -f "$CONFIG_FILE" ]]; then
-        local val
+	if [[ -f "$CONFIG_FILE" ]]; then
+		local val
 
-        val=$(jq -r '.repos_base_path // empty' "$CONFIG_FILE" 2>/dev/null)
-        [[ -n "$val" ]] && REPOS_BASE_PATH="${val/#\~/$HOME}"
+		val=$(jq -r '.repos_base_path // empty' "$CONFIG_FILE" 2>/dev/null)
+		[[ -n "$val" ]] && REPOS_BASE_PATH="${val/#\~/$HOME}"
 
-        val=$(jq -r '.parallel_jobs // empty' "$CONFIG_FILE" 2>/dev/null)
-        [[ -n "$val" ]] && DEFAULT_PARALLEL_JOBS="$val"
-    fi
+		val=$(jq -r '.parallel_jobs // empty' "$CONFIG_FILE" 2>/dev/null)
+		[[ -n "$val" ]] && DEFAULT_PARALLEL_JOBS="$val"
+	fi
 }
 
 # Get repositories to ensure are cloned from config (as JSON array)
 get_ensure_cloned() {
-    if [[ ! -f "$CONFIG_FILE" ]]; then
-        return 1
-    fi
-    jq -c '.ensure_cloned[]? // empty' "$CONFIG_FILE" 2>/dev/null
+	if [[ ! -f "$CONFIG_FILE" ]]; then
+		return 1
+	fi
+	jq -c '.ensure_cloned[]? // empty' "$CONFIG_FILE" 2>/dev/null
 }
 
 # Extract URL from ensure_cloned entry (handles both string and object formats)
 # Usage: get_entry_url <entry>
 get_entry_url() {
-    local entry="$1"
-    if [[ "$entry" == "{"* ]]; then
-        # It's a JSON object, extract url field
-        echo "$entry" | jq -r '.url // empty'
-    else
-        # It's a plain string (remove quotes if present)
-        echo "$entry" | tr -d '"'
-    fi
+	local entry="$1"
+	if [[ "$entry" == "{"* ]]; then
+		# It's a JSON object, extract url field
+		echo "$entry" | jq -r '.url // empty'
+	else
+		# It's a plain string (remove quotes if present)
+		echo "$entry" | tr -d '"'
+	fi
 }
 
 # Extract postClone command from ensure_cloned entry
 # Usage: get_entry_post_clone <entry>
 get_entry_post_clone() {
-    local entry="$1"
-    if [[ "$entry" == "{"* ]]; then
-        # It's a JSON object, extract postClone field
-        echo "$entry" | jq -r '.postClone // empty'
-    fi
-    # Plain strings don't have postClone
+	local entry="$1"
+	if [[ "$entry" == "{"* ]]; then
+		# It's a JSON object, extract postClone field
+		echo "$entry" | jq -r '.postClone // empty'
+	fi
+	# Plain strings don't have postClone
 }
 
 # Create default configuration file
 init_config() {
-    local config_dir
-    config_dir=$(dirname "$CONFIG_FILE")
+	local config_dir
+	config_dir=$(dirname "$CONFIG_FILE")
 
-    if [[ -f "$CONFIG_FILE" ]]; then
-        print_warning "Config file already exists: $CONFIG_FILE"
-        if ! confirm_action "Overwrite existing config?"; then
-            echo "Aborted."
-            return 1
-        fi
-    fi
+	if [[ -f "$CONFIG_FILE" ]]; then
+		print_warning "Config file already exists: $CONFIG_FILE"
+		if ! confirm_action "Overwrite existing config?"; then
+			echo "Aborted."
+			return 1
+		fi
+	fi
 
-    mkdir -p "$config_dir"
+	mkdir -p "$config_dir"
 
-    cat > "$CONFIG_FILE" << 'EOF'
+	cat >"$CONFIG_FILE" <<'EOF'
 {
   "repos_base_path": "~/repos",
   "parallel_jobs": 4,
@@ -99,8 +99,8 @@ init_config() {
 }
 EOF
 
-    print_success "Created config file: $CONFIG_FILE"
-    echo "Edit it to add your repositories and customize settings."
+	print_success "Created config file: $CONFIG_FILE"
+	echo "Edit it to add your repositories and customize settings."
 }
 
 # Initialize configuration - call early
@@ -108,178 +108,178 @@ load_config
 
 # Check if gum is available (only used for confirmations)
 has_gum() {
-    command -v gum &>/dev/null
+	command -v gum &>/dev/null
 }
 
 # Dependency check
 check_dependencies() {
-    local missing_deps=()
+	local missing_deps=()
 
-    for cmd in git fzf tmux jq; do
-        if ! command -v "$cmd" &>/dev/null; then
-            missing_deps+=("$cmd")
-        fi
-    done
+	for cmd in git fzf tmux jq; do
+		if ! command -v "$cmd" &>/dev/null; then
+			missing_deps+=("$cmd")
+		fi
+	done
 
-    if [[ ${#missing_deps[@]} -gt 0 ]]; then
-        print_error "Missing required dependencies: ${missing_deps[*]}"
-        echo "Please install the missing dependencies and try again."
-        exit 1
-    fi
+	if [[ ${#missing_deps[@]} -gt 0 ]]; then
+		print_error "Missing required dependencies: ${missing_deps[*]}"
+		echo "Please install the missing dependencies and try again."
+		exit 1
+	fi
 
-    # Check if REPOS_BASE_PATH exists
-    if [[ ! -d "$REPOS_BASE_PATH" ]]; then
-        print_warning "Repository base path does not exist: $REPOS_BASE_PATH"
-        echo -n "Create it? (y/N) "
-        read -r create_dir
-        if [[ "$create_dir" == "y" || "$create_dir" == "Y" ]]; then
-            if ! mkdir -p "$REPOS_BASE_PATH"; then
-                print_error "Failed to create directory: $REPOS_BASE_PATH"
-                exit 1
-            fi
-            print_success "Created directory: $REPOS_BASE_PATH"
-        else
-            exit 1
-        fi
-    fi
+	# Check if REPOS_BASE_PATH exists
+	if [[ ! -d "$REPOS_BASE_PATH" ]]; then
+		print_warning "Repository base path does not exist: $REPOS_BASE_PATH"
+		echo -n "Create it? (y/N) "
+		read -r create_dir
+		if [[ "$create_dir" == "y" || "$create_dir" == "Y" ]]; then
+			if ! mkdir -p "$REPOS_BASE_PATH"; then
+				print_error "Failed to create directory: $REPOS_BASE_PATH"
+				exit 1
+			fi
+			print_success "Created directory: $REPOS_BASE_PATH"
+		else
+			exit 1
+		fi
+	fi
 }
 
 # Confirm action with gum or fallback
 confirm_action() {
-    local prompt="$1"
+	local prompt="$1"
 
-    if has_gum; then
-        gum confirm "$prompt"
-    else
-        echo -n "$prompt (y/N) "
-        read -r confirm
-        [[ "$confirm" == "y" || "$confirm" == "Y" ]]
-    fi
+	if has_gum; then
+		gum confirm "$prompt"
+	else
+		echo -n "$prompt (y/N) "
+		read -r confirm
+		[[ "$confirm" == "y" || "$confirm" == "Y" ]]
+	fi
 }
 
 # Select repository with styled fzf
 select_repo() {
-    local prompt="$1"
-    local repos
-    repos=$(list_repos)
+	local prompt="$1"
+	local repos
+	repos=$(list_repos)
 
-    if [[ -z "$repos" ]]; then
-        print_error "No repositories found"
-        return 1
-    fi
+	if [[ -z "$repos" ]]; then
+		print_error "No repositories found"
+		return 1
+	fi
 
-    echo "$repos" | styled_fzf "$prompt"
+	echo "$repos" | styled_fzf "$prompt"
 }
 
 # Get tmux session name from repo path
 get_session_name() {
-    echo "$1" | tr '/:.' '-'
+	echo "$1" | tr '/:.' '-'
 }
 
 # Set FZF config file path
 styled_fzf() {
-    local prompt="${1:-Select: }"
-    local preview_cmd="${2:-}"
-    local additional_args=("${@:3}")
+	local prompt="${1:-Select: }"
+	local preview_cmd="${2:-}"
+	local additional_args=("${@:3}")
 
-    local fzf_args=(--border-label="┃ repos ┃" --prompt="$prompt")
+	local fzf_args=(--border-label="┃ repos ┃" --prompt="$prompt")
 
-    # Add preview if provided
-    if [[ -n "$preview_cmd" ]]; then
-        fzf_args+=(--preview "$preview_cmd" --preview-window=down:50%:wrap)
-    fi
+	# Add preview if provided
+	if [[ -n "$preview_cmd" ]]; then
+		fzf_args+=(--preview "$preview_cmd" --preview-window=down:50%:wrap)
+	fi
 
-    # Add any additional arguments
-    fzf_args+=("${additional_args[@]}")
+	# Add any additional arguments
+	fzf_args+=("${additional_args[@]}")
 
-    fzf "${fzf_args[@]}"
+	fzf "${fzf_args[@]}"
 }
 
 # Get repo sync status (ahead/behind remote)
 get_repo_sync_status() {
-    local repo_path="$1"
+	local repo_path="$1"
 
-    # Check if upstream is configured
-    if ! git -C "$repo_path" rev-parse --abbrev-ref '@{u}' &>/dev/null; then
-        echo "no upstream"
-        return
-    fi
+	# Check if upstream is configured
+	if ! git -C "$repo_path" rev-parse --abbrev-ref '@{u}' &>/dev/null; then
+		echo "no upstream"
+		return
+	fi
 
-    local ahead behind
-    ahead=$(git -C "$repo_path" rev-list --count '@{u}..' 2>/dev/null || echo "0")
-    behind=$(git -C "$repo_path" rev-list --count '..@{u}' 2>/dev/null || echo "0")
+	local ahead behind
+	ahead=$(git -C "$repo_path" rev-list --count '@{u}..' 2>/dev/null || echo "0")
+	behind=$(git -C "$repo_path" rev-list --count '..@{u}' 2>/dev/null || echo "0")
 
-    if [[ "$ahead" -eq 0 && "$behind" -eq 0 ]]; then
-        echo "up to date"
-    elif [[ "$ahead" -gt 0 && "$behind" -gt 0 ]]; then
-        echo "↑$ahead ↓$behind"
-    elif [[ "$ahead" -gt 0 ]]; then
-        echo "↑$ahead ahead"
-    else
-        echo "↓$behind behind"
-    fi
+	if [[ "$ahead" -eq 0 && "$behind" -eq 0 ]]; then
+		echo "up to date"
+	elif [[ "$ahead" -gt 0 && "$behind" -gt 0 ]]; then
+		echo "↑$ahead ↓$behind"
+	elif [[ "$ahead" -gt 0 ]]; then
+		echo "↑$ahead ahead"
+	else
+		echo "↓$behind behind"
+	fi
 }
 
 # Display formatted repo status block
 show_repo_status() {
-    local repo="$1"
-    local repo_path="$REPOS_BASE_PATH/$repo"
+	local repo="$1"
+	local repo_path="$REPOS_BASE_PATH/$repo"
 
-    echo "────────────────────────────────────────────────"
-    echo -e "${YELLOW}${repo}${NC}"
-    echo "────────────────────────────────────────────────"
+	echo "────────────────────────────────────────────────"
+	echo -e "${YELLOW}${repo}${NC}"
+	echo "────────────────────────────────────────────────"
 
-    # Show git status
-    (cd "$repo_path" && git status --short)
+	# Show git status
+	(cd "$repo_path" && git status --short)
 
-    # Show sync status
-    local sync_status
-    sync_status=$(get_repo_sync_status "$repo_path")
-    if [[ "$sync_status" != "up to date" && "$sync_status" != "no upstream" ]]; then
-        echo ""
-        echo -e "${BLUE}${sync_status}${NC}"
-    elif [[ "$sync_status" == "no upstream" ]]; then
-        echo ""
-        echo -e "${YELLOW}⚠ no upstream configured${NC}"
-    fi
+	# Show sync status
+	local sync_status
+	sync_status=$(get_repo_sync_status "$repo_path")
+	if [[ "$sync_status" != "up to date" && "$sync_status" != "no upstream" ]]; then
+		echo ""
+		echo -e "${BLUE}${sync_status}${NC}"
+	elif [[ "$sync_status" == "no upstream" ]]; then
+		echo ""
+		echo -e "${YELLOW}⚠ no upstream configured${NC}"
+	fi
 
-    echo "────────────────────────────────────────────────"
+	echo "────────────────────────────────────────────────"
 }
 
 # Parallel pull helper function
 parallel_pull() {
-    local repo="$1"
-    local repo_path="$REPOS_BASE_PATH/$repo"
+	local repo="$1"
+	local repo_path="$REPOS_BASE_PATH/$repo"
 
-    # Check if it's a git repo
-    if [[ ! -d "$repo_path/.git" ]]; then
-        echo "SKIP:$repo:not a git repo"
-        return 0
-    fi
+	# Check if it's a git repo
+	if [[ ! -d "$repo_path/.git" ]]; then
+		echo "SKIP:$repo:not a git repo"
+		return 0
+	fi
 
-    # Check if upstream is configured
-    if ! git -C "$repo_path" rev-parse --abbrev-ref '@{u}' &>/dev/null; then
-        echo "SKIP:$repo:no upstream"
-        return 0
-    fi
+	# Check if upstream is configured
+	if ! git -C "$repo_path" rev-parse --abbrev-ref '@{u}' &>/dev/null; then
+		echo "SKIP:$repo:no upstream"
+		return 0
+	fi
 
-    # Check if already up to date
-    git -C "$repo_path" fetch --quiet 2>/dev/null
-    local behind
-    behind=$(git -C "$repo_path" rev-list --count '..@{u}' 2>/dev/null || echo "0")
+	# Check if already up to date
+	git -C "$repo_path" fetch --quiet 2>/dev/null
+	local behind
+	behind=$(git -C "$repo_path" rev-list --count '..@{u}' 2>/dev/null || echo "0")
 
-    if [[ "$behind" -eq 0 ]]; then
-        echo "UP-TO-DATE:$repo"
-        return 0
-    fi
+	if [[ "$behind" -eq 0 ]]; then
+		echo "UP-TO-DATE:$repo"
+		return 0
+	fi
 
-    # Try to pull
-    if git -C "$repo_path" pull --quiet 2>/dev/null; then
-        echo "OK:$repo:$behind commits"
-    else
-        echo "CONFLICT:$repo"
-        return 1
-    fi
+	# Try to pull
+	if git -C "$repo_path" pull --quiet 2>/dev/null; then
+		echo "OK:$repo:$behind commits"
+	else
+		echo "CONFLICT:$repo"
+		return 1
+	fi
 }
 
 export -f parallel_pull get_repo_sync_status
@@ -287,610 +287,610 @@ export REPOS_BASE_PATH
 
 # Parse git URL to extract username and repo name
 parse_git_url() {
-    local url="$1"
-    local username repo_name
+	local url="$1"
+	local username repo_name
 
-    # Remove .git suffix if present
-    url="${url%.git}"
+	# Remove .git suffix if present
+	url="${url%.git}"
 
-    if [[ "$url" =~ ^git@.*:(.+)/(.+)$ ]]; then
-        # SSH URL format: git@github.com:username/repo
-        username="${BASH_REMATCH[1]}"
-        repo_name="${BASH_REMATCH[2]}"
-    elif [[ "$url" =~ ^https?://.*github\.com/(.+)/(.+)$ ]]; then
-        # HTTPS URL format: https://github.com/username/repo
-        username="${BASH_REMATCH[1]}"
-        repo_name="${BASH_REMATCH[2]}"
-    else
-        print_error "Invalid Git URL format"
-        return 1
-    fi
+	if [[ "$url" =~ ^git@.*:(.+)/(.+)$ ]]; then
+		# SSH URL format: git@github.com:username/repo
+		username="${BASH_REMATCH[1]}"
+		repo_name="${BASH_REMATCH[2]}"
+	elif [[ "$url" =~ ^https?://.*github\.com/(.+)/(.+)$ ]]; then
+		# HTTPS URL format: https://github.com/username/repo
+		username="${BASH_REMATCH[1]}"
+		repo_name="${BASH_REMATCH[2]}"
+	else
+		print_error "Invalid Git URL format"
+		return 1
+	fi
 
-    echo "$username/$repo_name"
+	echo "$username/$repo_name"
 }
 
 # Clone a single repository
 clone_single_repo() {
-    local git_url="$1"
-    local show_progress="${2:-true}"
+	local git_url="$1"
+	local show_progress="${2:-true}"
 
-    local repo_path
-    repo_path=$(parse_git_url "$git_url") || return 1
+	local repo_path
+	repo_path=$(parse_git_url "$git_url") || return 1
 
-    local clone_path="$REPOS_BASE_PATH/$repo_path"
+	local clone_path="$REPOS_BASE_PATH/$repo_path"
 
-    if [[ -d "$clone_path" ]]; then
-        echo "Skipping $repo_path (already exists)"
-        return 2 # Already exists
-    fi
+	if [[ -d "$clone_path" ]]; then
+		echo "Skipping $repo_path (already exists)"
+		return 2 # Already exists
+	fi
 
-    # Create parent directory
-    if ! mkdir -p "$(dirname "$clone_path")"; then
-        print_error "Failed to create directory for $repo_path"
-        return 1
-    fi
+	# Create parent directory
+	if ! mkdir -p "$(dirname "$clone_path")"; then
+		print_error "Failed to create directory for $repo_path"
+		return 1
+	fi
 
-    echo "Cloning $repo_path..."
+	echo "Cloning $repo_path..."
 
-    if [[ "$show_progress" == "true" ]]; then
-        if git clone "$git_url" "$clone_path"; then
-            print_success "Cloned $repo_path"
-            return 0
-        else
-            print_error "Failed to clone $repo_path"
-            return 1
-        fi
-    else
-        if git clone "$git_url" "$clone_path" >/dev/null 2>&1; then
-            print_success "Cloned $repo_path"
-            return 0
-        else
-            print_error "Failed to clone $repo_path"
-            return 1
-        fi
-    fi
+	if [[ "$show_progress" == "true" ]]; then
+		if git clone "$git_url" "$clone_path"; then
+			print_success "Cloned $repo_path"
+			return 0
+		else
+			print_error "Failed to clone $repo_path"
+			return 1
+		fi
+	else
+		if git clone "$git_url" "$clone_path" >/dev/null 2>&1; then
+			print_success "Cloned $repo_path"
+			return 0
+		else
+			print_error "Failed to clone $repo_path"
+			return 1
+		fi
+	fi
 }
 
 # Interactive repository selection and cloning
 interactive_add() {
-    # Check gh CLI
-    check_gh_cli || exit 1
+	# Check gh CLI
+	check_gh_cli || exit 1
 
-    # Fetch all repos the user has access to (personal + org)
-    local all_repos
-    if has_gum; then
-        all_repos=$(gum spin --spinner dot --title "Fetching accessible repositories..." -- \
-            gh api /user/repos --paginate --jq '.[].full_name' 2>/dev/null)
-    else
-        echo "Fetching accessible repositories..."
-        all_repos=$(gh api /user/repos --paginate --jq '.[].full_name' 2>/dev/null)
-    fi
+	# Fetch all repos the user has access to (personal + org)
+	local all_repos
+	if has_gum; then
+		all_repos=$(gum spin --spinner dot --title "Fetching accessible repositories..." -- \
+			gh api /user/repos --paginate --jq '.[].full_name' 2>/dev/null)
+	else
+		echo "Fetching accessible repositories..."
+		all_repos=$(gh api /user/repos --paginate --jq '.[].full_name' 2>/dev/null)
+	fi
 
-    if [[ -z "$all_repos" ]]; then
-        print_error "No accessible repositories found"
-        exit 1
-    fi
+	if [[ -z "$all_repos" ]]; then
+		print_error "No accessible repositories found"
+		exit 1
+	fi
 
-    # Get list of already cloned repos (owner/repo format)
-    local cloned_repos
-    cloned_repos=$(list_repos)
+	# Get list of already cloned repos (owner/repo format)
+	local cloned_repos
+	cloned_repos=$(list_repos)
 
-    # Filter out already cloned repos
-    local available_repos
-    available_repos=$(comm -23 <(echo "$all_repos" | sort) <(echo "$cloned_repos" | sort))
+	# Filter out already cloned repos
+	local available_repos
+	available_repos=$(comm -23 <(echo "$all_repos" | sort) <(echo "$cloned_repos" | sort))
 
-    if [[ -z "$available_repos" ]]; then
-        print_success "All accessible repositories are already cloned!"
-        exit 0
-    fi
+	if [[ -z "$available_repos" ]]; then
+		print_success "All accessible repositories are already cloned!"
+		exit 0
+	fi
 
-    # Use fzf to select a repo
-    local selected_repo
-    selected_repo=$(echo "$available_repos" | styled_fzf "Select repository to clone: ")
+	# Use fzf to select a repo
+	local selected_repo
+	selected_repo=$(echo "$available_repos" | styled_fzf "Select repository to clone: ")
 
-    if [[ -z "$selected_repo" ]]; then
-        echo "No repository selected"
-        exit 0
-    fi
+	if [[ -z "$selected_repo" ]]; then
+		echo "No repository selected"
+		exit 0
+	fi
 
-    # Construct SSH URL and clone (selected_repo is owner/repo format)
-    local git_url="git@github.com:${selected_repo}.git"
-    clone_single_repo "$git_url" true
+	# Construct SSH URL and clone (selected_repo is owner/repo format)
+	local git_url="git@github.com:${selected_repo}.git"
+	clone_single_repo "$git_url" true
 }
 
 # Add a repository
 add_repo() {
-    local git_url="$1"
+	local git_url="$1"
 
-    if [[ -z "$git_url" ]]; then
-        # No argument provided - use interactive mode
-        interactive_add
-        return
-    fi
+	if [[ -z "$git_url" ]]; then
+		# No argument provided - use interactive mode
+		interactive_add
+		return
+	fi
 
-    clone_single_repo "$git_url" true
+	clone_single_repo "$git_url" true
 }
 
 # List all repositories
 list_repos() {
-    if [[ ! -d "$REPOS_BASE_PATH" ]]; then
-        return
-    fi
+	if [[ ! -d "$REPOS_BASE_PATH" ]]; then
+		return
+	fi
 
-    find "$REPOS_BASE_PATH" -mindepth 2 -maxdepth 2 -type d 2>/dev/null |
-        sed "s|$REPOS_BASE_PATH/||" |
-        sort
+	find "$REPOS_BASE_PATH" -mindepth 2 -maxdepth 2 -type d 2>/dev/null |
+		sed "s|$REPOS_BASE_PATH/||" |
+		sort
 }
 
 # Remove a repository
 remove_repo() {
-    local selected
-    selected=$(select_repo "Select repository to remove: ")
+	local selected
+	selected=$(select_repo "Select repository to remove: ")
 
-    if [[ -z "$selected" ]]; then
-        echo "No repository selected"
-        exit 0
-    fi
+	if [[ -z "$selected" ]]; then
+		echo "No repository selected"
+		exit 0
+	fi
 
-    local repo_path="$REPOS_BASE_PATH/$selected"
+	local repo_path="$REPOS_BASE_PATH/$selected"
 
-    # Kill tmux session if it exists
-    local session_name
-    session_name=$(get_session_name "$selected")
-    tmux kill-session -t "$session_name" 2>/dev/null &&
-        print_warning "Killed tmux session: $session_name"
+	# Kill tmux session if it exists
+	local session_name
+	session_name=$(get_session_name "$selected")
+	tmux kill-session -t "$session_name" 2>/dev/null &&
+		print_warning "Killed tmux session: $session_name"
 
-    # Confirm removal
-    if confirm_action "Are you sure you want to remove $selected?"; then
-        if rm -rf "$repo_path"; then
-            print_success "Repository removed: $selected"
-        else
-            print_error "Failed to remove repository: $selected"
-            exit 1
-        fi
-    else
-        echo "Removal cancelled"
-    fi
+	# Confirm removal
+	if confirm_action "Are you sure you want to remove $selected?"; then
+		if rm -rf "$repo_path"; then
+			print_success "Repository removed: $selected"
+		else
+			print_error "Failed to remove repository: $selected"
+			exit 1
+		fi
+	else
+		echo "Removal cancelled"
+	fi
 }
 
 # Guide user through dependency installation
 install_deps() {
-    echo "repos - Dependency Installation Guide"
-    echo "===================================="
-    echo
+	echo "repos - Dependency Installation Guide"
+	echo "===================================="
+	echo
 
-    # Check current status
-    local missing_required=()
-    local missing_optional=()
+	# Check current status
+	local missing_required=()
+	local missing_optional=()
 
-    # Check required dependencies
-    for cmd in git fzf tmux jq; do
-        if ! command -v "$cmd" &>/dev/null; then
-            missing_required+=("$cmd")
-        else
-            print_success "$cmd is installed"
-        fi
-    done
+	# Check required dependencies
+	for cmd in git fzf tmux jq; do
+		if ! command -v "$cmd" &>/dev/null; then
+			missing_required+=("$cmd")
+		else
+			print_success "$cmd is installed"
+		fi
+	done
 
-    # Check optional dependencies
-    if ! command -v gum &>/dev/null; then
-        missing_optional+=("gum")
-    else
-        print_success "gum is installed (optional - enhanced UX for confirmations)"
-    fi
+	# Check optional dependencies
+	if ! command -v gum &>/dev/null; then
+		missing_optional+=("gum")
+	else
+		print_success "gum is installed (optional - enhanced UX for confirmations)"
+	fi
 
-    if ! command -v gh &>/dev/null; then
-        missing_optional+=("gh")
-    else
-        print_success "gh is installed (optional - wildcard repo cloning)"
-        # Check if authenticated
-        if ! gh auth status &>/dev/null; then
-            print_warning "GitHub CLI is not authenticated"
-            echo "  Run: gh auth login"
-        else
-            print_success "GitHub CLI is authenticated"
-        fi
-    fi
+	if ! command -v gh &>/dev/null; then
+		missing_optional+=("gh")
+	else
+		print_success "gh is installed (optional - wildcard repo cloning)"
+		# Check if authenticated
+		if ! gh auth status &>/dev/null; then
+			print_warning "GitHub CLI is not authenticated"
+			echo "  Run: gh auth login"
+		else
+			print_success "GitHub CLI is authenticated"
+		fi
+	fi
 
-    echo
+	echo
 
-    # Installation instructions for missing dependencies
-    if [[ ${#missing_required[@]} -gt 0 ]]; then
-        echo "Required dependencies to install:"
-        for dep in "${missing_required[@]}"; do
-            print_error "$dep is missing"
-        done
-        echo
+	# Installation instructions for missing dependencies
+	if [[ ${#missing_required[@]} -gt 0 ]]; then
+		echo "Required dependencies to install:"
+		for dep in "${missing_required[@]}"; do
+			print_error "$dep is missing"
+		done
+		echo
 
-        # OS-specific installation instructions
-        case "$(uname)" in
-        Darwin)
-            echo "macOS installation (using Homebrew):"
-            echo "  brew install git fzf tmux jq"
-            ;;
-        Linux)
-            # Detect Linux distribution
-            if command -v apt &>/dev/null; then
-                echo "Ubuntu/Debian installation:"
-                echo "  sudo apt update && sudo apt install git fzf tmux jq"
-            elif command -v yum &>/dev/null; then
-                echo "CentOS/RHEL installation:"
-                echo "  sudo yum install git fzf tmux jq"
-            elif command -v pacman &>/dev/null; then
-                echo "Arch Linux installation:"
-                echo "  sudo pacman -S git fzf tmux jq"
-            else
-                echo "Linux installation (check your package manager):"
-                echo "  Install: git fzf tmux jq"
-            fi
-            ;;
-        *)
-            echo "Please install the missing dependencies using your system's package manager"
-            ;;
-        esac
-        echo
-    fi
+		# OS-specific installation instructions
+		case "$(uname)" in
+		Darwin)
+			echo "macOS installation (using Homebrew):"
+			echo "  brew install git fzf tmux jq"
+			;;
+		Linux)
+			# Detect Linux distribution
+			if command -v apt &>/dev/null; then
+				echo "Ubuntu/Debian installation:"
+				echo "  sudo apt update && sudo apt install git fzf tmux jq"
+			elif command -v yum &>/dev/null; then
+				echo "CentOS/RHEL installation:"
+				echo "  sudo yum install git fzf tmux jq"
+			elif command -v pacman &>/dev/null; then
+				echo "Arch Linux installation:"
+				echo "  sudo pacman -S git fzf tmux jq"
+			else
+				echo "Linux installation (check your package manager):"
+				echo "  Install: git fzf tmux jq"
+			fi
+			;;
+		*)
+			echo "Please install the missing dependencies using your system's package manager"
+			;;
+		esac
+		echo
+	fi
 
-    if [[ ${#missing_optional[@]} -gt 0 ]]; then
-        echo "Optional dependencies for enhanced experience:"
-        for dep in "${missing_optional[@]}"; do
-            print_warning "$dep is not installed (optional)"
-        done
-        echo
+	if [[ ${#missing_optional[@]} -gt 0 ]]; then
+		echo "Optional dependencies for enhanced experience:"
+		for dep in "${missing_optional[@]}"; do
+			print_warning "$dep is not installed (optional)"
+		done
+		echo
 
-        # Installation instructions for optional deps
-        case "$(uname)" in
-        Darwin)
-            echo "macOS installation (using Homebrew):"
-            [[ " ${missing_optional[*]} " =~ " gum " ]] && echo "  brew install gum"
-            [[ " ${missing_optional[*]} " =~ " gh " ]] && echo "  brew install gh"
-            ;;
-        Linux)
-            if command -v apt &>/dev/null; then
-                echo "Ubuntu/Debian installation:"
-                [[ " ${missing_optional[*]} " =~ " gum " ]] && echo "  # gum: https://github.com/charmbracelet/gum#installation"
-                [[ " ${missing_optional[*]} " =~ " gh " ]] && echo "  sudo apt install gh"
-            elif command -v pacman &>/dev/null; then
-                echo "Arch Linux installation:"
-                [[ " ${missing_optional[*]} " =~ " gum " ]] && echo "  sudo pacman -S gum"
-                [[ " ${missing_optional[*]} " =~ " gh " ]] && echo "  sudo pacman -S github-cli"
-            else
-                echo "Linux installation:"
-                [[ " ${missing_optional[*]} " =~ " gum " ]] && echo "  gum: https://github.com/charmbracelet/gum#installation"
-                [[ " ${missing_optional[*]} " =~ " gh " ]] && echo "  gh: https://cli.github.com/"
-            fi
-            ;;
-        *)
-            [[ " ${missing_optional[*]} " =~ " gum " ]] && echo "  gum: https://github.com/charmbracelet/gum#installation"
-            [[ " ${missing_optional[*]} " =~ " gh " ]] && echo "  gh: https://cli.github.com/"
-            ;;
-        esac
-        echo
-    fi
+		# Installation instructions for optional deps
+		case "$(uname)" in
+		Darwin)
+			echo "macOS installation (using Homebrew):"
+			[[ " ${missing_optional[*]} " =~ " gum " ]] && echo "  brew install gum"
+			[[ " ${missing_optional[*]} " =~ " gh " ]] && echo "  brew install gh"
+			;;
+		Linux)
+			if command -v apt &>/dev/null; then
+				echo "Ubuntu/Debian installation:"
+				[[ " ${missing_optional[*]} " =~ " gum " ]] && echo "  # gum: https://github.com/charmbracelet/gum#installation"
+				[[ " ${missing_optional[*]} " =~ " gh " ]] && echo "  sudo apt install gh"
+			elif command -v pacman &>/dev/null; then
+				echo "Arch Linux installation:"
+				[[ " ${missing_optional[*]} " =~ " gum " ]] && echo "  sudo pacman -S gum"
+				[[ " ${missing_optional[*]} " =~ " gh " ]] && echo "  sudo pacman -S github-cli"
+			else
+				echo "Linux installation:"
+				[[ " ${missing_optional[*]} " =~ " gum " ]] && echo "  gum: https://github.com/charmbracelet/gum#installation"
+				[[ " ${missing_optional[*]} " =~ " gh " ]] && echo "  gh: https://cli.github.com/"
+			fi
+			;;
+		*)
+			[[ " ${missing_optional[*]} " =~ " gum " ]] && echo "  gum: https://github.com/charmbracelet/gum#installation"
+			[[ " ${missing_optional[*]} " =~ " gh " ]] && echo "  gh: https://cli.github.com/"
+			;;
+		esac
+		echo
+	fi
 
-    # GitHub CLI authentication note
-    if command -v gh &>/dev/null && ! gh auth status &>/dev/null; then
-        echo "📋 GitHub CLI Authentication:"
-        echo "  After installing gh, authenticate with:"
-        echo "  gh auth login"
-        echo
-        echo "  This is required for wildcard repository cloning (e.g., 'org/*' patterns)"
-        echo
-    fi
+	# GitHub CLI authentication note
+	if command -v gh &>/dev/null && ! gh auth status &>/dev/null; then
+		echo "📋 GitHub CLI Authentication:"
+		echo "  After installing gh, authenticate with:"
+		echo "  gh auth login"
+		echo
+		echo "  This is required for wildcard repository cloning (e.g., 'org/*' patterns)"
+		echo
+	fi
 
-    # Summary
-    if [[ ${#missing_required[@]} -eq 0 ]]; then
-        print_success "All required dependencies are installed!"
-        if [[ ${#missing_optional[@]} -eq 0 ]]; then
-            print_success "All optional dependencies are also installed!"
-            echo "You're ready to use all repos features! 🎉"
-        else
-            echo "You can use repos now, with enhanced features available after installing optional dependencies."
-        fi
-    else
-        echo "Install the required dependencies above, then run 'repos install' again to verify."
-        exit 1
-    fi
+	# Summary
+	if [[ ${#missing_required[@]} -eq 0 ]]; then
+		print_success "All required dependencies are installed!"
+		if [[ ${#missing_optional[@]} -eq 0 ]]; then
+			print_success "All optional dependencies are also installed!"
+			echo "You're ready to use all repos features! 🎉"
+		else
+			echo "You can use repos now, with enhanced features available after installing optional dependencies."
+		fi
+	else
+		echo "Install the required dependencies above, then run 'repos install' again to verify."
+		exit 1
+	fi
 }
 
 # Show git status for all repos, grouped by owner
 status_repos() {
-    local repos
-    repos=$(list_repos)
+	local repos
+	repos=$(list_repos)
 
-    if [[ -z "$repos" ]]; then
-        print_error "No repositories found"
-        exit 1
-    fi
+	if [[ -z "$repos" ]]; then
+		print_error "No repositories found"
+		exit 1
+	fi
 
-    local clean_only=false
-    if [[ "$1" == "--clean" ]]; then
-        clean_only=true
-    fi
+	local clean_only=false
+	if [[ "$1" == "--clean" ]]; then
+		clean_only=true
+	fi
 
-    echo "Checking status of all repositories..."
-    echo
+	echo "Checking status of all repositories..."
+	echo
 
-    # Use temp files for grouping (bash 3.2 compatible)
-    local tmp_dir="/tmp/repos_status_$$"
-    mkdir -p "$tmp_dir"
-    trap "rm -rf '$tmp_dir'" EXIT
+	# Use temp files for grouping (bash 3.2 compatible)
+	local tmp_dir="/tmp/repos_status_$$"
+	mkdir -p "$tmp_dir"
+	trap "rm -rf '$tmp_dir'" EXIT
 
-    local total_repos=0
-    local total_dirty_repos=0
-    local total_non_git=0
+	local total_repos=0
+	local total_dirty_repos=0
+	local total_non_git=0
 
-    while IFS= read -r repo; do
-        [[ -z "$repo" ]] && continue
-        ((total_repos++))
+	while IFS= read -r repo; do
+		[[ -z "$repo" ]] && continue
+		((total_repos++))
 
-        local owner="${repo%%/*}"
-        local repo_path="$REPOS_BASE_PATH/$repo"
+		local owner="${repo%%/*}"
+		local repo_path="$REPOS_BASE_PATH/$repo"
 
-        # Check if it's a git repository
-        if [[ ! -d "$repo_path/.git" ]]; then
-            echo "$repo" >> "$tmp_dir/non_git_$owner"
-            ((total_non_git++))
-            continue
-        fi
+		# Check if it's a git repository
+		if [[ ! -d "$repo_path/.git" ]]; then
+			echo "$repo" >>"$tmp_dir/non_git_$owner"
+			((total_non_git++))
+			continue
+		fi
 
-        # Get git status
-        local status_output
-        status_output=$(cd "$repo_path" && git status --porcelain 2>/dev/null)
+		# Get git status
+		local status_output
+		status_output=$(cd "$repo_path" && git status --porcelain 2>/dev/null)
 
-        if [[ -n "$status_output" ]]; then
-            echo "$repo" >> "$tmp_dir/dirty_$owner"
-            ((total_dirty_repos++))
-        else
-            echo "$repo" >> "$tmp_dir/clean_$owner"
-        fi
-    done <<<"$repos"
+		if [[ -n "$status_output" ]]; then
+			echo "$repo" >>"$tmp_dir/dirty_$owner"
+			((total_dirty_repos++))
+		else
+			echo "$repo" >>"$tmp_dir/clean_$owner"
+		fi
+	done <<<"$repos"
 
-    # Show results grouped by owner
-    local has_any_issues=false
+	# Show results grouped by owner
+	local has_any_issues=false
 
-    # Get unique owners with issues
-    local owners_with_issues=()
-    local f
-    for f in "$tmp_dir"/dirty_* "$tmp_dir"/non_git_*; do
-        [[ -e "$f" ]] || continue
-        local owner="${f##*_}"
-        # Add to array if not already present
-        local found=false
-        for o in "${owners_with_issues[@]}"; do
-            [[ "$o" == "$owner" ]] && found=true && break
-        done
-        [[ "$found" == false ]] && owners_with_issues+=("$owner")
-    done
+	# Get unique owners with issues
+	local owners_with_issues=()
+	local f
+	for f in "$tmp_dir"/dirty_* "$tmp_dir"/non_git_*; do
+		[[ -e "$f" ]] || continue
+		local owner="${f##*_}"
+		# Add to array if not already present
+		local found=false
+		for o in "${owners_with_issues[@]}"; do
+			[[ "$o" == "$owner" ]] && found=true && break
+		done
+		[[ "$found" == false ]] && owners_with_issues+=("$owner")
+	done
 
-    # Sort owners
-    IFS=$'\n' owners_with_issues=($(printf '%s\n' "${owners_with_issues[@]}" | sort))
-    unset IFS
+	# Sort owners
+	IFS=$'\n' owners_with_issues=($(printf '%s\n' "${owners_with_issues[@]}" | sort))
+	unset IFS
 
-    for owner in "${owners_with_issues[@]}"; do
-        has_any_issues=true
-        echo -e "${YELLOW}=== $owner ===${NC}"
+	for owner in "${owners_with_issues[@]}"; do
+		has_any_issues=true
+		echo -e "${YELLOW}=== $owner ===${NC}"
 
-        # Show non-git directories first
-        if [[ -f "$tmp_dir/non_git_$owner" ]]; then
-            while IFS= read -r repo; do
-                print_warning "$repo is not a git repository"
-            done < "$tmp_dir/non_git_$owner"
-            echo
-        fi
+		# Show non-git directories first
+		if [[ -f "$tmp_dir/non_git_$owner" ]]; then
+			while IFS= read -r repo; do
+				print_warning "$repo is not a git repository"
+			done <"$tmp_dir/non_git_$owner"
+			echo
+		fi
 
-        # Show dirty repositories
-        if [[ -f "$tmp_dir/dirty_$owner" ]]; then
-            while IFS= read -r repo; do
-                local repo_path="$REPOS_BASE_PATH/$repo"
-                echo -e "${YELLOW}$repo${NC}"
-                (cd "$repo_path" && git status --short)
-                echo
-            done < "$tmp_dir/dirty_$owner"
-        fi
-    done
+		# Show dirty repositories
+		if [[ -f "$tmp_dir/dirty_$owner" ]]; then
+			while IFS= read -r repo; do
+				local repo_path="$REPOS_BASE_PATH/$repo"
+				echo -e "${YELLOW}$repo${NC}"
+				(cd "$repo_path" && git status --short)
+				echo
+			done <"$tmp_dir/dirty_$owner"
+		fi
+	done
 
-    # Show clean repositories if not --clean flag
-    if [[ "$clean_only" == false ]]; then
-        local has_clean=false
-        for f in "$tmp_dir"/clean_*; do
-            [[ -e "$f" ]] || continue
-            local owner="${f##*_}"
-            if [[ "$has_clean" == false ]]; then
-                echo -e "${GREEN}=== Clean Repositories ===${NC}"
-                has_clean=true
-            fi
-            local count
-            count=$(wc -l < "$f" | tr -d ' ')
-            echo -e "${GREEN}$owner:${NC} $count repositories"
-        done
-        [[ "$has_clean" == true ]] && echo
-    fi
+	# Show clean repositories if not --clean flag
+	if [[ "$clean_only" == false ]]; then
+		local has_clean=false
+		for f in "$tmp_dir"/clean_*; do
+			[[ -e "$f" ]] || continue
+			local owner="${f##*_}"
+			if [[ "$has_clean" == false ]]; then
+				echo -e "${GREEN}=== Clean Repositories ===${NC}"
+				has_clean=true
+			fi
+			local count
+			count=$(wc -l <"$f" | tr -d ' ')
+			echo -e "${GREEN}$owner:${NC} $count repositories"
+		done
+		[[ "$has_clean" == true ]] && echo
+	fi
 
-    # Summary
-    echo -e "${YELLOW}=== Summary ===${NC}"
-    echo "Total repositories: $total_repos"
-    if [[ $total_dirty_repos -gt 0 ]]; then
-        echo -e "${YELLOW}Repositories with changes: $total_dirty_repos${NC}"
-    else
-        print_success "All git repositories are clean"
-    fi
-    if [[ $total_non_git -gt 0 ]]; then
-        print_warning "Non-git directories: $total_non_git"
-        for f in "$tmp_dir"/non_git_*; do
-            [[ -e "$f" ]] || continue
-            while IFS= read -r repo; do
-                echo "  • $repo"
-            done < "$f"
-        done
-    fi
+	# Summary
+	echo -e "${YELLOW}=== Summary ===${NC}"
+	echo "Total repositories: $total_repos"
+	if [[ $total_dirty_repos -gt 0 ]]; then
+		echo -e "${YELLOW}Repositories with changes: $total_dirty_repos${NC}"
+	else
+		print_success "All git repositories are clean"
+	fi
+	if [[ $total_non_git -gt 0 ]]; then
+		print_warning "Non-git directories: $total_non_git"
+		for f in "$tmp_dir"/non_git_*; do
+			[[ -e "$f" ]] || continue
+			while IFS= read -r repo; do
+				echo "  • $repo"
+			done <"$f"
+		done
+	fi
 
-    # Suggest cleanup if there are dirty repos
-    if [[ $total_dirty_repos -gt 0 ]]; then
-        echo
-        echo "💡 Run 'repos cleanup' to interactively clean up repositories"
-    fi
+	# Suggest cleanup if there are dirty repos
+	if [[ $total_dirty_repos -gt 0 ]]; then
+		echo
+		echo "💡 Run 'repos cleanup' to interactively clean up repositories"
+	fi
 }
 
 # Find and open files across all repositories
 find_files() {
-    local repos
-    repos=$(list_repos)
+	local repos
+	repos=$(list_repos)
 
-    if [[ -z "$repos" ]]; then
-        print_error "No repositories found"
-        exit 1
-    fi
+	if [[ -z "$repos" ]]; then
+		print_error "No repositories found"
+		exit 1
+	fi
 
-    # Check if EDITOR is set
-    if [[ -z "$EDITOR" ]]; then
-        print_warning "EDITOR environment variable not set, using 'vim' as default"
-        local editor="vim"
-    else
-        local editor="$EDITOR"
-    fi
+	# Check if EDITOR is set
+	if [[ -z "$EDITOR" ]]; then
+		print_warning "EDITOR environment variable not set, using 'vim' as default"
+		local editor="vim"
+	else
+		local editor="$EDITOR"
+	fi
 
-    echo "Searching files across all repositories..."
+	echo "Searching files across all repositories..."
 
-    # Build list of all git-tracked files with repo prefix
-    local temp_file
-    temp_file=$(mktemp)
+	# Build list of all git-tracked files with repo prefix
+	local temp_file
+	temp_file=$(mktemp)
 
-    while IFS= read -r repo; do
-        [[ -z "$repo" ]] && continue
+	while IFS= read -r repo; do
+		[[ -z "$repo" ]] && continue
 
-        local repo_path="$REPOS_BASE_PATH/$repo"
+		local repo_path="$REPOS_BASE_PATH/$repo"
 
-        # Check if it's a git repository
-        if [[ ! -d "$repo_path/.git" ]]; then
-            continue
-        fi
+		# Check if it's a git repository
+		if [[ ! -d "$repo_path/.git" ]]; then
+			continue
+		fi
 
-        # Get all git-tracked files and prefix with repo name
-        (cd "$repo_path" && git ls-files 2>/dev/null | sed "s|^|$repo/|") >>"$temp_file"
-    done <<<"$repos"
+		# Get all git-tracked files and prefix with repo name
+		(cd "$repo_path" && git ls-files 2>/dev/null | sed "s|^|$repo/|") >>"$temp_file"
+	done <<<"$repos"
 
-    # Check if any files were found
-    if [[ ! -s "$temp_file" ]]; then
-        rm -f "$temp_file"
-        print_error "No git-tracked files found in any repository"
-        exit 1
-    fi
+	# Check if any files were found
+	if [[ ! -s "$temp_file" ]]; then
+		rm -f "$temp_file"
+		print_error "No git-tracked files found in any repository"
+		exit 1
+	fi
 
-    # Use styled fzf to select file with preview and syntax highlighting
-    local preview_cmd
-    if command -v bat &>/dev/null; then
-        preview_cmd="bat --color=always --style=numbers --line-range=:50 $REPOS_BASE_PATH/{}"
-    elif command -v highlight &>/dev/null; then
-        preview_cmd="highlight -O ansi --force $REPOS_BASE_PATH/{} 2>/dev/null | head -50"
-    else
-        preview_cmd="head -50 $REPOS_BASE_PATH/{}"
-    fi
+	# Use styled fzf to select file with preview and syntax highlighting
+	local preview_cmd
+	if command -v bat &>/dev/null; then
+		preview_cmd="bat --color=always --style=numbers --line-range=:50 $REPOS_BASE_PATH/{}"
+	elif command -v highlight &>/dev/null; then
+		preview_cmd="highlight -O ansi --force $REPOS_BASE_PATH/{} 2>/dev/null | head -50"
+	else
+		preview_cmd="head -50 $REPOS_BASE_PATH/{}"
+	fi
 
-    local selected_file
-    selected_file=$(cat "$temp_file" | styled_fzf "Search files: " "$preview_cmd")
+	local selected_file
+	selected_file=$(cat "$temp_file" | styled_fzf "Search files: " "$preview_cmd")
 
-    rm -f "$temp_file"
+	rm -f "$temp_file"
 
-    if [[ -z "$selected_file" ]]; then
-        echo "No file selected"
-        exit 0
-    fi
+	if [[ -z "$selected_file" ]]; then
+		echo "No file selected"
+		exit 0
+	fi
 
-    local full_path="$REPOS_BASE_PATH/$selected_file"
+	local full_path="$REPOS_BASE_PATH/$selected_file"
 
-    if [[ ! -f "$full_path" ]]; then
-        print_error "File not found: $full_path"
-        exit 1
-    fi
+	if [[ ! -f "$full_path" ]]; then
+		print_error "File not found: $full_path"
+		exit 1
+	fi
 
-    echo "Opening $selected_file with $editor..."
-    "$editor" "$full_path"
+	echo "Opening $selected_file with $editor..."
+	"$editor" "$full_path"
 }
 
 # Open the repos script for editing
 config_repos() {
-    # Check if EDITOR is set
-    if [[ -z "$EDITOR" ]]; then
-        print_warning "EDITOR environment variable not set, using 'vim' as default"
-        local editor="vim"
-    else
-        local editor="$EDITOR"
-    fi
+	# Check if EDITOR is set
+	if [[ -z "$EDITOR" ]]; then
+		print_warning "EDITOR environment variable not set, using 'vim' as default"
+		local editor="vim"
+	else
+		local editor="$EDITOR"
+	fi
 
-    # Get the path to this script
-    local script_path
-    script_path=$(realpath "${BASH_SOURCE[0]}")
+	# Get the path to this script
+	local script_path
+	script_path=$(realpath "${BASH_SOURCE[0]}")
 
-    echo "Opening repos configuration with $editor..."
-    "$editor" "$script_path"
+	echo "Opening repos configuration with $editor..."
+	"$editor" "$script_path"
 }
 
 # Check if gh CLI is installed and authenticated
 check_gh_cli() {
-    if ! command -v gh &>/dev/null; then
-        print_error "GitHub CLI (gh) is not installed"
-        echo "Install it from: https://cli.github.com/"
-        return 1
-    fi
+	if ! command -v gh &>/dev/null; then
+		print_error "GitHub CLI (gh) is not installed"
+		echo "Install it from: https://cli.github.com/"
+		return 1
+	fi
 
-    if ! gh auth status &>/dev/null; then
-        print_error "GitHub CLI is not authenticated"
-        echo "Run: gh auth login"
-        return 1
-    fi
+	if ! gh auth status &>/dev/null; then
+		print_error "GitHub CLI is not authenticated"
+		echo "Run: gh auth login"
+		return 1
+	fi
 
-    return 0
+	return 0
 }
 
 # Get all repositories for an organization/user using GitHub CLI
 get_github_repos() {
-    local org_user="$1"
+	local org_user="$1"
 
-    # Check gh CLI before proceeding
-    check_gh_cli || return 1
+	# Check gh CLI before proceeding
+	check_gh_cli || return 1
 
-    # Use gh to list repos (it handles both users and orgs automatically)
-    local repos
+	# Use gh to list repos (it handles both users and orgs automatically)
+	local repos
 
-    if has_gum; then
-        repos=$(gum spin --spinner dot --title "Fetching repositories for $org_user..." -- \
-            gh repo list "$org_user" --limit 1000 --json name --jq '.[].name' 2>/dev/null)
-    else
-        echo "Fetching repositories for $org_user..."
-        repos=$(gh repo list "$org_user" --limit 1000 --json name --jq '.[].name' 2>/dev/null)
-    fi
+	if has_gum; then
+		repos=$(gum spin --spinner dot --title "Fetching repositories for $org_user..." -- \
+			gh repo list "$org_user" --limit 1000 --json name --jq '.[].name' 2>/dev/null)
+	else
+		echo "Fetching repositories for $org_user..."
+		repos=$(gh repo list "$org_user" --limit 1000 --json name --jq '.[].name' 2>/dev/null)
+	fi
 
-    if [[ -z "$repos" ]]; then
-        # Try as user if org failed
-        repos=$(gh api "users/$org_user/repos?per_page=100" --jq '.[].name' 2>/dev/null)
-    fi
+	if [[ -z "$repos" ]]; then
+		# Try as user if org failed
+		repos=$(gh api "users/$org_user/repos?per_page=100" --jq '.[].name' 2>/dev/null)
+	fi
 
-    echo "$repos"
+	echo "$repos"
 }
 
 # Parallel clone helper function
 parallel_clone() {
-    local git_url="$1"
-    local repo_path
-    repo_path=$(parse_git_url "$git_url") || return 1
+	local git_url="$1"
+	local repo_path
+	repo_path=$(parse_git_url "$git_url") || return 1
 
-    local clone_path="$REPOS_BASE_PATH/$repo_path"
+	local clone_path="$REPOS_BASE_PATH/$repo_path"
 
-    if [[ -d "$clone_path" ]]; then
-        echo "SKIP:$repo_path"
-        return 0
-    fi
+	if [[ -d "$clone_path" ]]; then
+		echo "SKIP:$repo_path"
+		return 0
+	fi
 
-    mkdir -p "$(dirname "$clone_path")" 2>/dev/null
+	mkdir -p "$(dirname "$clone_path")" 2>/dev/null
 
-    if git clone "$git_url" "$clone_path" >/dev/null 2>&1; then
-        echo "OK:$repo_path"
-        return 0
-    else
-        echo "FAIL:$repo_path"
-        return 1
-    fi
+	if git clone "$git_url" "$clone_path" >/dev/null 2>&1; then
+		echo "OK:$repo_path"
+		return 0
+	else
+		echo "FAIL:$repo_path"
+		return 1
+	fi
 }
 
 export -f parallel_clone parse_git_url print_success print_error
@@ -898,993 +898,993 @@ export REPOS_BASE_PATH
 
 # Setup repositories from config file
 setup_repos() {
-    local parallel_jobs="$DEFAULT_PARALLEL_JOBS"
+	local parallel_jobs="$DEFAULT_PARALLEL_JOBS"
 
-    # Load repos from config
-    if [[ ! -f "$CONFIG_FILE" ]]; then
-        print_error "Config file not found: $CONFIG_FILE"
-        echo "Run 'repos init' to create a default config file."
-        exit 1
-    fi
+	# Load repos from config
+	if [[ ! -f "$CONFIG_FILE" ]]; then
+		print_error "Config file not found: $CONFIG_FILE"
+		echo "Run 'repos init' to create a default config file."
+		exit 1
+	fi
 
-    local ensure_cloned=()
-    while IFS= read -r line; do
-        [[ -n "$line" ]] && ensure_cloned+=("$line")
-    done < <(get_ensure_cloned)
+	local ensure_cloned=()
+	while IFS= read -r line; do
+		[[ -n "$line" ]] && ensure_cloned+=("$line")
+	done < <(get_ensure_cloned)
 
-    if [[ ${#ensure_cloned[@]} -eq 0 ]]; then
-        print_error "No repositories defined in config file"
-        echo "Edit $CONFIG_FILE and add repositories to ensure_cloned array."
-        exit 1
-    fi
+	if [[ ${#ensure_cloned[@]} -eq 0 ]]; then
+		print_error "No repositories defined in config file"
+		echo "Edit $CONFIG_FILE and add repositories to ensure_cloned array."
+		exit 1
+	fi
 
-    # Track postClone commands (parallel arrays - bash 3.2 compatible)
-    local post_clone_urls=()
-    local post_clone_commands=()
+	# Track postClone commands (parallel arrays - bash 3.2 compatible)
+	local post_clone_urls=()
+	local post_clone_commands=()
 
-    # Check if any wildcard patterns exist that would need gh CLI
-    local has_wildcards=false
-    for entry in "${ensure_cloned[@]}"; do
-        local url
-        url=$(get_entry_url "$entry")
-        if [[ "$url" == *"/*" ]]; then
-            has_wildcards=true
-            break
-        fi
-    done
+	# Check if any wildcard patterns exist that would need gh CLI
+	local has_wildcards=false
+	for entry in "${ensure_cloned[@]}"; do
+		local url
+		url=$(get_entry_url "$entry")
+		if [[ "$url" == *"/*" ]]; then
+			has_wildcards=true
+			break
+		fi
+	done
 
-    if [[ "$has_wildcards" == true ]]; then
-        check_gh_cli || exit 1
-    fi
+	if [[ "$has_wildcards" == true ]]; then
+		check_gh_cli || exit 1
+	fi
 
-    local clone_urls=()
+	local clone_urls=()
 
-    # First, expand all patterns to get actual URLs
-    for entry in "${ensure_cloned[@]}"; do
-        # Skip comments and empty lines
-        [[ "$entry" =~ ^[[:space:]]*# ]] && continue
-        [[ -z "$entry" ]] && continue
+	# First, expand all patterns to get actual URLs
+	for entry in "${ensure_cloned[@]}"; do
+		# Skip comments and empty lines
+		[[ "$entry" =~ ^[[:space:]]*# ]] && continue
+		[[ -z "$entry" ]] && continue
 
-        # Extract URL from entry (handles both string and object formats)
-        local repo_url
-        repo_url=$(get_entry_url "$entry")
-        [[ -z "$repo_url" ]] && continue
+		# Extract URL from entry (handles both string and object formats)
+		local repo_url
+		repo_url=$(get_entry_url "$entry")
+		[[ -z "$repo_url" ]] && continue
 
-        # Store postClone command if present (preserving config order)
-        local post_clone
-        post_clone=$(get_entry_post_clone "$entry")
-        if [[ -n "$post_clone" ]]; then
-            post_clone_urls+=("$repo_url")
-            post_clone_commands+=("$post_clone")
-        fi
+		# Store postClone command if present (preserving config order)
+		local post_clone
+		post_clone=$(get_entry_post_clone "$entry")
+		if [[ -n "$post_clone" ]]; then
+			post_clone_urls+=("$repo_url")
+			post_clone_commands+=("$post_clone")
+		fi
 
-        # Check if it's a wildcard pattern
-        if [[ "$repo_url" == *"/*" ]]; then
-            # Extract organization/user from wildcard pattern
-            local base_url="${repo_url%/*}"
-            local org_user
+		# Check if it's a wildcard pattern
+		if [[ "$repo_url" == *"/*" ]]; then
+			# Extract organization/user from wildcard pattern
+			local base_url="${repo_url%/*}"
+			local org_user
 
-            if [[ "$base_url" =~ git@.*:(.+)$ ]]; then
-                org_user="${BASH_REMATCH[1]}"
-            elif [[ "$base_url" =~ https?://.*github\.com/(.+)$ ]]; then
-                org_user="${BASH_REMATCH[1]}"
-            else
-                print_error "Invalid wildcard pattern: $repo_url"
-                continue
-            fi
+			if [[ "$base_url" =~ git@.*:(.+)$ ]]; then
+				org_user="${BASH_REMATCH[1]}"
+			elif [[ "$base_url" =~ https?://.*github\.com/(.+)$ ]]; then
+				org_user="${BASH_REMATCH[1]}"
+			else
+				print_error "Invalid wildcard pattern: $repo_url"
+				continue
+			fi
 
-            local repos
-            if ! repos=$(get_github_repos "$org_user"); then
-                continue
-            fi
+			local repos
+			if ! repos=$(get_github_repos "$org_user"); then
+				continue
+			fi
 
-            if [[ -z "$repos" ]]; then
-                print_error "No repositories found for $org_user"
-                continue
-            fi
+			if [[ -z "$repos" ]]; then
+				print_error "No repositories found for $org_user"
+				continue
+			fi
 
-            # Add each repository URL
-            while IFS= read -r repo_name; do
-                [[ -z "$repo_name" ]] && continue
-                clone_urls+=("${base_url}/${repo_name}.git")
-            done <<<"$repos"
-        else
-            # Single repository
-            clone_urls+=("$repo_url")
-        fi
-    done
+			# Add each repository URL
+			while IFS= read -r repo_name; do
+				[[ -z "$repo_name" ]] && continue
+				clone_urls+=("${base_url}/${repo_name}.git")
+			done <<<"$repos"
+		else
+			# Single repository
+			clone_urls+=("$repo_url")
+		fi
+	done
 
-    if [[ ${#clone_urls[@]} -eq 0 ]]; then
-        print_error "No repositories to clone"
-        exit 1
-    fi
+	if [[ ${#clone_urls[@]} -eq 0 ]]; then
+		print_error "No repositories to clone"
+		exit 1
+	fi
 
-    echo "Found ${#clone_urls[@]} repositories to process"
-    echo "Using $parallel_jobs parallel jobs"
-    echo
+	echo "Found ${#clone_urls[@]} repositories to process"
+	echo "Using $parallel_jobs parallel jobs"
+	echo
 
-    # Use parallel cloning
-    local results
-    if has_gum; then
-        results=$(gum spin --spinner dot --title "Cloning repositories..." -- \
-            bash -c 'printf "%s\n" '"$(printf '"%s" ' "${clone_urls[@]}")"' | xargs -P '"$parallel_jobs"' -I {} bash -c "parallel_clone \"{}\""')
-    else
-        echo "Cloning repositories (this may take a while)..."
-        results=$(printf '%s\n' "${clone_urls[@]}" |
-            xargs -P "$parallel_jobs" -I {} bash -c 'parallel_clone "{}"')
-    fi
+	# Use parallel cloning
+	local results
+	if has_gum; then
+		results=$(gum spin --spinner dot --title "Cloning repositories..." -- \
+			bash -c 'printf "%s\n" '"$(printf '"%s" ' "${clone_urls[@]}")"' | xargs -P '"$parallel_jobs"' -I {} bash -c "parallel_clone \"{}\""')
+	else
+		echo "Cloning repositories (this may take a while)..."
+		results=$(printf '%s\n' "${clone_urls[@]}" |
+			xargs -P "$parallel_jobs" -I {} bash -c 'parallel_clone "{}"')
+	fi
 
-    # Process results
-    local cloned=0
-    local skipped=0
-    local failed=0
+	# Process results
+	local cloned=0
+	local skipped=0
+	local failed=0
 
-    while IFS= read -r result; do
-        [[ -z "$result" ]] && continue
+	while IFS= read -r result; do
+		[[ -z "$result" ]] && continue
 
-        case "$result" in
-        OK:*)
-            ((cloned++))
-            print_success "Cloned ${result#OK:}"
-            ;;
-        SKIP:*)
-            ((skipped++))
-            echo "Skipped ${result#SKIP:} (already exists)"
-            ;;
-        FAIL:*)
-            ((failed++))
-            print_error "Failed ${result#FAIL:}"
-            ;;
-        esac
-    done <<<"$results"
+		case "$result" in
+		OK:*)
+			((cloned++))
+			print_success "Cloned ${result#OK:}"
+			;;
+		SKIP:*)
+			((skipped++))
+			echo "Skipped ${result#SKIP:} (already exists)"
+			;;
+		FAIL:*)
+			((failed++))
+			print_error "Failed ${result#FAIL:}"
+			;;
+		esac
+	done <<<"$results"
 
-    local total=$((cloned + skipped + failed))
+	local total=$((cloned + skipped + failed))
 
-    echo
-    print_success "Setup complete: $total repositories processed"
-    echo "  Cloned: $cloned"
-    echo "  Skipped: $skipped"
-    echo "  Failed: $failed"
+	echo
+	print_success "Setup complete: $total repositories processed"
+	echo "  Cloned: $cloned"
+	echo "  Skipped: $skipped"
+	echo "  Failed: $failed"
 
-    # Run postClone commands for repos that have them (in config order)
-    if [[ ${#post_clone_urls[@]} -gt 0 ]]; then
-        echo
-        echo "Running postClone commands..."
-        for i in "${!post_clone_urls[@]}"; do
-            local repo_url="${post_clone_urls[$i]}"
-            local post_clone_cmd="${post_clone_commands[$i]}"
-            local repo_path
-            repo_path=$(parse_git_url "$repo_url")
-            repo_path="$REPOS_BASE_PATH/$repo_path"
+	# Run postClone commands for repos that have them (in config order)
+	if [[ ${#post_clone_urls[@]} -gt 0 ]]; then
+		echo
+		echo "Running postClone commands..."
+		for i in "${!post_clone_urls[@]}"; do
+			local repo_url="${post_clone_urls[$i]}"
+			local post_clone_cmd="${post_clone_commands[$i]}"
+			local repo_path
+			repo_path=$(parse_git_url "$repo_url")
+			repo_path="$REPOS_BASE_PATH/$repo_path"
 
-            if [[ -d "$repo_path" ]]; then
-                echo
-                echo "────────────────────────────────────────────────"
-                echo -e "${YELLOW}$(basename "$repo_path")${NC} → $post_clone_cmd"
-                echo "────────────────────────────────────────────────"
-                if (cd "$repo_path" && eval "$post_clone_cmd"); then
-                    print_success "postClone completed for $(basename "$repo_path")"
-                else
-                    print_error "postClone failed for $(basename "$repo_path")"
-                fi
-            fi
-        done
-    fi
+			if [[ -d "$repo_path" ]]; then
+				echo
+				echo "────────────────────────────────────────────────"
+				echo -e "${YELLOW}$(basename "$repo_path")${NC} → $post_clone_cmd"
+				echo "────────────────────────────────────────────────"
+				if (cd "$repo_path" && eval "$post_clone_cmd"); then
+					print_success "postClone completed for $(basename "$repo_path")"
+				else
+					print_error "postClone failed for $(basename "$repo_path")"
+				fi
+			fi
+		done
+	fi
 }
 
 # Interactive cleanup workflow using lazygit for repositories with changes
 cleanup_repos() {
-    # Check if lazygit is available
-    if ! command -v lazygit &>/dev/null; then
-        print_error "lazygit is not installed"
-        echo "Install it from: https://github.com/jesseduffield/lazygit"
-        case "$(uname)" in
-        Darwin)
-            echo "  brew install lazygit"
-            ;;
-        Linux)
-            if command -v pacman &>/dev/null; then
-                echo "  sudo pacman -S lazygit"
-            elif command -v apt &>/dev/null; then
-                echo "  # Follow installation guide at https://github.com/jesseduffield/lazygit"
-            fi
-            ;;
-        esac
-        exit 1
-    fi
+	# Check if lazygit is available
+	if ! command -v lazygit &>/dev/null; then
+		print_error "lazygit is not installed"
+		echo "Install it from: https://github.com/jesseduffield/lazygit"
+		case "$(uname)" in
+		Darwin)
+			echo "  brew install lazygit"
+			;;
+		Linux)
+			if command -v pacman &>/dev/null; then
+				echo "  sudo pacman -S lazygit"
+			elif command -v apt &>/dev/null; then
+				echo "  # Follow installation guide at https://github.com/jesseduffield/lazygit"
+			fi
+			;;
+		esac
+		exit 1
+	fi
 
-    local repos
-    repos=$(list_repos)
+	local repos
+	repos=$(list_repos)
 
-    if [[ -z "$repos" ]]; then
-        print_error "No repositories found"
-        exit 1
-    fi
+	if [[ -z "$repos" ]]; then
+		print_error "No repositories found"
+		exit 1
+	fi
 
-    echo "Building cleanup queue..."
+	echo "Building cleanup queue..."
 
-    # Build queue of dirty repositories and non-git directories
-    local dirty_repos=()
-    local non_git_repos=()
-    while IFS= read -r repo; do
-        [[ -z "$repo" ]] && continue
+	# Build queue of dirty repositories and non-git directories
+	local dirty_repos=()
+	local non_git_repos=()
+	while IFS= read -r repo; do
+		[[ -z "$repo" ]] && continue
 
-        local repo_path="$REPOS_BASE_PATH/$repo"
+		local repo_path="$REPOS_BASE_PATH/$repo"
 
-        # Check if it's a git repository
-        if [[ ! -d "$repo_path/.git" ]]; then
-            non_git_repos+=("$repo")
-            continue
-        fi
+		# Check if it's a git repository
+		if [[ ! -d "$repo_path/.git" ]]; then
+			non_git_repos+=("$repo")
+			continue
+		fi
 
-        # Get git status
-        local status_output
-        status_output=$(cd "$repo_path" && git status --porcelain 2>/dev/null)
+		# Get git status
+		local status_output
+		status_output=$(cd "$repo_path" && git status --porcelain 2>/dev/null)
 
-        if [[ -n "$status_output" ]]; then
-            dirty_repos+=("$repo")
-        fi
-    done <<<"$repos"
+		if [[ -n "$status_output" ]]; then
+			dirty_repos+=("$repo")
+		fi
+	done <<<"$repos"
 
-    # Check if there's anything to clean up
-    if [[ ${#dirty_repos[@]} -eq 0 && ${#non_git_repos[@]} -eq 0 ]]; then
-        print_success "All repositories are clean! Nothing to cleanup."
-        return 0
-    fi
+	# Check if there's anything to clean up
+	if [[ ${#dirty_repos[@]} -eq 0 && ${#non_git_repos[@]} -eq 0 ]]; then
+		print_success "All repositories are clean! Nothing to cleanup."
+		return 0
+	fi
 
-    local total_items=$((${#dirty_repos[@]} + ${#non_git_repos[@]}))
-    echo "Found ${#dirty_repos[@]} repositories with changes"
-    if [[ ${#non_git_repos[@]} -gt 0 ]]; then
-        echo "Found ${#non_git_repos[@]} non-git directories"
-    fi
-    echo
+	local total_items=$((${#dirty_repos[@]} + ${#non_git_repos[@]}))
+	echo "Found ${#dirty_repos[@]} repositories with changes"
+	if [[ ${#non_git_repos[@]} -gt 0 ]]; then
+		echo "Found ${#non_git_repos[@]} non-git directories"
+	fi
+	echo
 
-    # Process non-git directories first
-    local current=1
-    for repo in "${non_git_repos[@]}"; do
-        local repo_path="$REPOS_BASE_PATH/$repo"
-        local repo_name="${repo#*/}"
+	# Process non-git directories first
+	local current=1
+	for repo in "${non_git_repos[@]}"; do
+		local repo_path="$REPOS_BASE_PATH/$repo"
+		local repo_name="${repo#*/}"
 
-        echo -e "${YELLOW}Non-git directory: $repo${NC}"
+		echo -e "${YELLOW}Non-git directory: $repo${NC}"
 
-        local actions=(
-            "Initialize as Git|Run git init and make initial commit"
-            "Remove Directory|Delete the entire directory"
-            "Skip|Leave as-is and continue"
-        )
+		local actions=(
+			"Initialize as Git|Run git init and make initial commit"
+			"Remove Directory|Delete the entire directory"
+			"Skip|Leave as-is and continue"
+		)
 
-        local selected_action
-        selected_action=$(printf '%s\n' "${actions[@]}" | cut -d'|' -f1 | styled_fzf "Action for $repo_name: ")
+		local selected_action
+		selected_action=$(printf '%s\n' "${actions[@]}" | cut -d'|' -f1 | styled_fzf "Action for $repo_name: ")
 
-        case "$selected_action" in
-        "Initialize as Git")
-            if (cd "$repo_path" && git init && git add -A && git commit -m "Initial commit"); then
-                print_success "$repo_name: initialized as git repository"
-            else
-                print_error "$repo_name: git initialization failed"
-            fi
-            ;;
-        "Remove Directory")
-            if confirm_action "Really delete $repo_name directory?"; then
-                if rm -rf "$repo_path"; then
-                    print_success "$repo_name: directory removed"
-                else
-                    print_error "$repo_name: removal failed"
-                fi
-            fi
-            ;;
-        "Skip")
-            echo "Skipping $repo_name"
-            ;;
-        esac
+		case "$selected_action" in
+		"Initialize as Git")
+			if (cd "$repo_path" && git init && git add -A && git commit -m "Initial commit"); then
+				print_success "$repo_name: initialized as git repository"
+			else
+				print_error "$repo_name: git initialization failed"
+			fi
+			;;
+		"Remove Directory")
+			if confirm_action "Really delete $repo_name directory?"; then
+				if rm -rf "$repo_path"; then
+					print_success "$repo_name: directory removed"
+				else
+					print_error "$repo_name: removal failed"
+				fi
+			fi
+			;;
+		"Skip")
+			echo "Skipping $repo_name"
+			;;
+		esac
 
-        # Show progress and prompt to continue
-        echo
-        echo "Progress: $current/$total_items items processed"
+		# Show progress and prompt to continue
+		echo
+		echo "Progress: $current/$total_items items processed"
 
-        # If this is the last item, don't prompt
-        if [[ $current -eq $total_items ]]; then
-            break
-        fi
+		# If this is the last item, don't prompt
+		if [[ $current -eq $total_items ]]; then
+			break
+		fi
 
-        # Use gum confirm if available, otherwise fallback
-        if has_gum; then
-            if ! gum confirm "Continue to next item?"; then
-                echo "Cleanup stopped"
-                break
-            fi
-        else
-            echo -n "Continue to next item? (y/N) "
-            read -r continue_input
-            if [[ "$continue_input" != "y" && "$continue_input" != "Y" ]]; then
-                echo "Cleanup stopped"
-                break
-            fi
-        fi
+		# Use gum confirm if available, otherwise fallback
+		if has_gum; then
+			if ! gum confirm "Continue to next item?"; then
+				echo "Cleanup stopped"
+				break
+			fi
+		else
+			echo -n "Continue to next item? (y/N) "
+			read -r continue_input
+			if [[ "$continue_input" != "y" && "$continue_input" != "Y" ]]; then
+				echo "Cleanup stopped"
+				break
+			fi
+		fi
 
-        ((current++))
-        echo
-    done
+		((current++))
+		echo
+	done
 
-    # Process each dirty repository with lazygit
-    for repo in "${dirty_repos[@]}"; do
-        local repo_path="$REPOS_BASE_PATH/$repo"
+	# Process each dirty repository with lazygit
+	for repo in "${dirty_repos[@]}"; do
+		local repo_path="$REPOS_BASE_PATH/$repo"
 
-        echo -e "${YELLOW}Opening lazygit for: $repo${NC}"
+		echo -e "${YELLOW}Opening lazygit for: $repo${NC}"
 
-        # Change to repository directory and run lazygit
-        (cd "$repo_path" && lazygit)
+		# Change to repository directory and run lazygit
+		(cd "$repo_path" && lazygit)
 
-        # Show progress and prompt to continue
-        echo
-        echo "Progress: $current/$total_items items processed"
+		# Show progress and prompt to continue
+		echo
+		echo "Progress: $current/$total_items items processed"
 
-        # If this is the last item, don't prompt
-        if [[ $current -eq $total_items ]]; then
-            break
-        fi
+		# If this is the last item, don't prompt
+		if [[ $current -eq $total_items ]]; then
+			break
+		fi
 
-        # Use gum confirm if available, otherwise fallback
-        if has_gum; then
-            if ! gum confirm "Continue to next repository?"; then
-                echo "Cleanup stopped"
-                break
-            fi
-        else
-            echo -n "Continue to next repository? (y/N) "
-            read -r continue_input
-            if [[ "$continue_input" != "y" && "$continue_input" != "Y" ]]; then
-                echo "Cleanup stopped"
-                break
-            fi
-        fi
+		# Use gum confirm if available, otherwise fallback
+		if has_gum; then
+			if ! gum confirm "Continue to next repository?"; then
+				echo "Cleanup stopped"
+				break
+			fi
+		else
+			echo -n "Continue to next repository? (y/N) "
+			read -r continue_input
+			if [[ "$continue_input" != "y" && "$continue_input" != "Y" ]]; then
+				echo "Cleanup stopped"
+				break
+			fi
+		fi
 
-        ((current++))
-        echo
-    done
+		((current++))
+		echo
+	done
 
-    print_success "Cleanup completed!"
+	print_success "Cleanup completed!"
 }
 
 # Dots repo helper: check if repo is the dots repo
 is_dots_repo() {
-    local repo_path="$1"
-    [[ -f "$repo_path/common/.config/ghostty/config" ]] && [[ -f "$repo_path/symlinks.yml" ]]
+	local repo_path="$1"
+	[[ -f "$repo_path/common/.config/ghostty/config" ]] && [[ -f "$repo_path/symlinks.yml" ]]
 }
 
 # Dots repo helper: commit theme changes
 dots_commit_theme() {
-    local repo_path="$1"
-    local theme_files=(
-        "common/.config/ghostty/config"
-        "common/.config/nvim/lua/config.lua"
-        "common/.config/tmux/tmux.conf"
-        "common/.config/zed/settings.json"
-    )
+	local repo_path="$1"
+	local theme_files=(
+		"common/.config/ghostty/config"
+		"common/.config/nvim/lua/config.lua"
+		"common/.config/tmux/tmux.conf"
+		"common/.config/zed/settings.json"
+	)
 
-    # Check if any theme files have changes
-    local has_changes=false
-    for file in "${theme_files[@]}"; do
-        if [[ -n $(git -C "$repo_path" status --porcelain "$file" 2>/dev/null) ]]; then
-            has_changes=true
-            break
-        fi
-    done
+	# Check if any theme files have changes
+	local has_changes=false
+	for file in "${theme_files[@]}"; do
+		if [[ -n $(git -C "$repo_path" status --porcelain "$file" 2>/dev/null) ]]; then
+			has_changes=true
+			break
+		fi
+	done
 
-    if [[ "$has_changes" == false ]]; then
-        echo "No theme changes to commit"
-        return 1
-    fi
+	if [[ "$has_changes" == false ]]; then
+		echo "No theme changes to commit"
+		return 1
+	fi
 
-    # Extract theme name from nvim config diff or current value
-    local theme_name
-    theme_name=$(git -C "$repo_path" diff "common/.config/nvim/lua/config.lua" 2>/dev/null | grep '+.*colorscheme' | sed 's/.*"\(.*\)".*/\1/')
-    if [[ -z "$theme_name" ]]; then
-        theme_name=$(grep 'colorscheme = ' "$repo_path/common/.config/nvim/lua/config.lua" | sed 's/.*"\(.*\)".*/\1/')
-    fi
+	# Extract theme name from nvim config diff or current value
+	local theme_name
+	theme_name=$(git -C "$repo_path" diff "common/.config/nvim/lua/config.lua" 2>/dev/null | grep '+.*colorscheme' | sed 's/.*"\(.*\)".*/\1/')
+	if [[ -z "$theme_name" ]]; then
+		theme_name=$(grep 'colorscheme = ' "$repo_path/common/.config/nvim/lua/config.lua" | sed 's/.*"\(.*\)".*/\1/')
+	fi
 
-    if [[ -z "$theme_name" ]]; then
-        theme_name="unknown"
-    fi
+	if [[ -z "$theme_name" ]]; then
+		theme_name="unknown"
+	fi
 
-    # Stage and commit
-    (cd "$repo_path" && git add "${theme_files[@]}" && git commit -m "chore(themes): switch to $theme_name")
-    print_success "Theme commit created: $theme_name"
+	# Stage and commit
+	(cd "$repo_path" && git add "${theme_files[@]}" && git commit -m "chore(themes): switch to $theme_name")
+	print_success "Theme commit created: $theme_name"
 }
 
 # Dots repo helper: commit session changes (with cleanup)
 dots_commit_sessions() {
-    local repo_path="$1"
-    local sessions_dir="$repo_path/common/.config/nvim/sessions"
+	local repo_path="$1"
+	local sessions_dir="$repo_path/common/.config/nvim/sessions"
 
-    # Clean up old sessions (older than 2 days)
-    local deleted_count
-    deleted_count=$(find "$sessions_dir" -type f -mtime +2 -delete -print 2>/dev/null | wc -l | tr -d ' ')
-    if [[ "$deleted_count" -gt 0 ]]; then
-        echo "Cleaned up $deleted_count old session(s)"
-    fi
+	# Clean up old sessions (older than 2 days)
+	local deleted_count
+	deleted_count=$(find "$sessions_dir" -type f -mtime +2 -delete -print 2>/dev/null | wc -l | tr -d ' ')
+	if [[ "$deleted_count" -gt 0 ]]; then
+		echo "Cleaned up $deleted_count old session(s)"
+	fi
 
-    # Check if any session files have changes
-    if [[ -z $(git -C "$repo_path" status --porcelain "common/.config/nvim/sessions/" 2>/dev/null) ]]; then
-        echo "No session changes to commit"
-        return 1
-    fi
+	# Check if any session files have changes
+	if [[ -z $(git -C "$repo_path" status --porcelain "common/.config/nvim/sessions/" 2>/dev/null) ]]; then
+		echo "No session changes to commit"
+		return 1
+	fi
 
-    # Stage and commit
-    (cd "$repo_path" && git add "common/.config/nvim/sessions/" && git commit -m "chore(nvim): update sessions")
-    print_success "Sessions commit created"
+	# Stage and commit
+	(cd "$repo_path" && git add "common/.config/nvim/sessions/" && git commit -m "chore(nvim): update sessions")
+	print_success "Sessions commit created"
 }
 
 # Dots repo helper: commit radar changes
 dots_commit_radar() {
-    local repo_path="$1"
-    local radar_file="common/.local/share/nvim/radar/data.json"
+	local repo_path="$1"
+	local radar_file="common/.local/share/nvim/radar/data.json"
 
-    # Check if radar file has changes
-    if [[ -z $(git -C "$repo_path" status --porcelain "$radar_file" 2>/dev/null) ]]; then
-        echo "No radar changes to commit"
-        return 1
-    fi
+	# Check if radar file has changes
+	if [[ -z $(git -C "$repo_path" status --porcelain "$radar_file" 2>/dev/null) ]]; then
+		echo "No radar changes to commit"
+		return 1
+	fi
 
-    # Stage and commit
-    (cd "$repo_path" && git add "$radar_file" && git commit -m "chore(nvim): update radar data")
-    print_success "Radar commit created"
+	# Stage and commit
+	(cd "$repo_path" && git add "$radar_file" && git commit -m "chore(nvim): update radar data")
+	print_success "Radar commit created"
 }
 
 # Leave workflow - end of day sync
 leave_repos() {
-    local repos
-    repos=$(list_repos)
+	local repos
+	repos=$(list_repos)
 
-    if [[ -z "$repos" ]]; then
-        print_error "No repositories found"
-        exit 1
-    fi
+	if [[ -z "$repos" ]]; then
+		print_error "No repositories found"
+		exit 1
+	fi
 
-    echo "Scanning repositories..."
-    echo
+	echo "Scanning repositories..."
+	echo
 
-    # Build queue of repos needing attention
-    local dirty_repos=()
-    local repos_to_push=()
+	# Build queue of repos needing attention
+	local dirty_repos=()
+	local repos_to_push=()
 
-    while IFS= read -r repo; do
-        [[ -z "$repo" ]] && continue
+	while IFS= read -r repo; do
+		[[ -z "$repo" ]] && continue
 
-        local repo_path="$REPOS_BASE_PATH/$repo"
+		local repo_path="$REPOS_BASE_PATH/$repo"
 
-        # Skip non-git directories
-        if [[ ! -d "$repo_path/.git" ]]; then
-            continue
-        fi
+		# Skip non-git directories
+		if [[ ! -d "$repo_path/.git" ]]; then
+			continue
+		fi
 
-        # Check for uncommitted changes
-        local status_output
-        status_output=$(cd "$repo_path" && git status --porcelain 2>/dev/null)
+		# Check for uncommitted changes
+		local status_output
+		status_output=$(cd "$repo_path" && git status --porcelain 2>/dev/null)
 
-        # Check for unpushed commits
-        local ahead=0
-        if git -C "$repo_path" rev-parse --abbrev-ref '@{u}' &>/dev/null; then
-            ahead=$(git -C "$repo_path" rev-list --count '@{u}..' 2>/dev/null || echo "0")
-        fi
+		# Check for unpushed commits
+		local ahead=0
+		if git -C "$repo_path" rev-parse --abbrev-ref '@{u}' &>/dev/null; then
+			ahead=$(git -C "$repo_path" rev-list --count '@{u}..' 2>/dev/null || echo "0")
+		fi
 
-        if [[ -n "$status_output" ]]; then
-            dirty_repos+=("$repo")
-        elif [[ "$ahead" -gt 0 ]]; then
-            repos_to_push+=("$repo")
-        fi
-    done <<< "$repos"
+		if [[ -n "$status_output" ]]; then
+			dirty_repos+=("$repo")
+		elif [[ "$ahead" -gt 0 ]]; then
+			repos_to_push+=("$repo")
+		fi
+	done <<<"$repos"
 
-    # Check if there's anything to do
-    if [[ ${#dirty_repos[@]} -eq 0 && ${#repos_to_push[@]} -eq 0 ]]; then
-        print_success "All repositories are clean and synced!"
-        return 0
-    fi
+	# Check if there's anything to do
+	if [[ ${#dirty_repos[@]} -eq 0 && ${#repos_to_push[@]} -eq 0 ]]; then
+		print_success "All repositories are clean and synced!"
+		return 0
+	fi
 
-    echo "Found ${#dirty_repos[@]} repos with uncommitted changes"
-    echo "Found ${#repos_to_push[@]} repos with unpushed commits"
-    echo
+	echo "Found ${#dirty_repos[@]} repos with uncommitted changes"
+	echo "Found ${#repos_to_push[@]} repos with unpushed commits"
+	echo
 
-    # Process dirty repos interactively
-    local current=1
-    local total=${#dirty_repos[@]}
-    local processed_repos=()
+	# Process dirty repos interactively
+	local current=1
+	local total=${#dirty_repos[@]}
+	local processed_repos=()
 
-    for repo in "${dirty_repos[@]}"; do
-        local repo_path="$REPOS_BASE_PATH/$repo"
+	for repo in "${dirty_repos[@]}"; do
+		local repo_path="$REPOS_BASE_PATH/$repo"
 
-        echo
-        echo "[$current/$total]"
-        show_repo_status "$repo"
-        echo
+		echo
+		echo "[$current/$total]"
+		show_repo_status "$repo"
+		echo
 
-        # Auto-offer dots chores if this is the dots repo
-        if is_dots_repo "$repo_path"; then
-            local run_chores=false
-            if has_gum; then
-                gum confirm "Run dots chores? (theme/sessions/radar)" && run_chores=true
-            else
-                echo -n "Run dots chores? (theme/sessions/radar) (Y/n) "
-                read -r confirm_chores
-                [[ "$confirm_chores" != "n" && "$confirm_chores" != "N" ]] && run_chores=true
-            fi
+		# Auto-offer dots chores if this is the dots repo
+		if is_dots_repo "$repo_path"; then
+			local run_chores=false
+			if has_gum; then
+				gum confirm "Run dots chores? (theme/sessions/radar)" && run_chores=true
+			else
+				echo -n "Run dots chores? (theme/sessions/radar) (Y/n) "
+				read -r confirm_chores
+				[[ "$confirm_chores" != "n" && "$confirm_chores" != "N" ]] && run_chores=true
+			fi
 
-            if [[ "$run_chores" == true ]]; then
-                echo "Running dots chores..."
-                dots_commit_theme "$repo_path"
-                dots_commit_sessions "$repo_path"
-                dots_commit_radar "$repo_path"
+			if [[ "$run_chores" == true ]]; then
+				echo "Running dots chores..."
+				dots_commit_theme "$repo_path"
+				dots_commit_sessions "$repo_path"
+				dots_commit_radar "$repo_path"
 
-                # Re-check if there are remaining changes
-                local remaining
-                remaining=$(git -C "$repo_path" status --porcelain 2>/dev/null)
-                if [[ -z "$remaining" ]]; then
-                    print_success "Dots repo is clean!"
-                    processed_repos+=("$repo")
-                    ((current++))
-                    continue
-                fi
+				# Re-check if there are remaining changes
+				local remaining
+				remaining=$(git -C "$repo_path" status --porcelain 2>/dev/null)
+				if [[ -z "$remaining" ]]; then
+					print_success "Dots repo is clean!"
+					processed_repos+=("$repo")
+					((current++))
+					continue
+				fi
 
-                echo
-                echo "Remaining changes:"
-                show_repo_status "$repo"
-                echo
-            fi
-        fi
+				echo
+				echo "Remaining changes:"
+				show_repo_status "$repo"
+				echo
+			fi
+		fi
 
-        # Standard menu options
-        local actions=(
-            "Review in LazyGit"
-            "Stage all and commit with AI"
-            "Backup with timestamp"
-            "Cleanup with Claude"
-            "─────────"
-            "Discard changes"
-            "Push without committing"
-            "Skip this repo"
-            "Stop walkthrough"
-        )
+		# Standard menu options
+		local actions=(
+			"Review in LazyGit"
+			"Stage all and commit with AI"
+			"Backup with timestamp"
+			"Cleanup with Claude"
+			"─────────"
+			"Discard changes"
+			"Push without committing"
+			"Skip this repo"
+			"Stop walkthrough"
+		)
 
-        local selected_action
-        if has_gum; then
-            selected_action=$(printf '%s\n' "${actions[@]}" | gum choose --header "What would you like to do?")
-        else
-            echo "Options:"
-            local i=1
-            for action in "${actions[@]}"; do
-                if [[ "$action" == "─────────" ]]; then
-                    echo "  $action"
-                else
-                    echo "  [$i] $action"
-                    ((i++))
-                fi
-            done
-            echo -n "Choice: "
-            read -r choice
-            local j=0
-            for action in "${actions[@]}"; do
-                if [[ "$action" != "─────────" ]]; then
-                    ((j++))
-                    if [[ "$j" == "$choice" ]]; then
-                        selected_action="$action"
-                        break
-                    fi
-                fi
-            done
-            [[ -z "$selected_action" ]] && selected_action="Skip this repo"
-        fi
+		local selected_action
+		if has_gum; then
+			selected_action=$(printf '%s\n' "${actions[@]}" | gum choose --header "What would you like to do?")
+		else
+			echo "Options:"
+			local i=1
+			for action in "${actions[@]}"; do
+				if [[ "$action" == "─────────" ]]; then
+					echo "  $action"
+				else
+					echo "  [$i] $action"
+					((i++))
+				fi
+			done
+			echo -n "Choice: "
+			read -r choice
+			local j=0
+			for action in "${actions[@]}"; do
+				if [[ "$action" != "─────────" ]]; then
+					((j++))
+					if [[ "$j" == "$choice" ]]; then
+						selected_action="$action"
+						break
+					fi
+				fi
+			done
+			[[ -z "$selected_action" ]] && selected_action="Skip this repo"
+		fi
 
-        case "$selected_action" in
-            "Review in LazyGit")
-                (cd "$repo_path" && lazygit)
-                processed_repos+=("$repo")
-                ;;
-            "Stage all and commit with AI")
-                echo "Staging all and running smart commit..."
-                if command -v repo &>/dev/null; then
-                    (cd "$repo_path" && git add -A && repo commit -s -y)
-                    processed_repos+=("$repo")
-                else
-                    print_error "'repo' command not found"
-                fi
-                ;;
-            "Backup with timestamp")
-                local timestamp
-                timestamp=$(date "+%Y-%m-%d %H:%M")
-                (cd "$repo_path" && git add -A && git commit -m "backup: $timestamp")
-                print_success "Backup commit created"
-                processed_repos+=("$repo")
-                ;;
-            "Cleanup with Claude")
-                echo "Running git cleanup with Claude..."
-                if command -v claude &>/dev/null; then
-                    local dots_dir="${DOTS_DIR:-$HOME/repos/nikbrunner/dots}"
-                    (cd "$repo_path" && claude -p "$dots_dir/common/.claude/commands/dots/git-cleanup.md")
-                    processed_repos+=("$repo")
-                else
-                    print_error "'claude' command not found"
-                fi
-                ;;
-            "Discard changes")
-                if has_gum; then
-                    if gum confirm "Discard ALL changes in $repo?" --default=false; then
-                        (cd "$repo_path" && git checkout . && git clean -fd)
-                        print_success "Changes discarded"
-                        processed_repos+=("$repo")
-                    else
-                        echo "Cancelled"
-                    fi
-                else
-                    echo -n "Discard ALL changes in $repo? (y/N) "
-                    read -r confirm_discard
-                    if [[ "$confirm_discard" == "y" || "$confirm_discard" == "Y" ]]; then
-                        (cd "$repo_path" && git checkout . && git clean -fd)
-                        print_success "Changes discarded"
-                        processed_repos+=("$repo")
-                    else
-                        echo "Cancelled"
-                    fi
-                fi
-                ;;
-            "Push without committing")
-                echo "Skipping commit, will push later..."
-                processed_repos+=("$repo")
-                ;;
-            "Skip this repo")
-                echo "Skipping..."
-                ;;
-            "Stop walkthrough")
-                echo "Stopping walkthrough"
-                break
-                ;;
-        esac
+		case "$selected_action" in
+		"Review in LazyGit")
+			(cd "$repo_path" && lazygit)
+			processed_repos+=("$repo")
+			;;
+		"Stage all and commit with AI")
+			echo "Staging all and running smart commit..."
+			if command -v repo &>/dev/null; then
+				(cd "$repo_path" && git add -A && repo commit -s -y)
+				processed_repos+=("$repo")
+			else
+				print_error "'repo' command not found"
+			fi
+			;;
+		"Backup with timestamp")
+			local timestamp
+			timestamp=$(date "+%Y-%m-%d %H:%M")
+			(cd "$repo_path" && git add -A && git commit -m "backup: $timestamp")
+			print_success "Backup commit created"
+			processed_repos+=("$repo")
+			;;
+		"Cleanup with Claude")
+			echo "Running git cleanup with Claude..."
+			if command -v claude &>/dev/null; then
+				local dots_dir="${DOTS_DIR:-$HOME/repos/nikbrunner/dots}"
+				(cd "$repo_path" && claude -p "$dots_dir/common/.claude/commands/dots/git-cleanup.md")
+				processed_repos+=("$repo")
+			else
+				print_error "'claude' command not found"
+			fi
+			;;
+		"Discard changes")
+			if has_gum; then
+				if gum confirm "Discard ALL changes in $repo?" --default=false; then
+					(cd "$repo_path" && git checkout . && git clean -fd)
+					print_success "Changes discarded"
+					processed_repos+=("$repo")
+				else
+					echo "Cancelled"
+				fi
+			else
+				echo -n "Discard ALL changes in $repo? (y/N) "
+				read -r confirm_discard
+				if [[ "$confirm_discard" == "y" || "$confirm_discard" == "Y" ]]; then
+					(cd "$repo_path" && git checkout . && git clean -fd)
+					print_success "Changes discarded"
+					processed_repos+=("$repo")
+				else
+					echo "Cancelled"
+				fi
+			fi
+			;;
+		"Push without committing")
+			echo "Skipping commit, will push later..."
+			processed_repos+=("$repo")
+			;;
+		"Skip this repo")
+			echo "Skipping..."
+			;;
+		"Stop walkthrough")
+			echo "Stopping walkthrough"
+			break
+			;;
+		esac
 
-        ((current++))
-    done
+		((current++))
+	done
 
-    # Collect all repos that need pushing by re-scanning everything
-    # (not just processed repos - initial detection might have missed some)
-    echo
-    echo "Checking for repos to push..."
+	# Collect all repos that need pushing by re-scanning everything
+	# (not just processed repos - initial detection might have missed some)
+	echo
+	echo "Checking for repos to push..."
 
-    local all_to_push=()
-    while IFS= read -r repo; do
-        [[ -z "$repo" ]] && continue
-        local repo_path="$REPOS_BASE_PATH/$repo"
+	local all_to_push=()
+	while IFS= read -r repo; do
+		[[ -z "$repo" ]] && continue
+		local repo_path="$REPOS_BASE_PATH/$repo"
 
-        # Skip non-git directories
-        if [[ ! -d "$repo_path/.git" ]]; then
-            continue
-        fi
+		# Skip non-git directories
+		if [[ ! -d "$repo_path/.git" ]]; then
+			continue
+		fi
 
-        # Check if upstream is configured and we have unpushed commits
-        if git -C "$repo_path" rev-parse --abbrev-ref '@{u}' &>/dev/null; then
-            # Fetch to ensure tracking refs are current
-            git -C "$repo_path" fetch --quiet 2>/dev/null
-            local ahead
-            ahead=$(git -C "$repo_path" rev-list --count '@{u}..' 2>/dev/null)
-            if [[ -n "$ahead" && "$ahead" -gt 0 ]]; then
-                all_to_push+=("$repo")
-            fi
-        fi
-    done <<< "$(list_repos)"
+		# Check if upstream is configured and we have unpushed commits
+		if git -C "$repo_path" rev-parse --abbrev-ref '@{u}' &>/dev/null; then
+			# Fetch to ensure tracking refs are current
+			git -C "$repo_path" fetch --quiet 2>/dev/null
+			local ahead
+			ahead=$(git -C "$repo_path" rev-list --count '@{u}..' 2>/dev/null)
+			if [[ -n "$ahead" && "$ahead" -gt 0 ]]; then
+				all_to_push+=("$repo")
+			fi
+		fi
+	done <<<"$(list_repos)"
 
-    if [[ ${#all_to_push[@]} -eq 0 ]]; then
-        echo
-        print_success "Nothing to push!"
-        return 0
-    fi
+	if [[ ${#all_to_push[@]} -eq 0 ]]; then
+		echo
+		print_success "Nothing to push!"
+		return 0
+	fi
 
-    echo
-    echo "Repos ready to push:"
-    for repo in "${all_to_push[@]}"; do
-        local repo_path="$REPOS_BASE_PATH/$repo"
-        local ahead
-        ahead=$(git -C "$repo_path" rev-list --count '@{u}..' 2>/dev/null || echo "0")
-        echo "  • $repo (↑$ahead)"
-    done
-    echo
+	echo
+	echo "Repos ready to push:"
+	for repo in "${all_to_push[@]}"; do
+		local repo_path="$REPOS_BASE_PATH/$repo"
+		local ahead
+		ahead=$(git -C "$repo_path" rev-list --count '@{u}..' 2>/dev/null || echo "0")
+		echo "  • $repo (↑$ahead)"
+	done
+	echo
 
-    if has_gum; then
-        if gum confirm "Push all ${#all_to_push[@]} repos?"; then
-            for repo in "${all_to_push[@]}"; do
-                local repo_path="$REPOS_BASE_PATH/$repo"
-                echo "Pushing $repo..."
-                if git -C "$repo_path" push 2>/dev/null; then
-                    print_success "$repo pushed"
-                else
-                    print_error "$repo push failed"
-                fi
-            done
-        else
-            echo "Push cancelled"
-        fi
-    else
-        echo -n "Push all ${#all_to_push[@]} repos? (y/N) "
-        read -r do_push
-        if [[ "$do_push" == "y" || "$do_push" == "Y" ]]; then
-            for repo in "${all_to_push[@]}"; do
-                local repo_path="$REPOS_BASE_PATH/$repo"
-                echo "Pushing $repo..."
-                if git -C "$repo_path" push 2>/dev/null; then
-                    print_success "$repo pushed"
-                else
-                    print_error "$repo push failed"
-                fi
-            done
-        else
-            echo "Push cancelled"
-        fi
-    fi
+	if has_gum; then
+		if gum confirm "Push all ${#all_to_push[@]} repos?"; then
+			for repo in "${all_to_push[@]}"; do
+				local repo_path="$REPOS_BASE_PATH/$repo"
+				echo "Pushing $repo..."
+				if git -C "$repo_path" push 2>/dev/null; then
+					print_success "$repo pushed"
+				else
+					print_error "$repo push failed"
+				fi
+			done
+		else
+			echo "Push cancelled"
+		fi
+	else
+		echo -n "Push all ${#all_to_push[@]} repos? (y/N) "
+		read -r do_push
+		if [[ "$do_push" == "y" || "$do_push" == "Y" ]]; then
+			for repo in "${all_to_push[@]}"; do
+				local repo_path="$REPOS_BASE_PATH/$repo"
+				echo "Pushing $repo..."
+				if git -C "$repo_path" push 2>/dev/null; then
+					print_success "$repo pushed"
+				else
+					print_error "$repo push failed"
+				fi
+			done
+		else
+			echo "Push cancelled"
+		fi
+	fi
 
-    echo
-    print_success "Leave workflow complete!"
+	echo
+	print_success "Leave workflow complete!"
 }
 
 # Hard reset a repo to match remote
 fullreset_repo() {
-    local repo_path="$1"
-    local branch
-    branch=$(git -C "$repo_path" rev-parse --abbrev-ref HEAD)
+	local repo_path="$1"
+	local branch
+	branch=$(git -C "$repo_path" rev-parse --abbrev-ref HEAD)
 
-    # Fetch latest
-    git -C "$repo_path" fetch --all --quiet 2>/dev/null
+	# Fetch latest
+	git -C "$repo_path" fetch --all --quiet 2>/dev/null
 
-    # Reset to upstream
-    if git -C "$repo_path" reset --hard "@{u}" 2>/dev/null; then
-        return 0
-    else
-        return 1
-    fi
+	# Reset to upstream
+	if git -C "$repo_path" reset --hard "@{u}" 2>/dev/null; then
+		return 0
+	else
+		return 1
+	fi
 }
 
 # Get repo sync state: "clean" | "behind" | "diverged" | "dirty" | "dirty+behind" | "ahead"
 get_repo_state() {
-    local repo_path="$1"
+	local repo_path="$1"
 
-    # Check for uncommitted changes
-    local dirty=""
-    if [[ -n $(git -C "$repo_path" status --porcelain 2>/dev/null) ]]; then
-        dirty="dirty"
-    fi
+	# Check for uncommitted changes
+	local dirty=""
+	if [[ -n $(git -C "$repo_path" status --porcelain 2>/dev/null) ]]; then
+		dirty="dirty"
+	fi
 
-    # Check if upstream is configured
-    if ! git -C "$repo_path" rev-parse --abbrev-ref '@{u}' &>/dev/null; then
-        echo "no-upstream"
-        return
-    fi
+	# Check if upstream is configured
+	if ! git -C "$repo_path" rev-parse --abbrev-ref '@{u}' &>/dev/null; then
+		echo "no-upstream"
+		return
+	fi
 
-    local ahead behind
-    ahead=$(git -C "$repo_path" rev-list --count '@{u}..' 2>/dev/null || echo "0")
-    behind=$(git -C "$repo_path" rev-list --count '..@{u}' 2>/dev/null || echo "0")
+	local ahead behind
+	ahead=$(git -C "$repo_path" rev-list --count '@{u}..' 2>/dev/null || echo "0")
+	behind=$(git -C "$repo_path" rev-list --count '..@{u}' 2>/dev/null || echo "0")
 
-    if [[ -n "$dirty" ]]; then
-        if [[ "$behind" -gt 0 ]]; then
-            echo "dirty+behind:$ahead:$behind"
-        else
-            echo "dirty:$ahead:$behind"
-        fi
-    elif [[ "$ahead" -gt 0 && "$behind" -gt 0 ]]; then
-        echo "diverged:$ahead:$behind"
-    elif [[ "$ahead" -gt 0 ]]; then
-        echo "ahead:$ahead:$behind"
-    elif [[ "$behind" -gt 0 ]]; then
-        echo "behind:$ahead:$behind"
-    else
-        echo "clean:0:0"
-    fi
+	if [[ -n "$dirty" ]]; then
+		if [[ "$behind" -gt 0 ]]; then
+			echo "dirty+behind:$ahead:$behind"
+		else
+			echo "dirty:$ahead:$behind"
+		fi
+	elif [[ "$ahead" -gt 0 && "$behind" -gt 0 ]]; then
+		echo "diverged:$ahead:$behind"
+	elif [[ "$ahead" -gt 0 ]]; then
+		echo "ahead:$ahead:$behind"
+	elif [[ "$behind" -gt 0 ]]; then
+		echo "behind:$ahead:$behind"
+	else
+		echo "clean:0:0"
+	fi
 }
 
 # Arrive workflow - start of day sync
 arrive_repos() {
-    local hard_reset=false
+	local hard_reset=false
 
-    # Parse flags
-    while [[ $# -gt 0 ]]; do
-        case "$1" in
-            --hard)
-                hard_reset=true
-                shift
-                ;;
-            *)
-                shift
-                ;;
-        esac
-    done
+	# Parse flags
+	while [[ $# -gt 0 ]]; do
+		case "$1" in
+		--hard)
+			hard_reset=true
+			shift
+			;;
+		*)
+			shift
+			;;
+		esac
+	done
 
-    local repos
-    repos=$(list_repos)
+	local repos
+	repos=$(list_repos)
 
-    if [[ -z "$repos" ]]; then
-        print_error "No repositories found"
-        exit 1
-    fi
+	if [[ -z "$repos" ]]; then
+		print_error "No repositories found"
+		exit 1
+	fi
 
-    echo "Pulling all repositories..."
-    echo
+	echo "Pulling all repositories..."
+	echo
 
-    # Collect repos into array
-    local repo_list=()
-    while IFS= read -r repo; do
-        [[ -z "$repo" ]] && continue
-        local repo_path="$REPOS_BASE_PATH/$repo"
-        # Only include git repos
-        if [[ -d "$repo_path/.git" ]]; then
-            repo_list+=("$repo")
-        fi
-    done <<< "$repos"
+	# Collect repos into array
+	local repo_list=()
+	while IFS= read -r repo; do
+		[[ -z "$repo" ]] && continue
+		local repo_path="$REPOS_BASE_PATH/$repo"
+		# Only include git repos
+		if [[ -d "$repo_path/.git" ]]; then
+			repo_list+=("$repo")
+		fi
+	done <<<"$repos"
 
-    local total=${#repo_list[@]}
-    echo "Found $total git repositories"
-    echo
+	local total=${#repo_list[@]}
+	echo "Found $total git repositories"
+	echo
 
-    # Sync repos with visible progress
-    local ok_count=0
-    local up_to_date_count=0
-    local reset_count=0
-    local skip_count=0
-    local current=1
-    local skipped_repos=()
+	# Sync repos with visible progress
+	local ok_count=0
+	local up_to_date_count=0
+	local reset_count=0
+	local skip_count=0
+	local current=1
+	local skipped_repos=()
 
-    for repo in "${repo_list[@]}"; do
-        local repo_path="$REPOS_BASE_PATH/$repo"
+	for repo in "${repo_list[@]}"; do
+		local repo_path="$REPOS_BASE_PATH/$repo"
 
-        # Fetch first to get accurate state
-        git -C "$repo_path" fetch --quiet 2>/dev/null
+		# Fetch first to get accurate state
+		git -C "$repo_path" fetch --quiet 2>/dev/null
 
-        local state_info
-        state_info=$(get_repo_state "$repo_path")
-        local state="${state_info%%:*}"
-        local counts="${state_info#*:}"
-        local ahead="${counts%%:*}"
-        local behind="${counts#*:}"
+		local state_info
+		state_info=$(get_repo_state "$repo_path")
+		local state="${state_info%%:*}"
+		local counts="${state_info#*:}"
+		local ahead="${counts%%:*}"
+		local behind="${counts#*:}"
 
-        echo -n "[$current/$total] $repo "
+		echo -n "[$current/$total] $repo "
 
-        case "$state" in
-            clean)
-                echo "✓ up to date"
-                ((up_to_date_count++))
-                ;;
-            behind)
-                # Simple case - just pull
-                echo -n "(↓$behind) pulling... "
-                if git -C "$repo_path" pull --quiet 2>/dev/null; then
-                    print_success "updated"
-                    ((ok_count++))
-                else
-                    print_error "pull failed"
-                    skipped_repos+=("$repo")
-                    ((skip_count++))
-                fi
-                ;;
-            ahead)
-                # Local commits not on remote - nothing to pull
-                echo -e "${YELLOW}↑$ahead ahead${NC} (nothing to pull)"
-                ((up_to_date_count++))
-                ;;
-            diverged)
-                echo -e "${YELLOW}diverged${NC} (↑$ahead ↓$behind)"
-                if [[ "$hard_reset" == true ]]; then
-                    echo -n "  → resetting to remote... "
-                    if fullreset_repo "$repo_path"; then
-                        print_success "reset"
-                        ((reset_count++))
-                    else
-                        print_error "reset failed"
-                        skipped_repos+=("$repo")
-                        ((skip_count++))
-                    fi
-                else
-                    local do_reset=false
-                    if has_gum; then
-                        gum confirm "  Reset to remote? (discards $ahead local commits)" && do_reset=true
-                    else
-                        echo -n "  Reset to remote? (discards $ahead local commits) (y/N) "
-                        read -r confirm_reset
-                        [[ "$confirm_reset" == "y" || "$confirm_reset" == "Y" ]] && do_reset=true
-                    fi
+		case "$state" in
+		clean)
+			echo "✓ up to date"
+			((up_to_date_count++))
+			;;
+		behind)
+			# Simple case - just pull
+			echo -n "(↓$behind) pulling... "
+			if git -C "$repo_path" pull --quiet 2>/dev/null; then
+				print_success "updated"
+				((ok_count++))
+			else
+				print_error "pull failed"
+				skipped_repos+=("$repo")
+				((skip_count++))
+			fi
+			;;
+		ahead)
+			# Local commits not on remote - nothing to pull
+			echo -e "${YELLOW}↑$ahead ahead${NC} (nothing to pull)"
+			((up_to_date_count++))
+			;;
+		diverged)
+			echo -e "${YELLOW}diverged${NC} (↑$ahead ↓$behind)"
+			if [[ "$hard_reset" == true ]]; then
+				echo -n "  → resetting to remote... "
+				if fullreset_repo "$repo_path"; then
+					print_success "reset"
+					((reset_count++))
+				else
+					print_error "reset failed"
+					skipped_repos+=("$repo")
+					((skip_count++))
+				fi
+			else
+				local do_reset=false
+				if has_gum; then
+					gum confirm "  Reset to remote? (discards $ahead local commits)" && do_reset=true
+				else
+					echo -n "  Reset to remote? (discards $ahead local commits) (y/N) "
+					read -r confirm_reset
+					[[ "$confirm_reset" == "y" || "$confirm_reset" == "Y" ]] && do_reset=true
+				fi
 
-                    if [[ "$do_reset" == true ]]; then
-                        echo -n "  → resetting... "
-                        if fullreset_repo "$repo_path"; then
-                            print_success "reset"
-                            ((reset_count++))
-                        else
-                            print_error "reset failed"
-                            skipped_repos+=("$repo")
-                            ((skip_count++))
-                        fi
-                    else
-                        echo "  → skipped"
-                        skipped_repos+=("$repo")
-                        ((skip_count++))
-                    fi
-                fi
-                ;;
-            dirty|dirty+behind)
-                echo -e "${YELLOW}dirty${NC} (uncommitted changes)"
-                if [[ "$hard_reset" == true ]]; then
-                    echo -n "  → resetting to remote... "
-                    if fullreset_repo "$repo_path"; then
-                        print_success "reset"
-                        ((reset_count++))
-                    else
-                        print_error "reset failed"
-                        skipped_repos+=("$repo")
-                        ((skip_count++))
-                    fi
-                else
-                    local do_reset=false
-                    if has_gum; then
-                        gum confirm "  Reset to remote? (discards uncommitted changes)" --default=false && do_reset=true
-                    else
-                        echo -n "  Reset to remote? (discards uncommitted changes) (y/N) "
-                        read -r confirm_reset
-                        [[ "$confirm_reset" == "y" || "$confirm_reset" == "Y" ]] && do_reset=true
-                    fi
+				if [[ "$do_reset" == true ]]; then
+					echo -n "  → resetting... "
+					if fullreset_repo "$repo_path"; then
+						print_success "reset"
+						((reset_count++))
+					else
+						print_error "reset failed"
+						skipped_repos+=("$repo")
+						((skip_count++))
+					fi
+				else
+					echo "  → skipped"
+					skipped_repos+=("$repo")
+					((skip_count++))
+				fi
+			fi
+			;;
+		dirty | dirty+behind)
+			echo -e "${YELLOW}dirty${NC} (uncommitted changes)"
+			if [[ "$hard_reset" == true ]]; then
+				echo -n "  → resetting to remote... "
+				if fullreset_repo "$repo_path"; then
+					print_success "reset"
+					((reset_count++))
+				else
+					print_error "reset failed"
+					skipped_repos+=("$repo")
+					((skip_count++))
+				fi
+			else
+				local do_reset=false
+				if has_gum; then
+					gum confirm "  Reset to remote? (discards uncommitted changes)" --default=false && do_reset=true
+				else
+					echo -n "  Reset to remote? (discards uncommitted changes) (y/N) "
+					read -r confirm_reset
+					[[ "$confirm_reset" == "y" || "$confirm_reset" == "Y" ]] && do_reset=true
+				fi
 
-                    if [[ "$do_reset" == true ]]; then
-                        echo -n "  → resetting... "
-                        if fullreset_repo "$repo_path"; then
-                            print_success "reset"
-                            ((reset_count++))
-                        else
-                            print_error "reset failed"
-                            skipped_repos+=("$repo")
-                            ((skip_count++))
-                        fi
-                    else
-                        echo "  → skipped"
-                        skipped_repos+=("$repo")
-                        ((skip_count++))
-                    fi
-                fi
-                ;;
-            no-upstream)
-                print_warning "no upstream"
-                ((skip_count++))
-                ;;
-        esac
-        ((current++))
-    done
+				if [[ "$do_reset" == true ]]; then
+					echo -n "  → resetting... "
+					if fullreset_repo "$repo_path"; then
+						print_success "reset"
+						((reset_count++))
+					else
+						print_error "reset failed"
+						skipped_repos+=("$repo")
+						((skip_count++))
+					fi
+				else
+					echo "  → skipped"
+					skipped_repos+=("$repo")
+					((skip_count++))
+				fi
+			fi
+			;;
+		no-upstream)
+			print_warning "no upstream"
+			((skip_count++))
+			;;
+		esac
+		((current++))
+	done
 
-    # Summary
-    echo
-    echo "────────────────────────────────────────────────"
-    echo -e "${YELLOW}Summary${NC}"
-    echo "────────────────────────────────────────────────"
-    echo "  Total repositories: $total"
-    [[ $ok_count -gt 0 ]] && print_success "Pulled: $ok_count"
-    [[ $reset_count -gt 0 ]] && print_success "Reset: $reset_count"
-    [[ $up_to_date_count -gt 0 ]] && echo "  Already up to date: $up_to_date_count"
-    [[ $skip_count -gt 0 ]] && print_warning "Skipped: $skip_count"
+	# Summary
+	echo
+	echo "────────────────────────────────────────────────"
+	echo -e "${YELLOW}Summary${NC}"
+	echo "────────────────────────────────────────────────"
+	echo "  Total repositories: $total"
+	[[ $ok_count -gt 0 ]] && print_success "Pulled: $ok_count"
+	[[ $reset_count -gt 0 ]] && print_success "Reset: $reset_count"
+	[[ $up_to_date_count -gt 0 ]] && echo "  Already up to date: $up_to_date_count"
+	[[ $skip_count -gt 0 ]] && print_warning "Skipped: $skip_count"
 
-    # List skipped repos
-    if [[ ${#skipped_repos[@]} -gt 0 ]]; then
-        echo
-        print_warning "Skipped repos:"
-        for repo in "${skipped_repos[@]}"; do
-            echo "  • $repo"
-        done
-    fi
+	# List skipped repos
+	if [[ ${#skipped_repos[@]} -gt 0 ]]; then
+		echo
+		print_warning "Skipped repos:"
+		for repo in "${skipped_repos[@]}"; do
+			echo "  • $repo"
+		done
+	fi
 
-    echo
-    print_success "Arrive workflow complete!"
+	echo
+	print_success "Arrive workflow complete!"
 }
 
 # Show help
 show_help() {
-    # Check which tools are installed
-    local git_s fzf_s tmux_s jq_s gum_s gh_s
-    command -v git &>/dev/null && git_s="✓" || git_s="✗"
-    command -v fzf &>/dev/null && fzf_s="✓" || fzf_s="✗"
-    command -v tmux &>/dev/null && tmux_s="✓" || tmux_s="✗"
-    command -v jq &>/dev/null && jq_s="✓" || jq_s="✗"
-    command -v gum &>/dev/null && gum_s="✓" || gum_s="◦"
-    command -v gh &>/dev/null && gh_s="✓" || gh_s="◦"
+	# Check which tools are installed
+	local git_s fzf_s tmux_s jq_s gum_s gh_s
+	command -v git &>/dev/null && git_s="✓" || git_s="✗"
+	command -v fzf &>/dev/null && fzf_s="✓" || fzf_s="✗"
+	command -v tmux &>/dev/null && tmux_s="✓" || tmux_s="✗"
+	command -v jq &>/dev/null && jq_s="✓" || jq_s="✗"
+	command -v gum &>/dev/null && gum_s="✓" || gum_s="◦"
+	command -v gh &>/dev/null && gh_s="✓" || gh_s="◦"
 
-    printf ' ╭────────────────────────────────────────╮
+	printf ' ╭────────────────────────────────────────╮
  │                                        │
  │  repos - Minimal repository manager    │
  │                                        │
@@ -1942,47 +1942,47 @@ check_dependencies
 # Main command handler
 case "${1:-}" in
 init)
-    init_config
-    ;;
+	init_config
+	;;
 install)
-    install_deps
-    ;;
+	install_deps
+	;;
 add)
-    add_repo "$2"
-    ;;
+	add_repo "$2"
+	;;
 remove)
-    remove_repo
-    ;;
+	remove_repo
+	;;
 find)
-    find_files
-    ;;
+	find_files
+	;;
 config)
-    config_repos
-    ;;
+	config_repos
+	;;
 status)
-    status_repos "$2"
-    ;;
+	status_repos "$2"
+	;;
 cleanup)
-    cleanup_repos
-    ;;
+	cleanup_repos
+	;;
 leave)
-    leave_repos
-    ;;
+	leave_repos
+	;;
 arrive)
-    shift
-    arrive_repos "$@"
-    ;;
+	shift
+	arrive_repos "$@"
+	;;
 setup)
-    setup_repos
-    ;;
+	setup_repos
+	;;
 help | --help | -h)
-    show_help
-    ;;
+	show_help
+	;;
 *)
-    if [[ -n "$1" ]]; then
-        print_error "Unknown command: $1"
-    fi
-    show_help
-    exit 1
-    ;;
+	if [[ -n "$1" ]]; then
+		print_error "Unknown command: $1"
+	fi
+	show_help
+	exit 1
+	;;
 esac

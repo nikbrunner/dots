@@ -23,177 +23,177 @@ LAZYGIT_THEMES_DIR="$DOTS_DIR/common/.config/lazygit/themes"
 
 # Get current theme from nvim config
 get_current_theme() {
-    grep "colorscheme" "$NVIM_CONFIG" | sed 's/.*= *"//' | sed 's/".*//'
+	grep "colorscheme" "$NVIM_CONFIG" | sed 's/.*= *"//' | sed 's/".*//'
 }
 
 # Get current background mode from macOS system
 get_current_mode() {
-    if [[ "$(uname)" == "Darwin" ]]; then
-        if defaults read -g AppleInterfaceStyle 2>/dev/null | grep -q "Dark"; then
-            echo "dark"
-        else
-            echo "light"
-        fi
-    else
-        # Default to dark on non-macOS systems
-        echo "dark"
-    fi
+	if [[ "$(uname)" == "Darwin" ]]; then
+		if defaults read -g AppleInterfaceStyle 2>/dev/null | grep -q "Dark"; then
+			echo "dark"
+		else
+			echo "light"
+		fi
+	else
+		# Default to dark on non-macOS systems
+		echo "dark"
+	fi
 }
 
 # Get theme metadata (appearance and collection)
 get_theme_metadata() {
-    local theme="$1"
-    jq -r ".themes.\"$theme\" | [.appearance, .collection] | @tsv" "$THEMES_JSON"
+	local theme="$1"
+	jq -r ".themes.\"$theme\" | [.appearance, .collection] | @tsv" "$THEMES_JSON"
 }
 
 # Update Neovim configuration
 update_nvim_theme() {
-    local theme="$1"
-    if [[ "$(uname)" == "Darwin" ]]; then
-        sed -i '' "s/colorscheme = .*/colorscheme = \"$theme\",/" "$NVIM_CONFIG"
-    else
-        sed -i "s/colorscheme = .*/colorscheme = \"$theme\",/" "$NVIM_CONFIG"
-    fi
+	local theme="$1"
+	if [[ "$(uname)" == "Darwin" ]]; then
+		sed -i '' "s/colorscheme = .*/colorscheme = \"$theme\",/" "$NVIM_CONFIG"
+	else
+		sed -i "s/colorscheme = .*/colorscheme = \"$theme\",/" "$NVIM_CONFIG"
+	fi
 }
 
 # Update tmux configuration
 update_tmux_theme() {
-    local theme="$1"
-    local collection="$2"
-    local theme_path="~/repos/black-atom-industries/tmux/themes/$collection/${theme}.conf"
-    if [[ "$(uname)" == "Darwin" ]]; then
-        sed -i '' "s|source-file .*/black-atom-industries/tmux/themes/.*/.*\.conf|source-file $theme_path|" "$TMUX_CONFIG"
-    else
-        sed -i "s|source-file .*/black-atom-industries/tmux/themes/.*/.*\.conf|source-file $theme_path|" "$TMUX_CONFIG"
-    fi
+	local theme="$1"
+	local collection="$2"
+	local theme_path="~/repos/black-atom-industries/tmux/themes/$collection/${theme}.conf"
+	if [[ "$(uname)" == "Darwin" ]]; then
+		sed -i '' "s|source-file .*/black-atom-industries/tmux/themes/.*/.*\.conf|source-file $theme_path|" "$TMUX_CONFIG"
+	else
+		sed -i "s|source-file .*/black-atom-industries/tmux/themes/.*/.*\.conf|source-file $theme_path|" "$TMUX_CONFIG"
+	fi
 }
 
 # Update Ghostty configuration
 update_ghostty_theme() {
-    local theme="$1"
-    if [[ "$(uname)" == "Darwin" ]]; then
-        sed -i '' "s/^theme = .*/theme = ${theme}.conf/" "$GHOSTTY_CONFIG"
-    else
-        sed -i "s/^theme = .*/theme = ${theme}.conf/" "$GHOSTTY_CONFIG"
-    fi
+	local theme="$1"
+	if [[ "$(uname)" == "Darwin" ]]; then
+		sed -i '' "s/^theme = .*/theme = ${theme}.conf/" "$GHOSTTY_CONFIG"
+	else
+		sed -i "s/^theme = .*/theme = ${theme}.conf/" "$GHOSTTY_CONFIG"
+	fi
 }
 
 # Update Zed configuration
 update_zed_theme() {
-    local theme="$1"
-    local appearance="$2"
-    local display_name
-    display_name=$(jq -r ".themes.\"$theme\".display_name" "$THEMES_JSON")
+	local theme="$1"
+	local appearance="$2"
+	local display_name
+	display_name=$(jq -r ".themes.\"$theme\".display_name" "$THEMES_JSON")
 
-    if [[ "$appearance" == "dark" ]]; then
-        jq ".theme.dark = \"$display_name\"" "$ZED_CONFIG" >"$ZED_CONFIG.tmp" && mv "$ZED_CONFIG.tmp" "$ZED_CONFIG"
-    else
-        jq ".theme.light = \"$display_name\"" "$ZED_CONFIG" >"$ZED_CONFIG.tmp" && mv "$ZED_CONFIG.tmp" "$ZED_CONFIG"
-    fi
+	if [[ "$appearance" == "dark" ]]; then
+		jq ".theme.dark = \"$display_name\"" "$ZED_CONFIG" >"$ZED_CONFIG.tmp" && mv "$ZED_CONFIG.tmp" "$ZED_CONFIG"
+	else
+		jq ".theme.light = \"$display_name\"" "$ZED_CONFIG" >"$ZED_CONFIG.tmp" && mv "$ZED_CONFIG.tmp" "$ZED_CONFIG"
+	fi
 }
 
 # Update Git delta configuration
 update_delta_theme() {
-    local appearance="$1"
-    if [[ "$(uname)" == "Darwin" ]]; then
-        if [[ "$appearance" == "dark" ]]; then
-            sed -i '' 's/^  light = true/  ; light = true/' "$GIT_CONFIG"
-            sed -i '' 's/^  ; dark = true/  dark = true/' "$GIT_CONFIG"
-        else
-            sed -i '' 's/^  dark = true/  ; dark = true/' "$GIT_CONFIG"
-            sed -i '' 's/^  ; light = true/  light = true/' "$GIT_CONFIG"
-        fi
-    else
-        if [[ "$appearance" == "dark" ]]; then
-            sed -i 's/^  light = true/  ; light = true/' "$GIT_CONFIG"
-            sed -i 's/^  ; dark = true/  dark = true/' "$GIT_CONFIG"
-        else
-            sed -i 's/^  dark = true/  ; dark = true/' "$GIT_CONFIG"
-            sed -i 's/^  ; light = true/  light = true/' "$GIT_CONFIG"
-        fi
-    fi
+	local appearance="$1"
+	if [[ "$(uname)" == "Darwin" ]]; then
+		if [[ "$appearance" == "dark" ]]; then
+			sed -i '' 's/^  light = true/  ; light = true/' "$GIT_CONFIG"
+			sed -i '' 's/^  ; dark = true/  dark = true/' "$GIT_CONFIG"
+		else
+			sed -i '' 's/^  dark = true/  ; dark = true/' "$GIT_CONFIG"
+			sed -i '' 's/^  ; light = true/  light = true/' "$GIT_CONFIG"
+		fi
+	else
+		if [[ "$appearance" == "dark" ]]; then
+			sed -i 's/^  light = true/  ; light = true/' "$GIT_CONFIG"
+			sed -i 's/^  ; dark = true/  dark = true/' "$GIT_CONFIG"
+		else
+			sed -i 's/^  dark = true/  ; dark = true/' "$GIT_CONFIG"
+			sed -i 's/^  ; light = true/  light = true/' "$GIT_CONFIG"
+		fi
+	fi
 }
 
 # Update Niri theme (Linux/Wayland only)
 update_niri_theme() {
-    # Skip on macOS - niri is Linux/Wayland only
-    [[ "$(uname)" == "Darwin" ]] && return 0
+	# Skip on macOS - niri is Linux/Wayland only
+	[[ "$(uname)" == "Darwin" ]] && return 0
 
-    local theme="$1"
-    local collection="$2"
-    local theme_source="$HOME/repos/black-atom-industries/niri/themes/$collection/${theme}.kdl"
+	local theme="$1"
+	local collection="$2"
+	local theme_source="$HOME/repos/black-atom-industries/niri/themes/$collection/${theme}.kdl"
 
-    # Only update if niri config directory exists
-    if [[ -d "$(dirname "$NIRI_THEME_LINK")" ]]; then
-        ln -sfr "$theme_source" "$NIRI_THEME_LINK"
-        echo "niri theme updated"
-    fi
+	# Only update if niri config directory exists
+	if [[ -d "$(dirname "$NIRI_THEME_LINK")" ]]; then
+		ln -sfr "$theme_source" "$NIRI_THEME_LINK"
+		echo "niri theme updated"
+	fi
 }
 
 # Update Waybar theme (Linux/Wayland only)
 update_waybar_theme() {
-    # Skip on macOS - waybar is Linux/Wayland only
-    [[ "$(uname)" == "Darwin" ]] && return 0
+	# Skip on macOS - waybar is Linux/Wayland only
+	[[ "$(uname)" == "Darwin" ]] && return 0
 
-    local theme="$1"
+	local theme="$1"
 
-    # Only update if waybar themes directory exists
-    if [[ -d "$WAYBAR_THEMES_DIR" ]]; then
-        ln -sf "themes/${theme}.css" "$WAYBAR_THEME"
-        echo "waybar theme updated"
-    fi
+	# Only update if waybar themes directory exists
+	if [[ -d "$WAYBAR_THEMES_DIR" ]]; then
+		ln -sf "themes/${theme}.css" "$WAYBAR_THEME"
+		echo "waybar theme updated"
+	fi
 }
 
 # Update lazygit theme (requires yq)
 update_lazygit_theme() {
-    local theme="$1"
-    local theme_file="$LAZYGIT_THEMES_DIR/${theme}.yml"
+	local theme="$1"
+	local theme_file="$LAZYGIT_THEMES_DIR/${theme}.yml"
 
-    if ! command -v yq >/dev/null 2>&1; then
-        echo "yq not installed, skipping lazygit theme update"
-        return 0
-    fi
+	if ! command -v yq >/dev/null 2>&1; then
+		echo "yq not installed, skipping lazygit theme update"
+		return 0
+	fi
 
-    if [[ ! -f "$theme_file" ]]; then
-        echo "lazygit theme not found: $theme_file"
-        return 0
-    fi
+	if [[ ! -f "$theme_file" ]]; then
+		echo "lazygit theme not found: $theme_file"
+		return 0
+	fi
 
-    # Use yq load() to properly merge YAML structures
-    yq -i ".gui.theme = load(\"$theme_file\").gui.theme" "$LAZYGIT_CONFIG"
-    yq -i ".gui.authorColors = load(\"$theme_file\").gui.authorColors" "$LAZYGIT_CONFIG"
+	# Use yq load() to properly merge YAML structures
+	yq -i ".gui.theme = load(\"$theme_file\").gui.theme" "$LAZYGIT_CONFIG"
+	yq -i ".gui.authorColors = load(\"$theme_file\").gui.authorColors" "$LAZYGIT_CONFIG"
 
-    echo "lazygit theme updated"
+	echo "lazygit theme updated"
 }
 
 # Reload Waybar stylesheet (Linux/Wayland only)
 reload_waybar() {
-    [[ "$(uname)" == "Darwin" ]] && return 0
+	[[ "$(uname)" == "Darwin" ]] && return 0
 
-    if pgrep -x waybar >/dev/null 2>&1; then
-        killall -SIGUSR2 waybar 2>/dev/null && echo "waybar styles reloaded"
-    fi
+	if pgrep -x waybar >/dev/null 2>&1; then
+		killall -SIGUSR2 waybar 2>/dev/null && echo "waybar styles reloaded"
+	fi
 }
 
 # Update macOS system appearance
 update_macos_appearance() {
-    local appearance="$1"
-    if [[ "$(uname)" == "Darwin" ]]; then
-        if [[ "$appearance" == "dark" ]]; then
-            osascript -e 'tell application "System Events" to tell appearance preferences to set dark mode to true' 2>/dev/null && echo "macOS switched to dark mode"
-        else
-            osascript -e 'tell application "System Events" to tell appearance preferences to set dark mode to false' 2>/dev/null && echo "macOS switched to light mode"
-        fi
-    fi
+	local appearance="$1"
+	if [[ "$(uname)" == "Darwin" ]]; then
+		if [[ "$appearance" == "dark" ]]; then
+			osascript -e 'tell application "System Events" to tell appearance preferences to set dark mode to true' 2>/dev/null && echo "macOS switched to dark mode"
+		else
+			osascript -e 'tell application "System Events" to tell appearance preferences to set dark mode to false' 2>/dev/null && echo "macOS switched to light mode"
+		fi
+	fi
 }
 
 # Reload tmux configuration if tmux is running
 reload_tmux() {
-    if command -v tmux >/dev/null 2>&1 && tmux list-sessions >/dev/null 2>&1; then
-        if tmux source-file "$TMUX_CONFIG" 2>/dev/null; then
-            echo "tmux configuration reloaded"
-        fi
-    fi
+	if command -v tmux >/dev/null 2>&1 && tmux list-sessions >/dev/null 2>&1; then
+		if tmux source-file "$TMUX_CONFIG" 2>/dev/null; then
+			echo "tmux configuration reloaded"
+		fi
+	fi
 }
 
 # Source shared Ghostty reload function
@@ -201,176 +201,176 @@ source "$DOTS_DIR/common/.local/bin/ghostty-reload"
 
 # Restart Neovim instances and restore sessions (tmux-aware)
 restart_neovim_instances() {
-    if ! command -v tmux >/dev/null 2>&1; then
-        echo "tmux not found, skipping Neovim restart"
-        return 0
-    fi
+	if ! command -v tmux >/dev/null 2>&1; then
+		echo "tmux not found, skipping Neovim restart"
+		return 0
+	fi
 
-    # Find tmux panes running Neovim
-    local nvim_panes
-    nvim_panes=$(tmux list-panes -a -F "#{session_name}:#{window_index}.#{pane_index}" -f "#{==:#{pane_current_command},nvim}" 2>/dev/null)
+	# Find tmux panes running Neovim
+	local nvim_panes
+	nvim_panes=$(tmux list-panes -a -F "#{session_name}:#{window_index}.#{pane_index}" -f "#{==:#{pane_current_command},nvim}" 2>/dev/null)
 
-    # Also try alternative search patterns
-    local alt_panes
-    alt_panes=$(tmux list-panes -a -F "#{session_name}:#{window_index}.#{pane_index} #{pane_current_command}" | grep nvim | cut -d' ' -f1 2>/dev/null)
+	# Also try alternative search patterns
+	local alt_panes
+	alt_panes=$(tmux list-panes -a -F "#{session_name}:#{window_index}.#{pane_index} #{pane_current_command}" | grep nvim | cut -d' ' -f1 2>/dev/null)
 
-    if [[ -z "$nvim_panes" ]] && [[ -z "$alt_panes" ]]; then
-        echo "No Neovim instances found in tmux"
-        return 0
-    fi
+	if [[ -z "$nvim_panes" ]] && [[ -z "$alt_panes" ]]; then
+		echo "No Neovim instances found in tmux"
+		return 0
+	fi
 
-    # Use whichever search found results
-    local panes_to_use
-    if [[ -n "$nvim_panes" ]]; then
-        panes_to_use="$nvim_panes"
-    else
-        panes_to_use="$alt_panes"
-    fi
+	# Use whichever search found results
+	local panes_to_use
+	if [[ -n "$nvim_panes" ]]; then
+		panes_to_use="$nvim_panes"
+	else
+		panes_to_use="$alt_panes"
+	fi
 
-    local count=0
-    local total_panes
-    total_panes=$(echo "$panes_to_use" | wc -l | tr -d ' ')
+	local count=0
+	local total_panes
+	total_panes=$(echo "$panes_to_use" | wc -l | tr -d ' ')
 
-    echo "Restarting $total_panes Neovim instances..."
+	echo "Restarting $total_panes Neovim instances..."
 
-    # Send restart and session restore to each Neovim pane
-    while IFS= read -r pane; do
-        if [[ -n "$pane" ]]; then
-            count=$((count + 1))
-            echo -n "  [$count/$total_panes] "
+	# Send restart and session restore to each Neovim pane
+	while IFS= read -r pane; do
+		if [[ -n "$pane" ]]; then
+			count=$((count + 1))
+			echo -n "  [$count/$total_panes] "
 
-            # Send escape first to exit any mode, then restart
-            tmux send-keys -t "$pane" 'Escape' ':restart' 'Enter' 2>/dev/null
+			# Send escape first to exit any mode, then restart
+			tmux send-keys -t "$pane" 'Escape' ':restart' 'Enter' 2>/dev/null
 
-            # Moderate delay for restart to complete
-            sleep 0.2
+			# Moderate delay for restart to complete
+			sleep 0.2
 
-            # Session gets automatically restored via mini sessions
+			# Session gets automatically restored via mini sessions
 
-            # Minimal delay between panes
-            sleep 0.1
-        fi
-    done <<<"$panes_to_use"
+			# Minimal delay between panes
+			sleep 0.1
+		fi
+	done <<<"$panes_to_use"
 
-    if [[ $count -eq 0 ]]; then
-        echo "No Neovim instances found"
-    fi
+	if [[ $count -eq 0 ]]; then
+		echo "No Neovim instances found"
+	fi
 }
 
 # Apply theme to all tools
 apply_theme() {
-    local theme="$1"
+	local theme="$1"
 
-    # Get and validate theme metadata
-    local metadata appearance collection
-    metadata=$(get_theme_metadata "$theme")
+	# Get and validate theme metadata
+	local metadata appearance collection
+	metadata=$(get_theme_metadata "$theme")
 
-    if [[ -z "$metadata" || "$metadata" == *"null"* ]]; then
-        echo "Error: Theme '$theme' not found"
-        return 1
-    fi
+	if [[ -z "$metadata" || "$metadata" == *"null"* ]]; then
+		echo "Error: Theme '$theme' not found"
+		return 1
+	fi
 
-    read -r appearance collection <<<"$metadata"
+	read -r appearance collection <<<"$metadata"
 
-    echo "Applying theme: $theme ($appearance mode)"
+	echo "Applying theme: $theme ($appearance mode)"
 
-    # Apply theme to all tools
-    update_nvim_theme "$theme"
-    update_tmux_theme "$theme" "$collection"
-    update_ghostty_theme "$theme"
-    update_zed_theme "$theme" "$appearance"
-    update_delta_theme "$appearance"
-    update_niri_theme "$theme" "$collection"
-    update_waybar_theme "$theme"
-    update_lazygit_theme "$theme"
-    update_macos_appearance "$appearance"
+	# Apply theme to all tools
+	update_nvim_theme "$theme"
+	update_tmux_theme "$theme" "$collection"
+	update_ghostty_theme "$theme"
+	update_zed_theme "$theme" "$appearance"
+	update_delta_theme "$appearance"
+	update_niri_theme "$theme" "$collection"
+	update_waybar_theme "$theme"
+	update_lazygit_theme "$theme"
+	update_macos_appearance "$appearance"
 
-    # Brief pause to let file changes and system appearance settle
-    sleep 0.2
+	# Brief pause to let file changes and system appearance settle
+	sleep 0.2
 
-    # Reload configurations
-    echo "Reloading configurations..."
-    reload_tmux
-    echo "tmux reload completed"
-    reload_ghostty
-    echo "ghostty reload completed"
-    reload_waybar
+	# Reload configurations
+	echo "Reloading configurations..."
+	reload_tmux
+	echo "tmux reload completed"
+	reload_ghostty
+	echo "ghostty reload completed"
+	reload_waybar
 
-    # Brief pause before Neovim restarts
-    sleep 0.1
+	# Brief pause before Neovim restarts
+	sleep 0.1
 
-    # Restart Neovim instances with new theme
-    restart_neovim_instances
+	# Restart Neovim instances with new theme
+	restart_neovim_instances
 
-    echo "Theme applied successfully!"
+	echo "Theme applied successfully!"
 }
 
 # Validate dependencies and configuration files
 validate_environment() {
-    local errors=()
+	local errors=()
 
-    # Check required commands
-    local required_cmds=("jq" "fzf")
-    for cmd in "${required_cmds[@]}"; do
-        command -v "$cmd" >/dev/null 2>&1 || errors+=("$cmd is required but not installed")
-    done
+	# Check required commands
+	local required_cmds=("jq" "fzf")
+	for cmd in "${required_cmds[@]}"; do
+		command -v "$cmd" >/dev/null 2>&1 || errors+=("$cmd is required but not installed")
+	done
 
-    # Check configuration files
-    [[ -f "$THEMES_JSON" ]] || errors+=("Themes registry not found: $THEMES_JSON")
-    [[ -f "$NVIM_CONFIG" ]] || errors+=("Neovim config not found: $NVIM_CONFIG")
-    [[ -f "$TMUX_CONFIG" ]] || errors+=("tmux config not found: $TMUX_CONFIG")
-    [[ -f "$GHOSTTY_CONFIG" ]] || errors+=("Ghostty config not found: $GHOSTTY_CONFIG")
-    [[ -f "$GIT_CONFIG" ]] || errors+=("Git config not found: $GIT_CONFIG")
+	# Check configuration files
+	[[ -f "$THEMES_JSON" ]] || errors+=("Themes registry not found: $THEMES_JSON")
+	[[ -f "$NVIM_CONFIG" ]] || errors+=("Neovim config not found: $NVIM_CONFIG")
+	[[ -f "$TMUX_CONFIG" ]] || errors+=("tmux config not found: $TMUX_CONFIG")
+	[[ -f "$GHOSTTY_CONFIG" ]] || errors+=("Ghostty config not found: $GHOSTTY_CONFIG")
+	[[ -f "$GIT_CONFIG" ]] || errors+=("Git config not found: $GIT_CONFIG")
 
-    if [[ ${#errors[@]} -gt 0 ]]; then
-        echo "Environment errors:"
-        printf "  - %s\n" "${errors[@]}"
-        return 1
-    fi
+	if [[ ${#errors[@]} -gt 0 ]]; then
+		echo "Environment errors:"
+		printf "  - %s\n" "${errors[@]}"
+		return 1
+	fi
 }
 
 main() {
-    # Validate environment
-    validate_environment || exit 1
+	# Validate environment
+	validate_environment || exit 1
 
-    # Get current state
-    local current_theme current_mode
-    current_theme=$(get_current_theme)
-    current_mode=$(get_current_mode)
+	# Get current state
+	local current_theme current_mode
+	current_theme=$(get_current_theme)
+	current_mode=$(get_current_mode)
 
-    # Get available themes with display names
-    local themes_display
-    themes_display=$(jq -r '.themes | to_entries[] | "\(.key):\(.value.display_name)"' "$THEMES_JSON")
+	# Get available themes with display names
+	local themes_display
+	themes_display=$(jq -r '.themes | to_entries[] | "\(.key):\(.value.display_name)"' "$THEMES_JSON")
 
-    if [[ -z "$themes_display" ]]; then
-        echo "No themes found in $THEMES_JSON"
-        exit 1
-    fi
+	if [[ -z "$themes_display" ]]; then
+		echo "No themes found in $THEMES_JSON"
+		exit 1
+	fi
 
-    # Show current state
-    echo "Current theme: $current_theme ($current_mode mode)"
-    echo
+	# Show current state
+	echo "Current theme: $current_theme ($current_mode mode)"
+	echo
 
-    # Interactive selection with fzf
-    local selected_line selected_theme
-    selected_line=$(echo "$themes_display" | fzf \
-        --border-label="┃ pick-theme ┃" \
-        --prompt="Select theme: " \
-        --header="Current: $current_theme | Mode: $current_mode" \
-        --with-nth=2 \
-        --delimiter=":")
+	# Interactive selection with fzf
+	local selected_line selected_theme
+	selected_line=$(echo "$themes_display" | fzf \
+		--border-label="┃ pick-theme ┃" \
+		--prompt="Select theme: " \
+		--header="Current: $current_theme | Mode: $current_mode" \
+		--with-nth=2 \
+		--delimiter=":")
 
-    if [[ -n "$selected_line" ]]; then
-        selected_theme=$(echo "$selected_line" | cut -d: -f1)
+	if [[ -n "$selected_line" ]]; then
+		selected_theme=$(echo "$selected_line" | cut -d: -f1)
 
-        if [[ "$selected_theme" == "$current_theme" ]]; then
-            echo "Theme unchanged: $selected_theme"
-        else
-            apply_theme "$selected_theme"
-        fi
-    else
-        echo "No theme selected"
-    fi
+		if [[ "$selected_theme" == "$current_theme" ]]; then
+			echo "Theme unchanged: $selected_theme"
+		else
+			apply_theme "$selected_theme"
+		fi
+	else
+		echo "No theme selected"
+	fi
 }
 
 main "$@"

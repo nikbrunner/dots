@@ -4,29 +4,29 @@
 set -euo pipefail
 
 options=(
-    "Lock"
-    "Logout"
-    "Suspend"
-    "Reboot"
-    "Shutdown"
+	"Lock"
+	"Logout"
+	"Suspend"
+	"Reboot"
+	"Shutdown"
 )
 
 choice=$(printf '%s\n' "${options[@]}" | fuzzel --dmenu --prompt "Power Menu: ")
 
 case "$choice" in
 "Lock")
-    hyprlock
-    ;;
+	hyprlock
+	;;
 "Logout")
-    niri msg action quit
-    ;;
+	niri msg action quit
+	;;
 "Suspend")
-    systemctl suspend
-    ;;
+	systemctl suspend
+	;;
 "Reboot")
-    systemctl reboot
-    ;;
+	systemctl reboot
+	;;
 "Shutdown")
-    systemctl poweroff
-    ;;
+	systemctl poweroff
+	;;
 esac

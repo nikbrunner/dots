@@ -5,32 +5,32 @@ source "/opt/homebrew/opt/nvm/nvm.sh"
 
 # Find all package.json files (excluding node_modules)
 for package_json in $(rg --files --glob "package.json" --glob '!./node_modules'); do
-    dir=$(dirname "$package_json")
-    echo "📦 Running command in $dir"
+	dir=$(dirname "$package_json")
+	echo "📦 Running command in $dir"
 
-    if [[ "$1" == "npm" ]] && [[ "$2" == "ci" ]]; then
-        # check if there a package-lock.json exists
-        if [[ ! -f "$dir/package-lock.json" ]]; then
-            echo "⏭️  Skipping $dir (no package-lock.json, required for npm ci)"
-            echo "--------------------------------------------------------------------------------"
-            continue
-        fi
-    fi
+	if [[ "$1" == "npm" ]] && [[ "$2" == "ci" ]]; then
+		# check if there a package-lock.json exists
+		if [[ ! -f "$dir/package-lock.json" ]]; then
+			echo "⏭️  Skipping $dir (no package-lock.json, required for npm ci)"
+			echo "--------------------------------------------------------------------------------"
+			continue
+		fi
+	fi
 
-    # Run the command in the directory
-    # If the first argument is "npm", use nvm to switch to the correct node version
-    if [[ "$1" == "npm" ]]; then
-        if (cd "$dir" && nvm use && "$@"); then
-            echo "✅ Command succeeded"
-        else
-            echo "❌ Command failed (exit code: $?)"
-        fi
-    else
-        if (cd "$dir" && "$@"); then
-            echo "✅ Command succeeded"
-        else
-            echo "❌ Command failed (exit code: $?)"
-        fi
-    fi
-    echo "--------------------------------------------------------------------------------"
+	# Run the command in the directory
+	# If the first argument is "npm", use nvm to switch to the correct node version
+	if [[ "$1" == "npm" ]]; then
+		if (cd "$dir" && nvm use && "$@"); then
+			echo "✅ Command succeeded"
+		else
+			echo "❌ Command failed (exit code: $?)"
+		fi
+	else
+		if (cd "$dir" && "$@"); then
+			echo "✅ Command succeeded"
+		else
+			echo "❌ Command failed (exit code: $?)"
+		fi
+	fi
+	echo "--------------------------------------------------------------------------------"
 done

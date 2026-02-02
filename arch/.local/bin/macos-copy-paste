@@ -6,24 +6,24 @@
 action="${1:-}"
 
 if [[ -z "$action" ]]; then
-    echo "Usage: macos-copy-paste copy|paste|cut" >&2
-    exit 1
+	echo "Usage: macos-copy-paste copy|paste|cut" >&2
+	exit 1
 fi
 
 # Small delay to let the key event settle
 sleep 0.05
 
 case "$action" in
-    copy)
-        # Ctrl+Insert works universally (terminals + GUI apps)
-        wtype -M ctrl -P Insert -p Insert -m ctrl
-        ;;
-    paste)
-        # Shift+Insert works universally (terminals + GUI apps)
-        wtype -M shift -P Insert -p Insert -m shift
-        ;;
-    cut)
-        # Ctrl+X for cut (standard, works most places)
-        wtype -M ctrl -P x -p x -m ctrl
-        ;;
+copy)
+	# Ctrl+Insert works universally (terminals + GUI apps)
+	wtype -M ctrl -P Insert -p Insert -m ctrl
+	;;
+paste)
+	# Shift+Insert works universally (terminals + GUI apps)
+	wtype -M shift -P Insert -p Insert -m shift
+	;;
+cut)
+	# Ctrl+X for cut (standard, works most places)
+	wtype -M ctrl -P x -p x -m ctrl
+	;;
 esac

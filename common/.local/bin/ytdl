@@ -19,34 +19,34 @@ NC='\033[0m' # No Color
 
 # Check dependencies
 for cmd in yt-dlp ffmpeg eyeD3; do
-    if ! command -v "$cmd" &>/dev/null; then
-        echo -e "${RED}Error: $cmd is required but not installed.${NC}"
-        if [ "$cmd" = "eyeD3" ]; then
-            echo -e "${YELLOW}Install with: brew install eye-d3${NC}"
-        fi
-        exit 1
-    fi
+	if ! command -v "$cmd" &>/dev/null; then
+		echo -e "${RED}Error: $cmd is required but not installed.${NC}"
+		if [ "$cmd" = "eyeD3" ]; then
+			echo -e "${YELLOW}Install with: brew install eye-d3${NC}"
+		fi
+		exit 1
+	fi
 done
 
 # Check arguments
 if [ $# -eq 0 ]; then
-    echo "Usage: ytdl <URL>"
-    echo "       ytdl open"
-    echo "Downloads music from YouTube/YouTube Music with embedded cover art"
-    echo "Automatically handles:"
-    echo "  • Single songs → Downloads to Inbox/"
-    echo "  • Albums/Playlists → Downloads to Inbox/[Album Name]/"
-    echo ""
-    echo "Commands:"
-    echo "  open    Open the music directory in Finder"
-    exit 1
+	echo "Usage: ytdl <URL>"
+	echo "       ytdl open"
+	echo "Downloads music from YouTube/YouTube Music with embedded cover art"
+	echo "Automatically handles:"
+	echo "  • Single songs → Downloads to Inbox/"
+	echo "  • Albums/Playlists → Downloads to Inbox/[Album Name]/"
+	echo ""
+	echo "Commands:"
+	echo "  open    Open the music directory in Finder"
+	exit 1
 fi
 
 # Handle 'open' command
 if [ "$1" = "open" ]; then
-    echo -e "${BLUE}📂 Opening: $MUSIC_DIR${NC}"
-    open "$MUSIC_DIR"
-    exit 0
+	echo -e "${BLUE}📂 Opening: $MUSIC_DIR${NC}"
+	open "$MUSIC_DIR"
+	exit 0
 fi
 
 URL="$1"
@@ -56,235 +56,235 @@ echo -e "${BLUE}🔍 Analyzing URL...${NC}"
 
 # Simple detection: check if URL contains "playlist" or "album"
 if [[ "$URL" =~ playlist|album|list= ]]; then
-    IS_PLAYLIST=true
+	IS_PLAYLIST=true
 
-    # Check if music-organize is available
-    if ! command -v music-organize &>/dev/null; then
-        echo -e "${RED}Error: music-organize is required for playlist downloads.${NC}"
-        exit 1
-    fi
+	# Check if music-organize is available
+	if ! command -v music-organize &>/dev/null; then
+		echo -e "${RED}Error: music-organize is required for playlist downloads.${NC}"
+		exit 1
+	fi
 
-    # Get playlist info for display
-    echo -e "${YELLOW}⏳ Detecting playlist information...${NC}"
-    PLAYLIST_INFO=$(yt-dlp --playlist-items 1 --print "%(playlist)s|%(playlist_count)s" "$URL" 2>/dev/null || echo "")
-    if [ -n "$PLAYLIST_INFO" ] && [ "$PLAYLIST_INFO" != "NA|NA" ]; then
-        PLAYLIST_TITLE=$(echo "$PLAYLIST_INFO" | cut -d'|' -f1)
-        TRACK_COUNT=$(echo "$PLAYLIST_INFO" | cut -d'|' -f2)
-        PLAYLIST_TITLE=${PLAYLIST_TITLE#"Album - "}
-        PLAYLIST_TITLE=${PLAYLIST_TITLE#"Playlist - "}
-        PLAYLIST_TITLE=${PLAYLIST_TITLE#"Single - "}
-        PLAYLIST_TITLE=${PLAYLIST_TITLE#"EP - "}
-        echo -e "${GREEN}📀 Detected: $PLAYLIST_TITLE${NC}"
-        [ -n "$TRACK_COUNT" ] && [ "$TRACK_COUNT" != "NA" ] && echo -e "${GREEN}   Tracks: $TRACK_COUNT${NC}"
-    else
-        TRACK_COUNT=""
-    fi
+	# Get playlist info for display
+	echo -e "${YELLOW}⏳ Detecting playlist information...${NC}"
+	PLAYLIST_INFO=$(yt-dlp --playlist-items 1 --print "%(playlist)s|%(playlist_count)s" "$URL" 2>/dev/null || echo "")
+	if [ -n "$PLAYLIST_INFO" ] && [ "$PLAYLIST_INFO" != "NA|NA" ]; then
+		PLAYLIST_TITLE=$(echo "$PLAYLIST_INFO" | cut -d'|' -f1)
+		TRACK_COUNT=$(echo "$PLAYLIST_INFO" | cut -d'|' -f2)
+		PLAYLIST_TITLE=${PLAYLIST_TITLE#"Album - "}
+		PLAYLIST_TITLE=${PLAYLIST_TITLE#"Playlist - "}
+		PLAYLIST_TITLE=${PLAYLIST_TITLE#"Single - "}
+		PLAYLIST_TITLE=${PLAYLIST_TITLE#"EP - "}
+		echo -e "${GREEN}📀 Detected: $PLAYLIST_TITLE${NC}"
+		[ -n "$TRACK_COUNT" ] && [ "$TRACK_COUNT" != "NA" ] && echo -e "${GREEN}   Tracks: $TRACK_COUNT${NC}"
+	else
+		TRACK_COUNT=""
+	fi
 
-    # Download first track to temp for metadata/organization
-    TEMP_DIR=$(mktemp -d)
-    trap 'rm -rf "$TEMP_DIR"' EXIT
+	# Download first track to temp for metadata/organization
+	TEMP_DIR=$(mktemp -d)
+	trap 'rm -rf "$TEMP_DIR"' EXIT
 
-    echo ""
-    echo -e "${BLUE}⬇️  Downloading first track for organization...${NC}"
+	echo ""
+	echo -e "${BLUE}⬇️  Downloading first track for organization...${NC}"
 
-    yt-dlp \
-        --playlist-items 1 \
-        -x \
-        --audio-format mp3 \
-        --audio-quality 0 \
-        --embed-metadata \
-        --add-metadata \
-        --write-thumbnail \
-        --convert-thumbnails jpg \
-        -o "$TEMP_DIR/%(title)s.%(ext)s" \
-        "$URL" || true
+	yt-dlp \
+		--playlist-items 1 \
+		-x \
+		--audio-format mp3 \
+		--audio-quality 0 \
+		--embed-metadata \
+		--add-metadata \
+		--write-thumbnail \
+		--convert-thumbnails jpg \
+		-o "$TEMP_DIR/%(title)s.%(ext)s" \
+		"$URL" || true
 
-    FIRST_MP3=$(find "$TEMP_DIR" -name "*.mp3" | head -1)
-    FIRST_JPG=$(find "$TEMP_DIR" -name "*.jpg" | head -1)
+	FIRST_MP3=$(find "$TEMP_DIR" -name "*.mp3" | head -1)
+	FIRST_JPG=$(find "$TEMP_DIR" -name "*.jpg" | head -1)
 
-    if [ -z "$FIRST_MP3" ]; then
-        echo -e "${RED}❌ Error: Failed to download first track${NC}"
-        exit 1
-    fi
+	if [ -z "$FIRST_MP3" ]; then
+		echo -e "${RED}❌ Error: Failed to download first track${NC}"
+		exit 1
+	fi
 
-    # Embed cover art in first track before organizing
-    if [ -n "$FIRST_JPG" ]; then
-        eyeD3 --add-image="$FIRST_JPG:FRONT_COVER" --preserve-file-times "$FIRST_MP3" &>/dev/null || true
-    fi
+	# Embed cover art in first track before organizing
+	if [ -n "$FIRST_JPG" ]; then
+		eyeD3 --add-image="$FIRST_JPG:FRONT_COVER" --preserve-file-times "$FIRST_MP3" &>/dev/null || true
+	fi
 
-    echo ""
-    echo -e "${BLUE}🤖 Starting AI organization...${NC}"
-    ORGANIZE_OUTPUT=$(music-organize "$FIRST_MP3")
-    FINAL_DIR=$(echo "$ORGANIZE_OUTPUT" | grep "^FINAL_DIR:" | cut -d: -f2-)
+	echo ""
+	echo -e "${BLUE}🤖 Starting AI organization...${NC}"
+	ORGANIZE_OUTPUT=$(music-organize "$FIRST_MP3")
+	FINAL_DIR=$(echo "$ORGANIZE_OUTPUT" | grep "^FINAL_DIR:" | cut -d: -f2-)
 
-    if [ -z "$FINAL_DIR" ]; then
-        echo -e "${RED}❌ Error: Could not determine final location${NC}"
-        exit 1
-    fi
+	if [ -z "$FINAL_DIR" ]; then
+		echo -e "${RED}❌ Error: Could not determine final location${NC}"
+		exit 1
+	fi
 
-    echo -e "${GREEN}   Final location: $FINAL_DIR${NC}"
+	echo -e "${GREEN}   Final location: $FINAL_DIR${NC}"
 
-    # Get album name from final directory for metadata
-    CLEAN_ALBUM_NAME=$(basename "$FINAL_DIR")
+	# Get album name from final directory for metadata
+	CLEAN_ALBUM_NAME=$(basename "$FINAL_DIR")
 
-    # Rename first track to include track number
-    FIRST_TRACK_NAME=$(basename "$FIRST_MP3")
-    FINAL_FIRST_TRACK="$FINAL_DIR/$FIRST_TRACK_NAME"
-    if [ -f "$FINAL_FIRST_TRACK" ]; then
-        NEW_NAME="01 - $FIRST_TRACK_NAME"
-        mv "$FINAL_FIRST_TRACK" "$FINAL_DIR/$NEW_NAME" 2>/dev/null || true
-    fi
+	# Rename first track to include track number
+	FIRST_TRACK_NAME=$(basename "$FIRST_MP3")
+	FINAL_FIRST_TRACK="$FINAL_DIR/$FIRST_TRACK_NAME"
+	if [ -f "$FINAL_FIRST_TRACK" ]; then
+		NEW_NAME="01 - $FIRST_TRACK_NAME"
+		mv "$FINAL_FIRST_TRACK" "$FINAL_DIR/$NEW_NAME" 2>/dev/null || true
+	fi
 
-    # Download remaining tracks if there are more
-    if [ -n "$TRACK_COUNT" ] && [ "$TRACK_COUNT" != "NA" ] && [ "$TRACK_COUNT" -gt 1 ]; then
-        echo ""
-        echo -e "${BLUE}⬇️  Downloading remaining $((TRACK_COUNT - 1)) tracks to: $FINAL_DIR${NC}"
+	# Download remaining tracks if there are more
+	if [ -n "$TRACK_COUNT" ] && [ "$TRACK_COUNT" != "NA" ] && [ "$TRACK_COUNT" -gt 1 ]; then
+		echo ""
+		echo -e "${BLUE}⬇️  Downloading remaining $((TRACK_COUNT - 1)) tracks to: $FINAL_DIR${NC}"
 
-        yt-dlp \
-            --ignore-errors \
-            --playlist-items 2- \
-            -x \
-            --audio-format mp3 \
-            --audio-quality 0 \
-            --embed-metadata \
-            --add-metadata \
-            --write-thumbnail \
-            --convert-thumbnails jpg \
-            -o "$FINAL_DIR/%(playlist_index)02d - %(title)s.%(ext)s" \
-            "$URL" || true
-    fi
+		yt-dlp \
+			--ignore-errors \
+			--playlist-items 2- \
+			-x \
+			--audio-format mp3 \
+			--audio-quality 0 \
+			--embed-metadata \
+			--add-metadata \
+			--write-thumbnail \
+			--convert-thumbnails jpg \
+			-o "$FINAL_DIR/%(playlist_index)02d - %(title)s.%(ext)s" \
+			"$URL" || true
+	fi
 
-    DOWNLOAD_SUCCESS=true
+	DOWNLOAD_SUCCESS=true
 
-    # Count downloaded files
-    DOWNLOADED_COUNT=$(find "$FINAL_DIR" -name "*.mp3" 2>/dev/null | wc -l | tr -d ' ')
+	# Count downloaded files
+	DOWNLOADED_COUNT=$(find "$FINAL_DIR" -name "*.mp3" 2>/dev/null | wc -l | tr -d ' ')
 
-    if [ "$DOWNLOADED_COUNT" -eq 0 ]; then
-        echo -e "${RED}❌ Error: No files were downloaded${NC}"
-        exit 1
-    fi
+	if [ "$DOWNLOADED_COUNT" -eq 0 ]; then
+		echo -e "${RED}❌ Error: No files were downloaded${NC}"
+		exit 1
+	fi
 
-    # Find album cover (largest jpg) and embed in all tracks
-    ALBUM_COVER=$(find "$FINAL_DIR" -name "*.jpg" -type f -exec ls -S {} + 2>/dev/null | head -1 || echo "")
-    # Also check temp dir for cover if none in final dir
-    if [ -z "$ALBUM_COVER" ] && [ -n "$FIRST_JPG" ] && [ -f "$FIRST_JPG" ]; then
-        cp "$FIRST_JPG" "$FINAL_DIR/cover.jpg"
-        ALBUM_COVER="$FINAL_DIR/cover.jpg"
-    fi
+	# Find album cover (largest jpg) and embed in all tracks
+	ALBUM_COVER=$(find "$FINAL_DIR" -name "*.jpg" -type f -exec ls -S {} + 2>/dev/null | head -1 || echo "")
+	# Also check temp dir for cover if none in final dir
+	if [ -z "$ALBUM_COVER" ] && [ -n "$FIRST_JPG" ] && [ -f "$FIRST_JPG" ]; then
+		cp "$FIRST_JPG" "$FINAL_DIR/cover.jpg"
+		ALBUM_COVER="$FINAL_DIR/cover.jpg"
+	fi
 
-    if [ -n "$ALBUM_COVER" ]; then
-        echo ""
-        echo -e "${BLUE}🎨 Embedding album art...${NC}"
+	if [ -n "$ALBUM_COVER" ]; then
+		echo ""
+		echo -e "${BLUE}🎨 Embedding album art...${NC}"
 
-        while IFS= read -r -d '' mp3; do
-            if [ -f "$mp3" ]; then
-                echo -e "   ${YELLOW}Processing: $(basename "$mp3")${NC}"
-                TRACK_NUM=$(basename "$mp3" | grep -o '^[0-9]\+' || echo "")
+		while IFS= read -r -d '' mp3; do
+			if [ -f "$mp3" ]; then
+				echo -e "   ${YELLOW}Processing: $(basename "$mp3")${NC}"
+				TRACK_NUM=$(basename "$mp3" | grep -o '^[0-9]\+' || echo "")
 
-                if [ -n "$TRACK_NUM" ]; then
-                    eyeD3 --add-image="$ALBUM_COVER:FRONT_COVER" \
-                        --track="$TRACK_NUM" \
-                        --track-total="$DOWNLOADED_COUNT" \
-                        --album="$CLEAN_ALBUM_NAME" \
-                        --preserve-file-times \
-                        "$mp3" &>/dev/null && \
-                        echo -e "   ${GREEN}✓ Updated${NC}" || \
-                        echo -e "   ${YELLOW}⚠️  Warning: Failed to update metadata${NC}"
-                else
-                    eyeD3 --add-image="$ALBUM_COVER:FRONT_COVER" \
-                        --album="$CLEAN_ALBUM_NAME" \
-                        --preserve-file-times \
-                        "$mp3" &>/dev/null && \
-                        echo -e "   ${GREEN}✓ Updated${NC}" || \
-                        echo -e "   ${YELLOW}⚠️  Warning: Failed to update metadata${NC}"
-                fi
-            fi
-        done < <(find "$FINAL_DIR" -maxdepth 1 -name "*.mp3" -type f -print0)
+				if [ -n "$TRACK_NUM" ]; then
+					eyeD3 --add-image="$ALBUM_COVER:FRONT_COVER" \
+						--track="$TRACK_NUM" \
+						--track-total="$DOWNLOADED_COUNT" \
+						--album="$CLEAN_ALBUM_NAME" \
+						--preserve-file-times \
+						"$mp3" &>/dev/null &&
+						echo -e "   ${GREEN}✓ Updated${NC}" ||
+						echo -e "   ${YELLOW}⚠️  Warning: Failed to update metadata${NC}"
+				else
+					eyeD3 --add-image="$ALBUM_COVER:FRONT_COVER" \
+						--album="$CLEAN_ALBUM_NAME" \
+						--preserve-file-times \
+						"$mp3" &>/dev/null &&
+						echo -e "   ${GREEN}✓ Updated${NC}" ||
+						echo -e "   ${YELLOW}⚠️  Warning: Failed to update metadata${NC}"
+				fi
+			fi
+		done < <(find "$FINAL_DIR" -maxdepth 1 -name "*.mp3" -type f -print0)
 
-        # Rename cover to standard name
-        if [ "$(basename "$ALBUM_COVER")" != "cover.jpg" ]; then
-            mv "$ALBUM_COVER" "$FINAL_DIR/cover.jpg" 2>/dev/null || true
-        fi
+		# Rename cover to standard name
+		if [ "$(basename "$ALBUM_COVER")" != "cover.jpg" ]; then
+			mv "$ALBUM_COVER" "$FINAL_DIR/cover.jpg" 2>/dev/null || true
+		fi
 
-        # Clean up other jpg files (track thumbnails)
-        find "$FINAL_DIR" -name "*.jpg" ! -name "cover.jpg" -delete 2>/dev/null || true
-    fi
+		# Clean up other jpg files (track thumbnails)
+		find "$FINAL_DIR" -name "*.jpg" ! -name "cover.jpg" -delete 2>/dev/null || true
+	fi
 
-    # Summary
-    echo ""
-    echo -e "${GREEN}✅ Album downloaded successfully!${NC}"
-    echo -e "${GREEN}   Location: $FINAL_DIR${NC}"
-    echo -e "${GREEN}   Tracks: $DOWNLOADED_COUNT${NC}"
+	# Summary
+	echo ""
+	echo -e "${GREEN}✅ Album downloaded successfully!${NC}"
+	echo -e "${GREEN}   Location: $FINAL_DIR${NC}"
+	echo -e "${GREEN}   Tracks: $DOWNLOADED_COUNT${NC}"
 
-    if [ -n "$TRACK_COUNT" ] && [ "$TRACK_COUNT" != "NA" ]; then
-        SKIPPED=$((TRACK_COUNT - DOWNLOADED_COUNT))
-        if [ "$SKIPPED" -gt 0 ]; then
-            echo -e "${YELLOW}   Skipped: $SKIPPED (unavailable/private/deleted)${NC}"
-        fi
-    fi
+	if [ -n "$TRACK_COUNT" ] && [ "$TRACK_COUNT" != "NA" ]; then
+		SKIPPED=$((TRACK_COUNT - DOWNLOADED_COUNT))
+		if [ "$SKIPPED" -gt 0 ]; then
+			echo -e "${YELLOW}   Skipped: $SKIPPED (unavailable/private/deleted)${NC}"
+		fi
+	fi
 
 else
-    # Single track
-    IS_PLAYLIST=false
-    VIDEO_TITLE=$(yt-dlp --get-title "$URL" 2>/dev/null || echo "Unknown")
-    echo -e "${GREEN}🎵 Detected single track: $VIDEO_TITLE${NC}"
+	# Single track
+	IS_PLAYLIST=false
+	VIDEO_TITLE=$(yt-dlp --get-title "$URL" 2>/dev/null || echo "Unknown")
+	echo -e "${GREEN}🎵 Detected single track: $VIDEO_TITLE${NC}"
 
-    # Use temp dir for single tracks (simpler processing)
-    TEMP_DIR=$(mktemp -d)
-    trap 'rm -rf "$TEMP_DIR"' EXIT
+	# Use temp dir for single tracks (simpler processing)
+	TEMP_DIR=$(mktemp -d)
+	trap 'rm -rf "$TEMP_DIR"' EXIT
 
-    OUTPUT_TEMPLATE="$TEMP_DIR/%(uploader)s - %(title)s.%(ext)s"
+	OUTPUT_TEMPLATE="$TEMP_DIR/%(uploader)s - %(title)s.%(ext)s"
 
-    echo -e "${BLUE}⬇️  Downloading...${NC}"
+	echo -e "${BLUE}⬇️  Downloading...${NC}"
 
-    if ! yt-dlp \
-        -x \
-        --audio-format mp3 \
-        --audio-quality 0 \
-        --embed-metadata \
-        --add-metadata \
-        --write-thumbnail \
-        --convert-thumbnails jpg \
-        -o "$OUTPUT_TEMPLATE" \
-        "$URL"; then
-        echo -e "${RED}❌ Error: Download failed${NC}"
-        echo -e "${YELLOW}This might be due to:${NC}"
-        echo -e "${YELLOW}  • Region restrictions${NC}"
-        echo -e "${YELLOW}  • Unavailable content${NC}"
-        echo -e "${YELLOW}  • Private/deleted videos${NC}"
-        exit 1
-    fi
+	if ! yt-dlp \
+		-x \
+		--audio-format mp3 \
+		--audio-quality 0 \
+		--embed-metadata \
+		--add-metadata \
+		--write-thumbnail \
+		--convert-thumbnails jpg \
+		-o "$OUTPUT_TEMPLATE" \
+		"$URL"; then
+		echo -e "${RED}❌ Error: Download failed${NC}"
+		echo -e "${YELLOW}This might be due to:${NC}"
+		echo -e "${YELLOW}  • Region restrictions${NC}"
+		echo -e "${YELLOW}  • Unavailable content${NC}"
+		echo -e "${YELLOW}  • Private/deleted videos${NC}"
+		exit 1
+	fi
 
-    MP3_FILE=$(find "$TEMP_DIR" -name "*.mp3" | head -1)
-    JPG_FILE=$(find "$TEMP_DIR" -name "*.jpg" | head -1)
+	MP3_FILE=$(find "$TEMP_DIR" -name "*.mp3" | head -1)
+	JPG_FILE=$(find "$TEMP_DIR" -name "*.jpg" | head -1)
 
-    if [ -z "$MP3_FILE" ]; then
-        echo -e "${RED}❌ Error: No MP3 file found${NC}"
-        exit 1
-    fi
+	if [ -z "$MP3_FILE" ]; then
+		echo -e "${RED}❌ Error: No MP3 file found${NC}"
+		exit 1
+	fi
 
-    # Embed cover art if available
-    if [ -n "$JPG_FILE" ]; then
-        echo -e "${BLUE}🎨 Embedding cover art...${NC}"
-        eyeD3 --add-image="$JPG_FILE:FRONT_COVER" \
-            --preserve-file-times \
-            "$MP3_FILE" &>/dev/null && \
-            echo -e "${GREEN}✓ Updated artwork${NC}" || \
-            echo -e "${YELLOW}⚠️  Warning: Failed to embed cover art${NC}"
-    fi
+	# Embed cover art if available
+	if [ -n "$JPG_FILE" ]; then
+		echo -e "${BLUE}🎨 Embedding cover art...${NC}"
+		eyeD3 --add-image="$JPG_FILE:FRONT_COVER" \
+			--preserve-file-times \
+			"$MP3_FILE" &>/dev/null &&
+			echo -e "${GREEN}✓ Updated artwork${NC}" ||
+			echo -e "${YELLOW}⚠️  Warning: Failed to embed cover art${NC}"
+	fi
 
-    DOWNLOAD_SUCCESS=true
+	DOWNLOAD_SUCCESS=true
 
-    # Use music-organize if available, otherwise move to inbox
-    if command -v music-organize &>/dev/null; then
-        echo ""
-        echo -e "${BLUE}🤖 Starting AI organization...${NC}"
-        music-organize "$MP3_FILE"
-    else
-        mkdir -p "$INBOX_DIR"
-        echo -e "${BLUE}📦 Moving to: $INBOX_DIR${NC}"
-        mv "$MP3_FILE" "$INBOX_DIR/"
-        echo -e "${GREEN}✅ Track downloaded successfully!${NC}"
-        echo -e "${GREEN}   Location: $INBOX_DIR/$(basename "$MP3_FILE")${NC}"
-    fi
+	# Use music-organize if available, otherwise move to inbox
+	if command -v music-organize &>/dev/null; then
+		echo ""
+		echo -e "${BLUE}🤖 Starting AI organization...${NC}"
+		music-organize "$MP3_FILE"
+	else
+		mkdir -p "$INBOX_DIR"
+		echo -e "${BLUE}📦 Moving to: $INBOX_DIR${NC}"
+		mv "$MP3_FILE" "$INBOX_DIR/"
+		echo -e "${GREEN}✅ Track downloaded successfully!${NC}"
+		echo -e "${GREEN}   Location: $INBOX_DIR/$(basename "$MP3_FILE")${NC}"
+	fi
 fi

@@ -21,992 +21,990 @@ cd "$DOTS_DIR"
 
 # Check for gum and provide helpful message if missing
 check_gum() {
-    if ! command -v gum >/dev/null 2>&1; then
-        echo "⚠ gum not found - install for enhanced UI:"
-        echo "  macOS: brew install gum"
-        echo "  Linux: See https://github.com/charmbracelet/gum#installation"
-        echo ""
-        return 1
-    fi
-    return 0
+	if ! command -v gum >/dev/null 2>&1; then
+		echo "⚠ gum not found - install for enhanced UI:"
+		echo "  macOS: brew install gum"
+		echo "  Linux: See https://github.com/charmbracelet/gum#installation"
+		echo ""
+		return 1
+	fi
+	return 0
 }
 
 # Enhanced output functions using gum when available
 log_section() {
-    if command -v gum >/dev/null 2>&1; then
-        gum style --foreground=4 --bold "$1"
-    else
-        echo "$1"
-    fi
+	if command -v gum >/dev/null 2>&1; then
+		gum style --foreground=4 --bold "$1"
+	else
+		echo "$1"
+	fi
 }
 
 log_success() {
-    if command -v gum >/dev/null 2>&1; then
-        gum style --foreground=2 "✓ $1"
-    else
-        echo "✓ $1"
-    fi
+	if command -v gum >/dev/null 2>&1; then
+		gum style --foreground=2 "✓ $1"
+	else
+		echo "✓ $1"
+	fi
 }
 
 log_warning() {
-    if command -v gum >/dev/null 2>&1; then
-        gum style --foreground=3 "⚠ $1"
-    else
-        echo "⚠ $1"
-    fi
+	if command -v gum >/dev/null 2>&1; then
+		gum style --foreground=3 "⚠ $1"
+	else
+		echo "⚠ $1"
+	fi
 }
 
 log_error() {
-    if command -v gum >/dev/null 2>&1; then
-        gum style --foreground=1 "✗ $1"
-    else
-        echo "✗ $1"
-    fi
+	if command -v gum >/dev/null 2>&1; then
+		gum style --foreground=1 "✗ $1"
+	else
+		echo "✗ $1"
+	fi
 }
 
 log_info() {
-    if command -v gum >/dev/null 2>&1; then
-        gum style --foreground=6 "→ $1"
-    else
-        echo "→ $1"
-    fi
+	if command -v gum >/dev/null 2>&1; then
+		gum style --foreground=6 "→ $1"
+	else
+		echo "→ $1"
+	fi
 }
 
 # Function to show usage
 show_usage() {
-    if command -v gum >/dev/null 2>&1; then
-        gum style --border="rounded" --padding="1 2" --margin="1" \
-            --foreground=4 --bold "dots - Dotfiles management command"
-        echo ""
-        gum style "Usage: dots <command> [options]"
-        echo ""
-        gum style --foreground=4 --bold "Commands:"
-        gum style --foreground=2 "  install      - Initial setup with symlinks and submodules [--dry-run]"
-        gum style --foreground=2 "  deps         - Install/check dependencies [check|install|validate]"
-        gum style --foreground=2 "  link         - Update all symlinks (clean broken + create new) [--dry-run] [--no-backup] [--verbose]"
-        gum style --foreground=2 "  sync         - Git pull + submodule updates"
-        gum style --foreground=2 "  commit       - Open LazyGit for interactive committing"
-        gum style --foreground=2 "  push         - Push commits to remote [--force]"
-        gum style --foreground=2 "  sub-update   - Update all submodules"
-        gum style --foreground=2 "  sub-add      - Add new submodule"
-        gum style --foreground=2 "  sub-commit   - Commit submodule hash updates"
-        gum style --foreground=2 "  sub-status   - Show status of all submodules"
-        gum style --foreground=2 "  status       - Show git and symlink status"
-        gum style --foreground=2 "  test         - Run comprehensive system tests"
-        gum style --foreground=2 "  format       - Format repository files with prettier and shfmt [--check]"
-        gum style --foreground=2 "  log          - Show git log"
-        gum style --foreground=2 "  open         - Open dots directory with \$EDITOR"
-        gum style --foreground=2 "  remove       - Remove path from git tracking (keep files locally)"
-        gum style --foreground=2 "  theme        - Interactive theme selector for all development tools [--debug]"
-        gum style --foreground=2 "  theme-link   - Create relative symlinks for Black Atom themes [--dry-run]"
-        gum style --foreground=2 "  font         - Interactive font selector for terminal applications"
-        gum style --foreground=2 "  mcp          - Configure Claude Code MCP servers [--dry-run] [--force]"
-        echo ""
-    else
-        echo "dots - Dotfiles management command"
-        echo ""
-        echo "Usage: dots <command> [options]"
-        echo ""
-        echo "Commands:"
-        echo "  install      - Initial setup with symlinks and submodules [--dry-run]"
-        echo "  deps         - Install/check dependencies [check|install|validate]"
-        echo "  link         - Update all symlinks (clean broken + create new) [--dry-run] [--no-backup] [--verbose]"
-        echo "  sync         - Git pull + submodule updates"
-        echo "  commit       - Open LazyGit for interactive committing"
-        echo "  push         - Push commits to remote [--force]"
-        echo "  sub-update   - Update all submodules"
-        echo "  sub-add      - Add new submodule"
-        echo "  sub-commit   - Commit submodule hash updates"
-        echo "  sub-status   - Show status of all submodules"
-        echo "  status       - Show git and symlink status"
-        echo "  test         - Run comprehensive system tests"
-        echo "  format       - Format repository files with prettier and shfmt [--check]"
-        echo "  log          - Show git log"
-        echo "  open         - Open dots directory with \$EDITOR"
-        echo "  remove       - Remove path from git tracking (keep files locally)"
-        echo "  theme        - Interactive theme selector for all development tools [--debug]"
-        echo "  theme-link   - Create relative symlinks for Black Atom themes [--dry-run]"
-        echo "  font         - Interactive font selector for terminal applications"
-        echo "  mcp          - Configure Claude Code MCP servers [--dry-run] [--force]"
-        echo ""
-    fi
+	if command -v gum >/dev/null 2>&1; then
+		gum style --border="rounded" --padding="1 2" --margin="1" \
+			--foreground=4 --bold "dots - Dotfiles management command"
+		echo ""
+		gum style "Usage: dots <command> [options]"
+		echo ""
+		gum style --foreground=4 --bold "Commands:"
+		gum style --foreground=2 "  install      - Initial setup with symlinks and submodules [--dry-run]"
+		gum style --foreground=2 "  deps         - Install/check dependencies [check|install|validate]"
+		gum style --foreground=2 "  link         - Update all symlinks (clean broken + create new) [--dry-run] [--no-backup] [--verbose]"
+		gum style --foreground=2 "  sync         - Git pull + submodule updates"
+		gum style --foreground=2 "  commit       - Open LazyGit for interactive committing"
+		gum style --foreground=2 "  push         - Push commits to remote [--force]"
+		gum style --foreground=2 "  sub-update   - Update all submodules"
+		gum style --foreground=2 "  sub-add      - Add new submodule"
+		gum style --foreground=2 "  sub-commit   - Commit submodule hash updates"
+		gum style --foreground=2 "  sub-status   - Show status of all submodules"
+		gum style --foreground=2 "  status       - Show git and symlink status"
+		gum style --foreground=2 "  test         - Run comprehensive system tests"
+		gum style --foreground=2 "  format       - Format repository files with prettier and shfmt [--check]"
+		gum style --foreground=2 "  log          - Show git log"
+		gum style --foreground=2 "  open         - Open dots directory with \$EDITOR"
+		gum style --foreground=2 "  remove       - Remove path from git tracking (keep files locally)"
+		gum style --foreground=2 "  theme        - Interactive theme selector for all development tools [--debug]"
+		gum style --foreground=2 "  theme-link   - Create relative symlinks for Black Atom themes [--dry-run]"
+		gum style --foreground=2 "  font         - Interactive font selector for terminal applications"
+		gum style --foreground=2 "  mcp          - Configure Claude Code MCP servers [--dry-run] [--force]"
+		echo ""
+	else
+		echo "dots - Dotfiles management command"
+		echo ""
+		echo "Usage: dots <command> [options]"
+		echo ""
+		echo "Commands:"
+		echo "  install      - Initial setup with symlinks and submodules [--dry-run]"
+		echo "  deps         - Install/check dependencies [check|install|validate]"
+		echo "  link         - Update all symlinks (clean broken + create new) [--dry-run] [--no-backup] [--verbose]"
+		echo "  sync         - Git pull + submodule updates"
+		echo "  commit       - Open LazyGit for interactive committing"
+		echo "  push         - Push commits to remote [--force]"
+		echo "  sub-update   - Update all submodules"
+		echo "  sub-add      - Add new submodule"
+		echo "  sub-commit   - Commit submodule hash updates"
+		echo "  sub-status   - Show status of all submodules"
+		echo "  status       - Show git and symlink status"
+		echo "  test         - Run comprehensive system tests"
+		echo "  format       - Format repository files with prettier and shfmt [--check]"
+		echo "  log          - Show git log"
+		echo "  open         - Open dots directory with \$EDITOR"
+		echo "  remove       - Remove path from git tracking (keep files locally)"
+		echo "  theme        - Interactive theme selector for all development tools [--debug]"
+		echo "  theme-link   - Create relative symlinks for Black Atom themes [--dry-run]"
+		echo "  font         - Interactive font selector for terminal applications"
+		echo "  mcp          - Configure Claude Code MCP servers [--dry-run] [--force]"
+		echo ""
+	fi
 }
 
 # Install command
 cmd_install() {
-    echo "→ Running installation..."
-    "$DOTS_DIR/install.sh" "$@"
+	echo "→ Running installation..."
+	"$DOTS_DIR/install.sh" "$@"
 }
 
 # Deps command - install/check dependencies only
 cmd_deps() {
-    case "${1:-install}" in
-        check)
-            log_info "Checking dependencies..."
-            echo ""
-            "$DOTS_DIR/scripts/deps/install.sh" check
-            ;;
-        install)
-            log_info "Installing dependencies..."
-            echo ""
-            "$DOTS_DIR/scripts/deps/install.sh" install
-            ;;
-        list)
-            "$DOTS_DIR/scripts/deps/install.sh" list
-            ;;
-        *)
-            echo "Usage: dots deps [check|install|list]"
-            echo ""
-            echo "  check   - Show dependency status"
-            echo "  install - Install all missing dependencies (default)"
-            echo "  list    - List all dependencies for current OS"
-            ;;
-    esac
+	case "${1:-install}" in
+	check)
+		log_info "Checking dependencies..."
+		echo ""
+		"$DOTS_DIR/scripts/deps/install.sh" check
+		;;
+	install)
+		log_info "Installing dependencies..."
+		echo ""
+		"$DOTS_DIR/scripts/deps/install.sh" install
+		;;
+	list)
+		"$DOTS_DIR/scripts/deps/install.sh" list
+		;;
+	*)
+		echo "Usage: dots deps [check|install|list]"
+		echo ""
+		echo "  check   - Show dependency status"
+		echo "  install - Install all missing dependencies (default)"
+		echo "  list    - List all dependencies for current OS"
+		;;
+	esac
 }
 
 # MCP command - configure Claude Code MCP servers
 cmd_mcp() {
-    "$DOTS_DIR/scripts/claude-mcp.sh" "$@"
+	"$DOTS_DIR/scripts/claude-mcp.sh" "$@"
 }
 
 # Link command
 cmd_link() {
-    echo "→ Creating symlinks..."
-    "$DOTS_DIR/scripts/symlinks.sh" "$@"
+	echo "→ Creating symlinks..."
+	"$DOTS_DIR/scripts/symlinks.sh" "$@"
 }
 
 # Sync command
 cmd_sync() {
-    log_info "Checking for local changes..."
+	log_info "Checking for local changes..."
 
-    local did_stash=false
+	local did_stash=false
 
-    # Check if there are uncommitted changes
-    if ! git diff-index --quiet HEAD --; then
-        log_warning "Local changes detected:"
-        git diff --stat HEAD | sed 's/^/  /'
-        echo ""
+	# Check if there are uncommitted changes
+	if ! git diff-index --quiet HEAD --; then
+		log_warning "Local changes detected:"
+		git diff --stat HEAD | sed 's/^/  /'
+		echo ""
 
-        if command -v gum >/dev/null 2>&1; then
-            local choice
-            choice=$(gum choose \
-                "Stash changes and continue" \
-                "Commit first (lazygit)" \
-                "Smart commit (AI)" \
-                "Git cleanup (Claude)" \
-                "Skip to push" \
-                "Cancel sync")
-            case "$choice" in
-                "Stash changes and continue")
-                    log_info "Stashing local changes..."
-                    if git stash push -m "dots sync auto-stash $(date +%Y%m%d_%H%M%S)"; then
-                        did_stash=true
-                        log_success "Changes stashed"
-                    else
-                        log_error "Failed to stash changes"
-                        return 1
-                    fi
-                    ;;
-                "Commit first (lazygit)")
-                    cmd_commit
-                    # After commit, check if there are still changes
-                    if ! git diff-index --quiet HEAD --; then
-                        log_error "Still have uncommitted changes. Sync cancelled."
-                        return 1
-                    fi
-                    ;;
-                "Smart commit (AI)")
-                    log_info "Running smart commit..."
-                    if command -v repo >/dev/null 2>&1; then
-                        repo commit -s -y
-                        if ! git diff-index --quiet HEAD --; then
-                            log_error "Still have uncommitted changes. Sync cancelled."
-                            return 1
-                        fi
-                    else
-                        log_error "'repo' command not found"
-                        return 1
-                    fi
-                    ;;
-                "Git cleanup (Claude)")
-                    log_info "Running git cleanup with Claude..."
-                    if command -v claude >/dev/null 2>&1; then
-                        claude -p "$DOTS_DIR/common/.claude/commands/dots/git-cleanup.md"
-                        if ! git diff-index --quiet HEAD --; then
-                            log_error "Still have uncommitted changes. Sync cancelled."
-                            return 1
-                        fi
-                    else
-                        log_error "'claude' command not found"
-                        return 1
-                    fi
-                    ;;
-                "Skip to push")
-                    log_warning "Skipping uncommitted changes..."
-                    echo ""
-                    if [[ -n $(git log @{u}.. 2>/dev/null) ]]; then
-                        local commit_count
-                        commit_count=$(git rev-list --count @{u}.. 2>/dev/null)
-                        log_info "Found $commit_count local commit(s) to push"
-                        do_push false
-                    else
-                        log_success "Nothing to push"
-                    fi
-                    return 0
-                    ;;
-                *)
-                    log_info "Sync cancelled"
-                    return 1
-                    ;;
-            esac
-        else
-            echo "Options:"
-            echo "  [s] Stash changes and continue"
-            echo "  [c] Commit first (opens lazygit)"
-            echo "  [q] Cancel sync"
-            echo -n "Choice: "
-            read -r choice
-            case "$choice" in
-                s|S)
-                    log_info "Stashing local changes..."
-                    if git stash push -m "dots sync auto-stash $(date +%Y%m%d_%H%M%S)"; then
-                        did_stash=true
-                        log_success "Changes stashed"
-                    else
-                        log_error "Failed to stash changes"
-                        return 1
-                    fi
-                    ;;
-                c|C)
-                    cmd_commit
-                    if ! git diff-index --quiet HEAD --; then
-                        log_error "Still have uncommitted changes. Sync cancelled."
-                        return 1
-                    fi
-                    ;;
-                *)
-                    log_info "Sync cancelled"
-                    return 1
-                    ;;
-            esac
-        fi
-        echo ""
-    fi
+		if command -v gum >/dev/null 2>&1; then
+			local choice
+			choice=$(gum choose \
+				"Stash changes and continue" \
+				"Commit first (lazygit)" \
+				"Smart commit (AI)" \
+				"Git cleanup (Claude)" \
+				"Skip to push" \
+				"Cancel sync")
+			case "$choice" in
+			"Stash changes and continue")
+				log_info "Stashing local changes..."
+				if git stash push -m "dots sync auto-stash $(date +%Y%m%d_%H%M%S)"; then
+					did_stash=true
+					log_success "Changes stashed"
+				else
+					log_error "Failed to stash changes"
+					return 1
+				fi
+				;;
+			"Commit first (lazygit)")
+				cmd_commit
+				# After commit, check if there are still changes
+				if ! git diff-index --quiet HEAD --; then
+					log_error "Still have uncommitted changes. Sync cancelled."
+					return 1
+				fi
+				;;
+			"Smart commit (AI)")
+				log_info "Running smart commit..."
+				if command -v repo >/dev/null 2>&1; then
+					repo commit -s -y
+					if ! git diff-index --quiet HEAD --; then
+						log_error "Still have uncommitted changes. Sync cancelled."
+						return 1
+					fi
+				else
+					log_error "'repo' command not found"
+					return 1
+				fi
+				;;
+			"Git cleanup (Claude)")
+				log_info "Running git cleanup with Claude..."
+				if command -v claude >/dev/null 2>&1; then
+					claude -p "$DOTS_DIR/common/.claude/commands/dots/git-cleanup.md"
+					if ! git diff-index --quiet HEAD --; then
+						log_error "Still have uncommitted changes. Sync cancelled."
+						return 1
+					fi
+				else
+					log_error "'claude' command not found"
+					return 1
+				fi
+				;;
+			"Skip to push")
+				log_warning "Skipping uncommitted changes..."
+				echo ""
+				if [[ -n $(git log @{u}.. 2>/dev/null) ]]; then
+					local commit_count
+					commit_count=$(git rev-list --count @{u}.. 2>/dev/null)
+					log_info "Found $commit_count local commit(s) to push"
+					do_push false
+				else
+					log_success "Nothing to push"
+				fi
+				return 0
+				;;
+			*)
+				log_info "Sync cancelled"
+				return 1
+				;;
+			esac
+		else
+			echo "Options:"
+			echo "  [s] Stash changes and continue"
+			echo "  [c] Commit first (opens lazygit)"
+			echo "  [q] Cancel sync"
+			echo -n "Choice: "
+			read -r choice
+			case "$choice" in
+			s | S)
+				log_info "Stashing local changes..."
+				if git stash push -m "dots sync auto-stash $(date +%Y%m%d_%H%M%S)"; then
+					did_stash=true
+					log_success "Changes stashed"
+				else
+					log_error "Failed to stash changes"
+					return 1
+				fi
+				;;
+			c | C)
+				cmd_commit
+				if ! git diff-index --quiet HEAD --; then
+					log_error "Still have uncommitted changes. Sync cancelled."
+					return 1
+				fi
+				;;
+			*)
+				log_info "Sync cancelled"
+				return 1
+				;;
+			esac
+		fi
+		echo ""
+	fi
 
-    # Check for untracked files
-    if [[ -n $(git ls-files --others --exclude-standard) ]]; then
-        log_warning "Untracked files detected:"
-        git ls-files --others --exclude-standard | sed 's/^/  /'
-        echo ""
-        if command -v gum >/dev/null 2>&1; then
-            if ! gum confirm "Continue syncing anyway?"; then
-                # Restore stash if we made one
-                if [[ "$did_stash" == true ]]; then
-                    log_info "Restoring stashed changes..."
-                    git stash pop
-                fi
-                log_info "Sync cancelled"
-                return 1
-            fi
-        else
-            echo -n "Continue syncing anyway? (y/N) "
-            read -r continue_sync
-            if [[ "$continue_sync" != "y" && "$continue_sync" != "Y" ]]; then
-                if [[ "$did_stash" == true ]]; then
-                    log_info "Restoring stashed changes..."
-                    git stash pop
-                fi
-                log_info "Sync cancelled"
-                return 1
-            fi
-        fi
-        echo ""
-    fi
+	# Check for untracked files
+	if [[ -n $(git ls-files --others --exclude-standard) ]]; then
+		log_warning "Untracked files detected:"
+		git ls-files --others --exclude-standard | sed 's/^/  /'
+		echo ""
+		if command -v gum >/dev/null 2>&1; then
+			if ! gum confirm "Continue syncing anyway?"; then
+				# Restore stash if we made one
+				if [[ "$did_stash" == true ]]; then
+					log_info "Restoring stashed changes..."
+					git stash pop
+				fi
+				log_info "Sync cancelled"
+				return 1
+			fi
+		else
+			echo -n "Continue syncing anyway? (y/N) "
+			read -r continue_sync
+			if [[ "$continue_sync" != "y" && "$continue_sync" != "Y" ]]; then
+				if [[ "$did_stash" == true ]]; then
+					log_info "Restoring stashed changes..."
+					git stash pop
+				fi
+				log_info "Sync cancelled"
+				return 1
+			fi
+		fi
+		echo ""
+	fi
 
-    log_info "Syncing repository..."
+	log_info "Syncing repository..."
 
-    # Try to pull from remote
-    local pull_output
-    local pull_failed=false
+	# Try to pull from remote
+	local pull_output
+	local pull_failed=false
 
-    if command -v gum >/dev/null 2>&1; then
-        if ! pull_output=$(gum spin --spinner="dot" --title="Pulling from remote..." -- git pull origin main 2>&1); then
-            if ! pull_output=$(gum spin --spinner="dot" --title="Trying master branch..." -- git pull origin master 2>&1); then
-                pull_failed=true
-            fi
-        fi
-    else
-        if ! pull_output=$(git pull origin main 2>&1); then
-            if ! pull_output=$(git pull origin master 2>&1); then
-                pull_failed=true
-            fi
-        fi
-    fi
+	if command -v gum >/dev/null 2>&1; then
+		if ! pull_output=$(gum spin --spinner="dot" --title="Pulling from remote..." -- git pull origin main 2>&1); then
+			if ! pull_output=$(gum spin --spinner="dot" --title="Trying master branch..." -- git pull origin master 2>&1); then
+				pull_failed=true
+			fi
+		fi
+	else
+		if ! pull_output=$(git pull origin main 2>&1); then
+			if ! pull_output=$(git pull origin master 2>&1); then
+				pull_failed=true
+			fi
+		fi
+	fi
 
-    if [[ "$pull_failed" == true ]]; then
-        log_error "Failed to pull from remote"
-        echo ""
-        echo "$pull_output" | sed 's/^/  /'
-        echo ""
+	if [[ "$pull_failed" == true ]]; then
+		log_error "Failed to pull from remote"
+		echo ""
+		echo "$pull_output" | sed 's/^/  /'
+		echo ""
 
-        # Check if it's a merge conflict
-        if echo "$pull_output" | grep -qi "conflict\|merge"; then
-            log_warning "Merge conflict detected. To resolve:"
-            echo "  1. Run 'git status' to see conflicting files"
-            echo "  2. Edit files to resolve conflicts"
-            echo "  3. Run 'git add <files>' then 'git commit'"
-            echo "  Or run 'git merge --abort' to cancel"
-        fi
+		# Check if it's a merge conflict
+		if echo "$pull_output" | grep -qi "conflict\|merge"; then
+			log_warning "Merge conflict detected. To resolve:"
+			echo "  1. Run 'git status' to see conflicting files"
+			echo "  2. Edit files to resolve conflicts"
+			echo "  3. Run 'git add <files>' then 'git commit'"
+			echo "  Or run 'git merge --abort' to cancel"
+		fi
 
-        # Restore stash if we made one
-        if [[ "$did_stash" == true ]]; then
-            echo ""
-            log_info "Your local changes are still stashed."
-            echo "  Run 'git stash pop' to restore them after resolving issues."
-        fi
-        return 1
-    fi
+		# Restore stash if we made one
+		if [[ "$did_stash" == true ]]; then
+			echo ""
+			log_info "Your local changes are still stashed."
+			echo "  Run 'git stash pop' to restore them after resolving issues."
+		fi
+		return 1
+	fi
 
-    # Update submodules if they exist
-    if [[ -f .gitmodules ]]; then
-        log_info "Updating submodules..."
-        if command -v gum >/dev/null 2>&1; then
-            gum spin --spinner="dot" --title="Updating submodules..." -- "$DOTS_DIR/scripts/submodules.sh" update
-        else
-            "$DOTS_DIR/scripts/submodules.sh" update
-        fi
-    fi
+	# Update submodules if they exist
+	if [[ -f .gitmodules ]]; then
+		log_info "Updating submodules..."
+		if command -v gum >/dev/null 2>&1; then
+			gum spin --spinner="dot" --title="Updating submodules..." -- "$DOTS_DIR/scripts/submodules.sh" update
+		else
+			"$DOTS_DIR/scripts/submodules.sh" update
+		fi
+	fi
 
-    log_success "Sync complete"
+	log_success "Sync complete"
 
-    # Restore stash if we made one
-    if [[ "$did_stash" == true ]]; then
-        echo ""
-        log_info "Restoring stashed changes..."
-        if git stash pop; then
-            log_success "Stashed changes restored"
-        else
-            log_error "Failed to restore stash (possible conflict)"
-            echo "  Your changes are in 'git stash list'"
-            echo "  Run 'git stash show -p' to see them"
-            echo "  Run 'git stash pop' to try again after resolving"
-        fi
-    fi
+	# Restore stash if we made one
+	if [[ "$did_stash" == true ]]; then
+		echo ""
+		log_info "Restoring stashed changes..."
+		if git stash pop; then
+			log_success "Stashed changes restored"
+		else
+			log_error "Failed to restore stash (possible conflict)"
+			echo "  Your changes are in 'git stash list'"
+			echo "  Run 'git stash show -p' to see them"
+			echo "  Run 'git stash pop' to try again after resolving"
+		fi
+	fi
 
-    # Offer to update symlinks
-    echo ""
-    if command -v gum >/dev/null 2>&1; then
-        if gum confirm "Update symlinks to reflect any new changes?"; then
-            echo ""
-            cmd_link
-        fi
-    else
-        echo -n "Update symlinks to reflect any new changes? (y/N) "
-        read -r update_links
-        if [[ "$update_links" == "y" || "$update_links" == "Y" ]]; then
-            echo ""
-            cmd_link
-        fi
-    fi
+	# Offer to update symlinks
+	echo ""
+	if command -v gum >/dev/null 2>&1; then
+		if gum confirm "Update symlinks to reflect any new changes?"; then
+			echo ""
+			cmd_link
+		fi
+	else
+		echo -n "Update symlinks to reflect any new changes? (y/N) "
+		read -r update_links
+		if [[ "$update_links" == "y" || "$update_links" == "Y" ]]; then
+			echo ""
+			cmd_link
+		fi
+	fi
 
-    # Push local commits if any
-    echo ""
-    if [[ -n $(git log @{u}.. 2>/dev/null) ]]; then
-        local commit_count
-        commit_count=$(git rev-list --count @{u}.. 2>/dev/null)
-        log_info "Found $commit_count local commit(s) to push"
+	# Push local commits if any
+	echo ""
+	if [[ -n $(git log @{u}.. 2>/dev/null) ]]; then
+		local commit_count
+		commit_count=$(git rev-list --count @{u}.. 2>/dev/null)
+		log_info "Found $commit_count local commit(s) to push"
 
-        if command -v gum >/dev/null 2>&1; then
-            if gum confirm "Push to remote?"; then
-                do_push false
-            else
-                log_info "Skipped push. Run 'dots push' later."
-            fi
-        else
-            echo -n "Push to remote? (Y/n) "
-            read -r do_push_choice
-            if [[ "$do_push_choice" != "n" && "$do_push_choice" != "N" ]]; then
-                do_push false
-            else
-                log_info "Skipped push. Run 'dots push' later."
-            fi
-        fi
-    else
-        log_success "Already up to date with remote"
-    fi
+		if command -v gum >/dev/null 2>&1; then
+			if gum confirm "Push to remote?"; then
+				do_push false
+			else
+				log_info "Skipped push. Run 'dots push' later."
+			fi
+		else
+			echo -n "Push to remote? (Y/n) "
+			read -r do_push_choice
+			if [[ "$do_push_choice" != "n" && "$do_push_choice" != "N" ]]; then
+				do_push false
+			else
+				log_info "Skipped push. Run 'dots push' later."
+			fi
+		fi
+	else
+		log_success "Already up to date with remote"
+	fi
 }
 
 # Shared push function
 do_push() {
-    local force_flag="${1:-false}"
+	local force_flag="${1:-false}"
 
-    log_info "Pushing to remote..."
+	log_info "Pushing to remote..."
 
-    if [[ "$force_flag" == "true" ]]; then
-        # Force push directly
-        if command -v gum >/dev/null 2>&1; then
-            gum spin --spinner="dot" --title="Force pushing..." -- git push --force-with-lease
-        else
-            git push --force-with-lease
-        fi
-        log_success "Changes force pushed"
-    else
-        # Try regular push
-        if command -v gum >/dev/null 2>&1; then
-            # Capture output to show error message
-            local push_output
-            if push_output=$(gum spin --spinner="dot" --title="Pushing..." -- git push 2>&1); then
-                log_success "Changes pushed"
-            else
-                log_warning "Push failed:"
-                echo "$push_output"
-                echo ""
-                if gum confirm "Force push with --force-with-lease?"; then
-                    gum spin --spinner="dot" --title="Force pushing..." -- git push --force-with-lease
-                    log_success "Changes force pushed"
-                else
-                    log_error "Push cancelled"
-                    return 1
-                fi
-            fi
-        else
-            # Capture output to show error message
-            local push_output
-            if push_output=$(git push 2>&1); then
-                log_success "Changes pushed"
-            else
-                log_warning "Push failed:"
-                echo "$push_output"
-                echo "Try: git push --force-with-lease"
-                return 1
-            fi
-        fi
-    fi
+	if [[ "$force_flag" == "true" ]]; then
+		# Force push directly
+		if command -v gum >/dev/null 2>&1; then
+			gum spin --spinner="dot" --title="Force pushing..." -- git push --force-with-lease
+		else
+			git push --force-with-lease
+		fi
+		log_success "Changes force pushed"
+	else
+		# Try regular push
+		if command -v gum >/dev/null 2>&1; then
+			# Capture output to show error message
+			local push_output
+			if push_output=$(gum spin --spinner="dot" --title="Pushing..." -- git push 2>&1); then
+				log_success "Changes pushed"
+			else
+				log_warning "Push failed:"
+				echo "$push_output"
+				echo ""
+				if gum confirm "Force push with --force-with-lease?"; then
+					gum spin --spinner="dot" --title="Force pushing..." -- git push --force-with-lease
+					log_success "Changes force pushed"
+				else
+					log_error "Push cancelled"
+					return 1
+				fi
+			fi
+		else
+			# Capture output to show error message
+			local push_output
+			if push_output=$(git push 2>&1); then
+				log_success "Changes pushed"
+			else
+				log_warning "Push failed:"
+				echo "$push_output"
+				echo "Try: git push --force-with-lease"
+				return 1
+			fi
+		fi
+	fi
 }
 
 # Commit command - opens LazyGit for interactive committing
 cmd_commit() {
-    log_info "Opening LazyGit for commits..."
+	log_info "Opening LazyGit for commits..."
 
-    if command -v lazygit >/dev/null 2>&1; then
-        lazygit
-    else
-        log_error "LazyGit not found. Install with: brew install lazygit"
-        return 1
-    fi
+	if command -v lazygit >/dev/null 2>&1; then
+		lazygit
+	else
+		log_error "LazyGit not found. Install with: brew install lazygit"
+		return 1
+	fi
 }
 
 # Push command - only pushes, no committing
 cmd_push() {
-    local force_flag=false
-    if [[ "$1" == "--force" || "$1" == "-f" ]]; then
-        force_flag=true
-    fi
+	local force_flag=false
+	if [[ "$1" == "--force" || "$1" == "-f" ]]; then
+		force_flag=true
+	fi
 
-    # Check if there are any commits to push
-    if [[ -z $(git log @{u}.. 2>/dev/null) ]]; then
-        log_success "No commits to push"
-        return 0
-    fi
+	# Check if there are any commits to push
+	if [[ -z $(git log @{u}.. 2>/dev/null) ]]; then
+		log_success "No commits to push"
+		return 0
+	fi
 
-    do_push "$force_flag"
+	do_push "$force_flag"
 }
 
 # Submodule update command
 cmd_sub_update() {
-    "$DOTS_DIR/scripts/submodules.sh" update
+	"$DOTS_DIR/scripts/submodules.sh" update
 }
 
 # Submodule add command
 cmd_sub_add() {
-    if [[ $# -lt 2 ]]; then
-        echo "✗ Usage: dots sub-add <repo_url> <path>"
-        return 1
-    fi
-    "$DOTS_DIR/scripts/submodules.sh" add "$@"
+	if [[ $# -lt 2 ]]; then
+		echo "✗ Usage: dots sub-add <repo_url> <path>"
+		return 1
+	fi
+	"$DOTS_DIR/scripts/submodules.sh" add "$@"
 }
 
 # Submodule status command - shows status of all submodules
 cmd_sub_status() {
-    # Check if we have any submodules
-    if [[ ! -f .gitmodules ]]; then
-        log_warning "No submodules found in this repository"
-        return 0
-    fi
-    
-    # Get list of submodule paths
-    local submodule_paths
-    submodule_paths=($(git submodule status 2>/dev/null | awk '{print $2}'))
-    
-    # Check for submodule changes only
-    local submodule_changes=()
-    for path in "${submodule_paths[@]}"; do
-        if git status --porcelain | grep -q "^.M $path$"; then
-            submodule_changes+=("$path")
-        fi
-    done
-    
-    log_section "=== Submodule Status ==="
-    
-    if [[ ${#submodule_changes[@]} -gt 0 ]]; then
-        echo "Changes detected in submodules:"
-        for path in "${submodule_changes[@]}"; do
-            local name=$(basename "$path")
-            echo "  - $name"
-        done
-    else
-        log_success "All submodules are up to date"
-    fi
-    
-    echo ""
-    log_section "=== Detailed Submodule Info ==="
-    git submodule status
-    
-    # Offer to commit if there are changes
-    if [[ ${#submodule_changes[@]} -gt 0 ]]; then
-        echo ""
-        if command -v gum >/dev/null 2>&1; then
-            if gum confirm "Commit submodule changes?"; then
-                cmd_sub_commit
-            fi
-        else
-            log_info "Run 'dots sub-commit' to commit these changes"
-        fi
-    fi
+	# Check if we have any submodules
+	if [[ ! -f .gitmodules ]]; then
+		log_warning "No submodules found in this repository"
+		return 0
+	fi
+
+	# Get list of submodule paths
+	local submodule_paths
+	submodule_paths=($(git submodule status 2>/dev/null | awk '{print $2}'))
+
+	# Check for submodule changes only
+	local submodule_changes=()
+	for path in "${submodule_paths[@]}"; do
+		if git status --porcelain | grep -q "^.M $path$"; then
+			submodule_changes+=("$path")
+		fi
+	done
+
+	log_section "=== Submodule Status ==="
+
+	if [[ ${#submodule_changes[@]} -gt 0 ]]; then
+		echo "Changes detected in submodules:"
+		for path in "${submodule_changes[@]}"; do
+			local name=$(basename "$path")
+			echo "  - $name"
+		done
+	else
+		log_success "All submodules are up to date"
+	fi
+
+	echo ""
+	log_section "=== Detailed Submodule Info ==="
+	git submodule status
+
+	# Offer to commit if there are changes
+	if [[ ${#submodule_changes[@]} -gt 0 ]]; then
+		echo ""
+		if command -v gum >/dev/null 2>&1; then
+			if gum confirm "Commit submodule changes?"; then
+				cmd_sub_commit
+			fi
+		else
+			log_info "Run 'dots sub-commit' to commit these changes"
+		fi
+	fi
 }
 
 # Submodule commit command - commits submodule hash updates
 cmd_sub_commit() {
-    log_info "Checking for submodule changes..."
-    
-    # Get list of submodule paths
-    local submodule_paths
-    submodule_paths=($(git submodule status 2>/dev/null | awk '{print $2}'))
-    
-    # Find submodules with changes
-    local submodule_changes=()
-    for path in "${submodule_paths[@]}"; do
-        if git status --porcelain | grep -q "^.M $path$"; then
-            submodule_changes+=("$path")
-        fi
-    done
-    
-    if [[ ${#submodule_changes[@]} -eq 0 ]]; then
-        log_success "All submodules are up to date"
-        return 0
-    fi
-    
-    # Show and add only submodule changes
-    log_info "Found submodule changes:"
-    for path in "${submodule_changes[@]}"; do
-        echo "  $path"
-        git add "$path"
-    done
-    echo ""
-    
-    # Create commit message with submodule names
-    local commit_msg="chore: update submodule commit hashes"
-    if [[ ${#submodule_changes[@]} -eq 1 ]]; then
-        local name=$(basename "${submodule_changes[0]}")
-        commit_msg="chore: update $name submodule"
-    fi
-    
-    if command -v gum >/dev/null 2>&1; then
-        gum spin --spinner="dot" --title="Committing submodule updates..." -- \
-            git commit -m "$commit_msg"
-    else
-        git commit -m "$commit_msg"
-    fi
-    
-    # Show which submodules were committed
-    if [[ ${#submodule_changes[@]} -eq 1 ]]; then
-        local name=$(basename "${submodule_changes[0]}")
-        log_success "Submodule changes committed for $name"
-    else
-        log_success "Submodule changes committed for ${#submodule_changes[@]} submodules"
-    fi
+	log_info "Checking for submodule changes..."
+
+	# Get list of submodule paths
+	local submodule_paths
+	submodule_paths=($(git submodule status 2>/dev/null | awk '{print $2}'))
+
+	# Find submodules with changes
+	local submodule_changes=()
+	for path in "${submodule_paths[@]}"; do
+		if git status --porcelain | grep -q "^.M $path$"; then
+			submodule_changes+=("$path")
+		fi
+	done
+
+	if [[ ${#submodule_changes[@]} -eq 0 ]]; then
+		log_success "All submodules are up to date"
+		return 0
+	fi
+
+	# Show and add only submodule changes
+	log_info "Found submodule changes:"
+	for path in "${submodule_changes[@]}"; do
+		echo "  $path"
+		git add "$path"
+	done
+	echo ""
+
+	# Create commit message with submodule names
+	local commit_msg="chore: update submodule commit hashes"
+	if [[ ${#submodule_changes[@]} -eq 1 ]]; then
+		local name=$(basename "${submodule_changes[0]}")
+		commit_msg="chore: update $name submodule"
+	fi
+
+	if command -v gum >/dev/null 2>&1; then
+		gum spin --spinner="dot" --title="Committing submodule updates..." -- \
+			git commit -m "$commit_msg"
+	else
+		git commit -m "$commit_msg"
+	fi
+
+	# Show which submodules were committed
+	if [[ ${#submodule_changes[@]} -eq 1 ]]; then
+		local name=$(basename "${submodule_changes[0]}")
+		log_success "Submodule changes committed for $name"
+	else
+		log_success "Submodule changes committed for ${#submodule_changes[@]} submodules"
+	fi
 }
 
 # Status command - delegate to external script
 cmd_status() {
-    log_section "=== Git Repository Status ==="
-    git status --short
+	log_section "=== Git Repository Status ==="
+	git status --short
 
-    echo ""
-    log_section "=== Symlink Status ==="
+	echo ""
+	log_section "=== Symlink Status ==="
 
-    echo "Checking symlinks..."
-    
-    # Source symlinks.sh to get access to check function
-    # shellcheck disable=SC1091
-    source "$DOTS_DIR/scripts/symlinks.sh"
+	echo "Checking symlinks..."
 
-    # Get current OS and symlinks file
-    local current_os
-    current_os=$("$DOTS_DIR/scripts/detect-os.sh" get_os)
-    local symlinks_file="$DOTS_DIR/symlinks.yml"
+	# Source symlinks.sh to get access to check function
+	# shellcheck disable=SC1091
+	source "$DOTS_DIR/scripts/symlinks.sh"
 
-    # Check symlink status
-    check_symlinks_from_config "$symlinks_file" "$current_os" --verbose
+	# Get current OS and symlinks file
+	local current_os
+	current_os=$("$DOTS_DIR/scripts/detect-os.sh" get_os)
+	local symlinks_file="$DOTS_DIR/symlinks.yml"
+
+	# Check symlink status
+	check_symlinks_from_config "$symlinks_file" "$current_os" --verbose
 }
 
 # Test command - comprehensive system checks
 cmd_test() {
-    echo "=== Dotfiles System Test ==="
-    echo ""
+	echo "=== Dotfiles System Test ==="
+	echo ""
 
-    local tests_passed=0
-    local tests_failed=0
+	local tests_passed=0
+	local tests_failed=0
 
-    # Test 1: Check if we're in the right directory
-    echo "→ Testing repository structure..."
-    if [[ -f "CLAUDE.md" && -d "scripts" && -d "common" ]]; then
-        echo "✓ Repository structure OK"
-        ((tests_passed++))
-    else
-        echo "✗ Repository structure missing"
-        ((tests_failed++))
-    fi
+	# Test 1: Check if we're in the right directory
+	echo "→ Testing repository structure..."
+	if [[ -f "CLAUDE.md" && -d "scripts" && -d "common" ]]; then
+		echo "✓ Repository structure OK"
+		((tests_passed++))
+	else
+		echo "✗ Repository structure missing"
+		((tests_failed++))
+	fi
 
-    # Test 2: Check OS detection
-    echo "→ Testing OS detection..."
-    source "$DOTS_DIR/scripts/detect-os.sh"
-    local detected_os=$(get_os)
-    if [[ -n "$detected_os" && ("$detected_os" == "macos" || "$detected_os" == "linux") ]]; then
-        echo "✓ OS detection OK: $detected_os"
-        ((tests_passed++))
-    else
-        echo "✗ OS detection failed: $detected_os"
-        ((tests_failed++))
-    fi
+	# Test 2: Check OS detection
+	echo "→ Testing OS detection..."
+	source "$DOTS_DIR/scripts/detect-os.sh"
+	local detected_os=$(get_os)
+	if [[ -n "$detected_os" && ("$detected_os" == "macos" || "$detected_os" == "linux") ]]; then
+		echo "✓ OS detection OK: $detected_os"
+		((tests_passed++))
+	else
+		echo "✗ OS detection failed: $detected_os"
+		((tests_failed++))
+	fi
 
-    # Test 3: Check directory structure
-    echo "→ Testing directory structure..."
-    local expected_dirs=("$DOTS_DIR/common" "$DOTS_DIR/$detected_os" "$DOTS_DIR/scripts")
-    local missing_dirs=0
-    for dir in "${expected_dirs[@]}"; do
-        if [[ ! -d "$dir" ]]; then
-            ((missing_dirs++))
-        fi
-    done
-    if [[ $missing_dirs -eq 0 ]]; then
-        echo "✓ Directory structure OK"
-        ((tests_passed++))
-    else
-        echo "✗ Directory structure incomplete ($missing_dirs missing)"
-        ((tests_failed++))
-    fi
+	# Test 3: Check directory structure
+	echo "→ Testing directory structure..."
+	local expected_dirs=("$DOTS_DIR/common" "$DOTS_DIR/$detected_os" "$DOTS_DIR/scripts")
+	local missing_dirs=0
+	for dir in "${expected_dirs[@]}"; do
+		if [[ ! -d "$dir" ]]; then
+			((missing_dirs++))
+		fi
+	done
+	if [[ $missing_dirs -eq 0 ]]; then
+		echo "✓ Directory structure OK"
+		((tests_passed++))
+	else
+		echo "✗ Directory structure incomplete ($missing_dirs missing)"
+		((tests_failed++))
+	fi
 
-    # Test 4: Check symlink creation (dry run)
-    echo "→ Testing symlink creation (dry run)..."
-    if "$DOTS_DIR/scripts/symlinks.sh" --dry-run >/dev/null 2>&1; then
-        echo "✓ Symlink creation test OK"
-        ((tests_passed++))
-    else
-        echo "✗ Symlink creation test failed"
-        ((tests_failed++))
-    fi
+	# Test 4: Check symlink creation (dry run)
+	echo "→ Testing symlink creation (dry run)..."
+	if "$DOTS_DIR/scripts/symlinks.sh" --dry-run >/dev/null 2>&1; then
+		echo "✓ Symlink creation test OK"
+		((tests_passed++))
+	else
+		echo "✗ Symlink creation test failed"
+		((tests_failed++))
+	fi
 
-    # Test 5: Check critical symlinks exist and are correct
-    echo "→ Testing critical symlinks..."
-    local critical_links=("$HOME/.zshrc" "$HOME/.gitconfig" "$HOME/bin/dots")
-    local valid_symlinks=0
+	# Test 5: Check critical symlinks exist and are correct
+	echo "→ Testing critical symlinks..."
+	local critical_links=("$HOME/.zshrc" "$HOME/.gitconfig" "$HOME/bin/dots")
+	local valid_symlinks=0
 
-    for link in "${critical_links[@]}"; do
-        if [[ -L "$link" && -e "$link" ]]; then
-            ((valid_symlinks++))
-        fi
-    done
+	for link in "${critical_links[@]}"; do
+		if [[ -L "$link" && -e "$link" ]]; then
+			((valid_symlinks++))
+		fi
+	done
 
-    if [[ $valid_symlinks -eq ${#critical_links[@]} ]]; then
-        echo "✓ Critical symlinks OK ($valid_symlinks/${#critical_links[@]})"
-        ((tests_passed++))
-    else
-        echo "⚠ Some critical symlinks missing ($valid_symlinks/${#critical_links[@]})"
-        # Don't fail the test - symlinks might not be set up yet
-        ((tests_passed++))
-    fi
+	if [[ $valid_symlinks -eq ${#critical_links[@]} ]]; then
+		echo "✓ Critical symlinks OK ($valid_symlinks/${#critical_links[@]})"
+		((tests_passed++))
+	else
+		echo "⚠ Some critical symlinks missing ($valid_symlinks/${#critical_links[@]})"
+		# Don't fail the test - symlinks might not be set up yet
+		((tests_passed++))
+	fi
 
-    # Test 6: Check git repository status
-    echo "→ Testing git repository..."
-    if git rev-parse --git-dir >/dev/null 2>&1; then
-        echo "✓ Git repository OK"
-        ((tests_passed++))
-    else
-        echo "✗ Git repository not found"
-        ((tests_failed++))
-    fi
+	# Test 6: Check git repository status
+	echo "→ Testing git repository..."
+	if git rev-parse --git-dir >/dev/null 2>&1; then
+		echo "✓ Git repository OK"
+		((tests_passed++))
+	else
+		echo "✗ Git repository not found"
+		((tests_failed++))
+	fi
 
-    # Test 7: Lint shell scripts with shellcheck
-    echo "→ Linting shell scripts..."
-    if command -v shellcheck >/dev/null 2>&1; then
-        local shell_files=()
-        local lint_errors=0
+	# Test 7: Lint shell scripts with shellcheck
+	echo "→ Linting shell scripts..."
+	if command -v shellcheck >/dev/null 2>&1; then
+		local shell_files=()
+		local lint_errors=0
 
-        # Find all shell files
-        while IFS= read -r -d '' file; do
-            shell_files+=("$file")
-        done < <(find . -name "*.sh" -not -path "./.git/*" -print0 2>/dev/null)
+		# Find all shell files
+		while IFS= read -r -d '' file; do
+			shell_files+=("$file")
+		done < <(find . -name "*.sh" -not -path "./.git/*" -print0 2>/dev/null)
 
-        # Add executable scripts with shell shebangs
-        while IFS= read -r -d '' file; do
-            if [[ -x "$file" && -f "$file" ]]; then
-                local first_line=$(head -n1 "$file" 2>/dev/null)
-                if [[ "$first_line" =~ ^#!.*/(bash|sh|zsh) ]]; then
-                    shell_files+=("$file")
-                fi
-            fi
-        done < <(find . -type f -not -path "./.git/*" -not -name "*.sh" -print0 2>/dev/null)
+		# Add executable scripts with shell shebangs
+		while IFS= read -r -d '' file; do
+			if [[ -x "$file" && -f "$file" ]]; then
+				local first_line=$(head -n1 "$file" 2>/dev/null)
+				if [[ "$first_line" =~ ^#!.*/(bash|sh|zsh) ]]; then
+					shell_files+=("$file")
+				fi
+			fi
+		done < <(find . -type f -not -path "./.git/*" -not -name "*.sh" -print0 2>/dev/null)
 
-        if [[ ${#shell_files[@]} -gt 0 ]]; then
-            local files_with_issues=()
-            for file in "${shell_files[@]}"; do
-                if ! shellcheck "$file" >/dev/null 2>&1; then
-                    ((lint_errors++))
-                    files_with_issues+=("$file")
-                fi
-            done
+		if [[ ${#shell_files[@]} -gt 0 ]]; then
+			local files_with_issues=()
+			for file in "${shell_files[@]}"; do
+				if ! shellcheck "$file" >/dev/null 2>&1; then
+					((lint_errors++))
+					files_with_issues+=("$file")
+				fi
+			done
 
-            if [[ $lint_errors -eq 0 ]]; then
-                echo "✓ Shell scripts lint OK (${#shell_files[@]} files)"
-                ((tests_passed++))
-            else
-                echo "⚠ Shell scripts have lint issues ($lint_errors/${#shell_files[@]} files):"
-                for file in "${files_with_issues[@]}"; do
-                    echo ""
-                    log_warning "Issues in $file:"
-                    # Run shellcheck and indent the output
-                    shellcheck "$file" 2>&1 | sed 's/^/      /'
-                done
-                # Don't fail the test - just warn about lint issues
-                ((tests_passed++))
-            fi
-        else
-            echo "✓ No shell scripts found"
-            ((tests_passed++))
-        fi
-    else
-        echo "⚠ shellcheck not available, skipping shell script linting"
-        echo "    Install with: brew install shellcheck"
-        ((tests_passed++))
-    fi
+			if [[ $lint_errors -eq 0 ]]; then
+				echo "✓ Shell scripts lint OK (${#shell_files[@]} files)"
+				((tests_passed++))
+			else
+				echo "⚠ Shell scripts have lint issues ($lint_errors/${#shell_files[@]} files):"
+				for file in "${files_with_issues[@]}"; do
+					echo ""
+					log_warning "Issues in $file:"
+					# Run shellcheck and indent the output
+					shellcheck "$file" 2>&1 | sed 's/^/      /'
+				done
+				# Don't fail the test - just warn about lint issues
+				((tests_passed++))
+			fi
+		else
+			echo "✓ No shell scripts found"
+			((tests_passed++))
+		fi
+	else
+		echo "⚠ shellcheck not available, skipping shell script linting"
+		echo "    Install with: brew install shellcheck"
+		((tests_passed++))
+	fi
 
-    # Summary
-    echo ""
-    echo "=== Test Summary ==="
-    local total_tests=$((tests_passed + tests_failed))
-    echo "  Total tests: $total_tests"
-    echo "  ✓ Passed: $tests_passed"
+	# Summary
+	echo ""
+	echo "=== Test Summary ==="
+	local total_tests=$((tests_passed + tests_failed))
+	echo "  Total tests: $total_tests"
+	echo "  ✓ Passed: $tests_passed"
 
-    if [[ $tests_failed -gt 0 ]]; then
-        echo "  ✗ Failed: $tests_failed"
-        echo ""
-        echo "❌ System tests FAILED"
-        return 1
-    else
-        echo ""
-        echo "🎉 All system tests PASSED"
-        return 0
-    fi
+	if [[ $tests_failed -gt 0 ]]; then
+		echo "  ✗ Failed: $tests_failed"
+		echo ""
+		echo "❌ System tests FAILED"
+		return 1
+	else
+		echo ""
+		echo "🎉 All system tests PASSED"
+		return 0
+	fi
 }
-
 
 # Format command
 cmd_format() {
-    echo "→ Formatting repository files..."
-    "$DOTS_DIR/scripts/format.sh" "$@"
+	echo "→ Formatting repository files..."
+	"$DOTS_DIR/scripts/format.sh" "$@"
 }
 
 # Log command
 cmd_log() {
-    echo "→ Recent commits:"
-    git log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate -10
+	echo "→ Recent commits:"
+	git log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate -10
 }
 
 # Open command - open dots directory with $EDITOR
 cmd_open() {
-    # Check if EDITOR is set
-    if [[ -z "$EDITOR" ]]; then
-        echo "⚠ EDITOR environment variable not set, using 'vim' as default"
-        local editor="vim"
-    else
-        local editor="$EDITOR"
-    fi
-    
-    echo "→ Opening dots directory with $editor..."
-    "$editor" "$DOTS_DIR"
-}
+	# Check if EDITOR is set
+	if [[ -z "$EDITOR" ]]; then
+		echo "⚠ EDITOR environment variable not set, using 'vim' as default"
+		local editor="vim"
+	else
+		local editor="$EDITOR"
+	fi
 
+	echo "→ Opening dots directory with $editor..."
+	"$editor" "$DOTS_DIR"
+}
 
 # Remove command - remove files from git tracking but keep them locally
 cmd_remove() {
-    if [[ $# -lt 1 ]]; then
-        log_error "Usage: dots remove <path>"
-        echo "       Removes path from git tracking and adds to .gitignore"
-        return 1
-    fi
+	if [[ $# -lt 1 ]]; then
+		log_error "Usage: dots remove <path>"
+		echo "       Removes path from git tracking and adds to .gitignore"
+		return 1
+	fi
 
-    local path="$1"
-    
-    # Make path relative to dots directory
-    if [[ "$path" = /* ]]; then
-        path="${path#$DOTS_DIR/}"
-    fi
-    
-    # Check if path exists
-    if [[ ! -e "$path" ]]; then
-        log_error "Path does not exist: $path"
-        return 1
-    fi
-    
-    log_info "Removing from git tracking: $path"
-    
-    # Check if the path is currently tracked
-    if git ls-files --error-unmatch "$path" >/dev/null 2>&1; then
-        # Remove from git tracking
-        if [[ -d "$path" ]]; then
-            if ! git rm --cached -r "$path" 2>/dev/null; then
-                log_error "Failed to remove directory from git tracking"
-                return 1
-            fi
-        else
-            if ! git rm --cached "$path" 2>/dev/null; then
-                log_error "Failed to remove file from git tracking"
-                return 1
-            fi
-        fi
-        log_success "Removed from git tracking"
-    else
-        log_warning "Path is not tracked by git"
-    fi
-    
-    # Add to .gitignore
-    log_info "Adding to .gitignore..."
-    
-    # Ensure path ends with / for directories
-    local gitignore_entry="$path"
-    if [[ -d "$path" ]] && [[ ! "$gitignore_entry" = */ ]]; then
-        gitignore_entry="${gitignore_entry}/"
-    fi
-    
-    # Check if already in .gitignore
-    if grep -Fxq "$gitignore_entry" .gitignore 2>/dev/null; then
-        log_info "Already in .gitignore"
-    else
-        # Add to .gitignore
-        if [[ -f .gitignore ]]; then
-            # Ensure .gitignore ends with newline
-            if [[ -n "$(tail -c 1 .gitignore 2>/dev/null)" ]]; then
-                echo "" >> .gitignore
-            fi
-        fi
-        echo "$gitignore_entry" >> .gitignore
-        log_success "Added to .gitignore"
-    fi
-    
-    # Stage .gitignore changes
-    git add .gitignore
-    
-    # Show status
-    echo ""
-    log_section "Changes ready to commit:"
-    git status --short | grep -E "^(M|D|A)" | head -10
-    
-    echo ""
-    log_info "Files still exist locally at: $DOTS_DIR/$path"
-    
-    if command -v gum >/dev/null 2>&1; then
-        echo ""
-        if gum confirm "Commit these changes now?"; then
-            local commit_msg="chore: remove $path from git tracking"
-            git commit -m "$commit_msg"
-            log_success "Changes committed"
-        else
-            log_info "Run 'dots commit' when ready to commit"
-        fi
-    else
-        echo ""
-        log_info "Run 'dots commit' to commit these changes"
-    fi
+	local path="$1"
+
+	# Make path relative to dots directory
+	if [[ "$path" = /* ]]; then
+		path="${path#$DOTS_DIR/}"
+	fi
+
+	# Check if path exists
+	if [[ ! -e "$path" ]]; then
+		log_error "Path does not exist: $path"
+		return 1
+	fi
+
+	log_info "Removing from git tracking: $path"
+
+	# Check if the path is currently tracked
+	if git ls-files --error-unmatch "$path" >/dev/null 2>&1; then
+		# Remove from git tracking
+		if [[ -d "$path" ]]; then
+			if ! git rm --cached -r "$path" 2>/dev/null; then
+				log_error "Failed to remove directory from git tracking"
+				return 1
+			fi
+		else
+			if ! git rm --cached "$path" 2>/dev/null; then
+				log_error "Failed to remove file from git tracking"
+				return 1
+			fi
+		fi
+		log_success "Removed from git tracking"
+	else
+		log_warning "Path is not tracked by git"
+	fi
+
+	# Add to .gitignore
+	log_info "Adding to .gitignore..."
+
+	# Ensure path ends with / for directories
+	local gitignore_entry="$path"
+	if [[ -d "$path" ]] && [[ ! "$gitignore_entry" = */ ]]; then
+		gitignore_entry="${gitignore_entry}/"
+	fi
+
+	# Check if already in .gitignore
+	if grep -Fxq "$gitignore_entry" .gitignore 2>/dev/null; then
+		log_info "Already in .gitignore"
+	else
+		# Add to .gitignore
+		if [[ -f .gitignore ]]; then
+			# Ensure .gitignore ends with newline
+			if [[ -n "$(tail -c 1 .gitignore 2>/dev/null)" ]]; then
+				echo "" >>.gitignore
+			fi
+		fi
+		echo "$gitignore_entry" >>.gitignore
+		log_success "Added to .gitignore"
+	fi
+
+	# Stage .gitignore changes
+	git add .gitignore
+
+	# Show status
+	echo ""
+	log_section "Changes ready to commit:"
+	git status --short | grep -E "^(M|D|A)" | head -10
+
+	echo ""
+	log_info "Files still exist locally at: $DOTS_DIR/$path"
+
+	if command -v gum >/dev/null 2>&1; then
+		echo ""
+		if gum confirm "Commit these changes now?"; then
+			local commit_msg="chore: remove $path from git tracking"
+			git commit -m "$commit_msg"
+			log_success "Changes committed"
+		else
+			log_info "Run 'dots commit' when ready to commit"
+		fi
+	else
+		echo ""
+		log_info "Run 'dots commit' to commit these changes"
+	fi
 }
 
 # Main command dispatcher
 case "${1:-}" in
 install)
-    shift
-    cmd_install "$@"
-    ;;
+	shift
+	cmd_install "$@"
+	;;
 deps)
-    shift
-    cmd_deps "$@"
-    ;;
+	shift
+	cmd_deps "$@"
+	;;
 link)
-    shift
-    cmd_link "$@"
-    ;;
+	shift
+	cmd_link "$@"
+	;;
 sync)
-    cmd_sync
-    ;;
+	cmd_sync
+	;;
 commit)
-    shift
-    cmd_commit "$@"
-    ;;
+	shift
+	cmd_commit "$@"
+	;;
 push)
-    shift
-    cmd_push "$@"
-    ;;
+	shift
+	cmd_push "$@"
+	;;
 sub-update)
-    cmd_sub_update
-    ;;
+	cmd_sub_update
+	;;
 sub-add)
-    shift
-    cmd_sub_add "$@"
-    ;;
+	shift
+	cmd_sub_add "$@"
+	;;
 sub-commit)
-    cmd_sub_commit
-    ;;
+	cmd_sub_commit
+	;;
 sub-status)
-    cmd_sub_status
-    ;;
+	cmd_sub_status
+	;;
 status)
-    cmd_status
-    ;;
+	cmd_status
+	;;
 test)
-    cmd_test
-    ;;
+	cmd_test
+	;;
 format)
-    shift
-    cmd_format "$@"
-    ;;
+	shift
+	cmd_format "$@"
+	;;
 log)
-    cmd_log
-    ;;
+	cmd_log
+	;;
 open)
-    cmd_open
-    ;;
+	cmd_open
+	;;
 remove)
-    shift
-    cmd_remove "$@"
-    ;;
+	shift
+	cmd_remove "$@"
+	;;
 theme)
-    # Return to original directory before running pick-theme
-    cd "$ORIGINAL_PWD"
-    exec pick-theme "$@"
-    ;;
+	# Return to original directory before running pick-theme
+	cd "$ORIGINAL_PWD"
+	exec pick-theme "$@"
+	;;
 theme-link)
-    shift
-    "$DOTS_DIR/scripts/theme-link.sh" "$@"
-    ;;
+	shift
+	"$DOTS_DIR/scripts/theme-link.sh" "$@"
+	;;
 font)
-    # Return to original directory before running pick-font
-    cd "$ORIGINAL_PWD"
-    exec pick-font "$@"
-    ;;
+	# Return to original directory before running pick-font
+	cd "$ORIGINAL_PWD"
+	exec pick-font "$@"
+	;;
 mcp)
-    shift
-    cmd_mcp "$@"
-    ;;
+	shift
+	cmd_mcp "$@"
+	;;
 *)
-    show_usage
-    ;;
+	show_usage
+	;;
 esac

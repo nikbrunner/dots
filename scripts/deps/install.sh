@@ -10,9 +10,12 @@ source "$DEPS_DIR/../detect-os.sh"
 OS=$(get_os)
 
 case "$OS" in
-    macos) source "$DEPS_DIR/macos.sh" ;;
-    arch)  source "$DEPS_DIR/arch.sh" ;;
-    *)     echo "❌ Unsupported OS: $OS"; exit 1 ;;
+macos) source "$DEPS_DIR/macos.sh" ;;
+arch) source "$DEPS_DIR/arch.sh" ;;
+*)
+    echo "❌ Unsupported OS: $OS"
+    exit 1
+    ;;
 esac
 
 # Configure system settings (shared across OSes)
@@ -62,7 +65,7 @@ configure_system() {
     # Install TPM (Tmux Plugin Manager)
     if [[ ! -d "$HOME/.tmux/plugins/tpm" ]]; then
         echo "🔌 Installing TPM..."
-        git clone https://github.com/tmux-plugins/tpm "$HOME/.tmux/plugins/tpm" 2>/dev/null && \
+        git clone https://github.com/tmux-plugins/tpm "$HOME/.tmux/plugins/tpm" 2>/dev/null &&
             echo "✅ TPM installed" || echo "⚠️  TPM install failed"
     else
         echo "✅ TPM already installed"
@@ -111,11 +114,17 @@ validate_dependencies() {
 # Run subcommand if script is executed directly
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
     case "${1:-install}" in
-        check)     check_all ;;
-        install)   install_all ;;
-        list)      echo "nvm"; grep -E '^(brew|cask)' "$DEPS_DIR/Brewfile" | sed 's/.*"\(.*\)".*/\1/' ;;
-        configure) configure_system ;;
-        validate)  validate_dependencies ;;
-        *)         echo "Usage: $0 [check|install|list|configure|validate]"; exit 1 ;;
+    check) check_all ;;
+    install) install_all ;;
+    list)
+        echo "nvm"
+        grep -E '^(brew|cask)' "$DEPS_DIR/Brewfile" | sed 's/.*"\(.*\)".*/\1/'
+        ;;
+    configure) configure_system ;;
+    validate) validate_dependencies ;;
+    *)
+        echo "Usage: $0 [check|install|list|configure|validate]"
+        exit 1
+        ;;
     esac
 fi

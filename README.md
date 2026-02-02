@@ -94,7 +94,7 @@ yay -S 1password
 ```bash
 git clone git@github.com:nikbrunner/dots.git ~/repos/nikbrunner/dots
 cd ~/repos/nikbrunner/dots
-./install.sh
+./scripts/install.sh
 ```
 
 This will:
@@ -107,7 +107,7 @@ This will:
 **Manual Installation** (skip dependencies):
 
 ```bash
-./install.sh --no-deps
+./scripts/install.sh --no-deps
 echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.zshrc
 source ~/.zshrc
 ```
@@ -116,7 +116,7 @@ source ~/.zshrc
 
 ```bash
 # For detailed diagnostics during installation
-./install.sh --debug --dry-run
+./scripts/install.sh --debug --dry-run
 
 # For testing symlink operations
 dots link --debug --dry-run

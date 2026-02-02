@@ -20,24 +20,24 @@ DRY_RUN=false
 FORCE=false
 for arg in "$@"; do
     case "$arg" in
-        --dry-run)
-            DRY_RUN=true
-            ;;
-        --force)
-            FORCE=true
-            ;;
-        --help|-h)
-            echo "Usage: $0 [--dry-run] [--force]"
-            echo ""
-            echo "Options:"
-            echo "  --dry-run  Show what would be done without making changes"
-            echo "  --force    Re-add servers even if they already exist"
-            echo ""
-            echo "Environment variables required:"
-            echo "  EXA_API_KEY  - API key for Exa web search"
-            echo "  REF_API_KEY  - API key for Ref.tools documentation"
-            exit 0
-            ;;
+    --dry-run)
+        DRY_RUN=true
+        ;;
+    --force)
+        FORCE=true
+        ;;
+    --help | -h)
+        echo "Usage: $0 [--dry-run] [--force]"
+        echo ""
+        echo "Options:"
+        echo "  --dry-run  Show what would be done without making changes"
+        echo "  --force    Re-add servers even if they already exist"
+        echo ""
+        echo "Environment variables required:"
+        echo "  EXA_API_KEY  - API key for Exa web search"
+        echo "  REF_API_KEY  - API key for Ref.tools documentation"
+        exit 0
+        ;;
     esac
 done
 
@@ -208,33 +208,33 @@ setup_mcp_servers() {
         fi
 
         case "$transport" in
-            stdio)
-                local command args env_json
-                command=$(jq -r ".servers[\"$name\"].command" "$MCP_CONFIG")
-                args=$(jq -c ".servers[\"$name\"].args // []" "$MCP_CONFIG")
-                env_json=$(jq -c ".servers[\"$name\"].env // {}" "$MCP_CONFIG")
+        stdio)
+            local command args env_json
+            command=$(jq -r ".servers[\"$name\"].command" "$MCP_CONFIG")
+            args=$(jq -c ".servers[\"$name\"].args // []" "$MCP_CONFIG")
+            env_json=$(jq -c ".servers[\"$name\"].env // {}" "$MCP_CONFIG")
 
-                if add_stdio_server "$name" "$command" "$args" "$env_json"; then
-                    ((added++))
-                else
-                    ((failed++))
-                fi
-                ;;
-            http)
-                local url headers_json
-                url=$(jq -r ".servers[\"$name\"].url" "$MCP_CONFIG")
-                headers_json=$(jq -c ".servers[\"$name\"].headers // {}" "$MCP_CONFIG")
-
-                if add_http_server "$name" "$url" "$headers_json"; then
-                    ((added++))
-                else
-                    ((failed++))
-                fi
-                ;;
-            *)
-                echo -e "${YELLOW}Warning: Unknown transport '$transport' for $name${NC}"
+            if add_stdio_server "$name" "$command" "$args" "$env_json"; then
+                ((added++))
+            else
                 ((failed++))
-                ;;
+            fi
+            ;;
+        http)
+            local url headers_json
+            url=$(jq -r ".servers[\"$name\"].url" "$MCP_CONFIG")
+            headers_json=$(jq -c ".servers[\"$name\"].headers // {}" "$MCP_CONFIG")
+
+            if add_http_server "$name" "$url" "$headers_json"; then
+                ((added++))
+            else
+                ((failed++))
+            fi
+            ;;
+        *)
+            echo -e "${YELLOW}Warning: Unknown transport '$transport' for $name${NC}"
+            ((failed++))
+            ;;
         esac
     done
 

@@ -8,86 +8,85 @@ MPD_CONFIG="$HOME/.config/mpd/mpd.conf"
 
 # Check if MPD is installed
 if ! command -v mpd &>/dev/null; then
-    echo "❌ MPD is not installed"
-    exit 1
+	echo "❌ MPD is not installed"
+	exit 1
 fi
 
 # Check if config exists
 if [ ! -f "$MPD_CONFIG" ]; then
-    echo "❌ MPD config not found at $MPD_CONFIG"
-    echo "Run 'dots link' to create the configuration."
-    exit 1
+	echo "❌ MPD config not found at $MPD_CONFIG"
+	echo "Run 'dots link' to create the configuration."
+	exit 1
 fi
 
 case "${1:-start}" in
 start)
-    echo "🎵 Starting MPD..."
-    if pgrep -x "mpd" >/dev/null; then
-        echo "⚠️  MPD is already running."
-    else
-        mpd "$MPD_CONFIG"
-        echo "✅ MPD started. Use 'rmpc' or 'music client' to control it."
-    fi
-    ;;
+	echo "🎵 Starting MPD..."
+	if pgrep -x "mpd" >/dev/null; then
+		echo "⚠️  MPD is already running."
+	else
+		mpd "$MPD_CONFIG"
+		echo "✅ MPD started. Use 'rmpc' or 'music client' to control it."
+	fi
+	;;
 
 stop)
-    echo "⏹️  Stopping MPD..."
-    if pgrep -x "mpd" >/dev/null; then
-        pkill -x mpd
-        sleep 1
-        if pgrep -x "mpd" >/dev/null; then
-            echo "❌ Failed to stop MPD."
-        else
-            echo "✅ MPD stopped."
-        fi
-    else
-        echo "❌ MPD was not running."
-    fi
-    ;;
+	echo "⏹️  Stopping MPD..."
+	if pgrep -x "mpd" >/dev/null; then
+		pkill -x mpd
+		sleep 1
+		if pgrep -x "mpd" >/dev/null; then
+			echo "❌ Failed to stop MPD."
+		else
+			echo "✅ MPD stopped."
+		fi
+	else
+		echo "❌ MPD was not running."
+	fi
+	;;
 
 restart)
-    echo "🔄 Restarting MPD..."
-    if pgrep -x "mpd" >/dev/null; then
-        mpd --kill "$MPD_CONFIG" 2>/dev/null || pkill -x mpd
-        sleep 2
-    fi
-    mpd "$MPD_CONFIG"
-    echo "✅ MPD restarted."
-    ;;
+	echo "🔄 Restarting MPD..."
+	if pgrep -x "mpd" >/dev/null; then
+		mpd --kill "$MPD_CONFIG" 2>/dev/null || pkill -x mpd
+		sleep 2
+	fi
+	mpd "$MPD_CONFIG"
+	echo "✅ MPD restarted."
+	;;
 
 status)
-    if pgrep -x "mpd" >/dev/null; then
-        echo "✅ MPD is running"
-    else
-        echo "❌ MPD is not running"
-    fi
-    ;;
+	if pgrep -x "mpd" >/dev/null; then
+		echo "✅ MPD is running"
+	else
+		echo "❌ MPD is not running"
+	fi
+	;;
 
 update)
-    echo "🔄 Updating MPD database..."
-    mpc update
-    echo "✅ Database updated."
-    ;;
+	echo "🔄 Updating MPD database..."
+	mpc update
+	echo "✅ Database updated."
+	;;
 
 client)
-    if command -v rmpc &>/dev/null; then
-        echo "🎵 Starting rmpc..."
-        rmpc
-    else
-        echo "❌ rmpc not found. Install with: cargo install rmpc"
-    fi
-    ;;
+	if command -v rmpc &>/dev/null; then
+		echo "🎵 Starting rmpc..."
+		rmpc
+	else
+		echo "❌ rmpc not found. Install with: cargo install rmpc"
+	fi
+	;;
 
 *)
-    echo "Usage: music [start|stop|restart|status|update|client]"
-    echo ""
-    echo "Commands:"
-    echo "  start   - Start MPD daemon"
-    echo "  stop    - Stop MPD daemon"
-    echo "  restart - Restart MPD daemon"
-    echo "  status  - Check if MPD is running"
-    echo "  update  - Update music database"
-    echo "  client  - Launch music client (rmpc or ncmpcpp)"
-    ;;
+	echo "Usage: music [start|stop|restart|status|update|client]"
+	echo ""
+	echo "Commands:"
+	echo "  start   - Start MPD daemon"
+	echo "  stop    - Stop MPD daemon"
+	echo "  restart - Restart MPD daemon"
+	echo "  status  - Check if MPD is running"
+	echo "  update  - Update music database"
+	echo "  client  - Launch music client (rmpc or ncmpcpp)"
+	;;
 esac
-
