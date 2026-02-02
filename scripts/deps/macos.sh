@@ -27,6 +27,17 @@ install_nvm() {
     fi
 }
 
+# Install Claude Code via native installer (auto-updates)
+install_claude_code() {
+    echo "Installing Claude Code..."
+    if command -v curl &>/dev/null; then
+        curl -fsSL https://claude.ai/install.sh | bash
+    else
+        echo "curl not available"
+        return 1
+    fi
+}
+
 # Check all dependencies
 check_all() {
     echo "Checking dependencies..."
@@ -59,6 +70,13 @@ install_all() {
     else
         echo "  nvm: missing"
         install_nvm
+    fi
+
+    if command -v claude &>/dev/null; then
+        echo "  claude-code: installed"
+    else
+        echo "  claude-code: missing"
+        install_claude_code
     fi
 
     echo ""

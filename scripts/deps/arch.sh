@@ -45,7 +45,6 @@ DEPS=(
     deno
 
     # AI & dev tools
-    claude-code
     av-cli-bin
 
     # Desktop apps
@@ -89,7 +88,6 @@ check_dep() {
     git-delta) command -v delta &>/dev/null ;;
     github-cli) command -v gh &>/dev/null ;;
     rust) command -v cargo &>/dev/null ;;
-    claude-code) command -v claude &>/dev/null ;;
     python-eyed3) command -v eyeD3 &>/dev/null ;;
     go-yq) command -v yq &>/dev/null ;;
     beads-bin) command -v bd &>/dev/null ;;
@@ -141,14 +139,6 @@ install_dep() {
 
     # Post-install hooks
     case "$dep" in
-    claude-code)
-        # Create symlink for claude command
-        if [[ -f "/usr/bin/claude" ]] && [[ ! -e "$HOME/.local/bin/claude" ]]; then
-            mkdir -p "$HOME/.local/bin"
-            ln -s /usr/bin/claude "$HOME/.local/bin/claude"
-            echo "✅ Created claude symlink"
-        fi
-        ;;
     bluez)
         # Enable bluetooth service
         if ! systemctl is-enabled bluetooth &>/dev/null; then
@@ -199,6 +189,14 @@ check_all() {
         missing+=("nvm")
     fi
 
+    # Check claude-code separately (native install)
+    if command -v claude &>/dev/null; then
+        echo "  ✅ claude-code"
+    else
+        echo "  ❌ claude-code"
+        missing+=("claude-code")
+    fi
+
     echo ""
     if [[ ${#missing[@]} -eq 0 ]]; then
         echo "✅ All dependencies installed!"
@@ -226,6 +224,18 @@ install_nvm() {
             nvm alias default lts/*
         fi
         echo "✅ nvm installed"
+    else
+        echo "❌ curl not available"
+        return 1
+    fi
+}
+
+# Install Claude Code via native installer (auto-updates)
+install_claude_code() {
+    echo "📦 Installing Claude Code..."
+    if command -v curl &>/dev/null; then
+        curl -fsSL https://claude.ai/install.sh | bash
+        echo "✅ Claude Code installed"
     else
         echo "❌ curl not available"
         return 1
@@ -261,8 +271,17 @@ install_all() {
         nvm_missing=true
     fi
 
+    # Check claude-code (native install, not pacman)
+    local claude_missing=false
+    if command -v claude &>/dev/null; then
+        echo "  ✅ claude-code"
+    else
+        echo "  ❌ claude-code"
+        claude_missing=true
+    fi
+
     # Install missing
-    if [[ ${#missing[@]} -gt 0 ]] || [[ "$nvm_missing" == true ]]; then
+    if [[ ${#missing[@]} -gt 0 ]] || [[ "$nvm_missing" == true ]] || [[ "$claude_missing" == true ]]; then
         echo ""
         echo "🚀 Installing missing dependencies..."
 
@@ -272,6 +291,10 @@ install_all() {
 
         if [[ "$nvm_missing" == true ]]; then
             install_nvm
+        fi
+
+        if [[ "$claude_missing" == true ]]; then
+            install_claude_code
         fi
 
         echo ""
