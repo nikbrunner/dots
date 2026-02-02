@@ -1,78 +1,6 @@
 {
   "$schema": "https://json.schemastore.org/claude-code-settings.json",
-  "alwaysThinkingEnabled": true,
-  "enabledPlugins": {
-    "clangd-lsp@claude-plugins-official": true,
-    "lua-lsp@claude-plugins-official": true,
-    "superpowers@superpowers-marketplace": true
-  },
-  "feedbackSurveyState": {
-    "lastShownTime": 1754313915132
-  },
-  "hooks": {
-    "Notification": [
-      {
-        "hooks": [
-          {
-            "command": "~/.local/bin/helm-hook Notification",
-            "type": "command"
-          }
-        ]
-      }
-    ],
-    "PreToolUse": [
-      {
-        "matcher": "WebFetch|WebSearch",
-        "hooks": [
-          {
-            "command": "echo '{\"hookSpecificOutput\": {\"hookEventName\": \"PreToolUse\", \"permissionDecision\": \"allow\"}}'",
-            "type": "command"
-          }
-        ]
-      },
-      {
-        "hooks": [
-          {
-            "command": "~/.local/bin/helm-hook PreToolUse",
-            "type": "command"
-          }
-        ]
-      }
-    ],
-    "SessionStart": [
-      {
-        "hooks": [
-          {
-            "command": "~/.local/bin/helm-hook SessionStart",
-            "type": "command"
-          }
-        ],
-        "matcher": ""
-      }
-    ],
-    "Stop": [
-      {
-        "hooks": [
-          {
-            "command": "~/.local/bin/helm-hook Stop",
-            "type": "command"
-          }
-        ]
-      }
-    ],
-    "SessionEnd": [
-      {
-        "hooks": [
-          {
-            "command": "~/.local/bin/helm-hook SessionEnd",
-            "type": "command"
-          }
-        ]
-      }
-    ]
-  },
   "includeCoAuthoredBy": false,
-  "model": "opus",
   "permissions": {
     "allow": [
       "Bash(cat:*)",
@@ -117,11 +45,86 @@
       "mcp__linear__*",
       "mcp__supabase__*"
     ],
-    "ask": [],
-    "deny": []
+    "deny": [],
+    "ask": []
+  },
+  "hooks": {
+    "Notification": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.local/bin/helm-hook Notification"
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "WebFetch|WebSearch",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo '{\"hookSpecificOutput\": {\"hookEventName\": \"PreToolUse\", \"permissionDecision\": \"allow\"}}'"
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.local/bin/helm-hook PreToolUse"
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.local/bin/helm-hook SessionStart"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.local/bin/helm-hook Stop"
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.local/bin/helm-hook SessionEnd"
+          }
+        ]
+      }
+    ]
   },
   "statusLine": {
-    "command": "~/.local/bin/claude-statusline",
-    "type": "command"
+    "type": "command",
+    "command": "~/.local/bin/claude-statusline"
+  },
+  "enabledPlugins": {
+    "clangd-lsp@claude-plugins-official": true,
+    "lua-lsp@claude-plugins-official": true,
+    "superpowers@superpowers-marketplace": true
+  },
+  "alwaysThinkingEnabled": true,
+  "autoUpdatesChannel": "stable",
+  "feedbackSurveyState": {
+    "lastShownTime": 1754313915132
+  },
+  "env": {
+    "DISABLE_AUTOUPDATER": "1"
   }
 }
