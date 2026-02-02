@@ -18,6 +18,7 @@ cask "ghostty"
 cask "shottr"
 cask "homerow"
 brew "luarocks"
+brew "yoink"
 
 # Shell enhancements
 brew "zsh-autosuggestions"
