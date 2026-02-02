@@ -1,4 +1,5 @@
-.PHONY: fmt-sh fmt-sh-check
+.PHONY: fmt-sh
+
 SHELL_PATHS := \
 	scripts/ \
 	common/.local/bin/ \
@@ -10,5 +11,3 @@ SHELL_PATHS := \
 fmt-sh:
 	shfmt -w $(SHELL_PATHS)
 
-fmt-sh-check:
-	shfmt -d $(SHELL_PATHS)
