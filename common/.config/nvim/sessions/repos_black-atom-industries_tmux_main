@@ -3,17 +3,18 @@ let s:so_save = &g:so | let s:siso_save = &g:siso | setg so=0 siso=0 | setl so=-
 let v:this_session=expand("<sfile>:p")
 silent only
 silent tabonly
-cd ~/repos/dealercenter-digital/bc-desktop-client
+cd ~/repos/black-atom-industries/tmux
 if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +39 perf-branch.log
-badd +26 perf-master.log
+badd +18 themes/mnml/collection.template.conf
+badd +0 themes/mnml/black-atom-mnml-ita-light.conf
 argglobal
 %argdel
-edit perf-master.log
+$argadd ~/repos/black-atom-industries/tmux/themes/default/black-atom-default-dark-dimmed.conf
+edit themes/mnml/collection.template.conf
 let s:save_splitbelow = &splitbelow
 let s:save_splitright = &splitright
 set splitbelow splitright
@@ -30,8 +31,8 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe 'vert 1resize ' . ((&columns * 116 + 116) / 233)
-exe 'vert 2resize ' . ((&columns * 116 + 116) / 233)
+exe 'vert 1resize ' . ((&columns * 133 + 134) / 268)
+exe 'vert 2resize ' . ((&columns * 134 + 134) / 268)
 argglobal
 setlocal keymap=
 setlocal noarabic
@@ -49,8 +50,8 @@ setlocal cinoptions=
 setlocal cinscopedecls=public,protected,private
 setlocal cinwords=if,else,while,do,for,switch
 setlocal colorcolumn=
-setlocal comments=s1:/*,mb:*,ex:*/,://,b:#,:%,:XCOMM,n:>,fb:-,fb:â€¢
-setlocal commentstring=
+setlocal comments=:#
+setlocal commentstring=#\ %s
 setlocal complete=.,w,b,u,t
 setlocal completefunc=
 setlocal completeslash=
@@ -64,8 +65,8 @@ setlocal cursorlineopt=both
 setlocal nodiff
 setlocal eventignorewin=
 setlocal expandtab
-if &filetype != ''
-setlocal filetype=
+if &filetype != 'conf'
+setlocal filetype=conf
 endif
 setlocal fixendofline
 setlocal foldcolumn=0
@@ -80,7 +81,7 @@ setlocal foldnestmax=20
 setlocal foldtext=
 setlocal formatexpr=v:lua.require'conform'.formatexpr()
 setlocal formatlistpat=^\\s*\\d\\+[\\]:.)}\\t\ ]\\s*
-setlocal formatoptions=tcqj
+setlocal formatoptions=jcroql
 setlocal iminsert=0
 setlocal imsearch=-1
 setlocal includeexpr=
@@ -109,11 +110,11 @@ setlocal norightleft
 setlocal rightleftcmd=search
 setlocal scrollback=-1
 setlocal noscrollbind
-setlocal shiftwidth=2
+setlocal shiftwidth=4
 setlocal signcolumn=yes
 setlocal smartindent
 setlocal nosmoothscroll
-setlocal softtabstop=-1
+setlocal softtabstop=4
 setlocal nospell
 setlocal spellcapcheck=[.?!]\\_[\\])'\"\\t\ ]\\+
 setlocal spellfile=
@@ -123,16 +124,16 @@ setlocal statuscolumn=%!v:lua.require'snacks.statuscolumn'.get()
 setlocal suffixesadd=
 setlocal noswapfile
 setlocal synmaxcol=3000
-if &syntax != ''
-setlocal syntax=
+if &syntax != 'conf'
+setlocal syntax=conf
 endif
-setlocal tabstop=2
+setlocal tabstop=4
 setlocal tagfunc=
 setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarFilename#perf-master.log%*
+setlocal winbar=%#WinBarPath#themes%*\ %#WinBarSeparator#/%*\ %#WinBarPath#mnml%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#collection.template.conf%*
 setlocal winblend=0
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -140,18 +141,19 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 26 - ((25 * winheight(0) + 21) / 43)
+let s:l = 18 - ((17 * winheight(0) + 20) / 40)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 26
-normal! 052|
+keepjumps 18
+normal! 060|
 wincmd w
 argglobal
-if bufexists(fnamemodify("perf-branch.log", ":p")) | buffer perf-branch.log | else | edit perf-branch.log | endif
+if bufexists(fnamemodify("themes/mnml/black-atom-mnml-ita-light.conf", ":p")) | buffer themes/mnml/black-atom-mnml-ita-light.conf | else | edit themes/mnml/black-atom-mnml-ita-light.conf | endif
 if &buftype ==# 'terminal'
-  silent file perf-branch.log
+  silent file themes/mnml/black-atom-mnml-ita-light.conf
 endif
+balt themes/mnml/collection.template.conf
 setlocal keymap=
 setlocal noarabic
 setlocal autoindent
@@ -168,8 +170,8 @@ setlocal cinoptions=
 setlocal cinscopedecls=public,protected,private
 setlocal cinwords=if,else,while,do,for,switch
 setlocal colorcolumn=
-setlocal comments=s1:/*,mb:*,ex:*/,://,b:#,:%,:XCOMM,n:>,fb:-,fb:â€¢
-setlocal commentstring=
+setlocal comments=:#
+setlocal commentstring=#\ %s
 setlocal complete=.,w,b,u,t
 setlocal completefunc=
 setlocal completeslash=
@@ -183,8 +185,8 @@ setlocal cursorlineopt=both
 setlocal nodiff
 setlocal eventignorewin=
 setlocal expandtab
-if &filetype != ''
-setlocal filetype=
+if &filetype != 'conf'
+setlocal filetype=conf
 endif
 setlocal fixendofline
 setlocal foldcolumn=0
@@ -199,7 +201,7 @@ setlocal foldnestmax=20
 setlocal foldtext=
 setlocal formatexpr=v:lua.require'conform'.formatexpr()
 setlocal formatlistpat=^\\s*\\d\\+[\\]:.)}\\t\ ]\\s*
-setlocal formatoptions=tcqj
+setlocal formatoptions=jcroql
 setlocal iminsert=0
 setlocal imsearch=-1
 setlocal includeexpr=
@@ -228,11 +230,11 @@ setlocal norightleft
 setlocal rightleftcmd=search
 setlocal scrollback=-1
 setlocal noscrollbind
-setlocal shiftwidth=2
+setlocal shiftwidth=4
 setlocal signcolumn=yes
 setlocal smartindent
 setlocal nosmoothscroll
-setlocal softtabstop=-1
+setlocal softtabstop=4
 setlocal nospell
 setlocal spellcapcheck=[.?!]\\_[\\])'\"\\t\ ]\\+
 setlocal spellfile=
@@ -242,16 +244,16 @@ setlocal statuscolumn=%!v:lua.require'snacks.statuscolumn'.get()
 setlocal suffixesadd=
 setlocal noswapfile
 setlocal synmaxcol=3000
-if &syntax != ''
-setlocal syntax=
+if &syntax != 'conf'
+setlocal syntax=conf
 endif
-setlocal tabstop=2
+setlocal tabstop=4
 setlocal tagfunc=
 setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarFilename#perf-branch.log%*
+setlocal winbar=%#WinBarPath#themes%*\ %#WinBarSeparator#/%*\ %#WinBarPath#mnml%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#black-atom-mnml-ita-light.conf%*
 setlocal winblend=0
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -259,16 +261,16 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 39 - ((38 * winheight(0) + 21) / 43)
+let s:l = 23 - ((22 * winheight(0) + 20) / 40)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 39
-normal! 032|
+keepjumps 23
+normal! 0
 wincmd w
 2wincmd w
-exe 'vert 1resize ' . ((&columns * 116 + 116) / 233)
-exe 'vert 2resize ' . ((&columns * 116 + 116) / 233)
+exe 'vert 1resize ' . ((&columns * 133 + 134) / 268)
+exe 'vert 2resize ' . ((&columns * 134 + 134) / 268)
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
@@ -284,7 +286,6 @@ if filereadable(s:sx)
 endif
 let &g:so = s:so_save | let &g:siso = s:siso_save
 set hlsearch
-nohlsearch
 doautoall SessionLoadPost
 unlet SessionLoad
 " vim: set ft=vim :

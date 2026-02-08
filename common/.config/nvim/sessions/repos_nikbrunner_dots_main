@@ -9,23 +9,15 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +50 ~/repos/nikbrunner/dots/scripts/deps/Brewfile
-badd +0 common/.claude/settings.json
+badd +15 ~/repos/nikbrunner/dots/common/.config/nvim/lua/lib/tabline.lua
+badd +97 ~/repos/nikbrunner/dots/common/.config/nvim/lua/options.lua
 argglobal
 %argdel
-set stal=2
+$argadd ~/repos/nikbrunner/dots/common/.config/nvim/lua/options.lua
 tabnew +setlocal\ bufhidden=wipe
 tabrewind
-edit ~/repos/nikbrunner/dots/scripts/deps/Brewfile
+edit ~/repos/nikbrunner/dots/common/.config/nvim/lua/lib/tabline.lua
 argglobal
-let s:cpo_save=&cpo
-set cpo&vim
-cmap <buffer> <C-R><C-F> <Plug><cfile>
-cmap <buffer> <SNR>47_<ctag> <Plug><ctag>
-cmap <buffer> <SNR>47_<cfile> <Plug><cfile>
-cmap <buffer>  <Plug><cfile>
-let &cpo=s:cpo_save
-unlet s:cpo_save
 setlocal keymap=
 setlocal noarabic
 setlocal autoindent
@@ -42,8 +34,8 @@ setlocal cinoptions=
 setlocal cinscopedecls=public,protected,private
 setlocal cinwords=if,else,while,do,for,switch
 setlocal colorcolumn=
-setlocal comments=b:#
-setlocal commentstring=#\ %s
+setlocal comments=:---,:--
+setlocal commentstring=--\ %s
 setlocal complete=.,w,b,u,t
 setlocal completefunc=
 setlocal completeslash=
@@ -54,11 +46,12 @@ setlocal nocursorbind
 setlocal nocursorcolumn
 setlocal cursorline
 setlocal cursorlineopt=both
+setlocal define=\\<function\\|\\<local\\%(\\s\\+function\\)\\=
 setlocal nodiff
 setlocal eventignorewin=
 setlocal expandtab
-if &filetype != 'ruby'
-setlocal filetype=ruby
+if &filetype != 'lua'
+setlocal filetype=lua
 endif
 setlocal fixendofline
 setlocal foldcolumn=0
@@ -76,13 +69,12 @@ setlocal formatlistpat=^\\s*\\d\\+[\\]:.)}\\t\ ]\\s*
 setlocal formatoptions=jcroql
 setlocal iminsert=0
 setlocal imsearch=-1
-setlocal include=^\\s*\\<\\(load\\>\\|require\\>\\|autoload\\s*:\\=[\"']\\=\\h\\w*[\"']\\=,\\)
-setlocal includeexpr=
+setlocal include=\\<\\%(\\%(do\\|load\\)file\\|require\\)\\s*(
+setlocal includeexpr=v:lua.require'vim._ftplugin.lua'.includeexpr(v:fname)
 setlocal indentexpr=nvim_treesitter#indent()
-setlocal indentkeys=0{,0},0),0],!^F,o,O,e,:,.,=end,=else,=elsif,=when,=in\ ,=ensure,=rescue,==begin,==end,=private,=protected,=public
+setlocal indentkeys=0{,0},0),0],:,0#,!^F,o,O,e,0=end,0=until
 setlocal noinfercase
 setlocal iskeyword=@,48-57,_,192-255
-setlocal keywordprg=ri
 setlocal lhistory=10
 setlocal nolinebreak
 setlocal nolisp
@@ -95,7 +87,7 @@ setlocal nrformats=bin,hex
 setlocal number
 setlocal numberwidth=4
 setlocal omnifunc=v:lua.vim.lsp.omnifunc
-setlocal path=,.,,
+setlocal path=,
 setlocal nopreserveindent
 setlocal nopreviewwindow
 setlocal quoteescape=\\
@@ -105,30 +97,30 @@ setlocal norightleft
 setlocal rightleftcmd=search
 setlocal scrollback=-1
 setlocal noscrollbind
-setlocal shiftwidth=2
+setlocal shiftwidth=4
 setlocal signcolumn=yes
-setlocal nosmartindent
+setlocal smartindent
 setlocal nosmoothscroll
-setlocal softtabstop=2
+setlocal softtabstop=-1
 setlocal nospell
 setlocal spellcapcheck=[.?!]\\_[\\])'\"\\t\ ]\\+
 setlocal spellfile=
 setlocal spelllang=en_us,de_de
 setlocal spelloptions=noplainbuffer
 setlocal statuscolumn=%!v:lua.require'snacks.statuscolumn'.get()
-setlocal suffixesadd=.rb
+setlocal suffixesadd=.lua
 setlocal noswapfile
 setlocal synmaxcol=3000
 if &syntax != ''
 setlocal syntax=
 endif
 setlocal tabstop=4
-setlocal tagfunc=
+setlocal tagfunc=v:lua.vim.lsp.tagfunc
 setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#scripts%*\ %#WinBarSeparator#/%*\ %#WinBarPath#deps%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#Brewfile%*
+setlocal winbar=%#WinBarPath#common%*\ %#WinBarSeparator#/%*\ %#WinBarPath#.config%*\ %#WinBarSeparator#/%*\ %#WinBarPath#nvim%*\ %#WinBarSeparator#/%*\ %#WinBarPath#lua%*\ %#WinBarSeparator#/%*\ %#WinBarPath#lib%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#tabline.lua%*\ %#WinBarSeparator##%*\ %#WinBarSymbol#M.render%*\ %#WinBarSeparator##%*\ %#WinBarSymbol#for%*\ %#WinBarSeparator##%*\ %#WinBarSymbol#if%*
 setlocal winblend=0
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -136,15 +128,16 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 34 - ((21 * winheight(0) + 27) / 55)
+let s:l = 15 - ((11 * winheight(0) + 20) / 40)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 34
-normal! 010|
+keepjumps 15
+normal! 0
 tabnext
-edit common/.claude/settings.json
+edit ~/repos/nikbrunner/dots/common/.config/nvim/lua/options.lua
 argglobal
+balt ~/repos/nikbrunner/dots/common/.config/nvim/lua/lib/tabline.lua
 setlocal keymap=
 setlocal noarabic
 setlocal autoindent
@@ -161,8 +154,8 @@ setlocal cinoptions=
 setlocal cinscopedecls=public,protected,private
 setlocal cinwords=if,else,while,do,for,switch
 setlocal colorcolumn=
-setlocal comments=
-setlocal commentstring=
+setlocal comments=:---,:--
+setlocal commentstring=--\ %s
 setlocal complete=.,w,b,u,t
 setlocal completefunc=
 setlocal completeslash=
@@ -173,18 +166,19 @@ setlocal nocursorbind
 setlocal nocursorcolumn
 setlocal cursorline
 setlocal cursorlineopt=both
+setlocal define=\\<function\\|\\<local\\%(\\s\\+function\\)\\=
 setlocal nodiff
 setlocal eventignorewin=
 setlocal expandtab
-if &filetype != 'json'
-setlocal filetype=json
+if &filetype != 'lua'
+setlocal filetype=lua
 endif
 setlocal fixendofline
 setlocal foldcolumn=0
 setlocal foldenable
 setlocal foldexpr=v:lua.vim.treesitter.foldexpr()
 setlocal foldignore=#
-setlocal foldlevel=999
+setlocal foldlevel=99
 setlocal foldmarker={{{,}}}
 setlocal foldmethod=indent
 setlocal foldminlines=1
@@ -192,12 +186,13 @@ setlocal foldnestmax=20
 setlocal foldtext=
 setlocal formatexpr=v:lua.require'conform'.formatexpr()
 setlocal formatlistpat=^\\s*\\d\\+[\\]:.)}\\t\ ]\\s*
-setlocal formatoptions=cqj
+setlocal formatoptions=jcroql
 setlocal iminsert=0
 setlocal imsearch=-1
-setlocal includeexpr=
+setlocal include=\\<\\%(\\%(do\\|load\\)file\\|require\\)\\s*(
+setlocal includeexpr=v:lua.require'vim._ftplugin.lua'.includeexpr(v:fname)
 setlocal indentexpr=nvim_treesitter#indent()
-setlocal indentkeys=0{,0},0),0[,0],!^F,o,O,e
+setlocal indentkeys=0{,0},0),0],:,0#,!^F,o,O,e,0=end,0=until
 setlocal noinfercase
 setlocal iskeyword=@,48-57,_,192-255
 setlocal lhistory=10
@@ -212,6 +207,7 @@ setlocal nrformats=bin,hex
 setlocal number
 setlocal numberwidth=4
 setlocal omnifunc=v:lua.vim.lsp.omnifunc
+setlocal path=,
 setlocal nopreserveindent
 setlocal nopreviewwindow
 setlocal quoteescape=\\
@@ -221,9 +217,9 @@ setlocal norightleft
 setlocal rightleftcmd=search
 setlocal scrollback=-1
 setlocal noscrollbind
-setlocal shiftwidth=2
+setlocal shiftwidth=4
 setlocal signcolumn=yes
-setlocal nosmartindent
+setlocal smartindent
 setlocal nosmoothscroll
 setlocal softtabstop=-1
 setlocal nospell
@@ -232,19 +228,19 @@ setlocal spellfile=
 setlocal spelllang=en_us,de_de
 setlocal spelloptions=noplainbuffer
 setlocal statuscolumn=%!v:lua.require'snacks.statuscolumn'.get()
-setlocal suffixesadd=
+setlocal suffixesadd=.lua
 setlocal noswapfile
 setlocal synmaxcol=3000
 if &syntax != ''
 setlocal syntax=
 endif
 setlocal tabstop=4
-setlocal tagfunc=
+setlocal tagfunc=v:lua.vim.lsp.tagfunc
 setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#common%*\ %#WinBarSeparator#/%*\ %#WinBarPath#.claude%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#settings.json%*
+setlocal winbar=%#WinBarPath#common%*\ %#WinBarSeparator#/%*\ %#WinBarPath#.config%*\ %#WinBarSeparator#/%*\ %#WinBarPath#nvim%*\ %#WinBarSeparator#/%*\ %#WinBarPath#lua%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#options.lua%*
 setlocal winblend=0
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -252,14 +248,13 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 123 - ((48 * winheight(0) + 27) / 54)
+let s:l = 97 - ((13 * winheight(0) + 20) / 40)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 123
+keepjumps 97
 normal! 0
 tabnext 2
-set stal=1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
 endif
