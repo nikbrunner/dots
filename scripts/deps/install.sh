@@ -100,6 +100,13 @@ validate_dependencies() {
         echo "nvm: installed"
     fi
 
+    # Check qmk
+    if command -v qmk &>/dev/null; then
+        echo "qmk: installed"
+    else
+        echo "qmk: missing"
+    fi
+
     # Check brew bundle
     if brew bundle check --file="$DEPS_DIR/Brewfile" &>/dev/null; then
         echo "All brew packages installed!"
@@ -118,6 +125,7 @@ if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
     install) install_all ;;
     list)
         echo "nvm"
+        echo "qmk"
         grep -E '^(brew|cask)' "$DEPS_DIR/Brewfile" | sed 's/.*"\(.*\)".*/\1/'
         ;;
     configure) configure_system ;;

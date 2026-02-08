@@ -38,6 +38,17 @@ install_claude_code() {
     fi
 }
 
+# Install QMK via official installer
+install_qmk() {
+    echo "Installing QMK..."
+    if command -v curl &>/dev/null; then
+        curl -fsSL https://install.qmk.fm | sh
+    else
+        echo "curl not available"
+        return 1
+    fi
+}
+
 # Check all dependencies
 check_all() {
     echo "Checking dependencies..."
@@ -48,6 +59,13 @@ check_all() {
         echo "  nvm: installed"
     else
         echo "  nvm: missing"
+    fi
+
+    # Check qmk
+    if command -v qmk &>/dev/null; then
+        echo "  qmk: installed"
+    else
+        echo "  qmk: missing"
     fi
 
     echo ""
@@ -77,6 +95,13 @@ install_all() {
     else
         echo "  claude-code: missing"
         install_claude_code
+    fi
+
+    if command -v qmk &>/dev/null; then
+        echo "  qmk: installed"
+    else
+        echo "  qmk: missing"
+        install_qmk
     fi
 
     echo ""
