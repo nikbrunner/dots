@@ -1,5 +1,4 @@
 tap "aviator-co/tap"
-
 brew "atuin"
 brew "aviator-co/tap/av"
 brew "bat"
@@ -25,6 +24,7 @@ brew "luarocks"
 brew "mpc"
 brew "mpd"
 brew "opencode"
+brew "pipx"
 brew "ripgrep"
 brew "rust"
 brew "tmux"
