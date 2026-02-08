@@ -8,7 +8,7 @@ Run these in sequence, skipping any that have no changes:
 
 ### 1. Theme Changes
 
-Files: `common/.config/ghostty/config`, `common/.config/nvim/lua/config.lua`, `common/.config/tmux/tmux.conf`, `common/.config/zed/settings.json`
+Files: `common/.config/ghostty/config`, `common/.config/nvim/lua/config.lua`, `common/.config/tmux/tmux.conf`, `common/.config/zed/settings.json`, `common/.config/lazygit/config.yml`, `common/.gitconfig` (delta dark/light toggle)
 
 ```bash
 # Extract theme name from nvim config
