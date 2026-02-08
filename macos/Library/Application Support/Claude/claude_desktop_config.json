@@ -13,10 +13,12 @@
     }
   },
   "preferences": {
+    "menuBarEnabled": false,
+    "quickEntryShortcut": "off",
     "localAgentModeTrustedFolders": [
       "/Users/nbr/repos/nikbrunner/notes"
     ],
-    "quickEntryShortcut": "off",
-    "menuBarEnabled": false
+    "sidebarMode": "chat",
+    "coworkScheduledTasksEnabled": false
   }
 }
