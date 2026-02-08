@@ -164,6 +164,11 @@
       "display_name": "Black Atom — MNM ∷ Mono Light",
       "appearance": "light",
       "collection": "mnml"
+    },
+    "black-atom-mnml-ita-light": {
+      "display_name": "Black Atom — MNM ∷ ITA Light",
+      "appearance": "light",
+      "collection": "mnml"
     }
   },
   "tools": {
