@@ -43,7 +43,7 @@
   },
   "theme": {
     "mode": "system",
-    "dark": "Black Atom — JPN ∷ Koyo Yoru",
+    "dark": "Black Atom — MNM ∷ Mono Dark",
     "light": "Black Atom — MNM ∷ ITA Light"
   },
   "base_keymap": "VSCode",
