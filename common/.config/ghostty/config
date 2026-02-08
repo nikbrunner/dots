@@ -2,7 +2,7 @@
 # https://github.com/imrajyavardhan12/spectre-ghostty-config
 
 # Colors
-theme = black-atom-mnml-clay-light.conf
+theme = black-atom-mnml-ita-light.conf
 bold-is-bright = false
 
 # Window
@@ -24,7 +24,7 @@ window-inherit-working-directory = true
 unfocused-split-opacity = 1
 window-inherit-font-size = true
 window-theme = system
-window-decoration = none
+window-decoration = auto
 
 # background-opacity = 0.8
 
@@ -37,7 +37,7 @@ shell-integration-features = no-cursor
 
 # Macos
 macos-titlebar-style = hidden
-macos-icon = paper
+# macos-icon = paper
 
 # Application
 link-url = true
