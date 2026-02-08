@@ -154,6 +154,16 @@
       "display_name": "Black Atom — MNM ∷ Osman Light",
       "appearance": "light",
       "collection": "mnml"
+    },
+    "black-atom-mnml-mono-dark": {
+      "display_name": "Black Atom — MNM ∷ Mono Dark",
+      "appearance": "dark",
+      "collection": "mnml"
+    },
+    "black-atom-mnml-mono-light": {
+      "display_name": "Black Atom — MNM ∷ Mono Light",
+      "appearance": "light",
+      "collection": "mnml"
     }
   },
   "tools": {
