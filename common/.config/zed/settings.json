@@ -1,4 +1,7 @@
 {
+  "session": {
+    "trust_all_worktrees": false
+  },
   "buffer_font_family": "TX-02 Condensed",
   "which_key": {
     "delay_ms": 250,
@@ -40,8 +43,8 @@
   },
   "theme": {
     "mode": "system",
-    "dark": "Black Atom — Dark Dimmed",
-    "light": "Black Atom — MNM ∷ Clay Light"
+    "dark": "Black Atom — JPN ∷ Koyo Yoru",
+    "light": "Black Atom — MNM ∷ ITA Light"
   },
   "base_keymap": "VSCode",
   "vim_mode": true,
