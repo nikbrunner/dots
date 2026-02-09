@@ -18,7 +18,7 @@
     "localAgentModeTrustedFolders": [
       "/Users/nbr/repos/nikbrunner/notes"
     ],
-    "sidebarMode": "chat",
-    "coworkScheduledTasksEnabled": false
+    "coworkScheduledTasksEnabled": false,
+    "sidebarMode": "chat"
   }
 }
