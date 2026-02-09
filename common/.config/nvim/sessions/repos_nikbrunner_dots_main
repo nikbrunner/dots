@@ -10,7 +10,7 @@ endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
 badd +15 ~/repos/nikbrunner/dots/common/.config/nvim/lua/lib/tabline.lua
-badd +113 ~/repos/nikbrunner/dots/common/.config/nvim/lua/options.lua
+badd +82 ~/repos/nikbrunner/dots/common/.config/nvim/lua/options.lua
 argglobal
 %argdel
 $argadd ~/repos/nikbrunner/dots/common/.config/nvim/lua/options.lua
@@ -248,12 +248,12 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 102 - ((43 * winheight(0) + 33) / 66)
+let s:l = 85 - ((26 * winheight(0) + 33) / 66)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 102
-normal! 015|
+keepjumps 85
+normal! 0
 tabnext 2
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
