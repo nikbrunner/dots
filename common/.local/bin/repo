@@ -69,9 +69,9 @@ call_claude_api() {
 
 	while [ $attempt -le $max_retries ]; do
 		if [ $attempt -gt 1 ]; then
-			echo "Retrying (attempt $attempt/$max_retries)..."
+			echo "Retrying (attempt $attempt/$max_retries)..." >&2
 		else
-			echo "Generating with $model..."
+			echo "Generating with $model..." >&2
 		fi
 		response=$(curl -s -X POST "https://api.anthropic.com/v1/messages" \
 			-H "x-api-key: $ANTHROPIC_API_KEY" \
