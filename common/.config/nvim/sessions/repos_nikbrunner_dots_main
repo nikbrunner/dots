@@ -10,7 +10,7 @@ endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
 badd +15 ~/repos/nikbrunner/dots/common/.config/nvim/lua/lib/tabline.lua
-badd +82 ~/repos/nikbrunner/dots/common/.config/nvim/lua/options.lua
+badd +3 scripts/deps/Brewfile
 argglobal
 %argdel
 $argadd ~/repos/nikbrunner/dots/common/.config/nvim/lua/options.lua
@@ -128,16 +128,25 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 15 - ((14 * winheight(0) + 33) / 66)
+let s:l = 15 - ((11 * winheight(0) + 26) / 52)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
 keepjumps 15
 normal! 0
 tabnext
-edit ~/repos/nikbrunner/dots/common/.config/nvim/lua/options.lua
+edit scripts/deps/Brewfile
 argglobal
-balt ~/repos/nikbrunner/dots/common/.config/nvim/lua/lib/tabline.lua
+let s:cpo_save=&cpo
+set cpo&vim
+cmap <buffer> <SNR>62_<ctag> <Plug><ctag>
+cmap <buffer> <SNR>62_<cfile> <Plug><cfile>
+cmap <buffer> <C-R><C-F> <Plug><cfile>
+cmap <buffer> <SNR>39_<ctag> <Plug><ctag>
+cmap <buffer> <SNR>39_<cfile> <Plug><cfile>
+cmap <buffer>  <Plug><cfile>
+let &cpo=s:cpo_save
+unlet s:cpo_save
 setlocal keymap=
 setlocal noarabic
 setlocal autoindent
@@ -154,8 +163,8 @@ setlocal cinoptions=
 setlocal cinscopedecls=public,protected,private
 setlocal cinwords=if,else,while,do,for,switch
 setlocal colorcolumn=
-setlocal comments=:---,:--
-setlocal commentstring=--\ %s
+setlocal comments=b:#
+setlocal commentstring=#\ %s
 setlocal complete=.,w,b,u,t
 setlocal completefunc=
 setlocal completeslash=
@@ -166,12 +175,11 @@ setlocal nocursorbind
 setlocal nocursorcolumn
 setlocal cursorline
 setlocal cursorlineopt=both
-setlocal define=\\<function\\|\\<local\\%(\\s\\+function\\)\\=
 setlocal nodiff
 setlocal eventignorewin=
 setlocal expandtab
-if &filetype != 'lua'
-setlocal filetype=lua
+if &filetype != 'ruby'
+setlocal filetype=ruby
 endif
 setlocal fixendofline
 setlocal foldcolumn=0
@@ -189,12 +197,13 @@ setlocal formatlistpat=^\\s*\\d\\+[\\]:.)}\\t\ ]\\s*
 setlocal formatoptions=jcroql
 setlocal iminsert=0
 setlocal imsearch=-1
-setlocal include=\\<\\%(\\%(do\\|load\\)file\\|require\\)\\s*(
-setlocal includeexpr=v:lua.require'vim._ftplugin.lua'.includeexpr(v:fname)
+setlocal include=^\\s*\\<\\(load\\>\\|require\\>\\|autoload\\s*:\\=[\"']\\=\\h\\w*[\"']\\=,\\)
+setlocal includeexpr=
 setlocal indentexpr=nvim_treesitter#indent()
-setlocal indentkeys=0{,0},0),0],:,0#,!^F,o,O,e,0=end,0=until
+setlocal indentkeys=0{,0},0),0],!^F,o,O,e,:,.,=end,=else,=elsif,=when,=in\ ,=ensure,=rescue,==begin,==end,=private,=protected,=public
 setlocal noinfercase
 setlocal iskeyword=@,48-57,_,192-255
+setlocal keywordprg=ri
 setlocal lhistory=10
 setlocal nolinebreak
 setlocal nolisp
@@ -207,7 +216,7 @@ setlocal nrformats=bin,hex
 setlocal number
 setlocal numberwidth=4
 setlocal omnifunc=v:lua.vim.lsp.omnifunc
-setlocal path=,
+setlocal path=,.,,
 setlocal nopreserveindent
 setlocal nopreviewwindow
 setlocal quoteescape=\\
@@ -217,30 +226,30 @@ setlocal norightleft
 setlocal rightleftcmd=search
 setlocal scrollback=-1
 setlocal noscrollbind
-setlocal shiftwidth=4
+setlocal shiftwidth=2
 setlocal signcolumn=yes
-setlocal smartindent
+setlocal nosmartindent
 setlocal nosmoothscroll
-setlocal softtabstop=-1
+setlocal softtabstop=2
 setlocal nospell
 setlocal spellcapcheck=[.?!]\\_[\\])'\"\\t\ ]\\+
 setlocal spellfile=
 setlocal spelllang=en_us,de_de
 setlocal spelloptions=noplainbuffer
 setlocal statuscolumn=%!v:lua.require'snacks.statuscolumn'.get()
-setlocal suffixesadd=.lua
+setlocal suffixesadd=.rb
 setlocal noswapfile
 setlocal synmaxcol=3000
 if &syntax != ''
 setlocal syntax=
 endif
 setlocal tabstop=4
-setlocal tagfunc=v:lua.vim.lsp.tagfunc
+setlocal tagfunc=
 setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#common%*\ %#WinBarSeparator#/%*\ %#WinBarPath#.config%*\ %#WinBarSeparator#/%*\ %#WinBarPath#nvim%*\ %#WinBarSeparator#/%*\ %#WinBarPath#lua%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#options.lua%*
+setlocal winbar=%#WinBarPath#scripts%*\ %#WinBarSeparator#/%*\ %#WinBarPath#deps%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#Brewfile%*
 setlocal winblend=0
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -248,12 +257,12 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 85 - ((26 * winheight(0) + 33) / 66)
+let s:l = 3 - ((2 * winheight(0) + 26) / 52)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 85
-normal! 0
+keepjumps 3
+normal! 012|
 tabnext 2
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
