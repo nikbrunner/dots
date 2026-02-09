@@ -9,12 +9,9 @@ DOTS_DIR="${DOTS_DIR:-$HOME/repos/nikbrunner/dots}"
 # Capture the original working directory before changing to dots dir
 ORIGINAL_PWD="$(pwd)"
 
-# Colors disabled for compatibility
-RED=''
-GREEN=''
-YELLOW=''
-BLUE=''
-NC='' # No Color
+# Source shared repos library for arrive/leave commands
+# shellcheck disable=SC1091
+source "$DOTS_DIR/scripts/repos-lib.sh"
 
 # Change to dots directory for git operations
 cd "$DOTS_DIR"
@@ -72,6 +69,600 @@ log_info() {
 	fi
 }
 
+# ── Arrive command ─────────────────────────────────────────────
+# Full machine sync: pull dots, deps, link, pull all repos, rebuild tools
+cmd_arrive() {
+	local hard_reset=false
+	local rebuild_all=false
+
+	while [[ $# -gt 0 ]]; do
+		case "$1" in
+		--hard) hard_reset=true; shift ;;
+		--rebuild-all) rebuild_all=true; shift ;;
+		*) shift ;;
+		esac
+	done
+
+	# ── Phase 1: Sync dots repo ──
+	log_section "Phase 1: Sync dots repository"
+
+	local pull_output pull_failed=false
+	if ! pull_output=$(git pull origin main 2>&1); then
+		if ! pull_output=$(git pull origin master 2>&1); then
+			pull_failed=true
+		fi
+	fi
+
+	if [[ "$pull_failed" == true ]]; then
+		log_error "Failed to pull dots repo"
+		echo "$pull_output" | sed 's/^/  /'
+		return 1
+	fi
+	log_success "Dots repo pulled"
+
+	# Update submodules
+	if [[ -f .gitmodules ]]; then
+		log_info "Updating submodules..."
+		"$DOTS_DIR/scripts/submodules.sh" update
+	fi
+
+	# ── Phase 2: Check dependencies ──
+	echo ""
+	log_section "Phase 2: Check dependencies"
+	if "$DOTS_DIR/scripts/deps/install.sh" check 2>/dev/null; then
+		log_success "All dependencies present"
+	else
+		log_warning "Some dependencies may be missing"
+		if command -v gum >/dev/null 2>&1; then
+			if gum confirm "Install missing dependencies?"; then
+				"$DOTS_DIR/scripts/deps/install.sh" install || true
+			fi
+		else
+			log_info "Run 'dots deps install' to install missing dependencies"
+		fi
+	fi
+
+	# ── Phase 3: Update symlinks ──
+	echo ""
+	log_section "Phase 3: Update symlinks"
+	cmd_link
+
+	# ── Phase 4: Pull all repos ──
+	echo ""
+	log_section "Phase 4: Pull all repositories"
+	load_config
+
+	local repos
+	repos=$(list_repos)
+
+	if [[ -z "$repos" ]]; then
+		log_warning "No repositories found"
+	else
+		local repo_list=()
+		while IFS= read -r repo; do
+			[[ -z "$repo" ]] && continue
+			local repo_path="$REPOS_BASE_PATH/$repo"
+			if [[ -d "$repo_path/.git" ]]; then
+				# Skip dots repo itself (already handled in Phase 1)
+				if is_dots_repo "$repo_path"; then
+					continue
+				fi
+				repo_list+=("$repo")
+			fi
+		done <<<"$repos"
+
+		local total=${#repo_list[@]}
+		log_info "Found $total git repositories"
+		echo ""
+
+		local ok_count=0
+		local up_to_date_count=0
+		local reset_count=0
+		local skip_count=0
+		local current=1
+		local skipped_repos=()
+		local updated_repos=()
+
+		for repo in "${repo_list[@]}"; do
+			local repo_path="$REPOS_BASE_PATH/$repo"
+
+			# Fetch first to get accurate state
+			git -C "$repo_path" fetch --quiet 2>/dev/null || true
+
+			local state_info
+			state_info=$(get_repo_state "$repo_path")
+			local state="${state_info%%:*}"
+			local counts="${state_info#*:}"
+			local ahead="${counts%%:*}"
+			local behind="${counts#*:}"
+
+			echo -n "[$current/$total] $repo "
+
+			case "$state" in
+			clean)
+				echo "✓ up to date"
+				((up_to_date_count++))
+				;;
+			behind)
+				echo -n "(↓$behind) pulling... "
+				if git -C "$repo_path" pull --quiet 2>/dev/null; then
+					print_success "updated"
+					updated_repos+=("$repo")
+					((ok_count++))
+				else
+					print_error "pull failed"
+					skipped_repos+=("$repo")
+					((skip_count++))
+				fi
+				;;
+			ahead)
+				echo -e "${YELLOW}↑$ahead ahead${NC} (nothing to pull)"
+				((up_to_date_count++))
+				;;
+			diverged)
+				echo -e "${YELLOW}diverged${NC} (↑$ahead ↓$behind)"
+				if [[ "$hard_reset" == true ]]; then
+					echo -n "  → resetting to remote... "
+					if fullreset_repo "$repo_path"; then
+						print_success "reset"
+						updated_repos+=("$repo")
+						((reset_count++))
+					else
+						print_error "reset failed"
+						skipped_repos+=("$repo")
+						((skip_count++))
+					fi
+				else
+					local do_reset=false
+					if has_gum; then
+						gum confirm "  Reset to remote? (discards $ahead local commits)" && do_reset=true
+					else
+						echo -n "  Reset to remote? (discards $ahead local commits) (y/N) "
+						read -r confirm_reset
+						[[ "$confirm_reset" == "y" || "$confirm_reset" == "Y" ]] && do_reset=true
+					fi
+
+					if [[ "$do_reset" == true ]]; then
+						echo -n "  → resetting... "
+						if fullreset_repo "$repo_path"; then
+							print_success "reset"
+							updated_repos+=("$repo")
+							((reset_count++))
+						else
+							print_error "reset failed"
+							skipped_repos+=("$repo")
+							((skip_count++))
+						fi
+					else
+						echo "  → skipped"
+						skipped_repos+=("$repo")
+						((skip_count++))
+					fi
+				fi
+				;;
+			dirty | dirty+behind)
+				echo -e "${YELLOW}dirty${NC} (uncommitted changes)"
+				if [[ "$hard_reset" == true ]]; then
+					echo -n "  → resetting to remote... "
+					if fullreset_repo "$repo_path"; then
+						print_success "reset"
+						updated_repos+=("$repo")
+						((reset_count++))
+					else
+						print_error "reset failed"
+						skipped_repos+=("$repo")
+						((skip_count++))
+					fi
+				else
+					local do_reset=false
+					if has_gum; then
+						gum confirm "  Reset to remote? (discards uncommitted changes)" --default=false && do_reset=true
+					else
+						echo -n "  Reset to remote? (discards uncommitted changes) (y/N) "
+						read -r confirm_reset
+						[[ "$confirm_reset" == "y" || "$confirm_reset" == "Y" ]] && do_reset=true
+					fi
+
+					if [[ "$do_reset" == true ]]; then
+						echo -n "  → resetting... "
+						if fullreset_repo "$repo_path"; then
+							print_success "reset"
+							updated_repos+=("$repo")
+							((reset_count++))
+						else
+							print_error "reset failed"
+							skipped_repos+=("$repo")
+							((skip_count++))
+						fi
+					else
+						echo "  → skipped"
+						skipped_repos+=("$repo")
+						((skip_count++))
+					fi
+				fi
+				;;
+			no-upstream)
+				print_warning "no upstream"
+				((skip_count++))
+				;;
+			esac
+			((current++))
+		done
+
+		# Summary
+		echo ""
+		echo "────────────────────────────────────────────────"
+		log_info "Summary: $total repositories"
+		[[ $ok_count -gt 0 ]] && log_success "Pulled: $ok_count"
+		[[ $reset_count -gt 0 ]] && log_success "Reset: $reset_count"
+		[[ $up_to_date_count -gt 0 ]] && echo "  Already up to date: $up_to_date_count"
+		[[ $skip_count -gt 0 ]] && log_warning "Skipped: $skip_count"
+
+		if [[ ${#skipped_repos[@]} -gt 0 ]]; then
+			echo ""
+			log_warning "Skipped repos:"
+			for repo in "${skipped_repos[@]}"; do
+				echo "  * $repo"
+			done
+		fi
+	fi
+
+	# ── Phase 5: Rebuild tools ──
+	echo ""
+	log_section "Phase 5: Rebuild tools"
+
+	local entries=()
+	while IFS= read -r line; do
+		[[ -n "$line" ]] && entries+=("$line")
+	done < <(get_ensure_cloned 2>/dev/null || true)
+
+	if [[ ${#entries[@]} -eq 0 ]]; then
+		log_info "No ensure_cloned config found, skipping rebuilds"
+	else
+		local rebuilt=0
+		for entry in "${entries[@]}"; do
+			local post_clone
+			post_clone=$(get_entry_post_clone "$entry")
+			[[ -z "$post_clone" ]] && continue
+
+			local url
+			url=$(get_entry_url "$entry")
+			# Skip wildcard patterns
+			[[ "$url" == *"/*" ]] && continue
+
+			local repo_rel
+			repo_rel=$(parse_git_url "$url" 2>/dev/null) || continue
+			local repo_path="$REPOS_BASE_PATH/$repo_rel"
+
+			# Only rebuild if updated (or --rebuild-all)
+			if [[ "$rebuild_all" == true ]]; then
+				: # always rebuild
+			else
+				local was_updated=false
+				for updated in "${updated_repos[@]:-}"; do
+					if [[ "$updated" == "$repo_rel" ]]; then
+						was_updated=true
+						break
+					fi
+				done
+				[[ "$was_updated" == false ]] && continue
+			fi
+
+			if [[ -d "$repo_path" ]]; then
+				log_info "Rebuilding $(basename "$repo_path"): $post_clone"
+				if (cd "$repo_path" && eval "$post_clone"); then
+					log_success "Rebuilt $(basename "$repo_path")"
+					((rebuilt++))
+				else
+					log_error "Rebuild failed for $(basename "$repo_path")"
+				fi
+			fi
+		done
+
+		if [[ $rebuilt -eq 0 ]]; then
+			log_info "No tools needed rebuilding"
+		fi
+	fi
+
+	echo ""
+	log_success "Arrive complete!"
+}
+
+# ── Leave command ──────────────────────────────────────────────
+# End of day: dots chores, commit/push dots, handle dirty repos, push all
+cmd_leave() {
+	load_config
+
+	# ── Phase 1: Dots chores ──
+	log_section "Phase 1: Dots chores"
+	dots_commit_theme "$DOTS_DIR" || true
+	dots_commit_sessions "$DOTS_DIR" || true
+	dots_commit_radar "$DOTS_DIR" || true
+
+	# ── Phase 2: Commit/push dots ──
+	echo ""
+	log_section "Phase 2: Dots commit & push"
+
+	local dots_dirty
+	dots_dirty=$(git status --porcelain 2>/dev/null)
+
+	if [[ -n "$dots_dirty" ]]; then
+		log_warning "Dots repo has uncommitted changes:"
+		git status --short
+		echo ""
+
+		local actions=(
+			"Review in LazyGit"
+			"Stage all and commit with AI"
+			"Backup with timestamp"
+			"─────────"
+			"Skip"
+		)
+
+		local selected_action
+		if has_gum; then
+			selected_action=$(printf '%s\n' "${actions[@]}" | gum choose --header "What would you like to do with dots?")
+		else
+			echo "Options:"
+			local i=1
+			for action in "${actions[@]}"; do
+				if [[ "$action" == "─────────" ]]; then
+					echo "  $action"
+				else
+					echo "  [$i] $action"
+					((i++))
+				fi
+			done
+			echo -n "Choice: "
+			read -r choice
+			local j=0
+			for action in "${actions[@]}"; do
+				if [[ "$action" != "─────────" ]]; then
+					((j++))
+					if [[ "$j" == "$choice" ]]; then
+						selected_action="$action"
+						break
+					fi
+				fi
+			done
+			[[ -z "${selected_action:-}" ]] && selected_action="Skip"
+		fi
+
+		case "$selected_action" in
+		"Review in LazyGit")
+			lazygit
+			;;
+		"Stage all and commit with AI")
+			if command -v repo &>/dev/null; then
+				git add -A && repo commit -s -y
+			else
+				log_error "'repo' command not found"
+			fi
+			;;
+		"Backup with timestamp")
+			local timestamp
+			timestamp=$(date "+%Y-%m-%d %H:%M")
+			git add -A && git commit -m "backup: $timestamp"
+			log_success "Backup commit created"
+			;;
+		"Skip")
+			log_info "Skipping dots commit"
+			;;
+		esac
+	else
+		log_success "Dots repo is clean"
+	fi
+
+	# Push dots if unpushed commits
+	if [[ -n $(git log @{u}.. 2>/dev/null) ]]; then
+		do_push false
+	fi
+
+	# ── Phase 3: Handle dirty non-dots repos ──
+	echo ""
+	log_section "Phase 3: Handle dirty repos"
+
+	local repos
+	repos=$(list_repos)
+
+	local dirty_repos=()
+	while IFS= read -r repo; do
+		[[ -z "$repo" ]] && continue
+		local repo_path="$REPOS_BASE_PATH/$repo"
+
+		[[ ! -d "$repo_path/.git" ]] && continue
+		# Skip dots repo (already handled)
+		is_dots_repo "$repo_path" && continue
+
+		local status_output
+		status_output=$(cd "$repo_path" && git status --porcelain 2>/dev/null)
+		if [[ -n "$status_output" ]]; then
+			dirty_repos+=("$repo")
+		fi
+	done <<<"$repos"
+
+	if [[ ${#dirty_repos[@]} -eq 0 ]]; then
+		log_success "All repos are clean"
+	else
+		log_info "Found ${#dirty_repos[@]} repos with uncommitted changes"
+		echo ""
+
+		local current=1
+		local total=${#dirty_repos[@]}
+
+		for repo in "${dirty_repos[@]}"; do
+			local repo_path="$REPOS_BASE_PATH/$repo"
+
+			echo ""
+			echo "[$current/$total]"
+			show_repo_status "$repo"
+			echo ""
+
+			local actions=(
+				"Review in LazyGit"
+				"Stage all and commit with AI"
+				"Backup with timestamp"
+				"Cleanup with Claude"
+				"─────────"
+				"Discard changes"
+				"Push without committing"
+				"Skip this repo"
+				"Stop walkthrough"
+			)
+
+			local selected_action
+			if has_gum; then
+				selected_action=$(printf '%s\n' "${actions[@]}" | gum choose --header "What would you like to do?")
+			else
+				echo "Options:"
+				local i=1
+				for action in "${actions[@]}"; do
+					if [[ "$action" == "─────────" ]]; then
+						echo "  $action"
+					else
+						echo "  [$i] $action"
+						((i++))
+					fi
+				done
+				echo -n "Choice: "
+				read -r choice
+				local j=0
+				for action in "${actions[@]}"; do
+					if [[ "$action" != "─────────" ]]; then
+						((j++))
+						if [[ "$j" == "$choice" ]]; then
+							selected_action="$action"
+							break
+						fi
+					fi
+				done
+				[[ -z "${selected_action:-}" ]] && selected_action="Skip this repo"
+			fi
+
+			case "$selected_action" in
+			"Review in LazyGit")
+				(cd "$repo_path" && lazygit)
+				;;
+			"Stage all and commit with AI")
+				if command -v repo &>/dev/null; then
+					(cd "$repo_path" && git add -A && repo commit -s -y)
+				else
+					print_error "'repo' command not found"
+				fi
+				;;
+			"Backup with timestamp")
+				local timestamp
+				timestamp=$(date "+%Y-%m-%d %H:%M")
+				(cd "$repo_path" && git add -A && git commit -m "backup: $timestamp")
+				print_success "Backup commit created"
+				;;
+			"Cleanup with Claude")
+				if command -v claude &>/dev/null; then
+					(cd "$repo_path" && claude -p "$DOTS_DIR/common/.claude/commands/dots/git-cleanup.md")
+				else
+					print_error "'claude' command not found"
+				fi
+				;;
+			"Discard changes")
+				if has_gum; then
+					if gum confirm "Discard ALL changes in $repo?" --default=false; then
+						(cd "$repo_path" && git checkout . && git clean -fd)
+						print_success "Changes discarded"
+					else
+						echo "Cancelled"
+					fi
+				else
+					echo -n "Discard ALL changes in $repo? (y/N) "
+					read -r confirm_discard
+					if [[ "$confirm_discard" == "y" || "$confirm_discard" == "Y" ]]; then
+						(cd "$repo_path" && git checkout . && git clean -fd)
+						print_success "Changes discarded"
+					else
+						echo "Cancelled"
+					fi
+				fi
+				;;
+			"Push without committing")
+				echo "Skipping commit, will push later..."
+				;;
+			"Skip this repo")
+				echo "Skipping..."
+				;;
+			"Stop walkthrough")
+				echo "Stopping walkthrough"
+				break
+				;;
+			esac
+
+			((current++))
+		done
+	fi
+
+	# ── Phase 4: Push all repos ──
+	echo ""
+	log_section "Phase 4: Push all repos"
+	echo "Checking for repos to push..."
+
+	local all_to_push=()
+	while IFS= read -r repo; do
+		[[ -z "$repo" ]] && continue
+		local repo_path="$REPOS_BASE_PATH/$repo"
+
+		[[ ! -d "$repo_path/.git" ]] && continue
+		# Skip dots (already pushed in Phase 2)
+		is_dots_repo "$repo_path" && continue
+
+		if git -C "$repo_path" rev-parse --abbrev-ref '@{u}' &>/dev/null; then
+			git -C "$repo_path" fetch --quiet 2>/dev/null || true
+			local ahead
+			ahead=$(git -C "$repo_path" rev-list --count '@{u}..' 2>/dev/null || echo "0")
+			if [[ -n "$ahead" && "$ahead" -gt 0 ]]; then
+				all_to_push+=("$repo")
+			fi
+		fi
+	done <<<"$(list_repos)"
+
+	if [[ ${#all_to_push[@]} -eq 0 ]]; then
+		log_success "Nothing to push!"
+	else
+		echo ""
+		echo "Repos ready to push:"
+		for repo in "${all_to_push[@]}"; do
+			local repo_path="$REPOS_BASE_PATH/$repo"
+			local ahead
+			ahead=$(git -C "$repo_path" rev-list --count '@{u}..' 2>/dev/null || echo "0")
+			echo "  * $repo (↑$ahead)"
+		done
+		echo ""
+
+		local do_push_all=false
+		if has_gum; then
+			gum confirm "Push all ${#all_to_push[@]} repos?" && do_push_all=true
+		else
+			echo -n "Push all ${#all_to_push[@]} repos? (y/N) "
+			read -r push_confirm
+			[[ "$push_confirm" == "y" || "$push_confirm" == "Y" ]] && do_push_all=true
+		fi
+
+		if [[ "$do_push_all" == true ]]; then
+			for repo in "${all_to_push[@]}"; do
+				local repo_path="$REPOS_BASE_PATH/$repo"
+				echo "Pushing $repo..."
+				if git -C "$repo_path" push 2>/dev/null; then
+					print_success "$repo pushed"
+				else
+					print_error "$repo push failed"
+				fi
+			done
+		else
+			echo "Push cancelled"
+		fi
+	fi
+
+	echo ""
+	log_success "Leave complete!"
+}
+
 # Function to show usage
 show_usage() {
 	if command -v gum >/dev/null 2>&1; then
@@ -102,6 +693,10 @@ show_usage() {
 		gum style --foreground=2 "  font         - Interactive font selector for terminal applications"
 		gum style --foreground=2 "  mcp          - Configure Claude Code MCP servers [--dry-run] [--force]"
 		echo ""
+		gum style --foreground=4 --bold "Machine Sync:"
+		gum style --foreground=2 "  arrive       - Full machine sync: pull dots, deps, symlinks, all repos, rebuild [--hard] [--rebuild-all]"
+		gum style --foreground=2 "  leave        - End of day: dots chores, commit/push, handle dirty repos, push all"
+		echo ""
 	else
 		echo "dots - Dotfiles management command"
 		echo ""
@@ -128,6 +723,10 @@ show_usage() {
 		echo "  theme-link   - Create relative symlinks for Black Atom themes [--dry-run]"
 		echo "  font         - Interactive font selector for terminal applications"
 		echo "  mcp          - Configure Claude Code MCP servers [--dry-run] [--force]"
+		echo ""
+		echo "Machine Sync:"
+		echo "  arrive       - Full machine sync: pull dots, deps, symlinks, all repos, rebuild [--hard] [--rebuild-all]"
+		echo "  leave        - End of day: dots chores, commit/push, handle dirty repos, push all"
 		echo ""
 	fi
 }
@@ -1003,6 +1602,14 @@ font)
 mcp)
 	shift
 	cmd_mcp "$@"
+	;;
+arrive)
+	shift
+	cmd_arrive "$@"
+	;;
+leave)
+	shift
+	cmd_leave "$@"
 	;;
 *)
 	show_usage

@@ -25,6 +25,11 @@ dots/
 ### Dotfiles Management (`dots`)
 
 ```bash
+# Machine Sync
+dots arrive [--hard] [--rebuild-all]  # Full sync: pull dots, deps, symlinks, all repos, rebuild
+dots leave                             # End of day: chores, commit/push dots, handle dirty repos
+
+# Setup & Config
 dots install [--dry-run] [--no-deps]  # Complete machine setup
 dots link [--dry-run] [--verbose]     # Update all symlinks
 dots sync                              # Git pull + submodule updates
@@ -114,6 +119,8 @@ Run `dots theme-link` to create/update relative symlinks to Black Atom repos.
 ## Key Files
 
 - `common/.local/bin/dots` - Main CLI implementation
+- `common/.local/bin/repos` - Repository management CLI
+- `scripts/repos-lib.sh` - Shared library (sourced by both `dots` and `repos`)
 - `scripts/symlinks.sh` - Symlink creation logic
 - `scripts/detect-os.sh` - OS detection (`macos`, `arch`, `linux`)
 - `scripts/deps/` - Dependency management (install.sh dispatcher, macos.sh, arch.sh)
