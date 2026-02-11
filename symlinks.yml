@@ -63,3 +63,4 @@ arch:
   arch/.config/niri: ~/.config/niri
   arch/.config/satty: ~/.config/satty
   arch/.config/waybar: ~/.config/waybar
+  arch/.config/waypaper: ~/.config/waypaper
