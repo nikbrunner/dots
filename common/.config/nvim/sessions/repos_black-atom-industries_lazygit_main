@@ -10,7 +10,7 @@ endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
 badd +17 ~/repos/black-atom-industries/lazygit/CLAUDE.md
-badd +19 ~/repos/black-atom-industries/lazygit/themes/mnml/black-atom-mnml-ita-light.yml
+badd +24 ~/repos/black-atom-industries/lazygit/themes/mnml/black-atom-mnml-ita-light.yml
 argglobal
 %argdel
 $argadd ~/repos/black-atom-industries/lazygit/themes/mnml/black-atom-mnml-ita-light.yml
@@ -140,7 +140,7 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal wrap
 setlocal wrapmargin=0
-let s:l = 17 - ((15 * winheight(0) + 20) / 41)
+let s:l = 17 - ((15 * winheight(0) + 22) / 44)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
@@ -257,11 +257,11 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 19 - ((18 * winheight(0) + 20) / 41)
+let s:l = 24 - ((23 * winheight(0) + 22) / 44)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 19
+keepjumps 24
 normal! 0
 tabnext 2
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'

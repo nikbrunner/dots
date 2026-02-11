@@ -43,7 +43,7 @@
   },
   "theme": {
     "mode": "system",
-    "dark": "Black Atom — MNM ∷ Mono Dark",
+    "dark": "Black Atom — Dark Dimmed",
     "light": "Black Atom — MNM ∷ ITA Light"
   },
   "base_keymap": "VSCode",
