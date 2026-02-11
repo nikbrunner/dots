@@ -103,7 +103,7 @@ check_dep() {
         ;;
 
     # Packages without commands - check via pacman
-    bluez | bluez-utils | lib32-gamemode)
+    bluez | bluez-utils | lib32-gamemode | zsh-autosuggestions | zsh-syntax-highlighting)
         pacman -Qi "$dep" &>/dev/null
         ;;
 
@@ -200,8 +200,10 @@ check_all() {
     echo ""
     if [[ ${#missing[@]} -eq 0 ]]; then
         echo "✅ All dependencies installed!"
+        return 0
     else
         echo "❌ Missing: ${#missing[@]} dependencies"
+        return 1
     fi
 }
 
