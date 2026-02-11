@@ -181,23 +181,23 @@ cmd_arrive() {
 			case "$state" in
 			clean)
 				echo "✓ up to date"
-				((up_to_date_count++))
+				((up_to_date_count++)) || true
 				;;
 			behind)
 				echo -n "(↓$behind) pulling... "
 				if git -C "$repo_path" pull --quiet 2>/dev/null; then
 					print_success "updated"
 					updated_repos+=("$repo")
-					((ok_count++))
+					((ok_count++)) || true
 				else
 					print_error "pull failed"
 					skipped_repos+=("$repo")
-					((skip_count++))
+					((skip_count++)) || true
 				fi
 				;;
 			ahead)
 				echo -e "${YELLOW}↑$ahead ahead${NC} (nothing to pull)"
-				((up_to_date_count++))
+				((up_to_date_count++)) || true
 				;;
 			diverged)
 				echo -e "${YELLOW}diverged${NC} (↑$ahead ↓$behind)"
@@ -206,11 +206,11 @@ cmd_arrive() {
 					if fullreset_repo "$repo_path"; then
 						print_success "reset"
 						updated_repos+=("$repo")
-						((reset_count++))
+						((reset_count++)) || true
 					else
 						print_error "reset failed"
 						skipped_repos+=("$repo")
-						((skip_count++))
+						((skip_count++)) || true
 					fi
 				else
 					local do_reset=false
@@ -227,16 +227,16 @@ cmd_arrive() {
 						if fullreset_repo "$repo_path"; then
 							print_success "reset"
 							updated_repos+=("$repo")
-							((reset_count++))
+							((reset_count++)) || true
 						else
 							print_error "reset failed"
 							skipped_repos+=("$repo")
-							((skip_count++))
+							((skip_count++)) || true
 						fi
 					else
 						echo "  → skipped"
 						skipped_repos+=("$repo")
-						((skip_count++))
+						((skip_count++)) || true
 					fi
 				fi
 				;;
@@ -247,11 +247,11 @@ cmd_arrive() {
 					if fullreset_repo "$repo_path"; then
 						print_success "reset"
 						updated_repos+=("$repo")
-						((reset_count++))
+						((reset_count++)) || true
 					else
 						print_error "reset failed"
 						skipped_repos+=("$repo")
-						((skip_count++))
+						((skip_count++)) || true
 					fi
 				else
 					local do_reset=false
@@ -268,25 +268,25 @@ cmd_arrive() {
 						if fullreset_repo "$repo_path"; then
 							print_success "reset"
 							updated_repos+=("$repo")
-							((reset_count++))
+							((reset_count++)) || true
 						else
 							print_error "reset failed"
 							skipped_repos+=("$repo")
-							((skip_count++))
+							((skip_count++)) || true
 						fi
 					else
 						echo "  → skipped"
 						skipped_repos+=("$repo")
-						((skip_count++))
+						((skip_count++)) || true
 					fi
 				fi
 				;;
 			no-upstream)
 				print_warning "no upstream"
-				((skip_count++))
+				((skip_count++)) || true
 				;;
 			esac
-			((current++))
+			((current++)) || true
 		done
 
 		# Summary
@@ -352,7 +352,7 @@ cmd_arrive() {
 				log_info "Rebuilding $(basename "$repo_path"): $post_clone"
 				if (cd "$repo_path" && eval "$post_clone"); then
 					log_success "Rebuilt $(basename "$repo_path")"
-					((rebuilt++))
+					((rebuilt++)) || true
 				else
 					log_error "Rebuild failed for $(basename "$repo_path")"
 				fi
@@ -410,7 +410,7 @@ cmd_leave() {
 					echo "  $action"
 				else
 					echo "  [$i] $action"
-					((i++))
+					((i++)) || true
 				fi
 			done
 			echo -n "Choice: "
@@ -418,7 +418,7 @@ cmd_leave() {
 			local j=0
 			for action in "${actions[@]}"; do
 				if [[ "$action" != "─────────" ]]; then
-					((j++))
+					((j++)) || true
 					if [[ "$j" == "$choice" ]]; then
 						selected_action="$action"
 						break
@@ -521,7 +521,7 @@ cmd_leave() {
 						echo "  $action"
 					else
 						echo "  [$i] $action"
-						((i++))
+						((i++)) || true
 					fi
 				done
 				echo -n "Choice: "
@@ -529,7 +529,7 @@ cmd_leave() {
 				local j=0
 				for action in "${actions[@]}"; do
 					if [[ "$action" != "─────────" ]]; then
-						((j++))
+						((j++)) || true
 						if [[ "$j" == "$choice" ]]; then
 							selected_action="$action"
 							break
@@ -594,7 +594,7 @@ cmd_leave() {
 				;;
 			esac
 
-			((current++))
+			((current++)) || true
 		done
 	fi
 
@@ -1261,10 +1261,10 @@ cmd_test() {
 	echo "→ Testing repository structure..."
 	if [[ -f "CLAUDE.md" && -d "scripts" && -d "common" ]]; then
 		echo "✓ Repository structure OK"
-		((tests_passed++))
+		((tests_passed++)) || true
 	else
 		echo "✗ Repository structure missing"
-		((tests_failed++))
+		((tests_failed++)) || true
 	fi
 
 	# Test 2: Check OS detection
@@ -1273,10 +1273,10 @@ cmd_test() {
 	local detected_os=$(get_os)
 	if [[ -n "$detected_os" && ("$detected_os" == "macos" || "$detected_os" == "linux") ]]; then
 		echo "✓ OS detection OK: $detected_os"
-		((tests_passed++))
+		((tests_passed++)) || true
 	else
 		echo "✗ OS detection failed: $detected_os"
-		((tests_failed++))
+		((tests_failed++)) || true
 	fi
 
 	# Test 3: Check directory structure
@@ -1285,25 +1285,25 @@ cmd_test() {
 	local missing_dirs=0
 	for dir in "${expected_dirs[@]}"; do
 		if [[ ! -d "$dir" ]]; then
-			((missing_dirs++))
+			((missing_dirs++)) || true
 		fi
 	done
 	if [[ $missing_dirs -eq 0 ]]; then
 		echo "✓ Directory structure OK"
-		((tests_passed++))
+		((tests_passed++)) || true
 	else
 		echo "✗ Directory structure incomplete ($missing_dirs missing)"
-		((tests_failed++))
+		((tests_failed++)) || true
 	fi
 
 	# Test 4: Check symlink creation (dry run)
 	echo "→ Testing symlink creation (dry run)..."
 	if "$DOTS_DIR/scripts/symlinks.sh" --dry-run >/dev/null 2>&1; then
 		echo "✓ Symlink creation test OK"
-		((tests_passed++))
+		((tests_passed++)) || true
 	else
 		echo "✗ Symlink creation test failed"
-		((tests_failed++))
+		((tests_failed++)) || true
 	fi
 
 	# Test 5: Check critical symlinks exist and are correct
@@ -1313,27 +1313,27 @@ cmd_test() {
 
 	for link in "${critical_links[@]}"; do
 		if [[ -L "$link" && -e "$link" ]]; then
-			((valid_symlinks++))
+			((valid_symlinks++)) || true
 		fi
 	done
 
 	if [[ $valid_symlinks -eq ${#critical_links[@]} ]]; then
 		echo "✓ Critical symlinks OK ($valid_symlinks/${#critical_links[@]})"
-		((tests_passed++))
+		((tests_passed++)) || true
 	else
 		echo "⚠ Some critical symlinks missing ($valid_symlinks/${#critical_links[@]})"
 		# Don't fail the test - symlinks might not be set up yet
-		((tests_passed++))
+		((tests_passed++)) || true
 	fi
 
 	# Test 6: Check git repository status
 	echo "→ Testing git repository..."
 	if git rev-parse --git-dir >/dev/null 2>&1; then
 		echo "✓ Git repository OK"
-		((tests_passed++))
+		((tests_passed++)) || true
 	else
 		echo "✗ Git repository not found"
-		((tests_failed++))
+		((tests_failed++)) || true
 	fi
 
 	# Test 7: Lint shell scripts with shellcheck
@@ -1361,14 +1361,14 @@ cmd_test() {
 			local files_with_issues=()
 			for file in "${shell_files[@]}"; do
 				if ! shellcheck "$file" >/dev/null 2>&1; then
-					((lint_errors++))
+					((lint_errors++)) || true
 					files_with_issues+=("$file")
 				fi
 			done
 
 			if [[ $lint_errors -eq 0 ]]; then
 				echo "✓ Shell scripts lint OK (${#shell_files[@]} files)"
-				((tests_passed++))
+				((tests_passed++)) || true
 			else
 				echo "⚠ Shell scripts have lint issues ($lint_errors/${#shell_files[@]} files):"
 				for file in "${files_with_issues[@]}"; do
@@ -1378,16 +1378,16 @@ cmd_test() {
 					shellcheck "$file" 2>&1 | sed 's/^/      /'
 				done
 				# Don't fail the test - just warn about lint issues
-				((tests_passed++))
+				((tests_passed++)) || true
 			fi
 		else
 			echo "✓ No shell scripts found"
-			((tests_passed++))
+			((tests_passed++)) || true
 		fi
 	else
 		echo "⚠ shellcheck not available, skipping shell script linting"
 		echo "    Install with: brew install shellcheck"
-		((tests_passed++))
+		((tests_passed++)) || true
 	fi
 
 	# Summary
