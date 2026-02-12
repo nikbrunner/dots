@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 # Shared library for repository operations.
-# Sourced by both `dots` and `repos` commands.
+# Sourced by `dots` commands (arrive/leave).
 # Has NO side effects -- callers must invoke load_config() themselves.
+# Requires: yq (https://github.com/mikefarah/yq/)
 
 # Guard against double-sourcing
 [[ -n "${_REPOS_LIB_LOADED:-}" ]] && return 0
@@ -9,10 +10,9 @@ _REPOS_LIB_LOADED=1
 
 # ── Configuration ────────────────────────────────────────────
 
-CONFIG_FILE="${XDG_CONFIG_HOME:-$HOME/.config}/repos/config.json"
+CONFIG_FILE="${XDG_CONFIG_HOME:-$HOME/.config}/helm/config.yml"
 
 _DEFAULT_REPOS_BASE_PATH="$HOME/repos"
-_DEFAULT_PARALLEL_JOBS=4
 
 # ── Colors ───────────────────────────────────────────────────
 
@@ -40,42 +40,40 @@ print_warning() {
 
 load_config() {
 	REPOS_BASE_PATH="$_DEFAULT_REPOS_BASE_PATH"
-	DEFAULT_PARALLEL_JOBS="$_DEFAULT_PARALLEL_JOBS"
 
 	if [[ -f "$CONFIG_FILE" ]]; then
 		local val
 
-		val=$(jq -r '.repos_base_path // empty' "$CONFIG_FILE" 2>/dev/null) || true
-		[[ -n "$val" ]] && REPOS_BASE_PATH="${val/#\~/$HOME}"
-
-		val=$(jq -r '.parallel_jobs // empty' "$CONFIG_FILE" 2>/dev/null) || true
-		[[ -n "$val" ]] && DEFAULT_PARALLEL_JOBS="$val"
+		val=$(yq '.project_dirs[0] // ""' "$CONFIG_FILE" 2>/dev/null) || true
+		[[ -n "$val" && "$val" != "null" ]] && REPOS_BASE_PATH="${val/#\~/$HOME}"
 	fi
 }
 
-# Get repositories to ensure are cloned from config (as JSON array)
+# Get repositories to ensure are cloned from config (one JSON entry per line)
 get_ensure_cloned() {
 	if [[ ! -f "$CONFIG_FILE" ]]; then
 		return 1
 	fi
-	jq -c '.ensure_cloned[]? // empty' "$CONFIG_FILE" 2>/dev/null
+	yq -o=json -I=0 '.ensure_cloned[]' "$CONFIG_FILE" 2>/dev/null
 }
 
 # Extract URL from ensure_cloned entry (handles both string and object formats)
 get_entry_url() {
 	local entry="$1"
 	if [[ "$entry" == "{"* ]]; then
-		echo "$entry" | jq -r '.url // empty'
+		echo "$entry" | yq -p=json '.url // ""'
 	else
 		echo "$entry" | tr -d '"'
 	fi
 }
 
-# Extract postClone command from ensure_cloned entry
+# Extract post_clone command from ensure_cloned entry
 get_entry_post_clone() {
 	local entry="$1"
 	if [[ "$entry" == "{"* ]]; then
-		echo "$entry" | jq -r '.postClone // empty'
+		local val
+		val=$(echo "$entry" | yq -p=json '.post_clone // ""')
+		[[ -n "$val" && "$val" != "null" ]] && echo "$val"
 	fi
 }
 

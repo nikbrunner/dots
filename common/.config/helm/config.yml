@@ -20,9 +20,6 @@ git_status_enabled: true
 # Supports multiple paths - all will be scanned
 project_dirs:
   - ~/repos
-# Example with multiple paths:
-# project_dirs:
-#   - ~/repos
 #   - ~/work
 #   - ~/personal
 
@@ -36,3 +33,23 @@ default_session_dir: ~/repos
 lazygit_popup:
   width: 100%
   height: 90%
+
+# Repositories to ensure are cloned (used by 'helm setup')
+ensure_cloned:
+  - git@github.com:nikbrunner/dots
+  - git@github.com:nikbrunner/notes
+  - git@github.com:nikbrunner/the-black-atom
+  - git@github.com:nikbrunner/koyo
+  - git@github.com:nikbrunner/nbr.haus
+  - git@github.com:nikbrunner/fff-snacks.nvim
+  - git@github.com:nikbrunner/review.nvim
+  - git@github.com:nikbrunner/wallpapers
+  - url: git@github.com:black-atom-industries/helm
+    post_clone: make install
+  - url: git@github.com:nikbrunner/bm
+    post_clone: make install
+  - url: git@github.com:nikbrunner/tmux-file-picker
+    post_clone: make install
+  - git@github.com:black-atom-industries/*
+  - url: git@github.com:nikbrunner/fonts
+    post_clone: ./install.sh
