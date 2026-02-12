@@ -748,8 +748,7 @@ show_usage() {
 	echo "Commands:"
 	echo "  deps         - Install/check dependencies [check|install|validate]"
 	echo "  link         - Update all symlinks (clean broken + create new) [--dry-run] [--no-backup] [--verbose]"
-	echo "  commit       - Open LazyGit for interactive committing"
-	echo "  status       - Show git and symlink status"
+	echo "  state        - Open LazyGit for git status and committing"
 	echo "  open         - Open dots directory with \$EDITOR"
 	echo "  remove       - Remove path from git tracking (keep files locally)"
 	echo "  theme        - Interactive theme selector for all development tools [--debug]"
@@ -851,39 +850,14 @@ do_push() {
 	fi
 }
 
-# Commit command - opens LazyGit for interactive committing
-cmd_commit() {
-	log_info "Opening LazyGit for commits..."
-
+# State command - opens LazyGit
+cmd_state() {
 	if command -v lazygit >/dev/null 2>&1; then
 		lazygit
 	else
 		log_error "LazyGit not found. Install with: brew install lazygit"
 		return 1
 	fi
-}
-
-# Status command - delegate to external script
-cmd_status() {
-	log_section "=== Git Repository Status ==="
-	git status --short
-
-	echo ""
-	log_section "=== Symlink Status ==="
-
-	echo "Checking symlinks..."
-
-	# Source symlinks.sh to get access to check function
-	# shellcheck disable=SC1091
-	source "$DOTS_DIR/scripts/symlinks.sh"
-
-	# Get current OS and symlinks file
-	local current_os
-	current_os=$("$DOTS_DIR/scripts/detect-os.sh" get_os)
-	local symlinks_file="$DOTS_DIR/symlinks.yml"
-
-	# Check symlink status
-	check_symlinks_from_config "$symlinks_file" "$current_os" --verbose
 }
 
 # Open command - open dots directory with $EDITOR
@@ -1002,12 +976,8 @@ link)
 	shift
 	cmd_link "$@"
 	;;
-commit)
-	shift
-	cmd_commit "$@"
-	;;
-status)
-	cmd_status
+state)
+	cmd_state
 	;;
 open)
 	cmd_open
