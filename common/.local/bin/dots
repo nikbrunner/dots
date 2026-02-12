@@ -47,7 +47,7 @@ cmd_pull() {
 
 	if [[ "$pull_failed" == true ]]; then
 		log_error "Failed to pull dots repo"
-		echo "$pull_output" | sed 's/^/  /'
+		echo "  ${pull_output//$'\n'/$'\n'  }"
 		return 1
 	fi
 	log_success "Dots repo pulled"
@@ -267,7 +267,7 @@ cmd_push() {
 	fi
 
 	# Push dots if unpushed commits
-	if [[ -n $(git log @{u}.. 2>/dev/null) ]]; then
+	if [[ -n $(git log '@{u}..' 2>/dev/null) ]]; then
 		do_push false
 	fi
 
