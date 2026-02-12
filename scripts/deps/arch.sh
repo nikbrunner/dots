@@ -42,6 +42,7 @@ DEPS=(
     # Languages & runtimes
     rust
     go
+    golangci-lint-bin
     deno
     uv
 
@@ -91,6 +92,7 @@ check_dep() {
     rust) command -v cargo &>/dev/null ;;
     python-eyed3) command -v eyeD3 &>/dev/null ;;
     go-yq) command -v yq &>/dev/null ;;
+    golangci-lint-bin) command -v golangci-lint &>/dev/null ;;
     beads-bin) command -v bd &>/dev/null ;;
     av-cli-bin) command -v av &>/dev/null ;;
     zed-preview-bin) command -v zeditor &>/dev/null ;;
