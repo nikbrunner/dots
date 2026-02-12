@@ -757,7 +757,6 @@ show_usage() {
 	echo "  link         - Update all symlinks (clean broken + create new) [--dry-run] [--no-backup] [--verbose]"
 	echo "  commit       - Open LazyGit for interactive committing"
 	echo "  status       - Show git and symlink status"
-	echo "  format       - Format repository files with prettier and shfmt [--check]"
 	echo "  log          - Show git log"
 	echo "  open         - Open dots directory with \$EDITOR"
 	echo "  remove       - Remove path from git tracking (keep files locally)"
@@ -898,12 +897,6 @@ cmd_status() {
 	check_symlinks_from_config "$symlinks_file" "$current_os" --verbose
 }
 
-# Format command
-cmd_format() {
-	echo "→ Formatting repository files..."
-	"$DOTS_DIR/scripts/format.sh" "$@"
-}
-
 # Log command
 cmd_log() {
 	echo "→ Recent commits:"
@@ -1036,10 +1029,6 @@ commit)
 	;;
 status)
 	cmd_status
-	;;
-format)
-	shift
-	cmd_format "$@"
 	;;
 log)
 	cmd_log
