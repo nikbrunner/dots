@@ -168,14 +168,17 @@ cmd_pull() {
 		helm repos rebuild --all
 	elif [[ ${#updated_repos[@]} -gt 0 ]]; then
 		local repos_csv
-		repos_csv=$(IFS=,; echo "${updated_repos[*]}")
+		repos_csv=$(
+			IFS=,
+			echo "${updated_repos[*]}"
+		)
 		helm repos rebuild --repos "$repos_csv"
 	else
 		log_info "No tools needed rebuilding"
 	fi
 
 	echo ""
-	log_success "Arrive complete!"
+	log_success "Dots pull complete!"
 }
 
 # ── Push command ───────────────────────────────────────────────
@@ -455,7 +458,7 @@ cmd_push() {
 	fi
 
 	echo ""
-	log_success "Leave complete!"
+	log_success "Dots push complete!"
 }
 
 # ── Chores command ──────────────────────────────────────────────
