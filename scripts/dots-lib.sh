@@ -5,36 +5,19 @@
 # Requires: yq (https://github.com/mikefarah/yq/)
 
 # Guard against double-sourcing
-[[ -n "${_REPOS_LIB_LOADED:-}" ]] && return 0
-_REPOS_LIB_LOADED=1
+[[ -n "${_DOTS_LIB_LOADED:-}" ]] && return 0
+_DOTS_LIB_LOADED=1
+
+# Source shared logging (provides log_*, has_gum, confirm, choose)
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# shellcheck disable=SC1091
+source "$SCRIPT_DIR/log.sh"
 
 # ── Configuration ────────────────────────────────────────────
 
 CONFIG_FILE="${XDG_CONFIG_HOME:-$HOME/.config}/helm/config.yml"
 
 _DEFAULT_REPOS_BASE_PATH="$HOME/repos"
-
-# ── Colors ───────────────────────────────────────────────────
-
-GREEN='\033[0;32m'
-RED='\033[0;31m'
-YELLOW='\033[0;33m'
-BLUE='\033[0;34m'
-NC='\033[0m'
-
-# ── Output helpers ───────────────────────────────────────────
-
-print_success() {
-	echo -e "${GREEN}✓ $1${NC}"
-}
-
-print_error() {
-	echo -e "${RED}✗ $1${NC}"
-}
-
-print_warning() {
-	echo -e "${YELLOW}⚠ $1${NC}"
-}
 
 # ── Config loading ───────────────────────────────────────────
 
@@ -74,24 +57,6 @@ get_entry_post_clone() {
 		local val
 		val=$(echo "$entry" | yq -p=json '.post_clone // ""')
 		[[ -n "$val" && "$val" != "null" ]] && echo "$val"
-	fi
-}
-
-# ── Utility helpers ──────────────────────────────────────────
-
-has_gum() {
-	command -v gum &>/dev/null
-}
-
-confirm_action() {
-	local prompt="$1"
-
-	if has_gum; then
-		gum confirm "$prompt"
-	else
-		echo -n "$prompt (y/N) "
-		read -r confirm
-		[[ "$confirm" == "y" || "$confirm" == "Y" ]]
 	fi
 }
 

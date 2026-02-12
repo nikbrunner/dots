@@ -6,65 +6,14 @@ set -e
 # Get the dots directory
 DOTS_DIR="${DOTS_DIR:-$HOME/repos/nikbrunner/dots}"
 
-# Source shared dots library for pull/push commands
+# Source shared libraries
+# shellcheck disable=SC1091
+source "$DOTS_DIR/scripts/log.sh"
 # shellcheck disable=SC1091
 source "$DOTS_DIR/scripts/dots-lib.sh"
 
 # Change to dots directory for git operations
 cd "$DOTS_DIR"
-
-# Check for gum and provide helpful message if missing
-check_gum() {
-	if ! command -v gum >/dev/null 2>&1; then
-		echo "⚠ gum not found - install for enhanced UI:"
-		echo "  macOS: brew install gum"
-		echo "  Linux: See https://github.com/charmbracelet/gum#installation"
-		echo ""
-		return 1
-	fi
-	return 0
-}
-
-# Enhanced output functions using gum when available
-log_section() {
-	if command -v gum >/dev/null 2>&1; then
-		gum style --foreground=4 --bold "$1"
-	else
-		echo "$1"
-	fi
-}
-
-log_success() {
-	if command -v gum >/dev/null 2>&1; then
-		gum style --foreground=2 "✓ $1"
-	else
-		echo "✓ $1"
-	fi
-}
-
-log_warning() {
-	if command -v gum >/dev/null 2>&1; then
-		gum style --foreground=3 "⚠ $1"
-	else
-		echo "⚠ $1"
-	fi
-}
-
-log_error() {
-	if command -v gum >/dev/null 2>&1; then
-		gum style --foreground=1 "✗ $1"
-	else
-		echo "✗ $1"
-	fi
-}
-
-log_info() {
-	if command -v gum >/dev/null 2>&1; then
-		gum style --foreground=6 "→ $1"
-	else
-		echo "→ $1"
-	fi
-}
 
 # ── Pull command ───────────────────────────────────────────────
 # Full machine sync: pull dots, deps, link, pull all repos, rebuild tools
@@ -183,11 +132,11 @@ cmd_pull() {
 			behind)
 				echo -n "(↓$behind) pulling... "
 				if git -C "$repo_path" pull --quiet 2>/dev/null; then
-					print_success "updated"
+					log_success "updated"
 					updated_repos+=("$repo")
 					((ok_count++)) || true
 				else
-					print_error "pull failed"
+					log_error "pull failed"
 					skipped_repos+=("$repo")
 					((skip_count++)) || true
 				fi
@@ -201,11 +150,11 @@ cmd_pull() {
 				if [[ "$hard_reset" == true ]]; then
 					echo -n "  → resetting to remote... "
 					if fullreset_repo "$repo_path"; then
-						print_success "reset"
+						log_success "reset"
 						updated_repos+=("$repo")
 						((reset_count++)) || true
 					else
-						print_error "reset failed"
+						log_error "reset failed"
 						skipped_repos+=("$repo")
 						((skip_count++)) || true
 					fi
@@ -222,11 +171,11 @@ cmd_pull() {
 					if [[ "$do_reset" == true ]]; then
 						echo -n "  → resetting... "
 						if fullreset_repo "$repo_path"; then
-							print_success "reset"
+							log_success "reset"
 							updated_repos+=("$repo")
 							((reset_count++)) || true
 						else
-							print_error "reset failed"
+							log_error "reset failed"
 							skipped_repos+=("$repo")
 							((skip_count++)) || true
 						fi
@@ -242,11 +191,11 @@ cmd_pull() {
 				if [[ "$hard_reset" == true ]]; then
 					echo -n "  → resetting to remote... "
 					if fullreset_repo "$repo_path"; then
-						print_success "reset"
+						log_success "reset"
 						updated_repos+=("$repo")
 						((reset_count++)) || true
 					else
-						print_error "reset failed"
+						log_error "reset failed"
 						skipped_repos+=("$repo")
 						((skip_count++)) || true
 					fi
@@ -263,11 +212,11 @@ cmd_pull() {
 					if [[ "$do_reset" == true ]]; then
 						echo -n "  → resetting... "
 						if fullreset_repo "$repo_path"; then
-							print_success "reset"
+							log_success "reset"
 							updated_repos+=("$repo")
 							((reset_count++)) || true
 						else
-							print_error "reset failed"
+							log_error "reset failed"
 							skipped_repos+=("$repo")
 							((skip_count++)) || true
 						fi
@@ -279,7 +228,7 @@ cmd_pull() {
 				fi
 				;;
 			no-upstream)
-				print_warning "no upstream"
+				log_warning "no upstream"
 				((skip_count++)) || true
 				;;
 			esac
@@ -544,27 +493,27 @@ cmd_push() {
 				if command -v repo &>/dev/null; then
 					(cd "$repo_path" && git add -A && repo commit -s -y)
 				else
-					print_error "'repo' command not found"
+					log_error "'repo' command not found"
 				fi
 				;;
 			"Backup with timestamp")
 				local timestamp
 				timestamp=$(date "+%Y-%m-%d %H:%M")
 				(cd "$repo_path" && git add -A && git commit -m "backup: $timestamp")
-				print_success "Backup commit created"
+				log_success "Backup commit created"
 				;;
 			"Cleanup with Claude")
 				if command -v claude &>/dev/null; then
 					(cd "$repo_path" && claude -p "$DOTS_DIR/common/.claude/commands/dots/git-cleanup.md")
 				else
-					print_error "'claude' command not found"
+					log_error "'claude' command not found"
 				fi
 				;;
 			"Discard changes")
 				if has_gum; then
 					if gum confirm "Discard ALL changes in $repo?" --default=false; then
 						(cd "$repo_path" && git checkout . && git clean -fd)
-						print_success "Changes discarded"
+						log_success "Changes discarded"
 					else
 						echo "Cancelled"
 					fi
@@ -573,7 +522,7 @@ cmd_push() {
 					read -r confirm_discard
 					if [[ "$confirm_discard" == "y" || "$confirm_discard" == "Y" ]]; then
 						(cd "$repo_path" && git checkout . && git clean -fd)
-						print_success "Changes discarded"
+						log_success "Changes discarded"
 					else
 						echo "Cancelled"
 					fi
@@ -646,9 +595,9 @@ cmd_push() {
 				local repo_path="$REPOS_BASE_PATH/$repo"
 				echo "Pushing $repo..."
 				if git -C "$repo_path" push 2>/dev/null; then
-					print_success "$repo pushed"
+					log_success "$repo pushed"
 				else
-					print_error "$repo push failed"
+					log_error "$repo push failed"
 				fi
 			done
 		else
