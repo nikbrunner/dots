@@ -763,7 +763,6 @@ show_usage() {
 	echo "  remove       - Remove path from git tracking (keep files locally)"
 	echo "  theme        - Interactive theme selector for all development tools [--debug]"
 	echo "  theme-link   - Create relative symlinks for Black Atom themes [--dry-run]"
-	echo "  font         - Interactive font selector for terminal applications"
 	echo "  mcp          - Configure Claude Code MCP servers [--dry-run] [--force]"
 	echo ""
 	echo "Machine Sync:"
@@ -1060,11 +1059,6 @@ theme)
 theme-link)
 	shift
 	"$DOTS_DIR/scripts/theme-link.sh" "$@"
-	;;
-font)
-	# Return to original directory before running pick-font
-	cd "$ORIGINAL_PWD"
-	exec pick-font "$@"
 	;;
 mcp)
 	shift
