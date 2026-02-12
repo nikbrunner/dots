@@ -754,7 +754,6 @@ show_usage() {
 	echo "  open         - Open dots directory with \$EDITOR"
 	echo "  remove       - Remove path from git tracking (keep files locally)"
 	echo "  theme        - Interactive theme selector for all development tools [--debug]"
-	echo "  theme-link   - Create relative symlinks for Black Atom themes [--dry-run]"
 	echo "  mcp          - Configure Claude Code MCP servers [--dry-run] [--force]"
 	echo ""
 	echo "Machine Sync:"
@@ -805,6 +804,10 @@ cmd_mcp() {
 cmd_link() {
 	echo "→ Creating symlinks..."
 	"$DOTS_DIR/scripts/symlinks.sh" "$@"
+
+	echo ""
+	echo "→ Linking Black Atom themes..."
+	"$DOTS_DIR/scripts/theme-link.sh" "$@"
 }
 
 # Shared push function
@@ -1028,10 +1031,6 @@ theme)
 	# Return to original directory before running pick-theme
 	cd "$ORIGINAL_PWD"
 	exec pick-theme "$@"
-	;;
-theme-link)
-	shift
-	"$DOTS_DIR/scripts/theme-link.sh" "$@"
 	;;
 mcp)
 	shift
