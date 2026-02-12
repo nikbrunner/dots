@@ -663,6 +663,84 @@ cmd_leave() {
 	log_success "Leave complete!"
 }
 
+# ── Chores command ──────────────────────────────────────────────
+# Commit routine dots repo changes: fonts, themes, sessions, radar, lazy-lock, bookmarks
+cmd_chores() {
+	log_section "Dots Chores"
+	echo ""
+
+	local commits_created=0
+
+	# Font changes (run before theme - if only font changed, commit separately)
+	if dots_commit_font "$DOTS_DIR"; then
+		((commits_created++)) || true
+	fi
+	echo ""
+
+	# Theme changes
+	if dots_commit_theme "$DOTS_DIR"; then
+		((commits_created++)) || true
+	fi
+	echo ""
+
+	# Session changes (includes cleanup of old sessions)
+	if dots_commit_sessions "$DOTS_DIR"; then
+		((commits_created++)) || true
+	fi
+	echo ""
+
+	# Radar changes
+	if dots_commit_radar "$DOTS_DIR"; then
+		((commits_created++)) || true
+	fi
+	echo ""
+
+	# Lazy-lock changes
+	if dots_commit_lazy_lock "$DOTS_DIR"; then
+		((commits_created++)) || true
+	fi
+	echo ""
+
+	# Bookmarks changes
+	if dots_commit_bookmarks "$DOTS_DIR"; then
+		((commits_created++)) || true
+	fi
+
+	# Summary
+	echo ""
+	echo "────────────────────────────────────────────────"
+	if [[ $commits_created -gt 0 ]]; then
+		log_success "Created $commits_created chore commit(s)"
+	else
+		log_info "No chore commits needed"
+	fi
+
+	# Check for remaining uncommitted changes
+	local remaining
+	remaining=$(git status --porcelain 2>/dev/null)
+	if [[ -n "$remaining" ]]; then
+		echo ""
+		log_warning "Remaining uncommitted changes:"
+		git status --short
+	fi
+
+	# Offer to push if commits were created
+	if [[ $commits_created -gt 0 ]]; then
+		echo ""
+		if command -v gum >/dev/null 2>&1; then
+			if gum confirm "Push commits to remote?"; then
+				do_push false
+			fi
+		else
+			echo -n "Push commits to remote? (y/N) "
+			read -r push_choice
+			if [[ "$push_choice" == "y" || "$push_choice" == "Y" ]]; then
+				do_push false
+			fi
+		fi
+	fi
+}
+
 # Function to show usage
 show_usage() {
 	if command -v gum >/dev/null 2>&1; then
@@ -696,6 +774,7 @@ show_usage() {
 		gum style --foreground=4 --bold "Machine Sync:"
 		gum style --foreground=2 "  arrive       - Full machine sync: pull dots, deps, symlinks, all repos, rebuild [--hard] [--rebuild-all]"
 		gum style --foreground=2 "  leave        - End of day: dots chores, commit/push, handle dirty repos, push all"
+		gum style --foreground=2 "  chores       - Commit routine changes: fonts, themes, sessions, radar, lazy-lock, bookmarks"
 		echo ""
 	else
 		echo "dots - Dotfiles management command"
@@ -727,6 +806,7 @@ show_usage() {
 		echo "Machine Sync:"
 		echo "  arrive       - Full machine sync: pull dots, deps, symlinks, all repos, rebuild [--hard] [--rebuild-all]"
 		echo "  leave        - End of day: dots chores, commit/push, handle dirty repos, push all"
+		echo "  chores       - Commit routine changes: fonts, themes, sessions, radar, lazy-lock, bookmarks"
 		echo ""
 	fi
 }
@@ -1610,6 +1690,9 @@ arrive)
 leave)
 	shift
 	cmd_leave "$@"
+	;;
+chores)
+	cmd_chores
 	;;
 *)
 	show_usage

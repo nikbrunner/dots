@@ -300,3 +300,61 @@ dots_commit_radar() {
 	(cd "$repo_path" && git add "$radar_file" && git commit -m "chore(nvim): update radar data")
 	print_success "Radar commit created"
 }
+
+dots_commit_font() {
+	local repo_path="$1"
+	local ghostty_file="common/.config/ghostty/config"
+
+	# Check if ghostty config has changes
+	if [[ -z $(git -C "$repo_path" status --porcelain "$ghostty_file" 2>/dev/null) ]]; then
+		echo "No font changes to commit"
+		return 1
+	fi
+
+	# Check if ONLY font-family line changed (not theme or other settings)
+	local diff_lines
+	diff_lines=$(git -C "$repo_path" diff "$ghostty_file" 2>/dev/null | grep '^[+-]' | grep -v '^[+-][+-][+-]' | grep -v '^[+-]$' || true)
+
+	# If changes include non-font lines, skip (let theme commit handle it)
+	if echo "$diff_lines" | grep -qv 'font-'; then
+		echo "Ghostty has non-font changes, skipping font commit"
+		return 1
+	fi
+
+	# Extract font name from current config
+	local font_name
+	font_name=$(grep '^font-family = ' "$repo_path/$ghostty_file" | sed 's/.*= //' | tr -d ' ') || true
+
+	if [[ -z "$font_name" ]]; then
+		font_name="unknown"
+	fi
+
+	(cd "$repo_path" && git add "$ghostty_file" && git commit -m "chore(fonts): switch to $font_name")
+	print_success "Font commit created: $font_name"
+}
+
+dots_commit_lazy_lock() {
+	local repo_path="$1"
+	local lazy_lock_file="common/.config/nvim/lazy-lock.json"
+
+	if [[ -z $(git -C "$repo_path" status --porcelain "$lazy_lock_file" 2>/dev/null) ]]; then
+		echo "No lazy-lock changes to commit"
+		return 1
+	fi
+
+	(cd "$repo_path" && git add "$lazy_lock_file" && git commit -m "chore(nvim): update lazy-lock")
+	print_success "Lazy-lock commit created"
+}
+
+dots_commit_bookmarks() {
+	local repo_path="$1"
+	local bookmarks_file="common/.config/bm/bookmarks.db"
+
+	if [[ -z $(git -C "$repo_path" status --porcelain "$bookmarks_file" 2>/dev/null) ]]; then
+		echo "No bookmarks changes to commit"
+		return 1
+	fi
+
+	(cd "$repo_path" && git add "$bookmarks_file" && git commit -m "chore(bm): update bookmarks")
+	print_success "Bookmarks commit created"
+}
