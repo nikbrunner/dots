@@ -3,18 +3,17 @@ let s:so_save = &g:so | let s:siso_save = &g:siso | setg so=0 siso=0 | setl so=-
 let v:this_session=expand("<sfile>:p")
 silent only
 silent tabonly
-cd ~/repos/black-atom-industries/tmux
+cd ~/repos/black-atom-industries/helm
 if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +18 themes/mnml/collection.template.conf
-badd +0 themes/mnml/black-atom-mnml-ita-light.conf
+badd +16 ~/repos/black-atom-industries/helm/internal/repos/config.go
+badd +100 ~/repos/black-atom-industries/helm/internal/config/config.go
 argglobal
 %argdel
-$argadd ~/repos/black-atom-industries/tmux/themes/default/black-atom-default-dark-dimmed.conf
-edit themes/mnml/collection.template.conf
+edit ~/repos/black-atom-industries/helm/internal/repos/config.go
 let s:save_splitbelow = &splitbelow
 let s:save_splitright = &splitright
 set splitbelow splitright
@@ -31,8 +30,8 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe 'vert 1resize ' . ((&columns * 133 + 134) / 268)
-exe 'vert 2resize ' . ((&columns * 134 + 134) / 268)
+exe 'vert 1resize ' . ((&columns * 173 + 174) / 348)
+exe 'vert 2resize ' . ((&columns * 174 + 174) / 348)
 argglobal
 setlocal keymap=
 setlocal noarabic
@@ -50,8 +49,8 @@ setlocal cinoptions=
 setlocal cinscopedecls=public,protected,private
 setlocal cinwords=if,else,while,do,for,switch
 setlocal colorcolumn=
-setlocal comments=:#
-setlocal commentstring=#\ %s
+setlocal comments=s1:/*,mb:*,ex:*/,://
+setlocal commentstring=//\ %s
 setlocal complete=.,w,b,u,t
 setlocal completefunc=
 setlocal completeslash=
@@ -64,9 +63,9 @@ setlocal cursorline
 setlocal cursorlineopt=both
 setlocal nodiff
 setlocal eventignorewin=
-setlocal expandtab
-if &filetype != 'conf'
-setlocal filetype=conf
+setlocal noexpandtab
+if &filetype != 'go'
+setlocal filetype=go
 endif
 setlocal fixendofline
 setlocal foldcolumn=0
@@ -81,14 +80,16 @@ setlocal foldnestmax=20
 setlocal foldtext=
 setlocal formatexpr=v:lua.require'conform'.formatexpr()
 setlocal formatlistpat=^\\s*\\d\\+[\\]:.)}\\t\ ]\\s*
-setlocal formatoptions=jcroql
+setlocal formatoptions=cqj
+setlocal formatprg=gofmt
 setlocal iminsert=0
 setlocal imsearch=-1
 setlocal includeexpr=
-setlocal indentexpr=
-setlocal indentkeys=0{,0},0),0],:,0#,!^F,o,O,e
+setlocal indentexpr=nvim_treesitter#indent()
+setlocal indentkeys=0{,0},0),0],:,0#,!^F,o,O,e,<:>,0=},0=)
 setlocal noinfercase
 setlocal iskeyword=@,48-57,_,192-255
+setlocal keywordprg=:GoKeywordPrg
 setlocal lhistory=10
 setlocal nolinebreak
 setlocal nolisp
@@ -110,30 +111,30 @@ setlocal norightleft
 setlocal rightleftcmd=search
 setlocal scrollback=-1
 setlocal noscrollbind
-setlocal shiftwidth=4
+setlocal shiftwidth=0
 setlocal signcolumn=yes
 setlocal smartindent
 setlocal nosmoothscroll
-setlocal softtabstop=4
+setlocal softtabstop=-1
 setlocal nospell
 setlocal spellcapcheck=[.?!]\\_[\\])'\"\\t\ ]\\+
 setlocal spellfile=
 setlocal spelllang=en_us,de_de
-setlocal spelloptions=
+setlocal spelloptions=noplainbuffer
 setlocal statuscolumn=%!v:lua.require'snacks.statuscolumn'.get()
 setlocal suffixesadd=
 setlocal noswapfile
 setlocal synmaxcol=3000
-if &syntax != 'conf'
-setlocal syntax=conf
+if &syntax != ''
+setlocal syntax=
 endif
 setlocal tabstop=4
-setlocal tagfunc=
+setlocal tagfunc=v:lua.vim.lsp.tagfunc
 setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#themes%*\ %#WinBarSeparator#/%*\ %#WinBarPath#mnml%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#collection.template.conf%*
+setlocal winbar=%#WinBarPath#internal%*\ %#WinBarSeparator#/%*\ %#WinBarPath#repos%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#config.go%*\ %#WinBarSeparator##%*\ %#WinBarSymbol#ListClonedRepos%*
 setlocal winblend=0
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -141,19 +142,21 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 18 - ((17 * winheight(0) + 20) / 40)
+12
+sil! normal! zo
+let s:l = 27 - ((26 * winheight(0) + 33) / 66)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 18
-normal! 060|
+keepjumps 27
+normal! 0
 wincmd w
 argglobal
-if bufexists(fnamemodify("themes/mnml/black-atom-mnml-ita-light.conf", ":p")) | buffer themes/mnml/black-atom-mnml-ita-light.conf | else | edit themes/mnml/black-atom-mnml-ita-light.conf | endif
+if bufexists(fnamemodify("~/repos/black-atom-industries/helm/internal/config/config.go", ":p")) | buffer ~/repos/black-atom-industries/helm/internal/config/config.go | else | edit ~/repos/black-atom-industries/helm/internal/config/config.go | endif
 if &buftype ==# 'terminal'
-  silent file themes/mnml/black-atom-mnml-ita-light.conf
+  silent file ~/repos/black-atom-industries/helm/internal/config/config.go
 endif
-balt themes/mnml/collection.template.conf
+balt ~/repos/black-atom-industries/helm/internal/repos/config.go
 setlocal keymap=
 setlocal noarabic
 setlocal autoindent
@@ -170,8 +173,8 @@ setlocal cinoptions=
 setlocal cinscopedecls=public,protected,private
 setlocal cinwords=if,else,while,do,for,switch
 setlocal colorcolumn=
-setlocal comments=:#
-setlocal commentstring=#\ %s
+setlocal comments=s1:/*,mb:*,ex:*/,://
+setlocal commentstring=//\ %s
 setlocal complete=.,w,b,u,t
 setlocal completefunc=
 setlocal completeslash=
@@ -184,9 +187,9 @@ setlocal cursorline
 setlocal cursorlineopt=both
 setlocal nodiff
 setlocal eventignorewin=
-setlocal expandtab
-if &filetype != 'conf'
-setlocal filetype=conf
+setlocal noexpandtab
+if &filetype != 'go'
+setlocal filetype=go
 endif
 setlocal fixendofline
 setlocal foldcolumn=0
@@ -201,14 +204,16 @@ setlocal foldnestmax=20
 setlocal foldtext=
 setlocal formatexpr=v:lua.require'conform'.formatexpr()
 setlocal formatlistpat=^\\s*\\d\\+[\\]:.)}\\t\ ]\\s*
-setlocal formatoptions=jcroql
+setlocal formatoptions=cqj
+setlocal formatprg=gofmt
 setlocal iminsert=0
 setlocal imsearch=-1
 setlocal includeexpr=
-setlocal indentexpr=
-setlocal indentkeys=0{,0},0),0],:,0#,!^F,o,O,e
+setlocal indentexpr=nvim_treesitter#indent()
+setlocal indentkeys=0{,0},0),0],:,0#,!^F,o,O,e,<:>,0=},0=)
 setlocal noinfercase
 setlocal iskeyword=@,48-57,_,192-255
+setlocal keywordprg=:GoKeywordPrg
 setlocal lhistory=10
 setlocal nolinebreak
 setlocal nolisp
@@ -230,30 +235,30 @@ setlocal norightleft
 setlocal rightleftcmd=search
 setlocal scrollback=-1
 setlocal noscrollbind
-setlocal shiftwidth=4
+setlocal shiftwidth=0
 setlocal signcolumn=yes
 setlocal smartindent
 setlocal nosmoothscroll
-setlocal softtabstop=4
+setlocal softtabstop=-1
 setlocal nospell
 setlocal spellcapcheck=[.?!]\\_[\\])'\"\\t\ ]\\+
 setlocal spellfile=
 setlocal spelllang=en_us,de_de
-setlocal spelloptions=
+setlocal spelloptions=noplainbuffer
 setlocal statuscolumn=%!v:lua.require'snacks.statuscolumn'.get()
 setlocal suffixesadd=
 setlocal noswapfile
 setlocal synmaxcol=3000
-if &syntax != 'conf'
-setlocal syntax=conf
+if &syntax != ''
+setlocal syntax=
 endif
 setlocal tabstop=4
-setlocal tagfunc=
+setlocal tagfunc=v:lua.vim.lsp.tagfunc
 setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#themes%*\ %#WinBarSeparator#/%*\ %#WinBarPath#mnml%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#black-atom-mnml-ita-light.conf%*
+setlocal winbar=%#WinBarPath#internal%*\ %#WinBarSeparator#/%*\ %#WinBarPath#config%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#config.go%*\ %#WinBarSeparator##%*\ %#WinBarSymbol#BookmarksPath%*
 setlocal winblend=0
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -261,16 +266,16 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 23 - ((22 * winheight(0) + 20) / 40)
+let s:l = 102 - ((35 * winheight(0) + 33) / 66)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 23
+keepjumps 102
 normal! 0
 wincmd w
 2wincmd w
-exe 'vert 1resize ' . ((&columns * 133 + 134) / 268)
-exe 'vert 2resize ' . ((&columns * 134 + 134) / 268)
+exe 'vert 1resize ' . ((&columns * 173 + 174) / 348)
+exe 'vert 2resize ' . ((&columns * 174 + 174) / 348)
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
@@ -286,6 +291,7 @@ if filereadable(s:sx)
 endif
 let &g:so = s:so_save | let &g:siso = s:siso_save
 set hlsearch
+nohlsearch
 doautoall SessionLoadPost
 unlet SessionLoad
 " vim: set ft=vim :
