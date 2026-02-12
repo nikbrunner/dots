@@ -76,7 +76,7 @@ parse_git_url() {
 		username="${BASH_REMATCH[1]}"
 		repo_name="${BASH_REMATCH[2]}"
 	else
-		print_error "Invalid Git URL format"
+		log_error "Invalid Git URL format"
 		return 1
 	fi
 
@@ -232,7 +232,7 @@ dots_commit_theme() {
 	fi
 
 	(cd "$repo_path" && git add "${theme_files[@]}" && git commit -m "chore(themes): switch to $theme_name")
-	print_success "Theme commit created: $theme_name"
+	log_success "Theme commit created: $theme_name"
 }
 
 dots_commit_sessions() {
@@ -251,7 +251,7 @@ dots_commit_sessions() {
 	fi
 
 	(cd "$repo_path" && git add "common/.config/nvim/sessions/" && git commit -m "chore(nvim): update sessions")
-	print_success "Sessions commit created"
+	log_success "Sessions commit created"
 }
 
 dots_commit_radar() {
@@ -264,7 +264,7 @@ dots_commit_radar() {
 	fi
 
 	(cd "$repo_path" && git add "$radar_file" && git commit -m "chore(nvim): update radar data")
-	print_success "Radar commit created"
+	log_success "Radar commit created"
 }
 
 dots_commit_font() {
@@ -296,7 +296,7 @@ dots_commit_font() {
 	fi
 
 	(cd "$repo_path" && git add "$ghostty_file" && git commit -m "chore(fonts): switch to $font_name")
-	print_success "Font commit created: $font_name"
+	log_success "Font commit created: $font_name"
 }
 
 dots_commit_lazy_lock() {
@@ -309,7 +309,7 @@ dots_commit_lazy_lock() {
 	fi
 
 	(cd "$repo_path" && git add "$lazy_lock_file" && git commit -m "chore(nvim): update lazy-lock")
-	print_success "Lazy-lock commit created"
+	log_success "Lazy-lock commit created"
 }
 
 dots_commit_bookmarks() {
@@ -322,5 +322,5 @@ dots_commit_bookmarks() {
 	fi
 
 	(cd "$repo_path" && git add "$bookmarks_file" && git commit -m "chore(bm): update bookmarks")
-	print_success "Bookmarks commit created"
+	log_success "Bookmarks commit created"
 }
