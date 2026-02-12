@@ -757,7 +757,6 @@ show_usage() {
 	echo "  link         - Update all symlinks (clean broken + create new) [--dry-run] [--no-backup] [--verbose]"
 	echo "  commit       - Open LazyGit for interactive committing"
 	echo "  status       - Show git and symlink status"
-	echo "  test         - Run comprehensive system tests"
 	echo "  format       - Format repository files with prettier and shfmt [--check]"
 	echo "  log          - Show git log"
 	echo "  open         - Open dots directory with \$EDITOR"
@@ -900,166 +899,6 @@ cmd_status() {
 	check_symlinks_from_config "$symlinks_file" "$current_os" --verbose
 }
 
-# Test command - comprehensive system checks
-cmd_test() {
-	echo "=== Dotfiles System Test ==="
-	echo ""
-
-	local tests_passed=0
-	local tests_failed=0
-
-	# Test 1: Check if we're in the right directory
-	echo "→ Testing repository structure..."
-	if [[ -f "CLAUDE.md" && -d "scripts" && -d "common" ]]; then
-		echo "✓ Repository structure OK"
-		((tests_passed++)) || true
-	else
-		echo "✗ Repository structure missing"
-		((tests_failed++)) || true
-	fi
-
-	# Test 2: Check OS detection
-	echo "→ Testing OS detection..."
-	source "$DOTS_DIR/scripts/detect-os.sh"
-	local detected_os=$(get_os)
-	if [[ -n "$detected_os" && ("$detected_os" == "macos" || "$detected_os" == "linux") ]]; then
-		echo "✓ OS detection OK: $detected_os"
-		((tests_passed++)) || true
-	else
-		echo "✗ OS detection failed: $detected_os"
-		((tests_failed++)) || true
-	fi
-
-	# Test 3: Check directory structure
-	echo "→ Testing directory structure..."
-	local expected_dirs=("$DOTS_DIR/common" "$DOTS_DIR/$detected_os" "$DOTS_DIR/scripts")
-	local missing_dirs=0
-	for dir in "${expected_dirs[@]}"; do
-		if [[ ! -d "$dir" ]]; then
-			((missing_dirs++)) || true
-		fi
-	done
-	if [[ $missing_dirs -eq 0 ]]; then
-		echo "✓ Directory structure OK"
-		((tests_passed++)) || true
-	else
-		echo "✗ Directory structure incomplete ($missing_dirs missing)"
-		((tests_failed++)) || true
-	fi
-
-	# Test 4: Check symlink creation (dry run)
-	echo "→ Testing symlink creation (dry run)..."
-	if "$DOTS_DIR/scripts/symlinks.sh" --dry-run >/dev/null 2>&1; then
-		echo "✓ Symlink creation test OK"
-		((tests_passed++)) || true
-	else
-		echo "✗ Symlink creation test failed"
-		((tests_failed++)) || true
-	fi
-
-	# Test 5: Check critical symlinks exist and are correct
-	echo "→ Testing critical symlinks..."
-	local critical_links=("$HOME/.zshrc" "$HOME/.gitconfig" "$HOME/bin/dots")
-	local valid_symlinks=0
-
-	for link in "${critical_links[@]}"; do
-		if [[ -L "$link" && -e "$link" ]]; then
-			((valid_symlinks++)) || true
-		fi
-	done
-
-	if [[ $valid_symlinks -eq ${#critical_links[@]} ]]; then
-		echo "✓ Critical symlinks OK ($valid_symlinks/${#critical_links[@]})"
-		((tests_passed++)) || true
-	else
-		echo "⚠ Some critical symlinks missing ($valid_symlinks/${#critical_links[@]})"
-		# Don't fail the test - symlinks might not be set up yet
-		((tests_passed++)) || true
-	fi
-
-	# Test 6: Check git repository status
-	echo "→ Testing git repository..."
-	if git rev-parse --git-dir >/dev/null 2>&1; then
-		echo "✓ Git repository OK"
-		((tests_passed++)) || true
-	else
-		echo "✗ Git repository not found"
-		((tests_failed++)) || true
-	fi
-
-	# Test 7: Lint shell scripts with shellcheck
-	echo "→ Linting shell scripts..."
-	if command -v shellcheck >/dev/null 2>&1; then
-		local shell_files=()
-		local lint_errors=0
-
-		# Find all shell files
-		while IFS= read -r -d '' file; do
-			shell_files+=("$file")
-		done < <(find . -name "*.sh" -not -path "./.git/*" -print0 2>/dev/null)
-
-		# Add executable scripts with shell shebangs
-		while IFS= read -r -d '' file; do
-			if [[ -x "$file" && -f "$file" ]]; then
-				local first_line=$(head -n1 "$file" 2>/dev/null)
-				if [[ "$first_line" =~ ^#!.*/(bash|sh|zsh) ]]; then
-					shell_files+=("$file")
-				fi
-			fi
-		done < <(find . -type f -not -path "./.git/*" -not -name "*.sh" -print0 2>/dev/null)
-
-		if [[ ${#shell_files[@]} -gt 0 ]]; then
-			local files_with_issues=()
-			for file in "${shell_files[@]}"; do
-				if ! shellcheck "$file" >/dev/null 2>&1; then
-					((lint_errors++)) || true
-					files_with_issues+=("$file")
-				fi
-			done
-
-			if [[ $lint_errors -eq 0 ]]; then
-				echo "✓ Shell scripts lint OK (${#shell_files[@]} files)"
-				((tests_passed++)) || true
-			else
-				echo "⚠ Shell scripts have lint issues ($lint_errors/${#shell_files[@]} files):"
-				for file in "${files_with_issues[@]}"; do
-					echo ""
-					log_warning "Issues in $file:"
-					# Run shellcheck and indent the output
-					shellcheck "$file" 2>&1 | sed 's/^/      /'
-				done
-				# Don't fail the test - just warn about lint issues
-				((tests_passed++)) || true
-			fi
-		else
-			echo "✓ No shell scripts found"
-			((tests_passed++)) || true
-		fi
-	else
-		echo "⚠ shellcheck not available, skipping shell script linting"
-		echo "    Install with: brew install shellcheck"
-		((tests_passed++)) || true
-	fi
-
-	# Summary
-	echo ""
-	echo "=== Test Summary ==="
-	local total_tests=$((tests_passed + tests_failed))
-	echo "  Total tests: $total_tests"
-	echo "  ✓ Passed: $tests_passed"
-
-	if [[ $tests_failed -gt 0 ]]; then
-		echo "  ✗ Failed: $tests_failed"
-		echo ""
-		echo "❌ System tests FAILED"
-		return 1
-	else
-		echo ""
-		echo "🎉 All system tests PASSED"
-		return 0
-	fi
-}
-
 # Format command
 cmd_format() {
 	echo "→ Formatting repository files..."
@@ -1198,9 +1037,6 @@ commit)
 	;;
 status)
 	cmd_status
-	;;
-test)
-	cmd_test
 	;;
 format)
 	shift
