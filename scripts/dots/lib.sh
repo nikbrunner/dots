@@ -202,6 +202,7 @@ dots_commit_theme() {
 	local repo_path="$1"
 	local theme_files=(
 		"common/.config/ghostty/config"
+		"common/.config/lazygit/config.yml"
 		"common/.config/nvim/lua/config.lua"
 		"common/.config/tmux/tmux.conf"
 		"common/.config/zed/settings.json"
