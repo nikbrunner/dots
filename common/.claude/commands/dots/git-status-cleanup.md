@@ -68,4 +68,4 @@ feat(nvim): use local review.nvim fork with improved keymaps
 
 ## Your goal
 
-Create clean, atomic commits that make the git history easy to understand and navigate. Handle routine chores first using established patterns, then process remaining changes one file at a time unless truly interdependent.
+Create clean, atomic commits that make the git history easy to understand and navigate. Handle routine chores first using established patterns (./git-chores.md), then process remaining changes one file at a time unless truly interdependent.
