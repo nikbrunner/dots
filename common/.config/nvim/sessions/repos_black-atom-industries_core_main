@@ -15,11 +15,12 @@ badd +10 ~/repos/black-atom-industries/core/src/themes/default/feedback-dark.ts
 badd +13 src/themes/default/create-ui-dark.ts
 badd +63 src/themes/mnml/create-palette.ts
 badd +53 src/themes/mnml/black-atom-mnml-mono-dark.ts
-badd +39 ~/repos/black-atom-industries/core/src/themes/mnml/black-atom-mnml-mono-light.ts
+badd +37 ~/repos/black-atom-industries/core/src/themes/mnml/black-atom-mnml-mono-light.ts
 badd +56 src/themes/mnml/create-ui-light.ts
 badd +18 ~/repos/black-atom-industries/core/deno.json
 badd +71 ~/repos/black-atom-industries/core/src/tasks/adapters/generate.ts
 badd +24 ~/repos/black-atom-industries/core/src/themes/mnml/black-atom-mnml-ita-light.ts
+badd +20 ~/repos/black-atom-industries/core/src/config.ts
 argglobal
 %argdel
 $argadd ~/.config/lazygit/config.yml
@@ -53,10 +54,10 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe 'vert 1resize ' . ((&columns * 40 + 80) / 161)
-exe 'vert 2resize ' . ((&columns * 39 + 80) / 161)
-exe 'vert 3resize ' . ((&columns * 40 + 80) / 161)
-exe 'vert 4resize ' . ((&columns * 39 + 80) / 161)
+exe 'vert 1resize ' . ((&columns * 70 + 140) / 281)
+exe 'vert 2resize ' . ((&columns * 68 + 140) / 281)
+exe 'vert 3resize ' . ((&columns * 72 + 140) / 281)
+exe 'vert 4resize ' . ((&columns * 68 + 140) / 281)
 argglobal
 setlocal keymap=
 setlocal noarabic
@@ -165,7 +166,7 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 56 - ((4 * winheight(0) + 27) / 54)
+let s:l = 56 - ((4 * winheight(0) + 27) / 55)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
@@ -287,12 +288,12 @@ setlocal nowrap
 setlocal wrapmargin=0
 45
 sil! normal! zo
-let s:l = 33 - ((25 * winheight(0) + 27) / 54)
+let s:l = 33 - ((25 * winheight(0) + 27) / 55)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
 keepjumps 33
-let s:c = 33 - ((12 * winwidth(0) + 19) / 39)
+let s:c = 33 - ((21 * winwidth(0) + 34) / 68)
 if s:c > 0
   exe 'normal! ' . s:c . '|zs' . 33 . '|'
 else
@@ -412,7 +413,7 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 10 - ((7 * winheight(0) + 27) / 54)
+let s:l = 10 - ((7 * winheight(0) + 27) / 55)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
@@ -532,17 +533,17 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 34 - ((25 * winheight(0) + 27) / 54)
+let s:l = 34 - ((25 * winheight(0) + 27) / 55)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
 keepjumps 34
 normal! 0
 wincmd w
-exe 'vert 1resize ' . ((&columns * 40 + 80) / 161)
-exe 'vert 2resize ' . ((&columns * 39 + 80) / 161)
-exe 'vert 3resize ' . ((&columns * 40 + 80) / 161)
-exe 'vert 4resize ' . ((&columns * 39 + 80) / 161)
+exe 'vert 1resize ' . ((&columns * 70 + 140) / 281)
+exe 'vert 2resize ' . ((&columns * 68 + 140) / 281)
+exe 'vert 3resize ' . ((&columns * 72 + 140) / 281)
+exe 'vert 4resize ' . ((&columns * 68 + 140) / 281)
 tabnext
 edit src/themes/mnml/create-palette.ts
 argglobal
@@ -656,7 +657,7 @@ setlocal nowrap
 setlocal wrapmargin=0
 12
 sil! normal! zo
-let s:l = 63 - ((46 * winheight(0) + 27) / 54)
+let s:l = 63 - ((47 * winheight(0) + 27) / 55)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
@@ -683,9 +684,9 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe 'vert 1resize ' . ((&columns * 53 + 80) / 161)
-exe 'vert 2resize ' . ((&columns * 53 + 80) / 161)
-exe 'vert 3resize ' . ((&columns * 53 + 80) / 161)
+exe 'vert 1resize ' . ((&columns * 93 + 140) / 281)
+exe 'vert 2resize ' . ((&columns * 93 + 140) / 281)
+exe 'vert 3resize ' . ((&columns * 93 + 140) / 281)
 argglobal
 setlocal keymap=
 setlocal noarabic
@@ -794,7 +795,7 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 37 - ((30 * winheight(0) + 27) / 54)
+let s:l = 37 - ((31 * winheight(0) + 27) / 55)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
@@ -914,7 +915,7 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 49 - ((0 * winheight(0) + 27) / 54)
+let s:l = 49 - ((0 * winheight(0) + 27) / 55)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
@@ -1034,16 +1035,16 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 56 - ((45 * winheight(0) + 27) / 54)
+let s:l = 56 - ((46 * winheight(0) + 27) / 55)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
 keepjumps 56
 normal! 02|
 wincmd w
-exe 'vert 1resize ' . ((&columns * 53 + 80) / 161)
-exe 'vert 2resize ' . ((&columns * 53 + 80) / 161)
-exe 'vert 3resize ' . ((&columns * 53 + 80) / 161)
+exe 'vert 1resize ' . ((&columns * 93 + 140) / 281)
+exe 'vert 2resize ' . ((&columns * 93 + 140) / 281)
+exe 'vert 3resize ' . ((&columns * 93 + 140) / 281)
 tabnext
 edit ~/repos/black-atom-industries/core/deno.json
 argglobal
@@ -1154,7 +1155,7 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 18 - ((14 * winheight(0) + 27) / 54)
+let s:l = 18 - ((14 * winheight(0) + 27) / 55)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
@@ -1282,14 +1283,14 @@ sil! normal! zo
 sil! normal! zo
 63
 sil! normal! zo
-let s:l = 71 - ((31 * winheight(0) + 27) / 54)
+let s:l = 71 - ((32 * winheight(0) + 27) / 55)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
 keepjumps 71
 normal! 042|
 tabnext
-edit ~/repos/black-atom-industries/core/src/themes/mnml/black-atom-mnml-mono-light.ts
+edit ~/repos/black-atom-industries/core/src/config.ts
 let s:save_splitbelow = &splitbelow
 let s:save_splitright = &splitright
 set splitbelow splitright
@@ -1306,9 +1307,10 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe 'vert 1resize ' . ((&columns * 80 + 80) / 161)
-exe 'vert 2resize ' . ((&columns * 80 + 80) / 161)
+exe 'vert 1resize ' . ((&columns * 140 + 140) / 281)
+exe 'vert 2resize ' . ((&columns * 140 + 140) / 281)
 argglobal
+balt ~/repos/black-atom-industries/core/src/themes/mnml/black-atom-mnml-mono-light.ts
 setlocal keymap=
 setlocal noarabic
 setlocal autoindent
@@ -1408,7 +1410,7 @@ setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#src%*\ %#WinBarSeparator#/%*\ %#WinBarPath#themes%*\ %#WinBarSeparator#/%*\ %#WinBarPath#mnml%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#black-atom-mnml-mono-light.ts%*
+setlocal winbar=%#WinBarPath#src%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#config.ts%*
 setlocal winblend=0
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -1416,12 +1418,12 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 20 - ((9 * winheight(0) + 27) / 54)
+let s:l = 24 - ((23 * winheight(0) + 27) / 55)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 20
-normal! 0
+keepjumps 24
+normal! 010|
 wincmd w
 argglobal
 if bufexists(fnamemodify("~/repos/black-atom-industries/core/src/themes/mnml/black-atom-mnml-ita-light.ts", ":p")) | buffer ~/repos/black-atom-industries/core/src/themes/mnml/black-atom-mnml-ita-light.ts | else | edit ~/repos/black-atom-industries/core/src/themes/mnml/black-atom-mnml-ita-light.ts | endif
@@ -1536,16 +1538,15 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 24 - ((9 * winheight(0) + 27) / 54)
+let s:l = 28 - ((13 * winheight(0) + 27) / 55)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 24
+keepjumps 28
 normal! 0
 wincmd w
-2wincmd w
-exe 'vert 1resize ' . ((&columns * 80 + 80) / 161)
-exe 'vert 2resize ' . ((&columns * 80 + 80) / 161)
+exe 'vert 1resize ' . ((&columns * 140 + 140) / 281)
+exe 'vert 2resize ' . ((&columns * 140 + 140) / 281)
 tabnext 6
 set stal=1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
