@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# Shared library for repository operations.
-# Sourced by `dots` commands (arrive/leave).
+# Shared library for dots CLI operations.
+# Sourced by the `dots` command.
 # Has NO side effects -- callers must invoke load_config() themselves.
 # Requires: yq (https://github.com/mikefarah/yq/)
 

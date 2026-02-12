@@ -11,7 +11,7 @@ ORIGINAL_PWD="$(pwd)"
 
 # Source shared repos library for arrive/leave commands
 # shellcheck disable=SC1091
-source "$DOTS_DIR/scripts/repos-lib.sh"
+source "$DOTS_DIR/scripts/dots-lib.sh"
 
 # Change to dots directory for git operations
 cd "$DOTS_DIR"
