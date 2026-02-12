@@ -106,12 +106,6 @@ cmd_pull() {
 	fi
 	log_success "Dots repo pulled"
 
-	# Update submodules
-	if [[ -f .gitmodules ]]; then
-		log_info "Updating submodules..."
-		"$DOTS_DIR/scripts/submodules.sh" update
-	fi
-
 	# ── Phase 2: Check dependencies ──
 	echo ""
 	log_section "Phase 2: Check dependencies"

@@ -106,23 +106,13 @@ if [[ ! -d "$SCRIPT_DIR/.git" ]]; then
     fi
 fi
 
-# 5. Run submodule initialization (when we have submodules)
-if [[ -f "$SCRIPT_DIR/.gitmodules" ]]; then
-    if [[ "$DRY_RUN" == true ]]; then
-        echo -e "${YELLOW}→${NC} [DRY] Would initialize submodules"
-    else
-        echo -e "${YELLOW}→${NC} Initializing submodules..."
-        "$SCRIPT_DIR/scripts/submodules.sh" update
-    fi
-fi
-
-# 6. Create symlinks
+# 5. Create symlinks
 echo -e "${YELLOW}→${NC} Creating symlinks..."
 SYMLINK_ARGS=()
 [[ "$DRY_RUN" == true ]] && SYMLINK_ARGS+=("--dry-run")
 "$SCRIPT_DIR/scripts/symlinks.sh" "${SYMLINK_ARGS[@]}"
 
-# 7. Set up dots command
+# 6. Set up dots command
 if [[ "$DRY_RUN" == true ]]; then
     echo -e "${YELLOW}→${NC} [DRY] Would set up dots command at ~/.local/bin/dots"
     if [[ ! -L "$HOME/.local/bin/dots" ]]; then
@@ -142,7 +132,7 @@ else
     echo -e "${GREEN}✓${NC} Created dots command at ~/.local/bin/dots"
 fi
 
-# 8. Make all scripts executable
+# 7. Make all scripts executable
 if [[ "$DRY_RUN" == true ]]; then
     echo -e "${YELLOW}→${NC} [DRY] Would make scripts executable"
     echo "  Would chmod +x: install.sh"
@@ -156,7 +146,7 @@ else
     echo -e "${GREEN}✓${NC} All scripts are now executable"
 fi
 
-# 8.5. Install rmpc music client
+# 8. Install rmpc music client
 if [[ "$SKIP_DEPS" == false ]]; then
     echo ""
     echo -e "${BLUE}🎵 Phase 5: Music Client Setup${NC}"
