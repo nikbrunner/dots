@@ -746,7 +746,6 @@ show_usage() {
 	echo "Usage: dots <command> [options]"
 	echo ""
 	echo "Commands:"
-	echo "  install      - Initial setup with symlinks and submodules [--dry-run]"
 	echo "  deps         - Install/check dependencies [check|install|validate]"
 	echo "  link         - Update all symlinks (clean broken + create new) [--dry-run] [--no-backup] [--verbose]"
 	echo "  commit       - Open LazyGit for interactive committing"
@@ -761,12 +760,6 @@ show_usage() {
 	echo "  push         - End of day: chores, commit/push dots, handle dirty repos, push all"
 	echo "  chores       - Commit routine changes: fonts, themes, sessions, radar, lazy-lock, bookmarks"
 	echo ""
-}
-
-# Install command
-cmd_install() {
-	echo "→ Running installation..."
-	"$DOTS_DIR/install.sh" "$@"
 }
 
 # Deps command - install/check dependencies only
@@ -1001,10 +994,6 @@ cmd_remove() {
 
 # Main command dispatcher
 case "${1:-}" in
-install)
-	shift
-	cmd_install "$@"
-	;;
 deps)
 	shift
 	cmd_deps "$@"
