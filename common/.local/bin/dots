@@ -770,11 +770,6 @@ show_usage() {
 	echo ""
 	echo "  theme        - Interactive theme selector for all development tools"
 	echo "                 --debug: show debug output"
-	echo ""
-	echo "  mcp          - Configure Claude Code MCP servers"
-	echo "                 --dry-run: preview without making changes"
-	echo "                 --force: overwrite existing config"
-	echo ""
 }
 
 # Deps command - install/check dependencies only
@@ -801,11 +796,6 @@ cmd_deps() {
 		echo "  list    - List all dependencies for current OS"
 		;;
 	esac
-}
-
-# MCP command - configure Claude Code MCP servers
-cmd_mcp() {
-	"$DOTS_DIR/scripts/claude-mcp.sh" "$@"
 }
 
 # Link command
@@ -1006,10 +996,6 @@ theme)
 	# Return to original directory before running pick-theme
 	cd "$ORIGINAL_PWD"
 	exec pick-theme "$@"
-	;;
-mcp)
-	shift
-	cmd_mcp "$@"
 	;;
 pull)
 	shift
