@@ -758,10 +758,6 @@ show_usage() {
 	echo "  sync         - Git pull + submodule updates"
 	echo "  commit       - Open LazyGit for interactive committing"
 	echo "  push         - Push commits to remote [--force]"
-	echo "  sub-update   - Update all submodules"
-	echo "  sub-add      - Add new submodule"
-	echo "  sub-commit   - Commit submodule hash updates"
-	echo "  sub-status   - Show status of all submodules"
 	echo "  status       - Show git and symlink status"
 	echo "  test         - Run comprehensive system tests"
 	echo "  format       - Format repository files with prettier and shfmt [--check]"
@@ -1160,121 +1156,6 @@ cmd_push() {
 	do_push "$force_flag"
 }
 
-# Submodule update command
-cmd_sub_update() {
-	"$DOTS_DIR/scripts/submodules.sh" update
-}
-
-# Submodule add command
-cmd_sub_add() {
-	if [[ $# -lt 2 ]]; then
-		echo "✗ Usage: dots sub-add <repo_url> <path>"
-		return 1
-	fi
-	"$DOTS_DIR/scripts/submodules.sh" add "$@"
-}
-
-# Submodule status command - shows status of all submodules
-cmd_sub_status() {
-	# Check if we have any submodules
-	if [[ ! -f .gitmodules ]]; then
-		log_warning "No submodules found in this repository"
-		return 0
-	fi
-
-	# Get list of submodule paths
-	local submodule_paths
-	submodule_paths=($(git submodule status 2>/dev/null | awk '{print $2}'))
-
-	# Check for submodule changes only
-	local submodule_changes=()
-	for path in "${submodule_paths[@]}"; do
-		if git status --porcelain | grep -q "^.M $path$"; then
-			submodule_changes+=("$path")
-		fi
-	done
-
-	log_section "=== Submodule Status ==="
-
-	if [[ ${#submodule_changes[@]} -gt 0 ]]; then
-		echo "Changes detected in submodules:"
-		for path in "${submodule_changes[@]}"; do
-			local name=$(basename "$path")
-			echo "  - $name"
-		done
-	else
-		log_success "All submodules are up to date"
-	fi
-
-	echo ""
-	log_section "=== Detailed Submodule Info ==="
-	git submodule status
-
-	# Offer to commit if there are changes
-	if [[ ${#submodule_changes[@]} -gt 0 ]]; then
-		echo ""
-		if command -v gum >/dev/null 2>&1; then
-			if gum confirm "Commit submodule changes?"; then
-				cmd_sub_commit
-			fi
-		else
-			log_info "Run 'dots sub-commit' to commit these changes"
-		fi
-	fi
-}
-
-# Submodule commit command - commits submodule hash updates
-cmd_sub_commit() {
-	log_info "Checking for submodule changes..."
-
-	# Get list of submodule paths
-	local submodule_paths
-	submodule_paths=($(git submodule status 2>/dev/null | awk '{print $2}'))
-
-	# Find submodules with changes
-	local submodule_changes=()
-	for path in "${submodule_paths[@]}"; do
-		if git status --porcelain | grep -q "^.M $path$"; then
-			submodule_changes+=("$path")
-		fi
-	done
-
-	if [[ ${#submodule_changes[@]} -eq 0 ]]; then
-		log_success "All submodules are up to date"
-		return 0
-	fi
-
-	# Show and add only submodule changes
-	log_info "Found submodule changes:"
-	for path in "${submodule_changes[@]}"; do
-		echo "  $path"
-		git add "$path"
-	done
-	echo ""
-
-	# Create commit message with submodule names
-	local commit_msg="chore: update submodule commit hashes"
-	if [[ ${#submodule_changes[@]} -eq 1 ]]; then
-		local name=$(basename "${submodule_changes[0]}")
-		commit_msg="chore: update $name submodule"
-	fi
-
-	if command -v gum >/dev/null 2>&1; then
-		gum spin --spinner="dot" --title="Committing submodule updates..." -- \
-			git commit -m "$commit_msg"
-	else
-		git commit -m "$commit_msg"
-	fi
-
-	# Show which submodules were committed
-	if [[ ${#submodule_changes[@]} -eq 1 ]]; then
-		local name=$(basename "${submodule_changes[0]}")
-		log_success "Submodule changes committed for $name"
-	else
-		log_success "Submodule changes committed for ${#submodule_changes[@]} submodules"
-	fi
-}
-
 # Status command - delegate to external script
 cmd_status() {
 	log_section "=== Git Repository Status ==="
@@ -1600,19 +1481,6 @@ commit)
 push)
 	shift
 	cmd_push "$@"
-	;;
-sub-update)
-	cmd_sub_update
-	;;
-sub-add)
-	shift
-	cmd_sub_add "$@"
-	;;
-sub-commit)
-	cmd_sub_commit
-	;;
-sub-status)
-	cmd_sub_status
 	;;
 status)
 	cmd_status
