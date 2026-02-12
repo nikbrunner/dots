@@ -77,8 +77,14 @@ cmd_arrive() {
 
 	while [[ $# -gt 0 ]]; do
 		case "$1" in
-		--hard) hard_reset=true; shift ;;
-		--rebuild-all) rebuild_all=true; shift ;;
+		--hard)
+			hard_reset=true
+			shift
+			;;
+		--rebuild-all)
+			rebuild_all=true
+			shift
+			;;
 		*) shift ;;
 		esac
 	done
@@ -722,23 +728,21 @@ cmd_chores() {
 		echo ""
 		log_warning "Remaining uncommitted changes:"
 		git status --short
-	fi
 
-	# Offer to push if commits were created
-	if [[ $commits_created -gt 0 ]]; then
-		echo ""
+		# Offer to open lazygit afterwards
 		if command -v gum >/dev/null 2>&1; then
-			if gum confirm "Push commits to remote?"; then
-				do_push false
+			if gum confirm "Open LazyGit?"; then
+				lazygit
 			fi
 		else
-			echo -n "Push commits to remote? (y/N) "
-			read -r push_choice
-			if [[ "$push_choice" == "y" || "$push_choice" == "Y" ]]; then
-				do_push false
+			echo -n "Open LazyGit? (y/N) "
+			read -r open_lazygit_choice
+			if [[ "$open_lazygit_choice" == "y" || "$open_lazygit_choice" == "Y" ]]; then
+				lazygit
 			fi
 		fi
 	fi
+
 }
 
 # Function to show usage
