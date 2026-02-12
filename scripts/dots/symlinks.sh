@@ -403,13 +403,12 @@ if [[ "${BASH_SOURCE[0]}" != "${0}" ]]; then
     return 0
 fi
 
-# Get the script directory
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-DOTS_DIR="$(dirname "$SCRIPT_DIR")"
+# Get dots directory
+DOTS_DIR="${DOTS_DIR:-$HOME/repos/nikbrunner/dots}"
 
 # Source detect-os library
 # shellcheck disable=SC1091
-source "$SCRIPT_DIR/detect-os.sh"
+source "$DOTS_DIR/scripts/dots/detect-os.sh"
 
 # Get current OS
 CURRENT_OS=$(get_os)

@@ -10,7 +10,7 @@ DOTS_DIR="${DOTS_DIR:-$HOME/repos/nikbrunner/dots}"
 # shellcheck disable=SC1091
 source "$DOTS_DIR/scripts/log.sh"
 # shellcheck disable=SC1091
-source "$DOTS_DIR/scripts/dots-lib.sh"
+source "$DOTS_DIR/scripts/dots/lib.sh"
 
 # Change to dots directory for git operations
 cd "$DOTS_DIR"
@@ -711,7 +711,7 @@ show_usage() {
 	echo "                 check: show dependency status"
 	echo "                 install: install missing dependencies"
 	echo "                 list: list all dependencies"
-	}
+}
 
 # Deps command - install/check dependencies only
 cmd_deps() {
@@ -742,11 +742,11 @@ cmd_deps() {
 # Link command
 cmd_link() {
 	echo "→ Creating symlinks..."
-	"$DOTS_DIR/scripts/symlinks.sh" "$@"
+	"$DOTS_DIR/scripts/dots/symlinks.sh" "$@"
 
 	echo ""
 	echo "→ Linking Black Atom themes..."
-	"$DOTS_DIR/scripts/theme-link.sh" "$@"
+	"$DOTS_DIR/scripts/dots/theme-link.sh" "$@"
 }
 
 # Shared push function

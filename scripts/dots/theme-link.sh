@@ -4,9 +4,8 @@
 
 set -e
 
-# Get the script directory and dots directory
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-DOTS_DIR="$(dirname "$SCRIPT_DIR")"
+# Get dots directory
+DOTS_DIR="${DOTS_DIR:-$HOME/repos/nikbrunner/dots}"
 BLACK_ATOM_DIR="${BLACK_ATOM_DIR:-$HOME/repos/black-atom-industries}"
 
 # Parse arguments
