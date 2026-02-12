@@ -6,9 +6,6 @@ set -e
 # Get the dots directory
 DOTS_DIR="${DOTS_DIR:-$HOME/repos/nikbrunner/dots}"
 
-# Capture the original working directory before changing to dots dir
-ORIGINAL_PWD="$(pwd)"
-
 # Source shared dots library for pull/push commands
 # shellcheck disable=SC1091
 source "$DOTS_DIR/scripts/dots-lib.sh"
@@ -765,12 +762,7 @@ show_usage() {
 	echo "                 check: show dependency status"
 	echo "                 install: install missing dependencies"
 	echo "                 list: list all dependencies"
-	echo ""
-	echo "  remove       - Remove path from git tracking (keep files locally)"
-	echo ""
-	echo "  theme        - Interactive theme selector for all development tools"
-	echo "                 --debug: show debug output"
-}
+	}
 
 # Deps command - install/check dependencies only
 cmd_deps() {
@@ -880,98 +872,6 @@ cmd_open() {
 	"$editor" "$DOTS_DIR"
 }
 
-# Remove command - remove files from git tracking but keep them locally
-cmd_remove() {
-	if [[ $# -lt 1 ]]; then
-		log_error "Usage: dots remove <path>"
-		echo "       Removes path from git tracking and adds to .gitignore"
-		return 1
-	fi
-
-	local path="$1"
-
-	# Make path relative to dots directory
-	if [[ "$path" = /* ]]; then
-		path="${path#$DOTS_DIR/}"
-	fi
-
-	# Check if path exists
-	if [[ ! -e "$path" ]]; then
-		log_error "Path does not exist: $path"
-		return 1
-	fi
-
-	log_info "Removing from git tracking: $path"
-
-	# Check if the path is currently tracked
-	if git ls-files --error-unmatch "$path" >/dev/null 2>&1; then
-		# Remove from git tracking
-		if [[ -d "$path" ]]; then
-			if ! git rm --cached -r "$path" 2>/dev/null; then
-				log_error "Failed to remove directory from git tracking"
-				return 1
-			fi
-		else
-			if ! git rm --cached "$path" 2>/dev/null; then
-				log_error "Failed to remove file from git tracking"
-				return 1
-			fi
-		fi
-		log_success "Removed from git tracking"
-	else
-		log_warning "Path is not tracked by git"
-	fi
-
-	# Add to .gitignore
-	log_info "Adding to .gitignore..."
-
-	# Ensure path ends with / for directories
-	local gitignore_entry="$path"
-	if [[ -d "$path" ]] && [[ ! "$gitignore_entry" = */ ]]; then
-		gitignore_entry="${gitignore_entry}/"
-	fi
-
-	# Check if already in .gitignore
-	if grep -Fxq "$gitignore_entry" .gitignore 2>/dev/null; then
-		log_info "Already in .gitignore"
-	else
-		# Add to .gitignore
-		if [[ -f .gitignore ]]; then
-			# Ensure .gitignore ends with newline
-			if [[ -n "$(tail -c 1 .gitignore 2>/dev/null)" ]]; then
-				echo "" >>.gitignore
-			fi
-		fi
-		echo "$gitignore_entry" >>.gitignore
-		log_success "Added to .gitignore"
-	fi
-
-	# Stage .gitignore changes
-	git add .gitignore
-
-	# Show status
-	echo ""
-	log_section "Changes ready to commit:"
-	git status --short | grep -E "^(M|D|A)" | head -10
-
-	echo ""
-	log_info "Files still exist locally at: $DOTS_DIR/$path"
-
-	if command -v gum >/dev/null 2>&1; then
-		echo ""
-		if gum confirm "Commit these changes now?"; then
-			local commit_msg="chore: remove $path from git tracking"
-			git commit -m "$commit_msg"
-			log_success "Changes committed"
-		else
-			log_info "Run 'dots commit' when ready to commit"
-		fi
-	else
-		echo ""
-		log_info "Run 'dots commit' to commit these changes"
-	fi
-}
-
 # Main command dispatcher
 case "${1:-}" in
 deps)
@@ -987,15 +887,6 @@ state)
 	;;
 open)
 	cmd_open
-	;;
-remove)
-	shift
-	cmd_remove "$@"
-	;;
-theme)
-	# Return to original directory before running pick-theme
-	cd "$ORIGINAL_PWD"
-	exec pick-theme "$@"
 	;;
 pull)
 	shift

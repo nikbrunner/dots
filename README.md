@@ -192,14 +192,51 @@ Unified repository operations with optional AI assistance:
    - OS-specific: `macos/` or `arch/` (mirrors home directory structure)
 2. **Update configuration**: Edit `symlinks.yml` to add the symlink entry in the appropriate OS section
 3. **Update symlinks**: `dots link`
-4. **Commit changes**: `dots commit` (opens LazyGit)
+4. **Commit changes**: `dots state` (opens LazyGit)
+
+**Example**: Adding a new tool config
+```bash
+# 1. Create the config file
+mkdir -p common/.config/mytool
+cp ~/.config/mytool/config.toml common/.config/mytool/
+
+# 2. Add to symlinks.yml under the common: section
+#    "common/.config/mytool": "~/.config/mytool"
+
+# 3. Create the symlink
+dots link
+
+# 4. Commit
+dots state
+```
 
 #### Removing a Configuration
 
 1. **Delete the file** from the repository
 2. **Update configuration**: Remove the entry from `symlinks.yml`
 3. **Update symlinks**: `dots link` (broken symlinks are automatically removed)
-4. **Commit changes**: `dots commit`
+4. **Commit changes**: `dots state`
+
+**Example**: Removing a tool config
+```bash
+# 1. Delete from repo
+rm -rf common/.config/mytool
+
+# 2. Remove entry from symlinks.yml
+
+# 3. Clean up broken symlink
+dots link
+
+# 4. Commit
+dots state
+```
+
+#### Untracking a File (Keep Locally, Stop Tracking)
+
+```bash
+git rm --cached path/to/file
+# Optionally add to .gitignore to hide from git status
+```
 
 #### Renaming/Moving a Configuration
 
