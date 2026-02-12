@@ -9,8 +9,8 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +16 ~/repos/black-atom-industries/helm/internal/repos/config.go
-badd +100 ~/repos/black-atom-industries/helm/internal/config/config.go
+badd +27 ~/repos/black-atom-industries/helm/internal/repos/config.go
+badd +102 ~/repos/black-atom-industries/helm/internal/config/config.go
 argglobal
 %argdel
 edit ~/repos/black-atom-industries/helm/internal/repos/config.go
@@ -258,7 +258,7 @@ setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#internal%*\ %#WinBarSeparator#/%*\ %#WinBarPath#config%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#config.go%*\ %#WinBarSeparator##%*\ %#WinBarSymbol#BookmarksPath%*
+setlocal winbar=%#WinBarPath#internal%*\ %#WinBarSeparator#/%*\ %#WinBarPath#config%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#config.go%*
 setlocal winblend=0
 setlocal nowinfixbuf
 setlocal nowinfixheight
