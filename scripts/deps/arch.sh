@@ -43,6 +43,7 @@ DEPS=(
     rust
     go
     deno
+    uv
 
     # AI & dev tools
     av-cli-bin
