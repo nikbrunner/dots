@@ -9,7 +9,7 @@ DOTS_DIR="${DOTS_DIR:-$HOME/repos/nikbrunner/dots}"
 # Capture the original working directory before changing to dots dir
 ORIGINAL_PWD="$(pwd)"
 
-# Source shared repos library for arrive/leave commands
+# Source shared dots library for pull/push commands
 # shellcheck disable=SC1091
 source "$DOTS_DIR/scripts/dots-lib.sh"
 
@@ -69,9 +69,9 @@ log_info() {
 	fi
 }
 
-# ── Arrive command ─────────────────────────────────────────────
+# ── Pull command ───────────────────────────────────────────────
 # Full machine sync: pull dots, deps, link, pull all repos, rebuild tools
-cmd_arrive() {
+cmd_pull() {
 	local hard_reset=false
 	local rebuild_all=false
 
@@ -374,9 +374,9 @@ cmd_arrive() {
 	log_success "Arrive complete!"
 }
 
-# ── Leave command ──────────────────────────────────────────────
+# ── Push command ───────────────────────────────────────────────
 # End of day: dots chores, commit/push dots, handle dirty repos, push all
-cmd_leave() {
+cmd_push() {
 	load_config
 
 	# ── Phase 1: Dots chores ──
@@ -756,7 +756,6 @@ show_usage() {
 	echo "  deps         - Install/check dependencies [check|install|validate]"
 	echo "  link         - Update all symlinks (clean broken + create new) [--dry-run] [--no-backup] [--verbose]"
 	echo "  commit       - Open LazyGit for interactive committing"
-	echo "  push         - Push commits to remote [--force]"
 	echo "  status       - Show git and symlink status"
 	echo "  test         - Run comprehensive system tests"
 	echo "  format       - Format repository files with prettier and shfmt [--check]"
@@ -769,8 +768,8 @@ show_usage() {
 	echo "  mcp          - Configure Claude Code MCP servers [--dry-run] [--force]"
 	echo ""
 	echo "Machine Sync:"
-	echo "  arrive       - Full machine sync: pull dots, deps, symlinks, all repos, rebuild [--hard] [--rebuild-all]"
-	echo "  leave        - End of day: dots chores, commit/push, handle dirty repos, push all"
+	echo "  pull         - Full machine sync: pull dots, deps, symlinks, all repos, rebuild [--hard] [--rebuild-all]"
+	echo "  push         - End of day: chores, commit/push dots, handle dirty repos, push all"
 	echo "  chores       - Commit routine changes: fonts, themes, sessions, radar, lazy-lock, bookmarks"
 	echo ""
 }
@@ -876,22 +875,6 @@ cmd_commit() {
 		log_error "LazyGit not found. Install with: brew install lazygit"
 		return 1
 	fi
-}
-
-# Push command - only pushes, no committing
-cmd_push() {
-	local force_flag=false
-	if [[ "$1" == "--force" || "$1" == "-f" ]]; then
-		force_flag=true
-	fi
-
-	# Check if there are any commits to push
-	if [[ -z $(git log @{u}.. 2>/dev/null) ]]; then
-		log_success "No commits to push"
-		return 0
-	fi
-
-	do_push "$force_flag"
 }
 
 # Status command - delegate to external script
@@ -1213,10 +1196,6 @@ commit)
 	shift
 	cmd_commit "$@"
 	;;
-push)
-	shift
-	cmd_push "$@"
-	;;
 status)
 	cmd_status
 	;;
@@ -1255,13 +1234,13 @@ mcp)
 	shift
 	cmd_mcp "$@"
 	;;
-arrive)
+pull)
 	shift
-	cmd_arrive "$@"
+	cmd_pull "$@"
 	;;
-leave)
+push)
 	shift
-	cmd_leave "$@"
+	cmd_push "$@"
 	;;
 chores)
 	cmd_chores
