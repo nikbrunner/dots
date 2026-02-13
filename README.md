@@ -5,14 +5,11 @@ A clean, organized dotfiles repository using symlinks for easy management and de
 ## 📚 Table of Contents
 
 - [Overview](#overview)
-- [Structure](#structure)
 - [Installation](#installation)
 - [Usage](#usage)
   - [Core Commands](#core-commands)
   - [Managing Configurations](#managing-configurations)
 - [How It Works](#how-it-works)
-  - [OS-Specific Configurations](#os-specific-configurations)
-  - [Multiplexer Configuration](#multiplexer-configuration)
 - [Black Atom Theme Integration](#black-atom-theme-integration)
 - [Platform Support](#platform-support)
 - [Useful Links](#useful-links)
@@ -27,30 +24,6 @@ This dotfiles system uses a unified YAML configuration for symlink management:
 - Supports wildcard patterns for flexible file management (e.g., `"common/.local/bin/*": "~/.local/bin"`)
 - Eliminates duplication with shared common entries across platforms
 
-## Structure
-
-```
-dots/
-├── README.md                # This file
-├── CLAUDE.md                # Claude Code instructions
-├── symlinks.yml             # Symlinks configuration (YAML)
-├── scripts/                 # Core management scripts
-│   ├── dots/                # Dots-specific scripts
-│   │   ├── detect-os.sh     # OS detection (macos, arch, linux)
-│   │   ├── lib.sh           # Shared library (config, repo helpers, chore commits)
-│   │   ├── symlinks.sh      # Symlink creation and management
-│   │   └── theme-link.sh    # Black Atom theme symlink creation
-│   ├── deps/                # Dependency management (install.sh, macos.sh, arch.sh)
-│   ├── log.sh               # Shared logging/UI functions
-│   └── install.sh           # Full machine setup script
-├── common/                  # Cross-platform configurations
-│   ├── .config/             # Tool configurations
-│   ├── .local/bin/          # Custom scripts (dots, repo, etc.)
-│   └── .zshrc, etc.         # Root dotfiles
-├── macos/                   # macOS-specific configurations
-└── arch/                    # Arch-specific configurations
-```
-
 ## Installation
 
 ### Prerequisites
@@ -58,6 +31,7 @@ dots/
 Before cloning, set up SSH access to GitHub via 1Password:
 
 **macOS:**
+
 ```bash
 # Install Homebrew
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
@@ -67,12 +41,14 @@ brew install --cask 1password
 ```
 
 **Arch Linux (EndeavourOS):**
+
 ```bash
 # yay is pre-installed on EndeavourOS
 yay -S 1password
 ```
 
 **Then configure 1Password SSH:**
+
 1. Open 1Password and sign in
 2. Add your SSH key (or create one: **+ New Item → SSH Key**)
 3. Enable the SSH agent: **Settings → Developer → SSH Agent**
@@ -168,20 +144,13 @@ Place OS-specific files in `macos/`, `linux/`, or `arch/` following the home dir
 
 **Important**: The YAML section names must match the OS detection output:
 
-| Detected OS | YAML Section   | Description                                      |
-| ----------- | -------------- | ------------------------------------------------ |
-| `macos`     | `macos:`       | macOS systems                                    |
-| `arch`      | `arch:`        | Arch Linux systems                               |
-| `linux`     | `common:` only | Other Linux distributions (no dedicated section) |
-| `common`    | `common:`      | Always processed on all platforms                |
+| Detected OS | YAML Section | Description                       |
+| ----------- | ------------ | --------------------------------- |
+| `common`    | `common:`    | Always processed on all platforms |
+| `macos`     | `macos:`     | macOS systems                     |
+| `arch`      | `arch:`      | Arch Linux systems                |
 
 The system always processes the `common` section first, then adds the platform-specific section if it exists. OS detection is handled by `scripts/dots/detect-os.sh`.
-
-### Multiplexer Configuration
-
-The terminal configuration supports switching between WezTerm and tmux as the session/window/pane multiplexer. Currently tmux is used as the multiplexer.
-
-To switch, toggle the multiplexer bindings in `~/.config/wezterm/keymaps.lua` (comment/uncomment the `keymaps-multiplexer` require block). Both configurations provide the same keybinding experience.
 
 ## Black Atom Theme Integration
 
@@ -211,27 +180,3 @@ Theme linking runs automatically as part of `dots link`. It can also be run dire
 ```bash
 scripts/dots/theme-link.sh [--dry-run]
 ```
-
-**When theme linking matters:**
-
-- After cloning this repo on a new machine
-- If theme symlinks become absolute (git will show them as modified)
-- After adding new themes to Black Atom adapter repos
-
-**Supported adapters:**
-
-| Adapter | Source                                          | Dots Location                    |
-| ------- | ----------------------------------------------- | -------------------------------- |
-| Ghostty | `~/repos/black-atom-industries/ghostty/themes/` | `common/.config/ghostty/themes/` |
-| WezTerm | `~/repos/black-atom-industries/wezterm/themes/` | `common/.config/wezterm/colors/` |
-| Zed     | `~/repos/black-atom-industries/zed/themes/`     | `common/.config/zed/themes/`     |
-
-## Platform Support
-
-- ✅ macOS (primary development)
-- ✅ Linux (EndeavourOS/Arch)
-- ❌ Windows (not supported)
-
-## Useful Links
-
-- [Omarchy: Opinionated Arch/Hyprland Setup By DHH](https://omarchy.org/)
