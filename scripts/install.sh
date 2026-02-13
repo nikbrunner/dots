@@ -321,6 +321,31 @@ if [[ -d "$FONTS_REPO" ]]; then
     fi
 fi
 
+# 15. Seed zoxide database
+if command -v zoxide &>/dev/null; then
+    ZOXIDE_SEED="$DOTS_DIR/common/.config/zoxide/seed.txt"
+    if [[ -f "$ZOXIDE_SEED" ]]; then
+        echo ""
+        echo -e "${BLUE}📂 Phase 10: Zoxide Seed${NC}"
+        if [[ "$DRY_RUN" == true ]]; then
+            echo -e "${YELLOW}→${NC} [DRY] Would seed zoxide with base paths from seed.txt"
+        else
+            count=0
+            while IFS= read -r line; do
+                # Skip comments and empty lines
+                [[ -z "$line" || "$line" == \#* ]] && continue
+                # Expand ~ to $HOME, then glob-expand (unquoted)
+                expanded="${line/#\~/$HOME}"
+                # shellcheck disable=SC2086
+                for path in $expanded; do
+                    [[ -d "$path" ]] && zoxide add "$path" 2>/dev/null && ((count++)) || true
+                done
+            done <"$ZOXIDE_SEED"
+            echo -e "${GREEN}✓${NC} Seeded zoxide with $count paths"
+        fi
+    fi
+fi
+
 # Success message
 echo ""
 if [[ "$DRY_RUN" == true ]]; then
@@ -355,16 +380,5 @@ else
     echo "1. Install dependencies manually or run: ./install.sh (without --no-deps)"
     echo "2. Ensure ~/.local/bin is in your PATH"
     echo "3. Reload your shell: source ~/.zshrc"
-fi
-echo ""
-
-if [[ "$SKIP_DEPS" == false ]]; then
-    echo "🛠️  Available commands:"
-    echo "  • 'dots' - dotfiles management (status, sync, link)"
-    echo "  • 'repos' - repository management (find, open, status)"
-    echo "  • 'repo' - individual repository operations"
-    echo "  • 'ytdl' - download music from YouTube with metadata"
-    echo "  • 'music' - control MPD music daemon"
-    echo "  • 'rmpc' - terminal music player"
 fi
 echo ""

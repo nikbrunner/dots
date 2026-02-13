@@ -1,0 +1,13 @@
+# Zoxide seed paths — imported on fresh machine setup.
+# One path per line, use ~ for home directory.
+# Wildcards are supported (e.g. ~/repos/nikbrunner/*).
+# Lines starting with # are ignored.
+
+# Config
+~/.config
+~/.config/nvim
+
+# Repos
+~/repos/nikbrunner/*
+~/repos/black-atom-industries/*
+~/repos/qmk/*

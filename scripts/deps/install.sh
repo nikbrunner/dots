@@ -33,15 +33,15 @@ configure_system() {
     fi
     zsh_path=$(which zsh)
 
-    if [[ "$current_shell" != "$zsh_path" ]]; then
+    if [[ "$(basename "$current_shell")" == "zsh" ]]; then
+        echo "✅ zsh already default shell ($current_shell)"
+    else
         echo "🐚 Setting zsh as default shell..."
         if [[ "$OS" == "macos" ]]; then
             chsh -s "$zsh_path" && echo "✅ Shell changed to zsh" || echo "❌ Failed - run: chsh -s $zsh_path"
         else
             sudo usermod -s "$zsh_path" "$USER" && echo "✅ Shell changed to zsh" || echo "❌ Failed - run: sudo usermod -s $zsh_path $USER"
         fi
-    else
-        echo "✅ zsh already default shell"
     fi
 
     # Configure Git signing with 1Password
