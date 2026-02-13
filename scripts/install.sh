@@ -4,8 +4,8 @@
 
 set -e
 
-# Get the script directory
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# Get the dots directory (this script lives in scripts/)
+DOTS_DIR="${DOTS_DIR:-$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)}"
 
 # Colors for output
 GREEN='\033[0;32m'
@@ -34,9 +34,9 @@ done
 
 # Source dependencies and OS detection
 # shellcheck disable=SC1091
-source "$SCRIPT_DIR/scripts/detect-os.sh"
+source "$DOTS_DIR/scripts/dots/detect-os.sh"
 # shellcheck disable=SC1091
-source "$SCRIPT_DIR/scripts/deps/install.sh"
+source "$DOTS_DIR/scripts/deps/install.sh"
 
 echo -e "${BLUE}╔══════════════════════════════════════╗${NC}"
 echo -e "${BLUE}║    Dots Complete Machine Setup       ║${NC}"
@@ -95,12 +95,12 @@ fi
 # 4. Initialize git repository if needed
 echo ""
 echo -e "${BLUE}🔗 Phase 3: Dotfiles Setup${NC}"
-if [[ ! -d "$SCRIPT_DIR/.git" ]]; then
+if [[ ! -d "$DOTS_DIR/.git" ]]; then
     if [[ "$DRY_RUN" == true ]]; then
         echo -e "${YELLOW}→${NC} [DRY] Would initialize git repository"
     else
         echo -e "${YELLOW}→${NC} Initializing git repository..."
-        cd "$SCRIPT_DIR"
+        cd "$DOTS_DIR"
         git init
         echo -e "${GREEN}✓${NC} Git repository initialized"
     fi
@@ -110,13 +110,13 @@ fi
 echo -e "${YELLOW}→${NC} Creating symlinks..."
 SYMLINK_ARGS=()
 [[ "$DRY_RUN" == true ]] && SYMLINK_ARGS+=("--dry-run")
-"$SCRIPT_DIR/scripts/symlinks.sh" "${SYMLINK_ARGS[@]}"
+"$DOTS_DIR/scripts/dots/symlinks.sh" "${SYMLINK_ARGS[@]}"
 
 # 6. Set up dots command
 if [[ "$DRY_RUN" == true ]]; then
     echo -e "${YELLOW}→${NC} [DRY] Would set up dots command at ~/.local/bin/dots"
     if [[ ! -L "$HOME/.local/bin/dots" ]]; then
-        echo -e "  Would create symlink: ~/.local/bin/dots → $SCRIPT_DIR/common/.local/bin/dots"
+        echo -e "  Would create symlink: ~/.local/bin/dots → $DOTS_DIR/common/.local/bin/dots"
     fi
 else
     echo -e "${YELLOW}→${NC} Setting up dots command..."
@@ -128,7 +128,7 @@ else
     if [[ -L "$HOME/.local/bin/dots" ]]; then
         rm "$HOME/.local/bin/dots"
     fi
-    ln -s "$SCRIPT_DIR/common/.local/bin/dots" "$HOME/.local/bin/dots"
+    ln -s "$DOTS_DIR/common/.local/bin/dots" "$HOME/.local/bin/dots"
     echo -e "${GREEN}✓${NC} Created dots command at ~/.local/bin/dots"
 fi
 
@@ -140,9 +140,9 @@ if [[ "$DRY_RUN" == true ]]; then
     echo "  Would chmod +x: common/.local/bin/*"
 else
     echo -e "${YELLOW}→${NC} Making scripts executable..."
-    chmod +x "$SCRIPT_DIR/install.sh"
-    chmod +x "$SCRIPT_DIR/scripts/"*.sh
-    find "$SCRIPT_DIR/common/.local/bin" -type f -exec chmod +x {} \;
+    chmod +x "$DOTS_DIR/scripts/install.sh"
+    chmod +x "$DOTS_DIR/scripts/"*.sh
+    find "$DOTS_DIR/common/.local/bin" -type f -exec chmod +x {} \;
     echo -e "${GREEN}✓${NC} All scripts are now executable"
 fi
 
@@ -252,15 +252,15 @@ if [[ "$SKIP_DEPS" == false ]] && command -v claude &>/dev/null && command -v jq
     echo ""
     echo -e "${BLUE}🔌 Phase 7.5: Claude Code MCP Setup${NC}"
     if [[ "$DRY_RUN" == true ]]; then
-        "$SCRIPT_DIR/scripts/claude-mcp.sh" --dry-run
+        "$DOTS_DIR/scripts/claude-mcp.sh" --dry-run
     else
         # Check if required env vars are set
         if [[ -n "$EXA_API_KEY" ]] || [[ -n "$REF_API_KEY" ]]; then
-            "$SCRIPT_DIR/scripts/claude-mcp.sh"
+            "$DOTS_DIR/scripts/claude-mcp.sh"
         else
             echo -e "${YELLOW}⚠️${NC} MCP API keys not set in environment"
             echo "  Set EXA_API_KEY and REF_API_KEY, then run: dots mcp"
-            echo "  Or run manually: $SCRIPT_DIR/scripts/claude-mcp.sh"
+            echo "  Or run manually: $DOTS_DIR/scripts/claude-mcp.sh"
         fi
     fi
 elif [[ "$DRY_RUN" == true ]] && command -v claude &>/dev/null; then
@@ -279,7 +279,7 @@ if [[ "$DRY_RUN" == false ]] && [[ -f "$REPOS_CONFIG" ]]; then
     if command -v gum &>/dev/null; then
         if gum confirm "Run 'repos setup' to clone your repositories?"; then
             echo ""
-            "$SCRIPT_DIR/common/.local/bin/repos" setup
+            "$DOTS_DIR/common/.local/bin/repos" setup
         else
             echo -e "${YELLOW}→${NC} Skipped. Run 'repos setup' later to clone repositories."
         fi
@@ -288,7 +288,7 @@ if [[ "$DRY_RUN" == false ]] && [[ -f "$REPOS_CONFIG" ]]; then
         read -r run_repos_setup
         if [[ "$run_repos_setup" == "y" || "$run_repos_setup" == "Y" ]]; then
             echo ""
-            "$SCRIPT_DIR/common/.local/bin/repos" setup
+            "$DOTS_DIR/common/.local/bin/repos" setup
         else
             echo -e "${YELLOW}→${NC} Skipped. Run 'repos setup' later to clone repositories."
         fi

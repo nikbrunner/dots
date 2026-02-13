@@ -4,14 +4,14 @@
 
 set -eo pipefail
 
-DEPS_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-source "$DEPS_DIR/../detect-os.sh"
+DOTS_DIR="${DOTS_DIR:-$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)}"
+source "$DOTS_DIR/scripts/dots/detect-os.sh"
 
 OS=$(get_os)
 
 case "$OS" in
-macos) source "$DEPS_DIR/macos.sh" ;;
-arch) source "$DEPS_DIR/arch.sh" ;;
+macos) source "$DOTS_DIR/scripts/deps/macos.sh" ;;
+arch) source "$DOTS_DIR/scripts/deps/arch.sh" ;;
 *)
     echo "❌ Unsupported OS: $OS"
     exit 1
@@ -108,12 +108,12 @@ validate_dependencies() {
     fi
 
     # Check brew bundle
-    if brew bundle check --file="$DEPS_DIR/Brewfile" &>/dev/null; then
+    if brew bundle check --file="$DOTS_DIR/scripts/deps/Brewfile" &>/dev/null; then
         echo "All brew packages installed!"
         return 0
     else
         echo "Some brew packages missing"
-        brew bundle check --file="$DEPS_DIR/Brewfile"
+        brew bundle check --file="$DOTS_DIR/scripts/deps/Brewfile"
         return 1
     fi
 }
@@ -126,7 +126,7 @@ if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
     list)
         echo "nvm"
         echo "qmk"
-        grep -E '^(brew|cask)' "$DEPS_DIR/Brewfile" | sed 's/.*"\(.*\)".*/\1/'
+        grep -E '^(brew|cask)' "$DOTS_DIR/scripts/deps/Brewfile" | sed 's/.*"\(.*\)".*/\1/'
         ;;
     configure) configure_system ;;
     validate) validate_dependencies ;;

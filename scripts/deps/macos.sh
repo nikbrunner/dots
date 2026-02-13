@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # macOS dependencies
 
-DEPS_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+: "${DOTS_DIR:?DOTS_DIR must be set before sourcing macos.sh}"
 
 # Install nvm via curl script
 install_nvm() {
@@ -70,7 +70,7 @@ check_all() {
 
     echo ""
     echo "Brew packages:"
-    brew bundle check --file="$DEPS_DIR/Brewfile" --verbose
+    brew bundle check --file="$DOTS_DIR/scripts/deps/Brewfile" --verbose
 }
 
 # Install all missing dependencies
@@ -106,7 +106,7 @@ install_all() {
 
     echo ""
     echo "Installing brew packages..."
-    brew bundle install --file="$DEPS_DIR/Brewfile"
+    brew bundle install --file="$DOTS_DIR/scripts/deps/Brewfile"
 
     echo ""
     echo "Done!"

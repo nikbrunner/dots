@@ -8,10 +8,12 @@
 [[ -n "${_DOTS_LIB_LOADED:-}" ]] && return 0
 _DOTS_LIB_LOADED=1
 
+# Require DOTS_DIR from caller
+: "${DOTS_DIR:?DOTS_DIR must be set before sourcing lib.sh}"
+
 # Source shared logging (provides log_*, has_gum, confirm, choose)
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # shellcheck disable=SC1091
-source "$SCRIPT_DIR/../log.sh"
+source "$DOTS_DIR/scripts/log.sh"
 
 # ── Configuration ────────────────────────────────────────────
 

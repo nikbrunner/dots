@@ -24,6 +24,7 @@ export XDG_CONFIG_HOME="$HOME/.config" # Because of https://github.com/jesseduff
 export RIPGREP_CONFIG_PATH=$HOME/.ripgreprc
 
 # Globals ================================================================
+export DOTS_DIR="$HOME/repos/nikbrunner/dots"
 export EDITOR="nvim"
 export MANPAGER='nvim +Man!'
 export BAT_THEME="base16"

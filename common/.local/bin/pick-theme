@@ -6,7 +6,7 @@
 set -euo pipefail
 
 # Configuration
-DOTS_DIR="$HOME/repos/nikbrunner/dots"
+DOTS_DIR="${DOTS_DIR:-$HOME/repos/nikbrunner/dots}"
 THEMES_JSON="$DOTS_DIR/common/themes.json"
 
 # Tool configurations
