@@ -200,6 +200,14 @@ check_all() {
         missing+=("claude-code")
     fi
 
+    # Check peon-ping separately (curl install)
+    if command -v peon-ping &>/dev/null; then
+        echo "  ✅ peon-ping"
+    else
+        echo "  ❌ peon-ping"
+        missing+=("peon-ping")
+    fi
+
     echo ""
     if [[ ${#missing[@]} -eq 0 ]]; then
         echo "✅ All dependencies installed!"
@@ -247,6 +255,18 @@ install_claude_code() {
     fi
 }
 
+# Install peon-ping via curl script
+install_peon_ping() {
+    echo "📦 Installing peon-ping..."
+    if command -v curl &>/dev/null; then
+        curl -fsSL https://raw.githubusercontent.com/PeonPing/peon-ping/main/install.sh | bash
+        echo "✅ peon-ping installed"
+    else
+        echo "❌ curl not available"
+        return 1
+    fi
+}
+
 # Install all missing dependencies
 install_all() {
     local pkg_manager
@@ -285,8 +305,17 @@ install_all() {
         claude_missing=true
     fi
 
+    # Check peon-ping (curl install, not pacman)
+    local peon_ping_missing=false
+    if command -v peon-ping &>/dev/null; then
+        echo "  ✅ peon-ping"
+    else
+        echo "  ❌ peon-ping"
+        peon_ping_missing=true
+    fi
+
     # Install missing
-    if [[ ${#missing[@]} -gt 0 ]] || [[ "$nvm_missing" == true ]] || [[ "$claude_missing" == true ]]; then
+    if [[ ${#missing[@]} -gt 0 ]] || [[ "$nvm_missing" == true ]] || [[ "$claude_missing" == true ]] || [[ "$peon_ping_missing" == true ]]; then
         echo ""
         echo "🚀 Installing missing dependencies..."
 
@@ -300,6 +329,10 @@ install_all() {
 
         if [[ "$claude_missing" == true ]]; then
             install_claude_code
+        fi
+
+        if [[ "$peon_ping_missing" == true ]]; then
+            install_peon_ping
         fi
 
         echo ""
