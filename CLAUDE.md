@@ -22,57 +22,11 @@ dots/
 
 ## Commands
 
-### Dotfiles Management (`dots`)
+- **`dots`** — Dotfiles management. Run `dots` with no args for usage. See `common/.local/bin/dots`.
+- **`repo`** — AI-powered git operations (commit, branch). Run `repo help` for usage. See `common/.local/bin/repo`.
+- **`helm`** — External tool for multi-repo management (pull, push, status, rebuild). Invoked by `dots pull` and `dots push`.
 
-```bash
-# Machine Sync
-dots arrive [--hard] [--rebuild-all]  # Full sync: pull dots, deps, symlinks, all repos, rebuild
-dots leave                             # End of day: chores, commit/push dots, handle dirty repos
-
-# Setup & Config
-dots install [--dry-run] [--no-deps]  # Complete machine setup
-dots link [--dry-run] [--verbose]     # Update all symlinks
-dots sync                              # Git pull + submodule updates
-dots status                            # Git and symlink status
-dots test                              # Comprehensive system tests
-dots deps [check|install|validate]    # Dependency management
-dots commit                            # Open LazyGit
-dots push [--force]                    # Push to remote
-
-# Submodules
-dots sub-add <url> <path>             # Add submodule
-dots sub-update                        # Update all submodules
-dots sub-commit                        # Commit submodule hash changes
-dots sub-status                        # Show submodule status
-
-# Utilities
-dots theme [--debug]                   # Interactive theme selector
-dots font                              # Interactive font selector
-dots mcp [--dry-run] [--force]        # Configure Claude Code MCPs
-dots open                              # Open dots in $EDITOR
-dots remove <path>                     # Untrack path from git
-```
-
-### Repository Management (`repos`)
-
-```bash
-repos open                # Open a repository in tmux (with fzf)
-repos find                # Search files across all repos
-repos status              # Git status for all repositories
-repos add <url>           # Clone repo to organized location
-repos setup               # Clone all repos from ENSURE_CLONED list
-```
-
-### Git Operations (`repo`)
-
-```bash
-repo commit               # Open lazygit
-repo commit -s [-y] [-p]  # AI-generated commit message
-repo branch "name"        # Create branch with exact name
-repo branch -s "desc"     # AI-generated branch name
-```
-
-Git aliases: `git sc` → `repo commit -s`, `git sb` → `repo branch -s`
+Full machine setup: `scripts/install.sh [--dry-run] [--no-deps]`
 
 ## Symlink Configuration
 
@@ -91,46 +45,43 @@ The `symlinks.yml` file defines all symlinks with OS-specific sections:
 
 **Move/Rename**: Move file in repo → `dots link` (auto-removes old, creates new)
 
-## Claude Code MCP Setup
+## Architecture
 
-MCP servers are defined in `common/.claude/mcp-servers.json` and configured per-machine:
+### Script Sourcing Chain
 
-```bash
-# Set API keys in .zshrc
-export EXA_API_KEY='...'
-export REF_API_KEY='...'
+The `dots` CLI sources two shared libraries:
+1. `scripts/log.sh` — logging functions (`log_section`, `log_success`, `log_warning`, `log_error`, `log_info`), plus `has_gum`, `confirm`, `choose` helpers. Uses `gum` for enhanced output when available.
+2. `scripts/dots/lib.sh` — config loading (`load_config`), git URL parsing, repo state detection, and automated chore commit functions (`dots_commit_theme`, `dots_commit_sessions`, `dots_commit_radar`, `dots_commit_font`, `dots_commit_lazy_lock`, `dots_commit_bookmarks`).
 
-# Configure MCPs
-dots mcp
-```
+`lib.sh` requires `DOTS_DIR` to be set before sourcing and reads helm config from `~/.config/helm/config.yml` for `REPOS_BASE_PATH`.
 
-Available servers: `exa` (web search), `Ref` (docs lookup), `chrome-devtools` (browser automation)
+### Black Atom Theme Integration
 
-## Black Atom Theme Integration
-
-Theme files in this repo are symlinks to Black Atom adapter repos:
-
-```
-~/.config/ghostty/themes/  →  dots/common/.config/ghostty/themes/  →  black-atom-industries/ghostty/
-```
-
-Run `dots theme-link` to create/update relative symlinks to Black Atom repos.
+Theme files in this repo are symlinks to Black Atom adapter repos. `dots link` automatically runs `scripts/dots/theme-link.sh` which creates relative symlinks from dots theme directories to Black Atom adapter repos at `~/repos/black-atom-industries/`.
 
 ## Key Files
 
-- `common/.local/bin/dots` - Main CLI implementation
-- `common/.local/bin/repos` - Repository management CLI
-- `scripts/repos-lib.sh` - Shared library (sourced by both `dots` and `repos`)
-- `scripts/symlinks.sh` - Symlink creation logic
-- `scripts/detect-os.sh` - OS detection (`macos`, `arch`, `linux`)
-- `scripts/deps/` - Dependency management (install.sh dispatcher, macos.sh, arch.sh)
+- `common/.local/bin/dots` — Main CLI implementation (dispatcher + `cmd_pull`, `cmd_push`, `cmd_chores`, `cmd_link`, `cmd_deps`)
+- `common/.local/bin/repo` — AI-powered git operations (commit, branch)
+- `scripts/dots/lib.sh` — Shared library (config loading, repo helpers, chore commit functions)
+- `scripts/dots/symlinks.sh` — Symlink creation/cleanup logic (also sourceable as a library)
+- `scripts/dots/detect-os.sh` — OS detection (`macos`, `arch`, `linux`)
+- `scripts/dots/theme-link.sh` — Black Atom theme symlink creation
+- `scripts/log.sh` — Shared logging/UI functions
+- `scripts/deps/` — Dependency management (install.sh dispatcher, macos.sh, arch.sh)
+- `scripts/install.sh` — Full machine setup script
+- `scripts/claude-mcp.sh` — Claude Code MCP server configuration
 
 ## Environment Variables
 
-- `DOTS_DIR` - Override dots directory (default: `~/repos/nikbrunner/dots`)
+- `DOTS_DIR` — Override dots directory (default: `~/repos/nikbrunner/dots`)
+- `BLACK_ATOM_DIR` — Override Black Atom repos directory (default: `~/repos/black-atom-industries`)
+- `ANTHROPIC_API_KEY` — Required for `repo commit -s` / `repo branch -s` API mode
 
-## Notes
+## Shell Conventions
 
-- Run `dots test` to validate the system (includes shellcheck linting)
-- Use `dots link --dry-run` to preview symlink operations
-- This repository is personal and not intended for public use
+- All scripts use `set -e` (exit on error)
+- `repo` uses `set -euo pipefail`
+- `yq` is required for YAML parsing (`symlinks.yml`, helm config)
+- `gum` is optional but enhances UI (confirmations, spinners, styled output)
+- Scripts are linted with `shellcheck`

@@ -9,24 +9,12 @@ A clean, organized dotfiles repository using symlinks for easy management and de
 - [Installation](#installation)
 - [Usage](#usage)
   - [Core Commands](#core-commands)
-    - [`dots` - Dotfiles Management](#dots---dotfiles-management)
-    - [`repos` - Repository Manager](#repos---repository-manager)
-    - [`repo` - Repository Operations](#repo---repository-operations)
-- [`dots` Usage Examples](#dots-usage-examples)
-  - [Adding a New Configuration](#adding-a-new-configuration)
-  - [Removing a Configuration](#removing-a-configuration)
-  - [Renaming/Moving a Configuration](#renamingmoving-a-configuration)
-  - [Editing Configurations](#editing-configurations)
-  - [Syncing Across Machines](#syncing-across-machines)
-  - [Testing the System](#testing-the-system)
-  - [Other Notable Commands](#other-notable-commands)
+  - [Managing Configurations](#managing-configurations)
 - [How It Works](#how-it-works)
   - [OS-Specific Configurations](#os-specific-configurations)
   - [Multiplexer Configuration](#multiplexer-configuration)
 - [Black Atom Theme Integration](#black-atom-theme-integration)
 - [Submodules](#submodules)
-- [Development](#development)
-- [Dependencies](#dependencies)
 - [Platform Support](#platform-support)
 - [Useful Links](#useful-links)
 
@@ -47,18 +35,20 @@ dots/
 ├── README.md                # This file
 ├── CLAUDE.md                # Claude Code instructions
 ├── symlinks.yml             # Symlinks configuration (YAML)
-├── scripts/                 # Management scripts
-│   ├── detect-os.sh         # OS detection utility
-│   └── symlinks.sh          # Symlink creation and management
+├── scripts/                 # Core management scripts
+│   ├── dots/                # Dots-specific scripts
+│   │   ├── detect-os.sh     # OS detection (macos, arch, linux)
+│   │   ├── lib.sh           # Shared library (config, repo helpers, chore commits)
+│   │   ├── symlinks.sh      # Symlink creation and management
+│   │   └── theme-link.sh    # Black Atom theme symlink creation
+│   ├── deps/                # Dependency management (install.sh, macos.sh, arch.sh)
+│   ├── log.sh               # Shared logging/UI functions
+│   └── install.sh           # Full machine setup script
 ├── common/                  # Cross-platform configurations
-│   ├── .config/             # Config files (.zshrc, .gitconfig, etc.)
-│   ├── bin/                 # Custom scripts
+│   ├── .config/             # Tool configurations
+│   ├── .local/bin/          # Custom scripts (dots, repo, etc.)
 │   └── .zshrc, etc.         # Root dotfiles
 ├── macos/                   # macOS-specific configurations
-│   ├── .config/karabiner/   # Karabiner configuration
-│   ├── Library/             # Application Support files
-│   └── Brewfile             # Homebrew dependencies
-├── linux/                   # Linux-specific configurations
 └── arch/                    # Arch-specific configurations
 ```
 
@@ -124,162 +114,36 @@ dots link --debug --dry-run
 
 ## Usage
 
-The `dots` command provides a unified interface for managing your dotfiles:
-
 ### Core Commands
 
-#### `dots` - Dotfiles Management
+- **`dots`** — Dotfiles management (pull, push, link, chores, deps). Run `dots` with no args for usage.
+- **`repo`** — AI-powered git operations (commit, branch). Run `repo help` for usage.
+- **`helm`** — External tool for multi-repo management. Invoked by `dots pull` and `dots push`.
 
-| Command           | Description                                                                        | Options                                 |
-| ----------------- | ---------------------------------------------------------------------------------- | --------------------------------------- |
-| `dots install`    | Complete machine setup with dependencies, symlinks and submodules                  | `--dry-run`, `--no-deps`                |
-| `dots link`       | Update all symlinks (removes broken + creates new)                                 | `--dry-run`, `--no-backup`, `--verbose` |
-| `dots sync`       | Git pull + submodule updates                                                       | -                                       |
-| `dots status`     | Show git and symlink status                                                        | -                                       |
-| `dots open`       | Open dots directory with `$EDITOR`                                                 | -                                       |
-| `dots test`       | Run comprehensive system tests                                                     | -                                       |
-| `dots format`     | Format repository files with prettier and shfmt                                    | `--check`                               |
-| `dots commit`     | Open LazyGit for interactive committing                                            | -                                       |
-| `dots push`       | Push commits to remote                                                             | `--force`                               |
-| `dots log`        | Show recent commits                                                                | -                                       |
-| `dots sub-update` | Update all submodules                                                              | -                                       |
-| `dots sub-add`    | Add new submodule                                                                  | `<url> <path>`                          |
-| `dots sub-commit` | Commit submodule hash updates                                                      | -                                       |
-| `dots sub-status` | Show status of all submodules                                                      | -                                       |
-| `dots theme-link` | Create relative symlinks for Black Atom themes                                     | `--dry-run`                             |
-| `dots test`       | Run comprehensive system tests (repository structure, OS detection, symlinks, etc) | -                                       |
+### Managing Configurations
 
-#### `repos` - Repository Manager
+#### Adding a Configuration
 
-A minimal but powerful repository manager for organizing all your git repositories under `~/repos/username/repo-name/`:
-
-| Command           | Description                                    | Options |
-| ----------------- | ---------------------------------------------- | ------- |
-| `repos find`      | Search and open files across all repositories  | -       |
-| `repos open`      | Open a repository in tmux                      | -       |
-| `repos status`    | Show git status for all repositories           | -       |
-| `repos add <url>` | Clone a repository to organized location       | -       |
-| `repos config`    | Edit repos configuration (ENSURE_CLONED list)  | -       |
-| `repos setup`     | Clone all repositories from ENSURE_CLONED list | -       |
-
-#### `repo` - Repository Operations
-
-Unified repository operations with optional AI assistance:
-
-| Command                 | Description                             | Options                                             |
-| ----------------------- | --------------------------------------- | --------------------------------------------------- |
-| `repo commit`           | Open lazygit for interactive committing | -                                                   |
-| `repo commit -s`        | Generate commit message with AI         | `-y` (auto-confirm), `-p` (push), `-f` (force push) |
-| `repo branch "name"`    | Create branch with exact name           | -                                                   |
-| `repo branch -s "desc"` | Generate branch name with AI            | `-y` (auto-create)                                  |
-
-**Git Aliases:**
-
-- `git sc` → `repo commit -s` (smart commit)
-- `git sb` → `repo branch -s` (smart branch)
-
-**Examples:**
-
-- `repo commit -s -yp` - AI commit with auto-confirm and push
-- `repo branch -s -y "BCD-123 fix login"` - AI branch name with auto-create
-
-## `dots` Usage Examples
-
-#### Adding a New Configuration
-
-1. **Add the file** to the appropriate directory:
-   - Cross-platform: `common/` (mirrors home directory structure)
-   - OS-specific: `macos/` or `arch/` (mirrors home directory structure)
-2. **Update configuration**: Edit `symlinks.yml` to add the symlink entry in the appropriate OS section
-3. **Update symlinks**: `dots link`
-4. **Commit changes**: `dots state` (opens LazyGit)
-
-**Example**: Adding a new tool config
-```bash
-# 1. Create the config file
-mkdir -p common/.config/mytool
-cp ~/.config/mytool/config.toml common/.config/mytool/
-
-# 2. Add to symlinks.yml under the common: section
-#    "common/.config/mytool": "~/.config/mytool"
-
-# 3. Create the symlink
-dots link
-
-# 4. Commit
-dots state
-```
+1. Place file in `common/` (cross-platform) or `macos/`/`arch/` (OS-specific), mirroring home directory structure
+2. Add entry to `symlinks.yml` in the appropriate section
+3. Run `dots link`
 
 #### Removing a Configuration
 
-1. **Delete the file** from the repository
-2. **Update configuration**: Remove the entry from `symlinks.yml`
-3. **Update symlinks**: `dots link` (broken symlinks are automatically removed)
-4. **Commit changes**: `dots state`
-
-**Example**: Removing a tool config
-```bash
-# 1. Delete from repo
-rm -rf common/.config/mytool
-
-# 2. Remove entry from symlinks.yml
-
-# 3. Clean up broken symlink
-dots link
-
-# 4. Commit
-dots state
-```
-
-#### Untracking a File (Keep Locally, Stop Tracking)
-
-```bash
-git rm --cached path/to/file
-# Optionally add to .gitignore to hide from git status
-```
+1. Delete the file from the repository
+2. Remove the entry from `symlinks.yml`
+3. Run `dots link` (broken symlinks are automatically cleaned up)
 
 #### Renaming/Moving a Configuration
 
-1. **Rename the file** in the repository:
-   ```bash
-   # Example: Rename a script
-   mv common/.local/bin/old-name common/.local/bin/new-name
-   ```
-2. **Update symlinks**: `dots link`
-   - Old symlink (`~/.local/bin/old-name`) is automatically removed
-   - New symlink (`~/.local/bin/new-name`) is created
-3. **Commit changes**: `dots commit`
+1. Move the file in the repository
+2. Run `dots link` (old symlink removed, new one created)
 
-#### Editing Configurations
-
-1. **Edit files directly** in your home directory (they're symlinked!)
-2. **Check changes**: `dots status`
-3. **Commit changes**: `dots commit`
-
-#### Syncing Across Machines
+#### Preview Changes
 
 ```bash
-# On other machines
-dots sync  # Pull latest changes and update submodules
-dots link  # Update symlinks if needed
+dots link --dry-run --verbose
 ```
-
-#### Testing the System
-
-```bash
-# Run comprehensive system tests (good before making changes)
-dots test
-
-# Preview what symlinks would be created (detailed output)
-dots link --dry-run
-```
-
-The `dots test` command validates the entire system (repository structure, OS detection, symlink creation, etc.) and reports pass/fail status. Use `dots link --dry-run` when you want detailed output showing exactly what symlink operations would be performed.
-
-#### Other Notable Commands
-
-- Various helper scripts in `~/.local/bin/` for development workflows
-- Platform-specific utilities and configurations
 
 ## How It Works
 
@@ -319,7 +183,7 @@ Place OS-specific files in `macos/`, `linux/`, or `arch/` following the home dir
 | `linux`     | `common:` only | Other Linux distributions (no dedicated section) |
 | `common`    | `common:`      | Always processed on all platforms                |
 
-The system always processes the `common` section first, then adds the platform-specific section if it exists. OS detection is handled by `scripts/detect-os.sh`.
+The system always processes the `common` section first, then adds the platform-specific section if it exists. OS detection is handled by `scripts/dots/detect-os.sh`.
 
 ### Multiplexer Configuration
 
@@ -367,17 +231,13 @@ This two-layer approach means:
 
 The symlinks inside dots use **relative paths** (e.g., `../../../../../../black-atom-industries/ghostty/...`) so they work on any machine as long as both repos are cloned to the same relative locations.
 
-**Commands:**
+Theme linking runs automatically as part of `dots link`. It can also be run directly:
 
 ```bash
-# Preview what theme symlinks would be created
-dots theme-link --dry-run
-
-# Create/recreate all theme symlinks with correct relative paths
-dots theme-link
+scripts/dots/theme-link.sh [--dry-run]
 ```
 
-**When to run `dots theme-link`:**
+**When theme linking matters:**
 
 - After cloning this repo on a new machine
 - If theme symlinks become absolute (git will show them as modified)
@@ -398,14 +258,7 @@ Current submodules:
 - `common/.config/nvim` - Neovim configuration ([nikbrunner/nbr.nvim](https://github.com/nikbrunner/nbr.nvim))
 - `common/.config/wezterm` - Wezterm configuration ([nikbrunner/wezterm](https://github.com/nikbrunner/wezterm))
 
-Common commands:
-
-- `dots sub-add <url> <path>` - Add new submodule
-- `dots sub-update` - Update all submodules
-- `dots sub-status` - Show submodule status
-- `dots sub-commit` - Commit submodule hash updates
-
-> **📖 Detailed Documentation**: See [docs/SUBMODULES.md](./docs/SUBMODULES.md) for comprehensive submodule management guide including troubleshooting, best practices, and removal planning.
+Managed with standard `git submodule` commands. See [docs/SUBMODULES.md](./docs/SUBMODULES.md) for details.
 
 ## Platform Support
 
