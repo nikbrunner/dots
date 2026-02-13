@@ -358,7 +358,6 @@ function M.keys()
         -- App
         { "<leader>aa",          function() Snacks.picker.commands() end, desc = "[A]ctions" },
         { "<leader>ad",          M.file_surfer, desc = "[D]ocument" },
-        { "<leader>af",          function() Snacks.zen.zen() end, desc = "[F]ocus Mode" },
         { "<leader>ahh",         function() Snacks.picker.highlights() end, desc = "[H]ightlights" },
         { "<leader>ahk",          function() Snacks.picker.keymaps() end, desc = "[K]eymaps" },
         { "<leader>ahm",         function() Snacks.picker.man() end, desc = "[M]anuals" },
@@ -369,7 +368,6 @@ function M.keys()
         { "<leader>at",          function() Snacks.picker.colorschemes() end, desc = "[T]hemes" },
         { "<leader>aw",          function() Snacks.picker.projects() end, desc = "[W]orkspace" },
         { "<leader>aW",          function() Snacks.picker.zoxide() end, desc = "[W]orkspace (Zoxide)" },
-        { "<leader>az",          function() Snacks.zen.zoom() end, desc = "[Z]oom Mode" },
 
 
         -- Workspace
@@ -678,18 +676,6 @@ return {
                 },
             },
         },
-        zen = {
-            toggles = {
-                dim = false,
-                git_signs = false,
-                mini_diff_signs = false,
-                diagnostics = true,
-            },
-            ---@type snacks.zen.Config
-            zoom = {
-                show = { statusline = false, tabline = false },
-            },
-        },
         words = { debounce = 100 },
         terminal = {
             win = {
@@ -723,30 +709,6 @@ return {
                 wo = {
                     winblend = 0,
                     winhighlight = "Normal:SnacksNotifierHistory",
-                },
-            },
-            zen = {
-                width = 165,
-                backdrop = {
-                    transparent = true,
-                    blend = 20,
-                },
-                wo = {
-                    scrolloff = 999,
-                },
-                keys = {
-                    q = function(self)
-                        self:close()
-                    end,
-                    ["<leader>td"] = function()
-                        if vim.g.snacks_animate_dim then
-                            Snacks.dim.disable()
-                            vim.g.snacks_animate_dim = false
-                        else
-                            Snacks.dim.enable()
-                            vim.g.snacks_animate_dim = true
-                        end
-                    end,
                 },
             },
         },
