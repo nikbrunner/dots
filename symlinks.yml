@@ -3,6 +3,7 @@ common:
   common/.claude/agents: ~/.claude/agents
   common/.claude/commands: ~/.claude/commands
   common/.claude/settings.json: ~/.claude/settings.json
+  common/.claude/hooks/peon-ping/config.json: ~/.claude/hooks/peon-ping/config.json
   common/.config/.zsh/_git: ~/.config/.zsh/_git
   common/.config/.zsh/git-completion.bash: ~/.config/.zsh/git-completion.bash
   common/.config/atuin/config.toml: ~/.config/atuin/config.toml

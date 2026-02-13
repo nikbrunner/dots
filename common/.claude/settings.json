@@ -60,6 +60,16 @@
             "command": "~/.local/bin/helm-hook Notification"
           }
         ]
+      },
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/Users/nbr/.claude/hooks/peon-ping/peon.sh",
+            "timeout": 10
+          }
+        ]
       }
     ],
     "PreToolUse": [
@@ -90,6 +100,16 @@
             "command": "~/.local/bin/helm-hook SessionStart"
           }
         ]
+      },
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/Users/nbr/.claude/hooks/peon-ping/peon.sh",
+            "timeout": 10
+          }
+        ]
       }
     ],
     "Stop": [
@@ -100,6 +120,16 @@
             "command": "~/.local/bin/helm-hook Stop"
           }
         ]
+      },
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/Users/nbr/.claude/hooks/peon-ping/peon.sh",
+            "timeout": 10
+          }
+        ]
       }
     ],
     "SessionEnd": [
@@ -108,6 +138,30 @@
           {
             "type": "command",
             "command": "~/.local/bin/helm-hook SessionEnd"
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/Users/nbr/.claude/hooks/peon-ping/peon.sh",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "PermissionRequest": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/Users/nbr/.claude/hooks/peon-ping/peon.sh",
+            "timeout": 10
           }
         ]
       }
