@@ -43,7 +43,7 @@
   },
   "theme": {
     "mode": "system",
-    "dark": "Black Atom — Dark",
+    "dark": "Black Atom — Dark Dimmed",
     "light": "Black Atom — Light"
   },
   "base_keymap": "VSCode",
