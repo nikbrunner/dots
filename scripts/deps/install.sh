@@ -44,7 +44,9 @@ configure_system() {
         fi
     fi
 
-    # Configure Git signing with 1Password
+    # Git SSH signing is configured via platform-specific .gitconfig.local files
+    # (macos/.gitconfig.local and arch/.gitconfig.local), not at install time.
+    # Verify the signing binary exists:
     local op_ssh_sign_path=""
     if command -v op-ssh-sign &>/dev/null; then
         op_ssh_sign_path=$(which op-ssh-sign)
@@ -55,9 +57,7 @@ configure_system() {
     fi
 
     if [[ -n "$op_ssh_sign_path" ]]; then
-        echo "🔑 Configuring Git SSH signing..."
-        git config --global gpg.ssh.program "$op_ssh_sign_path"
-        echo "✅ Git signing configured"
+        echo "✅ 1Password SSH signing available ($op_ssh_sign_path)"
     else
         echo "⚠️  1Password SSH signing not found"
     fi
