@@ -14,7 +14,6 @@ A clean, organized dotfiles repository using symlinks for easy management and de
   - [OS-Specific Configurations](#os-specific-configurations)
   - [Multiplexer Configuration](#multiplexer-configuration)
 - [Black Atom Theme Integration](#black-atom-theme-integration)
-- [Submodules](#submodules)
 - [Platform Support](#platform-support)
 - [Useful Links](#useful-links)
 
@@ -105,11 +104,11 @@ source ~/.zshrc
 **Troubleshooting**:
 
 ```bash
-# For detailed diagnostics during installation
-./scripts/install.sh --debug --dry-run
+# Preview installation without making changes
+./scripts/install.sh --dry-run
 
-# For testing symlink operations
-dots link --debug --dry-run
+# Preview symlink operations
+dots link --dry-run --verbose
 ```
 
 ## Usage
@@ -157,13 +156,6 @@ When you run `dots link`:
    - Wildcard expansion for patterns like `"common/.local/bin/*": "~/.local/bin"`
 4. **Backs up conflicts**: If a real file exists where a symlink should go, it's backed up with a timestamp (unless `--no-backup` is used)
 
-**Manual Configuration Benefits**:
-
-- Explicit control over what gets symlinked
-- Mix directory and file-level symlinks as needed
-- Wildcard patterns for selective file linking
-- 74% fewer configuration entries compared to auto-discovery (42 vs 353)
-
 **Options:**
 
 - `--dry-run`: Preview what would happen without making changes
@@ -187,26 +179,9 @@ The system always processes the `common` section first, then adds the platform-s
 
 ### Multiplexer Configuration
 
-The terminal configuration supports switching between WezTerm and tmux as multiplexers while maintaining consistent keybindings. This allows you to use the same muscle memory regardless of which tool handles session/window/pane management.
+The terminal configuration supports switching between WezTerm and tmux as the session/window/pane multiplexer. Currently tmux is used as the multiplexer.
 
-**Switching multiplexers:**
-
-To use **tmux as multiplexer**:
-
-1. In `~/.config/wezterm/keymaps.lua`: Comment out the multiplexer bindings (lines 48-51)
-2. In `~/.config/tmux/keymaps.conf`: Uncomment the source line (line 27)
-
-To use **WezTerm as multiplexer** (default):
-
-1. In `~/.config/wezterm/keymaps.lua`: Ensure multiplexer bindings are uncommented
-2. In `~/.config/tmux/keymaps.conf`: Ensure the source line is commented out
-
-**How it works:**
-
-- WezTerm loads multiplexer keybindings when uncommented, providing full session/window/pane management
-- tmux loads multiplexer keybindings when uncommented, handling session/window/pane management
-- Both configurations provide the same keybinding experience for navigation and management
-- Simple comment/uncomment approach works reliably across all platforms and desktop environments
+To switch, toggle the multiplexer bindings in `~/.config/wezterm/keymaps.lua` (comment/uncomment the `keymaps-multiplexer` require block). Both configurations provide the same keybinding experience.
 
 ## Black Atom Theme Integration
 
@@ -225,7 +200,7 @@ This dotfiles system integrates with [Black Atom Industries](https://github.com/
 This two-layer approach means:
 
 1. Your home directory links to dots (managed by `dots link`)
-2. Dots links to Black Atom repos (managed by `dots theme-link`)
+2. Dots links to Black Atom repos (managed by `scripts/dots/theme-link.sh`, run automatically by `dots link`)
 
 **Why relative symlinks?**
 
@@ -250,15 +225,6 @@ scripts/dots/theme-link.sh [--dry-run]
 | Ghostty | `~/repos/black-atom-industries/ghostty/themes/` | `common/.config/ghostty/themes/` |
 | WezTerm | `~/repos/black-atom-industries/wezterm/themes/` | `common/.config/wezterm/colors/` |
 | Zed     | `~/repos/black-atom-industries/zed/themes/`     | `common/.config/zed/themes/`     |
-
-## Submodules
-
-Current submodules:
-
-- `common/.config/nvim` - Neovim configuration ([nikbrunner/nbr.nvim](https://github.com/nikbrunner/nbr.nvim))
-- `common/.config/wezterm` - Wezterm configuration ([nikbrunner/wezterm](https://github.com/nikbrunner/wezterm))
-
-Managed with standard `git submodule` commands. See [docs/SUBMODULES.md](./docs/SUBMODULES.md) for details.
 
 ## Platform Support
 
