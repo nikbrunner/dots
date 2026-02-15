@@ -1,6 +1,8 @@
 -- Force English locale for date formatting (prevents German month/day names)
 os.setlocale("C", "time")
 
+local periodic = require("lib.periodic")
+
 ---@type LazyPluginSpec
 return {
     "obsidian-nvim/obsidian.nvim",
@@ -31,30 +33,15 @@ return {
                 name = "notes",
                 path = "~/repos/nikbrunner/notes",
             },
-            {
-                name = "dcd-notes",
-                path = "~/repos/nikbrunner/dcd-notes",
-                overrides = {
-                    notes_subdir = "Inbox",
-                    daily_notes = {
-                        folder = "Log",
-                        date_format = "%Y/%Y.%m.%d - %A",
-                        template = "Daily Note.md",
-                    },
-                    templates = {
-                        folder = "Templates",
-                    },
-                },
-            },
         },
         notes_subdir = "00 - Inbox",
         daily_notes = {
-            folder = "02 - Areas/Log",
-            date_format = "%Y/%m - %B/%Y.%m.%d - %A",
+            folder = periodic.log_dir,
+            date_format = periodic.notes.daily.path_fmt,
             template = "Daily Note.md",
         },
         templates = {
-            folder = "05 - Meta/Templates",
+            folder = periodic.templates_dir,
             date_format = "%y.%m.%d — %A",
             time_format = "%H:%M",
             substitutions = {
@@ -96,53 +83,11 @@ return {
         { ",nph", "<cmd>Obsidian yesterday<cr>", desc = "Periodic: prev daily" },
         { ",npl", "<cmd>Obsidian tomorrow<cr>", desc = "Periodic: next daily" },
         { ",npD", "<cmd>Obsidian dailies<cr>", desc = "Periodic: dailies picker" },
-        -- Periodic notes (weekly/monthly/quarterly/yearly via custom Lua)
-        {
-            ",npw",
-            function()
-                local client = require("obsidian").get_client()
-                local vault = tostring(client.dir)
-                local week = tonumber(os.date("%V"))
-                local path = vault .. "/02 - Areas/Log/" .. os.date("%Y/%m - %B/%Y.%m - %B") .. " - W" .. week .. ".md"
-                vim.fn.mkdir(vim.fn.fnamemodify(path, ":h"), "p")
-                vim.cmd("edit " .. vim.fn.fnameescape(path))
-            end,
-            desc = "Periodic: weekly",
-        },
-        {
-            ",npm",
-            function()
-                local client = require("obsidian").get_client()
-                local vault = tostring(client.dir)
-                local path = vault .. "/02 - Areas/Log/" .. os.date("%Y/%m - %B/%Y.%m - %B") .. ".md"
-                vim.fn.mkdir(vim.fn.fnamemodify(path, ":h"), "p")
-                vim.cmd("edit " .. vim.fn.fnameescape(path))
-            end,
-            desc = "Periodic: monthly",
-        },
-        {
-            ",npq",
-            function()
-                local client = require("obsidian").get_client()
-                local vault = tostring(client.dir)
-                local quarter = math.ceil(tonumber(os.date("%m")) / 3)
-                local path = vault .. "/02 - Areas/Log/" .. os.date("%Y") .. "/" .. os.date("%Y") .. " - Q" .. quarter .. ".md"
-                vim.fn.mkdir(vim.fn.fnamemodify(path, ":h"), "p")
-                vim.cmd("edit " .. vim.fn.fnameescape(path))
-            end,
-            desc = "Periodic: quarterly",
-        },
-        {
-            ",npy",
-            function()
-                local client = require("obsidian").get_client()
-                local vault = tostring(client.dir)
-                local path = vault .. "/02 - Areas/Log/" .. os.date("%Y/%Y") .. ".md"
-                vim.fn.mkdir(vim.fn.fnamemodify(path, ":h"), "p")
-                vim.cmd("edit " .. vim.fn.fnameescape(path))
-            end,
-            desc = "Periodic: yearly",
-        },
+        -- Periodic notes (weekly/monthly/quarterly/yearly via lib.periodic)
+        { ",npw", function() periodic.open("weekly") end, desc = "Periodic: weekly" },
+        { ",npm", function() periodic.open("monthly") end, desc = "Periodic: monthly" },
+        { ",npq", function() periodic.open("quarterly") end, desc = "Periodic: quarterly" },
+        { ",npy", function() periodic.open("yearly") end, desc = "Periodic: yearly" },
         -- General notes
         { ",nn", "<cmd>Obsidian new<cr>", desc = "New note" },
         { ",ns", "<cmd>Obsidian search<cr>", desc = "Search notes" },

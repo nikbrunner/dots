@@ -12,6 +12,7 @@ setmetatable(M, {
             ui = "lib.ui",
             config = "lib.config",
             lsp = "lib.lsp",
+            periodic = "lib.periodic",
         }
 
         if modules[k] then
