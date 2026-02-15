@@ -8,15 +8,16 @@ M.log_dir = "02 - Areas/Log"
 M.templates_dir = "05 - Meta/Templates"
 
 ---@class PeriodicNoteConfig
----@field path_fmt string os.date format string for the full relative path (without .md)
+---@field path_fmt string|nil os.date format string for the full relative path (without .md)
+---@field template string|nil Template filename (without .md)
 
 ---@type table<string, PeriodicNoteConfig>
 M.notes = {
-    daily = { path_fmt = "%Y/%m - %B/%Y.%m.%d - %A" },
-    weekly = {}, -- needs special handling (Moment.js locale week)
-    monthly = { path_fmt = "%Y/%m - %B/%Y.%m - %B" },
-    quarterly = {}, -- needs special handling (quarter number)
-    yearly = { path_fmt = "%Y/%Y" },
+    daily = { path_fmt = "%Y/%m - %B/%Y.%m.%d - %A", template = "Daily Note" },
+    weekly = { template = "Weekly Note" }, -- path needs special handling (locale week)
+    monthly = { path_fmt = "%Y/%m - %B/%Y.%m - %B", template = "Monthly Note" },
+    quarterly = { template = "Quarterly Note" }, -- path needs special handling (quarter)
+    yearly = { path_fmt = "%Y/%Y", template = "Yearly Note" },
 }
 
 ---Locale week number matching Moment.js `w` (Sunday-start, week 1 contains Jan 1).
@@ -28,48 +29,50 @@ function M.locale_week()
     return math.floor((yday - 1 + jan1_wday) / 7) + 1
 end
 
----Get the vault root directory.
----@return string
-function M.vault_dir()
-    ---@diagnostic disable-next-line: undefined-global
-    return tostring(Obsidian.dir)
-end
-
----Build the relative path (without .md) for a periodic note.
+---Build the note title (= filename without .md) for a periodic note.
 ---@param kind string One of "daily", "weekly", "monthly", "quarterly", "yearly"
 ---@return string
-local function rel_path(kind)
+function M.title(kind)
     if kind == "weekly" then
-        return os.date("%Y/%m - %B/%Y.%m - %B") .. " - W" .. M.locale_week()
+        return os.date("%Y.%m - %B") .. " - W" .. M.locale_week()
     elseif kind == "quarterly" then
         local quarter = math.ceil(tonumber(os.date("%m")) / 3)
-        return os.date("%Y") .. "/" .. os.date("%Y") .. " - Q" .. quarter
+        return os.date("%Y") .. " - Q" .. quarter
+    elseif kind == "yearly" then
+        return os.date("%Y")
+    elseif kind == "monthly" then
+        return os.date("%Y.%m - %B")
     else
-        return os.date(M.notes[kind].path_fmt)
+        return os.date("%Y.%m.%d - %A")
     end
 end
 
----Build the absolute path for a periodic note.
+---Build the directory (relative to vault root) for a periodic note.
 ---@param kind string One of "daily", "weekly", "monthly", "quarterly", "yearly"
 ---@return string
-function M.path(kind)
-    return M.vault_dir() .. "/" .. M.log_dir .. "/" .. rel_path(kind) .. ".md"
+function M.dir(kind)
+    if kind == "quarterly" or kind == "yearly" then
+        return M.log_dir .. "/" .. os.date("%Y")
+    else
+        return M.log_dir .. "/" .. os.date("%Y/%m - %B")
+    end
 end
 
----Open the periodic note for the given kind, creating parent dirs as needed.
----Sets the headline from the filename if the file is new.
+---Open or create a periodic note using obsidian.nvim's Note API.
+---Applies the corresponding template for new notes.
 ---@param kind string One of "weekly", "monthly", "quarterly", "yearly"
 function M.open(kind)
-    local path = M.path(kind)
-    local is_new = vim.fn.filereadable(path) == 0
+    local Note = require("obsidian.note")
+    local cfg = M.notes[kind]
+    local note_title = M.title(kind)
+    local note_dir = M.dir(kind)
 
-    vim.fn.mkdir(vim.fn.fnamemodify(path, ":h"), "p")
-    vim.cmd("edit " .. vim.fn.fnameescape(path))
-
-    if is_new then
-        local basename = vim.fn.fnamemodify(path, ":t:r")
-        vim.api.nvim_buf_set_lines(0, 0, -1, false, { "# " .. basename, "" })
-    end
+    Note.create({
+        id = note_title,
+        dir = note_dir,
+        template = cfg.template,
+        should_write = true,
+    }):open()
 end
 
 return M
