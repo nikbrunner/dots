@@ -91,14 +91,69 @@ return {
         vim.cmd.cnoreabbrev("o", "Obsidian")
     end,
     keys = {
-        { ",nd", "<cmd>Obsidian today<cr>", desc = "Daily note (today)" },
-        { ",ny", "<cmd>Obsidian yesterday<cr>", desc = "Yesterday's note" },
-        { ",nm", "<cmd>Obsidian tomorrow<cr>", desc = "Tomorrow's note" },
+        -- Periodic notes (daily via obsidian.nvim)
+        { ",npd", "<cmd>Obsidian today<cr>", desc = "Periodic: daily (today)" },
+        { ",nph", "<cmd>Obsidian yesterday<cr>", desc = "Periodic: prev daily" },
+        { ",npl", "<cmd>Obsidian tomorrow<cr>", desc = "Periodic: next daily" },
+        { ",npD", "<cmd>Obsidian dailies<cr>", desc = "Periodic: dailies picker" },
+        -- Periodic notes (weekly/monthly/quarterly/yearly via custom Lua)
+        {
+            ",npw",
+            function()
+                local client = require("obsidian").get_client()
+                local vault = tostring(client.dir)
+                local week = tonumber(os.date("%V"))
+                local path = vault .. "/02 - Areas/Log/" .. os.date("%Y/%Y.%m - %B") .. " - W" .. week .. ".md"
+                vim.fn.mkdir(vim.fn.fnamemodify(path, ":h"), "p")
+                vim.cmd("edit " .. vim.fn.fnameescape(path))
+            end,
+            desc = "Periodic: weekly",
+        },
+        {
+            ",npm",
+            function()
+                local client = require("obsidian").get_client()
+                local vault = tostring(client.dir)
+                local path = vault .. "/02 - Areas/Log/" .. os.date("%Y/%Y.%m - %B") .. ".md"
+                vim.fn.mkdir(vim.fn.fnamemodify(path, ":h"), "p")
+                vim.cmd("edit " .. vim.fn.fnameescape(path))
+            end,
+            desc = "Periodic: monthly",
+        },
+        {
+            ",npq",
+            function()
+                local client = require("obsidian").get_client()
+                local vault = tostring(client.dir)
+                local quarter = math.ceil(tonumber(os.date("%m")) / 3)
+                local path = vault .. "/02 - Areas/Log/" .. os.date("%Y") .. "/" .. os.date("%Y") .. " - Q" .. quarter .. ".md"
+                vim.fn.mkdir(vim.fn.fnamemodify(path, ":h"), "p")
+                vim.cmd("edit " .. vim.fn.fnameescape(path))
+            end,
+            desc = "Periodic: quarterly",
+        },
+        {
+            ",npy",
+            function()
+                local client = require("obsidian").get_client()
+                local vault = tostring(client.dir)
+                local path = vault .. "/02 - Areas/Log/" .. os.date("%Y/%Y") .. ".md"
+                vim.fn.mkdir(vim.fn.fnamemodify(path, ":h"), "p")
+                vim.cmd("edit " .. vim.fn.fnameescape(path))
+            end,
+            desc = "Periodic: yearly",
+        },
+        -- General notes
         { ",nn", "<cmd>Obsidian new<cr>", desc = "New note" },
         { ",ns", "<cmd>Obsidian search<cr>", desc = "Search notes" },
         { ",nq", "<cmd>Obsidian quick_switch<cr>", desc = "Quick switch" },
         { ",nl", "<cmd>Obsidian links<cr>", desc = "Note links" },
         { ",nb", "<cmd>Obsidian backlinks<cr>", desc = "Backlinks" },
         { ",nt", "<cmd>Obsidian template<cr>", desc = "Insert template" },
+        { ",nT", "<cmd>Obsidian tags<cr>", desc = "Search tags" },
+        { ",no", "<cmd>Obsidian open<cr>", desc = "Open in Obsidian" },
+        { ",nr", "<cmd>Obsidian rename<cr>", desc = "Rename note" },
+        { ",nc", "<cmd>Obsidian toc<cr>", desc = "Table of contents" },
+        { ",nx", "<cmd>Obsidian toggle_checkbox<cr>", desc = "Toggle checkbox" },
     },
 }
