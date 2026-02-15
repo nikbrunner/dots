@@ -103,7 +103,7 @@ return {
                 local client = require("obsidian").get_client()
                 local vault = tostring(client.dir)
                 local week = tonumber(os.date("%V"))
-                local path = vault .. "/02 - Areas/Log/" .. os.date("%Y/%Y.%m - %B") .. " - W" .. week .. ".md"
+                local path = vault .. "/02 - Areas/Log/" .. os.date("%Y/%m - %B/%Y.%m - %B") .. " - W" .. week .. ".md"
                 vim.fn.mkdir(vim.fn.fnamemodify(path, ":h"), "p")
                 vim.cmd("edit " .. vim.fn.fnameescape(path))
             end,
@@ -114,7 +114,7 @@ return {
             function()
                 local client = require("obsidian").get_client()
                 local vault = tostring(client.dir)
-                local path = vault .. "/02 - Areas/Log/" .. os.date("%Y/%Y.%m - %B") .. ".md"
+                local path = vault .. "/02 - Areas/Log/" .. os.date("%Y/%m - %B/%Y.%m - %B") .. ".md"
                 vim.fn.mkdir(vim.fn.fnamemodify(path, ":h"), "p")
                 vim.cmd("edit " .. vim.fn.fnameescape(path))
             end,
