@@ -1,15 +1,16 @@
 # Claude Code Project Memories
 
-Periodic snapshots of Claude Code's per-project memory files (`~/.claude/projects/*/memory/`).
+Claude Code's per-project memory files, tracked via symlinks.
 
-These are synced — not symlinked — by `dots chores` via `dots_commit_memories()`.
-The source of truth remains `~/.claude/projects/*/memory/`. This is a backup for review and version control.
+On first discovery, `dots chores` moves memory files from `~/.claude/projects/*/memory/` into this directory and replaces the originals with symlinks pointing back here. Claude Code then reads and writes directly through the symlinks, so this directory is always up to date.
+
+Subsequent `dots chores` runs just commit any changes.
 
 ## Directory Structure
 
-Project directories are derived from their absolute paths. For example:
+Project directories are resolved against `~/repos/` for readable names:
 
 ```
 ~/.claude/projects/-Users-nbr-repos-black-atom-industries-core/memory/
-→ claude-memories/black-atom-industries/core/
+→ symlink → claude-memories/black-atom-industries/core/
 ```
