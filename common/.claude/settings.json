@@ -181,5 +181,6 @@
   "autoUpdatesChannel": "latest",
   "feedbackSurveyState": {
     "lastShownTime": 1754313915132
-  }
+  },
+  "effortLevel": "medium"
 }
