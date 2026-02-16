@@ -503,6 +503,12 @@ cmd_chores() {
 	if dots_commit_bookmarks "$DOTS_DIR"; then
 		((commits_created++)) || true
 	fi
+	echo ""
+
+	# Claude Code memory snapshots
+	if dots_commit_claude_memories "$DOTS_DIR"; then
+		((commits_created++)) || true
+	fi
 
 	# Summary
 	echo ""
@@ -599,6 +605,11 @@ cmd_link() {
 	echo ""
 	echo "→ Linking Black Atom themes..."
 	"$DOTS_DIR/scripts/dots/theme-link.sh" "$@"
+
+	echo ""
+	echo "→ Linking Claude memories..."
+	load_config
+	dots_link_claude_memories "$DOTS_DIR"
 }
 
 # Shared push function

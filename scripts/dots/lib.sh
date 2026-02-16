@@ -326,3 +326,155 @@ dots_commit_bookmarks() {
 	(cd "$repo_path" && git add "$bookmarks_file" && git commit -m "chore(bm): update bookmarks")
 	log_success "Bookmarks commit created"
 }
+
+# Resolve a Claude project directory name to a readable org/repo path
+# by matching against actual directories in the repos base path.
+# Example: -Users-nbr-repos-black-atom-industries-core → black-atom-industries/core
+_resolve_claude_project_path() {
+	local project_dir="$1"
+	local repos_base="$2"
+
+	local stripped
+	stripped=$(echo "$project_dir" | sed 's/^-Users-[^-]*-repos-//')
+
+	for org_dir in "$repos_base"/*/; do
+		[[ -d "$org_dir" ]] || continue
+		local org
+		org=$(basename "$org_dir")
+		local org_dashed
+		org_dashed=$(echo "$org" | tr '/' '-')
+
+		if [[ "$stripped" == "$org_dashed"-* ]]; then
+			echo "$org/${stripped#"${org_dashed}"-}"
+			return
+		elif [[ "$stripped" == "$org_dashed" ]]; then
+			echo "$org"
+			return
+		fi
+	done
+
+	# Fallback: use raw stripped name
+	echo "$stripped"
+}
+
+# Link tracked claude memories back to ~/.claude/projects/*/memory/
+# This is the reverse of dots_commit_claude_memories: given memory content in dots,
+# create the expected Claude project directory and symlink memory/ back to dots.
+dots_link_claude_memories() {
+	local repo_path="$1"
+	local memories_dir="$repo_path/common/.claude/claude-memories"
+	local projects_base="$HOME/.claude/projects"
+	local repos_base="${REPOS_BASE_PATH:-$HOME/repos}"
+
+	if [[ ! -d "$memories_dir" ]]; then
+		return
+	fi
+
+	local user
+	user=$(basename "$HOME")
+
+	local linked=0
+	# Iterate org/repo dirs in claude-memories/
+	for org_dir in "$memories_dir"/*/; do
+		[[ -d "$org_dir" ]] || continue
+		local org
+		org=$(basename "$org_dir")
+
+		# Skip non-project entries (like README.md's parent)
+		[[ "$org" == "README.md" ]] && continue
+
+		for repo_dir in "$org_dir"/*/; do
+			[[ -d "$repo_dir" ]] || continue
+			local repo
+			repo=$(basename "$repo_dir")
+
+			# Skip empty dirs (no files to link)
+			if [[ -z $(find "$repo_dir" -type f 2>/dev/null) ]]; then
+				continue
+			fi
+
+			# Reconstruct Claude project dir name:
+			# black-atom-industries/core → -Users-nbr-repos-black-atom-industries-core
+			local project_dir_name="-Users-${user}-repos-${org}-${repo}"
+			local project_dir="$projects_base/$project_dir_name"
+			local memory_target="$project_dir/memory"
+
+			# Skip if already correctly symlinked
+			if [[ -L "$memory_target" ]]; then
+				local current_target
+				current_target=$(readlink "$memory_target")
+				if [[ "$current_target" == "$repo_dir" || "$current_target" == "${repo_dir%/}" ]]; then
+					continue
+				fi
+			fi
+
+			# Ensure project dir exists
+			mkdir -p "$project_dir"
+
+			# Remove existing memory dir/symlink if present
+			if [[ -e "$memory_target" || -L "$memory_target" ]]; then
+				rm -rf "$memory_target"
+			fi
+
+			ln -s "${repo_dir%/}" "$memory_target"
+			echo "  Linked: $org/$repo"
+			((linked++)) || true
+		done
+	done
+
+	if [[ $linked -gt 0 ]]; then
+		log_success "Linked $linked claude memory project(s)"
+	fi
+}
+
+dots_commit_claude_memories() {
+	local repo_path="$1"
+	local memories_dir="$repo_path/common/.claude/claude-memories"
+	local source_base="$HOME/.claude/projects"
+	local repos_base="${REPOS_BASE_PATH:-$HOME/repos}"
+
+	# Discover memory dirs and ensure they are symlinked into dots
+	local linked=0
+	for memory_dir in "$source_base"/*/memory; do
+		[[ -d "$memory_dir" ]] || continue
+
+		# Skip if already a symlink (already managed)
+		if [[ -L "$memory_dir" ]]; then
+			continue
+		fi
+
+		# Skip empty memory dirs (no files to track)
+		if [[ -z $(find "$memory_dir" -type f 2>/dev/null) ]]; then
+			continue
+		fi
+
+		local project_dir
+		project_dir=$(basename "$(dirname "$memory_dir")")
+
+		local target_path
+		target_path=$(_resolve_claude_project_path "$project_dir" "$repos_base")
+
+		local dots_target="$memories_dir/$target_path"
+		mkdir -p "$dots_target"
+
+		# Move memory files into dots, then replace with symlink
+		cp -a "$memory_dir"/* "$dots_target/" 2>/dev/null || true
+		rm -rf "$memory_dir"
+		ln -s "$dots_target" "$memory_dir"
+
+		echo "Linked: $target_path"
+		((linked++)) || true
+	done
+
+	if [[ $linked -gt 0 ]]; then
+		echo "Linked $linked new project(s)"
+	fi
+
+	if [[ -z $(git -C "$repo_path" status --porcelain "common/.claude/claude-memories/" 2>/dev/null) ]]; then
+		echo "No claude memory changes to commit"
+		return 1
+	fi
+
+	(cd "$repo_path" && git add "common/.claude/claude-memories/" && git commit -m "chore(claude): sync project memories")
+	log_success "Memories commit created"
+}
