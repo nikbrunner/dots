@@ -19,8 +19,8 @@ badd +37 ~/repos/black-atom-industries/core/src/themes/mnml/black-atom-mnml-mono
 badd +56 src/themes/mnml/create-ui-light.ts
 badd +18 ~/repos/black-atom-industries/core/deno.json
 badd +71 ~/repos/black-atom-industries/core/src/tasks/adapters/generate.ts
-badd +24 ~/repos/black-atom-industries/core/src/themes/mnml/black-atom-mnml-ita-light.ts
-badd +24 ~/repos/black-atom-industries/core/src/config.ts
+badd +19 ~/repos/black-atom-industries/core/src/themes/mnml/black-atom-mnml-ita-light.ts
+badd +27 ~/repos/black-atom-industries/core/src/config.ts
 argglobal
 %argdel
 $argadd ~/.config/lazygit/config.yml
@@ -1418,11 +1418,11 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 24 - ((23 * winheight(0) + 27) / 55)
+let s:l = 26 - ((25 * winheight(0) + 27) / 55)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 24
+keepjumps 26
 normal! 010|
 wincmd w
 argglobal
@@ -1538,11 +1538,11 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 28 - ((13 * winheight(0) + 27) / 55)
+let s:l = 18 - ((17 * winheight(0) + 27) / 55)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 28
+keepjumps 18
 normal! 0
 wincmd w
 exe 'vert 1resize ' . ((&columns * 140 + 140) / 281)
