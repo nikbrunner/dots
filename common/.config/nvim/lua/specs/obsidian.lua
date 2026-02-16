@@ -45,9 +45,22 @@ return {
             date_format = "%y.%m.%d — %A",
             time_format = "%H:%M",
             substitutions = {
-                -- Handle Obsidian's native {{date:YYYY.MM.DD - dddd}} syntax
+                -- Map Obsidian's {{date:FORMAT}} syntax to Lua os.date equivalents.
+                -- Each key matches a {{date:*}} token used in our periodic note templates.
                 ["date:YYYY.MM.DD - dddd"] = function()
                     return os.date("%Y.%m.%d - %A")
+                end,
+                ["date:YYYY.MM - MMMM"] = function()
+                    return os.date("%Y.%m - %B")
+                end,
+                ["date:YYYY"] = function()
+                    return os.date("%Y")
+                end,
+                ["date:w"] = function()
+                    return tostring(periodic.locale_week())
+                end,
+                ["date:Q"] = function()
+                    return tostring(math.ceil(tonumber(os.date("%m")) / 3))
                 end,
             },
         },
