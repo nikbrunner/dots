@@ -61,6 +61,37 @@ return {
                 ["date:Q"] = function()
                     return tostring(math.ceil(tonumber(os.date("%m")) / 3))
                 end,
+                -- Linter-compatible timestamp: "Saturday, February 15th 2026, 2:30:45 pm"
+                ["date:dddd, MMMM Do YYYY, h:mm:ss a"] = function()
+                    local day = tonumber(os.date("%d"))
+                    local last_two = day % 100
+                    local suffix
+                    if last_two >= 11 and last_two <= 13 then
+                        suffix = "th"
+                    else
+                        local last_one = day % 10
+                        if last_one == 1 then
+                            suffix = "st"
+                        elseif last_one == 2 then
+                            suffix = "nd"
+                        elseif last_one == 3 then
+                            suffix = "rd"
+                        else
+                            suffix = "th"
+                        end
+                    end
+                    local hour24 = tonumber(os.date("%H"))
+                    local hour12 = hour24 % 12
+                    if hour12 == 0 then hour12 = 12 end
+                    local ampm = hour24 < 12 and "am" or "pm"
+                    return os.date("%A, %B ")
+                        .. day
+                        .. suffix
+                        .. os.date(" %Y, ")
+                        .. hour12
+                        .. os.date(":%M:%S ")
+                        .. ampm
+                end,
             },
         },
         checkbox = {
