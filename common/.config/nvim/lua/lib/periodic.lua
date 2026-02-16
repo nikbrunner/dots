@@ -5,7 +5,7 @@
 local M = {}
 
 M.log_dir = "02 - Areas/Log"
-M.templates_dir = "05 - Meta/Templates"
+M.templates_dir = "05 - Meta/Templates/Periodic"
 
 ---@class PeriodicNoteConfig
 ---@field path_fmt string|nil os.date format string for the full relative path (without .md)
@@ -39,11 +39,11 @@ function M.title(kind)
         local quarter = math.ceil(tonumber(os.date("%m")) / 3)
         return os.date("%Y") .. " - Q" .. quarter
     elseif kind == "yearly" then
-        return os.date("%Y")
+        return tostring(os.date("%Y"))
     elseif kind == "monthly" then
-        return os.date("%Y.%m - %B")
+        return tostring(os.date("%Y.%m - %B"))
     else
-        return os.date("%Y.%m.%d - %A")
+        return tostring(os.date("%Y.%m.%d - %A"))
     end
 end
 

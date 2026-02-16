@@ -1,5 +1,4 @@
 -- Force English locale for date formatting (prevents German month/day names)
-os.setlocale("C", "time")
 
 local periodic = require("lib.periodic")
 
@@ -8,7 +7,7 @@ return {
     "obsidian-nvim/obsidian.nvim",
     version = "*",
     event = "VeryLazy",
-    -- ft = "markdown",
+    -- ft = "markdown", // Always load
     dependencies = {
         "nvim-lua/plenary.nvim",
     },
@@ -17,6 +16,12 @@ return {
     opts = {
         legacy_commands = false,
         -- Use the provided title/id if given, otherwise generate zettel-style ID
+        workspaces = {
+            {
+                name = "notes",
+                path = "~/repos/nikbrunner/notes",
+            },
+        },
         note_id_func = function(title)
             if title ~= nil and title ~= "" then
                 return title
@@ -28,12 +33,6 @@ return {
             end
             return tostring(os.time()) .. "-" .. suffix
         end,
-        workspaces = {
-            {
-                name = "notes",
-                path = "~/repos/nikbrunner/notes",
-            },
-        },
         notes_subdir = "00 - Inbox",
         daily_notes = {
             folder = periodic.log_dir,
@@ -48,13 +47,13 @@ return {
                 -- Map Obsidian's {{date:FORMAT}} syntax to Lua os.date equivalents.
                 -- Each key matches a {{date:*}} token used in our periodic note templates.
                 ["date:YYYY.MM.DD - dddd"] = function()
-                    return os.date("%Y.%m.%d - %A")
+                    return tostring(os.date("%Y.%m.%d - %A"))
                 end,
                 ["date:YYYY.MM - MMMM"] = function()
-                    return os.date("%Y.%m - %B")
+                    return tostring(os.date("%Y.%m - %B"))
                 end,
                 ["date:YYYY"] = function()
-                    return os.date("%Y")
+                    return tostring(os.date("%Y"))
                 end,
                 ["date:w"] = function()
                     return tostring(periodic.locale_week())
@@ -85,6 +84,7 @@ return {
         },
     },
     config = function(_, opts)
+        os.setlocale("C", "time")
         require("obsidian").setup(opts)
 
         -- Command abbreviation: :o -> :Obsidian
@@ -97,21 +97,45 @@ return {
         { ",npl", "<cmd>Obsidian tomorrow<cr>", desc = "Periodic: next daily" },
         { ",npD", "<cmd>Obsidian dailies<cr>", desc = "Periodic: dailies picker" },
         -- Periodic notes (weekly/monthly/quarterly/yearly via lib.periodic)
-        { ",npw", function() periodic.open("weekly") end, desc = "Periodic: weekly" },
-        { ",npm", function() periodic.open("monthly") end, desc = "Periodic: monthly" },
-        { ",npq", function() periodic.open("quarterly") end, desc = "Periodic: quarterly" },
-        { ",npy", function() periodic.open("yearly") end, desc = "Periodic: yearly" },
+        {
+            ",npw",
+            function()
+                periodic.open("weekly")
+            end,
+            desc = "Periodic: weekly",
+        },
+        {
+            ",npm",
+            function()
+                periodic.open("monthly")
+            end,
+            desc = "Periodic: monthly",
+        },
+        {
+            ",npq",
+            function()
+                periodic.open("quarterly")
+            end,
+            desc = "Periodic: quarterly",
+        },
+        {
+            ",npy",
+            function()
+                periodic.open("yearly")
+            end,
+            desc = "Periodic: yearly",
+        },
         -- General notes
+        { ",nd", "<cmd>Obsidian dailies<cr>", desc = "Dailies" },
         { ",nn", "<cmd>Obsidian new<cr>", desc = "New note" },
         { ",ns", "<cmd>Obsidian search<cr>", desc = "Search notes" },
         { ",nq", "<cmd>Obsidian quick_switch<cr>", desc = "Quick switch" },
         { ",nl", "<cmd>Obsidian links<cr>", desc = "Note links" },
         { ",nb", "<cmd>Obsidian backlinks<cr>", desc = "Backlinks" },
-        { ",nt", "<cmd>Obsidian template<cr>", desc = "Insert template" },
-        { ",nT", "<cmd>Obsidian tags<cr>", desc = "Search tags" },
+        { ",nT", "<cmd>Obsidian template<cr>", desc = "Insert template" },
+        { ",nt", "<cmd>Obsidian tags<cr>", desc = "Search tags" },
         { ",no", "<cmd>Obsidian open<cr>", desc = "Open in Obsidian" },
         { ",nr", "<cmd>Obsidian rename<cr>", desc = "Rename note" },
         { ",nc", "<cmd>Obsidian toc<cr>", desc = "Table of contents" },
-        { ",nx", "<cmd>Obsidian toggle_checkbox<cr>", desc = "Toggle checkbox" },
     },
 }
