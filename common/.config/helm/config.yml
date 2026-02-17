@@ -34,6 +34,9 @@ lazygit_popup:
   width: 100%
   height: 90%
 
+# Command to run on each dirty repo via 'helm repos dirty --walk'
+dirty_walkthrough_command: "lazygit -p {}"
+
 # Repositories to ensure are cloned (used by 'helm setup')
 ensure_cloned:
   - git@github.com:nikbrunner/dots
