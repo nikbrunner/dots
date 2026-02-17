@@ -10,7 +10,7 @@ endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
 badd +7 .obsidian/themes/Velocity/theme.css
-badd +108 ~/repos/nikbrunner/notes/.obsidian/hotkeys.json
+badd +9 01\ -\ Projects/New\ Job\ Nik/Coverletters/Sparetech\ -\ Senior\ Frontend\ Engineer.md
 argglobal
 %argdel
 $argadd ~/repos/nikbrunner/notes/05\ -\ Meta/Templates/Daily\ Note.md
@@ -31,8 +31,8 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe 'vert 1resize ' . ((&columns * 163 + 164) / 328)
-exe 'vert 2resize ' . ((&columns * 164 + 164) / 328)
+exe 'vert 1resize ' . ((&columns * 197 + 197) / 394)
+exe 'vert 2resize ' . ((&columns * 196 + 197) / 394)
 argglobal
 setlocal keymap=
 setlocal noarabic
@@ -191,7 +191,7 @@ sil! 239,242fold
 sil! 244,247fold
 sil! 249,252fold
 let &fdl = &fdl
-let s:l = 7 - ((6 * winheight(0) + 28) / 56)
+let s:l = 7 - ((5 * winheight(0) + 34) / 68)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
@@ -199,10 +199,25 @@ keepjumps 7
 normal! 0
 wincmd w
 argglobal
-if bufexists(fnamemodify("~/repos/nikbrunner/notes/.obsidian/hotkeys.json", ":p")) | buffer ~/repos/nikbrunner/notes/.obsidian/hotkeys.json | else | edit ~/repos/nikbrunner/notes/.obsidian/hotkeys.json | endif
+if bufexists(fnamemodify("01\ -\ Projects/New\ Job\ Nik/Coverletters/Sparetech\ -\ Senior\ Frontend\ Engineer.md", ":p")) | buffer 01\ -\ Projects/New\ Job\ Nik/Coverletters/Sparetech\ -\ Senior\ Frontend\ Engineer.md | else | edit 01\ -\ Projects/New\ Job\ Nik/Coverletters/Sparetech\ -\ Senior\ Frontend\ Engineer.md | endif
 if &buftype ==# 'terminal'
-  silent file ~/repos/nikbrunner/notes/.obsidian/hotkeys.json
+  silent file 01\ -\ Projects/New\ Job\ Nik/Coverletters/Sparetech\ -\ Senior\ Frontend\ Engineer.md
 endif
+let s:cpo_save=&cpo
+set cpo&vim
+nnoremap <buffer>  <Cmd>MarkdownToggleCheckbox
+nnoremap <buffer> ,niT <Cmd>MarkdownInsertTable
+vnoremap <buffer> ,nil s["]()<Cmd>normal! h<Cmd>startinsert<Cmd>lua require("markdown-tools.commands").prompt_and_insert_url()
+vmap <buffer> ,nii s*"*
+vmap <buffer> ,niH s=="==
+vmap <buffer> ,nib s**"**
+vnoremap <buffer> ,nih <Cmd>MarkdownHeader
+nnoremap <buffer> ,nih <Cmd>MarkdownHeader
+xnoremap <buffer> <silent> [[ :exe "normal! gv"|call search('\%(^#\{1,5\}\s\+\S\|^\S.*\n^[=-]\+$\)', "bsW")
+xnoremap <buffer> <silent> ]] :exe "normal! gv"|call search('\%(^#\{1,5\}\s\+\S\|^\S.*\n^[=-]\+$\)', "sW")
+nnoremap <buffer> <C-T> <Cmd>MarkdownToggleCheckbox
+let &cpo=s:cpo_save
+unlet s:cpo_save
 setlocal keymap=
 setlocal noarabic
 setlocal autoindent
@@ -219,8 +234,8 @@ setlocal cinoptions=
 setlocal cinscopedecls=public,protected,private
 setlocal cinwords=if,else,while,do,for,switch
 setlocal colorcolumn=
-setlocal comments=
-setlocal commentstring=
+setlocal comments=fb:*,fb:-,fb:+,n:>
+setlocal commentstring=<!--\ %s\ -->
 setlocal complete=.,w,b,u,t
 setlocal completefunc=
 setlocal completeslash=
@@ -234,8 +249,8 @@ setlocal cursorlineopt=both
 setlocal nodiff
 setlocal eventignorewin=
 setlocal expandtab
-if &filetype != 'json'
-setlocal filetype=json
+if &filetype != 'markdown'
+setlocal filetype=markdown
 endif
 setlocal fixendofline
 setlocal foldcolumn=0
@@ -249,21 +264,21 @@ setlocal foldminlines=1
 setlocal foldnestmax=20
 setlocal foldtext=
 setlocal formatexpr=v:lua.require'conform'.formatexpr()
-setlocal formatlistpat=^\\s*\\d\\+[\\]:.)}\\t\ ]\\s*
-setlocal formatoptions=cqj
+setlocal formatlistpat=^\\s*\\d\\+\\.\\s\\+\\|^\\s*[-*+]\\s\\+\\|^\\[^\\ze[^\\]]\\+\\]:\\&^.\\{4\\}
+setlocal formatoptions=jtcqln
 setlocal iminsert=0
 setlocal imsearch=-1
 setlocal includeexpr=
 setlocal indentexpr=nvim_treesitter#indent()
-setlocal indentkeys=0{,0},0),0[,0],!^F,o,O,e
+setlocal indentkeys=0{,0},0),0],:,0#,!^F,o,O,e
 setlocal noinfercase
 setlocal iskeyword=@,48-57,_,192-255
 setlocal lhistory=10
-setlocal nolinebreak
+setlocal linebreak
 setlocal nolisp
 setlocal lispoptions=
 setlocal nolist
-setlocal matchpairs=(:),{:},[:]
+setlocal matchpairs=(:),{:},[:],<:>
 setlocal modeline
 setlocal modifiable
 setlocal nrformats=bin,hex
@@ -281,7 +296,7 @@ setlocal scrollback=-1
 setlocal noscrollbind
 setlocal shiftwidth=2
 setlocal signcolumn=yes
-setlocal nosmartindent
+setlocal smartindent
 setlocal nosmoothscroll
 setlocal softtabstop=-1
 setlocal nospell
@@ -297,35 +312,29 @@ if &syntax != ''
 setlocal syntax=
 endif
 setlocal tabstop=4
-setlocal tagfunc=
-setlocal textwidth=0
+setlocal tagfunc=v:lua.vim.lsp.tagfunc
+setlocal textwidth=85
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#.obsidian%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#hotkeys.json%*
+setlocal winbar=%#WinBarPath#01\ -\ Projects%*\ %#WinBarSeparator#/%*\ %#WinBarPath#New\ Job\ Nik%*\ %#WinBarSeparator#/%*\ %#WinBarPath#Coverletters%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#Sparetech\ -\ Senior\ Frontend\ Engineer.md%*
 setlocal winblend=0
 setlocal nowinfixbuf
 setlocal nowinfixheight
 setlocal nowinfixwidth
 setlocal winhighlight=
-setlocal nowrap
+setlocal wrap
 setlocal wrapmargin=0
-2
-sil! normal! zo
-100
-sil! normal! zo
-101
-sil! normal! zo
-let s:l = 108 - ((47 * winheight(0) + 28) / 56)
+let s:l = 15 - ((14 * winheight(0) + 34) / 68)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 108
-normal! 0
+keepjumps 15
+normal! 088|
 wincmd w
 2wincmd w
-exe 'vert 1resize ' . ((&columns * 163 + 164) / 328)
-exe 'vert 2resize ' . ((&columns * 164 + 164) / 328)
+exe 'vert 1resize ' . ((&columns * 197 + 197) / 394)
+exe 'vert 2resize ' . ((&columns * 196 + 197) / 394)
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf

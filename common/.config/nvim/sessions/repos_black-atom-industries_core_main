@@ -54,10 +54,10 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe 'vert 1resize ' . ((&columns * 70 + 140) / 281)
-exe 'vert 2resize ' . ((&columns * 68 + 140) / 281)
-exe 'vert 3resize ' . ((&columns * 72 + 140) / 281)
-exe 'vert 4resize ' . ((&columns * 68 + 140) / 281)
+exe 'vert 1resize ' . ((&columns * 67 + 134) / 268)
+exe 'vert 2resize ' . ((&columns * 66 + 134) / 268)
+exe 'vert 3resize ' . ((&columns * 66 + 134) / 268)
+exe 'vert 4resize ' . ((&columns * 66 + 134) / 268)
 argglobal
 setlocal keymap=
 setlocal noarabic
@@ -293,7 +293,7 @@ if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
 keepjumps 33
-let s:c = 33 - ((21 * winwidth(0) + 34) / 68)
+let s:c = 33 - ((21 * winwidth(0) + 33) / 66)
 if s:c > 0
   exe 'normal! ' . s:c . '|zs' . 33 . '|'
 else
@@ -540,10 +540,10 @@ normal! zt
 keepjumps 34
 normal! 0
 wincmd w
-exe 'vert 1resize ' . ((&columns * 70 + 140) / 281)
-exe 'vert 2resize ' . ((&columns * 68 + 140) / 281)
-exe 'vert 3resize ' . ((&columns * 72 + 140) / 281)
-exe 'vert 4resize ' . ((&columns * 68 + 140) / 281)
+exe 'vert 1resize ' . ((&columns * 67 + 134) / 268)
+exe 'vert 2resize ' . ((&columns * 66 + 134) / 268)
+exe 'vert 3resize ' . ((&columns * 66 + 134) / 268)
+exe 'vert 4resize ' . ((&columns * 66 + 134) / 268)
 tabnext
 edit src/themes/mnml/create-palette.ts
 argglobal
@@ -684,9 +684,9 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe 'vert 1resize ' . ((&columns * 93 + 140) / 281)
-exe 'vert 2resize ' . ((&columns * 93 + 140) / 281)
-exe 'vert 3resize ' . ((&columns * 93 + 140) / 281)
+exe 'vert 1resize ' . ((&columns * 89 + 134) / 268)
+exe 'vert 2resize ' . ((&columns * 89 + 134) / 268)
+exe 'vert 3resize ' . ((&columns * 88 + 134) / 268)
 argglobal
 setlocal keymap=
 setlocal noarabic
@@ -1042,9 +1042,9 @@ normal! zt
 keepjumps 56
 normal! 02|
 wincmd w
-exe 'vert 1resize ' . ((&columns * 93 + 140) / 281)
-exe 'vert 2resize ' . ((&columns * 93 + 140) / 281)
-exe 'vert 3resize ' . ((&columns * 93 + 140) / 281)
+exe 'vert 1resize ' . ((&columns * 89 + 134) / 268)
+exe 'vert 2resize ' . ((&columns * 89 + 134) / 268)
+exe 'vert 3resize ' . ((&columns * 88 + 134) / 268)
 tabnext
 edit ~/repos/black-atom-industries/core/deno.json
 argglobal
@@ -1307,8 +1307,8 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe 'vert 1resize ' . ((&columns * 140 + 140) / 281)
-exe 'vert 2resize ' . ((&columns * 140 + 140) / 281)
+exe 'vert 1resize ' . ((&columns * 134 + 134) / 268)
+exe 'vert 2resize ' . ((&columns * 133 + 134) / 268)
 argglobal
 balt ~/repos/black-atom-industries/core/src/themes/mnml/black-atom-mnml-mono-light.ts
 setlocal keymap=
@@ -1423,7 +1423,7 @@ if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
 keepjumps 26
-normal! 010|
+normal! 0
 wincmd w
 argglobal
 if bufexists(fnamemodify("~/repos/black-atom-industries/core/src/themes/mnml/black-atom-mnml-ita-light.ts", ":p")) | buffer ~/repos/black-atom-industries/core/src/themes/mnml/black-atom-mnml-ita-light.ts | else | edit ~/repos/black-atom-industries/core/src/themes/mnml/black-atom-mnml-ita-light.ts | endif
@@ -1545,8 +1545,8 @@ normal! zt
 keepjumps 18
 normal! 0
 wincmd w
-exe 'vert 1resize ' . ((&columns * 140 + 140) / 281)
-exe 'vert 2resize ' . ((&columns * 140 + 140) / 281)
+exe 'vert 1resize ' . ((&columns * 134 + 134) / 268)
+exe 'vert 2resize ' . ((&columns * 133 + 134) / 268)
 tabnext 6
 set stal=1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'

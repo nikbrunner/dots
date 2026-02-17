@@ -43,7 +43,7 @@
   },
   "theme": {
     "mode": "system",
-    "dark": "Black Atom — MNM ∷ Mikado Dark",
+    "dark": "Black Atom — Dark Dimmed",
     "light": "Black Atom — STA ∷ Research"
   },
   "base_keymap": "VSCode",
