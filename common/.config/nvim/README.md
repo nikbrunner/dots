@@ -60,15 +60,6 @@ rm -rf ~/.local/share/nbr
 
 Make sure you have [a nerd font](https://github.com/ryanoasis/nerd-fonts) installed.
 
-## Obsidian
-
-I have a `.vimrc` config for my Obsidian Notes.
-To have a backup, a SSOT and standalone capabilities, I have a little script, which copies the `.obsidian.vimrc` to the Note folders.
-
-```sh
-sh ./obsidian/sync.sh
-```
-
 ## TODO
 
 [TODO.md](./TODO.md)

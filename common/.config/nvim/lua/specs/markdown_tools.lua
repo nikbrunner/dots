@@ -8,7 +8,6 @@ return {
     opts = {
         picker = "snacks",
 
-        -- Obsidian should handle this
         insert_frontmatter = false,
 
         frontmatter_date = function()
@@ -16,10 +15,7 @@ return {
         end,
 
         commands = {
-            -- All these are hanlded by Obsidian
-            -- create_from_template = false,
-            -- insert_checkbox = false,
-            -- toggle_checkbox = false,
+            create_from_template = false,
         },
 
         -- Keymappings for shortcuts. Set to `false` or `""` to disable.
@@ -37,7 +33,6 @@ return {
             preview = "<leader>np", -- Preview
         },
 
-        -- This handles Obisidian
         enable_local_options = false,
     },
 }
