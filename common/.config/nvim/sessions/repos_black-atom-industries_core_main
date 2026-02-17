@@ -20,7 +20,7 @@ badd +56 src/themes/mnml/create-ui-light.ts
 badd +18 ~/repos/black-atom-industries/core/deno.json
 badd +71 ~/repos/black-atom-industries/core/src/tasks/adapters/generate.ts
 badd +19 ~/repos/black-atom-industries/core/src/themes/mnml/black-atom-mnml-ita-light.ts
-badd +27 ~/repos/black-atom-industries/core/src/config.ts
+badd +26 ~/repos/black-atom-industries/core/src/config.ts
 argglobal
 %argdel
 $argadd ~/.config/lazygit/config.yml
