@@ -22,7 +22,7 @@ badd +71 ~/repos/black-atom-industries/core/src/tasks/adapters/generate.ts
 badd +39 ~/repos/black-atom-industries/core/src/themes/default/black-atom-default-dark.ts
 badd +19 src/themes/default/create-syntax-dark.ts
 badd +41 src/themes/default/black-atom-default-light-dimmed.ts
-badd +42 src/themes/default/black-atom-default-light.ts
+badd +44 src/themes/default/black-atom-default-light.ts
 badd +53 src/themes/default/create-syntax-light.ts
 argglobal
 %argdel
@@ -1674,11 +1674,11 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 44 - ((43 * winheight(0) + 28) / 57)
+let s:l = 47 - ((46 * winheight(0) + 28) / 57)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 44
+keepjumps 47
 normal! 02|
 wincmd w
 argglobal

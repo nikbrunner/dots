@@ -762,6 +762,7 @@ setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
+setlocal winbar=%#WinBarPath#themes%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#black-atom-default-dark-dimmed.css%*\ %#WinBarSeparator##%*\ %#WinBarSymbol#.theme-dark.black-atom-default-dark-dimmed%*
 setlocal winblend=0
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -769,11 +770,11 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 55 - ((4 * winheight(0) + 29) / 59)
+let s:l = 57 - ((6 * winheight(0) + 29) / 58)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 55
+keepjumps 57
 normal! 0
 tabnext 3
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
