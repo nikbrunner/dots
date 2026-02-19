@@ -17,6 +17,10 @@ Nik has real self-worth issues that show up consistently in professional context
 - Strong introvert in professional contexts, but has grown in communication and outwardness over time
 - Knows himself well and appreciates when his self-knowledge is respected rather than challenged
 
+## Job Review Workflow
+
+After a job review session, put the summary in `01 - Projects/New Job 2026/New Job 2026.md` under the current date — NOT in the daily note. Use wikilinks for position names (e.g. `[[Filen - Senior Full-Stack Developer]]`). The daily note just gets the task checked off with a link to `[[New Job 2026]]`.
+
 ## Job Search Context (as of 2026-02-19)
 
 - Left DCD end of January 2026, currently job hunting
