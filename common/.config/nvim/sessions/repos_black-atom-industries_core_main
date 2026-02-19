@@ -10,7 +10,7 @@ endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
 badd +56 src/themes/mnml/black-atom-mnml-osman-light.ts
-badd +45 ~/repos/black-atom-industries/core/src/themes/default/black-atom-default-dark-dimmed.ts
+badd +26 ~/repos/black-atom-industries/core/src/themes/default/black-atom-default-dark-dimmed.ts
 badd +10 ~/repos/black-atom-industries/core/src/themes/default/feedback-dark.ts
 badd +13 src/themes/default/create-ui-dark.ts
 badd +63 src/themes/mnml/create-palette.ts
@@ -19,10 +19,10 @@ badd +37 ~/repos/black-atom-industries/core/src/themes/mnml/black-atom-mnml-mono
 badd +56 src/themes/mnml/create-ui-light.ts
 badd +18 ~/repos/black-atom-industries/core/deno.json
 badd +71 ~/repos/black-atom-industries/core/src/tasks/adapters/generate.ts
-badd +39 ~/repos/black-atom-industries/core/src/themes/default/black-atom-default-dark.ts
+badd +41 ~/repos/black-atom-industries/core/src/themes/default/black-atom-default-dark.ts
 badd +19 src/themes/default/create-syntax-dark.ts
-badd +41 src/themes/default/black-atom-default-light-dimmed.ts
-badd +44 src/themes/default/black-atom-default-light.ts
+badd +55 src/themes/default/black-atom-default-light-dimmed.ts
+badd +39 src/themes/default/black-atom-default-light.ts
 badd +53 src/themes/default/create-syntax-light.ts
 argglobal
 %argdel
@@ -169,7 +169,7 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 56 - ((4 * winheight(0) + 28) / 57)
+let s:l = 56 - ((5 * winheight(0) + 28) / 57)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
@@ -289,7 +289,7 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 33 - ((25 * winheight(0) + 28) / 57)
+let s:l = 33 - ((26 * winheight(0) + 28) / 57)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
@@ -534,7 +534,7 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 34 - ((25 * winheight(0) + 28) / 57)
+let s:l = 34 - ((26 * winheight(0) + 28) / 57)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
@@ -658,7 +658,7 @@ setlocal nowrap
 setlocal wrapmargin=0
 12
 sil! normal! zo
-let s:l = 63 - ((48 * winheight(0) + 28) / 57)
+let s:l = 63 - ((5 * winheight(0) + 28) / 57)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
@@ -796,7 +796,7 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 37 - ((4 * winheight(0) + 28) / 57)
+let s:l = 37 - ((5 * winheight(0) + 28) / 57)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
@@ -1322,10 +1322,10 @@ set winminwidth=0
 set winwidth=1
 exe 'vert 1resize ' . ((&columns * 57 + 174) / 348)
 exe 'vert 2resize ' . ((&columns * 57 + 174) / 348)
-exe 'vert 3resize ' . ((&columns * 57 + 174) / 348)
+exe 'vert 3resize ' . ((&columns * 58 + 174) / 348)
 exe 'vert 4resize ' . ((&columns * 57 + 174) / 348)
 exe 'vert 5resize ' . ((&columns * 57 + 174) / 348)
-exe 'vert 6resize ' . ((&columns * 58 + 174) / 348)
+exe 'vert 6resize ' . ((&columns * 57 + 174) / 348)
 argglobal
 setlocal keymap=
 setlocal noarabic
@@ -1434,12 +1434,12 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 39 - ((32 * winheight(0) + 28) / 57)
+let s:l = 41 - ((34 * winheight(0) + 28) / 57)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 39
-normal! 0
+keepjumps 41
+normal! 032|
 wincmd w
 argglobal
 if bufexists(fnamemodify("~/repos/black-atom-industries/core/src/themes/default/black-atom-default-dark-dimmed.ts", ":p")) | buffer ~/repos/black-atom-industries/core/src/themes/default/black-atom-default-dark-dimmed.ts | else | edit ~/repos/black-atom-industries/core/src/themes/default/black-atom-default-dark-dimmed.ts | endif
@@ -1554,12 +1554,12 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 31 - ((27 * winheight(0) + 28) / 57)
+let s:l = 31 - ((22 * winheight(0) + 28) / 57)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
 keepjumps 31
-normal! 035|
+normal! 021|
 wincmd w
 argglobal
 if bufexists(fnamemodify("src/themes/default/black-atom-default-light.ts", ":p")) | buffer src/themes/default/black-atom-default-light.ts | else | edit src/themes/default/black-atom-default-light.ts | endif
@@ -1674,12 +1674,12 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 47 - ((46 * winheight(0) + 28) / 57)
+let s:l = 25 - ((24 * winheight(0) + 28) / 57)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 47
-normal! 02|
+keepjumps 25
+normal! 0
 wincmd w
 argglobal
 if bufexists(fnamemodify("src/themes/default/black-atom-default-light-dimmed.ts", ":p")) | buffer src/themes/default/black-atom-default-light-dimmed.ts | else | edit src/themes/default/black-atom-default-light-dimmed.ts | endif
@@ -1794,11 +1794,11 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 42 - ((38 * winheight(0) + 28) / 57)
+let s:l = 58 - ((41 * winheight(0) + 28) / 57)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 42
+keepjumps 58
 normal! 02|
 wincmd w
 argglobal
@@ -1918,7 +1918,7 @@ setlocal wrapmargin=0
 sil! normal! zo
 15
 sil! normal! zo
-let s:l = 51 - ((48 * winheight(0) + 28) / 57)
+let s:l = 51 - ((47 * winheight(0) + 28) / 57)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
@@ -2045,13 +2045,13 @@ normal! zt
 keepjumps 58
 normal! 09|
 wincmd w
-3wincmd w
+2wincmd w
 exe 'vert 1resize ' . ((&columns * 57 + 174) / 348)
 exe 'vert 2resize ' . ((&columns * 57 + 174) / 348)
-exe 'vert 3resize ' . ((&columns * 57 + 174) / 348)
+exe 'vert 3resize ' . ((&columns * 58 + 174) / 348)
 exe 'vert 4resize ' . ((&columns * 57 + 174) / 348)
 exe 'vert 5resize ' . ((&columns * 57 + 174) / 348)
-exe 'vert 6resize ' . ((&columns * 58 + 174) / 348)
+exe 'vert 6resize ' . ((&columns * 57 + 174) / 348)
 tabnext 6
 set stal=1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'

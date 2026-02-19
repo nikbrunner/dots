@@ -762,7 +762,7 @@ setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#themes%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#black-atom-default-dark-dimmed.css%*\ %#WinBarSeparator##%*\ %#WinBarSymbol#.theme-dark.black-atom-default-dark-dimmed%*
+setlocal winbar=%#WinBarPath#themes%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#black-atom-default-dark-dimmed.css%*
 setlocal winblend=0
 setlocal nowinfixbuf
 setlocal nowinfixheight
