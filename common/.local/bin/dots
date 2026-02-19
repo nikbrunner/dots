@@ -184,6 +184,18 @@ cmd_pull() {
 # ── Push command ───────────────────────────────────────────────
 # End of day: dots chores, commit/push dots, handle dirty repos, push all
 cmd_push() {
+	local include_repos=false
+
+	while [[ $# -gt 0 ]]; do
+		case "$1" in
+		--include-repos)
+			include_repos=true
+			shift
+			;;
+		*) shift ;;
+		esac
+	done
+
 	load_config
 
 	# ── Phase 1: Dots chores ──
@@ -269,6 +281,14 @@ cmd_push() {
 	# Push dots if unpushed commits
 	if [[ -n $(git log '@{u}..' 2>/dev/null) ]]; then
 		do_push false
+	fi
+
+	if [[ "$include_repos" == false ]]; then
+		echo ""
+		log_info "Skipping repo handling (use --include-repos to include)"
+		echo ""
+		log_success "Dots push complete!"
+		return 0
 	fi
 
 	# ── Phase 3: Handle dirty non-dots repos ──
@@ -558,7 +578,8 @@ show_usage() {
 	echo "  pull         - Full sync: pull dots, deps, symlinks, all repos, rebuild"
 	echo "                 --hard: force reset diverged/dirty repos"
 	echo "                 --rebuild-all: rebuild all tools, not just updated"
-	echo "  push         - End of day: chores, commit/push dots, handle dirty repos"
+	echo "  push         - Chores, commit/push dots repo"
+	echo "                 --include-repos: also handle dirty repos and push all"
 	echo ""
 	echo "  link         - Update all symlinks (clean broken + create new)"
 	echo "                 --dry-run: preview without making changes"
