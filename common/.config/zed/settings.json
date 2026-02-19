@@ -3,7 +3,7 @@
   "session": {
     "trust_all_worktrees": false
   },
-  "buffer_font_family": "ComicCodeLigatures Nerd Font",
+  "buffer_font_family": "TX-02 Condensed",
   "which_key": {
     "delay_ms": 250,
     "enabled": true
@@ -49,7 +49,7 @@
   "cursor_blink": false,
   "theme": {
     "mode": "system",
-    "dark": "Black Atom — Dark Dimmed",
+    "dark": "Black Atom — Dark",
     "light": "Black Atom — Light Dimmed"
   },
   "base_keymap": "VSCode",
@@ -95,7 +95,7 @@
   "terminal": {
     "line_height": "standard",
     "working_directory": "current_project_directory",
-    "font_family": "ComicCodeLigatures Nerd Font"
+    "font_family": "TX-02 Condensed"
   },
   "lsp": {
     "vtsls": {
@@ -121,5 +121,5 @@
       }
     }
   },
-  "ui_font_family": "ComicCodeLigatures Nerd Font"
+  "ui_font_family": "TX-02 Condensed"
 }
