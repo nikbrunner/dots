@@ -12,10 +12,10 @@ set shortmess+=aoO
 badd +26 styles/ui/borders.settings.yaml
 badd +35 styles/ui/borders.css
 badd +55 tmp_sources/style_settings.md
-badd +0 deno.json
-badd +2034 tmp_sources/app.css
+badd +11 deno.json
 argglobal
 %argdel
+tabnew +setlocal\ bufhidden=wipe
 tabnew +setlocal\ bufhidden=wipe
 tabrewind
 edit deno.json
@@ -41,10 +41,10 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe 'vert 1resize ' . ((&columns * 69 + 140) / 281)
-exe 'vert 2resize ' . ((&columns * 70 + 140) / 281)
-exe 'vert 3resize ' . ((&columns * 70 + 140) / 281)
-exe 'vert 4resize ' . ((&columns * 69 + 140) / 281)
+exe 'vert 1resize ' . ((&columns * 87 + 174) / 348)
+exe 'vert 2resize ' . ((&columns * 86 + 174) / 348)
+exe 'vert 3resize ' . ((&columns * 86 + 174) / 348)
+exe 'vert 4resize ' . ((&columns * 86 + 174) / 348)
 argglobal
 balt styles/ui/borders.settings.yaml
 setlocal keymap=
@@ -154,7 +154,7 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 8 - ((7 * winheight(0) + 25) / 50)
+let s:l = 8 - ((7 * winheight(0) + 29) / 58)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
@@ -166,6 +166,7 @@ if bufexists(fnamemodify("styles/ui/borders.settings.yaml", ":p")) | buffer styl
 if &buftype ==# 'terminal'
   silent file styles/ui/borders.settings.yaml
 endif
+balt deno.json
 setlocal keymap=
 setlocal noarabic
 setlocal autoindent
@@ -273,7 +274,7 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 27 - ((26 * winheight(0) + 25) / 50)
+let s:l = 27 - ((26 * winheight(0) + 29) / 58)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
@@ -285,6 +286,7 @@ if bufexists(fnamemodify("styles/ui/borders.css", ":p")) | buffer styles/ui/bord
 if &buftype ==# 'terminal'
   silent file styles/ui/borders.css
 endif
+balt deno.json
 setlocal keymap=
 setlocal noarabic
 setlocal autoindent
@@ -393,7 +395,7 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 35 - ((34 * winheight(0) + 25) / 50)
+let s:l = 35 - ((34 * winheight(0) + 29) / 58)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
@@ -405,6 +407,7 @@ if bufexists(fnamemodify("tmp_sources/style_settings.md", ":p")) | buffer tmp_so
 if &buftype ==# 'terminal'
   silent file tmp_sources/style_settings.md
 endif
+balt deno.json
 let s:cpo_save=&cpo
 set cpo&vim
 nnoremap <buffer>  <Cmd>MarkdownToggleCheckbox
@@ -514,7 +517,7 @@ if &syntax != ''
 setlocal syntax=
 endif
 setlocal tabstop=4
-setlocal tagfunc=
+setlocal tagfunc=v:lua.vim.lsp.tagfunc
 setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
@@ -529,21 +532,20 @@ setlocal wrap
 setlocal wrapmargin=0
 17
 sil! normal! zo
-let s:l = 263 - ((28 * winheight(0) + 25) / 50)
+let s:l = 263 - ((27 * winheight(0) + 29) / 58)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
 keepjumps 263
 normal! 0
 wincmd w
-exe 'vert 1resize ' . ((&columns * 69 + 140) / 281)
-exe 'vert 2resize ' . ((&columns * 70 + 140) / 281)
-exe 'vert 3resize ' . ((&columns * 70 + 140) / 281)
-exe 'vert 4resize ' . ((&columns * 69 + 140) / 281)
+exe 'vert 1resize ' . ((&columns * 87 + 174) / 348)
+exe 'vert 2resize ' . ((&columns * 86 + 174) / 348)
+exe 'vert 3resize ' . ((&columns * 86 + 174) / 348)
+exe 'vert 4resize ' . ((&columns * 86 + 174) / 348)
 tabnext
-edit tmp_sources/app.css
+edit deno.json
 argglobal
-balt styles/ui/borders.css
 setlocal keymap=
 setlocal noarabic
 setlocal autoindent
@@ -552,6 +554,122 @@ setlocal nobreakindent
 setlocal breakindentopt=
 setlocal bufhidden=
 setlocal buflisted
+setlocal buftype=
+setlocal busy=0
+setlocal nocindent
+setlocal cinkeys=0{,0},0),0],:,0#,!^F,o,O,e
+setlocal cinoptions=
+setlocal cinscopedecls=public,protected,private
+setlocal cinwords=if,else,while,do,for,switch
+setlocal colorcolumn=
+setlocal comments=
+setlocal commentstring=
+setlocal complete=.,w,b,u,t
+setlocal completefunc=
+setlocal completeslash=
+setlocal concealcursor=
+setlocal conceallevel=0
+setlocal nocopyindent
+setlocal nocursorbind
+setlocal nocursorcolumn
+setlocal cursorline
+setlocal cursorlineopt=both
+setlocal nodiff
+setlocal eventignorewin=
+setlocal noexpandtab
+if &filetype != 'json'
+setlocal filetype=json
+endif
+setlocal fixendofline
+setlocal foldcolumn=0
+setlocal foldenable
+setlocal foldexpr=v:lua.vim.treesitter.foldexpr()
+setlocal foldignore=#
+setlocal foldlevel=99
+setlocal foldmarker={{{,}}}
+setlocal foldmethod=indent
+setlocal foldminlines=1
+setlocal foldnestmax=20
+setlocal foldtext=
+setlocal formatexpr=v:lua.require'conform'.formatexpr()
+setlocal formatlistpat=^\\s*\\d\\+[\\]:.)}\\t\ ]\\s*
+setlocal formatoptions=cqj
+setlocal iminsert=0
+setlocal imsearch=-1
+setlocal includeexpr=
+setlocal indentexpr=nvim_treesitter#indent()
+setlocal indentkeys=0{,0},0),0[,0],!^F,o,O,e
+setlocal noinfercase
+setlocal iskeyword=@,48-57,_,192-255
+setlocal lhistory=10
+setlocal nolinebreak
+setlocal nolisp
+setlocal lispoptions=
+setlocal nolist
+setlocal matchpairs=(:),{:},[:]
+setlocal modeline
+setlocal modifiable
+setlocal nrformats=bin,hex
+setlocal number
+setlocal numberwidth=4
+setlocal omnifunc=v:lua.vim.lsp.omnifunc
+setlocal nopreserveindent
+setlocal nopreviewwindow
+setlocal quoteescape=\\
+setlocal noreadonly
+setlocal relativenumber
+setlocal norightleft
+setlocal rightleftcmd=search
+setlocal scrollback=-1
+setlocal noscrollbind
+setlocal shiftwidth=4
+setlocal signcolumn=yes
+setlocal nosmartindent
+setlocal nosmoothscroll
+setlocal softtabstop=-1
+setlocal nospell
+setlocal spellcapcheck=[.?!]\\_[\\])'\"\\t\ ]\\+
+setlocal spellfile=
+setlocal spelllang=en_us,de_de
+setlocal spelloptions=noplainbuffer
+setlocal statuscolumn=%!v:lua.require'snacks.statuscolumn'.get()
+setlocal suffixesadd=
+setlocal noswapfile
+setlocal synmaxcol=3000
+if &syntax != ''
+setlocal syntax=
+endif
+setlocal tabstop=4
+setlocal tagfunc=
+setlocal textwidth=0
+setlocal undofile
+setlocal varsofttabstop=
+setlocal vartabstop=
+setlocal winbar=%#WinBarFilename#deno.json%*\ %#WinBarSeparator##%*\ %#WinBarSymbol#fmt%*
+setlocal winblend=0
+setlocal nowinfixbuf
+setlocal nowinfixheight
+setlocal nowinfixwidth
+setlocal winhighlight=
+setlocal nowrap
+setlocal wrapmargin=0
+let s:l = 11 - ((10 * winheight(0) + 29) / 58)
+if s:l < 1 | let s:l = 1 | endif
+keepjumps exe s:l
+normal! zt
+keepjumps 11
+normal! 0
+tabnext
+edit ~/repos/black-atom-industries/obsidian/themes/black-atom-default-dark-dimmed.css
+argglobal
+setlocal keymap=
+setlocal noarabic
+setlocal autoindent
+setlocal nobinary
+setlocal nobreakindent
+setlocal breakindentopt=
+setlocal bufhidden=
+setlocal nobuflisted
 setlocal buftype=
 setlocal busy=0
 setlocal nocindent
@@ -620,7 +738,7 @@ setlocal relativenumber
 setlocal norightleft
 setlocal rightleftcmd=search
 setlocal scrollback=-1
-setlocal noscrollbind
+setlocal scrollbind
 setlocal shiftwidth=4
 setlocal signcolumn=yes
 setlocal nosmartindent
@@ -630,13 +748,13 @@ setlocal nospell
 setlocal spellcapcheck=[.?!]\\_[\\])'\"\\t\ ]\\+
 setlocal spellfile=
 setlocal spelllang=en_us,de_de
-setlocal spelloptions=
+setlocal spelloptions=noplainbuffer
 setlocal statuscolumn=%!v:lua.require'snacks.statuscolumn'.get()
 setlocal suffixesadd=
 setlocal noswapfile
 setlocal synmaxcol=3000
-if &syntax != 'css'
-setlocal syntax=css
+if &syntax != ''
+setlocal syntax=
 endif
 setlocal tabstop=4
 setlocal tagfunc=v:lua.vim.lsp.tagfunc
@@ -644,7 +762,6 @@ setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#tmp_sources%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#app.css%*\ %#WinBarSeparator##%*\ %#WinBarSymbol#body%*
 setlocal winblend=0
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -652,13 +769,13 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 2034 - ((26 * winheight(0) + 25) / 50)
+let s:l = 55 - ((4 * winheight(0) + 29) / 59)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 2034
+keepjumps 55
 normal! 0
-tabnext 2
+tabnext 3
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
 endif
@@ -673,6 +790,7 @@ if filereadable(s:sx)
 endif
 let &g:so = s:so_save | let &g:siso = s:siso_save
 set hlsearch
+nohlsearch
 doautoall SessionLoadPost
 unlet SessionLoad
 " vim: set ft=vim :
