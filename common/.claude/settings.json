@@ -51,6 +51,7 @@
     "deny": [],
     "ask": []
   },
+  "model": "sonnet",
   "hooks": {
     "Notification": [
       {
