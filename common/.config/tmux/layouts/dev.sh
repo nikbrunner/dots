@@ -1,21 +1,21 @@
 #!/usr/bin/env bash
 #
-# Dev layout: 3 windows for development workflow
+# Dev layout: 2 windows for development workflow
 #
 # Windows:
-# 1. claude   - Claude + command pane
-# 2. code     - Editor
-# 3. server   - Two panes for server/output
+# 1. claude   - Claude + Editor + terminal (ide layout)
+# 2. server   - Two panes for server/output
 #
 # Window 1 (claude):
-# ┌─────────────────┬─────────────────┐
-# │                 │                 │
-# │     claude      │    terminal     │
-# │      (50%)      │     (50%)       │
-# │                 │                 │
-# └─────────────────┴─────────────────┘
+# ┌─────────┬───────────────────────────┐
+# │         │                           │
+# │ claude  │         editor            │
+# │  (25%)  │          (75%)            │
+# │         ├───────────────────────────┤
+# │         │    terminal (20%)         │
+# └─────────┴───────────────────────────┘
 #
-# Window 3 (server):
+# Window 2 (server):
 # ┌─────────────────┬─────────────────┐
 # │                 │                 │
 # │     server      │     server      │
@@ -33,19 +33,17 @@ working_dir="${2:?Working directory required}"
 apply_layout() {
     # Window 1: claude (already exists as window 1)
     tmux rename-window -t "${session_name}:1" "claude"
-    tmux split-window -h -t "${session_name}:1" -c "$working_dir" -l 50%
+    tmux split-window -h -t "${session_name}:1" -c "$working_dir" -l 75%
+    tmux split-window -v -t "${session_name}:1.2" -c "$working_dir" -l 20%
     tmux send-keys -t "${session_name}:1.1" "[[ -f .nvmrc ]] && nvm use; claude" Enter
-    tmux send-keys -t "${session_name}:1.2" "[[ -f .nvmrc ]] && nvm use; clear" Enter
+    tmux send-keys -t "${session_name}:1.2" "[[ -f .nvmrc ]] && nvm use; nvim" Enter
+    tmux send-keys -t "${session_name}:1.3" "[[ -f .nvmrc ]] && nvm use; clear" Enter
 
-    # Window 2: code
-    tmux new-window -t "${session_name}" -n "code" -c "$working_dir"
-    tmux send-keys -t "${session_name}:2" "nvim" Enter
-
-    # Window 3: server (two panes)
+    # Window 2: server (two panes)
     tmux new-window -t "${session_name}" -n "server" -c "$working_dir"
-    tmux split-window -h -t "${session_name}:3" -c "$working_dir" -l 50%
-    tmux send-keys -t "${session_name}:3.1" "[[ -f .nvmrc ]] && nvm use; clear" Enter
-    tmux send-keys -t "${session_name}:3.2" "[[ -f .nvmrc ]] && nvm use; clear" Enter
+    tmux split-window -h -t "${session_name}:2" -c "$working_dir" -l 50%
+    tmux send-keys -t "${session_name}:2.1" "[[ -f .nvmrc ]] && nvm use; clear" Enter
+    tmux send-keys -t "${session_name}:2.2" "[[ -f .nvmrc ]] && nvm use; clear" Enter
 
     # Focus on claude window, first pane
     tmux select-window -t "${session_name}:1"
@@ -60,15 +58,15 @@ else
     # Not attached yet - use a one-time hook that runs after client attaches
     layout_commands="
         tmux rename-window -t '${session_name}:1' 'claude'
-        tmux split-window -h -t '${session_name}:1' -c '${working_dir}' -l 50%
+        tmux split-window -h -t '${session_name}:1' -c '${working_dir}' -l 75%
+        tmux split-window -v -t '${session_name}:1.2' -c '${working_dir}' -l 20%
         tmux send-keys -t '${session_name}:1.1' '[[ -f .nvmrc ]] && nvm use; claude' Enter
-        tmux send-keys -t '${session_name}:1.2' '[[ -f .nvmrc ]] && nvm use; clear' Enter
-        tmux new-window -t '${session_name}' -n 'code' -c '${working_dir}'
-        tmux send-keys -t '${session_name}:2' 'nvim' Enter
+        tmux send-keys -t '${session_name}:1.2' '[[ -f .nvmrc ]] && nvm use; nvim' Enter
+        tmux send-keys -t '${session_name}:1.3' '[[ -f .nvmrc ]] && nvm use; clear' Enter
         tmux new-window -t '${session_name}' -n 'server' -c '${working_dir}'
-        tmux split-window -h -t '${session_name}:3' -c '${working_dir}' -l 50%
-        tmux send-keys -t '${session_name}:3.1' '[[ -f .nvmrc ]] && nvm use; clear' Enter
-        tmux send-keys -t '${session_name}:3.2' '[[ -f .nvmrc ]] && nvm use; clear' Enter
+        tmux split-window -h -t '${session_name}:2' -c '${working_dir}' -l 50%
+        tmux send-keys -t '${session_name}:2.1' '[[ -f .nvmrc ]] && nvm use; clear' Enter
+        tmux send-keys -t '${session_name}:2.2' '[[ -f .nvmrc ]] && nvm use; clear' Enter
         tmux select-window -t '${session_name}:1'
         tmux select-pane -t '${session_name}:1.1'
         tmux set-hook -u -t '${session_name}' client-attached
