@@ -10,7 +10,7 @@ endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
 badd +56 src/themes/mnml/black-atom-mnml-osman-light.ts
-badd +26 ~/repos/black-atom-industries/core/src/themes/default/black-atom-default-dark-dimmed.ts
+badd +31 ~/repos/black-atom-industries/core/src/themes/default/black-atom-default-dark-dimmed.ts
 badd +10 ~/repos/black-atom-industries/core/src/themes/default/feedback-dark.ts
 badd +13 src/themes/default/create-ui-dark.ts
 badd +63 src/themes/mnml/create-palette.ts
@@ -57,10 +57,10 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe 'vert 1resize ' . ((&columns * 87 + 174) / 348)
-exe 'vert 2resize ' . ((&columns * 86 + 174) / 348)
-exe 'vert 3resize ' . ((&columns * 86 + 174) / 348)
-exe 'vert 4resize ' . ((&columns * 86 + 174) / 348)
+exe 'vert 1resize ' . ((&columns * 20 + 39) / 78)
+exe 'vert 2resize ' . ((&columns * 19 + 39) / 78)
+exe 'vert 3resize ' . ((&columns * 17 + 39) / 78)
+exe 'vert 4resize ' . ((&columns * 19 + 39) / 78)
 argglobal
 setlocal keymap=
 setlocal noarabic
@@ -169,7 +169,7 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 56 - ((5 * winheight(0) + 28) / 57)
+let s:l = 56 - ((2 * winheight(0) + 9) / 18)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
@@ -289,12 +289,12 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 33 - ((26 * winheight(0) + 28) / 57)
+let s:l = 33 - ((8 * winheight(0) + 9) / 18)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
 keepjumps 33
-let s:c = 33 - ((31 * winwidth(0) + 43) / 86)
+let s:c = 33 - ((4 * winwidth(0) + 9) / 19)
 if s:c > 0
   exe 'normal! ' . s:c . '|zs' . 33 . '|'
 else
@@ -414,7 +414,7 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 10 - ((9 * winheight(0) + 28) / 57)
+let s:l = 10 - ((2 * winheight(0) + 9) / 18)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
@@ -534,17 +534,17 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 34 - ((26 * winheight(0) + 28) / 57)
+let s:l = 34 - ((8 * winheight(0) + 9) / 18)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
 keepjumps 34
 normal! 0
 wincmd w
-exe 'vert 1resize ' . ((&columns * 87 + 174) / 348)
-exe 'vert 2resize ' . ((&columns * 86 + 174) / 348)
-exe 'vert 3resize ' . ((&columns * 86 + 174) / 348)
-exe 'vert 4resize ' . ((&columns * 86 + 174) / 348)
+exe 'vert 1resize ' . ((&columns * 20 + 39) / 78)
+exe 'vert 2resize ' . ((&columns * 19 + 39) / 78)
+exe 'vert 3resize ' . ((&columns * 17 + 39) / 78)
+exe 'vert 4resize ' . ((&columns * 19 + 39) / 78)
 tabnext
 edit src/themes/mnml/create-palette.ts
 argglobal
@@ -658,7 +658,7 @@ setlocal nowrap
 setlocal wrapmargin=0
 12
 sil! normal! zo
-let s:l = 63 - ((5 * winheight(0) + 28) / 57)
+let s:l = 63 - ((2 * winheight(0) + 9) / 18)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
@@ -685,9 +685,9 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe 'vert 1resize ' . ((&columns * 116 + 174) / 348)
-exe 'vert 2resize ' . ((&columns * 115 + 174) / 348)
-exe 'vert 3resize ' . ((&columns * 115 + 174) / 348)
+exe 'vert 1resize ' . ((&columns * 26 + 39) / 78)
+exe 'vert 2resize ' . ((&columns * 25 + 39) / 78)
+exe 'vert 3resize ' . ((&columns * 25 + 39) / 78)
 argglobal
 setlocal keymap=
 setlocal noarabic
@@ -796,7 +796,7 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 37 - ((5 * winheight(0) + 28) / 57)
+let s:l = 37 - ((2 * winheight(0) + 9) / 18)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
@@ -916,12 +916,17 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 49 - ((0 * winheight(0) + 28) / 57)
+let s:l = 49 - ((0 * winheight(0) + 9) / 18)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
 keepjumps 49
-normal! 031|
+let s:c = 31 - ((9 * winwidth(0) + 12) / 25)
+if s:c > 0
+  exe 'normal! ' . s:c . '|zs' . 31 . '|'
+else
+  normal! 031|
+endif
 wincmd w
 argglobal
 if bufexists(fnamemodify("src/themes/mnml/black-atom-mnml-mono-dark.ts", ":p")) | buffer src/themes/mnml/black-atom-mnml-mono-dark.ts | else | edit src/themes/mnml/black-atom-mnml-mono-dark.ts | endif
@@ -1036,16 +1041,16 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 56 - ((0 * winheight(0) + 28) / 57)
+let s:l = 56 - ((0 * winheight(0) + 9) / 18)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
 keepjumps 56
 normal! 02|
 wincmd w
-exe 'vert 1resize ' . ((&columns * 116 + 174) / 348)
-exe 'vert 2resize ' . ((&columns * 115 + 174) / 348)
-exe 'vert 3resize ' . ((&columns * 115 + 174) / 348)
+exe 'vert 1resize ' . ((&columns * 26 + 39) / 78)
+exe 'vert 2resize ' . ((&columns * 25 + 39) / 78)
+exe 'vert 3resize ' . ((&columns * 25 + 39) / 78)
 tabnext
 edit ~/repos/black-atom-industries/core/deno.json
 argglobal
@@ -1156,7 +1161,7 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 18 - ((17 * winheight(0) + 28) / 57)
+let s:l = 18 - ((6 * winheight(0) + 9) / 18)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
@@ -1284,7 +1289,7 @@ sil! normal! zo
 sil! normal! zo
 63
 sil! normal! zo
-let s:l = 71 - ((33 * winheight(0) + 28) / 57)
+let s:l = 71 - ((11 * winheight(0) + 9) / 18)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
@@ -1320,12 +1325,12 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe 'vert 1resize ' . ((&columns * 57 + 174) / 348)
-exe 'vert 2resize ' . ((&columns * 57 + 174) / 348)
-exe 'vert 3resize ' . ((&columns * 58 + 174) / 348)
-exe 'vert 4resize ' . ((&columns * 57 + 174) / 348)
-exe 'vert 5resize ' . ((&columns * 57 + 174) / 348)
-exe 'vert 6resize ' . ((&columns * 57 + 174) / 348)
+exe 'vert 1resize ' . ((&columns * 12 + 39) / 78)
+exe 'vert 2resize ' . ((&columns * 20 + 39) / 78)
+exe 'vert 3resize ' . ((&columns * 5 + 39) / 78)
+exe 'vert 4resize ' . ((&columns * 12 + 39) / 78)
+exe 'vert 5resize ' . ((&columns * 12 + 39) / 78)
+exe 'vert 6resize ' . ((&columns * 12 + 39) / 78)
 argglobal
 setlocal keymap=
 setlocal noarabic
@@ -1434,12 +1439,17 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 41 - ((34 * winheight(0) + 28) / 57)
+let s:l = 41 - ((11 * winheight(0) + 9) / 18)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
 keepjumps 41
-normal! 032|
+let s:c = 35 - ((3 * winwidth(0) + 6) / 12)
+if s:c > 0
+  exe 'normal! ' . s:c . '|zs' . 35 . '|'
+else
+  normal! 035|
+endif
 wincmd w
 argglobal
 if bufexists(fnamemodify("~/repos/black-atom-industries/core/src/themes/default/black-atom-default-dark-dimmed.ts", ":p")) | buffer ~/repos/black-atom-industries/core/src/themes/default/black-atom-default-dark-dimmed.ts | else | edit ~/repos/black-atom-industries/core/src/themes/default/black-atom-default-dark-dimmed.ts | endif
@@ -1554,12 +1564,12 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 31 - ((22 * winheight(0) + 28) / 57)
+let s:l = 31 - ((7 * winheight(0) + 9) / 18)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
 keepjumps 31
-normal! 021|
+normal! 0
 wincmd w
 argglobal
 if bufexists(fnamemodify("src/themes/default/black-atom-default-light.ts", ":p")) | buffer src/themes/default/black-atom-default-light.ts | else | edit src/themes/default/black-atom-default-light.ts | endif
@@ -1674,7 +1684,7 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 25 - ((24 * winheight(0) + 28) / 57)
+let s:l = 25 - ((7 * winheight(0) + 9) / 18)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
@@ -1794,7 +1804,7 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 58 - ((41 * winheight(0) + 28) / 57)
+let s:l = 58 - ((13 * winheight(0) + 9) / 18)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
@@ -1918,7 +1928,7 @@ setlocal wrapmargin=0
 sil! normal! zo
 15
 sil! normal! zo
-let s:l = 51 - ((47 * winheight(0) + 28) / 57)
+let s:l = 51 - ((13 * winheight(0) + 9) / 18)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
@@ -2038,20 +2048,25 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 58 - ((33 * winheight(0) + 28) / 57)
+let s:l = 58 - ((11 * winheight(0) + 9) / 18)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
 keepjumps 58
-normal! 09|
+let s:c = 9 - ((3 * winwidth(0) + 6) / 12)
+if s:c > 0
+  exe 'normal! ' . s:c . '|zs' . 9 . '|'
+else
+  normal! 09|
+endif
 wincmd w
 2wincmd w
-exe 'vert 1resize ' . ((&columns * 57 + 174) / 348)
-exe 'vert 2resize ' . ((&columns * 57 + 174) / 348)
-exe 'vert 3resize ' . ((&columns * 58 + 174) / 348)
-exe 'vert 4resize ' . ((&columns * 57 + 174) / 348)
-exe 'vert 5resize ' . ((&columns * 57 + 174) / 348)
-exe 'vert 6resize ' . ((&columns * 57 + 174) / 348)
+exe 'vert 1resize ' . ((&columns * 12 + 39) / 78)
+exe 'vert 2resize ' . ((&columns * 20 + 39) / 78)
+exe 'vert 3resize ' . ((&columns * 5 + 39) / 78)
+exe 'vert 4resize ' . ((&columns * 12 + 39) / 78)
+exe 'vert 5resize ' . ((&columns * 12 + 39) / 78)
+exe 'vert 6resize ' . ((&columns * 12 + 39) / 78)
 tabnext 6
 set stal=1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
