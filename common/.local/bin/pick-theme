@@ -20,6 +20,7 @@ WAYBAR_THEME="$HOME/.config/waybar/theme.css"
 WAYBAR_THEMES_DIR="$HOME/.config/waybar/themes"
 LAZYGIT_CONFIG="$DOTS_DIR/common/.config/lazygit/config.yml"
 LAZYGIT_THEMES_DIR="$DOTS_DIR/common/.config/lazygit/themes"
+HELM_CONFIG="$HOME/.config/helm/config.yml"
 
 # Get current theme from nvim config
 get_current_theme() {
@@ -144,6 +145,24 @@ update_waybar_theme() {
 	fi
 }
 
+# Update helm appearance config (requires yq)
+update_helm_theme() {
+	local appearance="$1"
+
+	if ! command -v yq >/dev/null 2>&1; then
+		echo "yq not installed, skipping helm theme update"
+		return 0
+	fi
+
+	if [[ ! -f "$HELM_CONFIG" ]]; then
+		echo "helm config not found: $HELM_CONFIG"
+		return 0
+	fi
+
+	yq -i ".appearance = \"$appearance\"" "$HELM_CONFIG"
+	echo "helm appearance updated to $appearance"
+}
+
 # Update lazygit theme (requires yq)
 update_lazygit_theme() {
 	local theme="$1"
@@ -237,15 +256,12 @@ restart_neovim_instances() {
 	while IFS= read -r pane; do
 		if [[ -n "$pane" ]]; then
 			count=$((count + 1))
-			echo -n "  [$count/$total_panes] "
 
 			# Send escape first to exit any mode, then restart
 			tmux send-keys -t "$pane" 'Escape' ':restart' 'Enter' 2>/dev/null
 
 			# Moderate delay for restart to complete
 			sleep 0.2
-
-			# Session gets automatically restored via mini sessions
 
 			# Minimal delay between panes
 			sleep 0.1
@@ -254,6 +270,8 @@ restart_neovim_instances() {
 
 	if [[ $count -eq 0 ]]; then
 		echo "No Neovim instances found"
+	else
+		echo "Restarted $count Neovim instances"
 	fi
 }
 
@@ -272,9 +290,10 @@ apply_theme() {
 
 	read -r appearance collection <<<"$metadata"
 
-	echo "Applying theme: $theme ($appearance mode)"
+	echo "Applying: $theme ($appearance)"
+	echo ""
 
-	# Apply theme to all tools
+	# Update config files
 	update_nvim_theme "$theme"
 	update_tmux_theme "$theme" "$collection"
 	update_ghostty_theme "$theme"
@@ -283,26 +302,32 @@ apply_theme() {
 	update_niri_theme "$theme" "$collection"
 	update_waybar_theme "$theme"
 	update_lazygit_theme "$theme"
+	update_helm_theme "$appearance"
 	update_macos_appearance "$appearance"
 
+	# Suppress terminal escape sequences (Ghostty sends capability
+	# queries when its config changes, which leak into output)
+	stty -echo 2>/dev/null || true
+
 	# Brief pause to let file changes and system appearance settle
-	sleep 0.2
+	sleep 0.3
 
-	# Reload configurations
-	echo "Reloading configurations..."
-	reload_tmux
-	echo "tmux reload completed"
-	reload_ghostty
-	echo "ghostty reload completed"
-	reload_waybar
+	# Reload configurations (suppress all output from reload functions)
+	echo "Reloading..."
+	reload_tmux >/dev/null 2>&1
+	reload_ghostty >/dev/null 2>&1
+	reload_waybar >/dev/null 2>&1
 
-	# Brief pause before Neovim restarts
-	sleep 0.1
+	sleep 0.3
+
+	# Restore terminal echo before Neovim restarts
+	stty echo 2>/dev/null || true
 
 	# Restart Neovim instances with new theme
 	restart_neovim_instances
 
-	echo "Theme applied successfully!"
+	echo ""
+	echo "Done."
 }
 
 # Validate dependencies and configuration files
