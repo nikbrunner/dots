@@ -20,6 +20,7 @@ DEPS=(
     gum
     github-cli
     luarocks
+    stylua
     paru
 
     # Shell enhancements
