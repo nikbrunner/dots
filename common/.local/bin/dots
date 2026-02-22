@@ -594,7 +594,7 @@ show_usage() {
 
 # Deps command - install/check dependencies only
 cmd_deps() {
-	case "${1:-install}" in
+	case "${1:-}" in
 	check)
 		log_info "Checking dependencies..."
 		echo ""
@@ -605,14 +605,20 @@ cmd_deps() {
 		echo ""
 		"$DOTS_DIR/scripts/deps/install.sh" install
 		;;
+	upgrade)
+		log_info "Upgrading dependencies..."
+		echo ""
+		"$DOTS_DIR/scripts/deps/install.sh" upgrade
+		;;
 	list)
 		"$DOTS_DIR/scripts/deps/install.sh" list
 		;;
 	*)
-		echo "Usage: dots deps [check|install|list]"
+		echo "Usage: dots deps <check|install|upgrade|list>"
 		echo ""
 		echo "  check   - Show dependency status"
-		echo "  install - Install all missing dependencies (default)"
+		echo "  install - Install all missing dependencies"
+		echo "  upgrade - Upgrade all dependencies to latest versions"
 		echo "  list    - List all dependencies for current OS"
 		;;
 	esac

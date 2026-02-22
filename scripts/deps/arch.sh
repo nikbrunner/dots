@@ -343,3 +343,19 @@ install_all() {
         echo "✅ All dependencies already installed!"
     fi
 }
+
+# Upgrade all installed packages
+upgrade_all() {
+    local pkg_manager
+    pkg_manager=$(get_pkg_manager)
+
+    echo "📦 Upgrading packages via $pkg_manager..."
+    if [[ "$pkg_manager" == "pacman" ]]; then
+        sudo pacman -Syu --noconfirm
+    else
+        "$pkg_manager" -Syu --noconfirm
+    fi
+
+    echo ""
+    echo "✅ Upgrade complete!"
+}

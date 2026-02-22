@@ -123,6 +123,7 @@ if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
     case "${1:-install}" in
     check) check_all ;;
     install) install_all ;;
+    upgrade) upgrade_all ;;
     list)
         echo "nvm"
         echo "qmk"
@@ -131,7 +132,7 @@ if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
     configure) configure_system ;;
     validate) validate_dependencies ;;
     *)
-        echo "Usage: $0 [check|install|list|configure|validate]"
+        echo "Usage: $0 [check|install|upgrade|list|configure|validate]"
         exit 1
         ;;
     esac

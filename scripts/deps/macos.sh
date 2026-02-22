@@ -106,6 +106,20 @@ install_all() {
 
     echo ""
     echo "Installing brew packages..."
+    brew bundle install --no-upgrade --file="$DOTS_DIR/scripts/deps/Brewfile"
+
+    echo ""
+    echo "Done!"
+}
+
+# Upgrade all brew packages
+upgrade_all() {
+    if ! command -v brew &>/dev/null; then
+        echo "Homebrew not found. Install from https://brew.sh"
+        exit 1
+    fi
+
+    echo "Upgrading brew packages..."
     brew bundle install --file="$DOTS_DIR/scripts/deps/Brewfile"
 
     echo ""
