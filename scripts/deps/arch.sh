@@ -36,6 +36,9 @@ DEPS=(
     mpd
     mpc
 
+    # File watching
+    entr
+
     # Data processing
     go-yq
     jq

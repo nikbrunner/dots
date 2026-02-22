@@ -24,10 +24,12 @@ Ask: Which OS(es) should this dependency be added to?
 - Arch only
 - Both
 
-### 2. Get Package Names
+### 2. Get and Verify Package Names
 
-For each selected OS, ask:
-- What is the package name for [OS]?
+For each selected OS, determine the package name and **verify it exists via web search** before adding. Do NOT assume package names are the same across platforms — they often differ.
+
+- **macOS**: Search Homebrew formulae/casks to confirm the exact name
+- **Arch**: Search archlinux.org packages and AUR to confirm the exact name
 
 Package name formats:
 - **macOS**: brew name (e.g., `neovim`, `git-delta`)
