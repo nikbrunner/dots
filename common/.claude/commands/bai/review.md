@@ -37,6 +37,7 @@ Examples:
    Team: Development | Project: Black Atom - 1.0
    Status: In Progress | Priority: P2 | Created: 2 weeks ago
    Relations: Blocks DEV-124, DEV-125
+   linear://black-atom-industries/issue/DEV-123/issue-title
 
    Description snippet...
 
@@ -76,3 +77,7 @@ Review complete:
 - Closed: 4 (2 done, 2 canceled)
 - Skipped: 1
 ```
+
+## Notes
+
+- **URL format**: Always show issue links as `linear://` app URLs (replace `https://linear.app/` with `linear://` from the API's `url` field)

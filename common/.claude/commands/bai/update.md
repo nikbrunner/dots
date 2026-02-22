@@ -62,6 +62,7 @@ Examples:
 ```
 Updated [DEV-123]:
 Status: Todo → In Progress
+linear://black-atom-industries/issue/DEV-123/implement-theme-generator
 ```
 
 or
@@ -69,9 +70,11 @@ or
 ```
 Updated [DEV-123]:
 Now blocks: DEV-124, DEV-125
+linear://black-atom-industries/issue/DEV-123/implement-theme-generator
 ```
 
 ## Notes
 
 - Relations are REPLACED not appended - always include existing relations when adding new ones
 - Show current state before and after for clarity
+- **URL format**: Always show issue links as `linear://` app URLs (replace `https://linear.app/` with `linear://` from the API's `url` field)
