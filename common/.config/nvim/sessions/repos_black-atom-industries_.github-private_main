@@ -3,17 +3,16 @@ let s:so_save = &g:so | let s:siso_save = &g:siso | setg so=0 siso=0 | setl so=-
 let v:this_session=expand("<sfile>:p")
 silent only
 silent tabonly
-cd ~/repos/nikbrunner/notes
+cd ~/repos/black-atom-industries/.github-private
 if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +44 ~/repos/nikbrunner/notes/01\ -\ Projects/New\ Job\ 2026/Job\ Platforms.md
+badd +13 profile/README.md
 argglobal
 %argdel
-$argadd ~/repos/nikbrunner/notes/05\ -\ Meta/Templates/Daily\ Note.md
-edit ~/repos/nikbrunner/notes/01\ -\ Projects/New\ Job\ 2026/Job\ Platforms.md
+edit profile/README.md
 argglobal
 let s:cpo_save=&cpo
 set cpo&vim
@@ -125,11 +124,11 @@ setlocal syntax=
 endif
 setlocal tabstop=4
 setlocal tagfunc=v:lua.vim.lsp.tagfunc
-setlocal textwidth=85
+setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#01\ -\ Projects%*\ %#WinBarSeparator#/%*\ %#WinBarPath#New\ Job\ 2026%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#Job\ Platforms.md%*
+setlocal winbar=%#WinBarPath#profile%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#README.md%*
 setlocal winblend=0
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -137,11 +136,11 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal wrap
 setlocal wrapmargin=0
-let s:l = 44 - ((32 * winheight(0) + 28) / 56)
+let s:l = 13 - ((12 * winheight(0) + 28) / 57)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 44
+keepjumps 13
 normal! 0
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
