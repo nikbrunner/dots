@@ -3,16 +3,12 @@
 
 # Layout script name to apply when creating new sessions
 layout: dev
-
 # Directory containing layout scripts
 layout_dir: ~/.config/tmux/layouts
-
 # Enable Claude Code status integration
 claude_status_enabled: true
-
 # Enable git status indicator (shows dirty/ahead/behind for repos)
 git_status_enabled: true
-
 # Directory for status cache files
 # cache_dir: ~/.cache/helm
 
@@ -28,15 +24,12 @@ project_dirs:
 
 # Default directory for new sessions created with C-n
 default_session_dir: ~/repos
-
 # Lazygit popup dimensions (C-g)
 lazygit_popup:
   width: 100%
   height: 90%
-
 # Command to run on each dirty repo via 'helm repos dirty --walk'
 dirty_walkthrough_command: "lazygit -p {}"
-
 # Repositories to ensure are cloned (used by 'helm setup')
 ensure_cloned:
   - git@github.com:nikbrunner/dots
@@ -56,3 +49,4 @@ ensure_cloned:
   - git@github.com:black-atom-industries/*
   - url: git@github.com:nikbrunner/fonts
     post_clone: ./install.sh
+appearance: dark
