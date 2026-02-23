@@ -26,6 +26,10 @@
 - Don't fetch all issues at once — returns 122K+ chars
 - Query by state separately: `state: "In Progress"`, `state: "Todo"`, `state: "Backlog"`
 
+## Workflow Preferences
+
+- **Worktrees**: Nik likes worktrees but prefers them as sibling folders next to the main repo, not nested inside `.claude/worktrees/`. Always ask before creating a worktree.
+
 ## V1 Milestones
 
 1. Core Themes Finalized (Feb 28) — DEV-241 (naming) + DEV-242 (Default vs Stations) block DEV-186 (epic)
