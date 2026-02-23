@@ -111,5 +111,5 @@ if vim.fn.has("nvim-0.12") == 1 then
     })
 end
 
--- vim.o.tabline = "%!v:lua.require('lib.tabline').render()"
-vim.o.showtabline = 0
+vim.o.tabline = "%!v:lua.require('lib.tabline').render()"
+-- vim.o.showtabline = 0
