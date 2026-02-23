@@ -1,6 +1,17 @@
 {
   "version": 1,
   "projects": {
+    "~/repos/black-atom-industries/core": {
+      "main": {
+        "locks": [
+          {
+            "filename": "deno.json",
+            "label": "1"
+          }
+        ],
+        "lastAccessed": 1771844178
+      }
+    },
     "~/repos/black-atom-industries/radar.nvim": {
       "main": {
         "locks": [
@@ -13,7 +24,7 @@
             "label": "2"
           }
         ],
-        "lastAccessed": 1770634942
+        "lastAccessed": 1771844179
       }
     },
     "~/repos/black-atom-industries/website": {
@@ -404,7 +415,7 @@
             "label": "3"
           }
         ],
-        "lastAccessed": 1771573030
+        "lastAccessed": 1771844180
       }
     },
     "~/repos/nikbrunner/nbr.haus": {
@@ -435,15 +446,11 @@
       "main": {
         "locks": [
           {
-            "filename": "02 - Areas/Log/2025/2025.12 - December.md",
+            "filename": "01 - Projects/Grill.md",
             "label": "1"
-          },
-          {
-            "filename": "01 - Projects/New Job Nik/New Job Log.md",
-            "label": "2"
           }
         ],
-        "lastAccessed": 1771576542
+        "lastAccessed": 1771844304
       }
     },
     "~/repos/nikbrunner/wichtel-app": {
