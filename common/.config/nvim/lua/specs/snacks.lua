@@ -349,65 +349,35 @@ end
 function M.keys()
     -- stylua: ignore start
     return {
-        -- General
-        { "<leader>.",           function() Snacks.picker.resume() end, desc = "Resume Picker" },
-        { "<leader>;",           function() Snacks.picker.commands() end, desc = "Commands" },
-        { "<leader>:",           function() Snacks.picker.command_history() end, desc = "Command History" },
-        { "<leader>'",           function() Snacks.picker.registers() end, desc = "Registers" },
-
-        -- App
-        { "<leader>aa",          function() Snacks.picker.commands() end, desc = "[A]ctions" },
+        -- App (Snacks-unique features)
         { "<leader>ad",          M.file_surfer, desc = "[D]ocument" },
-        { "<leader>ahh",         function() Snacks.picker.highlights() end, desc = "[H]ightlights" },
-        { "<leader>ahk",          function() Snacks.picker.keymaps() end, desc = "[K]eymaps" },
         { "<leader>ahm",         function() Snacks.picker.man() end, desc = "[M]anuals" },
-        { "<leader>aht",         function() Snacks.picker.help() end, desc = "[T]ags" },
         { "<leader>an",          function() Snacks.notifier.show_history() end, desc = "[N]otifications" },
-        { "<leader>ar",          function() Snacks.picker.recent() end, desc = "[R]ecent Documents (Anywhere)" },
-        { "<leader>as",          function() Snacks.picker.files({ cwd = vim.fn.expand("$HOME") .. "/repos/nikbrunner/dots" }) end, desc = "[D]ots" },
-        { "<leader>at",          function() Snacks.picker.colorschemes() end, desc = "[T]hemes" },
         { "<leader>aw",          function() Snacks.picker.projects() end, desc = "[W]orkspace" },
         { "<leader>aW",          function() Snacks.picker.zoxide() end, desc = "[W]orkspace (Zoxide)" },
 
-
-        -- Workspace
-        -- Main File Finding is handled via fff.nvim & fff-snacks.nvim (<leader><leader> & <leader>wd)
+        -- Workspace (Snacks-unique features)
         { "<leader>we",          M.explorer, desc = "[E]xplorer" },
-        { "<leader>wd",          function() Snacks.picker.files({ filter = { cwd = true }}) end, desc = "[R]ecent Documents" },
-        { "<leader>wr",          function() Snacks.picker.recent({ filter = { cwd = true }}) end, desc = "[R]ecent Documents" },
-        { "<leader>wj",          function() Snacks.picker.jumps() end, desc = "[J]umps" },
-        { "<leader>wm",          function() Snacks.picker.git_status() end, desc = "[M]odified Documents" },
-        { "<leader>wc",          function() Snacks.picker.git_diff() end, desc = "[C]hanges" },
-        { "<leader>wt",          function() Snacks.picker.grep() end, desc = "[T]ext" },
-        { "<leader>ww",          function() Snacks.picker.grep_word() end, desc = "[W]ord" },
-        { "<leader>wp",          function() Snacks.picker.diagnostics() end, desc = "[P]roblems" },
-        { "<leader>ws",          function() Snacks.picker.lsp_workspace_symbols() end, desc = "[S]ymbols" },
         { "<leader>wvh",         function() Snacks.picker.git_log() end, desc = "[H]istory" },
         { "<leader>wvH",         function() Snacks.lazygit.log() end, desc = "[H]istory (Lazygit)" },
         { "<leader>wvr",         function() Snacks.gitbrowse() end, desc = "[R]emote" },
         { "<leader>wvs",         function() Snacks.lazygit() end, desc = "[S]tatus" },
-        { "<leader>wvb",         function() Snacks.picker.git_branches() end, desc = "[B]ranches" },
         { "<leader>wvib",         M.gh_issue_browse, desc = "[B]rowse Issues" },
         { "<leader>wvpm",         M.gh_pr_diff, desc = "[M]odifications in current PR" },
         { "<leader>wvpd",         M.gh_pr_buffer, desc = "[D]escription of current PR" },
         { "<leader>wvpb",         M.gh_pr_browse, desc = "[B]rowse Pull Requests" },
 
-        -- Document
+        -- Document (Snacks-unique features)
         { "<leader>da",          M.find_associated_files, desc = "[A]ssociated Documents" },
         { "<leader>dc",          M.git_diff_in_file, desc = "[C]hanges" },
         { "<leader>dvh",         function() Snacks.picker.git_log_file() end, desc = "[H]istory" },
         { "<leader>dvH",         function() Snacks.lazygit.log_file() end, desc = "[H]istory (Lazygit)" },
         { "<leader>dj",          M.buffer_jumps, desc = "[J]umps" },
-        { "<leader>dp",          function() Snacks.picker.diagnostics_buffer({ layout = M.buffer_layout }) end, desc = "[P]roblems" },
-        { "<leader>ds",          function() Snacks.picker.lsp_symbols() end, desc = "[S]ymbols" },
-        { "<leader>dt",          function() Snacks.picker.lines({ layout = M.buffer_layout }) end, desc = "[T]ext" },
         { "<leader>du",          function() Snacks.picker.undo() end, desc = "[U]ndo" },
 
-        -- Symbols
+        -- Symbols (Snacks-unique features)
         { "svb",                  function() Snacks.git.blame_line() end, desc = "[B]lame" },
         { "svh",                  function() Snacks.picker.git_log_line() end, desc = "[H]istory" },
-        { "sr",                   function() Snacks.picker.lsp_references() end, desc = "[R]eferences" },
-        { "si",                   function() Snacks.picker.lsp_implementations() end, desc = "[I]mplementations" },
     }
     -- stylua: ignore end
 end
@@ -478,46 +448,6 @@ return {
             "mbbill/undotree",
             cmd = { "UndotreeToggle", "UndotreeShow", "UndotreeHide" },
         },
-        {
-            "dmtrKovalenko/fff.nvim",
-            pin = true,
-            lazy = false,
-            build = function()
-                require("fff.download").download_or_build_binary()
-            end,
-            opts = {
-                max_results = 400,
-                max_threads = 8,
-                debug = {
-                    enabled = true, -- we expect your collaboration at least during the beta
-                    show_scores = true, -- to help us optimize the scoring system, feel free to share your scores!
-                },
-            },
-        },
-        {
-            "madmaxieee/fff-snacks.nvim",
-            dir = require("lib.config").get_repo_path("nikbrunner/fff-snacks.nvim"),
-            dependencies = { "dmtrKovalenko/fff.nvim", "folke/snacks.nvim" },
-            keys = {
-                { "<leader><leader>", "<CMD>FFFSnacks<CR>", desc = "Find Files" },
-            },
-            ---@module "fff-snacks"
-            ---@type fff-snacks.Config
-            opts = {
-                layout = function()
-                    return M.smart_layout()
-                end,
-                git_icons = {
-                    added = " ",
-                    modified = " ",
-                    untracked = "󰎔 ",
-                    deleted = " ",
-                    ignored = " ",
-                    renamed = " ",
-                    clean = "  ",
-                },
-            },
-        },
     },
 
     ---@type snacks.Config
@@ -527,7 +457,7 @@ return {
         debug = { enabled = true },
         toggle = { enabled = true },
         gitbrowse = { enabled = true },
-        input = { enabled = true },
+        input = { enabled = false },
         scroll = { enabled = false },
         gh = {
             keys = {
@@ -550,7 +480,7 @@ return {
         },
         picker = {
             -- ~/.local/share/nvim/lazy/snacks.nvim/lua/snacks/picker/config/defaults.lua
-            ui_select = true, -- replace `vim.ui.select` with the snacks picker
+            ui_select = false, -- MiniPick handles vim.ui.select
             layouts = {
                 gh_diff = {
                     layout = {
