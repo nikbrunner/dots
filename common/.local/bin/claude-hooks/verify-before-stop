@@ -20,6 +20,17 @@ if [ "$stop_hook_active" = "true" ]; then
     exit 0
 fi
 
+# Skip verification for repos that have frequent auto-changing files
+skip_repos=(
+    "nikbrunner/dots"
+)
+
+for repo in "${skip_repos[@]}"; do
+    if [[ "$cwd" == *"$repo"* ]]; then
+        exit 0
+    fi
+done
+
 # Check if we're in a git repo with changes
 if [ -n "$cwd" ] && [ -d "$cwd/.git" ] || git -C "$cwd" rev-parse --git-dir > /dev/null 2>&1; then
     changes=$(git -C "$cwd" status --porcelain 2>/dev/null || true)
