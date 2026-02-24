@@ -3,7 +3,7 @@
   "session": {
     "trust_all_worktrees": false
   },
-  "buffer_font_family": "TX-02",
+  "buffer_font_family": "TX-02 ExtraCondensed",
   "which_key": {
     "delay_ms": 250,
     "enabled": true
@@ -95,7 +95,7 @@
   "terminal": {
     "line_height": "standard",
     "working_directory": "current_project_directory",
-    "font_family": "TX-02"
+    "font_family": "TX-02 ExtraCondensed"
   },
   "lsp": {
     "vtsls": {
@@ -121,5 +121,5 @@
       }
     }
   },
-  "ui_font_family": "TX-02"
+  "ui_font_family": "TX-02 ExtraCondensed"
 }
