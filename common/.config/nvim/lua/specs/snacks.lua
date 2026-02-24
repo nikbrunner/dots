@@ -213,18 +213,6 @@ function M.explorer()
     end
 end
 
-function M.git_diff_in_file()
-    local file = vim.fn.expand("%")
-    if file ~= "" then
-        Snacks.picker.git_diff({
-            cmd_args = { "--", file },
-            staged = false, -- Only show unstaged changes
-        })
-    else
-        vim.notify("No file in current buffer", vim.log.levels.WARN)
-    end
-end
-
 function M.gh_pr_diff()
     local state = require("state")
     if state:has_gh_context() then
@@ -368,7 +356,7 @@ function M.keys()
 
         -- Document (Snacks-unique features)
         { "<leader>da",          M.find_associated_files, desc = "[A]ssociated Documents" },
-        { "<leader>dc",          M.git_diff_in_file, desc = "[C]hanges" },
+
         { "<leader>dvh",         function() Snacks.picker.git_log_file() end, desc = "[H]istory" },
         { "<leader>dvH",         function() Snacks.lazygit.log_file() end, desc = "[H]istory (Lazygit)" },
         { "<leader>dj",          M.buffer_jumps, desc = "[J]umps" },

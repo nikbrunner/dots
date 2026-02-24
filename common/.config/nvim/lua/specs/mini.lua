@@ -448,6 +448,22 @@ M.win_config = {
         }
     end,
 
+    -- Big picker centered (for diff previews)
+    big = function()
+        local height = math.floor(0.8 * vim.o.lines)
+        local width = math.floor(0.8 * vim.o.columns)
+
+        return {
+            relative = "editor",
+            anchor = "SW",
+            height = height,
+            width = width,
+            border = "solid",
+            row = vim.o.lines - 1,
+            col = math.floor((vim.o.columns - width) / 2),
+        }
+    end,
+
     -- Picker at bottom of current buffer window
     buf_bottom = function()
         local window_height = vim.api.nvim_win_get_height(0)
@@ -637,6 +653,9 @@ function M.pick()
         end
 
         MiniPick.start({
+            window = {
+                config = M.win_config.big,
+            },
             source = {
                 items = items,
                 name = "Git Changed",
@@ -689,16 +708,17 @@ function M.pick()
     map("n", "<leader>wt",          function() MiniPick.builtin.grep_live() end, { desc = "[T]ext" })
     map("n", "<leader>ww",          function() MiniPick.builtin.grep({ pattern = vim.fn.expand("<cword>") }) end, { desc = "[W]ord" })
     map("n", "<leader>wm",          MiniPick.registry.git_changed, { desc = "[M]odified Documents" })
-    map("n", "<leader>wc",          function() MiniExtra.pickers.git_hunks() end, { desc = "[C]hanges" })
+    map("n", "<leader>wc",          function() MiniExtra.pickers.git_hunks({}, { window = { config = M.win_config.big } }) end, { desc = "[C]hanges" })
     map("n", "<leader>ws",          function() MiniExtra.pickers.lsp({ scope = "workspace_symbol" }) end, { desc = "[S]ymbols" })
-    map("n", "<leader>wvb",         function() MiniExtra.pickers.git_branches() end, { desc = "[B]ranches" })
-    map("n", "<leader>wvh",         function() MiniExtra.pickers.git_commits() end, { desc = "[H]istory" })
+    map("n", "<leader>wvb",         function() MiniExtra.pickers.git_branches({}, { window = { config = M.win_config.big } }) end, { desc = "[B]ranches" })
+    map("n", "<leader>wvh",         function() MiniExtra.pickers.git_commits({}, { window = { config = M.win_config.big } }) end, { desc = "[H]istory" })
     map("n", "<leader>wj",          function() MiniExtra.pickers.list({ scope = "jump" }) end, { desc = "[J]umps" })
     map("n", "<leader>wp",          function() MiniExtra.pickers.diagnostic() end, { desc = "[P]roblems" })
 
     -- Document
     map("n", "<leader>dt",          function() MiniExtra.pickers.buf_lines({ scope = "current" }) end, { desc = "[T]ext" })
     map("n", "<leader>ds",          function() MiniExtra.pickers.lsp({ scope = "document_symbol" }) end, { desc = "[S]ymbols" })
+    map("n", "<leader>dc",          function() MiniExtra.pickers.git_hunks({ path = vim.fn.expand("%") }, { window = { config = M.win_config.big } }) end, { desc = "[C]hanges" })
     map("n", "<leader>dp",          function() MiniExtra.pickers.diagnostic({ scope = "current" }) end, { desc = "[P]roblems" })
 
     -- Symbol
