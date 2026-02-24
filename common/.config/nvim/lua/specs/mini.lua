@@ -758,9 +758,7 @@ function M.pick()
                         MS.write(M.get_session_name(), { force = true })
 
                         -- Stop LSP before buffer wipe to avoid stale callbacks
-                        for _, client in ipairs(vim.lsp.get_clients()) do
-                            client:stop(true)
-                        end
+                        vim.iter(vim.lsp.get_clients()):each(function(c) c:stop(true) end)
                         vim.cmd("silent! %bwipeout!")
 
                         -- Switch to new project
