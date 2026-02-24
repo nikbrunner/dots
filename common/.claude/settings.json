@@ -114,6 +114,16 @@
     ],
     "Stop": [
       {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.local/bin/claude-hooks/verify-before-stop",
+            "timeout": 10
+          }
+        ]
+      },
+      {
         "hooks": [
           {
             "type": "command",

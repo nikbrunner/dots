@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+set -e
+
+# Stop hook: Block Claude from finishing if there are uncommitted git changes
+# and verification hasn't been requested yet (stop_hook_active = false).
+#
+# Flow:
+# 1. Claude finishes → this hook fires
+# 2. If git has changes AND stop_hook_active is false → block with verification request
+# 3. Claude runs appropriate lint/test/format commands for the project
+# 4. Claude stops again → stop_hook_active is true → allow through
+
+input=$(cat)
+
+stop_hook_active=$(echo "$input" | jq -r '.stop_hook_active // false')
+cwd=$(echo "$input" | jq -r '.cwd // ""')
+
+# If we already blocked once, let Claude through
+if [ "$stop_hook_active" = "true" ]; then
+    exit 0
+fi
+
+# Check if we're in a git repo with changes
+if [ -n "$cwd" ] && [ -d "$cwd/.git" ] || git -C "$cwd" rev-parse --git-dir > /dev/null 2>&1; then
+    changes=$(git -C "$cwd" status --porcelain 2>/dev/null || true)
+
+    if [ -n "$changes" ]; then
+        cat <<'EOF'
+{
+    "decision": "block",
+    "reason": "There are uncommitted changes in the working directory. Before finishing, please verify your work by running the appropriate lint, format, and test commands for this project. Check the project structure (package.json, deno.json, Makefile, Cargo.toml, etc.) to determine the right commands."
+}
+EOF
+        exit 0
+    fi
+fi
+
+# No changes or not a git repo — allow stop
+exit 0
