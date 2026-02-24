@@ -682,8 +682,7 @@ function M.pick()
 
     -- Custom picker: pick a project directory, then open files in it
     MiniPick.registry.project_files = function()
-        local config = require("config").config
-        local repos_path = config.pathes.repos
+        local repos_path = require("config").pathes.repos
 
         -- Gather directories 2 levels deep (org/project)
         local dirs = {}
@@ -717,8 +716,7 @@ function M.pick()
 
     -- Custom picker: pick a project directory and cd into it
     MiniPick.registry.project_switch = function()
-        local config = require("config").config
-        local repos_path = config.pathes.repos
+        local repos_path = require("config").pathes.repos
 
         local dirs = {}
         local orgs = vim.fn.readdir(repos_path, function(name)
@@ -751,11 +749,21 @@ function M.pick()
     MiniPick.registry.associated_files = function()
         local current_filename = vim.fn.expand("%:t:r")
         local base_name = current_filename:match("^([^.]+)") or current_filename
+        local current_path = vim.fn.expand("%:.")
 
-        MiniPick.builtin.files()
-        vim.schedule(function()
-            MiniPick.set_picker_query({ base_name })
-        end)
+        -- Find files whose basename starts with the base name
+        local cmd = { "rg", "--files", "--glob", "**/" .. base_name .. ".*" }
+        local output = vim.fn.systemlist(cmd)
+        local items = vim.tbl_filter(function(item)
+            return item ~= current_path
+        end, output)
+
+        MiniPick.start({
+            source = {
+                items = items,
+                name = "Associated Files",
+            },
+        })
     end
 
     -- Custom picker: buffer-local jumps
@@ -815,36 +823,36 @@ function M.pick()
     -- App
     map("n", "<leader>aa",          function() MiniExtra.pickers.commands() end, { desc = "[A]ctions" })
     map("n", "<leader>ad",          MiniPick.registry.project_files, { desc = "[D]ocument (in project)" })
-    map("n", "<leader>ahm",         function() MiniExtra.pickers.manpages() end, { desc = "[M]anuals" })
-    map("n", "<leader>ar",          function() MiniExtra.pickers.oldfiles() end, { desc = "[R]ecent Documents (Anywhere)" })
-    map("n", "<leader>at",          function() MiniExtra.pickers.colorschemes() end, { desc = "[T]hemes" })
-    map("n", "<leader>aw",          MiniPick.registry.project_switch, { desc = "[W]orkspace" })
     map("n", "<leader>ahh",         function() MiniExtra.pickers.hl_groups() end, { desc = "[H]ightlights" })
     map("n", "<leader>ahk",         function() MiniExtra.pickers.keymaps() end, { desc = "[K]eymaps" })
+    map("n", "<leader>ahm",         function() MiniExtra.pickers.manpages() end, { desc = "[M]anuals" })
     map("n", "<leader>aht",         function() MiniPick.builtin.help() end, { desc = "[T]ags" })
+    map("n", "<leader>ar",          function() MiniExtra.pickers.oldfiles() end, { desc = "[R]ecent Documents (Anywhere)" })
     map("n", "<leader>as",          function() MiniPick.builtin.files(nil, { source = { cwd = vim.fn.expand("$HOME") .. "/repos/nikbrunner/dots" }}) end, { desc = "[S]ettings (Dots)" })
+    map("n", "<leader>at",          function() MiniExtra.pickers.colorschemes() end, { desc = "[T]hemes" })
+    map("n", "<leader>aw",          MiniPick.registry.project_switch, { desc = "[W]orkspace" })
 
     -- Workspace
-    map("n", "<leader>wd",          MiniPick.registry.frecency, { desc = "[D]ocument" })
-    map("n", "<leader>wr",          function() MiniExtra.pickers.oldfiles({ current_dir = true }) end, { desc = "[R]ecent Documents" })
-    map("n", "<leader>wt",          function() MiniPick.builtin.grep_live() end, { desc = "[T]ext" })
-    map("n", "<leader>ww",          function() MiniPick.builtin.grep({ pattern = vim.fn.expand("<cword>") }) end, { desc = "[W]ord" })
-    map("n", "<leader>wm",          MiniPick.registry.git_changed, { desc = "[M]odified Documents" })
     map("n", "<leader>wc",          function() MiniExtra.pickers.git_hunks({}, { window = { config = M.win_config.big } }) end, { desc = "[C]hanges" })
+    map("n", "<leader>wd",          MiniPick.registry.frecency, { desc = "[D]ocument" })
+    map("n", "<leader>wj",          function() MiniExtra.pickers.list({ scope = "jump" }) end, { desc = "[J]umps" })
+    map("n", "<leader>wm",          MiniPick.registry.git_changed, { desc = "[M]odified Documents" })
+    map("n", "<leader>wp",          function() MiniExtra.pickers.diagnostic() end, { desc = "[P]roblems" })
+    map("n", "<leader>wr",          function() MiniExtra.pickers.oldfiles({ current_dir = true }) end, { desc = "[R]ecent Documents" })
     map("n", "<leader>ws",          function() MiniExtra.pickers.lsp({ scope = "workspace_symbol" }) end, { desc = "[S]ymbols" })
+    map("n", "<leader>wt",          function() MiniPick.builtin.grep_live() end, { desc = "[T]ext" })
     map("n", "<leader>wvb",         function() MiniExtra.pickers.git_branches({}, { window = { config = M.win_config.big } }) end, { desc = "[B]ranches" })
     map("n", "<leader>wvh",         function() MiniExtra.pickers.git_commits({}, { window = { config = M.win_config.big } }) end, { desc = "[H]istory" })
     map("n", "<leader>wvr",         git_browse, { desc = "[R]emote (GitHub)" })
-    map("n", "<leader>wj",          function() MiniExtra.pickers.list({ scope = "jump" }) end, { desc = "[J]umps" })
-    map("n", "<leader>wp",          function() MiniExtra.pickers.diagnostic() end, { desc = "[P]roblems" })
+    map("n", "<leader>ww",          function() MiniPick.builtin.grep({ pattern = vim.fn.expand("<cword>") }) end, { desc = "[W]ord" })
 
     -- Document
     map("n", "<leader>da",          MiniPick.registry.associated_files, { desc = "[A]ssociated Documents" })
-    map("n", "<leader>dt",          function() MiniExtra.pickers.buf_lines({ scope = "current" }) end, { desc = "[T]ext" })
-    map("n", "<leader>ds",          function() MiniExtra.pickers.lsp({ scope = "document_symbol" }) end, { desc = "[S]ymbols" })
     map("n", "<leader>dc",          function() MiniExtra.pickers.git_hunks({ path = vim.fn.expand("%") }, { window = { config = M.win_config.big } }) end, { desc = "[C]hanges" })
     map("n", "<leader>dj",          MiniPick.registry.buffer_jumps, { desc = "[J]umps" })
     map("n", "<leader>dp",          function() MiniExtra.pickers.diagnostic({ scope = "current" }) end, { desc = "[P]roblems" })
+    map("n", "<leader>ds",          function() MiniExtra.pickers.lsp({ scope = "document_symbol" }) end, { desc = "[S]ymbols" })
+    map("n", "<leader>dt",          function() MiniExtra.pickers.buf_lines({ scope = "current" }) end, { desc = "[T]ext" })
 
     -- Symbol
     map("n", "sr",                  function() MiniExtra.pickers.lsp({ scope = "references" }) end, { desc = "[R]eferences" })
