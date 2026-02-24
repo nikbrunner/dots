@@ -797,7 +797,7 @@ if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
 keepjumps 141
-normal! 033|
+normal! 0
 wincmd w
 argglobal
 if bufexists(fnamemodify("~/repos/black-atom-industries/obsidian/themes/black-atom-default-dark-dimmed.css", ":p")) | buffer ~/repos/black-atom-industries/obsidian/themes/black-atom-default-dark-dimmed.css | else | edit ~/repos/black-atom-industries/obsidian/themes/black-atom-default-dark-dimmed.css | endif
