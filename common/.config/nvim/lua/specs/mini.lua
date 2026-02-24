@@ -855,13 +855,13 @@ function M.files()
 
             -- Path operations
             map("n", "gx", ui_open, { buffer = bufid, desc = "OS open" })
-            map("n", "gy", yank_path, { buffer = bufid, desc = "Yank path" })
 
-            -- Yank path variants
-            map("n", "<leader>yn", yank_filename, { buffer = bufid, desc = "Yank filename" })
-            map("n", "<leader>yr", yank_relative_path, { buffer = bufid, desc = "Yank relative path" })
-            map("n", "<leader>yh", yank_path_from_home, { buffer = bufid, desc = "Yank path from home" })
-            map("n", "<leader>ya", yank_absolute_path, { buffer = bufid, desc = "Yank absolute path" })
+            -- Yank variants
+            map("n", "gyp", yank_path, { buffer = bufid, desc = "Yank path" })
+            map("n", "gyn", yank_filename, { buffer = bufid, desc = "Yank filename" })
+            map("n", "gyr", yank_relative_path, { buffer = bufid, desc = "Yank relative path" })
+            map("n", "gyh", yank_path_from_home, { buffer = bufid, desc = "Yank path from home" })
+            map("n", "gya", yank_absolute_path, { buffer = bufid, desc = "Yank absolute path" })
 
             -- Bookmark navigation (g prefix)
             map("n", "g.", function() setBranch(vim.fn.getcwd()) end, { buffer = bufid, desc = "Current working directory" })
