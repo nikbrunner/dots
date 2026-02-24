@@ -894,8 +894,8 @@ function M.files()
     -- Global keymaps
     local map = vim.keymap.set
     -- stylua: ignore start
-    map("n", "-", function() MiniFiles.open(vim.api.nvim_buf_get_name(0)) end, { desc = "[E]xplorer" })
-    map("n", "_", function() MiniFiles.open(vim.fn.getcwd()) end, { desc = "[E]xplorer (cwd)" })
+    map("n", "<leader>we", function() MiniFiles.open(vim.api.nvim_buf_get_name(0)) end, { desc = "[E]xplorer" })
+    map("n", "<leader>wE", function() MiniFiles.open(vim.fn.getcwd()) end, { desc = "[E]xplorer (cwd)" })
     -- stylua: ignore end
 end
 
