@@ -163,20 +163,24 @@ function M.diff()
     end, { desc = "[S]tage document" })
 end
 
-function M.get_session_name()
-    local cwd = vim.fn.getcwd()
+---Get session name for a given path (defaults to cwd)
+---@param path? string Absolute path to derive session name from
+---@return string
+function M.get_session_name(path)
+    local dir = path or vim.fn.getcwd()
     local home = vim.fn.expand("~")
 
     -- Strip home directory to make portable across macOS/Linux
-    local name = cwd
-    if vim.startswith(cwd, home) then
-        name = string.sub(cwd, #home + 2) -- +2 to skip the trailing slash
+    local name = dir
+    if vim.startswith(dir, home) then
+        name = string.sub(dir, #home + 2) -- +2 to skip the trailing slash
     end
 
     -- Replace remaining slashes with underscores
     name = string.gsub(name, "/", "_")
 
-    local branch = vim.trim(vim.fn.system("git branch --show-current"))
+    local result = vim.fn.system("git -C " .. vim.fn.shellescape(dir) .. " branch --show-current")
+    local branch = vim.trim(result)
     branch = string.gsub(branch, "/", "_")
 
     if vim.v.shell_error == 0 and branch ~= "" then
@@ -311,6 +315,11 @@ function M.sessions()
         -- Auto-switch sessions on TermLeave event (like closing the lazygit terminal)
         vim.api.nvim_create_autocmd({ "TermLeave", "VimResume" }, {
             callback = function(event)
+                -- Skip if project_switch is in progress
+                if vim.g._mini_session_switching then
+                    return
+                end
+
                 -- For TermLeave events, only proceed if it's a Snacks terminal
                 if event.event == "TermLeave" then
                     local buf = event.buf or vim.api.nvim_get_current_buf()
@@ -336,7 +345,7 @@ function M.sessions()
             end,
         })
 
-        -- Auto-create session on VimEnter for specified directories
+        -- Auto-create session on VimLeave for specified directories
         vim.api.nvim_create_autocmd({ "VimLeave" }, {
             callback = function()
                 local MS = require("mini.sessions")
@@ -737,9 +746,39 @@ function M.pick()
                 items = dirs,
                 name = "Switch Project",
                 choose = function(item)
-                    local chosen_path = repos_path .. "/" .. item
-                    vim.fn.chdir(chosen_path)
-                    vim.notify("Switched to " .. item)
+                    vim.schedule(function()
+                        local chosen_path = repos_path .. "/" .. item
+                        local MS = require("mini.sessions")
+
+                        -- Guard: prevent TermLeave/VimResume autocmd from
+                        -- triggering MS.read() during our switch
+                        vim.g._mini_session_switching = true
+
+                        -- Save current project session (cwd is still old project)
+                        MS.write(M.get_session_name(), { force = true })
+
+                        -- Stop LSP before buffer wipe to avoid stale callbacks
+                        for _, client in ipairs(vim.lsp.get_clients()) do
+                            client:stop(true)
+                        end
+                        vim.cmd("silent! %bwipeout!")
+
+                        -- Switch to new project
+                        vim.fn.chdir(chosen_path)
+
+                        -- Restore target session or start fresh
+                        local target_session = M.get_session_name(chosen_path)
+                        if MS.detected[target_session] then
+                            local data = MS.detected[target_session]
+                            vim.cmd(("silent! source %s"):format(vim.fn.fnameescape(data.path)))
+                            vim.v.this_session = data.path
+                        else
+                            vim.cmd.enew()
+                            vim.notify("Switched to " .. item .. " (no session)")
+                        end
+
+                        vim.g._mini_session_switching = false
+                    end)
                 end,
             },
         })
