@@ -850,6 +850,9 @@ function M.files()
             end
 
             -- stylua: ignore start
+            -- Synchronize (save) changes
+            map("n", "<C-s>", MiniFiles.synchronize, { buffer = bufid, desc = "Synchronize changes" })
+
             -- Path operations
             map("n", "gx", ui_open, { buffer = bufid, desc = "OS open" })
             map("n", "gy", yank_path, { buffer = bufid, desc = "Yank path" })
@@ -986,7 +989,7 @@ return {
         M.visits()
         M.extra()
         M.pick()
-        -- M.files()
+        M.files()
         M.clue()
         M.git()
         M.diff()
