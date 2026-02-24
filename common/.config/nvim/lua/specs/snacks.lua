@@ -357,7 +357,6 @@ function M.keys()
         { "<leader>aW",          function() Snacks.picker.zoxide() end, desc = "[W]orkspace (Zoxide)" },
 
         -- Workspace (Snacks-unique features)
-        { "<leader>we",          M.explorer, desc = "[E]xplorer" },
         { "<leader>wvh",         function() Snacks.picker.git_log() end, desc = "[H]istory" },
         { "<leader>wvH",         function() Snacks.lazygit.log() end, desc = "[H]istory (Lazygit)" },
         { "<leader>wvr",         function() Snacks.gitbrowse() end, desc = "[R]emote" },
