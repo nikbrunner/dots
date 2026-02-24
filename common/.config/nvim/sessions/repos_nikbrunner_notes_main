@@ -9,11 +9,11 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +44 ~/repos/nikbrunner/notes/01\ -\ Projects/New\ Job\ 2026/Job\ Platforms.md
+badd +18 01\ -\ Projects/Grill.md
 argglobal
 %argdel
 $argadd ~/repos/nikbrunner/notes/05\ -\ Meta/Templates/Daily\ Note.md
-edit ~/repos/nikbrunner/notes/01\ -\ Projects/New\ Job\ 2026/Job\ Platforms.md
+edit 01\ -\ Projects/Grill.md
 argglobal
 let s:cpo_save=&cpo
 set cpo&vim
@@ -106,7 +106,7 @@ setlocal norightleft
 setlocal rightleftcmd=search
 setlocal scrollback=-1
 setlocal noscrollbind
-setlocal shiftwidth=2
+setlocal shiftwidth=4
 setlocal signcolumn=yes
 setlocal smartindent
 setlocal nosmoothscroll
@@ -129,7 +129,7 @@ setlocal textwidth=85
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#01\ -\ Projects%*\ %#WinBarSeparator#/%*\ %#WinBarPath#New\ Job\ 2026%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#Job\ Platforms.md%*
+setlocal winbar=%#WinBarPath#01\ -\ Projects%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#Grill.md%*
 setlocal winblend=0
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -137,11 +137,11 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal wrap
 setlocal wrapmargin=0
-let s:l = 44 - ((32 * winheight(0) + 28) / 56)
+let s:l = 18 - ((17 * winheight(0) + 28) / 56)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 44
+keepjumps 18
 normal! 0
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
