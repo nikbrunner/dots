@@ -86,132 +86,8 @@ local function detect_gh_pr_context()
 end
 
 -- ============================================================================
--- Custom Picker Functions
+-- Custom Picker Functions (Snacks-unique)
 -- ============================================================================
-
----Open a zoxide picker, then open files picker in the selected directory
----@return nil
-function M.file_surfer()
-    Snacks.picker.zoxide({
-        confirm = function(picker, item)
-            local cwd = item._path
-
-            picker:close()
-            vim.fn.chdir(cwd)
-
-            vim.schedule(function()
-                Snacks.picker.files({
-                    filter = {
-                        cwd = cwd,
-                    },
-                })
-            end)
-        end,
-    })
-end
-
----Find files associated with the current file (same base name)
----Excludes suffixes like .stories, .test, .data, etc.
----@return nil
-function M.find_associated_files()
-    local current_filename = vim.fn.expand("%:t:r")
-    local base_name = current_filename:match("^([^.]+)") or current_filename
-    local relative_filepath = vim.fn.fnamemodify(vim.fn.expand("%"), ":~:.")
-
-    Snacks.picker.files({
-        pattern = base_name,
-        exclude = {
-            ".git",
-            relative_filepath,
-        },
-        matcher = {
-            ignorecase = true,
-        },
-    })
-end
-
----Show jumps for the current buffer only
----@return nil
-function M.buffer_jumps()
-    local current_buf = vim.api.nvim_get_current_buf()
-    local current_file = vim.api.nvim_buf_get_name(current_buf)
-
-    Snacks.picker({
-        prompt = "Buffer Jumps",
-        layout = M.buffer_layout,
-        format = "file",
-        main = { current = true },
-        finder = function()
-            local jumps = vim.fn.getjumplist()[1]
-            local items = {}
-
-            -- Filter to only current buffer and build items
-            for _, jump in ipairs(jumps) do
-                local buf = jump.bufnr and vim.api.nvim_buf_is_valid(jump.bufnr) and jump.bufnr or 0
-                if buf == current_buf and jump.lnum > 0 then
-                    local line = vim.api.nvim_buf_get_lines(buf, jump.lnum - 1, jump.lnum, false)[1]
-                    table.insert(items, 1, {
-                        buf = buf,
-                        line = line,
-                        text = table.concat({ current_file, line }, " "),
-                        file = current_file,
-                        pos = { jump.lnum, jump.col },
-                    })
-                end
-            end
-
-            return items
-        end,
-    })
-end
-
----Show buffers and recent files from current working directory
----Includes terminal buffers (unlike smart picker which filters them out)
----@return nil
-function M.buffers_and_recent()
-    Snacks.picker({
-        multi = { "recent", "buffers" },
-        format = "buffer",
-        matcher = {
-            frecency = true,
-            sort_empty = true,
-            cwd_bonus = true,
-        },
-        sort = { fields = { "source_id", "score:desc", "frecency:desc" } },
-        sources = {
-            buffers = {
-                finder = "buffers",
-                format = "buffer",
-                hidden = false,
-                unloaded = false,
-                current = false,
-                sort_lastused = true,
-                -- Don't filter by cwd for buffers (allows terminal buffers)
-                filter = {},
-            },
-            recent = {
-                -- Only apply cwd filter to recent files
-                filter = { cwd = true },
-            },
-        },
-    })
-end
-
----Toggle or focus the file explorer
----@return nil
-function M.explorer()
-    local explorer_pickers = Snacks.picker.get({ source = "explorer" })
-    for _, picker in pairs(explorer_pickers) do
-        if picker:is_focused() then
-            picker:close()
-        else
-            picker:focus()
-        end
-    end
-    if #explorer_pickers == 0 then
-        Snacks.picker.explorer()
-    end
-end
 
 function M.gh_pr_diff()
     local state = require("state")
@@ -276,32 +152,8 @@ M.shared_layout_opts = {
     },
 }
 
----Get layout configuration for buffer-specific picker
----Positions picker at bottom-left of current window
----@return snacks.picker.layout.Config
-function M.buffer_layout()
-    local win = vim.api.nvim_get_current_win()
-    local win_pos = vim.api.nvim_win_get_position(win)
-    local win_width = vim.api.nvim_win_get_width(win)
-    local win_height = vim.api.nvim_win_get_height(win)
-
-    local border_width = 2
-    local picker_height = math.floor(0.25 * win_height)
-    local col = win_pos[2]
-    local row = win_pos[1] + win_height - picker_height - 1
-
-    return vim.tbl_deep_extend("force", M.shared_layout_opts, {
-        layout = {
-            col = col,
-            width = win_width - border_width,
-            row = row,
-            height = picker_height,
-        },
-    })
-end
-
 ---Get smart layout that adapts based on window width
----Uses centered layout for wide windows (>= 165 cols), buffer layout otherwise
+---Uses centered layout for wide windows (>= 165 cols), compact layout otherwise
 ---@return snacks.picker.layout.Config
 function M.smart_layout()
     local win = vim.api.nvim_get_current_win()
@@ -312,6 +164,9 @@ function M.smart_layout()
     local picker_height = math.floor(0.25 * win_height)
     local row = win_pos[1] + win_height - picker_height - 1
 
+    local col = win_pos[2]
+    local border_width = 2
+
     if win_width >= 165 then
         return vim.tbl_deep_extend("force", M.shared_layout_opts, {
             layout = {
@@ -321,7 +176,14 @@ function M.smart_layout()
             },
         })
     else
-        return M.buffer_layout()
+        return vim.tbl_deep_extend("force", M.shared_layout_opts, {
+            layout = {
+                col = col,
+                width = win_width - border_width,
+                row = row,
+                height = picker_height,
+            },
+        })
     end
 end
 
@@ -338,28 +200,19 @@ function M.keys()
     -- stylua: ignore start
     return {
         -- App (Snacks-unique features)
-        { "<leader>ad",          M.file_surfer, desc = "[D]ocument" },
-        { "<leader>ahm",         function() Snacks.picker.man() end, desc = "[M]anuals" },
         { "<leader>an",          function() Snacks.notifier.show_history() end, desc = "[N]otifications" },
-        { "<leader>aw",          function() Snacks.picker.projects() end, desc = "[W]orkspace" },
-        { "<leader>aW",          function() Snacks.picker.zoxide() end, desc = "[W]orkspace (Zoxide)" },
 
         -- Workspace (Snacks-unique features)
-        { "<leader>wvh",         function() Snacks.picker.git_log() end, desc = "[H]istory" },
         { "<leader>wvH",         function() Snacks.lazygit.log() end, desc = "[H]istory (Lazygit)" },
-        { "<leader>wvr",         function() Snacks.gitbrowse() end, desc = "[R]emote" },
-        { "<leader>wvs",         function() Snacks.lazygit() end, desc = "[S]tatus" },
+        { "<leader>wvs",         function() Snacks.lazygit() end, desc = "[S]tatus (Lazygit)" },
         { "<leader>wvib",         M.gh_issue_browse, desc = "[B]rowse Issues" },
-        { "<leader>wvpm",         M.gh_pr_diff, desc = "[M]odifications in current PR" },
+        { "<leader>wvpc",         M.gh_pr_diff, desc = "[C]hanges in current PR" },
         { "<leader>wvpd",         M.gh_pr_buffer, desc = "[D]escription of current PR" },
         { "<leader>wvpb",         M.gh_pr_browse, desc = "[B]rowse Pull Requests" },
 
         -- Document (Snacks-unique features)
-        { "<leader>da",          M.find_associated_files, desc = "[A]ssociated Documents" },
-
         { "<leader>dvh",         function() Snacks.picker.git_log_file() end, desc = "[H]istory" },
         { "<leader>dvH",         function() Snacks.lazygit.log_file() end, desc = "[H]istory (Lazygit)" },
-        { "<leader>dj",          M.buffer_jumps, desc = "[J]umps" },
         { "<leader>du",          function() Snacks.picker.undo() end, desc = "[U]ndo" },
 
         -- Symbols (Snacks-unique features)
@@ -527,70 +380,7 @@ return {
                 },
             },
             sources = {
-                explorer = {
-                    replace_netrw = true,
-                    git_status = true,
-                    jump = {
-                        close = false,
-                    },
-                    hidden = true,
-                    ignored = true,
-                    win = {
-                        list = {
-                            keys = {
-                                ["]c"] = "explorer_git_next",
-                                ["[c"] = "explorer_git_prev",
-                                ["<c-t>"] = { "tab", mode = { "n", "i" } },
-                            },
-                        },
-                    },
-                    icons = {
-                        tree = {
-                            vertical = "  ",
-                            middle = "  ",
-                            last = "  ",
-                        },
-                    },
-                },
-                buffers = {
-                    current = false,
-                },
-                files = {
-                    hidden = true,
-                },
-                smart = {
-                    multi = { "buffers", "recent", "files" },
-                    sort = { fields = { "source_id" } }, -- source_id:asc, source_id:desc
-                    filter = { cwd = true },
-                },
-                lsp_references = {
-                    pattern = "!import !default", -- Exclude Imports and Default Exports
-                },
-                lsp_symbols = {
-                    finder = "lsp_symbols",
-                    format = "lsp_symbol",
-                    hierarchy = true,
-                    filter = {
-                        default = true,
-                        markdown = true,
-                        help = true,
-                    },
-                },
-                git_status = { preview = "git_status" },
                 gh_diff = { layout = { preset = "gh_diff" } },
-                projects = {
-                    finder = "recent_projects",
-                    -- TODO: restore session
-                    format = "file",
-                    dev = {
-                        "~/repos/nikbrunner/",
-                        "~/repos/dealercenter-digital/",
-                        "~/repos/black-atom-industries/",
-                        "~/repos/bradtraversy/",
-                        "~/repos/total-typescript/",
-                        "~/.local/share/nvim/",
-                    },
-                },
             },
         },
         words = { debounce = 100 },

@@ -680,6 +680,125 @@ function M.pick()
         })
     end
 
+    -- Custom picker: pick a project directory, then open files in it
+    MiniPick.registry.project_files = function()
+        local config = require("config").config
+        local repos_path = config.pathes.repos
+
+        -- Gather directories 2 levels deep (org/project)
+        local dirs = {}
+        local orgs = vim.fn.readdir(repos_path, function(name)
+            return vim.fn.isdirectory(repos_path .. "/" .. name) == 1
+        end)
+        for _, org in ipairs(orgs) do
+            local org_path = repos_path .. "/" .. org
+            local projects = vim.fn.readdir(org_path, function(name)
+                return vim.fn.isdirectory(org_path .. "/" .. name) == 1
+            end)
+            for _, project in ipairs(projects) do
+                table.insert(dirs, org .. "/" .. project)
+            end
+        end
+
+        MiniPick.start({
+            source = {
+                items = dirs,
+                name = "Projects",
+                choose = function(item)
+                    local chosen_path = repos_path .. "/" .. item
+                    vim.fn.chdir(chosen_path)
+                    vim.schedule(function()
+                        MiniPick.builtin.files()
+                    end)
+                end,
+            },
+        })
+    end
+
+    -- Custom picker: pick a project directory and cd into it
+    MiniPick.registry.project_switch = function()
+        local config = require("config").config
+        local repos_path = config.pathes.repos
+
+        local dirs = {}
+        local orgs = vim.fn.readdir(repos_path, function(name)
+            return vim.fn.isdirectory(repos_path .. "/" .. name) == 1
+        end)
+        for _, org in ipairs(orgs) do
+            local org_path = repos_path .. "/" .. org
+            local projects = vim.fn.readdir(org_path, function(name)
+                return vim.fn.isdirectory(org_path .. "/" .. name) == 1
+            end)
+            for _, project in ipairs(projects) do
+                table.insert(dirs, org .. "/" .. project)
+            end
+        end
+
+        MiniPick.start({
+            source = {
+                items = dirs,
+                name = "Switch Project",
+                choose = function(item)
+                    local chosen_path = repos_path .. "/" .. item
+                    vim.fn.chdir(chosen_path)
+                    vim.notify("Switched to " .. item)
+                end,
+            },
+        })
+    end
+
+    -- Custom picker: find associated files (same base name as current file)
+    MiniPick.registry.associated_files = function()
+        local current_filename = vim.fn.expand("%:t:r")
+        local base_name = current_filename:match("^([^.]+)") or current_filename
+
+        MiniPick.builtin.files()
+        vim.schedule(function()
+            MiniPick.set_picker_query({ base_name })
+        end)
+    end
+
+    -- Custom picker: buffer-local jumps
+    MiniPick.registry.buffer_jumps = function()
+        local current_buf = vim.api.nvim_get_current_buf()
+        local current_file = vim.api.nvim_buf_get_name(current_buf)
+
+        local jumps = vim.fn.getjumplist()[1]
+        local items = {}
+
+        for _, jump in ipairs(jumps) do
+            local buf = jump.bufnr and vim.api.nvim_buf_is_valid(jump.bufnr) and jump.bufnr or 0
+            if buf == current_buf and jump.lnum > 0 then
+                local lines = vim.api.nvim_buf_get_lines(buf, jump.lnum - 1, jump.lnum, false)
+                local line_text = lines[1] or ""
+                table.insert(items, 1, {
+                    text = string.format("%d: %s", jump.lnum, vim.trim(line_text)),
+                    bufnr = buf,
+                    lnum = jump.lnum,
+                    col = jump.col + 1,
+                    path = current_file,
+                })
+            end
+        end
+
+        MiniPick.start({
+            source = {
+                items = items,
+                name = "Buffer Jumps",
+                choose = function(item)
+                    vim.api.nvim_win_set_cursor(0, { item.lnum, item.col - 1 })
+                end,
+            },
+        })
+    end
+
+    -- Open current file/line in GitHub
+    local function git_browse()
+        local file = vim.fn.expand("%:.")
+        local line = vim.fn.line(".")
+        vim.fn.system({ "gh", "browse", file .. ":" .. line })
+    end
+
     -- Use MiniPick for vim.ui.select
     vim.ui.select = MiniPick.ui_select
 
@@ -695,8 +814,11 @@ function M.pick()
 
     -- App
     map("n", "<leader>aa",          function() MiniExtra.pickers.commands() end, { desc = "[A]ctions" })
+    map("n", "<leader>ad",          MiniPick.registry.project_files, { desc = "[D]ocument (in project)" })
+    map("n", "<leader>ahm",         function() MiniExtra.pickers.manpages() end, { desc = "[M]anuals" })
     map("n", "<leader>ar",          function() MiniExtra.pickers.oldfiles() end, { desc = "[R]ecent Documents (Anywhere)" })
     map("n", "<leader>at",          function() MiniExtra.pickers.colorschemes() end, { desc = "[T]hemes" })
+    map("n", "<leader>aw",          MiniPick.registry.project_switch, { desc = "[W]orkspace" })
     map("n", "<leader>ahh",         function() MiniExtra.pickers.hl_groups() end, { desc = "[H]ightlights" })
     map("n", "<leader>ahk",         function() MiniExtra.pickers.keymaps() end, { desc = "[K]eymaps" })
     map("n", "<leader>aht",         function() MiniPick.builtin.help() end, { desc = "[T]ags" })
@@ -712,13 +834,16 @@ function M.pick()
     map("n", "<leader>ws",          function() MiniExtra.pickers.lsp({ scope = "workspace_symbol" }) end, { desc = "[S]ymbols" })
     map("n", "<leader>wvb",         function() MiniExtra.pickers.git_branches({}, { window = { config = M.win_config.big } }) end, { desc = "[B]ranches" })
     map("n", "<leader>wvh",         function() MiniExtra.pickers.git_commits({}, { window = { config = M.win_config.big } }) end, { desc = "[H]istory" })
+    map("n", "<leader>wvr",         git_browse, { desc = "[R]emote (GitHub)" })
     map("n", "<leader>wj",          function() MiniExtra.pickers.list({ scope = "jump" }) end, { desc = "[J]umps" })
     map("n", "<leader>wp",          function() MiniExtra.pickers.diagnostic() end, { desc = "[P]roblems" })
 
     -- Document
+    map("n", "<leader>da",          MiniPick.registry.associated_files, { desc = "[A]ssociated Documents" })
     map("n", "<leader>dt",          function() MiniExtra.pickers.buf_lines({ scope = "current" }) end, { desc = "[T]ext" })
     map("n", "<leader>ds",          function() MiniExtra.pickers.lsp({ scope = "document_symbol" }) end, { desc = "[S]ymbols" })
     map("n", "<leader>dc",          function() MiniExtra.pickers.git_hunks({ path = vim.fn.expand("%") }, { window = { config = M.win_config.big } }) end, { desc = "[C]hanges" })
+    map("n", "<leader>dj",          MiniPick.registry.buffer_jumps, { desc = "[J]umps" })
     map("n", "<leader>dp",          function() MiniExtra.pickers.diagnostic({ scope = "current" }) end, { desc = "[P]roblems" })
 
     -- Symbol
