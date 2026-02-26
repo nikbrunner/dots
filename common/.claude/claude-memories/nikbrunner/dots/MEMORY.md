@@ -21,7 +21,7 @@ common/.claude/
     ├── react-patterns/    # Knowledge (user-invocable: false)
     ├── mcp-guide/         # Knowledge (user-invocable: false)
     ├── obsidian-guide/    # Knowledge (user-invocable: false)
-    ├── bai-*/             # 6 Linear skills (user-invocable: false, Claude discovers)
+    ├── bai-*/             # 7 Linear skills (user-invocable: false, Claude discovers)
     ├── dots-*/            # 4 dotfiles skills (user-invocable, /dots:add etc.)
     ├── bugs/              # Bug hunting (user-invocable: false)
     ├── arch-review/       # Architecture review (user-invocable: false)
@@ -42,7 +42,7 @@ common/.claude/
 ### Invocability Rules
 
 - **User-invocable (shows in / menu)**: dots:*, gh-pr-review, docs, are-we-done, migrate-to-skills
-- **Claude-only (user-invocable: false)**: bai:*, bugs, arch-review, ui-review, research, plus all 4 knowledge skills
+- **Claude-only (user-invocable: false)**: bai:* (including bai:commit — auto-detects issue from branch, appends [ID] to commit, prompts status update after), bugs, arch-review, ui-review, research, plus all 4 knowledge skills
 - **All skills are discoverable** by Claude (no disable-model-invocation anywhere)
 
 ### Key Decisions
