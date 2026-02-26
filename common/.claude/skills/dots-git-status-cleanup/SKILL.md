@@ -1,5 +1,5 @@
 ---
-name: dots-git-status-cleanup
+name: dots:git-status-cleanup
 description: Clean up git status with focused semantic commits
 ---
 

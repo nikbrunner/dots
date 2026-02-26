@@ -1,5 +1,5 @@
 ---
-name: dots-deps-manage
+name: dots:deps-manage
 description: Manage dependencies in the dots repository
 argument-hint: [add|remove] [package]
 ---

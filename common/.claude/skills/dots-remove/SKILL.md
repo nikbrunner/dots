@@ -1,5 +1,5 @@
 ---
-name: dots-remove
+name: dots:remove
 description: Remove a config from dots symlink management
 argument-hint: [symlink or repo path]
 ---

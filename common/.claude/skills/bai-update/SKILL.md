@@ -1,5 +1,5 @@
 ---
-name: bai-update
+name: bai:update
 description: Update a Black Atom issue (status, labels, relations, etc.)
 allowed-tools: ["mcp__linear__update_issue", "mcp__linear__create_comment", "mcp__linear__list_issue_statuses", "mcp__linear__get_issue", "mcp__linear__list_teams", "mcp__linear__list_issues", "AskUserQuestion"]
 ---
