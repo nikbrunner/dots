@@ -2,19 +2,19 @@
 set -e
 
 # Stop hook: Block Claude from finishing if there are NEW uncommitted git changes
-# (beyond what existed at session start) and verification hasn't been done yet.
+# (beyond what existed at session start) AND Claude actually modified files.
 #
 # Flow:
-# 1. First invocation: snapshot current git status to a temp file
-# 2. Claude finishes → this hook fires
-# 3. If there are NEW changes (not in snapshot) AND stop_hook_active is false → block
-# 4. Claude runs appropriate lint/test/format commands for the project
-# 5. Claude stops again → stop_hook_active is true → allow through
+# 1. Check transcript for file-modifying tool usage (Edit, Write, Bash)
+# 2. No file modifications → allow stop (pure Q&A, no blocking)
+# 3. File modifications + new uncommitted changes → block for verification
+# 4. Claude runs lint/test/format → stops again → stop_hook_active = true → allow
 
 input=$(cat)
 
 stop_hook_active=$(echo "$input" | jq -r '.stop_hook_active // false')
 cwd=$(echo "$input" | jq -r '.cwd // ""')
+transcript_path=$(echo "$input" | jq -r '.transcript_path // ""')
 
 # If we already blocked once, let Claude through
 if [ "$stop_hook_active" = "true" ]; then
@@ -31,6 +31,21 @@ for repo in "${skip_repos[@]}"; do
         exit 0
     fi
 done
+
+# Check if Claude actually modified files by scanning the transcript.
+# If no file-modifying tools were used, this was just Q&A — don't block.
+if [ -n "$transcript_path" ] && [ -f "$transcript_path" ]; then
+    # Look for Edit, Write, or MultiEdit tool usage in the transcript JSONL
+    has_file_modifications=$(grep -cE '"tool_use".*"(Edit|Write|MultiEdit|NotebookEdit)"' "$transcript_path" 2>/dev/null || true)
+
+    # Also check for Bash commands that could modify files (but not read-only ones)
+    has_bash_writes=$(grep -cE '"tool_use".*"Bash"' "$transcript_path" 2>/dev/null || true)
+
+    if [ "${has_file_modifications:-0}" = "0" ] && [ "${has_bash_writes:-0}" = "0" ]; then
+        # No file-modifying tools used — pure Q&A session, allow stop
+        exit 0
+    fi
+fi
 
 # Check if we're in a git repo
 if [ -z "$cwd" ]; then
