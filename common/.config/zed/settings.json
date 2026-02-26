@@ -3,7 +3,7 @@
   "session": {
     "trust_all_worktrees": false
   },
-  "buffer_font_family": "Maple Mono NF",
+  "buffer_font_family": "RecMonoDuotone Nerd Font",
   "which_key": {
     "delay_ms": 250,
     "enabled": true
@@ -95,7 +95,7 @@
   "terminal": {
     "line_height": "standard",
     "working_directory": "current_project_directory",
-    "font_family": "Maple Mono NF"
+    "font_family": "RecMonoDuotone Nerd Font"
   },
   "lsp": {
     "vtsls": {
@@ -121,5 +121,5 @@
       }
     }
   },
-  "ui_font_family": "Maple Mono NF"
+  "ui_font_family": "RecMonoDuotone Nerd Font"
 }
