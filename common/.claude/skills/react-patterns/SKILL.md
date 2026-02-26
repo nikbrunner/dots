@@ -11,6 +11,7 @@ user-invocable: false
 - **Dumb functional components** + **smart containers** + **partials**
 - Components are independent — a component's CSS must never reference another component's classes
 - If a component needs to know about another component, that's a code smell
+- Styling should happen almost exclusively in components, containers and other consumers of the component should only use some styling if absolutely necessary. This implies the uses of layout components and partials.
 
 ## TypeScript Conventions
 
