@@ -70,9 +70,10 @@ Show the categorized plan as a table. Include:
 Only after approval:
 1. Create skill directories and SKILL.md files
 2. Create hook scripts and register in settings.json
-3. Rewrite CLAUDE.md (lean version)
+3. Rewrite AGENTS.md (lean version)
 4. Update symlinks if applicable
 5. Remove old command/agent files
+6. Symlink AGENTS.md to CLAUDE.md so claude can discover it
 
 ### 6. Verify
 
