@@ -758,7 +758,9 @@ function M.pick()
                         MS.write(M.get_session_name(), { force = true })
 
                         -- Stop LSP before buffer wipe to avoid stale callbacks
-                        vim.iter(vim.lsp.get_clients()):each(function(c) c:stop(true) end)
+                        vim.iter(vim.lsp.get_clients()):each(function(c)
+                            c:stop(true)
+                        end)
                         vim.cmd("silent! %bwipeout!")
 
                         -- Switch to new project
@@ -1084,8 +1086,8 @@ function M.files()
     -- Global keymaps
     local map = vim.keymap.set
     -- stylua: ignore start
-    map("n", "<leader>we", function() MiniFiles.open(vim.api.nvim_buf_get_name(0)) end, { desc = "[E]xplorer" })
-    map("n", "<leader>wE", function() MiniFiles.open(vim.fn.getcwd()) end, { desc = "[E]xplorer (cwd)" })
+    map("n", "-", function() MiniFiles.open(vim.api.nvim_buf_get_name(0)) end, { desc = "[E]xplorer" })
+    map("n", "<leader>we", function() MiniFiles.open(vim.fn.getcwd()) end, { desc = "[E]xplorer (cwd)" })
     -- stylua: ignore end
 end
 
