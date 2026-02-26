@@ -141,7 +141,7 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 35 - ((34 * winheight(0) + 26) / 53)
+let s:l = 35 - ((34 * winheight(0) + 25) / 50)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
@@ -261,11 +261,11 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 25 - ((24 * winheight(0) + 26) / 53)
+let s:l = 28 - ((27 * winheight(0) + 25) / 50)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 25
+keepjumps 28
 normal! 0
 wincmd w
 2wincmd w
