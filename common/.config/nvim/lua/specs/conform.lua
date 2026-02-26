@@ -126,6 +126,7 @@ return {
                 yaml = { prettier_cmd },
                 toml = { "taplo" },
                 go = { "gofmt" },
+                rust = { "rustfmt" },
                 sh = { "shfmt" },
                 http = { "kulala-fmt" },
             },
