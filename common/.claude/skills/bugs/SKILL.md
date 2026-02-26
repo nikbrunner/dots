@@ -1,7 +1,6 @@
 ---
 name: bugs
 description: Use bug-finder agent to hunt for logical errors and potential runtime issues
-disable-model-invocation: true
 argument-hint: [optional: specific file, directory, or function to focus on]
 ---
 

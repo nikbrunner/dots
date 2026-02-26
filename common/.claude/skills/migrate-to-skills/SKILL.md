@@ -1,7 +1,6 @@
 ---
 name: migrate-to-skills
 description: Audit a project's Claude Code setup and plan migration from commands/agents to skills/hooks
-disable-model-invocation: true
 argument-hint: [optional: path to project root]
 ---
 

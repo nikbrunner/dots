@@ -1,7 +1,6 @@
 ---
 name: research
 description: Research a topic thoroughly before implementation
-disable-model-invocation: true
 argument-hint: [topic, library, or problem]
 ---
 

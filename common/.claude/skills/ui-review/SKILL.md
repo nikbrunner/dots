@@ -1,7 +1,6 @@
 ---
 name: ui-review
 description: Review UI/UX of specified files, or of staged/unstaged git changes.
-disable-model-invocation: true
 argument-hint: [path/to/file]... (optional)
 allowed-tools: Bash(git:diff)
 ---

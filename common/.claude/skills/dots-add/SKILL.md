@@ -1,7 +1,6 @@
 ---
 name: dots-add
 description: Add a config file to dots for symlink management
-disable-model-invocation: true
 argument-hint: [path to config file]
 ---
 

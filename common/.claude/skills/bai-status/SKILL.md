@@ -1,7 +1,6 @@
 ---
 name: bai-status
 description: Show my Black Atom Industries issues
-disable-model-invocation: true
 allowed-tools: ["mcp__linear__list_issues", "mcp__linear__get_issue"]
 ---
 

@@ -1,7 +1,6 @@
 ---
 name: dots-git-status-cleanup
 description: Clean up git status with focused semantic commits
-disable-model-invocation: true
 ---
 
 # Git Status Cleanup

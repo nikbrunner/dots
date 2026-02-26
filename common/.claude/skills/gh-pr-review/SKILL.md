@@ -1,7 +1,6 @@
 ---
 name: gh-pr-review
 description: Post a comprehensive AI-assisted code review as a GitHub PR comment
-disable-model-invocation: true
 argument-hint: [PR number or URL]
 ---
 

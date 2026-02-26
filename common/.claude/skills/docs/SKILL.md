@@ -1,7 +1,6 @@
 ---
 name: docs
 description: Complete documentation workflow: review, implement fixes, and commit changes
-disable-model-invocation: true
 argument-hint: [optional: specific file or directory to focus on]
 ---
 

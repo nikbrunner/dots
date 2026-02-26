@@ -1,7 +1,6 @@
 ---
 name: dots-remove
 description: Remove a config from dots symlink management
-disable-model-invocation: true
 argument-hint: [symlink or repo path]
 ---
 

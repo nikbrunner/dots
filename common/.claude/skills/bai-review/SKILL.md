@@ -1,7 +1,6 @@
 ---
 name: bai-review
 description: Review and clean up Black Atom issues
-disable-model-invocation: true
 allowed-tools: ["mcp__linear__list_issues", "mcp__linear__get_issue", "mcp__linear__update_issue", "mcp__linear__create_comment", "mcp__linear__list_issue_statuses", "AskUserQuestion"]
 ---
 

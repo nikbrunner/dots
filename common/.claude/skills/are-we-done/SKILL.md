@@ -1,7 +1,6 @@
 ---
 name: are-we-done
 description: Run structural completeness review
-disable-model-invocation: true
 ---
 
 # 1. Structural Completeness Review

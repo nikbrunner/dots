@@ -1,7 +1,6 @@
 ---
 name: bai-ready
 description: Show Black Atom issues ready to work (no blockers)
-disable-model-invocation: true
 allowed-tools: ["mcp__linear__list_issues", "mcp__linear__get_issue"]
 ---
 

@@ -1,7 +1,6 @@
 ---
 name: arch-review
 description: Review architecture of specified path(s), or staged/unstaged git changes.
-disable-model-invocation: true
 argument-hint: [path/to/directory]... (optional)
 allowed-tools: Bash(git:diff)
 ---

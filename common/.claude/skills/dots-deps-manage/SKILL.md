@@ -1,7 +1,6 @@
 ---
 name: dots-deps-manage
 description: Manage dependencies in the dots repository
-disable-model-invocation: true
 argument-hint: [add|remove] [package]
 ---
 
