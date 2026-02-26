@@ -427,6 +427,19 @@ dots_link_claude_memories() {
 	fi
 }
 
+dots_commit_gitconfig() {
+	local repo_path="$1"
+	local gitconfig="common/.gitconfig"
+
+	if [[ -z $(git -C "$repo_path" status --porcelain "$gitconfig" 2>/dev/null) ]]; then
+		echo "No gitconfig changes to commit"
+		return 1
+	fi
+
+	(cd "$repo_path" && git add "$gitconfig" && git commit -m "chore(gitconfig): update config")
+	log_success "Gitconfig commit created"
+}
+
 dots_commit_helm_config() {
 	local repo_path="$1"
 	local helm_config="common/.config/helm/config.yml"
