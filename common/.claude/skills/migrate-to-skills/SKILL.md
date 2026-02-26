@@ -36,20 +36,36 @@ For each discovered item, classify it:
 | **→ Cut** | Redundant, outdated, discoverable from codebase | Remove |
 
 For skills, additionally determine:
-- `disable-model-invocation: true` — action skills the user triggers manually
-- `user-invocable: false` — background knowledge Claude loads automatically
+- `user-invocable: false` — contextual skills Claude discovers and invokes automatically
+- Keep user-invocable (default) — action skills with side effects or that users trigger manually
 
-### 3. Present the plan
+### 3. Naming conventions
+
+**Namespace separator**: Use `:` in the `name` field for grouped skills.
+**Directory names**: Use `-` (hyphen) as separator since `:` is not valid in filenames.
+
+Examples:
+- Directory: `bai-status/SKILL.md` → Frontmatter: `name: bai:status`
+- Directory: `dots-add/SKILL.md` → Frontmatter: `name: dots:add`
+- Directory: `research/SKILL.md` → Frontmatter: `name: research` (no namespace needed)
+
+Common namespace prefixes:
+- `bai:` — Black Atom Industries issue tracking
+- `dots:` — Dotfiles management
+- No prefix — general-purpose skills (bugs, research, arch-review, etc.)
+
+### 4. Present the plan
 
 Show the categorized plan as a table. Include:
 - Source file path
 - Category (skill/hook/keep/cut)
-- New destination path (if applicable)
-- Frontmatter flags
+- New skill name (with `:` namespace if applicable)
+- New directory path (with `-` separator)
+- Frontmatter flags (`user-invocable: false`, `allowed-tools`, etc.)
 
 **Wait for user approval before proceeding.**
 
-### 4. Execute the migration
+### 5. Execute the migration
 
 Only after approval:
 1. Create skill directories and SKILL.md files
@@ -58,7 +74,7 @@ Only after approval:
 4. Update symlinks if applicable
 5. Remove old command/agent files
 
-### 5. Verify
+### 6. Verify
 
 - List all new skills: `ls -la .claude/skills/*/SKILL.md`
 - Check hooks are executable: `ls -la .claude/hooks/enforce/`
