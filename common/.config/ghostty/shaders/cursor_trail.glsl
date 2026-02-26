@@ -72,11 +72,12 @@ vec2 getRectangleCenter(vec4 rectangle) {
 
 // const vec4 TRAIL_COLOR = vec4(1.0, 0.725, 0.161, 1.0);
 // const vec4 TRAIL_COLOR = vec4(0.196, 0.180, 0.133, 1.0);
-const vec4 TRAIL_COLOR = vec4(0.851, 0.467, 0.341, 1.0);
+// const vec4 TRAIL_COLOR = vec4(0.851, 0.467, 0.341, 1.0);
+const vec4 TRAIL_COLOR = vec4(0.3388, 0.6775, 0.3436, 1.0);
 
 // const vec4 TRAIL_COLOR_ACCENT = vec4(1.0, 0.5, 0., 1.0);
 // const vec4 TRAIL_COLOR_ACCENT = vec4(0.467, 0.443, 0.384, 1.0);
-const vec4 TRAIL_COLOR_ACCENT = vec4(0.902, 0.549, 0.431, 1.0);
+const vec4 TRAIL_COLOR_ACCENT = vec4(0.2629, 0.759, 0.5245, 1.0);
 
 
 const vec4 CURRENT_CURSOR_COLOR = TRAIL_COLOR;
