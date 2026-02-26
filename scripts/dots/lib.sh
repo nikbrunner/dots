@@ -427,6 +427,19 @@ dots_link_claude_memories() {
 	fi
 }
 
+dots_commit_helm_config() {
+	local repo_path="$1"
+	local helm_config="common/.config/helm/config.yml"
+
+	if [[ -z $(git -C "$repo_path" status --porcelain "$helm_config" 2>/dev/null) ]]; then
+		echo "No helm config changes to commit"
+		return 1
+	fi
+
+	(cd "$repo_path" && git add "$helm_config" && git commit -m "chore(helm): update config")
+	log_success "Helm config commit created"
+}
+
 dots_commit_claude_memories() {
 	local repo_path="$1"
 	local memories_dir="$repo_path/common/.claude/claude-memories"

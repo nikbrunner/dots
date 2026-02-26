@@ -525,6 +525,12 @@ cmd_chores() {
 	fi
 	echo ""
 
+	# Helm config changes
+	if dots_commit_helm_config "$DOTS_DIR"; then
+		((commits_created++)) || true
+	fi
+	echo ""
+
 	# Claude Code memory snapshots
 	if dots_commit_claude_memories "$DOTS_DIR"; then
 		((commits_created++)) || true
