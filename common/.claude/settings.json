@@ -89,6 +89,26 @@
             "command": "~/.local/bin/helm-hook PreToolUse"
           }
         ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/enforce/semantic-commits.sh"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/enforce/warn-any-type.sh"
+          }
+        ]
       }
     ],
     "SessionStart": [
