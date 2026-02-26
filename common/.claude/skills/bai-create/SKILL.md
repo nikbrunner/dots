@@ -2,7 +2,7 @@
 name: bai:create
 user-invocable: false
 description: Create a new Black Atom Industries issue
-allowed-tools: ["mcp__linear__create_issue", "mcp__linear__list_teams", "mcp__linear__list_projects", "mcp__linear__list_issue_labels", "mcp__linear__list_issues", "AskUserQuestion"]
+allowed-tools: ["mcp__linear__save_issue", "mcp__linear__list_teams", "mcp__linear__list_projects", "mcp__linear__list_issue_labels", "mcp__linear__list_issues", "AskUserQuestion"]
 ---
 
 # Black Atom Create
@@ -47,7 +47,7 @@ Examples:
 
 4. Check for related issues - suggest linking if relevant
 
-5. Create with `mcp__linear__create_issue`:
+5. Create with `mcp__linear__save_issue`:
    - `title`: from arguments
    - `team`: determined team ID
    - `assignee`: "me" (always assign to Nik)

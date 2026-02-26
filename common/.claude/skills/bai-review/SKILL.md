@@ -2,7 +2,7 @@
 name: bai:review
 user-invocable: false
 description: Review and clean up Black Atom issues
-allowed-tools: ["mcp__linear__list_issues", "mcp__linear__get_issue", "mcp__linear__update_issue", "mcp__linear__create_comment", "mcp__linear__list_issue_statuses", "AskUserQuestion"]
+allowed-tools: ["mcp__linear__list_issues", "mcp__linear__get_issue", "mcp__linear__save_issue", "mcp__linear__create_comment", "mcp__linear__list_issue_statuses", "AskUserQuestion"]
 ---
 
 # Black Atom Review
