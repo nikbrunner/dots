@@ -1,14 +1,15 @@
 #!/usr/bin/env bash
 set -e
 
-# Stop hook: Block Claude from finishing if there are uncommitted git changes
-# and verification hasn't been requested yet (stop_hook_active = false).
+# Stop hook: Block Claude from finishing if there are NEW uncommitted git changes
+# (beyond what existed at session start) and verification hasn't been done yet.
 #
 # Flow:
-# 1. Claude finishes → this hook fires
-# 2. If git has changes AND stop_hook_active is false → block with verification request
-# 3. Claude runs appropriate lint/test/format commands for the project
-# 4. Claude stops again → stop_hook_active is true → allow through
+# 1. First invocation: snapshot current git status to a temp file
+# 2. Claude finishes → this hook fires
+# 3. If there are NEW changes (not in snapshot) AND stop_hook_active is false → block
+# 4. Claude runs appropriate lint/test/format commands for the project
+# 5. Claude stops again → stop_hook_active is true → allow through
 
 input=$(cat)
 
@@ -31,20 +32,48 @@ for repo in "${skip_repos[@]}"; do
     fi
 done
 
-# Check if we're in a git repo with changes
-if [ -n "$cwd" ] && [ -d "$cwd/.git" ] || git -C "$cwd" rev-parse --git-dir > /dev/null 2>&1; then
-    changes=$(git -C "$cwd" status --porcelain 2>/dev/null || true)
-
-    if [ -n "$changes" ]; then
-        cat <<'EOF'
-{
-    "decision": "block",
-    "reason": "There are uncommitted changes in the working directory. Before finishing, please verify your work by running the appropriate lint, format, and test commands for this project. Check the project structure (package.json, deno.json, Makefile, Cargo.toml, etc.) to determine the right commands."
-}
-EOF
-        exit 0
-    fi
+# Check if we're in a git repo
+if [ -z "$cwd" ]; then
+    exit 0
 fi
 
-# No changes or not a git repo — allow stop
+if ! { [ -d "$cwd/.git" ] || git -C "$cwd" rev-parse --git-dir > /dev/null 2>&1; }; then
+    exit 0
+fi
+
+current_changes=$(git -C "$cwd" status --porcelain 2>/dev/null || true)
+
+# No changes at all — allow stop
+if [ -z "$current_changes" ]; then
+    exit 0
+fi
+
+# Use a snapshot file to track pre-existing changes from session start.
+# The snapshot is keyed by repo path (hashed) so multiple repos don't collide.
+snapshot_dir="${TMPDIR:-/tmp}/claude-stop-hook"
+mkdir -p "$snapshot_dir"
+repo_hash=$(echo "$cwd" | md5 -q 2>/dev/null || echo "$cwd" | md5sum | cut -d' ' -f1)
+snapshot_file="$snapshot_dir/$repo_hash"
+
+# First run: save snapshot of pre-existing changes and compare
+if [ ! -f "$snapshot_file" ]; then
+    echo "$current_changes" > "$snapshot_file"
+fi
+
+baseline=$(cat "$snapshot_file")
+
+# Compare: only block if there are changes beyond the baseline
+new_changes=$(diff <(echo "$baseline") <(echo "$current_changes") 2>/dev/null || true)
+
+if [ -z "$new_changes" ]; then
+    # No new changes beyond what existed at session start — allow stop
+    exit 0
+fi
+
+cat <<'EOF'
+{
+    "decision": "block",
+    "reason": "You have made changes during this session that are not yet committed. Before finishing, please: (1) Run the appropriate lint, format, and test commands for this project — check the project structure (package.json, deno.json, Makefile, Cargo.toml, etc.) to determine the right commands. (2) Do NOT discard, checkout, or revert any files. (3) Report your verification results to the user."
+}
+EOF
 exit 0
