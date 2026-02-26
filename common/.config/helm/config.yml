@@ -49,4 +49,4 @@ ensure_cloned:
   - git@github.com:black-atom-industries/*
   - url: git@github.com:nikbrunner/fonts
     post_clone: ./install.sh
-appearance: dark
+appearance: light
