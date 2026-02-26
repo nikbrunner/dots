@@ -499,111 +499,55 @@ M.win_config = {
     end,
 }
 
---- Smart file picker with intelligent prioritization
----
---- Combines multiple sources (alternative file, recent files, visited paths, all files)
---- into a single picker with weighted scoring for better file navigation.
----
---- Priority order (lower score = higher priority):
---- 1. Alternative file (#) - heavily prioritized for quick switching
---- 2. Recent files (oldfiles) - files recently opened in cwd
---- 3. Visited paths (mini.visits) - frequently accessed files
---- 4. All other files - general fallback
----
---- Current file is always ranked last to avoid accidental re-selection.
+--- Smart file picker: all files ranked by mini.visits frecency.
+--- Visited files appear first (by frecency), unvisited files after (by fuzzy score).
+--- Current file is always ranked last.
 function M.smart_picker()
     local MiniPick = require("mini.pick")
     local MiniFuzzy = require("mini.fuzzy")
     local MiniVisits = require("mini.visits")
 
     local visit_paths = MiniVisits.list_paths()
-    local current_file = vim.fn.expand("%")
-    local cwd = vim.fn.getcwd()
+    local current_file = vim.fn.expand("%:.")
+    local total_visits = #visit_paths
 
-    -- Get alternative file for priority boost
-    local alt_file = vim.fn.expand("#")
-
-    -- Get oldfiles scoped to current working directory
-    local oldfiles = {}
-    for _, file in ipairs(vim.v.oldfiles) do
-        local abs_path = vim.fn.fnamemodify(file, ":p")
-        if vim.startswith(abs_path, cwd) then
-            table.insert(oldfiles, vim.fn.fnamemodify(file, ":."))
-        end
+    -- Relative path -> frecency rank (lower = more frecent)
+    local frecency = {}
+    for i, path in ipairs(visit_paths) do
+        frecency[vim.fn.fnamemodify(path, ":.")] = i
     end
 
     MiniPick.builtin.files(nil, {
         source = {
             match = function(stritems, indices, query)
-                -- Concatenate prompt to a single string
-                local prompt = vim.pesc(table.concat(query))
-
-                -- If ignorecase is on and there are no uppercase letters in prompt,
-                -- convert paths to lowercase for matching purposes
-                local convert_path = function(str)
-                    return str
-                end
-                if vim.o.ignorecase and string.find(prompt, "%u") == nil then
-                    convert_path = function(str)
-                        return string.lower(str)
-                    end
-                end
-
-                local current_file_cased = convert_path(current_file)
-                local alt_file_rel = alt_file ~= "" and vim.fn.fnamemodify(alt_file, ":.") or nil
-                local alt_file_cased = alt_file_rel and convert_path(alt_file_rel) or nil
-
-                -- Create lookup tables for priority files
-                local oldfiles_lookup = {}
-                for index, file_path in ipairs(oldfiles) do
-                    oldfiles_lookup[convert_path(file_path)] = index
-                end
-
-                local visits_lookup = {}
-                for index, path in ipairs(visit_paths) do
-                    local key = vim.fn.fnamemodify(path, ":.")
-                    visits_lookup[convert_path(key)] = index
-                end
+                local prompt = table.concat(query)
 
                 local result = {}
                 for _, index in ipairs(indices) do
                     local path = stritems[index]
-                    local path_cased = convert_path(path)
-                    local match_score = prompt == "" and 0 or MiniFuzzy.match(prompt, path).score
+                    local score = prompt == "" and 0 or MiniFuzzy.match(prompt, path).score
 
-                    if match_score >= 0 then
-                        local score
+                    if score >= 0 then
+                        local rank
 
-                        -- Current file gets ranked last
-                        if path_cased == current_file_cased then
-                            score = 999999
-                        -- Alt file gets highest priority
-                        elseif alt_file_cased and path_cased == alt_file_cased then
-                            score = match_score - 10000
-                        -- Oldfiles get second priority
-                        elseif oldfiles_lookup[path_cased] then
-                            score = match_score - 1000 + oldfiles_lookup[path_cased]
-                        -- Visit paths get third priority
-                        elseif visits_lookup[path_cased] then
-                            score = match_score + visits_lookup[path_cased]
-                        -- Everything else
+                        if path == current_file then
+                            rank = 999999
+                        elseif frecency[path] then
+                            rank = frecency[path]
                         else
-                            score = match_score + 100000
+                            rank = total_visits + 1 + score
                         end
 
-                        table.insert(result, {
-                            index = index,
-                            score = score,
-                        })
+                        table.insert(result, { index = index, rank = rank })
                     end
                 end
 
                 table.sort(result, function(a, b)
-                    return a.score < b.score
+                    return a.rank < b.rank
                 end)
 
-                return vim.tbl_map(function(val)
-                    return val.index
+                return vim.tbl_map(function(v)
+                    return v.index
                 end, result)
             end,
         },
