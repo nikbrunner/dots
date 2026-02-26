@@ -9,7 +9,7 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +175 internal/ui/colors.go
+badd +178 internal/ui/colors.go
 badd +94 internal/ui/columns.go
 argglobal
 %argdel
