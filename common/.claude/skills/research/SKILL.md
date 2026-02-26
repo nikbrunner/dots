@@ -1,5 +1,6 @@
 ---
 name: research
+user-invocable: false
 description: Research a topic thoroughly before implementation
 argument-hint: [topic, library, or problem]
 ---

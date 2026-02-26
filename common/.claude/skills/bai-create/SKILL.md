@@ -1,5 +1,6 @@
 ---
 name: bai:create
+user-invocable: false
 description: Create a new Black Atom Industries issue
 allowed-tools: ["mcp__linear__create_issue", "mcp__linear__list_teams", "mcp__linear__list_projects", "mcp__linear__list_issue_labels", "mcp__linear__list_issues", "AskUserQuestion"]
 ---

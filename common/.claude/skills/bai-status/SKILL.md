@@ -1,5 +1,6 @@
 ---
-name: bai-status
+name: bai:status
+user-invocable: false
 description: Show my Black Atom Industries issues
 allowed-tools: ["mcp__linear__list_issues", "mcp__linear__get_issue"]
 ---

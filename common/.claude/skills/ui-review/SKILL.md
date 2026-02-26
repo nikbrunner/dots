@@ -1,5 +1,6 @@
 ---
 name: ui-review
+user-invocable: false
 description: Review UI/UX of specified files, or of staged/unstaged git changes.
 argument-hint: [path/to/file]... (optional)
 allowed-tools: Bash(git:diff)

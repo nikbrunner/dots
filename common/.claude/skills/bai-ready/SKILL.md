@@ -1,5 +1,6 @@
 ---
 name: bai:ready
+user-invocable: false
 description: Show Black Atom issues ready to work (no blockers)
 allowed-tools: ["mcp__linear__list_issues", "mcp__linear__get_issue"]
 ---
