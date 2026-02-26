@@ -3,7 +3,7 @@
   "session": {
     "trust_all_worktrees": false
   },
-  "buffer_font_family": "TX-02",
+  "buffer_font_family": "Maple Mono NF",
   "which_key": {
     "delay_ms": 250,
     "enabled": true
@@ -50,7 +50,7 @@
   "theme": {
     "mode": "system",
     "dark": "Black Atom — Dark Dimmed",
-    "light": "Black Atom — Light Dimmed"
+    "light": "Black Atom — JPN ∷ Koyo Hiru"
   },
   "base_keymap": "VSCode",
   "vim_mode": true,
@@ -95,7 +95,7 @@
   "terminal": {
     "line_height": "standard",
     "working_directory": "current_project_directory",
-    "font_family": "TX-02"
+    "font_family": "Maple Mono NF"
   },
   "lsp": {
     "vtsls": {
@@ -121,5 +121,5 @@
       }
     }
   },
-  "ui_font_family": "TX-02"
+  "ui_font_family": "Maple Mono NF"
 }
