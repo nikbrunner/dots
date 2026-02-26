@@ -50,7 +50,7 @@
   "theme": {
     "mode": "system",
     "dark": "Black Atom — Dark",
-    "light": "Black Atom — Light"
+    "light": "Black Atom — Light Dimmed"
   },
   "base_keymap": "VSCode",
   "vim_mode": true,
