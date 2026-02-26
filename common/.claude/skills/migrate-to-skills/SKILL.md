@@ -12,6 +12,16 @@ Audit a project's Claude Code configuration and generate a migration plan.
 
 `$ARGUMENTS` — Optional path to project root. Defaults to current working directory.
 
+## Goals
+
+The migration targets these outcomes:
+
+1. **Lean AGENTS.md** — Only essential project-level context needed on every interaction. No workflows, no task instructions, no domain deep-dives. Think 3-50 lines depending on project complexity. CLAUDE.md symlinks to AGENTS.md for Claude Code compatibility.
+2. **No commands/ directory** — All `.claude/commands/` slash commands are converted to `.claude/skills/` format.
+3. **Enforcement via hooks** — Deterministic rules ("always X", "never Y") become bash scripts in `.claude/hooks/enforce/`, not CLAUDE.md instructions.
+4. **Domain knowledge as discoverable skills** — Context that Claude needs occasionally (architecture, workflows, project-specific knowledge) becomes `user-invocable: false` skills that Claude discovers automatically.
+5. **Clean skill namespace** — Skills use `:` namespace prefixes in names and `-` in directory names. Only action skills with side effects stay user-invocable.
+
 ## Process
 
 ### 1. Scan for existing configuration
@@ -32,7 +42,7 @@ For each discovered item, classify it:
 |----------|----------|--------|
 | **→ Skill** | Task instructions, domain knowledge, workflows | Convert to `.claude/skills/<name>/SKILL.md` |
 | **→ Hook** | Deterministic enforcement ("don't do X", "always use Y") | Create bash script in `.claude/hooks/enforce/` |
-| **→ Keep in CLAUDE.md** | Always-on personality, communication style, core principles | Leave in CLAUDE.md |
+| **→ Keep in AGENTS.md** | Always-on project context, communication style, core principles | Leave in AGENTS.md |
 | **→ Cut** | Redundant, outdated, discoverable from codebase | Remove |
 
 For skills, additionally determine:
@@ -79,5 +89,5 @@ Only after approval:
 
 - List all new skills: `ls -la .claude/skills/*/SKILL.md`
 - Check hooks are executable: `ls -la .claude/hooks/enforce/`
-- Verify CLAUDE.md line count: `wc -l .claude/CLAUDE.md`
+- Verify AGENTS.md line count: `wc -l AGENTS.md`
 - Test a skill invocation: suggest user try `/skill-name`
