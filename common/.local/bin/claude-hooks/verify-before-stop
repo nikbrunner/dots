@@ -5,7 +5,7 @@ set -e
 # (beyond what existed at session start) AND Claude actually modified files.
 #
 # Flow:
-# 1. Check transcript for file-modifying tool usage (Edit, Write, Bash)
+# 1. Check transcript for file-modifying tool usage (Edit, Write, MultiEdit, NotebookEdit)
 # 2. No file modifications → allow stop (pure Q&A, no blocking)
 # 3. File modifications + new uncommitted changes → block for verification
 # 4. Claude runs lint/test/format → stops again → stop_hook_active = true → allow
@@ -33,16 +33,11 @@ for repo in "${skip_repos[@]}"; do
 done
 
 # Check if Claude actually modified files by scanning the transcript.
-# If no file-modifying tools were used, this was just Q&A — don't block.
+# Only check for dedicated file-writing tools — Bash is too broad (git log, ls, etc.)
 if [ -n "$transcript_path" ] && [ -f "$transcript_path" ]; then
-    # Look for Edit, Write, or MultiEdit tool usage in the transcript JSONL
-    has_file_modifications=$(grep -cE '"tool_use".*"(Edit|Write|MultiEdit|NotebookEdit)"' "$transcript_path" 2>/dev/null || true)
+    has_file_modifications=$(grep -cE '"(Edit|Write|MultiEdit|NotebookEdit)"' "$transcript_path" 2>/dev/null || true)
 
-    # Also check for Bash commands that could modify files (but not read-only ones)
-    has_bash_writes=$(grep -cE '"tool_use".*"Bash"' "$transcript_path" 2>/dev/null || true)
-
-    if [ "${has_file_modifications:-0}" = "0" ] && [ "${has_bash_writes:-0}" = "0" ]; then
-        # No file-modifying tools used — pure Q&A session, allow stop
+    if [ "${has_file_modifications:-0}" = "0" ]; then
         exit 0
     fi
 fi
@@ -65,30 +60,46 @@ fi
 
 # Use a snapshot file to track pre-existing changes from session start.
 # The snapshot is keyed by repo path (hashed) so multiple repos don't collide.
+# Also track the commit hash so we refresh the baseline after commits.
 snapshot_dir="${TMPDIR:-/tmp}/claude-stop-hook"
 mkdir -p "$snapshot_dir"
 repo_hash=$(echo "$cwd" | md5 -q 2>/dev/null || echo "$cwd" | md5sum | cut -d' ' -f1)
 snapshot_file="$snapshot_dir/$repo_hash"
+head_file="$snapshot_dir/${repo_hash}.head"
 
-# First run: save snapshot of pre-existing changes and compare
+current_head=$(git -C "$cwd" rev-parse HEAD 2>/dev/null || echo "none")
+
+# Refresh baseline if HEAD moved (Claude committed something mid-session)
+if [ -f "$head_file" ]; then
+    saved_head=$(cat "$head_file")
+    if [ "$saved_head" != "$current_head" ]; then
+        # HEAD changed — Claude committed. Refresh baseline to current state.
+        echo "$current_changes" > "$snapshot_file"
+        echo "$current_head" > "$head_file"
+    fi
+fi
+
+# First run: save snapshot of pre-existing changes
 if [ ! -f "$snapshot_file" ]; then
     echo "$current_changes" > "$snapshot_file"
+    echo "$current_head" > "$head_file"
 fi
 
 baseline=$(cat "$snapshot_file")
 
-# Compare: only block if there are changes beyond the baseline
-new_changes=$(diff <(echo "$baseline") <(echo "$current_changes") 2>/dev/null || true)
+# Only block if there are NEW dirty files not in the baseline.
+# Lines starting with ">" in diff output = new entries in current_changes.
+# Ignore lines that were removed (Claude committed them) — those are fine.
+new_dirty=$(diff <(echo "$baseline") <(echo "$current_changes") 2>/dev/null | grep '^> ' || true)
 
-if [ -z "$new_changes" ]; then
-    # No new changes beyond what existed at session start — allow stop
+if [ -z "$new_dirty" ]; then
     exit 0
 fi
 
 cat <<'EOF'
 {
     "decision": "block",
-    "reason": "You have made changes during this session that are not yet committed. Before finishing, please: (1) Run the appropriate lint, format, and test commands for this project — check the project structure (package.json, deno.json, Makefile, Cargo.toml, etc.) to determine the right commands. (2) Do NOT discard, checkout, or revert any files. (3) Report your verification results to the user."
+    "reason": "You have uncommitted changes from this session. Before finishing: (1) Run lint/format/test commands appropriate for this project. (2) Do NOT discard or revert files. (3) Briefly report results to the user."
 }
 EOF
 exit 0
