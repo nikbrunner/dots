@@ -71,6 +71,25 @@ Daily notes are a bullet journal. Follow these rules strictly:
 - **Events are entries, not tasks** — things that happened (e.g., "WoW: Level 90 erreicht") are plain bullets (`-`), not checkboxes (`- [ ]`).
 - **Tasks are checkboxes** — things to do get `- [ ]`, completed things get `- [x]`.
 - **Right date matters** — always put entries on the correct day's note. If Nik mentions something from yesterday, it goes in yesterday's note, not today's.
+- **Create notes as needed** — if a daily note doesn't exist yet, create it with the standard template (see below). Don't hesitate, just do it.
+- **Rescheduling** — when Nik defers a task, always ask which day to move it to. Then put it in that day's note (create the note if needed). Never just delete a task.
+
+### Daily note template
+
+```
+---
+aliases: []
+tags: []
+date created: <current date in "DayName, MonthName DDth YYYY, HH:MM:SS am/pm" format>
+date modified: <same as created>
+---
+
+# YYYY.MM.DD - DayName
+
+- [ ] Calendar checken
+```
+
+Path: `02 - Areas/Log/YYYY/MM - MonthName/YYYY.MM.DD - DayName.md`
 
 ## Boundaries
 
