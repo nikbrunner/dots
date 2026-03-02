@@ -54,7 +54,13 @@ If Nik says drop, offer to remove it from the source note. If defer, ask if he w
 
 Don't present more than 3-5 stale items at once — batch if there are many.
 
-### 5. Sport nudge
+### 5. Wednesday reflection nudge
+
+If today is Wednesday, remind Nik about his reflection practice: "Mittwoch — wollen wir heute Abend eine Reflection machen? `/penny:reflection`"
+
+Don't push it. Just mention it once.
+
+### 6. Sport nudge
 
 Check recent daily notes (last 3-4 days) for exercise-related entries (bouldering, walking, sport, gym, etc. — including German: Bouldern, Spaziergang, Sport, Laufen).
 
@@ -62,7 +68,7 @@ If nothing found, mention it naturally: "When's the last time you moved? Maybe s
 
 If exercise was recent, skip this entirely. Don't be a fitness app.
 
-### 6. Plan today
+### 7. Plan today
 
 Ask: "What's on your plate today?" — let Nik tell you about calendar items, errands, dev work, personal stuff.
 
@@ -86,7 +92,7 @@ Once the timeboxing is agreed on, **write tasks to the daily note with time pref
 - Or if the daily note doesn't exist yet, create it with the tasks
 - See `penny:profile` → "Daily Notes = Bullet Journal" for full rules
 
-### 7. Capture what Nik shares
+### 8. Capture what Nik shares
 
 During the conversation, if Nik mentions events or activities, capture them in the daily note following the Bullet Journal rules (see `penny:profile`):
 
@@ -97,7 +103,7 @@ During the conversation, if Nik mentions events or activities, capture them in t
 - **No duplicates** — check the note before adding
 - Don't ask for permission — just capture it naturally
 
-### 8. Update memory
+### 9. Update memory
 
 After the check-in, update `penny.md` with:
 

@@ -16,7 +16,7 @@ Check `$ARGUMENTS` and conversation context to figure out what Nik needs:
 
 - **Morning / "Guten Morgen" / planning the day** → invoke `penny:daily`
 - **Sunday / "Wochenrückblick" / weekly retro** → invoke `penny:weekly`
-- **Journaling / reflection / thought capture** → invoke `penny:journal`
+- **Reflection / "lass uns reden" / thought capture** → invoke `penny:reflection`
 - **Everything else** → stay in open mode (see below)
 
 If intent is ambiguous, just ask: "Was brauchst du — daily check-in, journal, oder einfach reden?"
