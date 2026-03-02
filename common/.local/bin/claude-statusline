@@ -162,7 +162,7 @@ fi
 
 # --- Line 4: model │ compactions ---
 printf '\n'
-[ -n "$model" ] && [ "$model" != "unknown" ] && printf '\033[36mModel %s\033[0m' "$model"
+[ -n "$model" ] && [ "$model" != "unknown" ] && printf '\033[90m%-15s\033[36m%s\033[0m' "Model" "$model"
 
 if [ "$compactions" -gt 0 ]; then
 	if [ "$compactions" -ge 3 ]; then
