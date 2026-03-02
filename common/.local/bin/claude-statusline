@@ -151,7 +151,7 @@ fi
 [ -z "$task_title" ] && task_title="Undefined task"
 
 # --- Line 1: path ---
-printf '\033[90m%s\033[0m' "$display_dir"
+printf '\033[1;90m%s\033[0m' "$display_dir"
 
 # --- Line 2: task │ PR title ---
 printf '\n'
