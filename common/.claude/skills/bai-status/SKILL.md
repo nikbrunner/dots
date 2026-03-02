@@ -47,23 +47,23 @@ Examples:
 [DEV-123] Implement theme generator
   Team: Development | Project: Black Atom - 1.0 | P2
   Blocks: DEV-124, DEV-125
-  linear://black-atom-industries/issue/DEV-123/implement-theme-generator
+  https://linear.app/black-atom-industries/issue/DEV-123/implement-theme-generator
 
 ### Todo
 
 [DEV-126] Write README
   Team: Development | Project: Black Atom - 1.0 | P3
-  linear://black-atom-industries/issue/DEV-126/write-readme
+  https://linear.app/black-atom-industries/issue/DEV-126/write-readme
 
 ### Backlog
 
 [DEV-130] Core Creator MVP
   Team: Development | Project: Core Creator | P4
-  linear://black-atom-industries/issue/DEV-130/core-creator-mvp
+  https://linear.app/black-atom-industries/issue/DEV-130/core-creator-mvp
 ```
 
 ## Notes
 
 - Use `get_issue` with `includeRelations: true` to show blocking relationships
 - Highlight any blocked issues clearly
-- **URL format**: Always show issue links as `linear://` app URLs (replace `https://linear.app/` with `linear://` from the API's `url` field)
+- **URL format**: Always show issue links as `https://linear.app/` web URLs (use the `url` field from the API directly)

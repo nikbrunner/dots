@@ -41,11 +41,11 @@ Examples:
 ```
 Closed [DEV-123]: Implement theme generator
 Status: In Progress → Done
-linear://black-atom-industries/issue/DEV-123/implement-theme-generator
+https://linear.app/black-atom-industries/issue/DEV-123/implement-theme-generator
 
 This unblocks:
-- [DEV-124] Publish to npm — linear://black-atom-industries/issue/DEV-124/publish-to-npm
-- [DEV-125] Update documentation — linear://black-atom-industries/issue/DEV-125/update-documentation
+- [DEV-124] Publish to npm — https://linear.app/black-atom-industries/issue/DEV-124/publish-to-npm
+- [DEV-125] Update documentation — https://linear.app/black-atom-industries/issue/DEV-125/update-documentation
 ```
 
 or with comment:
@@ -54,7 +54,7 @@ or with comment:
 Closed [DEV-123]: Old feature request
 Status: Backlog → Canceled
 Comment: "No longer needed after architecture change"
-linear://black-atom-industries/issue/DEV-123/old-feature-request
+https://linear.app/black-atom-industries/issue/DEV-123/old-feature-request
 ```
 
 ## Notes
@@ -62,4 +62,4 @@ linear://black-atom-industries/issue/DEV-123/old-feature-request
 - Check for issues this was blocking and highlight them
 - Use "Canceled" status for won't-do items
 - Reference related commits if closing after implementation
-- **URL format**: Always show issue links as `linear://` app URLs (replace `https://linear.app/` with `linear://` from the API's `url` field)
+- **URL format**: Always show issue links as `https://linear.app/` web URLs (use the `url` field from the API directly)

@@ -61,7 +61,7 @@ Examples:
 Created issue:
 [DEV-127] Fix theme contrast in dark mode
 Team: Development | Project: Black Atom - 1.0 | P3
-linear://black-atom-industries/issue/DEV-127/fix-theme-contrast-in-dark-mode
+https://linear.app/black-atom-industries/issue/DEV-127/fix-theme-contrast-in-dark-mode
 ```
 
 ## Notes
@@ -69,4 +69,4 @@ linear://black-atom-industries/issue/DEV-127/fix-theme-contrast-in-dark-mode
 - Always suggest a project for new issues (usually Black Atom - 1.0)
 - If creating multiple related issues, suggest setting up blockedBy relations
 - Push back on team choice if it seems mismatched (e.g., code work assigned to Design)
-- **URL format**: Always show issue links as `linear://` app URLs (replace `https://linear.app/` with `linear://` from the API's `url` field)
+- **URL format**: Always show issue links as `https://linear.app/` web URLs (use the `url` field from the API directly)
