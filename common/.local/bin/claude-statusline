@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
 # Claude Code statusline script
-# 3-line layout:
+# 4-line layout:
 #   Line 1: project path │ git branch
 #   Line 2: model │ duration │ compactions
 #   Line 3: context bar │ percentage │ token counts
+#   Line 4: 5hr usage │ 7-day usage (from OAuth API, cached 60s)
 
 # Read JSON input from Claude Code
 input=$(cat)
@@ -78,8 +79,11 @@ fi
 # Separator
 sep="\033[90m │ \033[0m"
 
+# Shorten home directory to ~
+display_dir="${dir/#$HOME/\~}"
+
 # --- Line 1: path │ git branch ---
-printf '\033[90m%s\033[0m' "$dir"
+printf '\033[90m%s\033[0m' "$display_dir"
 [ -n "$branch" ] && printf '%b\033[32m\ue725 %s\033[0m' "$sep" "$branch"
 
 # --- Line 2: model │ duration │ compactions ---
@@ -100,13 +104,114 @@ fi
 # --- Line 3: context bar │ percentage │ token counts ---
 if [ "$context_max" -gt 0 ] 2>/dev/null; then
 	printf '\n'
+	printf '\033[90m%-15s\033[0m' "Context"
 	printf '%b' "$bar"
 
 	if [ "$percent" -ge 75 ]; then
-		printf ' \033[31m%d%%\033[0m \033[31m⛽\033[0m' "$percent"
+		printf ' \033[31m%3d%%\033[0m  \033[31m⛽\033[0m' "$percent"
 	else
-		printf ' %d%%' "$percent"
+		printf ' %3d%%' "$percent"
 	fi
 
-	printf '%b\033[90m%dk / %dk\033[0m' "$sep" "$used_k" "$max_k"
+	printf '  \033[90m%dk / %dk Tokens\033[0m' "$used_k" "$max_k"
+fi
+
+# --- Lines 4-5: 5hr and 7-day usage (OAuth API with caching) ---
+USAGE_CACHE="/tmp/claude-statusline-usage.json"
+USAGE_CACHE_TTL=60
+
+fetch_usage() {
+	local creds token response
+	creds=$(security find-generic-password -s "Claude Code-credentials" -w 2>/dev/null) || return 1
+	token=$(echo "$creds" | jq -r '.claudeAiOauth.accessToken') || return 1
+	[ -z "$token" ] || [ "$token" = "null" ] && return 1
+	response=$(curl -s --max-time 3 "https://api.anthropic.com/api/oauth/usage" \
+		-H "Authorization: Bearer $token" \
+		-H "anthropic-beta: oauth-2025-04-20" \
+		-H "Content-Type: application/json" 2>/dev/null) || return 1
+	echo "$response" | jq -e '.five_hour' >/dev/null 2>&1 || return 1
+	echo "$response" >"$USAGE_CACHE"
+}
+
+# Refresh cache if stale
+if [ ! -f "$USAGE_CACHE" ] || [ $(($(date +%s) - $(stat -f%m "$USAGE_CACHE" 2>/dev/null || echo 0))) -gt $USAGE_CACHE_TTL ]; then
+	fetch_usage 2>/dev/null &
+fi
+
+# Build usage bar (same style as context bar)
+usage_bar() {
+	local pct=$1 width=10
+	local fill=$((pct * width / 100))
+	[ "$pct" -gt 0 ] && [ "$fill" -eq 0 ] && fill=1
+	[ "$fill" -gt "$width" ] && fill=$width
+	local emp=$((width - fill))
+
+	local color
+	if [ "$pct" -lt 50 ]; then
+		color="\033[32m"
+	elif [ "$pct" -lt 75 ]; then
+		color="\033[33m"
+	else
+		color="\033[31m"
+	fi
+
+	printf '%b' "$color"
+	for ((i = 0; i < fill; i++)); do printf '█'; done
+	printf '\033[90m'
+	for ((i = 0; i < emp; i++)); do printf '░'; done
+	printf '\033[0m'
+}
+
+# Format ISO reset time to local human-readable
+format_reset() {
+	local iso=$1
+	# Strip fractional seconds and timezone for macOS date parsing
+	local clean
+	clean=$(echo "$iso" | sed 's/\.[0-9]*+/ +/' | sed 's/+\([0-9][0-9]\):\([0-9][0-9]\)/+\1\2/')
+	local epoch
+	epoch=$(date -jf "%Y-%m-%dT%H:%M:%S %z" "$clean" +%s 2>/dev/null) || return 1
+	local now
+	now=$(date +%s)
+	local diff=$((epoch - now))
+
+	if [ "$diff" -le 0 ]; then
+		printf 'now'
+	elif [ "$diff" -lt 3600 ]; then
+		printf '%dm' $((diff / 60))
+	elif [ "$diff" -lt 86400 ]; then
+		# Today or soon — show time
+		date -jf "%Y-%m-%dT%H:%M:%S %z" "$clean" "+%-I:%M%p" 2>/dev/null | tr '[:upper:]' '[:lower:]'
+	else
+		# Further out — show date + time
+		date -jf "%Y-%m-%dT%H:%M:%S %z" "$clean" "+%b %-d, %-I:%M%p" 2>/dev/null | tr '[:upper:]' '[:lower:]'
+	fi
+}
+
+if [ -f "$USAGE_CACHE" ]; then
+	u5=$(jq -r '.five_hour.utilization // empty' "$USAGE_CACHE" 2>/dev/null | cut -d. -f1)
+	u7=$(jq -r '.seven_day.utilization // empty' "$USAGE_CACHE" 2>/dev/null | cut -d. -f1)
+	r5=$(jq -r '.five_hour.resets_at // empty' "$USAGE_CACHE" 2>/dev/null)
+	r7=$(jq -r '.seven_day.resets_at // empty' "$USAGE_CACHE" 2>/dev/null)
+
+	if [ -n "$u5" ]; then
+		printf '\n'
+		printf '\033[90m%-15s\033[0m' "Current Limit"
+		usage_bar "$u5"
+		printf ' %3d%%' "$u5"
+		if [ -n "$r5" ]; then
+			reset_str=$(format_reset "$r5")
+			[ -n "$reset_str" ] && printf '  \033[90mresets %s\033[0m' "$reset_str"
+		fi
+	fi
+
+	if [ -n "$u7" ]; then
+		printf '\n'
+		printf '\033[90m%-15s\033[0m' "Weekly Limit"
+		usage_bar "$u7"
+		printf ' %3d%%' "$u7"
+		if [ -n "$r7" ]; then
+			reset_str=$(format_reset "$r7")
+			[ -n "$reset_str" ] && printf '  \033[90mresets %s\033[0m' "$reset_str"
+		fi
+	fi
 fi
