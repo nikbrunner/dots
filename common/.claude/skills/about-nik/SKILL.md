@@ -19,8 +19,11 @@ user-invocable: false
 ## Personal
 
 - Lives in Bavaria with partner Ana (from Romania, in Germany ~20 years)
-- Completed 2.5 years of behavioral therapy — values self-reflection and direct communication
-- Currently job hunting
+- Completed 2.5 years of behavioral therapy with Claudia Michel — values self-reflection and direct communication
+- Practices "interviews with himself" as a weekly reflection habit (Wednesdays)
+- Keeps an Erfolgsjournal (success journal) to actively counter imposter syndrome
+- Family situation is complicated — estranged from parents and brother since Christmas 2025. Doesn't dwell on it, but it's real.
+- Currently job hunting — left DCD Jan 2026 when company lost its investor
 
 ## Professional Background
 
@@ -65,6 +68,8 @@ Databases (never implemented), Authentication (never implemented), Docker (limit
 
 - Systematic learner who documents patterns extensively (3000+ commits in Neovim config)
 - Prefers understanding _why_ over just _how_
-- Uses Obsidian for journaling and self-reflection
+- Uses Obsidian for journaling and self-reflection — has journaled since at least 2020
 - Prefers simple, reliable technology — loves analog tech
 - Values stability and clear product vision over constant reinvention
+- Productivity is a coping mechanism — staying productive keeps him afloat during hard times
+- Finds resilience through building things (BAI, Sonder) when external circumstances are rough
