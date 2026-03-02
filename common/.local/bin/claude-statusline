@@ -49,21 +49,31 @@ fi
 # Git info
 branch=$(git -C "$dir" branch --show-current 2>/dev/null)
 
-# Git status summary (short)
-git_status=""
+# Git status: diff stats (insertions/deletions/modified files)
+git_summary=""
 if [ -n "$branch" ]; then
-	staged=$(git -C "$dir" diff --cached --numstat 2>/dev/null | wc -l | tr -d ' ')
-	unstaged=$(git -C "$dir" diff --numstat 2>/dev/null | wc -l | tr -d ' ')
+	# Count changed files and line stats
+	staged_files=$(git -C "$dir" diff --cached --numstat 2>/dev/null)
+	unstaged_files=$(git -C "$dir" diff --numstat 2>/dev/null)
 	untracked=$(git -C "$dir" ls-files --others --exclude-standard 2>/dev/null | wc -l | tr -d ' ')
-	total=$((staged + unstaged + untracked))
-	if [ "$total" -eq 0 ]; then
-		git_status="\033[32m✓\033[0m"
+
+	# Combine staged + unstaged for total stats
+	all_changes=$(printf '%s\n%s' "$staged_files" "$unstaged_files" | grep -v '^$')
+	if [ -n "$all_changes" ]; then
+		added=$(echo "$all_changes" | awk '{s+=$1} END {print s+0}')
+		deleted=$(echo "$all_changes" | awk '{s+=$2} END {print s+0}')
+		changed=$(echo "$all_changes" | wc -l | tr -d ' ')
+		total_files=$((changed + untracked))
+
+		parts="${total_files} changed"
+		[ "$added" -gt 0 ] && parts="${parts}, +${added}"
+		[ "$deleted" -gt 0 ] && parts="${parts}, -${deleted}"
+		[ "$untracked" -gt 0 ] && parts="${parts}, ${untracked} new"
+		git_summary="\033[32m\ue725 ${branch}\033[0m\033[90m, ${parts}\033[0m"
+	elif [ "$untracked" -gt 0 ]; then
+		git_summary="\033[32m\ue725 ${branch}\033[0m\033[90m, ${untracked} new\033[0m"
 	else
-		parts=""
-		[ "$staged" -gt 0 ] && parts="+${staged}"
-		[ "$unstaged" -gt 0 ] && parts="${parts:+$parts }~${unstaged}"
-		[ "$untracked" -gt 0 ] && parts="${parts:+$parts }?${untracked}"
-		git_status="\033[33m${parts}\033[0m"
+		git_summary="\033[32m\ue725 ${branch}\033[0m\033[90m, clean\033[0m"
 	fi
 fi
 
@@ -140,27 +150,29 @@ if [ -n "$branch" ] && [ -f "${dir}/.claude/tasks/${branch}" ]; then
 fi
 [ -z "$task_title" ] && task_title="Undefined task"
 
-# --- Line 1: path │ git branch - status ---
+# --- Line 1: path ---
 printf '\033[90m%s\033[0m' "$display_dir"
-if [ -n "$branch" ]; then
-	printf '%b\033[32m\ue725 %s\033[0m' "$sep" "$branch"
-	[ -n "$git_status" ] && printf ' %b' "$git_status"
-fi
 
 # --- Line 2: task │ PR title ---
 printf '\n'
-printf '\033[97m%s\033[0m' "$task_title"
+printf '\033[90m%-15s\033[97m%s\033[0m' "Task" "$task_title"
 if [ -n "$pr_title" ]; then
 	printf '%b\033[90mPR#%s\033[0m \033[37m%s\033[0m' "$sep" "$pr_number" "$pr_title"
 fi
 
-# --- Line 3: last commit ---
-if [ -n "$last_commit" ]; then
+# --- Line 3: git status ---
+if [ -n "$git_summary" ]; then
 	printf '\n'
-	printf '\033[90m%s\033[0m' "$last_commit"
+	printf '\033[90m%-15s\033[0m%b' "Git" "$git_summary"
 fi
 
-# --- Line 4: model │ compactions ---
+# --- Line 4: last commit ---
+if [ -n "$last_commit" ]; then
+	printf '\n'
+	printf '\033[90m%-15s%s\033[0m' "Last Commit" "$last_commit"
+fi
+
+# --- Line 5: model │ compactions ---
 printf '\n'
 [ -n "$model" ] && [ "$model" != "unknown" ] && printf '\033[90m%-15s\033[36m%s\033[0m' "Model" "$model"
 
