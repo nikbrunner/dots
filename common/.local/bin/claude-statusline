@@ -252,10 +252,10 @@ format_reset() {
 		printf '%dm' $((diff / 60))
 	elif [ "$diff" -lt 86400 ]; then
 		# Today or soon — show time
-		date -jf "%Y-%m-%dT%H:%M:%S %z" "$clean" "+%-I:%M%p" 2>/dev/null | tr '[:upper:]' '[:lower:]'
+		date -jf "%Y-%m-%dT%H:%M:%S %z" "$clean" "+%H:%M" 2>/dev/null
 	else
 		# Further out — show date + time
-		date -jf "%Y-%m-%dT%H:%M:%S %z" "$clean" "+%b %-d, %-I:%M%p" 2>/dev/null | tr '[:upper:]' '[:lower:]'
+		date -jf "%Y-%m-%dT%H:%M:%S %z" "$clean" "+%b %-d, %H:%M" 2>/dev/null
 	fi
 }
 
