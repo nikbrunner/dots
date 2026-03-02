@@ -67,12 +67,10 @@ if [ -n "$branch" ]; then
 	fi
 fi
 
-# Last commit message (truncated with ellipsis if needed)
-last_commit_full=$(git -C "$dir" log -1 --format='%s' 2>/dev/null)
-if [ "${#last_commit_full}" -gt 80 ]; then
-	last_commit="${last_commit_full:0:77}..."
-else
-	last_commit="$last_commit_full"
+# Last commit message (truncated at 50 chars)
+last_commit=$(git -C "$dir" log -1 --format='%s' 2>/dev/null)
+if [ "${#last_commit}" -gt 50 ]; then
+	last_commit="${last_commit:0:47}..."
 fi
 
 # Context progress bar + token counts
@@ -162,11 +160,9 @@ if [ -n "$last_commit" ]; then
 	printf '\033[90m%s\033[0m' "$last_commit"
 fi
 
-# --- Line 3: model │ duration │ compactions ---
+# --- Line 4: model │ compactions ---
 printf '\n'
-[ -n "$model" ] && [ "$model" != "unknown" ] && printf '\033[36m%s\033[0m' "$model"
-
-[ -n "$duration" ] && printf '%b\033[35m%s\033[0m' "$sep" "$duration"
+[ -n "$model" ] && [ "$model" != "unknown" ] && printf '\033[36mModel %s\033[0m' "$model"
 
 if [ "$compactions" -gt 0 ]; then
 	if [ "$compactions" -ge 3 ]; then
