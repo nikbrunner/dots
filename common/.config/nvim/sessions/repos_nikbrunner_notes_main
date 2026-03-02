@@ -9,10 +9,10 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +9 01\ -\ Projects/Sonder/Sonder\ Concept.md
+badd +97 01\ -\ Projects/New\ Job\ 2026/Positions/Filen\ -\ Senior\ Full-Stack\ Developer.md
 argglobal
 %argdel
-edit 01\ -\ Projects/Sonder/Sonder\ Concept.md
+edit 01\ -\ Projects/New\ Job\ 2026/Positions/Filen\ -\ Senior\ Full-Stack\ Developer.md
 argglobal
 let s:cpo_save=&cpo
 set cpo&vim
@@ -59,7 +59,7 @@ setlocal cursorline
 setlocal cursorlineopt=both
 setlocal nodiff
 setlocal eventignorewin=
-setlocal noexpandtab
+setlocal expandtab
 if &filetype != 'markdown'
 setlocal filetype=markdown
 endif
@@ -109,7 +109,7 @@ setlocal shiftwidth=4
 setlocal signcolumn=yes
 setlocal smartindent
 setlocal nosmoothscroll
-setlocal softtabstop=-1
+setlocal softtabstop=4
 setlocal nospell
 setlocal spellcapcheck=[.?!]\\_[\\])'\"\\t\ ]\\+
 setlocal spellfile=
@@ -122,13 +122,13 @@ setlocal synmaxcol=3000
 if &syntax != ''
 setlocal syntax=
 endif
-setlocal tabstop=8
+setlocal tabstop=4
 setlocal tagfunc=v:lua.vim.lsp.tagfunc
 setlocal textwidth=85
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#01\ -\ Projects%*\ %#WinBarSeparator#/%*\ %#WinBarPath#Sonder%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#Sonder\ Concept.md%*
+setlocal winbar=%#WinBarPath#01\ -\ Projects%*\ %#WinBarSeparator#/%*\ %#WinBarPath#New\ Job\ 2026%*\ %#WinBarSeparator#/%*\ %#WinBarPath#Positions%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#Filen\ -\ Senior\ Full-Stack\ Developer.md%*
 setlocal winblend=0
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -136,11 +136,11 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal wrap
 setlocal wrapmargin=0
-let s:l = 9 - ((8 * winheight(0) + 25) / 50)
+let s:l = 97 - ((38 * winheight(0) + 22) / 45)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 9
+keepjumps 97
 normal! 0
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'

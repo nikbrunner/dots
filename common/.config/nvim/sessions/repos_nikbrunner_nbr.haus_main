@@ -9,10 +9,10 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +7 src/texts/domains/projects.de.ts
+badd +1 src/components/ControlPanel/ControlPanelColorDot.tsx
 argglobal
 %argdel
-edit src/texts/domains/projects.de.ts
+edit src/components/ControlPanel/ControlPanelColorDot.tsx
 argglobal
 setlocal keymap=
 setlocal noarabic
@@ -45,8 +45,8 @@ setlocal cursorlineopt=both
 setlocal nodiff
 setlocal eventignorewin=
 setlocal expandtab
-if &filetype != 'typescript'
-setlocal filetype=typescript
+if &filetype != 'typescriptreact'
+setlocal filetype=typescriptreact
 endif
 setlocal fixendofline
 setlocal foldcolumn=0
@@ -113,7 +113,7 @@ setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#src%*\ %#WinBarSeparator#/%*\ %#WinBarPath#texts%*\ %#WinBarSeparator#/%*\ %#WinBarPath#domains%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#projects.de.ts%*\ %#WinBarSeparator##%*\ %#WinBarSymbol#texts%*\ %#WinBarSeparator##%*\ %#WinBarSymbol#blackAtom%*\ %#WinBarSeparator##%*\ %#WinBarSymbol#web%*\ %#WinBarSeparator##%*\ %#WinBarSymbol#paragraphs%*
+setlocal winbar=%#WinBarPath#src%*\ %#WinBarSeparator#/%*\ %#WinBarPath#components%*\ %#WinBarSeparator#/%*\ %#WinBarPath#ControlPanel%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#ControlPanelColorDot.tsx%*
 setlocal winblend=0
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -121,11 +121,11 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 13 - ((12 * winheight(0) + 26) / 53)
+let s:l = 5 - ((4 * winheight(0) + 22) / 44)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 13
+keepjumps 5
 normal! 0
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
