@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 # Claude Code statusline script
-# Displays: directory (gray) + git branch (green) + context bar
+# 3-line layout:
+#   Line 1: project path │ git branch
+#   Line 2: model │ duration │ compactions
+#   Line 3: context bar │ percentage │ token counts
 
 # Read JSON input from Claude Code
 input=$(cat)
@@ -13,14 +16,13 @@ transcript=$(echo "$input" | jq -r '.transcript_path // ""')
 context_max=$(echo "$input" | jq -r '.context_window.context_window_size // 1')
 
 # Calculate actual context from current_usage
-# Formula from ccstatusline: input_tokens + cache_read + cache_creation
+# Formula: input_tokens + cache_read + cache_creation
 input_tok=$(echo "$input" | jq -r '.context_window.current_usage.input_tokens // 0')
 cache_read=$(echo "$input" | jq -r '.context_window.current_usage.cache_read_input_tokens // 0')
 cache_create=$(echo "$input" | jq -r '.context_window.current_usage.cache_creation_input_tokens // 0')
 context_used=$((input_tok + cache_read + cache_create))
 
 # Count compactions from transcript
-# Look for compact_boundary entries (actual compaction events)
 compactions=0
 if [ -n "$transcript" ] && [ -f "$transcript" ]; then
 	compactions=$(grep -c '"subtype":"compact_boundary"' "$transcript" 2>/dev/null || echo "0")
@@ -44,7 +46,7 @@ fi
 # Git branch
 branch=$(git -C "$dir" branch --show-current 2>/dev/null)
 
-# Context progress bar
+# Context progress bar + token counts
 if [ "$context_max" -gt 0 ] 2>/dev/null; then
 	percent=$((context_used * 100 / context_max))
 	bar_width=10
@@ -53,53 +55,58 @@ if [ "$context_max" -gt 0 ] 2>/dev/null; then
 	[ "$percent" -gt 0 ] && [ "$filled" -eq 0 ] && filled=1
 	empty=$((bar_width - filled))
 
-	# Color based on usage: green < 50%, yellow 50-75%, red > 75% (reserve zone)
+	# Color based on usage: green < 50%, yellow 50-75%, red > 75%
 	if [ "$percent" -lt 50 ]; then
-		color="\033[32m" # green
+		bar_color="\033[32m"
 	elif [ "$percent" -lt 75 ]; then
-		color="\033[33m" # yellow
+		bar_color="\033[33m"
 	else
-		color="\033[31m" # red - reserve zone
+		bar_color="\033[31m"
 	fi
 
-	bar="${color}"
+	bar="${bar_color}"
 	for ((i = 0; i < filled; i++)); do bar+="█"; done
 	bar+="\033[90m"
 	for ((i = 0; i < empty; i++)); do bar+="░"; done
 	bar+="\033[0m"
 
-	# Add reserve indicator when past 75% (usable threshold)
-	if [ "$percent" -ge 75 ]; then
-		context_display=" ${bar} ${percent}% \033[31m⛽\033[0m"
-	else
-		context_display=" ${bar} ${percent}%"
-	fi
+	# Token counts as rounded k values
+	used_k=$(( (context_used + 500) / 1000 ))
+	max_k=$(( (context_max + 500) / 1000 ))
 fi
 
 # Separator
 sep="\033[90m │ \033[0m"
 
-# Output: directory in gray
+# --- Line 1: path │ git branch ---
 printf '\033[90m%s\033[0m' "$dir"
-
-# Git branch in green (with icon)
 [ -n "$branch" ] && printf '%b\033[32m\ue725 %s\033[0m' "$sep" "$branch"
 
-# Context bar
-[ -n "$context_display" ] && printf '%b%b' "$sep" "$context_display"
+# --- Line 2: model │ duration │ compactions ---
+printf '\n'
+[ -n "$model" ] && [ "$model" != "unknown" ] && printf '\033[36m%s\033[0m' "$model"
 
-# Model in cyan
-[ -n "$model" ] && [ "$model" != "unknown" ] && printf '%b\033[36m%s\033[0m' "$sep" "$model"
-
-# Duration in magenta
 [ -n "$duration" ] && printf '%b\033[35m%s\033[0m' "$sep" "$duration"
 
-# Compactions (only show if > 0, yellow/red warning)
 if [ "$compactions" -gt 0 ]; then
 	if [ "$compactions" -ge 3 ]; then
-		comp_color="\033[31m" # red
+		comp_color="\033[31m"
 	else
-		comp_color="\033[33m" # yellow
+		comp_color="\033[33m"
 	fi
 	printf '%b%b⚠ %sx compact\033[0m' "$sep" "$comp_color" "$compactions"
+fi
+
+# --- Line 3: context bar │ percentage │ token counts ---
+if [ "$context_max" -gt 0 ] 2>/dev/null; then
+	printf '\n'
+	printf '%b' "$bar"
+
+	if [ "$percent" -ge 75 ]; then
+		printf ' \033[31m%d%%\033[0m \033[31m⛽\033[0m' "$percent"
+	else
+		printf ' %d%%' "$percent"
+	fi
+
+	printf '%b\033[90m%dk / %dk\033[0m' "$sep" "$used_k" "$max_k"
 fi
