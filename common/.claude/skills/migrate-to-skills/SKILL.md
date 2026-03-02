@@ -45,6 +45,17 @@ For each discovered item, classify it:
 | **→ Keep in AGENTS.md** | Always-on project context, communication style, core principles | Leave in AGENTS.md |
 | **→ Cut** | Redundant, outdated, discoverable from codebase | Remove |
 
+**"Discoverable from codebase" means CUT it.** Be aggressive. Common examples:
+- Dev commands → discoverable from `package.json`, `Makefile`, `deno.json`, etc.
+- Node/runtime version → `.nvmrc`, `.tool-versions`, `package.json#engines`
+- Path aliases → `tsconfig.json#paths`, `vite.config.*`
+- Auto-generated files → inferable from framework (e.g. TanStack Start generates route trees)
+- Architecture details → if they exist in `docs/`, don't duplicate in AGENTS.md
+- Linting/formatting config → discoverable from config files
+- Test setup → discoverable from test config and `package.json` scripts
+
+**The bar for keeping something in AGENTS.md:** Would Claude make a costly mistake without this line? If the answer is "no, it would just need to read a file first," cut it.
+
 For skills, additionally determine:
 - `user-invocable: false` — contextual skills Claude discovers and invokes automatically
 - Keep user-invocable (default) — action skills with side effects or that users trigger manually
