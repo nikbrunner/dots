@@ -1,10 +1,12 @@
 #!/usr/bin/env bash
 # Claude Code statusline script
-# 4-line layout:
-#   Line 1: project path │ git branch
-#   Line 2: model │ duration │ compactions
-#   Line 3: context bar │ percentage │ token counts
-#   Line 4: 5hr usage │ 7-day usage (from OAuth API, cached 60s)
+# Layout:
+#   Line 1: path │ git branch - status
+#   Line 2: task │ PR title │ last commit
+#   Line 3: model │ duration │ compacts
+#   Line 4: context bar
+#   Line 5: current limit bar
+#   Line 6: weekly limit bar
 
 # Read JSON input from Claude Code
 input=$(cat)
@@ -44,8 +46,34 @@ if [ "$duration_ms" -gt 0 ] 2>/dev/null; then
 	fi
 fi
 
-# Git branch
+# Git info
 branch=$(git -C "$dir" branch --show-current 2>/dev/null)
+
+# Git status summary (short)
+git_status=""
+if [ -n "$branch" ]; then
+	staged=$(git -C "$dir" diff --cached --numstat 2>/dev/null | wc -l | tr -d ' ')
+	unstaged=$(git -C "$dir" diff --numstat 2>/dev/null | wc -l | tr -d ' ')
+	untracked=$(git -C "$dir" ls-files --others --exclude-standard 2>/dev/null | wc -l | tr -d ' ')
+	total=$((staged + unstaged + untracked))
+	if [ "$total" -eq 0 ]; then
+		git_status="\033[32m✓\033[0m"
+	else
+		parts=""
+		[ "$staged" -gt 0 ] && parts="+${staged}"
+		[ "$unstaged" -gt 0 ] && parts="${parts:+$parts }~${unstaged}"
+		[ "$untracked" -gt 0 ] && parts="${parts:+$parts }?${untracked}"
+		git_status="\033[33m${parts}\033[0m"
+	fi
+fi
+
+# Last commit message (truncated with ellipsis if needed)
+last_commit_full=$(git -C "$dir" log -1 --format='%s' 2>/dev/null)
+if [ "${#last_commit_full}" -gt 80 ]; then
+	last_commit="${last_commit_full:0:77}..."
+else
+	last_commit="$last_commit_full"
+fi
 
 # Context progress bar + token counts
 if [ "$context_max" -gt 0 ] 2>/dev/null; then
@@ -82,11 +110,59 @@ sep="\033[90m │ \033[0m"
 # Shorten home directory to ~
 display_dir="${dir/#$HOME/\~}"
 
-# --- Line 1: path │ git branch ---
-printf '\033[90m%s\033[0m' "$display_dir"
-[ -n "$branch" ] && printf '%b\033[32m\ue725 %s\033[0m' "$sep" "$branch"
+# PR title (cached, background fetch)
+PR_CACHE="/tmp/claude-statusline-pr-$(echo "$dir" | md5 -q).json"
+PR_CACHE_TTL=120
 
-# --- Line 2: model │ duration │ compactions ---
+fetch_pr() {
+	local pr_json
+	pr_json=$(gh pr view --json title,number --jq '"\(.number)\t\(.title)"' 2>/dev/null) || return 1
+	[ -z "$pr_json" ] && return 1
+	echo "$pr_json" >"$PR_CACHE"
+}
+
+# Refresh PR cache if stale (background)
+if [ -n "$branch" ] && [ "$branch" != "main" ] && [ "$branch" != "master" ]; then
+	if [ ! -f "$PR_CACHE" ] || [ $(($(date +%s) - $(stat -f%m "$PR_CACHE" 2>/dev/null || echo 0))) -gt $PR_CACHE_TTL ]; then
+		(cd "$dir" && fetch_pr) 2>/dev/null &
+	fi
+fi
+
+pr_title=""
+pr_number=""
+if [ -f "$PR_CACHE" ]; then
+	pr_number=$(cut -f1 "$PR_CACHE" 2>/dev/null)
+	pr_title=$(cut -f2 "$PR_CACHE" 2>/dev/null | head -c 40)
+fi
+
+# Task title from .claude/tasks/<branch> file in project
+task_title=""
+if [ -n "$branch" ] && [ -f "${dir}/.claude/tasks/${branch}" ]; then
+	task_title=$(head -1 "${dir}/.claude/tasks/${branch}" | head -c 50)
+fi
+[ -z "$task_title" ] && task_title="Undefined task"
+
+# --- Line 1: path │ git branch - status ---
+printf '\033[90m%s\033[0m' "$display_dir"
+if [ -n "$branch" ]; then
+	printf '%b\033[32m\ue725 %s\033[0m' "$sep" "$branch"
+	[ -n "$git_status" ] && printf ' %b' "$git_status"
+fi
+
+# --- Line 2: task │ PR title ---
+printf '\n'
+printf '\033[97m%s\033[0m' "$task_title"
+if [ -n "$pr_title" ]; then
+	printf '%b\033[90mPR#%s\033[0m \033[37m%s\033[0m' "$sep" "$pr_number" "$pr_title"
+fi
+
+# --- Line 3: last commit ---
+if [ -n "$last_commit" ]; then
+	printf '\n'
+	printf '\033[90m%s\033[0m' "$last_commit"
+fi
+
+# --- Line 3: model │ duration │ compactions ---
 printf '\n'
 [ -n "$model" ] && [ "$model" != "unknown" ] && printf '\033[36m%s\033[0m' "$model"
 
@@ -98,7 +174,7 @@ if [ "$compactions" -gt 0 ]; then
 	else
 		comp_color="\033[33m"
 	fi
-	printf '%b%b⚠ %sx compact\033[0m' "$sep" "$comp_color" "$compactions"
+	printf '%b%bCompacts %sx\033[0m' "$sep" "$comp_color" "$compactions"
 fi
 
 # --- Line 3: context bar │ percentage │ token counts ---
