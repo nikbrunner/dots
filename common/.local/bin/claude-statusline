@@ -143,19 +143,17 @@ if [ -f "$PR_CACHE" ]; then
 	pr_title=$(cut -f2 "$PR_CACHE" 2>/dev/null | head -c 40)
 fi
 
-# Task title from .claude/tasks/<branch> file in project
-task_title=""
-if [ -n "$branch" ] && [ -f "${dir}/.claude/tasks/${branch}" ]; then
-	task_title=$(head -1 "${dir}/.claude/tasks/${branch}" | head -c 50)
-fi
-[ -z "$task_title" ] && task_title="Undefined task"
+# Session name from Claude Code JSON input
+session_name=$(echo "$input" | jq -r '.session_name // ""')
 
 # --- Line 1: path ---
 printf '\033[1;90m%s\033[0m' "$display_dir"
 
-# --- Line 2: task ---
-printf '\n'
-printf '\033[90m%-15s\033[97m%s\033[0m' "Task" "$task_title"
+# --- Line 2: session ---
+if [ -n "$session_name" ]; then
+	printf '\n'
+	printf '\033[90m%-15s\033[97m%s\033[0m' "Session" "$session_name"
+fi
 
 # --- Line 3: PR ---
 if [ -n "$pr_title" ]; then
