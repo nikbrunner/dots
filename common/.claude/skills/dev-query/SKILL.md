@@ -16,7 +16,7 @@ No default library -- choose per project. The separation principle is what matte
 
 ## Query Organization
 
-Three complexity levels depending on API surface size. See `references/query-patterns.md` for detailed examples.
+Three complexity levels depending on API surface size. See `query-patterns.md` for detailed examples.
 
 1. **One file per endpoint** -- smallest projects, queries + mutations co-located
 2. **One folder per topic** -- medium projects, separate files per query/mutation
@@ -35,6 +35,6 @@ TKDodo's Practical React Query blog: https://tkdodo.eu/blog/practical-react-quer
 
 ## References
 
-- For query organization examples, see `references/query-patterns.md`
-- For fetch wrapper pattern, see `references/fetch-wrapper.md`
-- For state separation details, see `references/state-separation.md`
+- For query organization examples, see `query-patterns.md`
+- For fetch wrapper pattern, see `fetch-wrapper.md`
+- For state separation details, see `state-separation.md`

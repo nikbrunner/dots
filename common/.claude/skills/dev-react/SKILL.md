@@ -34,9 +34,9 @@ Fetching and data processing happen in Containers, Hooks, or Partials -- never i
 
 ## References
 
-- For component examples and anti-patterns, see `references/component-patterns.md`
-- For folder structure conventions, see `references/folder-structure.md`
-- For hook patterns, see `references/hooks-as-logic-layer.md`
+- For component examples and anti-patterns, see `component-patterns.md`
+- For folder structure conventions, see `folder-structure.md`
+- For hook patterns, see `hooks-as-logic-layer.md`
 
 ### Key Influences
 

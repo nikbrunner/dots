@@ -32,4 +32,4 @@ Test what matters. Logic gets unit tests. Components get visual tests. User flow
 
 ## References
 
-- For setup patterns and examples, see `references/patterns.md`
+- For setup patterns and examples, see `patterns.md`

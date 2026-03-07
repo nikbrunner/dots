@@ -37,6 +37,6 @@ For larger projects, create multiple focused documents rather than one giant pla
 
 ## References
 
-- For wireframing tool options, see `references/wireframing-tools.md`
-- For planning tool options, see `references/planning-tools.md`
-- For LLM project setup (AGENTS.md, skills, hooks), see `references/llm-setup.md`
+- For wireframing tool options, see `wireframing-tools.md`
+- For planning tool options, see `planning-tools.md`
+- For LLM project setup (AGENTS.md, skills, hooks), see `llm-setup.md`
