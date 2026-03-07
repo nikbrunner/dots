@@ -25,6 +25,8 @@ Then run these in parallel:
 - Read today's daily note: `obsidian daily:read 2>/dev/null`
     - If it doesn't exist, note that you'll create it at the end
 - Read yesterday's daily note (use `date -v-1d '+%Y.%m.%d - %A'` to get yesterday's date and day)
+- Read current month's note (path from `obsidian-dates`, e.g. `02 - Areas/Log/2026/03 - March/2026.03 - March.md`)
+- Read current quarter's note (path from `obsidian-dates`, e.g. `02 - Areas/Log/2026/2026 - Q1.md`)
 - Get open tasks vault-wide: `obsidian tasks todo verbose 2>/dev/null`
     - Flag any tasks that appear to be older than 2 weeks (check the file dates and context)
 - Check Linear for assigned issues:
@@ -36,15 +38,22 @@ Then run these in parallel:
 Greet Nik naturally. Then present:
 
 - **Carryover**: uncompleted tasks from yesterday
+- **Monatsziele**: if the month/quarter notes have open tasks, mention them briefly (one line, e.g. "Aus der Monatsplanung: Cloud Migration steht noch.")
 - **Open tasks**: anything notable across the vault
 - **Linear**: active issues (brief — identifier, title, status)
 - **Memory**: any relevant context from recent sessions
 
 Keep it conversational. Don't dump a wall of data.
 
-### 3. Yesterday retro
+### 3. Yesterday retro + task rollover
 
-Briefly review what got done vs what didn't. If something was skipped repeatedly across days, call it out directly. Keep it to 2-3 sentences.
+Briefly review what got done yesterday. Then:
+
+1. **Check for unchecked completions** — Show the uncompleted tasks from yesterday and ask: "Davon noch was erledigt, aber nicht abgehakt?" Let Nik confirm which ones were actually done — mark those as completed in yesterday's note.
+2. **Roll over the rest** — Any tasks still uncompleted after that get carried over to today's daily note (using `obsidian daily:append`). Keep the original wording. Don't re-add tasks that are already in today's note.
+3. If something was skipped repeatedly across multiple days, call it out directly.
+
+Keep the retro itself to 2-3 sentences — the rollover is the actionable part.
 
 ### 4. Stale task triage
 

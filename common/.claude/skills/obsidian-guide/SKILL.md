@@ -99,6 +99,10 @@ For periodic note path patterns and date formatting rules, load the `obsidian-da
 
 If the CLI is unavailable, fall back to reading/writing files directly. Load `obsidian-dates` for path patterns. The CLI is preferred because it handles path resolution, template variables, and Obsidian plugin integration (tasks, properties, etc.).
 
+## Wikilinks
+
+**Obsidian wikilinks resolve by filename, NOT by heading or title.** A file at `01 - Projects/Self-Hosting/Calendar.md` is linked as `[[Calendar]]`, not `[[Calendar — Self-Hosted CalDAV]]` or `[[Self-Hosting/Calendar]]`. Always use the bare filename without extension.
+
 ## Guidelines
 
 - If asked to save a conversation summary, add it with a dated headline to the conversation history file

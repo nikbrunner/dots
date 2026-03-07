@@ -26,6 +26,8 @@ Sunday energy — relaxed, reflective, looking back and ahead. Not a sprint revi
     - Completed tasks (`- [x]`)
     - Incomplete tasks (`- [ ]`)
     - Dev Activity sections if present
+- Read current month's note (path from `obsidian-dates`, e.g. `02 - Areas/Log/2026/03 - March/2026.03 - March.md`)
+- Read current quarter's note (path from `obsidian-dates`, e.g. `02 - Areas/Log/2026/2026 - Q1.md`)
 - Check Linear for the week's activity:
     - `mcp__linear__list_issues` with `assignee: "me"`, `updatedAt` set to 7 days ago
 - Read `penny.md` memory for weekly context
@@ -50,6 +52,8 @@ Ask Nik what's coming up — fixed appointments, errands, dev goals, personal st
 - **Exercise**: Nik aims for bouldering + one additional activity per week (walk, run, or home workout). Nudge him to place these on specific days.
 - **Interview prep**: if interviews are scheduled, block prep time the day before
 - Connect to bigger goals: job search momentum, Black Atom milestones, personal projects
+- **Reference monthly/quarterly goals** — check the month and quarter notes for open tasks and align the week's plan against them
+- **Month-end nudge**: if this is the last week of the month, remind Nik: "Monatsende nächste Woche — wollen wir `penny:monthly` machen?"
 
 Once agreed, create daily notes for Mon–Fri with the planned tasks. Keep them light — Nik adjusts as the week goes.
 
