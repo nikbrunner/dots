@@ -1,6 +1,6 @@
 # Dots Project Memory
 
-## Claude Code Config Architecture (2026-02-25)
+## Claude Code Config Architecture (2026-03-08)
 
 Restructured from bloated CLAUDE.md + slash commands to skills + hooks.
 
@@ -8,54 +8,41 @@ Restructured from bloated CLAUDE.md + slash commands to skills + hooks.
 
 ```
 common/.claude/
-├── CLAUDE.md              # Lean (~33 lines) — communication, blind spot rule, skill references
+├── CLAUDE.md              # Lean (~28 lines) — communication, blind spot rule, no skill refs
 ├── settings.json          # Hooks config, permissions, plugins
-├── agents/                # Superpowers plugin agents (12 files, leave alone)
+├── agents/                # 12 custom agent files (added 2026-01-12, NOT from a plugin — needs overhaul)
 ├── hooks/
 │   ├── peon-ping/         # Sound notifications
 │   └── enforce/           # Deterministic enforcement
 │       ├── semantic-commits.sh   # PreToolUse: blocks non-semantic commits
 │       └── warn-any-type.sh      # PostToolUse: warns on `: any` in TypeScript
 └── skills/
-    ├── about-nik/         # Knowledge (user-invocable: false)
-    ├── mcp-guide/         # Knowledge (user-invocable: false)
-    ├── obsidian-guide/    # Knowledge (user-invocable: false)
-    ├── dev-react/         # Component architecture + references/ (replaces react-patterns)
-    ├── dev-query/         # TanStack Query patterns + references/
-    ├── dev-typescript/    # TypeScript conventions (no references/)
-    ├── dev-testing/       # Testing approach + references/
-    ├── dev-planning/      # Planning & kickoff (renamed from dev-greenfield)
-    ├── bai-*/             # 7 Linear skills (user-invocable: false, Claude discovers)
-    ├── dots-*/            # 4 dotfiles skills (user-invocable, /dots:add etc.)
-    ├── bugs/              # Bug hunting (user-invocable: false)
-    ├── arch-review/       # Architecture review (user-invocable: false)
-    ├── are-we-done/       # Structural completeness (user-invocable, /are-we-done)
-    ├── docs/              # Documentation workflow (user-invocable, /docs)
-    ├── gh-pr-review/      # PR review (user-invocable, /gh-pr-review)
-    ├── research/          # Research (user-invocable: false, Claude discovers)
-    ├── ui-review/         # UI/UX review (user-invocable: false)
-    └── migrate-to-skills/ # Meta-skill (user-invocable, /migrate-to-skills)
+    ├── README.md              # TODOs and status tracking for skills work
+    ├── about-*/               # 7 knowledge skills (about:nik, about:bai, etc.)
+    ├── dev-*/                 # 8 dev skills (react, typescript, tanstack-query, testing, planning, bugs, arch-review, ui-review)
+    ├── bai-*/                 # 8 BAI workflow skills (bai:status, bai:commit, etc.)
+    ├── dots-*/                # 4 dotfiles skills (dots:add, dots:remove, etc.)
+    ├── penny-*/               # 5 penny skills + penny base
+    ├── browser-automation/    # agent-browser CLI usage
+    └── (others)               # are-we-done, docs, gh-pr-review, migrate-to-skills, research, mcp-guide, obsidian-guide, setup-dep-upgrade-skill
 ```
 
 ### Naming Conventions
 
-- **Namespace separator**: `:` in `name` field (e.g., `bai:status`, `dots:add`)
-- **Directory names**: `-` hyphen (e.g., `bai-status/`, `dots-add/`)
-- **No prefix**: general-purpose skills (bugs, research, arch-review)
-
-### Invocability Rules
-
-- **User-invocable (shows in / menu)**: dots:*, gh-pr-review, docs, are-we-done, migrate-to-skills
-- **Claude-only (user-invocable: false)**: bai:* (including bai:commit — auto-detects issue from branch, appends [ID] to commit, prompts status update after), bugs, arch-review, ui-review, research, dev-* (5 personal dev skills), plus knowledge skills
-- **All skills are discoverable** by Claude (no disable-model-invocation anywhere)
+- **Namespace separator**: `:` in `name` field (e.g., `about:nik`, `bai:status`, `dev:react`)
+- **Directory names**: `-` hyphen (e.g., `about-nik/`, `bai-status/`, `dev-react/`)
+- **All namespaced prefixes**: `about:`, `bai:`, `dev:`, `dev-tanstack-`, `dots:`, `penny:`
+- **TanStack skills**: use `dev-tanstack-*` directory, `dev:tanstack-*` name (avoids ts ambiguity)
 
 ### Key Decisions
 
 - **"Spinach Rule" → "Blind Spot Rule"** — Nik hated the spinach terminology
-- **DCD commands removed** — Nik no longer at DealerCenter Digital (lost investor, 2025)
 - **Sonder** — future project, anonymous storytelling platform, domain: sonder.house
-- **Agents directory stays** — superpowers plugin manages it, symlinked from dots
-- **Colon namespace works** in skill name fields despite docs saying "hyphens only"
+- **Agents directory** — manually added 2026-01-12 (not plugin-managed), needs overhaul/cleanup
+- **Colon namespace works** in skill name fields
+- **Skills have Sources of Truth sections** — link to official docs, Claude must verify before implementation
+- **browser-automation** — replaces Chrome DevTools MCP; uses agent-browser CLI via Bash
+- **Matt Pocock / AI Hero** — useful resource for Claude Code patterns: https://www.aihero.dev/posts
 
 ### Symlinks (symlinks.yml)
 
