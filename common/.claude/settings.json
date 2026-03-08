@@ -195,12 +195,13 @@
     "clangd-lsp@claude-plugins-official": true,
     "lua-lsp@claude-plugins-official": true,
     "superpowers@claude-plugins-official": true,
-    "frontend-design@claude-plugins-official": true
+    "frontend-design@claude-plugins-official": true,
+    "github@claude-plugins-official": true,
+    "typescript-lsp@claude-plugins-official": true
   },
   "alwaysThinkingEnabled": true,
   "autoUpdatesChannel": "latest",
   "feedbackSurveyState": {
     "lastShownTime": 1754313915132
-  },
-  "effortLevel": "medium"
+  }
 }
