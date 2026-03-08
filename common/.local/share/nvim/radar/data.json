@@ -17,7 +17,7 @@
             "label": "3"
           }
         ],
-        "lastAccessed": 1772450529
+        "lastAccessed": 1772534396
       }
     },
     "~/repos/black-atom-industries/radar.nvim": {
@@ -423,7 +423,18 @@
             "label": "3"
           }
         ],
-        "lastAccessed": 1772452027
+        "lastAccessed": 1772969235
+      }
+    },
+    "~/repos/nikbrunner/filen-interview": {
+      "main": {
+        "locks": [
+          {
+            "filename": "README.md",
+            "label": "1"
+          }
+        ],
+        "lastAccessed": 1772740861
       }
     },
     "~/repos/nikbrunner/nbr.haus": {
@@ -438,7 +449,7 @@
             "label": "2"
           }
         ],
-        "lastAccessed": 1772450530
+        "lastAccessed": 1772740861
       },
       "rework-structure": {
         "locks": [
@@ -452,13 +463,8 @@
     },
     "~/repos/nikbrunner/notes": {
       "main": {
-        "locks": [
-          {
-            "filename": "01 - Projects/Grill.md",
-            "label": "1"
-          }
-        ],
-        "lastAccessed": 1772452434
+        "locks": [],
+        "lastAccessed": 1772962082
       }
     },
     "~/repos/nikbrunner/wichtel-app": {
