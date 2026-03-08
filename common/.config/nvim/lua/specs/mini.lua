@@ -817,7 +817,7 @@ function M.pick()
 
     -- Workspace
     map("n", "<leader>wc",          function() MiniExtra.pickers.git_hunks({}, { window = { config = M.win_config.big } }) end, { desc = "[C]hanges" })
-    map("n", "<leader>wd",          MiniPick.registry.frecency, { desc = "[D]ocument" })
+    map("n", "<leader>wd",          function() MiniPick.builtin.files() end, { desc = "[D]ocument" })
     map("n", "<leader>wj",          function() MiniExtra.pickers.list({ scope = "jump" }) end, { desc = "[J]umps" })
     map("n", "<leader>wm",          MiniPick.registry.git_changed, { desc = "[M]odified Documents" })
     map("n", "<leader>wp",          function() MiniExtra.pickers.diagnostic() end, { desc = "[P]roblems" })
