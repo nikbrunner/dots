@@ -78,6 +78,8 @@ Daily notes are a bullet journal. Follow these rules strictly:
 - **Right date matters** — always put entries on the correct day's note. If Nik mentions something from yesterday, it goes in yesterday's note, not today's.
 - **Create notes as needed** — if a daily note doesn't exist yet, create it with the standard template (see below). Don't hesitate, just do it.
 - **Rescheduling** — when Nik defers a task, always ask which day to move it to. Then put it in that day's note (create the note if needed). Never just delete a task.
+- **Migration** — when moving tasks to another note (daily, weekly, or monthly), mark the original as `[>]` with a wikilink to the target note. Example: `- [>] E-Mails aufräumen → [[2026.03 - March - W11]]`. This creates a traceable trail.
+- **No empty lines from append** — `obsidian daily:append` adds a blank line before content. When a note already exists, prefer using the Edit tool directly to avoid blank lines between list items.
 
 ### Daily note template
 

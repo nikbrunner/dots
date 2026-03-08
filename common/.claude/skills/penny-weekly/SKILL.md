@@ -59,15 +59,37 @@ Once agreed, create daily notes for Mon–Fri with the planned tasks. Keep them 
 
 ### 4. Write to weekly note
 
-Find or create the weekly note. Use the periodic notes format from CLAUDE.md (locale week number, Sunday start).
+The retro goes into the **current week's** note (not the previous week's). The weekly note belongs to the new week; the retro looks back at the previous week.
 
-Write a `## Week Retro` section:
+Find or create the weekly note for the **current** week. Use the periodic notes format from CLAUDE.md (locale week number, Sunday start).
 
-- **Summary**: 2-3 sentences of lookback-friendly prose. Written so Nik can read it months later and remember what this week felt like.
-- **Highlights**: 3-5 bullet points of the most significant things
-- **Next week**: planned intentions and key dates
+#### Weekly note structure
 
-Format: minimal, matches Nik's style. No headers beyond `##` and `###`.
+```markdown
+# YYYY.MM - MonthName - WXX
+
+## Carryover from [[YYYY.MM - MonthName - WPrev]]
+
+- [ ] Tasks carried over from last week
+
+## [[YYYY.MM - MonthName - WPrev]] - Retro
+
+Summary paragraph (2-3 sentences, lookback-friendly prose).
+
+### Highlights
+
+- 3-5 bullet points of the most significant things
+
+### Naechste Woche
+
+- Planned intentions and key dates
+```
+
+Key rules:
+- **Heading is the current week** (W11), not the retro'd week (W10)
+- **Carryover first** — incomplete tasks from last week, with wikilink to previous weekly note
+- **Retro heading** uses a wikilink to the previous week: `## [[YYYY.MM - MonthName - WPrev]] - Retro`
+- Format: minimal, matches Nik's style. No headers beyond `##` and `###`.
 
 If the weekly note doesn't exist, check the path pattern against existing files in the month folder first. Create only if needed.
 

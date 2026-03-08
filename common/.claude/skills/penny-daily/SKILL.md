@@ -50,7 +50,7 @@ Keep it conversational. Don't dump a wall of data.
 Briefly review what got done yesterday. Then:
 
 1. **Check for unchecked completions** — Show the uncompleted tasks from yesterday and ask: "Davon noch was erledigt, aber nicht abgehakt?" Let Nik confirm which ones were actually done — mark those as completed in yesterday's note.
-2. **Roll over the rest** — Any tasks still uncompleted after that get carried over to today's daily note (using `obsidian daily:append`). Keep the original wording. Don't re-add tasks that are already in today's note.
+2. **Roll over the rest** — Any tasks still uncompleted after that get carried over to today's daily note. Keep the original wording. Don't re-add tasks that are already in today's note. Mark migrated tasks in yesterday's note as `[>]` with a wikilink to the target (e.g., `→ [[2026.03.08 - Sunday]]` or `→ [[2026.03 - March - W11]]`).
 3. If something was skipped repeatedly across multiple days, call it out directly.
 
 Keep the retro itself to 2-3 sentences — the rollover is the actionable part.
