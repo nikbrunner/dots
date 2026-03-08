@@ -1,5 +1,9 @@
 # Livery Project Memory
 
+## Tauri v2 Learnings
+
+See [tauri-learnings.md](tauri-learnings.md) for details on FS scoping, shell permissions, and webview constraints.
+
 ## Nik's Git Workflow Preferences
 
 - **Every commit must be green** — a working state. Don't commit broken code.

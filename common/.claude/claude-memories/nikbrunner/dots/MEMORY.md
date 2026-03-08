@@ -8,7 +8,7 @@ Restructured from bloated CLAUDE.md + slash commands to skills + hooks.
 
 ```
 common/.claude/
-├── CLAUDE.md              # Lean (47 lines) — communication, blind spot rule, dev principles
+├── CLAUDE.md              # Lean (~33 lines) — communication, blind spot rule, skill references
 ├── settings.json          # Hooks config, permissions, plugins
 ├── agents/                # Superpowers plugin agents (12 files, leave alone)
 ├── hooks/
@@ -18,9 +18,13 @@ common/.claude/
 │       └── warn-any-type.sh      # PostToolUse: warns on `: any` in TypeScript
 └── skills/
     ├── about-nik/         # Knowledge (user-invocable: false)
-    ├── react-patterns/    # Knowledge (user-invocable: false)
     ├── mcp-guide/         # Knowledge (user-invocable: false)
     ├── obsidian-guide/    # Knowledge (user-invocable: false)
+    ├── dev-react/         # Component architecture + references/ (replaces react-patterns)
+    ├── dev-query/         # TanStack Query patterns + references/
+    ├── dev-typescript/    # TypeScript conventions (no references/)
+    ├── dev-testing/       # Testing approach + references/
+    ├── dev-planning/      # Planning & kickoff (renamed from dev-greenfield)
     ├── bai-*/             # 7 Linear skills (user-invocable: false, Claude discovers)
     ├── dots-*/            # 4 dotfiles skills (user-invocable, /dots:add etc.)
     ├── bugs/              # Bug hunting (user-invocable: false)
@@ -42,7 +46,7 @@ common/.claude/
 ### Invocability Rules
 
 - **User-invocable (shows in / menu)**: dots:*, gh-pr-review, docs, are-we-done, migrate-to-skills
-- **Claude-only (user-invocable: false)**: bai:* (including bai:commit — auto-detects issue from branch, appends [ID] to commit, prompts status update after), bugs, arch-review, ui-review, research, plus all 4 knowledge skills
+- **Claude-only (user-invocable: false)**: bai:* (including bai:commit — auto-detects issue from branch, appends [ID] to commit, prompts status update after), bugs, arch-review, ui-review, research, dev-* (5 personal dev skills), plus knowledge skills
 - **All skills are discoverable** by Claude (no disable-model-invocation anywhere)
 
 ### Key Decisions
