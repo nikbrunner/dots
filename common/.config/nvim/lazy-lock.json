@@ -13,7 +13,7 @@
   "kulala.nvim": { "branch": "main", "commit": "6656c9d332735ca6a27725e0fb45a1715c4372d9" },
   "lazy.nvim": { "branch": "main", "commit": "306a05526ada86a7b30af95c5cc81ffba93fef97" },
   "lazydev.nvim": { "branch": "main", "commit": "5231c62aa83c2f8dc8e7ba957aa77098cda1257d" },
-  "markdown-tools.nvim": { "branch": "main", "commit": "495ae12fb440e8292ab8a023b778b570adbd1902" },
+  "markdown-plus.nvim": { "branch": "main", "commit": "87771f4a040855cbad945b102a3cafe05722d904" },
   "mason.nvim": { "branch": "main", "commit": "44d1e90e1f66e077268191e3ee9d2ac97cc18e65" },
   "mini.nvim": { "branch": "main", "commit": "0098de999048af0539183d625c52d733318a441b" },
   "nui.nvim": { "branch": "main", "commit": "de740991c12411b663994b2860f1a4fd0937c130" },
