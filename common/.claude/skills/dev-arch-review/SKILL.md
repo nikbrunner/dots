@@ -1,15 +1,15 @@
 ---
-name: ui-review
+name: dev:arch-review
 user-invocable: false
-description: Review UI/UX of specified files, or of staged/unstaged git changes.
-argument-hint: [path/to/file]... (optional)
+description: Review architecture of specified path(s), or staged/unstaged git changes.
+argument-hint: [path/to/directory]... (optional)
 allowed-tools: Bash(git:diff)
 ---
-Engage the **ui-ux-consultant** subagent to perform a UI/UX and accessibility review.
+Use the **architecture-reviewer** subagent to conduct a thorough architectural review.
 
 Your analysis target is determined by the following rules:
 
-1.  **If file paths are provided as arguments**, your review must focus exclusively on them: **$ARGUMENTS**
+1.  **If file or directory paths are provided as arguments**, your review must focus exclusively on them: **$ARGUMENTS**
 
 2.  **If no arguments are provided**, your analysis MUST focus on the recent git changes provided below. Please prioritize the **'Staged Changes'**. If that section is empty, then analyze the **'Unstaged Changes'**.
 
@@ -25,4 +25,4 @@ Your analysis target is determined by the following rules:
 !git diff HEAD
 ```
 ---
-*Your final report should focus on platform guideline adherence, user experience flow, and accessibility (A11y).*
+*Your final report should evaluate the code against the principles of Separation of Concerns, SOLID, Scalability, and Maintainability.*

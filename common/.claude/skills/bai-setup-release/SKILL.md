@@ -1,5 +1,5 @@
 ---
-name: bai-setup-release
+name: bai:setup-release
 description: Set up release-please in a Black Atom Industries repo. Accepts initial version as argument.
 user-invocable: true
 arguments: "[version]"

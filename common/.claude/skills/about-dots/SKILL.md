@@ -1,5 +1,5 @@
 ---
-name: about-dots
+name: about:dots
 description: Dots dotfiles management system context. Load when dotfiles, dots repo, or machine config comes up.
 user-invocable: false
 ---

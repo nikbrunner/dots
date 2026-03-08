@@ -1,5 +1,5 @@
 ---
-name: about-nbr-haus
+name: about:nbr-haus
 description: nbr.haus personal portfolio/CV site context. Load when portfolio, CV, or nbr.haus comes up.
 user-invocable: false
 ---

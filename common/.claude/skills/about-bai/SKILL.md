@@ -1,5 +1,5 @@
 ---
-name: about-bai
+name: about:bai
 description: Black Atom Industries theme ecosystem context. Load when BAI, themes, adapters, or colorschemes come up.
 user-invocable: false
 ---
