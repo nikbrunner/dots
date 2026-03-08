@@ -1,10 +1,10 @@
 ---
-name: dev:greenfield
-description: "Nik's greenfield project and feature kickoff process -- design before code, wireframing, planning tools. Load when starting new projects or major features."
+name: dev:planning
+description: "Nik's planning process -- design before code, scope-appropriate wireframing and documentation. Load when starting new projects, major features, or non-trivial changes."
 user-invocable: false
 ---
 
-# Greenfield & Feature Kickoff
+# Planning & Kickoff
 
 ## Principle: Design Before Code
 
@@ -16,7 +16,7 @@ Don't jump into code. Establish direction first. The level of design depends on 
 |-------|----------------|
 | **Greenfield project** | Wireframe/sketch required. Establish layout, navigation, core components. |
 | **Major feature** | Screenshots with annotations, or lightweight wireframes. |
-| **Small feature/bugfix** | Mental model is enough. Skip formality. |
+| **Bug fix / small feature** | Mental model is enough. Skip formality. |
 
 ## Process
 

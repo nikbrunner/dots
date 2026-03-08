@@ -1,5 +1,6 @@
 tap "PeonPing/tap"
 tap "aviator-co/tap"
+brew "agent-browser"
 brew "atuin"
 brew "aviator-co/tap/av"
 brew "bat"
