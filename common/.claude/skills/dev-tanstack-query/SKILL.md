@@ -1,10 +1,10 @@
 ---
-name: dev:query
+name: dev:tanstack-query
 description: "Nik's TanStack Query patterns -- topic-based keys, query/mutation co-location, server state separation. Load when working with TanStack Query or data fetching in React."
 user-invocable: false
 ---
 
-# Data Fetching & State Separation
+# TanStack Query Patterns
 
 ## Core Principle: Server State != Client State
 
@@ -29,9 +29,18 @@ Three complexity levels depending on API surface size. See `query-patterns.md` f
 - Never spread the query object -- return `{ query, derivedValue }` to avoid unnecessary re-renders
 - Single source of truth fetch wrapper for auth, base URL, error handling
 
-## Primary Influence
+## Sources of Truth
 
-TKDodo's Practical React Query blog: https://tkdodo.eu/blog/practical-react-query
+To ensure best practices, always verify patterns against these references before implementation. Use Ref MCP to look up specific topics.
+
+- **TanStack Query Docs**: https://tanstack.com/query/latest/docs/framework/react/
+- **TKDodo's Practical React Query** (primary influence): https://tkdodo.eu/blog/practical-react-query
+
+Key articles to consult per topic:
+- Render optimization → [Render Optimizations guide](https://tanstack.com/query/latest/docs/framework/react/guides/render-optimizations) + [TKDodo: Render Optimizations](https://tkdodo.eu/blog/react-query-render-optimizations)
+- Query keys → [Query Keys guide](https://tanstack.com/query/latest/docs/framework/react/guides/query-keys)
+- Invalidation → [TKDodo: Automatic Query Invalidation](https://tkdodo.eu/blog/automatic-query-invalidation-after-mutations)
+- Selectors → [TKDodo: Selectors Supercharged](https://tkdodo.eu/blog/react-query-selectors-supercharged)
 
 ## References
 
