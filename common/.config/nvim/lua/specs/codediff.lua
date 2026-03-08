@@ -33,6 +33,7 @@ return {
     },
     {
         "nikbrunner/review.nvim",
+        enabled = false,
         dir = require("lib.config").get_repo_path("nikbrunner/review.nvim"),
         dependencies = {
             "esmuellert/codediff.nvim",
