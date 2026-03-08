@@ -53,7 +53,12 @@ export const Disabled: Story = {
 
 ## Visual Regression
 
-Storybook's built-in screenshot comparison catches unintended visual changes. Configure per project -- the key is that component changes are caught automatically.
+Not built into Storybook for free. Options:
+- **Chromatic** (paid) — Storybook's official cloud-based visual regression service
+- **Custom solution** — Playwright screenshots + image diffing
+- **Storybook test runner + Playwright** — DIY screenshot comparison in CI
+
+This is a per-project decision. The key principle: component visual changes should be caught automatically, however you set it up.
 
 ## Interaction Tests (Storybook + Playwright)
 
