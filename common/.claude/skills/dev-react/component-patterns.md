@@ -3,19 +3,22 @@
 ## Dumb Component
 
 ```tsx
-interface UserCardProps {
+interface Props {
   name: string;
   avatarUrl: string;
   role: string;
   onEdit: () => void;
 }
 
-function UserCard({ name, avatarUrl, role, onEdit }: UserCardProps) {
+export function UserCard({ name, avatarUrl, role, onEdit }: Props) {
   return (
-    <div className={styles.card}>
+    <div data-component="UserCard" className={styles.card}>
       <img src={avatarUrl} alt={name} className={styles.avatar} />
+
       <h3>{name}</h3>
+
       <span>{role}</span>
+
       <button onClick={onEdit}>Edit</button>
     </div>
   );
@@ -23,56 +26,36 @@ function UserCard({ name, avatarUrl, role, onEdit }: UserCardProps) {
 ```
 
 - Receives only props (data + callbacks)
+  - Simple prop data types to help React compare values isntead of reference equality of objects and arrays
+  - If it is still needed to handover complex data, keep in mind that reference equality is handled (`React.memo` or `React.useMemo`)
 - All styling is here
 - No app dependencies, no store access, no fetching
 - Rarely has own state -- when it does, it's pure UI state (hover, open/closed)
 
-## Smart Container
-
-```tsx
-function UserProfileContainer() {
-  const { query: userQuery, permissions } = useUserProfile();
-  const { mutate: updateUser } = useUpdateUser();
-
-  if (userQuery.isPending) return <LoadingSpinner />;
-  if (userQuery.isError) return <ErrorDisplay error={userQuery.error} />;
-
-  const user = userQuery.data;
-
-  return (
-    <PageLayout>
-      <UserProfileHeader
-        name={user.name}
-        avatarUrl={user.avatar}
-        canEdit={permissions.canEdit}
-        onEdit={() => updateUser(user.id)}
-      />
-      <ActivityFeedPartial userId={user.id} />
-    </PageLayout>
-  );
-}
-```
-
-- No DOM styling (small layout utility classes are acceptable)
-- Provides data and callbacks to children
-- Named `*Container` by convention
-- Orchestrates -- delegates logic to topic hooks
-
 ## Partial
 
 ```tsx
-function UserProfileHeader({
+interface Props {
+  name: string;
+  avatarUrl: string;
+  onEdit: () => void;
+  canEdit: boolean;
+}
+
+export function UserProfileHeader({
   name,
   avatarUrl,
   canEdit,
   onEdit,
-}: UserProfileHeaderProps) {
+}: Props) {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
     <div className={styles.header}>
       <Avatar url={avatarUrl} size="lg" />
+
       <UserName name={name} />
+
       {canEdit && (
         <EditButton
           onClick={onEdit}
@@ -94,7 +77,12 @@ function UserProfileHeader({
 ## Layout Component
 
 ```tsx
-function PageLayout({ children, sidebar }: PageLayoutProps) {
+interface Props {
+  children: React.ReactNode;
+  sidebar: React.ReactNode;
+}
+
+export function PageLayout({ children, sidebar }: Props) {
   return (
     <div className={styles.page}>
       <aside className={styles.sidebar}>{sidebar}</aside>
@@ -108,6 +96,45 @@ function PageLayout({ children, sidebar }: PageLayoutProps) {
 - Accepts children/slots as props (nodes as props pattern)
 - No data logic, no fetching
 
+## Smart Container
+
+For query patterns read the skill `dev-tanstack-query`.
+
+```tsx
+export function UserProfileContainer() {
+  const userProfile = useUserProfile(); // Query Hook
+  const updateUser = useUpdateUser(); // Mutation Hook
+
+  const permissions = useUserPermissions(userProfile.data); // Utility hook that derives permissions from user profile
+
+  if (userProfile.query.isPending) {
+    return <LoadingSpinner />;
+  }
+
+  if (userProfile.query.isError) {
+    return <ErrorDisplay error={userQuery.error} />;
+  }
+
+  return (
+    <PageLayout>
+      <UserProfileHeader
+        name={userProfile.data.name}
+        avatarUrl={userProfile.data.avatar}
+        canEdit={permissions.canEdit}
+        onEdit={() => updateUser.mutate(user.id)}
+      />
+
+      <ActivityFeedPartial userId={userProfile.data.id} />
+    </PageLayout>
+  );
+}
+```
+
+- No DOM styling (small layout utility classes are acceptable)
+- Provides data and callbacks to children
+- Named `*Container` by convention
+- Orchestrates -- delegates logic to topic hooks
+
 ## Broad vs Deep Split
 
 **Prefer Broad Split** -- one Container fans out to many Dumb Components directly, rather than passing props through a single proxy component (Deep Split). From Dan Abramov:
@@ -120,4 +147,4 @@ function PageLayout({ children, sidebar }: PageLayoutProps) {
 - Container with CSS classes beyond minor layout utilities
 - Dumb Component that calls `useQuery` or accesses a store
 - Hardcoded strings in a component when i18n exists
-- Prop drilling through 3+ levels (introduce a Container or Partial)
+- Prop drilling through 3+ levels (introduce a Container or Partial or consider a higher level state or context)
