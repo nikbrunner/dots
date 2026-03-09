@@ -3,7 +3,7 @@
   "session": {
     "trust_all_worktrees": false
   },
-  "buffer_font_family": "TX-02 Condensed",
+  "buffer_font_family": "RecMonoCasual Nerd Font",
   "which_key": {
     "delay_ms": 250,
     "enabled": true
@@ -49,8 +49,8 @@
   "cursor_blink": false,
   "theme": {
     "mode": "system",
-    "dark": "Black Atom — Dark",
-    "light": "Black Atom — JPN ∷ Koyo Hiru"
+    "dark": "Black Atom — MNM ∷ Mono Dark",
+    "light": "Black Atom — MNM ∷ Mono Light"
   },
   "base_keymap": "VSCode",
   "vim_mode": true,
@@ -95,7 +95,7 @@
   "terminal": {
     "line_height": "standard",
     "working_directory": "current_project_directory",
-    "font_family": "TX-02 Condensed"
+    "font_family": "RecMonoCasual Nerd Font"
   },
   "lsp": {
     "vtsls": {
@@ -121,5 +121,5 @@
       }
     }
   },
-  "ui_font_family": "TX-02 Condensed"
+  "ui_font_family": "RecMonoCasual Nerd Font"
 }
