@@ -22,6 +22,14 @@ edit README.md
 argglobal
 let s:cpo_save=&cpo
 set cpo&vim
+inoremap <buffer> <M-CR> <Plug>(MarkdownPlusListShiftEnter)
+inoremap <buffer> <S-Tab> <Plug>(MarkdownPlusListOutdent)
+inoremap <buffer> <BS> <Plug>(MarkdownPlusListBackspace)
+inoremap <buffer> <C-T> <Plug>(MarkdownPlusToggleCheckbox)
+inoremap <buffer> <M-h> <Plug>(MarkdownPlusTableNavLeft)
+inoremap <buffer> <M-l> <Plug>(MarkdownPlusTableNavRight)
+inoremap <buffer> <M-k> <Plug>(MarkdownPlusTableNavUp)
+inoremap <buffer> <M-j> <Plug>(MarkdownPlusTableNavDown)
 nnoremap <buffer>  <Cmd>MarkdownToggleCheckbox
 nnoremap <buffer> ,niT <Cmd>MarkdownInsertTable
 vnoremap <buffer> ,nil s["]()<Cmd>normal! h<Cmd>startinsert<Cmd>lua require("markdown-tools.commands").prompt_and_insert_url()
@@ -30,9 +38,102 @@ vmap <buffer> ,niH s=="==
 vmap <buffer> ,nib s**"**
 vnoremap <buffer> ,nih <Cmd>MarkdownHeader
 nnoremap <buffer> ,nih <Cmd>MarkdownHeader
+nnoremap <buffer> .mr <Plug>(MarkdownPlusRenumberLists)
+nnoremap <buffer> .md <Plug>(MarkdownPlusDebugLists)
+nnoremap <buffer> .mx <Plug>(MarkdownPlusToggleCheckbox)
+xnoremap <buffer> .mx <Plug>(MarkdownPlusToggleCheckbox)
+nnoremap <buffer> .mb <Plug>(MarkdownPlusBold)
+xnoremap <buffer> .mb <Plug>(MarkdownPlusBold)
+nnoremap <buffer> .mi <Plug>(MarkdownPlusItalic)
+xnoremap <buffer> .mi <Plug>(MarkdownPlusItalic)
+nnoremap <buffer> .mS <Plug>(MarkdownPlusStrikethrough)
+xnoremap <buffer> .mS <Plug>(MarkdownPlusStrikethrough)
+nnoremap <buffer> .m` <Plug>(MarkdownPlusCode)
+xnoremap <buffer> .m` <Plug>(MarkdownPlusCode)
+nnoremap <buffer> .m= <Plug>(MarkdownPlusHighlight)
+xnoremap <buffer> .m= <Plug>(MarkdownPlusHighlight)
+nnoremap <buffer> .mu <Plug>(MarkdownPlusUnderline)
+xnoremap <buffer> .mu <Plug>(MarkdownPlusUnderline)
+xnoremap <buffer> .me <Plug>(MarkdownPlusEscapeSelection)
+xnoremap <buffer> .mw <Plug>(MarkdownPlusCodeBlock)
+nnoremap <buffer> .mF <Plug>(MarkdownPlusClearFormatting)
+xnoremap <buffer> .mF <Plug>(MarkdownPlusClearFormatting)
+nnoremap <buffer> .mh <Plug>(MarkdownPlusInsertThematicBreak)
+nnoremap <buffer> .mH <Plug>(MarkdownPlusCycleThematicBreak)
+nnoremap <buffer> .h+ <Plug>(MarkdownPlusPromoteHeader)
+nnoremap <buffer> .h- <Plug>(MarkdownPlusDemoteHeader)
+nnoremap <buffer> .ms <Plug>(MarkdownPlusToggleAtxSetext)
+nnoremap <buffer> .ht <Plug>(MarkdownPlusGenerateTOC)
+nnoremap <buffer> .hu <Plug>(MarkdownPlusUpdateTOC)
+nnoremap <buffer> .hT <Plug>(MarkdownPlusOpenTocWindow)
+nnoremap <buffer> .h1 <Plug>(MarkdownPlusHeader1)
+nnoremap <buffer> .h2 <Plug>(MarkdownPlusHeader2)
+nnoremap <buffer> .h3 <Plug>(MarkdownPlusHeader3)
+nnoremap <buffer> .h4 <Plug>(MarkdownPlusHeader4)
+nnoremap <buffer> .h5 <Plug>(MarkdownPlusHeader5)
+nnoremap <buffer> .h6 <Plug>(MarkdownPlusHeader6)
+nnoremap <buffer> .ml <Plug>(MarkdownPlusInsertLink)
+vnoremap <buffer> .ml <Plug>(MarkdownPlusSelectionToLink)
+nnoremap <buffer> .me <Plug>(MarkdownPlusEditLink)
+nnoremap <buffer> .mR <Plug>(MarkdownPlusConvertToReference)
+nnoremap <buffer> .mI <Plug>(MarkdownPlusConvertToInline)
+nnoremap <buffer> .ma <Plug>(MarkdownPlusAutoLinkURL)
+nnoremap <buffer> .mp <Plug>(MarkdownPlusSmartPaste)
+nnoremap <buffer> .mL <Plug>(MarkdownPlusInsertImage)
+vnoremap <buffer> .mL <Plug>(MarkdownPlusSelectionToImage)
+nnoremap <buffer> .mE <Plug>(MarkdownPlusEditImage)
+nnoremap <buffer> .mA <Plug>(MarkdownPlusToggleImageLink)
+nnoremap <buffer> .mq <Plug>(MarkdownPlusToggleQuote)
+xnoremap <buffer> .mq <Plug>(MarkdownPlusToggleQuote)
+nnoremap <buffer> .mQi <Plug>(MarkdownPlusInsertCallout)
+xnoremap <buffer> .mQi <Plug>(MarkdownPlusInsertCallout)
+nnoremap <buffer> .mQt <Plug>(MarkdownPlusToggleCalloutType)
+nnoremap <buffer> .mQc <Plug>(MarkdownPlusConvertToCallout)
+nnoremap <buffer> .mQb <Plug>(MarkdownPlusConvertToBlockquote)
+nnoremap <buffer> .mc <Plug>(MarkdownPlusCodeBlockInsert)
+xnoremap <buffer> .mc <Plug>(MarkdownPlusCodeBlockInsert)
+nnoremap <buffer> .mC <Plug>(MarkdownPlusCodeBlockChangeLanguage)
+nnoremap <buffer> .tc <Plug>(MarkdownPlusTableCreate)
+nnoremap <buffer> .tf <Plug>(MarkdownPlusTableFormat)
+nnoremap <buffer> .tn <Plug>(MarkdownPlusTableNormalize)
+nnoremap <buffer> .tir <Plug>(MarkdownPlusTableInsertRowBelow)
+nnoremap <buffer> .tiR <Plug>(MarkdownPlusTableInsertRowAbove)
+nnoremap <buffer> .tdr <Plug>(MarkdownPlusTableDeleteRow)
+nnoremap <buffer> .tyr <Plug>(MarkdownPlusTableDuplicateRow)
+nnoremap <buffer> .tic <Plug>(MarkdownPlusTableInsertColumnRight)
+nnoremap <buffer> .tiC <Plug>(MarkdownPlusTableInsertColumnLeft)
+nnoremap <buffer> .tdc <Plug>(MarkdownPlusTableDeleteColumn)
+nnoremap <buffer> .tyc <Plug>(MarkdownPlusTableDuplicateColumn)
+nnoremap <buffer> .ta <Plug>(MarkdownPlusTableToggleCellAlignment)
+nnoremap <buffer> .tx <Plug>(MarkdownPlusTableClearCell)
+nnoremap <buffer> .tmj <Plug>(MarkdownPlusTableMoveRowDown)
+nnoremap <buffer> .tmk <Plug>(MarkdownPlusTableMoveRowUp)
+nnoremap <buffer> .tmh <Plug>(MarkdownPlusTableMoveColumnLeft)
+nnoremap <buffer> .tml <Plug>(MarkdownPlusTableMoveColumnRight)
+nnoremap <buffer> .tt <Plug>(MarkdownPlusTableTranspose)
+nnoremap <buffer> .tsa <Plug>(MarkdownPlusTableSortAscending)
+nnoremap <buffer> .tsd <Plug>(MarkdownPlusTableSortDescending)
+nnoremap <buffer> .tvx <Plug>(MarkdownPlusTableToCSV)
+nnoremap <buffer> .tvi <Plug>(MarkdownPlusTableFromCSV)
+nnoremap <buffer> .mfi <Plug>(MarkdownPlusFootnoteInsert)
+nnoremap <buffer> .mfe <Plug>(MarkdownPlusFootnoteEdit)
+nnoremap <buffer> .mfd <Plug>(MarkdownPlusFootnoteDelete)
+nnoremap <buffer> .mfg <Plug>(MarkdownPlusFootnoteGotoDefinition)
+nnoremap <buffer> .mfr <Plug>(MarkdownPlusFootnoteGotoReference)
+nnoremap <buffer> .mfn <Plug>(MarkdownPlusFootnoteNext)
+nnoremap <buffer> .mfp <Plug>(MarkdownPlusFootnotePrev)
+nnoremap <buffer> .mfl <Plug>(MarkdownPlusFootnoteList)
+nnoremap <buffer> O <Plug>(MarkdownPlusNewListItemAbove)
+nnoremap <buffer> [b <Plug>(MarkdownPlusCodeBlockPrev)
 xnoremap <buffer> <silent> [[ :exe "normal! gv"|call search('\%(^#\{1,5\}\s\+\S\|^\S.*\n^[=-]\+$\)', "bsW")
+nnoremap <buffer> ]b <Plug>(MarkdownPlusCodeBlockNext)
 xnoremap <buffer> <silent> ]] :exe "normal! gv"|call search('\%(^#\{1,5\}\s\+\S\|^\S.*\n^[=-]\+$\)', "sW")
+nnoremap <buffer> gd <Plug>(MarkdownPlusFollowLink)
+nnoremap <buffer> o <Plug>(MarkdownPlusNewListItemBelow)
 nnoremap <buffer> <C-T> <Cmd>MarkdownToggleCheckbox
+inoremap <buffer> 	 <Plug>(MarkdownPlusListIndent)
+inoremap <buffer>  <Plug>(MarkdownPlusListEnter)
+inoremap <buffer>  <Plug>(MarkdownPlusToggleCheckbox)
 let &cpo=s:cpo_save
 unlet s:cpo_save
 setlocal keymap=
@@ -166,8 +267,8 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe 'vert 1resize ' . ((&columns * 124 + 124) / 248)
-exe 'vert 2resize ' . ((&columns * 123 + 124) / 248)
+exe 'vert 1resize ' . ((&columns * 141 + 141) / 282)
+exe 'vert 2resize ' . ((&columns * 140 + 141) / 282)
 argglobal
 balt ~/repos/black-atom-industries/core/preview/src/tabs/UiPreview.tsx
 setlocal keymap=
@@ -404,8 +505,8 @@ normal! zt
 keepjumps 28
 normal! 020|
 wincmd w
-exe 'vert 1resize ' . ((&columns * 124 + 124) / 248)
-exe 'vert 2resize ' . ((&columns * 123 + 124) / 248)
+exe 'vert 1resize ' . ((&columns * 141 + 141) / 282)
+exe 'vert 2resize ' . ((&columns * 140 + 141) / 282)
 tabnext 2
 set stal=1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
