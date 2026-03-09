@@ -37,6 +37,8 @@ Fetching and data processing happen in Containers, Hooks, or Partials -- never i
 - For component examples and anti-patterns, see `component-patterns.md`
 - For folder structure conventions, see `folder-structure.md`
 - For hook patterns, see `hooks-as-logic-layer.md`
+- For component library choices (Base UI, ShadCN, Mantine), see `component-libraries.md`
+- For styling conventions and CSS approach, see skill `dev:styling`
 
 ## Sources of Truth
 

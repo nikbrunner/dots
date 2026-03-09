@@ -15,7 +15,7 @@
 ## TODOs
 
 ### Skills to create
-- [ ] **dev-styling** — CSS / Styling approaches, design tokens
+- [x] **dev-styling** — CSS / Styling approaches, design tokens
 - [ ] **dev-tanstack-(router|start|form|store)** — With personal preferences and examples and documentation links
 
 ### Skills to improve
