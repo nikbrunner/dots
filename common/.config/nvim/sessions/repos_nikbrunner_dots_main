@@ -9,14 +9,12 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +57 ~/repos/nikbrunner/dots/common/.claude/skills/dev-react/component-patterns.md
+badd +47 common/.config/tmux/keymaps.conf
 argglobal
 %argdel
 $argadd ~/repos/nikbrunner/dots/common/.claude/skills/dev-react/component-patterns.md
-edit ~/repos/nikbrunner/dots/common/.claude/skills/dev-react/component-patterns.md
+edit common/.config/tmux/keymaps.conf
 argglobal
-xnoremap <buffer> <silent> [[ :exe "normal! gv"|call search('\%(^#\{1,5\}\s\+\S\|^\S.*\n^[=-]\+$\)', "bsW")
-xnoremap <buffer> <silent> ]] :exe "normal! gv"|call search('\%(^#\{1,5\}\s\+\S\|^\S.*\n^[=-]\+$\)', "sW")
 setlocal keymap=
 setlocal noarabic
 setlocal autoindent
@@ -33,8 +31,8 @@ setlocal cinoptions=
 setlocal cinscopedecls=public,protected,private
 setlocal cinwords=if,else,while,do,for,switch
 setlocal colorcolumn=
-setlocal comments=fb:*,fb:-,fb:+,n:>
-setlocal commentstring=<!--\ %s\ -->
+setlocal comments=:#
+setlocal commentstring=#\ %s
 setlocal complete=.,w,b,u,t
 setlocal completefunc=
 setlocal completeslash=
@@ -48,8 +46,8 @@ setlocal cursorlineopt=both
 setlocal nodiff
 setlocal eventignorewin=
 setlocal expandtab
-if &filetype != 'markdown'
-setlocal filetype=markdown
+if &filetype != 'conf'
+setlocal filetype=conf
 endif
 setlocal fixendofline
 setlocal foldcolumn=0
@@ -63,21 +61,21 @@ setlocal foldminlines=1
 setlocal foldnestmax=20
 setlocal foldtext=
 setlocal formatexpr=v:lua.require'conform'.formatexpr()
-setlocal formatlistpat=^\\s*\\d\\+\\.\\s\\+\\|^\\s*[-*+]\\s\\+\\|^\\[^\\ze[^\\]]\\+\\]:\\&^.\\{4\\}
-setlocal formatoptions=jtcqln
+setlocal formatlistpat=^\\s*\\d\\+[\\]:.)}\\t\ ]\\s*
+setlocal formatoptions=jcroql
 setlocal iminsert=0
 setlocal imsearch=-1
 setlocal includeexpr=
-setlocal indentexpr=nvim_treesitter#indent()
+setlocal indentexpr=
 setlocal indentkeys=0{,0},0),0],:,0#,!^F,o,O,e
 setlocal noinfercase
 setlocal iskeyword=@,48-57,_,192-255
 setlocal lhistory=10
-setlocal linebreak
+setlocal nolinebreak
 setlocal nolisp
 setlocal lispoptions=
 setlocal nolist
-setlocal matchpairs=(:),{:},[:],<:>
+setlocal matchpairs=(:),{:},[:]
 setlocal modeline
 setlocal modifiable
 setlocal nrformats=bin,hex
@@ -93,7 +91,7 @@ setlocal norightleft
 setlocal rightleftcmd=search
 setlocal scrollback=-1
 setlocal noscrollbind
-setlocal shiftwidth=2
+setlocal shiftwidth=4
 setlocal signcolumn=yes
 setlocal smartindent
 setlocal nosmoothscroll
@@ -102,34 +100,34 @@ setlocal nospell
 setlocal spellcapcheck=[.?!]\\_[\\])'\"\\t\ ]\\+
 setlocal spellfile=
 setlocal spelllang=en_us,de_de
-setlocal spelloptions=noplainbuffer
+setlocal spelloptions=
 setlocal statuscolumn=%!v:lua.require'snacks.statuscolumn'.get()
 setlocal suffixesadd=
 setlocal noswapfile
 setlocal synmaxcol=3000
-if &syntax != ''
-setlocal syntax=
+if &syntax != 'conf'
+setlocal syntax=conf
 endif
 setlocal tabstop=4
-setlocal tagfunc=v:lua.vim.lsp.tagfunc
+setlocal tagfunc=
 setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#common%*\ %#WinBarSeparator#/%*\ %#WinBarPath#.claude%*\ %#WinBarSeparator#/%*\ %#WinBarPath#skills%*\ %#WinBarSeparator#/%*\ %#WinBarPath#dev-react%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#component-patterns.md%*
+setlocal winbar=%#WinBarPath#common%*\ %#WinBarSeparator#/%*\ %#WinBarPath#.config%*\ %#WinBarSeparator#/%*\ %#WinBarPath#tmux%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#keymaps.conf%*
 setlocal winblend=0
 setlocal nowinfixbuf
 setlocal nowinfixheight
 setlocal nowinfixwidth
 setlocal winhighlight=
-setlocal wrap
+setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 63 - ((43 * winheight(0) + 24) / 49)
+let s:l = 47 - ((34 * winheight(0) + 20) / 40)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 63
-normal! 0
+keepjumps 47
+normal! 011|
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
