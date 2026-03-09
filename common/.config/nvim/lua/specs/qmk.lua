@@ -26,9 +26,12 @@ M.spec = {
         local group = vim.api.nvim_create_augroup("qmk-auto-format-group", {})
 
         vim.api.nvim_create_autocmd("BufEnter", {
-            desc = "Format CRKBD koyo keymap",
+            desc = "Format CRKBD/Chocofi koyo keymap",
             group = group,
-            pattern = "*nikbrunner/koyo/qmk/crkbd/src/keymap.c",
+            pattern = {
+                "*nikbrunner/koyo/qmk/crkbd/src/keymap.c",
+                "*nikbrunner/koyo/qmk/chocofi/src/keymap.c",
+            },
             callback = function()
                 setup({
                     name = "LAYOUT_split_3x5_3",
