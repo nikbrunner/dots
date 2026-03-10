@@ -30,6 +30,13 @@ Test what matters. Logic gets unit tests. Components get visual tests. User flow
 - Trivial code (simple prop pass-through, basic renders)
 - Framework behavior (React rendering, router navigation)
 
+## Sources of Truth
+
+- **Vitest**: https://vitest.dev/
+- **Testing Library**: https://testing-library.com/docs/
+- **Storybook**: https://storybook.js.org/docs
+- **Playwright**: https://playwright.dev/docs/intro
+
 ## References
 
 - For setup patterns and examples, see `patterns.md`

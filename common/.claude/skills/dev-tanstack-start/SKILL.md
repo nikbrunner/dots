@@ -55,8 +55,6 @@ function Posts() {
 
 ## Sources of Truth
 
-Always verify patterns against these references before implementation. Use Ref MCP to look up specific topics.
-
 - **TanStack Start Docs**: https://tanstack.com/start/latest/docs/framework/react/overview
 - **Server Functions Guide**: https://tanstack.com/start/latest/docs/framework/react/guide/server-functions
 - **Middleware Guide**: https://tanstack.com/start/latest/docs/framework/react/guide/middleware

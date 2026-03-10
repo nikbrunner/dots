@@ -64,6 +64,10 @@ Before renaming or changing a function signature, use `findReferences` to find a
 - Keep explanations proportional to complexity
 - Markdown tables: use minimum separator (`|-|-|`). Never pad with repeated hyphens. No box-drawing / ASCII-art table characters.
 
+### Sources of Truth
+
+Skills may include a **Sources of Truth** section with links to official docs. Before implementing patterns from a skill, verify against those references using Ref MCP. Fallbacks: Exa MCP for web search, agent-browser CLI for browsing docs directly. Skills capture preferences — docs capture current API reality.
+
 ### Self-Improvement Awareness
 
 While working with skills, watch for gaps, outdated content, or missing cross-references. When you notice something:

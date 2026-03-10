@@ -49,8 +49,6 @@ Search params fill the URL state category from `dev:tanstack-query` state-separa
 
 ## Sources of Truth
 
-Always verify patterns against these references before implementation. Use Ref MCP to look up specific topics.
-
 - **TanStack Router Docs**: https://tanstack.com/router/latest/docs/framework/react/overview
 - **File-Based Routing Guide**: https://tanstack.com/router/latest/docs/framework/react/guide/file-based-routing
 - **Data Loading Guide**: https://tanstack.com/router/latest/docs/framework/react/guide/data-loading

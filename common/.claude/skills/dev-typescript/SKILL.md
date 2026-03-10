@@ -63,3 +63,9 @@ const labels: Record<ThemeKey, string> = {
 - `any` in any form -- function params, return types, generics, type assertions
 - Classes when a function + object literal works
 - Duplicating types that could be derived from a single source
+
+## Sources of Truth
+
+- **TypeScript Handbook**: https://www.typescriptlang.org/docs/handbook/
+- **TypeScript Release Notes**: https://devblogs.microsoft.com/typescript/
+- **Matt Pocock / Total TypeScript**: https://www.totaltypescript.com/

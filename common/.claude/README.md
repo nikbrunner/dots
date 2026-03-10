@@ -39,8 +39,8 @@
 - [ ] If inlining: migrate agent personas into skill files, delete `agents/`
 
 ### Sources of Truth pattern
-- [ ] Add to remaining dev skills (dev-typescript, dev-testing, dev-planning)
-- [ ] Consider: should skills auto-verify against docs before implementation?
+- [x] Add to remaining dev skills (dev-typescript, dev-testing, dev-planning)
+- [x] Centralized verification rule in CLAUDE.md (Ref MCP primary, Exa + agent-browser fallbacks)
 
 ### Research & Inspiration
 - [ ] Matt Pocock's AI Hero: https://www.aihero.dev/posts

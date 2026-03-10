@@ -42,8 +42,6 @@ Fetching and data processing happen in Containers, Hooks, or Partials -- never i
 
 ## Sources of Truth
 
-To ensure best practices, always verify patterns against these references before implementation. Use Ref MCP to look up specific topics.
-
 - **React Docs (API Reference)**: https://react.dev/reference/react
 - **React Docs (Learn)**: https://react.dev/learn
 

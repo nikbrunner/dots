@@ -29,8 +29,6 @@ Three complexity levels depending on API surface size. See `query-patterns.md` f
 
 ## Sources of Truth
 
-To ensure best practices, always verify patterns against these references before implementation. Use Ref MCP to look up specific topics.
-
 - **TanStack Query Docs**: https://tanstack.com/query/latest/docs/framework/react/
 - **TKDodo's Practical React Query** (primary influence): https://tkdodo.eu/blog/practical-react-query
 

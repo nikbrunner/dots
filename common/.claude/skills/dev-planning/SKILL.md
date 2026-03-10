@@ -35,6 +35,11 @@ For larger projects, create multiple focused documents rather than one giant pla
 - Data model / API surface
 - Implementation steps (task-by-task)
 
+## Sources of Truth
+
+- **Excalidraw** (wireframing): https://excalidraw.com/
+- **Mermaid** (diagrams): https://mermaid.js.org/
+
 ## References
 
 - For wireframing tool options, see `wireframing-tools.md`
