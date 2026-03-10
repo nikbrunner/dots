@@ -25,7 +25,9 @@ Skills and hooks are Claude Code-specific and have no equivalent in other tools.
 
 ### Skills to create
 - [x] **dev-styling** — CSS / Styling approaches, design tokens
-- [ ] **dev-tanstack-(router|start|form|store)** — With personal preferences and examples and documentation links
+- [x] **dev-tanstack-router** — File-based routing, search params, data loading patterns
+- [x] **dev-tanstack-start** — Server functions, middleware, SSR patterns
+- [ ] **dev-tanstack-(form|store)** — With personal preferences and examples and documentation links
 
 ### Skills to improve
 - [ ] **dev-react** — Improve component file examples

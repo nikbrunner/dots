@@ -42,6 +42,11 @@ Key articles to consult per topic:
 - Invalidation → [TKDodo: Automatic Query Invalidation](https://tkdodo.eu/blog/automatic-query-invalidation-after-mutations)
 - Selectors → [TKDodo: Selectors Supercharged](https://tkdodo.eu/blog/react-query-selectors-supercharged)
 
+## Cross-References
+
+- `dev:tanstack-router` -- URL state via search params, loader integration with `ensureQueryData`
+- `dev:tanstack-start` -- server functions as data layer, Query for client-side caching on top
+
 ## References
 
 - For query organization examples, see `query-patterns.md`

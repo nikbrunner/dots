@@ -34,7 +34,7 @@ Redux shrinks dramatically and contains only genuine client state.
 
 Filters, pagination, sort order, active tabs -- state that belongs in the URL for shareability and browser navigation.
 
-TanStack Router makes this type-safe with search params. Evaluate per project whether URL state deserves explicit handling.
+TanStack Router makes this type-safe with search params. See `dev:tanstack-router` search-params for patterns.
 
 ## No Default Library
 
