@@ -42,6 +42,19 @@
 - [x] Add to remaining dev skills (dev-typescript, dev-testing, dev-planning)
 - [x] Centralized verification rule in CLAUDE.md (Ref MCP primary, Exa + agent-browser fallbacks)
 
+### Known Issues / Upstream Bugs
+
+- [ ] **Skill auto-discovery unreliable** — [#30387](https://github.com/anthropics/claude-code/issues/30387)
+  - Skills overlapping with built-in behaviors (git, styling, testing) are skipped ~50% of the time
+  - Novel skills (Jira, custom CLIs) trigger reliably
+  - Model-level bug labeled `bug` + `model` + `area:skills`, still open
+  - Workaround: "Skill Check (mandatory)" section added to CLAUDE.md; make key dev skills user-invocable
+- [ ] **CLAUDE.md instructions ignored** — [#32161](https://github.com/anthropics/claude-code/issues/32161)
+  - Knowledge retrieval rules in CLAUDE.md systematically ignored
+  - Related: context file dispatch feature request [#31575](https://github.com/anthropics/claude-code/issues/31575)
+- [ ] **Skill hot-reload misses new directories** — [#31559](https://github.com/anthropics/claude-code/issues/31559)
+  - Modifications to existing SKILL.md detected, but new skill dirs added mid-session are not
+
 ### Research & Inspiration
 - [ ] Matt Pocock's AI Hero: https://www.aihero.dev/posts
   - "How To Make Codebases AI Agents Love" — deep modules, codebase architecture

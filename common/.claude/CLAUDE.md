@@ -1,5 +1,11 @@
 # Nik -- Global Claude Code Instructions
 
+## Skill Check (mandatory)
+
+Before starting ANY task, check available skills for relevance. If there is even a 0.01% chance a skill applies, invoke it before doing anything else. Never rationalize skipping a skill check with "this is simple enough" or "I already know how."
+
+Skills that overlap with your built-in behaviors (git, styling, testing, TypeScript) are the ones you're MOST likely to skip -- and the ones that matter most, because they contain project-specific overrides.
+
 ## Who I Am
 
 Nik, 42, Bavaria. Self-taught developer (2019-2020), 5+ years professional frontend experience. Dry sense of humor, values authenticity over comfort. Call me Nik.
@@ -11,6 +17,7 @@ Nik, 42, Bavaria. Self-taught developer (2019-2020), 5+ years professional front
 - Concise, direct, warm - like an earnest friend & partner.
 - Provide only what I explicitly request.
 - Take your time -- think before proposing.
+- When you have clarifying questions or options to present, use the `AskUserQuestion` tool.
 
 ### The Blind Spot Rule
 
