@@ -8,6 +8,12 @@ user-invocable: false
 
 Template for creating dev-* concept skills consistently. Not for process/review skills (dev:bugs, dev:arch-review, dev:ui-review) — those follow different patterns.
 
+**IMPORTANT**:
+
+- Before creating a new skill, use the Ref MCP, Exa MCP, and agent-browser CLI to research the topic and about its key principles and anti-patterns.
+- Also keep track which breaking changes are either happend or are planned. A project could use an older version of a tool.
+- Also check if there is overlapping topics with other `dev-*` skills and if cross-references, or even a restructure is needed.
+
 ## SKILL.md Template
 
 See `template.md` for the canonical SKILL.md structure with placeholders.
@@ -22,6 +28,7 @@ See `template.md` for the canonical SKILL.md structure with placeholders.
 
 **File conventions:**
 - Descriptive names: `query-patterns.md`, `url-state-patterns.md`, `alternatives.md`
+- For dedicated code example files, use the `*-examples.md` suffix
 - No frontmatter — start with `# Title`
 - Real-world code examples preferred over pseudocode
 
