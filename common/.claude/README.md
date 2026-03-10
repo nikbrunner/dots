@@ -25,7 +25,7 @@
 - [x] **dev-tanstack-router** — File-based routing, search params, data loading patterns
 - [x] **dev-tanstack-start** — Server functions, middleware, SSR patterns
 - [ ] **dev-tanstack-(form|store)** — With personal preferences and examples and documentation links
-- [ ] **dev-state-management** — Redux, MobX, Recoil, etc. (Server state vs client state)
+- [x] **dev-state-management** — State categorization, separation principle, URL state patterns
 
 ### Skills to improve
 - [ ] **dev-react** — Improve component file examples

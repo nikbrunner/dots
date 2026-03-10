@@ -6,13 +6,11 @@ user-invocable: false
 
 # TanStack Query Patterns
 
-## Core Principle: Server State != Client State
+## Core Principle: TanStack Query Manages Server State
 
-- **Server State**: Source of truth lies outside the client. The client holds a cache that can go stale. Managed by TanStack Query (an async state manager, not a fetch library).
-- **Client State**: Source of truth lies in the client itself. Only the client knows the current value. Managed by Redux Toolkit, Zustand, useState, or similar.
-- **URL State** (optional third category): Filters, pagination, active tabs. TanStack Router with type-safe search params.
+TanStack Query is an async state manager, not a fetch library. It manages state whose source of truth lies outside the client -- data that can go stale, needs caching, and is shared across users.
 
-No default library -- choose per project. The separation principle is what matters.
+For the full state categorization (server / URL / client), see `dev:state-management`.
 
 ## Query Organization
 
@@ -44,6 +42,7 @@ Key articles to consult per topic:
 
 ## Cross-References
 
+- `dev:state-management` -- state categorization, separation principle, decision flow
 - `dev:tanstack-router` -- URL state via search params, loader integration with `ensureQueryData`
 - `dev:tanstack-start` -- server functions as data layer, Query for client-side caching on top
 
@@ -51,4 +50,3 @@ Key articles to consult per topic:
 
 - For query organization examples, see `query-patterns.md`
 - For fetch wrapper pattern, see `fetch-wrapper.md`
-- For state separation details, see `state-separation.md`
