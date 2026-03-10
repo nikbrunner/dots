@@ -1,14 +1,5 @@
 # Claude Code Config — Status & TODOs
 
-## Cross-Tool Sync
-
-`CLAUDE.md` contains global instructions that are tool-agnostic (communication style, code intelligence, context efficiency). To use the same instructions with other tools (e.g., OpenCode), symlink the file:
-
-- Claude Code: `~/.claude/CLAUDE.md` (managed via dots symlinks)
-- OpenCode: `~/.config/opencode/AGENTS.md` → symlink to the same source
-
-Skills and hooks are Claude Code-specific and have no equivalent in other tools.
-
 ## Skill Namespace Conventions
 
 | Prefix | Purpose | Invocable |
@@ -23,11 +14,18 @@ Skills and hooks are Claude Code-specific and have no equivalent in other tools.
 
 ## TODOs
 
+### Cross-Tool Sync
+- [ ] Symlink `CLAUDE.md` for use with other tools (e.g., OpenCode)
+  - Claude Code: `~/.claude/CLAUDE.md` (managed via dots symlinks)
+  - OpenCode: `~/.config/opencode/AGENTS.md` → symlink to the same source
+  - Note: Skills and hooks are Claude Code-specific and have no equivalent in other tools
+
 ### Skills to create
 - [x] **dev-styling** — CSS / Styling approaches, design tokens
 - [x] **dev-tanstack-router** — File-based routing, search params, data loading patterns
 - [x] **dev-tanstack-start** — Server functions, middleware, SSR patterns
 - [ ] **dev-tanstack-(form|store)** — With personal preferences and examples and documentation links
+- [ ] **dev-state-management** — Redux, MobX, Recoil, etc. (Server state vs client state)
 
 ### Skills to improve
 - [ ] **dev-react** — Improve component file examples
