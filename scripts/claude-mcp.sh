@@ -17,4 +17,12 @@ claude mcp add --scope user --transport http Ref https://api.ref.tools/mcp -H "x
 claude mcp add --scope user chrome-devtools -- npx chrome-devtools-mcp@latest || true
 claude mcp add --scope user --transport http linear https://mcp.linear.app/mcp || true
 
+# OpenPencil requires global bun install (not available via npx)
+if command -v bun &>/dev/null; then
+    bun add -g @open-pencil/mcp 2>/dev/null || true
+    claude mcp add --scope user open-pencil -- openpencil-mcp || true
+else
+    echo "bun not installed, skipping open-pencil MCP"
+fi
+
 echo "MCP servers configured"

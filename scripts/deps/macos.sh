@@ -38,6 +38,17 @@ install_claude_code() {
     fi
 }
 
+# Install Bun via official installer
+install_bun() {
+    echo "Installing bun..."
+    if command -v curl &>/dev/null; then
+        curl -fsSL https://bun.sh/install | bash
+    else
+        echo "curl not available"
+        return 1
+    fi
+}
+
 # Install QMK via official installer
 install_qmk() {
     echo "Installing QMK..."
@@ -59,6 +70,13 @@ check_all() {
         echo "  nvm: installed"
     else
         echo "  nvm: missing"
+    fi
+
+    # Check bun
+    if command -v bun &>/dev/null; then
+        echo "  bun: installed"
+    else
+        echo "  bun: missing"
     fi
 
     # Check qmk
@@ -95,6 +113,13 @@ install_all() {
     else
         echo "  claude-code: missing"
         install_claude_code
+    fi
+
+    if command -v bun &>/dev/null; then
+        echo "  bun: installed"
+    else
+        echo "  bun: missing"
+        install_bun
     fi
 
     if command -v qmk &>/dev/null; then
