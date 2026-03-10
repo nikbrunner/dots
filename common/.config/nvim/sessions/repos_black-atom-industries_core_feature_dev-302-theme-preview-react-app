@@ -11,7 +11,7 @@ let s:shortmess_save = &shortmess
 set shortmess+=aoO
 badd +58 README.md
 badd +4 ~/repos/black-atom-industries/core/preview/src/tabs/UiPreview.tsx
-badd +26 preview/src/App.tsx
+badd +11 preview/deno.json
 argglobal
 %argdel
 $argadd ~/repos/black-atom-industries/core/src/mod.ts
@@ -243,14 +243,14 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal wrap
 setlocal wrapmargin=0
-let s:l = 54 - ((34 * winheight(0) + 23) / 47)
+let s:l = 54 - ((32 * winheight(0) + 22) / 45)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
 keepjumps 54
 normal! 0
 tabnext
-edit preview/src/App.tsx
+edit preview/deno.json
 let s:save_splitbelow = &splitbelow
 let s:save_splitright = &splitright
 set splitbelow splitright
@@ -267,10 +267,9 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe 'vert 1resize ' . ((&columns * 141 + 141) / 282)
-exe 'vert 2resize ' . ((&columns * 140 + 141) / 282)
+exe 'vert 1resize ' . ((&columns * 120 + 120) / 241)
+exe 'vert 2resize ' . ((&columns * 120 + 120) / 241)
 argglobal
-balt ~/repos/black-atom-industries/core/preview/src/tabs/UiPreview.tsx
 setlocal keymap=
 setlocal noarabic
 setlocal autoindent
@@ -287,8 +286,8 @@ setlocal cinoptions=
 setlocal cinscopedecls=public,protected,private
 setlocal cinwords=if,else,while,do,for,switch
 setlocal colorcolumn=
-setlocal comments=sO:*\ -,mO:*\ \ ,exO:*/,s1:/*,mb:*,ex:*/,://
-setlocal commentstring=//\ %s
+setlocal comments=
+setlocal commentstring=
 setlocal complete=.,w,b,u,t
 setlocal completefunc=
 setlocal completeslash=
@@ -302,8 +301,8 @@ setlocal cursorlineopt=both
 setlocal nodiff
 setlocal eventignorewin=
 setlocal expandtab
-if &filetype != 'typescriptreact'
-setlocal filetype=typescriptreact
+if &filetype != 'json'
+setlocal filetype=json
 endif
 setlocal fixendofline
 setlocal foldcolumn=0
@@ -318,14 +317,14 @@ setlocal foldnestmax=20
 setlocal foldtext=
 setlocal formatexpr=v:lua.require'conform'.formatexpr()
 setlocal formatlistpat=^\\s*\\d\\+[\\]:.)}\\t\ ]\\s*
-setlocal formatoptions=jcroql
+setlocal formatoptions=cqj
 setlocal iminsert=0
 setlocal imsearch=-1
 setlocal includeexpr=
-setlocal indentexpr=GetTypescriptIndent()
-setlocal indentkeys=0{,0},0),0],0,,!^F,o,O,e
+setlocal indentexpr=nvim_treesitter#indent()
+setlocal indentkeys=0{,0},0),0[,0],!^F,o,O,e
 setlocal noinfercase
-setlocal iskeyword=@,48-57,_,192-255,$,#
+setlocal iskeyword=@,48-57,_,192-255
 setlocal lhistory=10
 setlocal nolinebreak
 setlocal nolisp
@@ -358,19 +357,19 @@ setlocal spellfile=
 setlocal spelllang=en_us,de_de
 setlocal spelloptions=noplainbuffer
 setlocal statuscolumn=%!v:lua.require'snacks.statuscolumn'.get()
-setlocal suffixesadd=.ts,.d.ts,.tsx,.js,.jsx,.cjs,.mjs
+setlocal suffixesadd=
 setlocal noswapfile
 setlocal synmaxcol=3000
 if &syntax != ''
 setlocal syntax=
 endif
 setlocal tabstop=4
-setlocal tagfunc=v:lua.vim.lsp.tagfunc
+setlocal tagfunc=
 setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#preview%*\ %#WinBarSeparator#/%*\ %#WinBarPath#src%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#App.tsx%*
+setlocal winbar=%#WinBarPath#preview%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#deno.json%*
 setlocal winblend=0
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -378,19 +377,19 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 26 - ((25 * winheight(0) + 23) / 47)
+let s:l = 16 - ((15 * winheight(0) + 22) / 45)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 26
-normal! 0
+keepjumps 16
+normal! 05|
 wincmd w
 argglobal
 if bufexists(fnamemodify("~/repos/black-atom-industries/core/preview/src/tabs/UiPreview.tsx", ":p")) | buffer ~/repos/black-atom-industries/core/preview/src/tabs/UiPreview.tsx | else | edit ~/repos/black-atom-industries/core/preview/src/tabs/UiPreview.tsx | endif
 if &buftype ==# 'terminal'
   silent file ~/repos/black-atom-industries/core/preview/src/tabs/UiPreview.tsx
 endif
-balt preview/src/App.tsx
+balt preview/deno.json
 setlocal keymap=
 setlocal noarabic
 setlocal autoindent
@@ -498,15 +497,15 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 28 - ((27 * winheight(0) + 23) / 47)
+let s:l = 28 - ((25 * winheight(0) + 22) / 45)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
 keepjumps 28
 normal! 020|
 wincmd w
-exe 'vert 1resize ' . ((&columns * 141 + 141) / 282)
-exe 'vert 2resize ' . ((&columns * 140 + 141) / 282)
+exe 'vert 1resize ' . ((&columns * 120 + 120) / 241)
+exe 'vert 2resize ' . ((&columns * 120 + 120) / 241)
 tabnext 2
 set stal=1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
