@@ -3,6 +3,9 @@
 
 set -euo pipefail
 
+# Source environment variables if not loaded (e.g. tmux popups skip .zshrc)
+[[ -r ~/.env ]] && { set -a; source ~/.env; set +a; }
+
 # ========================================================================
 # Configuration
 # ========================================================================
