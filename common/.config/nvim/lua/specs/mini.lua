@@ -575,6 +575,7 @@ function M.pick()
     MiniPick.registry.frecency = M.smart_picker
 
     -- Custom picker: modified + untracked files (all changed files) with diff preview
+    -- Items are sorted by path and show status indicators + dimmed directory portions
     MiniPick.registry.git_changed = function()
         local git_root = vim.fn.systemlist("git rev-parse --show-toplevel")[1]
         if vim.v.shell_error ~= 0 then
@@ -586,23 +587,33 @@ function M.pick()
         local untracked = vim.fn.systemlist("git ls-files --others --exclude-standard")
 
         local items = {}
-        local status_lookup = {}
         local seen = {}
 
         for _, file in ipairs(modified) do
             if not seen[file] then
                 seen[file] = true
-                table.insert(items, file)
-                status_lookup[file] = "modified"
+                table.insert(items, { text = file, path = file, status = "M" })
             end
         end
 
         for _, file in ipairs(untracked) do
             if not seen[file] then
                 seen[file] = true
-                table.insert(items, file)
-                status_lookup[file] = "untracked"
+                table.insert(items, { text = file, path = file, status = "?" })
             end
+        end
+
+        table.sort(items, function(a, b)
+            return a.path < b.path
+        end)
+
+        -- Format: "M  dir/subdir/  filename.ext"
+        local status_hl = { M = "MiniDiffSignChange", ["?"] = "MiniDiffSignAdd" }
+        for _, item in ipairs(items) do
+            local dir = vim.fn.fnamemodify(item.path, ":h")
+            local name = vim.fn.fnamemodify(item.path, ":t")
+            local prefix = dir ~= "." and (dir .. "/") or ""
+            item.text = item.status .. "  " .. prefix .. name
         end
 
         MiniPick.start({
@@ -613,13 +624,40 @@ function M.pick()
                 items = items,
                 name = "Git Changed",
                 cwd = git_root,
+                show = function(buf_id, items_to_show, query)
+                    MiniPick.default_show(buf_id, items_to_show, query)
+                    local ns = vim.api.nvim_create_namespace("git_changed_pick")
+                    vim.api.nvim_buf_clear_namespace(buf_id, ns, 0, -1)
+
+                    for i, item in ipairs(items_to_show) do
+                        if type(item) == "table" then
+                            local line = i - 1
+                            -- Highlight status indicator
+                            local hl = status_hl[item.status] or "Comment"
+                            vim.api.nvim_buf_set_extmark(buf_id, ns, line, 0, {
+                                end_col = #item.status,
+                                hl_group = hl,
+                            })
+                            -- Dim directory portion (after "M  ")
+                            local dir = vim.fn.fnamemodify(item.path, ":h")
+                            if dir ~= "." then
+                                local dir_start = #item.status + 2 -- after "M  "
+                                local dir_end = dir_start + #dir + 1 -- include trailing /
+                                vim.api.nvim_buf_set_extmark(buf_id, ns, line, dir_start, {
+                                    end_col = dir_end,
+                                    hl_group = "Comment",
+                                })
+                            end
+                        end
+                    end
+                end,
                 preview = function(buf_id, item)
+                    local path = type(item) == "table" and item.path or item
                     local lines
-                    if status_lookup[item] == "modified" then
-                        lines = vim.fn.systemlist({ "git", "-C", git_root, "diff", "--", item })
+                    if item.status == "M" then
+                        lines = vim.fn.systemlist({ "git", "-C", git_root, "diff", "--", path })
                     else
-                        -- Untracked: show as new file diff
-                        lines = vim.fn.systemlist({ "git", "-C", git_root, "diff", "--no-index", "/dev/null", item })
+                        lines = vim.fn.systemlist({ "git", "-C", git_root, "diff", "--no-index", "/dev/null", path })
                     end
 
                     if #lines == 0 then
@@ -628,6 +666,10 @@ function M.pick()
 
                     vim.api.nvim_buf_set_lines(buf_id, 0, -1, false, lines)
                     vim.bo[buf_id].filetype = "diff"
+                end,
+                choose = function(item)
+                    local path = type(item) == "table" and item.path or item
+                    MiniPick.default_choose(path)
                 end,
             },
         })
@@ -1032,7 +1074,56 @@ function M.files()
     -- stylua: ignore start
     map("n", "-", function() MiniFiles.open(vim.api.nvim_buf_get_name(0)) end, { desc = "[E]xplorer" })
     map("n", "<leader>we", function() MiniFiles.open(vim.fn.getcwd()) end, { desc = "[E]xplorer (cwd)" })
+    map("n", "<leader>wf", function() M.git_files() end, { desc = "Git [F]iles (tree)" })
     -- stylua: ignore end
+end
+
+--- Open mini.files filtered to only git modified and untracked files.
+--- Directories are shown only if they contain changed files underneath.
+function M.git_files()
+    local MiniFiles = require("mini.files")
+    local git_root = vim.fn.systemlist("git rev-parse --show-toplevel")[1]
+    if vim.v.shell_error ~= 0 then
+        vim.notify("Not in a git repository", vim.log.levels.ERROR)
+        return
+    end
+
+    local changed = {}
+    local parent_dirs = {}
+
+    local function register(file)
+        local abs = git_root .. "/" .. file
+        changed[abs] = true
+        local dir = vim.fn.fnamemodify(abs, ":h")
+        while dir ~= git_root and dir ~= "/" do
+            parent_dirs[dir] = true
+            dir = vim.fn.fnamemodify(dir, ":h")
+        end
+        parent_dirs[git_root] = true
+    end
+
+    for _, f in ipairs(vim.fn.systemlist("git ls-files --modified")) do
+        register(f)
+    end
+    for _, f in ipairs(vim.fn.systemlist("git ls-files --others --exclude-standard")) do
+        register(f)
+    end
+
+    if vim.tbl_isempty(changed) then
+        vim.notify("No modified or untracked files", vim.log.levels.INFO)
+        return
+    end
+
+    MiniFiles.open(git_root, false, {
+        content = {
+            filter = function(fs_entry)
+                if fs_entry.fs_type == "directory" then
+                    return parent_dirs[fs_entry.path] or false
+                end
+                return changed[fs_entry.path] or false
+            end,
+        },
+    })
 end
 
 -- ============================================================================
