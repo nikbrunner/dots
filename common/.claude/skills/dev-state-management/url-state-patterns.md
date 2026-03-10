@@ -36,6 +36,30 @@ function Products() {
 
 No `useState`, no state manager. The URL is the source of truth. Copy the URL, share it, bookmark it -- the view reproduces.
 
+### Encapsulating in a Hook
+
+When a param is used across multiple components, extract it into a reusable hook:
+
+```tsx
+// useCategory.ts
+import { useNavigate, useSearch } from "@tanstack/react-router"
+
+export function useCategory() {
+  const { category } = useSearch({ strict: false })
+  const navigate = useNavigate()
+
+  const setCategory = (cat: string | undefined) =>
+    navigate({
+      to: ".",
+      search: prev => ({ ...prev, category: cat }),
+    })
+
+  return { category, setCategory }
+}
+```
+
+`strict: false` makes the hook usable from any route — it reads whatever search params exist without binding to a specific `Route`. Same pattern works for `useSort`, `usePage`, `useView`, etc.
+
 ## Advanced Case: Search Params + Storage Fallback
 
 From nbr.haus -- URL state with localStorage persistence for user preferences. More complex because it handles SSR hydration and DOM side effects.
