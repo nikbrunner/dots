@@ -423,7 +423,7 @@
             "label": "3"
           }
         ],
-        "lastAccessed": 1773077137
+        "lastAccessed": 1773162003
       }
     },
     "~/repos/nikbrunner/filen-interview": {
@@ -435,6 +435,25 @@
           }
         ],
         "lastAccessed": 1772740861
+      }
+    },
+    "~/repos/nikbrunner/imfusion-coding-assignment": {
+      "main": {
+        "locks": [
+          {
+            "filename": "ASSIGNMENT.md",
+            "label": "1"
+          },
+          {
+            "filename": "design/dashboard/implementation-plan.md",
+            "label": "2"
+          },
+          {
+            "filename": "src/routes/index.tsx",
+            "label": "3"
+          }
+        ],
+        "lastAccessed": 1773170303
       }
     },
     "~/repos/nikbrunner/nbr.haus": {
@@ -449,7 +468,7 @@
             "label": "2"
           }
         ],
-        "lastAccessed": 1773077137
+        "lastAccessed": 1773162004
       },
       "rework-structure": {
         "locks": [
@@ -464,7 +483,7 @@
     "~/repos/nikbrunner/notes": {
       "main": {
         "locks": [],
-        "lastAccessed": 1773077137
+        "lastAccessed": 1773162004
       }
     },
     "~/repos/nikbrunner/wichtel-app": {
