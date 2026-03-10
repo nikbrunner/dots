@@ -1,10 +1,44 @@
 # URL State Patterns
 
-## The Pattern: Search Params + Storage Fallback
+## Simple Case: Filters & Pagination
 
-From nbr.haus -- URL state hooks that are shareable, persistent, and type-safe.
+The most common URL state pattern. Search params drive the query, no persistence needed.
 
-The shape: read from search params → fallback to localStorage → fallback to default. Setter updates DOM/effect, persists to storage, and navigates with `replace: true`.
+```tsx
+// Route definition with validated search params
+export const Route = createFileRoute('/products')({
+  validateSearch: z.object({
+    page: z.number().default(1),
+    sort: z.enum(['name', 'price', 'date']).default('name'),
+    category: z.string().optional(),
+  }),
+  component: Products,
+})
+
+function Products() {
+  const { page, sort, category } = Route.useSearch()
+  const navigate = useNavigate({ from: Route.fullPath })
+
+  // Search params drive the query directly
+  const { data } = useSuspenseQuery(
+    productsQueryOptions({ page, sort, category })
+  )
+
+  const nextPage = () =>
+    navigate({ search: prev => ({ ...prev, page: prev.page + 1 }) })
+
+  const setCategory = (cat: string) =>
+    navigate({ search: prev => ({ ...prev, category: cat, page: 1 }) })
+
+  return (/* ... */)
+}
+```
+
+No `useState`, no state manager. The URL is the source of truth. Copy the URL, share it, bookmark it -- the view reproduces.
+
+## Advanced Case: Search Params + Storage Fallback
+
+From nbr.haus -- URL state with localStorage persistence for user preferences. More complex because it handles SSR hydration and DOM side effects.
 
 ```tsx
 // useColorMode.ts (simplified from nbr.haus)
