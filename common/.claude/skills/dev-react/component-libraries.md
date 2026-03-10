@@ -7,7 +7,9 @@ Headless (unstyled) primitives for accessible, composable UI. Separate concern f
 - **What:** Headless component library from the MUI team
 - **Status:** Preferred default for new projects
 - **Why:** Unstyled, accessible, composable. Pairs with any CSS approach (CSS Modules, Tailwind, plain CSS). ShadCN is migrating from Radix to Base UI.
-- **Docs:** https://base-ui.com
+- **Docs:** (Sources of Truth)
+  - https://base-ui.com
+  - https://base-ui.com/llms.txt
 
 ## References
 
