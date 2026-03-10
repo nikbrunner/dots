@@ -1,7 +1,7 @@
 ---
 name: dev:planning
 description: "Nik's planning process -- design before code, scope-appropriate wireframing and documentation. Load when starting new projects, major features, or non-trivial changes."
-user-invocable: false
+user-invocable: true
 ---
 
 # Planning & Kickoff
