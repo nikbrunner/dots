@@ -38,7 +38,7 @@ No default library -- choose per project.
 |-|-|-|
 | **Redux Toolkit** | Proven, used at DCD | Good for complex state with many reducers. Migration from vanilla Redux straightforward. |
 | **Zustand** | Not tried yet | Lighter than RTK, minimal boilerplate. |
-| **TanStack Store** | Alpha | Preferred if mature -- TanStack ecosystem consistency. Watch for v1. |
+| **TanStack Store** | Available | Preferred in TanStack ecosystem -- signals-based, tiny bundle. See `dev:tanstack-store`. |
 
 The separation principle matters more than the specific library.
 
@@ -55,6 +55,8 @@ The separation principle matters more than the specific library.
 
 - `dev:tanstack-query` -- server state patterns, query organization
 - `dev:tanstack-router` -- URL state via search params
+- `dev:tanstack-store` -- client state with signals, derived stores
+- `dev:tanstack-form` -- form state management (uses Store internally)
 - `dev:react` -- containers orchestrate state, components receive it as props
 
 ## References

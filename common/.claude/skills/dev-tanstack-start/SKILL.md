@@ -64,6 +64,7 @@ function Posts() {
 
 - `dev:tanstack-router` -- routing foundation (file routing, loaders, search params)
 - `dev:tanstack-query` -- client-side caching on top of server functions
+- `dev:tanstack-form` -- server-side form validation via `createServerValidate`
 
 ## References
 

@@ -42,6 +42,8 @@ Key articles to consult per topic:
 
 - `dev:state-management` -- state categorization, separation principle, decision flow
 - `dev:tanstack-router` -- URL state via search params, loader integration with `ensureQueryData`
+- `dev:tanstack-store` -- client state; Query handles server state only
+- `dev:tanstack-form` -- form state; can coexist with Query for form submissions
 - `dev:tanstack-start` -- server functions as data layer, Query for client-side caching on top
 
 ## References
