@@ -1,4 +1,4 @@
-local prettier_cmd = "prettierd"
+local prettier_cmd = "prettier"
 local prettier_configs = {
     ".prettierrc",
     ".prettierrc.json",
