@@ -4,25 +4,30 @@
 # Exit 0 = allow, Exit 2 = block with feedback.
 
 INPUT=$(cat)
-COMMAND=$(echo "$INPUT" | jq -r '.tool_input.command // empty')
+COMMAND=$(printf '%s' "$INPUT" | jq -r '.tool_input.command // empty')
 
 # Only check git commit commands
-if ! echo "$COMMAND" | grep -qE '^git commit'; then
+if ! printf '%s' "$COMMAND" | head -1 | grep -qE '^git commit'; then
     exit 0
 fi
 
-# Extract the commit message from -m flag
-# Handles: git commit -m "msg", git commit -m 'msg'
-MSG=$(echo "$COMMAND" | sed -n "s/.*-m[[:space:]]*[\"']\(.*\)[\"'].*/\1/p")
+# Strategy: extract the first meaningful line of the commit message.
+# Supports: -m "msg", -m 'msg', -m msg, and heredoc style -m "$(cat <<'EOF'\n...\nEOF\n)"
+MSG=""
 
-# Also try without quotes: git commit -m msg
-if [ -z "$MSG" ]; then
-    MSG=$(echo "$COMMAND" | sed -n 's/.*-m[[:space:]]*\([^"'"'"'][^[:space:]]*\).*/\1/p')
+# Try heredoc: look for first non-blank line after the heredoc delimiter
+if printf '%s' "$COMMAND" | grep -q "cat <<"; then
+    MSG=$(printf '%s\n' "$COMMAND" | sed -n "/cat <<['\"]\\{0,1\\}EOF['\"]\\{0,1\\}/,/^[[:space:]]*EOF/{/cat <</d;/^[[:space:]]*EOF/d;p;}" | sed '/^[[:space:]]*$/d' | head -1 | sed 's/^[[:space:]]*//')
 fi
 
-# Handle heredoc style: -m "$(cat <<'EOF' ... EOF )"
+# Try single-line -m "msg" or -m 'msg'
 if [ -z "$MSG" ]; then
-    MSG=$(echo "$COMMAND" | grep -oE "cat <<['\"]?EOF['\"]?" > /dev/null && echo "$COMMAND" | sed -n '/cat <<.*EOF/,/EOF/p' | grep -v 'cat <<' | grep -v 'EOF' | head -1 | sed 's/^[[:space:]]*//')
+    MSG=$(printf '%s' "$COMMAND" | head -1 | sed -n "s/.*-m[[:space:]]*[\"']\(.*\)[\"'].*/\1/p")
+fi
+
+# Try -m msg (no quotes)
+if [ -z "$MSG" ]; then
+    MSG=$(printf '%s' "$COMMAND" | head -1 | sed -n 's/.*-m[[:space:]]*\([^"'"'"'][^[:space:]]*\).*/\1/p')
 fi
 
 # If we can't extract a message, allow it (might be amend without -m, or interactive)
@@ -31,7 +36,7 @@ if [ -z "$MSG" ]; then
 fi
 
 # Check for semantic prefix
-if echo "$MSG" | grep -qE '^\s*(feat|fix|refactor|chore|docs|style|test|ci|perf)(\(.+\))?(!)?:'; then
+if printf '%s' "$MSG" | grep -qE '^\s*(feat|fix|refactor|chore|docs|style|test|ci|perf)(\(.+\))?(!)?:'; then
     exit 0
 fi
 
