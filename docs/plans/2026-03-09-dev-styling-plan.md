@@ -72,6 +72,8 @@ Style file lives next to the component, same name. See `dev:react` → `folder-s
 
 ## Sources of Truth
 
+To ensure best practices, always verify patterns against these references before implementation. Use Ref MCP to look up specific topics.
+
 - **MDN CSS Reference**: https://developer.mozilla.org/en-US/docs/Web/CSS
 - **CSS Modules spec**: https://github.com/css-modules/css-modules
 - **CVA docs**: https://cva.style
