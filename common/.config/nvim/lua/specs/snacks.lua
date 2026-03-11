@@ -201,6 +201,7 @@ function M.keys()
     return {
         -- App (Snacks-unique features)
         { "<leader>an",          function() Snacks.notifier.show_history() end, desc = "[N]otifications" },
+        { "<leader>av",          function() Snacks.lazygit() end, desc = "[V]ersion Control" },
 
         -- Workspace (Snacks-unique features)
         { "<leader>wvH",         function() Snacks.lazygit.log() end, desc = "[H]istory (Lazygit)" },
@@ -394,12 +395,6 @@ return {
         },
         lazygit = {
             configure = false, -- Theme managed by pick-theme via Black Atom adapter
-            config = {
-                os = {
-                    edit = "nvim --server $NVIM --remote-send '<cmd>close<cr><cmd>lua EditFromLazygit({{filename}})<CR>'",
-                    editAtLine = "nvim --server $NVIM --remote-send '<cmd>close<CR><cmd>lua EditLineFromLazygit({{filename}},{{line}})<CR>'",
-                },
-            },
             win = {
                 backdrop = true,
                 border = "solid",
