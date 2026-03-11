@@ -9,11 +9,11 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +28 vite.config.ts
+badd +18 ~/repos/nikbrunner/imfusion-coding-assignment/src/components/PatientCard.tsx
 argglobal
 %argdel
-$argadd ~/repos/nikbrunner/imfusion-coding-assignment/src/components/SeriesRow.tsx
-edit vite.config.ts
+$argadd PERSONAL_NOTES.md
+edit ~/repos/nikbrunner/imfusion-coding-assignment/src/components/PatientCard.tsx
 argglobal
 setlocal keymap=
 setlocal noarabic
@@ -46,8 +46,8 @@ setlocal cursorlineopt=both
 setlocal nodiff
 setlocal eventignorewin=
 setlocal expandtab
-if &filetype != 'typescript'
-setlocal filetype=typescript
+if &filetype != 'typescriptreact'
+setlocal filetype=typescriptreact
 endif
 setlocal fixendofline
 setlocal foldcolumn=0
@@ -114,7 +114,7 @@ setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarFilename#vite.config.ts%*
+setlocal winbar=%#WinBarPath#src%*\ %#WinBarSeparator#/%*\ %#WinBarPath#components%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#PatientCard.tsx%*\ %#WinBarSeparator##%*\ %#WinBarSymbol#patientCard%*\ %#WinBarSeparator##%*\ %#WinBarSymbol#defaultVariants%*
 setlocal winblend=0
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -122,18 +122,18 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-11
+39
 sil! normal! zo
-19
+40
 sil! normal! zo
-20
+46
 sil! normal! zo
-let s:l = 28 - ((27 * winheight(0) + 29) / 58)
+let s:l = 16 - ((15 * winheight(0) + 21) / 43)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 28
-normal! 05|
+keepjumps 16
+normal! 0
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf

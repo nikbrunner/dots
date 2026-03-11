@@ -10,7 +10,7 @@ endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
 badd +298 src/routes/index.tsx
-badd +1 src/hooks/useColorMode.ts
+badd +16 src/hooks/useColorMode.ts
 argglobal
 %argdel
 edit src/routes/index.tsx
@@ -282,7 +282,7 @@ setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#src%*\ %#WinBarSeparator#/%*\ %#WinBarPath#hooks%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#useColorMode.ts%*\ %#WinBarSeparator##%*\ %#WinBarSymbol#useColorMode%*\ %#WinBarSeparator##%*\ %#WinBarSymbol#colorMode%*
+setlocal winbar=%#WinBarPath#src%*\ %#WinBarSeparator#/%*\ %#WinBarPath#hooks%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#useColorMode.ts%*
 setlocal winblend=0
 setlocal nowinfixbuf
 setlocal nowinfixheight
