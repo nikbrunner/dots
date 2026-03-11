@@ -2,10 +2,9 @@
 # https://github.com/jesseduffield/lazygit/blob/master/docs/Config.md
 os:
   open: "zed {{filename}}"
-  editPreset: "nvim-remote"
-  # edit: "nvim --server $NVIM --remote-send '<cmd>close<cr><cmd>lua EditFromLazygit({{filename}})<CR>'"
-  # editAtLine: "nvim --server $NVIM --remote-send '<cmd>close<CR><cmd>lua EditLineFromLazygit({{filename}},{{line}})<CR>'"
-  editInTerminal: true
+  edit: "nvim --server $NVIM --remote-send '<cmd>close<cr><cmd>lua EditFromLazygit({{filename}})<CR>'"
+  editAtLine: "nvim --server $NVIM --remote-send '<cmd>close<CR><cmd>lua EditLineFromLazygit({{filename}},{{line}})<CR>'"
+  editInTerminal: false
   openDirInEditor: "nvim {{dir}}"
 promptToReturnFromSubprocess: false
 gui:
