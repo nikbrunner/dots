@@ -11,7 +11,7 @@ window-padding-y = 15
 window-vsync = true
 
 # Advanced
-# custom-shader = ./shaders/cursor_trail.glsl
+custom-shader = ./shaders/boo.glsl
 adjust-cell-height = 35%
 adjust-cursor-thickness = 3
 adjust-underline-position = 3
