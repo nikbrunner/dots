@@ -201,24 +201,24 @@ function M.keys()
     return {
         -- App (Snacks-unique features)
         { "<leader>an",          function() Snacks.notifier.show_history() end, desc = "[N]otifications" },
-        { "<leader>av",          function() Snacks.lazygit() end, desc = "[V]ersion Control" },
+        { "<leader>ag",          function() Snacks.lazygit() end, desc = "[G]it" },
 
         -- Workspace (Snacks-unique features)
-        { "<leader>wvH",         function() Snacks.lazygit.log() end, desc = "[H]istory (Lazygit)" },
-        { "<leader>wvs",         function() Snacks.lazygit() end, desc = "[S]tatus (Lazygit)" },
-        { "<leader>wvib",         M.gh_issue_browse, desc = "[B]rowse Issues" },
-        { "<leader>wvpc",         M.gh_pr_diff, desc = "[C]hanges in current PR" },
-        { "<leader>wvpd",         M.gh_pr_buffer, desc = "[D]escription of current PR" },
-        { "<leader>wvpb",         M.gh_pr_browse, desc = "[B]rowse Pull Requests" },
+        { "<leader>wgH",         function() Snacks.lazygit.log() end, desc = "[H]istory (Lazygit)" },
+        { "<leader>wgs",         function() Snacks.lazygit() end, desc = "[S]tatus (Lazygit)" },
+        { "<leader>wgib",         M.gh_issue_browse, desc = "[B]rowse Issues" },
+        { "<leader>wgpc",         M.gh_pr_diff, desc = "[C]hanges in current PR" },
+        { "<leader>wgpd",         M.gh_pr_buffer, desc = "[D]escription of current PR" },
+        { "<leader>wgpb",         M.gh_pr_browse, desc = "[B]rowse Pull Requests" },
 
         -- Document (Snacks-unique features)
-        { "<leader>dvh",         function() Snacks.picker.git_log_file() end, desc = "[H]istory" },
-        { "<leader>dvH",         function() Snacks.lazygit.log_file() end, desc = "[H]istory (Lazygit)" },
+        { "<leader>dgh",         function() Snacks.picker.git_log_file() end, desc = "[H]istory" },
+        { "<leader>dgH",         function() Snacks.lazygit.log_file() end, desc = "[H]istory (Lazygit)" },
         { "<leader>du",          function() Snacks.picker.undo() end, desc = "[U]ndo" },
 
         -- Symbols (Snacks-unique features)
-        { "svb",                  function() Snacks.git.blame_line() end, desc = "[B]lame" },
-        { "svh",                  function() Snacks.picker.git_log_line() end, desc = "[H]istory" },
+        { "<leader>sgb",          function() Snacks.git.blame_line() end, desc = "[B]lame" },
+        { "<leader>sgh",          function() Snacks.picker.git_log_line() end, desc = "[H]istory" },
     }
     -- stylua: ignore end
 end

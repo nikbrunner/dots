@@ -149,16 +149,16 @@ function M.diff()
     end, { desc = "Reset Hunk" })
 
     -- Preview/overlay toggle
-    map({ "n", "v" }, "<leader>cv", function()
+    map({ "n", "v" }, "<leader>cg", function()
         MiniDiff.toggle_overlay(0)
-    end, { desc = "Version (Hunk Preview)" })
+    end, { desc = "[G]it (Hunk Preview)" })
 
     -- Buffer-level operations
-    map("n", "<leader>dvr", function()
+    map("n", "<leader>dgr", function()
         MiniDiff.do_hunks(0, "reset")
     end, { desc = "[R]evert changes" })
 
-    map("n", "<leader>dvs", function()
+    map("n", "<leader>dgs", function()
         MiniDiff.do_hunks(0, "apply")
     end, { desc = "[S]tage document" })
 end
@@ -252,19 +252,19 @@ function M.sessions()
         },
     })
 
-    vim.keymap.set("n", "<leader>ss", function()
+    vim.keymap.set("n", "<leader>ass", function()
         require("mini.sessions").write(M.get_session_name())
     end, { desc = "[S]ave" })
 
-    vim.keymap.set("n", "<leader>sl", function()
+    vim.keymap.set("n", "<leader>asl", function()
         require("mini.sessions").select("read")
     end, { desc = "[L]ist" })
 
-    vim.keymap.set("n", "<leader>sd", function()
+    vim.keymap.set("n", "<leader>asd", function()
         require("mini.sessions").select("delete", { force = true })
     end, { desc = "[D]elete" })
 
-    vim.keymap.set("n", "<leader>sc", function()
+    vim.keymap.set("n", "<leader>asc", function()
         local sessions_dir = vim.fn.stdpath("config") .. "/sessions/"
         local two_days_ago = os.time() - (2 * 24 * 60 * 60) -- 2 days in seconds
         local deleted_count = 0
@@ -853,7 +853,7 @@ function M.pick()
     map("n", "<leader>ahm",         function() MiniExtra.pickers.manpages() end, { desc = "[M]anuals" })
     map("n", "<leader>aht",         function() MiniPick.builtin.help() end, { desc = "[T]ags" })
     map("n", "<leader>ar",          function() MiniExtra.pickers.oldfiles() end, { desc = "[R]ecent Documents (Anywhere)" })
-    map("n", "<leader>as",          function() MiniPick.builtin.files(nil, { source = { cwd = vim.fn.expand("$HOME") .. "/repos/nikbrunner/dots" }}) end, { desc = "[S]ettings (Dots)" })
+    map("n", "<leader>a,",          function() MiniPick.builtin.files(nil, { source = { cwd = vim.fn.expand("$HOME") .. "/repos/nikbrunner/dots" }}) end, { desc = "[,]Settings (Dots)" })
     map("n", "<leader>at",          function() MiniExtra.pickers.colorschemes() end, { desc = "[T]hemes" })
     map("n", "<leader>aw",          MiniPick.registry.project_switch, { desc = "[W]orkspace" })
 
@@ -866,9 +866,9 @@ function M.pick()
     map("n", "<leader>wr",          function() MiniExtra.pickers.oldfiles({ current_dir = true }) end, { desc = "[R]ecent Documents" })
     map("n", "<leader>ws",          function() MiniExtra.pickers.lsp({ scope = "workspace_symbol" }) end, { desc = "[S]ymbols" })
     map("n", "<leader>wt",          function() MiniPick.builtin.grep_live() end, { desc = "[T]ext" })
-    map("n", "<leader>wvb",         function() MiniExtra.pickers.git_branches({}, { window = { config = M.win_config.big } }) end, { desc = "[B]ranches" })
-    map("n", "<leader>wvh",         function() MiniExtra.pickers.git_commits({}, { window = { config = M.win_config.big } }) end, { desc = "[H]istory" })
-    map("n", "<leader>wvr",         git_browse, { desc = "[R]emote (GitHub)" })
+    map("n", "<leader>wgb",         function() MiniExtra.pickers.git_branches({}, { window = { config = M.win_config.big } }) end, { desc = "[B]ranches" })
+    map("n", "<leader>wgh",         function() MiniExtra.pickers.git_commits({}, { window = { config = M.win_config.big } }) end, { desc = "[H]istory" })
+    map("n", "<leader>wgr",         git_browse, { desc = "[R]emote (GitHub)" })
     map("n", "<leader>ww",          function() MiniPick.builtin.grep({ pattern = vim.fn.expand("<cword>") }) end, { desc = "[W]ord" })
 
     -- Document
@@ -880,8 +880,8 @@ function M.pick()
     map("n", "<leader>dt",          function() MiniExtra.pickers.buf_lines({ scope = "current" }) end, { desc = "[T]ext" })
 
     -- Symbol
-    map("n", "sr",                  function() MiniExtra.pickers.lsp({ scope = "references" }) end, { desc = "[R]eferences" })
-    map("n", "si",                  function() MiniExtra.pickers.lsp({ scope = "implementation" }) end, { desc = "[I]mplementations" })
+    map("n", "<leader>sr",           function() MiniExtra.pickers.lsp({ scope = "references" }) end, { desc = "[R]eferences" })
+    map("n", "<leader>si",           function() MiniExtra.pickers.lsp({ scope = "implementation" }) end, { desc = "[I]mplementations" })
     -- stylua: ignore end
 end
 
@@ -1074,7 +1074,7 @@ function M.files()
     -- stylua: ignore start
     map("n", "-", function() MiniFiles.open(vim.api.nvim_buf_get_name(0)) end, { desc = "[E]xplorer" })
     map("n", "<leader>we", function() MiniFiles.open(vim.fn.getcwd()) end, { desc = "[E]xplorer (cwd)" })
-    map("n", "<leader>wf", function() M.git_files() end, { desc = "Git [F]iles (tree)" })
+    -- map("n", "<leader>wf", function() M.git_files() end, { desc = "Git [F]iles (tree)" })
     -- stylua: ignore end
 end
 
@@ -1176,23 +1176,24 @@ function M.clue()
 
             -- Workspace
             { mode = "n", keys = "<leader>w", desc = "[W]orkspace" },
-            { mode = "n", keys = "<leader>wv", desc = "[V]ersion" },
-            { mode = "n", keys = "<leader>wvi", desc = "[I]ssues" },
-            { mode = "n", keys = "<leader>wvp", desc = "[P]ull Requests" },
+            { mode = "n", keys = "<leader>wg", desc = "[G]it" },
+            { mode = "n", keys = "<leader>wgi", desc = "[I]ssues" },
+            { mode = "n", keys = "<leader>wgp", desc = "[P]ull Requests" },
 
             -- Document
             { mode = "n", keys = "<leader>d", desc = "[D]ocument" },
             { mode = "n", keys = "<leader>dy", desc = "[Y]ank" },
-            { mode = "n", keys = "<leader>dv", desc = "[V]ersion" },
+            { mode = "n", keys = "<leader>dg", desc = "[G]it" },
 
             -- Symbol
-            { mode = "n", keys = "sl", desc = "[L]og" },
-            { mode = "n", keys = "sc", desc = "[C]alls" },
-            { mode = "n", keys = "sv", desc = "[V]ersion" },
+            { mode = "n", keys = "<leader>s", desc = "[S]ymbol" },
+            { mode = "n", keys = "<leader>sl", desc = "[L]og" },
+            { mode = "n", keys = "<leader>sc", desc = "[C]alls" },
+            { mode = "n", keys = "<leader>sg", desc = "[G]it" },
 
             -- Other
             { mode = "n", keys = "<leader>c", desc = "[C]hange" },
-            { mode = "n", keys = "<leader>s", desc = "[S]ession" },
+            { mode = "n", keys = "<leader>as", desc = "[S]ession" },
             { mode = "n", keys = "<leader>h", desc = "[H]ttp" },
             { mode = "n", keys = "<leader>n", desc = "[N]otes" },
             { mode = "n", keys = "<leader>x", desc = "Trouble/Quickfix" },

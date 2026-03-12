@@ -1,4 +1,7 @@
 [
+  // ============================================================
+  // Global (all contexts)
+  // ============================================================
   {
     "bindings": {
       "ctrl-s": "workspace::SaveAll",
@@ -7,109 +10,126 @@
       "alt-[": "workspace::ToggleLeftDock",
       "alt-]": "workspace::ToggleRightDock",
 
-      ", a w": "projects::OpenRecent",
+      // --- App Scope (AWDCS: A) ---
+      ", a a": "command_palette::Toggle",
+      ", a g": "git_panel::ToggleFocus",
       ", a t": "theme_selector::Toggle",
-      ", a s": "zed::OpenSettings",
+      ", a ,": "zed::OpenSettings",
       ", a k": "zed::OpenKeymap",
-
-      // Intelligence
+      ", a w": "projects::OpenRecent",
       ", a i a": "editor::ToggleEditPrediction",
+      ", a f": "workspace::ToggleZenMode",
+      ", a z": "workspace::ToggleCenteredLayout",
 
+      // --- Pane Navigation ---
       "ctrl-h": "workspace::ActivatePaneLeft",
       "ctrl-l": "workspace::ActivatePaneRight",
       "ctrl-k": "workspace::ActivatePaneUp",
       "ctrl-j": "workspace::ActivatePaneDown"
     }
   },
+
+  // ============================================================
+  // Workspace context (AWDCS: W)
+  // ============================================================
   {
     "context": "Workspace",
     "bindings": {
-      ", a g": [
-        "task::Spawn",
-        { "task_name": "Open lazygit", "target": "center" }
-      ],
       ", ,": "file_finder::Toggle",
       ", w d": "file_finder::Toggle",
       ", w r": "tab_switcher::Toggle",
       ", w s": "project_symbols::Toggle",
       ", w f": "pane::DeploySearch",
-      ", w e": "project_panel::ToggleFocus" // reveal current file
+      ", w t": "pane::DeploySearch",
+      ", w e": "project_panel::ToggleFocus",
+      ", w p": "diagnostics::Deploy",
+      ", w m": "git::OpenModifiedFiles",
+      ", w g b": "branches::OpenRecent"
     }
   },
+
+  // ============================================================
+  // Editor — full mode (expand excerpts)
+  // ============================================================
   {
     "context": "Editor && mode == full",
     "bindings": {
-      "shift-enter": [
-        "editor::ExpandExcerpts",
-        {
-          "lines": 5
-        }
-      ]
+      "shift-enter": ["editor::ExpandExcerpts", { "lines": 5 }]
     }
   },
+
+  // ============================================================
+  // Editor — Vim Normal (AWDCS: D, C, S + Navigation)
+  // ============================================================
   {
     "context": "Editor && vim_mode == normal && !VimWaiting && !menu",
     "bindings": {
-      // Find
-      // ", ,": ["workspace::SendKeystrokes", ":"],
-
-      ", d f": "buffer_search::Deploy",
-
+      // --- Navigation ---
       "H": "pane::ActivatePreviousItem",
       "L": "pane::ActivateNextItem",
-
       "space": ["workspace::SendKeystrokes", "c i w"],
 
-      // Document Actions
-      ", d y p": "workspace::CopyRelativePath",
-      ", d v r": "git::RestoreFile",
+      // --- Document Scope (AWDCS: D) ---
+      ", d f": "buffer_search::Deploy",
       ", d s": "outline::Toggle",
+      ", d l": "pane::AlternateFile",
+      ", d p": "editor::GoToDiagnostic",
+      ", d y p": "workspace::CopyRelativePath",
+      ", d y a": "workspace::CopyPath",
+      ", d g r": "git::RestoreFile",
+      ", d g s": "git::StageFile",
 
-      // Change
-      // ", c r": "editor::RevertSelectedHunks",
+      // --- Change Scope (AWDCS: C) ---
       ", c r": "git::Restore",
+      ", c s": "git::StageAndNext",
       ", c d": "editor::ToggleSelectedDiffHunks",
+      ", c g": "editor::ToggleSelectedDiffHunks",
       "] c": "editor::GoToNextChange",
       "[ c": "editor::GoToPreviousChange",
 
-      // Symbol
-      "s d": "editor::GoToDefinition",
-      "s r": "editor::FindAllReferences",
-      "s i": "editor::Hover",
-      "s n": "editor::Rename",
-      "s a": "editor::ToggleCodeActions",
+      // --- Symbol Scope (AWDCS: S) ---
+      ", s d": "editor::GoToDefinition",
+      ", s r": "editor::FindAllReferences",
+      ", s i": "editor::Hover",
+      ", s n": "editor::Rename",
+      ", s a": "editor::ToggleCodeActions",
+      ", s t": "editor::GoToTypeDefinition",
+      ", s shift-i": "editor::GoToImplementation",
+      ", s g b": "editor::BlameHover",
 
-      // Custom
-      // comment out and copy under
+      // --- Custom ---
       "y c": ["workspace::SendKeystrokes", "y y g c c p"]
     }
   },
+
+  // ============================================================
+  // Editor — Vim Visual
+  // ============================================================
   {
     "context": "Editor && vim_mode == visual && !VimWaiting && !menu",
     "bindings": {
-      // Assistant
       "g a": "agent::QuoteSelection",
-
-      // Fold
-      // "z a": "editor::Fold",
-      // "z o": "editor::UnfoldLines"
       "v": "editor::SelectLargerSyntaxNode",
       "V": "editor::SelectSmallerSyntaxNode",
       "A": "editor::SelectAll",
       "K": "editor::MoveLineUp",
       "J": "editor::MoveLineDown",
-
       ", c c g": "editor::CopyPermalinkToLine"
     }
   },
+
+  // ============================================================
+  // Editor — Vim Insert
+  // ============================================================
   {
     "context": "Editor && vim_mode == insert && !menu",
-    "bindings": {
-      // put key-bindings here if you want them to work in insert mode
-    }
+    "bindings": {}
   },
+
+  // ============================================================
+  // Project Panel
+  // ============================================================
   {
-    // this is not working. i dont know why really.
     "context": "ProjectPanel && not_editing",
     "bindings": {
       "escape": "project_panel::ToggleFocus",
@@ -134,6 +154,10 @@
       "g y": "workspace::CopyPath"
     }
   },
+
+  // ============================================================
+  // Terminal
+  // ============================================================
   {
     "context": "Terminal",
     "bindings": {

@@ -64,7 +64,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
         local lib = require("lib.lsp")
 
         -- LSP Diagnostics
-        vim.keymap.set("n", "sp", function()
+        vim.keymap.set("n", "<leader>sp", function()
             lib.set_diagnostic_virtual_lines()
 
             vim.api.nvim_create_autocmd("CursorMoved", {
@@ -78,13 +78,13 @@ vim.api.nvim_create_autocmd("LspAttach", {
             })
         end, { buffer = ev.buf, desc = "[P]roblems (Inline)" })
 
-        vim.keymap.set("n", "sh", vim.lsp.buf.hover, { buffer = ev.buf, desc = "[H]over Info" })
+        vim.keymap.set("n", "<leader>sh", vim.lsp.buf.hover, { buffer = ev.buf, desc = "[H]over Info" })
         vim.keymap.set("i", "<C-k>", vim.lsp.buf.signature_help, { buffer = ev.buf, desc = "Signature Help" })
-        vim.keymap.set("n", "sa", vim.lsp.buf.code_action, { buffer = ev.buf, desc = "[A]ction" })
-        vim.keymap.set("n", "sn", vim.lsp.buf.rename, { buffer = ev.buf, desc = "Re[n]ame" })
+        vim.keymap.set("n", "<leader>sa", vim.lsp.buf.code_action, { buffer = ev.buf, desc = "[A]ction" })
+        vim.keymap.set("n", "<leader>sn", vim.lsp.buf.rename, { buffer = ev.buf, desc = "Re[n]ame" })
 
-        vim.keymap.set("n", "sV", lib.goto_split_definition, { buffer = ev.buf, desc = "[D]efinition in Split" })
-        vim.keymap.set("n", "sT", lib.goto_tab_definition, { buffer = ev.buf, desc = "[D]efinition in Tab" })
+        vim.keymap.set("n", "<leader>sV", lib.goto_split_definition, { buffer = ev.buf, desc = "[D]efinition in Split" })
+        vim.keymap.set("n", "<leader>sT", lib.goto_tab_definition, { buffer = ev.buf, desc = "[D]efinition in Tab" })
 
         -- Enable native inline completion
         -- vim.lsp.inline_completion.enable()

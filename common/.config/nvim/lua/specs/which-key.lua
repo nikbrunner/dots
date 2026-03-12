@@ -38,28 +38,30 @@ return {
             { "<leader>al", group = "[L]anguages", icon = "󰗊" },
             { "<leader>ah", group = "[H]elp", icon = "󰋖" },
             { "<leader>ap", group = "[P]lugins", icon = "󰏖" },
-            { "<leader>as", group = "[S]ettings", icon = "" },
-            { "<leader>av", group = "[V]ersion", icon = "󰊢" },
+            { "<leader>a,", group = "[,]Settings", icon = "" },
+            { "<leader>as", group = "[S]ession", icon = "󰐹" },
+            { "<leader>ag", group = "[G]it", icon = "󰊢" },
             { "<leader>ao", group = "[O]ptions", icon = "" },
 
             -- Workspace groups
             { "<leader>w", group = "[W]orkspace", icon = "󰉋" },
-            { "<leader>wv", group = "[V]ersion", icon = "󰊢" },
-            { "<leader>wvi", group = "[I]ssues", icon = "" },
-            { "<leader>wvp", group = "[P]ull Requests", icon = "" },
+            { "<leader>wg", group = "[G]it", icon = "󰊢" },
+            { "<leader>wgi", group = "[I]ssues", icon = "" },
+            { "<leader>wgp", group = "[P]ull Requests", icon = "" },
 
             -- Document groups
             { "<leader>d", group = "[D]ocument", icon = "󰈙" },
             { "<leader>dy", group = "[Y]ank", icon = "󰆏" },
-            { "<leader>dv", group = "[V]ersion", icon = "󰊢" },
+            { "<leader>dg", group = "[G]it", icon = "󰊢" },
 
-            -- Operator-pending groups (for s prefix)
-            { "sl", group = "[L]og", icon = "󰦪" },
-            { "sc", group = "[C]alls", icon = "󰜎" },
+            -- Symbol groups
+            { "<leader>s", group = "[S]ymbol", icon = "" },
+            { "<leader>sl", group = "[L]og", icon = "󰦪" },
+            { "<leader>sc", group = "[C]alls", icon = "󰜎" },
+            { "<leader>sg", group = "[G]it", icon = "󰊢" },
 
             -- Other leader groups
             { "<leader>c", group = "[C]hange", icon = "󰛿" },
-            { "<leader>s", group = "[S]ession", icon = "󰐹" },
             { "<leader>h", group = "[H]ttp", icon = "󰖟" },
             { "<leader>n", group = "[N]otes", icon = "󰠮" },
             { "<leader>x", group = "Trouble/Quickfix", icon = "󱖫" },
