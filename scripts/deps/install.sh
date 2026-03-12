@@ -18,6 +18,79 @@ arch) source "$DOTS_DIR/scripts/deps/arch.sh" ;;
     ;;
 esac
 
+NPM_GLOBALS_FILE="$DOTS_DIR/scripts/deps/npm-globals.txt"
+
+# Read npm global packages from file (skips empty lines and comments)
+_read_npm_globals() {
+    [[ -f "$NPM_GLOBALS_FILE" ]] || return
+    grep -v '^\s*#' "$NPM_GLOBALS_FILE" | grep -v '^\s*$'
+}
+
+# Parse a line from npm-globals.txt into pkg and cmd
+# Format: "package-name" or "package-name:command-name"
+_parse_npm_entry() {
+    local entry="$1"
+    NPM_PKG="${entry%%:*}"
+    if [[ "$entry" == *:* ]]; then
+        NPM_CMD="${entry#*:}"
+    else
+        NPM_CMD="${entry##*/}"
+    fi
+}
+
+# Check which npm globals are installed
+check_npm_globals() {
+    local entry
+    while IFS= read -r entry; do
+        _parse_npm_entry "$entry"
+        if command -v "$NPM_CMD" &>/dev/null; then
+            echo "  $NPM_PKG: installed"
+        else
+            echo "  $NPM_PKG: missing"
+        fi
+    done < <(_read_npm_globals)
+}
+
+# Install missing npm globals
+install_npm_globals() {
+    if ! command -v npm &>/dev/null; then
+        echo "npm not available — skipping npm globals"
+        return
+    fi
+
+    local entry missing=()
+    while IFS= read -r entry; do
+        _parse_npm_entry "$entry"
+        if ! command -v "$NPM_CMD" &>/dev/null; then
+            missing+=("$NPM_PKG")
+        fi
+    done < <(_read_npm_globals)
+
+    if [[ ${#missing[@]} -gt 0 ]]; then
+        echo "Installing npm globals: ${missing[*]}"
+        npm install -g "${missing[@]}"
+    fi
+}
+
+# Upgrade all npm globals from the list
+upgrade_npm_globals() {
+    if ! command -v npm &>/dev/null; then
+        echo "npm not available — skipping npm globals"
+        return
+    fi
+
+    local entry pkgs=()
+    while IFS= read -r entry; do
+        _parse_npm_entry "$entry"
+        pkgs+=("$NPM_PKG")
+    done < <(_read_npm_globals)
+
+    if [[ ${#pkgs[@]} -gt 0 ]]; then
+        echo "Upgrading npm globals: ${pkgs[*]}"
+        npm install -g "${pkgs[@]}"
+    fi
+}
+
 # Configure system settings (shared across OSes)
 configure_system() {
     echo ""
@@ -121,13 +194,19 @@ validate_dependencies() {
 # Run subcommand if script is executed directly
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
     case "${1:-install}" in
-    check) check_all ;;
-    install) install_all ;;
-    upgrade) upgrade_all ;;
+    check) check_all || true; echo ""; echo "npm globals:"; check_npm_globals ;;
+    install) install_all && install_npm_globals ;;
+    upgrade) upgrade_all && upgrade_npm_globals ;;
     list)
         echo "nvm"
         echo "qmk"
         grep -E '^(brew|cask)' "$DOTS_DIR/scripts/deps/Brewfile" | sed 's/.*"\(.*\)".*/\1/'
+        echo ""
+        echo "npm globals:"
+        while IFS= read -r entry; do
+            _parse_npm_entry "$entry"
+            echo "$NPM_PKG"
+        done < <(_read_npm_globals)
         ;;
     configure) configure_system ;;
     validate) validate_dependencies ;;

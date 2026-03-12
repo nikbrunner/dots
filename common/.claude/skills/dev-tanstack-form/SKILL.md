@@ -1,6 +1,6 @@
 ---
 name: dev:tanstack-form
-description: "Nik's TanStack Form patterns -- type-safe fields, validation, render props. Load when @tanstack/react-form is in dependencies or form handling is needed."
+description: "Nik's TanStack Form patterns -- type-safe fields, validation, render props. Loaded via dev:tanstack when Form is relevant."
 user-invocable: false
 ---
 
@@ -171,8 +171,8 @@ Pattern: share `formOptions` between client/server, use `mergeForm` + `useTransf
 
 ## Cross-References
 
-- `dev:tanstack-store` -- Form uses Store internally; same `useStore` + selector pattern
-- `dev:tanstack-start` -- server-side validation via `createServerValidate`
+- `dev:tanstack` -- CLI for doc lookup, ecosystem entry point
+- `dev:tanstack-query` -- server state; Form handles form state only
 - `dev:typescript` -- type-safe patterns align with Form's inference
 - `dev:react` -- render prop pattern for fields fits component architecture
 

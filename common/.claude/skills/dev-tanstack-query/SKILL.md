@@ -1,6 +1,6 @@
 ---
 name: dev:tanstack-query
-description: "Nik's TanStack Query patterns -- topic-based keys, query/mutation co-location, server state separation. Load when working with TanStack Query or data fetching in React."
+description: "Nik's TanStack Query patterns -- topic-based keys, query/mutation co-location, server state separation. Loaded via dev:tanstack when Query is relevant."
 user-invocable: false
 ---
 
@@ -40,11 +40,9 @@ Key articles to consult per topic:
 
 ## Cross-References
 
+- `dev:tanstack` -- CLI for doc lookup, ecosystem entry point
 - `dev:state-management` -- state categorization, separation principle, decision flow
-- `dev:tanstack-router` -- URL state via search params, loader integration with `ensureQueryData`
-- `dev:tanstack-store` -- client state; Query handles server state only
 - `dev:tanstack-form` -- form state; can coexist with Query for form submissions
-- `dev:tanstack-start` -- server functions as data layer, Query for client-side caching on top
 
 ## References
 

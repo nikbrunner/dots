@@ -1,0 +1,3 @@
+# Format: package-name or package-name:command-name
+# Use command-name override when the binary differs from the package name
+@tanstack/cli:tanstack
