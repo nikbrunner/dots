@@ -550,38 +550,6 @@ handle_push_after_commit() {
 				echo ""
 			fi
 		fi
-	else
-		# Ask to push after commit
-		echo ""
-		read -r -p "Push to remote? (y/n): " confirm
-		if [ "$confirm" = "y" ] || [ "$confirm" = "Y" ]; then
-			# Try regular push
-			push_output=""
-			if ! push_output=$(git push 2>&1); then
-				echo ""
-				echo "Push failed:"
-				echo "$push_output"
-				echo ""
-				read -r -p "Force push with --force-with-lease? (y/n): " force_confirm
-				if [ "$force_confirm" = "y" ] || [ "$force_confirm" = "Y" ]; then
-					git push --force-with-lease
-					echo ""
-					echo "All done! Changes committed and pushed successfully!"
-					echo ""
-				else
-					echo "Push cancelled."
-					exit 1
-				fi
-			else
-				echo ""
-				echo "All done! Changes committed and pushed successfully!"
-				echo ""
-			fi
-		else
-			echo ""
-			echo "All done! Changes committed successfully!"
-			echo ""
-		fi
 	fi
 }
 
