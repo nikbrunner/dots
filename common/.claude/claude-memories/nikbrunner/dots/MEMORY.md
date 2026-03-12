@@ -18,7 +18,7 @@ common/.claude/
 │       └── warn-any-type.sh      # PostToolUse: warns on `: any` in TypeScript
 └── skills/
     ├── README.md              # TODOs and status tracking for skills work
-    ├── about-*/               # 7 knowledge skills (about:nik, about:bai, etc.)
+    ├── about-*/               # 8 knowledge skills (about:nik, about:bai, about:awdcs, etc.)
     ├── dev-*/                 # 8 dev skills (react, typescript, tanstack-query, testing, planning, bugs, arch-review, ui-review)
     ├── bai-*/                 # 8 BAI workflow skills (bai:status, bai:commit, etc.)
     ├── dots-*/                # 4 dotfiles skills (dots:add, dots:remove, etc.)
