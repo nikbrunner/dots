@@ -22,7 +22,7 @@ Repo: `~/repos/nikbrunner/awdcs/`
 
 ## Key Patterns
 
-- **Format**: `<Scope><?Group?><Operation>` — e.g., `<leader>wvh` = Workspace → Version → History
+- **Format**: `<Scope><?Group?><Operation>` — e.g., `<leader>wgh` = Workspace → Git → History
 - **Lowercase/Uppercase variants**: lowercase = transient picker UI, uppercase = persistent panel UI
 - **Leader key**: Nik uses `,` — enables two-handed ergonomic typing
 - **Symbol scope exception**: `s` prefix without leader (high-frequency operations)
