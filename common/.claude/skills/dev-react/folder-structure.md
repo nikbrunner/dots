@@ -7,10 +7,16 @@ src/
 ├── components/          # Dumb Components
 ├── containers/          # Smart Containers
 ├── partials/            # Compositions
-├── hooks/               # Shared logic hooks
+├── hooks/               # UI utilities, shared event hooks (no server state)
+├── queries/             # TanStack Query hooks → see dev:tanstack-query
 ├── lib/                 # Utilities, helpers
 └── types/               # Shared type definitions
 ```
+
+### hooks/ vs queries/
+
+- `hooks/` — UI utilities and shared event hooks: `useDebounce`, `useMediaQuery`, `useClickOutside`, `useKeyboardShortcut`. No server state, no TanStack Query.
+- `queries/` — All TanStack Query hooks, including orchestration hooks that compose multiple queries (e.g. `useUserProfile`). Organized by topic. See `dev:tanstack-query` for structure.
 
 ## Multi-File Components
 

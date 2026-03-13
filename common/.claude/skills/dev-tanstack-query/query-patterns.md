@@ -1,5 +1,22 @@
 # Query Patterns
 
+## Orchestration / Topic Hooks
+
+Hooks that compose multiple queries into a domain API (e.g. `useUserProfile` calling `useUser` + `usePermissions`) live in the same topic folder as the query hooks they orchestrate — not in `hooks/`.
+
+```
+queries/
+├── user/
+│   ├── query-key.ts
+│   ├── use-user.ts
+│   ├── use-permissions.ts
+│   └── use-user-profile.ts   # composes the above, derives canEdit etc.
+```
+
+If consumed by only one container, co-locate it there instead. See `dev:react` co-location rules.
+
+---
+
 ## Complexity 1: One File Per Endpoint
 
 Best for small API surfaces. Co-locates queries and mutations per topic.

@@ -46,8 +46,8 @@ function UserContainer() {
 | Hook scope | Location |
 |-----------|----------|
 | Used by one component/container | Co-located in its folder |
-| Used by multiple consumers | Top-level `hooks/` directory |
-| Specific to a query topic | Co-located in `queries/` topic folder |
+| UI utility or shared event hook | Top-level `hooks/` directory |
+| Query wrapper or topic orchestration hook | `queries/` topic folder (see `dev:tanstack-query`) |
 
 ## When to Extract a Hook
 
