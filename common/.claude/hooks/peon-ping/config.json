@@ -1,5 +1,4 @@
 {
-  "active_pack": "peon",
   "volume": 0.5,
   "enabled": true,
   "desktop_notifications": true,
@@ -16,5 +15,6 @@
   "annoyed_window_seconds": 10,
   "silent_window_seconds": 0,
   "pack_rotation": [],
-  "pack_rotation_mode": "random"
+  "pack_rotation_mode": "random",
+  "default_pack": "glados"
 }
