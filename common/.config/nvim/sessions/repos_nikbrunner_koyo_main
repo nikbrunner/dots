@@ -9,7 +9,7 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +156 ~/repos/nikbrunner/koyo/qmk/chocofi/src/keymap.c
+badd +43 ~/repos/nikbrunner/koyo/qmk/chocofi/src/keymap.c
 argglobal
 %argdel
 $argadd ~/repos/nikbrunner/koyo/qmk/chocofi/src/keymap.c
@@ -147,13 +147,19 @@ sil! normal! zo
 sil! normal! zo
 151
 sil! normal! zo
+151
+sil! normal! zo
+151
+sil! normal! zo
+151
+sil! normal! zo
 154
 sil! normal! zo
-let s:l = 37 - ((26 * winheight(0) + 26) / 53)
+let s:l = 43 - ((42 * winheight(0) + 26) / 53)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 37
+keepjumps 43
 normal! 0
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
