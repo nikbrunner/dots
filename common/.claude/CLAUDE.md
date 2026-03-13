@@ -75,6 +75,8 @@ Before renaming or changing a function signature, use `findReferences` to find a
 
 Skills may include a **Sources of Truth** section with links to official docs. Before implementing patterns from a skill, verify against those references using Ref MCP. Fallbacks: Exa MCP for web search, agent-browser CLI for browsing docs directly. Skills capture preferences — docs capture current API reality.
 
+For searching Tanstack docs, use the `tanstack` cli, that is installed globally.
+
 ### Self-Improvement Awareness
 
 While working with skills, watch for gaps, outdated content, or missing cross-references. When you notice something:
