@@ -37,55 +37,37 @@ return {
     end,
     opts = function()
         local conform = require("conform")
-        local bufnr = vim.api.nvim_get_current_buf()
-        local fname = vim.uri_to_fname(vim.uri_from_bufnr(bufnr))
 
-        local is_prettier_available = conform.get_formatter_info(prettier_cmd, bufnr).available
-        local prettier_config = vim.fs.find(prettier_configs, { upward = true, path = fname })[1]
-
-        if prettier_config ~= nil then
-            if not is_prettier_available then
-                vim.notify(
-                    string.format(
-                        "There is a `prettier` config (%s), but `%s` is not installed",
-                        prettier_config,
-                        prettier_cmd
-                    ),
-                    vim.log.levels.WARN,
-                    { title = "Conform" }
-                )
-            end
-        end
-
-        local is_deno_available = conform.get_formatter_info(deno_cmd, bufnr).available
-        local deno_config = vim.fs.find(deno_configs, { upward = true, path = fname })[1]
-
-        if deno_config ~= nil then
-            if not is_deno_available then
-                vim.notify("There is a deno config, but deno is not installed", vim.log.levels.WARN, { title = "Conform" })
-            end
-        end
-
-        local is_biome_available = conform.get_formatter_info(biome_cmd, bufnr).available
-        local biome_config = vim.fs.find(biome_configs, { upward = true, path = fname })[1]
-
-        if biome_config ~= nil then
-            if not is_biome_available then
-                vim.notify("There is a biome config, but biome is not installed", vim.log.levels.WARN, { title = "Conform" })
-            end
-        end
-
-        local function handle_shared_formatter()
+        local function handle_shared_formatter(buf)
             -- NOTE: Priority order:
             -- 1. Prettier (explicit formatting config)
             -- 2. Deno (all-in-one tool for Deno projects)
             -- 3. Biome (all-in-one tool, but in some projects only used for linting)
+            local buf_fname = vim.uri_to_fname(vim.uri_from_bufnr(buf))
 
-            if prettier_config ~= nil and is_prettier_available then
+            local is_prettier = conform.get_formatter_info(prettier_cmd, buf).available
+            local prettier_config = vim.fs.find(prettier_configs, { upward = true, path = buf_fname })[1]
+
+            if prettier_config ~= nil and not is_prettier then
+                vim.notify(
+                    string.format("There is a `prettier` config (%s), but `%s` is not installed", prettier_config, prettier_cmd),
+                    vim.log.levels.WARN,
+                    { title = "Conform" }
+                )
+            end
+
+            if prettier_config ~= nil and is_prettier then
                 return { prettier_cmd, stop_after_first = true }
             end
 
-            if deno_config ~= nil and is_deno_available then
+            local is_deno = conform.get_formatter_info(deno_cmd, buf).available
+            local deno_config = vim.fs.find(deno_configs, { upward = true, path = buf_fname })[1]
+
+            if deno_config ~= nil and not is_deno then
+                vim.notify("There is a deno config, but deno is not installed", vim.log.levels.WARN, { title = "Conform" })
+            end
+
+            if deno_config ~= nil and is_deno then
                 return { "deno_fmt", stop_after_first = true }
             end
 
@@ -93,7 +75,14 @@ return {
             -- https://github.com/kiyoon/conform.nvim/blob/f73ca2e94221d0374134b64c085d1847a6ed3593/lua/conform/formatters/biome-check.lua
             -- https://github.com/kiyoon/conform.nvim/blob/f73ca2e94221d0374134b64c085d1847a6ed3593/lua/conform/formatters/biome.lua
             -- https://github.com/kiyoon/conform.nvim/blob/f73ca2e94221d0374134b64c085d1847a6ed3593/lua/conform/formatters/biome-organize-imports.lua
-            if biome_config ~= nil and is_biome_available then
+            local is_biome = conform.get_formatter_info(biome_cmd, buf).available
+            local biome_config = vim.fs.find(biome_configs, { upward = true, path = buf_fname })[1]
+
+            if biome_config ~= nil and not is_biome then
+                vim.notify("There is a biome config, but biome is not installed", vim.log.levels.WARN, { title = "Conform" })
+            end
+
+            if biome_config ~= nil and is_biome then
                 -- return { "biome", "biome-organize-imports" }
                 return { "biome-check" }
             end
