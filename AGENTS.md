@@ -23,7 +23,7 @@ dots/
 ## Commands
 
 - **`dots`** — Dotfiles management. Run `dots` with no args for usage. See `common/.local/bin/dots`.
-- **`repo`** — AI-powered git operations (commit, branch). Run `repo help` for usage. See `common/.local/bin/repo`.
+- **`brick`** — AI-powered git operations (commit, branch). Run `brick --help` for usage. See [nikbrunner/brick](https://github.com/nikbrunner/brick).
 - **`helm`** — External tool for multi-repo management (pull, push, status, rebuild). Invoked by `dots pull` and `dots push`.
 
 Full machine setup: `scripts/install.sh [--dry-run] [--no-deps]`
@@ -62,7 +62,6 @@ Theme files in this repo are symlinks to Black Atom adapter repos. `dots link` a
 ## Key Files
 
 - `common/.local/bin/dots` — Main CLI implementation (dispatcher + `cmd_pull`, `cmd_push`, `cmd_chores`, `cmd_link`, `cmd_deps`)
-- `common/.local/bin/repo` — AI-powered git operations (commit, branch)
 - `scripts/dots/lib.sh` — Shared library (config loading, repo helpers, chore commit functions)
 - `scripts/dots/symlinks.sh` — Symlink creation/cleanup logic (also sourceable as a library)
 - `scripts/dots/detect-os.sh` — OS detection (`macos`, `arch`, `linux`)
@@ -76,12 +75,11 @@ Theme files in this repo are symlinks to Black Atom adapter repos. `dots link` a
 
 - `DOTS_DIR` — Override dots directory (default: `~/repos/nikbrunner/dots`)
 - `BLACK_ATOM_DIR` — Override Black Atom repos directory (default: `~/repos/black-atom-industries`)
-- `ANTHROPIC_API_KEY` — Required for `repo commit -s` / `repo branch -s` API mode
+- `ANTHROPIC_API_KEY` — Required for `brick commit --smart` / `brick branch --smart` API mode
 
 ## Shell Conventions
 
 - All scripts use `set -e` (exit on error)
-- `repo` uses `set -euo pipefail`
 - `yq` is required for YAML parsing (`symlinks.yml`, helm config)
 - `gum` is optional but enhances UI (confirmations, spinners, styled output)
 - Scripts are linted with `shellcheck`
