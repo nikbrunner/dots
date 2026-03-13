@@ -43,6 +43,11 @@ common/.claude/
 - **Skills have Sources of Truth sections** — link to official docs, Claude must verify before implementation
 - **browser-automation** — replaces Chrome DevTools MCP; uses agent-browser CLI via Bash
 - **Matt Pocock / AI Hero** — useful resource for Claude Code patterns: https://www.aihero.dev/posts
+- **Livery** — BAI desktop theme manager (Tauri v2 + React), GUI evolution of pick-theme → [project_livery.md](project_livery.md)
+
+### Feedback
+
+- **Skill discovery discipline** — always check skills before using MCP tools directly → [feedback_skill_discovery.md](feedback_skill_discovery.md)
 
 ### Symlinks (symlinks.yml)
 
