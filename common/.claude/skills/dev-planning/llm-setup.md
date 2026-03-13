@@ -46,6 +46,46 @@ Common hooks:
 - Forbidden patterns (e.g., warn on `any` in TypeScript)
 - Auto-formatting after file writes
 
+### 4. Pre-commit Hook
+
+Create a `scripts/setup-hooks.sh` script to install a pre-commit hook that runs checks before every commit. Run it once after cloning.
+
+```bash
+#!/usr/bin/env bash
+set -e
+
+HOOK_FILE=".git/hooks/pre-commit"
+
+cat > "$HOOK_FILE" << 'EOF'
+#!/usr/bin/env bash
+set -e
+
+# Adapt these to the project's actual commands
+echo "Running pre-commit checks..."
+
+# Type check
+npm run typecheck 2>/dev/null || pnpm typecheck 2>/dev/null || true
+
+# Lint
+npm run lint 2>/dev/null || pnpm lint 2>/dev/null || true
+
+# Tests (fast unit tests only — keep the hook quick)
+npm run test:unit 2>/dev/null || pnpm test:unit 2>/dev/null || true
+
+echo "Pre-commit checks passed."
+EOF
+
+chmod +x "$HOOK_FILE"
+echo "Pre-commit hook installed at $HOOK_FILE"
+```
+
+**Adapt to the project:**
+- Replace `typecheck`, `lint`, `test:unit` with the project's actual `package.json` scripts
+- For non-Node projects, replace npm/pnpm with the relevant toolchain (e.g., `go vet ./...`, `cargo clippy`)
+- Keep it fast — slow hooks get bypassed. Integration tests belong in CI, not here.
+
+Mention `scripts/setup-hooks.sh` in `AGENTS.md` so Claude knows to run it after cloning.
+
 ## Feature Work: Evaluate and Extend
 
 When implementing a major feature, check if the LLM setup needs updating:
