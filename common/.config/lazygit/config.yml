@@ -11,26 +11,26 @@ gui:
   # Theme colors managed by pick-theme
   theme:
     activeBorderColor:
-      - "#e49e22"
+      - "#1085fc"
       - bold
     inactiveBorderColor:
-      - "#b19b7c"
+      - "#6c6158"
     optionsTextColor:
-      - "#b5a4d7"
+      - "#1085fc"
     selectedLineBgColor:
-      - "#4a3d50"
+      - "#e4dcd6"
     cherryPickedCommitBgColor:
-      - "#3a2d3f"
+      - "#f2eae2"
     cherryPickedCommitFgColor:
-      - "#e49e22"
+      - "#1085fc"
     unstagedChangesColor:
-      - "#fe838f"
+      - "#f1342d"
     defaultFgColor:
-      - "#ead2b2"
+      - "#38312b"
     searchingActiveBorderColor:
-      - "#e49e22"
+      - "#897e74"
   authorColors:
-    "*": "#e19b73"
+    "*": "#897e74"
   branchColors:
     "main": "#e74c3c"
     "master": "#e74c3c"
@@ -110,7 +110,7 @@ customCommands:
     output: terminal
   - key: "Z"
     context: "files"
-    command: "repo commit -s"
+    command: "brick commit --smart"
     output: terminal
   - key: "N"
     context: "localBranches"

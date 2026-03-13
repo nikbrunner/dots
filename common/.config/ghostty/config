@@ -2,7 +2,7 @@
 # https://github.com/imrajyavardhan12/spectre-ghostty-config
 
 # Colors
-theme = black-atom-mnml-mono-light.conf
+theme = black-atom-mnml-osman-light.conf
 bold-is-bright = false
 
 # Window
