@@ -168,6 +168,15 @@
         "hooks": [
           {
             "type": "command",
+            "command": "~/.claude/hooks/enforce/skills-check.sh"
+          }
+        ]
+      },
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
             "command": "/Users/nbr/.claude/hooks/peon-ping/peon.sh",
             "timeout": 10
           }
@@ -204,5 +213,6 @@
   "voiceEnabled": true,
   "feedbackSurveyState": {
     "lastShownTime": 1754313915132
-  }
+  },
+  "model": "sonnet"
 }
