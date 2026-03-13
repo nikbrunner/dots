@@ -1,57 +1,52 @@
 {
   "document_symbols": "on",
   "session": {
-    "trust_all_worktrees": false
+    "trust_all_worktrees": false,
   },
   "buffer_font_family": "TX-02 ExtraCondensed",
   "which_key": {
     "delay_ms": 250,
-    "enabled": true
+    "enabled": true,
   },
   "sticky_scroll": {
-    "enabled": true
+    "enabled": true,
   },
   "agent_buffer_font_size": 20.0,
   "agent_ui_font_size": 20.0,
   "telemetry": {
     "diagnostics": false,
-    "metrics": false
+    "metrics": false,
   },
   "agent": {
     "tool_permissions": {
-      "default": "allow"
+      "default": "allow",
     },
     "inline_assistant_model": {
       "provider": "anthropic",
       "model": "claude-opus-4-6-latest",
-      "enable_thinking": false
+      "enable_thinking": false,
     },
     "use_modifier_to_send": true,
     "default_profile": "write",
     "default_model": {
       "provider": "copilot_chat",
-      "model": "gpt-5"
-    }
+      "model": "gpt-5",
+    },
   },
   "hide_mouse": "on_typing_and_movement",
-  "icon_theme": "Catppuccin Macchiato",
   "edit_predictions": {
     "provider": "supermaven",
     "mode": "eager",
-    "enabled_in_text_threads": false
+    "enabled_in_text_threads": false,
   },
   "ssh_connections": [
     {
       "host": "BC_OFFICE_LAN",
-      "projects": []
-    }
+      "projects": [],
+    },
   ],
   "cursor_blink": false,
-  "theme": {
-    "mode": "system",
-    "dark": "Black Atom — JPN ∷ Koyo Yoru",
-    "light": "Black Atom — JPN ∷ Koyo Hiru"
-  },
+  "theme": "One Dark",
   "base_keymap": "VSCode",
   "vim_mode": true,
   "ui_font_size": 16.0,
@@ -62,64 +57,64 @@
   "tabs": {
     "show_diagnostics": "all",
     "git_status": true,
-    "file_icons": true
+    "file_icons": true,
   },
   "tab_bar": {
     "show": true,
-    "show_nav_history_buttons": false
+    "show_nav_history_buttons": false,
   },
   "git": {
-    "git_gutter": "tracked_files"
+    "git_gutter": "tracked_files",
   },
   "indent_guides": {
-    "enabled": false
+    "enabled": false,
   },
   "git_panel": {
     "dock": "left",
     "status_style": "icon",
-    "sort_by_path": true
+    "sort_by_path": true,
   },
   "project_panel": {
     "git_status": true,
     "indent_guides": {
-      "show": "never"
-    }
+      "show": "never",
+    },
   },
   "diagnostics": {
     "include_warnings": true,
     "inline": {
-      "enabled": true
-    }
+      "enabled": true,
+    },
   },
   "format_on_save": "on",
   "terminal": {
     "line_height": "standard",
     "working_directory": "current_project_directory",
-    "font_family": "TX-02 ExtraCondensed"
+    "font_family": "TX-02 ExtraCondensed",
   },
   "lsp": {
     "vtsls": {
       "settings": {
         "typescript": {
           "preferences": {
-            "importModuleSpecifier": "relative"
-          }
-        }
-      }
+            "importModuleSpecifier": "relative",
+          },
+        },
+      },
     },
     "eslint": {
       "settings": {
         "eslint": {
-          "enable": true
-        }
-      }
+          "enable": true,
+        },
+      },
     },
     "biome": {
       "settings": {
         "config_path": "./biome.json",
-        "require_config_file": true
-      }
-    }
+        "require_config_file": true,
+      },
+    },
   },
-  "ui_font_family": "TX-02 ExtraCondensed"
+  "ui_font_family": "TX-02 ExtraCondensed",
 }
