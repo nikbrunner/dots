@@ -6,15 +6,15 @@ return {
         event = "VeryLazy",
         keys = {
             -- Workspace level
-            { "<leader>wvd", "<cmd>CodeDiff<cr>", desc = "Workspace [D]iff to `master` (CodeDiff)" },
-            { "<leader>wvD", "<cmd>CodeDiff master<cr>", desc = "Workspace [D]iff (CodeDiff)" },
+            { "<leader>wgd", "<cmd>CodeDiff<cr>", desc = "Workspace [D]iff to `master` (CodeDiff)" },
+            { "<leader>wgD", "<cmd>CodeDiff master<cr>", desc = "Workspace [D]iff (CodeDiff)" },
 
             -- Document level
-            { "<leader>dvd", "<cmd>CodeDiff file HEAD<cr>", desc = "Document [D]iff (CodeDiff)" },
-            { "<leader>dvD", "<cmd>CodeDiff file master<cr>", desc = "Document [D]iff (CodeDiff)" },
+            { "<leader>dgd", "<cmd>CodeDiff file HEAD<cr>", desc = "Document [D]iff (CodeDiff)" },
+            { "<leader>dgD", "<cmd>CodeDiff file master<cr>", desc = "Document [D]iff (CodeDiff)" },
 
             {
-                "<leader>wvb",
+                "<leader>wgb",
                 function()
                     vim.ui.input({ prompt = "Compare against branch: " }, function(branch)
                         if branch and branch ~= "" then
@@ -25,7 +25,7 @@ return {
                 desc = "Compare [B]ranch (CodeDiff)",
             },
 
-            { "<leader>wvpm", "<cmd>CodeDiff merge<cr>", desc = "[M]erge conflicts (CodeDiff)" },
+            { "<leader>wgpm", "<cmd>CodeDiff merge<cr>", desc = "[M]erge conflicts (CodeDiff)" },
         },
         opts = {
             char_brightness = 1, -- disable auto-adjustment
@@ -42,7 +42,7 @@ return {
         event = "VeryLazy",
         cmd = "Review",
         keys = {
-            { "<leader>wvpr", "<cmd>Review<cr>", desc = "[R]eview diff (review.nvim)" },
+            { "<leader>wgpr", "<cmd>Review<cr>", desc = "[R]eview diff (review.nvim)" },
         },
         opts = {},
     },
