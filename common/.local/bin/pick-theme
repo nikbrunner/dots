@@ -3,7 +3,18 @@
 # pick-theme - Unified theme selector for all development tools
 # Uses fzf to select from Black Atom themes and updates configurations
 
-set -euo pipefail
+set -uo pipefail
+
+# Run a step and track failures without aborting
+errors=()
+run_step() {
+	local label="$1"
+	shift
+	if ! "$@" 2>&1; then
+		errors+=("$label")
+		echo "  ✗ $label failed" >&2
+	fi
+}
 
 # Configuration
 DOTS_DIR="${DOTS_DIR:-$HOME/repos/nikbrunner/dots}"
@@ -82,14 +93,18 @@ update_ghostty_theme() {
 # Update Zed configuration
 update_zed_theme() {
 	local theme="$1"
-	local appearance="$2"
 	local display_name
 	display_name=$(jq -r ".themes.\"$theme\".display_name" "$THEMES_JSON")
 
-	if [[ "$appearance" == "dark" ]]; then
-		jq ".theme.dark = \"$display_name\"" "$ZED_CONFIG" >"$ZED_CONFIG.tmp" && mv "$ZED_CONFIG.tmp" "$ZED_CONFIG"
+	if [[ -z "$display_name" || "$display_name" == "null" ]]; then
+		echo "Zed theme display name not found for $theme, skipping"
+		return 0
+	fi
+
+	if [[ "$(uname)" == "Darwin" ]]; then
+		sed -i '' "s/\"theme\": \".*\"/\"theme\": \"$display_name\"/" "$ZED_CONFIG"
 	else
-		jq ".theme.light = \"$display_name\"" "$ZED_CONFIG" >"$ZED_CONFIG.tmp" && mv "$ZED_CONFIG.tmp" "$ZED_CONFIG"
+		sed -i "s/\"theme\": \".*\"/\"theme\": \"$display_name\"/" "$ZED_CONFIG"
 	fi
 }
 
@@ -293,17 +308,19 @@ apply_theme() {
 	echo "Applying: $theme ($appearance)"
 	echo ""
 
+	errors=()
+
 	# Update config files
-	update_nvim_theme "$theme"
-	update_tmux_theme "$theme" "$collection"
-	update_ghostty_theme "$theme"
-	update_zed_theme "$theme" "$appearance"
-	update_delta_theme "$appearance"
-	update_niri_theme "$theme" "$collection"
-	update_waybar_theme "$theme"
-	update_lazygit_theme "$theme"
-	update_helm_theme "$appearance"
-	update_macos_appearance "$appearance"
+	run_step "nvim config" update_nvim_theme "$theme"
+	run_step "tmux config" update_tmux_theme "$theme" "$collection"
+	run_step "ghostty config" update_ghostty_theme "$theme"
+	run_step "zed config" update_zed_theme "$theme"
+	run_step "delta config" update_delta_theme "$appearance"
+	run_step "niri config" update_niri_theme "$theme" "$collection"
+	run_step "waybar config" update_waybar_theme "$theme"
+	run_step "lazygit config" update_lazygit_theme "$theme"
+	run_step "helm config" update_helm_theme "$appearance"
+	run_step "macOS appearance" update_macos_appearance "$appearance"
 
 	# Suppress terminal escape sequences (Ghostty sends capability
 	# queries when its config changes, which leak into output)
@@ -314,9 +331,9 @@ apply_theme() {
 
 	# Reload configurations (suppress all output from reload functions)
 	echo "Reloading..."
-	reload_tmux >/dev/null 2>&1
-	reload_ghostty >/dev/null 2>&1
-	reload_waybar >/dev/null 2>&1
+	run_step "tmux reload" reload_tmux
+	run_step "ghostty reload" reload_ghostty
+	run_step "waybar reload" reload_waybar
 
 	sleep 0.3
 
@@ -324,9 +341,14 @@ apply_theme() {
 	stty echo 2>/dev/null || true
 
 	# Restart Neovim instances with new theme
-	restart_neovim_instances
+	run_step "neovim restart" restart_neovim_instances
 
 	echo ""
+	if [[ ${#errors[@]} -gt 0 ]]; then
+		echo "Done with ${#errors[@]} error(s):"
+		printf "  - %s\n" "${errors[@]}"
+		return 1
+	fi
 	echo "Done."
 }
 
@@ -357,6 +379,12 @@ validate_environment() {
 main() {
 	# Validate environment
 	validate_environment || exit 1
+
+	# If a theme name is passed as argument, apply directly (skip fzf)
+	if [[ $# -gt 0 ]]; then
+		apply_theme "$1"
+		return $?
+	fi
 
 	# Get current state
 	local current_theme current_mode
