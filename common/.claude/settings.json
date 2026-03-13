@@ -201,6 +201,7 @@
   },
   "alwaysThinkingEnabled": true,
   "autoUpdatesChannel": "latest",
+  "voiceEnabled": true,
   "feedbackSurveyState": {
     "lastShownTime": 1754313915132
   }
