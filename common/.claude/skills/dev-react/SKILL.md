@@ -10,23 +10,28 @@ user-invocable: false
 
 | Role | Purpose | Has Styling? | Fetches Data? |
 |------|---------|-------------|---------------|
-| **Dumb Component** | How things look | Yes | No |
+| **Dumb Component** | How things look | **Yes** | No |
 | **Smart Container** | How things work | No (layout utils ok) | Yes (via hooks) |
-| **Partial** | Reusable composition of components | Yes | Light logic ok |
-| **Layout Component** | Structural arrangement | Yes (layout only) | No |
+| **Partial** | Reusable composition of components | **No** | Light logic ok |
+| **Layout Component** | Structural arrangement | **Yes (layout only)** | No |
 
 ## Core Principles
 
+- **Styling lives exclusively in Dumb Components and Layout Components -- nowhere else.**
+- Partials and Containers contain zero styling. If a Partial needs layout, extract a Layout Component.
 - Components are "dumb" -- no data processing, no hardcoded values, no fetching
 - Components know nothing about other components (unless they inherently belong together)
-- Styling lives in components, not in containers. This implies the need for Layout Components.
 - Props should be simple data types where possible
 - Localized text is passed as props -- no hardcoded strings in components (unless no i18n exists)
 - Small utility classes for one-off layout adjustments in containers are acceptable
 
 ## Partials
 
-A Partial is a composition of Dumb Components with light logic -- reusable or extracted because it "feels right" as a unit. Example: a `UserProfileHeader` composing `Avatar` + `UserName` + `EditButton` with click handler wiring.
+A Partial is a **pure composition** of Dumb Components and Layout Components with light logic -- zero styling of its own. Reusable or extracted because it "feels right" as a unit.
+
+Example: a `UserProfileHeader` composing `Avatar` + `UserName` + `EditButton` with click handler wiring. If the partial needs a wrapper with flex layout, that wrapper is a Layout Component (`Stack`, `Row`, `ExampleSection`, etc.), not an inline style on the partial.
+
+**Red flag:** A partial with a CSS file. This almost always means either (a) the styled element should be its own Dumb Component, or (b) the layout wrapper should be a Layout Component.
 
 ## Data Flow
 

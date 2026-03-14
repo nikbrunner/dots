@@ -1,5 +1,16 @@
 # Component Patterns
 
+## Data Attributes
+
+Every role's root element gets a `data-*` attribute for DOM inspection and debugging:
+
+| Role | Attribute | Example |
+|-|-|-|
+| Dumb Component | `data-component` | `data-component="UserCard"` |
+| Partial | `data-partial` | `data-partial="UserProfileHeader"` |
+| Layout Component | `data-layout` | `data-layout="PageLayout"` |
+| Smart Container | `data-container` | `data-container="UserProfileContainer"` |
+
 ## Dumb Component
 
 ```tsx
@@ -51,7 +62,7 @@ export function UserProfileHeader({
   const [isHovered, setIsHovered] = useState(false);
 
   return (
-    <div className={styles.header}>
+    <Row data-partial="UserProfileHeader" gap="md">
       <Avatar url={avatarUrl} size="lg" />
 
       <UserName name={name} />
@@ -64,15 +75,16 @@ export function UserProfileHeader({
           highlighted={isHovered}
         />
       )}
-    </div>
+    </Row>
   );
 }
 ```
 
 - Composition of Dumb Components with light local logic
-- Has its own styling for composition/layout
+- **Zero styling** -- uses Layout Components (Row, Stack, etc.) for arrangement
 - Reusable or extracted because it forms a coherent unit
 - Can have co-located utility hooks if needed
+- Red flag: a partial with a CSS file
 
 ## Layout Component
 
@@ -84,7 +96,7 @@ interface Props {
 
 export function PageLayout({ children, sidebar }: Props) {
   return (
-    <div className={styles.page}>
+    <div data-layout="PageLayout" className={styles.page}>
       <aside className={styles.sidebar}>{sidebar}</aside>
       <main className={styles.main}>{children}</main>
     </div>
@@ -116,7 +128,7 @@ export function UserProfileContainer() {
   }
 
   return (
-    <PageLayout>
+    <PageLayout data-container="UserProfileContainer">
       <UserProfileHeader
         name={userProfile.data.name}
         avatarUrl={userProfile.data.avatar}
@@ -134,6 +146,70 @@ export function UserProfileContainer() {
 - Provides data and callbacks to children
 - Named `*Container` by convention
 - Orchestrates -- delegates logic to topic hooks
+
+## File-Local Subcomponents
+
+Components defined in the same file as their parent — used to decompose without creating new files.
+
+**In component files** — can be exported (co-located sub-components that belong together):
+
+```tsx
+// components/user-list/index.tsx
+
+export function UserListItem({ name, role }: { name: string; role: string }) {
+  return (
+    <li data-component="UserListItem" className={styles.item}>
+      <span>{name}</span>
+      <span>{role}</span>
+    </li>
+  );
+}
+
+export function UserList({ users }: Props) {
+  return (
+    <ul data-component="UserList" className={styles.list}>
+      {users.map((user) => (
+        <UserListItem key={user.id} name={user.name} role={user.role} />
+      ))}
+    </ul>
+  );
+}
+```
+
+**In partials and containers** — not exported, private helpers to keep the main component readable:
+
+```tsx
+// containers/dashboard/index.tsx
+
+function StatsSection({ stats }: { stats: Stats }) {
+  return (
+    <Row gap="sm">
+      <StatCard label="Users" value={stats.users} />
+      <StatCard label="Revenue" value={stats.revenue} />
+    </Row>
+  );
+}
+
+export function DashboardContainer() {
+  const dashboard = useDashboard();
+
+  return (
+    <PageLayout data-container="DashboardContainer">
+      <StatsSection stats={dashboard.data.stats} />
+      <ActivityFeedPartial userId={dashboard.data.userId} />
+    </PageLayout>
+  );
+}
+```
+
+**When to use:**
+- The subcomponent is only used by one parent
+- It's small enough that a separate file adds more overhead than clarity
+- It helps readability by breaking up a long return block
+
+**When to extract to its own file:**
+- Used by multiple consumers
+- Has its own styling (component) or grows beyond ~30-40 lines
 
 ## Broad vs Deep Split
 
