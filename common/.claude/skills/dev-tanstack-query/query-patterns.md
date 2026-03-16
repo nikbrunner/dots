@@ -189,17 +189,35 @@ const queryClient = new QueryClient({
 
 Any mutation with a key like `["products", "update"]` automatically invalidates all `["products", ...]` queries on success. Opt out per-mutation with `meta: { autoInvalidate: false }`.
 
-### Render Optimization: Don't Spread
+### Render Optimization: Don't Spread, Do Memoize
+
+Two rules for custom query hooks:
+
+**1. Don't spread the query object.** Rest-destructuring (`...rest`) breaks React Query's tracked property optimization (Proxy-based, on by default since v4). It also creates a new object reference every render.
 
 ```tsx
-// Bad -- creates new object every render
+// Bad -- breaks tracked properties, new object every render
 const { data, isLoading, ...rest } = useQuery(/* ... */);
 return { ...rest, data, isLoading, derivedValue };
 
-// Good -- stable reference
+// Good -- tracked properties work, clean API surface
 const query = useQuery(/* ... */);
 return { query, derivedValue: query.data?.something };
 ```
+
+**2. Memoize derived values.** Structural sharing keeps `query.data` referentially stable when data hasn't changed. But `.filter()`, `.map()`, etc. always create new arrays — breaking the reference chain. `useMemo` preserves it:
+
+```tsx
+const all = query.data ?? [];
+
+// Bad -- new array every render, even if `all` hasn't changed
+const active = all.filter(b => b.active);
+
+// Good -- cached result when `all` reference is stable
+const active = useMemo(() => all.filter(b => b.active), [all]);
+```
+
+The chain: structural sharing → stable `query.data` → stable dep → `useMemo` returns cached derived value.
 
 See: https://tanstack.com/query/latest/docs/framework/react/guides/render-optimizations
 
