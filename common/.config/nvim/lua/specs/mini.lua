@@ -955,6 +955,33 @@ function M.files()
         end,
     })
 
+    -- Symlink indicators via extmarks
+    local ns_symlink = vim.api.nvim_create_namespace("mini_files_symlink")
+
+    vim.api.nvim_create_autocmd("User", {
+        pattern = "MiniFilesBufferUpdate",
+        callback = function(args)
+            local buf_id = args.data.buf_id
+            vim.api.nvim_buf_clear_namespace(buf_id, ns_symlink, 0, -1)
+
+            local lines = vim.api.nvim_buf_get_lines(buf_id, 0, -1, false)
+            for i, _ in ipairs(lines) do
+                local entry = MiniFiles.get_fs_entry(buf_id, i)
+                if entry then
+                    local stat = vim.uv.fs_lstat(entry.path)
+                    if stat and stat.type == "link" then
+                        local target = vim.uv.fs_readlink(entry.path)
+                        local virt_text = target and ("→ " .. target) or "→"
+                        vim.api.nvim_buf_set_extmark(buf_id, ns_symlink, i - 1, 0, {
+                            virt_text = { { virt_text, "Comment" } },
+                            virt_text_pos = "eol",
+                        })
+                    end
+                end
+            end
+        end,
+    })
+
     -- LSP rename integration with Snacks
     vim.api.nvim_create_autocmd("User", {
         pattern = "MiniFilesActionRename",
@@ -1217,7 +1244,7 @@ return {
         M.visits()
         M.extra()
         M.pick()
-        -- M.files() -- Replaced by fyler.nvim
+        M.files()
         M.clue()
         M.git()
         M.diff()
