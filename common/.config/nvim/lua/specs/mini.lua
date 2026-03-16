@@ -1217,7 +1217,7 @@ return {
         M.visits()
         M.extra()
         M.pick()
-        M.files()
+        -- M.files() -- Replaced by fyler.nvim
         M.clue()
         M.git()
         M.diff()
