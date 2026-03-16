@@ -2,22 +2,27 @@
   "version": 1,
   "projects": {
     "~/repos/black-atom-industries/core": {
-      "main": {
+      "feature/dev-311-monitor-dashboard": {
         "locks": [
           {
-            "filename": "src/mod.ts",
+            "filename": "/Users/nbr/repos/nikbrunner/notes/GitPad/core/gitpad.md",
             "label": "1"
           },
           {
-            "filename": "src/types/theme.ts",
+            "filename": "monitor/src/routes/__root.tsx",
             "label": "2"
-          },
-          {
-            "filename": "src/types/themes.ts",
-            "label": "3"
           }
         ],
-        "lastAccessed": 1773418970
+        "lastAccessed": 1773684699
+      },
+      "main": {
+        "locks": [
+          {
+            "filename": "README.md",
+            "label": "1"
+          }
+        ],
+        "lastAccessed": 1773576267
       }
     },
     "~/repos/black-atom-industries/radar.nvim": {
@@ -423,7 +428,7 @@
             "label": "3"
           }
         ],
-        "lastAccessed": 1773419368
+        "lastAccessed": 1773684800
       }
     },
     "~/repos/nikbrunner/filen-interview": {
