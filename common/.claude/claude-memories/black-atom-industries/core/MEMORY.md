@@ -29,6 +29,11 @@
 ## Workflow Preferences
 
 - **Worktrees**: Nik likes worktrees but prefers them as sibling folders next to the main repo, not nested inside `.claude/worktrees/`. Always ask before creating a worktree.
+- **Git**: [Amend failing commits](feedback_amend_failing_commits.md) — don't create fix commits for broken predecessors
+
+## Monitor App
+
+- [Architecture conventions](project_monitor_architecture.md) — routing, queries, types, core/monitor boundary
 
 ## V1 Milestones
 
