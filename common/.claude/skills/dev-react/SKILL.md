@@ -33,9 +33,19 @@ Example: a `UserProfileHeader` composing `Avatar` + `UserName` + `EditButton` wi
 
 **Red flag:** A partial with a CSS file. This almost always means either (a) the styled element should be its own Dumb Component, or (b) the layout wrapper should be a Layout Component.
 
+## Routes as Containers
+
+In route-based architectures (TanStack Start, Next.js, etc.), the **route component IS the container**. Data fetching happens in loaders, orchestration in the route component, and it renders partials/components. A separate `*Container` wrapper is redundant in these setups.
+
+- Route loaders prefetch data (`ensureQueryData`)
+- Route components use `useSuspenseQuery` for guaranteed data
+- Route components compose partials, pass data down, wire callbacks
+
+Standalone `*Container` components still make sense for non-route-level orchestration (e.g., a modal that fetches its own data, a widget embedded in a larger page).
+
 ## Data Flow
 
-Fetching and data processing happen in Containers, Hooks, or Partials -- never in Dumb Components. Containers are orchestrators that delegate complex logic to topic-specific hooks.
+Fetching and data processing happen in Containers (or Routes), Hooks, or Partials -- never in Dumb Components. Containers are orchestrators that delegate complex logic to topic-specific hooks.
 
 ## References
 

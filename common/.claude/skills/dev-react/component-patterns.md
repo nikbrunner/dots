@@ -82,6 +82,7 @@ export function UserProfileHeader({
 
 - Composition of Dumb Components with light local logic
 - **Zero styling** -- uses Layout Components (Row, Stack, etc.) for arrangement
+- Typically has a Layout Component as root element (Row, Stack, etc.) to arrange its children
 - Reusable or extracted because it forms a coherent unit
 - Can have co-located utility hooks if needed
 - Red flag: a partial with a CSS file
@@ -213,9 +214,59 @@ export function DashboardContainer() {
 
 ## Broad vs Deep Split
 
-**Prefer Broad Split** -- one Container fans out to many Dumb Components directly, rather than passing props through a single proxy component (Deep Split). From Dan Abramov:
+**Prefer Broad Split** -- one Container (or Route) fans out to many Dumb Components directly, rather than passing props through a single proxy component (Deep Split).
 
-> "When you notice that some components don't use the props they receive but merely forward them down... it's a good time to introduce some container components."
+When you notice components forwarding props they don't use, that's a signal to either:
+- Introduce a Container/Partial closer to where the data is needed
+- In route-based apps, let the route itself handle orchestration (see "Routes as Containers" in SKILL.md)
+
+## Render-Prop Context
+
+A context provider where `children` is a function receiving the context value. Cleanly scopes context consumption and avoids the need for a separate consumer component.
+
+```tsx
+interface FilterProviderProps {
+  groupedFacets: GroupedFacet[];
+  productPriceRange: PriceRange;
+  children: (value: FilterContextValue) => React.ReactNode;
+}
+
+export const FilterContextProvider = ({
+  groupedFacets,
+  productPriceRange,
+  children,
+}: FilterProviderProps) => {
+  const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
+
+  const value: FilterContextValue = {
+    groupedFacets,
+    productPriceRange,
+    mobileFiltersOpen,
+    setMobileFiltersOpen,
+  };
+
+  return (
+    <FilterContext.Provider value={value}>
+      {children(value)}
+    </FilterContext.Provider>
+  );
+};
+
+// Usage in a route/container:
+<FilterContextProvider groupedFacets={facets} productPriceRange={range}>
+  {(filterContext) => (
+    <div>
+      <FilterControls />
+      <ProductGrid />
+      <FiltersButton onClick={() => filterContext.setMobileFiltersOpen(true)} />
+    </div>
+  )}
+</FilterContextProvider>
+```
+
+- Provider receives static data as props, manages its own UI state internally
+- Children function gives immediate access without `useContext` at the call site
+- Still provides `useFilterContext()` hook for deeply nested consumers
 
 ## Anti-Patterns
 
