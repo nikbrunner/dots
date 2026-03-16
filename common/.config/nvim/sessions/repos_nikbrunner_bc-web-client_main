@@ -3,16 +3,17 @@ let s:so_save = &g:so | let s:siso_save = &g:siso | setg so=0 siso=0 | setl so=-
 let v:this_session=expand("<sfile>:p")
 silent only
 silent tabonly
-cd ~/repos/nikbrunner/notes
+cd ~/repos/nikbrunner/bc-web-client
 if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +30 01\ -\ Projects/New\ Job\ 2026/Positions/Brainlab\ -\ Software\ Engineer\ Frontend.md
+badd +17 README.md
 argglobal
 %argdel
-edit 01\ -\ Projects/New\ Job\ 2026/Positions/Brainlab\ -\ Software\ Engineer\ Frontend.md
+$argadd .
+edit README.md
 argglobal
 xnoremap <buffer> <silent> [[ :exe "normal! gv"|call search('\%(^#\{1,5\}\s\+\S\|^\S.*\n^[=-]\+$\)', "bsW")
 xnoremap <buffer> <silent> ]] :exe "normal! gv"|call search('\%(^#\{1,5\}\s\+\S\|^\S.*\n^[=-]\+$\)', "sW")
@@ -92,7 +93,7 @@ setlocal norightleft
 setlocal rightleftcmd=search
 setlocal scrollback=-1
 setlocal noscrollbind
-setlocal shiftwidth=2
+setlocal shiftwidth=3
 setlocal signcolumn=yes
 setlocal smartindent
 setlocal nosmoothscroll
@@ -111,11 +112,11 @@ setlocal syntax=
 endif
 setlocal tabstop=4
 setlocal tagfunc=v:lua.vim.lsp.tagfunc
-setlocal textwidth=85
+setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#01\ -\ Projects%*\ %#WinBarSeparator#/%*\ %#WinBarPath#New\ Job\ 2026%*\ %#WinBarSeparator#/%*\ %#WinBarPath#Positions%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#Brainlab\ -\ Software\ Engineer\ Frontend.md%*
+setlocal winbar=%#WinBarFilename#README.md%*
 setlocal winblend=0
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -123,11 +124,11 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal wrap
 setlocal wrapmargin=0
-let s:l = 30 - ((29 * winheight(0) + 24) / 48)
+let s:l = 17 - ((16 * winheight(0) + 34) / 68)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 30
+keepjumps 17
 normal! 0
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'

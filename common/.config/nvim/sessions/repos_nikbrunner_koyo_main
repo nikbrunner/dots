@@ -155,7 +155,7 @@ sil! normal! zo
 sil! normal! zo
 154
 sil! normal! zo
-let s:l = 43 - ((42 * winheight(0) + 26) / 53)
+let s:l = 43 - ((37 * winheight(0) + 23) / 47)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
