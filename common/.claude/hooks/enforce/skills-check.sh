@@ -7,5 +7,6 @@ CWD=$(pwd)
 REPO=$(basename "$CWD")
 REPO_OWNER=$(basename "$(dirname "$CWD")")
 
-printf '{"hookSpecificOutput": {"additionalContext": "⚡ Skills check: Before responding, scan the available skills list and invoke any relevant skill first. Current context: repo=%s, owner=%s, cwd=%s"}}\n' \
+printf '{"hookSpecificOutput": {"hookEventName": "UserPromptSubmit", "additionalContext": "⚡ Skills check: Before responding, scan the available skills list and invoke any relevant skill first. Current context: repo=%s, owner=%s, cwd=%s"}}\n' \
     "$REPO" "$REPO_OWNER" "$CWD"
+exit 0

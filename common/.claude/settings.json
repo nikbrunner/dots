@@ -190,6 +190,15 @@
         "hooks": [
           {
             "type": "command",
+            "command": "~/.claude/hooks/enforce/current-datetime.sh"
+          }
+        ]
+      },
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
             "command": "/Users/nbr/.claude/hooks/peon-ping/peon.sh",
             "timeout": 10,
             "async": true
@@ -260,7 +269,7 @@
     "superpowers@claude-plugins-official": true,
     "frontend-design@claude-plugins-official": true,
     "github@claude-plugins-official": true,
-    "typescript-lsp@claude-plugins-official": true
+    "typescript-lsp@claude-plugins-official": false
   },
   "alwaysThinkingEnabled": true,
   "autoUpdatesChannel": "latest",
