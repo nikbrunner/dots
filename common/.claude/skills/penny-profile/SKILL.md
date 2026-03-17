@@ -67,6 +67,7 @@ Read it at the start of every penny:\* session. Update it at the end with:
 
 Load the `obsidian-guide` skill for Obsidian CLI reference.
 Load the `penny-calendar` skill for calendar access (full CRUD via `davit` CLI + iCloud CalDAV).
+Load the `penny-timeblock` skill for building timeblocked day plans.
 
 ## Daily Notes = Bullet Journal
 
