@@ -3,5 +3,10 @@
 
 DATETIME=$(date '+%Y-%m-%d %H:%M %Z (%A)')
 
-printf '{"hookSpecificOutput": {"hookEventName": "UserPromptSubmit", "additionalContext": "Current date/time: %s"}}\n' "$DATETIME"
+printf '{
+  "hookSpecificOutput": {
+    "hookEventName": "UserPromptSubmit",
+    "additionalContext": "Current date/time: %s"
+  }
+}\n' "$DATETIME"
 exit 0
