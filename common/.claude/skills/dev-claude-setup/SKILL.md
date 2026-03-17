@@ -210,3 +210,7 @@ user-invocable: false  # only for knowledge skills; omit for action skills
 - Linting/formatting config discoverable from config files
 - Test setup discoverable from test config and scripts
 - Any line that fails the decision test
+
+## Cross-References
+
+- `dev:create-project` — may invoke this skill as Phase 6 of project bootstrapping
