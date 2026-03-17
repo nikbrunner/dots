@@ -101,7 +101,9 @@ Confirm with the user before running this — it changes a repo-level setting.
 
 7. **Check for old release workflows** in `.github/workflows/` and offer to remove them.
 
-8. **Commit** with message: `chore: add release-please configuration`
+8. **Add a "Releases" section to the README** (if one exists) noting that the project uses [release-please](https://github.com/googleapis/release-please) for automated versioning and changelog generation via [Conventional Commits](https://www.conventionalcommits.org/).
+
+9. **Commit** with message: `chore: add release-please configuration`
 
 ## Notes
 
