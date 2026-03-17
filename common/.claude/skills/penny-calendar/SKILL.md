@@ -10,77 +10,36 @@ Access Nik's iCloud calendar via `davit` CLI. Used by Penny for scheduling, brie
 
 ## Prerequisites
 
-`davit` must be installed globally (`deno task install` in the davit repo). Credentials come from env vars (`CALDAV_BASE_URL`, `CALDAV_USERNAME`, `CALDAV_PASSWORD`) — sourced from `~/.env`.
+- `davit` must be installed globally (`deno task install` in the davit repo)
+- Credentials from env vars managed by 1Password in `~/.env`
+- **Always run `source ~/.env` before davit commands in Bash**
 
-**Always run `source ~/.env` before davit commands in Bash.**
+## Command Reference
 
-## Commands
-
-### List calendars
-
-```bash
-source ~/.env && davit calendar list
-```
-
-Primary calendar: **iCloud**. Always use `--calendar iCloud` unless Nik specifies otherwise.
-
-### List events
+**Do not rely on hardcoded examples in this skill.** Always check davit's own help for current syntax:
 
 ```bash
-source ~/.env && davit event list --from "2026-03-17T00:00:00Z" --to "2026-03-17T23:59:59Z" --calendar iCloud
+davit --help
+davit calendar --help
+davit event --help
+davit event create --help
+davit event update --help
 ```
 
-- Use for morning briefings (penny:daily) — show today's agenda
-- Use before creating events — check for conflicts
-- Without `--calendar`, lists from all calendars
-- Recurring events show original date (no RRULE expansion yet)
+These are the source of truth for flags, arguments, and options.
 
-### Show event details
+## Defaults
 
-```bash
-source ~/.env && davit event show <uid> --calendar iCloud
-```
-
-Shows: title, start, end, description, location, URL, calendar.
-
-### Create event
-
-```bash
-source ~/.env && davit event create "Title" \
-  --start "2026-03-17T15:00:00Z" \
-  --end "2026-03-17T15:30:00Z" \
-  --desc "Notes and details" \
-  --location "ImFusion GmbH, München" \
-  --url "https://meet.google.com/abc" \
-  --calendar iCloud
-```
-
-### Update event
-
-```bash
-source ~/.env && davit event update <uid> \
-  --title "New Title" \
-  --desc "Updated notes" \
-  --location "New Location" \
-  --start "2026-03-17T16:00:00Z"
-```
-
-Only pass the fields you want to change. Omitted fields stay unchanged.
-
-### Delete event
-
-```bash
-source ~/.env && davit event delete <uid> --calendar iCloud
-```
+- Primary calendar: **iCloud** — always use `--calendar iCloud` unless Nik specifies otherwise
+- Use `--format json` when you need to parse output programmatically (e.g. extracting UID after create)
 
 ## Rules
 
 - **All timestamps are UTC** — Nik is in CET/CEST (UTC+1 winter, UTC+2 summer)
-  - 16:00 CET = 15:00 UTC (winter) | 16:00 CEST = 14:00 UTC (summer)
+  - Check DST: Germany switches last Sunday of March / last Sunday of October
   - Use `date -u` to verify if unsure
 - **Title format**: `Company/Context — What (Who)` — e.g. `ImFusion — Gehaltsgespräch (Mattia Lupetti)`
 - **Use `--calendar iCloud`** on all commands for speed (avoids scanning all calendars)
-- **Use `--format json`** when you need to parse output programmatically (e.g. extracting UID after create)
 
 ## Integration with Daily Notes
 
@@ -100,4 +59,4 @@ Example in daily note:
 - Recurring events show original date only (no RRULE expansion)
 - No VALARM/reminder support
 - No ATTENDEE support
-- getEvent fetches all objects per calendar (no server-side UID filter) — use `--calendar` to limit scope
+- Use `--calendar` to limit scope on show/update/delete (avoids expensive all-calendar scan)
