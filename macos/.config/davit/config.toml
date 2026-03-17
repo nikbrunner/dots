@@ -3,5 +3,6 @@ default_calendar = "iCloud"
 
 [servers.icloud]
 url = "https://caldav.icloud.com"
+carddav_url = "https://contacts.icloud.com"
 username = "nikolaus.brunner@protonmail.ch"
 # Password resolved from DAVIT_ICLOUD_PASSWORD env var
