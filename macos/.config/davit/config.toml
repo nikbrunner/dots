@@ -1,0 +1,7 @@
+default_server = "icloud"
+default_calendar = "iCloud"
+
+[servers.icloud]
+url = "https://caldav.icloud.com"
+username = "nikolaus.brunner@protonmail.ch"
+# Password resolved from DAVIT_ICLOUD_PASSWORD env var

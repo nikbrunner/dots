@@ -42,6 +42,7 @@ common:
   common/themes.json: ~/themes.json
 
 macos:
+  macos/.config/davit/config.toml: ~/.config/davit/config.toml
   macos/.config/zsh/os.zsh: ~/.config/zsh/os.zsh
   macos/.config/karabiner: ~/.config/karabiner
   macos/.gitconfig.local: ~/.gitconfig.local
