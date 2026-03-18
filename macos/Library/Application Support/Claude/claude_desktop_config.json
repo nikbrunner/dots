@@ -19,8 +19,9 @@
       "/Users/nbr/repos/nikbrunner/notes"
     ],
     "coworkScheduledTasksEnabled": true,
+    "ccdScheduledTasksEnabled": true,
     "sidebarMode": "chat",
     "coworkWebSearchEnabled": true,
-    "ccdScheduledTasksEnabled": true
+    "keepAwakeEnabled": true
   }
 }
