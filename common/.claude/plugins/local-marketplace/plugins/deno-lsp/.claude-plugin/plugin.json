@@ -1,0 +1,41 @@
+{
+  "name": "claude-deno-lsp",
+  "version": "0.2.0",
+  "description": "Deno Language Server integration for Claude Code",
+  "author": {
+    "name": "Wyatt Johnson"
+  },
+  "category": "development",
+  "strict": false,
+  "lspServers": {
+    "deno": {
+      "command": "deno",
+      "args": ["lsp"],
+      "extensionToLanguage": {
+        ".ts": "typescript",
+        ".tsx": "typescriptreact",
+        ".js": "javascript",
+        ".jsx": "javascriptreact",
+        ".mts": "typescript",
+        ".cts": "typescript",
+        ".mjs": "javascript",
+        ".cjs": "javascript"
+      },
+      "initializationOptions": {
+        "enable": true,
+        "lint": true,
+        "unstable": true
+      },
+      "settings": {
+        "deno": {
+          "enable": true,
+          "lint": true,
+          "suggest": {
+            "completeFunctionCalls": true,
+            "autoImports": true
+          }
+        }
+      }
+    }
+  }
+}

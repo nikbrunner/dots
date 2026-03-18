@@ -5,6 +5,7 @@ common:
   common/.claude/skills: ~/.claude/skills
   common/.claude/hooks/peon-ping/config.json: ~/.claude/hooks/peon-ping/config.json
   "common/.claude/hooks/enforce/*": ~/.claude/hooks/enforce
+  common/.claude/plugins/local-marketplace: ~/.claude/plugins/marketplaces/local-plugins
   common/.local/bin/claude-hooks: ~/.local/bin/claude-hooks
   common/.config/.zsh/_git: ~/.config/.zsh/_git
   common/.config/.zsh/git-completion.bash: ~/.config/.zsh/git-completion.bash
