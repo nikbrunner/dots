@@ -34,6 +34,7 @@
 ## Monitor App
 
 - [Architecture conventions](project_monitor_architecture.md) — routing, queries, types, core/monitor boundary
+- [DEV-312 Handover](project_dev312_handover.md) — contrast analysis, layout redesign, command palette, next steps (DEV-309 syntax preview)
 
 ## V1 Milestones
 
