@@ -9,7 +9,7 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +18 src/routes/index.tsx
+badd +60 src/routes/index.tsx
 badd +12 src/lib/apply-theme.ts
 argglobal
 %argdel
@@ -144,12 +144,12 @@ setlocal wrapmargin=0
 sil! normal! zo
 43
 sil! normal! zo
-let s:l = 11 - ((10 * winheight(0) + 29) / 59)
+let s:l = 60 - ((50 * winheight(0) + 29) / 59)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 11
-normal! 043|
+keepjumps 60
+normal! 0
 wincmd w
 argglobal
 if bufexists(fnamemodify("src/lib/apply-theme.ts", ":p")) | buffer src/lib/apply-theme.ts | else | edit src/lib/apply-theme.ts | endif
