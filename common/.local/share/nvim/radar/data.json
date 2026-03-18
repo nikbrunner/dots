@@ -22,7 +22,7 @@
             "label": "1"
           }
         ],
-        "lastAccessed": 1773690541
+        "lastAccessed": 1773850783
       }
     },
     "~/repos/black-atom-industries/radar.nvim": {
@@ -428,7 +428,7 @@
             "label": "3"
           }
         ],
-        "lastAccessed": 1773759023
+        "lastAccessed": 1773851090
       }
     },
     "~/repos/nikbrunner/filen-interview": {
@@ -495,8 +495,13 @@
     },
     "~/repos/nikbrunner/notes": {
       "main": {
-        "locks": [],
-        "lastAccessed": 1773763840
+        "locks": [
+          {
+            "filename": "01 - Projects/New Job 2026/Positions/ImFusion - Senior Frontend Developer Web UX.md",
+            "label": "1"
+          }
+        ],
+        "lastAccessed": 1773841163
       }
     },
     "~/repos/nikbrunner/wichtel-app": {
