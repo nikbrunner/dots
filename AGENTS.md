@@ -23,7 +23,7 @@ dots/
 ## Commands
 
 - **`dots`** — Dotfiles management. Run `dots` with no args for usage. See `common/.local/bin/dots`.
-- **`brick`** — AI-powered git operations (commit, branch). Run `brick --help` for usage. See [nikbrunner/brick](https://github.com/nikbrunner/brick).
+- **`shiplog`** — AI-powered git operations (commit, branch). Run `shiplog --help` for usage. See [nikbrunner/shiplog](https://github.com/nikbrunner/shiplog).
 - **`helm`** — External tool for multi-repo management (pull, push, status, rebuild). Invoked by `dots pull` and `dots push`.
 
 Full machine setup: `scripts/install.sh [--dry-run] [--no-deps]`
@@ -75,7 +75,7 @@ Theme files in this repo are symlinks to Black Atom adapter repos. `dots link` a
 
 - `DOTS_DIR` — Override dots directory (default: `~/repos/nikbrunner/dots`)
 - `BLACK_ATOM_DIR` — Override Black Atom repos directory (default: `~/repos/black-atom-industries`)
-- `ANTHROPIC_API_KEY` — Required for `brick commit --smart` / `brick branch --smart` API mode
+- `ANTHROPIC_API_KEY` — Required for `shiplog commit --smart` / `shiplog branch --smart` API mode
 
 ## Shell Conventions
 

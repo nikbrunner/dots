@@ -258,10 +258,10 @@ cmd_push() {
 			lazygit
 			;;
 		"Stage all and commit with AI")
-			if command -v brick &>/dev/null; then
-				git add -A && brick commit --smart --yes
+			if command -v shiplog &>/dev/null; then
+				git add -A && shiplog commit --smart --yes
 			else
-				log_error "'brick' command not found"
+				log_error "'shiplog' command not found"
 			fi
 			;;
 		"Backup with timestamp")
@@ -376,10 +376,10 @@ cmd_push() {
 				(cd "$repo_path" && lazygit)
 				;;
 			"Stage all and commit with AI")
-				if command -v brick &>/dev/null; then
-					(cd "$repo_path" && git add -A && brick commit --smart --yes)
+				if command -v shiplog &>/dev/null; then
+					(cd "$repo_path" && git add -A && shiplog commit --smart --yes)
 				else
-					log_error "'brick' command not found"
+					log_error "'shiplog' command not found"
 				fi
 				;;
 			"Backup with timestamp")

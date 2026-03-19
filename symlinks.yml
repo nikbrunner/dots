@@ -13,7 +13,7 @@ common:
   common/.config/av/config.yaml: ~/.config/av/config.yaml
   common/.config/bat/config: ~/.config/bat/config
   common/.config/bob/config.json: ~/.config/bob/config.json
-  common/.config/brick/config.toml: ~/.config/brick/config.toml
+  "common/.config/black-atom/*": ~/.config/black-atom
   common/.config/gh/config.yml: ~/.config/gh/config.yml
   common/.config/ghostty: ~/.config/ghostty
   common/.config/kitty: ~/.config/kitty

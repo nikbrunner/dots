@@ -7,7 +7,7 @@
 - [ ] Clean out un-used `dots` commands
   - [x] Remove all `sub-*` commands
   - [x] Remove `dots sync` command (superseded by `dots pull`)
-  - [x] Resolve `repo` command — replaced by `brick`
+  - [x] Resolve `repo` command — replaced by `shiplog`
 - [ ] Command or functionality to clean up backup files created by `dots link`
 - [ ] Remove outdated links
 - [ ] Remove outdated bins

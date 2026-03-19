@@ -110,7 +110,7 @@ customCommands:
     output: terminal
   - key: "Z"
     context: "files"
-    command: "brick commit --smart"
+    command: "shiplog commit --smart"
     output: terminal
   - key: "N"
     context: "localBranches"

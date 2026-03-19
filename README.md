@@ -92,7 +92,7 @@ dots link --dry-run --verbose
 ### Core Commands
 
 - **`dots`** — Dotfiles management (pull, push, link, chores, deps). Run `dots` with no args for usage.
-- **`brick`** — AI-powered git operations (commit, branch). Run `brick --help` for usage.
+- **`shiplog`** — AI-powered git operations (commit, branch). Run `shiplog --help` for usage.
 - **`helm`** — External tool for multi-repo management. Invoked by `dots pull` and `dots push`.
 
 ### Managing Configurations
