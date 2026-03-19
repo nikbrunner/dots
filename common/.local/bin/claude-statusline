@@ -118,29 +118,31 @@ sep="\033[90m │ \033[0m"
 # Shorten home directory to ~
 display_dir="${dir/#$HOME/\~}"
 
-# PR title (cached, background fetch)
-PR_CACHE="/tmp/claude-statusline-pr-$(echo "$dir" | md5 -q).json"
+# PR title (cached per repo+branch, background fetch)
+PR_CACHE="/tmp/claude-statusline-pr-$(echo "${dir}:${branch}" | md5 -q).json"
 PR_CACHE_TTL=120
 
 fetch_pr() {
 	local pr_json
-	pr_json=$(gh pr view --json title,number --jq '"\(.number)\t\(.title)"' 2>/dev/null) || return 1
+	pr_json=$(gh pr view --json title,number,state --jq 'select(.state == "OPEN") | "\(.number)\t\(.title)"' 2>/dev/null) || return 1
 	[ -z "$pr_json" ] && return 1
 	echo "$pr_json" >"$PR_CACHE"
 }
 
-# Refresh PR cache if stale (background)
+pr_title=""
+pr_number=""
+
+# Only fetch/show PR info on non-default branches
 if [ -n "$branch" ] && [ "$branch" != "main" ] && [ "$branch" != "master" ]; then
+	# Refresh cache if stale (background)
 	if [ ! -f "$PR_CACHE" ] || [ $(($(date +%s) - $(stat -f%m "$PR_CACHE" 2>/dev/null || echo 0))) -gt $PR_CACHE_TTL ]; then
 		(cd "$dir" && fetch_pr) 2>/dev/null &
 	fi
-fi
 
-pr_title=""
-pr_number=""
-if [ -f "$PR_CACHE" ]; then
-	pr_number=$(cut -f1 "$PR_CACHE" 2>/dev/null)
-	pr_title=$(cut -f2 "$PR_CACHE" 2>/dev/null | head -c 40)
+	if [ -f "$PR_CACHE" ]; then
+		pr_number=$(cut -f1 "$PR_CACHE" 2>/dev/null)
+		pr_title=$(cut -f2 "$PR_CACHE" 2>/dev/null | head -c 40)
+	fi
 fi
 
 # Session name from Claude Code JSON input
