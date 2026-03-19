@@ -52,10 +52,10 @@ expand_wildcard_entry() {
             return 1
         fi
 
-        # List all files (not directories) in the source directory
+        # List all files and directories in the source directory
         local file_count=0
         while IFS= read -r -d '' file; do
-            if [[ -f "$file" ]]; then
+            if [[ -n "$file" ]]; then
                 local filename
                 filename=$(basename "$file")
                 local file_source="$base_source/$filename"
@@ -63,10 +63,10 @@ expand_wildcard_entry() {
                 echo "$file_source|$file_target"
                 file_count=$((file_count + 1))
             fi
-        done < <(find "$abs_base_source" -maxdepth 1 -type f -print0 2>/dev/null)
+        done < <(find "$abs_base_source" -maxdepth 1 \( -type f -o -type d \) -not -path "$abs_base_source" -print0 2>/dev/null)
 
         if [[ "$file_count" -eq 0 ]]; then
-            echo "⚠ No files found in wildcard directory: $abs_base_source" >&2
+            echo "⚠ No entries found in wildcard directory: $abs_base_source" >&2
         fi
     else
         # Not a wildcard, return as-is
