@@ -55,3 +55,41 @@ function UserContainer() {
 - When the same logic appears in multiple places
 - When the logic has a clear "topic" name (`useAuth`, `useSettings`)
 - NOT for trivial one-liners (`useState` + toggle)
+
+## Named Effects
+
+<!-- Source: https://neciudan.dev/name-your-effects -->
+
+Always use **named function expressions** in `useEffect` instead of anonymous arrows:
+
+```tsx
+// Bad -- anonymous, intent unclear without reading body
+useEffect(() => {
+  const ws = new WebSocket(url);
+  ws.onmessage = handleMessage;
+  return () => ws.close();
+}, [url]);
+
+// Good -- name reveals purpose at a glance
+useEffect(function connectToWebSocket() {
+  const ws = new WebSocket(url);
+  ws.onmessage = handleMessage;
+
+  return function disconnectFromWebSocket() {
+    ws.close();
+  };
+}, [url]);
+```
+
+### Why
+
+- **Scannable** -- effect names reveal a component's side-effect story without reading implementations
+- **Better stack traces** -- named functions show up in error monitoring instead of `(anonymous)`
+- **Design smell detector** -- if the name contains "and" or you can't name it cleanly, the effect does too much and should be split
+- **Named cleanups** -- setup/teardown symmetry makes intent explicit
+
+### Rules
+
+- Name the effect after **what it does**, not what triggers it
+- Name cleanup functions after the **inverse action** (connect/disconnect, subscribe/unsubscribe, start/stop)
+- If you struggle to name it, question whether it should be an effect at all (see [You Might Not Need an Effect](https://react.dev/learn/you-might-not-need-an-effect))
