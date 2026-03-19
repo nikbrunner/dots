@@ -8,6 +8,14 @@ See [tauri-learnings.md](tauri-learnings.md) for details on FS scoping, shell pe
 
 See [nvim-updater-research.md](nvim-updater-research.md) for socket-based live reload, config persistence patterns, and DEV-315 fix status.
 
+## Architecture Decisions
+
+See [architecture-decisions.md](architecture-decisions.md) for Rust OS boundary, naming conventions, updater patterns, and CI review setup.
+
+## Naming Precision
+
+See [feedback-naming-precision.md](feedback-naming-precision.md) — Nik cares about domain-accurate naming.
+
 ## Nik's Git Workflow Preferences
 
 - **Every commit must be green** — a working state. Don't commit broken code.
