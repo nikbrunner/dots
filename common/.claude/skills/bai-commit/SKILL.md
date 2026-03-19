@@ -42,3 +42,4 @@ Ask:
 - Never invent or guess a ticket number — only use one if clearly present in context
 - Do not change the commit message structure, only append `ISSUE-ID`
 - Linear automatically links commits containing its identifiers, so the format must be exact
+- Prefer `shiplog commit --smart --yes` for AI-generated commit messages — the `--yes` flag auto-confirms. Ensure the issue ID is appended to the result
