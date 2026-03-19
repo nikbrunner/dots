@@ -21,9 +21,9 @@ Check in order:
 Append the issue identifier in brackets at the end of the subject line:
 
 ```
-feat(theme): add jpn-koyo-yoru colorscheme [DEV-123]
-fix(adapter): correct contrast ratio for bg-subtle [DEV-123]
-chore(deps): update black-atom-core to v2.1.0 [DEV-123]
+feat(theme): add jpn-koyo-yoru colorscheme DEV-123
+fix(adapter): correct contrast ratio for bg-subtle DEV-123
+chore(deps): update black-atom-core to v2.1.0 DEV-123
 ```
 
 Keep the existing semantic format (`type(scope): description`) — the ticket tag is additive only.
@@ -40,5 +40,5 @@ Ask:
 ## Notes
 
 - Never invent or guess a ticket number — only use one if clearly present in context
-- Do not change the commit message structure, only append `[ISSUE-ID]`
+- Do not change the commit message structure, only append `ISSUE-ID`
 - Linear automatically links commits containing its identifiers, so the format must be exact
