@@ -4,6 +4,10 @@
 
 See [tauri-learnings.md](tauri-learnings.md) for details on FS scoping, shell permissions, and webview constraints.
 
+## Nvim Updater Research
+
+See [nvim-updater-research.md](nvim-updater-research.md) for socket-based live reload, config persistence patterns, and DEV-315 fix status.
+
 ## Nik's Git Workflow Preferences
 
 - **Every commit must be green** — a working state. Don't commit broken code.
