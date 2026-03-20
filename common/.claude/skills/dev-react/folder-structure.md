@@ -22,58 +22,76 @@ src/
 
 When a component has multiple associated files, group them in a folder.
 
-Style file naming depends on project convention (see `dev:styling`):
+### Preferred: Named files + re-export index
+
+Each file in the folder is named after the component (or sub-component) with a semantic suffix. A thin `index.ts` re-exports the public API so imports stay clean. This avoids "editor tab hell" (6 tabs all reading `index.tsx`) while keeping short import paths.
 
 ```
-# The folder name is the component name, while the file names represent the purpose.
-# Using `index.tsx` as the file name, avoid imports like `import Button from '@components/Button/Button';`, and instead use `import Button from '@components/Button';`.
 components/
-├── Button/
-│   ├── index.tsx          # Exports the component
-│   ├── styles.module.css  # CSS Modules (Vite, Next.js)
-│   └── stories.tsx        # Storybook stories
+├── button/
+│   ├── Button.tsx             # Component implementation
+│   ├── Button.module.css      # Styles (see dev:styling)
+│   ├── Button.stories.tsx     # Storybook stories
+│   └── index.ts               # Re-export only: export { default } from './Button'
+```
 
-# Or a flat structure insteaq component folders:
-# Of course these could still be nested inside a `components/Button/` folder
+Why this over `index.tsx` as the component file:
+- Every open file has a **meaningful name** in editor tabs and file search
+- `index.ts` is a one-liner you never open — it exists only for clean imports
+- Semantic suffixes (`.module.css`, `.stories.tsx`, `.helpers.ts`, `.types.ts`) make purpose obvious at a glance
+
+### Alternative: Flat files (small projects)
+
+For simple projects or single-file components, folders are optional:
+
+```
 components/
 ├── Button.tsx
-├── Button.stories.tsx
 ├── Button.module.css
+├── Button.stories.tsx
 ```
 
 ## Co-Located Sub-Components
 
-Components that inherently belong together live in the same folder:
+Components that inherently belong together live in the same folder. Sub-components use their own name, not the parent's:
 
 ```
 components/
 ├── data-grid/
-│   ├── index.tsx        # Main DataGrid export
-│   ├── index.css        # Glue CSS
-│   ├── stories.tsx
-│   ├── table.tsx
-│   ├── table.css
-│   ├── table-header.tsx
-│   ├── table-header.css
-│   ├── table-row.tsx
-│   ├── table-row.css
-│   ├── table-cell.tsx
-│   ├── table-cell.css
-│   └── use-data-grid.ts # Component-specific hook
+│   ├── DataGrid.tsx           # Main component
+│   ├── DataGrid.module.css
+│   ├── DataGrid.stories.tsx
+│   ├── TableHeader.tsx        # Sub-component
+│   ├── TableHeader.module.css
+│   ├── TableRow.tsx
+│   ├── TableRow.module.css
+│   ├── TableCell.tsx
+│   ├── TableCell.module.css
+│   ├── use-data-grid.ts       # Component-specific hook
+│   └── index.ts               # Re-exports DataGrid (sub-components stay internal)
 ```
 
 ## Co-Located Hooks
 
-Hooks specific to a single component or container live next to it:
+Hooks specific to a single component live next to it in that component's folder:
 
 ```
-containers/
-├── user-profile/
-│   ├── index.tsx
-│   └── use-user-profile.ts   # Only used by this container
+components/
+├── data-grid/
+│   ├── DataGrid.tsx
+│   ├── use-data-grid.ts       # Only used by DataGrid
+│   └── index.ts
 ```
 
-Shared hooks that serve multiple consumers go in the top-level `hooks/` directory.
+Shared hooks that serve multiple consumers go in the top-level `hooks/` directory:
+
+```
+hooks/
+├── use-debounce.ts
+├── use-media-query.ts
+```
+
+Note: Don't colocate hooks in route directories — file-based routers (TanStack Router, Next.js, Remix) will interpret non-route files as routes.
 
 ## Naming Conventions
 
