@@ -1,5 +1,5 @@
 ---
-name: pr-knowledge-sync
+name: dev:pr-knowledge-sync
 description: Use after merging a PR or completing feature work to update project-scoped knowledge artifacts (CLAUDE.md, skills, hooks, documentation) that may be stale or incomplete relative to the code changes
 argument-hint: "[optional: PR number, branch name, or 'last' for last merged PR]"
 ---
