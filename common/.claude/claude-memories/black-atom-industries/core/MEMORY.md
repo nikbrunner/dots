@@ -1,12 +1,21 @@
 # Black Atom Core - Memory
 
-## Project State (as of 2026-02-12)
+## Project State (as of 2026-03-19)
 
-- **V1 target**: March 31, 2026
-- **Linear project**: Black Atom - 1.0 (fully triaged and restructured)
-- Helm and radar.nvim issues separated to "Core Creator" project
-- 5 OPS issues from 2023-2024 canceled as outdated
-- CRBN collection no longer exists; MNML is the newest collection
+- **V1 target**: No fixed date — dates set per sub-project instead
+- **Livery** is part of V1 scope (differentiator for the ecosystem)
+- **V1 = core themes (fine-tuned via monitor) + livery + adapters + branding**
+- Active parallel tracks: livery development + monitor development
+- Theme fine-tuning consolidated into [DEV-322](project_v1_restructure.md) (replaces DEV-186 epic + DEV-233-237)
+- DEV-241 (naming) and DEV-242 (Default vs Stations) still open blockers
+
+## Linear Projects (active)
+
+- **Black Atom - 1.0** — core themes, adapters, branding, launch items
+- **livery** — theme management desktop app (Tauri v2 + React)
+- **Black Atom - Monitor** — preview/analysis web app inside core repo
+- **helm** — tmux session manager (low priority, post-V1)
+- **radar.nvim** — Neovim file navigation plugin (low priority, post-V1)
 
 ## Collections (current)
 
@@ -36,9 +45,6 @@
 - [Architecture conventions](project_monitor_architecture.md) — routing, queries, types, core/monitor boundary
 - [DEV-312 Handover](project_dev312_handover.md) — contrast analysis, layout redesign, command palette, next steps (DEV-309 syntax preview)
 
-## V1 Milestones
+## V1 Restructure (2026-03-19)
 
-1. Core Themes Finalized (Feb 28) — DEV-241 (naming) + DEV-242 (Default vs Stations) block DEV-186 (epic)
-2. Adapters Complete (Mar 14) — blocked by themes
-3. Branding (Mar 22) — logo + banner
-4. Launch Ready (Mar 31) — READMEs, release workflows, license, contributions
+- [V1 restructure details](project_v1_restructure.md)
