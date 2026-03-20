@@ -1,0 +1,95 @@
+#!/usr/bin/env bash
+# bai-reality-check.sh — Cross-reference Linear issue IDs against git activity
+# Usage: bai-reality-check.sh [ISSUE_ID...]
+#   No args: scan all repos for any issue references in recent commits
+#   With args: check specific issues (e.g., bai-reality-check.sh DEV-290 DEV-299)
+
+BAI_DIR="$HOME/repos/black-atom-industries"
+SINCE="${BAI_SINCE:-3 months ago}"
+
+# All known BAI repos
+REPOS=(
+  core livery helm
+  nvim ghostty tmux zed wezterm obsidian lazygit niri waybar
+  adapter-template ai radar.nvim website shiplog
+)
+
+check_issue() {
+  local issue="$1"
+  local found=0
+
+  for repo in "${REPOS[@]}"; do
+    local dir="$BAI_DIR/$repo"
+    [ -d "$dir/.git" ] || continue
+
+    # Check branches
+    local branches
+    branches=$(git -C "$dir" branch -a 2>/dev/null | grep -i "$issue" | sed 's/^[ *]*/  /')
+    if [ -n "$branches" ]; then
+      [ $found -eq 0 ] && echo "=== $issue ==="
+      echo "  Branches in $repo:"
+      echo "$branches"
+      found=1
+    fi
+
+    # Check commits
+    local commits
+    commits=$(git -C "$dir" log --all --oneline --since="$SINCE" --grep="$issue" 2>/dev/null)
+    if [ -n "$commits" ]; then
+      [ $found -eq 0 ] && echo "=== $issue ==="
+      local count
+      count=$(echo "$commits" | wc -l | tr -d ' ')
+      local latest
+      latest=$(echo "$commits" | head -1)
+      echo "  $repo: $count commit(s), latest: $latest"
+      found=1
+    fi
+  done
+
+  if [ $found -eq 0 ]; then
+    echo "=== $issue === (no git activity)"
+  fi
+}
+
+if [ $# -gt 0 ]; then
+  # Check specific issues
+  for issue in "$@"; do
+    check_issue "$issue"
+  done
+else
+  # Scan all repos for issue references
+  echo "Scanning all BAI repos for issue references (since $SINCE)..."
+  echo ""
+
+  declare -A seen_issues
+
+  for repo in "${REPOS[@]}"; do
+    dir="$BAI_DIR/$repo"
+    [ -d "$dir/.git" ] || continue
+
+    # Extract issue IDs from commit messages
+    issues=$(git -C "$dir" log --all --oneline --since="$SINCE" 2>/dev/null \
+      | grep -oiE '(DEV|DES|WEB|OPS)-[0-9]+' \
+      | sort -u)
+
+    for issue in $issues; do
+      issue=$(echo "$issue" | tr '[:lower:]' '[:upper:]')
+      seen_issues[$issue]=1
+    done
+
+    # Extract issue IDs from branch names
+    issues=$(git -C "$dir" branch -a 2>/dev/null \
+      | grep -oiE '(DEV|DES|WEB|OPS)-[0-9]+' \
+      | sort -u)
+
+    for issue in $issues; do
+      issue=$(echo "$issue" | tr '[:lower:]' '[:upper:]')
+      seen_issues[$issue]=1
+    done
+  done
+
+  # Sort and check each
+  for issue in $(echo "${!seen_issues[@]}" | tr ' ' '\n' | sort -t'-' -k2 -n); do
+    check_issue "$issue"
+  done
+fi
