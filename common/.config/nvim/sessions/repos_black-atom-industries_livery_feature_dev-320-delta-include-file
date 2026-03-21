@@ -9,8 +9,8 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +7 src-tauri/src/lib.rs
 badd +6 src-tauri/src/main.rs
+badd +8 src-tauri/src/updaters/config_file.rs
 argglobal
 %argdel
 $argadd ./
@@ -34,136 +34,6 @@ set winwidth=1
 exe 'vert 1resize ' . ((&columns * 138 + 138) / 277)
 exe 'vert 2resize ' . ((&columns * 138 + 138) / 277)
 argglobal
-balt src-tauri/src/lib.rs
-onoremap <buffer> <silent> [[ :call rust#Jump('o', 'Back')
-xnoremap <buffer> <silent> [[ :call rust#Jump('v', 'Back')
-nnoremap <buffer> <silent> [[ :call rust#Jump('n', 'Back')
-onoremap <buffer> <silent> ]] :call rust#Jump('o', 'Forward')
-xnoremap <buffer> <silent> ]] :call rust#Jump('v', 'Forward')
-nnoremap <buffer> <silent> ]] :call rust#Jump('n', 'Forward')
-setlocal keymap=
-setlocal noarabic
-setlocal autoindent
-setlocal nobinary
-setlocal nobreakindent
-setlocal breakindentopt=
-setlocal bufhidden=
-setlocal buflisted
-setlocal buftype=
-setlocal busy=0
-setlocal cindent
-setlocal cinkeys=0{,0},!^F,o,O,0[,0],0(,0)
-setlocal cinoptions=L0,(s,Ws,J1,j1,m1
-setlocal cinscopedecls=public,protected,private
-setlocal cinwords=for,if,else,while,loop,impl,mod,unsafe,trait,struct,enum,fn,extern,macro
-setlocal colorcolumn=
-setlocal comments=s0:/*!,ex:*/,s1:/*,mb:*,ex:*/,:///,://!,://
-setlocal commentstring=//\ %s
-setlocal complete=.,w,b,u,t
-setlocal completefunc=
-setlocal completeslash=
-setlocal concealcursor=
-setlocal conceallevel=0
-setlocal nocopyindent
-setlocal nocursorbind
-setlocal nocursorcolumn
-setlocal cursorline
-setlocal cursorlineopt=both
-setlocal nodiff
-setlocal errorformat=%-G,%-Gerror:\ aborting\ %.%#,%-Gerror:\ Could\ not\ compile\ %.%#,%Eerror:\ %m,%Eerror[E%n]:\ %m,%Wwarning:\ %m,%Wwarning[E%n]:\ %m,%Inote:\ %m,%C\ %#-->\ %f:%l:%c,%C\ %#╭▸\ %f:%l:%c,%E\ \ left:%m,%C\ right:%m\ %f:%l:%c,%Z,%f:%l:%c:\ %t%*[^:]:\ %m,%f:%l:%c:\ %*\\d:%*\\d\ %t%*[^:]:\ %m,%-G%f:%l\ %s,%-G%*[\ ]^,%-G%*[\ ]^%*[~],%-G%*[\ ]...,%-G%\\s%#Downloading%.%#,%-G%\\s%#Checking%.%#,%-G%\\s%#Compiling%.%#,%-G%\\s%#Finished%.%#,%-G%\\s%#error:\ Could\ not\ compile\ %.%#,%-G%\\s%#To\ learn\ more\\,%.%#,%-G%\\s%#For\ more\ information\ about\ this\ error\\,%.%#,%-Gnote:\ Run\ with\ `RUST_BACKTRACE=%.%#,%.%#panicked\ at\ \\'%m\\'\\,\ %f:%l:%c
-setlocal eventignorewin=
-setlocal expandtab
-if &filetype != 'rust'
-setlocal filetype=rust
-endif
-setlocal fixendofline
-setlocal foldcolumn=0
-setlocal foldenable
-setlocal foldexpr=v:lua.vim.treesitter.foldexpr()
-setlocal foldignore=#
-setlocal foldlevel=99
-setlocal foldmarker={{{,}}}
-setlocal foldmethod=indent
-setlocal foldminlines=1
-setlocal foldnestmax=20
-setlocal foldtext=
-setlocal formatexpr=v:lua.require'conform'.formatexpr()
-setlocal formatlistpat=^\\s*\\d\\+[\\]:.)}\\t\ ]\\s*
-setlocal formatoptions=croqnlj
-setlocal iminsert=0
-setlocal imsearch=-1
-setlocal include=\\v^\\s*(pub\\s+)?use\\s+\\zs(\\f|:)+
-setlocal includeexpr=rust#IncludeExpr(v:fname)
-setlocal indentexpr=nvim_treesitter#indent()
-setlocal indentkeys=0{,0},!^F,o,O,0[,0],0(,0)
-setlocal noinfercase
-setlocal iskeyword=@,48-57,_,192-255
-setlocal lhistory=10
-setlocal nolinebreak
-setlocal nolisp
-setlocal lispoptions=
-setlocal nolist
-setlocal makeprg=cargo\ $*
-setlocal matchpairs=(:),{:},[:],<:>
-setlocal modeline
-setlocal modifiable
-setlocal nrformats=bin,hex
-setlocal number
-setlocal numberwidth=4
-setlocal omnifunc=v:lua.vim.lsp.omnifunc
-setlocal nopreserveindent
-setlocal nopreviewwindow
-setlocal quoteescape=\\
-setlocal noreadonly
-setlocal relativenumber
-setlocal norightleft
-setlocal rightleftcmd=search
-setlocal scrollback=-1
-setlocal noscrollbind
-setlocal shiftwidth=2
-setlocal signcolumn=yes
-setlocal smartindent
-setlocal nosmoothscroll
-setlocal softtabstop=-1
-setlocal nospell
-setlocal spellcapcheck=[.?!]\\_[\\])'\"\\t\ ]\\+
-setlocal spellfile=
-setlocal spelllang=en_us,de_de
-setlocal spelloptions=noplainbuffer
-setlocal statuscolumn=%!v:lua.require'snacks.statuscolumn'.get()
-setlocal suffixesadd=.rs
-setlocal noswapfile
-setlocal synmaxcol=3000
-if &syntax != ''
-setlocal syntax=
-endif
-setlocal tabstop=4
-setlocal tagfunc=v:lua.vim.lsp.tagfunc
-setlocal textwidth=100
-setlocal undofile
-setlocal varsofttabstop=
-setlocal vartabstop=
-setlocal winbar=%#WinBarPath#src-tauri%*\ %#WinBarSeparator#/%*\ %#WinBarPath#src%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#main.rs%*
-setlocal winblend=0
-setlocal nowinfixbuf
-setlocal nowinfixheight
-setlocal nowinfixwidth
-setlocal winhighlight=
-setlocal nowrap
-setlocal wrapmargin=0
-let s:l = 6 - ((5 * winheight(0) + 26) / 53)
-if s:l < 1 | let s:l = 1 | endif
-keepjumps exe s:l
-normal! zt
-keepjumps 6
-normal! 0
-wincmd w
-argglobal
-if bufexists(fnamemodify("src-tauri/src/lib.rs", ":p")) | buffer src-tauri/src/lib.rs | else | edit src-tauri/src/lib.rs | endif
-if &buftype ==# 'terminal'
-  silent file src-tauri/src/lib.rs
-endif
-balt src-tauri/src/main.rs
 onoremap <buffer> <silent> [[ :call rust#Jump('o', 'Back')
 xnoremap <buffer> <silent> [[ :call rust#Jump('v', 'Back')
 nnoremap <buffer> <silent> [[ :call rust#Jump('n', 'Back')
@@ -272,7 +142,7 @@ setlocal textwidth=100
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#src-tauri%*\ %#WinBarSeparator#/%*\ %#WinBarPath#src%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#lib.rs%*
+setlocal winbar=%#WinBarPath#src-tauri%*\ %#WinBarSeparator#/%*\ %#WinBarPath#src%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#main.rs%*
 setlocal winblend=0
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -280,12 +150,140 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 11 - ((10 * winheight(0) + 26) / 53)
+let s:l = 6 - ((5 * winheight(0) + 26) / 53)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 11
-normal! 010|
+keepjumps 6
+normal! 0
+wincmd w
+argglobal
+if bufexists(fnamemodify("src-tauri/src/updaters/config_file.rs", ":p")) | buffer src-tauri/src/updaters/config_file.rs | else | edit src-tauri/src/updaters/config_file.rs | endif
+if &buftype ==# 'terminal'
+  silent file src-tauri/src/updaters/config_file.rs
+endif
+onoremap <buffer> <silent> [[ :call rust#Jump('o', 'Back')
+xnoremap <buffer> <silent> [[ :call rust#Jump('v', 'Back')
+nnoremap <buffer> <silent> [[ :call rust#Jump('n', 'Back')
+onoremap <buffer> <silent> ]] :call rust#Jump('o', 'Forward')
+xnoremap <buffer> <silent> ]] :call rust#Jump('v', 'Forward')
+nnoremap <buffer> <silent> ]] :call rust#Jump('n', 'Forward')
+setlocal keymap=
+setlocal noarabic
+setlocal autoindent
+setlocal nobinary
+setlocal nobreakindent
+setlocal breakindentopt=
+setlocal bufhidden=
+setlocal buflisted
+setlocal buftype=
+setlocal busy=0
+setlocal cindent
+setlocal cinkeys=0{,0},!^F,o,O,0[,0],0(,0)
+setlocal cinoptions=L0,(s,Ws,J1,j1,m1
+setlocal cinscopedecls=public,protected,private
+setlocal cinwords=for,if,else,while,loop,impl,mod,unsafe,trait,struct,enum,fn,extern,macro
+setlocal colorcolumn=
+setlocal comments=s0:/*!,ex:*/,s1:/*,mb:*,ex:*/,:///,://!,://
+setlocal commentstring=//\ %s
+setlocal complete=.,w,b,u,t
+setlocal completefunc=
+setlocal completeslash=
+setlocal concealcursor=
+setlocal conceallevel=0
+setlocal nocopyindent
+setlocal nocursorbind
+setlocal nocursorcolumn
+setlocal cursorline
+setlocal cursorlineopt=both
+setlocal nodiff
+setlocal errorformat=%-G,%-Gerror:\ aborting\ %.%#,%-Gerror:\ Could\ not\ compile\ %.%#,%Eerror:\ %m,%Eerror[E%n]:\ %m,%Wwarning:\ %m,%Wwarning[E%n]:\ %m,%Inote:\ %m,%C\ %#-->\ %f:%l:%c,%C\ %#╭▸\ %f:%l:%c,%E\ \ left:%m,%C\ right:%m\ %f:%l:%c,%Z,%f:%l:%c:\ %t%*[^:]:\ %m,%f:%l:%c:\ %*\\d:%*\\d\ %t%*[^:]:\ %m,%-G%f:%l\ %s,%-G%*[\ ]^,%-G%*[\ ]^%*[~],%-G%*[\ ]...,%-G%\\s%#Downloading%.%#,%-G%\\s%#Checking%.%#,%-G%\\s%#Compiling%.%#,%-G%\\s%#Finished%.%#,%-G%\\s%#error:\ Could\ not\ compile\ %.%#,%-G%\\s%#To\ learn\ more\\,%.%#,%-G%\\s%#For\ more\ information\ about\ this\ error\\,%.%#,%-Gnote:\ Run\ with\ `RUST_BACKTRACE=%.%#,%.%#panicked\ at\ \\'%m\\'\\,\ %f:%l:%c
+setlocal eventignorewin=
+setlocal expandtab
+if &filetype != 'rust'
+setlocal filetype=rust
+endif
+setlocal fixendofline
+setlocal foldcolumn=0
+setlocal foldenable
+setlocal foldexpr=v:lua.vim.treesitter.foldexpr()
+setlocal foldignore=#
+setlocal foldlevel=0
+setlocal foldmarker={{{,}}}
+setlocal foldmethod=indent
+setlocal foldminlines=1
+setlocal foldnestmax=20
+setlocal foldtext=
+setlocal formatexpr=v:lua.require'conform'.formatexpr()
+setlocal formatlistpat=^\\s*\\d\\+[\\]:.)}\\t\ ]\\s*
+setlocal formatoptions=croqnlj
+setlocal iminsert=0
+setlocal imsearch=-1
+setlocal include=\\v^\\s*(pub\\s+)?use\\s+\\zs(\\f|:)+
+setlocal includeexpr=rust#IncludeExpr(v:fname)
+setlocal indentexpr=nvim_treesitter#indent()
+setlocal indentkeys=0{,0},!^F,o,O,0[,0],0(,0)
+setlocal noinfercase
+setlocal iskeyword=@,48-57,_,192-255
+setlocal lhistory=10
+setlocal nolinebreak
+setlocal nolisp
+setlocal lispoptions=
+setlocal nolist
+setlocal makeprg=cargo\ $*
+setlocal matchpairs=(:),{:},[:],<:>
+setlocal modeline
+setlocal modifiable
+setlocal nrformats=bin,hex
+setlocal number
+setlocal numberwidth=4
+setlocal omnifunc=v:lua.vim.lsp.omnifunc
+setlocal nopreserveindent
+setlocal nopreviewwindow
+setlocal quoteescape=\\
+setlocal noreadonly
+setlocal relativenumber
+setlocal norightleft
+setlocal rightleftcmd=search
+setlocal scrollback=-1
+setlocal noscrollbind
+setlocal shiftwidth=4
+setlocal signcolumn=yes
+setlocal smartindent
+setlocal nosmoothscroll
+setlocal softtabstop=-1
+setlocal nospell
+setlocal spellcapcheck=[.?!]\\_[\\])'\"\\t\ ]\\+
+setlocal spellfile=
+setlocal spelllang=en_us,de_de
+setlocal spelloptions=noplainbuffer
+setlocal statuscolumn=%!v:lua.require'snacks.statuscolumn'.get()
+setlocal suffixesadd=.rs
+setlocal noswapfile
+setlocal synmaxcol=3000
+if &syntax != ''
+setlocal syntax=
+endif
+setlocal tabstop=4
+setlocal tagfunc=v:lua.vim.lsp.tagfunc
+setlocal textwidth=100
+setlocal undofile
+setlocal varsofttabstop=
+setlocal vartabstop=
+setlocal winbar=%#WinBarPath#src-tauri%*\ %#WinBarSeparator#/%*\ %#WinBarPath#src%*\ %#WinBarSeparator#/%*\ %#WinBarPath#updaters%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#config_file.rs%*
+setlocal winblend=0
+setlocal nowinfixbuf
+setlocal nowinfixheight
+setlocal nowinfixwidth
+setlocal winhighlight=
+setlocal nowrap
+setlocal wrapmargin=0
+let s:l = 183 - ((182 * winheight(0) + 26) / 53)
+if s:l < 1 | let s:l = 1 | endif
+keepjumps exe s:l
+normal! zt
+keepjumps 183
+normal! 0
 wincmd w
 exe 'vert 1resize ' . ((&columns * 138 + 138) / 277)
 exe 'vert 2resize ' . ((&columns * 138 + 138) / 277)
