@@ -1,32 +1,31 @@
 ---
 name: bai:commit
 user-invocable: false
-description: Use when about to create a git commit in a Black Atom Industries repo and a Linear issue identifier is available in context (branch name, conversation, or recent issue lookup)
+description: BAI wrapper around dev:commit — appends Linear issue ID and offers status update afterward.
 allowed-tools: ["Bash", "mcp__linear__get_issue", "mcp__linear__save_issue", "mcp__linear__list_issue_statuses", "AskUserQuestion"]
 ---
 
 # Black Atom Commit
 
-When committing in a BAI repo, include the issue ticket number in the commit message and offer to update the ticket status afterward.
+BAI wrapper around `dev:commit`. Adds Linear issue tracking to the commit workflow.
 
-## Issue Detection
+## Before Committing: Detect Issue
 
 Check in order:
-1. **Branch name** — parse with `git branch --show-current`; look for pattern `[A-Z]+-[0-9]+` (e.g., `dev/DEV-123-add-theme-generator` → `DEV-123`)
+1. **Branch name** — parse with `git branch --show-current`; look for pattern `[A-Z]+-[0-9]+` (e.g., `feature/dev-123-add-theme-generator` → `DEV-123`)
 2. **Conversation context** — issue mentioned by user or from a recent `bai:*` skill invocation
-3. **Not found** — commit normally without a ticket reference
+3. **Not found** — proceed without a ticket reference
 
-## Commit Message Format
+## Commit
 
-Append the issue identifier in brackets at the end of the subject line:
+Follow `dev:commit` for the commit itself. Append the issue identifier at the end of the subject line:
 
 ```
 feat(theme): add jpn-koyo-yoru colorscheme DEV-123
 fix(adapter): correct contrast ratio for bg-subtle DEV-123
-chore(deps): update black-atom-core to v2.1.0 DEV-123
 ```
 
-Keep the existing semantic format (`type(scope): description`) — the ticket tag is additive only.
+The ticket tag is additive — don't change the `type(scope): description` structure.
 
 ## After Committing
 
@@ -40,6 +39,5 @@ Ask:
 ## Notes
 
 - Never invent or guess a ticket number — only use one if clearly present in context
-- Do not change the commit message structure, only append `ISSUE-ID`
 - Linear automatically links commits containing its identifiers, so the format must be exact
-- Prefer `shiplog commit --smart --yes` for AI-generated commit messages — the `--yes` flag auto-confirms. Ensure the issue ID is appended to the result
+- Prefer `shiplog commit --smart --yes` for AI-generated commit messages — append issue ID to the result
