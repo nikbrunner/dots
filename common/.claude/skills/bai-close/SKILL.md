@@ -1,13 +1,13 @@
 ---
 name: bai:close
 user-invocable: false
-description: Close a Black Atom issue
-allowed-tools: ["mcp__linear__save_issue", "mcp__linear__create_comment", "mcp__linear__list_issue_statuses", "mcp__linear__get_issue", "AskUserQuestion"]
+description: Close a Black Atom issue — Linear context wrapper around dev:close.
+allowed-tools: ["mcp__linear__save_issue", "mcp__linear__create_comment", "mcp__linear__list_issue_statuses", "mcp__linear__get_issue", "AskUserQuestion", "Bash"]
 ---
 
 # Black Atom Close
 
-Mark an issue as Done or Canceled.
+BAI wrapper around `dev:close`. Runs the generic dev completion flow, then handles Linear issue closure.
 
 ## Arguments
 
@@ -20,21 +20,24 @@ Examples:
 
 ## Process
 
-1. Parse issue identifier
+### 1. Run dev:close
 
+Invoke `dev:close` to handle verification and branch shipping (merge/PR/keep/discard).
+
+### 2. Close the Linear issue
+
+1. Parse issue identifier from arguments or branch name
 2. Get issue with `mcp__linear__get_issue` to find its team and current state
-
 3. Get available statuses with `mcp__linear__list_issue_statuses`
-
 4. Determine close type:
    - Default: "Done" (type: completed)
    - If "canceled" in comment: "Canceled" (type: canceled)
-
-5. Update issue status
-
+5. Update issue status via `mcp__linear__save_issue`
 6. If closing comment provided, add via `mcp__linear__create_comment`
 
-7. Check if this unblocks other issues - mention them
+### 3. Check unblocked issues
+
+Check if this unblocks other issues — mention them.
 
 ## Output
 
@@ -48,18 +51,9 @@ This unblocks:
 - [DEV-125] Update documentation — https://linear.app/black-atom-industries/issue/DEV-125/update-documentation
 ```
 
-or with comment:
-
-```
-Closed [DEV-123]: Old feature request
-Status: Backlog → Canceled
-Comment: "No longer needed after architecture change"
-https://linear.app/black-atom-industries/issue/DEV-123/old-feature-request
-```
-
 ## Notes
 
-- Check for issues this was blocking and highlight them
+- **URL format**: Always show issue links as `https://linear.app/` web URLs (use the `url` field from the API directly)
 - Use "Canceled" status for won't-do items
 - Reference related commits if closing after implementation
-- **URL format**: Always show issue links as `https://linear.app/` web URLs (use the `url` field from the API directly)
+- For non-BAI projects, use `dev:close` directly

@@ -29,17 +29,21 @@ Key concepts used across skills. Many originate from Matt Pocock's [skills colle
 
 ## Skill Pipeline
 
-Several `dev:*` skills form a sequential pipeline for feature development:
+`dev:start` is the universal entry point. It assesses scope from context and routes to the right depth:
 
-```
-dev:write-prd → dev:prd-to-plan → dev:prd-to-issues → implementation
-                                                         ↑
-dev:grill-me (pressure-test at any stage)    dev:tdd (test discipline)
-dev:design-interface (API design)            dev:refactor-plan (refactoring)
-dev:ubiquitous-language (terminology)        dev:edit-article (writing)
-```
+| Scope | Route |
+|-|-|
+| Trivial | Just do it. No ceremony. |
+| Small | `dev:worktrees` → implement → `dev:close` |
+| Medium | `dev:write-prd` → `dev:prd-to-plan` → `dev:worktrees` → `dev:executing-plans` → `dev:close` |
+| Large | `dev:grill-me` → `dev:write-prd` → `dev:prd-to-plan` → `dev:prd-to-issues` → `dev:worktrees` → `dev:executing-plans` → `dev:close` |
 
-These complement the superpowers plugin workflow (`brainstorming → writing-plans → executing-plans`). The `dev:*` pipeline is more structured and opinionated; superpowers is more flexible. Use whichever fits the situation.
+`dev:close` is the universal exit: verify → ship (merge/PR/keep/discard) → close tracked issue.
+
+For BAI projects: `bai:start` and `bai:close` wrap these with Linear issue management.
+
+**Toolbox** (loaded contextually at any stage):
+`dev:grill-me`, `dev:design-interface`, `dev:tdd`, `dev:verification`, `dev:ubiquitous-language`, `dev:refactor-plan`, `dev:edit-article`, `dev:arch-review`, `dev:bugs`
 
 ## TODOs
 

@@ -1,13 +1,13 @@
 ---
 name: bai:start
 user-invocable: false
-description: Start working on a Black Atom issue — sets status to In Progress and creates a feature branch
+description: Start working on a Black Atom issue — Linear context wrapper around dev:start.
 allowed-tools: ["mcp__linear__list_issues", "mcp__linear__get_issue", "mcp__linear__save_issue", "mcp__linear__list_issue_statuses", "mcp__linear__create_comment", "AskUserQuestion", "Bash"]
 ---
 
 # Black Atom Start
 
-Pick up an issue and set up the workspace.
+BAI wrapper around `dev:start`. Handles Linear issue management, then delegates to the generic dev pipeline.
 
 ## Arguments
 
@@ -58,17 +58,20 @@ Use `shiplog branch --smart --yes` with the issue title as input, or create manu
 git checkout main && git pull && git checkout -b feature/<branch-name>
 ```
 
-### 5. Confirm
+### 5. Route via dev:start
 
-Show summary of what was done.
+With the issue context now established (branch created, status set), invoke `dev:start` to assess scope and route to the appropriate pipeline depth. Pass the issue title and description as context for scope assessment.
 
-## Output
+### 6. Confirm
+
+Show summary:
 
 ```
 Started [DEV-123]: Implement theme generator
 Status: Todo → In Progress
 Branch: feature/dev-123-implement-theme-generator
 https://linear.app/black-atom-industries/issue/DEV-123/implement-theme-generator
+Pipeline: [scope] → [routed skills]
 ```
 
 If blocked:
@@ -85,3 +88,4 @@ Start anyway? (issue will be set to In Progress despite blockers)
 - Always branch from an up-to-date main/master
 - **URL format**: Always show issue links as `https://linear.app/` web URLs (use the `url` field from the API directly)
 - If the branch already exists, ask whether to check it out instead of creating
+- For non-BAI projects, use `dev:start` directly
