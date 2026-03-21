@@ -35,12 +35,43 @@ Let the user confirm or override.
 
 ## Step 3: Route
 
-| Scope   | Pipeline                                                                                                                                              |
-| ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Trivial | Just do it. No ceremony.                                                                                                                              |
-| Small   | `dev:worktrees` → implement → `dev:close`                                                                                                             |
-| Medium  | `dev:write-prd` → `dev:prd-to-plan` → `dev:worktrees` → `dev:executing-plans` → `dev:close`                                                           |
-| Large   | `dev:grill-me` → `dev:write-prd` → `dev:prd-to-plan` → `dev:prd-to-issues` → pick first issue → `dev:worktrees` → `dev:executing-plans` → `dev:close` |
+```
+dev:start (scope assessment → route)
+│
+├─ Trivial → just do it → dev:commit → done
+│
+├─ Small → dev:worktrees → implement → dev:close
+│
+├─ Medium
+│   │
+│   ├─ dev:write-prd
+│   │   └─ 🔍 prd-reviewer agent (up to 3 iterations)
+│   │
+│   ├─ dev:prd-to-plan
+│   │   └─ 🔍 plan-reviewer agent (up to 3 iterations)
+│   │
+│   ├─ dev:worktrees
+│   │
+│   ├─ dev:executing-plans
+│   │   └─ per task:
+│   │       1. dev:verification (tests, build, lint)
+│   │       2. 🔍 spec-compliance-reviewer agent (matches spec?)
+│   │       3. 🔍 pr-reviewer agent (code quality)
+│   │       └─ dev:receiving-review governs feedback handling
+│   │
+│   └─ dev:close
+│       1. dev:verification
+│       2. 🔍 structural-completeness-reviewer agent (full branch diff)
+│       3. dev:finishing-branch (merge/PR/keep/discard)
+│       4. close tracked issue (optional)
+│       5. knowledge sync (optional)
+│
+└─ Large
+    └─ dev:grill-me → then same as Medium,
+       plus dev:prd-to-issues before dev:worktrees
+```
+
+**Review gates (🔍):** 5 total across a medium/large task — PRD review, plan review, per-task spec compliance, per-task code quality, final structural completeness.
 
 ## Notes
 
