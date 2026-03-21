@@ -20,10 +20,7 @@ See [feedback-naming-precision.md](feedback-naming-precision.md) — Nik cares a
 
 See [session-2026-03-19-20-handover.md](session-2026-03-19-20-handover.md) for next steps (lazygit updater) and open items.
 
-## Nik's Git Workflow Preferences
+## Git Workflow
 
-- **Every commit must be green** — a working state. Don't commit broken code.
-- **Amend** small fixes into the previous commit rather than creating fix-on-fix commits.
-- Only create a new commit when it represents a distinct, working change.
-- **Always include the Linear issue number** (e.g., `[DEV-294]`) in commit messages.
-- **Update the Linear ticket** (status to Done) after committing.
+Commit conventions are now in the project-level `commit` skill (`.claude/skills/commit/SKILL.md`).
+Linear ticket updates are handled by `bai-commit` and `bai-close` skills.
