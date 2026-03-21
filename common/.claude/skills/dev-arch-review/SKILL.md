@@ -1,6 +1,6 @@
 ---
 name: dev:arch-review
-user-invocable: false
+user-invocable: true
 description: Review architecture of specified path(s), or staged/unstaged git changes.
 argument-hint: [path/to/directory]... (optional)
 allowed-tools: Bash(git:diff)
