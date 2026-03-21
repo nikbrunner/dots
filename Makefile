@@ -1,4 +1,4 @@
-.PHONY: fmt-sh
+.PHONY: fmt
 
 SHELL_PATHS := \
 	scripts/ \
@@ -8,6 +8,6 @@ SHELL_PATHS := \
 	common/.config/tmux/scripts/ \
 	common/.config/nvim/scripts/
 
-fmt-sh:
+fmt:
+	npx prettier --write "**/*.md"
 	shfmt -w $(SHELL_PATHS)
-
