@@ -14,7 +14,16 @@ Invoke `dev:verification` — run the project's test suite, build, lint. No comp
 
 If verification fails, stop. Fix first, then re-run this skill.
 
-## Step 2: Ship
+## Step 2: Final Review
+
+Dispatch the **structural-completeness-reviewer** agent across the full set of changes on this branch (diff against base branch).
+
+- If issues found: address them, re-run `dev:verification`, then re-dispatch the reviewer.
+- Only proceed to shipping once the reviewer confirms clean.
+
+This catches dead code, incomplete removals, orphaned imports, dev artifacts, and dependency hygiene issues that per-task reviews may miss at the integration level.
+
+## Step 3: Ship
 
 Invoke `dev:finishing-branch`:
 
@@ -23,7 +32,7 @@ Invoke `dev:finishing-branch`:
 3. Keep branch as-is
 4. Discard
 
-## Step 3: Close Tracked Issue (optional)
+## Step 4: Close Tracked Issue (optional)
 
 If there's an issue associated with this work (GitHub issue, Linear issue referenced in branch name or conversation):
 
@@ -33,7 +42,7 @@ If there's an issue associated with this work (GitHub issue, Linear issue refere
 
 If no issue is tracked, skip this step.
 
-## Step 4: Knowledge Sync (optional)
+## Step 5: Knowledge Sync (optional)
 
 For medium/large work, consider whether project knowledge artifacts need updating:
 

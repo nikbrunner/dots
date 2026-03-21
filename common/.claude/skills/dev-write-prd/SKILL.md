@@ -78,3 +78,11 @@ By default, create as a **GitHub issue** using `gh issue create`.
 If the user prefers local storage, save to `./plans/prd-[slug].md` instead.
 
 For BAI projects, consider using **Linear** as an alternative to GitHub issues.
+
+### Step 6: Review
+
+Dispatch the **prd-reviewer** agent with the PRD content.
+
+- If **Approved**: proceed (offer `dev:prd-to-plan` as next step)
+- If **Issues Found**: address the issues, then re-dispatch the reviewer
+- Max 3 review iterations — if still unresolved, escalate to the user for a decision
