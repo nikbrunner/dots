@@ -48,6 +48,7 @@ common/.claude/
 ### Feedback
 
 - **Skill discovery discipline** — always check skills before using MCP tools directly → [feedback_skill_discovery.md](feedback_skill_discovery.md)
+- **Web tool lanes** — agent-browser replaces WebFetch; Exa replaces WebSearch; Ref MCP for docs → [feedback_browser_automation.md](feedback_browser_automation.md)
 
 ### Symlinks (symlinks.yml)
 

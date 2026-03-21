@@ -9,11 +9,11 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +37 common/.claude/skills/docs/SKILL.md
+badd +89 common/.claude/README.md
 argglobal
 %argdel
 $argadd ~/repos/nikbrunner/dots/common/.claude/CLAUDE.md
-edit common/.claude/skills/docs/SKILL.md
+edit common/.claude/README.md
 argglobal
 xnoremap <buffer> <silent> [[ :exe "normal! gv"|call search('\%(^#\{1,5\}\s\+\S\|^\S.*\n^[=-]\+$\)', "bsW")
 xnoremap <buffer> <silent> ]] :exe "normal! gv"|call search('\%(^#\{1,5\}\s\+\S\|^\S.*\n^[=-]\+$\)', "sW")
@@ -116,7 +116,7 @@ setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#common%*\ %#WinBarSeparator#/%*\ %#WinBarPath#.claude%*\ %#WinBarSeparator#/%*\ %#WinBarPath#skills%*\ %#WinBarSeparator#/%*\ %#WinBarPath#docs%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#SKILL.md%*
+setlocal winbar=%#WinBarPath#common%*\ %#WinBarSeparator#/%*\ %#WinBarPath#.claude%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#README.md%*
 setlocal winblend=0
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -124,12 +124,12 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal wrap
 setlocal wrapmargin=0
-let s:l = 37 - ((36 * winheight(0) + 27) / 55)
+let s:l = 90 - ((39 * winheight(0) + 28) / 56)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 37
-normal! 026|
+keepjumps 90
+normal! 016|
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
@@ -143,7 +143,6 @@ if filereadable(s:sx)
 endif
 let &g:so = s:so_save | let &g:siso = s:siso_save
 set hlsearch
-nohlsearch
 doautoall SessionLoadPost
 unlet SessionLoad
 " vim: set ft=vim :

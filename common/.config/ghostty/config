@@ -2,7 +2,7 @@
 # https://github.com/imrajyavardhan12/spectre-ghostty-config
 
 # Colors
-theme = black-atom-jpn-murasaki-yoru.conf
+theme = black-atom-terra-fall-night.conf
 bold-is-bright = false
 
 # Window
@@ -18,7 +18,7 @@ adjust-underline-position = 3
 
 # Fonts
 font-size = 14
-font-family = Iosevka Nerd Font
+font-family = ComicCodeLigatures Nerd Font
 font-style-bold = Bold
 window-inherit-working-directory = true
 unfocused-split-opacity = 1

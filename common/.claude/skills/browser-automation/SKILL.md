@@ -6,7 +6,17 @@ user-invocable: false
 
 # Browser Automation (agent-browser)
 
-Use `agent-browser` via Bash for any browser interaction. Prefer this over Chrome DevTools MCP -- the snapshot output is purpose-built for AI agents.
+## MUST: Tool Lanes
+
+You MUST use the right tool for the job. Never mix these up:
+
+| Need                                      | MUST use                   | NEVER use   |
+| ----------------------------------------- | -------------------------- | ----------- |
+| View, explore, or interact with a website | `agent-browser` (via Bash) | `WebFetch`  |
+| Search the web                            | Exa MCP                    | `WebSearch` |
+| Look up library/framework/API docs        | Ref MCP                    | --          |
+
+**Why agent-browser over WebFetch:** `WebFetch` returns raw initial HTML. For SPAs and client-rendered sites, that's an empty `<div id="root">`. `agent-browser` fully renders the page (executes JS), so you see actual content, can navigate subroutes, and interact with elements.
 
 ## Core Workflow
 
