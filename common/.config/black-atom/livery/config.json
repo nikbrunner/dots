@@ -1,0 +1,27 @@
+{
+  "system_appearance": true,
+  "apps": {
+    "ghostty": {
+      "enabled": true,
+      "config_path": "~/.config/ghostty/config"
+    },
+    "nvim": {
+      "enabled": true,
+      "config_path": "~/.config/nvim/lua/config.lua"
+    },
+    "tmux": {
+      "enabled": true,
+      "config_path": "~/.config/tmux/tmux.conf",
+      "themes_path": "~/repos/black-atom-industries/tmux/themes"
+    },
+    "delta": {
+      "enabled": true,
+      "config_path": "~/.gitconfig.delta"
+    },
+    "lazygit": {
+      "enabled": true,
+      "config_path": "~/.config/lazygit/config.yml",
+      "themes_path": "~/repos/black-atom-industries/lazygit/themes"
+    }
+  }
+}
