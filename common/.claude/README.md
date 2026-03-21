@@ -37,25 +37,57 @@ Key concepts used across skills. Many originate from Matt Pocock's [skills colle
 | Commit      | `dev:commit` | `bai:commit` | Linear issue ID in message, status update offer |
 | Finish work | `dev:close`  | `bai:close`  | Linear status → Done, unblock check             |
 
-### Routing
+### Pipeline Tree
 
-`dev:start` assesses scope from context and routes to the right pipeline depth:
+`dev:start` assesses scope from context and routes to the right pipeline depth.
 
-| Scope   | Signals                             | Route                                                                                                                              |
-| ------- | ----------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
-| Trivial | One-liner, typo, config change      | Just do it → `dev:commit` → done                                                                                                   |
-| Small   | Single-file bugfix, isolated change | `dev:worktrees` → implement → `dev:close`                                                                                          |
-| Medium  | Multi-file feature, new module      | `dev:write-prd` → `dev:prd-to-plan` → `dev:worktrees` → `dev:executing-plans` → `dev:close`                                        |
-| Large   | Multi-issue project, cross-cutting  | `dev:grill-me` → `dev:write-prd` → `dev:prd-to-plan` → `dev:prd-to-issues` → `dev:worktrees` → `dev:executing-plans` → `dev:close` |
+```
+dev:start (scope assessment → route)
+│
+├─ Trivial → just do it → dev:commit → done
+│
+├─ Small → dev:worktrees → implement → dev:close
+│
+├─ Medium
+│   │
+│   ├─ dev:write-prd
+│   │   └─ 🔍 prd-reviewer agent (up to 3 iterations)
+│   │
+│   ├─ dev:prd-to-plan
+│   │   └─ 🔍 plan-reviewer agent (up to 3 iterations)
+│   │
+│   ├─ dev:worktrees
+│   │
+│   ├─ dev:executing-plans
+│   │   └─ per task:
+│   │       1. dev:verification (tests, build, lint)
+│   │       2. 🔍 spec-compliance-reviewer agent (matches spec?)
+│   │       3. 🔍 pr-reviewer agent (code quality)
+│   │       └─ dev:receiving-review governs feedback handling
+│   │
+│   └─ dev:close
+│       1. dev:verification
+│       2. 🔍 structural-completeness-reviewer agent (full branch diff)
+│       3. dev:finishing-branch (merge/PR/keep/discard)
+│       4. close tracked issue (optional)
+│       5. knowledge sync (optional)
+│
+└─ Large
+    └─ dev:grill-me → then same as Medium,
+       plus dev:prd-to-issues before dev:worktrees
+```
+
+**Review gates (🔍):** 5 total across a medium/large task — PRD review, plan review, per-task spec compliance, per-task code quality, final structural completeness.
 
 ### Toolbox (loaded contextually at any stage)
 
 | Skill                     | Purpose                                          |
-| ------------------------- | ------------------------------------------------ |
+|-|-|
 | `dev:grill-me`            | Pressure-test a design or decision               |
 | `dev:design-interface`    | Competing API/module designs via parallel agents |
 | `dev:tdd`                 | Vertical slice testing, behavior-driven design   |
 | `dev:verification`        | Evidence before any completion claim             |
+| `dev:receiving-review`    | Behavioral rules for processing reviewer feedback |
 | `dev:commit`              | Conventional commits with scope detection        |
 | `dev:ubiquitous-language` | Canonical domain terminology                     |
 | `dev:refactor-plan`       | Safe refactor as tiny commits                    |
@@ -74,10 +106,9 @@ Key concepts used across skills. Many originate from Matt Pocock's [skills colle
 
 ### Agents directory overhaul
 
-- [ ] Audit `agents/` — currently 12 agent files, never actively used
-- [ ] Decide: keep as reusable subagent definitions, or inline into skills via `context: fork`
-- [ ] If keeping: trim to only agents that are actually referenced from skills
-- [ ] If inlining: migrate agent personas into skill files, delete `agents/`
+- [x] Pipeline reviewers wired in: `prd-reviewer`, `plan-reviewer`, `spec-compliance-reviewer`, `structural-completeness-reviewer`, `pr-reviewer`
+- [ ] Audit remaining agents — `architecture-reviewer`, `doc-reviewer`, `doc-implementer`, `ui-ux-consultant`, `bug-finder`, `performance-profiler`, `test-runner`, `git-cherry-pick-orchestrator`, `implementation-architect`, `github-issue-creator`
+- [ ] Decide per agent: keep (referenced from skill), inline (`context: fork`), or delete (unused)
 
 ### Known Issues / Upstream Bugs
 
