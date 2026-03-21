@@ -39,6 +39,7 @@
 
 - **Worktrees**: Nik likes worktrees but prefers them as sibling folders next to the main repo, not nested inside `.claude/worktrees/`. Always ask before creating a worktree.
 - **Git**: [Amend failing commits](feedback_amend_failing_commits.md) — don't create fix commits for broken predecessors
+- **Releases**: [Highlights go on GitHub Release](feedback_release_highlights.md) — release-please PRs overwrite manual edits
 
 ## Monitor App
 

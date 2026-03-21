@@ -16,6 +16,10 @@ See [architecture-decisions.md](architecture-decisions.md) for Rust OS boundary,
 
 See [feedback-naming-precision.md](feedback-naming-precision.md) — Nik cares about domain-accurate naming.
 
+## Session Handover
+
+See [session-2026-03-19-20-handover.md](session-2026-03-19-20-handover.md) for next steps (lazygit updater) and open items.
+
 ## Nik's Git Workflow Preferences
 
 - **Every commit must be green** — a working state. Don't commit broken code.
