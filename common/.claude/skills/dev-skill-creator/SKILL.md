@@ -44,6 +44,36 @@ See `template.md` for the canonical SKILL.md structure with placeholders.
 | Tables | Minimal separators (`\|-\|-\|`) |
 | Code examples | Real-world > pseudocode, one good example > many mediocre |
 
+## Description Requirements
+
+The description is the ONLY thing the agent sees when deciding which skill to load. Max 1024 characters.
+
+- First sentence: what the skill does.
+- Second sentence: "Load when [specific triggers]."
+- Write in third person ("Nik's React patterns..." not "Your React patterns...").
+- Include concrete trigger words the agent will match against (e.g., "component", "hook", "React" not just "frontend").
+
+## When to Add Scripts
+
+Add utility scripts (`*.sh`, `*.ts`) to a skill directory when:
+
+- The operation is deterministic (same input always produces same output)
+- The same code would be generated repeatedly across invocations
+- Errors need explicit handling that's easy to get wrong inline
+
+Scripts save tokens vs. regenerating code each time. Name them descriptively: `validate-config.sh`, `scaffold-test.sh`.
+
+## Review Checklist
+
+After drafting a new skill, verify:
+
+- [ ] Description includes trigger words for when to load
+- [ ] SKILL.md is under 100 lines
+- [ ] No time-sensitive info (versions, dates) that will go stale
+- [ ] Terminology is consistent with other `dev-*` skills
+- [ ] Concrete examples, not abstract principles
+- [ ] Cross-references go one level deep (don't chain A -> B -> C)
+
 ## After Creation
 
 1. Add cross-references from related existing skills back to the new one

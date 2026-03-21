@@ -89,6 +89,29 @@ Scaffold files using templates from `templates.md`. Each file write goes through
 - Use `{name}` and `{description}` placeholder substitution from Phase 1/3 answers
 - Make scripts executable (`chmod +x`)
 
+### Optional: Pre-commit Hooks
+
+Offer to set up pre-commit hooks when scaffolding is complete:
+
+1. Detect package manager (deno, npm, pnpm, bun)
+2. For Node projects: install `husky` + `lint-staged` + `prettier` as devDeps
+3. For Deno projects: use `deno task` with a git hook script
+4. Configure pre-commit hook chain: lint-staged -> typecheck -> test
+5. Create `.lintstagedrc` and `.prettierrc` if missing
+
+### Optional: Git Guardrails
+
+Offer to set up Claude Code PreToolUse hooks that block dangerous git commands:
+
+- `git push` (without explicit approval)
+- `git reset --hard`
+- `git clean -f`
+- `git branch -D`
+- `git checkout .`
+- `git restore .`
+
+Reference the existing enforce hooks pattern at `common/.claude/hooks/enforce/` for implementation style. Create as a `enforce/git-guardrails.sh` hook script.
+
 ## Phase 6: CLAUDE
 
 Invoke `dev-claude-setup` to handle `.claude/` configuration. Pass context so it makes informed decisions:
