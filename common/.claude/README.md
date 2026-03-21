@@ -29,21 +29,39 @@ Key concepts used across skills. Many originate from Matt Pocock's [skills colle
 
 ## Skill Pipeline
 
-`dev:start` is the universal entry point. It assesses scope from context and routes to the right depth:
+### Entry & Exit
 
-| Scope | Route |
+| Role | Generic | BAI wrapper | BAI adds |
+|-|-|-|-|
+| Start work | `dev:start` | `bai:start` | Linear issue lookup, status → In Progress |
+| Commit | `dev:commit` | `bai:commit` | Linear issue ID in message, status update offer |
+| Finish work | `dev:close` | `bai:close` | Linear status → Done, unblock check |
+
+### Routing
+
+`dev:start` assesses scope from context and routes to the right pipeline depth:
+
+| Scope | Signals | Route |
+|-|-|-|
+| Trivial | One-liner, typo, config change | Just do it → `dev:commit` → done |
+| Small | Single-file bugfix, isolated change | `dev:worktrees` → implement → `dev:close` |
+| Medium | Multi-file feature, new module | `dev:write-prd` → `dev:prd-to-plan` → `dev:worktrees` → `dev:executing-plans` → `dev:close` |
+| Large | Multi-issue project, cross-cutting | `dev:grill-me` → `dev:write-prd` → `dev:prd-to-plan` → `dev:prd-to-issues` → `dev:worktrees` → `dev:executing-plans` → `dev:close` |
+
+### Toolbox (loaded contextually at any stage)
+
+| Skill | Purpose |
 |-|-|
-| Trivial | Just do it. No ceremony. |
-| Small | `dev:worktrees` → implement → `dev:close` |
-| Medium | `dev:write-prd` → `dev:prd-to-plan` → `dev:worktrees` → `dev:executing-plans` → `dev:close` |
-| Large | `dev:grill-me` → `dev:write-prd` → `dev:prd-to-plan` → `dev:prd-to-issues` → `dev:worktrees` → `dev:executing-plans` → `dev:close` |
-
-`dev:close` is the universal exit: verify → ship (merge/PR/keep/discard) → close tracked issue.
-
-For BAI projects: `bai:start` and `bai:close` wrap these with Linear issue management.
-
-**Toolbox** (loaded contextually at any stage):
-`dev:grill-me`, `dev:design-interface`, `dev:tdd`, `dev:verification`, `dev:ubiquitous-language`, `dev:refactor-plan`, `dev:edit-article`, `dev:arch-review`, `dev:bugs`
+| `dev:grill-me` | Pressure-test a design or decision |
+| `dev:design-interface` | Competing API/module designs via parallel agents |
+| `dev:tdd` | Vertical slice testing, behavior-driven design |
+| `dev:verification` | Evidence before any completion claim |
+| `dev:commit` | Conventional commits with scope detection |
+| `dev:ubiquitous-language` | Canonical domain terminology |
+| `dev:refactor-plan` | Safe refactor as tiny commits |
+| `dev:edit-article` | DAG-based article editing |
+| `dev:arch-review` | Architecture review with deep module eval |
+| `dev:bugs` | Bug hunting with TDD fix plans |
 
 ## TODOs
 
