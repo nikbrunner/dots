@@ -53,6 +53,14 @@ Walk through the plan. Challenge assumptions. Adjust based on feedback.
 
 Save to `./plans/plan-[slug].md`.
 
+### Step 7: Review
+
+Dispatch the **plan-reviewer** agent with both the plan file and the PRD reference.
+
+- If **Approved**: proceed (offer `dev:worktrees` → `dev:executing-plans` as next steps)
+- If **Issues Found**: address the issues, then re-dispatch the reviewer
+- Max 3 review iterations — if still unresolved, escalate to the user for a decision
+
 ## Plan Template
 
 ```markdown
