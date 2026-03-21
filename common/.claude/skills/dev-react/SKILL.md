@@ -8,12 +8,12 @@ user-invocable: false
 
 ## The 4 Roles
 
-| Role | Purpose | Has Styling? | Fetches Data? |
-|------|---------|-------------|---------------|
-| **Dumb Component** | How things look | **Yes** | No |
-| **Smart Container** | How things work | No (layout utils ok) | Yes (via hooks) |
-| **Partial** | Reusable composition of components | **No** | Light logic ok |
-| **Layout Component** | Structural arrangement | **Yes (layout only)** | No |
+| Role                 | Purpose                            | Has Styling?          | Fetches Data?   |
+| -------------------- | ---------------------------------- | --------------------- | --------------- |
+| **Dumb Component**   | How things look                    | **Yes**               | No              |
+| **Smart Container**  | How things work                    | No (layout utils ok)  | Yes (via hooks) |
+| **Partial**          | Reusable composition of components | **No**                | Light logic ok  |
+| **Layout Component** | Structural arrangement             | **Yes (layout only)** | No              |
 
 ## Core Principles
 

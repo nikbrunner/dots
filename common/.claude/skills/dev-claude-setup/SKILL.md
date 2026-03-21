@@ -18,23 +18,23 @@ Autonomous exploration — no user questions yet.
 
 ### Scan targets
 
-| Target | How |
-|-|-|
-| Language/framework | `package.json`, `go.mod`, `Cargo.toml`, `pyproject.toml`, `Makefile`, etc. |
-| Existing `.claude/` | `CLAUDE.md`, `settings.json`, `skills/`, `hooks/`, `commands/`, `agents/` |
-| Other AI config | `.cursorrules`, `.github/copilot-instructions.md`, `AGENTS.md`, `GEMINI.md` |
-| Project docs | `README.md`, `docs/`, `CONTRIBUTING.md` |
-| CI/CD | `.github/workflows/`, scripts for test/lint/build commands |
+| Target              | How                                                                         |
+| ------------------- | --------------------------------------------------------------------------- |
+| Language/framework  | `package.json`, `go.mod`, `Cargo.toml`, `pyproject.toml`, `Makefile`, etc.  |
+| Existing `.claude/` | `CLAUDE.md`, `settings.json`, `skills/`, `hooks/`, `commands/`, `agents/`   |
+| Other AI config     | `.cursorrules`, `.github/copilot-instructions.md`, `AGENTS.md`, `GEMINI.md` |
+| Project docs        | `README.md`, `docs/`, `CONTRIBUTING.md`                                     |
+| CI/CD               | `.github/workflows/`, scripts for test/lint/build commands                  |
 
 ### Classification
 
 Based on scan results, classify the repo:
 
-| State | Condition |
-|-|-|
-| **Fresh** | No `.claude/` directory |
+| State      | Condition                                                     |
+| ---------- | ------------------------------------------------------------- |
+| **Fresh**  | No `.claude/` directory                                       |
 | **Legacy** | Has `.claude/commands/` or `.claude/agents/` but no `skills/` |
-| **Modern** | Has `.claude/skills/` |
+| **Modern** | Has `.claude/skills/`                                         |
 
 ### Report
 
@@ -56,12 +56,12 @@ Generate a plan tailored to the repo state. Present for user approval before exe
 
 No existing Claude Code config. Scaffold from scratch based on what the scan found.
 
-| Item | Description |
-|-|-|
-| `CLAUDE.md` | Lean project context derived from scanned README/docs/package.json. Max ~50 lines. Only include what Claude would get wrong without. |
-| `settings.json` | Base structure with `allowedTools`, `hooks` keys. |
-| `skills/` | Suggest skills based on detected stack and available global skills. E.g., TS project with tests may benefit from project-specific testing conventions. No fixed mapping — use judgment. |
-| `hooks/enforce/` | Suggest enforcement hooks based on ecosystem (e.g., semantic commits, type safety). |
+| Item             | Description                                                                                                                                                                             |
+| ---------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `CLAUDE.md`      | Lean project context derived from scanned README/docs/package.json. Max ~50 lines. Only include what Claude would get wrong without.                                                    |
+| `settings.json`  | Base structure with `allowedTools`, `hooks` keys.                                                                                                                                       |
+| `skills/`        | Suggest skills based on detected stack and available global skills. E.g., TS project with tests may benefit from project-specific testing conventions. No fixed mapping — use judgment. |
+| `hooks/enforce/` | Suggest enforcement hooks based on ecosystem (e.g., semantic commits, type safety).                                                                                                     |
 
 ### Legacy
 
@@ -71,12 +71,12 @@ Has commands/agents but no skills. Subsumes all migration logic from the old `mi
 
 For every discovered item (CLAUDE.md lines, commands, agents), classify it:
 
-| Category | Criteria | Action |
-|-|-|-|
-| **Skill** | Task instructions, domain knowledge, workflows | Convert to `.claude/skills/<name>/SKILL.md` |
-| **Hook** | Deterministic enforcement ("don't do X", "always use Y") | Create bash script in `.claude/hooks/enforce/`, register in `settings.json` |
-| **Keep in CLAUDE.md** | Always-on project context, communication style, core principles | Retain in lean CLAUDE.md |
-| **Cut** | Redundant, outdated, discoverable from codebase | Remove entirely |
+| Category              | Criteria                                                        | Action                                                                      |
+| --------------------- | --------------------------------------------------------------- | --------------------------------------------------------------------------- |
+| **Skill**             | Task instructions, domain knowledge, workflows                  | Convert to `.claude/skills/<name>/SKILL.md`                                 |
+| **Hook**              | Deterministic enforcement ("don't do X", "always use Y")        | Create bash script in `.claude/hooks/enforce/`, register in `settings.json` |
+| **Keep in CLAUDE.md** | Always-on project context, communication style, core principles | Retain in lean CLAUDE.md                                                    |
+| **Cut**               | Redundant, outdated, discoverable from codebase                 | Remove entirely                                                             |
 
 #### What gets CUT — be aggressive
 
@@ -113,11 +113,11 @@ Has skills/hooks already. Audit for improvements.
 
 Present the plan as a table:
 
-| Source | Action | Target path | Rationale |
-|-|-|-|-|
-| `.claude/commands/review.md` | Migrate | `.claude/skills/dev-review/SKILL.md` | Workflow belongs in a skill |
-| `CLAUDE.md` lines 12-18 | Cut | — | Dev commands discoverable from package.json |
-| (new) | Create | `.claude/hooks/enforce/semantic-commits.sh` | Enforce commit convention |
+| Source                       | Action  | Target path                                 | Rationale                                   |
+| ---------------------------- | ------- | ------------------------------------------- | ------------------------------------------- |
+| `.claude/commands/review.md` | Migrate | `.claude/skills/dev-review/SKILL.md`        | Workflow belongs in a skill                 |
+| `CLAUDE.md` lines 12-18      | Cut     | —                                           | Dev commands discoverable from package.json |
+| (new)                        | Create  | `.claude/hooks/enforce/semantic-commits.sh` | Enforce commit convention                   |
 
 **Wait for user approval before proceeding to Phase 3.**
 
@@ -127,12 +127,12 @@ Execute the approved plan. Each file write goes through normal tool approval —
 
 ### Actions
 
-| Action | What happens |
-|-|-|
-| Create | Write `CLAUDE.md`, `settings.json`, skill/hook files from scratch |
-| Migrate | Convert command/agent to skill format, register hooks in `settings.json` |
-| Update | Edit existing files to trim bloat, update content, fix staleness |
-| Delete | Remove old `commands/`, `agents/` dirs after migration is verified |
+| Action  | What happens                                                                                       |
+| ------- | -------------------------------------------------------------------------------------------------- |
+| Create  | Write `CLAUDE.md`, `settings.json`, skill/hook files from scratch                                  |
+| Migrate | Convert command/agent to skill format, register hooks in `settings.json`                           |
+| Update  | Edit existing files to trim bloat, update content, fix staleness                                   |
+| Delete  | Remove old `commands/`, `agents/` dirs after migration is verified                                 |
 | Symlink | If `AGENTS.md` exists, symlink `CLAUDE.md` to `AGENTS.md` (CLAUDE.md is canonical for Claude Code) |
 
 ### Execution steps
@@ -189,7 +189,7 @@ All conventions baked into this skill's decisions.
 name: namespace:skill-name
 description: One-line description used for discovery
 argument-hint: [optional: what arguments look like]
-user-invocable: false  # only for knowledge skills; omit for action skills
+user-invocable: false # only for knowledge skills; omit for action skills
 ---
 ```
 

@@ -12,11 +12,11 @@ Don't jump into code. Establish direction first. The level of design depends on 
 
 ## When to Design
 
-| Scope | Design Approach |
-|-------|----------------|
-| **Greenfield project** | Wireframe/sketch required. Establish layout, navigation, core components. |
-| **Major feature** | Screenshots with annotations, or lightweight wireframes. |
-| **Bug fix / small feature** | Mental model is enough. Skip formality. |
+| Scope                       | Design Approach                                                           |
+| --------------------------- | ------------------------------------------------------------------------- |
+| **Greenfield project**      | Wireframe/sketch required. Establish layout, navigation, core components. |
+| **Major feature**           | Screenshots with annotations, or lightweight wireframes.                  |
+| **Bug fix / small feature** | Mental model is enough. Skip formality.                                   |
 
 ## Process
 
@@ -30,6 +30,7 @@ Don't jump into code. Establish direction first. The level of design depends on 
 ## Multi-Document Planning
 
 For larger projects, create multiple focused documents rather than one giant plan:
+
 - Architecture overview
 - Component inventory
 - Data model / API surface

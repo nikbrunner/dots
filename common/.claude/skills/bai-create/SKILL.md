@@ -2,7 +2,17 @@
 name: bai:create
 user-invocable: false
 description: Create a new Black Atom Industries issue
-allowed-tools: ["mcp__linear__save_issue", "mcp__linear__list_teams", "mcp__linear__list_projects", "mcp__linear__list_milestones", "mcp__linear__list_issue_labels", "mcp__linear__list_issue_statuses", "mcp__linear__list_issues", "AskUserQuestion"]
+allowed-tools:
+  [
+    "mcp__linear__save_issue",
+    "mcp__linear__list_teams",
+    "mcp__linear__list_projects",
+    "mcp__linear__list_milestones",
+    "mcp__linear__list_issue_labels",
+    "mcp__linear__list_issue_statuses",
+    "mcp__linear__list_issues",
+    "AskUserQuestion",
+  ]
 ---
 
 # Black Atom Create
@@ -14,6 +24,7 @@ Create a new issue in the Black Atom Industries workspace.
 `$ARGUMENTS` - Issue title and optional details
 
 Examples:
+
 - `Fix theme contrast in dark mode`
 - `"Add nvim telescope support" project:livery`
 - `Design new logo for v1 team:Design`
@@ -21,12 +32,14 @@ Examples:
 ## Context
 
 **Teams** (default: Development):
+
 - Development — Code, features, bugs
 - Design — Visual design, UI/UX
 - Operations — Releases, infrastructure
 - Website — Marketing site
 
 **Projects**:
+
 - Black Atom - 1.0 — Ship polished theme collections (High, target: 2026-03-31)
 - livery — Desktop theme manager app (Medium, in progress)
 - helm — TUI session manager for tmux (Low, in progress)
@@ -34,6 +47,7 @@ Examples:
 - Black Atom - Core Creator — Web theme editor (Medium, backlog)
 
 **Statuses** (default: Backlog):
+
 - Backlog — Not yet planned
 - Todo — Planned, not started
 - In Progress — Actively being worked on
@@ -42,6 +56,7 @@ Examples:
 - Canceled
 
 **Labels** (common):
+
 - Type: `feat`, `fix`, `refactor`, `chore`, `docs`, `perf`, `ci`
 - Repo: `neovim`, `ghostty`, `tmux`, `zed`, `vscode`, `obsidian`, `helm`, `radar.nvim`, `core`, `terminal`, `wezterm`
 - Other: `theme-inspiration`
@@ -64,9 +79,9 @@ Examples:
    - **Milestone** — suggest from fetched milestones if any exist, otherwise skip
    - **Labels** — only if ambiguous; otherwise infer from context (e.g., ghostty-related → `ghostty` + `feat`)
 
-6. **Check for related issues** — search briefly, suggest linking if relevant
+5. **Check for related issues** — search briefly, suggest linking if relevant
 
-7. **Create with `mcp__linear__save_issue`**:
+6. **Create with `mcp__linear__save_issue`**:
    - `title`: from arguments
    - `team`: determined team
    - `assignee`: "me" (always assign to Nik)

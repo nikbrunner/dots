@@ -25,13 +25,13 @@ A skill capturing Nik's CSS/styling preferences, anchors, and explored alternati
 
 Nik is actively exploring. The skill should document what's been tried with honest notes, not prescribe a framework. Current candidates:
 
-| Framework | Status | Notes |
-|---|---|---|
-| OpenProps | Explored, liked | Real CSS custom props, good defaults, missing utility classes |
-| Vanilla Extract | Curious | TypeScript-first, zero runtime, `.css.ts` is a new paradigm |
-| Panda CSS | Curious | Type-safe utilities, zero runtime, config-heavy |
-| Tailwind | Tolerated | Industry default, accepted when project uses it |
-| Plain CSS + custom props | Current default | Full control, no dependencies |
+| Framework                | Status          | Notes                                                         |
+| ------------------------ | --------------- | ------------------------------------------------------------- |
+| OpenProps                | Explored, liked | Real CSS custom props, good defaults, missing utility classes |
+| Vanilla Extract          | Curious         | TypeScript-first, zero runtime, `.css.ts` is a new paradigm   |
+| Panda CSS                | Curious         | Type-safe utilities, zero runtime, config-heavy               |
+| Tailwind                 | Tolerated       | Industry default, accepted when project uses it               |
+| Plain CSS + custom props | Current default | Full control, no dependencies                                 |
 
 ## Skill Structure
 

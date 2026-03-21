@@ -5,13 +5,14 @@ description: "Generate multiple competing interface designs using parallel sub-a
 
 # Design It Twice
 
-From John Ousterhout's *A Philosophy of Software Design*: design each interface at least twice with fundamentally different approaches before committing.
+From John Ousterhout's _A Philosophy of Software Design_: design each interface at least twice with fundamentally different approaches before committing.
 
 ## Workflow
 
 ### Step 1: Gather Requirements
 
 Ask the user:
+
 - What problem does this interface solve?
 - Who are the callers / consumers?
 - What are the most common use cases?
@@ -21,14 +22,15 @@ Ask the user:
 
 Spawn **3+ sub-agents**, each with a DIFFERENT constraint:
 
-| Agent | Constraint |
-|-|-|
-| A | Minimize the number of methods/props — radical simplicity |
-| B | Maximize flexibility — handle every edge case |
-| C | Optimize for the most common use case — 80/20 rule |
-| D | (Optional) Draw from a different paradigm — functional, builder, declarative, etc. |
+| Agent | Constraint                                                                         |
+| ----- | ---------------------------------------------------------------------------------- |
+| A     | Minimize the number of methods/props — radical simplicity                          |
+| B     | Maximize flexibility — handle every edge case                                      |
+| C     | Optimize for the most common use case — 80/20 rule                                 |
+| D     | (Optional) Draw from a different paradigm — functional, builder, declarative, etc. |
 
 Each agent outputs:
+
 - **Interface signature** (types, function signatures, or component props)
 - **Usage example** for the primary use case
 - **What it hides** from the caller (encapsulation wins)
@@ -43,6 +45,7 @@ Show all designs side by side. Let the user read before commenting.
 ### Step 4: Compare
 
 Evaluate each design on:
+
 - **Interface simplicity** — fewer concepts to learn
 - **General-purpose vs specialized** — reuse potential
 - **Implementation efficiency** — does the design make the implementation harder or easier?

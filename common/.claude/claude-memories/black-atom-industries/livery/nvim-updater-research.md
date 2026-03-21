@@ -9,6 +9,7 @@ type: project
 Neovim auto-creates a server socket at `$TMPDIR/nvim.<user>/*/nvim.*` — no `--listen` flag needed.
 
 Send `:colorscheme X` to all running instances:
+
 ```bash
 for s in $(find /var/folders -path "*/nvim.nbr/*/nvim.*" -type s 2>/dev/null); do
   nvim --server "$s" --remote-send ':colorscheme black-atom-jpn-koyo-hiru<CR>' 2>/dev/null
@@ -26,6 +27,7 @@ The `load()` function in black-atom/nvim had a Lua module caching issue preventi
 ## Config File Persistence — TODO
 
 Nik's nvim config has the theme in `~/.config/nvim/lua/config.lua`:
+
 ```lua
 colorscheme = "black-atom-terra-fall-night",
 ```

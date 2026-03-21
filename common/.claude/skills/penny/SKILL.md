@@ -3,7 +3,7 @@ name: penny
 description: Talk to Penny — Nik's personal assistant. Use when Nik addresses Penny directly (@penny, "Hey Penny", etc.) without a specific skill context.
 user-invocable: true
 allowed-tools:
-    [Bash, Read, Write, Edit, mcp__linear__list_issues, mcp__linear__get_issue]
+  [Bash, Read, Write, Edit, mcp__linear__list_issues, mcp__linear__get_issue]
 ---
 
 # Penny — Open Mode

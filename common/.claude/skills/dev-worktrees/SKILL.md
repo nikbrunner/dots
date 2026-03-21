@@ -34,15 +34,15 @@ git worktree add <path> -b <branch-name>
 
 Auto-detect and run the appropriate install:
 
-| Detected file | Command |
-|-|-|
-| `package.json` + `pnpm-lock.yaml` | `pnpm install` |
-| `package.json` + `package-lock.json` | `npm install` |
-| `package.json` (other) | `npm install` |
-| `Cargo.toml` | `cargo build` |
-| `deno.json` | `deno install` |
-| `requirements.txt` | `pip install -r requirements.txt` |
-| `go.mod` | `go mod download` |
+| Detected file                        | Command                           |
+| ------------------------------------ | --------------------------------- |
+| `package.json` + `pnpm-lock.yaml`    | `pnpm install`                    |
+| `package.json` + `package-lock.json` | `npm install`                     |
+| `package.json` (other)               | `npm install`                     |
+| `Cargo.toml`                         | `cargo build`                     |
+| `deno.json`                          | `deno install`                    |
+| `requirements.txt`                   | `pip install -r requirements.txt` |
+| `go.mod`                             | `go mod download`                 |
 
 ## Baseline Test
 
@@ -54,6 +54,7 @@ Run the project's test suite in the new worktree. This establishes a clean start
 ## Report
 
 After setup, report:
+
 - Worktree path
 - Test status (pass/fail/skipped)
 - Ready state

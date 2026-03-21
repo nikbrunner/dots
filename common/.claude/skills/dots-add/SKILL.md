@@ -23,11 +23,13 @@ Add a config file to the dots repository for symlink management.
 ### 2. Determine Target Location
 
 Ask which section this belongs to:
+
 - `common/` - Cross-platform configs (default)
 - `arch/` - Arch Linux specific
 - `macos/` - macOS specific
 
 The file structure should mirror the home directory:
+
 - `~/.config/foo/bar.conf` → `<section>/.config/foo/bar.conf`
 - `~/.zshrc` → `<section>/.zshrc`
 
@@ -43,6 +45,7 @@ cp "<source-file>" "$DOTS_DIR/<section>/<relative-path>"
 ### 4. Update symlinks.yml
 
 Add entry to the appropriate section in `symlinks.yml`:
+
 ```yaml
 <section>:
   <section>/<relative-path>: ~/<relative-path>
@@ -53,6 +56,7 @@ Keep entries alphabetically sorted within each section.
 ### 5. Ask About Dependencies
 
 If this config is for a specific tool/package, ask:
+
 - Should this tool be added as a dependency?
 - If yes, use the `/dots/deps-manage` skill to add it
 
@@ -75,6 +79,7 @@ ls -la "<source-file>"
 ## Output
 
 Report what was done:
+
 - File copied to: `<dots-path>`
 - Added to symlinks.yml: `<section>`
 - Dependency added: yes/no

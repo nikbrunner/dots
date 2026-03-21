@@ -9,6 +9,7 @@
 The global CLAUDE.md (276 lines) wastes instruction budget on domain-specific context that's irrelevant to most sessions. Rules like "don't use `any`" are suggestions, not guarantees. Slash commands in `.claude/commands/` work but lack skill features (auto-invocation, supporting files, tool restrictions).
 
 Inspired by:
+
 - [Claude Code Hooks: Enforce the Right CLI](https://www.aihero.dev/how-to-use-claude-code-hooks-to-enforce-the-right-cli)
 - [Never Run Claude Init](https://www.aihero.dev/never-run-claude-init)
 
@@ -26,6 +27,7 @@ Inspired by:
 Trim from 276 to ~60 lines. Keep only what must be always-on.
 
 **Stays:**
+
 - Communication style + Blind Spot Rule (renamed from "Spinach Rule", condensed to ~30 lines)
 - Identity: 3 lines (Nik, Bavaria, self-taught dev, dry humor, values authenticity)
 - Core dev principles: 5 lines (clean code, typesafety, no temporal coupling, standard APIs)
@@ -33,6 +35,7 @@ Trim from 276 to ~60 lines. Keep only what must be always-on.
 - Task management: 3 lines
 
 **Moves to skills:**
+
 - MCP usage guide -> `mcp-guide` skill
 - Personal context deep dive + projects -> `about-nik` skill
 - Professional background -> `about-nik` skill
@@ -40,8 +43,9 @@ Trim from 276 to ~60 lines. Keep only what must be always-on.
 - Obsidian/notes integration -> `obsidian-guide` skill
 
 **Cut entirely:**
+
 - DCD commands and references (no longer employed there)
-- BAI workflow details (covered by bai-* skills)
+- BAI workflow details (covered by bai-\* skills)
 - Tools & Environment section (Claude detects from environment)
 - Technologies & Learning section (discoverable from codebase)
 - Product Philosophy section (fold one line into about-nik)
@@ -51,17 +55,21 @@ Trim from 276 to ~60 lines. Keep only what must be always-on.
 Scripts in `common/.claude/hooks/enforce/`, registered in `settings.json`.
 
 ### semantic-commits.sh (PreToolUse on Bash)
+
 Block `git commit` commands where the message doesn't start with a semantic prefix (`feat:|fix:|refactor:|chore:|docs:|style:|test:|ci:|perf:`). Exit 2 with guidance.
 
 ### warn-any-type.sh (PostToolUse on Write/Edit)
+
 Warn (not block) when `: any` or `as any` appears in written/edited TypeScript files. Feedback message reminds to use proper types or `unknown`.
 
 **Not hooks (stay as CLAUDE.md instructions):**
+
 - "Research before implementation" — behavioral, not enforceable
 - "Ask before creating files" — handled by permission settings
 - "Prefer editing over creating" — judgment call
 
 **Not hooks (handled by settings):**
+
 - Co-author in commits — `"includeCoAuthoredBy": false` in settings.json
 - Claude Code references in commits — same setting covers this
 
@@ -70,6 +78,7 @@ Warn (not block) when `: any` or `as any` appears in written/edited TypeScript f
 Auto-discoverable skills that load when Claude detects relevance.
 
 ### about-nik (user-invocable: false)
+
 - Personality: reflective, dry humor, values authenticity, goes deep not wide, cares about craft
 - Partner Ana (Romanian, in Germany ~20 years)
 - Professional: self-taught (2019-2020), 5+ years frontend experience, previously at DealerCenter Digital (2020-2025), currently job hunting
@@ -80,6 +89,7 @@ Auto-discoverable skills that load when Claude detects relevance.
 - Learning gaps: databases, authentication, Docker
 
 ### react-patterns (user-invocable: false)
+
 - Dumb functional components + smart containers/partials
 - Component CSS isolation (never reference another component's classes)
 - Avoid `any` — use `unknown` as last resort
@@ -88,13 +98,15 @@ Auto-discoverable skills that load when Claude detects relevance.
 - Explicit and implicit types where each makes sense
 
 ### mcp-guide (user-invocable: false)
+
 - Ref MCP: documentation lookups (bubbletea, lipgloss, Go stdlib, etc.)
 - EXA MCP: web searches for examples, patterns, solutions
 - Chrome MCP: browser testing (opening URLs, HTML verification)
-- Linear MCP: Black Atom issue tracking (use bai-* skills)
+- Linear MCP: Black Atom issue tracking (use bai-\* skills)
 - Don't skip these — check docs before implementing
 
 ### obsidian-guide (user-invocable: false)
+
 - Daily notes: `02 - Areas/Log/YYYY/MM-MonthName/YYYY.MM.DD - DayName.md`
 - Look for `CLAUDE.md` in notes repo first
 - Conversation history: `03 - Resources/AI/Claude Conversation History.md`
@@ -106,25 +118,25 @@ Auto-discoverable skills that load when Claude detects relevance.
 
 17 commands (DCD removed) migrate to skill format. All get `disable-model-invocation: true`.
 
-| Old path | New skill name |
-|----------|---------------|
-| `commands/bai/status.md` | `bai-status` |
-| `commands/bai/ready.md` | `bai-ready` |
-| `commands/bai/create.md` | `bai-create` |
-| `commands/bai/update.md` | `bai-update` |
-| `commands/bai/close.md` | `bai-close` |
-| `commands/bai/review.md` | `bai-review` |
-| `commands/dots/add.md` | `dots-add` |
-| `commands/dots/remove.md` | `dots-remove` |
+| Old path                              | New skill name            |
+| ------------------------------------- | ------------------------- |
+| `commands/bai/status.md`              | `bai-status`              |
+| `commands/bai/ready.md`               | `bai-ready`               |
+| `commands/bai/create.md`              | `bai-create`              |
+| `commands/bai/update.md`              | `bai-update`              |
+| `commands/bai/close.md`               | `bai-close`               |
+| `commands/bai/review.md`              | `bai-review`              |
+| `commands/dots/add.md`                | `dots-add`                |
+| `commands/dots/remove.md`             | `dots-remove`             |
 | `commands/dots/git-status-cleanup.md` | `dots-git-status-cleanup` |
-| `commands/dots/deps-manage.md` | `dots-deps-manage` |
-| `commands/user/bugs.md` | `bugs` |
-| `commands/user/arch-review.md` | `arch-review` |
-| `commands/user/are-we-done.md` | `are-we-done` |
-| `commands/user/docs.md` | `docs` |
-| `commands/user/gh-pr-review.md` | `gh-pr-review` |
-| `commands/user/research.md` | `research` |
-| `commands/user/ui-review.md` | `ui-review` |
+| `commands/dots/deps-manage.md`        | `dots-deps-manage`        |
+| `commands/user/bugs.md`               | `bugs`                    |
+| `commands/user/arch-review.md`        | `arch-review`             |
+| `commands/user/are-we-done.md`        | `are-we-done`             |
+| `commands/user/docs.md`               | `docs`                    |
+| `commands/user/gh-pr-review.md`       | `gh-pr-review`            |
+| `commands/user/research.md`           | `research`                |
+| `commands/user/ui-review.md`          | `ui-review`               |
 
 Migration format: preserve existing content, wrap in SKILL.md frontmatter, move existing frontmatter fields (description, allowed-tools, argument-hint) to YAML block.
 
@@ -133,6 +145,7 @@ Migration format: preserve existing content, wrap in SKILL.md frontmatter, move 
 Skill: `migrate-to-skills` (`disable-model-invocation: true`)
 
 Workflow:
+
 1. Scan project for `.claude/commands/`, `.claude/agents/`, `CLAUDE.md`, `AGENTS.md`
 2. Categorize each item: -> skill, -> hook, -> keep in CLAUDE.md, -> cut
 3. Present conversion plan for approval
@@ -143,14 +156,17 @@ Workflow:
 ### symlinks.yml changes
 
 **Remove:**
+
 - `common/.claude/commands: ~/.claude/commands`
 - `common/.claude/agents: ~/.claude/agents`
 
 **Add:**
+
 - `common/.claude/skills: ~/.claude/skills`
 - `"common/.claude/hooks/enforce/*": ~/.claude/hooks/enforce`
 
 **Keep:**
+
 - `common/.claude/CLAUDE.md: ~/.claude/CLAUDE.md`
 - `common/.claude/settings.json: ~/.claude/settings.json`
 - `common/.claude/hooks/peon-ping/config.json: ~/.claude/hooks/peon-ping/config.json`

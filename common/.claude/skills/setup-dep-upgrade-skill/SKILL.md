@@ -18,15 +18,15 @@ Scaffold a project-specific `dep-upgrades` skill by detecting the ecosystem and 
 
 Automatically gather (no user input needed):
 
-| Check | How |
-|-------|-----|
-| Package manager | `package.json` → npm/pnpm/bun (check lock file), `go.mod` → Go, `Cargo.toml` → Rust, `pyproject.toml` → Python |
-| Lock file | `package-lock.json`, `pnpm-lock.yaml`, `bun.lockb`, `go.sum`, `Cargo.lock` |
-| Verification commands | Parse scripts from `package.json`, `Makefile`, `justfile`, etc. Look for: check, test, build, lint, typecheck |
-| Dependabot/Renovate | `.github/dependabot.yml`, `renovate.json`, `.renovaterc` |
-| Commit style | `git log --oneline -20` — detect conventional commits pattern |
-| CLAUDE.md | Read for project-specific commands or verification instructions |
-| CI config | `.github/workflows/`, `.gitlab-ci.yml` — extract test/check commands |
+| Check                 | How                                                                                                            |
+| --------------------- | -------------------------------------------------------------------------------------------------------------- |
+| Package manager       | `package.json` → npm/pnpm/bun (check lock file), `go.mod` → Go, `Cargo.toml` → Rust, `pyproject.toml` → Python |
+| Lock file             | `package-lock.json`, `pnpm-lock.yaml`, `bun.lockb`, `go.sum`, `Cargo.lock`                                     |
+| Verification commands | Parse scripts from `package.json`, `Makefile`, `justfile`, etc. Look for: check, test, build, lint, typecheck  |
+| Dependabot/Renovate   | `.github/dependabot.yml`, `renovate.json`, `.renovaterc`                                                       |
+| Commit style          | `git log --oneline -20` — detect conventional commits pattern                                                  |
+| CLAUDE.md             | Read for project-specific commands or verification instructions                                                |
+| CI config             | `.github/workflows/`, `.gitlab-ci.yml` — extract test/check commands                                           |
 
 ### 2. Ask Questions (3 max)
 
@@ -46,6 +46,7 @@ Pre-fill with detected style. "I see conventional commits (`feat:`, `fix:`, etc.
 Create `.claude/skills/dep-upgrades/SKILL.md` using the template below, filling in ecosystem-specific values.
 
 After generating, show the user the key details:
+
 - Package manager detected
 - Verification command(s) configured
 - Commit prefix configured
@@ -85,9 +86,9 @@ Upgrade dependencies with changelog review, verification, and safe commits.
 - **Outdated command:** `{{outdated_command}}`
 - **Upgrade command:** `{{upgrade_command}}`
 - **Verification:** `{{verify_command}}`
-{{#if extra_verify}}- **Extra verification:** `{{extra_verify}}`{{/if}}
+  {{#if extra_verify}}- **Extra verification:** `{{extra_verify}}`{{/if}}
 - **Commit prefix:** `{{commit_prefix}}`
-{{#if dependabot}}- **Dependabot:** configured (check PRs with `gh pr list --author "app/dependabot"`){{/if}}
+  {{#if dependabot}}- **Dependabot:** configured (check PRs with `gh pr list --author "app/dependabot"`){{/if}}
 
 ## Workflow
 
@@ -102,9 +103,9 @@ Run the outdated command and gather Dependabot PRs if applicable:
 
 Present a summary table to the user:
 
-| Package | Current | Latest | Bump | Source |
-|---------|---------|--------|------|--------|
-| example | 1.0.0 | 2.0.0 | major | npm outdated / Dependabot PR #N |
+| Package | Current | Latest | Bump  | Source                          |
+| ------- | ------- | ------ | ----- | ------------------------------- |
+| example | 1.0.0   | 2.0.0  | major | npm outdated / Dependabot PR #N |
 
 ### 2. Strategy Selection
 
@@ -121,6 +122,7 @@ For each dependency (or batch):
 #### 3a. Research changelog
 
 Use Exa or WebSearch to find the release page / changelog. Summarize:
+
 - **Breaking changes** that affect this project
 - **Deprecations** to be aware of
 - **New features** relevant to how we use this package
@@ -146,6 +148,7 @@ Report: how many files import it, which areas of the codebase are affected.
 ```
 
 If this is a Dependabot PR, merge it instead:
+
 ```bash
 gh pr merge <number> --squash
 git pull
@@ -156,13 +159,17 @@ git pull
 ```bash
 {{verify_command}}
 ```
+
 {{#if extra_verify}}
+
 ```bash
 {{extra_verify}}
 ```
+
 {{/if}}
 
 If verification fails:
+
 1. Read the error carefully
 2. Check the changelog for migration steps
 3. Fix the issue
@@ -171,6 +178,7 @@ If verification fails:
 #### 3e. Report
 
 Tell the user:
+
 - What version changed (from → to)
 - Any deprecation warnings in the output
 - Any new features worth adopting
@@ -199,40 +207,40 @@ After all upgrades are complete, present:
 
 ### npm (package.json + package-lock.json)
 
-| Placeholder | Value |
-|-------------|-------|
-| `package_manager` | npm |
-| `lock_file` | package-lock.json |
-| `outdated_command` | `npm outdated` |
-| `upgrade_command` | `npm install` |
-| `commit_prefix` | `build(deps):` or `chore(deps):` (ask user) |
+| Placeholder        | Value                                       |
+| ------------------ | ------------------------------------------- |
+| `package_manager`  | npm                                         |
+| `lock_file`        | package-lock.json                           |
+| `outdated_command` | `npm outdated`                              |
+| `upgrade_command`  | `npm install`                               |
+| `commit_prefix`    | `build(deps):` or `chore(deps):` (ask user) |
 
 ### pnpm (package.json + pnpm-lock.yaml)
 
-| Placeholder | Value |
-|-------------|-------|
-| `package_manager` | pnpm |
-| `lock_file` | pnpm-lock.yaml |
-| `outdated_command` | `pnpm outdated` |
-| `upgrade_command` | `pnpm update` |
-| `commit_prefix` | `build(deps):` or `chore(deps):` |
+| Placeholder        | Value                            |
+| ------------------ | -------------------------------- |
+| `package_manager`  | pnpm                             |
+| `lock_file`        | pnpm-lock.yaml                   |
+| `outdated_command` | `pnpm outdated`                  |
+| `upgrade_command`  | `pnpm update`                    |
+| `commit_prefix`    | `build(deps):` or `chore(deps):` |
 
 ### Go (go.mod)
 
-| Placeholder | Value |
-|-------------|-------|
-| `package_manager` | Go modules |
-| `lock_file` | go.sum |
+| Placeholder        | Value               |
+| ------------------ | ------------------- |
+| `package_manager`  | Go modules          |
+| `lock_file`        | go.sum              |
 | `outdated_command` | `go list -m -u all` |
-| `upgrade_command` | `go get` |
-| `commit_prefix` | `build(deps):` |
+| `upgrade_command`  | `go get`            |
+| `commit_prefix`    | `build(deps):`      |
 
 ### Rust (Cargo.toml)
 
-| Placeholder | Value |
-|-------------|-------|
-| `package_manager` | Cargo |
-| `lock_file` | Cargo.lock |
-| `outdated_command` | `cargo outdated` |
-| `upgrade_command` | `cargo update -p` |
-| `commit_prefix` | `build(deps):` |
+| Placeholder        | Value             |
+| ------------------ | ----------------- |
+| `package_manager`  | Cargo             |
+| `lock_file`        | Cargo.lock        |
+| `outdated_command` | `cargo outdated`  |
+| `upgrade_command`  | `cargo update -p` |
+| `commit_prefix`    | `build(deps):`    |

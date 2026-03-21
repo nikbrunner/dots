@@ -2,7 +2,16 @@
 name: bai:start
 user-invocable: false
 description: Start working on a Black Atom issue — Linear context wrapper around dev:start.
-allowed-tools: ["mcp__linear__list_issues", "mcp__linear__get_issue", "mcp__linear__save_issue", "mcp__linear__list_issue_statuses", "mcp__linear__create_comment", "AskUserQuestion", "Bash"]
+allowed-tools:
+  [
+    "mcp__linear__list_issues",
+    "mcp__linear__get_issue",
+    "mcp__linear__save_issue",
+    "mcp__linear__list_issue_statuses",
+    "mcp__linear__create_comment",
+    "AskUserQuestion",
+    "Bash",
+  ]
 ---
 
 # Black Atom Start
@@ -14,6 +23,7 @@ BAI wrapper around `dev:start`. Handles Linear issue management, then delegates 
 `$ARGUMENTS` - Issue identifier (optional)
 
 Examples:
+
 - `DEV-123`
 - `` (no args) — show ready issues to pick from
 
@@ -47,6 +57,7 @@ feature/<identifier-lowercase>-<slugified-title>
 Example: `DEV-123 Implement theme generator` → `feature/dev-123-implement-theme-generator`
 
 Rules:
+
 - Lowercase everything
 - Replace spaces/special chars with hyphens
 - Truncate slug to keep branch name reasonable (~60 chars max)

@@ -2,17 +2,18 @@
 
 ## Server State vs Client State
 
-| Aspect | Server State | Client State |
-|-|-|-|
-| **Source of truth** | Server/API | Client itself |
-| **Can go stale?** | Yes | No |
-| **Shared across users?** | Yes | No |
-| **Tool** | TanStack Query | Redux Toolkit, Zustand, useState |
-| **Examples** | User profiles, settings, lists | Modal open/closed, form drafts, UI preferences, toasts |
+| Aspect                   | Server State                   | Client State                                           |
+| ------------------------ | ------------------------------ | ------------------------------------------------------ |
+| **Source of truth**      | Server/API                     | Client itself                                          |
+| **Can go stale?**        | Yes                            | No                                                     |
+| **Shared across users?** | Yes                            | No                                                     |
+| **Tool**                 | TanStack Query                 | Redux Toolkit, Zustand, useState                       |
+| **Examples**             | User profiles, settings, lists | Modal open/closed, form drafts, UI preferences, toasts |
 
 ## The Migration Pattern
 
 Before (everything in Redux):
+
 ```
 Redux Store
 ├── users (fetched from API)        # server state misplaced
@@ -22,6 +23,7 @@ Redux Store
 ```
 
 After (separated into two layers):
+
 ```
 TanStack Query              Redux Toolkit (shrunk)
 ├── users                   ├── currentModal
@@ -29,6 +31,7 @@ TanStack Query              Redux Toolkit (shrunk)
 ```
 
 After (separated into three layers with Router):
+
 ```
 TanStack Query    TanStack Router (URL)    Redux Toolkit (minimal)
 ├── users         ├── filters              ├── currentModal
@@ -46,20 +49,21 @@ Context providers are natural state boundaries. When the provider unmounts, stat
 ```tsx
 // Multi-step form wizard -- state resets when leaving the wizard
 function WizardProvider({ children }: { children: React.ReactNode }) {
-  const [step, setStep] = useState(0)
-  const [formData, setFormData] = useState<Partial<FormData>>({})
+  const [step, setStep] = useState(0);
+  const [formData, setFormData] = useState<Partial<FormData>>({});
 
   return (
     <WizardContext.Provider value={{ step, setStep, formData, setFormData }}>
       {children}
     </WizardContext.Provider>
-  )
+  );
 }
 
 // When the user navigates away, WizardProvider unmounts → state gone
 ```
 
 Use Context when:
+
 - State is scoped to a subtree (not global)
 - State should reset when the user leaves that area
 - You don't want to manage cleanup/reset logic manually

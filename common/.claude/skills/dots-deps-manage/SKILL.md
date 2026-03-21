@@ -11,6 +11,7 @@ Manage dependencies in the dots repository.
 ## Arguments
 
 `$ARGUMENTS` can be:
+
 - `add <package>` - Add a new dependency
 - `remove <package>` - Remove a dependency
 - (empty) - Interactive mode, ask what to do
@@ -18,6 +19,7 @@ Manage dependencies in the dots repository.
 ## Files
 
 Dependencies are defined in OS-specific files:
+
 - `scripts/deps/macos.sh` - Homebrew packages
 - `scripts/deps/arch.sh` - Pacman/AUR packages
 
@@ -26,6 +28,7 @@ Dependencies are defined in OS-specific files:
 ### 1. Determine Target OS
 
 Ask: Which OS(es) should this dependency be added to?
+
 - macOS only
 - Arch only
 - Both
@@ -38,6 +41,7 @@ For each selected OS, determine the package name and **verify it exists via web 
 - **Arch**: Search archlinux.org packages and AUR to confirm the exact name
 
 Package name formats:
+
 - **macOS**: brew name (e.g., `neovim`, `git-delta`)
 - **macOS cask**: `--cask name` (e.g., `--cask 1password`)
 - **macOS tap**: `user/repo/package` (e.g., `steveyegge/beads/bd`)
@@ -46,6 +50,7 @@ Package name formats:
 ### 3. Determine Check Method
 
 Ask: How should we check if this is installed?
+
 - `command -v <name>` works (default)
 - Custom command check needed
 - Check via package manager (for packages without commands)
@@ -55,10 +60,12 @@ If custom: What command to check? (e.g., `command -v nvim` for neovim)
 ### 4. Post-install Hook
 
 Ask: Does this package need any post-install setup?
+
 - No (default)
 - Yes - describe what needs to happen
 
 Post-install examples:
+
 - Enable systemd service
 - Create symlink
 - Add user to group
@@ -88,6 +95,7 @@ Show where the package was found and ask for confirmation.
 ### 3. Remove from File(s)
 
 Remove from:
+
 - `DEPS` array
 - `check_dep()` case (if exists)
 - `install_dep()` post-install case (if exists)

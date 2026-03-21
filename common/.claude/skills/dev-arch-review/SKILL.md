@@ -5,6 +5,7 @@ description: Review architecture of specified path(s), or staged/unstaged git ch
 argument-hint: [path/to/directory]... (optional)
 allowed-tools: Bash(git:diff)
 ---
+
 Use the **architecture-reviewer** subagent to conduct a thorough architectural review.
 
 Your analysis target is determined by the following rules:
@@ -16,14 +17,17 @@ Your analysis target is determined by the following rules:
 ### Context from Git (if no arguments provided)
 
 **Staged Changes (Priority 1):**
+
 ```diff
 !git diff --staged
 ```
 
 **Unstaged Changes (Priority 2):**
+
 ```diff
 !git diff HEAD
 ```
+
 ### Additional Evaluation Criteria
 
 #### Deep Modules
@@ -34,12 +38,12 @@ Evaluate modules using John Ousterhout's depth metric: a deep module has a small
 
 Classify each dependency in the reviewed code:
 
-| Category | Description | Test Strategy |
-|-|-|-|
-| In-process | Pure computation, no I/O | Test directly, no mocks needed |
-| Local-substitutable | Has test stand-ins (in-memory DB, fake clock) | Use real substitutes in tests |
-| Ports & Adapters | Owned remote services behind an interface | Mock at the port boundary |
-| True External | Third-party APIs, SDKs | Mock at the outermost boundary only |
+| Category            | Description                                   | Test Strategy                       |
+| ------------------- | --------------------------------------------- | ----------------------------------- |
+| In-process          | Pure computation, no I/O                      | Test directly, no mocks needed      |
+| Local-substitutable | Has test stand-ins (in-memory DB, fake clock) | Use real substitutes in tests       |
+| Ports & Adapters    | Owned remote services behind an interface     | Mock at the port boundary           |
+| True External       | Third-party APIs, SDKs                        | Mock at the outermost boundary only |
 
 See `REFERENCE.md` for detailed dependency category guidance.
 
@@ -53,4 +57,5 @@ When boundary tests already cover a module's behavior, flag redundant shallow un
 - `dev:testing` — test strategy and tooling
 
 ---
-*Your final report should evaluate the code against the principles of Separation of Concerns, SOLID, Scalability, Maintainability, Module Depth, and Dependency Classification.*
+
+_Your final report should evaluate the code against the principles of Separation of Concerns, SOLID, Scalability, Maintainability, Module Depth, and Dependency Classification._

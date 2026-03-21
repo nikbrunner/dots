@@ -8,79 +8,90 @@ The pattern: share `formOptions` between client and server, validate on server v
 
 ```typescript
 // app/routes/index.tsx (or extracted to shared file)
-import { formOptions } from '@tanstack/react-form-start'
+import { formOptions } from "@tanstack/react-form-start";
 
 export const formOpts = formOptions({
   defaultValues: {
-    firstName: '',
+    firstName: "",
     age: 0,
   },
-})
+});
 ```
 
 ### 2. Server Validation + Handler
 
 ```typescript
-import { createServerValidate, ServerValidateError } from '@tanstack/react-form-start'
+import {
+  createServerValidate,
+  ServerValidateError,
+} from "@tanstack/react-form-start";
 
 const serverValidate = createServerValidate({
   ...formOpts,
   onServerValidate: ({ value }) => {
-    if (value.age < 12) return 'Must be at least 12 to sign up'
+    if (value.age < 12) return "Must be at least 12 to sign up";
   },
-})
+});
 
-export const handleForm = createServerFn({ method: 'POST' })
+export const handleForm = createServerFn({ method: "POST" })
   .inputValidator((data: unknown) => {
-    if (!(data instanceof FormData)) throw new Error('Invalid form data')
-    return data
+    if (!(data instanceof FormData)) throw new Error("Invalid form data");
+    return data;
   })
   .handler(async (ctx) => {
     try {
-      const validatedData = await serverValidate(ctx.data)
+      const validatedData = await serverValidate(ctx.data);
       // Persist to database
     } catch (e) {
-      if (e instanceof ServerValidateError) return e.response
-      throw e
+      if (e instanceof ServerValidateError) return e.response;
+      throw e;
     }
-    return 'Form validated successfully'
-  })
+    return "Form validated successfully";
+  });
 ```
 
 ### 3. Loader for Server State
 
 ```typescript
-import { getFormData } from '@tanstack/react-form-start'
+import { getFormData } from "@tanstack/react-form-start";
 
-export const getFormDataFromServer = createServerFn({ method: 'GET' })
-  .handler(async () => getFormData())
+export const getFormDataFromServer = createServerFn({ method: "GET" }).handler(
+  async () => getFormData(),
+);
 ```
 
 ### 4. Client Component with Merged State
 
 ```tsx
-import { mergeForm, useForm, useStore, useTransform } from '@tanstack/react-form-start'
+import {
+  mergeForm,
+  useForm,
+  useStore,
+  useTransform,
+} from "@tanstack/react-form-start";
 
-export const Route = createFileRoute('/')({
+export const Route = createFileRoute("/")({
   component: Home,
   loader: async () => ({ state: await getFormDataFromServer() }),
-})
+});
 
 function Home() {
-  const { state } = Route.useLoaderData()
+  const { state } = Route.useLoaderData();
   const form = useForm({
     ...formOpts,
     transform: useTransform((baseForm) => mergeForm(baseForm, state), [state]),
-  })
+  });
 
-  const formErrors = useStore(form.store, (s) => s.errors)
+  const formErrors = useStore(form.store, (s) => s.errors);
 
   return (
     <form action={handleForm.url} method="post" encType="multipart/form-data">
-      {formErrors.map((error) => <p key={error as string}>{error}</p>)}
+      {formErrors.map((error) => (
+        <p key={error as string}>{error}</p>
+      ))}
       {/* fields... */}
     </form>
-  )
+  );
 }
 ```
 

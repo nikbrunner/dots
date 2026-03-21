@@ -24,6 +24,7 @@ Scan for signals to determine project state and ecosystem. See `defaults.md` for
 4. **Project type** — CLI tool, library, web app, desktop app
 
 If no repo exists:
+
 1. Ask for project name and one-line description via `AskUserQuestion`
 2. `mkdir -p <path> && cd <path> && git init`
 3. Ask if user wants a GitHub remote — if yes, `gh repo create`
@@ -33,6 +34,7 @@ If no repo exists:
 Load defaults from `defaults.md` based on detected/specified project type.
 
 Load relevant `dev-*` skills for conventions (see Dev Skill Mappings in `defaults.md`):
+
 - `dev:typescript` — always for TS projects
 - `dev:react`, `dev:styling`, `dev:state-management` — for web/desktop
 - `dev:tanstack` — when TanStack libs are relevant
@@ -41,6 +43,7 @@ Load relevant `dev-*` skills for conventions (see Dev Skill Mappings in `default
 Present inferred configuration summary to user. Example:
 
 > **Inferred setup:**
+>
 > - Ecosystem: Deno
 > - Type: CLI tool
 > - Framework: Cliffy
@@ -68,18 +71,18 @@ Present a complete scaffolding plan as a table. Wait for user approval before ex
 
 Example:
 
-| File | Action | Content summary |
-|-|-|-|
-| `deno.json` | Create | Tasks, imports, fmt/lint config |
-| `src/main.ts` | Create | Entry point with Cliffy setup |
-| `src/commands/` | Create dir | CLI command stubs |
-| `src/config/` | Create dir | Config loading + Zod schema |
-| `src/lib/` | Create dir | Core logic |
-| `tests/` | Create dir | Test directory |
-| `scripts/setup-git-hooks.sh` | Create | Pre-commit hook installer |
-| `README.md` | Create | Name, install, usage, dev |
-| `.gitignore` | Create | Deno ignores |
-| `.claude/` | Delegate | → `dev-claude-setup` |
+| File                         | Action     | Content summary                 |
+| ---------------------------- | ---------- | ------------------------------- |
+| `deno.json`                  | Create     | Tasks, imports, fmt/lint config |
+| `src/main.ts`                | Create     | Entry point with Cliffy setup   |
+| `src/commands/`              | Create dir | CLI command stubs               |
+| `src/config/`                | Create dir | Config loading + Zod schema     |
+| `src/lib/`                   | Create dir | Core logic                      |
+| `tests/`                     | Create dir | Test directory                  |
+| `scripts/setup-git-hooks.sh` | Create     | Pre-commit hook installer       |
+| `README.md`                  | Create     | Name, install, usage, dev       |
+| `.gitignore`                 | Create     | Deno ignores                    |
+| `.claude/`                   | Delegate   | → `dev-claude-setup`            |
 
 ## Phase 5: EXECUTE
 
@@ -122,6 +125,7 @@ Invoke `dev-claude-setup` to handle `.claude/` configuration. Pass context so it
 - Which `dev-*` skills are relevant
 
 `dev-claude-setup` will create:
+
 - `CLAUDE.md` (lean, ~50 lines max)
 - `settings.json` (allowedTools, PostToolUse hooks)
 - Hooks (`postwrite.sh` for fmt+lint, `auto-install.sh` for CLI tools)

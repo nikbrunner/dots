@@ -42,19 +42,19 @@ When a param is used across multiple components, extract it into a reusable hook
 
 ```tsx
 // useCategory.ts
-import { useNavigate, useSearch } from "@tanstack/react-router"
+import { useNavigate, useSearch } from "@tanstack/react-router";
 
 export function useCategory() {
-  const { category } = useSearch({ strict: false })
-  const navigate = useNavigate()
+  const { category } = useSearch({ strict: false });
+  const navigate = useNavigate();
 
   const setCategory = (cat: string | undefined) =>
     navigate({
       to: ".",
-      search: prev => ({ ...prev, category: cat }),
-    })
+      search: (prev) => ({ ...prev, category: cat }),
+    });
 
-  return { category, setCategory }
+  return { category, setCategory };
 }
 ```
 
@@ -66,39 +66,43 @@ From nbr.haus -- URL state with localStorage persistence for user preferences. M
 
 ```tsx
 // useColorMode.ts (simplified from nbr.haus)
-import { useHydrated, useRouter, useSearch } from "@tanstack/react-router"
-import { colorModeSchema, defaultColorMode, type ColorMode } from "@/types/style"
+import { useHydrated, useRouter, useSearch } from "@tanstack/react-router";
+import {
+  colorModeSchema,
+  defaultColorMode,
+  type ColorMode,
+} from "@/types/style";
 
 export function useColorMode() {
-  const router = useRouter()
-  const search = useSearch({ strict: false })
-  const hydrated = useHydrated()
+  const router = useRouter();
+  const search = useSearch({ strict: false });
+  const hydrated = useHydrated();
 
   // Priority: URL param > localStorage > default
   const colorMode =
-    search.colorMode ?? getFromStorage(hydrated) ?? defaultColorMode
+    search.colorMode ?? getFromStorage(hydrated) ?? defaultColorMode;
 
   useEffect(() => {
-    if (!hydrated) return
-    applyColorMode(colorMode)
-  }, [hydrated, colorMode])
+    if (!hydrated) return;
+    applyColorMode(colorMode);
+  }, [hydrated, colorMode]);
 
   const setColorMode = useCallback(
     (newColorMode: ColorMode) => {
-      applyColorMode(newColorMode)
-      persistToStorage(newColorMode)
+      applyColorMode(newColorMode);
+      persistToStorage(newColorMode);
       router.navigate({
         to: ".",
-        search: prev => ({ ...prev, colorMode: newColorMode }),
+        search: (prev) => ({ ...prev, colorMode: newColorMode }),
         resetScroll: false,
-        replace: true,       // Don't pollute history
-        viewTransition: true // Smooth CSS transitions
-      })
+        replace: true, // Don't pollute history
+        viewTransition: true, // Smooth CSS transitions
+      });
     },
-    [router]
-  )
+    [router],
+  );
 
-  return { colorMode, setColorMode, colorModes: colorModeSchema.options }
+  return { colorMode, setColorMode, colorModes: colorModeSchema.options };
 }
 ```
 
@@ -126,17 +130,17 @@ export function useColorMode() {
 For `useQueryState`-style ergonomics (individual param hooks instead of full `Route.useSearch()`):
 
 ```tsx
-import { useQueryState, parseAsString } from "nuqs"
-import { NuqsAdapter } from "nuqs/adapters/tanstack-router"
+import { useQueryState, parseAsString } from "nuqs";
+import { NuqsAdapter } from "nuqs/adapters/tanstack-router";
 
 // Wrap app
 <NuqsAdapter>
   <App />
-</NuqsAdapter>
+</NuqsAdapter>;
 
 // Use individual param hooks
 function Filters() {
-  const [category, setCategory] = useQueryState("category", parseAsString)
+  const [category, setCategory] = useQueryState("category", parseAsString);
 }
 ```
 
@@ -150,16 +154,19 @@ Not everything needs URL state. `useIsMobile` is a good example:
 ```tsx
 export function useIsMobile(): boolean {
   const [isMobile, setIsMobile] = useState(() =>
-    typeof window === "undefined" ? false : window.innerWidth < MOBILE_BREAKPOINT
-  )
+    typeof window === "undefined"
+      ? false
+      : window.innerWidth < MOBILE_BREAKPOINT,
+  );
 
   useEffect(() => {
-    const handleResize = () => setIsMobile(window.innerWidth < MOBILE_BREAKPOINT)
-    window.addEventListener("resize", handleResize)
-    return () => window.removeEventListener("resize", handleResize)
-  }, [])
+    const handleResize = () =>
+      setIsMobile(window.innerWidth < MOBILE_BREAKPOINT);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
-  return isMobile
+  return isMobile;
 }
 ```
 

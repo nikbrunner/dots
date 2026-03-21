@@ -12,13 +12,13 @@ Repo: `~/repos/nikbrunner/awdcs/`
 
 ## The Five Scopes
 
-| Scope | Leader | Purpose |
-|-|-|-|
-| **[A]pp** | `<leader>a` | Application-level: themes, settings, plugins, help, AI |
-| **[W]orkspace** | `<leader>w` | Cross-codebase: find files, search text, version control |
-| **[D]ocument** | `<leader>d` | Current file: find/replace, diagnostics, undo, yank |
-| **[C]hange** | `<leader>c` | Git hunk operations: stage, revert, diff |
-| **[S]ymbol** | `s` (or `<leader>s`) | Code symbols: definition, references, rename, actions |
+| Scope           | Leader               | Purpose                                                  |
+| --------------- | -------------------- | -------------------------------------------------------- |
+| **[A]pp**       | `<leader>a`          | Application-level: themes, settings, plugins, help, AI   |
+| **[W]orkspace** | `<leader>w`          | Cross-codebase: find files, search text, version control |
+| **[D]ocument**  | `<leader>d`          | Current file: find/replace, diagnostics, undo, yank      |
+| **[C]hange**    | `<leader>c`          | Git hunk operations: stage, revert, diff                 |
+| **[S]ymbol**    | `s` (or `<leader>s`) | Code symbols: definition, references, rename, actions    |
 
 ## Key Patterns
 

@@ -30,7 +30,7 @@ Determined by which files changed. Project-specific scope rules override these d
 ### Description
 
 - 1 sentence, imperative mood ("add X" not "added X")
-- Focus on the *why*, not the *what*
+- Focus on the _why_, not the _what_
 - Keep under 70 characters
 
 ## Rules
@@ -44,11 +44,11 @@ Determined by which files changed. Project-specific scope rules override these d
 
 Choose based on what you're fixing:
 
-| Situation | Strategy | Command |
-|-|-|-|
-| Fix belongs to the **previous** commit | Amend | `git commit --amend --no-edit` |
-| Fix belongs to an **older** commit | Fixup + autosquash | See below |
-| Change is a **new distinct unit** of work | New commit | Normal commit |
+| Situation                                 | Strategy           | Command                        |
+| ----------------------------------------- | ------------------ | ------------------------------ |
+| Fix belongs to the **previous** commit    | Amend              | `git commit --amend --no-edit` |
+| Fix belongs to an **older** commit        | Fixup + autosquash | See below                      |
+| Change is a **new distinct unit** of work | New commit         | Normal commit                  |
 
 **Always ask before amending or fixup.** These rewrite history and can go wrong.
 
@@ -70,6 +70,6 @@ git rebase -i --autosquash <sha>~1
 1. Check `git status` and `git diff --staged` to understand what's being committed
 2. Determine scope from changed file paths
 3. Decide strategy: amend, fixup, or new commit
-4. Draft a concise message focusing on the *why*
+4. Draft a concise message focusing on the _why_
 5. Stage specific files
 6. Commit via heredoc for proper formatting

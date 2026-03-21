@@ -4,12 +4,12 @@
 
 Every role's root element gets a `data-*` attribute for DOM inspection and debugging:
 
-| Role | Attribute | Example |
-|-|-|-|
-| Dumb Component | `data-component` | `data-component="UserCard"` |
-| Partial | `data-partial` | `data-partial="UserProfileHeader"` |
-| Layout Component | `data-layout` | `data-layout="PageLayout"` |
-| Smart Container | `data-container` | `data-container="UserProfileContainer"` |
+| Role             | Attribute        | Example                                 |
+| ---------------- | ---------------- | --------------------------------------- |
+| Dumb Component   | `data-component` | `data-component="UserCard"`             |
+| Partial          | `data-partial`   | `data-partial="UserProfileHeader"`      |
+| Layout Component | `data-layout`    | `data-layout="PageLayout"`              |
+| Smart Container  | `data-container` | `data-container="UserProfileContainer"` |
 
 ## Dumb Component
 
@@ -53,12 +53,7 @@ interface Props {
   canEdit: boolean;
 }
 
-export function UserProfileHeader({
-  name,
-  avatarUrl,
-  canEdit,
-  onEdit,
-}: Props) {
+export function UserProfileHeader({ name, avatarUrl, canEdit, onEdit }: Props) {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
@@ -204,11 +199,13 @@ export function DashboardContainer() {
 ```
 
 **When to use:**
+
 - The subcomponent is only used by one parent
 - It's small enough that a separate file adds more overhead than clarity
 - It helps readability by breaking up a long return block
 
 **When to extract to its own file:**
+
 - Used by multiple consumers
 - Has its own styling (component) or grows beyond ~30-40 lines
 
@@ -217,6 +214,7 @@ export function DashboardContainer() {
 **Prefer Broad Split** -- one Container (or Route) fans out to many Dumb Components directly, rather than passing props through a single proxy component (Deep Split).
 
 When you notice components forwarding props they don't use, that's a signal to either:
+
 - Introduce a Container/Partial closer to where the data is needed
 - In route-based apps, let the route itself handle orchestration (see "Routes as Containers" in SKILL.md)
 
@@ -261,7 +259,7 @@ export const FilterContextProvider = ({
       <FiltersButton onClick={() => filterContext.setMobileFiltersOpen(true)} />
     </div>
   )}
-</FilterContextProvider>
+</FilterContextProvider>;
 ```
 
 - Provider receives static data as props, manages its own UI state internally

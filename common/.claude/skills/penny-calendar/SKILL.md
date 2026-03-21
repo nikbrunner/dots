@@ -49,9 +49,10 @@ Mirror important event details in the daily note alongside the calendar event:
 2. Add a task/entry in the daily note with context and wikilinks
 
 Example in daily note:
+
 ```markdown
 - [ ] 16:00 — Gehaltsgespräch ImFusion (Dr. Mattia Lupetti) 📅 2026-03-17
-	- [[ImFusion - Senior Frontend Developer Web UX]]
+  - [[ImFusion - Senior Frontend Developer Web UX]]
 ```
 
 ## Known Limitations

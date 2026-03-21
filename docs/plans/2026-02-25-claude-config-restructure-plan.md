@@ -15,6 +15,7 @@
 ### Task 1: Create directory structure
 
 **Files:**
+
 - Create: `common/.claude/skills/` (directory)
 - Create: `common/.claude/hooks/enforce/` (directory)
 
@@ -40,6 +41,7 @@ Move directly to Task 2.
 ### Task 2: Write lean CLAUDE.md
 
 **Files:**
+
 - Modify: `common/.claude/CLAUDE.md` (full rewrite, 276 → ~65 lines)
 
 **Step 1: Replace CLAUDE.md with lean version**
@@ -119,6 +121,7 @@ always-on communication rules and core dev principles."
 ### Task 3: Write knowledge skills
 
 **Files:**
+
 - Create: `common/.claude/skills/about-nik/SKILL.md`
 - Create: `common/.claude/skills/react-patterns/SKILL.md`
 - Create: `common/.claude/skills/mcp-guide/SKILL.md`
@@ -316,6 +319,7 @@ on-demand instead of consuming always-on instruction budget."
 ### Task 4: Write enforcement hooks
 
 **Files:**
+
 - Create: `common/.claude/hooks/enforce/semantic-commits.sh`
 - Create: `common/.claude/hooks/enforce/warn-any-type.sh`
 - Modify: `common/.claude/settings.json` (add hook registrations)
@@ -419,13 +423,13 @@ In the existing `PreToolUse` array, add a new entry:
 
 ```json
 {
-    "matcher": "Bash",
-    "hooks": [
-        {
-            "type": "command",
-            "command": "~/.claude/hooks/enforce/semantic-commits.sh"
-        }
-    ]
+  "matcher": "Bash",
+  "hooks": [
+    {
+      "type": "command",
+      "command": "~/.claude/hooks/enforce/semantic-commits.sh"
+    }
+  ]
 }
 ```
 
@@ -462,6 +466,7 @@ Add PostToolUse hook warning on TypeScript any type usage."
 ### Task 5: Migrate slash commands to skills (batch 1 — bai)
 
 **Files:**
+
 - Create: `common/.claude/skills/bai-status/SKILL.md`
 - Create: `common/.claude/skills/bai-ready/SKILL.md`
 - Create: `common/.claude/skills/bai-create/SKILL.md`
@@ -474,6 +479,7 @@ Add PostToolUse hook warning on TypeScript any type usage."
 **Step 1: Create all 6 bai skills**
 
 For each command file in `common/.claude/commands/bai/`:
+
 1. Read the existing `.md` file
 2. Create `common/.claude/skills/bai-<name>/SKILL.md`
 3. Keep existing frontmatter fields, add `disable-model-invocation: true`
@@ -488,7 +494,6 @@ description: Show my Black Atom Industries issues
 disable-model-invocation: true
 allowed-tools: ["mcp__linear__list_issues", "mcp__linear__get_issue"]
 ---
-
 # Black Atom Status
 [... rest of content unchanged ...]
 ```
@@ -510,6 +515,7 @@ disable-model-invocation: true."
 ### Task 6: Migrate slash commands to skills (batch 2 — dots + user)
 
 **Files:**
+
 - Create: `common/.claude/skills/dots-add/SKILL.md`
 - Create: `common/.claude/skills/dots-remove/SKILL.md`
 - Create: `common/.claude/skills/dots-git-status-cleanup/SKILL.md`
@@ -525,6 +531,7 @@ disable-model-invocation: true."
 **Step 1: Create all 11 skills**
 
 Same migration pattern as Task 5. For each command:
+
 1. Read existing `.md` file
 2. Create `common/.claude/skills/<name>/SKILL.md`
 3. Add `disable-model-invocation: true` to frontmatter
@@ -564,6 +571,7 @@ format with disable-model-invocation: true."
 ### Task 7: Write migration meta-skill, update symlinks, switchover
 
 **Files:**
+
 - Create: `common/.claude/skills/migrate-to-skills/SKILL.md`
 - Modify: `symlinks.yml`
 - Delete: `common/.claude/commands/` (entire directory)
@@ -647,15 +655,17 @@ Only after approval:
 In `symlinks.yml`, under the `common:` section:
 
 Remove these lines:
+
 ```yaml
-  common/.claude/agents: ~/.claude/agents
-  common/.claude/commands: ~/.claude/commands
+common/.claude/agents: ~/.claude/agents
+common/.claude/commands: ~/.claude/commands
 ```
 
 Add these lines (after the existing `.claude/` entries):
+
 ```yaml
-  common/.claude/skills: ~/.claude/skills
-  "common/.claude/hooks/enforce/*": ~/.claude/hooks/enforce
+common/.claude/skills: ~/.claude/skills
+"common/.claude/hooks/enforce/*": ~/.claude/hooks/enforce
 ```
 
 **Step 3: Delete old commands directory**
@@ -671,6 +681,7 @@ dots link
 ```
 
 This will:
+
 - Remove the `~/.claude/commands` symlink (source gone)
 - Remove the `~/.claude/agents` symlink (removed from symlinks.yml)
 - Create `~/.claude/skills` symlink → `common/.claude/skills`
@@ -703,6 +714,7 @@ cat ~/.claude/CLAUDE.md | wc -l
 ```
 
 Expected:
+
 - `~/.claude/skills/` → symlink to dots skills directory
 - `~/.claude/hooks/enforce/` contains symlinked hook scripts
 - `~/.claude/CLAUDE.md` still points to dots
@@ -711,6 +723,7 @@ Expected:
 **Step 2: Verify skills are discoverable**
 
 Start a new Claude Code session and ask:
+
 ```
 What skills are available?
 ```
@@ -720,6 +733,7 @@ Expected: all 22 skills should appear (4 knowledge + 17 action + 1 migration).
 **Step 3: Test a hook**
 
 In the new session, try a bad commit:
+
 ```
 git commit -m "updated stuff"
 ```
@@ -729,6 +743,7 @@ Expected: blocked with semantic prefix guidance.
 **Step 4: Test a knowledge skill**
 
 Ask something that should trigger about-nik:
+
 ```
 What projects am I working on?
 ```
@@ -738,6 +753,7 @@ Expected: Claude loads about-nik skill and mentions Black Atom, nbr.haus, Sonder
 **Step 5: Commit any fixes**
 
 If anything needed adjustment, commit with:
+
 ```bash
 git commit -m "fix(claude): adjust [specific fix] after migration verification"
 ```

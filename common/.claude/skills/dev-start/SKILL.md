@@ -11,6 +11,7 @@ Entry point for development work. Assess scope, then route.
 ## Step 1: Gather Context
 
 Read the user's prompt carefully. Look for:
+
 - Is there an existing issue/ticket reference?
 - Is the scope described or implied?
 - Is this greenfield or modification of existing code?
@@ -22,24 +23,24 @@ If the scope is unclear, ask ONE clarifying question via `AskUserQuestion` befor
 
 Based on what you know, classify:
 
-| Scope | Signals |
-|-|-|
-| **Trivial** | One-liner, typo fix, config change, rename |
-| **Small** | Single-file bugfix, small feature, isolated change |
-| **Medium** | Multi-file feature, new module, API changes |
-| **Large** | Multi-issue project, new system, cross-cutting concerns |
+| Scope       | Signals                                                 |
+| ----------- | ------------------------------------------------------- |
+| **Trivial** | One-liner, typo fix, config change, rename              |
+| **Small**   | Single-file bugfix, small feature, isolated change      |
+| **Medium**  | Multi-file feature, new module, API changes             |
+| **Large**   | Multi-issue project, new system, cross-cutting concerns |
 
 Present your assessment: "This looks like a [scope] task — I'll [route]. Sound right?"
 Let the user confirm or override.
 
 ## Step 3: Route
 
-| Scope | Pipeline |
-|-|-|
-| Trivial | Just do it. No ceremony. |
-| Small | `dev:worktrees` → implement → `dev:close` |
-| Medium | `dev:write-prd` → `dev:prd-to-plan` → `dev:worktrees` → `dev:executing-plans` → `dev:close` |
-| Large | `dev:grill-me` → `dev:write-prd` → `dev:prd-to-plan` → `dev:prd-to-issues` → pick first issue → `dev:worktrees` → `dev:executing-plans` → `dev:close` |
+| Scope   | Pipeline                                                                                                                                              |
+| ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Trivial | Just do it. No ceremony.                                                                                                                              |
+| Small   | `dev:worktrees` → implement → `dev:close`                                                                                                             |
+| Medium  | `dev:write-prd` → `dev:prd-to-plan` → `dev:worktrees` → `dev:executing-plans` → `dev:close`                                                           |
+| Large   | `dev:grill-me` → `dev:write-prd` → `dev:prd-to-plan` → `dev:prd-to-issues` → pick first issue → `dev:worktrees` → `dev:executing-plans` → `dev:close` |
 
 ## Notes
 

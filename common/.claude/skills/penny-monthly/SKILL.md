@@ -3,7 +3,7 @@ name: penny:monthly
 description: Month-end retro with Penny — reviews the month, triages tasks, checks quarterly goals, plans next month. Invoke at end of month or retroactively.
 user-invocable: true
 allowed-tools:
-    [Bash, Read, Write, Edit, mcp__linear__list_issues, mcp__linear__get_issue]
+  [Bash, Read, Write, Edit, mcp__linear__list_issues, mcp__linear__get_issue]
 ---
 
 # Penny — Monthly Retro & Planning
@@ -23,6 +23,7 @@ End-of-month energy — bigger picture than weekly. Looking back at the month, t
 **First**: Get the actual current date by running `date '+%Y.%m.%d - %A'`. If `$ARGUMENTS` contains a month (e.g. `2026-02`), use that as the target month instead.
 
 Determine:
+
 - Target month (current or from arguments)
 - Whether this is a quarter-end month (March, June, September, December)
 - Path to the month's note (from `obsidian-dates`)
@@ -35,7 +36,7 @@ Then run these in parallel:
 - Read the current quarter's note
 - Read `penny.md` memory
 - Check Linear for the month's activity:
-    - `mcp__linear__list_issues` with `assignee: "me"`, `updatedAt` set to start of target month
+  - `mcp__linear__list_issues` with `assignee: "me"`, `updatedAt` set to start of target month
 
 ### 2. Month retro
 
@@ -63,10 +64,12 @@ Present them one by one or in small batches. Don't rush this.
 Read the quarter note and check each goal/task against reality.
 
 **Always** (brief):
+
 - Status per item — done, in progress, not started, blocked
 - Are we on track? One honest sentence.
 
 **In quarter-end months** (March, June, September, December) go deeper:
+
 - Evaluate the quarter as a whole — what worked, what didn't
 - Write a `## Retro` section in the quarter note (same format as month retro)
 - Triage open quarter tasks: carry to next quarter, defer, or drop

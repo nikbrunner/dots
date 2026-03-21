@@ -2,7 +2,16 @@
 name: bai:update
 user-invocable: false
 description: Update a Black Atom issue (status, labels, relations, etc.)
-allowed-tools: ["mcp__linear__save_issue", "mcp__linear__create_comment", "mcp__linear__list_issue_statuses", "mcp__linear__get_issue", "mcp__linear__list_teams", "mcp__linear__list_issues", "AskUserQuestion"]
+allowed-tools:
+  [
+    "mcp__linear__save_issue",
+    "mcp__linear__create_comment",
+    "mcp__linear__list_issue_statuses",
+    "mcp__linear__get_issue",
+    "mcp__linear__list_teams",
+    "mcp__linear__list_issues",
+    "AskUserQuestion",
+  ]
 ---
 
 # Black Atom Update
@@ -14,6 +23,7 @@ Update an issue's status, add comments, manage relations, or change metadata.
 `$ARGUMENTS` - Issue identifier and what to update
 
 Examples:
+
 - `DEV-123 to In Progress`
 - `DEV-123 comment: Started working on this`
 - `DEV-123 priority 2`
@@ -23,6 +33,7 @@ Examples:
 ## Context
 
 **Status workflow** (Development team):
+
 - Backlog → Todo → In Progress → In Review → Done
 
 **Teams**: Development, Design, Operations, Website

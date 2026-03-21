@@ -8,11 +8,11 @@ user-invocable: false
 
 ## Anchors (firm defaults)
 
-| Anchor | What | Why |
-|--------|------|-----|
-| **CSS Modules** | Scoped `.module.css` or `.css` files | Real CSS, zero runtime, local scope |
-| **CVA** | Typed component variants | Type-safe variants + `cx()` for class merging |
-| **Co-located files** | `Button.css` next to `Button.tsx` | Styles belong to their component |
+| Anchor               | What                                 | Why                                           |
+| -------------------- | ------------------------------------ | --------------------------------------------- |
+| **CSS Modules**      | Scoped `.module.css` or `.css` files | Real CSS, zero runtime, local scope           |
+| **CVA**              | Typed component variants             | Type-safe variants + `cx()` for class merging |
+| **Co-located files** | `Button.css` next to `Button.tsx`    | Styles belong to their component              |
 
 ## Principles
 

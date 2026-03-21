@@ -35,9 +35,7 @@ interface Props {
 
 export function Button({ variant = "primary", children }: Props) {
   return (
-    <button className={cx(styles.root, styles[variant])}>
-      {children}
-    </button>
+    <button className={cx(styles.root, styles[variant])}>{children}</button>
   );
 }
 ```
@@ -51,6 +49,7 @@ export function Button({ variant = "primary", children }: Props) {
 ## File Naming
 
 Convention depends on the project setup:
+
 - `.module.css` -- explicit CSS Modules (Vite, Next.js default)
 - `.css` with build tool configured for modules -- less common but valid
 

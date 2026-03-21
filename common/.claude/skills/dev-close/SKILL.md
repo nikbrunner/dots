@@ -17,6 +17,7 @@ If verification fails, stop. Fix first, then re-run this skill.
 ## Step 2: Ship
 
 Invoke `dev:finishing-branch`:
+
 1. Merge locally
 2. Push & create PR
 3. Keep branch as-is
@@ -35,6 +36,7 @@ If no issue is tracked, skip this step.
 ## Step 4: Knowledge Sync (optional)
 
 For medium/large work, consider whether project knowledge artifacts need updating:
+
 - CLAUDE.md changes
 - New skills or skill updates
 - Documentation updates

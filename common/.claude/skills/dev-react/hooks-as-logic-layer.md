@@ -43,10 +43,10 @@ function UserContainer() {
 
 ## Co-Location Rules
 
-| Hook scope | Location |
-|-----------|----------|
-| Used by one component/container | Co-located in its folder |
-| UI utility or shared event hook | Top-level `hooks/` directory |
+| Hook scope                                | Location                                           |
+| ----------------------------------------- | -------------------------------------------------- |
+| Used by one component/container           | Co-located in its folder                           |
+| UI utility or shared event hook           | Top-level `hooks/` directory                       |
 | Query wrapper or topic orchestration hook | `queries/` topic folder (see `dev:tanstack-query`) |
 
 ## When to Extract a Hook
@@ -71,14 +71,17 @@ useEffect(() => {
 }, [url]);
 
 // Good -- name reveals purpose at a glance
-useEffect(function connectToWebSocket() {
-  const ws = new WebSocket(url);
-  ws.onmessage = handleMessage;
+useEffect(
+  function connectToWebSocket() {
+    const ws = new WebSocket(url);
+    ws.onmessage = handleMessage;
 
-  return function disconnectFromWebSocket() {
-    ws.close();
-  };
-}, [url]);
+    return function disconnectFromWebSocket() {
+      ws.close();
+    };
+  },
+  [url],
+);
 ```
 
 ### Why

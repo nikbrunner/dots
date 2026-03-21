@@ -34,6 +34,7 @@ Before external research, understand what you're working with:
 ### 2. Check Ref MCP for Documentation
 
 Search for official docs relevant to project dependencies:
+
 ```
 Use: mcp__Ref__ref_search_documentation
 Then: mcp__Ref__ref_read_url for relevant results
@@ -42,6 +43,7 @@ Then: mcp__Ref__ref_read_url for relevant results
 ### 3. Search Exa for Real-World Examples
 
 Look for implementations that match the project's stack:
+
 ```
 Use: mcp__exa__get_code_context_exa for code-specific searches
 Use: mcp__exa__web_search_exa for broader context
@@ -50,6 +52,7 @@ Use: mcp__exa__web_search_exa for broader context
 ### 4. Check Reference Repos (if applicable)
 
 Look at how similar libraries/plugins implement this:
+
 ```
 Use: WebFetch for GitHub repos or gists
 ```
@@ -57,6 +60,7 @@ Use: WebFetch for GitHub repos or gists
 ### 5. Synthesize Findings
 
 Connect external research back to project context:
+
 - How does this fit with existing patterns?
 - What needs to adapt to match project conventions?
 - Are there conflicts with current dependencies?
@@ -69,22 +73,27 @@ Present findings as:
 # Research: [Topic]
 
 ## Project Context
+
 - Current stack/dependencies relevant to this
 - Existing patterns in codebase that relate
 - Constraints or conventions to respect
 
 ## TL;DR
+
 One sentence recommendation that fits the project.
 
 ## Key Concepts
+
 - What you learned from docs/examples
 - How it maps to this project's needs
 
 ## Recommended Approach
+
 1. Step-by-step that respects existing patterns
 2. ...
 
 ## Resources
+
 - Links for reference
 ```
 

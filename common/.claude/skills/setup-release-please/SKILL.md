@@ -34,26 +34,27 @@ git remote show origin | grep 'HEAD branch' | awk '{print $NF}'
 
 ```json
 {
-    "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json",
-    "packages": {
-        ".": {
-            "release-type": "<detected-type>",
-            "bump-minor-pre-major": true,
-            "bump-patch-for-minor-pre-major": false,
-            "changelog-sections": [
-                { "type": "feat", "section": "Features" },
-                { "type": "refactor", "section": "Refactors" },
-                { "type": "fix", "section": "Bug Fixes" },
-                { "type": "docs", "section": "Documentation" },
-                { "type": "perf", "section": "Performance" }
-            ],
-            "extra-files": []
-        }
+  "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json",
+  "packages": {
+    ".": {
+      "release-type": "<detected-type>",
+      "bump-minor-pre-major": true,
+      "bump-patch-for-minor-pre-major": false,
+      "changelog-sections": [
+        { "type": "feat", "section": "Features" },
+        { "type": "refactor", "section": "Refactors" },
+        { "type": "fix", "section": "Bug Fixes" },
+        { "type": "docs", "section": "Documentation" },
+        { "type": "perf", "section": "Performance" }
+      ],
+      "extra-files": []
     }
+  }
 }
 ```
 
 **Extra-files by project type:**
+
 - Deno: `{ "type": "json", "path": "deno.json", "jsonpath": "$.version" }`
 - Obsidian: `{ "type": "json", "path": "manifest.json", "jsonpath": "$.version" }`
 - Go: none (native versioning)
@@ -70,22 +71,22 @@ git remote show origin | grep 'HEAD branch' | awk '{print $NF}'
 ```yaml
 name: Release
 on:
-    push:
-        branches: [<default-branch>]
+  push:
+    branches: [<default-branch>]
 
 permissions:
-    contents: write
-    pull-requests: write
+  contents: write
+  pull-requests: write
 
 jobs:
-    release-please:
-        runs-on: ubuntu-latest
-        steps:
-            - uses: googleapis/release-please-action@v4
-              id: release
-              with:
-                  config-file: .github/release-please-config.json
-                  manifest-file: .github/.release-please-manifest.json
+  release-please:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: googleapis/release-please-action@v4
+        id: release
+        with:
+          config-file: .github/release-please-config.json
+          manifest-file: .github/.release-please-manifest.json
 ```
 
 6. **Enable GitHub Actions PR permissions** so release-please can create PRs:

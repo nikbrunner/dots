@@ -6,7 +6,7 @@ user-invocable: false
 
 # Dev Skill Creator
 
-Template for creating dev-* concept skills consistently. Not for process/review skills (dev:bugs, dev:arch-review, dev:ui-review) — those follow different patterns.
+Template for creating dev-\* concept skills consistently. Not for process/review skills (dev:bugs, dev:arch-review, dev:ui-review) — those follow different patterns.
 
 **IMPORTANT**:
 
@@ -20,13 +20,14 @@ See `template.md` for the canonical SKILL.md structure with placeholders.
 
 ## Supporting Files
 
-| Condition | Action |
-|-|-|
-| Sub-topic exceeds ~50 lines | Separate `.md` file |
+| Condition                              | Action              |
+| -------------------------------------- | ------------------- |
+| Sub-topic exceeds ~50 lines            | Separate `.md` file |
 | Distinct concept with its own examples | Separate `.md` file |
-| Everything fits in SKILL.md | Keep inline |
+| Everything fits in SKILL.md            | Keep inline         |
 
 **File conventions:**
+
 - Descriptive names: `query-patterns.md`, `url-state-patterns.md`, `alternatives.md`
 - For dedicated code example files, use the `*-examples.md` suffix
 - No frontmatter — start with `# Title`
@@ -34,15 +35,15 @@ See `template.md` for the canonical SKILL.md structure with placeholders.
 
 ## Conventions
 
-| Aspect | Convention |
-|-|-|
-| Directory | `dev-topic-name/` (hyphen-separated) |
-| Skill name | `dev:topic-name` (colon namespace) |
-| TanStack skills | `dev-tanstack-*` dir, `dev:tanstack-*` name |
-| Description | Starts with "Nik's [topic]", ends with "Load when [trigger]." |
-| Cross-refs | Backtick-quoted inline: `` `dev:react` `` |
-| Tables | Minimal separators (`\|-\|-\|`) |
-| Code examples | Real-world > pseudocode, one good example > many mediocre |
+| Aspect          | Convention                                                    |
+| --------------- | ------------------------------------------------------------- |
+| Directory       | `dev-topic-name/` (hyphen-separated)                          |
+| Skill name      | `dev:topic-name` (colon namespace)                            |
+| TanStack skills | `dev-tanstack-*` dir, `dev:tanstack-*` name                   |
+| Description     | Starts with "Nik's [topic]", ends with "Load when [trigger]." |
+| Cross-refs      | Backtick-quoted inline: `` `dev:react` ``                     |
+| Tables          | Minimal separators (`\|-\|-\|`)                               |
+| Code examples   | Real-world > pseudocode, one good example > many mediocre     |
 
 ## Description Requirements
 

@@ -42,25 +42,25 @@ agent-browser close
 
 ## Key Commands
 
-| Command | Purpose |
-|---------|---------|
-| `open <url>` | Navigate to URL |
-| `snapshot` | Accessibility tree with `@ref` IDs |
-| `snapshot -i` | Interactive elements only (forms, buttons, links) |
-| `snapshot -c` | Compact -- remove empty structural elements |
-| `click @ref` | Click element by ref |
-| `fill @ref "text"` | Clear field and type |
-| `type @ref "text"` | Append text to field |
-| `press Enter` | Press key |
-| `get text @ref` | Extract text content |
-| `get html @ref` | Extract HTML |
-| `get url` | Current URL |
-| `screenshot [path]` | Take screenshot |
-| `screenshot --annotate` | Labeled screenshot with numbered legend |
-| `screenshot --full` | Full page screenshot |
-| `wait --load networkidle` | Wait for slow pages |
-| `eval "js code"` | Run JavaScript |
-| `close` | Close browser |
+| Command                   | Purpose                                           |
+| ------------------------- | ------------------------------------------------- |
+| `open <url>`              | Navigate to URL                                   |
+| `snapshot`                | Accessibility tree with `@ref` IDs                |
+| `snapshot -i`             | Interactive elements only (forms, buttons, links) |
+| `snapshot -c`             | Compact -- remove empty structural elements       |
+| `click @ref`              | Click element by ref                              |
+| `fill @ref "text"`        | Clear field and type                              |
+| `type @ref "text"`        | Append text to field                              |
+| `press Enter`             | Press key                                         |
+| `get text @ref`           | Extract text content                              |
+| `get html @ref`           | Extract HTML                                      |
+| `get url`                 | Current URL                                       |
+| `screenshot [path]`       | Take screenshot                                   |
+| `screenshot --annotate`   | Labeled screenshot with numbered legend           |
+| `screenshot --full`       | Full page screenshot                              |
+| `wait --load networkidle` | Wait for slow pages                               |
+| `eval "js code"`          | Run JavaScript                                    |
+| `close`                   | Close browser                                     |
 
 ## Chaining
 

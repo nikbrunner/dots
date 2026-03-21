@@ -71,9 +71,11 @@ Save to `./plans/plan-[slug].md`.
 **User stories addressed**: [list from PRD]
 
 **What to build**:
+
 - [ ] [Concrete deliverable spanning all layers]
 
 **Acceptance criteria**:
+
 - [ ] [Observable, testable outcome]
 
 ### Phase 2: [Name]

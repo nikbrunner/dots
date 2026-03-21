@@ -11,6 +11,7 @@ Nik wants his skills, preferences, and conventions to be a personal archive that
 **How to apply:** Keep knowledge in supporting .md files (component-patterns.md, folder-structure.md, etc.) separate from SKILL.md wiring. When creating or editing skills, maintain this separation. Don't over-engineer an abstraction layer yet — the current structure already separates well. Revisit when actively using 2+ LLM tools or when a credible open standard emerges.
 
 **Landscape (2026-03):** Researched existing solutions — all too fragile/immature:
+
 - `luisrudge/dot-ai` — CLI to generate vendor configs from single `.ai/` source
 - `dot-agents.com` — "one config, every agent" (early stage)
 - `fgrehm/dot-ai` — symlink-based AI dotfiles (Claude-focused)

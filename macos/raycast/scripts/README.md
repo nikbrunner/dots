@@ -12,6 +12,6 @@ Raycast doesn't auto-detect script directories. You need to register this folder
 
 ## Scripts
 
-| Script | Description |
-|--------|-------------|
+| Script                  | Description                                                                                               |
+| ----------------------- | --------------------------------------------------------------------------------------------------------- |
 | `linear-to-obsidian.sh` | Converts a Linear issue URL from clipboard to Obsidian-friendly markdown link with `linear://` URL scheme |

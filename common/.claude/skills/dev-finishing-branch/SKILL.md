@@ -57,9 +57,9 @@ If worktree exists, `git worktree remove --force`.
 
 ## Quick Reference
 
-| Option | Merges | Pushes | Keeps worktree | Cleanup |
-|-|-|-|-|-|
-| Merge | Yes | No | No | Branch + worktree deleted |
-| Push & PR | No | Yes | Yes | None |
-| Keep | No | No | Yes | None |
-| Discard | No | No | No | Branch + worktree force-deleted |
+| Option    | Merges | Pushes | Keeps worktree | Cleanup                         |
+| --------- | ------ | ------ | -------------- | ------------------------------- |
+| Merge     | Yes    | No     | No             | Branch + worktree deleted       |
+| Push & PR | No     | Yes    | Yes            | None                            |
+| Keep      | No     | No     | Yes            | None                            |
+| Discard   | No     | No     | No             | Branch + worktree force-deleted |

@@ -26,10 +26,12 @@ Prefer deriving types from runtime values over defining them separately. Single 
 ```tsx
 // Single source of truth: array → union type
 const themeKeys = ["dark", "light", "dimmed"] as const;
-type ThemeKey = typeof themeKeys[number];
+type ThemeKey = (typeof themeKeys)[number];
 
 // Validated constant with literal types preserved
-const metaMap = { /* ... */ } as const satisfies Record<ThemeKey, ThemeMeta>;
+const metaMap = {
+  /* ... */
+} as const satisfies Record<ThemeKey, ThemeMeta>;
 
 // Exhaustive record -- breaks if ThemeKey changes
 const labels: Record<ThemeKey, string> = {

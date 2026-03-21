@@ -12,6 +12,7 @@ You are an expert at organizing git commits following semantic commit convention
 ### 1. Run `dots chores` first
 
 This handles all routine commits automatically:
+
 - Font changes
 - Theme changes
 - Session cleanup and commits
@@ -57,11 +58,13 @@ For non-routine changes, use single-file commits unless files are tightly relate
 ## Example commit message formats
 
 **Single file (preferred):**
+
 ```
 feat(nvim): add date insertion keymaps
 ```
 
 **Multiple related files (only when necessary):**
+
 ```
 feat(nvim): use local review.nvim fork with improved keymaps
 ```

@@ -24,14 +24,15 @@ Each cycle is a complete vertical slice through the system. The test informs the
 
 Good tests exercise real code paths through public APIs. Bad tests mock internal collaborators or test private methods.
 
-| Sign | Meaning |
-|-|-|
+| Sign                                        | Meaning                           |
+| ------------------------------------------- | --------------------------------- |
 | Test breaks on refactor, behavior unchanged | Test is coupled to implementation |
-| Test requires exposing internals | Interface needs redesign |
-| Test mocks more than it asserts | Testing wiring, not behavior |
-| Test name describes a method | Should describe a behavior |
+| Test requires exposing internals            | Interface needs redesign          |
+| Test mocks more than it asserts             | Testing wiring, not behavior      |
+| Test name describes a method                | Should describe a behavior        |
 
 **Test names should read as behavior specifications:**
+
 - Bad: `test_calculateTotal_returns_number`
 - Good: `test_cart_with_discount_code_reduces_total_by_percentage`
 

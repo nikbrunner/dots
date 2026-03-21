@@ -14,12 +14,12 @@ The `tanstack` CLI is installed globally and is the **primary way to verify TanS
 
 ### Key Commands
 
-| Command | Purpose | Example |
-|-|-|-|
-| `search-docs` | Search docs by keyword | `tanstack search-docs "search params" --library router --json` |
-| `doc` | Read a specific doc page | `tanstack doc router framework/react/guide/data-loading --json` |
-| `libraries` | List all TanStack libraries | `tanstack libraries --json` |
-| `ecosystem` | Discover ecosystem tools | `tanstack ecosystem --category auth --json` |
+| Command       | Purpose                     | Example                                                         |
+| ------------- | --------------------------- | --------------------------------------------------------------- |
+| `search-docs` | Search docs by keyword      | `tanstack search-docs "search params" --library router --json`  |
+| `doc`         | Read a specific doc page    | `tanstack doc router framework/react/guide/data-loading --json` |
+| `libraries`   | List all TanStack libraries | `tanstack libraries --json`                                     |
+| `ecosystem`   | Discover ecosystem tools    | `tanstack ecosystem --category auth --json`                     |
 
 ### Usage Notes
 
@@ -32,10 +32,10 @@ The `tanstack` CLI is installed globally and is the **primary way to verify TanS
 
 The following `dev-tanstack-*` skills contain **Nik's personal patterns and preferences** for each library. Only load the one relevant to your current task -- don't load Query patterns when working on a Form.
 
-| Skill | When to load |
-|-|-|
+| Skill                | When to load                         |
+| -------------------- | ------------------------------------ |
 | `dev:tanstack-query` | Data fetching, caching, server state |
-| `dev:tanstack-form` | Form handling, validation |
+| `dev:tanstack-form`  | Form handling, validation            |
 
 For all other TanStack libraries (Router, Store, Start, Table, Virtual, etc.), use the CLI to look up docs directly.
 

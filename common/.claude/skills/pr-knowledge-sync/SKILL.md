@@ -38,6 +38,7 @@ digraph detect_pr {
 ```
 
 Commands:
+
 - Current branch PR: `gh pr view --json number,title,body,files`
 - Last merged PR: `gh pr list --state merged --limit 1 --json number,title,headRefName`
 - Specific PR: `gh pr view <number> --json number,title,body,files`
@@ -51,6 +52,7 @@ gh pr diff <number>
 ```
 
 Categorize changes:
+
 - **Structural**: new files/dirs, moved files, deleted files, renamed exports
 - **Behavioral**: new commands, changed APIs, modified workflows, new dependencies
 - **Configuration**: env vars, build config, CI changes
@@ -60,14 +62,15 @@ Categorize changes:
 
 Check each project-scoped knowledge file against the diff. These are the artifact types to review:
 
-| Artifact | Location | What to check |
-|-|-|-|
+| Artifact          | Location                             | What to check                               |
+| ----------------- | ------------------------------------ | ------------------------------------------- |
 | Project CLAUDE.md | `./CLAUDE.md` or `.claude/CLAUDE.md` | Commands, structure, architecture, env vars |
-| Skills | `.claude/skills/` | Conventions, patterns, references, examples |
-| Hooks | `.claude/hooks/` | Enforcement rules matching changed patterns |
-| README / docs | `*.md` in project root | Setup instructions, API docs, usage guides |
+| Skills            | `.claude/skills/`                    | Conventions, patterns, references, examples |
+| Hooks             | `.claude/hooks/`                     | Enforcement rules matching changed patterns |
+| README / docs     | `*.md` in project root               | Setup instructions, API docs, usage guides  |
 
 For each artifact, ask:
+
 1. Does the PR **invalidate** anything stated here? (stale content)
 2. Does the PR **add** something that should be documented here? (gap)
 3. Does the PR **change** a pattern this artifact describes? (drift)

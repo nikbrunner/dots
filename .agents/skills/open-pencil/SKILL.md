@@ -237,12 +237,34 @@ npx openpencil-mcp-http
 Create entire component trees in one call:
 
 ```jsx
-<Frame name="Card" w={320} h="hug" flex="col" gap={16} p={24} bg="#FFF" rounded={16}>
-  <Text size={18} weight="bold">Title</Text>
-  <Text size={14} color="#666">Description text</Text>
+<Frame
+  name="Card"
+  w={320}
+  h="hug"
+  flex="col"
+  gap={16}
+  p={24}
+  bg="#FFF"
+  rounded={16}
+>
+  <Text size={18} weight="bold">
+    Title
+  </Text>
+  <Text size={14} color="#666">
+    Description text
+  </Text>
   <Frame flex="row" gap={8}>
-    <Frame w={80} h={36} bg="#3B82F6" rounded={8} justify="center" items="center">
-      <Text size={14} color="#FFF" weight="600">Action</Text>
+    <Frame
+      w={80}
+      h={36}
+      bg="#3B82F6"
+      rounded={8}
+      justify="center"
+      items="center"
+    >
+      <Text size={14} color="#FFF" weight="600">
+        Action
+      </Text>
     </Frame>
   </Frame>
 </Frame>
@@ -252,26 +274,26 @@ Create entire component trees in one call:
 
 **Layout shorthands:**
 
-| Prop | Meaning |
-|------|---------|
-| `w`, `h` | Width, height (number or `"hug"` / `"fill"`) |
-| `flex` | `"row"` or `"col"` |
-| `grid`, `columns`, `rows` | CSS Grid — e.g. `columns="1fr 200px 1fr"` |
-| `gap`, `rowGap`, `columnGap` | Item spacing |
-| `p`, `px`, `py`, `pt`, `pr`, `pb`, `pl` | Padding |
-| `justify` | `"start"`, `"center"`, `"end"`, `"between"` |
-| `items` | `"start"`, `"center"`, `"end"`, `"stretch"` |
-| `grow` | Flex grow factor |
-| `bg` | Fill color (hex) |
-| `rounded`, `roundedTL/TR/BL/BR` | Corner radius |
-| `stroke`, `strokeWidth` | Stroke color and weight |
-| `opacity` | 0–1 |
-| `rotate` | Degrees |
-| `overflow` | `"hidden"` to clip children |
-| `shadow` | `"offsetX offsetY blur #color"` |
-| `blur` | Layer blur |
-| `size`, `weight`, `font`, `color`, `textAlign` | Text properties |
-| `colStart`, `rowStart`, `colSpan`, `rowSpan` | Grid child positioning |
+| Prop                                           | Meaning                                      |
+| ---------------------------------------------- | -------------------------------------------- |
+| `w`, `h`                                       | Width, height (number or `"hug"` / `"fill"`) |
+| `flex`                                         | `"row"` or `"col"`                           |
+| `grid`, `columns`, `rows`                      | CSS Grid — e.g. `columns="1fr 200px 1fr"`    |
+| `gap`, `rowGap`, `columnGap`                   | Item spacing                                 |
+| `p`, `px`, `py`, `pt`, `pr`, `pb`, `pl`        | Padding                                      |
+| `justify`                                      | `"start"`, `"center"`, `"end"`, `"between"`  |
+| `items`                                        | `"start"`, `"center"`, `"end"`, `"stretch"`  |
+| `grow`                                         | Flex grow factor                             |
+| `bg`                                           | Fill color (hex)                             |
+| `rounded`, `roundedTL/TR/BL/BR`                | Corner radius                                |
+| `stroke`, `strokeWidth`                        | Stroke color and weight                      |
+| `opacity`                                      | 0–1                                          |
+| `rotate`                                       | Degrees                                      |
+| `overflow`                                     | `"hidden"` to clip children                  |
+| `shadow`                                       | `"offsetX offsetY blur #color"`              |
+| `blur`                                         | Layer blur                                   |
+| `size`, `weight`, `font`, `color`, `textAlign` | Text properties                              |
+| `colStart`, `rowStart`, `colSpan`, `rowSpan`   | Grid child positioning                       |
 
 ## Node IDs
 

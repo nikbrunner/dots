@@ -11,6 +11,7 @@ Remove a config from dots symlink management.
 ## Arguments
 
 `$ARGUMENTS` can be:
+
 - A symlink path (e.g., `~/.config/gamemode.ini`)
 - A dots repo path (e.g., `arch/.config/gamemode.ini`)
 
@@ -19,6 +20,7 @@ Remove a config from dots symlink management.
 ### 1. Identify the Config
 
 If given a symlink path:
+
 ```bash
 # Check if it's a symlink pointing to dots
 readlink -f "<path>"
@@ -29,12 +31,14 @@ If given a dots repo path, verify it exists in the repo.
 ### 2. Find Entry in symlinks.yml
 
 Search for the entry in `symlinks.yml` and identify:
+
 - Which section it's in (common/arch/macos)
 - The full entry line
 
 ### 3. Confirm Removal
 
 Ask for confirmation:
+
 - Remove from symlinks.yml? (always yes for this operation)
 - Delete the file from dots repo? (ask - user might want to keep it)
 - Remove related dependency? (ask if applicable, use `/dots/deps-manage remove`)
@@ -51,6 +55,7 @@ rm "<symlink-path>"
 ```
 
 If user wants to keep using the config (just not managed by dots):
+
 ```bash
 # Copy from dots to original location
 cp "$DOTS_DIR/<section>/<path>" "<original-path>"
@@ -59,6 +64,7 @@ cp "$DOTS_DIR/<section>/<path>" "<original-path>"
 ### 6. Optionally Delete from Repo
 
 If user confirmed deletion:
+
 ```bash
 rm "$DOTS_DIR/<section>/<path>"
 # Remove empty parent directories
@@ -79,6 +85,7 @@ dots link
 ## Output
 
 Report what was done:
+
 - Removed from symlinks.yml: yes/no
 - File deleted from repo: yes/no
 - Dependency removed: yes/no

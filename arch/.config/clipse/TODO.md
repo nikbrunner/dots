@@ -9,6 +9,7 @@
 ### Background
 
 Clipse supports three image display modes:
+
 - `basic` - Shows basic image info (current)
 - `kitty` - Uses Kitty graphics protocol for inline images
 - `sixel` - Uses Sixel protocol

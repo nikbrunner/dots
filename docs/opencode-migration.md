@@ -6,16 +6,16 @@ This document captures the structural differences between Claude Code and OpenCo
 
 ## Directory Structure Mapping
 
-| Concept | Claude Code | OpenCode |
-|---------|-------------|----------|
-| **Project config** | `.claude/` | `.opencode/` |
-| **Global config** | `~/.claude/` | `~/.config/opencode/` |
-| **Commands** | `.claude/commands/` | `.opencode/commands/` |
-| **Agents** | `.claude/agents/` | `.opencode/agents/` |
-| **Plugins** | N/A (built-in only) | `.opencode/plugins/` |
-| **Instructions** | `CLAUDE.md` | `AGENTS.md` |
-| **Settings** | `settings.json` | `opencode.json` |
-| **MCP servers** | `~/.claude/mcp-servers.json` | Inside `opencode.json` under `"mcp"` |
+| Concept            | Claude Code                  | OpenCode                             |
+| ------------------ | ---------------------------- | ------------------------------------ |
+| **Project config** | `.claude/`                   | `.opencode/`                         |
+| **Global config**  | `~/.claude/`                 | `~/.config/opencode/`                |
+| **Commands**       | `.claude/commands/`          | `.opencode/commands/`                |
+| **Agents**         | `.claude/agents/`            | `.opencode/agents/`                  |
+| **Plugins**        | N/A (built-in only)          | `.opencode/plugins/`                 |
+| **Instructions**   | `CLAUDE.md`                  | `AGENTS.md`                          |
+| **Settings**       | `settings.json`              | `opencode.json`                      |
+| **MCP servers**    | `~/.claude/mcp-servers.json` | Inside `opencode.json` under `"mcp"` |
 
 ---
 
@@ -24,6 +24,7 @@ This document captures the structural differences between Claude Code and OpenCo
 **Good news**: OpenCode has backward compatibility. It will read `CLAUDE.md` if `AGENTS.md` doesn't exist.
 
 To maintain both tools, you can:
+
 1. Keep `CLAUDE.md` as-is (OpenCode reads it as fallback)
 2. Symlink: `ln -s CLAUDE.md AGENTS.md`
 3. Have both with shared content via includes
@@ -43,25 +44,25 @@ OpenCode also supports loading multiple instruction files via `opencode.json`:
 ### Format Comparison
 
 **Claude Code** (`.claude/commands/user/bugs.md`):
+
 ```yaml
 ---
 description: Use bug-finder agent to hunt for logical errors
 argument-hint: [optional: specific file or function]
 ---
-
 # Bug Finder Command
 ...
 $ARGUMENTS
 ```
 
 **OpenCode** (`.opencode/commands/bugs.md`):
+
 ```yaml
 ---
 description: Use bug-finder agent to hunt for logical errors
 agent: bug-finder
 model: anthropic/claude-sonnet-4-20250514
 ---
-
 # Bug Finder Command
 ...
 $ARGUMENTS
@@ -69,17 +70,18 @@ $ARGUMENTS
 
 ### Key Differences
 
-| Feature | Claude Code | OpenCode |
-|---------|-------------|----------|
-| **Frontmatter** | `description`, `argument-hint` | `description`, `agent`, `model`, `subtask` |
-| **Namespacing** | Folder-based (`bai/status.md` → `/bai/status`) | Flat or folder-based (same behavior) |
-| **Shell injection** | `` !`command` `` | `` !`command` `` (same) |
-| **Arguments** | `$ARGUMENTS`, `$1`, `$2` | `$ARGUMENTS`, `$1`, `$2` (same) |
-| **File inclusion** | `@filename` | `@filename` (same) |
+| Feature             | Claude Code                                    | OpenCode                                   |
+| ------------------- | ---------------------------------------------- | ------------------------------------------ |
+| **Frontmatter**     | `description`, `argument-hint`                 | `description`, `agent`, `model`, `subtask` |
+| **Namespacing**     | Folder-based (`bai/status.md` → `/bai/status`) | Flat or folder-based (same behavior)       |
+| **Shell injection** | `` !`command` ``                               | `` !`command` `` (same)                    |
+| **Arguments**       | `$ARGUMENTS`, `$1`, `$2`                       | `$ARGUMENTS`, `$1`, `$2` (same)            |
+| **File inclusion**  | `@filename`                                    | `@filename` (same)                         |
 
 ### Migration Script Concept
 
 Commands are mostly compatible. The main changes needed:
+
 1. Move from `.claude/commands/` to `.opencode/commands/`
 2. Replace `argument-hint` with appropriate frontmatter
 3. Add `agent:` if the command should use a specific agent
@@ -91,17 +93,18 @@ Commands are mostly compatible. The main changes needed:
 ### Format Comparison
 
 **Claude Code** (`.claude/agents/bug-finder.md`):
+
 ```yaml
 ---
 name: bug-finder
 description: A software detective that hunts for bugs
 tools: Read, Grep, Glob, Bash
 ---
-
 You are an expert Software Detective...
 ```
 
 **OpenCode** (`.opencode/agents/bug-finder.md`):
+
 ```yaml
 ---
 description: A software detective that hunts for bugs
@@ -112,20 +115,19 @@ tools:
 permission:
   bash: ask
 ---
-
 You are an expert Software Detective...
 ```
 
 ### Key Differences
 
-| Feature | Claude Code | OpenCode |
-|---------|-------------|----------|
-| **Tool restriction** | Allowlist (`tools: Read, Grep`) | Denylist (`tools: { write: false }`) |
-| **Mode** | Implicit (Task tool spawns) | Explicit (`mode: primary/subagent/all`) |
-| **Permissions** | Global settings.json | Per-agent (`permission: { bash: deny }`) |
-| **Model override** | Not supported | `model: provider/model-id` |
-| **Temperature** | Not supported | `temperature: 0.7` |
-| **Max steps** | Not supported | `steps: 25` |
+| Feature              | Claude Code                     | OpenCode                                 |
+| -------------------- | ------------------------------- | ---------------------------------------- |
+| **Tool restriction** | Allowlist (`tools: Read, Grep`) | Denylist (`tools: { write: false }`)     |
+| **Mode**             | Implicit (Task tool spawns)     | Explicit (`mode: primary/subagent/all`)  |
+| **Permissions**      | Global settings.json            | Per-agent (`permission: { bash: deny }`) |
+| **Model override**   | Not supported                   | `model: provider/model-id`               |
+| **Temperature**      | Not supported                   | `temperature: 0.7`                       |
+| **Max steps**        | Not supported                   | `steps: 25`                              |
 
 ### Migration Notes
 
@@ -144,19 +146,27 @@ This is the **most significant change**. Claude Code hooks are shell commands; O
 ```json
 {
   "hooks": {
-    "PreToolUse": [{
-      "matcher": "WebFetch|WebSearch",
-      "hooks": [{
-        "type": "command",
-        "command": "echo '{\"permissionDecision\": \"allow\"}'"
-      }]
-    }],
-    "SessionStart": [{
-      "hooks": [{
-        "type": "command",
-        "command": "~/.local/bin/helm-hook SessionStart"
-      }]
-    }]
+    "PreToolUse": [
+      {
+        "matcher": "WebFetch|WebSearch",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo '{\"permissionDecision\": \"allow\"}'"
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.local/bin/helm-hook SessionStart"
+          }
+        ]
+      }
+    ]
   }
 }
 ```
@@ -164,7 +174,7 @@ This is the **most significant change**. Claude Code hooks are shell commands; O
 ### OpenCode Equivalent Plugin (`.opencode/plugins/hooks.ts`)
 
 ```typescript
-import type { Plugin } from "opencode/plugin"
+import type { Plugin } from "opencode/plugin";
 
 export default function hooksPlugin(): Plugin {
   return {
@@ -175,7 +185,7 @@ export default function hooksPlugin(): Plugin {
       "tool.execute.before": async (input, output) => {
         if (input.tool === "web_fetch" || input.tool === "web_search") {
           // Auto-allow - no action needed, just don't throw
-          return
+          return;
         }
         // For other tools, could call external script:
         // await $`~/.local/bin/helm-hook PreToolUse ${input.tool}`
@@ -183,33 +193,33 @@ export default function hooksPlugin(): Plugin {
 
       // Equivalent to SessionStart
       "session.created": async (session) => {
-        await $`~/.local/bin/helm-hook SessionStart`
+        await $`~/.local/bin/helm-hook SessionStart`;
       },
 
       // Equivalent to SessionEnd
       "session.deleted": async (session) => {
-        await $`~/.local/bin/helm-hook SessionEnd`
+        await $`~/.local/bin/helm-hook SessionEnd`;
       },
 
       // Equivalent to Stop (session idle/complete)
       "session.idle": async () => {
-        await $`~/.local/bin/helm-hook Stop`
-      }
-    }
-  }
+        await $`~/.local/bin/helm-hook Stop`;
+      },
+    },
+  };
 }
 ```
 
 ### Hook Event Mapping
 
-| Claude Code | OpenCode |
-|-------------|----------|
-| `PreToolUse` | `tool.execute.before` |
-| `PostToolUse` | `tool.execute.after` |
-| `SessionStart` | `session.created` |
-| `SessionEnd` | `session.deleted` |
-| `Stop` | `session.idle` |
-| `Notification` | `tui.toast.show` |
+| Claude Code    | OpenCode              |
+| -------------- | --------------------- |
+| `PreToolUse`   | `tool.execute.before` |
+| `PostToolUse`  | `tool.execute.after`  |
+| `SessionStart` | `session.created`     |
+| `SessionEnd`   | `session.deleted`     |
+| `Stop`         | `session.idle`        |
+| `Notification` | `tui.toast.show`      |
 
 ### Additional OpenCode Events (no Claude equivalent)
 
@@ -253,14 +263,14 @@ export default function hooksPlugin(): Plugin {
 
 ### Key Differences
 
-| Feature | Claude Code | OpenCode |
-|---------|-------------|----------|
-| **Location** | Separate JSON file | Inside main config |
-| **Command format** | `command` + `args` array | Single `command` array |
-| **Env vars** | `env` | `environment` |
-| **Remote servers** | Not directly supported | `type: "remote"` with URL |
-| **OAuth** | Manual | Built-in OAuth flow |
-| **Timeout** | Not configurable | `timeout` in ms |
+| Feature            | Claude Code              | OpenCode                  |
+| ------------------ | ------------------------ | ------------------------- |
+| **Location**       | Separate JSON file       | Inside main config        |
+| **Command format** | `command` + `args` array | Single `command` array    |
+| **Env vars**       | `env`                    | `environment`             |
+| **Remote servers** | Not directly supported   | `type: "remote"` with URL |
+| **OAuth**          | Manual                   | Built-in OAuth flow       |
+| **Timeout**        | Not configurable         | `timeout` in ms           |
 
 ---
 
@@ -286,6 +296,7 @@ To disable all: `"formatter": false`
 ### The Challenge
 
 Both tools look for different directory names:
+
 - Claude Code: `.claude/`, `CLAUDE.md`
 - OpenCode: `.opencode/`, `AGENTS.md`
 
@@ -316,6 +327,7 @@ dots/
 ```
 
 A script could:
+
 1. Read canonical commands
 2. Transform frontmatter for each tool
 3. Write to respective directories
@@ -333,22 +345,26 @@ Keep both configurations separate. Use Claude Code as primary, OpenCode for expe
 ## Migration Priority
 
 ### Phase 1: Parallel Installation (No Migration)
+
 - Install OpenCode
 - Use `CLAUDE.md` (backward compatible)
 - Configure MCP servers in `opencode.json`
 - Test with Zen free models or BYOK
 
 ### Phase 2: Commands (Low Effort)
+
 - Copy commands to `.opencode/commands/`
 - Adjust frontmatter as needed
 - Namespace folders work the same
 
 ### Phase 3: Agents (Medium Effort)
+
 - Rewrite tool restrictions (allowlist → denylist)
 - Add `mode: subagent` to all
 - Test each agent individually
 
 ### Phase 4: Hooks → Plugins (High Effort)
+
 - Rewrite `helm-hook` integration as TypeScript plugin
 - Map event names
 - Test permission flows
@@ -392,18 +408,18 @@ Keep both configurations separate. Use Claude Code as primary, OpenCode for expe
 
 ## Quick Reference: Config File Locations
 
-| Purpose | Claude Code | OpenCode |
-|---------|-------------|----------|
-| Global instructions | `~/.claude/CLAUDE.md` | `~/.config/opencode/AGENTS.md` |
-| Project instructions | `./CLAUDE.md` | `./AGENTS.md` |
-| Global commands | `~/.claude/commands/` | `~/.config/opencode/commands/` |
-| Project commands | `.claude/commands/` | `.opencode/commands/` |
-| Global agents | `~/.claude/agents/` | `~/.config/opencode/agents/` |
-| Project agents | `.claude/agents/` | `.opencode/agents/` |
-| Global plugins | N/A | `~/.config/opencode/plugins/` |
-| Project plugins | N/A | `.opencode/plugins/` |
-| Settings | `.claude/settings.json` | `opencode.json` |
-| MCP servers | `~/.claude/mcp-servers.json` | Inside `opencode.json` |
+| Purpose              | Claude Code                  | OpenCode                       |
+| -------------------- | ---------------------------- | ------------------------------ |
+| Global instructions  | `~/.claude/CLAUDE.md`        | `~/.config/opencode/AGENTS.md` |
+| Project instructions | `./CLAUDE.md`                | `./AGENTS.md`                  |
+| Global commands      | `~/.claude/commands/`        | `~/.config/opencode/commands/` |
+| Project commands     | `.claude/commands/`          | `.opencode/commands/`          |
+| Global agents        | `~/.claude/agents/`          | `~/.config/opencode/agents/`   |
+| Project agents       | `.claude/agents/`            | `.opencode/agents/`            |
+| Global plugins       | N/A                          | `~/.config/opencode/plugins/`  |
+| Project plugins      | N/A                          | `.opencode/plugins/`           |
+| Settings             | `.claude/settings.json`      | `opencode.json`                |
+| MCP servers          | `~/.claude/mcp-servers.json` | Inside `opencode.json`         |
 
 ---
 

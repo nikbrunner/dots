@@ -2,7 +2,15 @@
 name: bai:review
 user-invocable: false
 description: Review and clean up Black Atom issues
-allowed-tools: ["mcp__linear__list_issues", "mcp__linear__get_issue", "mcp__linear__save_issue", "mcp__linear__create_comment", "mcp__linear__list_issue_statuses", "AskUserQuestion"]
+allowed-tools:
+  [
+    "mcp__linear__list_issues",
+    "mcp__linear__get_issue",
+    "mcp__linear__save_issue",
+    "mcp__linear__create_comment",
+    "mcp__linear__list_issue_statuses",
+    "AskUserQuestion",
+  ]
 ---
 
 # Black Atom Review
@@ -14,6 +22,7 @@ Review active issues to re-evaluate priorities, close stale items, and clean up.
 `$ARGUMENTS` - Optional filter (team, project, or search term)
 
 Examples:
+
 - `` (no args) - Review all active issues
 - `Development` - Review Development team issues only
 - `Black Atom - 1.0` - Review issues in the 1.0 project
@@ -34,6 +43,7 @@ Examples:
 2. Get full details for each with `mcp__linear__get_issue` (includeRelations: true)
 
 3. For each issue, present for review:
+
    ```
    [DEV-123] Issue title
    Team: Development | Project: Black Atom - 1.0
@@ -57,6 +67,7 @@ Examples:
 ## Review Prompts
 
 For each issue ask:
+
 - Is this still relevant to Black Atom v1 goals?
 - Is the priority accurate?
 - Are the blocking relations still correct?
@@ -65,6 +76,7 @@ For each issue ask:
 ## Flags
 
 Highlight issues that:
+
 - Have no updates in 30+ days (stale)
 - Are blocking other issues (high impact)
 - Are in "In Progress" but seem stuck

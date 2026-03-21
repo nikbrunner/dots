@@ -32,9 +32,18 @@ type Props = React.ButtonHTMLAttributes<HTMLButtonElement> &
     children: React.ReactNode;
   };
 
-export function Button({ variant, size, className, children, ...props }: Props) {
+export function Button({
+  variant,
+  size,
+  className,
+  children,
+  ...props
+}: Props) {
   return (
-    <button className={cx(buttonVariants({ variant, size }), className)} {...props}>
+    <button
+      className={cx(buttonVariants({ variant, size }), className)}
+      {...props}
+    >
       {children}
     </button>
   );
@@ -53,11 +62,11 @@ cx(styles.root, isActive && styles.active, className);
 
 ## Modifier Patterns Compared
 
-| Approach | Example | When |
-|----------|---------|------|
-| **CVA variants** | `variant: { primary: styles.primary }` | Component has well-defined variants |
-| **cx() conditionals** | `cx(styles.root, isOpen && styles.open)` | Toggle based on state |
-| **Data attributes** | `data-active={isActive}` + `[data-active] {}` | CSS-only state styling |
-| **BEM modifiers** | `.block--active {}` | SCSS projects without CSS Modules |
+| Approach              | Example                                       | When                                |
+| --------------------- | --------------------------------------------- | ----------------------------------- |
+| **CVA variants**      | `variant: { primary: styles.primary }`        | Component has well-defined variants |
+| **cx() conditionals** | `cx(styles.root, isOpen && styles.open)`      | Toggle based on state               |
+| **Data attributes**   | `data-active={isActive}` + `[data-active] {}` | CSS-only state styling              |
+| **BEM modifiers**     | `.block--active {}`                           | SCSS projects without CSS Modules   |
 
 Prefer CVA variants for component APIs. Use `cx()` for internal state toggles. Data attributes work well for CSS-only interactivity.

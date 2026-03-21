@@ -37,7 +37,10 @@ Single query + derived memoized values + multiple mutations. Returns `{ query, .
 const TOPIC = "brands" as const;
 const queryKey = (keys: string[] = []) => [TOPIC, ...keys] as const;
 
-type UseBrandsOptions = Omit<Partial<UseQueryOptions<Brand[]>>, "queryKey" | "queryFn">;
+type UseBrandsOptions = Omit<
+  Partial<UseQueryOptions<Brand[]>>,
+  "queryKey" | "queryFn"
+>;
 
 export const useBrands = (options: UseBrandsOptions = {}) => {
   const query = useQuery({
@@ -82,6 +85,7 @@ export const useBrands = (options: UseBrandsOptions = {}) => {
 ```
 
 Key conventions:
+
 - `query` returned as-is (never spread) for render optimization
 - Derived values memoized with `useMemo` for reference stability
 - Mutations share the same `queryKey` root for automatic invalidation via `MutationCache`
@@ -108,7 +112,8 @@ const useSetCustomization = (options = {}) => {
   return useMutation({
     ...options,
     mutationKey: queryKey(["customization"]),
-    mutationFn: customization => storeSetting(["customization"], customization),
+    mutationFn: (customization) =>
+      storeSetting(["customization"], customization),
   });
 };
 
@@ -116,7 +121,7 @@ const useSetMail = (options = {}) => {
   return useMutation({
     ...options,
     mutationKey: queryKey(["mail"]),
-    mutationFn: mail => storeSetting(["mail"], mail),
+    mutationFn: (mail) => storeSetting(["mail"], mail),
   });
 };
 
@@ -140,7 +145,9 @@ export const useSetSettings = {
 
 ```tsx
 // use-settings.lib.ts -- pure functions, no hooks
-const assortmentPriceSettings = (settings: Settings): AssortmentPriceSettings => {
+const assortmentPriceSettings = (
+  settings: Settings,
+): AssortmentPriceSettings => {
   const hasAutomatic = settings.assortment.type === AssortmentType.Automatic;
   return hasAutomatic ? settings.assortment.priceSettings : fallbackSettings;
 };
@@ -211,10 +218,10 @@ return { query, derivedValue: query.data?.something };
 const all = query.data ?? [];
 
 // Bad -- new array every render, even if `all` hasn't changed
-const active = all.filter(b => b.active);
+const active = all.filter((b) => b.active);
 
 // Good -- cached result when `all` reference is stable
-const active = useMemo(() => all.filter(b => b.active), [all]);
+const active = useMemo(() => all.filter((b) => b.active), [all]);
 ```
 
 The chain: structural sharing → stable `query.data` → stable dep → `useMemo` returns cached derived value.

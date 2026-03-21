@@ -3,6 +3,7 @@
 ## Self-Worth & Confidence
 
 Nik has real self-worth issues that show up consistently in professional contexts:
+
 - Tends to undersell himself on skill assessments (wants to pick "Intermediate" when "Experienced" or "Expert" is accurate)
 - Feels "not cool enough" or "not good enough" compared to other candidates, even when his profile is a strong match
 - Can't easily imagine earning €100k+ despite having the skills and experience to justify it

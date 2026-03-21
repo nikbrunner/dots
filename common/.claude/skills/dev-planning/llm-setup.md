@@ -25,11 +25,11 @@ ln -s AGENTS.md CLAUDE.md
 
 Create `.claude/skills/` for domain knowledge and workflows:
 
-| Type | Example | user-invocable? |
-|------|---------|-----------------|
-| **Domain knowledge** | `about-project/SKILL.md` -- entities, business rules, API shape | `false` |
-| **Conventions** | `api-conventions/SKILL.md` -- endpoint patterns, error formats | `false` |
-| **Workflows** | `deploy/SKILL.md` -- deployment steps | `true` |
+| Type                 | Example                                                         | user-invocable? |
+| -------------------- | --------------------------------------------------------------- | --------------- |
+| **Domain knowledge** | `about-project/SKILL.md` -- entities, business rules, API shape | `false`         |
+| **Conventions**      | `api-conventions/SKILL.md` -- endpoint patterns, error formats  | `false`         |
+| **Workflows**        | `deploy/SKILL.md` -- deployment steps                           | `true`          |
 
 Skills should contain what's NOT discoverable from the codebase itself. Don't duplicate what's in config files, package.json, or tsconfig.
 
@@ -42,6 +42,7 @@ Create `.claude/hooks/enforce/` for deterministic rules:
 - Register them in `.claude/settings.json`
 
 Common hooks:
+
 - Commit message format enforcement
 - Forbidden patterns (e.g., warn on `any` in TypeScript)
 - Auto-formatting after file writes
@@ -80,6 +81,7 @@ echo "Pre-commit hook installed at $HOOK_FILE"
 ```
 
 **Adapt to the project:**
+
 - Replace `typecheck`, `lint`, `test:unit` with the project's actual `package.json` scripts
 - For non-Node projects, replace npm/pnpm with the relevant toolchain (e.g., `go vet ./...`, `cargo clippy`)
 - Keep it fast — slow hooks get bypassed. Integration tests belong in CI, not here.

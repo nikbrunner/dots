@@ -1,6 +1,6 @@
 # TODO
 
-- [x] Add command `dots git-chores` that cleans up git chores `common/.claude/commands/dots/git-chores.md` `common/.claude/commands/dots/git-status-cleanup.md` 
+- [x] Add command `dots git-chores` that cleans up git chores `common/.claude/commands/dots/git-chores.md` `common/.claude/commands/dots/git-status-cleanup.md`
   - The goal would be that its not necessary to start claude first
 - [x] `dots mcp` - simplified to 4 direct commands in scripts/claude-mcp.sh
 - [x] Make `dots` print help menu faster

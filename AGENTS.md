@@ -50,6 +50,7 @@ The `symlinks.yml` file defines all symlinks with OS-specific sections:
 ### Script Sourcing Chain
 
 The `dots` CLI sources two shared libraries:
+
 1. `scripts/log.sh` — logging functions (`log_section`, `log_success`, `log_warning`, `log_error`, `log_info`), plus `has_gum`, `confirm`, `choose` helpers. Uses `gum` for enhanced output when available.
 2. `scripts/dots/lib.sh` — config loading (`load_config`), git URL parsing, repo state detection, and automated chore commit functions (`dots_commit_theme`, `dots_commit_sessions`, `dots_commit_radar`, `dots_commit_font`, `dots_commit_lazy_lock`, `dots_commit_bookmarks`).
 

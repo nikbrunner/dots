@@ -14,6 +14,7 @@ Show issues assigned to me in the Black Atom Industries workspace.
 `$ARGUMENTS` - Optional filter (team name or project)
 
 Examples:
+
 - `` (no args) - All my issues
 - `Development` - Only Development team issues
 - `Black Atom - 1.0` - Only issues in the 1.0 project

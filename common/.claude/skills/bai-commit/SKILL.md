@@ -2,7 +2,14 @@
 name: bai:commit
 user-invocable: false
 description: BAI wrapper around dev:commit — appends Linear issue ID and offers status update afterward.
-allowed-tools: ["Bash", "mcp__linear__get_issue", "mcp__linear__save_issue", "mcp__linear__list_issue_statuses", "AskUserQuestion"]
+allowed-tools:
+  [
+    "Bash",
+    "mcp__linear__get_issue",
+    "mcp__linear__save_issue",
+    "mcp__linear__list_issue_statuses",
+    "AskUserQuestion",
+  ]
 ---
 
 # Black Atom Commit
@@ -12,6 +19,7 @@ BAI wrapper around `dev:commit`. Adds Linear issue tracking to the commit workfl
 ## Before Committing: Detect Issue
 
 Check in order:
+
 1. **Branch name** — parse with `git branch --show-current`; look for pattern `[A-Z]+-[0-9]+` (e.g., `feature/dev-123-add-theme-generator` → `DEV-123`)
 2. **Conversation context** — issue mentioned by user or from a recent `bai:*` skill invocation
 3. **Not found** — proceed without a ticket reference

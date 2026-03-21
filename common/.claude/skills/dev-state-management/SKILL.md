@@ -22,23 +22,23 @@ Most projects need far less client state management than they think. URL params 
 
 ## The Categories
 
-| Category | Source of Truth | Tool | Examples |
-|-|-|-|-|
-| **URL State** | URL | Router search params | Filters, pagination, sort, color mode, theme settings |
-| **Server State** | Server/API | TanStack Query | User profiles, settings, lists |
-| **Scoped State** | Context provider | React Context | Multi-step wizard state, panel-local state |
-| **Client State** | Client store | RTK, Zustand, TanStack Store | Modal queue, toast notifications, UI preferences |
-| **Local State** | Component | `useState` | Input value, hover, open/closed |
+| Category         | Source of Truth  | Tool                         | Examples                                              |
+| ---------------- | ---------------- | ---------------------------- | ----------------------------------------------------- |
+| **URL State**    | URL              | Router search params         | Filters, pagination, sort, color mode, theme settings |
+| **Server State** | Server/API       | TanStack Query               | User profiles, settings, lists                        |
+| **Scoped State** | Context provider | React Context                | Multi-step wizard state, panel-local state            |
+| **Client State** | Client store     | RTK, Zustand, TanStack Store | Modal queue, toast notifications, UI preferences      |
+| **Local State**  | Component        | `useState`                   | Input value, hover, open/closed                       |
 
 ## Client State Libraries
 
 No default library -- choose per project.
 
-| Library | Status | Notes |
-|-|-|-|
-| **Redux Toolkit** | Proven, used at DCD | Good for complex state with many reducers. Migration from vanilla Redux straightforward. |
-| **Zustand** | Not tried yet | Lighter than RTK, minimal boilerplate. |
-| **TanStack Store** | Available | Preferred in TanStack ecosystem -- signals-based, tiny bundle. See `dev:tanstack-store`. |
+| Library            | Status              | Notes                                                                                    |
+| ------------------ | ------------------- | ---------------------------------------------------------------------------------------- |
+| **Redux Toolkit**  | Proven, used at DCD | Good for complex state with many reducers. Migration from vanilla Redux straightforward. |
+| **Zustand**        | Not tried yet       | Lighter than RTK, minimal boilerplate.                                                   |
+| **TanStack Store** | Available           | Preferred in TanStack ecosystem -- signals-based, tiny bundle. See `dev:tanstack-store`. |
 
 The separation principle matters more than the specific library.
 

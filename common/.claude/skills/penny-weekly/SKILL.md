@@ -21,15 +21,15 @@ Sunday energy — relaxed, reflective, looking back and ahead. Not a sprint revi
 **First**: Get the actual current date by running `date '+%Y.%m.%d - %A'`. Do NOT guess days of week — LLMs get this wrong. Use the shell. Then use `date -v-Nd '+%Y.%m.%d - %A'` (where N=1..6) to compute the past 7 days.
 
 - Read all daily notes from the past week (Mon-Sun)
-    - Use the daily note path pattern from `obsidian-dates` and the shell-computed dates to build the 7 file paths
+  - Use the daily note path pattern from `obsidian-dates` and the shell-computed dates to build the 7 file paths
 - For each daily note, track:
-    - Completed tasks (`- [x]`)
-    - Incomplete tasks (`- [ ]`)
-    - Dev Activity sections if present
+  - Completed tasks (`- [x]`)
+  - Incomplete tasks (`- [ ]`)
+  - Dev Activity sections if present
 - Read current month's note (path from `obsidian-dates`, e.g. `02 - Areas/Log/2026/03 - March/2026.03 - March.md`)
 - Read current quarter's note (path from `obsidian-dates`, e.g. `02 - Areas/Log/2026/2026 - Q1.md`)
 - Check Linear for the week's activity:
-    - `mcp__linear__list_issues` with `assignee: "me"`, `updatedAt` set to 7 days ago
+  - `mcp__linear__list_issues` with `assignee: "me"`, `updatedAt` set to 7 days ago
 - Read `penny.md` memory for weekly context
 
 ### 2. Present the week
@@ -86,6 +86,7 @@ Summary paragraph (2-3 sentences, lookback-friendly prose).
 ```
 
 Key rules:
+
 - **Heading is the current week** (W11), not the retro'd week (W10)
 - **Carryover first** — incomplete tasks from last week, with wikilink to previous weekly note
 - **Retro heading** uses a wikilink to the previous week: `## [[YYYY.MM - MonthName - WPrev]] - Retro`

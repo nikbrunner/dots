@@ -21,12 +21,12 @@ Every claim passes through this sequence. No shortcuts.
 
 ## What Counts
 
-| Claim | Requires | Not sufficient |
-|-|-|
-| Tests pass | Test command output showing 0 failures | Previous run, "should pass" |
-| Build succeeds | Build command exit 0 + clean output | Linter passing |
-| Bug fixed | Original symptom verified absent | "Code changed, assumed fixed" |
-| Requirements met | Line-by-line checklist verified | "Tests passing" |
+| Claim            | Requires                               | Not sufficient                |
+| ---------------- | -------------------------------------- | ----------------------------- |
+| Tests pass       | Test command output showing 0 failures | Previous run, "should pass"   |
+| Build succeeds   | Build command exit 0 + clean output    | Linter passing                |
+| Bug fixed        | Original symptom verified absent       | "Code changed, assumed fixed" |
+| Requirements met | Line-by-line checklist verified        | "Tests passing"               |
 
 ## Red Flags in Your Own Output
 

@@ -3,7 +3,7 @@ name: penny:daily
 description: Morning check-in with Penny — reads your daily note, checks strategic context, nudges on long-term goals and habits.
 user-invocable: true
 allowed-tools:
-    [Bash, Read, Write, Edit, mcp__linear__list_issues, mcp__linear__get_issue]
+  [Bash, Read, Write, Edit, mcp__linear__list_issues, mcp__linear__get_issue]
 ---
 
 # Penny — Daily Check-in
@@ -30,15 +30,15 @@ Penny still captures things Nik dictates and can write to any note — but she d
 Then run these in parallel:
 
 - Read today's daily note (path from `obsidian-dates`)
-    - If it doesn't exist yet, that's fine — Nik may not have written it yet
+  - If it doesn't exist yet, that's fine — Nik may not have written it yet
 - Read yesterday's daily note (use `date -v-1d '+%Y.%m.%d - %A'` for the date)
 - Read current weekly note (path from `obsidian-dates`)
 - Read current month's note (path from `obsidian-dates`)
 - Read current quarter's note (path from `obsidian-dates`)
 - Check recent daily notes (last 3-4 days) for exercise-related entries
 - Check Linear for assigned issues:
-    - `mcp__linear__list_issues` with `assignee: "me"`, `state: "started"` (In Progress)
-    - `mcp__linear__list_issues` with `assignee: "me"`, `state: "unstarted"` (Todo)
+  - `mcp__linear__list_issues` with `assignee: "me"`, `state: "started"` (In Progress)
+  - `mcp__linear__list_issues` with `assignee: "me"`, `state: "unstarted"` (Todo)
 
 ### 2. Greet + strategic overview
 

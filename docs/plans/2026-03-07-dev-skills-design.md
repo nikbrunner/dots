@@ -18,11 +18,11 @@ All skills use `dev-*` directory names and `dev:*` in the `name` field. All are 
 
 **SKILL.md (~70 lines):** Core principles — the 4 roles (Dumb Component, Smart Container, Partial, Layout Component), composition rules, prop conventions, localization.
 
-| Reference | Content |
-|-----------|---------|
-| `component-patterns.md` | Pseudocode examples per role, Broad vs Deep Split, anti-patterns |
-| `folder-structure.md` | Technical separation (`components/`, `containers/`, `partials/`, `hooks/`), multi-file component folders, co-located sub-components, naming conventions |
-| `hooks-as-logic-layer.md` | Topic hooks for logic encapsulation, containers as orchestrators, co-location rules |
+| Reference                 | Content                                                                                                                                                 |
+| ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `component-patterns.md`   | Pseudocode examples per role, Broad vs Deep Split, anti-patterns                                                                                        |
+| `folder-structure.md`     | Technical separation (`components/`, `containers/`, `partials/`, `hooks/`), multi-file component folders, co-located sub-components, naming conventions |
+| `hooks-as-logic-layer.md` | Topic hooks for logic encapsulation, containers as orchestrators, co-location rules                                                                     |
 
 **Replaces:** `react-patterns` skill (deleted).
 
@@ -30,17 +30,18 @@ All skills use `dev-*` directory names and `dev:*` in the `name` field. All are 
 
 **SKILL.md (~50 lines):** Server State vs Client State definition, no default library dogma, 3 complexity levels overview, TKDodo as primary influence.
 
-| Reference | Content |
-|-----------|---------|
-| `query-patterns.md` | Complexity 1 (file per endpoint with pseudocode), Complexity 2 (folder per topic), Complexity 3 (API folder for GraphQL), topic key pattern, auto-invalidation, `Omit<>` for query options, no-spread rule |
-| `fetch-wrapper.md` | Single source of truth for fetch function, auth headers, base URL, error handling |
-| `state-separation.md` | Server vs Client State with examples, URL State as third category, migration pattern (Redux-everything to Redux-client + Query-server) |
+| Reference             | Content                                                                                                                                                                                                    |
+| --------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `query-patterns.md`   | Complexity 1 (file per endpoint with pseudocode), Complexity 2 (folder per topic), Complexity 3 (API folder for GraphQL), topic key pattern, auto-invalidation, `Omit<>` for query options, no-spread rule |
+| `fetch-wrapper.md`    | Single source of truth for fetch function, auth headers, base URL, error handling                                                                                                                          |
+| `state-separation.md` | Server vs Client State with examples, URL State as third category, migration pattern (Redux-everything to Redux-client + Query-server)                                                                     |
 
 ### `dev-typescript` — TypeScript Conventions
 
 **SKILL.md (~50 lines, no references/):** Compact enough to stay in one file.
 
 Content:
+
 - `any` forbidden, `unknown` as last resort
 - Explicit and implicit types where each makes sense
 - Object arguments over positional parameters
@@ -55,18 +56,18 @@ Content:
 
 **SKILL.md (~40 lines):** Testing philosophy — what to test and how.
 
-| Reference | Content |
-|-----------|---------|
+| Reference     | Content                                                                                                                                                                                              |
+| ------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `patterns.md` | Vitest for unit tests (lib/utility functions), Storybook visual regression (screenshot comparison), Storybook interaction tests (Playwright-based), direction toward programmatic user story testing |
 
 ### `dev-greenfield` — Project & Feature Kickoff
 
 **SKILL.md (~50 lines):** Design-before-code process — when to wireframe, when screenshots suffice, multi-document planning.
 
-| Reference | Content |
-|-----------|---------|
+| Reference              | Content                                                                                                 |
+| ---------------------- | ------------------------------------------------------------------------------------------------------- |
 | `wireframing-tools.md` | OpenPencil (AI-native, local, .fig compatible, BYOK), Excalidraw (quick sketches), Figma (real designs) |
-| `planning-tools.md` | Beads (git-backed graph issue tracker), Linear (team projects), Markdown plans (solo/small projects) |
+| `planning-tools.md`    | Beads (git-backed graph issue tracker), Linear (team projects), Markdown plans (solo/small projects)    |
 
 ## CLAUDE.md Changes
 

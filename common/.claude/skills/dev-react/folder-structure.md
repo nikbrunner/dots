@@ -36,6 +36,7 @@ components/
 ```
 
 Why this over `index.tsx` as the component file:
+
 - Every open file has a **meaningful name** in editor tabs and file search
 - `index.ts` is a one-liner you never open — it exists only for clean imports
 - Semantic suffixes (`.module.css`, `.stories.tsx`, `.helpers.ts`, `.types.ts`) make purpose obvious at a glance

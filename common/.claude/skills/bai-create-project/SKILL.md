@@ -13,6 +13,7 @@ Wrapper over `dev:create-project` for Black Atom Industries repos. Loads org con
 ### 1. Load Org Context
 
 Invoke `about:bai` to understand the Black Atom ecosystem:
+
 - Theme system (collections, adapters, core)
 - Adapter architecture
 - Naming conventions
@@ -21,6 +22,7 @@ Invoke `about:bai` to understand the Black Atom ecosystem:
 ### 2. Load BAI Skills
 
 Read `bai:*` skills for org conventions:
+
 - `bai:commit` — commit message conventions, Linear issue integration
 - `bai:status` / `bai:create` / `bai:update` — issue workflow patterns
 - `bai:review` / `bai:close` — issue lifecycle
@@ -29,26 +31,26 @@ Read `bai:*` skills for org conventions:
 
 Ask if ambiguous. Use `AskUserQuestion`:
 
-| Type | Description | Example |
-|-|-|-|
-| **Adapter** | Theme adapter repo — maps Black Atom tokens to a tool's theme format | `black-atom-industries/ghostty`, `black-atom-industries/tmux` |
-| **Plugin** | Neovim/editor plugin (Lua, not TS — different ecosystem conventions) | `radar.nvim` |
-| **Core** | `@black-atom/core` packages — theme definitions, color math, utilities | `core/` monorepo packages |
-| **Tool** | Dev tooling for the BAI ecosystem | `helm`, `livery` |
-| **App** | Web or desktop app | `monitor`, `livery` (Tauri) |
+| Type        | Description                                                            | Example                                                       |
+| ----------- | ---------------------------------------------------------------------- | ------------------------------------------------------------- |
+| **Adapter** | Theme adapter repo — maps Black Atom tokens to a tool's theme format   | `black-atom-industries/ghostty`, `black-atom-industries/tmux` |
+| **Plugin**  | Neovim/editor plugin (Lua, not TS — different ecosystem conventions)   | `radar.nvim`                                                  |
+| **Core**    | `@black-atom/core` packages — theme definitions, color math, utilities | `core/` monorepo packages                                     |
+| **Tool**    | Dev tooling for the BAI ecosystem                                      | `helm`, `livery`                                              |
+| **App**     | Web or desktop app                                                     | `monitor`, `livery` (Tauri)                                   |
 
 ## BAI Defaults
 
 Applied as overrides to `dev:create-project`:
 
-| Setting | Value |
-|-|-|
-| Path | `~/repos/black-atom-industries/{name}` |
-| GitHub org | `black-atom-industries` |
-| CLAUDE.md | Include Linear project reference |
-| settings.json | Include `Skill(bai:create)`, `Skill(bai:update)` in allowedTools |
-| Commit skill | Reference `bai:commit` in `.claude/` config |
-| .gitignore | Add BAI-specific entries (e.g., `.luarocks/` for Lua plugins, adapter build artifacts) |
+| Setting       | Value                                                                                  |
+| ------------- | -------------------------------------------------------------------------------------- |
+| Path          | `~/repos/black-atom-industries/{name}`                                                 |
+| GitHub org    | `black-atom-industries`                                                                |
+| CLAUDE.md     | Include Linear project reference                                                       |
+| settings.json | Include `Skill(bai:create)`, `Skill(bai:update)` in allowedTools                       |
+| Commit skill  | Reference `bai:commit` in `.claude/` config                                            |
+| .gitignore    | Add BAI-specific entries (e.g., `.luarocks/` for Lua plugins, adapter build artifacts) |
 
 ## Flow
 

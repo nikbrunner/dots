@@ -54,6 +54,7 @@ export const Disabled: Story = {
 ## Visual Regression
 
 Not built into Storybook for free. Options:
+
 - **Chromatic** (paid) — Storybook's official cloud-based visual regression service
 - **Custom solution** — Playwright screenshots + image diffing
 - **Storybook test runner + Playwright** — DIY screenshot comparison in CI
@@ -85,5 +86,6 @@ Direction: Programmatic user story testing -- define user journeys as interactio
 ## Hook/Fetch Testing (Emerging)
 
 Area for growth. Patterns to explore:
+
 - Custom render wrapper with QueryClientProvider for testing hooks
 - MSW (Mock Service Worker) for intercepting API calls in tests

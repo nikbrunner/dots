@@ -2,7 +2,16 @@
 name: bai:weekly
 user-invocable: true
 description: Weekly Black Atom issue review — board health, staleness, priority check, project progress
-allowed-tools: ["mcp__linear__list_issues", "mcp__linear__get_issue", "mcp__linear__save_issue", "mcp__linear__list_projects", "AskUserQuestion", "Bash", "Grep"]
+allowed-tools:
+  [
+    "mcp__linear__list_issues",
+    "mcp__linear__get_issue",
+    "mcp__linear__save_issue",
+    "mcp__linear__list_projects",
+    "AskUserQuestion",
+    "Bash",
+    "Grep",
+  ]
 ---
 
 # Black Atom Weekly
@@ -14,6 +23,7 @@ Weekly review of all Black Atom Industries issues across projects. Checks board 
 `$ARGUMENTS` - Optional focus (project name or "quick" for summary only)
 
 Examples:
+
 - `` (no args) - Full weekly review
 - `livery` - Focus on livery project only
 - `quick` - Summary dashboard only, no interactive review
@@ -29,6 +39,7 @@ Examples:
 ### 1. Gather Data
 
 Query `mcp__linear__list_issues` three times (to avoid oversized responses):
+
 - `assignee: "me"`, `state: "In Progress"`, `includeArchived: false`
 - `assignee: "me"`, `state: "Todo"`, `includeArchived: false`
 - `assignee: "me"`, `state: "Backlog"`, `includeArchived: false`
@@ -77,6 +88,7 @@ bai-reality-check
 ```
 
 **What to look for:**
+
 - Issue marked "In Progress" but no commits in any repo → likely stale, suggest moving to Todo
 - Issue marked "Todo"/"Backlog" but has a branch → work has started, likely should be "In Progress"
 - Issue marked "Todo"/"Backlog" but has recent commits → likely done or in progress, suggest status update
@@ -108,6 +120,7 @@ Action: Quick confirmation that priority, project, and status are correct.
 Include git reality-check findings when presenting issues (e.g., "Linear: Todo, Git: 3 commits on branch last week — should this be In Progress?").
 
 For each flagged issue, use `AskUserQuestion` with options:
+
 - **Keep** — No changes needed
 - **Update** — Change status, priority, or project
 - **Close** — Done or canceled

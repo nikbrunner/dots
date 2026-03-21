@@ -108,8 +108,8 @@ if [ "$context_max" -gt 0 ] 2>/dev/null; then
 	bar+="\033[0m"
 
 	# Token counts as rounded k values
-	used_k=$(( (context_used + 500) / 1000 ))
-	max_k=$(( (context_max + 500) / 1000 ))
+	used_k=$(((context_used + 500) / 1000))
+	max_k=$(((context_max + 500) / 1000))
 fi
 
 # Separator

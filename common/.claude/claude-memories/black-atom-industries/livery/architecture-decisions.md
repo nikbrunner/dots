@@ -8,12 +8,13 @@ type: project
 
 The fundamental boundary:
 
-- **TypeScript** manages UI, state, calling order. Decides *what* to do.
-- **Rust** handles all OS operations — file I/O, process signals, socket communication. Does *how*.
+- **TypeScript** manages UI, state, calling order. Decides _what_ to do.
+- **Rust** handles all OS operations — file I/O, process signals, socket communication. Does _how_.
 
 No direct file system access from TypeScript. No shell commands from TypeScript. All OS operations go through typed Rust commands via `invoke()`.
 
 **Rust commands:**
+
 - `replace_in_file` — generic regex find-and-replace on any file (used by all updaters)
 - `reload_ghostty` — `pkill -SIGUSR2`
 - `reload_nvim` — socket discovery + `:colorscheme` via `--server`

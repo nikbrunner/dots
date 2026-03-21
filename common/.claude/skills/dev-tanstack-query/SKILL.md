@@ -33,6 +33,7 @@ Three complexity levels depending on API surface size. See `query-patterns.md` f
 - **TKDodo's Practical React Query** (primary influence): https://tkdodo.eu/blog/practical-react-query
 
 Key articles to consult per topic:
+
 - Render optimization → [Render Optimizations guide](https://tanstack.com/query/latest/docs/framework/react/guides/render-optimizations) + [TKDodo: Render Optimizations](https://tkdodo.eu/blog/react-query-render-optimizations)
 - Query keys → [Query Keys guide](https://tanstack.com/query/latest/docs/framework/react/guides/query-keys)
 - Invalidation → [TKDodo: Automatic Query Invalidation](https://tkdodo.eu/blog/automatic-query-invalidation-after-mutations)

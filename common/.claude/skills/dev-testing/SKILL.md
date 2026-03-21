@@ -12,11 +12,11 @@ Test what matters. Logic gets unit tests. Components get visual tests. User flow
 
 ## Testing Layers
 
-| Layer | Tool | What to Test |
-|-------|------|-------------|
-| **Unit** | Vitest | Lib functions, utilities, pure logic, transformations |
-| **Visual** | Storybook | Component appearance, states, variants (visual regression requires extra setup) |
-| **Interaction** | Storybook + Playwright | User flows, click sequences, form submissions |
+| Layer           | Tool                   | What to Test                                                                    |
+| --------------- | ---------------------- | ------------------------------------------------------------------------------- |
+| **Unit**        | Vitest                 | Lib functions, utilities, pure logic, transformations                           |
+| **Visual**      | Storybook              | Component appearance, states, variants (visual regression requires extra setup) |
+| **Interaction** | Storybook + Playwright | User flows, click sequences, form submissions                                   |
 
 ## Priorities
 

@@ -5,6 +5,7 @@ type: feedback
 ---
 
 Nik reviews code with naming precision in mind. During the ghostty/nvim PR, he pushed back on:
+
 - `tool` → `app` (too broad)
 - `tool` field in `UpdateResult` → `app`
 - Destructuring vs dot notation (`const { query } = useConfig()` → `const config = useConfig()`)

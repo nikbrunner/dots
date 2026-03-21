@@ -13,11 +13,11 @@ AI-powered inline completions using Cerebras inference API. Supermaven-style gho
 
 ### Keymaps
 
-| Key | Action |
-|-----|--------|
-| `<Tab>` | Accept full completion |
-| `<S-Tab>` | Accept first word |
-| `<C-]>` | Dismiss completion |
+| Key           | Action                 |
+| ------------- | ---------------------- |
+| `<Tab>`       | Accept full completion |
+| `<S-Tab>`     | Accept first word      |
+| `<C-]>`       | Dismiss completion     |
 | `<leader>aoa` | Toggle auto-completion |
 
 ### Commands
@@ -26,18 +26,18 @@ AI-powered inline completions using Cerebras inference API. Supermaven-style gho
 
 ### Available Models (Standard API)
 
-| Model ID | Name | Pricing (in/out per M) |
-|----------|------|------------------------|
-| `qwen-3-32b` | Qwen3 32B | $0.20 / $0.20 |
-| `qwen-3-235b-a22b-instruct-2507` | Qwen3 235B Instruct | $0.60 / $1.20 |
-| `llama-3.3-70b` | Llama 3.3 70B | $0.20 / $0.20 |
-| `llama3.1-8b` | Llama 3.1 8B | $0.10 / $0.10 |
+| Model ID                         | Name                | Pricing (in/out per M) |
+| -------------------------------- | ------------------- | ---------------------- |
+| `qwen-3-32b`                     | Qwen3 32B           | $0.20 / $0.20          |
+| `qwen-3-235b-a22b-instruct-2507` | Qwen3 235B Instruct | $0.60 / $1.20          |
+| `llama-3.3-70b`                  | Llama 3.3 70B       | $0.20 / $0.20          |
+| `llama3.1-8b`                    | Llama 3.1 8B        | $0.10 / $0.10          |
 
 ### Cerebras Code Subscription Models ($50-200/month)
 
-| Model ID | Name | FIM Support |
-|----------|------|-------------|
-| `qwen-3-coder-480b` | Qwen3 Coder 480B | Yes |
+| Model ID            | Name             | FIM Support |
+| ------------------- | ---------------- | ----------- |
+| `qwen-3-coder-480b` | Qwen3 Coder 480B | Yes         |
 
 ### Links
 

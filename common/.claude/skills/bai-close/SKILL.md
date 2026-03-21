@@ -2,7 +2,15 @@
 name: bai:close
 user-invocable: false
 description: Close a Black Atom issue — Linear context wrapper around dev:close.
-allowed-tools: ["mcp__linear__save_issue", "mcp__linear__create_comment", "mcp__linear__list_issue_statuses", "mcp__linear__get_issue", "AskUserQuestion", "Bash"]
+allowed-tools:
+  [
+    "mcp__linear__save_issue",
+    "mcp__linear__create_comment",
+    "mcp__linear__list_issue_statuses",
+    "mcp__linear__get_issue",
+    "AskUserQuestion",
+    "Bash",
+  ]
 ---
 
 # Black Atom Close
@@ -14,6 +22,7 @@ BAI wrapper around `dev:close`. Runs the generic dev completion flow, then handl
 `$ARGUMENTS` - Issue identifier and optional closing comment
 
 Examples:
+
 - `DEV-123`
 - `DEV-123 Completed implementation`
 - `DEV-123 canceled: No longer needed`

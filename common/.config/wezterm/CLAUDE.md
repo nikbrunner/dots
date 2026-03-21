@@ -7,6 +7,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 This is a WezTerm configuration written in Lua with a modular architecture. The main entry point is `wezterm.lua` which orchestrates loading of font, UI, and keymap modules.
 
 ### Configuration Flow
+
 ```
 wezterm.lua (entry) → font.lua → ui.lua → keymaps.lua
                                     ↓
@@ -14,7 +15,9 @@ wezterm.lua (entry) → font.lua → ui.lua → keymaps.lua
 ```
 
 ### Module Pattern
+
 Most configuration modules follow this pattern:
+
 ```lua
 return function(wezterm, config)
     -- Configure the config object
@@ -36,14 +39,17 @@ Utility modules use standard Lua module pattern with `local M = {}` and `return 
 ## Special Features
 
 ### Neovim Integration
+
 Pane navigation detects Neovim processes and sends commands directly to Neovim before falling back to WezTerm navigation.
 
-### Dynamic Theming  
+### Dynamic Theming
+
 - Automatic light/dark mode switching based on system appearance
 - External color configuration in `.current_schemes.lua`
 - Color schemes stored as TOML files in `colors/` directory
 
 ### Project Management
+
 - Uses `fd` for fast project discovery
 - Fuzzy project selection with workspace switching
 - Cached results stored in `wezterm.GLOBAL`
@@ -51,12 +57,14 @@ Pane navigation detects Neovim processes and sends commands directly to Neovim b
 ## Development Commands
 
 Since this is a configuration repository, changes take effect immediately when WezTerm reloads. Use:
+
 - Ctrl+, Shift+R to reload configuration
 - Check WezTerm debug console for Lua errors
 
 ## File Navigation
 
 Configuration is organized by feature:
+
 - Font selection: `font.lua`, `font-util.lua`, `fonts/`
 - Visual appearance: `ui.lua`, `tabs.lua`, `colors/`
 - Input handling: `keymaps.lua`

@@ -13,6 +13,7 @@
 ### Task 1: Create dev-styling/SKILL.md
 
 **Files:**
+
 - Create: `common/.claude/skills/dev-styling/SKILL.md`
 
 **Step 1: Create the file**
@@ -28,11 +29,11 @@ user-invocable: false
 
 ## Anchors (firm defaults)
 
-| Anchor | What | Why |
-|--------|------|-----|
-| **CSS Modules** | Scoped `.module.css` or `.css` files | Real CSS, zero runtime, local scope |
-| **CVA** | Typed component variants | Type-safe variants + `cx()` for class merging |
-| **Co-located files** | `Button.css` next to `Button.tsx` | Styles belong to their component |
+| Anchor               | What                                 | Why                                           |
+| -------------------- | ------------------------------------ | --------------------------------------------- |
+| **CSS Modules**      | Scoped `.module.css` or `.css` files | Real CSS, zero runtime, local scope           |
+| **CVA**              | Typed component variants             | Type-safe variants + `cx()` for class merging |
+| **Co-located files** | `Button.css` next to `Button.tsx`    | Styles belong to their component              |
 
 ## Principles
 
@@ -42,13 +43,14 @@ user-invocable: false
 - **No CSS framework default yet** -- actively exploring, see `alternatives.md`
 
 ## Co-Located File Convention
-
 ```
+
 components/
 ├── Button/
-│   ├── Button.tsx
-│   ├── Button.css
-│   └── Button.stories.tsx
+│ ├── Button.tsx
+│ ├── Button.css
+│ └── Button.stories.tsx
+
 ```
 
 Style file lives next to the component, same name. See `dev:react` → `folder-structure.md` for full conventions.
@@ -92,11 +94,12 @@ git commit -m "feat(skills): add dev:styling SKILL.md with anchors and principle
 ### Task 2: Create dev-styling/css-modules.md
 
 **Files:**
+
 - Create: `common/.claude/skills/dev-styling/css-modules.md`
 
 **Step 1: Create the file**
 
-```markdown
+````markdown
 # CSS Modules
 
 ## When to Use
@@ -121,6 +124,7 @@ git commit -m "feat(skills): add dev:styling SKILL.md with anchors and principle
   color: white;
 }
 ```
+````
 
 ```tsx
 // Button.tsx
@@ -134,9 +138,7 @@ interface Props {
 
 export function Button({ variant = "primary", children }: Props) {
   return (
-    <button className={cx(styles.root, styles[variant])}>
-      {children}
-    </button>
+    <button className={cx(styles.root, styles[variant])}>{children}</button>
   );
 }
 ```
@@ -150,29 +152,32 @@ export function Button({ variant = "primary", children }: Props) {
 ## File Naming
 
 Convention depends on the project setup:
+
 - `.module.css` -- explicit CSS Modules (Vite, Next.js default)
 - `.css` with build tool configured for modules -- less common but valid
 
 Be consistent within a project.
-```
+
+````
 
 **Step 2: Commit**
 
 ```bash
 git add common/.claude/skills/dev-styling/css-modules.md
 git commit -m "feat(skills): add css-modules patterns to dev:styling"
-```
+````
 
 ---
 
 ### Task 3: Create dev-styling/utility-patterns.md
 
 **Files:**
+
 - Create: `common/.claude/skills/dev-styling/utility-patterns.md`
 
 **Step 1: Create the file**
 
-```markdown
+````markdown
 # Utility Patterns
 
 ## CVA — Class Variance Authority
@@ -207,14 +212,24 @@ type Props = React.ButtonHTMLAttributes<HTMLButtonElement> &
     children: React.ReactNode;
   };
 
-export function Button({ variant, size, className, children, ...props }: Props) {
+export function Button({
+  variant,
+  size,
+  className,
+  children,
+  ...props
+}: Props) {
   return (
-    <button className={cx(buttonVariants({ variant, size }), className)} {...props}>
+    <button
+      className={cx(buttonVariants({ variant, size }), className)}
+      {...props}
+    >
       {children}
     </button>
   );
 }
 ```
+````
 
 ## cx() — Class Merging
 
@@ -228,28 +243,30 @@ cx(styles.root, isActive && styles.active, className);
 
 ## Modifier Patterns Compared
 
-| Approach | Example | When |
-|----------|---------|------|
-| **CVA variants** | `variant: { primary: styles.primary }` | Component has well-defined variants |
-| **cx() conditionals** | `cx(styles.root, isOpen && styles.open)` | Toggle based on state |
-| **Data attributes** | `data-active={isActive}` + `[data-active] {}` | CSS-only state styling |
-| **BEM modifiers** | `.block--active {}` | SCSS projects without CSS Modules |
+| Approach              | Example                                       | When                                |
+| --------------------- | --------------------------------------------- | ----------------------------------- |
+| **CVA variants**      | `variant: { primary: styles.primary }`        | Component has well-defined variants |
+| **cx() conditionals** | `cx(styles.root, isOpen && styles.open)`      | Toggle based on state               |
+| **Data attributes**   | `data-active={isActive}` + `[data-active] {}` | CSS-only state styling              |
+| **BEM modifiers**     | `.block--active {}`                           | SCSS projects without CSS Modules   |
 
 Prefer CVA variants for component APIs. Use `cx()` for internal state toggles. Data attributes work well for CSS-only interactivity.
-```
+
+````
 
 **Step 2: Commit**
 
 ```bash
 git add common/.claude/skills/dev-styling/utility-patterns.md
 git commit -m "feat(skills): add CVA and utility patterns to dev:styling"
-```
+````
 
 ---
 
 ### Task 4: Create dev-styling/alternatives.md
 
 **Files:**
+
 - Create: `common/.claude/skills/dev-styling/alternatives.md`
 
 **Step 1: Create the file**
@@ -318,6 +335,7 @@ git commit -m "feat(skills): add CSS alternatives reference to dev:styling"
 ### Task 5: Create dev-react/component-libraries.md
 
 **Files:**
+
 - Create: `common/.claude/skills/dev-react/component-libraries.md`
 
 **Step 1: Create the file**
@@ -363,6 +381,7 @@ git commit -m "feat(skills): add component-libraries reference to dev:react"
 ### Task 6: Update dev-react/SKILL.md cross-references
 
 **Files:**
+
 - Modify: `common/.claude/skills/dev-react/SKILL.md:37-39` (References section)
 
 **Step 1: Add cross-references**
@@ -386,6 +405,7 @@ git commit -m "chore(skills): add styling and component library cross-refs to de
 ### Task 7: Update dev-planning/SKILL.md cross-references
 
 **Files:**
+
 - Modify: `common/.claude/skills/dev-planning/SKILL.md:40-43` (References section)
 
 **Step 1: Add to References section**
@@ -408,6 +428,7 @@ git commit -m "chore(skills): add styling cross-ref to dev:planning"
 ### Task 8: Update dev-react/folder-structure.md
 
 **Files:**
+
 - Modify: `common/.claude/skills/dev-react/folder-structure.md:17-25` (Multi-File Components)
 
 **Step 1: Update the component file example to use consistent naming**
@@ -418,14 +439,16 @@ Update the multi-file component example to use `Button.css` naming (matching `de
 ## Multi-File Components
 
 When a component has multiple associated files, group them in a folder:
-
 ```
+
 components/
 ├── button/
-│   ├── index.tsx        # Exports the component
-│   ├── button.css       # Component styles (see dev:styling)
-│   └── stories.tsx      # Storybook stories
+│ ├── index.tsx # Exports the component
+│ ├── button.css # Component styles (see dev:styling)
+│ └── stories.tsx # Storybook stories
+
 ```
+
 ```
 
 **Step 2: Commit**
@@ -440,6 +463,7 @@ git commit -m "chore(skills): align folder-structure style file naming with dev:
 ### Task 9: Update skills README TODO
 
 **Files:**
+
 - Modify: `common/.claude/skills/README.md:18` (Skills to create section)
 
 **Step 1: Mark dev-styling as done**

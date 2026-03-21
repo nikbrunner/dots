@@ -12,14 +12,14 @@ TanStack Form manages form state with full TypeScript inference -- field names, 
 
 ## Key Concepts
 
-| Concept | API | Purpose |
-|-|-|-|
-| Form instance | `useForm({ defaultValues, onSubmit })` | Central form controller |
-| Shared options | `formOptions({ defaultValues })` | Reuse shape across client/server |
-| Field | `<form.Field name="x" children={...} />` | Type-safe render prop per field |
-| Subscribe | `<form.Subscribe selector={...} />` | Granular re-renders for form state |
-| Reactivity | `useStore(form.store, selector)` | Read form state outside fields |
-| Array fields | `<form.Field name="items" mode="array" />` | Dynamic lists with push/remove/swap |
+| Concept        | API                                        | Purpose                             |
+| -------------- | ------------------------------------------ | ----------------------------------- |
+| Form instance  | `useForm({ defaultValues, onSubmit })`     | Central form controller             |
+| Shared options | `formOptions({ defaultValues })`           | Reuse shape across client/server    |
+| Field          | `<form.Field name="x" children={...} />`   | Type-safe render prop per field     |
+| Subscribe      | `<form.Subscribe selector={...} />`        | Granular re-renders for form state  |
+| Reactivity     | `useStore(form.store, selector)`           | Read form state outside fields      |
+| Array fields   | `<form.Field name="items" mode="array" />` | Dynamic lists with push/remove/swap |
 
 ## Key Patterns
 
@@ -27,14 +27,19 @@ TanStack Form manages form state with full TypeScript inference -- field names, 
 
 ```tsx
 const form = useForm({
-  defaultValues: { firstName: '', age: 0 },
+  defaultValues: { firstName: "", age: 0 },
   onSubmit: async ({ value }) => {
-    await api.createUser(value)
+    await api.createUser(value);
   },
-})
+});
 
 return (
-  <form onSubmit={(e) => { e.preventDefault(); form.handleSubmit() }}>
+  <form
+    onSubmit={(e) => {
+      e.preventDefault();
+      form.handleSubmit();
+    }}
+  >
     <form.Field
       name="firstName"
       children={(field) => (
@@ -46,7 +51,7 @@ return (
       )}
     />
   </form>
-)
+);
 ```
 
 ### Validation
@@ -58,14 +63,14 @@ Three approaches, can be combined:
 <form.Field
   name="age"
   validators={{
-    onChange: ({ value }) => value < 18 ? 'Must be 18+' : undefined,
+    onChange: ({ value }) => (value < 18 ? "Must be 18+" : undefined),
     onChangeAsyncDebounceMs: 500,
     onChangeAsync: async ({ value }) => {
-      const taken = await checkAge(value)
-      return taken ? 'Invalid age' : undefined
+      const taken = await checkAge(value);
+      return taken ? "Invalid age" : undefined;
     },
   }}
-/>
+/>;
 
 // 2. Standard Schema (form-level) -- Zod, Valibot, ArkType
 const form = useForm({
@@ -73,15 +78,15 @@ const form = useForm({
   validators: {
     onChange: z.object({ age: z.number().gte(18) }),
   },
-})
+});
 
 // 3. Server validation (TanStack Start / Next.js / Remix)
 const serverValidate = createServerValidate({
   ...formOpts,
   onServerValidate: ({ value }) => {
-    if (value.age < 12) return 'Server: Must be 12+'
+    if (value.age < 12) return "Server: Must be 12+";
   },
-})
+});
 ```
 
 ### Field Listeners (Side Effects)
@@ -93,7 +98,7 @@ React to field changes without validation -- e.g., resetting dependent fields.
   name="country"
   listeners={{
     onChange: ({ value }) => {
-      form.setFieldValue('province', '')
+      form.setFieldValue("province", "");
     },
   }}
 />
@@ -103,11 +108,11 @@ React to field changes without validation -- e.g., resetting dependent fields.
 
 ```tsx
 // Correct
-const firstName = useStore(form.store, (s) => s.values.firstName)
-const errors = useStore(form.store, (s) => s.errorMap)
+const firstName = useStore(form.store, (s) => s.values.firstName);
+const errors = useStore(form.store, (s) => s.errorMap);
 
 // Wrong -- re-renders on every form state change
-const store = useStore(form.store)
+const store = useStore(form.store);
 ```
 
 ### Submit Button Pattern
@@ -117,7 +122,7 @@ const store = useStore(form.store)
   selector={(s) => [s.canSubmit, s.isSubmitting]}
   children={([canSubmit, isSubmitting]) => (
     <button type="submit" disabled={!canSubmit}>
-      {isSubmitting ? '...' : 'Submit'}
+      {isSubmitting ? "..." : "Submit"}
     </button>
   )}
 />
@@ -126,40 +131,42 @@ const store = useStore(form.store)
 ### Reset: Prevent Native HTML Reset
 
 ```tsx
-<button type="button" onClick={() => form.reset()}>Reset</button>
+<button type="button" onClick={() => form.reset()}>
+  Reset
+</button>
 ```
 
 Use `type="button"` or `e.preventDefault()` -- native `type="reset"` causes unexpected behavior with `<select>` elements.
 
 ## Field State Metadata
 
-| Flag | Meaning |
-|-|-|
-| `isTouched` | Changed or blurred at least once |
-| `isDirty` | Value changed (persistent -- stays true even if reverted) |
-| `isPristine` | Opposite of isDirty |
-| `isBlurred` | Lost focus at least once |
+| Flag             | Meaning                                                           |
+| ---------------- | ----------------------------------------------------------------- |
+| `isTouched`      | Changed or blurred at least once                                  |
+| `isDirty`        | Value changed (persistent -- stays true even if reverted)         |
+| `isPristine`     | Opposite of isDirty                                               |
+| `isBlurred`      | Lost focus at least once                                          |
 | `isDefaultValue` | Current value equals default (use for non-persistent dirty check) |
 
 ## SSR Integration
 
-| Framework | Package | Key Imports |
-|-|-|-|
-| TanStack Start | `@tanstack/react-form-start` | `formOptions`, `createServerValidate`, `mergeForm`, `useTransform` |
-| Next.js App Router | `@tanstack/react-form/nextjs` | `formOptions`, `createServerValidate`, `initialFormState` |
-| Remix | `@tanstack/react-form-remix` | `formOptions`, `createServerValidate`, `initialFormState` |
+| Framework          | Package                       | Key Imports                                                        |
+| ------------------ | ----------------------------- | ------------------------------------------------------------------ |
+| TanStack Start     | `@tanstack/react-form-start`  | `formOptions`, `createServerValidate`, `mergeForm`, `useTransform` |
+| Next.js App Router | `@tanstack/react-form/nextjs` | `formOptions`, `createServerValidate`, `initialFormState`          |
+| Remix              | `@tanstack/react-form-remix`  | `formOptions`, `createServerValidate`, `initialFormState`          |
 
 Pattern: share `formOptions` between client/server, use `mergeForm` + `useTransform` to sync server validation state back to client form.
 
 ## Anti-Patterns
 
-| Anti-Pattern | Instead |
-|-|-|
-| `useStore(form.store)` without selector | Always provide a selector |
-| `useField` for reactivity | Use `useStore(form.store, selector)` |
-| Native `type="reset"` button | `type="button"` with `form.reset()` |
-| Hasty field abstractions | Render props are intentionally explicit -- embrace them |
-| Mixing controlled inputs with form state | Let TanStack Form own the field value |
+| Anti-Pattern                             | Instead                                                 |
+| ---------------------------------------- | ------------------------------------------------------- |
+| `useStore(form.store)` without selector  | Always provide a selector                               |
+| `useField` for reactivity                | Use `useStore(form.store, selector)`                    |
+| Native `type="reset"` button             | `type="button"` with `form.reset()`                     |
+| Hasty field abstractions                 | Render props are intentionally explicit -- embrace them |
+| Mixing controlled inputs with form state | Let TanStack Form own the field value                   |
 
 ## Sources of Truth
 

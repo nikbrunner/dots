@@ -9,6 +9,7 @@ V1 scope expanded from "core themes + adapters + branding" to include livery as 
 **Why:** Livery (theme management desktop app) didn't exist when the original March 31 target was set. Nik sees it as a real differentiator vs other colorscheme ecosystems. The original timeline was too optimistic.
 
 **How to apply:**
+
 - No fixed V1 date — track milestones per sub-project (livery, monitor, core 1.0)
 - Theme fine-tuning is now DEV-322 (single checklist issue, 35 themes across 5 collections)
 - DEV-322 blocked by DEV-241 (naming) and DEV-242 (Default vs Stations) — both still open

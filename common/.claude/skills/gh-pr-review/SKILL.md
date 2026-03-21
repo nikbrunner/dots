@@ -17,16 +17,19 @@ Use this command when you want to perform a thorough code review and post it as 
 1. **Identify the PR**:
    - Accept PR number, URL, or use current branch's PR
    - If no PR specified, list available PRs:
+
    ```bash
    gh pr list
    ```
 
 2. **Gather Project Documentation**:
    - Check for and read all project documentation:
+
    ```bash
    # Look for documentation files
    ls -la README* CONTRIBUTING* CLAUDE* .github/ docs/ 2>/dev/null
    ```
+
    - Read and understand:
      - Coding standards and conventions
      - Architecture patterns
@@ -35,6 +38,7 @@ Use this command when you want to perform a thorough code review and post it as 
      - Any project-specific guidelines
 
 3. **Fetch PR Details**:
+
    ```bash
    # Get PR information
    gh pr view <PR_NUMBER> --json title,body,commits,files
@@ -78,6 +82,7 @@ Use this command when you want to perform a thorough code review and post it as 
    - Alternative approaches
 
 6. **Post Review Comment**:
+
    ```bash
    # Post the review as a PR comment
    gh pr comment <PR_NUMBER> --body "$(cat <<'EOF'
@@ -112,6 +117,7 @@ Use this command when you want to perform a thorough code review and post it as 
 ## Review Focus Areas
 
 ### Project Compliance (HIGHEST PRIORITY)
+
 - Documented coding standards
 - Naming conventions
 - File organization
@@ -119,12 +125,14 @@ Use this command when you want to perform a thorough code review and post it as 
 - Testing requirements
 
 ### Code Quality
+
 - Readability and maintainability
 - DRY principle
 - Clear naming
 - Proper abstractions
 
 ### Security & Safety
+
 - Input validation
 - Error handling
 - No exposed secrets
@@ -132,12 +140,14 @@ Use this command when you want to perform a thorough code review and post it as 
 - XSS protection
 
 ### Performance
+
 - Algorithm efficiency
 - Memory usage
 - Database queries
 - Caching strategies
 
 ### Testing
+
 - Test coverage
 - Edge cases
 - Integration tests

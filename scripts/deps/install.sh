@@ -194,7 +194,12 @@ validate_dependencies() {
 # Run subcommand if script is executed directly
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
     case "${1:-install}" in
-    check) check_all || true; echo ""; echo "npm globals:"; check_npm_globals ;;
+    check)
+        check_all || true
+        echo ""
+        echo "npm globals:"
+        check_npm_globals
+        ;;
     install) install_all && install_npm_globals ;;
     upgrade) upgrade_all && upgrade_npm_globals ;;
     list)

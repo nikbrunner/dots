@@ -28,14 +28,14 @@ Write to `UBIQUITOUS_LANGUAGE.md` in the project root.
 
 ## Core Domain Terms
 
-| Term | Definition | Aliases to Avoid |
-|-|-|-|
+| Term           | Definition         | Aliases to Avoid     |
+| -------------- | ------------------ | -------------------- |
 | Canonical term | Precise definition | old-name, vague-name |
 
 ## Actions / Verbs
 
 | Term | Definition | Aliases to Avoid |
-|-|-|-|
+| ---- | ---------- | ---------------- |
 
 ## Relationships
 

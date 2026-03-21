@@ -122,11 +122,11 @@ deno task install
 ## Development
 
 \`\`\`bash
-deno task test     # Run tests
-deno task check    # Type-check
-deno task lint     # Lint
-deno task fmt      # Format
-deno task checks   # All checks
+deno task test # Run tests
+deno task check # Type-check
+deno task lint # Lint
+deno task fmt # Format
+deno task checks # All checks
 \`\`\`
 ```
 

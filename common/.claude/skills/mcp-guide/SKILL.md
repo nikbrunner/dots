@@ -8,12 +8,12 @@ user-invocable: false
 
 These MCPs are configured and should be used — do not skip them.
 
-| MCP | When to Use |
-|-----|------------|
-| **Ref MCP** (`ref_search_documentation`, `ref_read_url`) | Documentation lookups for any library, framework, or API. Always check docs before implementing. |
-| **EXA MCP** (`web_search_exa`, `get_code_context_exa`) | Web searches for examples, patterns, or solutions not found in docs. Use for real-world code examples. |
-| **Chrome MCP** (`chrome-devtools__*`) | Browser testing — opening URLs, HTML export verification, visual checks. |
-| **Linear MCP** (`linear__*`) | Black Atom Industries issue tracking. Use the `bai-*` skills (`/bai-status`, `/bai-create`, etc.) |
+| MCP                                                      | When to Use                                                                                            |
+| -------------------------------------------------------- | ------------------------------------------------------------------------------------------------------ |
+| **Ref MCP** (`ref_search_documentation`, `ref_read_url`) | Documentation lookups for any library, framework, or API. Always check docs before implementing.       |
+| **EXA MCP** (`web_search_exa`, `get_code_context_exa`)   | Web searches for examples, patterns, or solutions not found in docs. Use for real-world code examples. |
+| **Chrome MCP** (`chrome-devtools__*`)                    | Browser testing — opening URLs, HTML export verification, visual checks.                               |
+| **Linear MCP** (`linear__*`)                             | Black Atom Industries issue tracking. Use the `bai-*` skills (`/bai-status`, `/bai-create`, etc.)      |
 
 ## Rules
 

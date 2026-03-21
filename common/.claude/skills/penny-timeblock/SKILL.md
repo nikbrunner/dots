@@ -22,19 +22,24 @@ Plan a timeblocked day for Nik. Reads existing events, checks context (daily not
 ## Step 2: Gather context
 
 ### Existing events
+
 ```bash
 source ~/.env && davit event list --from "<date>T00:00:00Z" --to "<date>T23:59:59Z" --calendar iCloud
 ```
+
 These are fixed anchors. Plan around them.
 
 ### Recent daily notes
+
 Read the last 2-3 daily notes to understand:
+
 - What tasks have been rolling over (stale tasks → suggest admin block)
 - What Nik has been focused on (dev projects → continue or suggest variety)
 - Exercise frequency (no movement in 2+ days → prioritize it)
 - Admin debt (emails, Steuer, etc. piling up → suggest admin block)
 
 ### Active projects
+
 Check what's hot — Linear issues in progress, recent git activity, open PRs.
 
 ## Step 3: Nik's Energy Pattern
@@ -49,23 +54,23 @@ Check what's hot — Linear issues in progress, recent git activity, open PRs.
 
 Pick from these based on context. Not every day needs all of them.
 
-| Activity | Emoji | Duration | When | Triggers |
-|-|-|-|-|-|
-| Morning Routine | ☕ | 30min | Always first | Every day |
-| Deep Work | 🔨 | 1.5–2.5h | Morning priority | Always — choose project based on what's active |
-| Admin | 📋 | 30–45min | Never before 12:00 | Stale tasks in notes, emails mentioned, Steuer etc. |
-| Interview Prep | 📝 | 20–30min | Before any call | Interview/call on the schedule |
-| Reading | 📖 | 30–45min | Afternoon/evening | No interviews, lighter day, hasn't read in a while |
-| Movement | 🚶 | 30–60min | Midday or evening | No bouldering/walk in 2+ days |
-| Bouldern | 🧗 | 1.5–2h | Afternoon/evening | Hasn't bouldered in a week+ |
-| Lunch | 🍽️ | 30–60min | Around 12:00 | Every day — combine with movement when possible |
-| Reflection / Journal | 📓 | 20–30min | Evening | Wednesday ritual, or stressful week |
-| Job Search | 🔍 | 45–60min | Late morning/afternoon | Active job hunting, no new applications in a while |
-| Project Planning | 🗺️ | 30–45min | Morning (after deep work) | New project starting, unclear next steps |
-| Free / Buffer | 🎯 | 15–30min | Before calls, between blocks | Before interviews, after intense blocks |
-| Meditation | 🧘 | 15–20min | Morning or before stressful events | Before interviews, stressful days, or hasn't done it in a while |
-| Musik hören | 🎧 | 30–60min | Afternoon/evening | Aktives Hören (Vinyl, neue Alben) — nicht Hintergrund. Recharge-Aktivität |
-| WoW / Gaming | 🎮 | Open-ended | Evening | Social time with Olli, no need to schedule — just don't over-block evenings |
+| Activity             | Emoji | Duration   | When                               | Triggers                                                                    |
+| -------------------- | ----- | ---------- | ---------------------------------- | --------------------------------------------------------------------------- |
+| Morning Routine      | ☕    | 30min      | Always first                       | Every day                                                                   |
+| Deep Work            | 🔨    | 1.5–2.5h   | Morning priority                   | Always — choose project based on what's active                              |
+| Admin                | 📋    | 30–45min   | Never before 12:00                 | Stale tasks in notes, emails mentioned, Steuer etc.                         |
+| Interview Prep       | 📝    | 20–30min   | Before any call                    | Interview/call on the schedule                                              |
+| Reading              | 📖    | 30–45min   | Afternoon/evening                  | No interviews, lighter day, hasn't read in a while                          |
+| Movement             | 🚶    | 30–60min   | Midday or evening                  | No bouldering/walk in 2+ days                                               |
+| Bouldern             | 🧗    | 1.5–2h     | Afternoon/evening                  | Hasn't bouldered in a week+                                                 |
+| Lunch                | 🍽️    | 30–60min   | Around 12:00                       | Every day — combine with movement when possible                             |
+| Reflection / Journal | 📓    | 20–30min   | Evening                            | Wednesday ritual, or stressful week                                         |
+| Job Search           | 🔍    | 45–60min   | Late morning/afternoon             | Active job hunting, no new applications in a while                          |
+| Project Planning     | 🗺️    | 30–45min   | Morning (after deep work)          | New project starting, unclear next steps                                    |
+| Free / Buffer        | 🎯    | 15–30min   | Before calls, between blocks       | Before interviews, after intense blocks                                     |
+| Meditation           | 🧘    | 15–20min   | Morning or before stressful events | Before interviews, stressful days, or hasn't done it in a while             |
+| Musik hören          | 🎧    | 30–60min   | Afternoon/evening                  | Aktives Hören (Vinyl, neue Alben) — nicht Hintergrund. Recharge-Aktivität   |
+| WoW / Gaming         | 🎮    | Open-ended | Evening                            | Social time with Olli, no need to schedule — just don't over-block evenings |
 
 ### Rules
 
