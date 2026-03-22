@@ -24,3 +24,7 @@ See [session-2026-03-19-20-handover.md](session-2026-03-19-20-handover.md) for n
 
 Commit conventions are now in the project-level `commit` skill (`.claude/skills/commit/SKILL.md`).
 Linear ticket updates are handled by `bai-commit` and `bai-close` skills.
+
+## UI Design Brainstorm
+
+See [design-brainstorm-2026-03-21.md](design-brainstorm-2026-03-21.md) for Stitch project, Black Atom color mapping, design direction, and workflow learnings.
