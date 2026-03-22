@@ -83,22 +83,29 @@ Daily notes are a bullet journal. Follow these rules strictly:
 - **Migration** — when moving tasks to another note (daily, weekly, or monthly), mark the original as `[>]` with a wikilink to the target note. Example: `- [>] E-Mails aufräumen → [[2026.03 - March - W11]]`. This creates a traceable trail.
 - **No empty lines from append** — `obsidian daily:append` adds a blank line before content. When a note already exists, prefer using the Edit tool directly to avoid blank lines between list items.
 
-### Daily note template
+### Daily note creation
 
-```
----
-aliases: []
-tags: []
-date created: <current date in "DayName, MonthName DDth YYYY, HH:MM:SS am/pm" format>
-date modified: <same as created>
----
+Use the two-step CLI pattern (see `obsidian-guide` skill):
 
-# YYYY.MM.DD - DayName
-
-- [ ] Calendar checken
+```bash
+DAILY_PATH=$(obsidian daily:path 2>/dev/null)
+obsidian create path="$DAILY_PATH" template="Periodic/Daily Note" 2>/dev/null
 ```
 
 Path: `02 - Areas/Log/YYYY/MM - MonthName/YYYY.MM.DD - DayName.md`
+
+### Daily note structure & formatting
+
+Daily notes use **project tags** for organization and **Linear links** for issue references:
+
+- **Project sections:** Use `## #project/black-atom-industries` as section headers, with sub-sections
+  like `### #project/black-atom-industries/livery` for specific repos.
+- **Task tags:** Tag tasks with their project: `- [ ] rework murasaki #project/black-atom-industries/core`
+- **Linear issue links:** Use `[DEV-318](linear://issue/DEV-318)` format for issue references in tasks.
+- **Unfinished task migration:** When creating a new day's note, check the previous day for unfinished
+  tasks (`- [ ]`) and migrate relevant ones to today. Don't migrate completed (`- [x]`) or
+  project-level tasks that are ongoing backlogs — only tasks that were meant for yesterday and didn't
+  get done.
 
 ## Boundaries
 

@@ -22,6 +22,10 @@
       "enabled": true,
       "config_path": "~/.config/lazygit/config.yml",
       "themes_path": "~/repos/black-atom-industries/lazygit/themes"
+    },
+    "zed": {
+      "enabled": true,
+      "config_path": "~/.config/zed/settings.json"
     }
   }
 }

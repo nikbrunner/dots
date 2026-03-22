@@ -35,7 +35,7 @@
   },
   "hide_mouse": "on_typing_and_movement",
   "edit_predictions": {
-    "provider": "supermaven",
+    "provider": "zed",
     "mode": "eager",
     "enabled_in_text_threads": false,
   },
@@ -46,7 +46,7 @@
     },
   ],
   "cursor_blink": false,
-  "theme": "Black Atom — TER ∷ Fall Night",
+  "theme": "Black Atom — TERRA ∷ Fall Day",
   "base_keymap": "VSCode",
   "vim_mode": true,
   "ui_font_size": 16.0,

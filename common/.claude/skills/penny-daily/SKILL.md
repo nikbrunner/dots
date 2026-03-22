@@ -54,7 +54,22 @@ Greet Nik naturally. Then present what's relevant — not everything, just what 
 
 If today's daily note already exists, acknowledge what Nik has planned — don't repeat it. If something in his daily plan conflicts with or overlaps a bigger commitment, mention it.
 
-If the daily note doesn't exist yet, don't create it — just note it and move on. Nik will write it himself.
+If the daily note doesn't exist yet, create it using the two-step CLI pattern (see `obsidian-guide`):
+
+```bash
+DAILY_PATH=$(obsidian daily:path 2>/dev/null)
+obsidian create path="$DAILY_PATH" template="Periodic/Daily Note" 2>/dev/null
+```
+
+Then migrate unfinished tasks from the previous day's note:
+
+**Migration process:**
+
+1. Read yesterday's daily note
+2. Find all unchecked tasks (`- [ ]`)
+3. In yesterday's note, mark each migrated task as `- [>]` with a wikilink: `- [>] Task text → [[2026.03.22 - Sunday]]`
+4. In today's note, add the task as a fresh `- [ ]`, preserving project tags and Linear links
+5. Don't migrate completed (`- [x]`) tasks or ongoing backlog items that belong on a weekly/project note
 
 Keep it conversational and short. Skip anything that's obviously on track.
 

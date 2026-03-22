@@ -18,15 +18,14 @@
       ", a k": "zed::OpenKeymap",
       ", a w": "projects::OpenRecent",
       ", a i a": "editor::ToggleEditPrediction",
-      ", a f": "workspace::ToggleZenMode",
       ", a z": "workspace::ToggleCenteredLayout",
 
       // --- Pane Navigation ---
       "ctrl-h": "workspace::ActivatePaneLeft",
       "ctrl-l": "workspace::ActivatePaneRight",
       "ctrl-k": "workspace::ActivatePaneUp",
-      "ctrl-j": "workspace::ActivatePaneDown"
-    }
+      "ctrl-j": "workspace::ActivatePaneDown",
+    },
   },
 
   // ============================================================
@@ -44,8 +43,8 @@
       ", w e": "project_panel::ToggleFocus",
       ", w p": "diagnostics::Deploy",
       ", w m": "git::OpenModifiedFiles",
-      ", w g b": "branches::OpenRecent"
-    }
+      ", w g b": "git::Branch",
+    },
   },
 
   // ============================================================
@@ -54,8 +53,8 @@
   {
     "context": "Editor && mode == full",
     "bindings": {
-      "shift-enter": ["editor::ExpandExcerpts", { "lines": 5 }]
-    }
+      "shift-enter": ["editor::ExpandExcerpts", { "lines": 5 }],
+    },
   },
 
   // ============================================================
@@ -98,8 +97,8 @@
       ", s g b": "editor::BlameHover",
 
       // --- Custom ---
-      "y c": ["workspace::SendKeystrokes", "y y g c c p"]
-    }
+      "y c": ["workspace::SendKeystrokes", "y y g c c p"],
+    },
   },
 
   // ============================================================
@@ -108,14 +107,14 @@
   {
     "context": "Editor && vim_mode == visual && !VimWaiting && !menu",
     "bindings": {
-      "g a": "agent::QuoteSelection",
+      "g a": "agent::AddSelectionToThread",
       "v": "editor::SelectLargerSyntaxNode",
       "V": "editor::SelectSmallerSyntaxNode",
       "A": "editor::SelectAll",
       "K": "editor::MoveLineUp",
       "J": "editor::MoveLineDown",
-      ", c c g": "editor::CopyPermalinkToLine"
-    }
+      ", c c g": "editor::CopyPermalinkToLine",
+    },
   },
 
   // ============================================================
@@ -123,7 +122,7 @@
   // ============================================================
   {
     "context": "Editor && vim_mode == insert && !menu",
-    "bindings": {}
+    "bindings": {},
   },
 
   // ============================================================
@@ -151,8 +150,8 @@
       "a": "project_panel::NewFile",
       "shift-a": "project_panel::NewDirectory",
       "shift-y": "workspace::CopyRelativePath",
-      "g y": "workspace::CopyPath"
-    }
+      "g y": "workspace::CopyPath",
+    },
   },
 
   // ============================================================
@@ -162,7 +161,7 @@
     "context": "Terminal",
     "bindings": {
       "alt-h": "pane::ActivatePreviousItem",
-      "alt-l": "pane::ActivateNextItem"
-    }
-  }
+      "alt-l": "pane::ActivateNextItem",
+    },
+  },
 ]

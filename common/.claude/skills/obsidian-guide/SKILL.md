@@ -24,11 +24,25 @@ Obsidian has an official CLI (`obsidian`). **Prefer CLI commands over direct fil
 
 ```bash
 obsidian daily:read                          # Read today's daily note
-obsidian daily:path                          # Get daily note file path
+obsidian daily:path                          # Get daily note file path (works even if note doesn't exist)
 obsidian daily:append content="- [ ] Task"   # Append to daily note
 obsidian daily:prepend content="## Section"  # Prepend to daily note
 obsidian daily                               # Open daily note in Obsidian
 ```
+
+#### Creating a Daily Note
+
+The `daily:*` commands require the note to exist first. To create today's daily note:
+
+```bash
+# Two-step pattern: resolve path, then create at that path
+DAILY_PATH=$(obsidian daily:path 2>/dev/null)
+obsidian create path="$DAILY_PATH" template="Periodic/Daily Note" 2>/dev/null
+```
+
+**Important:** Do NOT use `obsidian create name=` for daily notes — it doesn't resolve the daily note
+naming pattern and will create a file with the wrong name. Always use `path=` with the output of
+`daily:path`.
 
 ### Tasks
 
