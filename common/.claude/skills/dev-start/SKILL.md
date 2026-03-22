@@ -40,7 +40,7 @@ dev:start (scope assessment → route)
 │
 ├─ Trivial → just do it → dev:commit → done
 │
-├─ Small → dev:worktrees → implement → dev:close
+├─ Small → implement → dev:close
 │
 ├─ Medium
 │   │
