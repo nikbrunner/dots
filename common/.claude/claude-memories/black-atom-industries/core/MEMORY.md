@@ -1,7 +1,8 @@
 # Black Atom Core - Memory
 
-## Project State (as of 2026-03-19)
+## Project State (as of 2026-03-24)
 
+- **Current version**: v0.4.0 (released 2026-03-22)
 - **V1 target**: No fixed date — dates set per sub-project instead
 - **Livery** is part of V1 scope (differentiator for the ecosystem)
 - **V1 = core themes (fine-tuned via monitor) + livery + adapters + branding**
@@ -17,18 +18,12 @@
 - **helm** — tmux session manager (low priority, post-V1)
 - **radar.nvim** — Neovim file navigation plugin (low priority, post-V1)
 
-## Collections (current)
+## Collections & Themes
 
-`default`, `stations`, `jpn`, `terra`, `mnml` — defined in `src/types/theme.ts`
-
-## Key Architecture Notes
-
-- Default and Stations have incompatible UI/syntax creator signatures:
-  - Default: `(primaries, feedback, accents)` pattern
-  - Stations: `(primaries, palette)` pattern
-  - MNML: Uses `accents` pattern (similar to Default)
-- No shared UI/syntax files between collections — each has its own
-- Dark ranges (d10-d40) are very similar between Default and Stations
+- Collections: `default`, `stations`, `jpn`, `terra`, `mnml` — defined in `src/types/theme.ts`
+- **34 themes** total: default(4), stations(4), jpn(4), terra(8), mnml(14)
+- All creator functions use unified `ThemeCreatorOptions` interface (primaries, palette, feedback, accents)
+- Collections destructure different fields: Default/MNML use `{primaries, feedback, accents}`, Stations uses all four
 
 ## Linear Query Pattern
 
@@ -43,8 +38,9 @@
 
 ## Monitor App
 
-- [Architecture conventions](project_monitor_architecture.md) — routing, queries, types, core/monitor boundary
-- [DEV-312 Handover](project_dev312_handover.md) — contrast analysis, layout redesign, command palette, next steps (DEV-309 syntax preview)
+- [Architecture decisions](project_monitor_architecture.md) — non-obvious design choices (Combobox rejection, CSS var portal strategy, etc.)
+- [DEV-312 Handover](project_dev312_handover.md) — resolved items + remaining known issues (light theme hover, mobile responsiveness)
+- Day-to-day conventions are in `monitor/CLAUDE.md` (checked into repo)
 
 ## V1 Restructure (2026-03-19)
 

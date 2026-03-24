@@ -1,54 +1,41 @@
 ---
 name: DEV-312 Handover
-description: Session handover after completing contrast analysis & monitor layout redesign. Context for next session.
+description: Context from contrast analysis & monitor layout redesign. Tracks remaining known issues and design decisions.
 type: project
 ---
 
 ## What was done (DEV-312)
 
-Merged to main via PR #44 (squash merge). Core contrast analysis + full monitor layout redesign.
+Merged to main via PR #44 (squash merge, 2026-03-17). Core contrast analysis + full monitor layout redesign.
 
 ### Core
 
 - `src/lib/contrast-analysis.ts` — 28 intended fg/bg pairings across 5 categories, `analyzeThemeContrast()` function
-- `src/lib/contrast-analysis.test.ts` — 7 tests including error paths
 - Uses `keyof` for type-safe token access, explicit guard for missing tokens
 
 ### Monitor Layout Redesign
 
 - **Top nav** — Base UI `NavigationMenu` for route links (Dashboard, UI Preview, Syntax)
-- **Analytics sidebar** — persistent on preview pages, shows contrast health (pass rates, least contrast pair, all pairs by category)
+- **Analytics sidebar** — persistent on preview pages, shows contrast health
 - **Command palette** (`⌘K`) — generic `CommandPalette` component (Base UI Dialog + TanStack Form), `ThemeSwitcher` partial consumes it
 - **Removed**: left nav, right sidebar, bottom stats bar, 14 unused components
-
-### New Dependencies Added
-
-- `@base-ui/react` — NavigationMenu, Dialog
-- `@tanstack/react-form` + `@tanstack/react-store` — form state in command palette
-- `@tanstack/react-hotkeys` — `⌘K` shortcut
 
 ### Architecture Decisions
 
 - CSS vars synced to `:root` via `useEffect` so portals (Dialog) can access theme colors
-- `Combobox` was tried and abandoned for theme selector — filtering with grouped items was problematic. Custom implementation with Dialog works better.
-- `docs/superpowers/` is gitignored — specs/plans don't live in the repo
-- CI Claude Code Review now requires `needs-review` label + non-draft PR
+- `Combobox` was tried and abandoned for theme selector — filtering with grouped items was problematic. Custom Dialog implementation works better.
+- CI Claude Code Review requires `needs-review` label + non-draft PR
 
-### Known Issues / Polish Left
+### Resolved Issues
 
-- Pass rate summary always renders green regardless of value (should vary by threshold)
+- ~~Pass rate summary always renders green~~ — Fixed (commit 9964560, 2026-03-17)
+- ~~DEV-309 Syntax Preview~~ — Completed and merged to main (commit 73f9946)
+
+### Remaining Known Issues
+
 - Mobile responsiveness was removed with the layout redesign (no replacement yet)
 - Light theme hover state: `l20` → `l10` change means hover/selection/search share same primary in light mode — needs visual check
 
-## What's next
+**Why:** Preserves design decision context (Combobox rejection, CSS var portal strategy) that isn't in the code.
 
-**Recommended: DEV-309 — Syntax Preview Page**
-
-- Route stub already exists at `/preview/code` (shows "coming soon")
-- Analytics sidebar will auto-show contrast data on this route (already wired for all `/preview/*` routes)
-- Needs: syntax highlighting with theme tokens, multi-language samples
-- Maps syntax token groups (variable, string, keyword, type, etc.) to highlighted code
-
-**Why:** Syntax preview is the other main preview type alongside UI. Completes the core preview experience.
-
-**How to apply:** `@core/types/theme.ts` has `ThemeSyntaxColors` with all syntax token groups. The monitor already has `themeToCssVars()` which generates CSS vars for syntax tokens (`--ba-syntax-*`).
+**How to apply:** Reference when modifying the command palette or analytics sidebar. Check the light theme hover issue when fine-tuning themes.
