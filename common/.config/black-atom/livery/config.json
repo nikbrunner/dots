@@ -26,6 +26,10 @@
     "zed": {
       "enabled": true,
       "config_path": "~/.config/zed/settings.json"
+    },
+    "obsidian": {
+      "enabled": true,
+      "config_path": "~/repos/nikbrunner/notes/.obsidian/appearance.json"
     }
   }
 }
