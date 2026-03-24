@@ -76,20 +76,26 @@ When OpenSpec is not available and user declined initialization:
 # PRD: [Title]
 
 ## Problem Statement
+
 [What problem does this solve? Why now?]
 
 ## Solution
+
 [High-level approach.]
 
 ## User Stories
+
 - As a [user], I want [goal] so that [reason]
 
 ## Implementation Decisions
+
 [Key technical decisions with reasoning.]
 
 ## Testing Decisions
+
 [Testing strategy.]
 
 ## Out of Scope
+
 [Explicitly excluded items.]
 ```

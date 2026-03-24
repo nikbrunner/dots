@@ -22,3 +22,11 @@ Interview me relentlessly about every aspect of this plan until we reach a share
 - Surface hidden assumptions and edge cases early.
 - Track open vs resolved decisions as you go.
 - When we reach shared understanding, produce a concise summary of all decisions made.
+
+## Visual Companion
+
+When upcoming questions involve visual content (UI layouts, architecture diagrams, mockup comparisons), offer the `dev:visual-companion` skill:
+
+> "Some of what we're working on might be easier to show visually in a browser. Want me to start the visual companion?"
+
+If accepted, invoke `dev:visual-companion` to start the server. Then per question, decide whether to use the browser (visual content) or terminal (text/conceptual content). Stop the server when grilling is done or all remaining questions are text-only.

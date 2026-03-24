@@ -13,12 +13,14 @@ Browser-based companion for showing mockups, diagrams, and options during design
 Decide per-question, not per-session. The test: **would the user understand this better by seeing it than reading it?**
 
 **Use the browser** for content that IS visual:
+
 - UI mockups, wireframes, layouts, navigation structures
 - Architecture diagrams, data flow, relationship maps
 - Side-by-side comparisons of design directions
 - Spatial relationships, state machines, flowcharts
 
 **Use the terminal** for content that is text:
+
 - Requirements and scope questions
 - Conceptual A/B/C choices described in words
 - Tradeoff lists, comparison tables
@@ -64,6 +66,7 @@ ${CLAUDE_SKILL_DIR}/scripts/stop-server.sh $SCREEN_DIR
 ## CSS Classes Available
 
 See [visual-companion.md](visual-companion.md) for full CSS reference including:
+
 - `.options` + `.option` — A/B/C clickable choices
 - `.cards` + `.card` — visual design comparisons
 - `.mockup` — wireframe container
