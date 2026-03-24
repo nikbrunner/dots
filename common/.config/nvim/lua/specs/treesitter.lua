@@ -5,22 +5,22 @@ M.specs = {
     {
         "nvim-treesitter/nvim-treesitter",
         build = ":TSUpdate",
-        branch = "master",
-        commit = "42fc28ba918343ebfd5565147a42a26580579482",
+        branch = "main",
         lazy = false,
+        config = function()
+            -- Register the mdx filetype
+            vim.filetype.add({ extension = { mdx = "mdx" } })
+
+            -- Configure treesitter to use the markdown parser for mdx files
+            vim.treesitter.language.register("markdown", "mdx")
+        end,
+    },
+
+    {
+        "MeanderingProgrammer/treesitter-modules.nvim",
+        lazy = false,
+        dependencies = { "nvim-treesitter/nvim-treesitter" },
         opts = {
-            highlight = {
-                enable = true,
-                ---@diagnostic disable-next-line: unused-local
-                disable = function(lang, bufnr)
-                    return vim.api.nvim_buf_line_count(bufnr) > 5000
-                end,
-                additional_vim_regex_highlighting = false,
-            },
-            indent = {
-                enable = true,
-                disable = { "typescript", "tsx", "javascript", "jsx" },
-            },
             auto_install = true,
             ensure_installed = {
                 "bash",
@@ -41,7 +41,13 @@ M.specs = {
                 "vimdoc",
                 "yaml",
                 "http",
-                "kulala_http",
+            },
+            highlight = {
+                enable = true,
+                additional_vim_regex_highlighting = false,
+            },
+            indent = {
+                enable = false,
             },
             incremental_selection = {
                 enable = true,
@@ -53,17 +59,18 @@ M.specs = {
                 },
             },
         },
-        config = function(_, opts)
-            local configs = require("nvim-treesitter.configs")
+    },
 
-            -- Register the mdx filetype
-            vim.filetype.add({ extension = { mdx = "mdx" } })
+    -- Only needed for its query files (.scm) - MiniAi uses these
+    {
+        "nvim-treesitter/nvim-treesitter-textobjects",
+        branch = "main",
+        lazy = false,
+    },
 
-            -- Configure treesitter to use the markdown parser for mdx files
-            vim.treesitter.language.register("markdown", "mdx")
-
-            configs.setup(opts)
-        end,
+    {
+        "tpope/vim-sleuth",
+        event = "BufRead",
     },
 
     {
@@ -111,10 +118,10 @@ M.specs = {
             { mode = { "n", "v" }, "<Left>", "<CMD>Treewalker Left<CR>" },
             { mode = { "n", "v" }, "<Right>", "<CMD>Treewalker Right<CR>" },
 
-            -- { mode = { "n", "v" }, "<S-Up>", "<CMD>Treewalker SwapUp<CR>" },
-            -- { mode = { "n", "v" }, "<S-Down>", "<CMD>Treewalker SwapDown<CR>" },
-            -- { mode = { "n", "v" }, "<S-Left>", "<CMD>Treewalker SwapLeft<CR>" },
-            -- { mode = { "n", "v" }, "<S-Right>", "<CMD>Treewalker SwapRight<CR>" },
+            { mode = { "n", "v" }, "<S-Up>", "<CMD>Treewalker SwapUp<CR>" },
+            { mode = { "n", "v" }, "<S-Down>", "<CMD>Treewalker SwapDown<CR>" },
+            { mode = { "n", "v" }, "<S-Left>", "<CMD>Treewalker SwapLeft<CR>" },
+            { mode = { "n", "v" }, "<S-Right>", "<CMD>Treewalker SwapRight<CR>" },
         },
     },
 }
