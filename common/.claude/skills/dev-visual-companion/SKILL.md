@@ -36,6 +36,16 @@ Returns JSON with `url` and `screen_dir`. Tell the user to open the URL.
 
 Save `screen_dir` for the session. Add `.visual-companion/` to `.gitignore` if not already there.
 
+## Capture Existing State First
+
+Before generating mockups, establish the current visual state:
+
+1. **Ask for a screenshot or URL** — "Can you share a screenshot of the current UI, or a URL I can visit?"
+2. **Self-capture via agent-browser** — If the app is running locally, use `agent-browser navigate <url>` then `agent-browser screenshot` to capture the current state. Read the screenshot with the Read tool to understand what exists.
+3. **Self-capture via screencapture** — If it's a desktop app or no URL available: `screencapture -i /tmp/current-state.png` (interactive selection) or `screencapture -w /tmp/current-state.png` (window capture). Read the result.
+
+Use the captured state as the starting point for mockups — show what changes, not just what's new.
+
 ## The Loop
 
 1. **Write HTML fragment** to `$SCREEN_DIR/<name>.html` using the Write tool
