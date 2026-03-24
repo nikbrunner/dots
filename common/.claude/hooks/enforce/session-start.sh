@@ -38,6 +38,11 @@ escape_for_json() {
 escaped_content=$(escape_for_json "$skill_content")
 escaped_header=$(escape_for_json "$context_header")
 
-printf '{\n  "hookSpecificOutput": {\n    "hookEventName": "SessionStart",\n    "additionalContext": "%s\\n\\n%s"\n  }\n}\n' "$escaped_content" "$escaped_header"
+# Wrap in EXTREMELY_IMPORTANT tags at the injection level (not in the SKILL.md).
+# This is the pattern superpowers uses — structural tags in the payload carry more
+# weight than the same tags rendered as markdown inside skill content.
+session_context="<EXTREMELY_IMPORTANT>\\n${escaped_content}\\n\\n${escaped_header}\\n</EXTREMELY_IMPORTANT>"
+
+printf '{\n  "hookSpecificOutput": {\n    "hookEventName": "SessionStart",\n    "additionalContext": "%s"\n  }\n}\n' "$session_context"
 
 exit 0

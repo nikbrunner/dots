@@ -5,8 +5,6 @@ disable-model-invocation: true
 user-invocable: false
 ---
 
-<EXTREMELY_IMPORTANT>
-
 IF A SKILL APPLIES TO YOUR TASK, YOU DO NOT HAVE A CHOICE. YOU MUST USE IT.
 
 This is not negotiable. This is not optional. You cannot rationalize your way out of this.
@@ -14,8 +12,6 @@ This is not negotiable. This is not optional. You cannot rationalize your way ou
 If you think there is even a 1% chance a skill might apply, you ABSOLUTELY MUST invoke the skill using the Skill tool BEFORE any response, any action, any clarifying question.
 
 User instructions say WHAT, not HOW. "Add X" or "Fix Y" does not mean skip workflows. Check for skills FIRST.
-
-</EXTREMELY_IMPORTANT>
 
 ## Priority Chain
 
@@ -29,18 +25,18 @@ If CLAUDE.md contradicts a skill, follow CLAUDE.md. The user is in control.
 
 These thoughts mean STOP — you are rationalizing skipping a skill check:
 
-| Thought | Reality |
-|-|-|
-| "This is simple enough" | Simple tasks have skills too. Check. |
-| "I already know how" | Skills contain project-specific overrides you don't have memorized. Invoke it. |
-| "Let me explore first" | Skills tell you HOW to explore. Check first. |
-| "I need more context" | Skill check comes BEFORE clarifying questions. Always. |
-| "The skill is overkill" | Simple things become complex. Use it. |
-| "I'll just do this one thing first" | Check BEFORE doing anything. No exceptions. |
-| "I remember this skill" | Skills evolve. Read the current version via the Skill tool. |
-| "This doesn't need a formal process" | If a skill exists for it, use it. Period. |
-| "Let me look at the code quickly" | Files lack conversation context. Check for skills. |
-| "This feels productive" | Undisciplined action wastes time. Skills prevent this. |
+| Thought                              | Reality                                                                        |
+| ------------------------------------ | ------------------------------------------------------------------------------ |
+| "This is simple enough"              | Simple tasks have skills too. Check.                                           |
+| "I already know how"                 | Skills contain project-specific overrides you don't have memorized. Invoke it. |
+| "Let me explore first"               | Skills tell you HOW to explore. Check first.                                   |
+| "I need more context"                | Skill check comes BEFORE clarifying questions. Always.                         |
+| "The skill is overkill"              | Simple things become complex. Use it.                                          |
+| "I'll just do this one thing first"  | Check BEFORE doing anything. No exceptions.                                    |
+| "I remember this skill"              | Skills evolve. Read the current version via the Skill tool.                    |
+| "This doesn't need a formal process" | If a skill exists for it, use it. Period.                                      |
+| "Let me look at the code quickly"    | Files lack conversation context. Check for skills.                             |
+| "This feels productive"              | Undisciplined action wastes time. Skills prevent this.                         |
 
 ## Skill Types
 
