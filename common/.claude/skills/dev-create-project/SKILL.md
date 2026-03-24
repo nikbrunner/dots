@@ -38,7 +38,7 @@ Load relevant `dev-*` skills for conventions (see Dev Skill Mappings in `default
 - `dev:typescript` — always for TS projects
 - `dev:react`, `dev:styling`, `dev:state-management` — for web/desktop
 - `dev:tanstack` — when TanStack libs are relevant
-- `dev:testing`, `dev:planning` — always
+- `dev:tdd`, `dev:planning` — always
 
 Present inferred configuration summary to user. Example:
 
@@ -143,7 +143,7 @@ Invoke `dev-claude-setup` to handle `.claude/` configuration. Pass context so it
 - `dev-claude-setup` — invoked in Phase 6 for `.claude/` scaffolding
 - `dev:typescript` — TS conventions loaded in Phase 2
 - `dev:react` — React patterns loaded for web/desktop projects
-- `dev:testing` — test strategy loaded in Phase 2
+- `dev:tdd` — test strategy loaded in Phase 2
 - `dev:styling` — CSS/Tailwind preferences loaded for web/desktop projects
 - `dev:state-management` — state architecture loaded for web/desktop projects
 - `bai:create-project` — BAI-specific wrapper that invokes this skill

@@ -1,6 +1,6 @@
 ---
 name: dev:verification
-description: "Behavioral constraint -- no completion claims without fresh verification evidence. Load before any commit, PR, or done statement."
+description: "Behavioral constraint -- no completion claims without fresh verification evidence. Includes structural completeness review. Load before any commit, PR, or done statement."
 user-invocable: true
 ---
 
@@ -21,12 +21,12 @@ Every claim passes through this sequence. No shortcuts.
 
 ## What Counts
 
-| Claim            | Requires                               | Not sufficient                |
-| ---------------- | -------------------------------------- | ----------------------------- |
-| Tests pass       | Test command output showing 0 failures | Previous run, "should pass"   |
-| Build succeeds   | Build command exit 0 + clean output    | Linter passing                |
-| Bug fixed        | Original symptom verified absent       | "Code changed, assumed fixed" |
-| Requirements met | Line-by-line checklist verified        | "Tests passing"               |
+| Claim | Requires | Not sufficient |
+|-|-|-|
+| Tests pass | Test command output showing 0 failures | Previous run, "should pass" |
+| Build succeeds | Build command exit 0 + clean output | Linter passing |
+| Bug fixed | Original symptom verified absent | "Code changed, assumed fixed" |
+| Requirements met | Line-by-line checklist verified | "Tests passing" |
 
 ## Red Flags in Your Own Output
 
@@ -45,6 +45,17 @@ If you catch yourself writing any of these, stop and run the verification:
 - **"Just this once"** -- no exceptions.
 - **"The change is trivial"** -- trivial changes break builds.
 - **"I already verified something similar"** -- similar is not same.
+
+## Structural Completeness Review
+
+After verification passes, use the **structural-completeness-reviewer** agent to check:
+
+- Changes are fully integrated
+- Old code is properly removed
+- No technical debt introduced
+- Structural integrity maintained
+
+Address any review findings before claiming completion.
 
 ## Applies Before
 

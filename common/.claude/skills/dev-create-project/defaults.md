@@ -89,4 +89,4 @@ Always applied regardless of ecosystem:
 | Any TypeScript | `dev:typescript`                                                        |
 | React          | `dev:react`, `dev:styling`, `dev:state-management`                      |
 | TanStack usage | `dev:tanstack`, `dev:tanstack-query`, `dev:tanstack-form` (as relevant) |
-| Any project    | `dev:testing`, `dev:planning`                                           |
+| Any project    | `dev:tdd`, `dev:planning`                                               |

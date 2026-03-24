@@ -23,16 +23,16 @@ If CLAUDE.md contradicts a skill, follow CLAUDE.md. The user is in control.
 
 These thoughts mean STOP — you're skipping a skill check:
 
-| Thought | Reality |
-|-|-|
-| "This is simple enough" | Simple tasks have skills too. Check. |
-| "I already know how" | Skills contain project-specific overrides you don't have memorized. |
-| "Let me explore first" | Skills tell you HOW to explore. Check first. |
-| "I need more context" | Skill check comes BEFORE clarifying questions. |
-| "The skill is overkill" | Simple things become complex. Use it. |
-| "I'll just do this one thing first" | Check BEFORE doing anything. |
-| "I remember this skill" | Skills evolve. Read the current version. |
-| "This doesn't need a formal process" | If a skill exists for it, use it. |
+| Thought                              | Reality                                                             |
+| ------------------------------------ | ------------------------------------------------------------------- |
+| "This is simple enough"              | Simple tasks have skills too. Check.                                |
+| "I already know how"                 | Skills contain project-specific overrides you don't have memorized. |
+| "Let me explore first"               | Skills tell you HOW to explore. Check first.                        |
+| "I need more context"                | Skill check comes BEFORE clarifying questions.                      |
+| "The skill is overkill"              | Simple things become complex. Use it.                               |
+| "I'll just do this one thing first"  | Check BEFORE doing anything.                                        |
+| "I remember this skill"              | Skills evolve. Read the current version.                            |
+| "This doesn't need a formal process" | If a skill exists for it, use it.                                   |
 
 ## Skill Types
 

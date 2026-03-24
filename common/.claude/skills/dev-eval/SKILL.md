@@ -20,7 +20,7 @@ Evaluate code in the current project against Nik's `dev-*` convention skills.
 4. **Produce findings** — a flat list of actionable observations
 
 If the topic doesn't match any `dev-*` skill, say so and list the available concept skills:
-`dev:react`, `dev:typescript`, `dev:styling`, `dev:state-management`, `dev:testing`, `dev:tanstack-query`, `dev:tanstack-form`
+`dev:react`, `dev:typescript`, `dev:styling`, `dev:state-management`, `dev:tdd`, `dev:tanstack-query`, `dev:tanstack-form`
 
 ## Findings Format
 
