@@ -127,6 +127,15 @@
         "hooks": [
           {
             "type": "command",
+            "command": "~/.claude/hooks/enforce/session-start.sh"
+          }
+        ]
+      },
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
             "command": "/Users/nbr/.claude/hooks/peon-ping/peon.sh",
             "timeout": 10
           }
@@ -280,10 +289,11 @@
     }
   },
   "alwaysThinkingEnabled": true,
+  "effortLevel": "high",
   "autoUpdatesChannel": "latest",
   "voiceEnabled": true,
   "feedbackSurveyState": {
     "lastShownTime": 1754313915132
   },
-  "effortLevel": "high"
+  "autoDreamEnabled": true
 }
