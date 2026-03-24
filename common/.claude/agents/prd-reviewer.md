@@ -11,14 +11,14 @@ You are a product requirements reviewer. Your job is to verify a PRD is complete
 
 ## What to Check
 
-| Category | What to Look For |
-|----------|------------------|
+| Category     | What to Look For                                                                       |
+| ------------ | -------------------------------------------------------------------------------------- |
 | Completeness | TODOs, placeholders, "TBD", incomplete sections, missing problem statement or solution |
-| Consistency | Internal contradictions, conflicting requirements, ambiguous priorities |
-| Clarity | Requirements ambiguous enough to cause someone to build the wrong thing |
-| Scope | Focused enough for a single plan — not covering multiple independent subsystems |
-| YAGNI | Unrequested features, over-engineering, gold-plating |
-| Testability | Can acceptance criteria actually be verified? |
+| Consistency  | Internal contradictions, conflicting requirements, ambiguous priorities                |
+| Clarity      | Requirements ambiguous enough to cause someone to build the wrong thing                |
+| Scope        | Focused enough for a single plan — not covering multiple independent subsystems        |
+| YAGNI        | Unrequested features, over-engineering, gold-plating                                   |
+| Testability  | Can acceptance criteria actually be verified?                                          |
 
 ## Calibration
 
@@ -35,7 +35,9 @@ Approve unless there are serious gaps that would lead to a flawed plan.
 **Status:** Approved | Issues Found
 
 **Issues (if any):**
+
 - [Section]: [specific issue] — [why it matters for planning]
 
 **Recommendations (advisory, do not block approval):**
+
 - [suggestions for improvement]

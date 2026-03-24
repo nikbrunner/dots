@@ -43,19 +43,19 @@ See `dev:start` skill for the canonical pipeline tree with all review gates.
 
 ### Toolbox (loaded contextually at any stage)
 
-| Skill                     | Purpose                                          |
-|-|-|
-| `dev:grill-me`            | Pressure-test a design or decision               |
-| `dev:design-interface`    | Competing API/module designs via parallel agents |
-| `dev:tdd`                 | Vertical slice testing, behavior-driven design   |
-| `dev:verification`        | Evidence before any completion claim             |
+| Skill                     | Purpose                                           |
+| ------------------------- | ------------------------------------------------- |
+| `dev:grill-me`            | Pressure-test a design or decision                |
+| `dev:design-interface`    | Competing API/module designs via parallel agents  |
+| `dev:tdd`                 | Vertical slice testing, behavior-driven design    |
+| `dev:verification`        | Evidence before any completion claim              |
 | `dev:receiving-review`    | Behavioral rules for processing reviewer feedback |
-| `dev:commit`              | Conventional commits with scope detection        |
-| `dev:ubiquitous-language` | Canonical domain terminology                     |
-| `dev:refactor-plan`       | Safe refactor as tiny commits                    |
-| `dev:edit-article`        | DAG-based article editing                        |
-| `dev:arch-review`         | Architecture review with deep module eval        |
-| `dev:bugs`                | Bug hunting with TDD fix plans                   |
+| `dev:commit`              | Conventional commits with scope detection         |
+| `dev:ubiquitous-language` | Canonical domain terminology                      |
+| `dev:refactor-plan`       | Safe refactor as tiny commits                     |
+| `dev:edit-article`        | DAG-based article editing                         |
+| `dev:arch-review`         | Architecture review with deep module eval         |
+| `dev:bugs`                | Bug hunting with TDD fix plans                    |
 
 ## TODOs
 

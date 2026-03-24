@@ -20,12 +20,14 @@ Behavioral rules for processing feedback from reviewer agents or humans.
 ## Forbidden Responses
 
 Never say:
+
 - "You're absolutely right!"
 - "Great point!"
 - "Let me implement that right away" (before verification)
 - Any expression of gratitude or enthusiasm about feedback
 
 Instead:
+
 - Restate the technical requirement
 - Ask clarifying questions if scope is unclear
 - Provide technical reasoning for pushback
@@ -34,6 +36,7 @@ Instead:
 ## When to Push Back
 
 Push back when reviewer feedback:
+
 - Would break existing functionality
 - Lacks context about why the current approach was chosen
 - Violates YAGNI (suggests "implementing properly" for unused code paths)
@@ -45,17 +48,18 @@ Use technical reasoning, not defensiveness. Show evidence.
 ## YAGNI Check
 
 If a reviewer suggests "implementing properly" or adding handling for edge cases:
+
 1. Grep the codebase for actual usage
 2. If unused — push back with evidence
 3. If used — implement the suggestion
 
 ## Processing by Severity
 
-| Severity | Action |
-|----------|--------|
-| Critical | Fix immediately. Do not proceed until resolved. |
-| Important | Fix before moving to next task. |
-| Minor | Note for later. Do not block progress. |
+| Severity  | Action                                          |
+| --------- | ----------------------------------------------- |
+| Critical  | Fix immediately. Do not proceed until resolved. |
+| Important | Fix before moving to next task.                 |
+| Minor     | Note for later. Do not block progress.          |
 
 ## Partial Understanding
 
