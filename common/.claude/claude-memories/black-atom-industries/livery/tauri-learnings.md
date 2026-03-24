@@ -1,4 +1,8 @@
-# Tauri v2 Learnings
+---
+name: tauri-learnings
+description: Tauri v2 platform constraints — FS scoping gotchas, webview limitations, debugging tips
+type: project
+---
 
 ## FS Plugin Scoping
 
@@ -21,6 +25,8 @@
 - Use `@tauri-apps/api/path` for `homeDir()`, `join()`, etc.
 - Use `@tauri-apps/plugin-fs` for file operations
 - Use `@tauri-apps/plugin-shell` for shell commands
+
+**Note:** As of v0.2.0, FS and Shell plugins are removed (DEV-288, DEV-323). All OS operations go through typed Rust commands via tauri-specta.
 
 ## Debugging
 

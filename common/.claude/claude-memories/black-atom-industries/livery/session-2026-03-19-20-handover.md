@@ -1,52 +1,39 @@
 ---
-name: session-handover-2026-03-21
-description: Handover notes from the lazygit updater session (Mar 20-21). Next up: yaml-edit fork, then zed, macOS appearance.
+name: session-handover-2026-03-24
+description: Current project status after v0.2.0 release — all base updaters shipped, architecture consolidated, next milestone is frontend/UI
 type: project
 ---
 
-## What was shipped
+## v0.2.0 Released (2026-03-24)
 
-### PR #18 — file ops library + lazygit updater [DEV-317]
+All "Base Updaters" milestone (v0.3.0 in Linear, released as v0.2.0) work is complete.
 
-- **file_ops module** — extracted `replace_in_file` into `file_ops/text.rs`, renamed to `patch_text_file`
-- **`patch_yaml_file`** — lossless YAML merge using `yaml-edit` + `yaml_serde`
-- **Lazygit updater** — merges Black Atom theme YAML into lazygit config
-- **Config cleanup** — `Config::default()` extracted into `config/defaults.rs`
-- **Fixture-based tests** — real config file fixtures for all file_ops (lazygit, ghostty, nvim, tmux, delta)
-- **Livery config** added to dots (`common/.config/black-atom/livery/config.json`)
+### Shipped since 2026-03-21
 
-### Architecture updates
+| PR  | What                                                       | Issue   |
+| --- | ---------------------------------------------------------- | ------- |
+| #19 | Split AGENTS.md into scoped fe/be structure                | DEV-324 |
+| #20 | yaml-edit fork, removed ~120 lines workaround              | DEV-325 |
+| #21 | Consolidated updaters into single `update_app` command     | DEV-327 |
+| #22 | macOS/Linux system appearance toggle                       | DEV-291 |
+| #23 | tauri-specta for type-safe invoke calls                    | DEV-329 |
+| #24 | Zed updater with JSONC format-preserving editing           | DEV-289 |
+| #25 | Obsidian updater                                           | DEV-330 |
+| #26 | Consistent logging + duration tracking + benchmark         |         |
+| #27 | Canonicalize yaml path validation + enabledApps filter fix |         |
 
-- `patch_text_file` — regex replace (ghostty, nvim, tmux, delta)
-- `patch_yaml_file` — lossless YAML merge with comment preservation (lazygit)
-- Two-phase YAML merge: yaml_edit for scalars, string-level for sequences (workaround for yaml-edit bug)
-- Home-directory guard + tilde expansion on all file_ops commands
-- 16 backend tests (14 fixture-based + 2 inline), 18 frontend tests
+### Next milestone: Frontend & UI (v0.4.0 in Linear)
 
-## Next: yaml-edit fork
+Open items (as of 2026-03-24):
 
-`yaml-edit` (v0.2.1) has a confirmed bug: `Mapping::set` / `MappingEntry::set_value` produce
-malformed YAML for block sequences in nested mappings (missing newline, wrong indentation).
-All three APIs produce the same broken output. Reproduced with minimal test case.
+- DEV-318 — frontend architecture
+- DEV-319 — progress indicator redesign
+- DEV-299 — settings page UI design
+- DEV-326 — setup wizard
+- DES-25/DES-26 — logo and banner (design spec written to docs/)
+- Global shortcut (Meh-T) — not yet an issue
 
-**Plan:** Fork `jelmer/yaml-edit` to `black-atom-industries/yaml-edit`, fix the bug in
-`nodes/mapping.rs` (likely in how `build_content` handles the `indent` parameter for sequences),
-then point livery's Cargo.toml at the fork. This would delete ~120 lines of workaround code.
+### Tooling
 
-**DESIGN.md insight:** The `is_inline()` method controls same-line vs new-indented-line placement.
-Block sequences should return `false` but may not be doing so when passed as `YamlNode`.
-
-## Remaining v0.3.0 updaters
-
-- DEV-289 — zed (JSON parse, set theme.dark/theme.light, auto-watches)
-- DEV-291 — macOS system appearance (osascript, Rust command)
-
-## Other open items
-
-- DEV-324 — split AGENTS.md and docs into frontend/backend scopes (v0.4.0)
-- DEV-321 — per-updater documentation
-- DEV-318 — frontend architecture (v0.4.0)
-- DEV-319 — progress indicator redesign (v0.4.0)
-- DEV-299 — settings page UI design (v0.4.0)
-- Setup wizard for Black Atom — auto-detect apps, guided config (not yet an issue)
-- Global shortcut (Meh-T) — Tauri global-shortcut plugin (not yet an issue)
+- OpenSpec initialized 2026-03-24 — specs/ folder empty by design, populates via propose/archive cycle
+- nikbrunner/yaml-edit fork at `fix/sequence-indentation` branch — livery depends on this via git dep in Cargo.toml

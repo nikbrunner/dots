@@ -1,6 +1,6 @@
 ---
 name: architecture-decisions
-description: Key architecture decisions made during livery development — Rust/TS boundary, naming conventions, updater patterns
+description: Key architecture decisions made during livery development — Rust/TS boundary, updater consolidation, file_ops, tauri-specta
 type: project
 ---
 
@@ -11,37 +11,45 @@ The fundamental boundary:
 - **TypeScript** manages UI, state, calling order. Decides _what_ to do.
 - **Rust** handles all OS operations — file I/O, process signals, socket communication. Does _how_.
 
-No direct file system access from TypeScript. No shell commands from TypeScript. All OS operations go through typed Rust commands via `invoke()`.
-
-**Rust commands:**
-
-- `replace_in_file` — generic regex find-and-replace on any file (used by all updaters)
-- `reload_ghostty` — `pkill -SIGUSR2`
-- `reload_nvim` — socket discovery + `:colorscheme` via `--server`
-- `reload_tmux` — `tmux source-file`
-- `get_config` / `save_config` — livery config management
-
-**Removed:** Tauri Shell plugin (DEV-288) and Tauri FS plugin (DEV-323). Both replaced by typed Rust commands.
+No direct file system access from TypeScript. No shell commands from TypeScript. All OS operations go through typed Rust commands.
 
 **Why:** Consistency, security (no arbitrary shell/file access from webview), type safety.
-**How to apply:** When adding new updaters, add Rust commands in `src-tauri/src/updaters/`. TS updaters just call `invoke()`.
+
+## Consolidated Updater Architecture (DEV-327)
+
+As of v0.2.0, there are no per-app frontend updater files. The `src/updaters/` directory was removed entirely.
+
+**Two Rust commands handle all updates:**
+
+- `update_app` — takes `AppName` + `ThemeContext`, dispatches to the correct per-app module internally
+- `update_system_appearance` — macOS `osascript` / Linux appearance toggle
+
+**Per-app Rust modules** (`src-tauri/src/updaters/`): ghostty, nvim, tmux, lazygit, zed, obsidian, system_appearance
+
+**How to apply:** When adding new updaters, add a Rust module in `src-tauri/src/updaters/`, register it in `mod.rs`'s dispatch match. No frontend changes needed.
+
+## File Operations Library (`file_ops/`)
+
+Three file operation modules in `src-tauri/src/updaters/file_ops/`:
+
+- `text.rs` — `patch_text_file`: regex find-and-replace with template variables (ghostty, nvim, tmux, delta)
+- `yaml.rs` — `patch_yaml_file`: lossless YAML merge with comment preservation (lazygit). Uses nikbrunner/yaml-edit fork.
+- `jsonc.rs` — `patch_jsonc_file`: format-preserving JSONC editing (zed)
+
+All three share: home-directory guard with `canonicalize()`, tilde expansion, path validation.
+
+## tauri-specta (DEV-329)
+
+Type-safe invoke calls via tauri-specta. Rust commands are exported as typed TypeScript functions in `src/bindings.ts` (auto-generated on dev build). Frontend calls `commands.updateApp(...)` instead of raw `invoke("update_app", ...)`.
 
 ## Naming: "Apps" not "Tools"
 
-Config uses `apps` (not `tools`). Types are `AppName`, `AppConfig`, `AppUpdater`. Each configured application has an updater in the registry.
-
-**Why:** "tool" was too broad — we're configuring specific applications with updaters.
+Config uses `apps` (not `tools`). Types are `AppName`, `AppConfig`. Each configured application has an updater module.
 
 ## Configurable Pattern System
 
-Pattern defaults live in `src/updaters/defaults.ts`. Each app has a `matchPattern` (regex) and `replaceTemplate` (with `{themeKey}`, `{appearance}`, `{collectionKey}`, `{themesPath}` placeholders). Users can override via `match_pattern`/`replace_template` in their config.
-
-The `replace_in_file` Rust command handles the regex compilation, template rendering, and file I/O. Rust tests cover all patterns.
-
-## Claude CI Review Workflow
-
-Label-triggered (`needs-review`), concurrency guard prevents duplicates, auto-swaps to `reviewed` label on success. Uses custom prompt with `gh pr comment`.
+Pattern defaults live in `config/defaults.rs`. Each text-based app has a `matchPattern` (regex) and `replaceTemplate` (with `{themeKey}`, `{appearance}`, `{collectionKey}`, `{themesPath}` placeholders). Users can override via `match_pattern`/`replace_template` in their config.
 
 ## Config File Location
 
-`~/.config/black-atom/livery/config.json` — uses `"apps"` key. Old configs with `"tools"` silently fall back to defaults.
+`~/.config/black-atom/livery/config.json` — uses `"apps"` key.

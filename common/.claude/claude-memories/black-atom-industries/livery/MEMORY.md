@@ -1,34 +1,32 @@
 # Livery Project Memory
 
-## Tauri v2 Learnings
+## Project Status
 
-See [tauri-learnings.md](tauri-learnings.md) for details on FS scoping, shell permissions, and webview constraints.
-
-## Nvim Updater Research
-
-See [nvim-updater-research.md](nvim-updater-research.md) for socket-based live reload, config persistence patterns, and DEV-315 fix status.
+See [session-2026-03-19-20-handover.md](session-2026-03-19-20-handover.md) — v0.2.0 shipped (2026-03-24), all base updaters done, next milestone is frontend/UI.
 
 ## Architecture Decisions
 
-See [architecture-decisions.md](architecture-decisions.md) for Rust OS boundary, naming conventions, updater patterns, and CI review setup.
+See [architecture-decisions.md](architecture-decisions.md) — consolidated `update_app` command, file_ops library (text/yaml/jsonc), tauri-specta bindings, Rust-only OS boundary.
 
-## Naming Precision
+## Tauri v2 Learnings
 
-See [feedback-naming-precision.md](feedback-naming-precision.md) — Nik cares about domain-accurate naming.
+See [tauri-learnings.md](tauri-learnings.md) — FS scoping gotchas, webview limitations, debugging tips.
 
-## Session Handover
+## Nvim Updater
 
-See [session-2026-03-19-20-handover.md](session-2026-03-19-20-handover.md) for next steps (lazygit updater) and open items.
-
-## Git Workflow
-
-Commit conventions are now in the project-level `commit` skill (`.claude/skills/commit/SKILL.md`).
-Linear ticket updates are handled by `bai-commit` and `bai-close` skills.
-
-## Personal Config
-
-See [feedback-personal-config.md](feedback-personal-config.md) — update Nik's dots config after adding new apps/fields.
+See [nvim-updater-research.md](nvim-updater-research.md) — socket-based live reload, platform-specific paths.
 
 ## UI Design Brainstorm
 
-See [design-brainstorm-2026-03-21.md](design-brainstorm-2026-03-21.md) for Stitch project, Black Atom color mapping, design direction, and workflow learnings.
+See [design-brainstorm-2026-03-21.md](design-brainstorm-2026-03-21.md) — Stitch project, Black Atom color mapping, design direction.
+
+## Feedback
+
+- [feedback-naming-precision.md](feedback-naming-precision.md) — Nik cares about domain-accurate naming.
+- [feedback-css-modules.md](feedback-css-modules.md) — CSS Modules over Tailwind.
+- [feedback-personal-config.md](feedback-personal-config.md) — update Nik's dots config after adding new apps/fields.
+
+## Git Workflow
+
+Commit conventions are in the project-level `commit` skill (`.claude/skills/commit/SKILL.md`).
+Linear ticket updates are handled by `bai-commit` and `bai-close` skills.

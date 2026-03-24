@@ -52,6 +52,7 @@ common/.claude/
 
 - **Skill discovery discipline** → [feedback_skill_discovery.md](feedback_skill_discovery.md)
 - **Web tool lanes** → [feedback_browser_automation.md](feedback_browser_automation.md)
+- **No trash commits during debug cycles** → [feedback_commit_discipline.md](feedback_commit_discipline.md)
 
 ### Symlinks (symlinks.yml)
 
