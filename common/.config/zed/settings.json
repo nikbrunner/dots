@@ -1,4 +1,5 @@
 {
+  "icon_theme": "Zed (Default)",
   "document_symbols": "on",
   "session": {
     "trust_all_worktrees": false,
@@ -46,7 +47,11 @@
     },
   ],
   "cursor_blink": false,
-  "theme": "Black Atom — TERRA ∷ Fall Day",
+  "theme": {
+    "mode": "system",
+    "light": "Black Atom — TERRA ∷ Fall Day",
+    "dark": "Black Atom — TERRA ∷ Fall Night"
+  },
   "base_keymap": "VSCode",
   "vim_mode": true,
   "ui_font_size": 16.0,
