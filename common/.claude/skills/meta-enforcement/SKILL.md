@@ -37,6 +37,7 @@ These thoughts mean STOP — you are rationalizing skipping a skill check:
 | "This doesn't need a formal process" | If a skill exists for it, use it. Period.                                      |
 | "Let me look at the code quickly"    | Files lack conversation context. Check for skills.                             |
 | "This feels productive"              | Undisciplined action wastes time. Skills prevent this.                         |
+| "This is just a discussion"          | Questions about features, bugs, or architecture ARE development tasks. Check.  |
 
 ## Skill Types
 
