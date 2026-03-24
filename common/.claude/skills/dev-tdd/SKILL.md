@@ -1,24 +1,25 @@
 ---
 name: dev:tdd
-description: TDD patterns and anti-patterns — vertical slices, deep module testing, behavior-driven test design. Complements superpowers:test-driven-development. Load when doing TDD, writing tests, or designing testable interfaces.
+description: "TDD discipline and test strategy — red-green-refactor cycle, vertical slices, deep module testing, behavior-driven design. Load when doing TDD, writing tests, setting up test strategy, or discussing test infrastructure."
+user-invocable: false
 ---
 
-# TDD Patterns
+# TDD & Testing
 
-Additive patterns on top of the red-green-refactor discipline from `superpowers:test-driven-development`.
+## The Cycle: Red-Green-Refactor
+
+No production code without a failing test first.
+
+1. **Red**: Write ONE failing test describing ONE behavior
+2. **Green**: Write the minimal code to make it pass
+3. **Refactor**: Clean up while tests stay green
+4. **Repeat**
+
+Each cycle is a complete vertical slice. The test informs the interface, the implementation informs the next test.
 
 ## Anti-Pattern: Horizontal Slicing
 
 DO NOT write all tests first, then all implementation. Tests written in bulk test imagined behavior — they encode assumptions about code that doesn't exist yet, leading to tests that pass for the wrong reasons or need rewriting once real implementation reveals the actual shape.
-
-**Correct approach: Vertical Slices (Tracer Bullets)**
-
-1. Write ONE failing test describing ONE behavior
-2. Write minimal code to make it pass
-3. Refactor if needed
-4. Repeat
-
-Each cycle is a complete vertical slice through the system. The test informs the interface, the implementation informs the next test.
 
 ## Behavior Through Public Interfaces
 
@@ -56,8 +57,8 @@ Before moving to the next cycle, verify:
 - [ ] Implementation is minimal — no speculative features
 - [ ] No code exists without a corresponding test
 
-## Cross-References
+## References
 
-- `superpowers:test-driven-development` — core red-green-refactor discipline
-- `dev:testing` — test strategy, tooling, and coverage approach
+- For testing layers, tooling, and strategy, see [testing-layers.md](testing-layers.md)
+- For code examples and patterns, see [testing-patterns.md](testing-patterns.md)
 - `dev:arch-review` — deep module evaluation in architecture reviews

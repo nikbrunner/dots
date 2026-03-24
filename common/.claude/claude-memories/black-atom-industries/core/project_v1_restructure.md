@@ -11,7 +11,7 @@ V1 scope expanded from "core themes + adapters + branding" to include livery as 
 **How to apply:**
 
 - No fixed V1 date — track milestones per sub-project (livery, monitor, core 1.0)
-- Theme fine-tuning is now DEV-322 (single checklist issue, 35 themes across 5 collections)
+- Theme fine-tuning is now DEV-322 (single checklist issue, 34 themes across 5 collections)
 - DEV-322 blocked by DEV-241 (naming) and DEV-242 (Default vs Stations) — both still open
 - Canceled: DEV-186 (epic), DEV-233-237 (individual collection issues) — replaced by DEV-322
 - Monitor must be feature-complete before theme fine-tuning begins (visual feedback needed)

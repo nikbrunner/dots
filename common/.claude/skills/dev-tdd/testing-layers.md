@@ -1,16 +1,10 @@
----
-name: dev:testing
-description: "Nik's testing approach -- unit tests for logic, visual regression via Storybook, interaction tests. Load when setting up tests or discussing test strategy."
-user-invocable: false
----
-
-# Testing Approach
+# Testing Layers
 
 ## Philosophy
 
 Test what matters. Logic gets unit tests. Components get visual tests. User flows get interaction tests.
 
-## Testing Layers
+## Layers
 
 | Layer           | Tool                   | What to Test                                                                    |
 | --------------- | ---------------------- | ------------------------------------------------------------------------------- |
@@ -36,7 +30,3 @@ Test what matters. Logic gets unit tests. Components get visual tests. User flow
 - **Testing Library**: https://testing-library.com/docs/
 - **Storybook**: https://storybook.js.org/docs
 - **Playwright**: https://playwright.dev/docs/intro
-
-## References
-
-- For setup patterns and examples, see `patterns.md`

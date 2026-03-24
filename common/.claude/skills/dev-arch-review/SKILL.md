@@ -53,8 +53,7 @@ When boundary tests already cover a module's behavior, flag redundant shallow un
 
 ### Cross-References
 
-- `dev:tdd` — vertical slice testing, behavior-driven test design
-- `dev:testing` — test strategy and tooling
+- `dev:tdd` — TDD discipline, test strategy, and tooling
 
 ---
 

@@ -2,7 +2,7 @@
 
 ## Skill Check (mandatory)
 
-Before starting ANY task, check available skills for relevance. If there is even a 0.01% chance a skill applies, invoke it before doing anything else. Never rationalize skipping a skill check with "this is simple enough" or "I already know how."
+Before starting ANY task, check available skills for relevance. If there is even a 1% chance a skill applies, invoke it before doing anything else. Never rationalize skipping a skill check with "this is simple enough" or "I already know how."
 
 Skills that overlap with your built-in behaviors (git, styling, testing, TypeScript) are the ones you're MOST likely to skip -- and the ones that matter most, because they contain project-specific overrides.
 

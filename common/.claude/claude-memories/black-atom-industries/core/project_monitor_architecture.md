@@ -1,53 +1,22 @@
 ---
-name: Monitor app architecture conventions
-description: Conventions for the Black Atom Monitor React app — routing, queries, types, components, and the boundary between core and monitor
+name: Monitor architecture decisions
+description: Non-obvious design decisions for the Monitor app — things not captured in monitor/CLAUDE.md or derivable from code
 type: project
 ---
 
-## Monitor Architecture (as of 2026-03-16)
+## Design Decisions (not in code)
 
-The monitor is a React + Vite app at `monitor/` that previews and analyzes themes.
+- **Combobox rejection**: TanStack/Base UI Combobox was tried for theme selector but abandoned — filtering with grouped items was problematic. Custom implementation with Base UI Dialog works better.
+- **CSS vars to `:root`**: Needed so portals (Dialog rendered outside React tree) can access theme colors. This is why `useEffect` syncs vars to `document.documentElement` instead of just scoping to `AppLayout`.
+- **No containers/ pattern**: Routes are the orchestrators. `__root.tsx` is the app shell. Components are dumb (CSS Modules), partials compose (no styling).
+- **Full `ThemeDefinition` everywhere**: No lightweight/summary endpoints or subset types. 34 themes is small enough to always fetch full data.
 
-### Routing
+## Dependencies Added (DEV-312)
 
-- Uses TanStack Router with **file-based routing** (`monitor/src/routes/`)
-- Route components are **defined inline** in route files — no separate container imports
-- `__root.tsx` is the app shell layout (nav, sidebar, stats bar) — the only "container" that stays in `containers/`
-- Search params defined in `monitor/src/lib/search-params.ts` with Zod schema, defaults derived via `schema.parse({})`
-- `retainSearchParams(true)` + `stripSearchParams(defaults)` on root route
+- `@base-ui/react` — NavigationMenu, Dialog
+- `@tanstack/react-form` + `@tanstack/react-store` — form state in command palette
+- `@tanstack/react-hotkeys` — `⌘K` shortcut
 
-### Types
+**Why:** `monitor/CLAUDE.md` covers day-to-day conventions. This file preserves the _why_ behind non-obvious choices so future sessions don't re-explore dead ends.
 
-- **Never duplicate core types** — use `ThemeDefinition` from `@core/types/theme.ts` directly
-- Don't create parallel/subset types like `ThemeSummary` — if you need the full theme, fetch the full theme
-- `ThemeKey` and `DEFAULT_THEME_KEY` are exported from core
-
-### Queries
-
-- Live in `monitor/src/queries/` (not `hooks/`)
-- Follow TanStack Query conventions: topic-based keys, `Omit<>` for options passthrough
-- Use `apiClient` from `monitor/src/lib/api-client.ts` — centralized fetch wrapper
-- `useThemes()` returns `ThemeDefinition[]`, `useTheme(key)` returns single `ThemeDefinition`
-
-### API
-
-- `GET /api/themes` → `ThemeDefinition[]` (all themes, full data)
-- `GET /api/themes/:key` → `ThemeDefinition` (single theme)
-- No lightweight/summary endpoints — 34 themes is small enough for full data
-
-### Stats & Color Analysis
-
-- Stats functions (`themeContrast`, `collectionStats`, `orgStats`) live in **core** at `src/lib/stats.ts`
-- WCAG constants and grading live in **core** at `src/lib/wcag.ts`
-- Core uses `culori` for color calculations — monitor doesn't import culori directly
-- `themeToCssVars()` in monitor converts a `ThemeDefinition` into CSS custom properties programmatically
-
-### Components
-
-- Layout components use `*Layout` suffix (`AppLayout`, `StatsBarLayout`, `DashboardPageLayout`)
-- `ThemePreviewCard` receives full `ThemeDefinition` and creates its own CSS var scope via `themeToCssVars()`
-- Transformation utilities (like `groupByCollection`) live in tested lib files, not inline in components
-
-**Why:** Core owns the data and computation. Monitor owns the display. This separation enables the future CLI to reuse core's analytics without depending on React.
-
-**How to apply:** When adding new analytics/stats features, add computation to core. When adding new UI, add to monitor. Don't put computation in monitor or React-specific code in core.
+**How to apply:** Before proposing alternatives to the command palette, theme selector, or CSS var strategy, check these decisions first. The naive approaches were already tried.
