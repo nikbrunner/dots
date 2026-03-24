@@ -36,6 +36,15 @@ Returns JSON with `url` and `screen_dir`. Tell the user to open the URL.
 
 Save `screen_dir` for the session. Add `.visual-companion/` to `.gitignore` if not already there.
 
+## Tool Detection
+
+Before starting, check which visual tools are available:
+
+1. **Stitch MCP** — Check if `stitch` is a connected MCP server (local project MCP in `.mcp.json`). If available, prefer Stitch for generating and iterating on UI mockups — it produces higher-fidelity output than hand-written HTML fragments. Use Stitch tools for design generation and the companion server for presentation/selection.
+2. **agent-browser** — Available globally for navigating URLs and capturing screenshots.
+3. **open-pencil** — Available globally for Figma file inspection and editing.
+4. **Fallback** — Write HTML fragments directly to the companion server.
+
 ## Capture Existing State First
 
 Before generating mockups, establish the current visual state:
