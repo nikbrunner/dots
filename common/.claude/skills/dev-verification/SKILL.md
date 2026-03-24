@@ -46,6 +46,17 @@ If you catch yourself writing any of these, stop and run the verification:
 - **"The change is trivial"** -- trivial changes break builds.
 - **"I already verified something similar"** -- similar is not same.
 
+## Visual Verification (for UI changes)
+
+If the change affects visual output (TUI rendering, web UI, terminal layout, component appearance), build/lint passing is NOT sufficient. You MUST:
+
+1. **Build** the project
+2. **Launch** the app or component (tmux popup, dev server, storybook, etc.)
+3. **Capture** a screenshot (`screencapture -w /tmp/verify.png`, `agent-browser screenshot`, or ask the user)
+4. **Read** the screenshot and inspect for: alignment, spacing, borders, truncation, color contrast, redundant elements, missing elements
+
+Do NOT claim "looks correct" without seeing the rendered output. Screenshots are evidence. Descriptions are not.
+
 ## Structural Completeness Review
 
 After verification passes, use the **structural-completeness-reviewer** agent to check:
