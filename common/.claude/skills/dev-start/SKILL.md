@@ -40,9 +40,12 @@ dev:start (scope assessment → route)
 │
 ├─ Trivial → just do it → dev:commit → done
 │
-├─ Small → implement → dev:close
+├─ Small
+│   └─ dev:grill-me → implement → dev:close
 │
 ├─ Medium
+│   │
+│   ├─ dev:grill-me
 │   │
 │   ├─ dev:write-prd
 │   │   └─ 🔍 prd-reviewer agent (up to 3 iterations)
