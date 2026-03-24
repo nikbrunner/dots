@@ -34,9 +34,9 @@ if echo "$prompt_lower" | grep -qiE '\b(test|testing|tdd|vitest|jest|spec)\b'; t
     matches+=("dev:tdd — TDD discipline and test strategy")
 fi
 
-# dev:grill-me — design discussions
+# dev:brainstorm — design discussions
 if echo "$prompt_lower" | grep -qiE '(design|architecture|approach|trade.?off|pressure.?test|what do you think about)'; then
-    matches+=("dev:grill-me — Interview before implementation")
+    matches+=("dev:brainstorm — Interview before implementation")
 fi
 
 # dev:planning — planning work

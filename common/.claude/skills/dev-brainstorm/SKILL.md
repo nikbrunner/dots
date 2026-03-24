@@ -1,11 +1,11 @@
 ---
-name: "dev:grill-me"
-description: "Interview the user relentlessly about a plan or design until reaching shared understanding. Use when starting a new feature, reviewing architecture decisions, or pressure-testing a design before implementation."
+name: "dev:brainstorm"
+description: "Collaborative exploration of ideas, requirements, and design decisions. Use when starting a new feature, reviewing architecture decisions, or pressure-testing a design before implementation."
 ---
 
-# Grill Me
+# Brainstorm
 
-Interview me relentlessly about every aspect of this plan until we reach a shared understanding.
+Explore ideas collaboratively until we reach a shared understanding of what to build and how.
 
 ## Process
 
@@ -29,4 +29,4 @@ When upcoming questions involve visual content (UI layouts, architecture diagram
 
 > "Some of what we're working on might be easier to show visually in a browser. Want me to start the visual companion?"
 
-If accepted, invoke `dev:visual-companion` to start the server. Then per question, decide whether to use the browser (visual content) or terminal (text/conceptual content). Stop the server when grilling is done or all remaining questions are text-only.
+If accepted, invoke `dev:visual-companion` to start the server. Then per question, decide whether to use the browser (visual content) or terminal (text/conceptual content). Stop the server when brainstorming is done or all remaining questions are text-only.

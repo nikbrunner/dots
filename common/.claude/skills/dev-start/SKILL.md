@@ -41,11 +41,11 @@ dev:start (scope assessment → route)
 ├─ Trivial → just do it → dev:commit → done
 │
 ├─ Small
-│   └─ dev:grill-me → implement → dev:close
+│   └─ dev:brainstorm → implement → dev:close
 │
 ├─ Medium
 │   │
-│   ├─ dev:grill-me
+│   ├─ dev:brainstorm
 │   │
 │   ├─ dev:propose
 │   │   └─ 🔍 prd-reviewer agent (up to 3 iterations)
@@ -70,7 +70,7 @@ dev:start (scope assessment → route)
 │       5. knowledge sync (optional)
 │
 └─ Large
-    └─ dev:grill-me → then same as Medium,
+    └─ dev:brainstorm → then same as Medium,
        plus dev:prd-to-issues before dev:worktrees
 ```
 

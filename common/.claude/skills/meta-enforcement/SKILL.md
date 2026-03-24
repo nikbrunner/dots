@@ -51,7 +51,7 @@ The skill itself tells you which type it is. When unclear, treat as rigid.
 
 When multiple skills apply:
 
-1. **Process skills first** (grill-me, start, planning, debugging) — these determine HOW to approach the task
+1. **Process skills first** (brainstorm, start, planning, debugging) — these determine HOW to approach the task
 2. **Domain skills second** (react, typescript, tanstack) — these guide execution
 3. **Workflow skills third** (commit, verification, close) — these govern shipping
 

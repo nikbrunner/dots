@@ -93,7 +93,7 @@ See [visual-companion.md](visual-companion.md) for full CSS reference including:
 - `.pros-cons` — pro/con columns
 - Mock elements: `.mock-nav`, `.mock-sidebar`, `.mock-content`, `.mock-button`
 
-## Integration with dev:grill-me
+## Integration with dev:brainstorm
 
 When visual questions come up during grilling:
 

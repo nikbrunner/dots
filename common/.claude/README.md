@@ -45,7 +45,7 @@ See `dev:start` skill for the canonical pipeline tree with all review gates.
 
 | Skill                     | Purpose                                           |
 | ------------------------- | ------------------------------------------------- |
-| `dev:grill-me`            | Pressure-test a design or decision                |
+| `dev:brainstorm`            | Pressure-test a design or decision                |
 | `dev:design-interface`    | Competing API/module designs via parallel agents  |
 | `dev:tdd`                 | Vertical slice testing, behavior-driven design    |
 | `dev:verification`        | Evidence before any completion claim              |
@@ -85,7 +85,7 @@ See `dev:start` skill for the canonical pipeline tree with all review gates.
 
 ### Research & Inspiration
 
-- [x] Matt Pocock's skills — imported and adapted (2026-03-21), see `dev:grill-me`, `dev:propose`, `dev:plan-tasks`, `dev:prd-to-issues`, `dev:ubiquitous-language`, `dev:design-interface`, `dev:refactor-plan`, `dev:edit-article`, `dev:tdd`
+- [x] Matt Pocock's skills — imported and adapted (2026-03-21), see `dev:brainstorm`, `dev:propose`, `dev:plan-tasks`, `dev:prd-to-issues`, `dev:ubiquitous-language`, `dev:design-interface`, `dev:refactor-plan`, `dev:edit-article`, `dev:tdd`
 - [x] Matt Pocock's AI Hero articles — concepts integrated into skills (deep modules, vertical slices, TDD patterns)
 - [ ] Anthropic docs on skills: https://code.claude.com/docs/en/skills
 - [ ] Anthropic docs on subagents: https://code.claude.com/docs/en/sub-agents
