@@ -40,10 +40,10 @@ Save `screen_dir` for the session. Add `.visual-companion/` to `.gitignore` if n
 
 Before starting, check which visual tools are available:
 
-1. **Stitch MCP** — Check if `stitch` is a connected MCP server (local project MCP in `.mcp.json`). If available, prefer Stitch for generating and iterating on UI mockups — it produces higher-fidelity output than hand-written HTML fragments. Use Stitch tools for design generation and the companion server for presentation/selection.
+1. **Stitch MCP** — Check if `stitch` is a connected MCP server (local project MCP in `.mcp.json`). If Stitch is available, you MUST use it for all mockup generation — do NOT write HTML manually. Stitch produces higher-fidelity designs than hand-written fragments. Use Stitch for generation, the companion server for presentation/selection if needed.
 2. **agent-browser** — Available globally for navigating URLs and capturing screenshots.
 3. **open-pencil** — Available globally for Figma file inspection and editing.
-4. **Fallback** — Write HTML fragments directly to the companion server.
+4. **HTML fallback** — Only write HTML fragments directly when none of the above are available or applicable.
 
 ## Capture Existing State First
 
