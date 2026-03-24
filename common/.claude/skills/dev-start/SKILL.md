@@ -47,10 +47,10 @@ dev:start (scope assessment → route)
 │   │
 │   ├─ dev:grill-me
 │   │
-│   ├─ dev:write-prd
+│   ├─ dev:propose
 │   │   └─ 🔍 prd-reviewer agent (up to 3 iterations)
 │   │
-│   ├─ dev:prd-to-plan
+│   ├─ dev:plan-tasks
 │   │   └─ 🔍 plan-reviewer agent (up to 3 iterations)
 │   │
 │   ├─ dev:worktrees

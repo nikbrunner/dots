@@ -61,7 +61,8 @@ Applied as overrides to `dev:create-project`:
    - Path set to `~/repos/black-atom-industries/{name}`
    - Project type mapped from BAI type (adapter→lib, plugin→lib, core→lib, tool→cli, app→web/desktop)
    - BAI defaults merged into scaffolding plan
-5. After base skill completes, verify BAI-specific config is present:
+5. After base skill completes, offer `dev:openspec-init` to initialize OpenSpec for the project
+6. Verify BAI-specific config is present:
    - Linear reference in CLAUDE.md
    - `bai:commit` referenced in settings
    - Org-specific .gitignore entries

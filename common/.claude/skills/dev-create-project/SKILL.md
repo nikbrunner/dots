@@ -39,6 +39,7 @@ Load relevant `dev-*` skills for conventions (see Dev Skill Mappings in `default
 - `dev:react`, `dev:styling`, `dev:state-management` — for web/desktop
 - `dev:tanstack` — when TanStack libs are relevant
 - `dev:tdd`, `dev:planning` — always
+- `dev:openspec-init` — offer to initialize OpenSpec for medium+ projects
 
 Present inferred configuration summary to user. Example:
 
@@ -114,6 +115,10 @@ Offer to set up Claude Code PreToolUse hooks that block dangerous git commands:
 - `git restore .`
 
 Reference the existing enforce hooks pattern at `common/.claude/hooks/enforce/` for implementation style. Create as a `enforce/git-guardrails.sh` hook script.
+
+## Phase 5.5: OpenSpec (optional)
+
+Offer to initialize OpenSpec for medium+ projects. If accepted, invoke `dev:openspec-init` to scaffold the `openspec/` directory with project-level specs.
 
 ## Phase 6: CLAUDE
 

@@ -42,7 +42,17 @@ If there's an issue associated with this work (GitHub issue, Linear issue refere
 
 If no issue is tracked, skip this step.
 
-## Step 5: Knowledge Sync (optional)
+## Step 5: Archive OpenSpec Change (if applicable)
+
+If an active OpenSpec change exists for this work:
+
+1. Run `openspec archive <change-name>`
+2. Delta specs are synced into `openspec/specs/`
+3. Change is moved to `openspec/changes/archive/`
+
+If no OpenSpec change is associated, skip this step.
+
+## Step 6: Knowledge Sync (optional)
 
 For medium/large work, consider whether project knowledge artifacts need updating:
 

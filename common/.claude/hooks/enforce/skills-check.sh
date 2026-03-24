@@ -44,9 +44,9 @@ if echo "$prompt_lower" | grep -qiE '(plan|roadmap|scope|break.?down|phase|miles
     matches+=("dev:planning — Design before code")
 fi
 
-# dev:write-prd — PRD creation
-if echo "$prompt_lower" | grep -qiE '(prd|product requirements|requirements doc|spec.*write|write.*spec)'; then
-    matches+=("dev:write-prd — Create a PRD")
+# dev:propose — propose a change (OpenSpec or PRD)
+if echo "$prompt_lower" | grep -qiE '(prd|product requirements|requirements doc|spec.*write|write.*spec|propose|proposal|openspec)'; then
+    matches+=("dev:propose — Propose a change (OpenSpec or PRD)")
 fi
 
 # bai:start — BAI project work

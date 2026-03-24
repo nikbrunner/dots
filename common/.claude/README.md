@@ -85,7 +85,7 @@ See `dev:start` skill for the canonical pipeline tree with all review gates.
 
 ### Research & Inspiration
 
-- [x] Matt Pocock's skills — imported and adapted (2026-03-21), see `dev:grill-me`, `dev:write-prd`, `dev:prd-to-plan`, `dev:prd-to-issues`, `dev:ubiquitous-language`, `dev:design-interface`, `dev:refactor-plan`, `dev:edit-article`, `dev:tdd`
+- [x] Matt Pocock's skills — imported and adapted (2026-03-21), see `dev:grill-me`, `dev:propose`, `dev:plan-tasks`, `dev:prd-to-issues`, `dev:ubiquitous-language`, `dev:design-interface`, `dev:refactor-plan`, `dev:edit-article`, `dev:tdd`
 - [x] Matt Pocock's AI Hero articles — concepts integrated into skills (deep modules, vertical slices, TDD patterns)
 - [ ] Anthropic docs on skills: https://code.claude.com/docs/en/skills
 - [ ] Anthropic docs on subagents: https://code.claude.com/docs/en/sub-agents
