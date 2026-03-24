@@ -98,18 +98,6 @@ vim.cmd("cabbrev Wq wq")
 vim.cmd("cabbrev Wa wa")
 vim.cmd("cabbrev git Git")
 
-if vim.fn.has("nvim-0.12") == 1 then
-    -- :h vim._extui
-    require("vim._extui").enable({
-        enable = true, -- Whether to enable or disable the UI.
-        msg = { -- Options related to the message module.
-            ---@type 'cmd'|'msg' Where to place regular messages, either in the
-            ---cmdline or in a separate ephemeral message window.
-            target = "cmd",
-            timeout = 4000, -- Time a message is visible in the message window.
-        },
-    })
-end
 
 vim.o.tabline = "%!v:lua.require('lib.tabline').render()"
 -- vim.o.showtabline = 0
