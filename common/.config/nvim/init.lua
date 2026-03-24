@@ -18,7 +18,6 @@ require("options")
 require("lib")
 require("keymaps")
 require("autocmd")
-require("neovide")
 require("lsp-config")
 
 require("lazy").setup("specs", {
