@@ -1,16 +1,89 @@
 #!/bin/bash
-# UserPromptSubmit hook: Remind Claude to check skills before responding.
-# Injects working directory and repo context so Claude can correctly
-# evaluate which skills apply (e.g. bai:commit only for BAI repos).
+# UserPromptSubmit hook: Smart skill recommendation based on prompt content.
+# Reads the user's prompt, matches keywords, and suggests specific skills.
+# Falls back to generic reminder if no specific match found.
 
+set -euo pipefail
+
+# Read prompt from stdin JSON
+PROMPT=$(cat | jq -r '.prompt // empty' 2>/dev/null || echo "")
+
+# Gather context
 CWD=$(pwd)
 REPO=$(basename "$CWD")
 REPO_OWNER=$(basename "$(dirname "$CWD")")
 
+# Lowercase prompt for matching
+prompt_lower=$(echo "$PROMPT" | tr '[:upper:]' '[:lower:]')
+
+# Collect matching skills
+matches=()
+
+# dev:start — feature requests, bug reports, implementation tasks
+if echo "$prompt_lower" | grep -qiE '(feature|implement|build|refactor|add .*(support|option|ability)|fix|bug|change|improve|enhance|idea|solve|how (could|can|do|should) we|could we|should we|do you have an idea)'; then
+    matches+=("dev:start — Entry point for development tasks")
+fi
+
+# dev:commit — committing code
+if echo "$prompt_lower" | grep -qiE '(commit|push|ship it|merge|create a pr|pull request)'; then
+    matches+=("dev:commit — Commit format and strategy")
+fi
+
+# dev:tdd — testing
+if echo "$prompt_lower" | grep -qiE '\b(test|testing|tdd|vitest|jest|spec)\b'; then
+    matches+=("dev:tdd — TDD discipline and test strategy")
+fi
+
+# dev:grill-me — design discussions
+if echo "$prompt_lower" | grep -qiE '(design|architecture|approach|trade.?off|pressure.?test|what do you think about)'; then
+    matches+=("dev:grill-me — Interview before implementation")
+fi
+
+# dev:planning — planning work
+if echo "$prompt_lower" | grep -qiE '(plan|roadmap|scope|break.?down|phase|milestone)'; then
+    matches+=("dev:planning — Design before code")
+fi
+
+# dev:write-prd — PRD creation
+if echo "$prompt_lower" | grep -qiE '(prd|product requirements|requirements doc|spec.*write|write.*spec)'; then
+    matches+=("dev:write-prd — Create a PRD")
+fi
+
+# bai:start — BAI project work
+if [[ "$REPO_OWNER" == "black-atom-industries" ]]; then
+    if echo "$prompt_lower" | grep -qiE '(feature|implement|build|refactor|fix|bug|change|improve|issue|ticket)'; then
+        matches+=("bai:start — BAI development entry point (wraps dev:start with Linear)")
+    fi
+fi
+
+# dots:add / dots:remove — dotfiles management
+if [[ "$REPO" == "dots" ]]; then
+    if echo "$prompt_lower" | grep -qiE '(add.*config|new.*config|symlink|dotfile)'; then
+        matches+=("dots:add — Add config to dots")
+    fi
+    if echo "$prompt_lower" | grep -qiE '(remove.*config|delete.*config|unlink)'; then
+        matches+=("dots:remove — Remove config from dots")
+    fi
+fi
+
+# Build output
+if [[ ${#matches[@]} -gt 0 ]]; then
+    skill_list=""
+    for match in "${matches[@]}"; do
+        skill_list="${skill_list}\n  -> ${match}"
+    done
+    context="SKILL ACTIVATION CHECK — Before responding, invoke the relevant skill(s):\n${skill_list}\n\nACTION: Use the Skill tool BEFORE any response. Current context: repo=${REPO}, owner=${REPO_OWNER}"
+else
+    context="Skills check: Before responding, scan the available skills list and invoke any relevant skill first. Current context: repo=${REPO}, owner=${REPO_OWNER}, cwd=${CWD}"
+fi
+
+# Escape for JSON
+context_escaped=$(echo -e "$context" | sed 's/\\/\\\\/g; s/"/\\"/g' | tr '\n' ' ')
+
 printf '{
   "hookSpecificOutput": {
     "hookEventName": "UserPromptSubmit",
-    "additionalContext": "⚡ Skills check: Before responding, scan the available skills list and invoke any relevant skill first. Current context: repo=%s, owner=%s, cwd=%s"
+    "additionalContext": "%s"
   }
-}\n' "$REPO" "$REPO_OWNER" "$CWD"
+}\n' "$context_escaped"
 exit 0

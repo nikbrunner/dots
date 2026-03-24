@@ -147,6 +147,15 @@
         "hooks": [
           {
             "type": "command",
+            "command": "~/.claude/hooks/enforce/skills-check.sh"
+          }
+        ]
+      },
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
             "command": "~/.claude/hooks/enforce/current-datetime.sh"
           }
         ]
