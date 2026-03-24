@@ -9,11 +9,11 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +45 src/themes/jpn/black-atom-jpn-murasaki-yoru.ts
+badd +303 src/types/theme.ts
 argglobal
 %argdel
 $argadd ./
-edit src/themes/jpn/black-atom-jpn-murasaki-yoru.ts
+edit src/types/theme.ts
 argglobal
 setlocal keymap=
 setlocal noarabic
@@ -69,7 +69,7 @@ setlocal includeexpr=
 setlocal indentexpr=GetTypescriptIndent()
 setlocal indentkeys=0{,0},0),0],0,,!^F,o,O,e
 setlocal noinfercase
-setlocal iskeyword=@,48-57,_,192-255
+setlocal iskeyword=@,48-57,_,192-255,$,#
 setlocal lhistory=10
 setlocal nolinebreak
 setlocal nolisp
@@ -114,7 +114,7 @@ setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#src%*\ %#WinBarSeparator#/%*\ %#WinBarPath#themes%*\ %#WinBarSeparator#/%*\ %#WinBarPath#jpn%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#black-atom-jpn-murasaki-yoru.ts%*\ %#WinBarSeparator##%*\ %#WinBarSymbol#palette%*\ %#WinBarSeparator##%*\ %#WinBarSymbol#magenta%*
+setlocal winbar=%#WinBarPath#src%*\ %#WinBarSeparator#/%*\ %#WinBarPath#types%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#theme.ts%*\ %#WinBarSeparator##%*\ %#WinBarSymbol#ThemePrimaryColors%*\ %#WinBarSeparator##%*\ %#WinBarSymbol#d20%*
 setlocal winblend=0
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -122,12 +122,12 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 43 - ((42 * winheight(0) + 34) / 68)
+let s:l = 7 - ((6 * winheight(0) + 33) / 67)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 43
-normal! 029|
+keepjumps 7
+normal! 0
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
