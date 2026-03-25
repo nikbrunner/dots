@@ -47,12 +47,15 @@ common/.claude/
 - **Livery** — BAI desktop theme manager (Tauri v2 + React) → [project_livery.md](project_livery.md)
 - **Vendor-agnostic skills** — long-term goal, no ready solution yet → [project_vendor_agnostic_skills.md](project_vendor_agnostic_skills.md)
 - **Skills enforcement refactor** (2026-03-24) — SessionStart injection, skill consolidation, pipeline wiring → [project_skills_enforcement_refactor.md](project_skills_enforcement_refactor.md)
+- **Visual companion** (2026-03-24) — Extract superpowers' visual brainstorming server, integrate with agent-browser → [project_visual_companion.md](project_visual_companion.md)
+- **Visual companion v2** (2026-03-25) — Vertical stacking + fixed sidebar layout → [project_visual_companion_v2.md](project_visual_companion_v2.md)
 
 ### Feedback
 
 - **Skill discovery discipline** → [feedback_skill_discovery.md](feedback_skill_discovery.md)
 - **Web tool lanes** → [feedback_browser_automation.md](feedback_browser_automation.md)
 - **No trash commits during debug cycles** → [feedback_commit_discipline.md](feedback_commit_discipline.md)
+- **UI changes require visual verification** → [feedback_visual_verification.md](feedback_visual_verification.md)
 
 ### Symlinks (symlinks.yml)
 
