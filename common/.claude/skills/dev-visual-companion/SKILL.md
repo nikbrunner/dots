@@ -1,32 +1,42 @@
 ---
 name: dev:visual-companion
-description: "Browser-based visual companion for showing mockups, diagrams, and design options during brainstorming. Use when design questions need visual answers — layouts, wireframes, architecture diagrams, side-by-side comparisons."
+description: "Browser-based visual companion for design brainstorming — capture existing UI, iterate on mockups, export clean references. Use when design questions need visual answers."
 user-invocable: true
 ---
 
 # Visual Companion
 
-Browser-based companion for showing mockups, diagrams, and options during design discussions.
+Browser-based companion for visual design discussions. Supports the full loop: capture existing state → iterate on mockups → export clean reference for implementation.
 
 ## When to Use
 
 Decide per-question, not per-session. The test: **would the user understand this better by seeing it than reading it?**
 
-**Use the browser** for content that IS visual:
+**Use the browser** for visual content: UI mockups, wireframes, layout comparisons, architecture diagrams, spatial relationships.
 
-- UI mockups, wireframes, layouts, navigation structures
-- Architecture diagrams, data flow, relationship maps
-- Side-by-side comparisons of design directions
-- Spatial relationships, state machines, flowcharts
+**Use the terminal** for text content: requirements, conceptual choices, tradeoff lists, technical decisions.
 
-**Use the terminal** for content that is text:
+## Tool Detection
 
-- Requirements and scope questions
-- Conceptual A/B/C choices described in words
-- Tradeoff lists, comparison tables
-- Technical decisions, API design
+Before starting, check which visual tools are available and OFFER them:
 
-## Starting a Session
+1. **Stitch MCP** — Check if `stitch` is a connected MCP server. If available, MUST OFFER for mockup generation — it produces higher-fidelity output. The user decides whether to use it.
+2. **agent-browser** — For navigating URLs and capturing screenshots of web apps.
+3. **screencapture** (macOS) — For capturing TUI/desktop apps.
+4. **HTML fallback** — Write HTML fragments directly to the companion server.
+
+## The Flow
+
+### Phase 1: Capture Current State
+
+For redesign work, establish what exists before generating mockups:
+
+- **Web app running locally** → `agent-browser navigate <url>` then `agent-browser screenshot /tmp/current-state.png`. Read the screenshot.
+- **TUI/desktop app** → `screencapture -w /tmp/current-state.png` (window capture). Read the screenshot.
+- **User provides** → Ask for a screenshot path or have them drag-drop.
+- **Greenfield** → Skip this phase.
+
+### Phase 2: Start Companion Server
 
 ```bash
 ${CLAUDE_SKILL_DIR}/scripts/start-server.sh --project-dir $CWD
@@ -34,49 +44,32 @@ ${CLAUDE_SKILL_DIR}/scripts/start-server.sh --project-dir $CWD
 
 Returns JSON with `url` and `screen_dir`. Tell the user to open the URL.
 
-Save `screen_dir` for the session. Add `.visual-companion/` to `.gitignore` if not already there.
+### Phase 3: Iterate
 
-## Tool Detection
-
-Before starting, check which visual tools are available:
-
-1. **Stitch MCP** — Check if `stitch` is a connected MCP server (local project MCP in `.mcp.json`). If Stitch is available, you MUST use it for all mockup generation — do NOT write HTML manually. Stitch produces higher-fidelity designs than hand-written fragments. Use Stitch for generation, the companion server for presentation/selection if needed.
-2. **agent-browser** — Available globally for navigating URLs and capturing screenshots.
-3. **open-pencil** — Available globally for Figma file inspection and editing.
-4. **HTML fallback** — Only write HTML fragments directly when none of the above are available or applicable.
-
-## Capture Existing State First
-
-Before generating mockups, establish the current visual state:
-
-1. **Ask for a screenshot or URL** — "Can you share a screenshot of the current UI, or a URL I can visit?"
-2. **Self-capture via agent-browser** — If the app is running locally, use `agent-browser navigate <url>` then `agent-browser screenshot` to capture the current state. Read the screenshot with the Read tool to understand what exists.
-3. **Self-capture via screencapture** — If it's a desktop app or no URL available: `screencapture -i /tmp/current-state.png` (interactive selection) or `screencapture -w /tmp/current-state.png` (window capture). Read the result.
-
-Use the captured state as the starting point for mockups — show what changes, not just what's new.
-
-## The Loop
-
-1. **Write HTML fragment** to `$SCREEN_DIR/<name>.html` using the Write tool
-   - Use semantic filenames: `layout.html`, `nav-options.html`
+1. **Write HTML fragment** to `$SCREEN_DIR/<name>.html`
+   - Semantic filenames: `layout.html`, `sidebar-options.html`
    - Never reuse filenames — each screen is a new file
-   - Write fragments, not full documents — the server wraps them in the frame template
+   - Fragments only — server wraps in frame template
    - Server auto-serves the newest file
 
-2. **Tell the user** what's on screen and end your turn
-   - Remind them of the URL
-   - Brief text summary: "Showing 3 layout options for the dashboard"
-   - Ask them to respond in the terminal
+2. **Tell the user** what's on screen, remind them of the URL, end your turn.
 
-3. **On next turn** — read `$SCREEN_DIR/.events` if it exists
-   - Contains JSON lines of user clicks/selections
-   - Merge with terminal text for full picture
+3. **On next turn** — read `$SCREEN_DIR/.events` for click selections. Merge with terminal feedback.
 
-4. **Iterate or advance** — new file for revisions (`layout-v2.html`), move on when validated
+4. **Iterate** — `layout-v2.html` for revisions, advance when validated.
 
-5. **Unload when returning to terminal** — push a waiting screen when next question is text-only
+### Phase 4: Export Clean Reference
 
-## Stopping
+When the design is finalized:
+
+1. Write the final design as a **full HTML document** (starting with `<!DOCTYPE html>`) — the server serves it without the companion frame. Name it `final-<name>.html`.
+2. Capture a clean screenshot:
+   - Via agent-browser: `agent-browser navigate <url>` → `agent-browser screenshot <path>`
+   - Or ask the user to screenshot
+3. Save to `design/` at project root (create if needed), with descriptive name: `design/helm-sidebar-v1.png`
+4. Reference from spec/proposal: `![Sidebar design](../../design/helm-sidebar-v1.png)`
+
+### Phase 5: Stop Server
 
 ```bash
 ${CLAUDE_SKILL_DIR}/scripts/stop-server.sh $SCREEN_DIR
@@ -88,16 +81,21 @@ See [visual-companion.md](visual-companion.md) for full CSS reference including:
 
 - `.options` + `.option` — A/B/C clickable choices
 - `.cards` + `.card` — visual design comparisons
-- `.mockup` — wireframe container
+- `.mockup` — wireframe container with header
 - `.split` — side-by-side layout
 - `.pros-cons` — pro/con columns
 - Mock elements: `.mock-nav`, `.mock-sidebar`, `.mock-content`, `.mock-button`
 
 ## Integration with dev:brainstorm
 
-When visual questions come up during grilling:
+When visual questions come up during brainstorming:
 
 1. Offer the companion: "Some of this might be easier to show visually. Want me to start the visual companion?"
-2. If accepted, start the server
+2. If accepted, follow the flow above
 3. Per question, decide browser vs terminal
-4. Stop the server when grilling is done or all remaining questions are text-only
+4. Export clean reference when design is locked
+5. Stop server when brainstorming is done
+
+## Test Case
+
+See [test-case.md](test-case.md) for a ready-to-use test prompt and expected behavior.
