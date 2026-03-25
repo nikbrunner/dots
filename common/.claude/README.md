@@ -45,7 +45,7 @@ See `dev:start` skill for the canonical pipeline tree with all review gates.
 
 | Skill                     | Purpose                                           |
 | ------------------------- | ------------------------------------------------- |
-| `dev:brainstorm`            | Pressure-test a design or decision                |
+| `dev:brainstorm`          | Pressure-test a design or decision                |
 | `dev:design-interface`    | Competing API/module designs via parallel agents  |
 | `dev:tdd`                 | Vertical slice testing, behavior-driven design    |
 | `dev:verification`        | Evidence before any completion claim              |
