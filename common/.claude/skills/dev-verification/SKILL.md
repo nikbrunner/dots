@@ -57,6 +57,8 @@ If the change affects visual output (TUI rendering, web UI, terminal layout, com
 
 Do NOT claim "looks correct" without seeing the rendered output. Screenshots are evidence. Descriptions are not.
 
+If the `impeccable` plugin is available, dispatch **`impeccable:critique`** on the screenshot or rendered output for a structured UX evaluation before claiming visual completion. For final polish before shipping, use **`impeccable:polish`**.
+
 ## Structural Completeness Review
 
 After verification passes, use the **structural-completeness-reviewer** agent to check:
