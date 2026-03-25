@@ -62,7 +62,7 @@ Returns JSON with `url` and `screen_dir`. Tell the user to open the URL.
 
 When the design is finalized:
 
-1. Write the final design as a **full HTML document** (starting with `<!DOCTYPE html>`) — the server serves it without the companion frame. Name it `final-<name>.html`.
+1. Write the final design as a **full HTML document** (starting with `<!DOCTYPE html>`) — the server serves it without the companion frame. Name it `final-<name>.html`. **Important:** Make the design fill the full viewport (`width: 100vw; min-height: 100vh; margin: 0`) so the screenshot captures it edge-to-edge with no dead space.
 2. Capture a clean screenshot:
    - Via agent-browser: `agent-browser navigate <url>` → `agent-browser screenshot <path>`
    - Or ask the user to screenshot
