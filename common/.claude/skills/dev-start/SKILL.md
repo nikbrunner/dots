@@ -17,6 +17,8 @@ Read the user's prompt carefully. Look for:
 - Is this greenfield or modification of existing code?
 - How many files/modules are likely involved?
 
+**OpenSpec check:** If `openspec/` exists in the project, run `openspec list --json` to check for active changes. If the user's request matches an existing change (by name or description), route to `opsx:apply` or `opsx:explore` instead of starting from scratch. See `about:openspec` for directory structure and CLI reference.
+
 If the scope is unclear, ask ONE clarifying question via `AskUserQuestion` before routing. Don't over-ask — infer what you can.
 
 ## Step 2: Assess Scope

@@ -23,6 +23,14 @@ Explore ideas collaboratively until we reach a shared understanding of what to b
 - Track open vs resolved decisions as you go.
 - When we reach shared understanding, produce a concise summary of all decisions made.
 
+## OpenSpec Awareness
+
+If `openspec/` exists in the project, check for active changes via `openspec list --json`. If the user's request relates to an existing change, delegate exploration to `openspec-explore` (`/opsx:explore`) — it has the same brainstorming stance but with OpenSpec plumbing for reading/updating change artifacts. When delegating, also offer `dev:visual-companion` for visual questions (see below).
+
+If no `openspec/` exists, or the topic doesn't relate to an existing change, continue with the brainstorm process above.
+
+See `about:openspec` for directory structure and CLI reference.
+
 ## Visual Companion
 
 When upcoming questions involve visual content (UI layouts, architecture diagrams, mockup comparisons), offer the `dev:visual-companion` skill:
