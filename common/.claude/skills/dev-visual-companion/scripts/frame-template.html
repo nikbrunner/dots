@@ -72,9 +72,55 @@
       border-bottom: 1px solid var(--border);
       flex-shrink: 0;
     }
+    /* Hide static header in v2 mode — replaced by floating status pill */
+    body:has(.options .option[data-choice]) .header { display: none; }
     .header h1 { font-size: 0.85rem; font-weight: 500; color: var(--text-secondary); }
     .header .status { font-size: 0.7rem; color: var(--success); display: flex; align-items: center; gap: 0.4rem; }
     .header .status::before { content: ''; width: 6px; height: 6px; background: var(--success); border-radius: 50%; }
+
+    /* ===== DYNAMIC ISLAND (bottom-left floating pill) ===== */
+    #vc-island {
+      display: none;
+      position: fixed;
+      bottom: 1.25rem;
+      left: 1.25rem;
+      z-index: 1000;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: 2rem;
+      font-size: 0.8rem;
+      font-weight: 450;
+      color: var(--text-secondary);
+      align-items: center;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.12);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      overflow: hidden;
+    }
+    #vc-island .vc-island-section {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.4rem 1rem;
+    }
+    #vc-island .vc-island-connection .dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--success);
+      flex-shrink: 0;
+    }
+    #vc-island .vc-island-separator {
+      width: 1px;
+      align-self: stretch;
+      background: var(--border);
+      flex-shrink: 0;
+    }
+    #vc-island .vc-island-selection {
+      display: none;
+      color: var(--success);
+      font-weight: 500;
+    }
+    #vc-island.has-selection .vc-island-selection { display: flex; }
 
     .main { flex: 1; overflow-y: auto; }
     #claude-content { padding: 2rem; min-height: 100%; }
@@ -86,6 +132,8 @@
       flex-shrink: 0;
       text-align: center;
     }
+    /* Hide indicator bar in v2 mode — selection feedback is via floating badge */
+    body:has(.options .option[data-choice]) .indicator-bar { display: none; }
     .indicator-bar span {
       font-size: 0.75rem;
       color: var(--text-secondary);
@@ -95,6 +143,7 @@
       font-weight: 500;
     }
 
+
     /* ===== TYPOGRAPHY ===== */
     h2 { font-size: 1.5rem; font-weight: 600; margin-bottom: 0.5rem; }
     h3 { font-size: 1.1rem; font-weight: 600; margin-bottom: 0.25rem; }
@@ -102,33 +151,111 @@
     .section { margin-bottom: 2rem; }
     .label { font-size: 0.7rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem; }
 
-    /* ===== OPTIONS (for A/B/C choices) ===== */
-    .options { display: flex; flex-direction: column; gap: 0.75rem; }
+    /* ===== OPTIONS (full-viewport stacked layout with scroll-snap) ===== */
+    .main:has(.options .option) { scroll-snap-type: y mandatory; }
+    #claude-content:has(.options .option) { padding: 0; }
+    .options { display: flex; flex-direction: column; }
     .option {
-      background: var(--bg-secondary);
-      border: 2px solid var(--border);
-      border-radius: 12px;
-      padding: 1rem 1.25rem;
-      cursor: pointer;
-      transition: all 0.15s ease;
+      min-height: 100vh;
+      scroll-snap-align: start;
+      position: relative;
       display: flex;
-      align-items: flex-start;
-      gap: 1rem;
+      flex-direction: column;
     }
-    .option:hover { border-color: var(--accent); }
-    .option.selected { background: var(--selected-bg); border-color: var(--selected-border); }
-    .option .letter {
-      background: var(--bg-tertiary);
+    .option-mockup { flex: 1; display: flex; flex-direction: column; }
+
+    /* ===== FLOATING TOGGLE BUTTON ===== */
+    #vc-toggle {
+      display: none;
+      position: fixed;
+      bottom: 1.25rem;
+      right: 1.25rem;
+      z-index: 1001;
+      width: 2.5rem;
+      height: 2.5rem;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: var(--bg-secondary);
       color: var(--text-secondary);
-      width: 1.75rem; height: 1.75rem;
+      font-size: 1.1rem;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+      transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+                  box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+                  background 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+                  color 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+                  right 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      line-height: 1;
+    }
+    #vc-toggle:hover { transform: scale(1.08); box-shadow: 0 4px 16px rgba(0,0,0,0.18); }
+    #vc-toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+    #vc-toggle:active { transform: scale(0.95); }
+    #vc-toggle.active {
+      background: var(--accent);
+      color: white;
+      border-color: var(--accent);
+      right: calc(min(300px, 30vw) + 1.25rem);
+    }
+
+    /* ===== SIDEBAR OVERLAY ===== */
+    #vc-sidebar {
+      position: fixed;
+      top: 0; right: 0; bottom: 0;
+      width: min(300px, 30vw);
+      z-index: 999;
+      background: var(--bg-secondary);
+      border-left: 1px solid var(--border);
+      box-shadow: -8px 0 24px rgba(0,0,0,0.08);
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      transform: translateX(100%);
+      transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      overflow-y: auto;
+      pointer-events: none;
+    }
+    #vc-sidebar.open { transform: translateX(0); pointer-events: auto; }
+    .vc-sidebar-header { display: flex; align-items: center; gap: 0.75rem; }
+    .vc-option-letter {
+      background: var(--accent);
+      color: white;
+      width: 2rem; height: 2rem;
       border-radius: 6px;
       display: flex; align-items: center; justify-content: center;
-      font-weight: 600; font-size: 0.85rem; flex-shrink: 0;
+      font-weight: 600; font-size: 0.9rem; flex-shrink: 0;
     }
-    .option.selected .letter { background: var(--accent); color: white; }
-    .option .content { flex: 1; }
-    .option .content h3 { font-size: 0.95rem; margin-bottom: 0.15rem; }
-    .option .content p { color: var(--text-secondary); font-size: 0.85rem; margin: 0; }
+    .vc-sidebar-header h3 { font-size: 1rem; margin: 0; }
+    .vc-description { color: var(--text-secondary); font-size: 0.9rem; line-height: 1.5; }
+    #vc-feedback {
+      background: var(--bg-primary);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.75rem;
+      color: var(--text-primary);
+      font-family: inherit;
+      font-size: 0.85rem;
+      resize: vertical;
+      min-height: 5rem;
+    }
+    #vc-feedback:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.15); }
+    .vc-select-btn {
+      background: var(--accent);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 0.75rem;
+      font-size: 0.9rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+                  transform 0.1s cubic-bezier(0.4, 0, 0.2, 1),
+                  box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .vc-select-btn:hover { background: var(--accent-hover); box-shadow: 0 2px 8px rgba(0, 113, 227, 0.25); }
+    .vc-select-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+    .vc-select-btn:active { transform: scale(0.97); }
+    .vc-spacer { flex: 1; }
 
     /* ===== CARDS (for showing designs/mockups) ===== */
     .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; }
@@ -192,6 +319,11 @@
     .mock-content { padding: 1.5rem; flex: 1; }
     .mock-button { background: var(--accent); color: white; border: none; padding: 0.5rem 1rem; border-radius: 6px; font-size: 0.85rem; }
     .mock-input { background: var(--bg-primary); border: 1px solid var(--border); border-radius: 6px; padding: 0.5rem; width: 100%; }
+
+    /* ===== REDUCED MOTION ===== */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+    }
   </style>
 </head>
 <body>
@@ -209,6 +341,24 @@
   <div class="indicator-bar">
     <span id="indicator-text">Click an option above, then return to the terminal</span>
   </div>
+
+  <!-- Visual Companion v2: Dynamic island + Sidebar + Toggle -->
+  <div id="vc-island" aria-live="polite">
+    <div class="vc-island-section vc-island-connection"><span class="dot"></span> Connected</div>
+    <div class="vc-island-separator"></div>
+    <div class="vc-island-section vc-island-selection"><span id="vc-island-selection-text"></span></div>
+  </div>
+  <button id="vc-toggle" aria-label="Toggle options panel">☰</button>
+  <aside id="vc-sidebar" aria-label="Option details">
+    <div class="vc-sidebar-header">
+      <span class="vc-option-letter" id="vc-letter">A</span>
+      <h3 id="vc-title">Option</h3>
+    </div>
+    <p id="vc-description" class="vc-description"></p>
+    <div class="vc-spacer"></div>
+    <textarea id="vc-feedback" placeholder="Notes for Claude..." rows="4"></textarea>
+    <button id="vc-select" class="vc-select-btn">Select</button>
+  </aside>
 
 </body>
 </html>

@@ -135,57 +135,89 @@ Use `--url-host` to control what hostname is printed in the returned URL JSON.
 
 Write just the content that goes inside the page. The server wraps it in the frame template automatically (header, theme CSS, selection indicator, and all interactive infrastructure).
 
-**Minimal example:**
+**Minimal example (v2 — full-viewport options):**
 
 ```html
-<h2>Which layout works better?</h2>
-<p class="subtitle">Consider readability and visual hierarchy</p>
-
 <div class="options">
-  <div class="option" data-choice="a" onclick="toggleSelect(this)">
-    <div class="letter">A</div>
-    <div class="content">
-      <h3>Single Column</h3>
-      <p>Clean, focused reading experience</p>
+  <div
+    class="option"
+    data-choice="A"
+    data-title="Single Column"
+    data-description="Clean, focused reading experience"
+  >
+    <div class="option-mockup">
+      <div class="mock-nav">Logo | Home | About</div>
+      <div class="mock-content" style="min-height: 60vh;">
+        <h2>Main content area</h2>
+        <p>Full-width, single column layout</p>
+      </div>
     </div>
   </div>
-  <div class="option" data-choice="b" onclick="toggleSelect(this)">
-    <div class="letter">B</div>
-    <div class="content">
-      <h3>Two Column</h3>
-      <p>Sidebar navigation with main content</p>
+  <div
+    class="option"
+    data-choice="B"
+    data-title="Two Column"
+    data-description="Sidebar navigation with main content"
+  >
+    <div class="option-mockup">
+      <div class="mock-nav">Logo | Home | About</div>
+      <div style="display: flex; min-height: 60vh;">
+        <div class="mock-sidebar">Nav items</div>
+        <div class="mock-content">Main content area</div>
+      </div>
     </div>
   </div>
 </div>
 ```
 
-That's it. No `<html>`, no CSS, no `<script>` tags needed. The server provides all of that.
+Each option fills the viewport. The user scrolls between them (with scroll-snap) and uses the floating sidebar button to select. No `<html>`, no CSS, no `<script>` tags needed.
 
 ## CSS Classes Available
 
 The frame template provides these CSS classes for your content:
 
-### Options (A/B/C choices)
+### Options (full-viewport stacked layout — v2)
+
+Each option fills the full viewport width and snaps vertically. A floating toggle button (bottom-right) opens a sidebar overlay with option metadata, a feedback textarea, and a Select button. Selection happens via the sidebar, not by clicking the option itself.
 
 ```html
 <div class="options">
-  <div class="option" data-choice="a" onclick="toggleSelect(this)">
-    <div class="letter">A</div>
-    <div class="content">
-      <h3>Title</h3>
-      <p>Description</p>
+  <div
+    class="option"
+    data-choice="A"
+    data-title="Single Column"
+    data-description="Clean, focused reading experience"
+  >
+    <div class="option-mockup">
+      <!-- Full mockup content here — renders edge-to-edge -->
+    </div>
+  </div>
+  <div
+    class="option"
+    data-choice="B"
+    data-title="Two Column"
+    data-description="Sidebar navigation with main content"
+  >
+    <div class="option-mockup">
+      <!-- Full mockup content here -->
     </div>
   </div>
 </div>
 ```
 
-**Multi-select:** Add `data-multiselect` to the container to let users select multiple options. Each click toggles the item. The indicator bar shows the count.
+**Key attributes:**
 
-```html
-<div class="options" data-multiselect>
-  <!-- same option markup — users can select/deselect multiple -->
-</div>
-```
+- `data-choice` — Letter/ID shown in sidebar and sent in events (required)
+- `data-title` — Option title shown in sidebar (falls back to "Option X")
+- `data-description` — Description shown in sidebar (optional)
+
+**Sidebar features:**
+
+- Shows metadata for the currently visible option (via IntersectionObserver)
+- Textarea for per-option feedback notes (persists across scrolls)
+- Select button sends `{ type: "click", choice, feedback }` via WebSocket
+
+**Browser resize** naturally changes the viewport width each mockup fills — use this to simulate different screen sizes.
 
 ### Cards (visual designs)
 
@@ -264,12 +296,13 @@ The frame template provides these CSS classes for your content:
 When the user clicks options in the browser, their interactions are recorded to `$SCREEN_DIR/.events` (one JSON object per line). The file is cleared automatically when you push a new screen.
 
 ```jsonl
-{"type":"click","choice":"a","text":"Option A - Simple Layout","timestamp":1706000101}
-{"type":"click","choice":"c","text":"Option C - Complex Grid","timestamp":1706000108}
-{"type":"click","choice":"b","text":"Option B - Hybrid","timestamp":1706000115}
+{"type":"click","choice":"A","text":"Single Column","feedback":"I prefer the wider margins","timestamp":1706000101}
+{"type":"click","choice":"B","text":"Two Column","timestamp":1706000115}
 ```
 
-The full event stream shows the user's exploration path — they may click multiple options before settling. The last `choice` event is typically the final selection, but the pattern of clicks can reveal hesitation or preferences worth asking about.
+**v2 events** include an optional `feedback` field with text the user typed in the sidebar textarea before clicking Select. The `text` field contains the option title.
+
+The last event is typically the final selection. If `feedback` is present, use it as direct input for the next iteration.
 
 If `.events` doesn't exist, the user didn't interact with the browser — use only their terminal text.
 
