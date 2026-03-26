@@ -1244,7 +1244,7 @@ return {
         M.visits()
         M.extra()
         M.pick()
-        M.files()
+        -- M.files()
         M.clue()
         M.git()
         M.diff()
