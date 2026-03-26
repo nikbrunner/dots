@@ -84,3 +84,4 @@ dev:start (scope assessment → route)
 - `dev:verification` applies at every scope level — even trivial changes get verified before claiming done
 - The user can always say "skip to coding" to bypass planning steps
 - `dev:tdd` is loaded contextually during implementation regardless of scope
+- See [workflow.md](workflow.md) for the full lifecycle definition including OpenSpec integration, responsibility boundaries, and transition signals
