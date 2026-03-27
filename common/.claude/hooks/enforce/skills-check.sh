@@ -19,40 +19,40 @@ prompt_lower=$(echo "$PROMPT" | tr '[:upper:]' '[:lower:]')
 # Collect matching skills
 matches=()
 
-# dev:start — feature requests, bug reports, implementation tasks
+# dev:flow — feature requests, bug reports, implementation tasks
 if echo "$prompt_lower" | grep -qiE '(feature|implement|build|refactor|add .*(support|option|ability)|fix|bug|change|improve|enhance|idea|solve|how (could|can|do|should) we|could we|should we|do you have an idea)'; then
-    matches+=("dev:start — Entry point for development tasks")
+    matches+=("dev:flow — Development workflow entry point (orient, propose, build, close)")
 fi
 
-# dev:commit — committing code
+# dev:util:commit — committing code
 if echo "$prompt_lower" | grep -qiE '(commit|push|ship it|merge|create a pr|pull request)'; then
-    matches+=("dev:commit — Commit format and strategy")
+    matches+=("dev:util:commit — Commit format and strategy")
 fi
 
-# dev:tdd — testing
+# dev:style:tdd — testing
 if echo "$prompt_lower" | grep -qiE '\b(test|testing|tdd|vitest|jest|spec)\b'; then
-    matches+=("dev:tdd — TDD discipline and test strategy")
+    matches+=("dev:style:tdd — TDD discipline and test strategy")
 fi
 
-# dev:brainstorm — design discussions
+# dev:flow — design discussions (brainstorm is part of flow start)
 if echo "$prompt_lower" | grep -qiE '(design|architecture|approach|trade.?off|pressure.?test|what do you think about)'; then
-    matches+=("dev:brainstorm — Interview before implementation")
+    matches+=("dev:flow start — Orient and brainstorm before implementation")
 fi
 
-# dev:planning — planning work
+# dev:flow propose — planning work
 if echo "$prompt_lower" | grep -qiE '(plan|roadmap|scope|break.?down|phase|milestone)'; then
-    matches+=("dev:planning — Design before code")
+    matches+=("dev:flow propose — Design and plan before code")
 fi
 
-# dev:propose — propose a change (OpenSpec or PRD)
+# dev:flow propose — propose a change (OpenSpec or PRD)
 if echo "$prompt_lower" | grep -qiE '(prd|product requirements|requirements doc|spec.*write|write.*spec|propose|proposal|openspec)'; then
-    matches+=("dev:propose — Propose a change (OpenSpec or PRD)")
+    matches+=("dev:flow propose — Propose a change (OpenSpec or PRD)")
 fi
 
 # bai:start — BAI project work
 if [[ "$REPO_OWNER" == "black-atom-industries" ]]; then
     if echo "$prompt_lower" | grep -qiE '(feature|implement|build|refactor|fix|bug|change|improve|issue|ticket)'; then
-        matches+=("bai:start — BAI development entry point (wraps dev:start with Linear)")
+        matches+=("bai:start — BAI development entry point (wraps dev:flow with Linear)")
     fi
 fi
 
