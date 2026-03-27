@@ -35,5 +35,7 @@ Open items (as of 2026-03-24):
 
 ### Tooling
 
-- OpenSpec initialized 2026-03-24 — specs/ folder empty by design, populates via propose/archive cycle
+- OpenSpec initialized 2026-03-24 — `openspec/` dir exists, `specs/` empty by design (populates via propose/archive cycle)
+- **OpenSpec adoption decision (2026-03-24):** keep Nik's existing workflow skeleton (dev-start, dev-grill-me, review gates, Linear integration), replace PRD/plan artifact format with OpenSpec artifacts (proposal.md, design.md, tasks.md). Specs/ accumulation solves the stale-docs problem. Handover written to dots repo for another Claude instance to implement the skill modifications.
 - nikbrunner/yaml-edit fork at `fix/sequence-indentation` branch — livery depends on this via git dep in Cargo.toml
+- `UBIQUITOUS_LANGUAGE.md` created 2026-03-26 — formal domain glossary for the livery project

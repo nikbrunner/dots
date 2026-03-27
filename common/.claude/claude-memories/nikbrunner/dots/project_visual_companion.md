@@ -1,23 +1,26 @@
 ---
 name: Visual Companion for Design Brainstorming
-description: Plan to extract superpowers' visual brainstorming companion into standalone tool, integrate with agent-browser for AI visual feedback loop.
+description: Browser-based visual companion skill (dev-visual-companion) — capture existing UI, iterate on mockups, export clean references. Fully implemented.
 type: project
 ---
 
-Extract superpowers' visual companion (local HTTP server + HTML mockups + click-to-select) into a standalone tool owned by Nik.
+Browser-based visual companion that lets Claude show mockups during design discussions.
 
-**Why:** Claude can't see what it generates. During dev:grill-me design discussions, visual questions need visual answers — not ASCII art. The superpowers companion solves this with a file-watcher server that serves HTML fragments with interactive selection.
+**Why:** Claude can't see what it generates. During dev:brainstorm design discussions, visual questions need visual answers. The companion uses a file-watcher HTTP server + HTML fragments + click-to-select for interactive feedback.
 
-**How to apply:**
+**Status (2026-03-26):** Fully implemented as `dev-visual-companion` skill. V2 layout (vertical stacking + sidebar) also implemented and archived.
 
-- Start by copying superpowers' server scripts (`skills/brainstorming/scripts/`, `visual-companion.md`) into dots or a standalone repo
-- Key innovation: connect via agent-browser so Claude can actually see the rendered output (screenshot → Read tool), closing the feedback loop
-- Integrate as optional step in dev:grill-me when visual questions arise
-- Agentic Coding Handbook has a documented visual feedback workflow pattern
-- Nik has additional ideas to iterate on — discuss at start of next session
+**Key features:**
 
-**Current state:** Extracted to `dev-visual-companion` skill in dots. Server works, click events captured, integrated with dev:brainstorm. Enhanced flow: capture existing → iterate → export clean reference to `design/`.
+- Capture existing UI state before iterating (web via agent-browser, desktop via screencapture)
+- HTML fragment server with CSS classes for options, cards, mockups, split views
+- Click-to-select events captured to `.events` file
+- Export phase: full-document HTML → screenshot → `design/` directory
+- Stitch MCP offered when available (OFFER not REQUIRE — Google might kill it)
+- Impeccable critique/polish integrated into visual verification
 
-**Future:** Extract to standalone bundled plugin (server + templates + skills, zero external deps). Note: Stitch MCP is OFFER not REQUIRE — Google might kill it.
+**V2 layout (2026-03-25):** Vertical stacking + fixed sidebar. Each option takes full width, user scrolls to compare. Archived at `openspec/changes/archive/2026-03-25-visual-companion-v2-layout/`.
 
-**Source files:** Originally from `/Users/nbr/repos/obra/superpowers/skills/brainstorming/scripts/`
+**Source:** Extracted from `obra/superpowers/skills/brainstorming/scripts/`.
+
+**Future:** Extract to standalone bundled plugin (server + templates + skills, zero external deps).
