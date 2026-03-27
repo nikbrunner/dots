@@ -104,6 +104,3 @@
 [commit]
   gpgsign = true
 
-# OS-specific includes (these files will contain platform-specific paths)
-[include]
-  path = ~/.gitconfig.local
