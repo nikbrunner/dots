@@ -52,9 +52,10 @@ DEPS=(
 
     # AI & dev tools
     av-cli-bin
+    pass-cli
 
     # Desktop apps
-    1password
+    proton-pass
     claude-desktop-native
     signal-desktop
     slack-desktop
@@ -105,7 +106,7 @@ check_dep() {
     zapzap) command -v zapzap &>/dev/null ;;
 
     # Desktop apps - check via pacman
-    1password | claude-desktop-native | signal-desktop | slack-desktop | obsidian)
+    proton-pass | claude-desktop-native | signal-desktop | slack-desktop | obsidian)
         pacman -Qi "$dep" &>/dev/null
         ;;
 
@@ -113,6 +114,9 @@ check_dep() {
     bluez | bluez-utils | lib32-gamemode | zsh-autosuggestions | zsh-syntax-highlighting)
         pacman -Qi "$dep" &>/dev/null
         ;;
+
+    # Installed via custom script, not pacman
+    pass-cli) command -v pass-cli &>/dev/null ;;
 
     # Default: command name matches package name
     *) command -v "$dep" &>/dev/null ;;
@@ -138,6 +142,12 @@ install_dep() {
 
     echo "📦 Installing $dep..."
 
+    # Special install methods
+    if [[ "$dep" == "pass-cli" ]]; then
+        curl -fsSL https://proton.me/download/pass-cli/install.sh | bash
+        return $?
+    fi
+
     if [[ "$pkg_manager" == "pacman" ]]; then
         sudo pacman -S --needed --noconfirm "$dep"
     else
@@ -152,6 +162,14 @@ install_dep() {
             echo "🔵 Enabling bluetooth service..."
             sudo systemctl enable --now bluetooth
             echo "✅ Bluetooth service enabled"
+        fi
+        ;;
+    pass-cli)
+        # Enable ProtonPass SSH agent service
+        if ! systemctl --user is-enabled pass-ssh-agent &>/dev/null; then
+            echo "🔑 Enabling ProtonPass SSH agent service..."
+            systemctl --user enable --now pass-ssh-agent
+            echo "✅ ProtonPass SSH agent enabled"
         fi
         ;;
     docker)

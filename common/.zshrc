@@ -32,6 +32,7 @@ export RIPGREP_CONFIG_PATH=$HOME/.ripgreprc
 
 # Globals ================================================================
 export DOTS_DIR="$HOME/repos/nikbrunner/dots"
+export SSH_AUTH_SOCK="$HOME/.ssh/proton-pass-agent.sock"
 export EDITOR="nvim"
 export MANPAGER='nvim +Man!'
 export BAT_THEME="base16"
@@ -52,6 +53,7 @@ alias start="helm bookmark 0"
 alias lazyvim="NVIM_APPNAME=lazyvim nvim"
 alias gdl="gallery-dl"
 alias npmu="npm-upgrade"
+alias pp="pass-cli"
 alias scratch="$EDITOR $HOME/scratchpad.md"
 alias ydl='yt-dlp --audio-format mp3 --embed-thumbnail --embed-metadata --extract-audio'
 alias groot='cd "$(git rev-parse --show-toplevel 2>/dev/null)" || echo "I am not Groot (not in a git repo)"'

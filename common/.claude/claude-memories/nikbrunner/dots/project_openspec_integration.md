@@ -1,6 +1,6 @@
 ---
 name: OpenSpec Integration into Dev Skills
-description: Plan to replace PRD/Plan artifacts with OpenSpec format while keeping existing dev workflow skeleton and Linear integration.
+description: Integration of OpenSpec artifact format into dev-* skill pipeline — skill renames done, active branch feat/openspec-integration with remaining work.
 type: project
 ---
 
@@ -10,45 +10,33 @@ Integrate OpenSpec's artifact format and `specs/` accumulation into the existing
 
 **Why:** Nik has no clear convention for docs/specs/plans folders. Old plans go stale and become noise. OpenSpec's archive cycle solves this structurally — active changes are clearly in-progress, archived changes are dated history, and `openspec/specs/` is the only canonical "current truth."
 
-## Decision: Hybrid Integration
+## Current State (2026-03-26)
 
-**Keep:** dev-start, dev-grill-me, dev-executing-plans, dev-close, all review gates, Linear integration (bai-\*), all domain skills.
+**Branch:** `feat/openspec-integration` (21 commits ahead of main, not yet merged)
 
-**Replace:** PRD and Plan artifacts with OpenSpec artifacts (proposal.md, design.md, tasks.md, delta specs/).
+### Completed Work
 
-**Add:** specs/ accumulation via archive step in dev-close.
+1. **OpenSpec initialized** in dots repo (`openspec/` dir with `spec-driven-custom` schema)
+2. **Skill renames completed:**
+   - `dev-grill-me` → `dev-brainstorm` (directory + all cross-references)
+   - `dev-write-prd` → `dev-propose` (produces OpenSpec artifacts instead of PRD)
+   - `dev-prd-to-plan` → `dev-plan-tasks` (produces OpenSpec tasks.md instead of plan file)
+3. **New skill created:** `about-openspec` — OpenSpec context/awareness skill
+4. **OpenSpec routing added to `dev-start`** — routes to OpenSpec workflow when `openspec/` exists
+5. **Visual companion v2 layout** — proposed, implemented, and archived (`openspec/changes/archive/2026-03-25-visual-companion-v2-layout/`)
+6. **Per-project OpenSpec skills** installed at `.claude/skills/` (openspec-propose, openspec-apply-change, openspec-explore, openspec-archive-change) — aliased as `opsx:*` prefix
 
-## Skill Modifications Needed
+### Active OpenSpec Change
 
-### 1. `dev-write-prd` → Produce OpenSpec artifacts instead of a PRD
+`openspec/changes/openspec-skill-integration/` — the meta-change for integrating OpenSpec into the dev pipeline itself. Has proposal, design, specs (4 spec files), and tasks.
 
-- Output: `openspec/changes/<name>/proposal.md` (what & why) + `design.md` (how) + `specs/` (delta behavioral specs)
-- Use `openspec new change "<name>"` to scaffold, then `openspec instructions` for templates
-- Review gate: `prd-reviewer` adapts to validate proposal.md + design.md
+### Remaining Work
 
-### 2. `dev-prd-to-plan` → Produce OpenSpec tasks.md instead of a plan file
-
-- Output: `openspec/changes/<name>/tasks.md`
-- Use `openspec instructions tasks --change "<name>"` for template
-- Review gate: `plan-reviewer` adapts to validate tasks.md
-
-### 3. `dev-close` → Add archive step
-
-- After verification + ship, run `openspec archive` to:
-  - Sync delta specs into `openspec/specs/`
-  - Move change to `openspec/changes/archive/YYYY-MM-DD-<name>/`
-- Replaces/complements `pr-knowledge-sync` for behavioral documentation
-
-### 4. Review gates adapt to new artifact format
-
-- `prd-reviewer`: reads proposal.md + design.md instead of PRD
-- `plan-reviewer`: reads tasks.md instead of plan file
-
-### 5. New: Bootstrap skill (`openspec-bootstrap` or `dev-bootstrap-specs`)
-
-- Scan a codebase, generate initial `openspec/specs/` organized by domain
-- Needed for brownfield adoption across Nik's existing projects
-- Could be a global skill since it's project-agnostic
+- Finish implementing remaining tasks from `openspec-skill-integration` change
+- Wire `dev-close` to include OpenSpec archive step
+- Adapt review gates (prd-reviewer, plan-reviewer) for new artifact format
+- Bootstrap skill (`dev-openspec-init`) for brownfield adoption
+- Uncommitted changes on branch: settings.json, about-openspec, visual-companion files, tmux keymaps
 
 ## Architecture: Where Things Live
 
@@ -63,32 +51,8 @@ Integrate OpenSpec's artifact format and `specs/` accumulation into the existing
 ## OpenSpec CLI Basics
 
 - `openspec init --tools claude` — scaffolds `openspec/` dir + Claude skills in `.claude/`
-- `openspec new change "<name>"` — creates change directory with `.openspec.yaml`
+- `openspec new change "<name>"` — creates change directory
 - `openspec status --change "<name>" --json` — artifact completion status
-- `openspec instructions <artifact-id> --change "<name>" --json` — templates + rules for each artifact
+- `openspec instructions <artifact-id> --change "<name>" --json` — templates + rules
 - `openspec list --json` — list active changes
-- `openspec validate` — validate structure
-- Default schema: "spec-driven" (proposal → design → specs → tasks)
-
-## OpenSpec Skills (installed per-project, can be removed after integration)
-
-The `openspec init --tools claude` command installs 4 skills:
-
-- `openspec-propose` — one-shot artifact generation (replaced by modified dev-write-prd + dev-prd-to-plan)
-- `openspec-apply-change` — task execution loop (replaced by dev-executing-plans)
-- `openspec-explore` — thinking/discovery mode (replaced by dev-grill-me)
-- `openspec-archive-change` — archive + spec sync (absorbed into dev-close)
-
-After integration, these per-project skills can be removed — the global dev-\* skills handle the workflow.
-
-## Open Questions
-
-1. **Custom OpenSpec schema** — The default "spec-driven" schema defines artifact types. May want a custom schema that aligns with Nik's preferred artifact set. Needs investigation: `openspec schema --help`.
-2. **Bootstrap skill scope** — Global skill or per-project? Probably global since it's a one-time setup per repo.
-3. **openspec init automation** — Should `dev-create-project` or `dev-claude-setup` auto-run `openspec init`?
-
-## How to Apply
-
-Modify the global skills in `common/.claude/skills/`. Start with dev-write-prd and dev-prd-to-plan since those are the artifact producers. Then adapt review gates. Finally add the archive step to dev-close.
-
-**Test with livery first** — it already has `openspec init` done and has an empty `openspec/specs/` ready.
+- Custom schema at `openspec/schemas/spec-driven-custom/`
