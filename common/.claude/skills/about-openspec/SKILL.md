@@ -44,13 +44,13 @@ openspec validate --specs         # Validate all specs
 
 ## Skills
 
-| Skill                     | Invocation           | Purpose                                |
-| ------------------------- | -------------------- | -------------------------------------- |
-| `openspec-propose`        | `/opsx:propose`      | Create change + generate all artifacts |
-| `openspec-apply-change`   | `/opsx:apply`        | Implement tasks from a change          |
-| `openspec-explore`        | `/opsx:explore`      | Think through ideas (no code)          |
-| `openspec-archive-change` | `/opsx:archive`      | Archive completed change               |
-| `dev:openspec-init`       | `/dev-openspec-init` | Bootstrap OpenSpec in a project        |
+| Skill                     | Invocation            | Purpose                                |
+| ------------------------- | --------------------- | -------------------------------------- |
+| `openspec-propose`        | `/opsx:propose`       | Create change + generate all artifacts |
+| `openspec-apply-change`   | `/opsx:apply`         | Implement tasks from a change          |
+| `openspec-explore`        | `/opsx:explore`       | Think through ideas (no code)          |
+| `openspec-archive-change` | `/opsx:archive`       | Archive completed change               |
+| `dev:setup:openspec`      | `/dev-setup-openspec` | Bootstrap OpenSpec in a project        |
 
 ## Sources of Truth
 
