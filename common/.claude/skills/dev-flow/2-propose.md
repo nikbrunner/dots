@@ -2,7 +2,7 @@
 
 ## When to use
 
-Medium+ scope work that benefits from planning before code. Triggered by Nik invoking `/dev:flow propose` or `/opsx:propose`.
+Medium+ scope work that benefits from planning before code. Triggered by me invoking `/dev:flow propose` or `/opsx:propose`.
 
 ## BAI Auto-Detection
 
@@ -27,7 +27,7 @@ Understand before proposing: project structure, conventions, existing code relev
 
 ### 3. Interview
 
-Grill Nik on every aspect of the change:
+Grill me on every aspect of the change:
 
 - Provide your recommended answer for each question based on codebase exploration
 - If a question can be answered by the codebase, answer it yourself
@@ -61,7 +61,7 @@ Dispatch review agents (max 3 iterations each):
 1. **prd-reviewer** — validates proposal.md + design.md
 2. **plan-reviewer** — validates tasks against proposal
 
-If still unresolved after 3 iterations, escalate to Nik.
+If still unresolved after 3 iterations, escalate to me.
 
 ### 7. PRD fallback (no OpenSpec)
 
@@ -69,4 +69,4 @@ Same interview process, then write a PRD with: Problem Statement, Solution, User
 
 ## Transition to Phase 3
 
-Proposal approved and tasks written. Nik moves to `/dev:flow build` or `opsx:apply`. Claude never auto-transitions.
+Proposal approved and tasks written. I move to `/dev:flow build` or `opsx:apply`. Claude never auto-transitions.

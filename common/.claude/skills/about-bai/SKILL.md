@@ -6,7 +6,7 @@ user-invocable: false
 
 # About Black Atom Industries
 
-Nik's theme/colorscheme ecosystem — a modular system for consistent styling across editors, terminals, and tools.
+My theme/colorscheme ecosystem — a modular system for consistent styling across editors, terminals, and tools.
 
 A central `core` repo (Deno/TypeScript, published on JSR as `@black-atom/core`) defines all theme colors. Platform-specific adapter repos use Eta templates to generate theme files from core definitions. Changing a color in core propagates to every supported platform.
 

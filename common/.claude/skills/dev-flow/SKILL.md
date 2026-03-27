@@ -27,6 +27,6 @@ If `openspec/` exists: check for active changes on `start`, use `opsx:propose` d
 
 ## Responsibility
 
-- **Nik triggers**: `/dev:flow close` (Claude never assumes work is done)
+- **I trigger**: `/dev:flow close` (Claude never assumes work is done)
 - **Claude does**: check active work, route, track tasks, surface "all tasks complete"
 - **Claude asks**: "This looks medium — want to propose?" / "All tasks done — ready to close?"

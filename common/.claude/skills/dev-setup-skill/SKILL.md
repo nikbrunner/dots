@@ -35,15 +35,15 @@ See `template.md` for the canonical SKILL.md structure with placeholders.
 
 ## Conventions
 
-| Aspect          | Convention                                                    |
-| --------------- | ------------------------------------------------------------- |
-| Directory       | `dev-topic-name/` (hyphen-separated)                          |
-| Skill name      | `dev:topic-name` (colon namespace)                            |
-| TanStack skills | `dev-tanstack-*` dir, `dev:tanstack-*` name                   |
-| Description     | Starts with "Nik's [topic]", ends with "Load when [trigger]." |
-| Cross-refs      | Backtick-quoted inline: `` `dev:react` ``                     |
-| Tables          | Minimal separators (`\|-\|-\|`)                               |
-| Code examples   | Real-world > pseudocode, one good example > many mediocre     |
+| Aspect          | Convention                                                 |
+| --------------- | ---------------------------------------------------------- |
+| Directory       | `dev-topic-name/` (hyphen-separated)                       |
+| Skill name      | `dev:topic-name` (colon namespace)                         |
+| TanStack skills | `dev-tanstack-*` dir, `dev:tanstack-*` name                |
+| Description     | Starts with "My [topic]", ends with "Load when [trigger]." |
+| Cross-refs      | Backtick-quoted inline: `` `dev:react` ``                  |
+| Tables          | Minimal separators (`\|-\|-\|`)                            |
+| Code examples   | Real-world > pseudocode, one good example > many mediocre  |
 
 ## Description Requirements
 
@@ -51,7 +51,7 @@ The description is the ONLY thing the agent sees when deciding which skill to lo
 
 - First sentence: what the skill does.
 - Second sentence: "Load when [specific triggers]."
-- Write in third person ("Nik's React patterns..." not "Your React patterns...").
+- Write in first person ("My React patterns..." not "Your React patterns...").
 - Include concrete trigger words the agent will match against (e.g., "component", "hook", "React" not just "frontend").
 
 ## When to Add Scripts

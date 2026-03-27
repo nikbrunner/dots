@@ -2,7 +2,7 @@
 
 ## When to use
 
-Automatic entry point for any development task. Runs whenever Nik describes work or invokes `/dev:flow start`.
+Automatic entry point for any development task. Runs whenever I describe work or invoke `/dev:flow start`.
 
 ## BAI Auto-Detection
 
@@ -26,7 +26,7 @@ If repo path contains `black-atom-industries`, load Linear context automatically
    | Medium  | Multi-file feature, new module, API changes |
    | Large   | Multi-system, cross-cutting concerns        |
 
-4. **Present the assessment.** "This looks [scope] — I'll [route]. Sound right?" Let Nik confirm or override.
+4. **Present the assessment.** "This looks [scope] — I'll [route]. Sound right?" Let me confirm or override.
 
 5. **If scope is unclear**, ask ONE clarifying question via `AskUserQuestion`. Infer what you can — don't over-ask.
 
@@ -41,7 +41,7 @@ If repo path contains `black-atom-industries`, load Linear context automatically
 
 ## Brainstorm (optional, any scope)
 
-When Nik wants to explore before committing to an approach:
+When I want to explore before committing to an approach:
 
 - Walk the design tree branch by branch, resolving decisions one at a time
 - Provide recommended answers with reasoning — don't just ask, also propose
@@ -53,4 +53,4 @@ When Nik wants to explore before committing to an approach:
 
 ## Transition to Phase 2
 
-Nik invokes `/dev:flow propose` or `/opsx:propose`. Claude suggests it for medium+ scope but never forces it. Nik can always say "skip planning, just code" to jump to Phase 3.
+I invoke `/dev:flow propose` or `/opsx:propose`. Claude suggests it for medium+ scope but never forces it. I can always say "skip planning, just code" to jump to Phase 3.

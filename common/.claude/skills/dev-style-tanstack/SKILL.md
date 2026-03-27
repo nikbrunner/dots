@@ -1,12 +1,12 @@
 ---
 name: dev:style:tanstack
-description: "TanStack ecosystem patterns -- CLI tools, Query, Form, doc verification, and Nik's personal conventions. Load when any @tanstack/* package is in dependencies."
+description: "TanStack ecosystem patterns -- CLI tools, Query, Form, doc verification, and my personal conventions. Load when any @tanstack/* package is in dependencies."
 user-invocable: true
 ---
 
 # TanStack Ecosystem
 
-Entry point for working with TanStack libraries. This skill introduces the CLI for doc lookup and contains Nik's personal patterns and preferences for Query and Form.
+Entry point for working with TanStack libraries. This skill introduces the CLI for doc lookup and contains my personal patterns and preferences for Query and Form.
 
 ## TanStack CLI
 
@@ -72,7 +72,7 @@ See `form-patterns.md` for detailed patterns and API reference.
 ## Workflow
 
 1. Identify which TanStack library is relevant to the task
-2. Check sub-documents for Nik's preferences on Query or Form
+2. Check sub-documents for my preferences on Query or Form
 3. Use `tanstack search-docs` / `tanstack doc` to verify patterns against current docs before implementing
 4. For libraries without a dedicated sub-document (Router, Store, Start, Table, Virtual, etc.), rely on CLI docs alone
 

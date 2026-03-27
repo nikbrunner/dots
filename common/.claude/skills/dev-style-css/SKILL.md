@@ -1,6 +1,6 @@
 ---
 name: dev:style:css
-description: "Nik's CSS preferences -- CSS Modules, CVA, co-located styles, and explored alternatives. Load when working on CSS or styling in web projects."
+description: "My CSS preferences -- CSS Modules, CVA, co-located styles, and explored alternatives. Load when working on CSS or styling in web projects."
 user-invocable: false
 ---
 

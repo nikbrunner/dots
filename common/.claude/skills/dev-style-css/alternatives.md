@@ -1,6 +1,6 @@
 # CSS Framework Alternatives
 
-No framework default yet. These are Nik's notes from exploration.
+No framework default yet. These are my notes from exploration.
 
 ## Explored
 

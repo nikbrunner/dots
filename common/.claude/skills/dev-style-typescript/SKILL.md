@@ -1,6 +1,6 @@
 ---
 name: dev:style:typescript
-description: "Nik's TypeScript conventions -- type safety, naming, function signatures. Load when working in any TypeScript project."
+description: "My TypeScript conventions -- type safety, naming, function signatures. Load when working in any TypeScript project."
 user-invocable: false
 ---
 

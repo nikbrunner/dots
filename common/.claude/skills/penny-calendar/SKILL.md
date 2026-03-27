@@ -6,7 +6,7 @@ invocable: true
 
 # Penny Calendar
 
-Access Nik's iCloud calendar via `davit` CLI. Used by Penny for scheduling, briefings, and event management.
+Access my iCloud calendar via `davit` CLI. Used by Penny for scheduling, briefings, and event management.
 
 ## Prerequisites
 
@@ -30,12 +30,12 @@ These are the source of truth for flags, arguments, and options.
 
 ## Defaults
 
-- Primary calendar: **iCloud** — always use `--calendar iCloud` unless Nik specifies otherwise
+- Primary calendar: **iCloud** — always use `--calendar iCloud` unless I specify otherwise
 - Use `--format json` when you need to parse output programmatically (e.g. extracting UID after create)
 
 ## Rules
 
-- **All timestamps are UTC** — Nik is in CET/CEST (UTC+1 winter, UTC+2 summer)
+- **All timestamps are UTC** — I'm in CET/CEST (UTC+1 winter, UTC+2 summer)
   - Check DST: Germany switches last Sunday of March / last Sunday of October
   - Use `date -u` to verify if unsure
 - **Title format**: `Company/Context — What (Who)` — e.g. `ImFusion — Gehaltsgespräch (Mattia Lupetti)`

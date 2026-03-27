@@ -1,6 +1,6 @@
 ---
 name: obsidian-guide
-description: How to access and navigate Nik's Obsidian notes for task management, journaling, and project context. Load when notes, tasks, or daily planning come up.
+description: How to access and navigate my Obsidian notes for task management, journaling, and project context. Load when notes, tasks, or daily planning come up.
 user-invocable: false
 ---
 
@@ -8,10 +8,10 @@ user-invocable: false
 
 ## When to Access
 
-- When Nik explicitly asks to check daily tasks or todos
+- When I explicitly ask to check daily tasks or todos
 - When the conversation is about task management, planning, or productivity
-- When Nik mentions projects and you need context from notes
-- When Nik directly references notes or asks to look something up
+- When I mention projects and you need context from notes
+- When I directly reference notes or ask to look something up
 - **NOT automatically at the start of every conversation**
 
 ## Obsidian CLI

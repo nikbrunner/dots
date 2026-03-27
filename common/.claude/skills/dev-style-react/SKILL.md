@@ -1,6 +1,6 @@
 ---
 name: dev:style:react
-description: "Nik's React component architecture -- dumb/smart/partial pattern, folder structure, and composition principles. Load when working in React codebases."
+description: "My React component architecture -- dumb/smart/partial pattern, folder structure, and composition principles. Load when working in React codebases."
 user-invocable: false
 ---
 

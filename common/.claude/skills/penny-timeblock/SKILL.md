@@ -6,7 +6,7 @@ invocable: true
 
 # Penny Timeblock
 
-Plan a timeblocked day for Nik. Reads existing events, checks context (daily notes, recent patterns), then proposes a balanced day.
+Plan a timeblocked day for me. Reads existing events, checks context (daily notes, recent patterns), then proposes a balanced day.
 
 ## Before you start
 
@@ -16,7 +16,7 @@ Plan a timeblocked day for Nik. Reads existing events, checks context (daily not
 ## Step 1: Determine the date
 
 - Default: tomorrow
-- If Nik specifies a date, use that
+- If I specify a date, use that
 - Always verify the day of week with `date` command — never guess
 
 ## Step 2: Gather context
@@ -34,7 +34,7 @@ These are fixed anchors. Plan around them.
 Read the last 2-3 daily notes to understand:
 
 - What tasks have been rolling over (stale tasks → suggest admin block)
-- What Nik has been focused on (dev projects → continue or suggest variety)
+- What I've been focused on (dev projects → continue or suggest variety)
 - Exercise frequency (no movement in 2+ days → prioritize it)
 - Admin debt (emails, Steuer, etc. piling up → suggest admin block)
 
@@ -42,7 +42,7 @@ Read the last 2-3 daily notes to understand:
 
 Check what's hot — Linear issues in progress, recent git activity, open PRs.
 
-## Step 3: Nik's Energy Pattern
+## Step 3: My Energy Pattern
 
 - **08:00–10:30** — Peak focus. Always deep work. Never admin.
 - **10:30–12:00** — Good focus, slightly lower. Interviews, prep, or continued dev.
@@ -102,7 +102,7 @@ Passt das? Soll ich was ändern?
 
 ## Step 6: Create events
 
-Only after Nik confirms. Use davit CLI:
+Only after I confirm. Use davit CLI:
 
 ```bash
 source ~/.env && davit event create "Block Name" \
@@ -110,7 +110,7 @@ source ~/.env && davit event create "Block Name" \
   --desc "Description" --calendar iCloud
 ```
 
-- **All times UTC** — Nik is CET (UTC+1 winter) / CEST (UTC+2 summer)
+- **All times UTC** — I'm in CET (UTC+1 winter) / CEST (UTC+2 summer)
 - Check DST: Germany switches last Sunday of March / last Sunday of October
 
 ## Arguments

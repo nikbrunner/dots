@@ -2,7 +2,7 @@
 
 ## When to use
 
-Work is done and Nik invokes `/dev:flow close`. Claude never auto-triggers this phase.
+Work is done and I invoke `/dev:flow close`. Claude never auto-triggers this phase.
 
 ## BAI Auto-Detection
 

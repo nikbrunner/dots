@@ -84,7 +84,7 @@ Examples:
 6. **Create with `mcp__linear__save_issue`**:
    - `title`: from arguments
    - `team`: determined team
-   - `assignee`: "me" (always assign to Nik)
+   - `assignee`: "me" (always assign to me)
    - `project`: from answer
    - `priority`: from answer
    - `state`: from answer

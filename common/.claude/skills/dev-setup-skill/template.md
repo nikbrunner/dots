@@ -1,6 +1,6 @@
 ---
 name: dev:topic-name
-description: "Nik's [topic] — [key patterns]. Load when [detection context]."
+description: "My [topic] — [key patterns]. Load when [detection context]."
 user-invocable: false
 ---
 
@@ -8,7 +8,7 @@ user-invocable: false
 
 ## Core Principle
 
-1-3 sentences establishing philosophy/approach. What does Nik believe about this topic? What's the guiding principle that informs all decisions below?
+1-3 sentences establishing philosophy/approach. What do I believe about this topic? What's the guiding principle that informs all decisions below?
 
 ## Key Patterns
 

@@ -36,7 +36,7 @@ Run in this order. Do not skip or reorder.
 
 ## Handling Review Feedback
 
-When processing feedback from reviewers or Nik:
+When processing feedback from reviewers or me:
 
 1. Read the full feedback without reacting
 2. Restate the technical requirement in your own words
@@ -63,4 +63,4 @@ Stop and ask. Present what you tried, what failed, and what you need. Don't forc
 
 ## Transition to Phase 4
 
-All tasks complete, or untracked work done. Nik triggers `/dev:flow close`. Claude surfaces completion but never auto-transitions.
+All tasks complete, or untracked work done. I trigger `/dev:flow close`. Claude surfaces completion but never auto-transitions.
