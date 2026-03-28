@@ -25,14 +25,13 @@ Check if `openspec/` exists in project root.
 
 Understand before proposing: project structure, conventions, existing code relevant to the change, integration points, existing specs in `openspec/specs/` that may be affected.
 
-### 3. Interview
+### 3. Interview (if not already done in Phase 1)
 
-Grill me on every aspect of the change:
+Interview me relentlessly about every aspect of this plan until we reach a shared understanding. Walk down each branch of the design tree, resolving dependencies between decisions one-by-one. For each question, provide your recommended answer.
 
-- Provide your recommended answer for each question based on codebase exploration
-- If a question can be answered by the codebase, answer it yourself
-- Resolve dependencies between decisions before moving forward
-- For refactors: consider alternatives first, ruthlessly cut scope, define what's explicitly out of scope, check test coverage before planning changes
+Ask the questions one at a time.
+
+If a question can be answered by exploring the codebase, explore the codebase instead.
 
 ### 4. Write artifacts (OpenSpec path)
 

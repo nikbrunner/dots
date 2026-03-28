@@ -41,13 +41,14 @@ If repo path contains `black-atom-industries`, load Linear context automatically
 
 ## Brainstorm (optional, any scope)
 
-When I want to explore before committing to an approach:
+Interview me relentlessly about every aspect of this plan until we reach a shared understanding. Walk down each branch of the design tree, resolving dependencies between decisions one-by-one. For each question, provide your recommended answer.
 
-- Walk the design tree branch by branch, resolving decisions one at a time
-- Provide recommended answers with reasoning — don't just ask, also propose
-- If a question can be answered by reading code, read the code instead of asking
+Ask the questions one at a time.
+
+If a question can be answered by exploring the codebase, explore the codebase instead.
+
 - Challenge weak reasoning. Surface hidden assumptions early
-- Group related questions — don't ask one at a time when three are interrelated
+- For refactors: consider alternatives first, ruthlessly cut scope, define what's explicitly out of scope
 - If `openspec/` exists and the topic relates to an active change, delegate to `opsx:explore`
 - Offer `dev:util:visual-companion` when questions involve UI layouts or diagrams
 
