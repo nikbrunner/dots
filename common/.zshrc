@@ -1,12 +1,7 @@
-# OPENSPEC:START
-# OpenSpec shell completions configuration
+
 fpath=("/Users/nbr/.zsh/completions" $fpath)
 autoload -Uz compinit
 compinit
-# OPENSPEC:END
-
-# shellcheck shell=bash
-# Note: This is zsh config. Many shellcheck warnings are false positives.
 
 [[ -r ~/.env ]] && { set -a; source ~/.env; set +a; }
 
