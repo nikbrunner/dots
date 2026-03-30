@@ -10,10 +10,10 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +15 src/routes/index.tsx
+badd +10 .gitignore
 argglobal
 %argdel
-edit src/routes/index.tsx
+edit .gitignore
 argglobal
 setlocal keymap=
 setlocal noarabic
@@ -31,8 +31,8 @@ setlocal cinoptions=
 setlocal cinscopedecls=public,protected,private
 setlocal cinwords=if,else,while,do,for,switch
 setlocal colorcolumn=
-setlocal comments=sO:*\ -,mO:*\ \ ,exO:*/,s1:/*,mb:*,ex:*/,://
-setlocal commentstring=//\ %s
+setlocal comments=:#
+setlocal commentstring=#\ %s
 setlocal complete=.,w,b,u,t
 setlocal completefunc=
 setlocal completeslash=
@@ -46,8 +46,8 @@ setlocal cursorlineopt=both
 setlocal nodiff
 setlocal eventignorewin=
 setlocal expandtab
-if &filetype != 'typescriptreact'
-setlocal filetype=typescriptreact
+if &filetype != 'gitignore'
+setlocal filetype=gitignore
 endif
 setlocal fixendofline
 setlocal foldcolumn=0
@@ -56,18 +56,18 @@ setlocal foldexpr=v:lua.vim.treesitter.foldexpr()
 setlocal foldignore=#
 setlocal foldlevel=99
 setlocal foldmarker={{{,}}}
-setlocal foldmethod=indent
+setlocal foldmethod=expr
 setlocal foldminlines=1
 setlocal foldnestmax=20
 setlocal foldtext=
 setlocal formatexpr=v:lua.require'conform'.formatexpr()
 setlocal formatlistpat=^\\s*\\d\\+[\\]:.)}\\t\ ]\\s*
-setlocal formatoptions=jcroql
+setlocal formatoptions=ctqj
 setlocal iminsert=0
 setlocal imsearch=-1
 setlocal includeexpr=
-setlocal indentexpr=GetTypescriptIndent()
-setlocal indentkeys=0{,0},0),0],0,,!^F,o,O,e
+setlocal indentexpr=
+setlocal indentkeys=0{,0},0),0],:,0#,!^F,o,O,e
 setlocal noinfercase
 setlocal iskeyword=@,48-57,_,192-255
 setlocal lhistory=10
@@ -81,7 +81,7 @@ setlocal modifiable
 setlocal nrformats=bin,hex
 setlocal number
 setlocal numberwidth=4
-setlocal omnifunc=v:lua.vim.lsp.omnifunc
+setlocal omnifunc=
 setlocal nopreserveindent
 setlocal nopreviewwindow
 setlocal quoteescape=\\
@@ -93,28 +93,28 @@ setlocal scrollback=-1
 setlocal noscrollbind
 setlocal shiftwidth=4
 setlocal signcolumn=yes
-setlocal nosmartindent
+setlocal smartindent
 setlocal nosmoothscroll
-setlocal softtabstop=-1
+setlocal softtabstop=4
 setlocal nospell
 setlocal spellcapcheck=[.?!]\\_[\\])'\"\\t\ ]\\+
 setlocal spellfile=
 setlocal spelllang=en_us,de_de
-setlocal spelloptions=noplainbuffer
+setlocal spelloptions=
 setlocal statuscolumn=%!v:lua.require'snacks.statuscolumn'.get()
-setlocal suffixesadd=.ts,.d.ts,.tsx,.js,.jsx,.cjs,.mjs
+setlocal suffixesadd=
 setlocal noswapfile
 setlocal synmaxcol=3000
-if &syntax != ''
-setlocal syntax=
+if &syntax != 'gitignore'
+setlocal syntax=gitignore
 endif
 setlocal tabstop=4
-setlocal tagfunc=v:lua.vim.lsp.tagfunc
+setlocal tagfunc=
 setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#src%*\ %#WinBarSeparator#/%*\ %#WinBarPath#routes%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#index.tsx%*\ %#WinBarSeparator##%*\ %#WinBarSymbol#Component%*
+setlocal winbar=%#WinBarFilename#.gitignore%*
 setlocal winblend=0
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -122,22 +122,18 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-19
-sil! normal! zo
-44
-sil! normal! zo
-let s:l = 39 - ((36 * winheight(0) + 28) / 56)
+let s:l = 10 - ((9 * winheight(0) + 26) / 53)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 39
-normal! 09|
+keepjumps 10
+normal! 0
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
 endif
 unlet! s:wipebuf
-set winheight=1 winwidth=20
+set winheight=30 winwidth=165
 let &shortmess = s:shortmess_save
 let s:sx = expand("<sfile>:p:r")."x.vim"
 if filereadable(s:sx)
