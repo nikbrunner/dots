@@ -449,8 +449,8 @@ return {
             end,
         })
 
-        -- Detect PR context on startup and directory change
-        vim.api.nvim_create_autocmd({ "VimEnter", "DirChanged" }, {
+        -- Detect PR context on directory change
+        vim.api.nvim_create_autocmd("DirChanged", {
             callback = function()
                 vim.defer_fn(detect_gh_pr_context, 500)
             end,
