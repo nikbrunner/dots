@@ -100,4 +100,4 @@ vim.cmd("cabbrev Wa wa")
 vim.cmd("cabbrev git Git")
 
 vim.o.tabline = "%!v:lua.require('lib.tabline').render()"
--- vim.o.showtabline = 0
+vim.o.showtabline = 1
