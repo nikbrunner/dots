@@ -19,8 +19,6 @@ Browser-based visual companion that lets Claude show mockups during design discu
 - Stitch MCP offered when available (OFFER not REQUIRE — Google might kill it)
 - Impeccable critique/polish integrated into visual verification
 
-**V2 layout (2026-03-25):** Vertical stacking + fixed sidebar. Each option takes full width, user scrolls to compare. Archived at `openspec/changes/archive/2026-03-25-visual-companion-v2-layout/`.
-
 **Source:** Extracted from `obra/superpowers/skills/brainstorming/scripts/`.
 
 **Future:** Extract to standalone bundled plugin (server + templates + skills, zero external deps).

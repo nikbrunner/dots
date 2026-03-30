@@ -37,12 +37,6 @@ common/.claude/
 - **TanStack skills**: `dev-tanstack-*` directory, `dev:tanstack-*` name
 - **OpenSpec per-project**: `opsx:` prefix (opsx:explore, opsx:propose, opsx:apply, opsx:archive)
 
-### Recent Skill Renames (2026-03-25, feat/openspec-integration branch)
-
-- `dev-grill-me` → `dev-brainstorm`
-- `dev-write-prd` → `dev-propose`
-- `dev-prd-to-plan` → `dev-plan-tasks`
-
 ### Key Decisions
 
 - **"Blind Spot Rule"** — correction is mandatory when flaws detected
@@ -54,11 +48,13 @@ common/.claude/
 
 ### Active Projects
 
+- [Nvim picker migration](project_nvim_picker_migration.md) — Snacks sole picker, committed 6cef1af, not yet merged
+- [Neovim 0.12 migration](project_nvim012_migration.md) — Planned: vim.pack exploration, dots#9
 - [OpenSpec integration](project_openspec_integration.md) — Active branch, skill renames done, remaining tasks
 - [Visual companion](project_visual_companion.md) — Fully implemented, v2 archived
 - [Livery](project_livery.md) — BAI desktop theme manager (Tauri v2 + React)
 - [Vendor-agnostic skills](project_vendor_agnostic_skills.md) — Long-term goal, no ready solution
-- [Skills enforcement refactor](project_skills_enforcement_refactor.md) — Merged to main, peon-ping cleanup pending
+- [Skills enforcement refactor](project_skills_enforcement_refactor.md) — Fully complete, merged to main
 
 ### Feedback
 
