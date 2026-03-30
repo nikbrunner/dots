@@ -9,6 +9,8 @@ cat >"$HOOK" <<'EOF'
 set -e
 
 make fmt
+
+git diff --name-only --diff-filter=M | xargs git add
 EOF
 
 chmod +x "$HOOK"

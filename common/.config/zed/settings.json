@@ -50,7 +50,7 @@
   "theme": {
     "mode": "system",
     "light": "Black Atom — Stations ∷ Medical",
-    "dark": "Black Atom — MNML ∷ Clay Dark"
+    "dark": "Black Atom — Dark"
   },
   "base_keymap": "VSCode",
   "vim_mode": true,

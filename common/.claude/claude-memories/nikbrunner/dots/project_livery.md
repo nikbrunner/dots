@@ -11,6 +11,6 @@ Livery is a Black Atom Industries desktop app for managing themes across develop
 **How to apply:** When working on pick-theme or theme infrastructure in dots, consider how changes affect Livery. Livery should support CLI arguments for programmatic testing without the UI (same pattern as `pick-theme <theme-name>`).
 
 - Repo: `~/repos/black-atom-industries/livery`
-- Linear project: livery-ebebb9cdaef9
+- Tracking: GitHub Issues + GitHub Projects (migrated from Linear, 2026-03-30)
 - Stack: Deno, Tauri v2, React 18, Vite 6, Tailwind v4, `@black-atom/core` (JSR)
 - Config: `~/.config/black-atom/livery/config.json`
