@@ -49,8 +49,8 @@
   "cursor_blink": false,
   "theme": {
     "mode": "system",
-    "light": "Black Atom — TERRA ∷ Fall Day",
-    "dark": "Black Atom — TERRA ∷ Fall Night"
+    "light": "Black Atom — Stations ∷ Medical",
+    "dark": "Black Atom — MNML ∷ Clay Dark"
   },
   "base_keymap": "VSCode",
   "vim_mode": true,
