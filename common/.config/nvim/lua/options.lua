@@ -93,11 +93,11 @@ vim.opt.splitbelow = true
 vim.opt.splitright = true
 
 -- Abbreviations
+vim.cmd("cabbrev W w")
 vim.cmd("cabbrev Wqa wqa")
 vim.cmd("cabbrev Wq wq")
 vim.cmd("cabbrev Wa wa")
 vim.cmd("cabbrev git Git")
-
 
 vim.o.tabline = "%!v:lua.require('lib.tabline').render()"
 -- vim.o.showtabline = 0
