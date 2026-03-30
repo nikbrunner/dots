@@ -3,7 +3,7 @@ fpath=("/Users/nbr/.zsh/completions" $fpath)
 autoload -Uz compinit
 compinit
 
-[[ -r ~/.env ]] && { set -a; source ~/.env; set +a; }
+for f in ~/.env ~/.env.*; do [[ -r "$f" ]] && { set -a; source "$f"; set +a; }; done
 
 # Git completion (fpath must be set before compinit in os.zsh) ===========
 zstyle ':completion:*:*:git:*' script ~/.config/.zsh/git-completion.bash

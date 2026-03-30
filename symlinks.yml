@@ -70,3 +70,4 @@ arch:
   arch/.config/waybar: ~/.config/waybar
   arch/.config/waypaper: ~/.config/waypaper
   arch/.config/systemd/user/pass-ssh-agent.service: ~/.config/systemd/user/pass-ssh-agent.service
+  arch/.config/systemd/user/pass-env-sync.service: ~/.config/systemd/user/pass-env-sync.service

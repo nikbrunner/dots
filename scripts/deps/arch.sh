@@ -171,6 +171,12 @@ install_dep() {
             systemctl --user enable --now pass-ssh-agent
             echo "✅ ProtonPass SSH agent enabled"
         fi
+        # Enable ProtonPass env sync service
+        if ! systemctl --user is-enabled pass-env-sync &>/dev/null; then
+            echo "🔑 Enabling ProtonPass env sync service..."
+            systemctl --user enable --now pass-env-sync
+            echo "✅ ProtonPass env sync enabled"
+        fi
         ;;
     docker)
         # Add user to docker group
