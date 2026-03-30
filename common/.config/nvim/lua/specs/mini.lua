@@ -168,6 +168,14 @@ function M.sessions()
         verbose = { read = true, write = true, delete = true },
         hooks = {
             pre = {
+                -- Save current session before loading a different one
+                -- (e.g., after branch switch in lazygit)
+                read = function()
+                    if vim.v.this_session ~= "" then
+                        local current = vim.fn.fnamemodify(vim.v.this_session, ":t")
+                        require("mini.sessions").write(current)
+                    end
+                end,
                 write = function()
                     -- Delete ephemeral and non-visible buffers before writing session
                     vim.iter(vim.api.nvim_list_bufs())
@@ -277,21 +285,17 @@ function M.sessions()
         })
 
         -- Auto-switch sessions on TermLeave event (like closing the lazygit terminal)
-        vim.api.nvim_create_autocmd({ "TermLeave", "VimResume" }, {
+        vim.api.nvim_create_autocmd({ "TermLeave" }, {
             callback = function(event)
                 -- Skip if project_switch is in progress
                 if vim.g._mini_session_switching then
                     return
                 end
 
-                -- For TermLeave events, only proceed if it's a Snacks terminal
-                if event.event == "TermLeave" then
-                    local buf = event.buf or vim.api.nvim_get_current_buf()
-                    local is_snacks_terminal = vim.bo[buf].filetype == "snacks_terminal"
-
-                    if not is_snacks_terminal then
-                        return -- Skip fzf-lua and other non-Snacks terminals
-                    end
+                -- Only proceed if it's a Snacks terminal (skip fzf-lua and others)
+                local buf = event.buf or vim.api.nvim_get_current_buf()
+                if vim.bo[buf].filetype ~= "snacks_terminal" then
+                    return
                 end
 
                 -- Don't load session if we're already in a session load
