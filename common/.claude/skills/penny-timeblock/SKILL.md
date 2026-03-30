@@ -40,7 +40,7 @@ Read the last 2-3 daily notes to understand:
 
 ### Active projects
 
-Check what's hot — Linear issues in progress, recent git activity, open PRs.
+Check what's hot — GitHub issues in progress (`gh project item-list 7 --owner black-atom-industries`), recent git activity, open PRs.
 
 ## Step 3: My Energy Pattern
 

@@ -1,32 +1,34 @@
 ---
 name: dev:flow
-description: "Development workflow — orient, propose, build, close. Invoke with an argument to jump to a phase, or without to see the overview."
-argument-hint: "[start|propose|build|close]"
-user-invocable: true
+description: "Development workflow — assess, plan, implement, review, close. Invoke with an argument to jump to a phase, or without to see the overview."
+argument-hint: "[assess|plan|implement|review|close]"
 ---
 
 # dev:flow
 
-The development lifecycle in 4 phases. Read the phase doc matching `$ARGUMENTS` and follow its steps.
+The development lifecycle in 5 phases. Read the phase doc matching `$ARGUMENTS` and follow its steps.
+
+## Flow
+
+```
+assess ──→ plan ──→ implement ──→ review ──→ close
+  │                     ↑
+  └─ trivial/small ─────┘  (skip plan)
+```
+
+Any phase can be entered directly via `/dev:flow <phase>`.
 
 ## Routing
 
-| Argument  | Phase doc                    | What happens                                                 |
-| --------- | ---------------------------- | ------------------------------------------------------------ |
-| `start`   | [1-start.md](1-start.md)     | Orient, gather context, check OpenSpec, assess scope         |
-| `propose` | [2-propose.md](2-propose.md) | Draft plan, create PRD or OpenSpec change, review gates      |
-| `build`   | [3-build.md](3-build.md)     | Implement tasks, per-task verification, track progress       |
-| `close`   | [4-close.md](4-close.md)     | Verify, ship (merge/PR/keep), archive OpenSpec, close issues |
-| _(none)_  | Show this overview           | Ask which phase, or auto-detect from context                 |
+| Argument    | Phase doc                        | What happens                                               |
+| ----------- | -------------------------------- | ---------------------------------------------------------- |
+| `assess`    | [1-assess.md](1-assess.md)       | Orient, gather context, assess scope, write PRD if needed  |
+| `plan`      | [2-plan.md](2-plan.md)           | Create implementation plan from PRD                        |
+| `implement` | [3-implement.md](3-implement.md) | Implement tasks, per-task verification, track progress     |
+| `review`    | [4-review.md](4-review.md)       | Final verification, implementation review, human test plan |
+| `close`     | [5-close.md](5-close.md)         | Ship (merge/PR/keep), close issues, knowledge sync         |
+| _(none)_    | Show this overview               | Ask which phase, or auto-detect from context               |
 
-If no argument given and an active OpenSpec change exists with pending tasks, route to `build`.
+## Further context
 
-## OpenSpec
-
-If `openspec/` exists: check for active changes on `start`, use `opsx:propose` during `propose`, use `opsx:apply` during `build`, run `openspec archive` during `close`.
-
-## Responsibility
-
-- **I trigger**: `/dev:flow close` (Claude never assumes work is done)
-- **Claude does**: check active work, route, track tasks, surface "all tasks complete"
-- **Claude asks**: "This looks medium — want to propose?" / "All tasks done — ready to close?"
+If repo path contains `black-atom-industries`, load `about:bai` skill.

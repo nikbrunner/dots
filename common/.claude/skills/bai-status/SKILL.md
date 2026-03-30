@@ -2,69 +2,75 @@
 name: bai:status
 user-invocable: false
 description: Show my Black Atom Industries issues
-allowed-tools: ["mcp__linear__list_issues", "mcp__linear__get_issue"]
+allowed-tools: ["Bash"]
 ---
 
 # Black Atom Status
 
-Show issues assigned to me in the Black Atom Industries workspace.
+Show issues assigned to me across the Black Atom Industries GitHub org.
 
 ## Arguments
 
-`$ARGUMENTS` - Optional filter (team name or project)
+`$ARGUMENTS` - Optional filter (repo name)
 
 Examples:
 
 - `` (no args) - All my issues
-- `Development` - Only Development team issues
-- `Black Atom - 1.0` - Only issues in the 1.0 project
+- `core` - Only core repo issues
+- `livery` - Only livery repo issues
 
 ## Context
 
-**Teams**: Development, Design, Operations, Website
-**Projects**: Black Atom - 1.0 (active), Black Atom - Core Creator (backlog)
+**Repos**: .github, core, livery, helm, nvim, ghostty, tmux, zed, wezterm, obsidian, radar.nvim, ui, website
+**Project**: Black Atom V1 (#7)
+
+Load `about:bai` for GitHub project constants (IDs, field values).
 
 ## Process
 
-1. Query `mcp__linear__list_issues` with:
-   - `assignee: "me"`
-   - `includeArchived: false`
-   - Apply team/project filter if argument provided
+1. Query issues via one of:
 
-2. Group by status (In Progress → Todo → Backlog)
+   ```bash
+   # All project issues with status/priority
+   gh project item-list 7 --owner black-atom-industries --format json
 
-3. For each issue show:
-   - Identifier and title
-   - Team and project
-   - Priority (P0-P4)
+   # Or cross-repo search for assigned issues
+   gh search issues --assignee=@me --owner=black-atom-industries --state=open --json repository,number,title,state,labels,url
+   ```
+
+2. Apply repo filter if argument provided
+
+3. Group by status (In Progress → In Review → Todo)
+
+4. For each issue show:
+   - Repo and number (e.g., `core#50`)
+   - Title
+   - Priority (Urgent/High/Medium/Low)
    - Labels if any
-   - Blocking/blocked relations if any
+   - Whether it has `blocked` label
 
 ## Output Format
 
 ```
 ### In Progress
 
-[DEV-123] Implement theme generator
-  Team: Development | Project: Black Atom - 1.0 | P2
-  Blocks: DEV-124, DEV-125
-  https://linear.app/black-atom-industries/issue/DEV-123/implement-theme-generator
+[core#52] Add label/displayName as a property on ThemeMeta
+  Repo: core | Priority: Medium
+  https://github.com/black-atom-industries/core/issues/52
 
 ### Todo
 
-[DEV-126] Write README
-  Team: Development | Project: Black Atom - 1.0 | P3
-  https://linear.app/black-atom-industries/issue/DEV-126/write-readme
+[livery#29] Set up frontend architecture
+  Repo: livery | Priority: High | Milestone: v1.0.0
+  https://github.com/black-atom-industries/livery/issues/29
 
-### Backlog
-
-[DEV-130] Core Creator MVP
-  Team: Development | Project: Core Creator | P4
-  https://linear.app/black-atom-industries/issue/DEV-130/core-creator-mvp
+[core#50] Finalize naming conventions
+  Repo: core | Priority: Urgent | blocked
+  https://github.com/black-atom-industries/core/issues/50
 ```
 
 ## Notes
 
-- Use `get_issue` with `includeRelations: true` to show blocking relationships
-- Highlight any blocked issues clearly
-- **URL format**: Always show issue links as `https://linear.app/` web URLs (use the `url` field from the API directly)
+- Use `gh project item-list 7` for the richest data (includes status and priority fields)
+- Highlight blocked issues (those with `blocked` label) clearly
+- **URL format**: `https://github.com/black-atom-industries/<repo>/issues/<number>`

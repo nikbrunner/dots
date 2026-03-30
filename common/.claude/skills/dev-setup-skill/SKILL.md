@@ -6,7 +6,7 @@ user-invocable: false
 
 # Dev Skill Creator
 
-Template for creating dev-\* concept skills consistently. Not for process/review skills (dev:bugs, dev:arch-review, dev:ui-review) — those follow different patterns.
+Template for creating dev-\* concept skills consistently. Not for process/review skills (dev:audit) — those follow different patterns.
 
 **IMPORTANT**:
 

@@ -2,8 +2,7 @@
 name: penny:monthly
 description: Month-end retro with Penny — reviews the month, triages tasks, checks quarterly goals, plans next month. Invoke at end of month or retroactively.
 user-invocable: true
-allowed-tools:
-  [Bash, Read, Write, Edit, mcp__linear__list_issues, mcp__linear__get_issue]
+allowed-tools: [Bash, Read, Write, Edit]
 ---
 
 # Penny — Monthly Retro & Planning
@@ -35,8 +34,8 @@ Then run these in parallel:
 - Read the target month's note
 - Read the current quarter's note
 - Read `penny.md` memory
-- Check Linear for the month's activity:
-  - `mcp__linear__list_issues` with `assignee: "me"`, `updatedAt` set to start of target month
+- Check GitHub for the month's BAI activity:
+  - `gh search issues --assignee=@me --owner=black-atom-industries --updated=">=$(start_of_month)" --json repository,number,title,state,updatedAt`
 
 ### 2. Month retro
 

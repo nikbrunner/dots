@@ -5,8 +5,8 @@
 ## How
 
 - **`architecture-reviewer`** agent — dispatched as subagent for deep structural analysis
-- **LSP** — `incomingCalls`/`outgoingCalls` for call hierarchy, `findReferences` for coupling analysis
 - **`dev:util:design-interface`** — optionally invoked when a redesign proposal is warranted
+- **LSP** — `incomingCalls`/`outgoingCalls` for call hierarchy, `findReferences` for coupling analysis
 
 ## Steps
 

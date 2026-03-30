@@ -19,41 +19,34 @@ prompt_lower=$(echo "$PROMPT" | tr '[:upper:]' '[:lower:]')
 # Collect matching skills
 matches=()
 
-# dev:flow — feature requests, bug reports, implementation tasks
-if echo "$prompt_lower" | grep -qiE '(feature|implement|build|refactor|add .*(support|option|ability)|fix|bug|change|improve|enhance|idea|solve|how (could|can|do|should) we|could we|should we|do you have an idea)'; then
-    matches+=("dev:flow — Development workflow entry point (orient, propose, build, close)")
+# dev:flow assess — explicit task start signals (not casual discussion)
+if echo "$prompt_lower" | grep -qiE '(^(implement|build|refactor|fix|add|create|migrate|remove|delete|update|upgrade) |lets (start|begin|work on)|i want to (start|begin|work on)|can you (implement|build|fix|add|create))'; then
+    matches+=("dev:flow assess — Orient and assess before implementation")
+fi
+
+# dev:flow plan — explicit planning requests
+if echo "$prompt_lower" | grep -qiE '(^plan |write.*(prd|plan|spec)|break.*(down|into)|create.*(issues|tickets|tasks))'; then
+    matches+=("dev:flow plan — Create a plan or PRD")
 fi
 
 # dev:util:commit — committing code
-if echo "$prompt_lower" | grep -qiE '(commit|push|ship it|merge|create a pr|pull request)'; then
+if echo "$prompt_lower" | grep -qiE '(^commit|lets commit|create a commit|commit (this|these|the))'; then
     matches+=("dev:util:commit — Commit format and strategy")
 fi
 
-# dev:style:tdd — testing
-if echo "$prompt_lower" | grep -qiE '\b(test|testing|tdd|vitest|jest|spec)\b'; then
+# dev:style:tdd — explicit TDD requests
+if echo "$prompt_lower" | grep -qiE '(use tdd|red.green.refactor|write.*tests? first|test.driven)'; then
     matches+=("dev:style:tdd — TDD discipline and test strategy")
 fi
 
-# dev:flow — design discussions (brainstorm is part of flow start)
-if echo "$prompt_lower" | grep -qiE '(design|architecture|approach|trade.?off|pressure.?test|what do you think about)'; then
-    matches+=("dev:flow start — Orient and brainstorm before implementation")
+# dev:flow close — explicit close/ship requests
+if echo "$prompt_lower" | grep -qiE '(^(close|ship|finish|wrap up)|lets (close|ship|finish|wrap up)|create a pr|open a pr|merge (this|to))'; then
+    matches+=("dev:flow close — Verify, ship, and close")
 fi
 
-# dev:flow propose — planning work
-if echo "$prompt_lower" | grep -qiE '(plan|roadmap|scope|break.?down|phase|milestone)'; then
-    matches+=("dev:flow propose — Design and plan before code")
-fi
-
-# dev:flow propose — propose a change (OpenSpec or PRD)
-if echo "$prompt_lower" | grep -qiE '(prd|product requirements|requirements doc|spec.*write|write.*spec|propose|proposal|openspec)'; then
-    matches+=("dev:flow propose — Propose a change (OpenSpec or PRD)")
-fi
-
-# bai:start — BAI project work
-if [[ "$REPO_OWNER" == "black-atom-industries" ]]; then
-    if echo "$prompt_lower" | grep -qiE '(feature|implement|build|refactor|fix|bug|change|improve|issue|ticket)'; then
-        matches+=("bai:start — BAI development entry point (wraps dev:flow with Linear)")
-    fi
+# dev:audit — explicit audit/review requests
+if echo "$prompt_lower" | grep -qiE '(^(audit|review)|run.*(audit|review)|check.*(quality|conventions|a11y|accessibility))'; then
+    matches+=("dev:audit — Audit code quality (ui, style, arch, docs)")
 fi
 
 # dots:add / dots:remove — dotfiles management

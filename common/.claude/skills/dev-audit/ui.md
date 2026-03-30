@@ -6,8 +6,8 @@
 
 - **`impeccable:audit`** — technical quality scan (a11y, perf, theming, responsive, anti-patterns)
 - **`impeccable:critique`** — design coherence evaluation (hierarchy, IA, emotional resonance, composition)
+- **`impeccable:*`** - Check out if any other of the imppecciable skills are fitting for your use case.
 - **`agent-browser`** (via `dev:util:browser`) — screenshot capture for visual verification when available
-- **`ui-ux-consultant`** agent — dispatched for UX-focused review of specific files or git changes
 
 ## Steps
 

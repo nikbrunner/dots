@@ -2,8 +2,7 @@
 name: penny:daily
 description: Morning check-in with Penny — reads your daily note, checks strategic context, nudges on long-term goals and habits.
 user-invocable: true
-allowed-tools:
-  [Bash, Read, Write, Edit, mcp__linear__list_issues, mcp__linear__get_issue]
+allowed-tools: [Bash, Read, Write, Edit]
 ---
 
 # Penny — Daily Check-in
@@ -36,9 +35,8 @@ Then run these in parallel:
 - Read current month's note (path from `obsidian-dates`)
 - Read current quarter's note (path from `obsidian-dates`)
 - Check recent daily notes (last 3-4 days) for exercise-related entries
-- Check Linear for assigned issues:
-  - `mcp__linear__list_issues` with `assignee: "me"`, `state: "started"` (In Progress)
-  - `mcp__linear__list_issues` with `assignee: "me"`, `state: "unstarted"` (Todo)
+- Check GitHub for assigned BAI issues:
+  - `gh project item-list 7 --owner black-atom-industries --format json` (filter for In Progress / Todo)
 
 ### 2. Greet + strategic overview
 
@@ -47,7 +45,7 @@ Greet me naturally. Then present what's relevant — not everything, just what I
 - **Weekly carryover**: open tasks from the weekly note that haven't landed in a daily yet
 - **Monthly/Quarterly goals**: brief check — anything falling behind or approaching a deadline?
 - **Stale tasks**: anything older than 2 weeks across the vault — call it out directly. Ask: do, defer, or drop?
-- **Linear**: active issues, brief (identifier, title, status)
+- **GitHub**: active BAI issues, brief (repo#number, title, status)
 - **Habits**: if no exercise in 3-4 days, nudge naturally. Don't be a fitness app.
 - **Wednesday**: remind about reflection practice (`/penny:reflection`). Mention once, don't push.
 - **Memory**: any relevant context from recent sessions

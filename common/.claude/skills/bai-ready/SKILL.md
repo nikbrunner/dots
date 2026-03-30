@@ -2,60 +2,69 @@
 name: bai:ready
 user-invocable: false
 description: Show Black Atom issues ready to work (no blockers)
-allowed-tools: ["mcp__linear__list_issues", "mcp__linear__get_issue"]
+allowed-tools: ["Bash"]
 ---
 
 # Black Atom Ready
 
-Show issues that are ready to pick up - not blocked by other issues.
+Show issues that are ready to pick up — not blocked by other issues.
 
 ## Arguments
 
-`$ARGUMENTS` - Optional filter (team or project)
+`$ARGUMENTS` - Optional filter (repo name)
 
 ## Context
 
-**Teams**: Development, Design, Operations, Website
-**Projects**: Black Atom - 1.0 (active), Black Atom - Core Creator (backlog)
+**Repos**: .github, core, livery, helm, nvim, ghostty, tmux, zed, wezterm, obsidian, radar.nvim, ui, website
+**Project**: Black Atom V1 (#7)
+
+Load `about:bai` for GitHub project constants.
 
 ## Process
 
-1. Query `mcp__linear__list_issues` with:
-   - `assignee: "me"`
-   - `includeArchived: false`
-   - Filter to non-completed states
+1. Get all assigned open issues:
 
-2. For each issue, call `mcp__linear__get_issue` with `includeRelations: true`
+   ```bash
+   gh search issues --assignee=@me --owner=black-atom-industries --state=open --json repository,number,title,labels,url
+   ```
 
-3. Filter out issues that have unresolved `blockedBy` relations
+2. Filter out issues that have the `blocked` label
 
-4. Sort by priority (P1 before P2, etc.)
+3. Get priority from project data:
+
+   ```bash
+   gh project item-list 7 --owner black-atom-industries --format json
+   ```
+
+4. Sort by priority (Urgent first)
+
+5. For blocked issues, scan comments for "Blocked by" to show what they're waiting on:
+   ```bash
+   gh issue view <number> --repo black-atom-industries/<repo> --json comments --jq '.comments[].body'
+   ```
 
 ## Output Format
 
 ```
 ### Ready to Work
 
-1. [DEV-123] Implement theme generator (P2)
-   Team: Development | Project: Black Atom - 1.0
-   No blockers
-   https://linear.app/black-atom-industries/issue/DEV-123/implement-theme-generator
+1. [core#50] Finalize naming conventions (Urgent)
+   Repo: core
+   https://github.com/black-atom-industries/core/issues/50
 
-2. [DEV-126] Write README (P3)
-   Team: Development | Project: Black Atom - 1.0
-   No blockers
-   https://linear.app/black-atom-industries/issue/DEV-126/write-readme
+2. [livery#29] Set up frontend architecture (High)
+   Repo: livery | Milestone: v1.0.0
+   https://github.com/black-atom-industries/livery/issues/29
 
 ### Blocked (for reference)
 
-- [DEV-124] Publish to npm
-  Blocked by: DEV-123 (Implement theme generator)
-  https://linear.app/black-atom-industries/issue/DEV-124/publish-to-npm
+- [core#53] Fine-tune all themes for V1
+  Blocked by: core#50, core#51
+  https://github.com/black-atom-industries/core/issues/53
 ```
 
 ## Notes
 
-- An issue is "ready" if it has no unresolved blockedBy relations
+- An issue is "ready" if it does NOT have the `blocked` label
 - Show blocked issues separately so you know what's waiting
-- Prioritize by priority level
-- **URL format**: Always show issue links as `https://linear.app/` web URLs (use the `url` field from the API directly)
+- Prioritize by priority level (Urgent → High → Medium → Low)

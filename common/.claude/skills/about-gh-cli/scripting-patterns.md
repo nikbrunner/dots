@@ -163,6 +163,111 @@ gh auth status 2>&1 | grep -q "Logged in" && echo "authenticated"
 TOKEN=$(gh auth token)
 ```
 
+## Advanced Issue Features (GraphQL)
+
+These features require `gh api graphql` — no REST or CLI shorthand exists.
+
+### Issue Types
+
+Org-level issue types (Bug, Feature, Enhancement, etc.) are set via GraphQL. Requires the issue type ID (org-specific).
+
+```bash
+# Get issue node ID
+ISSUE_ID=$(gh issue view 42 -R owner/repo --json id --jq '.id')
+
+# Set issue type
+gh api graphql -f query='
+  mutation {
+    updateIssue(input: { id: "'"$ISSUE_ID"'", issueTypeId: "IT_kwDO..." }) {
+      issue { title }
+    }
+  }
+'
+```
+
+### Sub-Issues (Parent-Child)
+
+```bash
+# Add sub-issue to parent
+PARENT_ID=$(gh issue view 10 -R owner/repo --json id --jq '.id')
+SUB_ID=$(gh issue view 11 -R owner/repo --json id --jq '.id')
+gh api graphql -f query='
+  mutation {
+    addSubIssue(input: { issueId: "'"$PARENT_ID"'", subIssueId: "'"$SUB_ID"'" }) {
+      issue { title } subIssue { title }
+    }
+  }
+'
+
+# Remove sub-issue
+gh api graphql -f query='
+  mutation {
+    removeSubIssue(input: { issueId: "'"$PARENT_ID"'", subIssueId: "'"$SUB_ID"'" }) {
+      issue { title } subIssue { title }
+    }
+  }
+'
+```
+
+Works cross-repo. Up to 100 sub-issues per parent, 8 levels deep.
+
+### Blockers (Blocked-by Relationships)
+
+```bash
+# Mark issue as blocked by another
+BLOCKED_ID=$(gh issue view 20 -R owner/repo --json id --jq '.id')
+BLOCKING_ID=$(gh issue view 21 -R owner/repo --json id --jq '.id')
+gh api graphql -f query='
+  mutation {
+    addBlockedBy(input: { issueId: "'"$BLOCKED_ID"'", blockingIssueId: "'"$BLOCKING_ID"'" }) {
+      issue { title } blockingIssue { title }
+    }
+  }
+'
+
+# Remove blocker
+gh api graphql -f query='
+  mutation {
+    removeBlockedBy(input: { issueId: "'"$BLOCKED_ID"'", blockingIssueId: "'"$BLOCKING_ID"'" }) {
+      issue { title } blockingIssue { title }
+    }
+  }
+'
+```
+
+Visible in the "Relationships" sidebar on each issue.
+
+### Project Field Mutations
+
+Update project board fields (status, priority, custom fields) via GraphQL.
+
+```bash
+# Get item ID from project
+ITEM_ID=$(gh api graphql -f query='
+  query {
+    node(id: "PROJECT_ID") {
+      ... on ProjectV2 {
+        items(first: 100) {
+          nodes { id content { ... on Issue { number } } }
+        }
+      }
+    }
+  }
+' --jq '.data.node.items.nodes[] | select(.content.number == 42) | .id')
+
+# Update a single-select field (e.g. Status, Priority)
+gh api graphql -f query='
+  mutation {
+    updateProjectV2ItemFieldValue(input: {
+      projectId: "PROJECT_ID"
+      itemId: "'"$ITEM_ID"'"
+      fieldId: "FIELD_ID"
+      value: { singleSelectOptionId: "OPTION_ID" }
+    }) { projectV2Item { id } }
+  }
+'
+```
+
 ## Template Formatting
 
 ```bash

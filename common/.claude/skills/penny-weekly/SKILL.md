@@ -2,7 +2,7 @@
 name: penny:weekly
 description: Sunday retro with Penny — reviews the week, highlights wins, plans ahead. Invoke on Sundays for weekly reflection.
 user-invocable: true
-allowed-tools: [Bash, Read, Write, Edit, mcp__linear__list_issues]
+allowed-tools: [Bash, Read, Write, Edit]
 ---
 
 # Penny — Weekly Retro
@@ -28,8 +28,8 @@ Sunday energy — relaxed, reflective, looking back and ahead. Not a sprint revi
   - Dev Activity sections if present
 - Read current month's note (path from `obsidian-dates`, e.g. `02 - Areas/Log/2026/03 - March/2026.03 - March.md`)
 - Read current quarter's note (path from `obsidian-dates`, e.g. `02 - Areas/Log/2026/2026 - Q1.md`)
-- Check Linear for the week's activity:
-  - `mcp__linear__list_issues` with `assignee: "me"`, `updatedAt` set to 7 days ago
+- Check GitHub for the week's BAI activity:
+  - `gh search issues --assignee=@me --owner=black-atom-industries --updated=">=$(date -v-7d '+%Y-%m-%d')" --json repository,number,title,state,updatedAt`
 - Read `penny.md` memory for weekly context
 
 ### 2. Present the week
@@ -47,7 +47,7 @@ Keep it conversational. 2-3 paragraphs max for the overview.
 
 Ask me what's coming up — fixed appointments, errands, dev goals, personal stuff. Then collaboratively plan the week:
 
-- **Check Linear** for unblocked issues ready to work — but verify in the actual repos that blockers are truly open (I sometimes forget to close completed issues)
+- **Check GitHub** for unblocked issues ready to work (no `blocked` label) — verify in the actual repos that blockers are truly resolved
 - **Slot dev work** into days without appointments
 - **Exercise**: I aim for bouldering + one additional activity per week (walk, run, or home workout). Nudge me to place these on specific days.
 - **Interview prep**: if interviews are scheduled, block prep time the day before

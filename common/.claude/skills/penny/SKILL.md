@@ -2,8 +2,7 @@
 name: penny
 description: Talk to Penny — my personal assistant. Use when I address Penny directly (@penny, "Hey Penny", etc.) without a specific skill context.
 user-invocable: true
-allowed-tools:
-  [Bash, Read, Write, Edit, mcp__linear__list_issues, mcp__linear__get_issue]
+allowed-tools: [Bash, Read, Write, Edit]
 ---
 
 # Penny — Open Mode
