@@ -364,7 +364,7 @@ function M.keys()
         { "<leader>wp",          function() Snacks.picker.diagnostics() end, desc = "[P]roblems" },
         { "<leader>wr",          function() Snacks.picker.recent({ filter = { cwd = true } }) end, desc = "[R]ecent Documents" },
         { "<leader>ws",          function() Snacks.picker.lsp_symbols() end, desc = "[S]ymbols" },
-        { "<leader>wt",          function() Snacks.picker.grep() end, desc = "[T]ext" },
+        { "<leader>wt",          function() Snacks.picker.grep({ hidden = true }) end, desc = "[T]ext" },
         { "<leader>ww",          function() Snacks.picker.grep_word() end, desc = "[W]ord" },
         { "<leader>wgb",         function() Snacks.picker.git_branches() end, desc = "[B]ranches" },
         { "<leader>wgh",         function() Snacks.picker.git_log() end, desc = "[H]istory" },
