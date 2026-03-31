@@ -39,6 +39,7 @@ These are the source of truth for flags, arguments, and options.
   - Check DST: Germany switches last Sunday of March / last Sunday of October
   - Use `date -u` to verify if unsure
 - **Title format**: `Company/Context — What (Who)` — e.g. `ImFusion — Gehaltsgespräch (Mattia Lupetti)`
+- **Location format**: Use Apple Maps-compatible addresses — `Straße Nr, Ort, Germany`. No venue prefixes like "Beim Andi" or "Restaurant XY" — these break map lookup. Put venue names in the title or description instead.
 - **Use `--calendar iCloud`** on all commands for speed (avoids scanning all calendars)
 
 ## Integration with Daily Notes
