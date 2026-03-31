@@ -50,12 +50,17 @@ common/.claude/
 
 ### Active Projects
 
+- [ProtonPass migration](project_protonpass_migration.md) — SSH/signing done, env sync in progress
 - [Nvim picker migration](project_nvim_picker_migration.md) — Snacks sole picker, committed 6cef1af, not yet merged
 - [Neovim 0.12 migration](project_nvim012_migration.md) — Planned: vim.pack exploration, dots#9
 - [OpenSpec integration](project_openspec_integration.md) — Paused, evaluating incrementally
 - [Visual companion](project_visual_companion.md) — Fully implemented, v2 layout done
 - [Livery](project_livery.md) — BAI desktop theme manager (Tauri v2 + React)
 - [Vendor-agnostic skills](project_vendor_agnostic_skills.md) — Long-term goal, no ready solution
+
+### Completed Projects
+
+- [Skills enforcement refactor](project_skills_enforcement_refactor.md) — Done 2026-03-26, merged to main
 
 ### Feedback
 
