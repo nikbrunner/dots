@@ -22,12 +22,12 @@ Based on my prompt, explore the codebase, gather context, and try to make an ear
 - **Present the assessment** — Let me confirm or override.
 - **Trivial/Small without PRD** — If I confirm a trivial or small scope that doesn't need a PRD, skip straight to [Phase 3 - Implement](./3-implement.md).
 - **If scope is unclear**, ask clarifying questions.
-- For **medium** and **large** tasks, please use the [interview](./interview.md) to nail down the scope and requirements.
+- For **medium** and **large** tasks, please use the [interview](./guides/interview.md) to nail down the scope and requirements.
 - If provided helpful during assessment, you can also suggest using the `dev:util:visual-companion` skill to help with visualization.
 
 ## Write a PRD
 
-After the assessment, use the [write-a-prd](./write-a-prd.md) skill to write a PRD.
+After the assessment, use the [write-a-prd](./guides/write-a-prd.md) guide to write a PRD.
 Use the `prd-reviewer` agent to review the PRD.
 Evaluate the feedback of the reviewer and iterate until the PRD is ready the next step.
 If still unresolved after 3 iterations, escalate to me.
@@ -37,6 +37,9 @@ If still unresolved after 3 iterations, escalate to me.
 The PRD can either be written to a file or created as a GitHub issue.
 Offer me a choice with a suggestion based on context.
 
-## Transition to Phase 2
+## Transition
 
-When reviewer agent approves and the PRD is verified, offer to move to [Phase 2 - Plan](./2-plan.md).
+When reviewer agent approves and the PRD is verified, offer:
+
+- **Continue** — move to [Phase 2 - Plan](./2-plan.md)
+- **Park** — work is tracked (issue filed), not continuing now. Confirm issue properties are set (assignee, type, labels) and end cleanly.

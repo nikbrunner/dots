@@ -14,6 +14,13 @@ Check with the user that these modules match their expectations. Check with the 
 
 5. Once you have a complete understanding of the problem and solution, use the template below to write the PRD. The PRD should be submitted as a GitHub issue.
 
+6. After creating the issue, set its properties:
+   - **Assignee** — the user, unless they say otherwise
+   - **Type** — pick the most fitting issue type (Feature, Enhancement, Bug, Refactor, etc.)
+   - **Labels** — apply relevant labels if the repo has them (e.g., priority, area)
+   - **Project / Milestone** — set if the user mentions one or one is obvious from context
+   - Ask the user for priority if not already stated in the conversation.
+
 <prd-template>
 
 ## Problem Statement
