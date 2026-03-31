@@ -49,8 +49,8 @@
   "cursor_blink": false,
   "theme": {
     "mode": "system",
-    "light": "Black Atom — Stations ∷ Medical",
-    "dark": "Black Atom — Dark"
+    "light": "Black Atom — JPN ∷ Koyo Hiru",
+    "dark": "Black Atom — Dark Dimmed"
   },
   "base_keymap": "VSCode",
   "vim_mode": true,
