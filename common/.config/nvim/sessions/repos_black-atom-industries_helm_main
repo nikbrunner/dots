@@ -10,7 +10,7 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +100 .claude/settings.json
+badd +66 .claude/settings.json
 badd +1 Makefile
 argglobal
 %argdel
@@ -31,8 +31,8 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe 'vert 1resize ' . ((&columns * 123 + 123) / 246)
-exe 'vert 2resize ' . ((&columns * 122 + 123) / 246)
+exe 'vert 1resize ' . ((&columns * 138 + 138) / 276)
+exe 'vert 2resize ' . ((&columns * 137 + 138) / 276)
 argglobal
 setlocal keymap=
 setlocal noarabic
@@ -141,11 +141,11 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 100 - ((43 * winheight(0) + 22) / 44)
+let s:l = 66 - ((13 * winheight(0) + 24) / 48)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 100
+keepjumps 66
 normal! 0
 wincmd w
 argglobal
@@ -262,15 +262,15 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 23 - ((21 * winheight(0) + 22) / 44)
+let s:l = 23 - ((22 * winheight(0) + 24) / 48)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
 keepjumps 23
 normal! 0
 wincmd w
-exe 'vert 1resize ' . ((&columns * 123 + 123) / 246)
-exe 'vert 2resize ' . ((&columns * 122 + 123) / 246)
+exe 'vert 1resize ' . ((&columns * 138 + 138) / 276)
+exe 'vert 2resize ' . ((&columns * 137 + 138) / 276)
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf

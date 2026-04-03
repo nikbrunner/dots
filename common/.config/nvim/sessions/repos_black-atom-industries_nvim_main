@@ -11,6 +11,7 @@ endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
 badd +1 check.sh
+badd +35 ~/repos/black-atom-industries/nvim/lua/black-atom/highlights/plugins/codediff_nvim.lua
 argglobal
 %argdel
 set stal=2
@@ -128,7 +129,7 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 1 - ((0 * winheight(0) + 24) / 48)
+let s:l = 1 - ((0 * winheight(0) + 23) / 47)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
@@ -144,7 +145,7 @@ setlocal nobinary
 setlocal nobreakindent
 setlocal breakindentopt=
 setlocal bufhidden=
-setlocal nobuflisted
+setlocal buflisted
 setlocal buftype=
 setlocal busy=0
 setlocal nocindent
@@ -239,7 +240,7 @@ setlocal textwidth=120
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#lua%*\ %#WinBarSeparator#/%*\ %#WinBarPath#black-atom%*\ %#WinBarSeparator#/%*\ %#WinBarPath#highlights%*\ %#WinBarSeparator#/%*\ %#WinBarPath#plugins%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#codediff_nvim.lua%*\ %#WinBarSeparator##%*\ %#WinBarSymbol#return%*\ %#WinBarSeparator##%*\ %#WinBarSymbol#map%*\ %#WinBarSeparator##%*\ %#WinBarSymbol#return%*\ %#WinBarSeparator##%*\ %#WinBarSymbol#NeoTreeIndentMarker%*
+setlocal winbar=%#WinBarPath#lua%*\ %#WinBarSeparator#/%*\ %#WinBarPath#black-atom%*\ %#WinBarSeparator#/%*\ %#WinBarPath#highlights%*\ %#WinBarSeparator#/%*\ %#WinBarPath#plugins%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#codediff_nvim.lua%*
 setlocal winblend=0
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -247,16 +248,12 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-3
-sil! normal! zo
-5
-sil! normal! zo
 let s:l = 31 - ((30 * winheight(0) + 23) / 47)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
 keepjumps 31
-normal! 013|
+normal! 0
 tabnext 2
 set stal=1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'

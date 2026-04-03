@@ -10,11 +10,11 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +0 .git/hooks/pre-commit
+badd +35 ~/repos/nikbrunner/dots/common/.config/tmux/keymaps.conf
 argglobal
 %argdel
 $argadd ./
-edit .git/hooks/pre-commit
+edit ~/repos/nikbrunner/dots/common/.config/tmux/keymaps.conf
 argglobal
 setlocal keymap=
 setlocal noarabic
@@ -32,7 +32,7 @@ setlocal cinoptions=
 setlocal cinscopedecls=public,protected,private
 setlocal cinwords=if,else,while,do,for,switch
 setlocal colorcolumn=
-setlocal comments=b:#
+setlocal comments=:#
 setlocal commentstring=#\ %s
 setlocal complete=.,w,b,u,t
 setlocal completefunc=
@@ -45,11 +45,10 @@ setlocal nocursorcolumn
 setlocal cursorline
 setlocal cursorlineopt=both
 setlocal nodiff
-setlocal errorformat=%f:%l:%c:\ %trror:\ %m\ [SC%n],%f:%l:%c:\ %tarning:\ %m\ [SC%n],%f:%l:%c:\ %tote:\ %m\ [SC%n],%-G%.%#
 setlocal eventignorewin=
 setlocal expandtab
-if &filetype != 'sh'
-setlocal filetype=sh
+if &filetype != 'conf'
+setlocal filetype=conf
 endif
 setlocal fixendofline
 setlocal foldcolumn=0
@@ -64,28 +63,26 @@ setlocal foldnestmax=20
 setlocal foldtext=
 setlocal formatexpr=v:lua.require'conform'.formatexpr()
 setlocal formatlistpat=^\\s*\\d\\+[\\]:.)}\\t\ ]\\s*
-setlocal formatoptions=jcroql
+setlocal formatoptions=rqjclo
 setlocal iminsert=0
 setlocal imsearch=-1
 setlocal includeexpr=
-setlocal indentexpr=GetShIndent()
-setlocal indentkeys=0{,0},0),0],!^F,o,O,e,0=then,0=do,0=else,0=elif,0=fi,0=esac,0=done,0=end,),0=;;,0=;&,0=fin,0=fil,0=fip,0=fir,0=fix
+setlocal indentexpr=
+setlocal indentkeys=0{,0},0),0],:,0#,!^F,o,O,e
 setlocal noinfercase
 setlocal iskeyword=@,48-57,_,192-255
-setlocal keywordprg=:ShKeywordPrg
 setlocal lhistory=10
 setlocal nolinebreak
 setlocal nolisp
 setlocal lispoptions=
 setlocal nolist
-setlocal makeprg=shellcheck\ -f\ gcc
 setlocal matchpairs=(:),{:},[:]
 setlocal modeline
 setlocal modifiable
 setlocal nrformats=bin,hex
 setlocal number
 setlocal numberwidth=4
-setlocal omnifunc=v:lua.vim.lsp.omnifunc
+setlocal omnifunc=
 setlocal nopreserveindent
 setlocal nopreviewwindow
 setlocal quoteescape=\\
@@ -97,28 +94,28 @@ setlocal scrollback=-1
 setlocal noscrollbind
 setlocal shiftwidth=4
 setlocal signcolumn=yes
-setlocal nosmartindent
+setlocal smartindent
 setlocal nosmoothscroll
-setlocal softtabstop=4
+setlocal softtabstop=-1
 setlocal nospell
 setlocal spellcapcheck=[.?!]\\_[\\])'\"\\t\ ]\\+
 setlocal spellfile=
 setlocal spelllang=en_us,de_de
-setlocal spelloptions=noplainbuffer
+setlocal spelloptions=
 setlocal statuscolumn=%!v:lua.require'snacks.statuscolumn'.get()
 setlocal suffixesadd=
 setlocal noswapfile
 setlocal synmaxcol=3000
-if &syntax != ''
-setlocal syntax=
+if &syntax != 'conf'
+setlocal syntax=conf
 endif
 setlocal tabstop=4
-setlocal tagfunc=v:lua.vim.lsp.tagfunc
+setlocal tagfunc=
 setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#.git%*\ %#WinBarSeparator#/%*\ %#WinBarPath#hooks%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#pre-commit%*
+setlocal winbar=%#WinBarPath#common%*\ %#WinBarSeparator#/%*\ %#WinBarPath#.config%*\ %#WinBarSeparator#/%*\ %#WinBarPath#tmux%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#keymaps.conf%*
 setlocal winblend=0
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -126,11 +123,11 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 4 - ((3 * winheight(0) + 24) / 49)
+let s:l = 47 - ((34 * winheight(0) + 26) / 52)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 4
+keepjumps 47
 normal! 0
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
@@ -145,7 +142,6 @@ if filereadable(s:sx)
 endif
 let &g:so = s:so_save | let &g:siso = s:siso_save
 set hlsearch
-nohlsearch
 doautoall SessionLoadPost
 unlet SessionLoad
 " vim: set ft=vim :
