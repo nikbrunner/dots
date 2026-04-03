@@ -28,28 +28,44 @@ Issues tracked on GitHub Issues across org repos, with an org-level project for 
 
 ### Issue Types (org-level)
 
-<IMPORTANT>These ID's can be outdated.</IMPORTANT>
+List available issue types:
 
-| Name           | ID                    |
-| -------------- | --------------------- |
-| Bug            | `IT_kwDOCY_EKc4BNfT9` |
-| Feature        | `IT_kwDOCY_EKc4BNfT-` |
-| Design         | `IT_kwDOCY_EKc4BkU29` |
-| Enhancement    | `IT_kwDOCY_EKc4BkVJp` |
-| Refactor       | `IT_kwDOCY_EKc4BkVJw` |
-| Documentation  | `IT_kwDOCY_EKc4BkVJ3` |
-| Infrastructure | `IT_kwDOCY_EKc4BkVJ-` |
-| Task           | `IT_kwDOCY_EKc4BkVKL` |
+```bash
+gh api graphql -f query='{ organization(login: "black-atom-industries") { issueTypes(first: 20) { nodes { id name } } } }' --jq '.data.organization.issueTypes.nodes[] | "\(.name) | \(.id)"'
+```
+
+### Labels
+
+Labels use namespaced conventions: `state:*`, `contrib:*`, `topic:*`. Managed via `sync-labels.sh` in the `.github` repo, driven by `labels.json` config. Labels are assigned per repo category (discovered via GitHub topics).
+
+List labels for a repo:
+
+```bash
+gh label list --repo black-atom-industries/REPO
+```
+
+List repos by category:
+
+```bash
+gh repo list black-atom-industries --topic black-atom-adapter --json name --jq '.[].name'
+# Categories: black-atom-core, black-atom-adapter, black-atom-tool, black-atom-plugin, black-atom-meta, black-atom-web
+```
 
 ### Project Fields
 
-**Status** (field: `PVTSSF_lADOCY_EKc4BTDpbzhAaQ3U`): Todo (`f75ad846`), In Progress (`47fc9ee4`), In Review (`658b9552`), Done (`98236657`)
+List project fields and their options:
 
-**Priority** (field: `PVTSSF_lADOCY_EKc4BTDpbzhAaQ60`): Urgent (`e9ee10c3`), High (`8cf9837c`), Medium (`a96685a4`), Low (`d74cfabb`)
+```bash
+gh api graphql -f query='{ organization(login: "black-atom-industries") { projectV2(number: 7) { fields(first: 20) { nodes { ... on ProjectV2SingleSelectField { id name options { id name } } } } } } }' --jq '.data.organization.projectV2.fields.nodes[] | select(.name != null) | "\(.name) (\(.id)): \([.options[] | "\(.name)=\(.id)"] | join(", "))"'
+```
 
-### Repos with Issues
+### Repos
 
-`.github`, `core`, `livery`, `helm`, `nvim`, `ghostty`, `tmux`, `zed`, `wezterm`, `obsidian`, `radar.nvim`, `ui`, `website`
+List all org repos:
+
+```bash
+gh repo list black-atom-industries --json name --jq '.[].name' --limit 100
+```
 
 ### Sub-Issues (Parent-Child Relationships)
 
