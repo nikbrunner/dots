@@ -57,6 +57,8 @@ alias :q=exit
 alias :vs='tmux split-window -h -c "#{pane_current_path}"'
 alias :sp='tmux split-window -v -c "#{pane_current_path}"'
 
+alias claude="CLAUDE_CODE_NO_FLICKER=1 claude"
+
 
 # Yazi ==================================================================
 function y() {
