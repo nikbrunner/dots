@@ -24,13 +24,13 @@ All "Base Updaters" milestone (v0.3.0 in Linear, released as v0.2.0) work is com
 
 ### Next milestone: Frontend & UI (v0.4.0 in Linear)
 
-Open items (as of 2026-03-24):
+Open items (as of 2026-03-24, now tracked as GitHub Issues):
 
-- DEV-318 — frontend architecture
-- DEV-319 — progress indicator redesign
-- DEV-299 — settings page UI design
-- DEV-326 — setup wizard
-- DES-25/DES-26 — logo and banner (design spec written to docs/)
+- #29 — frontend architecture (was DEV-318)
+- Progress indicator redesign
+- Settings page UI design
+- Setup wizard
+- Logo and banner (design spec written to docs/)
 - Global shortcut (Meh-T) — not yet an issue
 
 ### Tooling
@@ -38,4 +38,5 @@ Open items (as of 2026-03-24):
 - OpenSpec initialized 2026-03-24 — `openspec/` dir exists, `specs/` empty by design (populates via propose/archive cycle)
 - **OpenSpec adoption decision (2026-03-24):** keep Nik's existing workflow skeleton (dev-start, dev-grill-me, review gates, Linear integration), replace PRD/plan artifact format with OpenSpec artifacts (proposal.md, design.md, tasks.md). Specs/ accumulation solves the stale-docs problem. Handover written to dots repo for another Claude instance to implement the skill modifications.
 - nikbrunner/yaml-edit fork at `fix/sequence-indentation` branch — livery depends on this via git dep in Cargo.toml
-- `UBIQUITOUS_LANGUAGE.md` created 2026-03-26 — formal domain glossary for the livery project
+- `GLOSSARY.md` created 2026-03-26 (originally `UBIQUITOUS_LANGUAGE.md`, renamed) — formal domain glossary for the livery project
+- Issue tracking migrated from Linear to GitHub Issues (2026-03-28, commit b79bf6d)

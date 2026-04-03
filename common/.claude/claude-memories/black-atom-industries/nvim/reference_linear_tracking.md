@@ -5,6 +5,7 @@ type: reference
 ---
 
 Issues for this repo are tracked in Linear under the **Development** team with prefix `DEV`.
+
 - Project: "Black Atom - 1.0"
 - Milestone example: "v0.5.0 — Adapter Improvements"
 - URL pattern: `https://linear.app/black-atom-industries/issue/DEV-{number}/...`

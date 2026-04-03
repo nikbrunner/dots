@@ -14,4 +14,9 @@
 
 - [davit_project.md](davit_project.md) — davit CalDAV/CardDAV CLI: used by Penny for calendar access via penny-calendar skill
 - Black Atom Industries area note at `02 - Areas/Black Atom Industries/Black Atom Industries.md`
+- BAI considering Linear → GitHub Issues migration (as of 2026-03-31)
 - Scarth Johnson (cyberpunk novel) — fresh start with Opus 4.6 on 2026-03-18
+
+## Tools
+
+- [readwise_cli.md](readwise_cli.md) — Readwise CLI (@readwise/cli): terminal access to Reader library, highlights, saved articles

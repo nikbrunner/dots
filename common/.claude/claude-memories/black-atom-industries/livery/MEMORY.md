@@ -2,7 +2,7 @@
 
 ## Project Status
 
-- [session-2026-03-19-20-handover.md](session-2026-03-19-20-handover.md) — v0.2.0 shipped, OpenSpec adopted, next milestone is frontend/UI
+- [session-2026-03-19-20-handover.md](session-2026-03-19-20-handover.md) — v0.2.0 shipped, next milestone is frontend/UI, issues now on GitHub
 
 ## Architecture
 
@@ -12,15 +12,15 @@
 
 ## UI Design
 
-- [design-brainstorm-2026-03-21.md](design-brainstorm-2026-03-21.md) — Stitch project, Black Atom color mapping, design direction
+- [design-brainstorm-2026-03-21.md](design-brainstorm-2026-03-21.md) — Stitch project, Black Atom color mapping, "Vault Terminal" direction
+- [frontend-component-library-eval.md](frontend-component-library-eval.md) — BaseUI vs Mantine trade-offs, decision open (2026-03-31)
 
 ## Feedback
 
 - [feedback-naming-precision.md](feedback-naming-precision.md) — Nik cares about domain-accurate naming
-- [feedback-css-modules.md](feedback-css-modules.md) — CSS Modules over Tailwind for frontend rebuild (Tailwind still in use)
+- [feedback-css-modules.md](feedback-css-modules.md) — CSS Modules over Tailwind for frontend rebuild
 - [feedback-personal-config.md](feedback-personal-config.md) — update Nik's dots config after adding new apps/fields
 
 ## Git Workflow
 
 Commit conventions are in the project-level `commit` skill (`.claude/skills/commit/SKILL.md`).
-Linear ticket updates are handled by `bai-commit` and `bai-close` skills.

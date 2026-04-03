@@ -42,6 +42,6 @@ type: project
 - Potentially set Theme tab colors to Black Atom values in Stitch UI
 - Then regenerate clean screens or continue iterating from v2/v3
 
-**Related Linear issues:** DES-25 (logo), DES-26 (banner), DEV-318 (frontend), DEV-326 (setup wizard), DEV-299 (settings page)
+**Related issues (migrated to GitHub Issues as of 2026-03-28):** #29 (frontend architecture), logo, banner, setup wizard, settings page
 
 **Design spec written to:** docs/superpowers/specs/2026-03-21-livery-ui-design-language.md
