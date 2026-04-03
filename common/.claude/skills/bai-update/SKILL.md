@@ -75,7 +75,7 @@ Load `about:bai` for GitHub project constants (field IDs, option IDs).
    **Labels** ("label [name]"):
 
    ```bash
-   gh issue edit <number> --repo black-atom-industries/<repo> --add-label "blocked"
+   gh issue edit <number> --repo black-atom-industries/<repo> --add-label "state:blocked"
    ```
 
 4. Confirm what was changed

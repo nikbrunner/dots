@@ -75,7 +75,7 @@ Present findings: "GitHub says X, but git shows Y"
 
 **Urgent/High in Todo** — high-priority issues sitting idle. Promote or deprioritize?
 
-**Stale blockers** — `blocked` label with no updates in 21+ days. Still blocked?
+**Stale blockers** — `state:blocked` label or native `blockedBy` relationships with no updates in 21+ days. Still blocked?
 
 **Recently created** — last 7 days. Confirm triage is correct.
 

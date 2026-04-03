@@ -82,5 +82,5 @@ https://github.com/black-atom-industries/core/issues/70
 ## Notes
 
 - Always suggest a repo — pick the most relevant one, don't default blindly
-- If creating multiple related issues, suggest using `blocked` label and "Blocked by" comments
+- If creating multiple related issues, use native `addBlockedBy` relationships (see `about:bai`) and `state:blocked` label for non-issue blockers
 - Push back on repo choice if it seems mismatched

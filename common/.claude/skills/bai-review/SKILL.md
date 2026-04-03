@@ -61,7 +61,7 @@ Load `about:bai` for GitHub project constants.
 Highlight issues that:
 
 - Have no updates in 30+ days (stale) — check `updatedAt`
-- Have `blocked` label (high impact if they block others)
+- Have `state:blocked` label or native `blockedBy` relationships (high impact if they block others)
 - Are In Progress but seem stuck
 - Have unclear descriptions
 

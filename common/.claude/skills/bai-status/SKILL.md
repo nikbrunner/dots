@@ -47,7 +47,7 @@ Load `about:bai` for GitHub project constants (IDs, field values).
    - Title
    - Priority (Urgent/High/Medium/Low)
    - Labels if any
-   - Whether it has `blocked` label
+   - Whether it has `state:blocked` label
 
 ## Output Format
 
@@ -65,12 +65,12 @@ Load `about:bai` for GitHub project constants (IDs, field values).
   https://github.com/black-atom-industries/livery/issues/29
 
 [core#50] Finalize naming conventions
-  Repo: core | Priority: Urgent | blocked
+  Repo: core | Priority: Urgent | state:blocked
   https://github.com/black-atom-industries/core/issues/50
 ```
 
 ## Notes
 
 - Use `gh project item-list 7` for the richest data (includes status and priority fields)
-- Highlight blocked issues (those with `blocked` label) clearly
+- Highlight blocked issues (those with `state:blocked` label) clearly
 - **URL format**: `https://github.com/black-atom-industries/<repo>/issues/<number>`

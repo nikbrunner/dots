@@ -15,7 +15,7 @@ Show issues that are ready to pick up — not blocked by other issues.
 
 ## Context
 
-**Repos**: .github, core, livery, helm, nvim, ghostty, tmux, zed, wezterm, obsidian, radar.nvim, ui, website
+**Repos**: Discover dynamically via `gh repo list black-atom-industries --json name --jq '.[].name' --limit 100`
 **Project**: Black Atom V1 (#7)
 
 Load `about:bai` for GitHub project constants.
@@ -28,7 +28,7 @@ Load `about:bai` for GitHub project constants.
    gh search issues --assignee=@me --owner=black-atom-industries --state=open --json repository,number,title,labels,url
    ```
 
-2. Filter out issues that have the `blocked` label
+2. Filter out issues that have the `state:blocked` label
 
 3. Get priority from project data:
 
@@ -65,6 +65,6 @@ Load `about:bai` for GitHub project constants.
 
 ## Notes
 
-- An issue is "ready" if it does NOT have the `blocked` label
+- An issue is "ready" if it does NOT have the `state:blocked` label
 - Show blocked issues separately so you know what's waiting
 - Prioritize by priority level (Urgent → High → Medium → Low)
