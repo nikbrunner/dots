@@ -13,15 +13,15 @@ Before doing anything, check if the project already has pre-commit hooks configu
 
 **Look for:**
 
-| Signal | Tool |
-|-|-|
-| `.husky/` directory | Husky |
-| `lefthook.yml` or `.lefthook.yml` | Lefthook |
-| `.pre-commit-config.yaml` | pre-commit (Python) |
-| `.git/hooks/pre-commit` (non-sample) | Manual git hooks |
-| `"husky"` in package.json deps | Husky |
-| `"prepare": "husky"` in scripts | Husky |
-| `"lint-staged"` in package.json | lint-staged (keep) |
+| Signal                               | Tool                |
+| ------------------------------------ | ------------------- |
+| `.husky/` directory                  | Husky               |
+| `lefthook.yml` or `.lefthook.yml`    | Lefthook            |
+| `.pre-commit-config.yaml`            | pre-commit (Python) |
+| `.git/hooks/pre-commit` (non-sample) | Manual git hooks    |
+| `"husky"` in package.json deps       | Husky               |
+| `"prepare": "husky"` in scripts      | Husky               |
+| `"lint-staged"` in package.json      | lint-staged (keep)  |
 
 **If an existing setup is found:**
 
@@ -35,11 +35,11 @@ Before doing anything, check if the project already has pre-commit hooks configu
 
 ## Step 1: Detect Ecosystem
 
-| Signal | Ecosystem |
-|-|-|
-| `deno.json` or `deno.jsonc` | Deno |
-| `package.json` + lockfile | Node |
-| Both present | Ask user which is primary |
+| Signal                      | Ecosystem                 |
+| --------------------------- | ------------------------- |
+| `deno.json` or `deno.jsonc` | Deno                      |
+| `package.json` + lockfile   | Node                      |
+| Both present                | Ask user which is primary |
 
 ## Step 2: Configure Hooks
 
