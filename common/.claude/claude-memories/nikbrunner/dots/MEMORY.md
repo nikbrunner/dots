@@ -1,6 +1,6 @@
 # Dots Project Memory
 
-## Claude Code Config Architecture (updated 2026-03-30)
+## Claude Code Config Architecture (updated 2026-04-03)
 
 Skills + hooks architecture with SessionStart enforcement injection.
 
@@ -24,9 +24,9 @@ common/.claude/
     ├── dev-audit/             # 1 skill, 4 sub-docs: ui, style, arch, docs
     ├── dev-style-*/           # 6 coding convention skills (react, typescript, css, tanstack, tdd, state)
     ├── dev-util-*/            # 5 standalone tools (commit, visual-companion, browser, glossary, design-interface)
-    ├── dev-setup-*/           # 4 bootstrapping (claude, project, openspec, skill)
+    ├── dev-setup-*/           # 5 bootstrapping (claude, project, openspec, skill, pre-commit)
     ├── about-*/               # 8 knowledge skills
-    ├── bai-*/                 # 6 BAI Linear tools (wrappers absorbed into dev:flow)
+    ├── bai-*/                 # 6 BAI GitHub issue tools + bai-create-project
     ├── dots-*/                # 4 dotfiles skills
     └── penny-*/               # 7 penny skills + penny base
 ```
@@ -47,6 +47,14 @@ common/.claude/
 - **Matt Pocock / AI Hero** — useful resource for Claude Code patterns: https://www.aihero.dev/posts
 - **Skill restructuring (2026-03-30)** — 34 dev skills → 17, namespaced taxonomy, BAI wrappers absorbed
 - **OpenSpec paused** — installed but not wired into flow, Nik wants to try incrementally
+- **Mise evaluated and dismissed (2026-04-02)** — not worth adopting for dots; only handles runtimes, not native packages (brew/pacman)
+
+### Plugins (settings.json)
+
+- `impeccable@impeccable` — design quality skills (pbakaus/impeccable)
+- `readwise@readwise-skills` — reading library access (readwiseio/readwise-skills, added 2026-04-01)
+- `claude-deno-lsp@local-plugins` — Deno LSP
+- `frontend-design@claude-plugins-official` — frontend design skills
 
 ### Active Projects
 
@@ -54,13 +62,13 @@ common/.claude/
 - [Nvim picker migration](project_nvim_picker_migration.md) — Snacks sole picker, committed 6cef1af, not yet merged
 - [Neovim 0.12 migration](project_nvim012_migration.md) — Planned: vim.pack exploration, dots#9
 - [OpenSpec integration](project_openspec_integration.md) — Paused, evaluating incrementally
-- [Visual companion](project_visual_companion.md) — Fully implemented, v2 layout done
 - [Livery](project_livery.md) — BAI desktop theme manager (Tauri v2 + React)
 - [Vendor-agnostic skills](project_vendor_agnostic_skills.md) — Long-term goal, no ready solution
 
 ### Completed Projects
 
 - [Skills enforcement refactor](project_skills_enforcement_refactor.md) — Done 2026-03-26, merged to main
+- [Visual companion](project_visual_companion.md) — Fully implemented, v2 layout done
 
 ### Feedback
 

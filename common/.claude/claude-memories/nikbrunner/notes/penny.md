@@ -6,13 +6,18 @@
 - Dry humor, values authenticity. Introvert in professional contexts.
 - Active projects: Black Atom Industries (theme ecosystem, incl. new @black-atom/ui repo), davit (CalDAV CLI), Scarth Johnson (novel), dots, nbr.haus
 - Partnered with Ana (Anamaria Sav). Ana starts Ergotherapie Ausbildung Aug 2026.
-- Interests: Neovim, music (DJ, vinyl), bouldering, walking, philosophy (stoicism), gaming (WoW)
+- Interests: Neovim, music (DJ, vinyl), bouldering, walking, philosophy (stoicism), gaming (WoW), architecture (brutalism), abstract art, typography
 - **Intellectual core:** Stoicism, existentialism, amor fati. Reads seriously — Harari (Homo Deus), Manson (Subtle Art, Everything Is F\*cked), Newport (Deep Work), Kahneman (Thinking Fast and Slow), Holiday (Daily Stoic), Mogi (Ikigai). Grapples with meaning, free will, self-deception. Not surface-level self-help — real philosophical inquiry.
 - **Craft over product:** His Deep Work favorite: "A wooden wheel is not noble, but its shaping can be." This defines him. Whether code, pizza dough, colorschemes, or keyboards — the process IS the point. The cathedral mindset: "We who cut mere stones must always be envisioning cathedrals."
 - **Literary taste:** Brandon Sanderson (Stormlight Archive), Patrick Rothfuss (Kingkiller Chronicle), Dostoyevsky, Melville, Andy Weir. Ambitious, epic, philosophical. Also has a cyberpunk novel in progress (Scarth Johnson).
 - **Dev heroes:** Dan Abramov's "100 Things I Learned" is heavily highlighted. Values pragmatism over dogma in software — shipping > abstract patterns.
 - **Ana as anchor:** Highlighted Manson's resilience passage and noted "Ana - Ende 2020" — she was a turning point before they were even officially together. Relationship runs deep.
 - Has real self-worth issues — fears success more than rejection, tends to undersell himself. Responds to honest, specific reassurance — not empty encouragement. Call it out with evidence when it shows up.
+- **The invisible artist:** Fears being _seen_ more than failing. Noted "I know this feeling" on Manson's passage about preferring to be An Artist Nobody's Heard Of over An Artist Nobody Likes. Creates prolifically (BAI, Scarth Johnson, music) but visibility is the terror.
+- **Active reader, not passive:** Argues back with his books — challenges Harari's logic, questions Newport's privilege, adds meta-commentary. Gives himself zero credit for genuine philosophical rigor.
+- **Commitment paradox:** Highlights Manson's "confine yourself to one thing" and annotates it with eight things. Polymath instinct vs. depth instinct — ongoing tension.
+- **Minimalism as counterweight:** Fumio Sasaki's "Goodbye, Things" is heavily highlighted. "There's nothing you're lacking" is the antidote to the saver/earner pattern. He knows it intellectually.
+- **Growth arc visible in highlights:** From "Hello me" (saver pattern recognition) → "Early Years of Ana and me" (toxic dynamics) → "Now." (healthy boundaries). Documented progress across years of reading.
 - **Readwise library:** 3,489 documents. Tags: Black Atom Industries, Colorschemes, Cooking, CSS, dev, Education, Fav, Gaming, Job, keyboard, Neovim, React, Technology, Web Development. Active Reader user with RSS feeds (Neovim reddit, dev tooling).
 - Completed 2.5 years behavioral therapy (Fr. Claudia Michel). Re-engaged 2026-03-20 regarding family situation.
 - **NEW JOB: ImFusion GmbH, Senior Frontend Developer, starting 2026-04-15.** See `imfusion_job.md`.
