@@ -60,6 +60,17 @@ install_qmk() {
     fi
 }
 
+# Install Readwise CLI via npm
+install_readwise_cli() {
+    echo "Installing Readwise CLI..."
+    if command -v npm &>/dev/null; then
+        npm install -g @readwise/cli
+    else
+        echo "npm not available — install Node.js first"
+        return 1
+    fi
+}
+
 # Check all dependencies
 check_all() {
     echo "Checking dependencies..."
@@ -84,6 +95,13 @@ check_all() {
         echo "  qmk: installed"
     else
         echo "  qmk: missing"
+    fi
+
+    # Check readwise-cli
+    if command -v readwise &>/dev/null; then
+        echo "  readwise-cli: installed"
+    else
+        echo "  readwise-cli: missing"
     fi
 
     echo ""
@@ -127,6 +145,13 @@ install_all() {
     else
         echo "  qmk: missing"
         install_qmk
+    fi
+
+    if command -v readwise &>/dev/null; then
+        echo "  readwise-cli: installed"
+    else
+        echo "  readwise-cli: missing"
+        install_readwise_cli
     fi
 
     echo ""
