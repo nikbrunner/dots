@@ -49,8 +49,8 @@
   "cursor_blink": false,
   "theme": {
     "mode": "system",
-    "light": "Black Atom — JPN ∷ Koyo Hiru",
-    "dark": "Black Atom — Dark Dimmed"
+    "light": "Black Atom — TERRA ∷ Fall Day",
+    "dark": "Black Atom — TERRA ∷ Fall Night"
   },
   "base_keymap": "VSCode",
   "vim_mode": true,
