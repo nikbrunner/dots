@@ -26,8 +26,8 @@ window-inherit-font-size = true
 window-theme = system
 window-decoration = auto
 
-# background-opacity = 0.9
-# set blur
+background-opacity = 0.95
+# background-blur = 5
 
 # Cursor
 cursor-style-blink = false
