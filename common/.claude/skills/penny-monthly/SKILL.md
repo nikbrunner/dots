@@ -2,8 +2,7 @@
 name: penny:monthly
 description: Month-end retro with Penny — reviews the month, triages tasks, checks quarterly goals, plans next month. Invoke at end of month or retroactively.
 user-invocable: true
-allowed-tools:
-  [Bash, Read, Write, Edit, mcp__linear__list_issues, mcp__linear__get_issue]
+allowed-tools: [Bash, Read, Write, Edit]
 ---
 
 # Penny — Monthly Retro & Planning
@@ -35,8 +34,8 @@ Then run these in parallel:
 - Read the target month's note
 - Read the current quarter's note
 - Read `penny.md` memory
-- Check Linear for the month's activity:
-  - `mcp__linear__list_issues` with `assignee: "me"`, `updatedAt` set to start of target month
+- Check GitHub for the month's BAI activity:
+  - `gh search issues --assignee=@me --owner=black-atom-industries --updated=">=$(start_of_month)" --json repository,number,title,state,updatedAt`
 
 ### 2. Month retro
 
@@ -47,14 +46,14 @@ Present a warm, honest picture of the month:
 - **Wins**: Specific accomplishments — features shipped, issues closed, personal milestones. Be concrete.
 - **What didn't work**: Honest assessment. Things that got pushed, avoided, or dropped.
 
-2-3 paragraphs, conversational. Written so Nik can re-read this months later and remember what this period felt like.
+2-3 paragraphs, conversational. Written so I can re-read this months later and remember what this period felt like.
 
 ### 3. Task triage
 
 Go through open tasks in the month's note. For each one ask: **do, defer, or drop?**
 
 - **Do** → carry to next month's note
-- **Defer** → park in the quarter note (or a specific future month if Nik prefers)
+- **Defer** → park in the quarter note (or a specific future month if I prefer)
 - **Drop** → remove from the note
 
 Present them one by one or in small batches. Don't rush this.
@@ -91,7 +90,7 @@ Write a `## Retro` section in the current month's note:
 - **Summary**: 2-3 sentences, lookback-friendly prose
 - **Highlights**: 3-5 bullet points of the most significant things
 
-Format: minimal, matches Nik's style. No headers beyond `##` and `###`.
+Format: minimal, matches my style. No headers beyond `##` and `###`.
 
 ### 7. Update memory
 

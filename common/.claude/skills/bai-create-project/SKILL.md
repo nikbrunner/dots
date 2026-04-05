@@ -23,7 +23,7 @@ Invoke `about:bai` to understand the Black Atom ecosystem:
 
 Read `bai:*` skills for org conventions:
 
-- `bai:commit` — commit message conventions, Linear issue integration
+- `bai:commit` — commit message conventions, GitHub issue integration
 - `bai:status` / `bai:create` / `bai:update` — issue workflow patterns
 - `bai:review` / `bai:close` — issue lifecycle
 
@@ -47,7 +47,7 @@ Applied as overrides to `dev:create-project`:
 | ------------- | -------------------------------------------------------------------------------------- |
 | Path          | `~/repos/black-atom-industries/{name}`                                                 |
 | GitHub org    | `black-atom-industries`                                                                |
-| CLAUDE.md     | Include Linear project reference                                                       |
+| CLAUDE.md     | Include GitHub project reference (Black Atom V1, project #7)                           |
 | settings.json | Include `Skill(bai:create)`, `Skill(bai:update)` in allowedTools                       |
 | Commit skill  | Reference `bai:commit` in `.claude/` config                                            |
 | .gitignore    | Add BAI-specific entries (e.g., `.luarocks/` for Lua plugins, adapter build artifacts) |
@@ -61,8 +61,9 @@ Applied as overrides to `dev:create-project`:
    - Path set to `~/repos/black-atom-industries/{name}`
    - Project type mapped from BAI type (adapter→lib, plugin→lib, core→lib, tool→cli, app→web/desktop)
    - BAI defaults merged into scaffolding plan
-5. After base skill completes, verify BAI-specific config is present:
-   - Linear reference in CLAUDE.md
+5. After base skill completes, offer to setup GitHub issue handling for the repo.
+6. Verify BAI-specific config is present:
+   - GitHub project reference in CLAUDE.md
    - `bai:commit` referenced in settings
    - Org-specific .gitignore entries
 
@@ -70,5 +71,5 @@ Applied as overrides to `dev:create-project`:
 
 - `dev:create-project` — base skill invoked with org overrides
 - `about:bai` — org ecosystem context (adapters, core, theme system)
-- `bai:commit` — commit conventions with Linear issue integration
+- `bai:commit` — commit conventions with GitHub issue integration
 - `bai:status` — issue tracking workflow

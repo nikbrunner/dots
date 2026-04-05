@@ -2,15 +2,7 @@
 name: bai:review
 user-invocable: false
 description: Review and clean up Black Atom issues
-allowed-tools:
-  [
-    "mcp__linear__list_issues",
-    "mcp__linear__get_issue",
-    "mcp__linear__save_issue",
-    "mcp__linear__create_comment",
-    "mcp__linear__list_issue_statuses",
-    "AskUserQuestion",
-  ]
+allowed-tools: ["Bash", "AskUserQuestion"]
 ---
 
 # Black Atom Review
@@ -19,67 +11,58 @@ Review active issues to re-evaluate priorities, close stale items, and clean up.
 
 ## Arguments
 
-`$ARGUMENTS` - Optional filter (team, project, or search term)
+`$ARGUMENTS` - Optional filter (repo name or search term)
 
 Examples:
 
 - `` (no args) - Review all active issues
-- `Development` - Review Development team issues only
-- `Black Atom - 1.0` - Review issues in the 1.0 project
-- `theme` - Review issues with "theme" in title/description
+- `core` - Review core repo issues only
+- `livery` - Review livery repo issues
+- `theme` - Review issues with "theme" in title
 
 ## Context
 
-**Teams**: Development, Design, Operations, Website
-**Projects**: Black Atom - 1.0 (active), Black Atom - Core Creator (backlog)
+**Repos**: .github, core, livery, helm, nvim, ghostty, tmux, zed, wezterm, obsidian, radar.nvim, ui, website
+**Project**: Black Atom V1 (#7)
+
+Load `about:bai` for GitHub project constants.
 
 ## Process
 
-1. Fetch active issues with `mcp__linear__list_issues`:
-   - `assignee: "me"`
-   - `includeArchived: false`
-   - Apply filter if argument provided
+1. Fetch active issues:
 
-2. Get full details for each with `mcp__linear__get_issue` (includeRelations: true)
+   ```bash
+   gh project item-list 7 --owner black-atom-industries --format json
+   ```
 
-3. For each issue, present for review:
+2. For each issue, present for review:
 
    ```
-   [DEV-123] Issue title
-   Team: Development | Project: Black Atom - 1.0
-   Status: In Progress | Priority: P2 | Created: 2 weeks ago
-   Relations: Blocks DEV-124, DEV-125
-   https://linear.app/black-atom-industries/issue/DEV-123/issue-title
+   [core#50] Finalize naming conventions
+   Repo: core | Status: Todo | Priority: Urgent | Updated: 2 weeks ago
+   Blocked: No
+   https://github.com/black-atom-industries/core/issues/50
 
    Description snippet...
 
    Actions: [Keep] [Update] [Close] [Skip]
    ```
 
-4. Use `AskUserQuestion` tool for each issue:
+3. Use `AskUserQuestion` for each issue:
    - **Keep**: No changes
-   - **Update**: Change status, priority, relations, or add comment
-   - **Close**: Mark done or canceled with reason
+   - **Update**: Change status, priority, or add comment
+   - **Close**: `gh issue close`
    - **Skip**: Come back later
 
-5. After all issues, provide summary
-
-## Review Prompts
-
-For each issue ask:
-
-- Is this still relevant to Black Atom v1 goals?
-- Is the priority accurate?
-- Are the blocking relations still correct?
-- Should this be closed or moved to a different project?
+4. After all issues, provide summary
 
 ## Flags
 
 Highlight issues that:
 
-- Have no updates in 30+ days (stale)
-- Are blocking other issues (high impact)
-- Are in "In Progress" but seem stuck
+- Have no updates in 30+ days (stale) — check `updatedAt`
+- Have `state:blocked` label or native `blockedBy` relationships (high impact if they block others)
+- Are In Progress but seem stuck
 - Have unclear descriptions
 
 ## Output Summary
@@ -94,4 +77,4 @@ Review complete:
 
 ## Notes
 
-- **URL format**: Always show issue links as `https://linear.app/` web URLs (use the `url` field from the API directly)
+- **Never modify issue state without explicit confirmation** — always ask via AskUserQuestion

@@ -1,4 +1,4 @@
-.PHONY: fmt install-git-hooks
+.PHONY: fmt
 
 SHELL_PATHS := \
 	scripts/ \
@@ -11,6 +11,3 @@ SHELL_PATHS := \
 fmt:
 	npx prettier --write "**/*.md"
 	shfmt -w $(SHELL_PATHS)
-
-install-git-hooks:
-	./scripts/setup-hooks.sh

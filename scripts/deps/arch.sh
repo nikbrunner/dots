@@ -52,9 +52,10 @@ DEPS=(
 
     # AI & dev tools
     av-cli-bin
+    pass-cli
 
     # Desktop apps
-    1password
+    proton-pass
     claude-desktop-native
     signal-desktop
     slack-desktop
@@ -105,7 +106,7 @@ check_dep() {
     zapzap) command -v zapzap &>/dev/null ;;
 
     # Desktop apps - check via pacman
-    1password | claude-desktop-native | signal-desktop | slack-desktop | obsidian)
+    proton-pass | claude-desktop-native | signal-desktop | slack-desktop | obsidian)
         pacman -Qi "$dep" &>/dev/null
         ;;
 
@@ -113,6 +114,9 @@ check_dep() {
     bluez | bluez-utils | lib32-gamemode | zsh-autosuggestions | zsh-syntax-highlighting)
         pacman -Qi "$dep" &>/dev/null
         ;;
+
+    # Installed via custom script, not pacman
+    pass-cli) command -v pass-cli &>/dev/null ;;
 
     # Default: command name matches package name
     *) command -v "$dep" &>/dev/null ;;
@@ -138,6 +142,12 @@ install_dep() {
 
     echo "📦 Installing $dep..."
 
+    # Special install methods
+    if [[ "$dep" == "pass-cli" ]]; then
+        curl -fsSL https://proton.me/download/pass-cli/install.sh | bash
+        return $?
+    fi
+
     if [[ "$pkg_manager" == "pacman" ]]; then
         sudo pacman -S --needed --noconfirm "$dep"
     else
@@ -152,6 +162,20 @@ install_dep() {
             echo "🔵 Enabling bluetooth service..."
             sudo systemctl enable --now bluetooth
             echo "✅ Bluetooth service enabled"
+        fi
+        ;;
+    pass-cli)
+        # Enable ProtonPass SSH agent service
+        if ! systemctl --user is-enabled pass-ssh-agent &>/dev/null; then
+            echo "🔑 Enabling ProtonPass SSH agent service..."
+            systemctl --user enable --now pass-ssh-agent
+            echo "✅ ProtonPass SSH agent enabled"
+        fi
+        # Enable ProtonPass env sync service
+        if ! systemctl --user is-enabled pass-env-sync &>/dev/null; then
+            echo "🔑 Enabling ProtonPass env sync service..."
+            systemctl --user enable --now pass-env-sync
+            echo "✅ ProtonPass env sync enabled"
         fi
         ;;
     docker)
@@ -171,6 +195,21 @@ install_dep() {
         fi
         ;;
     esac
+}
+
+# NOTE: Readwise Reader has no native Linux app. Use the web app at https://read.readwise.io/
+# Could be packaged as a PWA or wrapped with something like nativefier/electron.
+
+# Install Readwise CLI via npm
+install_readwise_cli() {
+    echo "📦 Installing Readwise CLI..."
+    if command -v npm &>/dev/null; then
+        npm install -g @readwise/cli
+        echo "✅ Readwise CLI installed"
+    else
+        echo "❌ npm not available — install Node.js first"
+        return 1
+    fi
 }
 
 # Check all dependencies and show status
@@ -202,6 +241,14 @@ check_all() {
     else
         echo "  ❌ claude-code"
         missing+=("claude-code")
+    fi
+
+    # Check readwise-cli separately (npm install)
+    if command -v readwise &>/dev/null; then
+        echo "  ✅ readwise-cli"
+    else
+        echo "  ❌ readwise-cli"
+        missing+=("readwise-cli")
     fi
 
     echo ""
@@ -289,8 +336,17 @@ install_all() {
         claude_missing=true
     fi
 
+    # Check readwise-cli (npm install)
+    local readwise_cli_missing=false
+    if command -v readwise &>/dev/null; then
+        echo "  ✅ readwise-cli"
+    else
+        echo "  ❌ readwise-cli"
+        readwise_cli_missing=true
+    fi
+
     # Install missing
-    if [[ ${#missing[@]} -gt 0 ]] || [[ "$nvm_missing" == true ]] || [[ "$claude_missing" == true ]]; then
+    if [[ ${#missing[@]} -gt 0 ]] || [[ "$nvm_missing" == true ]] || [[ "$claude_missing" == true ]] || [[ "$readwise_cli_missing" == true ]]; then
         echo ""
         echo "🚀 Installing missing dependencies..."
 
@@ -304,6 +360,10 @@ install_all() {
 
         if [[ "$claude_missing" == true ]]; then
             install_claude_code
+        fi
+
+        if [[ "$readwise_cli_missing" == true ]]; then
+            install_readwise_cli
         fi
 
         echo ""

@@ -2,16 +2,7 @@
 name: bai:update
 user-invocable: false
 description: Update a Black Atom issue (status, labels, relations, etc.)
-allowed-tools:
-  [
-    "mcp__linear__save_issue",
-    "mcp__linear__create_comment",
-    "mcp__linear__list_issue_statuses",
-    "mcp__linear__get_issue",
-    "mcp__linear__list_teams",
-    "mcp__linear__list_issues",
-    "AskUserQuestion",
-  ]
+allowed-tools: ["Bash", "AskUserQuestion"]
 ---
 
 # Black Atom Update
@@ -24,70 +15,80 @@ Update an issue's status, add comments, manage relations, or change metadata.
 
 Examples:
 
-- `DEV-123 to In Progress`
-- `DEV-123 comment: Started working on this`
-- `DEV-123 priority 2`
-- `DEV-123 blocks DEV-124`
-- `DEV-123 project "Black Atom - 1.0"`
+- `core#50 to In Progress`
+- `livery#29 comment: Started working on this`
+- `core#53 priority Urgent`
+- `core#50 blocks core#53`
+- `.github#4 close`
 
 ## Context
 
-**Status workflow** (Development team):
+**Issue format**: `repo#number` (e.g., `core#50`). Accept `#number` and infer repo from cwd.
+**Status workflow**: Todo → In Progress → In Review → Done
 
-- Backlog → Todo → In Progress → In Review → Done
-
-**Teams**: Development, Design, Operations, Website
+Load `about:bai` for GitHub project constants (field IDs, option IDs).
 
 ## Process
 
-1. Parse issue identifier (e.g., "DEV-123")
+1. Parse issue identifier (e.g., `core#50`)
 
-2. Get current issue state with `mcp__linear__get_issue` (includeRelations: true)
+2. Get current issue state:
+
+   ```bash
+   gh issue view <number> --repo black-atom-industries/<repo> --json title,state,labels,milestone,body,url,comments
+   ```
 
 3. Determine update type and execute:
 
    **Status change** ("to [status]"):
-   - Get team's available statuses
-   - Find matching status (case-insensitive)
-   - Update issue
+   - Get project item ID, then update via GraphQL (load IDs from `about:bai`):
+
+   ```bash
+   gh api graphql -f query='mutation { updateProjectV2ItemFieldValue(input: { projectId: "PVT_kwDOCY_EKc4BTDpb", itemId: "<item_id>", fieldId: "PVTSSF_lADOCY_EKc4BTDpbzhAaQ3U", value: {singleSelectOptionId: "<status_option_id>"} }) { projectV2Item { id } } }'
+   ```
 
    **Comment** ("comment: [text]"):
-   - Create comment via `mcp__linear__create_comment`
 
-   **Priority** ("priority [0-4]"):
-   - Update priority field
+   ```bash
+   gh issue comment <number> --repo black-atom-industries/<repo> --body "..."
+   ```
 
-   **Relations** ("blocks/blockedBy/relatedTo [issue]"):
-   - Get current relations
-   - Add new relation (remember: replaces all, so include existing)
-   - Update issue
+   **Priority** ("priority [level]"):
+   - Update project item priority field via GraphQL (same pattern as status)
 
-   **Project** ("project [name]"):
-   - Update project assignment
+   **Sub-issue** ("sub-issue of [issue]" or "add sub [issue]"):
+   - Use `addSubIssue` GraphQL mutation (see `about:bai` for pattern)
+   - Works cross-repo
+   - To remove: use `removeSubIssue` mutation
+
+   **Blocker** ("blocked by [issue]" or "blocks [issue]"):
+   - Use `addBlockedBy` GraphQL mutation (see `about:bai` for pattern)
+   - Works cross-repo
+   - To remove: use `removeBlockedBy` mutation
+
+   **Close**:
+
+   ```bash
+   gh issue close <number> --repo black-atom-industries/<repo>
+   ```
 
    **Labels** ("label [name]"):
-   - Add label to issue
+
+   ```bash
+   gh issue edit <number> --repo black-atom-industries/<repo> --add-label "state:blocked"
+   ```
 
 4. Confirm what was changed
 
 ## Output
 
 ```
-Updated [DEV-123]:
+Updated [core#50]:
 Status: Todo → In Progress
-https://linear.app/black-atom-industries/issue/DEV-123/implement-theme-generator
-```
-
-or
-
-```
-Updated [DEV-123]:
-Now blocks: DEV-124, DEV-125
-https://linear.app/black-atom-industries/issue/DEV-123/implement-theme-generator
+https://github.com/black-atom-industries/core/issues/50
 ```
 
 ## Notes
 
-- Relations are REPLACED not appended - always include existing relations when adding new ones
 - Show current state before and after for clarity
-- **URL format**: Always show issue links as `https://linear.app/` web URLs (use the `url` field from the API directly)
+- For dependencies: use sub-issues (parent-child) via GraphQL, not labels

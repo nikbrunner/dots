@@ -63,7 +63,7 @@ vim.opt.writebackup = false
 vim.opt.undofile = true
 vim.opt.updatetime = 500
 
-vim.opt.cmdheight = 0
+vim.opt.cmdheight = 1
 vim.opt.pumheight = 30
 vim.opt.pumblend = 10
 
@@ -93,11 +93,11 @@ vim.opt.splitbelow = true
 vim.opt.splitright = true
 
 -- Abbreviations
+vim.cmd("cabbrev W w")
 vim.cmd("cabbrev Wqa wqa")
 vim.cmd("cabbrev Wq wq")
 vim.cmd("cabbrev Wa wa")
 vim.cmd("cabbrev git Git")
 
-
 vim.o.tabline = "%!v:lua.require('lib.tabline').render()"
--- vim.o.showtabline = 0
+vim.o.showtabline = 1

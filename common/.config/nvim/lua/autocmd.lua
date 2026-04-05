@@ -54,7 +54,7 @@ auto("BufReadPost", {
     callback = function(event)
         local exclude = { "gitcommit" }
         local buf = event.buf
-        if vim.list_contains(exclude, vim.bo[buf].filetype) or vim.b[buf].lazyvim_last_loc then
+        if vim.g.SessionLoad == 1 or vim.list_contains(exclude, vim.bo[buf].filetype) or vim.b[buf].lazyvim_last_loc then
             return
         end
         vim.b[buf].lazyvim_last_loc = true

@@ -1,0 +1,11 @@
+#!/usr/bin/env sh
+set -e
+
+SHELL_PATHS="scripts/ common/.local/bin/ arch/.local/bin/ common/.config/tmux/layouts/ common/.config/tmux/scripts/ common/.config/nvim/scripts/"
+
+# Check markdown formatting
+npx prettier --check "**/*.md"
+
+# Check shell formatting
+# shellcheck disable=SC2086
+shfmt -d $SHELL_PATHS

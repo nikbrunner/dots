@@ -6,7 +6,7 @@ user-invocable: false
 
 # About nbr.haus
 
-Nik's personal portfolio and CV website. Domain: **nbr.haus**.
+My personal portfolio and CV website. Domain: **nbr.haus**.
 
 Built with TanStack Start (SSR), React 19, TypeScript, and regular CSS with BEM naming. Uses Open Props for design tokens and a custom hue-based theming system controlled via URL search params.
 
@@ -14,7 +14,7 @@ Two routes: `/` (main portfolio with responsive multi-column layout) and `/cv` (
 
 Has a lightweight i18n system driven by URL params, a ControlPanel component for theme/locale switching, and Storybook for component development.
 
-The site doubles as a practical showcase of Nik's frontend skills — clean component architecture, SSR, accessibility, and design sensibility.
+The site doubles as a practical showcase of my frontend skills — clean component architecture, SSR, accessibility, and design sensibility.
 
 ## Local Path
 

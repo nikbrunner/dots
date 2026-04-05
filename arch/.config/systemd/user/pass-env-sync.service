@@ -1,0 +1,10 @@
+[Unit]
+Description=Proton Pass environment variable sync
+After=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=%h/.local/bin/pp-env-sync
+
+[Install]
+WantedBy=default.target

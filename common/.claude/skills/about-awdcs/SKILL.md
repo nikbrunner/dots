@@ -6,7 +6,7 @@ user-invocable: false
 
 # About AWDCS
 
-Nik's scope-based keymap system for modal editors. Organizes bindings by **scope of operation** rather than tool or function — matching how developers naturally think ("I want to search the workspace" not "I want to use Telescope").
+My scope-based keymap system for modal editors. Organizes bindings by **scope of operation** rather than tool or function — matching how developers naturally think ("I want to search the workspace" not "I want to use Telescope").
 
 Repo: `~/repos/nikbrunner/awdcs/`
 
@@ -24,7 +24,7 @@ Repo: `~/repos/nikbrunner/awdcs/`
 
 - **Format**: `<Scope><?Group?><Operation>` — e.g., `<leader>wgh` = Workspace → Git → History
 - **Lowercase/Uppercase variants**: lowercase = transient picker UI, uppercase = persistent panel UI
-- **Leader key**: Nik uses `,` — enables two-handed ergonomic typing
+- **Leader key**: I use `,` — enables two-handed ergonomic typing
 - **Symbol scope exception**: `s` prefix without leader (high-frequency operations)
 - **Alphabetical order** within each scope for predictable reference
 - **Single mapping** per operation — no duplicates across scopes

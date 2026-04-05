@@ -203,27 +203,7 @@ if [ "$context_max" -gt 0 ] 2>/dev/null; then
 	printf '  \033[90m%dk / %dk Tokens\033[0m' "$used_k" "$max_k"
 fi
 
-# --- Lines 4-5: 5hr and 7-day usage (OAuth API with caching) ---
-USAGE_CACHE="/tmp/claude-statusline-usage.json"
-USAGE_CACHE_TTL=60
-
-fetch_usage() {
-	local creds token response
-	creds=$(security find-generic-password -s "Claude Code-credentials" -w 2>/dev/null) || return 1
-	token=$(echo "$creds" | jq -r '.claudeAiOauth.accessToken') || return 1
-	[ -z "$token" ] || [ "$token" = "null" ] && return 1
-	response=$(curl -s --max-time 3 "https://api.anthropic.com/api/oauth/usage" \
-		-H "Authorization: Bearer $token" \
-		-H "anthropic-beta: oauth-2025-04-20" \
-		-H "Content-Type: application/json" 2>/dev/null) || return 1
-	echo "$response" | jq -e '.five_hour' >/dev/null 2>&1 || return 1
-	echo "$response" >"$USAGE_CACHE"
-}
-
-# Refresh cache if stale
-if [ ! -f "$USAGE_CACHE" ] || [ $(($(date +%s) - $(stat -f%m "$USAGE_CACHE" 2>/dev/null || echo 0))) -gt $USAGE_CACHE_TTL ]; then
-	fetch_usage 2>/dev/null &
-fi
+# --- Lines 4-5: 5hr and 7-day usage (from Claude Code JSON input) ---
 
 # Build usage bar (same style as context bar)
 usage_bar() {
@@ -249,14 +229,9 @@ usage_bar() {
 	printf '\033[0m'
 }
 
-# Format ISO reset time to local human-readable
+# Format Unix epoch reset time to human-readable relative string
 format_reset() {
-	local iso=$1
-	# Strip fractional seconds and timezone for macOS date parsing
-	local clean
-	clean=$(echo "$iso" | sed 's/\.[0-9]*+/ +/' | sed 's/+\([0-9][0-9]\):\([0-9][0-9]\)/+\1\2/')
-	local epoch
-	epoch=$(date -jf "%Y-%m-%dT%H:%M:%S %z" "$clean" +%s 2>/dev/null) || return 1
+	local epoch=$1
 	local now
 	now=$(date +%s)
 	local diff=$((epoch - now))
@@ -266,40 +241,38 @@ format_reset() {
 	elif [ "$diff" -lt 3600 ]; then
 		printf '%dm' $((diff / 60))
 	elif [ "$diff" -lt 86400 ]; then
-		# Today or soon — show time
-		date -jf "%Y-%m-%dT%H:%M:%S %z" "$clean" "+%H:%M" 2>/dev/null
+		date -r "$epoch" "+%H:%M" 2>/dev/null
 	else
-		# Further out — show date + time
-		date -jf "%Y-%m-%dT%H:%M:%S %z" "$clean" "+%b %-d, %H:%M" 2>/dev/null
+		date -r "$epoch" "+%b %-d, %H:%M" 2>/dev/null
 	fi
 }
 
-if [ -f "$USAGE_CACHE" ]; then
-	u5=$(jq -r '.five_hour.utilization // empty' "$USAGE_CACHE" 2>/dev/null | cut -d. -f1)
-	u7=$(jq -r '.seven_day.utilization // empty' "$USAGE_CACHE" 2>/dev/null | cut -d. -f1)
-	r5=$(jq -r '.five_hour.resets_at // empty' "$USAGE_CACHE" 2>/dev/null)
-	r7=$(jq -r '.seven_day.resets_at // empty' "$USAGE_CACHE" 2>/dev/null)
+u5=$(echo "$input" | jq -r '.rate_limits.five_hour.used_percentage // empty' 2>/dev/null)
+r5=$(echo "$input" | jq -r '.rate_limits.five_hour.resets_at // empty' 2>/dev/null)
+u7=$(echo "$input" | jq -r '.rate_limits.seven_day.used_percentage // empty' 2>/dev/null)
+r7=$(echo "$input" | jq -r '.rate_limits.seven_day.resets_at // empty' 2>/dev/null)
 
-	if [ -n "$u5" ]; then
-		printf '\n'
-		printf '\033[90m%-15s\033[0m' "Current Limit"
-		usage_bar "$u5"
-		printf ' %3d%%' "$u5"
-		if [ -n "$r5" ]; then
-			reset_str=$(format_reset "$r5")
-			[ -n "$reset_str" ] && printf '  \033[90mresets %s\033[0m' "$reset_str"
-		fi
+if [ -n "$u5" ]; then
+	u5_int=$(printf '%.0f' "$u5")
+	printf '\n'
+	printf '\033[90m%-15s\033[0m' "Current Limit"
+	usage_bar "$u5_int"
+	printf ' %3d%%' "$u5_int"
+	if [ -n "$r5" ]; then
+		reset_str=$(format_reset "$r5")
+		[ -n "$reset_str" ] && printf '  \033[90mresets %s\033[0m' "$reset_str"
 	fi
+fi
 
-	if [ -n "$u7" ]; then
-		printf '\n'
-		printf '\033[90m%-15s\033[0m' "Weekly Limit"
-		usage_bar "$u7"
-		printf ' %3d%%' "$u7"
-		if [ -n "$r7" ]; then
-			reset_str=$(format_reset "$r7")
-			[ -n "$reset_str" ] && printf '  \033[90mresets %s\033[0m' "$reset_str"
-		fi
+if [ -n "$u7" ]; then
+	u7_int=$(printf '%.0f' "$u7")
+	printf '\n'
+	printf '\033[90m%-15s\033[0m' "Weekly Limit"
+	usage_bar "$u7_int"
+	printf ' %3d%%' "$u7_int"
+	if [ -n "$r7" ]; then
+		reset_str=$(format_reset "$r7")
+		[ -n "$reset_str" ] && printf '  \033[90mresets %s\033[0m' "$reset_str"
 	fi
 fi
 
