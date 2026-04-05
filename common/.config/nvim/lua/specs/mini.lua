@@ -23,7 +23,17 @@ function M.statusline()
 
                 local mode, mode_hl = m.section_mode({ trunc_width = 120 })
                 local git = m.section_git({ trunc_width = 75 })
-                local diagnostics = m.section_diagnostics({ trunc_width = 75 })
+                local diagnostics = vim.diagnostic.status()
+                local lsp_status = vim.lsp.status()
+                local lsp_names = table.concat(
+                    vim.iter(vim.lsp.get_clients())
+                        :map(function(c)
+                            return "[" .. c.name .. "]"
+                        end)
+                        :totable(),
+                    " "
+                )
+                local lsp_section = table.concat(vim.list_slice({ lsp_status, lsp_names }, 1, 2), " ")
 
                 return m.combine_groups({
                     { hl = mode_hl, strings = { mode } },
@@ -38,9 +48,11 @@ function M.statusline()
 
                     "%<", -- Mark general truncate point
 
-                    { hl = "DiagnosticError", strings = { diagnostics } },
-
                     "%=", -- End left alignment
+
+                    { hl = "@type", strings = { lsp_section } },
+
+                    { hl = "DiagnosticError", strings = { diagnostics } },
                 })
             end,
         },
