@@ -11,7 +11,7 @@ endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
 badd +66 .claude/settings.json
-badd +1 Makefile
+badd +0 ~/repos/black-atom-industries/helm/internal/ui/colors.go
 argglobal
 %argdel
 edit .claude/settings.json
@@ -31,8 +31,8 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe 'vert 1resize ' . ((&columns * 138 + 138) / 276)
-exe 'vert 2resize ' . ((&columns * 137 + 138) / 276)
+exe 'vert 1resize ' . ((&columns * 130 + 130) / 261)
+exe 'vert 2resize ' . ((&columns * 130 + 130) / 261)
 argglobal
 setlocal keymap=
 setlocal noarabic
@@ -141,7 +141,7 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 66 - ((13 * winheight(0) + 24) / 48)
+let s:l = 66 - ((14 * winheight(0) + 26) / 52)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
@@ -149,11 +149,10 @@ keepjumps 66
 normal! 0
 wincmd w
 argglobal
-if bufexists(fnamemodify("Makefile", ":p")) | buffer Makefile | else | edit Makefile | endif
+if bufexists(fnamemodify("~/repos/black-atom-industries/helm/internal/ui/colors.go", ":p")) | buffer ~/repos/black-atom-industries/helm/internal/ui/colors.go | else | edit ~/repos/black-atom-industries/helm/internal/ui/colors.go | endif
 if &buftype ==# 'terminal'
-  silent file Makefile
+  silent file ~/repos/black-atom-industries/helm/internal/ui/colors.go
 endif
-balt .claude/settings.json
 setlocal keymap=
 setlocal noarabic
 setlocal autoindent
@@ -170,8 +169,8 @@ setlocal cinoptions=
 setlocal cinscopedecls=public,protected,private
 setlocal cinwords=if,else,while,do,for,switch
 setlocal colorcolumn=
-setlocal comments=sO:#\ -,mO:#\ \ ,b:#
-setlocal commentstring=#\ %s
+setlocal comments=s1:/*,mb:*,ex:*/,://
+setlocal commentstring=//\ %s
 setlocal complete=.,w,b,u,t
 setlocal completefunc=
 setlocal completeslash=
@@ -185,8 +184,8 @@ setlocal cursorlineopt=both
 setlocal nodiff
 setlocal eventignorewin=
 setlocal noexpandtab
-if &filetype != 'make'
-setlocal filetype=make
+if &filetype != 'go'
+setlocal filetype=go
 endif
 setlocal fixendofline
 setlocal foldcolumn=0
@@ -201,15 +200,15 @@ setlocal foldnestmax=20
 setlocal foldtext=
 setlocal formatexpr=v:lua.require'conform'.formatexpr()
 setlocal formatlistpat=^\\s*\\d\\+[\\]:.)}\\t\ ]\\s*
-setlocal formatoptions=jcroql
+setlocal formatoptions=cqj
 setlocal iminsert=0
 setlocal imsearch=-1
-setlocal include=^\\s*include
 setlocal includeexpr=
-setlocal indentexpr=GetMakeIndent()
-setlocal indentkeys=!^F,o,O,<:>,=else,=endif
+setlocal indentexpr=GoIndent(v:lnum)
+setlocal indentkeys=0{,0},0),0],:,0#,!^F,o,O,e,<:>,0=},0=)
 setlocal noinfercase
 setlocal iskeyword=@,48-57,_,192-255
+setlocal keywordprg=:GoKeywordPrg
 setlocal lhistory=10
 setlocal nolinebreak
 setlocal nolisp
@@ -221,7 +220,7 @@ setlocal modifiable
 setlocal nrformats=bin,hex
 setlocal number
 setlocal numberwidth=4
-setlocal omnifunc=
+setlocal omnifunc=v:lua.vim.lsp.omnifunc
 setlocal nopreserveindent
 setlocal nopreviewwindow
 setlocal quoteescape=\\
@@ -233,28 +232,28 @@ setlocal scrollback=-1
 setlocal noscrollbind
 setlocal shiftwidth=0
 setlocal signcolumn=yes
-setlocal nosmartindent
+setlocal smartindent
 setlocal nosmoothscroll
 setlocal softtabstop=-1
 setlocal nospell
 setlocal spellcapcheck=[.?!]\\_[\\])'\"\\t\ ]\\+
 setlocal spellfile=
 setlocal spelllang=en_us,de_de
-setlocal spelloptions=
+setlocal spelloptions=noplainbuffer
 setlocal statuscolumn=%!v:lua.require'snacks.statuscolumn'.get()
 setlocal suffixesadd=
 setlocal noswapfile
 setlocal synmaxcol=3000
-if &syntax != 'make'
-setlocal syntax=make
+if &syntax != ''
+setlocal syntax=
 endif
 setlocal tabstop=4
-setlocal tagfunc=
+setlocal tagfunc=v:lua.vim.lsp.tagfunc
 setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarFilename#Makefile%*
+setlocal winbar=%#WinBarPath#internal%*\ %#WinBarSeparator#/%*\ %#WinBarPath#ui%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#colors.go%*
 setlocal winblend=0
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -262,15 +261,16 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 23 - ((22 * winheight(0) + 24) / 48)
+let s:l = 224 - ((27 * winheight(0) + 26) / 52)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 23
+keepjumps 224
 normal! 0
 wincmd w
-exe 'vert 1resize ' . ((&columns * 138 + 138) / 276)
-exe 'vert 2resize ' . ((&columns * 137 + 138) / 276)
+2wincmd w
+exe 'vert 1resize ' . ((&columns * 130 + 130) / 261)
+exe 'vert 2resize ' . ((&columns * 130 + 130) / 261)
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
