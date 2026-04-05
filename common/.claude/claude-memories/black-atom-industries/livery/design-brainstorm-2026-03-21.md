@@ -36,6 +36,8 @@ type: project
 - Workflow: Stitch → Code (via MCP + Claude Code), skip Figma
 - Can extract HTML/CSS per screen via get_screen downloadUrl
 
+**Stitch MCP status:** Connected and working as of 2026-04-04.
+
 **Next steps:**
 
 - Nik cleans up Stitch canvas manually (remove old versions)
