@@ -1,13 +1,8 @@
 #!/usr/bin/env bash
 # Claude Code statusline script
-# Layout:
-#   Line 1: path
-#   Line 2: session (if named)
-#   Line 3: PR title (if open PR)
-#   Line 4: git status (branch, dirty state — last commit)
-#   Line 5: model │ compacts
-#   Line 6: limits: context bar │ 5hr bar │ 7-day bar (single line)
-#   Line 7: time
+# Responsive layout (breakpoint: 100 cols)
+# Wide:  path / git │ commit │ PR link / model │ Ctx bar │ 5h bar │ 7d bar
+# Narrow: path / git │ commit / PR link / model / Limits: Ctx │ 5h │ 7d
 
 # Read JSON input from Claude Code
 input=$(cat)
@@ -70,22 +65,19 @@ if [ -n "$branch" ]; then
 		[ "$added" -gt 0 ] && parts="${parts}, +${added}"
 		[ "$deleted" -gt 0 ] && parts="${parts}, -${deleted}"
 		[ "$untracked" -gt 0 ] && parts="${parts}, ${untracked} new"
-		git_summary="\033[32m\ue725 ${branch}\033[0m\033[90m │ ${parts}\033[0m"
+		git_branch="\033[32m\ue725 ${branch}\033[0m"
+		git_stats="\033[90m${parts}\033[0m"
 	elif [ "$untracked" -gt 0 ]; then
-		git_summary="\033[32m\ue725 ${branch}\033[0m\033[90m │ ${untracked} new\033[0m"
+		git_branch="\033[32m\ue725 ${branch}\033[0m"
+		git_stats="\033[90m${untracked} new\033[0m"
 	else
-		git_summary="\033[32m\ue725 ${branch}\033[0m\033[90m │ clean\033[0m"
+		git_branch="\033[32m\ue725 ${branch}\033[0m"
+		git_stats="\033[90mclean\033[0m"
 	fi
 fi
 
-# Last commit message (truncated at 50 chars) — appended to git line
+# Last commit message (truncated in wide mode only)
 last_commit=$(git -C "$dir" log -1 --format='%s' 2>/dev/null)
-if [ "${#last_commit}" -gt 30 ]; then
-	last_commit="${last_commit:0:27}..."
-fi
-if [ -n "$last_commit" ] && [ -n "$git_summary" ]; then
-	git_summary="${git_summary}\033[90m │ ${last_commit}\033[0m"
-fi
 
 # Context progress bar + token counts
 if [ "$context_max" -gt 0 ] 2>/dev/null; then
@@ -149,19 +141,42 @@ if [ -n "$branch" ] && [ "$branch" != "main" ] && [ "$branch" != "master" ]; the
 	fi
 fi
 
+# Terminal width for responsive layout (tmux pane width, fallback to tput)
+# Claude Code's statusline area is narrower than pane_width due to internal chrome (~30 cols)
+cols=$(tmux display-message -p '#{pane_width}' 2>/dev/null || tput cols 2>/dev/null || echo 80)
+wide=true
+[ "$cols" -lt 180 ] && wide=false
+
 # --- Line 1: path ---
 printf '\033[1;90m%s\033[0m' "$display_dir"
 
-# --- Git status + optional PR link ---
-if [ -n "$git_summary" ]; then
+# --- Git status + commit + optional PR link ---
+if [ -n "$git_branch" ]; then
 	printf '\n'
-	printf '\033[90m%-15s\033[0m%b' "Git" "$git_summary"
-	if [ -n "$pr_number" ] && [ -n "$pr_url" ]; then
-		printf '%b%s' "$sep" "$pr_url"
+	if $wide; then
+		# Wide: everything on one line
+		printf '\033[90m%-15s\033[0m%b\033[90m │ \033[0m%b' "Git" "$git_branch" "$git_stats"
+		if [ -n "$last_commit" ]; then
+			wide_commit="$last_commit"
+			[ "${#wide_commit}" -gt 30 ] && wide_commit="${wide_commit:0:27}..."
+			printf '\033[90m │ %s\033[0m' "$wide_commit"
+		fi
+		[ -n "$pr_number" ] && [ -n "$pr_url" ] && printf '%b%s' "$sep" "$pr_url"
+	else
+		# Narrow: each section on its own line
+		printf '\033[90m%-15s\033[0m%b' "Branch" "$git_branch"
+		printf '\n'
+		printf '\033[90m%-15s\033[0m%b' "Changes" "$git_stats"
+		if [ -n "$last_commit" ]; then
+			printf '\n'
+			printf '\033[90m%-15s%s\033[0m' "Last Commit" "$last_commit"
+		fi
+		if [ -n "$pr_number" ] && [ -n "$pr_url" ]; then
+			printf '\n'
+			printf '\033[90m%-15s\033[0m%s' "PR" "$pr_url"
+		fi
 	fi
 fi
-
-# (model + compactions merged into limits line below)
 
 # Build usage bar (same style as context bar)
 usage_bar() {
@@ -210,7 +225,7 @@ r5=$(echo "$input" | jq -r '.rate_limits.five_hour.resets_at // empty' 2>/dev/nu
 u7=$(echo "$input" | jq -r '.rate_limits.seven_day.used_percentage // empty' 2>/dev/null)
 r7=$(echo "$input" | jq -r '.rate_limits.seven_day.resets_at // empty' 2>/dev/null)
 
-# --- Single line: model │ context bar │ 5hr limit │ 7-day limit ---
+# --- Model + limits ---
 printf '\n'
 if [ -n "$model" ] && [ "$model" != "unknown" ]; then
 	printf '\033[90m%-15s\033[36m%s\033[0m' "Model" "$model"
@@ -226,30 +241,61 @@ if [ "$compactions" -gt 0 ]; then
 fi
 
 if [ "$context_max" -gt 0 ] 2>/dev/null; then
-	printf '%b' "$sep"
-	printf '\033[90mCtx \033[0m'
-	printf '%b' "$bar"
-	printf '  \033[90m%dk/%dk\033[0m' "$used_k" "$max_k"
-
-	if [ -n "$u5" ]; then
-		u5_int=$(printf '%.0f' "$u5")
+	if $wide; then
+		# Wide: all bars on same line as model
 		printf '%b' "$sep"
-		printf '\033[90m5h \033[0m'
-		usage_bar "$u5_int"
-		if [ -n "$r5" ]; then
-			reset_str=$(format_reset "$r5")
-			[ -n "$reset_str" ] && printf '  \033[90m↺%s\033[0m' "$reset_str"
+		printf '\033[90mCtx \033[0m'
+		printf '%b' "$bar"
+		printf '  \033[90m%dk/%dk\033[0m' "$used_k" "$max_k"
+
+		if [ -n "$u5" ]; then
+			u5_int=$(printf '%.0f' "$u5")
+			printf '%b' "$sep"
+			printf '\033[90m5h \033[0m'
+			usage_bar "$u5_int"
+			if [ -n "$r5" ]; then
+				reset_str=$(format_reset "$r5")
+				[ -n "$reset_str" ] && printf '  \033[90m↺%s\033[0m' "$reset_str"
+			fi
 		fi
-	fi
 
-	if [ -n "$u7" ]; then
-		u7_int=$(printf '%.0f' "$u7")
-		printf '%b' "$sep"
-		printf '\033[90m7d \033[0m'
-		usage_bar "$u7_int"
-		if [ -n "$r7" ]; then
-			reset_str=$(format_reset "$r7")
-			[ -n "$reset_str" ] && printf '  \033[90m↺%s\033[0m' "$reset_str"
+		if [ -n "$u7" ]; then
+			u7_int=$(printf '%.0f' "$u7")
+			printf '%b' "$sep"
+			printf '\033[90m7d \033[0m'
+			usage_bar "$u7_int"
+			if [ -n "$r7" ]; then
+				reset_str=$(format_reset "$r7")
+				[ -n "$reset_str" ] && printf '  \033[90m↺%s\033[0m' "$reset_str"
+			fi
+		fi
+	else
+		# Narrow: each bar on its own line
+		printf '\n'
+		printf '\033[90m%-15s\033[0m' "Context"
+		printf '%b' "$bar"
+		printf '  \033[90m%dk/%dk\033[0m' "$used_k" "$max_k"
+
+		if [ -n "$u5" ]; then
+			u5_int=$(printf '%.0f' "$u5")
+			printf '\n'
+			printf '\033[90m%-15s\033[0m' "Current Limit"
+			usage_bar "$u5_int"
+			if [ -n "$r5" ]; then
+				reset_str=$(format_reset "$r5")
+				[ -n "$reset_str" ] && printf '  \033[90m↺%s\033[0m' "$reset_str"
+			fi
+		fi
+
+		if [ -n "$u7" ]; then
+			u7_int=$(printf '%.0f' "$u7")
+			printf '\n'
+			printf '\033[90m%-15s\033[0m' "Weekly Limit"
+			usage_bar "$u7_int"
+			if [ -n "$r7" ]; then
+				reset_str=$(format_reset "$r7")
+				[ -n "$reset_str" ] && printf '  \033[90m↺%s\033[0m' "$reset_str"
+			fi
 		fi
 	fi
 fi
