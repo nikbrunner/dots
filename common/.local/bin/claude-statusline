@@ -1,12 +1,13 @@
 #!/usr/bin/env bash
 # Claude Code statusline script
 # Layout:
-#   Line 1: path │ git branch - status
-#   Line 2: task │ PR title │ last commit
-#   Line 3: model │ duration │ compacts
-#   Line 4: context bar
-#   Line 5: current limit bar
-#   Line 6: weekly limit bar
+#   Line 1: path
+#   Line 2: session (if named)
+#   Line 3: PR title (if open PR)
+#   Line 4: git status (branch, dirty state — last commit)
+#   Line 5: model │ compacts
+#   Line 6: limits: context bar │ 5hr bar │ 7-day bar (single line)
+#   Line 7: time
 
 # Read JSON input from Claude Code
 input=$(cat)
@@ -69,18 +70,21 @@ if [ -n "$branch" ]; then
 		[ "$added" -gt 0 ] && parts="${parts}, +${added}"
 		[ "$deleted" -gt 0 ] && parts="${parts}, -${deleted}"
 		[ "$untracked" -gt 0 ] && parts="${parts}, ${untracked} new"
-		git_summary="\033[32m\ue725 ${branch}\033[0m\033[90m, ${parts}\033[0m"
+		git_summary="\033[32m\ue725 ${branch}\033[0m\033[90m │ ${parts}\033[0m"
 	elif [ "$untracked" -gt 0 ]; then
-		git_summary="\033[32m\ue725 ${branch}\033[0m\033[90m, ${untracked} new\033[0m"
+		git_summary="\033[32m\ue725 ${branch}\033[0m\033[90m │ ${untracked} new\033[0m"
 	else
-		git_summary="\033[32m\ue725 ${branch}\033[0m\033[90m, clean\033[0m"
+		git_summary="\033[32m\ue725 ${branch}\033[0m\033[90m │ clean\033[0m"
 	fi
 fi
 
-# Last commit message (truncated at 50 chars)
+# Last commit message (truncated at 50 chars) — appended to git line
 last_commit=$(git -C "$dir" log -1 --format='%s' 2>/dev/null)
-if [ "${#last_commit}" -gt 50 ]; then
-	last_commit="${last_commit:0:47}..."
+if [ "${#last_commit}" -gt 30 ]; then
+	last_commit="${last_commit:0:27}..."
+fi
+if [ -n "$last_commit" ] && [ -n "$git_summary" ]; then
+	git_summary="${git_summary}\033[90m │ ${last_commit}\033[0m"
 fi
 
 # Context progress bar + token counts
@@ -124,13 +128,13 @@ PR_CACHE_TTL=120
 
 fetch_pr() {
 	local pr_json
-	pr_json=$(gh pr view --json title,number,state --jq 'select(.state == "OPEN") | "\(.number)\t\(.title)"' 2>/dev/null) || return 1
+	pr_json=$(gh pr view --json title,number,state,url --jq 'select(.state == "OPEN") | "\(.number)\t\(.url)\t\(.title)"' 2>/dev/null) || return 1
 	[ -z "$pr_json" ] && return 1
 	echo "$pr_json" >"$PR_CACHE"
 }
 
-pr_title=""
 pr_number=""
+pr_url=""
 
 # Only fetch/show PR info on non-default branches
 if [ -n "$branch" ] && [ "$branch" != "main" ] && [ "$branch" != "master" ]; then
@@ -141,69 +145,23 @@ if [ -n "$branch" ] && [ "$branch" != "main" ] && [ "$branch" != "master" ]; the
 
 	if [ -f "$PR_CACHE" ]; then
 		pr_number=$(cut -f1 "$PR_CACHE" 2>/dev/null)
-		pr_title=$(cut -f2 "$PR_CACHE" 2>/dev/null | head -c 40)
+		pr_url=$(cut -f2 "$PR_CACHE" 2>/dev/null)
 	fi
 fi
-
-# Session name from Claude Code JSON input
-session_name=$(echo "$input" | jq -r '.session_name // ""')
 
 # --- Line 1: path ---
 printf '\033[1;90m%s\033[0m' "$display_dir"
 
-# --- Line 2: session ---
-if [ -n "$session_name" ]; then
-	printf '\n'
-	printf '\033[90m%-15s\033[97m%s\033[0m' "Session" "$session_name"
-fi
-
-# --- Line 3: PR ---
-if [ -n "$pr_title" ]; then
-	printf '\n'
-	printf '\033[90m%-15s\033[0m\033[90mPR#%s\033[0m \033[37m%s\033[0m' "PR" "$pr_number" "$pr_title"
-fi
-
-# --- Line 3: git status ---
+# --- Git status + optional PR link ---
 if [ -n "$git_summary" ]; then
 	printf '\n'
 	printf '\033[90m%-15s\033[0m%b' "Git" "$git_summary"
-fi
-
-# --- Line 4: last commit ---
-if [ -n "$last_commit" ]; then
-	printf '\n'
-	printf '\033[90m%-15s%s\033[0m' "Last Commit" "$last_commit"
-fi
-
-# --- Line 5: model │ compactions ---
-printf '\n'
-[ -n "$model" ] && [ "$model" != "unknown" ] && printf '\033[90m%-15s\033[36m%s\033[0m' "Model" "$model"
-
-if [ "$compactions" -gt 0 ]; then
-	if [ "$compactions" -ge 3 ]; then
-		comp_color="\033[31m"
-	else
-		comp_color="\033[33m"
+	if [ -n "$pr_number" ] && [ -n "$pr_url" ]; then
+		printf '%b%s' "$sep" "$pr_url"
 	fi
-	printf '%b%bCompacts %sx\033[0m' "$sep" "$comp_color" "$compactions"
 fi
 
-# --- Line 3: context bar │ percentage │ token counts ---
-if [ "$context_max" -gt 0 ] 2>/dev/null; then
-	printf '\n'
-	printf '\033[90m%-15s\033[0m' "Context"
-	printf '%b' "$bar"
-
-	if [ "$percent" -ge 75 ]; then
-		printf ' \033[31m%3d%%\033[0m  \033[31m⛽\033[0m' "$percent"
-	else
-		printf ' %3d%%' "$percent"
-	fi
-
-	printf '  \033[90m%dk / %dk Tokens\033[0m' "$used_k" "$max_k"
-fi
-
-# --- Lines 4-5: 5hr and 7-day usage (from Claude Code JSON input) ---
+# (model + compactions merged into limits line below)
 
 # Build usage bar (same style as context bar)
 usage_bar() {
@@ -252,30 +210,46 @@ r5=$(echo "$input" | jq -r '.rate_limits.five_hour.resets_at // empty' 2>/dev/nu
 u7=$(echo "$input" | jq -r '.rate_limits.seven_day.used_percentage // empty' 2>/dev/null)
 r7=$(echo "$input" | jq -r '.rate_limits.seven_day.resets_at // empty' 2>/dev/null)
 
-if [ -n "$u5" ]; then
-	u5_int=$(printf '%.0f' "$u5")
-	printf '\n'
-	printf '\033[90m%-15s\033[0m' "Current Limit"
-	usage_bar "$u5_int"
-	printf ' %3d%%' "$u5_int"
-	if [ -n "$r5" ]; then
-		reset_str=$(format_reset "$r5")
-		[ -n "$reset_str" ] && printf '  \033[90mresets %s\033[0m' "$reset_str"
-	fi
-fi
-
-if [ -n "$u7" ]; then
-	u7_int=$(printf '%.0f' "$u7")
-	printf '\n'
-	printf '\033[90m%-15s\033[0m' "Weekly Limit"
-	usage_bar "$u7_int"
-	printf ' %3d%%' "$u7_int"
-	if [ -n "$r7" ]; then
-		reset_str=$(format_reset "$r7")
-		[ -n "$reset_str" ] && printf '  \033[90mresets %s\033[0m' "$reset_str"
-	fi
-fi
-
-# --- Last line: current date and time ---
+# --- Single line: model │ context bar │ 5hr limit │ 7-day limit ---
 printf '\n'
-printf '\033[90m%-15s\033[35m%s\033[0m' "Time" "$(date '+%a %b %-d, %H:%M')"
+if [ -n "$model" ] && [ "$model" != "unknown" ]; then
+	printf '\033[90m%-15s\033[36m%s\033[0m' "Model" "$model"
+fi
+
+if [ "$compactions" -gt 0 ]; then
+	if [ "$compactions" -ge 3 ]; then
+		comp_color="\033[31m"
+	else
+		comp_color="\033[33m"
+	fi
+	printf '%b%bCompacts %sx\033[0m' "$sep" "$comp_color" "$compactions"
+fi
+
+if [ "$context_max" -gt 0 ] 2>/dev/null; then
+	printf '%b' "$sep"
+	printf '\033[90mCtx \033[0m'
+	printf '%b' "$bar"
+	printf '  \033[90m%dk/%dk\033[0m' "$used_k" "$max_k"
+
+	if [ -n "$u5" ]; then
+		u5_int=$(printf '%.0f' "$u5")
+		printf '%b' "$sep"
+		printf '\033[90m5h \033[0m'
+		usage_bar "$u5_int"
+		if [ -n "$r5" ]; then
+			reset_str=$(format_reset "$r5")
+			[ -n "$reset_str" ] && printf '  \033[90m↺%s\033[0m' "$reset_str"
+		fi
+	fi
+
+	if [ -n "$u7" ]; then
+		u7_int=$(printf '%.0f' "$u7")
+		printf '%b' "$sep"
+		printf '\033[90m7d \033[0m'
+		usage_bar "$u7_int"
+		if [ -n "$r7" ]; then
+			reset_str=$(format_reset "$r7")
+			[ -n "$reset_str" ] && printf '  \033[90m↺%s\033[0m' "$reset_str"
+		fi
+	fi
+fi
