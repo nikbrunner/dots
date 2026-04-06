@@ -36,7 +36,11 @@ gh api graphql -f query='{ organization(login: "black-atom-industries") { issueT
 
 ### Labels
 
-Labels use namespaced conventions: `state:*`, `contrib:*`, `topic:*`. Managed via `sync-labels.sh` in the `.github` repo, driven by `labels.json` config. Labels are assigned per repo category (discovered via GitHub topics).
+Labels use namespaced conventions: `state:*`, `contrib:*`, `topic:*`. Managed via Deno tooling in the `.github` repo (`src/labels/`). Labels are assigned per repo category (discovered via GitHub topics). Uncategorized repos still get org-wide labels.
+
+Org-wide labels (all repos): `state:needs-review`, `state:blocked`, `state:reviewed`, `contrib:good-first-issue`, `contrib:help-wanted`.
+
+Sync labels: `deno task sync-labels` (or `sync-labels:dry` to preview).
 
 List labels for a repo:
 
@@ -48,7 +52,7 @@ List repos by category:
 
 ```bash
 gh repo list black-atom-industries --topic black-atom-adapter --json name --jq '.[].name'
-# Categories: black-atom-core, black-atom-adapter, black-atom-tool, black-atom-plugin, black-atom-meta, black-atom-web
+# Categories: black-atom-core, black-atom-adapter, black-atom-app, black-atom-tool, black-atom-plugin, black-atom-meta, black-atom-web
 ```
 
 ### Project Fields

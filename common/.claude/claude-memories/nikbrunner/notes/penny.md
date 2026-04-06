@@ -56,3 +56,5 @@
 - 2026-03-30: Finished LLM Development Process V1. Neovim smart resize splits.
 - 2026-03-31: Penny session — added Dad's concert to calendar (notable: family contact despite estrangement). Daily planning: 1Password→ProtonPass migration, BAI Linear→GitHub Issues migration exploration.
 - 2026-04-03: Installed Readwise CLI. Penny deep-dive through his Readwise highlights — updated personality profile with intellectual/philosophical dimensions, reading taste, craft mindset. "Damit kannst du mich besser kennenlernen."
+- 2026-04-04: Explored Johnny.Decimal system for vault organization (research only, no changes). Revisited 2017 journal for movie nostalgia.
+- 2026-04-05: LLM tooling overwhelm — exhausted by noise (skills.sh, OpenCode, Kimi, MaxMini, OpenPackage, Google Stitch). Classic commitment paradox activation. Penny grounded him. Daily note shows he's actively exploring OpenCode as Claude Code alternative and prepped a migration prompt. ImFusion start in 10 days.
