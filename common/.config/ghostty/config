@@ -2,7 +2,7 @@
 # https://github.com/imrajyavardhan12/spectre-ghostty-config
 
 # Colors
-theme = black-atom-terra-fall-night.conf
+theme = black-atom-terra-fall-day.conf
 bold-is-bright = false
 
 # Window
@@ -26,8 +26,8 @@ window-inherit-font-size = true
 window-theme = system
 window-decoration = auto
 
-background-opacity = 0.95
-# background-blur = 5
+background-opacity = 0.9
+background-blur = 3
 
 # Cursor
 cursor-style-blink = false
@@ -37,14 +37,12 @@ cursor-style = block
 shell-integration-features = no-cursor
 
 # Macos
-macos-titlebar-style = hidden
-# macos-icon = paper
+# macos-titlebar-style = hidden
+macos-icon = paper
 
 # Application
 link-url = true
 link-previews = true
-# TODO: Add custom link matching for linear:// URLs once Ghostty supports the `link` config
-# https://github.com/ghostty-org/ghostty/discussions/3021
 # maximize = true
 
 # Mouse
