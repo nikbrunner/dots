@@ -108,8 +108,9 @@ if [ "$context_max" -gt 0 ] 2>/dev/null; then
 	max_k=$(((context_max + 500) / 1000))
 fi
 
-# Separator
-sep="\033[90m │ \033[0m"
+# Bracket wrapping for segments
+br_o="\033[90m[ \033[0m"
+br_c="\033[90m ]\033[0m"
 
 # Shorten home directory to ~
 display_dir="${dir/#$HOME/\~}"
@@ -154,26 +155,28 @@ printf '\033[1;90m%s\033[0m' "$display_dir"
 if [ -n "$git_branch" ]; then
 	printf '\n'
 	if $wide; then
-		# Wide: everything on one line
-		printf '\033[90m%-15s\033[0m%b\033[90m │ \033[0m%b' "Git" "$git_branch" "$git_stats"
+		# Wide: everything on one line with bracket segments
+		printf '\033[90m%-15s\033[0m' "Git"
+		printf '%b%b%b' "$br_o" "$git_branch" "$br_c"
+		printf ' %b%b%b' "$br_o" "$git_stats" "$br_c"
 		if [ -n "$last_commit" ]; then
 			wide_commit="$last_commit"
 			[ "${#wide_commit}" -gt 30 ] && wide_commit="${wide_commit:0:27}..."
-			printf '\033[90m │ %s\033[0m' "$wide_commit"
+			printf ' %b\033[90m%s\033[0m%b' "$br_o" "$wide_commit" "$br_c"
 		fi
-		[ -n "$pr_number" ] && [ -n "$pr_url" ] && printf '%b%s' "$sep" "$pr_url"
+		[ -n "$pr_number" ] && [ -n "$pr_url" ] && printf ' %b%s%b' "$br_o" "$pr_url" "$br_c"
 	else
-		# Narrow: each section on its own line
-		printf '\033[90m%-15s\033[0m%b' "Branch" "$git_branch"
+		# Narrow: each section on its own line with brackets
+		printf '\033[90m%-15s\033[0m%b%b%b' "Branch" "$br_o" "$git_branch" "$br_c"
 		printf '\n'
-		printf '\033[90m%-15s\033[0m%b' "Changes" "$git_stats"
+		printf '\033[90m%-15s\033[0m%b%b%b' "Changes" "$br_o" "$git_stats" "$br_c"
 		if [ -n "$last_commit" ]; then
 			printf '\n'
-			printf '\033[90m%-15s%s\033[0m' "Last Commit" "$last_commit"
+			printf '\033[90m%-15s\033[0m%b\033[90m%s\033[0m%b' "Last Commit" "$br_o" "$last_commit" "$br_c"
 		fi
 		if [ -n "$pr_number" ] && [ -n "$pr_url" ]; then
 			printf '\n'
-			printf '\033[90m%-15s\033[0m%s' "PR" "$pr_url"
+			printf '\033[90m%-15s\033[0m%b%s%b' "PR" "$br_o" "$pr_url" "$br_c"
 		fi
 	fi
 fi
@@ -228,7 +231,7 @@ r7=$(echo "$input" | jq -r '.rate_limits.seven_day.resets_at // empty' 2>/dev/nu
 # --- Model + limits ---
 printf '\n'
 if [ -n "$model" ] && [ "$model" != "unknown" ]; then
-	printf '\033[90m%-15s\033[36m%s\033[0m' "Model" "$model"
+	printf '\033[90m%-15s\033[0m%b\033[36m%s\033[0m%b' "Model" "$br_o" "$model" "$br_c"
 fi
 
 if [ "$compactions" -gt 0 ]; then
@@ -237,65 +240,62 @@ if [ "$compactions" -gt 0 ]; then
 	else
 		comp_color="\033[33m"
 	fi
-	printf '%b%bCompacts %sx\033[0m' "$sep" "$comp_color" "$compactions"
+	printf ' %b%bCompacts %sx\033[0m%b' "$br_o" "$comp_color" "$compactions" "$br_c"
 fi
 
 if [ "$context_max" -gt 0 ] 2>/dev/null; then
 	if $wide; then
 		# Wide: all bars on same line as model
-		printf '%b' "$sep"
-		printf '\033[90mCtx \033[0m'
-		printf '%b' "$bar"
-		printf '  \033[90m%dk/%dk\033[0m' "$used_k" "$max_k"
+		printf ' %b\033[90mCtx \033[0m%b  \033[90m%dk/%dk\033[0m%b' "$br_o" "$bar" "$used_k" "$max_k" "$br_c"
 
 		if [ -n "$u5" ]; then
 			u5_int=$(printf '%.0f' "$u5")
-			printf '%b' "$sep"
-			printf '\033[90m5h \033[0m'
+			printf ' %b\033[90m5h \033[0m' "$br_o"
 			usage_bar "$u5_int"
 			if [ -n "$r5" ]; then
 				reset_str=$(format_reset "$r5")
 				[ -n "$reset_str" ] && printf '  \033[90m↺%s\033[0m' "$reset_str"
 			fi
+			printf '%b' "$br_c"
 		fi
 
 		if [ -n "$u7" ]; then
 			u7_int=$(printf '%.0f' "$u7")
-			printf '%b' "$sep"
-			printf '\033[90m7d \033[0m'
+			printf ' %b\033[90m7d \033[0m' "$br_o"
 			usage_bar "$u7_int"
 			if [ -n "$r7" ]; then
 				reset_str=$(format_reset "$r7")
 				[ -n "$reset_str" ] && printf '  \033[90m↺%s\033[0m' "$reset_str"
 			fi
+			printf '%b' "$br_c"
 		fi
 	else
-		# Narrow: each bar on its own line
+		# Narrow: each bar on its own line with brackets
 		printf '\n'
-		printf '\033[90m%-15s\033[0m' "Context"
-		printf '%b' "$bar"
-		printf '  \033[90m%dk/%dk\033[0m' "$used_k" "$max_k"
+		printf '\033[90m%-15s\033[0m%b%b  \033[90m%dk/%dk\033[0m%b' "Context" "$br_o" "$bar" "$used_k" "$max_k" "$br_c"
 
 		if [ -n "$u5" ]; then
 			u5_int=$(printf '%.0f' "$u5")
 			printf '\n'
-			printf '\033[90m%-15s\033[0m' "Current Limit"
+			printf '\033[90m%-15s\033[0m%b' "Current Limit" "$br_o"
 			usage_bar "$u5_int"
 			if [ -n "$r5" ]; then
 				reset_str=$(format_reset "$r5")
 				[ -n "$reset_str" ] && printf '  \033[90m↺%s\033[0m' "$reset_str"
 			fi
+			printf '%b' "$br_c"
 		fi
 
 		if [ -n "$u7" ]; then
 			u7_int=$(printf '%.0f' "$u7")
 			printf '\n'
-			printf '\033[90m%-15s\033[0m' "Weekly Limit"
+			printf '\033[90m%-15s\033[0m%b' "Weekly Limit" "$br_o"
 			usage_bar "$u7_int"
 			if [ -n "$r7" ]; then
 				reset_str=$(format_reset "$r7")
 				[ -n "$reset_str" ] && printf '  \033[90m↺%s\033[0m' "$reset_str"
 			fi
+			printf '%b' "$br_c"
 		fi
 	fi
 fi
