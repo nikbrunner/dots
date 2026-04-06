@@ -10,7 +10,7 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +1 ~/repos/nikbrunner/dots/common/.config/nvim/lua/specs/mini.lua
+badd +32 ~/repos/nikbrunner/dots/common/.config/nvim/lua/specs/mini.lua
 argglobal
 %argdel
 $argadd ./
@@ -31,8 +31,8 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe 'vert 1resize ' . ((&columns * 76 + 76) / 153)
-exe 'vert 2resize ' . ((&columns * 76 + 76) / 153)
+exe 'vert 1resize ' . ((&columns * 39 + 40) / 80)
+exe 'vert 2resize ' . ((&columns * 40 + 40) / 80)
 argglobal
 setlocal keymap=
 setlocal noarabic
@@ -82,7 +82,7 @@ setlocal foldnestmax=20
 setlocal foldtext=
 setlocal formatexpr=v:lua.require'conform'.formatexpr()
 setlocal formatlistpat=^\\s*\\d\\+[\\]:.)}\\t\ ]\\s*
-setlocal formatoptions=jcroql
+setlocal formatoptions=lqrjoc
 setlocal iminsert=0
 setlocal imsearch=-1
 setlocal include=\\<\\%(\\%(do\\|load\\)file\\|require\\)\\s*(
@@ -154,28 +154,44 @@ sil! normal! zo
 sil! normal! zo
 18
 sil! normal! zo
-28
+29
 sil! normal! zo
-30
+37
 sil! normal! zo
-38
+39
 sil! normal! zo
-58
+43
+sil! normal! zo
+47
+sil! normal! zo
+49
+sil! normal! zo
+50
+sil! normal! zo
+60
 sil! normal! zo
 62
 sil! normal! zo
 63
 sil! normal! zo
-64
+76
+sil! normal! zo
+77
 sil! normal! zo
 78
 sil! normal! zo
-let s:l = 32 - ((20 * winheight(0) + 31) / 63)
+92
+sil! normal! zo
+93
+sil! normal! zo
+94
+sil! normal! zo
+let s:l = 32 - ((7 * winheight(0) + 10) / 21)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
 keepjumps 32
-normal! 028|
+normal! 0
 wincmd w
 argglobal
 enew | setl bt=help
@@ -296,15 +312,15 @@ setlocal nowrap
 setlocal wrapmargin=0
 silent! normal! zE
 let &fdl = &fdl
-let s:l = 1648 - ((14 * winheight(0) + 31) / 63)
+let s:l = 1648 - ((5 * winheight(0) + 10) / 21)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
 keepjumps 1648
 normal! 0
 wincmd w
-exe 'vert 1resize ' . ((&columns * 76 + 76) / 153)
-exe 'vert 2resize ' . ((&columns * 76 + 76) / 153)
+exe 'vert 1resize ' . ((&columns * 39 + 40) / 80)
+exe 'vert 2resize ' . ((&columns * 40 + 40) / 80)
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
