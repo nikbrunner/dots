@@ -61,6 +61,18 @@ deno test
 
 **Adapt**: If the project has no tests yet, omit `deno test` and tell the user. If `deno.json` has a `test` task, use `deno task test` instead.
 
+**Add `install-hooks` task to deno.json:**
+
+```json
+{
+  "tasks": {
+    "install-hooks": "git config core.hooksPath .githooks && echo 'Hooks installed.'"
+  }
+}
+```
+
+> Deno has no `prepare` lifecycle hook like Node's `npm install`. An explicit task is the Deno equivalent — collaborators run `deno task install-hooks` after cloning.
+
 ### Node Projects
 
 **Detect package manager**: Check for `package-lock.json` (npm), `pnpm-lock.yaml` (pnpm), `yarn.lock` (yarn), `bun.lockb` (bun). Default to npm if unclear.
@@ -129,6 +141,7 @@ git config core.hooksPath .githooks
 
 - [ ] `.githooks/pre-commit` exists and is executable
 - [ ] `git config core.hooksPath` returns `.githooks`
+- [ ] **Deno only**: `install-hooks` task exists in `deno.json`
 - [ ] **Node only**: `.lintstagedrc` exists, Prettier config exists, `prepare` script set
 - [ ] Run a dry-run of the hook: `./.githooks/pre-commit`
 
