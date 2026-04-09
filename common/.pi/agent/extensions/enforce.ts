@@ -6,7 +6,6 @@
  *   - session-start.sh     → session_start       : inject meta-enforcement skill content
  *   - skills-check.sh      → input               : keyword-match → suggest relevant skills
  *   - semantic-commits.sh  → tool_call (bash)    : block non-semantic git commits
- *   - warn-any-type.sh     → tool_result         : warn on `: any` / `as any` in TS files
  */
 
 import type { ExtensionAPI } from "@mariozechner/pi-coding-agent";
@@ -215,28 +214,4 @@ export default function (pi: ExtensionAPI) {
     };
   });
 
-  // ─── 5. warn-any-type: warn on `: any` / `as any` in TS files ────────────────
-
-  pi.on("tool_result", async (event, ctx) => {
-    if (event.toolName !== "write" && event.toolName !== "edit") return;
-
-    const input = event.input as Record<string, unknown>;
-    const filePath: string =
-      (input.file_path as string) ?? (input.path as string) ?? "";
-
-    if (!/\.(ts|tsx)$/.test(filePath)) return;
-
-    // For write: check full content. For edit: check new_string.
-    const content: string =
-      event.toolName === "write"
-        ? (input.content as string) ?? ""
-        : (input.new_string as string) ?? "";
-
-    if (/:\s*any\b|as\s+any\b/.test(content)) {
-      ctx.ui.notify(
-        `TypeScript \`any\` detected in ${filePath.split("/").pop()}.\nPrefer proper types or \`unknown\` as a last resort.`,
-        "warning"
-      );
-    }
-  });
 }
