@@ -1,6 +1,6 @@
 # AGENTS.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+This file provides guidance to Claude Code and Pi when working with code in this repository. The canonical global instructions live in `common/.agents/AGENTS.md` (symlinked to `~/.claude/CLAUDE.md` and `~/.pi/agent/AGENTS.md`). This file supplements it with repo-specific context.
 
 ## Repository Overview
 
@@ -70,7 +70,7 @@ Theme files in this repo are symlinks to Black Atom adapter repos. `dots link` a
 - `scripts/log.sh` — Shared logging/UI functions
 - `scripts/deps/` — Dependency management (install.sh dispatcher, macos.sh, arch.sh)
 - `scripts/install.sh` — Full machine setup script
-- `scripts/claude-mcp.sh` — Claude Code MCP server configuration
+- `scripts/claude-mcp.sh` — Claude Code MCP server configuration (legacy)
 
 ## Environment Variables
 

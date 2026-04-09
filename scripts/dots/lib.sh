@@ -256,6 +256,31 @@ dots_commit_sessions() {
     log_success "Sessions commit created"
 }
 
+dots_commit_pi_sessions() {
+    local repo_path="$1"
+    local pi_sessions_dir="$repo_path/common/.pi/agent/sessions"
+
+    if [[ ! -d "$pi_sessions_dir" ]]; then
+        echo "No pi sessions directory found"
+        return 0
+    fi
+
+    # Clean up old sessions (>2 days)
+    local deleted_count
+    deleted_count=$(find "$pi_sessions_dir" -type f -mtime +2 -delete -print 2>/dev/null | wc -l | tr -d ' ')
+    if [[ "$deleted_count" -gt 0 ]]; then
+        echo "Cleaned up $deleted_count old pi session(s)"
+    fi
+
+    if [[ -z $(git -C "$repo_path" status --porcelain "common/.pi/agent/sessions/" 2>/dev/null) ]]; then
+        echo "No pi session changes to commit"
+        return 1
+    fi
+
+    (cd "$repo_path" && git add "common/.pi/agent/sessions/" && git commit -m "chore(pi): update sessions")
+    log_success "Pi sessions commit created"
+}
+
 dots_commit_radar() {
     local repo_path="$1"
     local radar_file="common/.local/share/nvim/radar/data.json"
