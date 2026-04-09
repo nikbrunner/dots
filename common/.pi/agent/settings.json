@@ -1,0 +1,7 @@
+{
+  "theme": "dark",
+  "lastChangelogVersion": "0.66.1",
+  "packages": [
+    "npm:pi-web-access"
+  ]
+}
