@@ -7,5 +7,11 @@
     "npm:@plannotator/pi-extension"
   ],
   "defaultProvider": "openrouter",
-  "defaultModel": "anthropic/claude-sonnet-4.6"
+  "defaultModel": "minimax/minimax-m2.7",
+  "enabledModels": [
+    "openrouter/anthropic/claude-sonnet-4.6",
+    "openrouter/anthropic/claude-opus-4.6",
+    "openrouter/moonshotai/kimi-k2.5",
+    "openrouter/minimax/minimax-m2.7"
+  ]
 }
