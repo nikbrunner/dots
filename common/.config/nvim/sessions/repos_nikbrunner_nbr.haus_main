@@ -4,7 +4,7 @@ let v:this_session=expand("<sfile>:p")
 doautoall SessionLoadPre
 silent only
 silent tabonly
-cd ~/repos/black-atom-industries/ui
+cd ~/repos/nikbrunner/nbr.haus
 if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
@@ -61,7 +61,7 @@ setlocal foldnestmax=20
 setlocal foldtext=
 setlocal formatexpr=v:lua.require'conform'.formatexpr()
 setlocal formatlistpat=^\\s*\\d\\+[\\]:.)}\\t\ ]\\s*
-setlocal formatoptions=tcqj
+setlocal formatoptions=qtjc
 setlocal iminsert=0
 setlocal imsearch=-1
 setlocal includeexpr=

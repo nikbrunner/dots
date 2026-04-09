@@ -4,16 +4,16 @@ let v:this_session=expand("<sfile>:p")
 doautoall SessionLoadPre
 silent only
 silent tabonly
-cd ~/repos/black-atom-industries/.github
+cd ~/repos/nikbrunner/bc-web-client
 if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +0 src/labels/config.ts
+badd +13 ~/repos/black-atom-industries/livery/src/components/typography/Typo.P.tsx
 argglobal
 %argdel
-edit src/labels/config.ts
+edit ~/repos/black-atom-industries/livery/src/components/typography/Typo.P.tsx
 argglobal
 setlocal keymap=
 setlocal noarabic
@@ -46,8 +46,8 @@ setlocal cursorlineopt=both
 setlocal nodiff
 setlocal eventignorewin=
 setlocal expandtab
-if &filetype != 'typescript'
-setlocal filetype=typescript
+if &filetype != 'typescriptreact'
+setlocal filetype=typescriptreact
 endif
 setlocal fixendofline
 setlocal foldcolumn=0
@@ -69,7 +69,7 @@ setlocal includeexpr=
 setlocal indentexpr=GetTypescriptIndent()
 setlocal indentkeys=0{,0},0),0],0,,!^F,o,O,e
 setlocal noinfercase
-setlocal iskeyword=@,48-57,_,192-255
+setlocal iskeyword=@,48-57,_,192-255,$,#
 setlocal lhistory=10
 setlocal nolinebreak
 setlocal nolisp
@@ -91,7 +91,7 @@ setlocal norightleft
 setlocal rightleftcmd=search
 setlocal scrollback=-1
 setlocal noscrollbind
-setlocal shiftwidth=4
+setlocal shiftwidth=2
 setlocal signcolumn=yes
 setlocal nosmartindent
 setlocal nosmoothscroll
@@ -100,13 +100,13 @@ setlocal nospell
 setlocal spellcapcheck=[.?!]\\_[\\])'\"\\t\ ]\\+
 setlocal spellfile=
 setlocal spelllang=en_us,de_de
-setlocal spelloptions=noplainbuffer
+setlocal spelloptions=
 setlocal statuscolumn=%!v:lua.require'snacks.statuscolumn'.get()
 setlocal suffixesadd=.ts,.d.ts,.tsx,.js,.jsx,.cjs,.mjs
 setlocal noswapfile
 setlocal synmaxcol=3000
-if &syntax != ''
-setlocal syntax=
+if &syntax != 'typescriptreact'
+setlocal syntax=typescriptreact
 endif
 setlocal tabstop=4
 setlocal tagfunc=v:lua.vim.lsp.tagfunc
@@ -114,7 +114,7 @@ setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#src%*\ %#WinBarSeparator#/%*\ %#WinBarPath#labels%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#config.ts%*\ %#WinBarSeparator##%*\ %#WinBarSymbol#config%*\ %#WinBarSeparator##%*\ %#WinBarSymbol#categories%*\ %#WinBarSeparator##%*\ %#WinBarSymbol#\"black-atom-core\"%*\ %#WinBarSeparator##%*\ %#WinBarSymbol#topicLabels%*
+setlocal winbar=%#WinBarPath#~%*\ %#WinBarSeparator#/%*\ %#WinBarPath#repos%*\ %#WinBarSeparator#/%*\ %#WinBarPath#black-atom-industries%*\ %#WinBarSeparator#/%*\ %#WinBarPath#livery%*\ %#WinBarSeparator#/%*\ %#WinBarPath#src%*\ %#WinBarSeparator#/%*\ %#WinBarPath#components%*\ %#WinBarSeparator#/%*\ %#WinBarPath#typography%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#Typo.P.tsx%*\ %#WinBarSeparator##%*\ %#WinBarSymbol#pVariants%*\ %#WinBarSeparator##%*\ %#WinBarSymbol#defaultVariants%*
 setlocal winblend=0
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -122,11 +122,11 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 28 - ((27 * winheight(0) + 31) / 63)
+let s:l = 13 - ((12 * winheight(0) + 31) / 63)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 28
+keepjumps 13
 normal! 0
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
