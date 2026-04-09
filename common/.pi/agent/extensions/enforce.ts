@@ -40,7 +40,7 @@ export default function (pi: ExtensionAPI) {
   pi.on("session_start", async (_event, ctx) => {
     const skillPath = resolve(
       homedir(),
-      ".agents/skills/meta-enforcement/SKILL.md"
+      ".agents/skills/meta-enforcement/SKILL.md",
     );
 
     let skillContent: string;
@@ -51,7 +51,7 @@ export default function (pi: ExtensionAPI) {
     } catch {
       ctx.ui.notify(
         "enforce: meta-enforcement skill not found — skipping injection",
-        "warning"
+        "warning",
       );
       return;
     }
@@ -62,7 +62,7 @@ export default function (pi: ExtensionAPI) {
         content: skillContent,
         display: false,
       },
-      { triggerTurn: false }
+      { triggerTurn: false },
     );
   });
 
@@ -80,7 +80,7 @@ export default function (pi: ExtensionAPI) {
     // dev-flow assess — explicit task start signals
     if (
       /^(implement|build|refactor|fix|add|create|migrate|remove|delete|update|upgrade) /.test(
-        prompt
+        prompt,
       ) ||
       /lets (start|begin|work on)/.test(prompt) ||
       /i want to (start|begin|work on)/.test(prompt) ||
@@ -136,9 +136,7 @@ export default function (pi: ExtensionAPI) {
       /run.*(audit|review)/.test(prompt) ||
       /check.*(quality|conventions|a11y|accessibility)/.test(prompt)
     ) {
-      matches.push(
-        "dev-audit — Audit code quality (ui, style, arch, docs)"
-      );
+      matches.push("dev-audit — Audit code quality (ui, style, arch, docs)");
     }
 
     // dots skills — dotfiles management
@@ -153,10 +151,7 @@ export default function (pi: ExtensionAPI) {
 
     if (matches.length > 0) {
       const list = matches.map((m) => `  → ${m}`).join("\n");
-      ctx.ui.notify(
-        `Skills check — consider invoking:\n${list}`,
-        "info"
-      );
+      ctx.ui.notify(`Skills check — consider invoking:\n${list}`, "info");
     }
 
     return { action: "continue" };
@@ -178,7 +173,7 @@ export default function (pi: ExtensionAPI) {
     // Heredoc: find first non-blank line between heredoc delimiter and EOF
     if (command.includes("cat <<")) {
       const heredocMatch = command.match(
-        /cat <<['"]?EOF['"]?\n([\s\S]*?)\n\s*EOF/
+        /cat <<['"]?EOF['"]?\n([\s\S]*?)\n\s*EOF/,
       );
       if (heredocMatch) {
         msg =
@@ -213,5 +208,4 @@ export default function (pi: ExtensionAPI) {
       reason: `Commit message must start with a semantic prefix.\nValid: feat:, fix:, refactor:, chore:, docs:, style:, test:, ci:, perf:\nExample: feat(nvim): add telescope extension\nYour message: ${msg}`,
     };
   });
-
 }
