@@ -2,24 +2,26 @@
 
 ## Project Status
 
-- [session-2026-03-19-20-handover.md](session-2026-03-19-20-handover.md) — v0.2.0 shipped, global shortcut + macOS install added, frontend/UI next
+- [design-brainstorm-2026-03-21.md](design-brainstorm-2026-03-21.md) — UI rework on feat/ui-rework-foundation: tokens working, /dev routes replace Storybook, Phase 1 active
+- [session-2026-03-19-20-handover.md](session-2026-03-19-20-handover.md) — Project status as of 2026-04-08, open issues, branch state
 
 ## Architecture
 
 - [architecture-decisions.md](architecture-decisions.md) — TS/Rust boundary, consolidated updaters, file_ops, tauri-specta, keymappings
 - [tauri-learnings.md](tauri-learnings.md) — FS scoping gotchas, webview limitations, debugging tips
-- [nvim-updater-research.md](nvim-updater-research.md) — socket-based live reload, platform-specific paths
+- [nvim-updater-research.md](nvim-updater-research.md) — Socket-based live reload, platform-specific paths
 
 ## UI Design
 
-- [design-brainstorm-2026-03-21.md](design-brainstorm-2026-03-21.md) — Stitch project (MCP confirmed), Black Atom color mapping, "Vault Terminal" direction
-- [frontend-component-library-eval.md](frontend-component-library-eval.md) — BaseUI vs Mantine trade-offs, decision open; #29 is research/prep issue
+- [frontend-component-library-eval.md](frontend-component-library-eval.md) — Library deferred, Storybook abandoned for /dev route, visual dev via TanStack Router
 
 ## Feedback
 
 - [feedback-naming-precision.md](feedback-naming-precision.md) — Nik cares about domain-accurate naming
-- [feedback-css-modules.md](feedback-css-modules.md) — CSS Modules over Tailwind for frontend rebuild
-- [feedback-personal-config.md](feedback-personal-config.md) — update Nik's dots config after adding new apps/fields
+- [feedback-css-modules.md](feedback-css-modules.md) — CSS Modules + CVA over Tailwind, migration actively underway
+- [feedback-personal-config.md](feedback-personal-config.md) — Update Nik's dots config after adding new apps/fields
+- [feedback-stitch-abandoned.md](feedback-stitch-abandoned.md) — Stitch/Google abandoned, no Google tool dependencies
+- [feedback-wait-for-explicit-action.md](feedback-wait-for-explicit-action.md) — Don't act on follow-up questions; wait for explicit action requests
 
 ## Git Workflow
 

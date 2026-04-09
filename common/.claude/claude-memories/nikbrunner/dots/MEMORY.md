@@ -48,13 +48,16 @@ common/.claude/
 - **Skill restructuring (2026-03-30)** — 34 dev skills → 17, namespaced taxonomy, BAI wrappers absorbed
 - **OpenSpec paused** — installed but not wired into flow, Nik wants to try incrementally
 - **Mise evaluated and dismissed (2026-04-02)** — not worth adopting for dots; only handles runtimes, not native packages (brew/pacman)
+- **Pre-commit skill rewritten (2026-04-03)** — Husky dropped in favor of `.githooks/` + native `git core.hooksPath`. No wrapper deps needed.
 
 ### Plugins (settings.json)
 
 - `impeccable@impeccable` — design quality skills (pbakaus/impeccable)
 - `readwise@readwise-skills` — reading library access (readwiseio/readwise-skills, added 2026-04-01)
 - `claude-deno-lsp@local-plugins` — Deno LSP
+- `lua-lsp@claude-plugins-official` — Lua LSP (for Neovim config)
 - `frontend-design@claude-plugins-official` — frontend design skills
+- Linear MCP — auto-allowed (`mcp__linear__*`), used by BAI issue skills
 
 ### Active Projects
 

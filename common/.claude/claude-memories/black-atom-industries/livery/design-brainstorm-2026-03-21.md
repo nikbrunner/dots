@@ -1,49 +1,60 @@
 ---
 name: design-brainstorm-2026-03-21
-description: Livery UI design brainstorm session — Stitch project, brand identity direction, Black Atom color mapping
+description: Black Atom UI design — DESIGN.md at design/DESIGN.md, token system working, /dev route replaces Storybook, Phase 1 in progress on feat/ui-rework-foundation
 type: project
 ---
 
-## Livery UI Design — Brainstorm Status
+## Black Atom Design Language — Status as of 2026-04-08
 
-**Stitch project ID:** 11018168170664527349
+**DESIGN.md:** `livery/design/DESIGN.md` — refined with 3-voice typography, component patterns,
+anti-patterns, color system referencing core's Terra Fall hue range.
 
-**Design direction locked:**
+**Implementation branch:** `feat/ui-rework-foundation` — Phase 1 in progress.
 
-- "Vault terminal" hybrid — technical datasheet chrome, more atmospheric center specimen area
-- Setup wizard & settings: fully datasheet/utilitarian
-- Main view: hybrid (technical sides, breathing room in center)
-- Light AND dark mode both first-class
-- Monospace backbone + display sans for theme names only
-- No rounded corners. 1px borders. Uppercase mono section headers with horizontal rules.
-- Only accent colors: muted green (synced/valid) and purple (selected/active)
-- Chrome is monochrome — themes bring the color
+**Completed (committed by 2026-04-08):**
 
-**Actual Black Atom colors from core (hex):**
+- CVA installed and working with Deno + Vite
+- Token mapping module (`src/lib/tokens.ts`) imports `@black-atom/core` from JSR, maps theme UI
+  colors to CSS custom properties on `:root`. 36 variables. All hex, no OKLCH conversion needed.
+- Root layout wires tokens via useEffect — defaults to `terra-fall-night` for app chrome
+- `selectedTheme` renamed to `currentTheme` across codebase for clarity
 
-- Light surfaces: #f9fcff, #eceff1, #dbdee1, #d3d6d9
-- Light text: #191b1c, #28292a, #313334, #576570, #788288
-- Dark surfaces: #080f0f, #111817, #1a2121, #232a2a
-- Dark text: #d6e7f4, #c9dae7, #b6c7d3, #91a1ad, #73838e
-- Green accents: light #60a259/#2f8728, dark #afdca9/#8fbc8a
-- Purple accents: light #8f81d6/#735dc4, dark #ada5e1/#826cd9
+**Completed (uncommitted, in working tree 2026-04-08):**
 
-**Stitch learnings:**
+- Storybook 10 attempted → abandoned (CJS/ESM issues, SB9 breaking changes, addon-essentials removed)
+- `/dev` route system built as Storybook replacement:
+  - `DevLayout` component (Layout role: nav/aside/children slots, structural CSS only)
+  - `ThemeProvider` component for independent theme switching in dev routes
+  - `/dev/badge` (primitives showcase), `/dev/typography` pages
+  - `deno task dev:ui` opens Vite standalone at `/dev`
+- Badge component built (first Dumb Component with CSS Modules + CVA)
+- `autoCodeSplitting` disabled in vite.config.ts (caused 504s with TanStack Router, not needed)
 
-- DESIGN.md is auto-generated, serves as handoff artifact for coding agents
-- Edit API creates new screens alongside originals (no delete via MCP)
-- Set Design System (Theme tab + DESIGN.md) BEFORE generating screens for best results
-- Workflow: Stitch → Code (via MCP + Claude Code), skip Figma
-- Can extract HTML/CSS per screen via get_screen downloadUrl
+**Remaining Phase 1 tasks:**
 
-**Stitch MCP status:** Connected and working as of 2026-04-04.
+- Commit and verify the /dev route + Badge + ThemeProvider work
+- Global theme-switching decorator in /dev layout (partially done — ThemeProvider exists)
 
-**Next steps:**
+**Plan file:** `plans/ui-rework-foundation.md` — 4 phases covering infra, new components,
+migration of existing 5 components, and Tailwind removal.
 
-- Nik cleans up Stitch canvas manually (remove old versions)
-- Potentially set Theme tab colors to Black Atom values in Stitch UI
-- Then regenerate clean screens or continue iterating from v2/v3
+**PRD:** GitHub #29 — rewritten as UI rework kickoff issue.
 
-**Related issues (migrated to GitHub Issues as of 2026-03-28):** #29 (frontend architecture), logo, banner, setup wizard, settings page
+**Design direction (unchanged):**
 
-**Design spec written to:** docs/superpowers/specs/2026-03-21-livery-ui-design-language.md
+- Creative north star: "Warm Precision"
+- 3-voice typography: Space Grotesk (display), IBM Plex Sans or Geist (body, TBD), JetBrains Mono (mono)
+- Berkeley Mono licensing inquiry pending (ui#5)
+- Terra Fall family (hue ~50) is closest core reference for light mode
+- Default Dark (hue 195) works for dark mode
+- 0px border-radius, 1px borders, no shadows, tonal layering only
+
+**Key decisions:**
+
+- Stitch abandoned as design tool (too little control, Google dependency)
+- Storybook abandoned — replaced with `/dev` route system (simpler, no extra deps, works with Deno)
+- Component library decision deferred until after building first components
+- CSS Modules migration happens during component redesign, not separately
+- All 5 existing components get migrated + redesigned in one issue
+- Colors import from @black-atom/core via JSR — no hardcoded hex values
+- autoCodeSplitting disabled — not worth the complexity for small app
