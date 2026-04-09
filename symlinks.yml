@@ -1,6 +1,7 @@
 common:
   common/.pi: ~/.pi
-  common/.claude/CLAUDE.md: ~/.claude/CLAUDE.md
+  common/.agents/AGENTS.md: ~/.pi/agent/AGENTS.md
+  common/.agents/AGENTS.md: ~/.claude/CLAUDE.md
   common/.claude/agents: ~/.claude/agents
   common/.claude/settings.json: ~/.claude/settings.json
   common/.agents/skills: ~/.claude/skills

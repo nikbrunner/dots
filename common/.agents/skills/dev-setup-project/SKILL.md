@@ -81,7 +81,7 @@ Example:
 | `scripts/setup-git-hooks.sh` | Create     | Pre-commit hook installer       |
 | `README.md`                  | Create     | Name, install, usage, dev       |
 | `.gitignore`                 | Create     | Deno ignores                    |
-| `.claude/`                   | Delegate   | -> `dev:setup:claude`           |
+| `.claude/`                   | Delegate   | -> `dev-setup-llm`              |
 
 ## Phase 5: EXECUTE
 
@@ -116,14 +116,14 @@ Reference the existing enforce hooks pattern at `common/.claude/hooks/enforce/` 
 
 ## Phase 6: CLAUDE
 
-Invoke `dev:setup:claude` to handle `.claude/` configuration. Pass context so it makes informed decisions:
+Invoke `dev-setup-llm` to handle `.claude/` configuration. Pass context so it makes informed decisions:
 
 - Project name and type
 - Ecosystem (Deno/Node)
 - Whether it's a globally-installed CLI (triggers auto-install hook)
 - Which `dev-*` skills are relevant
 
-`dev:setup:claude` will create:
+`dev-setup-llm` will create:
 
 - `CLAUDE.md` (lean, ~50 lines max)
 - `settings.json` (allowedTools, PostToolUse hooks)
@@ -139,7 +139,7 @@ Invoke `dev:setup:claude` to handle `.claude/` configuration. Pass context so it
 
 ## Cross-References
 
-- `dev:setup:claude` — invoked in Phase 6 for `.claude/` scaffolding
+- `dev-setup-llm` — invoked in Phase 6 for `.claude/` scaffolding
 - `dev:style:typescript` — TS conventions loaded in Phase 2
 - `dev:style:react` — React patterns loaded for web/desktop projects
 - `dev:style:tdd` — test strategy loaded in Phase 2
