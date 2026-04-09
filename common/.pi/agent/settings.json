@@ -2,6 +2,10 @@
   "theme": "dark",
   "lastChangelogVersion": "0.66.1",
   "packages": [
-    "npm:pi-web-access"
-  ]
+    "npm:pi-web-access",
+    "npm:pi-fff",
+    "npm:@plannotator/pi-extension"
+  ],
+  "defaultProvider": "openrouter",
+  "defaultModel": "anthropic/claude-sonnet-4.6"
 }
