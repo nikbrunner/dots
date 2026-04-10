@@ -4,7 +4,7 @@ import globals from "globals";
 
 export default [
   {
-    ignores: ["node_modules/**", "dist/**"],
+    ignores: ["node_modules/**", "dist/**"]
   },
   {
     files: ["**/*.ts"],
@@ -13,17 +13,17 @@ export default [
       parserOptions: {
         project: "./tsconfig.json",
         tsconfigRootDir: import.meta.dirname,
-        sourceType: "module",
+        sourceType: "module"
       },
       globals: {
-        ...globals.node,
-      },
+        ...globals.node
+      }
     },
     plugins: {
-      "@typescript-eslint": tseslint,
+      "@typescript-eslint": tseslint
     },
     rules: {
-      ...tseslint.configs.strict.rules,
-    },
-  },
+      ...tseslint.configs.strict.rules
+    }
+  }
 ];
