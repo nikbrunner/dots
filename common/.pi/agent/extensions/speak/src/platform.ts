@@ -5,7 +5,7 @@
  * so Linux and Windows implementations can be dropped in later.
  */
 
-import { execSync, spawn, type ChildProcess } from "node:child_process";
+import { spawn, type ChildProcess } from "node:child_process";
 import { debug, debugError } from "./debug.js";
 
 export interface Platform {
@@ -19,7 +19,7 @@ export function createPlatform(): Platform {
       return createMacOSPlatform();
     default:
       return {
-        playAudio: async () => {},
+        playAudio: async () => {}
       } as Platform;
   }
 }
@@ -32,16 +32,16 @@ function createMacOSPlatform(): Platform {
         const proc = spawn("afplay", [filePath], { stdio: "ignore" });
         debug(`playAudio: afplay pid=${proc.pid}`);
         if (onProcess) onProcess(proc);
-        proc.on("close", (code) => {
+        proc.on("close", code => {
           debug(`playAudio: afplay pid=${proc.pid} exited with code=${code}`);
           if (code === 0 || code === null) resolve();
           else reject(new Error(`afplay exited with code ${code}`));
         });
-        proc.on("error", (err) => {
+        proc.on("error", err => {
           debugError(`playAudio: afplay pid=${proc.pid} error`, err);
           reject(err);
         });
       });
-    },
+    }
   };
 }

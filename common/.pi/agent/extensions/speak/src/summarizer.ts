@@ -33,7 +33,7 @@ export async function summarizeForPing(ctx: SummarizeContext): Promise<string> {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${apiKey}`,
+        Authorization: `Bearer ${apiKey}`
       },
       body: JSON.stringify({
         model: MODEL,
@@ -41,14 +41,15 @@ export async function summarizeForPing(ctx: SummarizeContext): Promise<string> {
         messages: [
           {
             role: "system",
-            content: "You write ultra-concise voice notifications. Always include the session name if given. Max 2 sentences. Be specific about what was done.",
+            content:
+              "You write ultra-concise voice notifications. Always include the session name if given. Max 2 sentences. Be specific about what was done."
           },
           {
             role: "user",
-            content: `Write a voice notification: what was done${where}. What: ${ctx.responseText.slice(0, 500)}`,
-          },
-        ],
-      }),
+            content: `Write a voice notification: what was done${where}. What: ${ctx.responseText.slice(0, 500)}`
+          }
+        ]
+      })
     });
 
     if (!response.ok) {
@@ -56,7 +57,7 @@ export async function summarizeForPing(ctx: SummarizeContext): Promise<string> {
       return fallbackSummary(ctx);
     }
 
-    const data = await response.json() as any;
+    const data = (await response.json()) as { choices?: Array<{ message?: { content?: string } }> };
     const summary = data.choices?.[0]?.message?.content?.trim();
     if (!summary) {
       debug("summarizer: empty response from OpenRouter");

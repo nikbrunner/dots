@@ -5,9 +5,9 @@
  * Environment variables override file config.
  */
 
-import { readFileSync, existsSync, mkdirSync, writeFileSync } from "node:fs";
-import { join } from "node:path";
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { homedir } from "node:os";
+import { join } from "node:path";
 import { debug } from "./debug.js";
 
 // ─── Types ───────────────────────────────────────────────────────────────────
@@ -36,7 +36,7 @@ const DEFAULT_CONFIG: SpeakConfig = {
   pitch: 1.0,
   maxChunkChars: 900,
   shortcut: "alt+r",
-  debug: true,
+  debug: true
 };
 
 // ─── File path ───────────────────────────────────────────────────────────────
@@ -44,7 +44,7 @@ const DEFAULT_CONFIG: SpeakConfig = {
 const CONFIG_DIR = join(homedir(), ".config", "pi-speak");
 const CONFIG_PATH = join(CONFIG_DIR, "config.json");
 
-// ─── Load ────────────────────────────────────────────────────────────────────
+// ─── Load ───────────────────────────────────────────────────────────────────
 
 export function loadConfig(): SpeakConfig {
   let fileConfig: Partial<SpeakConfig> = {};
@@ -54,8 +54,9 @@ export function loadConfig(): SpeakConfig {
       const raw = readFileSync(CONFIG_PATH, "utf-8");
       fileConfig = JSON.parse(raw);
       debug(`loadConfig: loaded from ${CONFIG_PATH}`);
-    } catch (err: any) {
-      debug(`loadConfig: failed to parse ${CONFIG_PATH}: ${err.message}`);
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : String(err);
+      debug(`loadConfig: failed to parse ${CONFIG_PATH}: ${message}`);
     }
   } else {
     debug(`loadConfig: no config file at ${CONFIG_PATH}, using defaults`);
@@ -71,7 +72,9 @@ export function loadConfig(): SpeakConfig {
   if (process.env.PI_SPEAK_DEBUG !== undefined) envOverrides.debug = process.env.PI_SPEAK_DEBUG !== "0";
 
   const config = { ...DEFAULT_CONFIG, ...fileConfig, ...envOverrides };
-  debug(`loadConfig: voiceId=${config.voiceId} bitrate=${config.bitrate} speed=${config.speed} pitch=${config.pitch} shortcut=${config.shortcut}`);
+  debug(
+    `loadConfig: voiceId=${config.voiceId} bitrate=${config.bitrate} speed=${config.speed} pitch=${config.pitch} shortcut=${config.shortcut}`
+  );
 
   return config;
 }
@@ -85,7 +88,8 @@ export function initConfig(): void {
     mkdirSync(CONFIG_DIR, { recursive: true });
     writeFileSync(CONFIG_PATH, JSON.stringify(DEFAULT_CONFIG, null, 2) + "\n");
     debug(`initConfig: created default config at ${CONFIG_PATH}`);
-  } catch (err: any) {
-    debug(`initConfig: failed to create ${CONFIG_PATH}: ${err.message}`);
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : String(err);
+    debug(`initConfig: failed to create ${CONFIG_PATH}: ${message}`);
   }
 }

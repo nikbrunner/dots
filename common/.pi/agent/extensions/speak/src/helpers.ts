@@ -2,9 +2,9 @@
  * Shared helpers for pi-speak extension.
  */
 
-import { readFileSync, existsSync } from "node:fs";
-import { join } from "node:path";
+import { existsSync, readFileSync } from "node:fs";
 import { homedir } from "node:os";
+import { join } from "node:path";
 
 /** Shell-quote a string for use in single-quoted context */
 export function shellQuote(s: string): string {
@@ -38,30 +38,32 @@ export function loadEnvKey(key: string): string | undefined {
 
 /** Strip markdown formatting for cleaner speech */
 export function stripMarkdown(text: string): string {
-  return text
-    // Remove code blocks
-    .replace(/```[\s\S]*?```/g, (match) => {
-      return match.replace(/```\w*\n?/g, "").trim();
-    })
-    // Remove inline code backticks
-    .replace(/`([^`]+)`/g, "$1")
-    // Remove bold/italic markers
-    .replace(/\*{1,3}([^*]+)\*{1,3}/g, "$1")
-    .replace(/_{1,3}([^_]+)_{1,3}/g, "$1")
-    // Remove strikethrough
-    .replace(/~~([^~]+)~~/g, "$1")
-    // Remove links, keep text
-    .replace(/\[([^\]]+)\]\([^)]+\)/g, "$1")
-    // Remove headers markers
-    .replace(/^#{1,6}\s+/gm, "")
-    // Remove horizontal rules
-    .replace(/^---+$/gm, "")
-    // Remove list markers
-    .replace(/^\s*[-*+]\s+/gm, "")
-    .replace(/^\s*\d+\.\s+/gm, "")
-    // Collapse multiple whitespace
-    .replace(/\n{2,}/g, "\n\n")
-    .trim();
+  return (
+    text
+      // Remove code blocks
+      .replace(/```[\s\S]*?```/g, match => {
+        return match.replace(/```\w*\n?/g, "").trim();
+      })
+      // Remove inline code backticks
+      .replace(/`([^`]+)`/g, "$1")
+      // Remove bold/italic markers
+      .replace(/\*{1,3}([^*]+)\*{1,3}/g, "$1")
+      .replace(/_{1,3}([^_]+)_{1,3}/g, "$1")
+      // Remove strikethrough
+      .replace(/~~([^~]+)~~/g, "$1")
+      // Remove links, keep text
+      .replace(/\[([^\]]+)\]\([^)]+\)/g, "$1")
+      // Remove headers markers
+      .replace(/^#{1,6}\s+/gm, "")
+      // Remove horizontal rules
+      .replace(/^---+$/gm, "")
+      // Remove list markers
+      .replace(/^\s*[-*+]\s+/gm, "")
+      .replace(/^\s*\d+\.\s+/gm, "")
+      // Collapse multiple whitespace
+      .replace(/\n{2,}/g, "\n\n")
+      .trim()
+  );
 }
 
 /** Split text into chunks at sentence boundaries, each ≤ maxChars */

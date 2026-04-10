@@ -11,14 +11,14 @@
  * Optional: OPENROUTER_API_KEY for smarter voice ping summaries
  */
 
-import type { ExtensionAPI } from "@mariozechner/pi-coding-agent";
 import { execSync } from "node:child_process";
-import { createPlatform } from "./platform.js";
-import { TTSPlayer } from "./tts.js";
-import { loadConfig, initConfig } from "./config.js";
-import { loadEnvKey, stripMarkdown } from "./helpers.js";
-import { summarizeForPing } from "./summarizer.js";
+import type { ExtensionAPI } from "@mariozechner/pi-coding-agent";
+import { initConfig, loadConfig } from "./config.js";
 import { debug, debugError } from "./debug.js";
+import { loadEnvKey, stripMarkdown } from "./helpers.js";
+import { createPlatform } from "./platform.js";
+import { summarizeForPing } from "./summarizer.js";
+import { TTSPlayer } from "./tts.js";
 
 export default function (pi: ExtensionAPI) {
   const config = loadConfig();
@@ -33,7 +33,9 @@ export default function (pi: ExtensionAPI) {
 
   // ── Extract assistant text ────────────────────────────────────────────────
 
-  function extractAssistantText(messages: any[]): string {
+  function extractAssistantText(
+    messages: { role?: string; content?: Array<{ type: string; text?: string }> }[]
+  ): string {
     for (let i = messages.length - 1; i >= 0; i--) {
       const msg = messages[i];
       if (msg?.role !== "assistant") continue;
@@ -60,11 +62,13 @@ export default function (pi: ExtensionAPI) {
     // Capture session name for voice ping
     if (process.env.TMUX_PANE) {
       try {
-        sessionName = execSync(
-          `tmux display-message -p -t '${process.env.TMUX_PANE}' '#{session_name}'`,
-          { encoding: "utf-8", stdio: ["pipe", "pipe", "pipe"] },
-        ).trim();
-      } catch { sessionName = ""; }
+        sessionName = execSync(`tmux display-message -p -t '${process.env.TMUX_PANE}' '#{session_name}'`, {
+          encoding: "utf-8",
+          stdio: ["pipe", "pipe", "pipe"]
+        }).trim();
+      } catch {
+        sessionName = "";
+      }
     }
 
     // Create default config file if missing
@@ -86,10 +90,7 @@ export default function (pi: ExtensionAPI) {
     if (!process.env.UNREAL_SPEECH_API_KEY) {
       disabled = true;
       debug("session_start: NO API KEY — extension disabled");
-      ctx.ui.notify(
-        "speak: UNREAL_SPEECH_API_KEY not set — voice readback disabled. Add it to ~/.env",
-        "warning",
-      );
+      ctx.ui.notify("speak: UNREAL_SPEECH_API_KEY not set — voice readback disabled. Add it to ~/.env", "warning");
       ctx.ui.setWidget("speak", undefined);
       return;
     }
@@ -125,19 +126,19 @@ export default function (pi: ExtensionAPI) {
     // Generate short voice ping summary (LLM if OpenRouter key, else fallback)
     const ping = await summarizeForPing({
       responseText: text,
-      sessionName: sessionName || undefined,
+      sessionName: sessionName || undefined
     });
     debug(`agent_end: voice ping = "${ping}"`);
 
     // Speak the ping (short, not cached — alt+r replays the full response)
-    player.ping(ping, ctx.ui);
+    player.ping(ping);
   });
 
   // ── Shortcut: alt+r — replay / stop ───────────────────────────────────────
 
   pi.registerShortcut(config.shortcut, {
     description: "Replay last response aloud / stop current playback",
-    handler: (ctx) => {
+    handler: ctx => {
       debug(`=== shortcut: ${config.shortcut} pressed ===`);
       if (disabled) {
         debug(`shortcut: SKIPPED (disabled)`);
@@ -164,6 +165,6 @@ export default function (pi: ExtensionAPI) {
         debugError("shortcut: speak() threw", err);
         ctx.ui.notify(`speak: replay error — ${err instanceof Error ? err.message : String(err)}`, "error");
       }
-    },
+    }
   });
 }

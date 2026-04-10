@@ -6,8 +6,8 @@
  */
 
 import { appendFileSync, existsSync, statSync, truncateSync } from "node:fs";
-import { join } from "node:path";
 import { homedir } from "node:os";
+import { join } from "node:path";
 
 const DEBUG_LOG = join(homedir(), ".pi-speak-debug.log");
 const MAX_LOG_BYTES = 2 * 1024 * 1024; // 2 MB — rotate if larger
