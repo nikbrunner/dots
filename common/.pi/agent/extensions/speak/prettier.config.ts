@@ -14,12 +14,7 @@ const config: Config = {
   arrowParens: "avoid",
   endOfLine: "lf",
 
-  // NOTE: Tailwind plugin must be last in the array (https://github.com/tailwindlabs/prettier-plugin-tailwindcss#compatibility-with-other-prettier-plugins)
-  plugins: ["@ianvs/prettier-plugin-sort-imports", "prettier-plugin-tailwindcss"],
 
-  importOrder: ["<THIRD_PARTY_MODULES>", "^[.]"],
-  importOrderParserPlugins: ["typescript", "jsx", "decorators-legacy"],
-  importOrderTypeScriptVersion: "5.0.0",
 };
 
 export default config;
