@@ -2,31 +2,27 @@
 
 ## Project Status
 
-See [session-2026-03-19-20-handover.md](session-2026-03-19-20-handover.md) — v0.2.0 shipped (2026-03-24), all base updaters done, next milestone is frontend/UI.
+- [design-brainstorm-2026-03-21.md](design-brainstorm-2026-03-21.md) — UI rework on feat/ui-rework-foundation: tokens working, /dev routes replace Storybook, Phase 1 active
+- [session-2026-03-19-20-handover.md](session-2026-03-19-20-handover.md) — Project status as of 2026-04-08, open issues, branch state
 
-## Architecture Decisions
+## Architecture
 
-See [architecture-decisions.md](architecture-decisions.md) — consolidated `update_app` command, file_ops library (text/yaml/jsonc), tauri-specta bindings, Rust-only OS boundary.
+- [architecture-decisions.md](architecture-decisions.md) — TS/Rust boundary, consolidated updaters, file_ops, tauri-specta, keymappings
+- [tauri-learnings.md](tauri-learnings.md) — FS scoping gotchas, webview limitations, debugging tips
+- [nvim-updater-research.md](nvim-updater-research.md) — Socket-based live reload, platform-specific paths
 
-## Tauri v2 Learnings
+## UI Design
 
-See [tauri-learnings.md](tauri-learnings.md) — FS scoping gotchas, webview limitations, debugging tips.
-
-## Nvim Updater
-
-See [nvim-updater-research.md](nvim-updater-research.md) — socket-based live reload, platform-specific paths.
-
-## UI Design Brainstorm
-
-See [design-brainstorm-2026-03-21.md](design-brainstorm-2026-03-21.md) — Stitch project, Black Atom color mapping, design direction.
+- [frontend-component-library-eval.md](frontend-component-library-eval.md) — Library deferred, Storybook abandoned for /dev route, visual dev via TanStack Router
 
 ## Feedback
 
-- [feedback-naming-precision.md](feedback-naming-precision.md) — Nik cares about domain-accurate naming.
-- [feedback-css-modules.md](feedback-css-modules.md) — CSS Modules over Tailwind.
-- [feedback-personal-config.md](feedback-personal-config.md) — update Nik's dots config after adding new apps/fields.
+- [feedback-naming-precision.md](feedback-naming-precision.md) — Nik cares about domain-accurate naming
+- [feedback-css-modules.md](feedback-css-modules.md) — CSS Modules + CVA over Tailwind, migration actively underway
+- [feedback-personal-config.md](feedback-personal-config.md) — Update Nik's dots config after adding new apps/fields
+- [feedback-stitch-abandoned.md](feedback-stitch-abandoned.md) — Stitch/Google abandoned, no Google tool dependencies
+- [feedback-wait-for-explicit-action.md](feedback-wait-for-explicit-action.md) — Don't act on follow-up questions; wait for explicit action requests
 
 ## Git Workflow
 
 Commit conventions are in the project-level `commit` skill (`.claude/skills/commit/SKILL.md`).
-Linear ticket updates are handled by `bai-commit` and `bai-close` skills.

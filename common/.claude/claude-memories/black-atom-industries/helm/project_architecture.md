@@ -6,21 +6,21 @@ type: project
 
 Helm is a Go TUI for tmux session management (Bubbletea/Lipgloss).
 
-## Model Split (2026-03-24, commit e4b771a)
+## Model Split (2026-03-24)
 
 `internal/model/model.go` was split into mode-specific files:
 
-| File                    | Contents                                                                   |
-| ----------------------- | -------------------------------------------------------------------------- |
-| `model.go` (~800 lines) | Model struct, `New()`, `Update()`/`View()` dispatch, shared helpers        |
-| `session.go`            | `handleNormalMode`, `viewSessionList`                                      |
-| `clone.go`              | Clone choice/URL/repo modes, `cloneSelectedRepo`, `fetchAvailableReposCmd` |
-| `bookmarks.go`          | `handleBookmarksMode`, `viewBookmarks`                                     |
-| `directory.go`          | `handlePickDirectoryMode`, `viewPickDirectory`                             |
+| File           | Contents                                                            |
+| -------------- | ------------------------------------------------------------------- |
+| `model.go`     | Model struct, `New()`, `Update()`/`View()` dispatch, shared helpers |
+| `session.go`   | `handleNormalMode`, `viewSessionList`, self-session pinning         |
+| `clone.go`     | Clone choice/URL/repo modes, `cloneSelectedRepo`                    |
+| `bookmarks.go` | `handleBookmarksMode`, `viewBookmarks`                              |
+| `directory.go` | `handlePickDirectoryMode`, `viewPickDirectory`                      |
 
 ## 10 Modes
 
-ModeNormal, ModeConfirmKill, ModeCreate, ModePickDirectory, ModeConfirmRemoveFolder, ModeCloneChoice, ModeCloneRepo, ModeCloneURL, ModeBookmarks, ModeCreatePath
+ModeNormal, ModeConfirmKill, ModeCreate, ModeCreatePath, ModePickDirectory, ModeConfirmRemoveFolder, ModeCloneChoice, ModeCloneRepo, ModeCloneURL, ModeBookmarks
 
 ## Key Packages
 
@@ -31,12 +31,19 @@ ModeNormal, ModeConfirmKill, ModeCreate, ModePickDirectory, ModeConfirmRemoveFol
 | `cmd/helm/setup.go`              | Bulk clone from `ensure_cloned` config                                  |
 | `internal/config/user_config.go` | YAML config with custom unmarshalers                                    |
 | `internal/config/app.go`         | App-level constants (name, paths)                                       |
-| `internal/ui/`                   | colors.go, styles.go, keys.go, columns.go, scrolllist.go, layout.go     |
+| `internal/ui/`                   | colors, styles, keys, columns, scrolllist, layout, sidebar, section     |
 | `internal/tmux/tmux.go`          | tmux command wrappers                                                   |
 | `internal/claude/status.go`      | Claude Code status file parsing                                         |
 | `internal/git/`                  | status.go, repo.go, remote.go                                           |
 | `internal/github/github.go`      | GitHub API for repo listing                                             |
 
-**Why:** Future sessions need accurate file locations. The old memory referenced `internal/repos/config.go` (deleted) and `internal/config/config.go` (renamed).
+## Recent Additions (2026-03-25)
 
-**How to apply:** Use these paths when navigating code. The model split means mode-specific logic lives in its own file, not in model.go.
+- **Sidebar UI** (`sidebar.go`, `section.go`): Action buttons in a sidebar box, mode-specific actions
+- **`--initial-view` flag**: Start helm in a specific mode (bookmarks, projects, clone)
+- **OpenSpec**: Behavioral specs in `openspec/` directory, used for change proposals
+- **Self-session pinning**: Current tmux session shown at top of session list with separator
+
+**Why:** Future sessions need accurate file locations and feature awareness.
+
+**How to apply:** Use these paths when navigating code. Mode-specific logic lives in its own file, not model.go.

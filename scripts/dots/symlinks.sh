@@ -76,7 +76,7 @@ expand_wildcard_entry() {
 
 # Function to create symlinks from symlinks configuration
 # Usage: create_symlinks_from_config <symlinks_file> <current_os> [options...]
-# Options: --dry-run, --no-backup, --verbose
+# Options: --dry-run, --no-backup, --quiet, --verbose
 create_symlinks_from_config() {
     local symlinks_file="$1"
     local current_os="$2"
@@ -85,6 +85,7 @@ create_symlinks_from_config() {
     # Parse options
     local dry_run=false
     local no_backup=false
+    local quiet=false
     local verbose=false
 
     for arg in "$@"; do
@@ -94,6 +95,9 @@ create_symlinks_from_config() {
             ;;
         --no-backup)
             no_backup=true
+            ;;
+        --quiet)
+            quiet=true
             ;;
         --verbose)
             verbose=true
@@ -162,15 +166,18 @@ create_symlinks_from_config() {
                     valid_links=$((valid_links + 1))
                     [[ "$verbose" == true ]] && echo "✓ [DRY] Symlink OK: $target_path"
                 else
-                    [[ "$verbose" == true ]] && echo "⚠ [DRY] Would update symlink: $target_path"
+                    # Would update symlink
                     updated_links=$((updated_links + 1))
+                    [[ "$quiet" != true ]] && echo "⚠ [DRY] Would update: $target_path"
                 fi
             elif [[ -e "$abs_target" ]]; then
-                [[ "$verbose" == true ]] && echo "⚠ [DRY] Would backup and replace: $target_path"
+                # Would backup and replace
                 created_links=$((created_links + 1))
+                [[ "$quiet" != true ]] && echo "+ [DRY] Would replace: $target_path"
             else
-                [[ "$verbose" == true ]] && echo "+ [DRY] Would create symlink: $target_path"
+                # Would create
                 created_links=$((created_links + 1))
+                [[ "$quiet" != true ]] && echo "+ [DRY] Would create: $target_path"
             fi
         else
             # Create parent directories if needed
@@ -188,7 +195,7 @@ create_symlinks_from_config() {
                     rm "$abs_target"
                     ln -s "$abs_source" "$abs_target"
                     updated_links=$((updated_links + 1))
-                    [[ "$verbose" == true ]] && echo "⚠ Updated symlink: $target_path"
+                    [[ "$quiet" != true ]] && echo "⚠ Updated: $target_path"
                 fi
             elif [[ -e "$abs_target" ]]; then
                 # Target exists but is not a symlink
@@ -203,12 +210,12 @@ create_symlinks_from_config() {
                 fi
                 ln -s "$abs_source" "$abs_target"
                 created_links=$((created_links + 1))
-                [[ "$verbose" == true ]] && echo "✓ Created symlink: $target_path"
+                [[ "$quiet" != true ]] && echo "+ Created: $target_path"
             else
                 # Target doesn't exist
                 ln -s "$abs_source" "$abs_target"
                 created_links=$((created_links + 1))
-                [[ "$verbose" == true ]] && echo "✓ Created symlink: $target_path"
+                [[ "$quiet" != true ]] && echo "+ Created: $target_path"
             fi
         fi
     done <"$temp_expanded"
@@ -222,10 +229,7 @@ create_symlinks_from_config() {
     else
         echo "Symlink operation complete:"
     fi
-    echo "  Total entries: $total_links"
-    echo "  Valid symlinks: $valid_links"
-    echo "  Created: $created_links"
-    echo "  Updated: $updated_links"
+    echo "  Total: $total_links | Created: $created_links | Updated: $updated_links | Valid: $valid_links"
     [[ "$errors" -gt 0 ]] && echo "  Errors: $errors"
 
     return $errors
@@ -417,6 +421,7 @@ SYMLINKS_FILE="$DOTS_DIR/symlinks.yml"
 # Check for flags
 DRY_RUN=false
 NO_BACKUP=false
+QUIET=false
 VERBOSE=false
 for arg in "$@"; do
     case $arg in
@@ -426,12 +431,15 @@ for arg in "$@"; do
     --no-backup)
         NO_BACKUP=true
         ;;
+    --quiet)
+        QUIET=true
+        ;;
     --verbose)
         VERBOSE=true
         ;;
     *)
         echo "Unknown option: $arg"
-        echo "Usage: $0 [--dry-run] [--no-backup] [--verbose]"
+        echo "Usage: $0 [--dry-run] [--no-backup] [--quiet] [--verbose]"
         exit 1
         ;;
     esac
@@ -473,6 +481,7 @@ echo "→ Processing configuration entries..."
 options=()
 [[ "$DRY_RUN" == true ]] && options+=(--dry-run)
 [[ "$NO_BACKUP" == true ]] && options+=(--no-backup)
+[[ "$QUIET" == true ]] && options+=(--quiet)
 [[ "$VERBOSE" == true ]] && options+=(--verbose)
 
 if create_symlinks_from_config "$SYMLINKS_FILE" "$CURRENT_OS" "${options[@]}"; then

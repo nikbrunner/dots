@@ -29,6 +29,9 @@ return {
         },
         opts = {
             char_brightness = 1, -- disable auto-adjustment
+            explorer = {
+                view_mode = "tree",
+            },
         },
     },
     {

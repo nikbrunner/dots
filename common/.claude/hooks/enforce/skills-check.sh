@@ -19,41 +19,34 @@ prompt_lower=$(echo "$PROMPT" | tr '[:upper:]' '[:lower:]')
 # Collect matching skills
 matches=()
 
-# dev:start — feature requests, bug reports, implementation tasks
-if echo "$prompt_lower" | grep -qiE '(feature|implement|build|refactor|add .*(support|option|ability)|fix|bug|change|improve|enhance|idea|solve|how (could|can|do|should) we|could we|should we|do you have an idea)'; then
-    matches+=("dev:start — Entry point for development tasks")
+# dev:flow assess — explicit task start signals (not casual discussion)
+if echo "$prompt_lower" | grep -qiE '(^(implement|build|refactor|fix|add|create|migrate|remove|delete|update|upgrade) |lets (start|begin|work on)|i want to (start|begin|work on)|can you (implement|build|fix|add|create))'; then
+    matches+=("dev:flow assess — Orient and assess before implementation")
 fi
 
-# dev:commit — committing code
-if echo "$prompt_lower" | grep -qiE '(commit|push|ship it|merge|create a pr|pull request)'; then
-    matches+=("dev:commit — Commit format and strategy")
+# dev:flow plan — explicit planning requests
+if echo "$prompt_lower" | grep -qiE '(^plan |write.*(prd|plan|spec)|break.*(down|into)|create.*(issues|tickets|tasks))'; then
+    matches+=("dev:flow plan — Create a plan or PRD")
 fi
 
-# dev:tdd — testing
-if echo "$prompt_lower" | grep -qiE '\b(test|testing|tdd|vitest|jest|spec)\b'; then
-    matches+=("dev:tdd — TDD discipline and test strategy")
+# dev:util:commit — committing code
+if echo "$prompt_lower" | grep -qiE '(^commit|lets commit|create a commit|commit (this|these|the))'; then
+    matches+=("dev:util:commit — Commit format and strategy")
 fi
 
-# dev:grill-me — design discussions
-if echo "$prompt_lower" | grep -qiE '(design|architecture|approach|trade.?off|pressure.?test|what do you think about)'; then
-    matches+=("dev:grill-me — Interview before implementation")
+# dev:style:tdd — explicit TDD requests
+if echo "$prompt_lower" | grep -qiE '(use tdd|red.green.refactor|write.*tests? first|test.driven)'; then
+    matches+=("dev:style:tdd — TDD discipline and test strategy")
 fi
 
-# dev:planning — planning work
-if echo "$prompt_lower" | grep -qiE '(plan|roadmap|scope|break.?down|phase|milestone)'; then
-    matches+=("dev:planning — Design before code")
+# dev:flow close — explicit close/ship requests
+if echo "$prompt_lower" | grep -qiE '(^(close|ship|finish|wrap up)|lets (close|ship|finish|wrap up)|create a pr|open a pr|merge (this|to))'; then
+    matches+=("dev:flow close — Verify, ship, and close")
 fi
 
-# dev:write-prd — PRD creation
-if echo "$prompt_lower" | grep -qiE '(prd|product requirements|requirements doc|spec.*write|write.*spec)'; then
-    matches+=("dev:write-prd — Create a PRD")
-fi
-
-# bai:start — BAI project work
-if [[ "$REPO_OWNER" == "black-atom-industries" ]]; then
-    if echo "$prompt_lower" | grep -qiE '(feature|implement|build|refactor|fix|bug|change|improve|issue|ticket)'; then
-        matches+=("bai:start — BAI development entry point (wraps dev:start with Linear)")
-    fi
+# dev:audit — explicit audit/review requests
+if echo "$prompt_lower" | grep -qiE '(^(audit|review)|run.*(audit|review)|check.*(quality|conventions|a11y|accessibility))'; then
+    matches+=("dev:audit — Audit code quality (ui, style, arch, docs)")
 fi
 
 # dots:add / dots:remove — dotfiles management

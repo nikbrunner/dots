@@ -50,6 +50,10 @@ Config uses `apps` (not `tools`). Types are `AppName`, `AppConfig`. Each configu
 
 Pattern defaults live in `config/defaults.rs`. Each text-based app has a `matchPattern` (regex) and `replaceTemplate` (with `{themeKey}`, `{appearance}`, `{collectionKey}`, `{themesPath}` placeholders). Users can override via `match_pattern`/`replace_template` in their config.
 
+## Keymappings
+
+Config includes `keymappings.toggle_window` (default: `super+ctrl+alt+shift+KeyT`). Read at startup by `tauri-plugin-global-shortcut` to register a global hotkey that toggles window visibility. Designed to be user-configurable via future settings UI.
+
 ## Config File Location
 
-`~/.config/black-atom/livery/config.json` — uses `"apps"` key.
+`~/.config/black-atom/livery/config.json` — uses `"apps"` and `"keymappings"` keys.

@@ -1,0 +1,121 @@
+{
+  "version": 3,
+  "skills": {
+    "book-review": {
+      "source": "readwiseio/readwise-skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/readwiseio/readwise-skills.git",
+      "skillPath": "skills/book-review/SKILL.md",
+      "skillFolderHash": "1193fdcf838dd8e00735f02523b69a348aa2d2a3",
+      "installedAt": "2026-04-09T19:31:25.584Z",
+      "updatedAt": "2026-04-09T19:31:25.584Z"
+    },
+    "build-persona": {
+      "source": "readwiseio/readwise-skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/readwiseio/readwise-skills.git",
+      "skillPath": "skills/build-persona/SKILL.md",
+      "skillFolderHash": "a8bbbe8838fe9aeb24e56e69d21e8e59982faf4f",
+      "installedAt": "2026-04-09T19:31:25.879Z",
+      "updatedAt": "2026-04-09T19:31:25.879Z"
+    },
+    "feed-catchup": {
+      "source": "readwiseio/readwise-skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/readwiseio/readwise-skills.git",
+      "skillPath": "skills/feed-catchup/SKILL.md",
+      "skillFolderHash": "5a4aa0a0dcdc1f4ee4ec7f056adc3212f577c8e7",
+      "installedAt": "2026-04-09T19:31:26.171Z",
+      "updatedAt": "2026-04-09T19:31:26.171Z"
+    },
+    "highlight-graph": {
+      "source": "readwiseio/readwise-skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/readwiseio/readwise-skills.git",
+      "skillPath": "skills/highlight-graph/SKILL.md",
+      "skillFolderHash": "7251c29bb3d97f78a1b76cb92658ce05c10369df",
+      "installedAt": "2026-04-09T19:31:26.491Z",
+      "updatedAt": "2026-04-09T19:31:26.491Z"
+    },
+    "now-reading-page": {
+      "source": "readwiseio/readwise-skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/readwiseio/readwise-skills.git",
+      "skillPath": "skills/now-reading-page/SKILL.md",
+      "skillFolderHash": "002f70c6e367512bc5bdde81a9578d67a4497944",
+      "installedAt": "2026-04-09T19:31:26.897Z",
+      "updatedAt": "2026-04-09T19:31:26.897Z"
+    },
+    "quiz": {
+      "source": "readwiseio/readwise-skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/readwiseio/readwise-skills.git",
+      "skillPath": "skills/quiz/SKILL.md",
+      "skillFolderHash": "1ceb157db519bf2b4fcd40a1b5c7ed3432cd0383",
+      "installedAt": "2026-04-09T19:31:27.205Z",
+      "updatedAt": "2026-04-09T19:31:27.205Z"
+    },
+    "reader-recap": {
+      "source": "readwiseio/readwise-skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/readwiseio/readwise-skills.git",
+      "skillPath": "skills/reader-recap/SKILL.md",
+      "skillFolderHash": "bfd9716e39d84ef08968dbb9358bfe2892ed8461",
+      "installedAt": "2026-04-09T19:31:27.495Z",
+      "updatedAt": "2026-04-09T19:31:27.495Z"
+    },
+    "readwise-cli": {
+      "source": "readwiseio/readwise-skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/readwiseio/readwise-skills.git",
+      "skillPath": "skills/readwise-cli/SKILL.md",
+      "skillFolderHash": "9b5aaaeaf26efeb82849d76d5ffdfa6e8618d1a0",
+      "installedAt": "2026-04-09T19:31:27.806Z",
+      "updatedAt": "2026-04-09T19:31:27.806Z"
+    },
+    "readwise-mcp": {
+      "source": "readwiseio/readwise-skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/readwiseio/readwise-skills.git",
+      "skillPath": "skills/readwise-mcp/SKILL.md",
+      "skillFolderHash": "55a91f21a70ead18a855a1811c5c2a228bbc6edb",
+      "installedAt": "2026-04-09T19:31:28.247Z",
+      "updatedAt": "2026-04-09T19:31:28.247Z"
+    },
+    "surprise-me": {
+      "source": "readwiseio/readwise-skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/readwiseio/readwise-skills.git",
+      "skillPath": "skills/surprise-me/SKILL.md",
+      "skillFolderHash": "c3de23a92021c691f6a3c9ddccc36dfe1d5467dd",
+      "installedAt": "2026-04-09T19:31:28.548Z",
+      "updatedAt": "2026-04-09T19:31:28.548Z"
+    },
+    "triage": {
+      "source": "readwiseio/readwise-skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/readwiseio/readwise-skills.git",
+      "skillPath": "skills/triage/SKILL.md",
+      "skillFolderHash": "2a51c7643a2e512a85f25e7d438276db1e6fc3f0",
+      "installedAt": "2026-04-09T19:31:28.855Z",
+      "updatedAt": "2026-04-09T19:31:28.855Z"
+    }
+  },
+  "dismissed": {
+    "findSkillsPrompt": true
+  },
+  "lastSelectedAgents": [
+    "amp",
+    "antigravity",
+    "cline",
+    "codex",
+    "cursor",
+    "deepagents",
+    "firebender",
+    "gemini-cli",
+    "github-copilot",
+    "kimi-cli",
+    "opencode",
+    "warp"
+  ]
+}

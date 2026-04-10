@@ -1,12 +1,8 @@
 #!/usr/bin/env bash
 # Claude Code statusline script
-# Layout:
-#   Line 1: path │ git branch - status
-#   Line 2: task │ PR title │ last commit
-#   Line 3: model │ duration │ compacts
-#   Line 4: context bar
-#   Line 5: current limit bar
-#   Line 6: weekly limit bar
+# Responsive layout (breakpoint: 100 cols)
+# Wide:  path / git │ commit │ PR link / model │ Ctx bar │ 5h bar │ 7d bar
+# Narrow: path / git │ commit / PR link / model / Limits: Ctx │ 5h │ 7d
 
 # Read JSON input from Claude Code
 input=$(cat)
@@ -69,19 +65,19 @@ if [ -n "$branch" ]; then
 		[ "$added" -gt 0 ] && parts="${parts}, +${added}"
 		[ "$deleted" -gt 0 ] && parts="${parts}, -${deleted}"
 		[ "$untracked" -gt 0 ] && parts="${parts}, ${untracked} new"
-		git_summary="\033[32m\ue725 ${branch}\033[0m\033[90m, ${parts}\033[0m"
+		git_branch="\033[32m\ue725 ${branch}\033[0m"
+		git_stats="\033[90m${parts}\033[0m"
 	elif [ "$untracked" -gt 0 ]; then
-		git_summary="\033[32m\ue725 ${branch}\033[0m\033[90m, ${untracked} new\033[0m"
+		git_branch="\033[32m\ue725 ${branch}\033[0m"
+		git_stats="\033[90m${untracked} new\033[0m"
 	else
-		git_summary="\033[32m\ue725 ${branch}\033[0m\033[90m, clean\033[0m"
+		git_branch="\033[32m\ue725 ${branch}\033[0m"
+		git_stats="\033[90mclean\033[0m"
 	fi
 fi
 
-# Last commit message (truncated at 50 chars)
+# Last commit message (truncated in wide mode only)
 last_commit=$(git -C "$dir" log -1 --format='%s' 2>/dev/null)
-if [ "${#last_commit}" -gt 50 ]; then
-	last_commit="${last_commit:0:47}..."
-fi
 
 # Context progress bar + token counts
 if [ "$context_max" -gt 0 ] 2>/dev/null; then
@@ -112,8 +108,9 @@ if [ "$context_max" -gt 0 ] 2>/dev/null; then
 	max_k=$(((context_max + 500) / 1000))
 fi
 
-# Separator
-sep="\033[90m │ \033[0m"
+# Bracket wrapping for segments
+br_o="\033[90m[ \033[0m"
+br_c="\033[90m ]\033[0m"
 
 # Shorten home directory to ~
 display_dir="${dir/#$HOME/\~}"
@@ -124,13 +121,13 @@ PR_CACHE_TTL=120
 
 fetch_pr() {
 	local pr_json
-	pr_json=$(gh pr view --json title,number,state --jq 'select(.state == "OPEN") | "\(.number)\t\(.title)"' 2>/dev/null) || return 1
+	pr_json=$(gh pr view --json title,number,state,url --jq 'select(.state == "OPEN") | "\(.number)\t\(.url)\t\(.title)"' 2>/dev/null) || return 1
 	[ -z "$pr_json" ] && return 1
 	echo "$pr_json" >"$PR_CACHE"
 }
 
-pr_title=""
 pr_number=""
+pr_url=""
 
 # Only fetch/show PR info on non-default branches
 if [ -n "$branch" ] && [ "$branch" != "main" ] && [ "$branch" != "master" ]; then
@@ -141,88 +138,47 @@ if [ -n "$branch" ] && [ "$branch" != "main" ] && [ "$branch" != "master" ]; the
 
 	if [ -f "$PR_CACHE" ]; then
 		pr_number=$(cut -f1 "$PR_CACHE" 2>/dev/null)
-		pr_title=$(cut -f2 "$PR_CACHE" 2>/dev/null | head -c 40)
+		pr_url=$(cut -f2 "$PR_CACHE" 2>/dev/null)
 	fi
 fi
 
-# Session name from Claude Code JSON input
-session_name=$(echo "$input" | jq -r '.session_name // ""')
+# Terminal width for responsive layout (tmux pane width, fallback to tput)
+# Claude Code's statusline area is narrower than pane_width due to internal chrome (~30 cols)
+cols=$(tmux display-message -p '#{pane_width}' 2>/dev/null || tput cols 2>/dev/null || echo 80)
+wide=true
+[ "$cols" -lt 180 ] && wide=false
 
 # --- Line 1: path ---
 printf '\033[1;90m%s\033[0m' "$display_dir"
 
-# --- Line 2: session ---
-if [ -n "$session_name" ]; then
+# --- Git status + commit + optional PR link ---
+if [ -n "$git_branch" ]; then
 	printf '\n'
-	printf '\033[90m%-15s\033[97m%s\033[0m' "Session" "$session_name"
-fi
-
-# --- Line 3: PR ---
-if [ -n "$pr_title" ]; then
-	printf '\n'
-	printf '\033[90m%-15s\033[0m\033[90mPR#%s\033[0m \033[37m%s\033[0m' "PR" "$pr_number" "$pr_title"
-fi
-
-# --- Line 3: git status ---
-if [ -n "$git_summary" ]; then
-	printf '\n'
-	printf '\033[90m%-15s\033[0m%b' "Git" "$git_summary"
-fi
-
-# --- Line 4: last commit ---
-if [ -n "$last_commit" ]; then
-	printf '\n'
-	printf '\033[90m%-15s%s\033[0m' "Last Commit" "$last_commit"
-fi
-
-# --- Line 5: model │ compactions ---
-printf '\n'
-[ -n "$model" ] && [ "$model" != "unknown" ] && printf '\033[90m%-15s\033[36m%s\033[0m' "Model" "$model"
-
-if [ "$compactions" -gt 0 ]; then
-	if [ "$compactions" -ge 3 ]; then
-		comp_color="\033[31m"
+	if $wide; then
+		# Wide: everything on one line with bracket segments
+		printf '\033[90m%-15s\033[0m' "Git"
+		printf '%b%b%b' "$br_o" "$git_branch" "$br_c"
+		printf ' %b%b%b' "$br_o" "$git_stats" "$br_c"
+		if [ -n "$last_commit" ]; then
+			wide_commit="$last_commit"
+			[ "${#wide_commit}" -gt 30 ] && wide_commit="${wide_commit:0:27}..."
+			printf ' %b\033[90m%s\033[0m%b' "$br_o" "$wide_commit" "$br_c"
+		fi
+		[ -n "$pr_number" ] && [ -n "$pr_url" ] && printf ' %b%s%b' "$br_o" "$pr_url" "$br_c"
 	else
-		comp_color="\033[33m"
+		# Narrow: each section on its own line with brackets
+		printf '\033[90m%-15s\033[0m%b%b%b' "Branch" "$br_o" "$git_branch" "$br_c"
+		printf '\n'
+		printf '\033[90m%-15s\033[0m%b%b%b' "Changes" "$br_o" "$git_stats" "$br_c"
+		if [ -n "$last_commit" ]; then
+			printf '\n'
+			printf '\033[90m%-15s\033[0m%b\033[90m%s\033[0m%b' "Last Commit" "$br_o" "$last_commit" "$br_c"
+		fi
+		if [ -n "$pr_number" ] && [ -n "$pr_url" ]; then
+			printf '\n'
+			printf '\033[90m%-15s\033[0m%b%s%b' "PR" "$br_o" "$pr_url" "$br_c"
+		fi
 	fi
-	printf '%b%bCompacts %sx\033[0m' "$sep" "$comp_color" "$compactions"
-fi
-
-# --- Line 3: context bar │ percentage │ token counts ---
-if [ "$context_max" -gt 0 ] 2>/dev/null; then
-	printf '\n'
-	printf '\033[90m%-15s\033[0m' "Context"
-	printf '%b' "$bar"
-
-	if [ "$percent" -ge 75 ]; then
-		printf ' \033[31m%3d%%\033[0m  \033[31m⛽\033[0m' "$percent"
-	else
-		printf ' %3d%%' "$percent"
-	fi
-
-	printf '  \033[90m%dk / %dk Tokens\033[0m' "$used_k" "$max_k"
-fi
-
-# --- Lines 4-5: 5hr and 7-day usage (OAuth API with caching) ---
-USAGE_CACHE="/tmp/claude-statusline-usage.json"
-USAGE_CACHE_TTL=60
-
-fetch_usage() {
-	local creds token response
-	creds=$(security find-generic-password -s "Claude Code-credentials" -w 2>/dev/null) || return 1
-	token=$(echo "$creds" | jq -r '.claudeAiOauth.accessToken') || return 1
-	[ -z "$token" ] || [ "$token" = "null" ] && return 1
-	response=$(curl -s --max-time 3 "https://api.anthropic.com/api/oauth/usage" \
-		-H "Authorization: Bearer $token" \
-		-H "anthropic-beta: oauth-2025-04-20" \
-		-H "Content-Type: application/json" 2>/dev/null) || return 1
-	echo "$response" | jq -e '.five_hour' >/dev/null 2>&1 || return 1
-	echo "$response" >"$USAGE_CACHE"
-}
-
-# Refresh cache if stale
-if [ ! -f "$USAGE_CACHE" ] || [ $(($(date +%s) - $(stat -f%m "$USAGE_CACHE" 2>/dev/null || echo 0))) -gt $USAGE_CACHE_TTL ]; then
-	fetch_usage 2>/dev/null &
 fi
 
 # Build usage bar (same style as context bar)
@@ -249,14 +205,9 @@ usage_bar() {
 	printf '\033[0m'
 }
 
-# Format ISO reset time to local human-readable
+# Format Unix epoch reset time to human-readable relative string
 format_reset() {
-	local iso=$1
-	# Strip fractional seconds and timezone for macOS date parsing
-	local clean
-	clean=$(echo "$iso" | sed 's/\.[0-9]*+/ +/' | sed 's/+\([0-9][0-9]\):\([0-9][0-9]\)/+\1\2/')
-	local epoch
-	epoch=$(date -jf "%Y-%m-%dT%H:%M:%S %z" "$clean" +%s 2>/dev/null) || return 1
+	local epoch=$1
 	local now
 	now=$(date +%s)
 	local diff=$((epoch - now))
@@ -266,43 +217,85 @@ format_reset() {
 	elif [ "$diff" -lt 3600 ]; then
 		printf '%dm' $((diff / 60))
 	elif [ "$diff" -lt 86400 ]; then
-		# Today or soon — show time
-		date -jf "%Y-%m-%dT%H:%M:%S %z" "$clean" "+%H:%M" 2>/dev/null
+		date -r "$epoch" "+%H:%M" 2>/dev/null
 	else
-		# Further out — show date + time
-		date -jf "%Y-%m-%dT%H:%M:%S %z" "$clean" "+%b %-d, %H:%M" 2>/dev/null
+		date -r "$epoch" "+%b %-d, %H:%M" 2>/dev/null
 	fi
 }
 
-if [ -f "$USAGE_CACHE" ]; then
-	u5=$(jq -r '.five_hour.utilization // empty' "$USAGE_CACHE" 2>/dev/null | cut -d. -f1)
-	u7=$(jq -r '.seven_day.utilization // empty' "$USAGE_CACHE" 2>/dev/null | cut -d. -f1)
-	r5=$(jq -r '.five_hour.resets_at // empty' "$USAGE_CACHE" 2>/dev/null)
-	r7=$(jq -r '.seven_day.resets_at // empty' "$USAGE_CACHE" 2>/dev/null)
+u5=$(echo "$input" | jq -r '.rate_limits.five_hour.used_percentage // empty' 2>/dev/null)
+r5=$(echo "$input" | jq -r '.rate_limits.five_hour.resets_at // empty' 2>/dev/null)
+u7=$(echo "$input" | jq -r '.rate_limits.seven_day.used_percentage // empty' 2>/dev/null)
+r7=$(echo "$input" | jq -r '.rate_limits.seven_day.resets_at // empty' 2>/dev/null)
 
-	if [ -n "$u5" ]; then
-		printf '\n'
-		printf '\033[90m%-15s\033[0m' "Current Limit"
-		usage_bar "$u5"
-		printf ' %3d%%' "$u5"
-		if [ -n "$r5" ]; then
-			reset_str=$(format_reset "$r5")
-			[ -n "$reset_str" ] && printf '  \033[90mresets %s\033[0m' "$reset_str"
-		fi
+# --- Model + limits ---
+printf '\n'
+if [ -n "$model" ] && [ "$model" != "unknown" ]; then
+	printf '\033[90m%-15s\033[0m%b\033[36m%s\033[0m%b' "Model" "$br_o" "$model" "$br_c"
+fi
+
+if [ "$compactions" -gt 0 ]; then
+	if [ "$compactions" -ge 3 ]; then
+		comp_color="\033[31m"
+	else
+		comp_color="\033[33m"
 	fi
+	printf ' %b%bCompacts %sx\033[0m%b' "$br_o" "$comp_color" "$compactions" "$br_c"
+fi
 
-	if [ -n "$u7" ]; then
+if [ "$context_max" -gt 0 ] 2>/dev/null; then
+	if $wide; then
+		# Wide: all bars on same line as model
+		printf ' %b\033[90mCtx \033[0m%b  \033[90m%dk/%dk\033[0m%b' "$br_o" "$bar" "$used_k" "$max_k" "$br_c"
+
+		if [ -n "$u5" ]; then
+			u5_int=$(printf '%.0f' "$u5")
+			printf ' %b\033[90m5h \033[0m' "$br_o"
+			usage_bar "$u5_int"
+			if [ -n "$r5" ]; then
+				reset_str=$(format_reset "$r5")
+				[ -n "$reset_str" ] && printf '  \033[90m↺%s\033[0m' "$reset_str"
+			fi
+			printf '%b' "$br_c"
+		fi
+
+		if [ -n "$u7" ]; then
+			u7_int=$(printf '%.0f' "$u7")
+			printf ' %b\033[90m7d \033[0m' "$br_o"
+			usage_bar "$u7_int"
+			if [ -n "$r7" ]; then
+				reset_str=$(format_reset "$r7")
+				[ -n "$reset_str" ] && printf '  \033[90m↺%s\033[0m' "$reset_str"
+			fi
+			printf '%b' "$br_c"
+		fi
+	else
+		# Narrow: each bar on its own line with brackets
 		printf '\n'
-		printf '\033[90m%-15s\033[0m' "Weekly Limit"
-		usage_bar "$u7"
-		printf ' %3d%%' "$u7"
-		if [ -n "$r7" ]; then
-			reset_str=$(format_reset "$r7")
-			[ -n "$reset_str" ] && printf '  \033[90mresets %s\033[0m' "$reset_str"
+		printf '\033[90m%-15s\033[0m%b%b  \033[90m%dk/%dk\033[0m%b' "Context" "$br_o" "$bar" "$used_k" "$max_k" "$br_c"
+
+		if [ -n "$u5" ]; then
+			u5_int=$(printf '%.0f' "$u5")
+			printf '\n'
+			printf '\033[90m%-15s\033[0m%b' "Current Limit" "$br_o"
+			usage_bar "$u5_int"
+			if [ -n "$r5" ]; then
+				reset_str=$(format_reset "$r5")
+				[ -n "$reset_str" ] && printf '  \033[90m↺%s\033[0m' "$reset_str"
+			fi
+			printf '%b' "$br_c"
+		fi
+
+		if [ -n "$u7" ]; then
+			u7_int=$(printf '%.0f' "$u7")
+			printf '\n'
+			printf '\033[90m%-15s\033[0m%b' "Weekly Limit" "$br_o"
+			usage_bar "$u7_int"
+			if [ -n "$r7" ]; then
+				reset_str=$(format_reset "$r7")
+				[ -n "$reset_str" ] && printf '  \033[90m↺%s\033[0m' "$reset_str"
+			fi
+			printf '%b' "$br_c"
 		fi
 	fi
 fi
-
-# --- Last line: current date and time ---
-printf '\n'
-printf '\033[90m%-15s\033[35m%s\033[0m' "Time" "$(date '+%a %b %-d, %H:%M')"

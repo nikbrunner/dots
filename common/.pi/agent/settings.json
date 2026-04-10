@@ -1,0 +1,18 @@
+{
+  "theme": "dark",
+  "lastChangelogVersion": "0.66.1",
+  "packages": [
+    "npm:pi-web-access",
+    "npm:pi-fff",
+    "npm:@plannotator/pi-extension"
+  ],
+  "defaultProvider": "openrouter",
+  "defaultModel": "minimax/minimax-m2.7",
+  "enabledModels": [
+    "openrouter/anthropic/claude-sonnet-4.6",
+    "openrouter/anthropic/claude-opus-4.6",
+    "openrouter/moonshotai/kimi-k2.5",
+    "openrouter/minimax/minimax-m2.7",
+    "openrouter/z-ai/glm-5.1"
+  ]
+}

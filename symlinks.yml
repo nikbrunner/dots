@@ -1,8 +1,11 @@
 common:
-  common/.claude/CLAUDE.md: ~/.claude/CLAUDE.md
+  common/.pi: ~/.pi
+  common/.agents/AGENTS.md: ~/.pi/agent/AGENTS.md
+  common/.agents/AGENTS.md: ~/.claude/CLAUDE.md
   common/.claude/agents: ~/.claude/agents
   common/.claude/settings.json: ~/.claude/settings.json
-  common/.claude/skills: ~/.claude/skills
+  common/.agents/skills: ~/.claude/skills
+  common/.agents: ~/.agents
   "common/.claude/hooks/enforce/*": ~/.claude/hooks/enforce
   common/.claude/plugins/local-marketplace: ~/.claude/plugins/marketplaces/local-plugins
   common/.local/bin/claude-hooks: ~/.local/bin/claude-hooks
@@ -37,6 +40,7 @@ common:
   common/.local/share/nvim/radar: ~/.local/share/nvim/radar
   common/.ripgreprc: ~/.ripgreprc
   common/.ssh/allowed_signers: ~/.ssh/allowed_signers
+  common/.ssh/config: ~/.ssh/config
   common/.vimrc: ~/.vimrc
   common/.zshrc: ~/.zshrc
   common/.local/bin/*: ~/.local/bin
@@ -46,11 +50,12 @@ macos:
   macos/.config/davit/config.toml: ~/.config/davit/config.toml
   macos/.config/zsh/os.zsh: ~/.config/zsh/os.zsh
   macos/.config/karabiner: ~/.config/karabiner
-  macos/.gitconfig.local: ~/.gitconfig.local
   scripts/deps/Brewfile: ~/Brewfile
   macos/Library/Application Support/Claude/claude_desktop_config.json: ~/Library/Application Support/Claude/claude_desktop_config.json
   macos/Library/LaunchAgents/com.pcloud.automount.plist: ~/Library/LaunchAgents/com.pcloud.automount.plist
   macos/Library/LaunchAgents/homebrew.mxcl.mpd.plist: ~/Library/LaunchAgents/homebrew.mxcl.mpd.plist
+  macos/Library/LaunchAgents/me.proton.pass-ssh-agent.plist: ~/Library/LaunchAgents/me.proton.pass-ssh-agent.plist
+  macos/Library/LaunchAgents/me.proton.pass-env-sync.plist: ~/Library/LaunchAgents/me.proton.pass-env-sync.plist
   macos/Library/Scripts/pcloud-auto-mount.applescript: ~/Library/Scripts/pcloud-auto-mount.applescript
 
 arch:
@@ -60,7 +65,6 @@ arch:
   arch/.config/fuzzel: ~/.config/fuzzel
   arch/.config/gamemode.ini: ~/.config/gamemode.ini
   arch/.config/mimeapps.list: ~/.config/mimeapps.list
-  arch/.gitconfig.local: ~/.gitconfig.local
   arch/.local/bin/*: ~/.local/bin
   arch/README.md: ~/README.md
   arch/.config/hypr: ~/.config/hypr
@@ -68,3 +72,5 @@ arch:
   arch/.config/satty: ~/.config/satty
   arch/.config/waybar: ~/.config/waybar
   arch/.config/waypaper: ~/.config/waypaper
+  arch/.config/systemd/user/pass-ssh-agent.service: ~/.config/systemd/user/pass-ssh-agent.service
+  arch/.config/systemd/user/pass-env-sync.service: ~/.config/systemd/user/pass-env-sync.service

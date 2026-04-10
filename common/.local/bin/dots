@@ -507,6 +507,12 @@ cmd_chores() {
 	fi
 	echo ""
 
+	# Pi session changes
+	if dots_commit_pi_sessions "$DOTS_DIR"; then
+		((commits_created++)) || true
+	fi
+	echo ""
+
 	# Radar changes
 	if dots_commit_radar "$DOTS_DIR"; then
 		((commits_created++)) || true

@@ -22,7 +22,26 @@
             "label": "1"
           }
         ],
-        "lastAccessed": 1774353267
+        "lastAccessed": 1775471855
+      }
+    },
+    "~/repos/black-atom-industries/livery": {
+      "feat/ui-rework-foundation": {
+        "locks": [
+          {
+            "filename": "src/store/app.ts",
+            "label": "1"
+          },
+          {
+            "filename": "src/routes/index.tsx",
+            "label": "2"
+          },
+          {
+            "filename": "src/lib/tokens.ts",
+            "label": "3"
+          }
+        ],
+        "lastAccessed": 1775666951
       }
     },
     "~/repos/black-atom-industries/radar.nvim": {
@@ -413,6 +432,19 @@
       }
     },
     "~/repos/nikbrunner/dots": {
+      "feat/openspec-integration": {
+        "locks": [
+          {
+            "filename": "common/.claude/skills/about-bai/SKILL.md",
+            "label": "1"
+          },
+          {
+            "filename": "common/.claude/skills/about-openspec/SKILL.md",
+            "label": "2"
+          }
+        ],
+        "lastAccessed": 1775820670
+      },
       "main": {
         "locks": [
           {
@@ -481,7 +513,7 @@
             "label": "2"
           }
         ],
-        "lastAccessed": 1773319194
+        "lastAccessed": 1775659581
       },
       "rework-structure": {
         "locks": [
@@ -501,7 +533,7 @@
             "label": "1"
           }
         ],
-        "lastAccessed": 1774180996
+        "lastAccessed": 1775381534
       }
     },
     "~/repos/nikbrunner/wichtel-app": {

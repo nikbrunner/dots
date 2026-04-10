@@ -10,14 +10,22 @@ BLACK_ATOM_DIR="${BLACK_ATOM_DIR:-$HOME/repos/black-atom-industries}"
 
 # Parse arguments
 DRY_RUN=false
+QUIET=false
+VERBOSE=false
 for arg in "$@"; do
     case $arg in
     --dry-run)
         DRY_RUN=true
         ;;
+    --quiet)
+        QUIET=true
+        ;;
+    --verbose)
+        VERBOSE=true
+        ;;
     *)
         echo "Unknown option: $arg"
-        echo "Usage: $0 [--dry-run]"
+        echo "Usage: $0 [--dry-run] [--quiet] [--verbose]"
         exit 1
         ;;
     esac
@@ -42,24 +50,44 @@ log_error() {
 
 # Create a relative symlink
 # Usage: create_relative_symlink <source_file> <target_symlink> <dry_run>
+# Returns: "created", "updated", or "existing" via echo
 create_relative_symlink() {
     local source="$1"
     local target="$2"
     local dry_run="$3"
 
-    # Calculate relative path from target directory to source file
-    local target_dir
-    target_dir=$(dirname "$target")
-    local rel_path
-    rel_path=$(python3 -c "import os.path; print(os.path.relpath('$source', '$target_dir'))")
+    # Check current state
+    local status="existing"
+    if [[ -L "$target" ]]; then
+        local current_target
+        current_target=$(readlink "$target" 2>/dev/null)
+
+        # Calculate expected relative path
+        local target_dir
+        target_dir=$(dirname "$target")
+        local expected_rel
+        expected_rel=$(python3 -c "import os.path; print(os.path.relpath('$source', '$target_dir'))")
+
+        if [[ "$current_target" == "$expected_rel" ]]; then
+            status="existing"
+        else
+            status="updated"
+        fi
+    elif [[ -e "$target" ]]; then
+        status="updated"
+    else
+        status="created"
+    fi
 
     if [[ "$dry_run" == "true" ]]; then
-        echo "  [DRY] $target -> $rel_path"
+        echo "  [DRY] $target"
     else
         rm -f "$target"
-        ln -s "$rel_path" "$target"
-        echo "  $target -> $rel_path"
+        ln -s "$(python3 -c "import os.path; print(os.path.relpath('$source', '$(dirname "$target")'))")" "$target"
+        [[ "$QUIET" != true ]] && echo "  $status: $(basename "$target")"
     fi
+
+    echo "$status"
 }
 
 # Process an adapter
@@ -85,6 +113,8 @@ process_adapter() {
     fi
 
     local count=0
+    local created=0
+    local updated=0
 
     # Find all theme files matching the extension
     while IFS= read -r -d '' source_file; do
@@ -97,14 +127,20 @@ process_adapter() {
         fi
 
         local target_file="$target_dir/$filename"
-        create_relative_symlink "$source_file" "$target_file" "$DRY_RUN"
+        local status
+        status=$(create_relative_symlink "$source_file" "$target_file" "$DRY_RUN")
         count=$((count + 1))
+
+        [[ "$status" == "created" ]] && created=$((created + 1))
+        [[ "$status" == "updated" ]] && updated=$((updated + 1))
     done < <(find "$adapter_dir/themes" -type f -name "*.$extension" -not -name "*.template.*" -print0 2>/dev/null)
 
     if [[ $count -eq 0 ]]; then
         log_warning "No theme files found for $adapter"
-    else
+    elif [[ "$VERBOSE" == true ]]; then
         log_success "Processed $count theme files for $adapter"
+    else
+        log_success "Processed $count theme files for $adapter (created: $created, updated: $updated)"
     fi
 }
 

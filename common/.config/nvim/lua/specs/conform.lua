@@ -87,6 +87,11 @@ return {
                 return { "biome-check" }
             end
 
+            -- Fallback to prettier with defaults for web-adjacent filetypes
+            if is_prettier then
+                return { prettier_cmd, stop_after_first = true }
+            end
+
             return {}
         end
 

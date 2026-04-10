@@ -86,8 +86,142 @@ local function detect_gh_pr_context()
 end
 
 -- ============================================================================
--- Custom Picker Functions (Snacks-unique)
+-- Custom Picker Functions
 -- ============================================================================
+
+---Get list of project directories (org/project) from repos path
+---@return snacks.picker.finder.Item[] dirs, string repos_path
+local function get_project_dirs()
+    local repos_path = require("config").pathes.repos
+    local dirs = {}
+    local orgs = vim.fn.readdir(repos_path, function(name)
+        return vim.fn.isdirectory(repos_path .. "/" .. name) == 1
+    end)
+    for _, org in ipairs(orgs) do
+        local org_path = repos_path .. "/" .. org
+        local projects = vim.fn.readdir(org_path, function(name)
+            return vim.fn.isdirectory(org_path .. "/" .. name) == 1
+        end)
+        for _, project in ipairs(projects) do
+            table.insert(dirs, { text = org .. "/" .. project, file = repos_path .. "/" .. org .. "/" .. project })
+        end
+    end
+    return dirs, repos_path
+end
+
+---Pick a project directory, then open files picker in it
+function M.project_files()
+    local dirs, repos_path = get_project_dirs()
+
+    Snacks.picker({
+        title = "Projects",
+        items = dirs,
+        format = "file",
+        confirm = function(picker, item)
+            picker:close()
+            vim.fn.chdir(item.file)
+            vim.schedule(function()
+                Snacks.picker.files()
+            end)
+        end,
+    })
+end
+
+---Pick a project directory, save current session, switch cwd, restore target session
+function M.project_switch()
+    local dirs, repos_path = get_project_dirs()
+    local get_session_name = require("lib.sessions").get_session_name
+
+    Snacks.picker({
+        title = "Switch Project",
+        items = dirs,
+        format = "file",
+        confirm = function(picker, item)
+            picker:close()
+            vim.schedule(function()
+                local chosen_path = item.file
+                local MS = require("mini.sessions")
+
+                -- Guard: prevent TermLeave/VimResume autocmd from
+                -- triggering MS.read() during our switch
+                vim.g._mini_session_switching = true
+
+                -- Save current project session (cwd is still old project)
+                MS.write(get_session_name(), { force = true })
+
+                -- Stop LSP before buffer wipe to avoid stale callbacks
+                vim.iter(vim.lsp.get_clients()):each(function(c)
+                    c:stop(true)
+                end)
+                vim.cmd("silent! %bwipeout!")
+
+                -- Switch to new project
+                vim.fn.chdir(chosen_path)
+
+                -- Restore target session or start fresh
+                local target_session = get_session_name(chosen_path)
+                if MS.detected[target_session] then
+                    local data = MS.detected[target_session]
+                    vim.cmd(("silent! source %s"):format(vim.fn.fnameescape(data.path)))
+                    vim.v.this_session = data.path
+                else
+                    vim.cmd.enew()
+                    vim.notify("Switched to " .. item.text .. " (no session)")
+                end
+
+                vim.g._mini_session_switching = false
+            end)
+        end,
+    })
+end
+
+---Find files associated with the current file (same base name)
+function M.associated_files()
+    local current_filename = vim.fn.expand("%:t:r")
+    local base_name = current_filename:match("^([^.]+)") or current_filename
+    local current_path = vim.fn.expand("%:.")
+
+    local cmd = { "rg", "--files", "--glob", "**/" .. base_name .. ".*" }
+    local output = vim.fn.systemlist(cmd)
+    local items = {}
+    for _, file in ipairs(output) do
+        if file ~= current_path then
+            table.insert(items, { text = file, file = file })
+        end
+    end
+
+    Snacks.picker({
+        title = "Associated Files",
+        items = items,
+    })
+end
+
+---Show jumps for the current buffer only
+function M.buffer_jumps()
+    local current_buf = vim.api.nvim_get_current_buf()
+    local current_file = vim.api.nvim_buf_get_name(current_buf)
+    local jumps = vim.fn.getjumplist()[1]
+    local items = {}
+
+    for _, jump in ipairs(jumps) do
+        local buf = jump.bufnr and vim.api.nvim_buf_is_valid(jump.bufnr) and jump.bufnr or 0
+        if buf == current_buf and jump.lnum > 0 then
+            local lines = vim.api.nvim_buf_get_lines(buf, jump.lnum - 1, jump.lnum, false)
+            table.insert(items, 1, {
+                text = string.format("%d: %s", jump.lnum, vim.trim(lines[1] or "")),
+                file = current_file,
+                pos = { jump.lnum, jump.col },
+            })
+        end
+    end
+
+    Snacks.picker({
+        title = "Buffer Jumps",
+        items = items,
+    })
+end
+
+-- GitHub Picker Functions
 
 function M.gh_pr_diff()
     local state = require("state")
@@ -197,28 +331,67 @@ end
 ---@see https://github.com/folke/snacks.nvim/blob/main/lua/snacks/picker/config/sources.lua
 ---@see https://github.com/kaiphat/dotfiles/blob/master/nvim/lua/plugins/snacks.lua
 function M.keys()
+    local dots_path = vim.fn.expand("$HOME") .. "/repos/nikbrunner/dots"
+
     -- stylua: ignore start
     return {
-        -- App (Snacks-unique features)
-        { "<leader>an",          function() Snacks.notifier.show_history() end, desc = "[N]otifications" },
-        { "<leader>ag",          function() Snacks.lazygit() end, desc = "[G]it" },
+        -- General
+        { "<leader><leader>",    function() Snacks.picker.smart() end, desc = "Pick file" },
+        { "<leader>.",           function() Snacks.picker.resume() end, desc = "Resume Picker" },
+        { "<leader>;",           function() Snacks.picker.commands() end, desc = "Commands" },
+        { "<leader>:",           function() Snacks.picker.command_history() end, desc = "Command History" },
+        { "<leader>'",           function() Snacks.picker.registers() end, desc = "Registers" },
 
-        -- Workspace (Snacks-unique features)
+        -- App
+        { "<leader>aa",          function() Snacks.picker.commands() end, desc = "[A]ctions" },
+        { "<leader>ad",          M.project_files, desc = "[D]ocument (in project)" },
+        { "<leader>ag",          function() Snacks.lazygit() end, desc = "[G]it" },
+        { "<leader>ahh",         function() Snacks.picker.highlights() end, desc = "[H]ighlights" },
+        { "<leader>ahk",         function() Snacks.picker.keymaps() end, desc = "[K]eymaps" },
+        { "<leader>ahm",         function() Snacks.picker.man() end, desc = "[M]anuals" },
+        { "<leader>aht",         function() Snacks.picker.help() end, desc = "[T]ags" },
+        { "<leader>an",          function() Snacks.notifier.show_history() end, desc = "[N]otifications" },
+        { "<leader>ar",          function() Snacks.picker.recent() end, desc = "[R]ecent Documents (Anywhere)" },
+        { "<leader>a,",          function() Snacks.picker.files({ cwd = dots_path }) end, desc = "[,]Settings (Dots)" },
+        { "<leader>at",          function() Snacks.picker.colorschemes() end, desc = "[T]hemes" },
+        { "<leader>aw",          M.project_switch, desc = "[W]orkspace" },
+
+        -- Workspace
+        { "<leader>wc",          function() Snacks.picker.git_diff() end, desc = "[C]hanges" },
+        { "<leader>wd",          function() Snacks.picker.files() end, desc = "[D]ocument" },
+        { "<leader>wj",          function() Snacks.picker.jumps() end, desc = "[J]umps" },
+        { "<leader>wm",          function() Snacks.picker.git_status() end, desc = "[M]odified Documents" },
+        { "<leader>wp",          function() Snacks.picker.diagnostics() end, desc = "[P]roblems" },
+        { "<leader>wr",          function() Snacks.picker.recent({ filter = { cwd = true } }) end, desc = "[R]ecent Documents" },
+        { "<leader>ws",          function() Snacks.picker.lsp_symbols() end, desc = "[S]ymbols" },
+        { "<leader>wt",          function() Snacks.picker.grep({ hidden = true }) end, desc = "[T]ext" },
+        { "<leader>ww",          function() Snacks.picker.grep_word() end, desc = "[W]ord" },
+        { "<leader>wgb",         function() Snacks.picker.git_branches() end, desc = "[B]ranches" },
+        { "<leader>wgh",         function() Snacks.picker.git_log() end, desc = "[H]istory" },
         { "<leader>wgH",         function() Snacks.lazygit.log() end, desc = "[H]istory (Lazygit)" },
+        { "<leader>wgr",         function() Snacks.gitbrowse() end, desc = "[R]emote (GitHub)" },
         { "<leader>wgs",         function() Snacks.lazygit() end, desc = "[S]tatus (Lazygit)" },
         { "<leader>wgib",         M.gh_issue_browse, desc = "[B]rowse Issues" },
         { "<leader>wgpc",         M.gh_pr_diff, desc = "[C]hanges in current PR" },
         { "<leader>wgpd",         M.gh_pr_buffer, desc = "[D]escription of current PR" },
         { "<leader>wgpb",         M.gh_pr_browse, desc = "[B]rowse Pull Requests" },
 
-        -- Document (Snacks-unique features)
+        -- Document
+        { "<leader>da",          M.associated_files, desc = "[A]ssociated Documents" },
+        { "<leader>dc",          function() Snacks.picker.git_diff({ current_file = true }) end, desc = "[C]hanges" },
         { "<leader>dgh",         function() Snacks.picker.git_log_file() end, desc = "[H]istory" },
         { "<leader>dgH",         function() Snacks.lazygit.log_file() end, desc = "[H]istory (Lazygit)" },
+        { "<leader>dj",          M.buffer_jumps, desc = "[J]umps" },
+        { "<leader>dp",          function() Snacks.picker.diagnostics({ filter = { buf = 0 } }) end, desc = "[P]roblems" },
+        { "<leader>ds",          function() Snacks.picker.lsp_symbols() end, desc = "[S]ymbols" },
+        { "<leader>dt",          function() Snacks.picker.lines() end, desc = "[T]ext" },
         { "<leader>du",          function() Snacks.picker.undo() end, desc = "[U]ndo" },
 
-        -- Symbols (Snacks-unique features)
+        -- Symbol
         { "<leader>sgb",          function() Snacks.git.blame_line() end, desc = "[B]lame" },
         { "<leader>sgh",          function() Snacks.picker.git_log_line() end, desc = "[H]istory" },
+        { "<leader>si",           function() Snacks.picker.lsp_implementations() end, desc = "[I]mplementations" },
+        { "<leader>sr",           function() Snacks.picker.lsp_references() end, desc = "[R]eferences" },
     }
     -- stylua: ignore end
 end
@@ -276,8 +449,8 @@ return {
             end,
         })
 
-        -- Detect PR context on startup and directory change
-        vim.api.nvim_create_autocmd({ "VimEnter", "DirChanged" }, {
+        -- Detect PR context on directory change
+        vim.api.nvim_create_autocmd("DirChanged", {
             callback = function()
                 vim.defer_fn(detect_gh_pr_context, 500)
             end,
@@ -321,7 +494,7 @@ return {
         },
         picker = {
             -- ~/.local/share/nvim/lazy/snacks.nvim/lua/snacks/picker/config/defaults.lua
-            ui_select = false, -- MiniPick handles vim.ui.select
+            ui_select = true,
             layouts = {
                 gh_diff = {
                     layout = {
@@ -381,6 +554,56 @@ return {
                 },
             },
             sources = {
+                explorer = {
+                    replace_netrw = true,
+                    git_status = true,
+                    jump = {
+                        close = false,
+                    },
+                    hidden = true,
+                    ignored = true,
+                    win = {
+                        list = {
+                            keys = {
+                                ["]c"] = "explorer_git_next",
+                                ["[c"] = "explorer_git_prev",
+                                ["<c-t>"] = { "tab", mode = { "n", "i" } },
+                            },
+                        },
+                    },
+                    icons = {
+                        tree = {
+                            vertical = "  ",
+                            middle = "  ",
+                            last = "  ",
+                        },
+                    },
+                },
+                buffers = {
+                    current = false,
+                },
+                files = {
+                    hidden = true,
+                },
+                smart = {
+                    multi = { "buffers", "recent", "files" },
+                    sort = { fields = { "source_id" } },
+                    filter = { cwd = true },
+                },
+                lsp_references = {
+                    pattern = "!import !default",
+                },
+                lsp_symbols = {
+                    finder = "lsp_symbols",
+                    format = "lsp_symbol",
+                    hierarchy = true,
+                    filter = {
+                        default = true,
+                        markdown = true,
+                        help = true,
+                    },
+                },
+                git_status = { preview = "git_status" },
                 gh_diff = { layout = { preset = "gh_diff" } },
             },
         },

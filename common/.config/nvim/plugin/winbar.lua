@@ -120,7 +120,7 @@ local function breadcrumbs_set()
     local file_path = vim.fn.bufname(bufnr)
     if not file_path or file_path == "" then
         vim.wo.winbar = ""
-        return
+        return ""
     end
 
     -- Check if window is wide enough for LSP symbols
@@ -128,7 +128,7 @@ local function breadcrumbs_set()
     if win_width < 150 then
         -- Just show the relative path for narrow windows
         vim.wo.winbar = get_relative_path(bufnr)
-        return
+        return ""
     end
 
     -- Check if any LSP client supports document symbols
@@ -145,13 +145,13 @@ local function breadcrumbs_set()
     -- If no document symbol support, just show the relative path
     if not has_document_symbol then
         vim.wo.winbar = get_relative_path(bufnr)
-        return
+        return ""
     end
 
     local uri = vim.lsp.util.make_text_document_params(bufnr)["uri"]
     if not uri then
         vim.wo.winbar = get_relative_path(bufnr)
-        return
+        return ""
     end
 
     local params = {

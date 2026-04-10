@@ -6,6 +6,7 @@ M.specs = {
         "nvim-treesitter/nvim-treesitter",
         build = ":TSUpdate",
         branch = "main",
+        pin = true,
         lazy = false,
         config = function()
             -- Register the mdx filetype
