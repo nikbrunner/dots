@@ -1,0 +1,13 @@
+{
+  "name": "pi-speak",
+  "version": "0.1.0",
+  "description": "Voice readback extension for Pi — reads agent responses aloud via Unreal Speech TTS",
+  "private": true,
+  "main": "src/index.ts",
+  "pi": {
+    "extensions": ["src/index.ts"]
+  },
+  "dependencies": {
+    "@mariozechner/pi-coding-agent": "*"
+  }
+}
