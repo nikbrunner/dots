@@ -1,42 +1,46 @@
 /**
  * Lint Extension for Pi
  *
- * Tracks modified TypeScript files during the turn and runs
- * ESLint and Prettier checks on agent_end.
+ * Runs ESLint and Prettier checks after every turn. Auto-fixes
+ * issues and notifies the agent before returning to user.
  */
 
 import type { ExtensionAPI } from "@mariozechner/pi-coding-agent";
 
 export default function lintExtension(pi: ExtensionAPI) {
-  const modifiedFiles = new Set<string>();
+  // Run lint/format checks after each turn
+  pi.on("turn_end", async (event, ctx) => {
+    // Find all TypeScript files that were modified this turn
+    const modifiedFiles = new Set<string>();
 
-  // Track write/edit tool calls
-  pi.on("tool_result", async (event) => {
-    if (event.toolName === "write" || event.toolName === "edit") {
-      const path = event.input.path as string;
-      if (path && path.endsWith(".ts") && !path.includes("node_modules")) {
-        modifiedFiles.add(path);
+    for (const msg of event.message.content) {
+      if (msg.type === "tool-result") {
+        const path = (msg as { path?: string }).path;
+        if (path && path.endsWith(".ts") && !path.includes("node_modules")) {
+          modifiedFiles.add(path);
+        }
       }
     }
-  });
 
-  // Run lint and format checks on agent_end
-  pi.on("agent_end", async (_event, ctx) => {
     if (modifiedFiles.size === 0) return;
 
     const files = Array.from(modifiedFiles);
-    modifiedFiles.clear();
 
-    // Run ESLint check
-    const lintResult = await pi.exec("npm", ["run", "lint:check", "--", ...files]);
-    if (lintResult.code !== 0) {
-      ctx.ui.notify(`Lint issues:\n${lintResult.stderr}`, "warning");
-    }
+    // Run auto-fix (silently fixes formatting/lint issues)
+    const result = await pi.exec("npm", ["run", "lint:fix", "--", ...files]);
 
-    // Run Prettier check
-    const formatResult = await pi.exec("npm", ["run", "format:check", "--", ...files]);
-    if (formatResult.code !== 0) {
-      ctx.ui.notify(`Format issues:\n${formatResult.stderr}`, "warning");
+    if (result.code === 0) {
+      // Inject message so agent is aware
+      ctx.sessionManager.appendMessage({
+        role: "user",
+        content: [
+          {
+            type: "text",
+            text: `[Lint: auto-fixed issues in ${files.length} file(s): ${files.join(", ")}]`,
+          },
+        ],
+        timestamp: Date.now(),
+      });
     }
   });
 }
