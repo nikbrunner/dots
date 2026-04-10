@@ -1,0 +1,3 @@
+- [ ] AGENTS.md file
+- [x] Project local pi extension for formatting and linting. I am thinking of Prettier and ESLint
+- [ ] Configurable model for the summarizer. By default, it should be a fast and free model
