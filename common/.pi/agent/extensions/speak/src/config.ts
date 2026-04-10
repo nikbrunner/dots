@@ -27,6 +27,8 @@ export interface SpeakConfig {
   shortcut: string;
   /** Enable debug logging to ~/.pi-speak-debug.log. Default: true */
   debug: boolean;
+  /** OpenRouter model for summarizer. Default: "openai/gpt-oss-20b" */
+  summarizerModel: string;
 }
 
 const DEFAULT_CONFIG: SpeakConfig = {
@@ -36,7 +38,8 @@ const DEFAULT_CONFIG: SpeakConfig = {
   pitch: 1.0,
   maxChunkChars: 900,
   shortcut: "alt+r",
-  debug: true
+  debug: true,
+  summarizerModel: "openai/gpt-oss-20b"
 };
 
 // ─── File path ───────────────────────────────────────────────────────────────
@@ -70,6 +73,7 @@ export function loadConfig(): SpeakConfig {
   if (process.env.PI_SPEAK_PITCH) envOverrides.pitch = parseFloat(process.env.PI_SPEAK_PITCH);
   if (process.env.PI_SPEAK_SHORTCUT) envOverrides.shortcut = process.env.PI_SPEAK_SHORTCUT;
   if (process.env.PI_SPEAK_DEBUG !== undefined) envOverrides.debug = process.env.PI_SPEAK_DEBUG !== "0";
+  if (process.env.PI_SPEAK_SUMMARIZER_MODEL) envOverrides.summarizerModel = process.env.PI_SPEAK_SUMMARIZER_MODEL;
 
   const config = { ...DEFAULT_CONFIG, ...fileConfig, ...envOverrides };
   debug(

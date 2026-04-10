@@ -126,7 +126,8 @@ export default function (pi: ExtensionAPI) {
     // Generate short voice ping summary (LLM if OpenRouter key, else fallback)
     const ping = await summarizeForPing({
       responseText: text,
-      sessionName: sessionName || undefined
+      sessionName: sessionName || undefined,
+      model: config.summarizerModel
     });
     debug(`agent_end: voice ping = "${ping}"`);
 

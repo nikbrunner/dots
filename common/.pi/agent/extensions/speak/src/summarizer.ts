@@ -8,7 +8,6 @@
 import { debug, debugError } from "./debug.js";
 
 const OPENROUTER_URL = "https://openrouter.ai/api/v1/chat/completions";
-const MODEL = "google/gemini-2.0-flash-001";
 const MAX_TOKENS = 60;
 
 export interface SummarizeContext {
@@ -16,6 +15,8 @@ export interface SummarizeContext {
   responseText: string;
   /** tmux session name (if available) */
   sessionName?: string;
+  /** OpenRouter model to use. Default: "openai/gpt-oss-20b" */
+  model?: string;
 }
 
 /** Generate a 2-sentence voice ping summary via OpenRouter */
@@ -26,6 +27,7 @@ export async function summarizeForPing(ctx: SummarizeContext): Promise<string> {
     return fallbackSummary(ctx);
   }
 
+  const model = ctx.model ?? "openai/gpt-oss-20b";
   const where = ctx.sessionName ? ` in the "${ctx.sessionName}" session` : "";
 
   try {
@@ -36,7 +38,7 @@ export async function summarizeForPing(ctx: SummarizeContext): Promise<string> {
         Authorization: `Bearer ${apiKey}`
       },
       body: JSON.stringify({
-        model: MODEL,
+        model,
         max_tokens: MAX_TOKENS,
         messages: [
           {
