@@ -268,26 +268,9 @@ end
 
 ---Show explorer filtered to only git-modified and untracked files
 function M.git_explorer()
-    local win = vim.api.nvim_get_current_win()
-    local pos = vim.api.nvim_win_get_position(win)
-    local width = vim.api.nvim_win_get_width(win)
-    local height = vim.api.nvim_win_get_height(win)
-
     Snacks.picker.explorer({
         title = "Git Explorer",
-        layout = {
-            layout = {
-                backdrop = false,
-                row = pos[1],
-                col = pos[2],
-                width = width,
-                height = height,
-                border = "none",
-                box = "vertical",
-                { win = "input", height = 1, border = "bottom" },
-                { win = "list", border = "none" },
-            },
-        },
+        layout = M.layouts.pane(),
         git_status = true,
         auto_close = true,
         git_status_open = true,
@@ -317,56 +300,81 @@ end
 -- Layout Configurations
 -- ============================================================================
 
----Shared layout options for pickers
----@type snacks.picker.layout.Config
----Get smart layout that adapts based on window width
----Uses centered layout for wide windows (>= 165 cols), compact layout otherwise
----@return snacks.picker.layout.Config
-function M.smart_layout()
-    local win = vim.api.nvim_get_current_win()
-    local win_pos = vim.api.nvim_win_get_position(win)
-    local win_width = vim.api.nvim_win_get_width(win)
-    local win_height = vim.api.nvim_win_get_height(win)
+---@type table<string, snacks.picker.layout.Config|fun(): snacks.picker.layout.Config>
+M.layouts = {
+    ---Adaptive bottom picker — centered for wide windows, full-width otherwise
+    smart = function()
+        local win = vim.api.nvim_get_current_win()
+        local win_pos = vim.api.nvim_win_get_position(win)
+        local win_width = vim.api.nvim_win_get_width(win)
+        local win_height = vim.api.nvim_win_get_height(win)
 
-    local picker_height = math.floor(0.25 * win_height)
-    local row = win_pos[1] + win_height - picker_height - 1
+        local picker_height = math.floor(0.25 * win_height)
+        local row = win_pos[1] + win_height - picker_height - 1
 
-    local col = win_pos[2]
-    local border_width = 2
+        local col = win_pos[2]
+        local border_width = 2
 
-    local shared_layout_opts = {
-        preview = "main",
-        layout = {
-            box = "vertical",
-            border = "solid",
-            min_width = 50,
-            min_height = 10,
-            backdrop = false,
-            { win = "preview", title = "{preview}", width = 0.6, border = "top" },
-            { win = "input", height = 1, border = "single" },
-            { win = "list", border = "none" },
-        },
-    }
-
-    if win_width >= 165 then
-        return vim.tbl_deep_extend("force", shared_layout_opts, {
+        ---@type snacks.picker.layout.Config
+        local shared_layout_opts = {
+            preview = "main",
             layout = {
-                width = 0.5,
-                row = row,
-                height = picker_height,
+                box = "vertical",
+                border = "solid",
+                min_width = 50,
+                min_height = 10,
+                backdrop = false,
+                { win = "preview", title = "{preview}", width = 0.6, border = "top" },
+                { win = "input", height = 1, border = "single" },
+                { win = "list", border = "none" },
             },
-        })
-    else
-        return vim.tbl_deep_extend("force", shared_layout_opts, {
+        }
+
+        ---@type snacks.picker.layout.Config
+        if win_width >= 165 then
+            return vim.tbl_deep_extend("force", shared_layout_opts, {
+                layout = {
+                    width = 0.5,
+                    row = row,
+                    height = picker_height,
+                },
+            })
+        else
+            ---@type snacks.picker.layout.Config
+            return vim.tbl_deep_extend("force", shared_layout_opts, {
+                layout = {
+                    col = col,
+                    width = win_width - border_width,
+                    row = row,
+                    height = picker_height,
+                },
+            })
+        end
+    end,
+
+    ---Float covering the current pane — like Oil
+    pane = function()
+        local win = vim.api.nvim_get_current_win()
+        local pos = vim.api.nvim_win_get_position(win)
+        local width = vim.api.nvim_win_get_width(win)
+        local height = vim.api.nvim_win_get_height(win)
+
+        ---@type snacks.picker.layout.Config
+        return {
             layout = {
-                col = col,
-                width = win_width - border_width,
-                row = row,
-                height = picker_height,
+                backdrop = false,
+                row = pos[1],
+                col = pos[2],
+                width = width,
+                height = height,
+                border = "none",
+                box = "vertical",
+                { win = "input", height = 1, border = true },
+                { win = "list", border = "none" },
             },
-        })
-    end
-end
+        }
+    end,
+}
 
 -- ============================================================================
 -- Keymaps
@@ -558,7 +566,7 @@ return {
                 },
             },
             layout = function()
-                return M.smart_layout()
+                return M.layouts.smart()
             end,
             matcher = {
                 -- the bonusses below, possibly require string concatenation and path normalization,
@@ -601,6 +609,7 @@ return {
                 explorer = {
                     replace_netrw = true,
                     git_status = true,
+                    layout = M.layouts.pane,
                     jump = {
                         close = false,
                     },

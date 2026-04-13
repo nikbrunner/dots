@@ -21,6 +21,13 @@ return {
                     desc = "Pick files",
                 },
                 {
+                    "<leader>wd",
+                    function()
+                        require("fff-snacks").find_files()
+                    end,
+                    desc = "Pick files",
+                },
+                {
                     "<leader>wt",
                     function()
                         require("fff-snacks").live_grep()
