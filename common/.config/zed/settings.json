@@ -1,5 +1,15 @@
 {
-  "icon_theme": "Zed (Default)",
+  "outline_panel": {
+    "dock": "left"
+  },
+  "collaboration_panel": {
+    "dock": "left"
+  },
+  "icon_theme": {
+    "mode": "dark",
+    "light": "Zed (Default)",
+    "dark": "Zed (Default)"
+  },
   "document_symbols": "on",
   "session": {
     "trust_all_worktrees": false,
@@ -19,6 +29,7 @@
     "metrics": false,
   },
   "agent": {
+    "dock": "right",
     "tool_permissions": {
       "default": "allow",
     },
@@ -48,9 +59,9 @@
   ],
   "cursor_blink": false,
   "theme": {
-    "mode": "system",
-    "light": "Black Atom — TERRA ∷ Fall Day",
-    "dark": "Black Atom — TERRA ∷ Summer Night"
+    "mode": "light",
+    "light": "Black Atom — MNML ∷ Mono Light",
+    "dark": "Black Atom — TERRA ∷ Fall Night"
   },
   "base_keymap": "VSCode",
   "vim_mode": true,
@@ -80,6 +91,7 @@
     "sort_by_path": true,
   },
   "project_panel": {
+    "dock": "left",
     "git_status": true,
     "indent_guides": {
       "show": "never",
