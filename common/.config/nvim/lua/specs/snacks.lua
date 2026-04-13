@@ -416,8 +416,8 @@ function M.keys()
         { "<leader>wc",          function() Snacks.picker.git_diff() end, desc = "[C]hanges" },
         -- { "<leader>wd",          function() Snacks.picker.files() end, desc = "[D]ocument" },
         { "<leader>wj",          function() Snacks.picker.jumps() end, desc = "[J]umps" },
-        { "<leader>wm",          function() Snacks.picker.git_status() end, desc = "[M]odified Documents" },
-        { "<leader>wM",          M.git_explorer, desc = "[M]odified Explorer" },
+        -- { "<leader>wm",          function() Snacks.picker.git_status() end, desc = "[M]odified Documents" },
+        { "<leader>wm",          M.git_explorer, desc = "[M]odified Explorer" },
         { "<leader>wp",          function() Snacks.picker.diagnostics() end, desc = "[P]roblems" },
         { "<leader>wr",          function() Snacks.picker.recent({ filter = { cwd = true } }) end, desc = "[R]ecent Documents" },
         { "<leader>ws",          function() Snacks.picker.lsp_symbols() end, desc = "[S]ymbols" },
@@ -445,10 +445,10 @@ function M.keys()
         { "<leader>du",          function() Snacks.picker.undo() end, desc = "[U]ndo" },
 
         -- Symbol
-        { "<leader>sgb",          function() Snacks.git.blame_line() end, desc = "[B]lame" },
-        { "<leader>sgh",          function() Snacks.picker.git_log_line() end, desc = "[H]istory" },
         { "<leader>si",           function() Snacks.picker.lsp_implementations() end, desc = "[I]mplementations" },
         { "<leader>sr",           function() Snacks.picker.lsp_references() end, desc = "[R]eferences" },
+        { "<leader>sgb",          function() Snacks.git.blame_line() end, desc = "[B]lame" },
+        { "<leader>sgh",          function() Snacks.picker.git_log_line() end, desc = "[H]istory" },
     }
     -- stylua: ignore end
 end
