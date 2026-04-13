@@ -268,9 +268,28 @@ end
 
 ---Show explorer filtered to only git-modified and untracked files
 function M.git_explorer()
+    local win = vim.api.nvim_get_current_win()
+    local pos = vim.api.nvim_win_get_position(win)
+    local width = vim.api.nvim_win_get_width(win)
+    local height = vim.api.nvim_win_get_height(win)
+
     Snacks.picker.explorer({
         title = "Git Explorer",
+        layout = {
+            layout = {
+                backdrop = false,
+                row = pos[1],
+                col = pos[2],
+                width = width,
+                height = height,
+                border = "none",
+                box = "vertical",
+                { win = "input", height = 1, border = "bottom" },
+                { win = "list", border = "none" },
+            },
+        },
         git_status = true,
+        auto_close = true,
         git_status_open = true,
         git_untracked = true,
         diagnostics = false,
