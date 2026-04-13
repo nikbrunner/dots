@@ -266,6 +266,34 @@ function M.gh_issue_browse()
     end)
 end
 
+---Show explorer filtered to only git-modified and untracked files
+function M.git_explorer()
+    Snacks.picker.explorer({
+        title = "Git Explorer",
+        git_status = true,
+        git_status_open = true,
+        git_untracked = true,
+        diagnostics = false,
+        ignored = false,
+        transform = function(item)
+            -- Always keep root directory
+            if not item.parent then
+                return
+            end
+            -- Keep files with git status (modified/untracked/etc)
+            if item.status then
+                return
+            end
+            -- Keep directories containing dirty descendants
+            if item.dir_status then
+                return
+            end
+            -- Filter out clean items
+            return false
+        end,
+    })
+end
+
 -- ============================================================================
 -- Layout Configurations
 -- ============================================================================
@@ -361,6 +389,7 @@ function M.keys()
         { "<leader>wd",          function() Snacks.picker.files() end, desc = "[D]ocument" },
         { "<leader>wj",          function() Snacks.picker.jumps() end, desc = "[J]umps" },
         { "<leader>wm",          function() Snacks.picker.git_status() end, desc = "[M]odified Documents" },
+        { "<leader>wM",          M.git_explorer, desc = "[M]odified Explorer" },
         { "<leader>wp",          function() Snacks.picker.diagnostics() end, desc = "[P]roblems" },
         { "<leader>wr",          function() Snacks.picker.recent({ filter = { cwd = true } }) end, desc = "[R]ecent Documents" },
         { "<leader>ws",          function() Snacks.picker.lsp_symbols() end, desc = "[S]ymbols" },
@@ -557,12 +586,26 @@ return {
                     },
                     hidden = true,
                     ignored = true,
+                    actions = {
+                        explorer_nodes_under_cursor = function(picker)
+                            local Tree = require("snacks.explorer.tree")
+                            local dir = picker:dir()
+                            Tree:walk(Tree:find(dir), function(node)
+                                if node.dir then
+                                    node.open = true
+                                end
+                            end, { all = true })
+                            require("snacks.explorer.actions").update(picker, { refresh = true })
+                        end,
+                    },
                     win = {
                         list = {
                             keys = {
                                 ["]c"] = "explorer_git_next",
                                 ["[c"] = "explorer_git_prev",
                                 ["<c-t>"] = { "tab", mode = { "n", "i" } },
+                                ["O"] = "explorer_nodes_under_cursor",
+                                ["<C-w>m"] = "toggle_maximize",
                             },
                         },
                     },
