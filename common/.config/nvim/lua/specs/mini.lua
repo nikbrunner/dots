@@ -35,6 +35,20 @@ function M.statusline()
                 )
                 local lsp_section = table.concat(vim.list_slice({ lsp_status, lsp_names }, 1, 2), " ")
 
+                -- Treesitter attachment indicator
+                local ts_section = ""
+                local ts_hl = "NonText"
+                local bufnr = vim.api.nvim_get_current_buf()
+                local ok, parser = pcall(vim.treesitter.get_parser, bufnr)
+                if ok and parser then
+                    local lang = parser:lang() or ""
+                    ts_section = " TS " .. lang
+                    ts_hl = "String"
+                else
+                    ts_section = " --"
+                    ts_hl = "NonText"
+                end
+
                 return m.combine_groups({
                     { hl = mode_hl, strings = { mode } },
                     {
@@ -51,6 +65,8 @@ function M.statusline()
                     "%=", -- End left alignment
 
                     { hl = "@type", strings = { lsp_section } },
+
+                    { hl = ts_hl, strings = { ts_section } },
 
                     { hl = "DiagnosticError", strings = { diagnostics } },
                 })
