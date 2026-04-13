@@ -4,15 +4,21 @@
   "packages": [
     "npm:pi-web-access",
     "npm:pi-fff",
-    "npm:@plannotator/pi-extension"
+    "npm:@plannotator/pi-extension",
+    "../../repos/nikbrunner/pi-speak"
   ],
   "defaultProvider": "openrouter",
-  "defaultModel": "minimax/minimax-m2.7",
+  "defaultModel": "qwen/qwen3.6-plus",
   "enabledModels": [
     "openrouter/anthropic/claude-sonnet-4.6",
     "openrouter/anthropic/claude-opus-4.6",
     "openrouter/moonshotai/kimi-k2.5",
     "openrouter/minimax/minimax-m2.7",
-    "openrouter/z-ai/glm-5.1"
-  ]
+    "openrouter/z-ai/glm-5.1",
+    "openrouter/qwen/qwen3.6-plus"
+  ],
+  "hideThinkingBlock": false,
+  "compaction": {
+    "enabled": false
+  }
 }
