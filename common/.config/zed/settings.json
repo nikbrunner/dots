@@ -50,7 +50,7 @@
   "theme": {
     "mode": "system",
     "light": "Black Atom — TERRA ∷ Fall Day",
-    "dark": "Black Atom — TERRA ∷ Fall Night"
+    "dark": "Black Atom — TERRA ∷ Summer Night"
   },
   "base_keymap": "VSCode",
   "vim_mode": true,
