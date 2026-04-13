@@ -270,7 +270,7 @@ end
 function M.git_explorer()
     Snacks.picker.explorer({
         title = "Git Explorer",
-        layout = M.layouts.pane(),
+        layout = M.layouts.half_pane,
         git_status = true,
         auto_close = true,
         git_status_open = true,
@@ -371,6 +371,32 @@ M.layouts = {
                 box = "vertical",
                 { win = "input", height = 1, border = "top_bottom" },
                 { win = "list", border = "hpad" },
+            },
+        }
+    end,
+
+    half_pane = function()
+        local win = vim.api.nvim_get_current_win()
+        local pos = vim.api.nvim_win_get_position(win)
+        local width = vim.api.nvim_win_get_width(win)
+        local height = vim.api.nvim_win_get_height(win)
+
+        local half_width = math.floor(width / 2)
+
+        ---@type snacks.picker.layout.Config
+        return {
+            preview = "main",
+            layout = {
+                backdrop = true,
+                row = pos[1],
+                col = pos[2] + half_width,
+                width = half_width - 2,
+                height = height - 1,
+                border = "shadow",
+                box = "vertical",
+                { win = "input", height = 1, border = "hpad" },
+                { win = "list", border = "none" },
+                { win = "preview", border = "none" },
             },
         }
     end,
@@ -607,14 +633,14 @@ return {
             },
             sources = {
                 explorer = {
+                    mouse = true,
                     replace_netrw = true,
+                    layout = M.layouts.half_pane,
+                    auto_close = true,
+                    jump = { close = false },
                     git_status = true,
-                    layout = M.layouts.pane,
-                    jump = {
-                        close = false,
-                    },
                     hidden = true,
-                    ignored = true,
+                    ignored = false,
                     actions = {
                         explorer_nodes_under_cursor = function(picker)
                             local Tree = require("snacks.explorer.tree")
