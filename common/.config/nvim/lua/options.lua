@@ -63,7 +63,7 @@ vim.opt.writebackup = false
 vim.opt.undofile = true
 vim.opt.updatetime = 500
 
-vim.opt.cmdheight = 1
+vim.opt.cmdheight = 0
 vim.opt.pumheight = 30
 vim.opt.pumblend = 10
 
