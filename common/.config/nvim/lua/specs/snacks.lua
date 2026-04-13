@@ -457,12 +457,7 @@ return {
         })
     end,
 
-    dependencies = {
-        {
-            "mbbill/undotree",
-            cmd = { "UndotreeToggle", "UndotreeShow", "UndotreeHide" },
-        },
-    },
+    dependencies = {},
 
     ---@type snacks.Config
     opts = {
