@@ -382,6 +382,13 @@ M.layouts = {
         local width = vim.api.nvim_win_get_width(win)
         local height = vim.api.nvim_win_get_height(win)
 
+        local min_width = 30
+        local threshold = min_width * 3 -- if pane < 240, fall back to full
+
+        if width < threshold then
+            return M.layouts.pane()
+        end
+
         local third_width = math.floor(width / 3)
 
         ---@type snacks.picker.layout.Config
@@ -390,7 +397,7 @@ M.layouts = {
             layout = {
                 backdrop = true,
                 row = pos[1],
-                col = pos[2] + (third_width * 2),
+                col = pos[2] + (width - third_width),
                 width = third_width - 2,
                 height = height - 1,
                 border = "shadow",
@@ -598,6 +605,16 @@ return {
                 diff = {
                     builtin = false, -- use external delta command for diffs
                     cmd = { "delta", "--width", vim.o.columns }, -- explicit width since PTY is disabled when piping input
+                },
+            },
+            icons = {
+                git = {
+                    staged = "S", -- staged changes. always overrides the type icons
+                    added = "A",
+                    deleted = "D",
+                    ignored = "I",
+                    modified = "M",
+                    renamed = "R",
                 },
             },
             win = {
