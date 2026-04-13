@@ -369,8 +369,8 @@ M.layouts = {
                 height = height,
                 border = "none",
                 box = "vertical",
-                { win = "input", height = 1, border = true },
-                { win = "list", border = "none" },
+                { win = "input", height = 1, border = "top_bottom" },
+                { win = "list", border = "hpad" },
             },
         }
     end,
