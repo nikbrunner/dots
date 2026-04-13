@@ -10,13 +10,11 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +57 README.md
+badd +249 ~/repos/nikbrunner/fff-snacks.nvim/lua/fff-snacks/find_files.lua
 argglobal
 %argdel
-edit README.md
+edit ~/repos/nikbrunner/fff-snacks.nvim/lua/fff-snacks/find_files.lua
 argglobal
-xnoremap <buffer> <silent> [[ :exe "normal! gv"|call search('\%(^#\{1,5\}\s\+\S\|^\S.*\n^[=-]\+$\)', "bsW")
-xnoremap <buffer> <silent> ]] :exe "normal! gv"|call search('\%(^#\{1,5\}\s\+\S\|^\S.*\n^[=-]\+$\)', "sW")
 setlocal keymap=
 setlocal noarabic
 setlocal autoindent
@@ -33,8 +31,8 @@ setlocal cinoptions=
 setlocal cinscopedecls=public,protected,private
 setlocal cinwords=if,else,while,do,for,switch
 setlocal colorcolumn=
-setlocal comments=fb:*,fb:-,fb:+,n:>
-setlocal commentstring=<!--\ %s\ -->
+setlocal comments=:---,:--
+setlocal commentstring=--\ %s
 setlocal complete=.,w,b,u,t
 setlocal completefunc=
 setlocal completeslash=
@@ -45,11 +43,12 @@ setlocal nocursorbind
 setlocal nocursorcolumn
 setlocal cursorline
 setlocal cursorlineopt=both
+setlocal define=\\<function\\|\\<local\\%(\\s\\+function\\)\\=
 setlocal nodiff
 setlocal eventignorewin=
 setlocal expandtab
-if &filetype != 'markdown'
-setlocal filetype=markdown
+if &filetype != 'lua'
+setlocal filetype=lua
 endif
 setlocal fixendofline
 setlocal foldcolumn=0
@@ -63,27 +62,29 @@ setlocal foldminlines=1
 setlocal foldnestmax=20
 setlocal foldtext=
 setlocal formatexpr=v:lua.require'conform'.formatexpr()
-setlocal formatlistpat=^\\s*\\d\\+\\.\\s\\+\\|^\\s*[-*+]\\s\\+\\|^\\[^\\ze[^\\]]\\+\\]:\\&^.\\{4\\}
-setlocal formatoptions=jtcqln
+setlocal formatlistpat=^\\s*\\d\\+[\\]:.)}\\t\ ]\\s*
+setlocal formatoptions=jcroql
 setlocal iminsert=0
 setlocal imsearch=-1
-setlocal includeexpr=
-setlocal indentexpr=
-setlocal indentkeys=0{,0},0),0],:,0#,!^F,o,O,e
+setlocal include=\\<\\%(\\%(do\\|load\\)file\\|require\\)\\s*(
+setlocal includeexpr=v:lua.require'vim._ftplugin.lua'.includeexpr(v:fname)
+setlocal indentexpr=GetLuaIndent()
+setlocal indentkeys=0{,0},0),0],:,0#,!^F,o,O,e,0=end,0=until
 setlocal noinfercase
 setlocal iskeyword=@,48-57,_,192-255
 setlocal lhistory=10
-setlocal linebreak
+setlocal nolinebreak
 setlocal nolisp
 setlocal lispoptions=
 setlocal nolist
-setlocal matchpairs=(:),{:},[:],<:>
+setlocal matchpairs=(:),{:},[:]
 setlocal modeline
 setlocal modifiable
 setlocal nrformats=bin,hex
 setlocal number
 setlocal numberwidth=4
 setlocal omnifunc=v:lua.vim.lsp.omnifunc
+setlocal path=,
 setlocal nopreserveindent
 setlocal nopreviewwindow
 setlocal quoteescape=\\
@@ -104,7 +105,7 @@ setlocal spellfile=
 setlocal spelllang=en_us,de_de
 setlocal spelloptions=noplainbuffer
 setlocal statuscolumn=%!v:lua.require'snacks.statuscolumn'.get()
-setlocal suffixesadd=
+setlocal suffixesadd=.lua
 setlocal noswapfile
 setlocal synmaxcol=3000
 if &syntax != ''
@@ -116,23 +117,19 @@ setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarFilename#README.md%*
+setlocal winbar=%#WinBarPath#lua%*\ %#WinBarSeparator#/%*\ %#WinBarPath#fff-snacks%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#find_files.lua%*
 setlocal winblend=0
 setlocal nowinfixbuf
 setlocal nowinfixheight
 setlocal nowinfixwidth
 setlocal winhighlight=
-setlocal wrap
+setlocal nowrap
 setlocal wrapmargin=0
-1
-sil! normal! zo
-36
-sil! normal! zo
-let s:l = 57 - ((45 * winheight(0) + 29) / 58)
+let s:l = 249 - ((50 * winheight(0) + 26) / 52)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 57
+keepjumps 249
 normal! 0
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
