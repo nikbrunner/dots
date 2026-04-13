@@ -300,20 +300,6 @@ end
 
 ---Shared layout options for pickers
 ---@type snacks.picker.layout.Config
-M.shared_layout_opts = {
-    preview = "main",
-    layout = {
-        box = "vertical",
-        border = "solid",
-        min_width = 50,
-        min_height = 10,
-        backdrop = false,
-        { win = "preview", title = "{preview}", width = 0.6, border = "top" },
-        { win = "input", height = 1, border = "single" },
-        { win = "list", border = "none" },
-    },
-}
-
 ---Get smart layout that adapts based on window width
 ---Uses centered layout for wide windows (>= 165 cols), compact layout otherwise
 ---@return snacks.picker.layout.Config
@@ -329,8 +315,22 @@ function M.smart_layout()
     local col = win_pos[2]
     local border_width = 2
 
+    local shared_layout_opts = {
+        preview = "main",
+        layout = {
+            box = "vertical",
+            border = "solid",
+            min_width = 50,
+            min_height = 10,
+            backdrop = false,
+            { win = "preview", title = "{preview}", width = 0.6, border = "top" },
+            { win = "input", height = 1, border = "single" },
+            { win = "list", border = "none" },
+        },
+    }
+
     if win_width >= 165 then
-        return vim.tbl_deep_extend("force", M.shared_layout_opts, {
+        return vim.tbl_deep_extend("force", shared_layout_opts, {
             layout = {
                 width = 0.5,
                 row = row,
@@ -338,7 +338,7 @@ function M.smart_layout()
             },
         })
     else
-        return vim.tbl_deep_extend("force", M.shared_layout_opts, {
+        return vim.tbl_deep_extend("force", shared_layout_opts, {
             layout = {
                 col = col,
                 width = win_width - border_width,
