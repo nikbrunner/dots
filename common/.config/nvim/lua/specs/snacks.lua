@@ -272,6 +272,7 @@ function M.git_explorer()
         title = "Git Explorer",
         layout = M.layouts.half_pane,
         git_status = true,
+        follow = true,
         auto_close = true,
         git_status_open = true,
         git_untracked = true,
@@ -641,6 +642,7 @@ return {
                     jump = { close = false },
                     git_status = true,
                     hidden = true,
+                    auto_confirm = true,
                     ignored = false,
                     actions = {
                         explorer_nodes_under_cursor = function(picker)
