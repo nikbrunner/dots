@@ -364,7 +364,7 @@ function M.keys()
     -- stylua: ignore start
     return {
         -- General
-        { "<leader><leader>",    function() Snacks.picker.smart() end, desc = "Pick file" },
+        -- { "<leader><leader>",    function() Snacks.picker.smart() end, desc = "Pick file" },
         { "<leader>.",           function() Snacks.picker.resume() end, desc = "Resume Picker" },
         { "<leader>;",           function() Snacks.picker.commands() end, desc = "Commands" },
         { "<leader>:",           function() Snacks.picker.command_history() end, desc = "Command History" },
@@ -385,16 +385,17 @@ function M.keys()
         { "<leader>aw",          M.project_switch, desc = "[W]orkspace" },
 
         -- Workspace
+        { "<leader>we",          function() Snacks.picker.explorer() end, desc = "[E]xplorer" },
         { "<leader>wc",          function() Snacks.picker.git_diff() end, desc = "[C]hanges" },
-        { "<leader>wd",          function() Snacks.picker.files() end, desc = "[D]ocument" },
+        -- { "<leader>wd",          function() Snacks.picker.files() end, desc = "[D]ocument" },
         { "<leader>wj",          function() Snacks.picker.jumps() end, desc = "[J]umps" },
         { "<leader>wm",          function() Snacks.picker.git_status() end, desc = "[M]odified Documents" },
         { "<leader>wM",          M.git_explorer, desc = "[M]odified Explorer" },
         { "<leader>wp",          function() Snacks.picker.diagnostics() end, desc = "[P]roblems" },
         { "<leader>wr",          function() Snacks.picker.recent({ filter = { cwd = true } }) end, desc = "[R]ecent Documents" },
         { "<leader>ws",          function() Snacks.picker.lsp_symbols() end, desc = "[S]ymbols" },
-        { "<leader>wt",          function() Snacks.picker.grep({ hidden = true }) end, desc = "[T]ext" },
-        { "<leader>ww",          function() Snacks.picker.grep_word() end, desc = "[W]ord" },
+        -- { "<leader>wt",          function() Snacks.picker.grep({ hidden = true }) end, desc = "[T]ext" },
+        -- { "<leader>ww",          function() Snacks.picker.grep_word() end, desc = "[W]ord" },
         { "<leader>wgb",         function() Snacks.picker.git_branches() end, desc = "[B]ranches" },
         { "<leader>wgh",         function() Snacks.picker.git_log() end, desc = "[H]istory" },
         { "<leader>wgH",         function() Snacks.lazygit.log() end, desc = "[H]istory (Lazygit)" },
@@ -549,7 +550,7 @@ return {
             },
             formatters = {
                 file = {
-                    filename_first = true, -- display filename before the file path
+                    filename_first = false, -- display filename before the file path
                     truncate = 80,
                 },
             },
@@ -589,10 +590,11 @@ return {
                     actions = {
                         explorer_nodes_under_cursor = function(picker)
                             local Tree = require("snacks.explorer.tree")
-                            local dir = picker:dir()
-                            Tree:walk(Tree:find(dir), function(node)
+                            local root = Tree:find(picker:dir())
+                            local open = not root.open
+                            Tree:walk(root, function(node)
                                 if node.dir then
-                                    node.open = true
+                                    node.open = open
                                 end
                             end, { all = true })
                             require("snacks.explorer.actions").update(picker, { refresh = true })
