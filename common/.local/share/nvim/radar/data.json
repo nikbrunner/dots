@@ -41,7 +41,7 @@
             "label": "3"
           }
         ],
-        "lastAccessed": 1775666951
+        "lastAccessed": 1775919706
       }
     },
     "~/repos/black-atom-industries/radar.nvim": {
@@ -56,7 +56,7 @@
             "label": "2"
           }
         ],
-        "lastAccessed": 1773220572
+        "lastAccessed": 1775898647
       }
     },
     "~/repos/black-atom-industries/website": {
@@ -443,7 +443,7 @@
             "label": "2"
           }
         ],
-        "lastAccessed": 1775820670
+        "lastAccessed": 1775989590
       },
       "main": {
         "locks": [
@@ -534,6 +534,25 @@
           }
         ],
         "lastAccessed": 1775381534
+      }
+    },
+    "~/repos/nikbrunner/pi-speak": {
+      "main": {
+        "locks": [
+          {
+            "filename": "README.md",
+            "label": "1"
+          },
+          {
+            "filename": "/Users/nbr/.pi-speak-debug.log",
+            "label": "2"
+          },
+          {
+            "filename": "/Users/nbr/.config/pi-speak/config.json",
+            "label": "3"
+          }
+        ],
+        "lastAccessed": 1776068231
       }
     },
     "~/repos/nikbrunner/wichtel-app": {
