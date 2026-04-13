@@ -173,7 +173,9 @@
     "typescript-lsp@claude-plugins-official": false,
     "claude-deno-lsp@local-plugins": true,
     "impeccable@impeccable": true,
-    "readwise@readwise-skills": true
+    "readwise@readwise-skills": true,
+    "plannotator@plannotator": true,
+    "caveman@caveman": true
   },
   "extraKnownMarketplaces": {
     "local-plugins": {
@@ -193,14 +195,26 @@
         "source": "github",
         "repo": "readwiseio/readwise-skills"
       }
+    },
+    "plannotator": {
+      "source": {
+        "source": "github",
+        "repo": "backnotprop/plannotator"
+      }
+    },
+    "caveman": {
+      "source": {
+        "source": "github",
+        "repo": "JuliusBrussee/caveman"
+      }
     }
   },
   "alwaysThinkingEnabled": true,
+  "effortLevel": "high",
   "autoUpdatesChannel": "latest",
   "voiceEnabled": true,
   "autoDreamEnabled": true,
   "feedbackSurveyState": {
     "lastShownTime": 1754313915132
-  },
-  "effortLevel": "high"
+  }
 }
