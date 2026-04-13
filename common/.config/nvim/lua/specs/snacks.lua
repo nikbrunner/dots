@@ -270,7 +270,7 @@ end
 function M.git_explorer()
     Snacks.picker.explorer({
         title = "Git Explorer",
-        layout = M.layouts.half_pane,
+        layout = M.layouts.third_pane,
         git_status = true,
         follow = true,
         auto_close = true,
@@ -376,13 +376,13 @@ M.layouts = {
         }
     end,
 
-    half_pane = function()
+    third_pane = function()
         local win = vim.api.nvim_get_current_win()
         local pos = vim.api.nvim_win_get_position(win)
         local width = vim.api.nvim_win_get_width(win)
         local height = vim.api.nvim_win_get_height(win)
 
-        local half_width = math.floor(width / 2)
+        local third_width = math.floor(width / 3)
 
         ---@type snacks.picker.layout.Config
         return {
@@ -390,8 +390,8 @@ M.layouts = {
             layout = {
                 backdrop = true,
                 row = pos[1],
-                col = pos[2] + half_width,
-                width = half_width - 2,
+                col = pos[2] + (third_width * 2),
+                width = third_width - 2,
                 height = height - 1,
                 border = "shadow",
                 box = "vertical",
@@ -637,7 +637,7 @@ return {
                 explorer = {
                     mouse = true,
                     replace_netrw = true,
-                    layout = M.layouts.half_pane,
+                    layout = M.layouts.third_pane,
                     auto_close = true,
                     jump = { close = false },
                     git_status = true,
