@@ -452,12 +452,22 @@ Complete these manual steps, then delete this file.
 ## App Logins
 
 - [ ] **Raycast** — Open, sign in, import settings
-- [ ] **Superwhisper** — Open, enter license key
+- [ ] **Claude** — Open, sign in
+- [ ] **Linear** — Open, sign in
+- [ ] **Slack** — Open, sign in to workspace
 - [ ] **Obsidian** — Open, select vault at `~/repos/nikbrunner/notes`
+- [ ] **Readwise Reader** — Open, sign in
+- [ ] **Zed** — Open, sign in (optional, for settings sync)
+- [ ] **Atuin** — Run `atuin login` (shell history sync)
 - [ ] **Signal** — Open, link device via phone
 - [ ] **WhatsApp** — Open, link device via phone
-- [ ] **Slack** — Open, sign in to workspace
 - [ ] **Docker Desktop** — Open, sign in (if needed)
+
+## License Keys
+
+- [ ] **Superwhisper** — Open, enter license key
+- [ ] **Shottr** — Open, enter license key (or use free tier)
+- [ ] **Yoink** — Open, restore App Store purchase
 
 ## System Settings
 
