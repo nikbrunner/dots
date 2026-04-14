@@ -454,7 +454,6 @@ Complete these manual steps, then delete this file.
 - [ ] **Raycast** — Open, sign in, import settings
 - [ ] **Claude** — Open, sign in
 - [ ] **Linear** — Open, sign in
-- [ ] **Slack** — Open, sign in to workspace (if needed)
 - [ ] **Mattermost** — Install and sign in (ImFusion)
 - [ ] **Obsidian** — Open, select vault at `~/repos/nikbrunner/notes`
 - [ ] **Readwise Reader** — Open, sign in
