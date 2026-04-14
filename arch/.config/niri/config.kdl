@@ -265,8 +265,8 @@ layout {
 // which may be more convenient to use.
 // See the binds section below for more spawn examples.
 
-// 1Password (start early so SSH agent and secrets are available)
-spawn-at-startup "1password" "--silent"
+// ProtonPass (start early so SSH agent and secrets are available)
+spawn-at-startup "proton-pass" "--silent"
 
 // This line starts waybar, a commonly used bar for Wayland compositors.
 spawn-at-startup "waybar"
@@ -448,7 +448,7 @@ binds {
      
     Ctrl+Shift+Alt+Mod+Semicolon hotkey-overlay-title="Run an Application: fuzzel" { spawn "fuzzel"; }
     Ctrl+Shift+Alt+Mod+W hotkey-overlay-title="Focus/Open Browser" { spawn-sh "niri-focus-or-open helium helium-browser"; }
-    Ctrl+Shift+Alt+Mod+X hotkey-overlay-title="Run an Application: 1Password" { spawn "1password"; }
+    Ctrl+Shift+Alt+Mod+X hotkey-overlay-title="Run an Application: ProtonPass" { spawn "proton-pass"; }
     Ctrl+Shift+Alt+Mod+N hotkey-overlay-title="Focus/Open Notes" { spawn-sh "niri-focus-or-open obsidian obsidian"; }
     Ctrl+Shift+Alt+Mod+A hotkey-overlay-title="Activity" { spawn "ghostty" "-e" "btop"; }
     Ctrl+Shift+Alt+Mod+B hotkey-overlay-title="Bookmarks" { spawn "ghostty" "--title=bm" "-e" "bm" ; }

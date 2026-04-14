@@ -164,8 +164,9 @@ validate_dependencies() {
         echo "qmk: missing"
     fi
 
-    # Check brew bundle (macOS only)
+    # Platform-specific validation
     if command -v brew &>/dev/null; then
+        # macOS: check Brewfile
         if brew bundle check --file="$DOTS_DIR/install/deps/Brewfile" &>/dev/null; then
             echo "All brew packages installed!"
             return 0
@@ -174,6 +175,10 @@ validate_dependencies() {
             brew bundle check --file="$DOTS_DIR/install/deps/Brewfile"
             return 1
         fi
+    elif command -v pacman &>/dev/null; then
+        # Arch: delegate to check_all
+        check_all
+        return $?
     fi
 }
 
