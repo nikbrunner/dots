@@ -72,8 +72,8 @@ Replace all 1Password references in the install flow with ProtonPass equivalents
 
 - [ ] `configure_system()` in `install/deps/install.sh`: `op-ssh-sign` check replaced with `pass-cli test` health check
 - [ ] `configure_system()` in `install/deps/install.sh`: prints ProtonPass status message instead of 1Password
-- [ ] Install flow order: Brewfile → `pp-env-sync` → non-brew deps → system config → symlinks → MCP → helm
-- [ ] `pp-env-sync` runs after Brewfile (which installs `pass-cli`) and before MCP setup (which needs API keys)
+- [ ] Install flow order: Brewfile → system config → symlinks → `pp-env-sync` → MCP → helm
+- [ ] `pp-env-sync` runs after symlinks (which sets up the script) and before MCP setup (which needs API keys)
 - [ ] Helm bootstrap phase: clone helm repo → `make install` → offer `helm setup`
 - [ ] Helm bootstrap only runs if Go is available (installed via Brewfile)
 - [ ] `helm setup` is offered interactively (gum confirm / read prompt), not forced

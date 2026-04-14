@@ -80,6 +80,7 @@ cd ~/repos/nikbrunner/dots
 
 | Phase | Description                                                  |
 | ----- | ------------------------------------------------------------ |
+| 1     | Detect OS                                                    |
 | 2     | Install dependencies (Brewfile + nvm, bun, claude-code, qmk) |
 | 3     | System configuration (zsh default shell, ProtonPass check)   |
 | 4     | Create symlinks from `symlinks.yml`                          |

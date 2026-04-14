@@ -8,8 +8,21 @@ set -e
 DOTS_DIR="${DOTS_DIR:-$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)}"
 
 # Bootstrap: on macOS with bash 3.x, install Homebrew + modern bash first, then re-exec
+# NOTE: This bootstrap must run even during --dry-run because bash 4+ is required
+# to parse the rest of the script. Xcode CLT, Homebrew, and bash are prerequisites.
 if [[ "${BASH_VERSINFO[0]}" -lt 4 ]]; then
-    echo "Detected bash ${BASH_VERSION} (need 4+). Bootstrapping..."
+    # Early dry-run check (bash 3 compatible)
+    _bootstrap_dry_run=false
+    for _arg in "$@"; do [ "$_arg" = "--dry-run" ] && _bootstrap_dry_run=true; done
+
+    if [[ "$_bootstrap_dry_run" == true ]]; then
+        echo "⚠️  bash ${BASH_VERSION} detected (need 4+)."
+        echo "   --dry-run requires Xcode CLT + Homebrew + modern bash to be installed first."
+        echo "   These will be installed now (unavoidable prerequisite)."
+        echo ""
+    else
+        echo "Detected bash ${BASH_VERSION} (need 4+). Bootstrapping..."
+    fi
 
     # Source OS detection (bash 3 compatible)
     # shellcheck disable=SC1091
