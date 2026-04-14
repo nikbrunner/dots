@@ -117,22 +117,15 @@ configure_system() {
         fi
     fi
 
-    # Git SSH signing is configured via platform-specific .gitconfig.local files
-    # (macos/.gitconfig.local and arch/.gitconfig.local), not at install time.
-    # Verify the signing binary exists:
-    local op_ssh_sign_path=""
-    if command -v op-ssh-sign &>/dev/null; then
-        op_ssh_sign_path=$(which op-ssh-sign)
-    elif [[ -x "/opt/1Password/op-ssh-sign" ]]; then
-        op_ssh_sign_path="/opt/1Password/op-ssh-sign"
-    elif [[ -x "/Applications/1Password.app/Contents/MacOS/op-ssh-sign" ]]; then
-        op_ssh_sign_path="/Applications/1Password.app/Contents/MacOS/op-ssh-sign"
-    fi
-
-    if [[ -n "$op_ssh_sign_path" ]]; then
-        echo "✅ 1Password SSH signing available ($op_ssh_sign_path)"
+    # Verify ProtonPass authentication (SSH agent + env sync depend on it)
+    if command -v pass-cli &>/dev/null; then
+        if pass-cli test &>/dev/null; then
+            echo "✅ ProtonPass authenticated"
+        else
+            echo "⚠️  ProtonPass not authenticated — run 'pass-cli login'"
+        fi
     else
-        echo "⚠️  1Password SSH signing not found"
+        echo "⚠️  pass-cli not found"
     fi
 
     # Install TPM (Tmux Plugin Manager)
