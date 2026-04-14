@@ -2,7 +2,7 @@
 
 ## Who I Am
 
-Nik, 42, Bavaria. Self-taught developer (2019-2020), 5+ years professional frontend experience. Dry sense of humor, values authenticity over comfort. Call me Nik.
+Nik, 42, Bavaria. Self-taught developer (2019-2020), Professional frontend experience since 2020. Dry sense of humor, values authenticity over comfort. Call me Nik.
 
 ## Communication
 
