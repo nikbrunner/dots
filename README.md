@@ -28,64 +28,21 @@ This dotfiles system uses a unified YAML configuration for symlink management:
 
 ### Prerequisites
 
-Before cloning, set up SSH access to GitHub via 1Password:
-
-**macOS:**
-
-```bash
-# Install Homebrew
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-
-# Install 1Password
-brew install --cask 1password
-```
-
-**Arch Linux (EndeavourOS):**
-
-```bash
-# yay is pre-installed on EndeavourOS
-yay -S 1password
-```
-
-**Then configure 1Password SSH:**
-
-1. Open 1Password and sign in
-2. Add your SSH key (or create one: **+ New Item → SSH Key**)
-3. Enable the SSH agent: **Settings → Developer → SSH Agent**
-4. Verify: `ssh -T git@github.com` should show "Hi username!"
+SSH access to GitHub via [ProtonPass](https://protonpass.github.io/pass-cli/) is required before cloning.
 
 ### Complete Machine Setup
+
+See **[install/README.md](install/README.md)** for the full bootstrap guide.
+
+Quick version:
 
 ```bash
 git clone git@github.com:nikbrunner/dots.git ~/repos/nikbrunner/dots
 cd ~/repos/nikbrunner/dots
-./scripts/install.sh
+./install/install.sh
 ```
 
-This will:
-
-- Install all required dependencies (git, zsh, tmux, neovim, fzf, ripgrep, etc.)
-- Configure system settings (default shell, Git signing)
-- Create all symlinks
-- Set up the `dots` command
-
-**Manual Installation** (skip dependencies):
-
-```bash
-./scripts/install.sh --no-deps
-echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.zshrc
-source ~/.zshrc
-```
-
-**Troubleshooting**:
-
-```bash
-# Preview installation without making changes
-./scripts/install.sh --dry-run
-
-# Preview symlink operations
-dots link --dry-run --verbose
-```
+**Flags**: `--dry-run` (preview), `--no-deps` (symlinks only), `--debug` (diagnostics)
 
 ## Usage
 
