@@ -180,14 +180,16 @@ validate_dependencies() {
         echo "qmk: missing"
     fi
 
-    # Check brew bundle
-    if brew bundle check --file="$DOTS_DIR/install/deps/Brewfile" &>/dev/null; then
-        echo "All brew packages installed!"
-        return 0
-    else
-        echo "Some brew packages missing"
-        brew bundle check --file="$DOTS_DIR/install/deps/Brewfile"
-        return 1
+    # Check brew bundle (macOS only)
+    if command -v brew &>/dev/null; then
+        if brew bundle check --file="$DOTS_DIR/install/deps/Brewfile" &>/dev/null; then
+            echo "All brew packages installed!"
+            return 0
+        else
+            echo "Some brew packages missing"
+            brew bundle check --file="$DOTS_DIR/install/deps/Brewfile"
+            return 1
+        fi
     fi
 }
 

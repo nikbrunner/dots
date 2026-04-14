@@ -109,13 +109,47 @@ check_all() {
     brew bundle check --file="$DOTS_DIR/install/deps/Brewfile" --verbose
 }
 
+# Ensure Xcode CLI Tools are installed
+ensure_xcode_clt() {
+    if xcode-select -p &>/dev/null; then
+        echo "✅ Xcode CLI Tools already installed"
+    else
+        echo "🔧 Installing Xcode CLI Tools..."
+        xcode-select --install
+        echo "⏳ Waiting for Xcode CLI Tools installation..."
+        echo "   Complete the installation dialog, then press Enter."
+        read -r
+    fi
+}
+
+# Ensure Homebrew is installed
+ensure_homebrew() {
+    if command -v brew &>/dev/null; then
+        echo "✅ Homebrew already installed"
+    else
+        echo "🍺 Installing Homebrew..."
+        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+        # Add brew to PATH for this session (Apple Silicon vs Intel)
+        if [[ -f "/opt/homebrew/bin/brew" ]]; then
+            eval "$(/opt/homebrew/bin/brew shellenv)"
+        elif [[ -f "/usr/local/bin/brew" ]]; then
+            eval "$(/usr/local/bin/brew shellenv)"
+        fi
+
+        if ! command -v brew &>/dev/null; then
+            echo "❌ Homebrew installation failed"
+            exit 1
+        fi
+        echo "✅ Homebrew installed"
+    fi
+}
+
 # Install all missing dependencies
 install_all() {
-    # Check brew is available
-    if ! command -v brew &>/dev/null; then
-        echo "Homebrew not found. Install from https://brew.sh"
-        exit 1
-    fi
+    # Bootstrap: Xcode CLT + Homebrew
+    ensure_xcode_clt
+    ensure_homebrew
 
     # Non-brew dependencies first
     echo "Checking non-brew dependencies..."

@@ -53,17 +53,18 @@ if [[ "$DEBUG" == true ]]; then
     echo ""
 fi
 
-# 1. Detect OS
+# ── Phase 1: Detect OS ──────────────────────────────────────────────────
 OS=$(get_os)
 echo -e "${GREEN}✓${NC} Detected OS: $OS"
 
-# 2. Install dependencies (unless skipped)
+# ── Phase 2: Install dependencies ───────────────────────────────────────
 if [[ "$SKIP_DEPS" == false ]]; then
     echo ""
-    echo -e "${BLUE}📋 Phase 1: Dependency Installation${NC}"
+    echo -e "${BLUE}📋 Phase 2: Dependency Installation${NC}"
     if [[ "$DRY_RUN" == true ]]; then
         echo -e "${YELLOW}→${NC} [DRY] Would install all required dependencies"
-        echo "  Required: git, zsh, tmux, neovim, fzf, ripgrep, fd, bat, delta, lazygit, eza, zoxide, gum, gh, 1password, 1password-cli"
+        echo "  Brew: git, zsh, tmux, bob (neovim), fzf, ripgrep, fd, bat, delta, lazygit, eza, zoxide, gum, gh, pass-cli, proton-pass"
+        echo "  Non-brew: nvm, bun, claude-code, qmk"
     else
         if ! install_all; then
             echo -e "${RED}❌ Failed to install dependencies${NC}"
@@ -76,13 +77,13 @@ else
     echo -e "${YELLOW}⚠️  Skipping dependency installation (--no-deps flag)${NC}"
 fi
 
-# 3. Configure system
+# ── Phase 3: System Configuration ───────────────────────────────────────
 echo ""
-echo -e "${BLUE}⚙️  Phase 2: System Configuration${NC}"
+echo -e "${BLUE}⚙️  Phase 3: System Configuration${NC}"
 if [[ "$DRY_RUN" == true ]]; then
     echo -e "${YELLOW}→${NC} [DRY] Would configure system settings"
     echo "  • Set zsh as default shell"
-    echo "  • Configure Git SSH signing"
+    echo "  • Check ProtonPass authentication"
     echo "  • Install TPM (Tmux Plugin Manager)"
 else
     if [[ "$SKIP_DEPS" == false ]]; then
@@ -92,9 +93,9 @@ else
     fi
 fi
 
-# 4. Initialize git repository if needed
+# ── Phase 4: Dotfiles Setup ─────────────────────────────────────────────
 echo ""
-echo -e "${BLUE}🔗 Phase 3: Dotfiles Setup${NC}"
+echo -e "${BLUE}🔗 Phase 4: Dotfiles Setup${NC}"
 if [[ ! -d "$DOTS_DIR/.git" ]]; then
     if [[ "$DRY_RUN" == true ]]; then
         echo -e "${YELLOW}→${NC} [DRY] Would initialize git repository"
@@ -106,13 +107,13 @@ if [[ ! -d "$DOTS_DIR/.git" ]]; then
     fi
 fi
 
-# 5. Create symlinks
+# Create symlinks
 echo -e "${YELLOW}→${NC} Creating symlinks..."
 SYMLINK_ARGS=()
 [[ "$DRY_RUN" == true ]] && SYMLINK_ARGS+=("--dry-run")
 "$DOTS_DIR/scripts/dots/symlinks.sh" "${SYMLINK_ARGS[@]}"
 
-# 6. Set up dots command
+# ── Phase 5: dots Command Setup ─────────────────────────────────────────
 if [[ "$DRY_RUN" == true ]]; then
     echo -e "${YELLOW}→${NC} [DRY] Would set up dots command at ~/.local/bin/dots"
     if [[ ! -L "$HOME/.local/bin/dots" ]]; then
@@ -120,11 +121,8 @@ if [[ "$DRY_RUN" == true ]]; then
     fi
 else
     echo -e "${YELLOW}→${NC} Setting up dots command..."
-
-    # Create ~/.local/bin if it doesn't exist
     mkdir -p "$HOME/.local/bin"
 
-    # Create dots command symlink
     if [[ -L "$HOME/.local/bin/dots" ]]; then
         rm "$HOME/.local/bin/dots"
     fi
@@ -132,10 +130,10 @@ else
     echo -e "${GREEN}✓${NC} Created dots command at ~/.local/bin/dots"
 fi
 
-# 7. Make all scripts executable
+# ── Phase 6: Make Scripts Executable ─────────────────────────────────────
 if [[ "$DRY_RUN" == true ]]; then
     echo -e "${YELLOW}→${NC} [DRY] Would make scripts executable"
-    echo "  Would chmod +x: install/*.sh"
+    echo "  Would chmod +x: install/*.sh, install/deps/*.sh"
     echo "  Would chmod +x: scripts/*.sh"
     echo "  Would chmod +x: common/.local/bin/*"
 else
@@ -147,10 +145,54 @@ else
     echo -e "${GREEN}✓${NC} All scripts are now executable"
 fi
 
-# 8. Install rmpc music client
+# ── Phase 7: Environment Sync ───────────────────────────────────────────
 if [[ "$SKIP_DEPS" == false ]]; then
     echo ""
-    echo -e "${BLUE}🎵 Phase 5: Music Client Setup${NC}"
+    echo -e "${BLUE}🔑 Phase 7: Environment Sync${NC}"
+    if [[ "$DRY_RUN" == true ]]; then
+        echo -e "${YELLOW}→${NC} [DRY] Would sync environment variables from ProtonPass"
+        echo "  Would run: pp-env-sync"
+    else
+        if command -v pass-cli &>/dev/null; then
+            if pass-cli test &>/dev/null; then
+                echo -e "${YELLOW}→${NC} Syncing environment variables from ProtonPass..."
+                if "$DOTS_DIR/common/.local/bin/pp-env-sync"; then
+                    echo -e "${GREEN}✓${NC} Environment variables synced"
+                    # Source the env file for remaining install phases
+                    for f in ~/.env ~/.env.*; do [[ -r "$f" ]] && { set -a; source "$f"; set +a; }; done
+                else
+                    echo -e "${YELLOW}⚠️${NC} Environment sync failed (optional)"
+                fi
+            else
+                echo -e "${YELLOW}⚠️${NC} ProtonPass not authenticated — skipping env sync"
+                echo "  Run 'pass-cli login' then 'pp-env-sync' later"
+            fi
+        else
+            echo -e "${YELLOW}⚠️${NC} pass-cli not installed — skipping env sync"
+        fi
+    fi
+fi
+
+# ── Phase 8: Claude Code MCP Setup ──────────────────────────────────────
+if [[ "$SKIP_DEPS" == false ]] && command -v claude &>/dev/null; then
+    echo ""
+    echo -e "${BLUE}🔌 Phase 8: Claude Code MCP Setup${NC}"
+    if [[ "$DRY_RUN" == true ]]; then
+        "$DOTS_DIR/scripts/claude-mcp.sh" --dry-run
+    else
+        if [[ -n "${EXA_API_KEY:-}" ]] || [[ -n "${REF_API_KEY:-}" ]]; then
+            "$DOTS_DIR/scripts/claude-mcp.sh"
+        else
+            echo -e "${YELLOW}⚠️${NC} MCP API keys not set in environment"
+            echo "  Run 'pp-env-sync' first, then: dots mcp"
+        fi
+    fi
+fi
+
+# ── Phase 9: Music Client ───────────────────────────────────────────────
+if [[ "$SKIP_DEPS" == false ]]; then
+    echo ""
+    echo -e "${BLUE}🎵 Phase 9: Music Client Setup${NC}"
     if [[ "$DRY_RUN" == true ]]; then
         echo -e "${YELLOW}→${NC} [DRY] Would install rmpc music client"
         echo "  Would run: cargo install rmpc"
@@ -173,15 +215,14 @@ if [[ "$SKIP_DEPS" == false ]]; then
     fi
 fi
 
-# 9. Bluetooth Setup (Arch only)
-if [[ "$SKIP_DEPS" == false ]] && [[ "$(get_os)" == "arch" ]]; then
+# ── Phase 10: Bluetooth Setup (Arch only) ────────────────────────────────
+if [[ "$SKIP_DEPS" == false ]] && [[ "$OS" == "arch" ]]; then
     echo ""
-    echo -e "${BLUE}🔵 Phase 5.5: Bluetooth Setup${NC}"
+    echo -e "${BLUE}🔵 Phase 10: Bluetooth Setup${NC}"
     if [[ "$DRY_RUN" == true ]]; then
         echo -e "${YELLOW}→${NC} [DRY] Would enable bluetooth.service"
         echo -e "${YELLOW}→${NC} [DRY] Would start blueman-applet"
     else
-        # Enable bluetooth service
         if ! systemctl is-enabled bluetooth &>/dev/null; then
             echo -e "${YELLOW}→${NC} Enabling bluetooth service..."
             sudo systemctl enable --now bluetooth
@@ -190,7 +231,6 @@ if [[ "$SKIP_DEPS" == false ]] && [[ "$(get_os)" == "arch" ]]; then
             echo -e "${GREEN}✓${NC} Bluetooth service already enabled"
         fi
 
-        # Start blueman-applet if not running
         if command -v blueman-applet &>/dev/null; then
             if ! pgrep -x blueman-applet &>/dev/null; then
                 echo -e "${YELLOW}→${NC} Starting blueman-applet..."
@@ -204,116 +244,97 @@ if [[ "$SKIP_DEPS" == false ]] && [[ "$(get_os)" == "arch" ]]; then
     fi
 fi
 
-# 10. Validate installation
-if [[ "$SKIP_DEPS" == false ]] && [[ "$DRY_RUN" == false ]]; then
+# ── Phase 11: GitHub Authentication ──────────────────────────────────────
+if command -v gh &>/dev/null; then
     echo ""
-    echo -e "${BLUE}🧪 Phase 6: Validation${NC}"
-    if validate_dependencies; then
-        echo -e "${GREEN}✓${NC} Testing dots command..."
-        if command -v dots &>/dev/null; then
-            echo -e "${GREEN}✓${NC} dots command functional"
-        else
-            echo -e "${YELLOW}⚠️${NC} dots command not in PATH - reload shell"
-        fi
-    fi
-fi
-
-# 11. GitHub Authentication
-if [[ "$DRY_RUN" == false ]] && command -v gh &>/dev/null; then
-    echo ""
-    echo -e "${BLUE}🔐 Phase 7: GitHub Authentication${NC}"
-    if gh auth status &>/dev/null; then
-        echo -e "${GREEN}✓${NC} Already authenticated with GitHub"
-    else
-        echo "GitHub CLI is not authenticated."
-        if command -v gum &>/dev/null; then
-            if gum confirm "Run 'gh auth login' to authenticate?"; then
-                gh auth login
-            else
-                echo -e "${YELLOW}→${NC} Skipped. Run 'gh auth login' later."
-            fi
-        else
-            echo -n "Run 'gh auth login' to authenticate? (y/N) "
-            read -r run_gh_auth
-            if [[ "$run_gh_auth" == "y" || "$run_gh_auth" == "Y" ]]; then
-                gh auth login
-            else
-                echo -e "${YELLOW}→${NC} Skipped. Run 'gh auth login' later."
-            fi
-        fi
-    fi
-elif [[ "$DRY_RUN" == true ]] && command -v gh &>/dev/null; then
-    echo ""
-    echo -e "${BLUE}🔐 Phase 7: GitHub Authentication${NC}"
-    echo -e "${YELLOW}→${NC} [DRY] Would check GitHub authentication status"
-fi
-
-# 12. Claude Code MCP Setup
-if [[ "$SKIP_DEPS" == false ]] && command -v claude &>/dev/null && command -v jq &>/dev/null; then
-    echo ""
-    echo -e "${BLUE}🔌 Phase 7.5: Claude Code MCP Setup${NC}"
+    echo -e "${BLUE}🔐 Phase 11: GitHub Authentication${NC}"
     if [[ "$DRY_RUN" == true ]]; then
-        "$DOTS_DIR/scripts/claude-mcp.sh" --dry-run
+        echo -e "${YELLOW}→${NC} [DRY] Would check GitHub authentication status"
     else
-        # Check if required env vars are set
-        if [[ -n "$EXA_API_KEY" ]] || [[ -n "$REF_API_KEY" ]]; then
-            "$DOTS_DIR/scripts/claude-mcp.sh"
+        if gh auth status &>/dev/null; then
+            echo -e "${GREEN}✓${NC} Already authenticated with GitHub"
         else
-            echo -e "${YELLOW}⚠️${NC} MCP API keys not set in environment"
-            echo "  Set EXA_API_KEY and REF_API_KEY, then run: dots mcp"
-            echo "  Or run manually: $DOTS_DIR/scripts/claude-mcp.sh"
+            echo "GitHub CLI is not authenticated."
+            if command -v gum &>/dev/null; then
+                if gum confirm "Run 'gh auth login' to authenticate?"; then
+                    gh auth login
+                else
+                    echo -e "${YELLOW}→${NC} Skipped. Run 'gh auth login' later."
+                fi
+            else
+                echo -n "Run 'gh auth login' to authenticate? (y/N) "
+                read -r run_gh_auth
+                if [[ "$run_gh_auth" == "y" || "$run_gh_auth" == "Y" ]]; then
+                    gh auth login
+                else
+                    echo -e "${YELLOW}→${NC} Skipped. Run 'gh auth login' later."
+                fi
+            fi
         fi
     fi
-elif [[ "$DRY_RUN" == true ]] && command -v claude &>/dev/null; then
-    echo ""
-    echo -e "${BLUE}🔌 Phase 7.5: Claude Code MCP Setup${NC}"
-    echo -e "${YELLOW}→${NC} [DRY] Would configure MCP servers for Claude Code"
 fi
 
-# 13. Offer to run repos setup
-REPOS_CONFIG="${XDG_CONFIG_HOME:-$HOME/.config}/repos/config.json"
-if [[ "$DRY_RUN" == false ]] && [[ -f "$REPOS_CONFIG" ]]; then
+# ── Phase 12: Helm Bootstrap ────────────────────────────────────────────
+if [[ "$SKIP_DEPS" == false ]]; then
+    HELM_REPO="$HOME/repos/black-atom-industries/helm"
     echo ""
-    echo -e "${BLUE}📦 Phase 8: Repository Setup${NC}"
-    echo "Found repos config at: $REPOS_CONFIG"
-    echo ""
-    if command -v gum &>/dev/null; then
-        if gum confirm "Run 'repos setup' to clone your repositories?"; then
-            echo ""
-            "$DOTS_DIR/common/.local/bin/repos" setup
-        else
-            echo -e "${YELLOW}→${NC} Skipped. Run 'repos setup' later to clone repositories."
-        fi
+    echo -e "${BLUE}⚓ Phase 12: Helm Bootstrap${NC}"
+    if [[ "$DRY_RUN" == true ]]; then
+        echo -e "${YELLOW}→${NC} [DRY] Would clone and build helm (tmux session manager)"
+        echo -e "${YELLOW}→${NC} [DRY] Would offer to run 'helm setup' for repo cloning"
     else
-        echo -n "Run 'repos setup' to clone your repositories? (y/N) "
-        read -r run_repos_setup
-        if [[ "$run_repos_setup" == "y" || "$run_repos_setup" == "Y" ]]; then
-            echo ""
-            "$DOTS_DIR/common/.local/bin/repos" setup
+        if command -v helm &>/dev/null; then
+            echo -e "${GREEN}✓${NC} helm already installed"
+        elif command -v go &>/dev/null; then
+            if [[ ! -d "$HELM_REPO" ]]; then
+                echo -e "${YELLOW}→${NC} Cloning helm..."
+                mkdir -p "$(dirname "$HELM_REPO")"
+                git clone git@github.com:black-atom-industries/helm.git "$HELM_REPO"
+            fi
+            echo -e "${YELLOW}→${NC} Building helm..."
+            if (cd "$HELM_REPO" && make install); then
+                echo -e "${GREEN}✓${NC} helm installed to ~/.local/bin"
+            else
+                echo -e "${YELLOW}⚠️${NC} helm build failed (optional)"
+            fi
         else
-            echo -e "${YELLOW}→${NC} Skipped. Run 'repos setup' later to clone repositories."
+            echo -e "${YELLOW}⚠️${NC} Go not available, skipping helm build"
+        fi
+
+        # Offer helm setup for repo cloning
+        if command -v helm &>/dev/null; then
+            echo ""
+            if command -v gum &>/dev/null; then
+                if gum confirm "Run 'helm setup' to clone your repositories?"; then
+                    helm setup
+                else
+                    echo -e "${YELLOW}→${NC} Skipped. Run 'helm setup' later."
+                fi
+            else
+                echo -n "Run 'helm setup' to clone your repositories? (y/N) "
+                read -r run_helm_setup
+                if [[ "$run_helm_setup" == "y" || "$run_helm_setup" == "Y" ]]; then
+                    helm setup
+                else
+                    echo -e "${YELLOW}→${NC} Skipped. Run 'helm setup' later."
+                fi
+            fi
         fi
     fi
-elif [[ "$DRY_RUN" == true ]] && [[ -f "$REPOS_CONFIG" ]]; then
-    echo ""
-    echo -e "${BLUE}📦 Phase 8: Repository Setup${NC}"
-    echo -e "${YELLOW}→${NC} [DRY] Would offer to run 'repos setup' to clone repositories"
 fi
 
-# 14. Fonts Setup (after repos are cloned)
+# ── Phase 13: Fonts Setup ───────────────────────────────────────────────
 FONTS_REPO="$HOME/repos/nikbrunner/fonts"
 if [[ -d "$FONTS_REPO" ]]; then
     echo ""
-    echo -e "${BLUE}🔤 Phase 9: Fonts Setup${NC}"
+    echo -e "${BLUE}🔤 Phase 13: Fonts Setup${NC}"
     if [[ "$DRY_RUN" == true ]]; then
         echo -e "${YELLOW}→${NC} [DRY] Would install fonts from $FONTS_REPO"
         echo -e "${YELLOW}→${NC} [DRY] Would symlink pick-font to ~/.local/bin"
     else
-        # Install fonts
         if [[ -x "$FONTS_REPO/install.sh" ]]; then
             "$FONTS_REPO/install.sh"
         fi
-        # Symlink pick-font
         if [[ -x "$FONTS_REPO/pick-font" ]]; then
             mkdir -p "$HOME/.local/bin"
             ln -sf "$FONTS_REPO/pick-font" "$HOME/.local/bin/pick-font"
@@ -322,20 +343,18 @@ if [[ -d "$FONTS_REPO" ]]; then
     fi
 fi
 
-# 15. Seed zoxide database
+# ── Phase 14: Zoxide Seed ───────────────────────────────────────────────
 if command -v zoxide &>/dev/null; then
     ZOXIDE_SEED="$DOTS_DIR/common/.config/zoxide/seed.txt"
     if [[ -f "$ZOXIDE_SEED" ]]; then
         echo ""
-        echo -e "${BLUE}📂 Phase 10: Zoxide Seed${NC}"
+        echo -e "${BLUE}📂 Phase 14: Zoxide Seed${NC}"
         if [[ "$DRY_RUN" == true ]]; then
             echo -e "${YELLOW}→${NC} [DRY] Would seed zoxide with base paths from seed.txt"
         else
             count=0
             while IFS= read -r line; do
-                # Skip comments and empty lines
                 [[ -z "$line" || "$line" == \#* ]] && continue
-                # Expand ~ to $HOME, then glob-expand (unquoted)
                 expanded="${line/#\~/$HOME}"
                 # shellcheck disable=SC2086
                 for path in $expanded; do
@@ -347,36 +366,49 @@ if command -v zoxide &>/dev/null; then
     fi
 fi
 
-# Success message
+# ── Phase 15: Validation ────────────────────────────────────────────────
+if [[ "$SKIP_DEPS" == false ]] && [[ "$DRY_RUN" == false ]]; then
+    echo ""
+    echo -e "${BLUE}🧪 Phase 15: Validation${NC}"
+    if validate_dependencies; then
+        echo -e "${GREEN}✓${NC} Testing dots command..."
+        if command -v dots &>/dev/null; then
+            echo -e "${GREEN}✓${NC} dots command functional"
+        else
+            echo -e "${YELLOW}⚠️${NC} dots command not in PATH — reload shell"
+        fi
+    fi
+fi
+
+# ── Complete ─────────────────────────────────────────────────────────────
 echo ""
 if [[ "$DRY_RUN" == true ]]; then
     echo -e "${GREEN}╔══════════════════════════════════════╗${NC}"
-    echo -e "${GREEN}║    Dry Run Complete! 🔍              ║${NC}"
+    echo -e "${GREEN}║    Dry Run Complete!                 ║${NC}"
     echo -e "${GREEN}╚══════════════════════════════════════╝${NC}"
     echo ""
     echo "This was a dry run. No changes were made."
     echo "Run without --dry-run to perform the actual installation."
 else
     echo -e "${GREEN}╔══════════════════════════════════════╗${NC}"
-    echo -e "${GREEN}║   Machine Setup Complete! 🎉         ║${NC}"
+    echo -e "${GREEN}║   Machine Setup Complete!            ║${NC}"
     echo -e "${GREEN}╚══════════════════════════════════════╝${NC}"
     echo ""
     if [[ "$SKIP_DEPS" == false ]]; then
-        echo "🎯 Your development environment is ready:"
-        echo "  • Modern shell: zsh with custom configuration"
-        echo "  • Editor: neovim with custom configuration"
-        echo "  • Tools: fzf, ripgrep, tmux, lazygit, gh"
-        echo "  • Configuration: Use 'dots' for dotfiles management"
+        echo "Your development environment is ready:"
+        echo "  • Shell: zsh with custom configuration"
+        echo "  • Editor: neovim (via bob)"
+        echo "  • Tools: fzf, ripgrep, tmux, lazygit, gh, helm"
+        echo "  • Dotfiles: managed via 'dots' command"
         echo ""
     fi
 fi
 
-echo "📋 Next steps:"
+echo "Next steps:"
 if [[ "$SKIP_DEPS" == false ]]; then
-    echo "1. Logout and login (for shell change to take effect)"
-    echo "2. Reload your shell: source ~/.zshrc"
-    echo "3. Test with: dots status"
-    echo "4. Verify SSH: ssh -T git@github.com"
+    echo "1. Reload your shell: source ~/.zshrc"
+    echo "2. Test with: dots status"
+    echo "3. Verify SSH: ssh -T git@github.com"
 else
     echo "1. Install dependencies manually or run: ./install.sh (without --no-deps)"
     echo "2. Ensure ~/.local/bin is in your PATH"

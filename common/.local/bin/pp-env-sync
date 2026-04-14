@@ -24,5 +24,3 @@ pass-cli item list --filter-type custom --output json |
 
 # Reload shell if running interactively
 [[ -t 0 ]] && exec zsh
-
-exec zsh
