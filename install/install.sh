@@ -441,6 +441,48 @@ if [[ "$SKIP_DEPS" == false ]] && [[ "$DRY_RUN" == false ]]; then
     fi
 fi
 
+# ── Post-install checklist ───────────────────────────────────────────────
+POST_INSTALL="$HOME/post-install.md"
+if [[ "$DRY_RUN" == false ]] && [[ "$SKIP_DEPS" == false ]]; then
+    cat >"$POST_INSTALL" <<'CHECKLIST'
+# Post-Install Checklist
+
+Complete these manual steps, then delete this file.
+
+## App Logins
+
+- [ ] **Raycast** — Open, sign in, import settings
+- [ ] **Superwhisper** — Open, enter license key
+- [ ] **Obsidian** — Open, select vault at `~/repos/nikbrunner/notes`
+- [ ] **Signal** — Open, link device via phone
+- [ ] **WhatsApp** — Open, link device via phone
+- [ ] **Slack** — Open, sign in to workspace
+- [ ] **Docker Desktop** — Open, sign in (if needed)
+
+## System Settings
+
+- [ ] **Neovim** — Run `bob install stable && bob use stable`
+- [ ] **Ghostty** — Set as default terminal
+- [ ] **Keyboard** — Set key repeat rate / delay in System Settings
+- [ ] **Homerow** — Open, grant accessibility permissions
+- [ ] **ProtonPass** — Enable browser extension
+
+## Verify
+
+- [ ] `dots status` — shows clean state
+- [ ] `ssh -T git@github.com` — authenticated
+- [ ] `gh auth status` — authenticated
+- [ ] `pass-cli test` — authenticated
+- [ ] Open a tmux session, test `helm` keybinding
+
+Delete this file when done: `rm ~/post-install.md`
+CHECKLIST
+
+    echo ""
+    echo -e "${BLUE}📝 Phase 16: Post-Install Checklist${NC}"
+    echo -e "${GREEN}✓${NC} Written to ~/post-install.md"
+fi
+
 # ── Complete ─────────────────────────────────────────────────────────────
 echo ""
 if [[ "$DRY_RUN" == true ]]; then
@@ -462,14 +504,16 @@ else
         echo "  • Tools: fzf, ripgrep, tmux, lazygit, gh, helm"
         echo "  • Dotfiles: managed via 'dots' command"
         echo ""
+        echo "📝 See ~/post-install.md for manual setup steps"
+        echo ""
     fi
 fi
 
 echo "Next steps:"
-if [[ "$SKIP_DEPS" == false ]]; then
+if [[ "$SKIP_DEPS" == false ]] && [[ "$DRY_RUN" == false ]]; then
     echo "1. Reload your shell: source ~/.zshrc"
-    echo "2. Test with: dots status"
-    echo "3. Verify SSH: ssh -T git@github.com"
+    echo "2. Open ~/post-install.md and work through the checklist"
+    echo "3. Delete it when done: rm ~/post-install.md"
 else
     echo "1. Install dependencies manually or run: ./install.sh (without --no-deps)"
     echo "2. Ensure ~/.local/bin is in your PATH"
