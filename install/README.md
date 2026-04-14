@@ -6,23 +6,28 @@ Complete bootstrap guide for setting up a new machine with dots.
 
 These steps must be done manually before the automated install can run. On a fresh machine, read these instructions on your phone via the GitHub app.
 
-### 1. Xcode CLI Tools (macOS)
+### 1. System Prerequisites
+
+**macOS:**
 
 ```bash
 xcode-select --install
-```
-
-### 2. Homebrew (macOS)
-
-```bash
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 ```
 
-After install, follow the instructions to add brew to your PATH.
+After Homebrew installs, follow the instructions to add `brew` to your PATH.
 
-### 3. ProtonPass
+**Arch Linux:**
 
-Install ProtonPass and the CLI:
+```bash
+# yay/paru is pre-installed on EndeavourOS
+# Ensure system is up to date
+sudo pacman -Syu
+```
+
+### 2. ProtonPass
+
+**macOS:**
 
 ```bash
 brew tap protonpass/tap
@@ -30,9 +35,16 @@ brew install pass-cli
 brew install --cask proton-pass
 ```
 
+**Arch Linux:**
+
+```bash
+curl -fsSL https://proton.me/download/pass-cli/install.sh | bash
+paru -S proton-pass
+```
+
 Open the Proton Pass app and sign in to your account.
 
-### 4. SSH Agent
+### 3. SSH Agent
 
 Authenticate the CLI and start the SSH agent:
 
@@ -54,7 +66,7 @@ You should see: `Hi <username>! You've successfully authenticated`.
 - [ProtonPass CLI docs](https://protonpass.github.io/pass-cli/)
 - [SSH Agent commands](https://protonpass.github.io/pass-cli/commands/ssh-agent)
 
-### 5. Clone dots
+### 4. Clone dots
 
 ```bash
 mkdir -p ~/repos/nikbrunner
@@ -68,6 +80,8 @@ cd ~/repos/nikbrunner/dots
 ./install/install.sh
 ```
 
+> On a fresh macOS with bash 3.2, the script auto-installs Homebrew + modern bash before continuing.
+
 ### Flags
 
 | Flag        | Description                                    |
@@ -78,23 +92,23 @@ cd ~/repos/nikbrunner/dots
 
 ### What it does
 
-| Phase | Description                                                  |
-| ----- | ------------------------------------------------------------ |
-| 1     | Detect OS                                                    |
-| 2     | Install dependencies (Brewfile + nvm, bun, claude-code, qmk) |
-| 3     | System configuration (zsh default shell, ProtonPass check)   |
-| 4     | Create symlinks from `symlinks.yml`                          |
-| 5     | Set up `dots` CLI command                                    |
-| 6     | Make scripts executable                                      |
-| 7     | Sync environment variables from ProtonPass (`pp-env-sync`)   |
-| 8     | Configure Claude Code MCP servers                            |
-| 9     | Install rmpc music client (via cargo)                        |
-| 10    | Bluetooth setup (Arch only)                                  |
-| 11    | GitHub authentication (`gh auth login`)                      |
-| 12    | Build and install helm, offer `helm setup` for repo cloning  |
-| 13    | Install fonts (if fonts repo exists)                         |
-| 14    | Seed zoxide with base paths                                  |
-| 15    | Validate installation                                        |
+| Phase | Description                                                           |
+| ----- | --------------------------------------------------------------------- |
+| 1     | Detect OS                                                             |
+| 2     | Install dependencies (Brewfile / pacman + nvm, bun, claude-code, qmk) |
+| 3     | System configuration (zsh default shell, ProtonPass check)            |
+| 4     | Create symlinks from `symlinks.yml`                                   |
+| 5     | Set up `dots` CLI command                                             |
+| 6     | Make scripts executable                                               |
+| 7     | Sync environment variables from ProtonPass (`pp-env-sync`)            |
+| 8     | Configure Claude Code MCP servers                                     |
+| 9     | Install rmpc music client (via cargo)                                 |
+| 10    | Bluetooth setup (Arch only)                                           |
+| 11    | GitHub authentication (`gh auth login`)                               |
+| 12    | Build and install helm, offer `helm setup` for repo cloning           |
+| 13    | Install fonts (if fonts repo exists)                                  |
+| 14    | Seed zoxide with base paths                                           |
+| 15    | Validate installation                                                 |
 
 ### Preview
 
