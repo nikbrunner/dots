@@ -7,6 +7,55 @@ set -e
 # Get the dots directory (this script lives in install/)
 DOTS_DIR="${DOTS_DIR:-$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)}"
 
+# Bootstrap: on macOS with bash 3.x, install Homebrew + modern bash first, then re-exec
+if [[ "${BASH_VERSINFO[0]}" -lt 4 ]]; then
+    echo "Detected bash ${BASH_VERSION} (need 4+). Bootstrapping..."
+
+    # Source OS detection (bash 3 compatible)
+    # shellcheck disable=SC1091
+    source "$DOTS_DIR/scripts/dots/detect-os.sh"
+
+    if [[ "$(get_os)" == "macos" ]]; then
+        # Xcode CLT
+        if ! xcode-select -p &>/dev/null; then
+            echo "🔧 Installing Xcode CLI Tools..."
+            xcode-select --install
+            echo "⏳ Complete the dialog, then press Enter."
+            read -r
+        fi
+
+        # Homebrew
+        if ! command -v brew &>/dev/null; then
+            echo "🍺 Installing Homebrew..."
+            /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+            if [[ -f "/opt/homebrew/bin/brew" ]]; then
+                eval "$(/opt/homebrew/bin/brew shellenv)"
+            elif [[ -f "/usr/local/bin/brew" ]]; then
+                eval "$(/usr/local/bin/brew shellenv)"
+            fi
+        fi
+
+        # Modern bash
+        if ! brew list bash &>/dev/null; then
+            echo "🐚 Installing modern bash..."
+            brew install bash
+        fi
+
+        # Re-exec with modern bash
+        MODERN_BASH="$(brew --prefix)/bin/bash"
+        if [[ -x "$MODERN_BASH" ]]; then
+            echo "✅ Re-running with bash 5..."
+            exec "$MODERN_BASH" "$0" "$@"
+        else
+            echo "❌ Failed to install modern bash" >&2
+            exit 1
+        fi
+    else
+        echo "❌ bash 4+ required. Install via your package manager." >&2
+        exit 1
+    fi
+fi
+
 # Colors for output
 GREEN='\033[0;32m'
 YELLOW='\033[0;33m'
