@@ -78,22 +78,22 @@ cd ~/repos/nikbrunner/dots
 
 ### What it does
 
-| Phase | Description                                                     |
-| ----- | --------------------------------------------------------------- |
-| 2     | Install dependencies (Brewfile + nvm, bun, claude-code, qmk)    |
-| 3     | System configuration (zsh default shell, ProtonPass check, TPM) |
-| 4     | Create symlinks from `symlinks.yml`                             |
-| 5     | Set up `dots` CLI command                                       |
-| 6     | Make scripts executable                                         |
-| 7     | Sync environment variables from ProtonPass (`pp-env-sync`)      |
-| 8     | Configure Claude Code MCP servers                               |
-| 9     | Install rmpc music client (via cargo)                           |
-| 10    | Bluetooth setup (Arch only)                                     |
-| 11    | GitHub authentication (`gh auth login`)                         |
-| 12    | Build and install helm, offer `helm setup` for repo cloning     |
-| 13    | Install fonts (if fonts repo exists)                            |
-| 14    | Seed zoxide with base paths                                     |
-| 15    | Validate installation                                           |
+| Phase | Description                                                  |
+| ----- | ------------------------------------------------------------ |
+| 2     | Install dependencies (Brewfile + nvm, bun, claude-code, qmk) |
+| 3     | System configuration (zsh default shell, ProtonPass check)   |
+| 4     | Create symlinks from `symlinks.yml`                          |
+| 5     | Set up `dots` CLI command                                    |
+| 6     | Make scripts executable                                      |
+| 7     | Sync environment variables from ProtonPass (`pp-env-sync`)   |
+| 8     | Configure Claude Code MCP servers                            |
+| 9     | Install rmpc music client (via cargo)                        |
+| 10    | Bluetooth setup (Arch only)                                  |
+| 11    | GitHub authentication (`gh auth login`)                      |
+| 12    | Build and install helm, offer `helm setup` for repo cloning  |
+| 13    | Install fonts (if fonts repo exists)                         |
+| 14    | Seed zoxide with base paths                                  |
+| 15    | Validate installation                                        |
 
 ### Preview
 
