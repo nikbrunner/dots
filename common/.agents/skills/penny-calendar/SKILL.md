@@ -11,7 +11,7 @@ Access my iCloud calendar via `davit` CLI. Used by Penny for scheduling, briefin
 ## Prerequisites
 
 - `davit` must be installed globally (`deno task install` in the davit repo)
-- Credentials from env vars managed by 1Password in `~/.env`
+- Credentials from env vars managed by ProtonPass in `~/.env`
 - **Always run `source ~/.env` before davit commands in Bash**
 
 ## Command Reference

@@ -43,7 +43,7 @@ For each selected OS, determine the package name and **verify it exists via web 
 Package name formats:
 
 - **macOS**: brew name (e.g., `neovim`, `git-delta`)
-- **macOS cask**: `--cask name` (e.g., `--cask 1password`)
+- **macOS cask**: `--cask name` (e.g., `--cask proton-pass`)
 - **macOS tap**: `user/repo/package` (e.g., `steveyegge/beads/bd`)
 - **Arch**: pacman/AUR name (e.g., `neovim`, `github-cli`)
 

@@ -8,7 +8,7 @@ davit ("DAV it") is a Deno CLI tool for CalDAV (calendar) and CardDAV (contacts)
 
 **Why:** caldav-mcp was too limited (4 commands, no update, no description). Nik wanted full calendar access for Penny without self-hosting. Built on tsdav library + iCloud CalDAV.
 
-**How to apply:** Use `davit --help` as source of truth for CLI commands. Penny accesses calendar via `penny-calendar` skill which calls davit via Bash. Config at `~/.config/davit/config.toml`, password from `DAVIT_ICLOUD_PASSWORD` env var (1Password).
+**How to apply:** Use `davit --help` as source of truth for CLI commands. Penny accesses calendar via `penny-calendar` skill which calls davit via Bash. Config at `~/.config/davit/config.toml`, password from `DAVIT_ICLOUD_PASSWORD` env var (ProtonPass via pp-env-sync).
 
 ## Key Details
 
