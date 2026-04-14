@@ -106,7 +106,7 @@ check_all() {
 
     echo ""
     echo "Brew packages:"
-    brew bundle check --file="$DOTS_DIR/scripts/deps/Brewfile" --verbose
+    brew bundle check --file="$DOTS_DIR/install/deps/Brewfile" --verbose
 }
 
 # Install all missing dependencies
@@ -156,7 +156,7 @@ install_all() {
 
     echo ""
     echo "Installing brew packages..."
-    brew bundle install --no-upgrade --file="$DOTS_DIR/scripts/deps/Brewfile"
+    brew bundle install --no-upgrade --file="$DOTS_DIR/install/deps/Brewfile"
 
     echo ""
     echo "Done!"
@@ -170,7 +170,7 @@ upgrade_all() {
     fi
 
     echo "Upgrading brew packages..."
-    brew bundle install --file="$DOTS_DIR/scripts/deps/Brewfile"
+    brew bundle install --file="$DOTS_DIR/install/deps/Brewfile"
 
     echo ""
     echo "Done!"

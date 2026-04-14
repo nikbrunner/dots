@@ -17,7 +17,8 @@ dots/
 │   └── .zshrc, etc.      # Root dotfiles
 ├── macos/                # macOS-specific configs
 ├── arch/                 # Arch Linux-specific configs
-└── scripts/              # Core management scripts
+├── install/              # Machine bootstrap & dependency management
+└── scripts/              # Runtime management scripts
 ```
 
 ## Commands
@@ -26,7 +27,7 @@ dots/
 - **`shiplog`** — AI-powered git operations (commit, branch). Run `shiplog --help` for usage. See [nikbrunner/shiplog](https://github.com/nikbrunner/shiplog).
 - **`helm`** — External tool for multi-repo management (pull, push, status, rebuild). Invoked by `dots pull` and `dots push`.
 
-Full machine setup: `scripts/install.sh [--dry-run] [--no-deps]`
+Full machine setup: `install/install.sh [--dry-run] [--no-deps]`
 
 ## Symlink Configuration
 
@@ -68,8 +69,8 @@ Theme files in this repo are symlinks to Black Atom adapter repos. `dots link` a
 - `scripts/dots/detect-os.sh` — OS detection (`macos`, `arch`, `linux`)
 - `scripts/dots/theme-link.sh` — Black Atom theme symlink creation
 - `scripts/log.sh` — Shared logging/UI functions
-- `scripts/deps/` — Dependency management (install.sh dispatcher, macos.sh, arch.sh)
-- `scripts/install.sh` — Full machine setup script
+- `install/deps/` — Dependency management (install.sh dispatcher, macos.sh, arch.sh)
+- `install/install.sh` — Full machine setup script
 - `scripts/claude-mcp.sh` — Claude Code MCP server configuration (legacy)
 
 ## Environment Variables

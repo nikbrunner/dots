@@ -4,7 +4,7 @@
 
 set -e
 
-# Get the dots directory (this script lives in scripts/)
+# Get the dots directory (this script lives in install/)
 DOTS_DIR="${DOTS_DIR:-$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)}"
 
 # Colors for output
@@ -36,7 +36,7 @@ done
 # shellcheck disable=SC1091
 source "$DOTS_DIR/scripts/dots/detect-os.sh"
 # shellcheck disable=SC1091
-source "$DOTS_DIR/scripts/deps/install.sh"
+source "$DOTS_DIR/install/deps/install.sh"
 
 echo -e "${BLUE}╔══════════════════════════════════════╗${NC}"
 echo -e "${BLUE}║    Dots Complete Machine Setup       ║${NC}"
@@ -135,12 +135,13 @@ fi
 # 7. Make all scripts executable
 if [[ "$DRY_RUN" == true ]]; then
     echo -e "${YELLOW}→${NC} [DRY] Would make scripts executable"
-    echo "  Would chmod +x: install.sh"
+    echo "  Would chmod +x: install/*.sh"
     echo "  Would chmod +x: scripts/*.sh"
     echo "  Would chmod +x: common/.local/bin/*"
 else
     echo -e "${YELLOW}→${NC} Making scripts executable..."
-    chmod +x "$DOTS_DIR/scripts/install.sh"
+    chmod +x "$DOTS_DIR/install/install.sh"
+    chmod +x "$DOTS_DIR/install/deps/"*.sh
     chmod +x "$DOTS_DIR/scripts/"*.sh
     find "$DOTS_DIR/common/.local/bin" -type f -exec chmod +x {} \;
     echo -e "${GREEN}✓${NC} All scripts are now executable"

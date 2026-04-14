@@ -55,13 +55,13 @@ cmd_pull() {
 	# ── Phase 2: Check dependencies ──
 	echo ""
 	log_section "Phase 2: Check dependencies"
-	if "$DOTS_DIR/scripts/deps/install.sh" check 2>/dev/null; then
+	if "$DOTS_DIR/install/deps/install.sh" check 2>/dev/null; then
 		log_success "All dependencies present"
 	else
 		log_warning "Some dependencies may be missing"
 		if command -v gum >/dev/null 2>&1; then
 			if gum confirm "Install missing dependencies?"; then
-				"$DOTS_DIR/scripts/deps/install.sh" install || true
+				"$DOTS_DIR/install/deps/install.sh" install || true
 			fi
 		else
 			log_info "Run 'dots deps install' to install missing dependencies"
@@ -616,20 +616,20 @@ cmd_deps() {
 	check)
 		log_info "Checking dependencies..."
 		echo ""
-		"$DOTS_DIR/scripts/deps/install.sh" check
+		"$DOTS_DIR/install/deps/install.sh" check
 		;;
 	install)
 		log_info "Installing dependencies..."
 		echo ""
-		"$DOTS_DIR/scripts/deps/install.sh" install
+		"$DOTS_DIR/install/deps/install.sh" install
 		;;
 	upgrade)
 		log_info "Upgrading dependencies..."
 		echo ""
-		"$DOTS_DIR/scripts/deps/install.sh" upgrade
+		"$DOTS_DIR/install/deps/install.sh" upgrade
 		;;
 	list)
-		"$DOTS_DIR/scripts/deps/install.sh" list
+		"$DOTS_DIR/install/deps/install.sh" list
 		;;
 	*)
 		echo "Usage: dots deps <check|install|upgrade|list>"

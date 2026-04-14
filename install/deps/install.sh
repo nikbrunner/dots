@@ -10,15 +10,15 @@ source "$DOTS_DIR/scripts/dots/detect-os.sh"
 OS=$(get_os)
 
 case "$OS" in
-macos) source "$DOTS_DIR/scripts/deps/macos.sh" ;;
-arch) source "$DOTS_DIR/scripts/deps/arch.sh" ;;
+macos) source "$DOTS_DIR/install/deps/macos.sh" ;;
+arch) source "$DOTS_DIR/install/deps/arch.sh" ;;
 *)
     echo "❌ Unsupported OS: $OS"
     exit 1
     ;;
 esac
 
-NPM_GLOBALS_FILE="$DOTS_DIR/scripts/deps/npm-globals.txt"
+NPM_GLOBALS_FILE="$DOTS_DIR/install/deps/npm-globals.txt"
 
 # Read npm global packages from file (skips empty lines and comments)
 _read_npm_globals() {
@@ -181,12 +181,12 @@ validate_dependencies() {
     fi
 
     # Check brew bundle
-    if brew bundle check --file="$DOTS_DIR/scripts/deps/Brewfile" &>/dev/null; then
+    if brew bundle check --file="$DOTS_DIR/install/deps/Brewfile" &>/dev/null; then
         echo "All brew packages installed!"
         return 0
     else
         echo "Some brew packages missing"
-        brew bundle check --file="$DOTS_DIR/scripts/deps/Brewfile"
+        brew bundle check --file="$DOTS_DIR/install/deps/Brewfile"
         return 1
     fi
 }
@@ -205,7 +205,7 @@ if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
     list)
         echo "nvm"
         echo "qmk"
-        grep -E '^(brew|cask)' "$DOTS_DIR/scripts/deps/Brewfile" | sed 's/.*"\(.*\)".*/\1/'
+        grep -E '^(brew|cask)' "$DOTS_DIR/install/deps/Brewfile" | sed 's/.*"\(.*\)".*/\1/'
         echo ""
         echo "npm globals:"
         while IFS= read -r entry; do
