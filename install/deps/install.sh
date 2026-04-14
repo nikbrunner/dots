@@ -128,15 +128,6 @@ configure_system() {
         echo "⚠️  pass-cli not found"
     fi
 
-    # Install TPM (Tmux Plugin Manager)
-    if [[ ! -d "$HOME/.tmux/plugins/tpm" ]]; then
-        echo "🔌 Installing TPM..."
-        git clone https://github.com/tmux-plugins/tpm "$HOME/.tmux/plugins/tpm" 2>/dev/null &&
-            echo "✅ TPM installed" || echo "⚠️  TPM install failed"
-    else
-        echo "✅ TPM already installed"
-    fi
-
     # Configure Docker (Linux only - macOS uses Docker Desktop)
     if [[ "$OS" != "macos" ]] && command -v docker &>/dev/null; then
         if ! groups "$USER" | grep -q '\bdocker\b'; then

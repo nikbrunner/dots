@@ -133,7 +133,6 @@ if [[ "$DRY_RUN" == true ]]; then
     echo -e "${YELLOW}→${NC} [DRY] Would configure system settings"
     echo "  • Set zsh as default shell"
     echo "  • Check ProtonPass authentication"
-    echo "  • Install TPM (Tmux Plugin Manager)"
 else
     if [[ "$SKIP_DEPS" == false ]]; then
         configure_system
