@@ -12,7 +12,7 @@ let s:shortmess_save = &shortmess
 set shortmess+=aoO
 badd +1 .prettierignore
 badd +32 ~/.config/pi-speak/config.json
-badd +162 ~/repos/nikbrunner/pi-speak/src/config/v1/schema.json
+badd +9 ~/repos/nikbrunner/pi-speak/src/helpers.ts
 argglobal
 %argdel
 $argadd ./
@@ -135,7 +135,7 @@ normal! zt
 keepjumps 3
 normal! 012|
 tabnext
-edit ~/repos/nikbrunner/pi-speak/src/config/v1/schema.json
+edit ~/repos/nikbrunner/pi-speak/src/helpers.ts
 let s:save_splitbelow = &splitbelow
 let s:save_splitright = &splitright
 set splitbelow splitright
@@ -152,8 +152,8 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe 'vert 1resize ' . ((&columns * 143 + 144) / 288)
-exe 'vert 2resize ' . ((&columns * 144 + 144) / 288)
+exe 'vert 1resize ' . ((&columns * 144 + 144) / 288)
+exe 'vert 2resize ' . ((&columns * 143 + 144) / 288)
 argglobal
 setlocal keymap=
 setlocal noarabic
@@ -171,8 +171,8 @@ setlocal cinoptions=
 setlocal cinscopedecls=public,protected,private
 setlocal cinwords=if,else,while,do,for,switch
 setlocal colorcolumn=
-setlocal comments=
-setlocal commentstring=
+setlocal comments=sO:*\ -,mO:*\ \ ,exO:*/,s1:/*,mb:*,ex:*/,://
+setlocal commentstring=//\ %s
 setlocal complete=.,w,b,u,t
 setlocal completefunc=
 setlocal completeslash=
@@ -186,8 +186,8 @@ setlocal cursorlineopt=both
 setlocal nodiff
 setlocal eventignorewin=
 setlocal expandtab
-if &filetype != 'json'
-setlocal filetype=json
+if &filetype != 'typescript'
+setlocal filetype=typescript
 endif
 setlocal fixendofline
 setlocal foldcolumn=0
@@ -202,12 +202,12 @@ setlocal foldnestmax=20
 setlocal foldtext=
 setlocal formatexpr=v:lua.require'conform'.formatexpr()
 setlocal formatlistpat=^\\s*\\d\\+[\\]:.)}\\t\ ]\\s*
-setlocal formatoptions=cnqjl
+setlocal formatoptions=jcroql
 setlocal iminsert=0
 setlocal imsearch=-1
 setlocal includeexpr=
-setlocal indentexpr=GetJSONIndent(v:lnum)
-setlocal indentkeys=0{,0},0),0[,0],!^F,o,O,e
+setlocal indentexpr=GetTypescriptIndent()
+setlocal indentkeys=0{,0},0),0],0,,!^F,o,O,e
 setlocal noinfercase
 setlocal iskeyword=@,48-57,_,192-255
 setlocal lhistory=10
@@ -230,7 +230,7 @@ setlocal relativenumber
 setlocal norightleft
 setlocal rightleftcmd=search
 setlocal scrollback=-1
-setlocal scrollbind
+setlocal noscrollbind
 setlocal shiftwidth=2
 setlocal signcolumn=yes
 setlocal nosmartindent
@@ -242,19 +242,19 @@ setlocal spellfile=
 setlocal spelllang=en_us,de_de
 setlocal spelloptions=noplainbuffer
 setlocal statuscolumn=%!v:lua.require'snacks.statuscolumn'.get()
-setlocal suffixesadd=
+setlocal suffixesadd=.ts,.d.ts,.tsx,.js,.jsx,.cjs,.mjs
 setlocal noswapfile
 setlocal synmaxcol=3000
 if &syntax != ''
 setlocal syntax=
 endif
 setlocal tabstop=4
-setlocal tagfunc=
+setlocal tagfunc=v:lua.vim.lsp.tagfunc
 setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#src%*\ %#WinBarSeparator#/%*\ %#WinBarPath#config%*\ %#WinBarSeparator#/%*\ %#WinBarPath#v1%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#schema.json%*
+setlocal winbar=%#WinBarPath#src%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#helpers.ts%*
 setlocal winblend=0
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -262,31 +262,18 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-1
-sil! normal! zo
-4
-sil! normal! zo
-108
-sil! normal! zo
-111
-sil! normal! zo
-148
-sil! normal! zo
-151
-sil! normal! zo
-let s:l = 162 - ((26 * winheight(0) + 25) / 50)
+let s:l = 13 - ((12 * winheight(0) + 25) / 50)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 162
-normal! 025|
+keepjumps 13
+normal! 0
 wincmd w
 argglobal
 if bufexists(fnamemodify("~/.config/pi-speak/config.json", ":p")) | buffer ~/.config/pi-speak/config.json | else | edit ~/.config/pi-speak/config.json | endif
 if &buftype ==# 'terminal'
   silent file ~/.config/pi-speak/config.json
 endif
-balt ~/repos/nikbrunner/pi-speak/src/config/v1/schema.json
 setlocal keymap=
 setlocal noarabic
 setlocal autoindent
@@ -353,7 +340,7 @@ setlocal modifiable
 setlocal nrformats=bin,hex
 setlocal number
 setlocal numberwidth=4
-setlocal omnifunc=v:lua.vim.lsp.omnifunc
+setlocal omnifunc=
 setlocal nopreserveindent
 setlocal nopreviewwindow
 setlocal quoteescape=\\
@@ -396,15 +383,15 @@ setlocal nowrap
 setlocal wrapmargin=0
 1
 sil! normal! zo
-let s:l = 24 - ((16 * winheight(0) + 25) / 50)
+let s:l = 24 - ((15 * winheight(0) + 25) / 50)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
 keepjumps 24
-normal! 04|
+normal! 0
 wincmd w
-exe 'vert 1resize ' . ((&columns * 143 + 144) / 288)
-exe 'vert 2resize ' . ((&columns * 144 + 144) / 288)
+exe 'vert 1resize ' . ((&columns * 144 + 144) / 288)
+exe 'vert 2resize ' . ((&columns * 143 + 144) / 288)
 tabnext 2
 set stal=1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
