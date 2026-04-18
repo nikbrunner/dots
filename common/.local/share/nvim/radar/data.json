@@ -460,7 +460,7 @@
             "label": "3"
           }
         ],
-        "lastAccessed": 1776163222
+        "lastAccessed": 1776504199
       }
     },
     "~/repos/nikbrunner/filen-interview": {
@@ -472,6 +472,25 @@
           }
         ],
         "lastAccessed": 1772740861
+      }
+    },
+    "~/repos/nikbrunner/imf-notes": {
+      "main": {
+        "locks": [
+          {
+            "filename": "research/inbox.md",
+            "label": "1"
+          },
+          {
+            "filename": "logs/26.04/26.04.md",
+            "label": "2"
+          },
+          {
+            "filename": "logs/26.04/26.04.17 - Friday.md",
+            "label": "3"
+          }
+        ],
+        "lastAccessed": 1776416206
       }
     },
     "~/repos/nikbrunner/imfusion-coding-assignment": {
