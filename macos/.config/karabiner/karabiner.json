@@ -15,10 +15,7 @@
                                 "conditions": [
                                     {
                                         "identifiers": [
-                                            {
-                                                "product_id": 834,
-                                                "vendor_id": 1452
-                                            }
+                                            { "is_built_in_keyboard": true }
                                         ],
                                         "type": "device_if"
                                     }
@@ -40,10 +37,7 @@
                                 "conditions": [
                                     {
                                         "identifiers": [
-                                            {
-                                                "product_id": 834,
-                                                "vendor_id": 1452
-                                            }
+                                            { "is_built_in_keyboard": true }
                                         ],
                                         "type": "device_if"
                                     }
@@ -123,10 +117,7 @@
                                 "conditions": [
                                     {
                                         "identifiers": [
-                                            {
-                                                "product_id": 834,
-                                                "vendor_id": 1452
-                                            }
+                                            { "is_built_in_keyboard": true }
                                         ],
                                         "type": "device_if"
                                     }
@@ -152,10 +143,7 @@
                                 "conditions": [
                                     {
                                         "identifiers": [
-                                            {
-                                                "product_id": 834,
-                                                "vendor_id": 1452
-                                            }
+                                            { "is_built_in_keyboard": true }
                                         ],
                                         "type": "device_if"
                                     }
@@ -174,10 +162,7 @@
                                 "conditions": [
                                     {
                                         "identifiers": [
-                                            {
-                                                "product_id": 834,
-                                                "vendor_id": 1452
-                                            }
+                                            { "is_built_in_keyboard": true }
                                         ],
                                         "type": "device_if"
                                     }
@@ -196,10 +181,7 @@
                                 "conditions": [
                                     {
                                         "identifiers": [
-                                            {
-                                                "product_id": 834,
-                                                "vendor_id": 1452
-                                            }
+                                            { "is_built_in_keyboard": true }
                                         ],
                                         "type": "device_if"
                                     }
@@ -218,10 +200,7 @@
                                 "conditions": [
                                     {
                                         "identifiers": [
-                                            {
-                                                "product_id": 834,
-                                                "vendor_id": 1452
-                                            }
+                                            { "is_built_in_keyboard": true }
                                         ],
                                         "type": "device_if"
                                     }
