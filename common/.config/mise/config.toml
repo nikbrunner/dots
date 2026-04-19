@@ -1,4 +1,8 @@
+[settings]
+lockfile = true
+
 [tools]
+# Runtimes
 node = "lts"
 bun = "latest"
 go = "latest"
@@ -9,10 +13,42 @@ python = "3"
 uv = "latest"
 docker-cli = "latest"
 
+# Neovim version manager
+bob = "latest"
+
+# Linters / formatters
+stylua = "latest"
+shellcheck = "latest"
+shfmt = "latest"
+golangci-lint = "latest"
+
+# CLI toolkit
+bat = "latest"
+eza = "latest"
+fd = "latest"
+fzf = "latest"
+ripgrep = "latest"
+yazi = "latest"
+zoxide = "latest"
+delta = "latest"
+gum = "latest"
+jq = "latest"
+yq = "latest"
+lazygit = "latest"
+atuin = "latest"
+gh = "latest"
+tmux = "latest"
+
+# Media
+yt-dlp = "latest"
+"pipx:gallery-dl" = "latest"
+"pipx:eyeD3" = "latest"
+
+# AI
+opencode = "latest"
+
+# npm globals
 "npm:@anthropic-ai/claude-code" = "latest"
 "npm:@readwise/cli" = "latest"
 "npm:@mariozechner/pi-coding-agent" = "latest"
 "npm:@tanstack/cli" = "latest"
-
-[settings]
-lockfile = true

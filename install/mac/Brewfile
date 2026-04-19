@@ -1,54 +1,22 @@
-# Homebrew bundle — macOS dependencies.
+# Homebrew bundle — system deps mise can't handle, plus macOS apps.
 # Run: brew bundle --file=install/mac/Brewfile
+#
+# Everything else (CLI tools, runtimes) lives in common/.config/mise/config.toml.
 
 tap "protonpass/tap"
 
-# Core CLI
-brew "bash"
-brew "coreutils"
-brew "git"
-brew "gh"
-brew "tmux"
-brew "zsh"
-brew "zsh-autosuggestions"
-brew "zsh-syntax-highlighting"
-brew "bob" 
-brew "stylua"
-brew "shellcheck"
-brew "shfmt"
-brew "go"
-brew "golangci-lint"
-brew "rust"
-brew "deno"
-brew "uv"
-brew "pipx"
-brew "bat"
-brew "eza"
-brew "fd"
-brew "fzf"
-brew "ripgrep"
-brew "yazi"
-brew "zoxide"
-brew "git-delta"
-brew "gum"
-brew "jq"
-brew "yq"
-brew "lazygit"
-brew "atuin"
-brew "entr"
-brew "luarocks"
+# Shell & git (system deps mise doesn't cover)
+brew "bash"                      # modern v5; macOS ships ancient v3
+brew "git"                       # prefer over Xcode CLT git
+brew "zsh-autosuggestions"       # source-only plugin; no mise backend
+brew "zsh-syntax-highlighting"   # source-only plugin; no mise backend
 
-# Media
-brew "eye-d3"
-brew "ffmpeg"
-brew "gallery-dl"
-brew "yt-dlp"
+# Tools not in mise registry (or better from brew)
+brew "entr"                      # not in mise registry
+brew "ffmpeg"                    # mise backend compiles from source (slow)
 
-# AI
+# Custom formula / taps
 brew "agent-browser"
-brew "opencode"
-
-# ProtonPass (SSH agent + password CLI)
 brew "protonpass/tap/pass-cli"
 
 # Casks — desktop apps
