@@ -19,11 +19,15 @@ local M = {}
 function M.get_repo_path(project_path)
     local Config = require("config")
 
-    if Config.dev_mode then
-        return Config.pathes.repos .. "/" .. project_path
-    else
+    if not Config.dev_mode then
         return nil
     end
+
+    local path = Config.pathes.repos .. "/" .. project_path
+    if vim.fn.isdirectory(path) == 1 then
+        return path
+    end
+    return nil
 end
 
 return M
