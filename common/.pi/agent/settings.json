@@ -1,6 +1,6 @@
 {
-  "theme": "dark",
-  "lastChangelogVersion": "0.66.1",
+  "theme": "light",
+  "lastChangelogVersion": "0.67.68",
   "packages": [
     "npm:pi-web-access",
     "npm:pi-fff",
@@ -17,7 +17,7 @@
     "openrouter/z-ai/glm-5.1",
     "openrouter/qwen/qwen3.6-plus"
   ],
-  "hideThinkingBlock": false,
+  "hideThinkingBlock": true,
   "compaction": {
     "enabled": false
   }
