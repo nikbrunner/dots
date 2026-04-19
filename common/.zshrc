@@ -103,6 +103,9 @@ bindkey '^e' edit-command-line
 # Push current line to buffer, run another command, then restore
 bindkey '^g' push-line-or-edit
 
+# mise — runtime and tool version manager
+command -v mise &>/dev/null && eval "$(mise activate zsh)"
+
 # Atuin
 [[ -f "$HOME/.atuin/bin/env" ]] && . "$HOME/.atuin/bin/env"
 command -v atuin &>/dev/null && eval "$(atuin init zsh)"

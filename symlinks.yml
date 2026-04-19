@@ -41,6 +41,7 @@ common:
   common/.ssh/allowed_signers: ~/.ssh/allowed_signers
   common/.ssh/config: ~/.ssh/config
   common/.vimrc: ~/.vimrc
+  common/.zshenv: ~/.zshenv
   common/.zshrc: ~/.zshrc
   common/.local/bin/*: ~/.local/bin
   common/themes.json: ~/themes.json
