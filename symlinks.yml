@@ -1,7 +1,5 @@
 common:
   common/.pi: ~/.pi
-  common/.agents/AGENTS.md: ~/.pi/agent/AGENTS.md
-  common/.agents/AGENTS.md: ~/.claude/CLAUDE.md
   common/.claude/agents: ~/.claude/agents
   common/.claude/settings.json: ~/.claude/settings.json
   common/.agents/skills: ~/.claude/skills
@@ -51,7 +49,6 @@ macos:
   macos/.config/davit/config.toml: ~/.config/davit/config.toml
   macos/.config/zsh/os.zsh: ~/.config/zsh/os.zsh
   macos/.config/karabiner: ~/.config/karabiner
-  install/deps/Brewfile: ~/Brewfile
   macos/Library/Application Support/Claude/claude_desktop_config.json: ~/Library/Application Support/Claude/claude_desktop_config.json
   macos/Library/LaunchAgents/com.pcloud.automount.plist: ~/Library/LaunchAgents/com.pcloud.automount.plist
   macos/Library/LaunchAgents/homebrew.mxcl.mpd.plist: ~/Library/LaunchAgents/homebrew.mxcl.mpd.plist
