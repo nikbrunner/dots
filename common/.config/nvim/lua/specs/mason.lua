@@ -20,7 +20,7 @@ local packages = {
     "stylua",
     "luacheck",
     "shellcheck",
-    "prettierd",
+    "prettier",
     "shfmt",
 }
 
