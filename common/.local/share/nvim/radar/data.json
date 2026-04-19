@@ -432,6 +432,23 @@
       }
     },
     "~/repos/nikbrunner/dots": {
+      "feat/install-overhaul": {
+        "locks": [
+          {
+            "filename": "install/mac/README.md",
+            "label": "1"
+          },
+          {
+            "filename": "symlinks.yml",
+            "label": "2"
+          },
+          {
+            "filename": "install/mac/Brewfile",
+            "label": "3"
+          }
+        ],
+        "lastAccessed": 1776616210
+      },
       "feat/openspec-integration": {
         "locks": [
           {
