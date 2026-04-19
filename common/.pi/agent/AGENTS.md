@@ -1,1 +1,1 @@
-/Users/nbr/repos/nikbrunner/dots/common/.agents/AGENTS.md
+../../.agents/AGENTS.md
