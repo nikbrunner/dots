@@ -1,0 +1,73 @@
+# Homebrew bundle — macOS dependencies.
+# Run: brew bundle --file=install/mac/Brewfile
+# Or use the step script: install/mac/steps/02-deps.sh
+
+tap "protonpass/tap"
+
+# Core CLI
+brew "bash"
+brew "coreutils"
+brew "git"
+brew "gh"
+brew "tmux"
+brew "zsh"
+brew "zsh-autosuggestions"
+brew "zsh-syntax-highlighting"
+brew "bob" 
+brew "stylua"
+brew "shellcheck"
+brew "shfmt"
+brew "go"
+brew "golangci-lint"
+brew "rust"
+brew "deno"
+brew "uv"
+brew "pipx"
+brew "mise"
+brew "bat"
+brew "eza"
+brew "fd"
+brew "fzf"
+brew "ripgrep"
+brew "yazi"
+brew "zoxide"
+brew "git-delta"
+brew "gum"
+brew "jq"
+brew "yq"
+brew "lazygit"
+brew "atuin"
+brew "entr"
+brew "luarocks"
+
+# Media
+brew "eye-d3"
+brew "ffmpeg"
+brew "gallery-dl"
+brew "yt-dlp"
+
+# AI
+brew "agent-browser"
+brew "opencode"
+
+# ProtonPass (SSH agent + password CLI)
+brew "protonpass/tap/pass-cli"
+
+# Casks — desktop apps
+cask "proton-pass"
+cask "claude"
+cask "reader"
+cask "docker-desktop"
+cask "ghostty"
+cask "helium-browser"
+cask "homerow"
+cask "karabiner-elements"
+cask "mattermost"
+cask "obsidian"
+cask "raycast"
+cask "shottr"
+cask "signal"
+cask "superwhisper"
+cask "whatsapp"
+cask "yoink"
+cask "zed@preview"

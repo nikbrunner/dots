@@ -1,0 +1,86 @@
+# Arch Linux package list — one package name per line (pacman / AUR).
+# Comments and blank lines ignored.
+# Install: paru -S --needed --noconfirm $(grep -v '^\s*#\|^\s*$' install/arch/pkglist.txt)
+
+# Core CLI
+git
+zsh
+tmux
+neovim
+fzf
+ripgrep
+fd
+bat
+git-delta
+lazygit
+eza
+yazi
+zoxide
+gum
+github-cli
+lua51
+luarocks
+stylua
+shellcheck
+shfmt
+paru
+
+# Shell enhancements
+zsh-autosuggestions
+zsh-syntax-highlighting
+atuin
+
+# Media tools
+gallery-dl
+yt-dlp
+ffmpeg
+python-eyed3
+mpd
+mpc
+
+# File watching
+entr
+
+# Data processing
+go-yq
+jq
+
+# Languages & runtimes
+rust
+go
+golangci-lint-bin
+deno
+uv
+
+# AI & dev tools
+pass-cli
+
+# Desktop apps
+proton-pass
+claude-desktop-native
+signal-desktop
+mattermost-desktop
+zapzap
+docker
+zed-preview-bin
+obsidian
+helium-browser-bin
+
+# Bluetooth
+bluez
+bluez-utils
+bluetui
+
+# Wayland/Niri desktop
+swww
+chafa
+niri
+waybar
+fuzzel
+satty
+clipse
+wtype
+
+# Gaming
+gamemode
+lib32-gamemode

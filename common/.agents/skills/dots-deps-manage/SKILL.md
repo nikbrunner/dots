@@ -20,8 +20,8 @@ Manage dependencies in the dots repository.
 
 Dependencies are defined in OS-specific files:
 
-- `install/deps/macos.sh` - Homebrew packages
-- `install/deps/arch.sh` - Pacman/AUR packages
+- `install/mac/Brewfile` - Homebrew formulae + casks (bundle format)
+- `install/arch/pkglist.txt` - Pacman/AUR packages, one per line
 
 ## Add Flow
 
