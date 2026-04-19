@@ -124,7 +124,9 @@ Enter Neovim to see if plugins are installed.
 Configure MCP servers for Claude Code (requires Step env sync for API keys).
 
 ```sh
-./scripts/claude-mcp.sh
+claude mcp add --scope user exa -e "EXA_API_KEY=$EXA_API_KEY" -- npx -y exa-mcp-server
+claude mcp add --scope user --transport http Ref https://api.ref.tools/mcp -H "x-ref-api-key: $REF_API_KEY"
+claude mcp add --scope user chrome-devtools -- npx chrome-devtools-mcp@latest
 ```
 
 ## Post-Install Checklist
