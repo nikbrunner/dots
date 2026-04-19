@@ -1,5 +1,6 @@
-provider = "anthropic"
-model = "claude-haiku-4-5"
-models = ["claude-opus-4-5", "claude-sonnet-4-5", "claude-haiku-4-5"]
+#:schema https://raw.githubusercontent.com/black-atom-industries/shiplog/main/schema.json
+provider = "openrouter"
+model = "openrouter/auto"
+models = ["openrouter/auto", "nvidia/nemotron-3-super:free", "x-ai/grok-4-fast"]
 summary_length = 72
 history_count = 10
