@@ -37,7 +37,9 @@ yq = "latest"
 lazygit = "latest"
 atuin = "latest"
 gh = "latest"
+git-lfs = "latest"
 tmux = "latest"
+tree-sitter = "latest"
 
 # Media
 yt-dlp = "latest"

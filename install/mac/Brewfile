@@ -1,9 +1,10 @@
-# Homebrew bundle — system deps mise can't handle, plus macOS apps.
+# Homebrew bundle — system deps mise can't handle, plus macOS apps & fonts.
 # Run: brew bundle --file=install/mac/Brewfile
 #
 # Everything else (CLI tools, runtimes) lives in common/.config/mise/config.toml.
 
 tap "protonpass/tap"
+tap "aviator-co/tap"
 
 # Shell & git (system deps mise doesn't cover)
 brew "bash"                      # modern v5; macOS ships ancient v3
@@ -14,10 +15,17 @@ brew "zsh-syntax-highlighting"   # source-only plugin; no mise backend
 # Tools not in mise registry (or better from brew)
 brew "entr"                      # not in mise registry
 brew "ffmpeg"                    # mise backend compiles from source (slow)
+brew "make"                      # mise backend via asdf compiles; brew's gmake is better
+brew "clang-format"              # mise only via LLVM compile (huge)
+brew "dos2unix"                  # not in mise registry
+brew "mole"                      # not in mise registry
+brew "mpd"                       # music player daemon — dots has mpd.conf
+brew "rmpc"                      # mpd client TUI — dots has rmpc config
 
 # Custom formula / taps
 brew "agent-browser"
 brew "protonpass/tap/pass-cli"
+brew "aviator-co/tap/av"         # aviator CLI — shell completion in os.zsh
 
 # Casks — desktop apps
 cask "proton-pass"
@@ -27,13 +35,27 @@ cask "docker-desktop"
 cask "ghostty"
 cask "helium-browser"
 cask "homerow"
+cask "jordanbaird-ice"
 cask "karabiner-elements"
+cask "linear-linear"
 cask "mattermost"
 cask "obsidian"
 cask "raycast"
 cask "shottr"
 cask "signal"
+cask "slack"
 cask "superwhisper"
 cask "whatsapp"
 cask "yoink"
 cask "zed@preview"
+
+# Fonts
+cask "font-departure-mono-nerd-font"
+cask "font-fira-code-nerd-font"
+cask "font-iosevka-nerd-font"
+cask "font-jetbrains-mono-nerd-font"
+cask "font-lilex-nerd-font"
+cask "font-maple-mono-nf"
+cask "font-recursive-mono-nerd-font"
+cask "font-space-grotesk"
+cask "font-space-mono-nerd-font"
