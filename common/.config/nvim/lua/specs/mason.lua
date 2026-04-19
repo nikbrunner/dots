@@ -15,6 +15,7 @@ local packages = {
     "tailwindcss-language-server",
     "vtsls",
     "yaml-language-server",
+    "taplo",
 
     -- Tools
     "stylua",

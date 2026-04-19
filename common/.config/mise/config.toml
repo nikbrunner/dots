@@ -9,10 +9,10 @@ python = "3"
 uv = "latest"
 docker-cli = "latest"
 
-# npm-based tools
 "npm:@anthropic-ai/claude-code" = "latest"
 "npm:@readwise/cli" = "latest"
 "npm:@mariozechner/pi-coding-agent" = "latest"
+"npm:@tanstack/cli" = "latest"
 
 [settings]
 lockfile = true
