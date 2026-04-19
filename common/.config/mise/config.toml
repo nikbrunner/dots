@@ -1,0 +1,17 @@
+[tools]
+node = "lts"
+bun = "latest"
+go = "latest"
+rust = "latest"
+deno = "latest"
+lua = "5.1"
+python = "3"
+uv = "latest"
+
+# npm-based tools
+"npm:@anthropic-ai/claude-code" = "latest"
+"npm:@readwise/cli" = "latest"
+"npm:@mariozechner/pi-coding-agent" = "latest"
+
+[settings]
+lockfile = true

@@ -114,10 +114,3 @@ zstyle ':vcs_info:git:*' formats ' %F{green}%b%f'
 setopt PROMPT_SUBST
 PROMPT='%F{gray}%~%f${vcs_info_msg_0_}%(1j. %F{red}[%j]%f.)
 %F{yellow}$%f '
-
-# bun completions
-[ -s "/Users/nbr/.bun/_bun" ] && source "/Users/nbr/.bun/_bun"
-
-# bun
-export BUN_INSTALL="$HOME/.bun"
-export PATH="$BUN_INSTALL/bin:$PATH"
