@@ -101,7 +101,7 @@ cmd_pull() {
 
 	if [[ ${#problem_repos[@]} -gt 0 ]]; then
 		echo ""
-		log_warning "${#problem_repos[@]} repos need attention:"
+		log_warn "${#problem_repos[@]} repos need attention:"
 		echo ""
 
 		for entry in "${problem_repos[@]}"; do
@@ -196,7 +196,7 @@ cmd_push() {
 	dots_dirty=$(git status --porcelain 2>/dev/null)
 
 	if [[ -n "$dots_dirty" ]]; then
-		log_warning "Dots repo has uncommitted changes:"
+		log_warn "Dots repo has uncommitted changes:"
 		git status --short
 		echo ""
 
@@ -491,8 +491,8 @@ cmd_chores() {
 	fi
 	echo ""
 
-	# Pi session changes
-	if dots_commit_pi_sessions "$DOTS_DIR"; then
+	# Pi changes (sessions, exa usage, agent settings)
+	if dots_commit_pi "$DOTS_DIR"; then
 		((commits_created++)) || true
 	fi
 	echo ""
@@ -546,7 +546,7 @@ cmd_chores() {
 	remaining=$(git status --porcelain 2>/dev/null)
 	if [[ -n "$remaining" ]]; then
 		echo ""
-		log_warning "Remaining uncommitted changes:"
+		log_warn "Remaining uncommitted changes:"
 		git status --short
 
 		# Offer to open lazygit afterwards
@@ -663,7 +663,7 @@ do_push() {
 			if push_output=$(gum spin --spinner="dot" --title="Pushing..." -- git push 2>&1); then
 				log_success "Changes pushed"
 			else
-				log_warning "Push failed:"
+				log_warn "Push failed:"
 				echo "$push_output"
 				echo ""
 				if gum confirm "Force push with --force-with-lease?"; then
@@ -680,7 +680,7 @@ do_push() {
 			if push_output=$(git push 2>&1); then
 				log_success "Changes pushed"
 			else
-				log_warning "Push failed:"
+				log_warn "Push failed:"
 				echo "$push_output"
 				echo "Try: git push --force-with-lease"
 				return 1
