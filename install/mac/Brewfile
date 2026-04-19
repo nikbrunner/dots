@@ -1,6 +1,5 @@
 # Homebrew bundle — macOS dependencies.
 # Run: brew bundle --file=install/mac/Brewfile
-# Or use the step script: install/mac/steps/02-deps.sh
 
 tap "protonpass/tap"
 
