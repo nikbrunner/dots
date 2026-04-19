@@ -7,6 +7,7 @@ deno = "latest"
 lua = "5.1"
 python = "3"
 uv = "latest"
+docker-cli = "latest"
 
 # npm-based tools
 "npm:@anthropic-ai/claude-code" = "latest"
