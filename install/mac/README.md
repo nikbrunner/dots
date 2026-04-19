@@ -21,25 +21,27 @@ xcode-select --install
 eval "$(/opt/homebrew/bin/brew shellenv)"
 ```
 
-## 2. Depencencies & Runtimes
+## 2. Dependencies & Runtimes
 
-Run the Brewfile to install dependencies and runtimes.
-
-Check the `./Brewfile` for the list of tools.
+Install brew packages (system deps + casks). Check `./Brewfile` for the list.
 
 ```sh
 brew bundle install --file=install/mac/Brewfile
 ```
 
-Install additonal tools and runtimes via [mise](https://mise.jdx.dev/dev-tools/).
+Install [mise](https://mise.jdx.dev/) (runtime + CLI tool manager):
 
-Check the `common/.config/mise/config.toml` for the list of tools.
+```sh
+curl https://mise.run | sh
+```
+
+Install all tools and runtimes tracked in `common/.config/mise/config.toml`:
 
 ```sh
 # Trust this repo's config
 mise trust
 
-# Install all runtimes from common/.config/mise/config.toml
+# Install everything from common/.config/mise/config.toml
 mise install
 ```
 
