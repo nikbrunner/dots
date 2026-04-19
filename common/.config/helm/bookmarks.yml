@@ -1,6 +1,6 @@
 bookmarks:
-    - path: /Users/nbr/repos/nikbrunner/dots
-    - path: /Users/nbr/repos/nikbrunner/notes
-    - path: /Users/nbr/repos/black-atom-industries/core
-    - path: /Users/nbr/repos/nikbrunner/nbr.haus
-    - path: /Users/nbr/repos/black-atom-industries/helm
+  - path: ~/repos/nikbrunner/dots
+  - path: ~/repos/nikbrunner/notes
+  - path: ~/repos/black-atom-industries/core
+  - path: ~/repos/nikbrunner/nbr.haus
+  - path: ~/repos/black-atom-industries/helm
