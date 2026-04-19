@@ -131,30 +131,29 @@ Configure MCP servers for Claude Code (requires Step env sync for API keys).
 
 ### App Logins
 
-- [ ] **Raycast** — Open, sign in, import settings
-- [ ] **Claude** — Open, sign in
-- [ ] **Obsidian** — Open, sign in and setup sync
-- [ ] **Readwise Reader** — Open, sign in
-- [ ] **Zed** — Open, sign in
-- [ ] **Atuin** — Run `atuin login`
-- [ ] **Signal** — Open, link device via phone
-- [ ] **WhatsApp** — Open, link device via phone
-- [ ] **Docker Desktop** — Open, sign in (if needed)
+- [ ] **Raycast** - Open, sign in, import settings
+- [ ] **Claude** - Open, sign in
+- [ ] **Obsidian** - Open, sign in and setup sync
+- [ ] **Readwise Reader** - Open, sign in
+- [ ] **Zed** - Open, sign in
+- [ ] **Atuin** - Run `atuin login`
+- [ ] **Signal** - Open, link device via phone
+- [ ] **WhatsApp** - Open, link device via phone
+- [ ] **Browser** - and Login into various services
 
 ### License Keys
 
-- [ ] **Superwhisper** — Open, enter license key
-- [ ] **Shottr** — Open, enter license key (or use free tier)
-- [ ] **Yoink** — Open, restore App Store purchase
+- [ ] **Superwhisper** - Open, enter license key
+- [ ] **Shottr** - Open, enter license key (or use free tier)
+- [ ] **Homerow** - Open, grant accessibility permissions and add license key
 
 ### System Settings
 
-- [ ] **Neovim** — Run `bob install stable && bob use stable`
-- [ ] **Ghostty** — Set as default terminal
-- [ ] **Karabiner-Elements** — Grant permissions, import rules
-- [ ] **Keyboard** — Set key repeat rate / delay in System Settings
-- [ ] **Homerow** — Open, grant accessibility permissions
-- [ ] **ProtonPass** — Enable browser extension
+- [ ] **Neovim** - Run `bob install stable && bob use stable`
+- [ ] **Karabiner-Elements** - Grant permissions, import rules
+- [ ] **Keyboard** - Set key repeat rate / delay in System Settings
+- [ ] **Keyboard** - Disable Hypr and Meh Keybings from Mac System Settings
+- [ ] **ProtonPass** - Enable browser extension
 
 ### Verify
 
