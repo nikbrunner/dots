@@ -60,8 +60,8 @@
   "cursor_blink": false,
   "theme": {
     "mode": "light",
-    "light": "Black Atom — MNML ∷ Mono Light",
-    "dark": "Black Atom — TERRA ∷ Fall Night"
+    "light": "Black Atom — TERRA ∷ Fall Day",
+    "dark": "Black Atom — Dark"
   },
   "base_keymap": "VSCode",
   "vim_mode": true,
