@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
 # Claude Code statusline script
-# Responsive layout (breakpoint: 100 cols)
-# Wide:  path / git │ commit │ PR link / model │ Ctx bar │ 5h bar │ 7d bar
-# Narrow: path / git │ commit / PR link / model / Limits: Ctx │ 5h │ 7d
+# Narrow layout: path / branch / changes / commit / PR / model / context / limits
 
 # Read JSON input from Claude Code
 input=$(cat)
@@ -76,7 +74,7 @@ if [ -n "$branch" ]; then
 	fi
 fi
 
-# Last commit message (truncated in wide mode only)
+# Last commit message
 last_commit=$(git -C "$dir" log -1 --format='%s' 2>/dev/null)
 
 # Context progress bar + token counts
@@ -142,42 +140,22 @@ if [ -n "$branch" ] && [ "$branch" != "main" ] && [ "$branch" != "master" ]; the
 	fi
 fi
 
-# Terminal width for responsive layout (tmux pane width, fallback to tput)
-# Claude Code's statusline area is narrower than pane_width due to internal chrome (~30 cols)
-cols=$(tmux display-message -p '#{pane_width}' 2>/dev/null || tput cols 2>/dev/null || echo 80)
-wide=true
-[ "$cols" -lt 180 ] && wide=false
-
 # --- Line 1: path ---
 printf '\033[1;90m%s\033[0m' "$display_dir"
 
 # --- Git status + commit + optional PR link ---
 if [ -n "$git_branch" ]; then
 	printf '\n'
-	if $wide; then
-		# Wide: everything on one line with bracket segments
-		printf '\033[90m%-15s\033[0m' "Git"
-		printf '%b%b%b' "$br_o" "$git_branch" "$br_c"
-		printf ' %b%b%b' "$br_o" "$git_stats" "$br_c"
-		if [ -n "$last_commit" ]; then
-			wide_commit="$last_commit"
-			[ "${#wide_commit}" -gt 30 ] && wide_commit="${wide_commit:0:27}..."
-			printf ' %b\033[90m%s\033[0m%b' "$br_o" "$wide_commit" "$br_c"
-		fi
-		[ -n "$pr_number" ] && [ -n "$pr_url" ] && printf ' %b%s%b' "$br_o" "$pr_url" "$br_c"
-	else
-		# Narrow: each section on its own line with brackets
-		printf '\033[90m%-15s\033[0m%b%b%b' "Branch" "$br_o" "$git_branch" "$br_c"
+	printf '\033[90m%-15s\033[0m%b%b%b' "Branch" "$br_o" "$git_branch" "$br_c"
+	printf '\n'
+	printf '\033[90m%-15s\033[0m%b%b%b' "Changes" "$br_o" "$git_stats" "$br_c"
+	if [ -n "$last_commit" ]; then
 		printf '\n'
-		printf '\033[90m%-15s\033[0m%b%b%b' "Changes" "$br_o" "$git_stats" "$br_c"
-		if [ -n "$last_commit" ]; then
-			printf '\n'
-			printf '\033[90m%-15s\033[0m%b\033[90m%s\033[0m%b' "Last Commit" "$br_o" "$last_commit" "$br_c"
-		fi
-		if [ -n "$pr_number" ] && [ -n "$pr_url" ]; then
-			printf '\n'
-			printf '\033[90m%-15s\033[0m%b%s%b' "PR" "$br_o" "$pr_url" "$br_c"
-		fi
+		printf '\033[90m%-15s\033[0m%b\033[90m%s\033[0m%b' "Last Commit" "$br_o" "$last_commit" "$br_c"
+	fi
+	if [ -n "$pr_number" ] && [ -n "$pr_url" ]; then
+		printf '\n'
+		printf '\033[90m%-15s\033[0m%b%s%b' "PR" "$br_o" "$pr_url" "$br_c"
 	fi
 fi
 
@@ -244,58 +222,30 @@ if [ "$compactions" -gt 0 ]; then
 fi
 
 if [ "$context_max" -gt 0 ] 2>/dev/null; then
-	if $wide; then
-		# Wide: all bars on same line as model
-		printf ' %b\033[90mCtx \033[0m%b  \033[90m%dk/%dk\033[0m%b' "$br_o" "$bar" "$used_k" "$max_k" "$br_c"
+	printf '\n'
+	printf '\033[90m%-15s\033[0m%b%b  \033[90m%dk/%dk\033[0m%b' "Context" "$br_o" "$bar" "$used_k" "$max_k" "$br_c"
 
-		if [ -n "$u5" ]; then
-			u5_int=$(printf '%.0f' "$u5")
-			printf ' %b\033[90m5h \033[0m' "$br_o"
-			usage_bar "$u5_int"
-			if [ -n "$r5" ]; then
-				reset_str=$(format_reset "$r5")
-				[ -n "$reset_str" ] && printf '  \033[90m↺%s\033[0m' "$reset_str"
-			fi
-			printf '%b' "$br_c"
-		fi
-
-		if [ -n "$u7" ]; then
-			u7_int=$(printf '%.0f' "$u7")
-			printf ' %b\033[90m7d \033[0m' "$br_o"
-			usage_bar "$u7_int"
-			if [ -n "$r7" ]; then
-				reset_str=$(format_reset "$r7")
-				[ -n "$reset_str" ] && printf '  \033[90m↺%s\033[0m' "$reset_str"
-			fi
-			printf '%b' "$br_c"
-		fi
-	else
-		# Narrow: each bar on its own line with brackets
+	if [ -n "$u5" ]; then
+		u5_int=$(printf '%.0f' "$u5")
 		printf '\n'
-		printf '\033[90m%-15s\033[0m%b%b  \033[90m%dk/%dk\033[0m%b' "Context" "$br_o" "$bar" "$used_k" "$max_k" "$br_c"
-
-		if [ -n "$u5" ]; then
-			u5_int=$(printf '%.0f' "$u5")
-			printf '\n'
-			printf '\033[90m%-15s\033[0m%b' "Current Limit" "$br_o"
-			usage_bar "$u5_int"
-			if [ -n "$r5" ]; then
-				reset_str=$(format_reset "$r5")
-				[ -n "$reset_str" ] && printf '  \033[90m↺%s\033[0m' "$reset_str"
-			fi
-			printf '%b' "$br_c"
+		printf '\033[90m%-15s\033[0m%b' "Current Limit" "$br_o"
+		usage_bar "$u5_int"
+		if [ -n "$r5" ]; then
+			reset_str=$(format_reset "$r5")
+			[ -n "$reset_str" ] && printf '  \033[90m↺%s\033[0m' "$reset_str"
 		fi
+		printf '%b' "$br_c"
+	fi
 
-		if [ -n "$u7" ]; then
-			u7_int=$(printf '%.0f' "$u7")
-			printf '\n'
-			printf '\033[90m%-15s\033[0m%b' "Weekly Limit" "$br_o"
-			usage_bar "$u7_int"
-			if [ -n "$r7" ]; then
-				reset_str=$(format_reset "$r7")
-				[ -n "$reset_str" ] && printf '  \033[90m↺%s\033[0m' "$reset_str"
-			fi
-			printf '%b' "$br_c"
+	if [ -n "$u7" ]; then
+		u7_int=$(printf '%.0f' "$u7")
+		printf '\n'
+		printf '\033[90m%-15s\033[0m%b' "Weekly Limit" "$br_o"
+		usage_bar "$u7_int"
+		if [ -n "$r7" ]; then
+			reset_str=$(format_reset "$r7")
+			[ -n "$reset_str" ] && printf '  \033[90m↺%s\033[0m' "$reset_str"
 		fi
+		printf '%b' "$br_c"
 	fi
 fi
