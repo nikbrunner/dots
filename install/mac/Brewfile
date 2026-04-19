@@ -16,8 +16,6 @@ brew "zsh-syntax-highlighting"   # source-only plugin; no mise backend
 brew "entr"                      # not in mise registry
 brew "ffmpeg"                    # mise backend compiles from source (slow)
 brew "make"                      # mise backend via asdf compiles; brew's gmake is better
-brew "clang-format"              # mise only via LLVM compile (huge)
-brew "dos2unix"                  # not in mise registry
 brew "mole"                      # not in mise registry
 brew "mpd"                       # music player daemon — dots has mpd.conf
 brew "rmpc"                      # mpd client TUI — dots has rmpc config
