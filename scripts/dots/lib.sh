@@ -256,29 +256,39 @@ dots_commit_sessions() {
     log_success "Sessions commit created"
 }
 
-dots_commit_pi_sessions() {
+dots_commit_pi() {
     local repo_path="$1"
     local pi_sessions_dir="$repo_path/common/.pi/agent/sessions"
-
-    if [[ ! -d "$pi_sessions_dir" ]]; then
-        echo "No pi sessions directory found"
-        return 0
-    fi
+    local pi_paths=(
+        "common/.pi/agent/sessions/"
+        "common/.pi/exa-usage.json"
+        "common/.pi/agent/settings.json"
+    )
 
     # Clean up old sessions (>2 days)
-    local deleted_count
-    deleted_count=$(find "$pi_sessions_dir" -type f -mtime +2 -delete -print 2>/dev/null | wc -l | tr -d ' ')
-    if [[ "$deleted_count" -gt 0 ]]; then
-        echo "Cleaned up $deleted_count old pi session(s)"
+    if [[ -d "$pi_sessions_dir" ]]; then
+        local deleted_count
+        deleted_count=$(find "$pi_sessions_dir" -type f -mtime +2 -delete -print 2>/dev/null | wc -l | tr -d ' ')
+        if [[ "$deleted_count" -gt 0 ]]; then
+            echo "Cleaned up $deleted_count old pi session(s)"
+        fi
     fi
 
-    if [[ -z $(git -C "$repo_path" status --porcelain "common/.pi/agent/sessions/" 2>/dev/null) ]]; then
-        echo "No pi session changes to commit"
+    local has_changes=false
+    for p in "${pi_paths[@]}"; do
+        if [[ -n $(git -C "$repo_path" status --porcelain "$p" 2>/dev/null) ]]; then
+            has_changes=true
+            break
+        fi
+    done
+
+    if [[ "$has_changes" == false ]]; then
+        echo "No pi changes to commit"
         return 1
     fi
 
-    (cd "$repo_path" && git add "common/.pi/agent/sessions/" && git commit -m "chore(pi): update sessions")
-    log_success "Pi sessions commit created"
+    (cd "$repo_path" && git add "${pi_paths[@]}" && git commit -m "chore(pi): update")
+    log_success "Pi commit created"
 }
 
 dots_commit_radar() {
