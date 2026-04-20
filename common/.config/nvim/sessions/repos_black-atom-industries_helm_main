@@ -100,7 +100,7 @@ setlocal spellcapcheck=[.?!]\\_[\\])'\"\\t\ ]\\+
 setlocal spellfile=
 setlocal spelllang=en_us,de_de
 setlocal spelloptions=
-setlocal statuscolumn=%!v:lua.require'snacks.statuscolumn'.get()
+setlocal statuscolumn=
 setlocal suffixesadd=
 setlocal noswapfile
 setlocal synmaxcol=3000
