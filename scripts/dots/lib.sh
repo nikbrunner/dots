@@ -11,7 +11,7 @@ _DOTS_LIB_LOADED=1
 # Require DOTS_DIR from caller
 : "${DOTS_DIR:?DOTS_DIR must be set before sourcing lib.sh}"
 
-# Source shared logging (provides log_*, has_gum, confirm, choose)
+# Source shared logging (provides log_*, confirm, choose)
 # shellcheck disable=SC1091
 source "$DOTS_DIR/scripts/log.sh"
 
