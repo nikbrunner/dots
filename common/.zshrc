@@ -18,7 +18,6 @@ fpath=(~/.config/.zsh $fpath)
 # only user-script dirs and version-manager-specific dirs here.
 export PATH=$HOME/.local/bin:/usr/local/bin:$PATH
 export PATH=$HOME/.cargo/bin:$PATH
-export PATH=$HOME/go/bin:$PATH
 export XDG_CONFIG_HOME="$HOME/.config" # Because of https://github.com/jesseduffield/lazygit/blob/master/docs/Config.md#user-config
 export RIPGREP_CONFIG_PATH=$HOME/.ripgreprc
 
