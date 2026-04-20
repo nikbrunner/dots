@@ -19,6 +19,7 @@ brew "make"                      # mise backend via asdf compiles; brew's gmake 
 brew "mole"                      # not in mise registry
 brew "mpd"                       # music player daemon — dots has mpd.conf
 brew "rmpc"                      # mpd client TUI — dots has rmpc config
+brew "btop"
 
 # Custom formula / taps
 brew "agent-browser"
@@ -26,11 +27,10 @@ brew "protonpass/tap/pass-cli"
 brew "aviator-co/tap/av"         # aviator CLI — shell completion in os.zsh
 
 # Casks — desktop apps
-cask "proton-pass"
-cask "claude"
 cask "cameracontroller"
-cask "reader"
+cask "claude"
 cask "docker-desktop"
+cask "figma"
 cask "ghostty"
 cask "helium-browser"
 cask "homerow"
@@ -39,7 +39,9 @@ cask "karabiner-elements"
 cask "linear-linear"
 cask "mattermost"
 cask "obsidian"
+cask "proton-pass"
 cask "raycast"
+cask "reader"
 cask "shottr"
 cask "signal"
 cask "slack"
@@ -47,7 +49,6 @@ cask "superwhisper"
 cask "whatsapp"
 cask "yoink"
 cask "zed@preview"
-cask "figma"
 
 # Fonts
 cask "font-departure-mono-nerd-font"
