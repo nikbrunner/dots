@@ -22,7 +22,7 @@
             "label": "1"
           }
         ],
-        "lastAccessed": 1776622460
+        "lastAccessed": 1776685906
       }
     },
     "~/repos/black-atom-industries/livery": {
@@ -439,19 +439,15 @@
             "label": "1"
           },
           {
-            "filename": "symlinks.yml",
+            "filename": "install/mac/Brewfile",
             "label": "2"
           },
           {
-            "filename": "install/mac/Brewfile",
-            "label": "3"
-          },
-          {
             "filename": "common/.config/mise/config.toml",
-            "label": "4"
+            "label": "3"
           }
         ],
-        "lastAccessed": 1776683564
+        "lastAccessed": 1776693830
       },
       "feat/openspec-integration": {
         "locks": [
