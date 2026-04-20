@@ -14,11 +14,10 @@ fpath=(~/.config/.zsh $fpath)
 [[ -f ~/.config/zsh/os.zsh ]] && source ~/.config/zsh/os.zsh
 
 # Cross-Platform Path Exports ===========================================
-# python and deno removed — managed by mise (see mise doctor warning).
+# Tool runtimes (python, deno, node, go, rust) managed by mise. Keep
+# only user-script dirs and version-manager-specific dirs here.
 export PATH=$HOME/.local/bin:/usr/local/bin:$PATH
-export PATH=$HOME/.local/share/bob/nvim-bin:$PATH
 export PATH=$HOME/.cargo/bin:$PATH
-export PATH=$HOME/Applications:$PATH
 export PATH=$HOME/go/bin:$PATH
 export XDG_CONFIG_HOME="$HOME/.config" # Because of https://github.com/jesseduffield/lazygit/blob/master/docs/Config.md#user-config
 export RIPGREP_CONFIG_PATH=$HOME/.ripgreprc
@@ -101,9 +100,6 @@ bindkey '^e' edit-command-line
 # Push current line to buffer, run another command, then restore
 bindkey '^g' push-line-or-edit
 
-# mise — runtime and tool version manager
-command -v mise &>/dev/null && eval "$(mise activate zsh)"
-
 # Atuin
 [[ -f "$HOME/.atuin/bin/env" ]] && . "$HOME/.atuin/bin/env"
 command -v atuin &>/dev/null && eval "$(atuin init zsh)"
@@ -115,3 +111,7 @@ zstyle ':vcs_info:git:*' formats ' %F{green}%b%f'
 setopt PROMPT_SUBST
 PROMPT='%F{gray}%~%f${vcs_info_msg_0_}%(1j. %F{red}[%j]%f.)
 %F{yellow}$%f '
+
+# mise — runtime and tool version manager (MUST run last, after all
+# PATH modifications, so mise's tool paths win precedence over user dirs).
+command -v mise &>/dev/null && eval "$(mise activate zsh)"
