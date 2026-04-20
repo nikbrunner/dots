@@ -14,13 +14,11 @@ fpath=(~/.config/.zsh $fpath)
 [[ -f ~/.config/zsh/os.zsh ]] && source ~/.config/zsh/os.zsh
 
 # Cross-Platform Path Exports ===========================================
+# python and deno removed — managed by mise (see mise doctor warning).
 export PATH=$HOME/.local/bin:/usr/local/bin:$PATH
 export PATH=$HOME/.local/share/bob/nvim-bin:$PATH
 export PATH=$HOME/.cargo/bin:$PATH
 export PATH=$HOME/Applications:$PATH
-export PATH=/usr/bin/python:$PATH
-export PATH=/usr/bin/python3:$PATH
-export PATH=$HOME/.deno/bin:$PATH
 export PATH=$HOME/go/bin:$PATH
 export XDG_CONFIG_HOME="$HOME/.config" # Because of https://github.com/jesseduffield/lazygit/blob/master/docs/Config.md#user-config
 export RIPGREP_CONFIG_PATH=$HOME/.ripgreprc
