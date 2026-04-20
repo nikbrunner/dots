@@ -28,6 +28,7 @@ brew "aviator-co/tap/av"         # aviator CLI — shell completion in os.zsh
 # Casks — desktop apps
 cask "proton-pass"
 cask "claude"
+cask "cameracontroller"
 cask "reader"
 cask "docker-desktop"
 cask "ghostty"
@@ -46,6 +47,7 @@ cask "superwhisper"
 cask "whatsapp"
 cask "yoink"
 cask "zed@preview"
+cask "figma"
 
 # Fonts
 cask "font-departure-mono-nerd-font"
