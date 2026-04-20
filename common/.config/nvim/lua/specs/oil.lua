@@ -1,7 +1,6 @@
 ---@type LazySpec
 return {
     "stevearc/oil.nvim",
-    enabled = false,
     lazy = false,
     ---@module 'oil'
     ---@type oil.SetupOpts

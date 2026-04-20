@@ -446,7 +446,6 @@ function M.keys()
         { "<leader>aw",          M.project_switch, desc = "[W]orkspace" },
 
         -- Workspace
-        { "-",                   function() Snacks.picker.explorer() end, desc = "[E]xplorer" },
         { "<leader>we",          function() Snacks.picker.explorer() end, desc = "[E]xplorer" },
         { "<leader>wc",          function() Snacks.picker.git_diff() end, desc = "[C]hanges" },
         -- { "<leader>wd",          function() Snacks.picker.files() end, desc = "[D]ocument" },
