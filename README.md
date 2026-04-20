@@ -42,13 +42,13 @@ cd ~/repos/nikbrunner/dots
 ./install/install.sh
 ```
 
-**Flags**: `--dry-run` (preview), `--no-deps` (symlinks only), `--debug` (diagnostics)
+**Flags**: `--dry-run` (preview), `--debug` (diagnostics)
 
 ## Usage
 
 ### Core Commands
 
-- **`dots`** — Dotfiles management (pull, push, link, chores, deps). Run `dots` with no args for usage.
+- **`dots`** — Dotfiles management (pull, push, link, chores). Run `dots` with no args for usage.
 - **`shiplog`** — AI-powered git operations (commit, branch). Run `shiplog --help` for usage.
 - **`helm`** — External tool for multi-repo management. Invoked by `dots pull` and `dots push`.
 

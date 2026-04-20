@@ -16,7 +16,7 @@ source "$DOTS_DIR/scripts/dots/lib.sh"
 cd "$DOTS_DIR"
 
 # ── Pull command ───────────────────────────────────────────────
-# Full machine sync: pull dots, deps, link, pull all repos, rebuild tools
+# Full machine sync: pull dots, link, pull all repos, rebuild tools
 cmd_pull() {
 	local hard_reset=false
 	local rebuild_all=false
@@ -577,7 +577,7 @@ show_usage() {
 	echo ""
 	echo "  chores       - Commit routine changes (fonts, themes, sessions, etc.)"
 	echo ""
-	echo "  pull         - Full sync: pull dots, deps, symlinks, all repos, rebuild"
+	echo "  pull         - Full sync: pull dots, symlinks, all repos, rebuild"
 	echo "                 --hard: force reset diverged/dirty repos"
 	echo "                 --rebuild-all: rebuild all tools, not just updated"
 	echo "  push         - Chores, commit/push dots repo"
@@ -587,43 +587,6 @@ show_usage() {
 	echo "                 --dry-run: preview without making changes"
 	echo "                 --no-backup: overwrite existing files"
 	echo "                 --verbose: show detailed output"
-	echo ""
-	echo "  deps         - Install/check dependencies"
-	echo "                 check: show dependency status"
-	echo "                 install: install missing dependencies"
-	echo "                 list: list all dependencies"
-}
-
-# Deps command - install/check dependencies only
-cmd_deps() {
-	case "${1:-}" in
-	check)
-		log_info "Checking dependencies..."
-		echo ""
-		"$DOTS_DIR/install/deps.sh" check
-		;;
-	install)
-		log_info "Installing dependencies..."
-		echo ""
-		"$DOTS_DIR/install/deps.sh" install
-		;;
-	upgrade)
-		log_info "Upgrading dependencies..."
-		echo ""
-		"$DOTS_DIR/install/deps.sh" upgrade
-		;;
-	list)
-		"$DOTS_DIR/install/deps.sh" list
-		;;
-	*)
-		echo "Usage: dots deps <check|install|upgrade|list>"
-		echo ""
-		echo "  check   - Show dependency status"
-		echo "  install - Install all missing dependencies"
-		echo "  upgrade - Upgrade all dependencies to latest versions"
-		echo "  list    - List all dependencies for current OS"
-		;;
-	esac
 }
 
 # Link command
@@ -715,10 +678,6 @@ cmd_open() {
 
 # Main command dispatcher
 case "${1:-}" in
-deps)
-	shift
-	cmd_deps "$@"
-	;;
 link)
 	shift
 	cmd_link "$@"

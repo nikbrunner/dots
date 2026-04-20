@@ -27,7 +27,7 @@ dots/
 - **`shiplog`** — AI-powered git operations (commit, branch). Run `shiplog --help` for usage. See [nikbrunner/shiplog](https://github.com/nikbrunner/shiplog).
 - **`helm`** — External tool for multi-repo management (pull, push, status, rebuild). Invoked by `dots pull` and `dots push`.
 
-Full machine setup: `install/install.sh [--dry-run] [--no-deps]`
+Full machine setup: follow `install/mac/README.md` or `install/arch/README.md`.
 
 ## Symlink Configuration
 
@@ -63,14 +63,14 @@ Theme files in this repo are symlinks to Black Atom adapter repos. `dots link` a
 
 ## Key Files
 
-- `common/.local/bin/dots` — Main CLI implementation (dispatcher + `cmd_pull`, `cmd_push`, `cmd_chores`, `cmd_link`, `cmd_deps`)
+- `common/.local/bin/dots` — Main CLI implementation (dispatcher + `cmd_pull`, `cmd_push`, `cmd_chores`, `cmd_link`)
 - `scripts/dots/lib.sh` — Shared library (config loading, repo helpers, chore commit functions)
 - `scripts/dots/symlinks.sh` — Symlink creation/cleanup logic (also sourceable as a library)
 - `scripts/dots/detect-os.sh` — OS detection (`macos`, `arch`, `linux`)
 - `scripts/dots/theme-link.sh` — Black Atom theme symlink creation
 - `scripts/log.sh` — Shared logging/UI functions
-- `install/deps/` — Dependency management (install.sh dispatcher, macos.sh, arch.sh)
-- `install/install.sh` — Full machine setup script
+- `install/mac/Brewfile`, `install/arch/pkglist.txt` — OS-specific native packages
+- `common/.config/mise/config.toml` — Cross-platform CLI tools + runtimes (via mise)
 - `scripts/claude-mcp.sh` — Claude Code MCP server configuration (legacy)
 
 ## Environment Variables
