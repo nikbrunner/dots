@@ -1,6 +1,6 @@
 #:schema https://raw.githubusercontent.com/black-atom-industries/shiplog/main/schema.json
 provider = "openrouter"
-model = "openrouter/auto"
-models = ["openrouter/auto", "nvidia/nemotron-3-super:free", "x-ai/grok-4-fast"]
+model = "google/gemma-3-27b-it"
+models = ["google/gemma-3-27b-it", "google/gemma-3-12b-it", "nvidia/nemotron-nano-9b-v2"]
 summary_length = 72
 history_count = 10
