@@ -447,7 +447,7 @@
             "label": "3"
           }
         ],
-        "lastAccessed": 1776693830
+        "lastAccessed": 1776776616
       },
       "feat/openspec-integration": {
         "locks": [
@@ -499,15 +499,11 @@
             "label": "1"
           },
           {
-            "filename": "logs/26.04/26.04.md",
+            "filename": "projects/web-ui.md",
             "label": "2"
-          },
-          {
-            "filename": "logs/26.04/26.04.17 - Friday.md",
-            "label": "3"
           }
         ],
-        "lastAccessed": 1776416206
+        "lastAccessed": 1776776211
       }
     },
     "~/repos/nikbrunner/imfusion-coding-assignment": {
