@@ -4,18 +4,19 @@ let v:this_session=expand("<sfile>:p")
 doautoall SessionLoadPre
 silent only
 silent tabonly
-cd ~/repos/nikbrunner/dots
+cd ~/repos/nikbrunner/imf-notes
 if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +0 ~/repos/nikbrunner/dots/common/.config/helm/config.yml
+badd +13 logs/2026/04.2026/21.04.2026\ -\ Tue.md
 argglobal
 %argdel
-$argadd ./
-edit ~/repos/nikbrunner/dots/common/.config/helm/config.yml
+edit logs/2026/04.2026/21.04.2026\ -\ Tue.md
 argglobal
+xnoremap <buffer> <silent> [[ :exe "normal! gv"|call search('\%(^#\{1,5\}\s\+\S\|^\S.*\n^[=-]\+$\)', "bsW")
+xnoremap <buffer> <silent> ]] :exe "normal! gv"|call search('\%(^#\{1,5\}\s\+\S\|^\S.*\n^[=-]\+$\)', "sW")
 setlocal keymap=
 setlocal noarabic
 setlocal autoindent
@@ -32,8 +33,8 @@ setlocal cinoptions=
 setlocal cinscopedecls=public,protected,private
 setlocal cinwords=if,else,while,do,for,switch
 setlocal colorcolumn=
-setlocal comments=:#
-setlocal commentstring=#\ %s
+setlocal comments=fb:*,fb:-,fb:+,n:>
+setlocal commentstring=<!--\ %s\ -->
 setlocal complete=.,w,b,u,t
 setlocal completefunc=
 setlocal completeslash=
@@ -46,9 +47,9 @@ setlocal cursorline
 setlocal cursorlineopt=both
 setlocal nodiff
 setlocal eventignorewin=
-setlocal expandtab
-if &filetype != 'yaml'
-setlocal filetype=yaml
+setlocal noexpandtab
+if &filetype != 'markdown'
+setlocal filetype=markdown
 endif
 setlocal fixendofline
 setlocal foldcolumn=0
@@ -62,21 +63,21 @@ setlocal foldminlines=1
 setlocal foldnestmax=20
 setlocal foldtext=
 setlocal formatexpr=v:lua.require'conform'.formatexpr()
-setlocal formatlistpat=^\\s*\\d\\+[\\]:.)}\\t\ ]\\s*
-setlocal formatoptions=jcroql
+setlocal formatlistpat=^\\s*\\d\\+\\.\\s\\+\\|^\\s*[-*+]\\s\\+\\|^\\[^\\ze[^\\]]\\+\\]:\\&^.\\{4\\}
+setlocal formatoptions=njctql
 setlocal iminsert=0
 setlocal imsearch=-1
 setlocal includeexpr=
-setlocal indentexpr=GetYAMLIndent(v:lnum)
-setlocal indentkeys=!^F,o,O,0},0],<:>,0-
+setlocal indentexpr=
+setlocal indentkeys=0{,0},0),0],:,0#,!^F,o,O,e
 setlocal noinfercase
 setlocal iskeyword=@,48-57,_,192-255
 setlocal lhistory=10
-setlocal nolinebreak
+setlocal linebreak
 setlocal nolisp
 setlocal lispoptions=
 setlocal nolist
-setlocal matchpairs=(:),{:},[:]
+setlocal matchpairs=(:),{:},[:],<:>
 setlocal modeline
 setlocal modifiable
 setlocal nrformats=bin,hex
@@ -94,7 +95,7 @@ setlocal scrollback=-1
 setlocal noscrollbind
 setlocal shiftwidth=2
 setlocal signcolumn=yes
-setlocal nosmartindent
+setlocal smartindent
 setlocal nosmoothscroll
 setlocal softtabstop=-1
 setlocal nospell
@@ -115,19 +116,21 @@ setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#common%*\ %#WinBarSeparator#/%*\ %#WinBarPath#.config%*\ %#WinBarSeparator#/%*\ %#WinBarPath#helm%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#config.yml%*\ %#WinBarSeparator##%*\ %#WinBarSymbol#ensure_cloned%*
+setlocal winbar=%#WinBarPath#logs%*\ %#WinBarSeparator#/%*\ %#WinBarPath#2026%*\ %#WinBarSeparator#/%*\ %#WinBarPath#04.2026%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#21.04.2026\ -\ Tue.md%*
 setlocal winblend=0
 setlocal nowinfixbuf
 setlocal nowinfixheight
 setlocal nowinfixwidth
 setlocal winhighlight=
-setlocal nowrap
+setlocal wrap
 setlocal wrapmargin=0
-let s:l = 50 - ((49 * winheight(0) + 26) / 53)
+6
+sil! normal! zo
+let s:l = 13 - ((12 * winheight(0) + 23) / 47)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 50
+keepjumps 13
 normal! 0
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'

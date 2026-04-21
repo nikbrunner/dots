@@ -12,7 +12,7 @@ let s:shortmess_save = &shortmess
 set shortmess+=aoO
 badd +45 install/mac/README.md
 badd +51 install/mac/Brewfile
-badd +458 common/.config/nvim/lua/specs/snacks.lua
+badd +10 common/.gitconfig
 argglobal
 %argdel
 $argadd ./
@@ -118,7 +118,7 @@ if &syntax != ''
 setlocal syntax=
 endif
 setlocal tabstop=4
-setlocal tagfunc=
+setlocal tagfunc=v:lua.vim.lsp.tagfunc
 setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
@@ -131,7 +131,7 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal wrap
 setlocal wrapmargin=0
-let s:l = 27 - ((20 * winheight(0) + 27) / 54)
+let s:l = 27 - ((16 * winheight(0) + 20) / 41)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
@@ -142,9 +142,11 @@ edit install/mac/Brewfile
 argglobal
 let s:cpo_save=&cpo
 set cpo&vim
-cmap <buffer> <C-R><C-F> <Plug><cfile>
-cmap <buffer> <SNR>59_<ctag> <Plug><ctag>
 cmap <buffer> <SNR>59_<cfile> <Plug><cfile>
+cmap <buffer> <SNR>59_<ctag> <Plug><ctag>
+cmap <buffer> <C-R><C-F> <Plug><cfile>
+cmap <buffer> <SNR>41_<ctag> <Plug><ctag>
+cmap <buffer> <SNR>41_<cfile> <Plug><cfile>
 cmap <buffer>  <Plug><cfile>
 let &cpo=s:cpo_save
 unlet s:cpo_save
@@ -258,14 +260,14 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 51 - ((43 * winheight(0) + 27) / 54)
+let s:l = 51 - ((33 * winheight(0) + 20) / 41)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
 keepjumps 51
 normal! 0
 tabnext
-edit common/.config/nvim/lua/specs/snacks.lua
+edit common/.gitconfig
 argglobal
 setlocal keymap=
 setlocal noarabic
@@ -283,8 +285,8 @@ setlocal cinoptions=
 setlocal cinscopedecls=public,protected,private
 setlocal cinwords=if,else,while,do,for,switch
 setlocal colorcolumn=
-setlocal comments=:---,:--
-setlocal commentstring=--\ %s
+setlocal comments=:#,:;
+setlocal commentstring=;\ %s
 setlocal complete=.,w,b,u,t
 setlocal completefunc=
 setlocal completeslash=
@@ -295,12 +297,11 @@ setlocal nocursorbind
 setlocal nocursorcolumn
 setlocal cursorline
 setlocal cursorlineopt=both
-setlocal define=\\<function\\|\\<local\\%(\\s\\+function\\)\\=
 setlocal nodiff
 setlocal eventignorewin=
-setlocal expandtab
-if &filetype != 'lua'
-setlocal filetype=lua
+setlocal noexpandtab
+if &filetype != 'gitconfig'
+setlocal filetype=gitconfig
 endif
 setlocal fixendofline
 setlocal foldcolumn=0
@@ -315,13 +316,12 @@ setlocal foldnestmax=20
 setlocal foldtext=
 setlocal formatexpr=v:lua.require'conform'.formatexpr()
 setlocal formatlistpat=^\\s*\\d\\+[\\]:.)}\\t\ ]\\s*
-setlocal formatoptions=jcroql
+setlocal formatoptions=ocqljr
 setlocal iminsert=0
 setlocal imsearch=-1
-setlocal include=\\<\\%(\\%(do\\|load\\)file\\|require\\)\\s*(
-setlocal includeexpr=v:lua.require'vim._ftplugin.lua'.includeexpr(v:fname)
-setlocal indentexpr=GetLuaIndent()
-setlocal indentkeys=0{,0},0),0],:,0#,!^F,o,O,e,0=end,0=until
+setlocal includeexpr=
+setlocal indentexpr=GetGitconfigIndent()
+setlocal indentkeys=o,O,*<Return>,0[,],0;,0#,=,!^F
 setlocal noinfercase
 setlocal iskeyword=@,48-57,_,192-255
 setlocal lhistory=10
@@ -335,8 +335,7 @@ setlocal modifiable
 setlocal nrformats=bin,hex
 setlocal number
 setlocal numberwidth=4
-setlocal omnifunc=v:lua.vim.lsp.omnifunc
-setlocal path=,
+setlocal omnifunc=
 setlocal nopreserveindent
 setlocal nopreviewwindow
 setlocal quoteescape=\\
@@ -346,7 +345,7 @@ setlocal norightleft
 setlocal rightleftcmd=search
 setlocal scrollback=-1
 setlocal noscrollbind
-setlocal shiftwidth=4
+setlocal shiftwidth=2
 setlocal signcolumn=yes
 setlocal smartindent
 setlocal nosmoothscroll
@@ -357,19 +356,19 @@ setlocal spellfile=
 setlocal spelllang=en_us,de_de
 setlocal spelloptions=noplainbuffer
 setlocal statuscolumn=%!v:lua.require'snacks.statuscolumn'.get()
-setlocal suffixesadd=.lua
+setlocal suffixesadd=
 setlocal noswapfile
 setlocal synmaxcol=3000
 if &syntax != ''
 setlocal syntax=
 endif
-setlocal tabstop=4
-setlocal tagfunc=v:lua.vim.lsp.tagfunc
+setlocal tabstop=8
+setlocal tagfunc=
 setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#common%*\ %#WinBarSeparator#/%*\ %#WinBarPath#.config%*\ %#WinBarSeparator#/%*\ %#WinBarPath#nvim%*\ %#WinBarSeparator#/%*\ %#WinBarPath#lua%*\ %#WinBarSeparator#/%*\ %#WinBarPath#specs%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#snacks.lua%*
+setlocal winbar=%#WinBarPath#common%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#.gitconfig%*
 setlocal winblend=0
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -377,11 +376,11 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 450 - ((22 * winheight(0) + 27) / 54)
+let s:l = 10 - ((7 * winheight(0) + 20) / 41)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 450
+keepjumps 10
 normal! 0
 tabnext 3
 set stal=1
