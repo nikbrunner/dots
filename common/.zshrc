@@ -17,6 +17,8 @@ fpath=(~/.config/.zsh $fpath)
 # Tool runtimes (python, deno, node, go, rust) managed by mise. Keep
 # only user-script dirs and version-manager-specific dirs here.
 export PATH=$HOME/.local/bin:/usr/local/bin:$PATH
+# For neovim binaries
+export PATH=$HOME/.local/share/bob/nvim-bin:$PATH
 export PATH=$HOME/.cargo/bin:$PATH
 export XDG_CONFIG_HOME="$HOME/.config" # Because of https://github.com/jesseduffield/lazygit/blob/master/docs/Config.md#user-config
 export RIPGREP_CONFIG_PATH=$HOME/.ripgreprc
