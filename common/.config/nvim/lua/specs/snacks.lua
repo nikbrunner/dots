@@ -446,12 +446,12 @@ function M.keys()
         { "<leader>aw",          M.project_switch, desc = "[W]orkspace" },
 
         -- Workspace
-        { "<leader>we",          function() Snacks.picker.explorer() end, desc = "[E]xplorer" },
+        -- { "<leader>we",          function() Snacks.picker.explorer() end, desc = "[E]xplorer" },
         { "<leader>wc",          function() Snacks.picker.git_diff() end, desc = "[C]hanges" },
         -- { "<leader>wd",          function() Snacks.picker.files() end, desc = "[D]ocument" },
         { "<leader>wj",          function() Snacks.picker.jumps() end, desc = "[J]umps" },
-        -- { "<leader>wm",          function() Snacks.picker.git_status() end, desc = "[M]odified Documents" },
-        { "<leader>wm",          M.git_explorer, desc = "[M]odified Explorer" },
+        { "<leader>wm",          function() Snacks.picker.git_status() end, desc = "[M]odified Documents" },
+        -- { "<leader>wm",          M.git_explorer, desc = "[M]odified Explorer" },
         { "<leader>wp",          function() Snacks.picker.diagnostics() end, desc = "[P]roblems" },
         { "<leader>wr",          function() Snacks.picker.recent({ filter = { cwd = true } }) end, desc = "[R]ecent Documents" },
         { "<leader>ws",          function() Snacks.picker.lsp_symbols() end, desc = "[S]ymbols" },
