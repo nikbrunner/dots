@@ -46,7 +46,7 @@ cmd_pull() {
 	fi
 
 	if [[ "$pull_failed" == true ]]; then
-		log_error "Failed to pull dots repo"
+		log_fail "Failed to pull dots repo"
 		echo "  ${pull_output//$'\n'/$'\n'  }"
 		return 1
 	fi
@@ -115,7 +115,7 @@ cmd_pull() {
 					log_okay "reset"
 					updated_repos+=("$name")
 				else
-					log_error "reset failed"
+					log_fail "reset failed"
 				fi
 			else
 				echo -e "  ${YELLOW}$name${NC} ($state)"
@@ -131,7 +131,7 @@ cmd_pull() {
 						log_okay "reset"
 						updated_repos+=("$name")
 					else
-						log_error "reset failed"
+						log_fail "reset failed"
 					fi
 				else
 					echo "    → skipped"
@@ -237,7 +237,7 @@ cmd_push() {
 			if command -v shiplog &>/dev/null; then
 				git add -A && shiplog commit --smart --yes
 			else
-				log_error "'shiplog' command not found"
+				log_fail "'shiplog' command not found"
 			fi
 			;;
 		"Backup with timestamp")
@@ -351,7 +351,7 @@ cmd_push() {
 				if command -v shiplog &>/dev/null; then
 					(cd "$repo_path" && git add -A && shiplog commit --smart --yes)
 				else
-					log_error "'shiplog' command not found"
+					log_fail "'shiplog' command not found"
 				fi
 				;;
 			"Backup with timestamp")
@@ -364,7 +364,7 @@ cmd_push() {
 				if command -v claude &>/dev/null; then
 					(cd "$repo_path" && claude -p "$DOTS_DIR/common/.claude/commands/dots/git-cleanup.md")
 				else
-					log_error "'claude' command not found"
+					log_fail "'claude' command not found"
 				fi
 				;;
 			"Discard changes")
@@ -595,7 +595,7 @@ do_push() {
 				git push --force-with-lease
 				log_okay "Changes force pushed"
 			else
-				log_error "Push cancelled"
+				log_fail "Push cancelled"
 				return 1
 			fi
 		fi
@@ -607,7 +607,7 @@ cmd_state() {
 	if command -v lazygit >/dev/null 2>&1; then
 		lazygit
 	else
-		log_error "LazyGit not found. Install with: brew install lazygit"
+		log_fail "LazyGit not found. Install with: brew install lazygit"
 		return 1
 	fi
 }
