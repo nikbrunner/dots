@@ -1,12 +1,13 @@
 {
-  "theme": "light",
+  "theme": "dark",
   "lastChangelogVersion": "0.69.0",
   "packages": [
     "npm:pi-web-access",
     "npm:@ff-labs/pi-fff",
     "npm:pi-lean-ctx",
     "npm:@plannotator/pi-extension",
-    "../../repos/nikbrunner/pi-speak"
+    "../../repos/nikbrunner/pi-speak",
+    "npm:pi-ask-user"
   ],
   "defaultProvider": "openrouter",
   "defaultModel": "moonshotai/kimi-k2.6",
