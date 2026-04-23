@@ -1,0 +1,16 @@
+# Managed by livery — https://github.com/black-atom-industries/livery
+
+[delta "black-atom-dark"]
+    dark = true
+
+[delta "black-atom-light"]
+    light = true
+
+[delta]
+    navigate = true
+    side-by-side = true
+    wrap-max-lines = 0
+    hyperlinks = true
+    hyperlinks-file-link-format = "lazygit-edit://{path}:{line}"
+    line-numbers = true
+    features = black-atom-dark

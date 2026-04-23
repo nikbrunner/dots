@@ -33,6 +33,7 @@ common:
   common/.config/zsh/lib/async.zsh: ~/.config/zsh/lib/async.zsh
   common/.config/zsh/prompt.zsh: ~/.config/zsh/prompt.zsh
   common/.gitconfig: ~/.gitconfig
+  common/.gitconfig.delta: ~/.gitconfig.delta
   common/.gitignore: ~/.gitignore
   common/.hushlogin: ~/.hushlogin
   common/.ideavimrc: ~/.ideavimrc
