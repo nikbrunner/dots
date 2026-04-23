@@ -78,7 +78,7 @@ parse_git_url() {
         username="${BASH_REMATCH[1]}"
         repo_name="${BASH_REMATCH[2]}"
     else
-        log_error "Invalid Git URL format"
+        log_fail "Invalid Git URL format"
         return 1
     fi
 
@@ -234,7 +234,7 @@ dots_commit_theme() {
     fi
 
     (cd "$repo_path" && git add "${theme_files[@]}" && git commit -m "chore(themes): switch to $theme_name")
-    log_success "Theme commit created: $theme_name"
+    log_okay "Theme commit created: $theme_name"
 }
 
 dots_commit_sessions() {
@@ -253,7 +253,7 @@ dots_commit_sessions() {
     fi
 
     (cd "$repo_path" && git add "common/.config/nvim/sessions/" && git commit -m "chore(nvim): update sessions")
-    log_success "Sessions commit created"
+    log_okay "Sessions commit created"
 }
 
 dots_commit_pi() {
@@ -288,7 +288,7 @@ dots_commit_pi() {
     fi
 
     (cd "$repo_path" && git add "${pi_paths[@]}" && git commit -m "chore(pi): update")
-    log_success "Pi commit created"
+    log_okay "Pi commit created"
 }
 
 dots_commit_radar() {
@@ -301,7 +301,7 @@ dots_commit_radar() {
     fi
 
     (cd "$repo_path" && git add "$radar_file" && git commit -m "chore(nvim): update radar data")
-    log_success "Radar commit created"
+    log_okay "Radar commit created"
 }
 
 dots_commit_font() {
@@ -333,7 +333,7 @@ dots_commit_font() {
     fi
 
     (cd "$repo_path" && git add "$ghostty_file" && git commit -m "chore(fonts): switch to $font_name")
-    log_success "Font commit created: $font_name"
+    log_okay "Font commit created: $font_name"
 }
 
 dots_commit_lazy_lock() {
@@ -346,7 +346,7 @@ dots_commit_lazy_lock() {
     fi
 
     (cd "$repo_path" && git add "$lazy_lock_file" && git commit -m "chore(nvim): update lazy-lock")
-    log_success "Lazy-lock commit created"
+    log_okay "Lazy-lock commit created"
 }
 
 dots_commit_bookmarks() {
@@ -359,7 +359,7 @@ dots_commit_bookmarks() {
     fi
 
     (cd "$repo_path" && git add "$bookmarks_file" && git commit -m "chore(bm): update bookmarks")
-    log_success "Bookmarks commit created"
+    log_okay "Bookmarks commit created"
 }
 
 # Resolve a Claude project directory name to a readable org/repo path
@@ -458,7 +458,7 @@ dots_link_claude_memories() {
     done
 
     if [[ $linked -gt 0 ]]; then
-        log_success "Linked $linked claude memory project(s)"
+        log_okay "Linked $linked claude memory project(s)"
     fi
 }
 
@@ -472,7 +472,7 @@ dots_commit_gitconfig() {
     fi
 
     (cd "$repo_path" && git add "$gitconfig" && git commit -m "chore(gitconfig): update config")
-    log_success "Gitconfig commit created"
+    log_okay "Gitconfig commit created"
 }
 
 dots_commit_helm_config() {
@@ -485,7 +485,7 @@ dots_commit_helm_config() {
     fi
 
     (cd "$repo_path" && git add "$helm_config" && git commit -m "chore(helm): update config")
-    log_success "Helm config commit created"
+    log_okay "Helm config commit created"
 }
 
 dots_commit_claude_memories() {
@@ -537,5 +537,5 @@ dots_commit_claude_memories() {
     fi
 
     (cd "$repo_path" && git add "common/.claude/claude-memories/" && git commit -m "chore(claude): sync project memories")
-    log_success "Memories commit created"
+    log_okay "Memories commit created"
 }
