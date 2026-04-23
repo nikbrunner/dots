@@ -19,7 +19,7 @@
     "openrouter/qwen/qwen3.6-plus",
     "openrouter/moonshotai/kimi-k2.6"
   ],
-  "hideThinkingBlock": true,
+  "hideThinkingBlock": false,
   "compaction": {
     "enabled": false
   }
