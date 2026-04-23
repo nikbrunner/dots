@@ -4,6 +4,7 @@ description: Forbidden visual tropes when generating or prompting Black Atom Ind
 type: feedback
 originSessionId: 79fd2620-1480-4326-90b4-6afbb2f4c2d1
 ---
+
 Never propose the following for Black Atom Industries logo work:
 
 - Dot-with-orbital-rings atom marks (electrons-around-nucleus iconography)
