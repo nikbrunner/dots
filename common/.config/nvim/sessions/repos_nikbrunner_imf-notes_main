@@ -10,10 +10,10 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +13 logs/2026/04.2026/21.04.2026\ -\ Tue.md
+badd +17 ~/repos/nikbrunner/imf-notes/research/Workflow\ React\ Lib.md
 argglobal
 %argdel
-edit logs/2026/04.2026/21.04.2026\ -\ Tue.md
+edit ~/repos/nikbrunner/imf-notes/research/Workflow\ React\ Lib.md
 argglobal
 xnoremap <buffer> <silent> [[ :exe "normal! gv"|call search('\%(^#\{1,5\}\s\+\S\|^\S.*\n^[=-]\+$\)', "bsW")
 xnoremap <buffer> <silent> ]] :exe "normal! gv"|call search('\%(^#\{1,5\}\s\+\S\|^\S.*\n^[=-]\+$\)', "sW")
@@ -39,7 +39,7 @@ setlocal complete=.,w,b,u,t
 setlocal completefunc=
 setlocal completeslash=
 setlocal concealcursor=
-setlocal conceallevel=0
+setlocal conceallevel=3
 setlocal nocopyindent
 setlocal nocursorbind
 setlocal nocursorcolumn
@@ -47,7 +47,7 @@ setlocal cursorline
 setlocal cursorlineopt=both
 setlocal nodiff
 setlocal eventignorewin=
-setlocal noexpandtab
+setlocal expandtab
 if &filetype != 'markdown'
 setlocal filetype=markdown
 endif
@@ -64,7 +64,7 @@ setlocal foldnestmax=20
 setlocal foldtext=
 setlocal formatexpr=v:lua.require'conform'.formatexpr()
 setlocal formatlistpat=^\\s*\\d\\+\\.\\s\\+\\|^\\s*[-*+]\\s\\+\\|^\\[^\\ze[^\\]]\\+\\]:\\&^.\\{4\\}
-setlocal formatoptions=njctql
+setlocal formatoptions=jtcqln
 setlocal iminsert=0
 setlocal imsearch=-1
 setlocal includeexpr=
@@ -73,7 +73,7 @@ setlocal indentkeys=0{,0},0),0],:,0#,!^F,o,O,e
 setlocal noinfercase
 setlocal iskeyword=@,48-57,_,192-255
 setlocal lhistory=10
-setlocal linebreak
+setlocal nolinebreak
 setlocal nolisp
 setlocal lispoptions=
 setlocal nolist
@@ -116,21 +116,19 @@ setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#logs%*\ %#WinBarSeparator#/%*\ %#WinBarPath#2026%*\ %#WinBarSeparator#/%*\ %#WinBarPath#04.2026%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#21.04.2026\ -\ Tue.md%*
+setlocal winbar=%#WinBarPath#research%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#Workflow\ React\ Lib.md%*
 setlocal winblend=0
 setlocal nowinfixbuf
 setlocal nowinfixheight
 setlocal nowinfixwidth
 setlocal winhighlight=
-setlocal wrap
+setlocal nowrap
 setlocal wrapmargin=0
-6
-sil! normal! zo
-let s:l = 13 - ((12 * winheight(0) + 23) / 47)
+let s:l = 31 - ((30 * winheight(0) + 31) / 62)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 13
+keepjumps 31
 normal! 0
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
