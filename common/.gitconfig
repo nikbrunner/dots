@@ -41,6 +41,9 @@
 [include]
   path = ~/.gitconfig.delta
 
+[includeIf "gitdir:~/repos/imfusion/"]
+  path = ~/.gitconfig.work
+
 [pager]
   diff = delta
   log = delta
