@@ -6,7 +6,6 @@ SHELL_PATHS := \
 	arch/.local/bin/ \
 	common/.config/tmux/layouts/ \
 	common/.config/tmux/scripts/ \
-	common/.config/nvim/scripts/
 
 fmt:
 	npx prettier --write "**/*.md"
