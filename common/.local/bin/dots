@@ -180,9 +180,7 @@ cmd_push() {
 
 	# ── Phase 1: Dots chores ──
 	log_section "Phase 1: Dots chores"
-	dots_commit_theme "$DOTS_DIR" || true
-	dots_commit_sessions "$DOTS_DIR" || true
-	dots_commit_radar "$DOTS_DIR" || true
+	cmd_chores
 
 	# ── Phase 2: Commit/push dots ──
 	echo ""
