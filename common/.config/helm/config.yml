@@ -2,6 +2,8 @@
 # Environment variables override these settings
 appearance: dark
 
+enable_layouts: false
+
 # Layout script name to apply when creating new sessions
 layout: dev
 
