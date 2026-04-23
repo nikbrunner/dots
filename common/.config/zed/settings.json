@@ -60,7 +60,7 @@
   "cursor_blink": false,
   "theme": {
     "mode": "light",
-    "light": "Black Atom — TERRA ∷ Fall Day",
+    "light": "Black Atom — Light",
     "dark": "Black Atom — Dark Dimmed"
   },
   "base_keymap": "VSCode",
