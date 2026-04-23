@@ -7,6 +7,7 @@ tap "protonpass/tap"
 tap "aviator-co/tap"
 
 # Shell & git (system deps mise doesn't cover)
+brew "coreutils"
 brew "bash"                      # modern v5; macOS ships ancient v3
 brew "git"                       # prefer over Xcode CLT git
 brew "zsh-autosuggestions"       # source-only plugin; no mise backend
