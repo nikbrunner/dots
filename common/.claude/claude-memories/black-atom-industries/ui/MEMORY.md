@@ -1,0 +1,1 @@
+- [BAI logo clichés to avoid](feedback_logo_cliches.md) — no orbital-ring atoms, no EST./heritage subtext, no gradients/glows/rounded corners on Black Atom logo work

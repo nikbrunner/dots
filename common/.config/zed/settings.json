@@ -60,8 +60,8 @@
   "cursor_blink": false,
   "theme": {
     "mode": "light",
-    "light": "Black Atom — Stations ∷ Medical",
-    "dark": "Black Atom — Dark Dimmed"
+    "light": "Black Atom — Light",
+    "dark": "Black Atom — TERRA ∷ Summer Night"
   },
   "base_keymap": "VSCode",
   "vim_mode": true,

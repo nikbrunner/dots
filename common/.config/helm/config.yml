@@ -52,6 +52,8 @@ ensure_cloned:
   - git@github.com:nikbrunner/wallpapers
   - url: git@github.com:black-atom-industries/helm
     post_clone: make install
+  - url: git@github.com:black-atom-industries/shiplog
+    post_clone: deno task install
   - url: git@github.com:nikbrunner/bm
     post_clone: make install
   - url: git@github.com:nikbrunner/tmux-file-picker

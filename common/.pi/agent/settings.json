@@ -3,7 +3,8 @@
   "lastChangelogVersion": "0.69.0",
   "packages": [
     "npm:pi-web-access",
-    "npm:pi-fff",
+    "npm:@ff-labs/pi-fff",
+    "npm:pi-lean-ctx",
     "npm:@plannotator/pi-extension",
     "../../repos/nikbrunner/pi-speak"
   ],
