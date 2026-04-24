@@ -44,9 +44,9 @@
         "ctx_workflow",
         "ctx"
       ],
-      "command": "/Users/nbr/.local/bin/lean-ctx",
+      "command": "~/.local/bin/lean-ctx",
       "env": {
-        "LEAN_CTX_DATA_DIR": "/Users/nbr/.lean-ctx"
+        "LEAN_CTX_DATA_DIR": "~/.lean-ctx"
       }
     }
   }

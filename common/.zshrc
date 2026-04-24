@@ -55,7 +55,9 @@ alias :q=exit
 alias :vs='tmux split-window -h -c "#{pane_current_path}"'
 alias :sp='tmux split-window -v -c "#{pane_current_path}"'
 
-alias claude="CLAUDE_CODE_NO_FLICKER=1 claude"
+claude() {
+  LEAN_CTX_AGENT=1 BASH_ENV="$HOME/.zshenv" CLAUDE_CODE_NO_FLICKER=1 command claude "$@"
+}
 
 
 # Yazi ==================================================================
@@ -120,4 +122,3 @@ command -v mise &>/dev/null && eval "$(mise activate zsh)"
 # lean-ctx shell hook
 [ -f "$HOME/.lean-ctx/shell-hook.zsh" ] && . "$HOME/.lean-ctx/shell-hook.zsh"
 
-alias claude='LEAN_CTX_AGENT=1 BASH_ENV="$HOME/.zshenv" claude'
