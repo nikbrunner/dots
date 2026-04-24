@@ -28,7 +28,6 @@ common:
   common/.config/yt-dlp/config: ~/.config/yt-dlp/config
   common/.config/zed: ~/.config/zed
   common/.config/bm: ~/.config/bm
-  common/.config/helm: ~/.config/helm
   common/.config/mise: ~/.config/mise
   common/.config/zsh/lib/async.zsh: ~/.config/zsh/lib/async.zsh
   common/.config/zsh/prompt.zsh: ~/.config/zsh/prompt.zsh
