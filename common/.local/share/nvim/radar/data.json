@@ -477,7 +477,7 @@
             "label": "3"
           }
         ],
-        "lastAccessed": 1776504199
+        "lastAccessed": 1777021765
       }
     },
     "~/repos/nikbrunner/filen-interview": {
@@ -495,19 +495,15 @@
       "main": {
         "locks": [
           {
-            "filename": "research/inbox.md",
+            "filename": "logs/2026/04.2026/24.04.2026 - Fri.md",
             "label": "1"
           },
           {
-            "filename": "projects/web-ui.md",
+            "filename": "research/Figma Tutorial.md",
             "label": "2"
-          },
-          {
-            "filename": "logs/2026/04.2026/23.04.2026 - Thu.md",
-            "label": "3"
           }
         ],
-        "lastAccessed": 1776959103
+        "lastAccessed": 1777019823
       }
     },
     "~/repos/nikbrunner/imfusion-coding-assignment": {
