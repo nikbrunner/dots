@@ -1,6 +1,6 @@
 {
-  "theme": "dark",
-  "lastChangelogVersion": "0.69.0",
+  "theme": "light",
+  "lastChangelogVersion": "0.70.0",
   "packages": [
     "npm:pi-web-access",
     "npm:@ff-labs/pi-fff",
@@ -12,14 +12,12 @@
   "defaultProvider": "openrouter",
   "defaultModel": "moonshotai/kimi-k2.6",
   "enabledModels": [
-    "openrouter/anthropic/claude-sonnet-4.6",
-    "openrouter/anthropic/claude-opus-4.6",
     "openrouter/minimax/minimax-m2.7",
     "openrouter/z-ai/glm-5.1",
     "openrouter/qwen/qwen3.6-plus",
     "openrouter/moonshotai/kimi-k2.6"
   ],
-  "hideThinkingBlock": false,
+  "hideThinkingBlock": true,
   "compaction": {
     "enabled": false
   }
