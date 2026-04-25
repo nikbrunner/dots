@@ -31,6 +31,7 @@ lean-ctx doctor --fix
 ## When to use lean-ctx
 
 Always prefer `lean-ctx -c <command>` over running commands directly when:
+
 - The command produces verbose output (build logs, git diffs, dependency trees, test results)
 - You are reading files and only need the structure or API surface
 - You want to check token savings for the current session
@@ -87,6 +88,7 @@ lean-ctx init --agent copilot   # VS Code / Copilot .vscode/mcp.json
 ## Multi-Agent & Knowledge (v2.7.0+)
 
 MCP tools:
+
 - `ctx_knowledge(action="remember", category, key, value)` — persistent cross-session project knowledge store
 - `ctx_knowledge(action="recall", query)` — search stored facts by text or category
 - `ctx_knowledge(action="consolidate")` — extract session findings into permanent knowledge
@@ -122,6 +124,7 @@ lean-ctx benchmark report       # Shareable Markdown report
 ```
 
 MCP tools for CCP:
+
 - `ctx_session status` — show current session state (~400 tokens)
 - `ctx_session load` — restore previous session (cross-chat memory)
 - `ctx_session task "description"` — set current task
