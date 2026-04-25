@@ -21,7 +21,15 @@ xcode-select --install
 eval "$(/opt/homebrew/bin/brew shellenv)"
 ```
 
-## 2. Dependencies & Runtimes
+## 3. Clone dots
+
+```sh
+mkdir -p ~/repos/nikbrunner
+git clone https://github.com/nikbrunner/dots.git ~/repos/nikbrunner/dots
+cd ~/repos/nikbrunner/dots
+```
+
+## 4. Dependencies & Runtimes
 
 Install brew packages (system deps + casks). Check `./Brewfile` for the list.
 
@@ -45,7 +53,7 @@ mise trust
 mise install
 ```
 
-## 2. ProtonPass + SSH
+## 5. ProtonPass + SSH
 
 Start the Proton Pass Desktop app and sign in.
 
@@ -66,15 +74,13 @@ gh auth login
 
 If SSH fails, fix it before continuing — nothing downstream works without GitHub SSH.
 
-## 3. Clone dots
+## 6. Switch git remote to SSH
 
 ```sh
-mkdir -p ~/repos/nikbrunner
-git clone git@github.com:nikbrunner/dots.git ~/repos/nikbrunner/dots
-cd ~/repos/nikbrunner/dots
+git remote set-url origin git@github.com:nikbrunner/dots.git
 ```
 
-## 4. Symlinks
+## 7. Symlinks
 
 ```sh
 # Create symlinks from symlinks.yml
@@ -83,7 +89,7 @@ cd ~/repos/nikbrunner/dots
 
 After that, the dot binaries from `~/.local/bin` will be available in your `$PATH`.
 
-## 5. Env Sync
+## 8. Env Sync
 
 Pull API keys and env vars from ProtonPass into `~/.env` and `~/.env.*`.
 
@@ -91,7 +97,7 @@ Pull API keys and env vars from ProtonPass into `~/.env` and `~/.env.*`.
 pp-env-sync
 ```
 
-## 6. helm + Repos
+## 9. helm + Repos
 
 > [!NOTE]
 > Currently, helm only supports GitHub repos.
@@ -108,7 +114,7 @@ Clone configured repos:
 helm setup
 ```
 
-## 7. Neovim
+## 10. Neovim
 
 Install neovim plugins via [lazy.nvim](https://github.com/folke/lazy.nvim).
 
@@ -121,9 +127,9 @@ Enter Neovim to see if plugins are installed.
 > [!NOTE]
 > On entering Neovim, the Mason plugins configured in `common/.config/nvim/lua/specs/mason.lua` will be installed.
 
-## 8. Claude Code MCP Servers
+## 11. Claude Code MCP Servers
 
-Configure MCP servers for Claude Code (requires Step env sync for API keys).
+Configure MCP servers for Claude Code (requires Step 8 env sync for API keys).
 
 ```sh
 claude mcp add --scope user exa -e "EXA_API_KEY=$EXA_API_KEY" -- npx -y exa-mcp-server

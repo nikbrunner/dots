@@ -1,75 +1,40 @@
-# Arch Linux package list — one package name per line (pacman / AUR).
-# Comments and blank lines ignored.
+# Arch Linux package list — system deps mise can't handle.
+# One package per line (pacman / AUR). Comments and blank lines ignored.
+#
 # Install: paru -S --needed --noconfirm $(grep -v '^\s*#\|^\s*$' install/arch/pkglist.txt)
+#
+# Everything else (CLI tools, runtimes) lives in common/.config/mise/config.toml.
 
-# Core CLI
+# System core
 git
 zsh
-tmux
-neovim
-fzf
-ripgrep
-fd
-bat
-git-delta
-lazygit
-eza
-yazi
-zoxide
-gum
-github-cli
-lua51
-luarocks
-stylua
-shellcheck
-shfmt
 paru
 
-# Shell enhancements
-zsh-autosuggestions
-zsh-syntax-highlighting
-atuin
-
-# Media tools
-gallery-dl
-yt-dlp
+# System deps (no mise backend, or mise compiles from source)
 ffmpeg
-python-eyed3
 mpd
 mpc
-
-# File watching
 entr
+lua51
+luarocks
 
-# Data processing
-go-yq
-jq
+# Shell plugins (source-only, no mise backend)
+zsh-autosuggestions
+zsh-syntax-highlighting
 
-# Languages & runtimes
-rust
-go
-golangci-lint-bin
-deno
-uv
-
-# AI & dev tools
+# ProtonPass + SSH
 pass-cli
+proton-pass
 
 # Desktop apps
-proton-pass
 claude-desktop-native
 signal-desktop
 mattermost-desktop
 zapzap
-docker
 zed-preview-bin
 obsidian
 helium-browser-bin
-
-# Bluetooth
-bluez
-bluez-utils
-bluetui
+docker
 
 # Wayland/Niri desktop
 swww
@@ -80,6 +45,11 @@ fuzzel
 satty
 clipse
 wtype
+
+# Bluetooth
+bluez
+bluez-utils
+bluetui
 
 # Gaming
 gamemode
