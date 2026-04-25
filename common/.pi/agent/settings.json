@@ -10,12 +10,14 @@
     "npm:pi-ask-user"
   ],
   "defaultProvider": "openrouter",
-  "defaultModel": "deepseek/deepseek-v4-pro",
+  "defaultModel": "minimax/minimax-m2.7",
   "enabledModels": [
     "openrouter/minimax/minimax-m2.7",
     "openrouter/z-ai/glm-5.1",
     "openrouter/qwen/qwen3.6-plus",
-    "openrouter/moonshotai/kimi-k2.6"
+    "openrouter/moonshotai/kimi-k2.6",
+    "openrouter/deepseek/deepseek-v4-pro",
+    "openrouter/deepseek/deepseek-v4-flash"
   ],
   "hideThinkingBlock": true,
   "compaction": {
