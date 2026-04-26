@@ -12,11 +12,11 @@ if ! pass-cli test &>/dev/null; then
 fi
 
 # Find all items starting with ".env" and sync each to ~/.<name>
-pass-cli item list --filter-type custom --output json |
+pass-cli item list "Nik" --filter-type custom --output json |
 	jq -r '.items[] | select(.content.title | startswith(".env")) | .content.title' |
 	while read -r title; do
 		out_file="$HOME/$title"
-		pass-cli item view --item-title="$title" --output=json |
+		pass-cli item view --vault-name="Nik" --item-title="$title" --output=json |
 			jq -r '.item.content.extra_fields[] | select(.content.Hidden) | "\(.name)=\(.content.Hidden)"' >"$out_file"
 		chmod 600 "$out_file"
 		echo "synced $(wc -l <"$out_file" | tr -d ' ') vars to $out_file"

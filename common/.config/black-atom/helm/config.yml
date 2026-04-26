@@ -21,7 +21,6 @@ ensure_cloned:
   - git@github.com:nikbrunner/nbr.haus
   - git@github.com:nikbrunner/fff-snacks.nvim
   - git@github.com:nikbrunner/review.nvim
-  - git@github.com:nikbrunner/wallpapers
   - url: git@github.com:black-atom-industries/helm
     post_clone: make install
   - url: git@github.com:black-atom-industries/shiplog
