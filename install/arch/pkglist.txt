@@ -37,7 +37,8 @@ helium-browser-bin
 docker
 
 # Wayland/Niri desktop
-swww
+awww
+waypaper
 chafa
 niri
 waybar

@@ -272,7 +272,7 @@ spawn-at-startup "proton-pass" "--silent"
 spawn-at-startup "waybar"
 
 // Wallpaper daemon
-spawn-at-startup "swww-daemon"
+spawn-at-startup "awww-daemon"
 spawn-at-startup "waypaper" "--restore"
 
 // Clipboard manager (clipse)
