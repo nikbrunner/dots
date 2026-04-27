@@ -178,6 +178,51 @@ Log out and back in for the group change to take effect.
 
 ---
 
+## Gaming
+
+`gamemode` and `lib32-gamemode` are installed via `pkglist.txt`. Steam ships in the same list. No daemon to enable — `gamemoderun` is invoked per-game via Steam launch options.
+
+### Cyberpunk 2077 (NVIDIA Turing, 4K)
+
+Verified working on RTX 2070 SUPER + nvidia 595, Proton Experimental.
+
+**Symptom:** Inventory screen freezes the rendered frame (audio + input still alive). Caused by descriptor heap / DXR-path bug in vkd3d-proton on NVIDIA. See [vkd3d-proton#652](https://github.com/HansKristian-Work/vkd3d-proton/issues/652).
+
+**Fix — Steam → Cyberpunk 2077 → Properties → Launch Options:**
+
+```
+DXVK_NVAPI_DISABLE_LOW_LATENCY=1 VKD3D_CONFIG=nodxr gamemoderun %command% --launcher-skip
+```
+
+**Also in-game:** NVIDIA Reflex = Off, Ray Tracing = Off (preset "High" or below, not RT presets). DLSS optional.
+
+What each flag does:
+
+| Flag                               | Purpose                                                            |
+| ---------------------------------- | ------------------------------------------------------------------ |
+| `DXVK_NVAPI_DISABLE_LOW_LATENCY=1` | Disables `VK_NV_low_latency2` (Reflex) — known menu hang on Turing |
+| `VKD3D_CONFIG=nodxr`               | Refuses DXR exposure to game — avoids descriptor heap OOB          |
+| `gamemoderun`                      | CPU governor + IO tuning during play                               |
+| `--launcher-skip`                  | Skips REDLauncher splash                                           |
+
+### Proton-GE (community Proton fork)
+
+For games where stock Proton Experimental still has issues. Includes patches ahead of upstream:
+
+```sh
+paru -S protonup-qt-bin
+```
+
+Quit Steam - Open ProtonUp-Qt → install latest GE-Proton → restart Steam → Settings → Compatibility → select GE-Proton.
+
+With that only the gamemoderun is needed:
+
+```sh
+gamemoderun %command% --launcher-skip
+```
+
+---
+
 ## Post-Install Checklist
 
 ### App Logins
