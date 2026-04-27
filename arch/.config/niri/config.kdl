@@ -268,6 +268,8 @@ layout {
 // ProtonPass (start early so SSH agent and secrets are available)
 spawn-at-startup "proton-pass" "--silent"
 
+spawn-at-startup "pass-cli" "ssh-agent" "daemon" "start"
+
 // This line starts waybar, a commonly used bar for Wayland compositors.
 spawn-at-startup "waybar"
 
