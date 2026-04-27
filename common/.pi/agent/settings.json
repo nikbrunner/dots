@@ -1,5 +1,5 @@
 {
-  "theme": "light",
+  "theme": "dark",
   "lastChangelogVersion": "0.70.2",
   "packages": [
     "npm:pi-web-access",
@@ -10,7 +10,7 @@
     "npm:pi-ask-user"
   ],
   "defaultProvider": "openrouter",
-  "defaultModel": "minimax/minimax-m2.7",
+  "defaultModel": "moonshotai/kimi-k2.6",
   "enabledModels": [
     "openrouter/minimax/minimax-m2.7",
     "openrouter/z-ai/glm-5.1",
@@ -22,5 +22,6 @@
   "hideThinkingBlock": true,
   "compaction": {
     "enabled": false
-  }
+  },
+  "defaultThinkingLevel": "medium"
 }
