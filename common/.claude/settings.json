@@ -222,12 +222,16 @@
     }
   },
   "alwaysThinkingEnabled": true,
-  "effortLevel": "high",
+  "effortLevel": "xhigh",
   "autoUpdatesChannel": "latest",
+  "voice": {
+    "enabled": true,
+    "mode": "hold"
+  },
   "autoDreamEnabled": true,
+  "editorMode": "vim",
   "voiceEnabled": true,
   "feedbackSurveyState": {
     "lastShownTime": 1754313915132
-  },
-  "skipAutoPermissionPrompt": true
+  }
 }
