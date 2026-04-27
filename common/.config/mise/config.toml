@@ -37,6 +37,7 @@ opencode = "latest"
 "npm:@readwise/cli" = "latest"
 "npm:@mariozechner/pi-coding-agent" = "latest"
 "npm:@tanstack/cli" = "latest"
+"npm:@lean-ctx-bin" = "latest"
 prettier = "latest"
 
 [settings]
