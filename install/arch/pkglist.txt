@@ -55,5 +55,5 @@ bluetui
 # Gaming
 gamemode
 lib32-gamemode
-protonup-qt-bin
+protonup-rs-bin
 steam
