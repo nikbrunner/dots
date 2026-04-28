@@ -1,5 +1,5 @@
 {
-  "theme": "dark",
+  "theme": "light",
   "lastChangelogVersion": "0.70.2",
   "packages": [
     "npm:pi-web-access",
