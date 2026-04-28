@@ -4,7 +4,6 @@
   "packages": [
     "npm:pi-web-access",
     "npm:@ff-labs/pi-fff",
-    "npm:pi-lean-ctx",
     "npm:@plannotator/pi-extension",
     "../../repos/nikbrunner/pi-speak",
     "npm:pi-ask-user"

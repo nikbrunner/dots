@@ -119,6 +119,4 @@ PROMPT='%F{gray}%~%f${vcs_info_msg_0_}%(1j. %F{red}[%j]%f.)
 # PATH modifications, so mise's tool paths win precedence over user dirs).
 command -v mise &>/dev/null && eval "$(mise activate zsh)"
 
-# lean-ctx shell hook
-[ -f "$HOME/.lean-ctx/shell-hook.zsh" ] && . "$HOME/.lean-ctx/shell-hook.zsh"
 

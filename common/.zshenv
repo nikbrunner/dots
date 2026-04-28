@@ -15,11 +15,3 @@ export PATH="$HOME/.local/share/mise/shims:$PATH"
 # plus dots scripts. Prepended last so these always win.
 export PATH="$HOME/.local/bin:$PATH"
 
-# >>> lean-ctx shell hook >>>
-if [[ -z "$LEAN_CTX_ACTIVE" && -n "$ZSH_EXECUTION_STRING" ]] && command -v lean-ctx &>/dev/null; then
-  if [[ -n "$LEAN_CTX_AGENT" || -n "$CLAUDECODE" || -n "$CODEX_CLI_SESSION" || -n "$GEMINI_SESSION" ]]; then
-    export LEAN_CTX_ACTIVE=1
-    exec lean-ctx -c "$ZSH_EXECUTION_STRING"
-  fi
-fi
-# <<< lean-ctx shell hook <<<
