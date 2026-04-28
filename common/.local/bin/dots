@@ -15,6 +15,19 @@ source "$DOTS_DIR/scripts/dots/lib.sh"
 # Change to dots directory for git operations
 cd "$DOTS_DIR"
 
+# Detect if current shell is running inside LazyGit (e.g. custom command)
+_inside_lazygit() {
+	local pid=$$
+	while [[ "$pid" -gt 1 ]]; do
+		local cmd
+		cmd=$(ps -p "$pid" -o comm= 2>/dev/null || true)
+		[[ "$cmd" == *"lazygit"* ]] && return 0
+		pid=$(ps -p "$pid" -o ppid= 2>/dev/null | tr -d ' ' || true)
+		[[ -z "$pid" || "$pid" == "0" || "$pid" == "1" ]] && break
+	done
+	return 1
+}
+
 # ── Pull command ───────────────────────────────────────────────
 # Full machine sync: pull dots, link, pull all repos, rebuild tools
 cmd_pull() {
@@ -528,10 +541,15 @@ cmd_chores() {
 		log_warn "Remaining uncommitted changes:"
 		git status --short
 
-		echo -n "Open LazyGit? (y/N) "
-		read -r open_lazygit_choice
-		if [[ "$open_lazygit_choice" == "y" || "$open_lazygit_choice" == "Y" ]]; then
-			lazygit
+		if ! _inside_lazygit; then
+			echo -n "Open LazyGit? (y/N) "
+			read -r open_lazygit_choice
+			if [[ "$open_lazygit_choice" == "y" || "$open_lazygit_choice" == "Y" ]]; then
+				lazygit
+			fi
+		else
+			echo ""
+			log_info "Skipping LazyGit prompt (already inside LazyGit)"
 		fi
 	fi
 
