@@ -475,6 +475,19 @@ dots_commit_gitconfig() {
     log_okay "Gitconfig commit created"
 }
 
+dots_commit_gitconfig_delta() {
+    local repo_path="$1"
+    local gitconfig_delta="common/.gitconfig.delta"
+
+    if [[ -z $(git -C "$repo_path" status --porcelain "$gitconfig_delta" 2>/dev/null) ]]; then
+        echo "No gitconfig.delta changes to commit"
+        return 1
+    fi
+
+    (cd "$repo_path" && git add "$gitconfig_delta" && git commit -m "chore(gitconfig): update delta config")
+    log_okay "Gitconfig.delta commit created"
+}
+
 dots_commit_helm_config() {
     local repo_path="$1"
     local helm_config="common/.config/helm/config.yml"
