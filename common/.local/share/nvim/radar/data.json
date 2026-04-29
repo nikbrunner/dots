@@ -587,6 +587,25 @@
         "lastAccessed": 1776965014
       }
     },
+    "~/repos/nikbrunner/poc-cmp-adr-mantine-ui": {
+      "main": {
+        "locks": [
+          {
+            "filename": "apps/playground/src/routes/index.tsx",
+            "label": "1"
+          },
+          {
+            "filename": "packages/web-ui/src/components/burger/burger.tsx",
+            "label": "2"
+          },
+          {
+            "filename": "tmp/braindump.md",
+            "label": "3"
+          }
+        ],
+        "lastAccessed": 1777463213
+      }
+    },
     "~/repos/nikbrunner/wichtel-app": {
       "customize-design": {
         "locks": [
