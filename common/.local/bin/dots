@@ -457,80 +457,85 @@ cmd_chores() {
 	log_section "Dots Chores"
 	echo ""
 
-	local commits_created=0
+	local topics_changed=()
 
-	# Font changes (run before theme - if only font changed, commit separately)
-	if dots_commit_font "$DOTS_DIR"; then
-		((commits_created++)) || true
+	# Font changes
+	if dots_stage_font "$DOTS_DIR"; then
+		topics_changed+=("fonts")
 	fi
 	echo ""
 
 	# Theme changes
-	if dots_commit_theme "$DOTS_DIR"; then
-		((commits_created++)) || true
+	if dots_stage_theme "$DOTS_DIR"; then
+		topics_changed+=("themes")
 	fi
 	echo ""
 
 	# Session changes (includes cleanup of old sessions)
-	if dots_commit_sessions "$DOTS_DIR"; then
-		((commits_created++)) || true
+	if dots_stage_sessions "$DOTS_DIR"; then
+		topics_changed+=("sessions")
 	fi
 	echo ""
 
 	# Pi changes (sessions, exa usage, agent settings)
-	if dots_commit_pi "$DOTS_DIR"; then
-		((commits_created++)) || true
+	if dots_stage_pi "$DOTS_DIR"; then
+		topics_changed+=("pi")
 	fi
 	echo ""
 
 	# Radar changes
-	if dots_commit_radar "$DOTS_DIR"; then
-		((commits_created++)) || true
+	if dots_stage_radar "$DOTS_DIR"; then
+		topics_changed+=("radar")
 	fi
 	echo ""
 
 	# Lazy-lock changes
-	if dots_commit_lazy_lock "$DOTS_DIR"; then
-		((commits_created++)) || true
+	if dots_stage_lazy_lock "$DOTS_DIR"; then
+		topics_changed+=("lazy-lock")
 	fi
 	echo ""
 
 	# Bookmarks changes
-	if dots_commit_bookmarks "$DOTS_DIR"; then
-		((commits_created++)) || true
+	if dots_stage_bookmarks "$DOTS_DIR"; then
+		topics_changed+=("bookmarks")
 	fi
 	echo ""
 
 	# Gitconfig changes
-	if dots_commit_gitconfig "$DOTS_DIR"; then
-		((commits_created++)) || true
+	if dots_stage_gitconfig "$DOTS_DIR"; then
+		topics_changed+=("gitconfig")
 	fi
 	echo ""
 
 	# Gitconfig delta changes
-	if dots_commit_gitconfig_delta "$DOTS_DIR"; then
-		((commits_created++)) || true
+	if dots_stage_gitconfig_delta "$DOTS_DIR"; then
+		topics_changed+=("gitconfig.delta")
 	fi
 	echo ""
 
 	# Helm config changes
-	if dots_commit_helm_config "$DOTS_DIR"; then
-		((commits_created++)) || true
+	if dots_stage_helm_config "$DOTS_DIR"; then
+		topics_changed+=("helm")
 	fi
 	echo ""
 
 	# Claude Code memory snapshots
-	if dots_commit_claude_memories "$DOTS_DIR"; then
-		((commits_created++)) || true
+	if dots_stage_claude_memories "$DOTS_DIR"; then
+		topics_changed+=("claude-memories")
 	fi
 
 	# Summary
 	echo ""
 	echo "────────────────────────────────────────────────"
-	if [[ $commits_created -gt 0 ]]; then
-		log_okay "Created $commits_created chore commit(s)"
+
+	if [[ ${#topics_changed[@]} -gt 0 ]]; then
+		# Build a single commit message from staged changes
+		local topic_list
+		topic_list=$(IFS=,; echo "${topics_changed[*]}")
+		(cd "$DOTS_DIR" && git commit -m "chore(dots): update $topic_list")
+		log_okay "Created 1 chore commit: update ${topic_list}"
 	else
-		log_info "No chore commits needed"
+		log_info "No chore changes to commit"
 	fi
 
 	# Check for remaining uncommitted changes

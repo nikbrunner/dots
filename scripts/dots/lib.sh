@@ -200,7 +200,7 @@ is_dots_repo() {
     [[ -f "$repo_path/common/.config/ghostty/config" ]] && [[ -f "$repo_path/symlinks.yml" ]]
 }
 
-dots_commit_theme() {
+dots_stage_theme() {
     local repo_path="$1"
     local theme_files=(
         "common/.config/ghostty/config"
@@ -223,21 +223,11 @@ dots_commit_theme() {
         return 1
     fi
 
-    local theme_name
-    theme_name=$(git -C "$repo_path" diff "common/.config/nvim/lua/config.lua" 2>/dev/null | grep '+.*colorscheme' | sed 's/.*"\(.*\)".*/\1/') || true
-    if [[ -z "$theme_name" ]]; then
-        theme_name=$(grep 'colorscheme = ' "$repo_path/common/.config/nvim/lua/config.lua" | sed 's/.*"\(.*\)".*/\1/') || true
-    fi
-
-    if [[ -z "$theme_name" ]]; then
-        theme_name="unknown"
-    fi
-
-    (cd "$repo_path" && git add "${theme_files[@]}" && git commit -m "chore(themes): switch to $theme_name")
-    log_okay "Theme commit created: $theme_name"
+    (cd "$repo_path" && git add "${theme_files[@]}")
+    log_okay "Theme changes staged"
 }
 
-dots_commit_sessions() {
+dots_stage_sessions() {
     local repo_path="$1"
     local sessions_dir="$repo_path/common/.config/nvim/sessions"
 
@@ -252,11 +242,11 @@ dots_commit_sessions() {
         return 1
     fi
 
-    (cd "$repo_path" && git add "common/.config/nvim/sessions/" && git commit -m "chore(nvim): update sessions")
-    log_okay "Sessions commit created"
+    (cd "$repo_path" && git add "common/.config/nvim/sessions/")
+    log_okay "Session changes staged"
 }
 
-dots_commit_pi() {
+dots_stage_pi() {
     local repo_path="$1"
     local pi_sessions_dir="$repo_path/common/.pi/agent/sessions"
     local pi_paths=(
@@ -287,11 +277,11 @@ dots_commit_pi() {
         return 1
     fi
 
-    (cd "$repo_path" && git add "${pi_paths[@]}" && git commit -m "chore(pi): update")
-    log_okay "Pi commit created"
+    (cd "$repo_path" && git add "${pi_paths[@]}")
+    log_okay "Pi changes staged"
 }
 
-dots_commit_radar() {
+dots_stage_radar() {
     local repo_path="$1"
     local radar_file="common/.local/share/nvim/radar/data.json"
 
@@ -300,11 +290,11 @@ dots_commit_radar() {
         return 1
     fi
 
-    (cd "$repo_path" && git add "$radar_file" && git commit -m "chore(nvim): update radar data")
-    log_okay "Radar commit created"
+    (cd "$repo_path" && git add "$radar_file")
+    log_okay "Radar changes staged"
 }
 
-dots_commit_font() {
+dots_stage_font() {
     local repo_path="$1"
     local ghostty_file="common/.config/ghostty/config"
 
@@ -318,25 +308,17 @@ dots_commit_font() {
     local diff_lines
     diff_lines=$(git -C "$repo_path" diff "$ghostty_file" 2>/dev/null | grep '^[+-]' | grep -v '^[+-][+-][+-]' | grep -v '^[+-]$' || true)
 
-    # If changes include non-font lines, skip (let theme commit handle it)
+    # If changes include non-font lines, skip (let theme staging handle it)
     if echo "$diff_lines" | grep -qv 'font-'; then
-        echo "Ghostty has non-font changes, skipping font commit"
+        echo "Ghostty has non-font changes, skipping font staging"
         return 1
     fi
 
-    # Extract font name from current config
-    local font_name
-    font_name=$(grep '^font-family = ' "$repo_path/$ghostty_file" | sed 's/.*= //' | tr -d ' ') || true
-
-    if [[ -z "$font_name" ]]; then
-        font_name="unknown"
-    fi
-
-    (cd "$repo_path" && git add "$ghostty_file" && git commit -m "chore(fonts): switch to $font_name")
-    log_okay "Font commit created: $font_name"
+    (cd "$repo_path" && git add "$ghostty_file")
+    log_okay "Font changes staged"
 }
 
-dots_commit_lazy_lock() {
+dots_stage_lazy_lock() {
     local repo_path="$1"
     local lazy_lock_file="common/.config/nvim/lazy-lock.json"
 
@@ -345,11 +327,11 @@ dots_commit_lazy_lock() {
         return 1
     fi
 
-    (cd "$repo_path" && git add "$lazy_lock_file" && git commit -m "chore(nvim): update lazy-lock")
-    log_okay "Lazy-lock commit created"
+    (cd "$repo_path" && git add "$lazy_lock_file")
+    log_okay "Lazy-lock changes staged"
 }
 
-dots_commit_bookmarks() {
+dots_stage_bookmarks() {
     local repo_path="$1"
     local bookmarks_file="common/.config/bm/bookmarks.db"
 
@@ -358,8 +340,8 @@ dots_commit_bookmarks() {
         return 1
     fi
 
-    (cd "$repo_path" && git add "$bookmarks_file" && git commit -m "chore(bm): update bookmarks")
-    log_okay "Bookmarks commit created"
+    (cd "$repo_path" && git add "$bookmarks_file")
+    log_okay "Bookmarks changes staged"
 }
 
 # Resolve a Claude project directory name to a readable org/repo path
@@ -462,7 +444,7 @@ dots_link_claude_memories() {
     fi
 }
 
-dots_commit_gitconfig() {
+dots_stage_gitconfig() {
     local repo_path="$1"
     local gitconfig="common/.gitconfig"
 
@@ -471,11 +453,11 @@ dots_commit_gitconfig() {
         return 1
     fi
 
-    (cd "$repo_path" && git add "$gitconfig" && git commit -m "chore(gitconfig): update config")
-    log_okay "Gitconfig commit created"
+    (cd "$repo_path" && git add "$gitconfig")
+    log_okay "Gitconfig changes staged"
 }
 
-dots_commit_gitconfig_delta() {
+dots_stage_gitconfig_delta() {
     local repo_path="$1"
     local gitconfig_delta="common/.gitconfig.delta"
 
@@ -484,11 +466,11 @@ dots_commit_gitconfig_delta() {
         return 1
     fi
 
-    (cd "$repo_path" && git add "$gitconfig_delta" && git commit -m "chore(gitconfig): update delta config")
-    log_okay "Gitconfig.delta commit created"
+    (cd "$repo_path" && git add "$gitconfig_delta")
+    log_okay "Gitconfig.delta changes staged"
 }
 
-dots_commit_helm_config() {
+dots_stage_helm_config() {
     local repo_path="$1"
     local helm_config="common/.config/helm/config.yml"
 
@@ -497,11 +479,11 @@ dots_commit_helm_config() {
         return 1
     fi
 
-    (cd "$repo_path" && git add "$helm_config" && git commit -m "chore(helm): update config")
-    log_okay "Helm config commit created"
+    (cd "$repo_path" && git add "$helm_config")
+    log_okay "Helm config changes staged"
 }
 
-dots_commit_claude_memories() {
+dots_stage_claude_memories() {
     local repo_path="$1"
     local memories_dir="$repo_path/common/.claude/claude-memories"
     local source_base="$HOME/.claude/projects"
@@ -549,6 +531,6 @@ dots_commit_claude_memories() {
         return 1
     fi
 
-    (cd "$repo_path" && git add "common/.claude/claude-memories/" && git commit -m "chore(claude): sync project memories")
-    log_okay "Memories commit created"
+    (cd "$repo_path" && git add "common/.claude/claude-memories/")
+    log_okay "Claude memory changes staged"
 }
