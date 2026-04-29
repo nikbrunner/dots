@@ -4,17 +4,17 @@ let v:this_session=expand("<sfile>:p")
 doautoall SessionLoadPre
 silent only
 silent tabonly
-cd ~/repos/nikbrunner/dots
+cd ~/repos/imfusion/poc-base-ui-with-shadcn
 if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +12 common/.pi/agent/settings.json
+badd +0 package.json
 argglobal
 %argdel
-$argadd ~/repos/nikbrunner/dots/common/.config/lazygit/config.yml
-edit common/.pi/agent/settings.json
+$argadd .
+edit package.json
 argglobal
 setlocal keymap=
 setlocal noarabic
@@ -63,7 +63,7 @@ setlocal foldnestmax=20
 setlocal foldtext=
 setlocal formatexpr=v:lua.require'conform'.formatexpr()
 setlocal formatlistpat=^\\s*\\d\\+[\\]:.)}\\t\ ]\\s*
-setlocal formatoptions=jqc
+setlocal formatoptions=cqj
 setlocal iminsert=0
 setlocal imsearch=-1
 setlocal includeexpr=
@@ -115,7 +115,7 @@ setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#common%*\ %#WinBarSeparator#/%*\ %#WinBarPath#.pi%*\ %#WinBarSeparator#/%*\ %#WinBarPath#agent%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#settings.json%*
+setlocal winbar=%#WinBarFilename#package.json%*
 setlocal winblend=0
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -123,12 +123,14 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 10 - ((9 * winheight(0) + 27) / 55)
+1
+sil! normal! zo
+let s:l = 9 - ((8 * winheight(0) + 20) / 40)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 10
-normal! 0
+keepjumps 9
+normal! 04|
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
