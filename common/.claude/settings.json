@@ -187,7 +187,7 @@
     "impeccable@impeccable": true,
     "readwise@readwise-skills": true,
     "plannotator@plannotator": true,
-    "caveman@caveman": true
+    "caveman@caveman": false
   },
   "extraKnownMarketplaces": {
     "local-plugins": {
@@ -229,8 +229,8 @@
     "mode": "hold"
   },
   "autoDreamEnabled": true,
-  "editorMode": "vim",
   "voiceEnabled": true,
+  "editorMode": "vim",
   "feedbackSurveyState": {
     "lastShownTime": 1754313915132
   }
