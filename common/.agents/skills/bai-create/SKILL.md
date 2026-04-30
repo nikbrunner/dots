@@ -1,7 +1,8 @@
 ---
 name: bai-create
-user-invocable: false
 description: Create a new Black Atom Industries issue
+metadata:
+  user-invocable: false
 allowed-tools: ["Bash", "AskUserQuestion"]
 ---
 
@@ -11,7 +12,7 @@ Create a new issue in the Black Atom Industries GitHub org.
 
 ## Arguments
 
-`$ARGUMENTS` - Issue title and optional details
+Issue title and optional details (`$ARGUMENTS` in Claude Code, or `/skill:bai-create` args in Pi).
 
 Examples:
 

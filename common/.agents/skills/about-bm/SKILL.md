@@ -1,7 +1,8 @@
 ---
 name: about-bm
 description: bm bookmark manager CLI context. Load when bm, bookmarks, or Bubbletea TUI comes up.
-user-invocable: false
+metadata:
+  user-invocable: false
 ---
 
 # About bm

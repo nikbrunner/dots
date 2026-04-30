@@ -1,7 +1,8 @@
 ---
 name: penny-weekly
 description: Sunday retro with Penny — reviews the week, highlights wins, plans ahead. Invoke on Sundays for weekly reflection.
-user-invocable: true
+metadata:
+  user-invocable: true
 allowed-tools: [Bash, Read, Write, Edit]
 ---
 
@@ -104,4 +105,4 @@ Update `penny.md` with:
 
 ## Arguments
 
-`$ARGUMENTS` — Optional date to use as "this Sunday" for retroactive retros.
+The argument (`$ARGUMENTS` in Claude Code, or `/skill:penny-weekly` args in Pi) — Optional date to use as "this Sunday" for retroactive retros.

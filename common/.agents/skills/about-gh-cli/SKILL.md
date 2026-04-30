@@ -1,7 +1,8 @@
 ---
 name: about-gh-cli
 description: "My GitHub CLI (gh) reference -- core commands, JSON output, gh api, scripting, advanced GraphQL (issue types, sub-issues, blockers, project fields). Load when using gh, GitHub CLI, pull requests, issues, releases, workflow runs, or GitHub API from the terminal."
-user-invocable: false
+metadata:
+  user-invocable: false
 ---
 
 # GitHub CLI (gh)

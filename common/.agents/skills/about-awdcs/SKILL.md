@@ -1,7 +1,8 @@
 ---
 name: about-awdcs
 description: AWDCS keybinding system context. Load when editor keybindings, keymaps, shortcuts, or key mappings come up (Neovim, Zed, etc.).
-user-invocable: false
+metadata:
+  user-invocable: false
 ---
 
 # About AWDCS

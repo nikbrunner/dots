@@ -1,7 +1,8 @@
 ---
 name: bai-review
-user-invocable: false
 description: Review and clean up Black Atom issues
+metadata:
+  user-invocable: false
 allowed-tools: ["Bash", "AskUserQuestion"]
 ---
 
@@ -11,7 +12,7 @@ Review active issues to re-evaluate priorities, close stale items, and clean up.
 
 ## Arguments
 
-`$ARGUMENTS` - Optional filter (repo name or search term)
+Optional repo name or search term filter (`$ARGUMENTS` in Claude Code, or `/skill:bai-review` args in Pi).
 
 Examples:
 

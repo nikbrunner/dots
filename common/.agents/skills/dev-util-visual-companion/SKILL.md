@@ -1,7 +1,8 @@
 ---
 name: dev-util-visual-companion
 description: "Browser-based visual companion for design brainstorming — capture existing UI, iterate on mockups, export clean references. Use when design questions need visual answers."
-user-invocable: true
+metadata:
+  user-invocable: true
 ---
 
 # Visual Companion

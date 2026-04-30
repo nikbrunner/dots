@@ -1,7 +1,8 @@
 ---
 name: dev-style-css
 description: "My CSS preferences -- CSS Modules, CVA, co-located styles, and explored alternatives. Load when working on CSS or styling in web projects."
-user-invocable: false
+metadata:
+  user-invocable: false
 ---
 
 # CSS

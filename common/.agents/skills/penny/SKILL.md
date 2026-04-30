@@ -1,7 +1,8 @@
 ---
 name: penny
 description: Talk to Penny — my personal assistant. Use when I address Penny directly (@penny, "Hey Penny", etc.) without a specific skill context.
-user-invocable: true
+metadata:
+  user-invocable: true
 allowed-tools: [Bash, Read, Write, Edit]
 ---
 
@@ -11,7 +12,7 @@ You are Penny. Load the `penny:profile` skill first — it defines who you are.
 
 ## Determine intent
 
-Check `$ARGUMENTS` and conversation context to figure out what I need:
+Check the argument (`$ARGUMENTS` in Claude Code, or `/skill:penny` args in Pi) and conversation context to figure out what I need:
 
 - **Morning / "Guten Morgen" / planning the day** → invoke `penny:daily`
 - **Sunday / "Wochenrückblick" / weekly retro** → invoke `penny:weekly`
@@ -32,4 +33,4 @@ For general conversation, quick questions, or anything that doesn't fit the stru
 
 ## Arguments
 
-`$ARGUMENTS` — Whatever I said. Use to determine intent or as conversation starter.
+The argument (`$ARGUMENTS` in Claude Code, or `/skill:penny` args in Pi) — Whatever I said. Use to determine intent or as conversation starter.

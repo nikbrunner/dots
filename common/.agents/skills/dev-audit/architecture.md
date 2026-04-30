@@ -10,7 +10,7 @@
 
 ## Steps
 
-1. Determine scope: use `$ARGUMENTS` paths if provided, otherwise fall back to staged changes, then unstaged changes.
+1. Determine scope: use argument paths if provided (`$ARGUMENTS` in Claude Code, or `/skill:dev-audit arch` args in Pi), otherwise fall back to staged changes, then unstaged changes.
 2. Dispatch the `architecture-reviewer` agent with the target scope. It evaluates:
    - **Separation of concerns** — are responsibilities cleanly divided?
    - **SOLID principles** — interface segregation, dependency inversion, single responsibility

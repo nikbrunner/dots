@@ -1,7 +1,8 @@
 ---
 name: bai-weekly
-user-invocable: true
 description: Weekly Black Atom issue review — board health, staleness, priority check, project progress
+metadata:
+  user-invocable: true
 allowed-tools: ["Bash", "Grep", "AskUserQuestion"]
 ---
 
@@ -11,7 +12,7 @@ Weekly review of all Black Atom Industries issues across repos. Checks board hea
 
 ## Arguments
 
-`$ARGUMENTS` - Optional focus (repo name or "quick" for summary only)
+Optional focus — repo name or "quick" for summary only (`$ARGUMENTS` in Claude Code, or `/skill:bai-weekly` args in Pi).
 
 Examples:
 

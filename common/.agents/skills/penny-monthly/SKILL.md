@@ -1,7 +1,8 @@
 ---
 name: penny-monthly
 description: Month-end retro with Penny — reviews the month, triages tasks, checks quarterly goals, plans next month. Invoke at end of month or retroactively.
-user-invocable: true
+metadata:
+  user-invocable: true
 allowed-tools: [Bash, Read, Write, Edit]
 ---
 
@@ -19,7 +20,7 @@ End-of-month energy — bigger picture than weekly. Looking back at the month, t
 
 ### 1. Gather context (do this silently, don't narrate)
 
-**First**: Get the actual current date by running `date '+%Y.%m.%d - %A'`. If `$ARGUMENTS` contains a month (e.g. `2026-02`), use that as the target month instead.
+**First**: Get the actual current date by running `date '+%Y.%m.%d - %A'`. If the argument (`$ARGUMENTS` in Claude Code, or `/skill:penny-monthly` args in Pi) contains a month (e.g. `2026-02`), use that as the target month instead.
 
 Determine:
 
@@ -103,7 +104,7 @@ Update `penny.md` with:
 
 ## Arguments
 
-`$ARGUMENTS` — Optional month (e.g., `2026-02`) for retroactive retros. Useful for catching up on months that weren't reviewed.
+The argument (`$ARGUMENTS` in Claude Code, or `/skill:penny-monthly` args in Pi) — Optional month (e.g., `2026-02`) for retroactive retros. Useful for catching up on months that weren't reviewed.
 
 ## Notes
 

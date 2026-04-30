@@ -1,7 +1,8 @@
 ---
 name: dots-remove
 description: Remove a config from dots symlink management
-argument-hint: [symlink or repo path]
+metadata:
+  argument-hint: "[symlink or repo path]"
 ---
 
 # Dots Remove
@@ -10,7 +11,7 @@ Remove a config from dots symlink management.
 
 ## Arguments
 
-`$ARGUMENTS` can be:
+Symlink or repo path (`$ARGUMENTS` in Claude Code, or `/skill:dots-remove` args in Pi). Can be:
 
 - A symlink path (e.g., `~/.config/gamemode.ini`)
 - A dots repo path (e.g., `arch/.config/gamemode.ini`)

@@ -1,7 +1,8 @@
 ---
 name: bai-status
-user-invocable: false
 description: Show my Black Atom Industries issues
+metadata:
+  user-invocable: false
 allowed-tools: ["Bash"]
 ---
 
@@ -11,7 +12,7 @@ Show issues assigned to me across the Black Atom Industries GitHub org.
 
 ## Arguments
 
-`$ARGUMENTS` - Optional filter (repo name)
+Optional repo name filter (`$ARGUMENTS` in Claude Code, or `/skill:bai-status` args in Pi).
 
 Examples:
 

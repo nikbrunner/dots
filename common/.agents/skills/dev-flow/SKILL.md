@@ -1,12 +1,20 @@
 ---
 name: dev-flow
 description: "Development workflow — assess, plan, implement, review, close. Invoke with an argument to jump to a phase, or without to see the overview."
-argument-hint: "[assess|plan|implement|review|close]"
+metadata:
+  argument-hint: "[assess|plan|implement|review|close]"
 ---
 
 # dev:flow
 
-The development lifecycle in 5 phases. Read the phase doc matching `$ARGUMENTS` and follow its steps.
+The development lifecycle in 5 phases. Read the phase doc matching the argument and follow its steps.
+
+## Arguments
+
+Determine the phase:
+1. If `$ARGUMENTS` is set (Claude Code), use its value
+2. If invoked via `/skill:dev-flow <phase>` (Pi), use the argument after the skill name
+3. If no argument provided, show this overview and ask which phase (or auto-detect from context)
 
 ## Flow
 

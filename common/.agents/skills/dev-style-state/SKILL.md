@@ -1,7 +1,8 @@
 ---
 name: dev-style-state
 description: "State categorization and management patterns -- server state, URL state, client state. Load when discussing state architecture or choosing state tools."
-user-invocable: false
+metadata:
+  user-invocable: false
 ---
 
 # State Management

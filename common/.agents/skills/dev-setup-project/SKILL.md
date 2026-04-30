@@ -1,7 +1,8 @@
 ---
 name: dev-setup-project
 description: Bootstrap a new project with my conventions — wizard flow that detects, infers, asks, plans, scaffolds, then invokes dev-claude-setup.
-argument-hint: "[path] [--type cli|lib|web|desktop]"
+metadata:
+  argument-hint: "[path] [--type cli|lib|web|desktop]"
 ---
 
 # Create Project

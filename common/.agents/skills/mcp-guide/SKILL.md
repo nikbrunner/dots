@@ -1,7 +1,8 @@
 ---
 name: mcp-guide
 description: Guide for using available MCP servers (Ref, Exa, Chrome) and GitHub CLI. Load when deciding which tool to use for documentation, search, or browser testing.
-user-invocable: false
+metadata:
+  user-invocable: false
 ---
 
 # MCP Tool Guide

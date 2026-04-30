@@ -11,7 +11,7 @@
 
 ## Steps
 
-1. Determine scope: if `$ARGUMENTS` names a PR number or branch, use that as the diff source. Otherwise, use recent commits (`git log --oneline -10` + `git diff HEAD~10`).
+1. Determine scope: if the argument names a PR number or branch (`$ARGUMENTS` in Claude Code, or `/skill:dev-audit docs` args in Pi), use that as the diff source. Otherwise, use recent commits (`git log --oneline -10` + `git diff HEAD~10`).
 2. Categorize code changes: structural (new/moved/deleted files), behavioral (new commands, changed APIs), configuration (env vars, build), patterns (new conventions).
 3. Scan each knowledge artifact against the diff:
 

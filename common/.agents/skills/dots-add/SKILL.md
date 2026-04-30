@@ -1,7 +1,8 @@
 ---
 name: dots-add
 description: Add a config file to dots for symlink management
-argument-hint: [path to config file]
+metadata:
+  argument-hint: "[path to config file]"
 ---
 
 # Dots Add
@@ -10,7 +11,7 @@ Add a config file to the dots repository for symlink management.
 
 ## Arguments
 
-`$ARGUMENTS` should be the path to an existing config file (e.g., `~/.config/gamemode.ini`)
+Path to an existing config file (`$ARGUMENTS` in Claude Code, or `/skill:dots-add` args in Pi). E.g., `~/.config/gamemode.ini`.
 
 ## Instructions
 

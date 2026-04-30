@@ -1,7 +1,8 @@
 ---
 name: dev-style-tanstack
 description: "TanStack ecosystem patterns -- CLI tools, Query, Form, doc verification, and my personal conventions. Load when any @tanstack/* package is in dependencies."
-user-invocable: true
+metadata:
+  user-invocable: true
 ---
 
 # TanStack Ecosystem

@@ -1,7 +1,8 @@
 ---
 name: bai-update
-user-invocable: false
 description: Update a Black Atom issue (status, labels, relations, etc.)
+metadata:
+  user-invocable: false
 allowed-tools: ["Bash", "AskUserQuestion"]
 ---
 
@@ -11,7 +12,7 @@ Update an issue's status, add comments, manage relations, or change metadata.
 
 ## Arguments
 
-`$ARGUMENTS` - Issue identifier and what to update
+Issue identifier and what to update (`$ARGUMENTS` in Claude Code, or `/skill:bai-update` args in Pi).
 
 Examples:
 

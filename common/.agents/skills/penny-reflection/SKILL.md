@@ -1,7 +1,8 @@
 ---
 name: penny-reflection
-description: Reflect with Penny — Wednesday ritual or anytime. Guided self-reflection conversation, captured to the journal. Also supports quick thought capture with arguments.
-user-invocable: true
+description: Reflect with Penny — Wednesday ritual or anytime. Guided self-reflection conversation, captured to the journal. Also supports quick thought capture with arguments (`$ARGUMENTS` in Claude Code, or `/skill:penny-reflection` args in Pi).
+metadata:
+  user-invocable: true
 allowed-tools: [Bash, Read, Write, Edit]
 ---
 
@@ -19,7 +20,7 @@ Wednesday is the default day, but this can be invoked anytime.
 
 ## Determine mode
 
-Check `$ARGUMENTS`:
+Check the argument (`$ARGUMENTS` in Claude Code, or `/skill:penny-reflection` args in Pi):
 
 - **If arguments provided** → Quick Capture mode
 - **If empty** → Reflection mode
@@ -145,4 +146,4 @@ Add a checked task in today's daily note:
 
 ## Arguments
 
-`$ARGUMENTS` — Text to capture (Quick Capture mode), or empty for Reflection mode.
+The argument (`$ARGUMENTS` in Claude Code, or `/skill:penny-reflection` args in Pi) — Text to capture (Quick Capture mode), or empty for Reflection mode.

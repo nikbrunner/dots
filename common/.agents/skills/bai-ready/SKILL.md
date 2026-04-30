@@ -1,7 +1,8 @@
 ---
 name: bai-ready
-user-invocable: false
 description: Show Black Atom issues ready to work (no blockers)
+metadata:
+  user-invocable: false
 allowed-tools: ["Bash"]
 ---
 
@@ -11,7 +12,7 @@ Show issues that are ready to pick up — not blocked by other issues.
 
 ## Arguments
 
-`$ARGUMENTS` - Optional filter (repo name)
+Optional repo name filter (`$ARGUMENTS` in Claude Code, or `/skill:bai-ready` args in Pi).
 
 ## Context
 

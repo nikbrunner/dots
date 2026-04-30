@@ -1,8 +1,9 @@
 ---
 name: dev-setup-release-please
 description: Set up release-please in any repo. Detects project type, creates config/workflow, enables GitHub Actions PR permissions.
-user-invocable: true
-arguments: "[version]"
+metadata:
+  argument-hint: "[version]"
+  user-invocable: true
 ---
 
 # Set Up Release-Please

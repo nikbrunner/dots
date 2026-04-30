@@ -11,7 +11,7 @@
 
 ## Steps
 
-1. Determine scope: use `$ARGUMENTS` if provided, otherwise fall back to staged changes (`git diff --staged`), then unstaged (`git diff HEAD`).
+1. Determine scope: use argument if provided (`$ARGUMENTS` in Claude Code, or `/skill:dev-audit ui` args in Pi), otherwise fall back to staged changes (`git diff --staged`), then unstaged (`git diff HEAD`).
 2. Run `impeccable:audit` on the target — produces a severity-rated technical report (a11y violations, perf issues, theme inconsistencies, responsive breakage, AI-slop detection).
 3. Run `impeccable:critique` on the target — produces a design director's critique (visual hierarchy, information architecture, emotional resonance, affordance, composition).
 4. If browser-automation is available, capture screenshots at key breakpoints (mobile, tablet, desktop) for visual evidence.

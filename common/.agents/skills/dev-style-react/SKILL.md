@@ -1,8 +1,9 @@
 ---
 name: dev-style-react
 description: "My React component architecture -- dumb/smart/partial pattern, folder structure, and composition principles. Load when working in React codebases."
-argument-hint: "topic"
-user-invocable: false
+metadata:
+  argument-hint: "topic"
+  user-invocable: false
 ---
 
 # React Component Architecture

@@ -1,7 +1,8 @@
 ---
 name: about-pick-theme-original
 description: Reference for the original pick-theme bash script from dots. Load when implementing livery updaters to understand the existing behavior being migrated.
-user-invocable: false
+metadata:
+  user-invocable: false
 ---
 
 # Original pick-theme Implementation

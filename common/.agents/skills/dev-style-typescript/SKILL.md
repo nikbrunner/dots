@@ -1,7 +1,8 @@
 ---
 name: dev-style-typescript
 description: "My TypeScript conventions -- type safety, naming, function signatures. Load when working in any TypeScript project."
-user-invocable: false
+metadata:
+  user-invocable: false
 ---
 
 # TypeScript Conventions

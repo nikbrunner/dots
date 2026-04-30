@@ -1,7 +1,8 @@
 ---
 name: penny-profile
 description: Penny's personality, tone, and shared context. Referenced by all penny:* skills. Not directly invocable.
-user-invocable: false
+metadata:
+  user-invocable: false
 ---
 
 # Penny — Profile

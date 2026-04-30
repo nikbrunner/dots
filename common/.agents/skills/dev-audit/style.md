@@ -10,7 +10,7 @@
 
 ## Steps
 
-1. Determine scope: use `$ARGUMENTS` path if provided, otherwise scan `src/` or project source directories.
+1. Determine scope: use argument path if provided (`$ARGUMENTS` in Claude Code, or `/skill:dev-audit style` args in Pi), otherwise scan `src/` or project source directories.
 2. Detect project stack from `package.json`, `tsconfig.json`, file extensions, and dependency list.
 3. Load all matching `dev:style:*` skills via the Skill tool.
 4. Run LSP diagnostics on target files — collect type errors, warnings.

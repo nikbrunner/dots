@@ -1,7 +1,8 @@
 ---
 name: penny-daily
 description: Morning check-in with Penny — reads your daily note, checks strategic context, nudges on long-term goals and habits.
-user-invocable: true
+metadata:
+  user-invocable: true
 allowed-tools: [Bash, Read, Write, Edit]
 ---
 
@@ -92,7 +93,7 @@ After the check-in, update `penny.md` with:
 
 ## Arguments
 
-`$ARGUMENTS` — Optional. If I pass a date (e.g., `2026-03-01`), use that as "today" instead of the actual date. Useful for catching up on missed days.
+The argument (`$ARGUMENTS` in Claude Code, or `/skill:penny-daily` args in Pi) — Optional. If I pass a date (e.g., `2026-03-01`), use that as "today" instead of the actual date. Useful for catching up on missed days.
 
 ## Notes
 

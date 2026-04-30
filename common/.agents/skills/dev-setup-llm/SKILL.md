@@ -1,7 +1,8 @@
 ---
 name: dev-setup-llm
 description: Set up or maintain LLM agent configuration for a project repo — handles fresh, legacy, and modern setups for any agent (Pi, Claude Code, etc.)
-argument-hint: [optional: path to project root]
+metadata:
+  argument-hint: "[optional: path to project root]"
 ---
 
 # LLM Agent Setup
@@ -17,7 +18,7 @@ See guide files for tool-specific details:
 
 ## Arguments
 
-`$ARGUMENTS` — Optional path to project root. Defaults to current working directory.
+Optional path to project root (`$ARGUMENTS` in Claude Code, or `/skill:dev-setup-llm` args in Pi). Defaults to current working directory.
 
 ## Phase 1: Scan
 
@@ -102,8 +103,9 @@ For every discovered item (AGENTS.md/CLAUDE.md lines, commands, agents), classif
 
 For each item categorized as a skill, also determine:
 
-- `user-invocable: false` — contextual/knowledge skills the agent discovers automatically
-- User-invocable (default, omit the key) — action skills with side effects or that users trigger manually
+- Knowledge/context skills — agent discovers automatically, no special flag needed
+- Action skills — users trigger manually, no special flag needed
+- To hide from auto-discovery, use `disable-model-invocation: true` (spec-compliant)
 
 ### Modern
 
@@ -179,9 +181,10 @@ All conventions baked into this skill's decisions.
 - Directory names use `-` (hyphen), e.g., `dev-testing/`
 - Common namespace prefixes: `bai-`, `dots-`, `dev-`, `penny-`
 - No prefix for general-purpose skills (e.g., `research`, `bugs`)
-- `user-invocable: false` for context/knowledge skills — omit entirely for action skills (defaults to true)
-- Include `description` and `argument-hint` in frontmatter
+- Use `metadata.argument-hint` (spec-compliant) instead of bare `argument-hint`
+- Include `description` in frontmatter (required by spec)
 - Skills live in `.agents/skills/` (shared across all tools)
+- To hide from auto-discovery, use `disable-model-invocation: true` (spec-compliant)
 
 **Skill frontmatter template:**
 
@@ -189,8 +192,8 @@ All conventions baked into this skill's decisions.
 ---
 name: dev-setup-llm
 description: One-line description used for discovery
-argument-hint: [optional: what arguments look like]
-user-invocable: false # only for knowledge skills; omit for action skills
+metadata:
+  argument-hint: "[optional: what arguments look like]"
 ---
 ```
 

@@ -1,7 +1,8 @@
 ---
 name: obsidian-guide
 description: How to access and navigate my Obsidian notes for task management, journaling, and project context. Load when notes, tasks, or daily planning come up.
-user-invocable: false
+metadata:
+  user-invocable: false
 ---
 
 # Obsidian Notes Guide

@@ -5,7 +5,8 @@ description: >-
   effect chains, prop-driven resets, missing cleanup, parent notifications, etc.) and propose
   idiomatic fixes. Based on React's "You Might Not Need an Effect" guide. Use when asked to
   audit, review, or clean up useEffect usage.
-argument-hint: "[path/to/scan]"
+metadata:
+  argument-hint: "[path/to/scan]"
 allowed-tools: Read Grep Glob Agent
 ---
 
@@ -17,7 +18,7 @@ Reference: https://react.dev/learn/you-might-not-need-an-effect
 
 ## Workflow
 
-1. **Find all useEffect usages.** Grep for `useEffect` across `$ARGUMENTS` (or the entire repo if no path given). Filter to `.tsx`, `.ts`, `.jsx`, `.js` files.
+1. **Find all useEffect usages.** Grep for `useEffect` across the argument path (`$ARGUMENTS` in Claude Code, or `/skill:dev-style-react-no-use-effect` args in Pi), or the entire repo if no path given. Filter to `.tsx`, `.ts`, `.jsx`, `.js` files.
 
 2. **Read each file** containing useEffect. For every useEffect call, classify it against the anti-pattern catalog below. Skip effects that are legitimate (event listeners with cleanup for component-scoped DOM, animation setup, true synchronization with external systems).
 
@@ -29,7 +30,7 @@ Reference: https://react.dev/learn/you-might-not-need-an-effect
 
 4. **Report findings** using the output format at the bottom. Group by anti-pattern. Include a summary with counts.
 
-5. If `$ARGUMENTS` is empty, scan all React component files in the project.
+5. If no argument path provided (`$ARGUMENTS` in Claude Code, or `/skill:dev-style-react-no-use-effect` args in Pi), scan all React component files in the project.
 
 ## Anti-Pattern Catalog
 

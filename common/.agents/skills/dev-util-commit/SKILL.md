@@ -1,8 +1,9 @@
 ---
 name: dev-util-commit
 description: Create a git commit with conventional commit format, scope detection, and clean history strategies. Load when committing code changes.
-user-invocable: true
-argument-hint: [optional commit message override]
+metadata:
+  argument-hint: "[optional commit message override]"
+  user-invocable: true
 ---
 
 # Commit

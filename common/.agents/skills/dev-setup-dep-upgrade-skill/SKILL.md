@@ -1,7 +1,8 @@
 ---
 name: dev-setup-dep-upgrade-skill
 description: Use when setting up a dependency upgrade workflow for a project repo. Detects ecosystem, asks targeted questions, then generates a project-level dep-upgrades skill.
-argument-hint: (run in project root)
+metadata:
+  argument-hint: "(run in project root)"
 ---
 
 # Setup Dependency Upgrade Skill
@@ -10,7 +11,7 @@ Scaffold a project-specific `dep-upgrades` skill by detecting the ecosystem and 
 
 ## Arguments
 
-`$ARGUMENTS` — unused. Run this in the project root directory.
+Unused. Run this in the project root directory. (`$ARGUMENTS` in Claude Code, or `/skill:dev-setup-dep-upgrade-skill` args in Pi — ignored.)
 
 ## Process
 
@@ -64,11 +65,12 @@ git commit -m "feat: add dep-upgrades project skill"
 
 The template below uses `{{placeholders}}` — replace them with detected/confirmed values.
 
-````markdown
+```markdown
 ---
 name: dev-setup-dep-upgrade-skill
 description: Use when upgrading dependencies, reviewing Dependabot/Renovate PRs, or auditing outdated packages in this project.
-argument-hint: [package-name|all]
+metadata:
+  argument-hint: "[package-name|all]"
 ---
 
 # Dependency Upgrades
@@ -77,7 +79,7 @@ Upgrade dependencies with changelog review, verification, and safe commits.
 
 ## Arguments
 
-`$ARGUMENTS` — optional package name(s) to upgrade. Empty to review all outdated deps.
+The argument (`$ARGUMENTS` in Claude Code, or `/skill:dev-setup-dep-upgrade-skill` args in Pi) — optional package name(s) to upgrade. Empty to review all outdated deps.
 
 ## Ecosystem
 

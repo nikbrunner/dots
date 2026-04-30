@@ -1,7 +1,8 @@
 ---
 name: about-black-atom-industries
 description: Black Atom Industries theme ecosystem context. Load when BAI, themes, adapters, or colorschemes come up.
-user-invocable: false
+metadata:
+  user-invocable: false
 ---
 
 # About Black Atom Industries
