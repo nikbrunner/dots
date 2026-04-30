@@ -1,6 +1,7 @@
 ---
 name: bai-update
 description: Update a Black Atom issue (status, labels, relations, etc.)
+user-invocable: false
 metadata:
   user-invocable: false
 allowed-tools: ["Bash", "AskUserQuestion"]

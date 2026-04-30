@@ -1,6 +1,7 @@
 ---
 name: dev-setup-dep-upgrade-skill
 description: Use when setting up a dependency upgrade workflow for a project repo. Detects ecosystem, asks targeted questions, then generates a project-level dep-upgrades skill.
+argument-hint: "(run in project root)"
 metadata:
   argument-hint: "(run in project root)"
 ---

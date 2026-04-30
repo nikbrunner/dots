@@ -1,6 +1,7 @@
 ---
 name: dev-setup-llm
 description: Set up or maintain LLM agent configuration for a project repo — handles fresh, legacy, and modern setups for any agent (Pi, Claude Code, etc.)
+argument-hint: "[optional: path to project root]"
 metadata:
   argument-hint: "[optional: path to project root]"
 ---

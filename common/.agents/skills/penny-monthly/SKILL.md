@@ -1,6 +1,7 @@
 ---
 name: penny-monthly
 description: Month-end retro with Penny — reviews the month, triages tasks, checks quarterly goals, plans next month. Invoke at end of month or retroactively.
+user-invocable: true
 metadata:
   user-invocable: true
 allowed-tools: [Bash, Read, Write, Edit]

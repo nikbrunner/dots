@@ -1,8 +1,10 @@
 ---
 name: dev-audit
 description: "Audit code quality through different lenses — UI, style conventions, architecture, documentation. Invoke with an argument to pick a lens."
+argument-hint: "[ui|style|arch|docs|ux]"
+user-invocable: true
 metadata:
-  argument-hint: "[ui|style|arch|docs]"
+  argument-hint: "[ui|style|arch|docs|ux]"
   user-invocable: true
 ---
 
@@ -25,3 +27,4 @@ Determine the lens:
 | `style`  | [style.md](style.md)               | Code against dev:style:\* conventions                 |
 | `arch`   | [architecture.md](architecture.md) | Structure via architecture-reviewer agent             |
 | `docs`   | [docs.md](docs.md)                 | Documentation completeness + knowledge sync           |
+| `ux`      | [ux-heuristics.md](ux-heuristics.md) | UX quality via Nielsen's 10 Usability Heuristics       |

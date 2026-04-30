@@ -1,6 +1,7 @@
 ---
 name: about-sonder
 description: Sonder anonymous storytelling platform context. Load when Sonder or sonder.house comes up.
+user-invocable: false
 metadata:
   user-invocable: false
 ---

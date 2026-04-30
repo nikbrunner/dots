@@ -1,6 +1,7 @@
 ---
 name: penny-weekly
 description: Sunday retro with Penny — reviews the week, highlights wins, plans ahead. Invoke on Sundays for weekly reflection.
+user-invocable: true
 metadata:
   user-invocable: true
 allowed-tools: [Bash, Read, Write, Edit]

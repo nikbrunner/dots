@@ -1,6 +1,7 @@
 ---
 name: dev-setup-skill
 description: "Template and checklist for creating new dev-* concept skills. Load when creating a new dev skill."
+user-invocable: false
 metadata:
   user-invocable: false
 ---

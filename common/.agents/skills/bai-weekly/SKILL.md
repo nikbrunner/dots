@@ -1,6 +1,7 @@
 ---
 name: bai-weekly
 description: Weekly Black Atom issue review — board health, staleness, priority check, project progress
+user-invocable: true
 metadata:
   user-invocable: true
 allowed-tools: ["Bash", "Grep", "AskUserQuestion"]

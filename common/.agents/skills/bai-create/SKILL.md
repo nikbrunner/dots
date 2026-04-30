@@ -1,6 +1,7 @@
 ---
 name: bai-create
 description: Create a new Black Atom Industries issue
+user-invocable: false
 metadata:
   user-invocable: false
 allowed-tools: ["Bash", "AskUserQuestion"]

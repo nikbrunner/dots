@@ -1,6 +1,7 @@
 ---
 name: dev-flow
 description: "Development workflow — assess, plan, implement, review, close. Invoke with an argument to jump to a phase, or without to see the overview."
+argument-hint: "[assess|plan|implement|review|close]"
 metadata:
   argument-hint: "[assess|plan|implement|review|close]"
 ---

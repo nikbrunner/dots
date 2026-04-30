@@ -5,6 +5,7 @@ description: >-
   effect chains, prop-driven resets, missing cleanup, parent notifications, etc.) and propose
   idiomatic fixes. Based on React's "You Might Not Need an Effect" guide. Use when asked to
   audit, review, or clean up useEffect usage.
+argument-hint: "[path/to/scan]"
 metadata:
   argument-hint: "[path/to/scan]"
 allowed-tools: Read Grep Glob Agent

@@ -1,6 +1,7 @@
 ---
 name: bai-review
 description: Review and clean up Black Atom issues
+user-invocable: false
 metadata:
   user-invocable: false
 allowed-tools: ["Bash", "AskUserQuestion"]

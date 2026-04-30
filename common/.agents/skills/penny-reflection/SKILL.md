@@ -1,6 +1,7 @@
 ---
 name: penny-reflection
 description: Reflect with Penny — Wednesday ritual or anytime. Guided self-reflection conversation, captured to the journal. Also supports quick thought capture with arguments (`$ARGUMENTS` in Claude Code, or `/skill:penny-reflection` args in Pi).
+user-invocable: true
 metadata:
   user-invocable: true
 allowed-tools: [Bash, Read, Write, Edit]

@@ -1,6 +1,7 @@
 ---
 name: meta-enforcement
 description: Core enforcement skill — injected at session start via hook. Not for direct invocation.
+user-invocable: false
 metadata:
   user-invocable: false
 disable-model-invocation: true

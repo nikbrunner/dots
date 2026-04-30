@@ -1,6 +1,7 @@
 ---
 name: bai-status
 description: Show my Black Atom Industries issues
+user-invocable: false
 metadata:
   user-invocable: false
 allowed-tools: ["Bash"]

@@ -1,6 +1,7 @@
 ---
 name: about-nik
 description: Nik's personal context, professional background, projects, and interests. Load when personal context, career history, or project knowledge is relevant.
+user-invocable: false
 metadata:
   user-invocable: false
 ---

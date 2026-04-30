@@ -1,6 +1,7 @@
 ---
 name: penny-daily
 description: Morning check-in with Penny — reads your daily note, checks strategic context, nudges on long-term goals and habits.
+user-invocable: true
 metadata:
   user-invocable: true
 allowed-tools: [Bash, Read, Write, Edit]

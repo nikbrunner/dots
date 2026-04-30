@@ -1,6 +1,8 @@
 ---
 name: dev:topic-name
 description: "My [topic] — [key patterns]. Load when [detection context]."
+argument-hint: "[optional: describe arguments if skill accepts them]"
+user-invocable: false
 metadata:
   argument-hint: "[optional: describe arguments if skill accepts them]"
   user-invocable: false

@@ -1,6 +1,7 @@
 ---
 name: dots-add
 description: Add a config file to dots for symlink management
+argument-hint: "[path to config file]"
 metadata:
   argument-hint: "[path to config file]"
 ---

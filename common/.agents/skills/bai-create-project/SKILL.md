@@ -1,6 +1,7 @@
 ---
 name: bai-create-project
 description: Bootstrap a Black Atom Industries project — loads org context from about:bai and bai:* skills, then invokes dev:create-project with BAI defaults.
+argument-hint: "[name] [--type adapter|plugin|core|tool|app]"
 metadata:
   argument-hint: "[name] [--type adapter|plugin|core|tool|app]"
 ---

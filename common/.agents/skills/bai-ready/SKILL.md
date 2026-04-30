@@ -1,6 +1,7 @@
 ---
 name: bai-ready
 description: Show Black Atom issues ready to work (no blockers)
+user-invocable: false
 metadata:
   user-invocable: false
 allowed-tools: ["Bash"]
