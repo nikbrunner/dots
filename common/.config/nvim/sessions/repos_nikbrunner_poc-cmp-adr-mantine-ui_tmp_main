@@ -4,24 +4,17 @@ let v:this_session=expand("<sfile>:p")
 doautoall SessionLoadPre
 silent only
 silent tabonly
-cd ~/repos/nikbrunner/poc-cmp-adr-mantine-ui/tmp
+cd ~/repos/imfusion/web-ui-poc/tmp
 if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +35 ~/repos/nikbrunner/poc-cmp-adr-mantine-ui/plans/01-monorepo-restructure.md
-badd +16 ~/repos/nikbrunner/poc-cmp-adr-mantine-ui/apps/playground/src/routes/index.tsx
 argglobal
 %argdel
 $argadd ~/repos/nikbrunner/poc-cmp-adr-mantine-ui/packages/web-ui/src/provider/web-ui-provider.tsx
-set stal=2
-tabnew +setlocal\ bufhidden=wipe
-tabrewind
-edit ~/repos/nikbrunner/poc-cmp-adr-mantine-ui/plans/01-monorepo-restructure.md
 argglobal
-xnoremap <buffer> <silent> [[ :exe "normal! gv"|call search('\%(^#\{1,5\}\s\+\S\|^\S.*\n^[=-]\+$\)', "bsW")
-xnoremap <buffer> <silent> ]] :exe "normal! gv"|call search('\%(^#\{1,5\}\s\+\S\|^\S.*\n^[=-]\+$\)', "sW")
+enew
 setlocal keymap=
 setlocal noarabic
 setlocal autoindent
@@ -38,129 +31,8 @@ setlocal cinoptions=
 setlocal cinscopedecls=public,protected,private
 setlocal cinwords=if,else,while,do,for,switch
 setlocal colorcolumn=
-setlocal comments=fb:*,fb:-,fb:+,n:>
-setlocal commentstring=<!--\ %s\ -->
-setlocal complete=.,w,b,u,t
-setlocal completefunc=
-setlocal completeslash=
-setlocal concealcursor=
-setlocal conceallevel=3
-setlocal nocopyindent
-setlocal nocursorbind
-setlocal nocursorcolumn
-setlocal cursorline
-setlocal cursorlineopt=both
-setlocal nodiff
-setlocal eventignorewin=
-setlocal expandtab
-if &filetype != 'markdown'
-setlocal filetype=markdown
-endif
-setlocal fixendofline
-setlocal foldcolumn=0
-setlocal foldenable
-setlocal foldexpr=v:lua.vim.treesitter.foldexpr()
-setlocal foldignore=#
-setlocal foldlevel=0
-setlocal foldmarker={{{,}}}
-setlocal foldmethod=expr
-setlocal foldminlines=1
-setlocal foldnestmax=20
-setlocal foldtext=
-setlocal formatexpr=v:lua.require'conform'.formatexpr()
-setlocal formatlistpat=^\\s*\\d\\+\\.\\s\\+\\|^\\s*[-*+]\\s\\+\\|^\\[^\\ze[^\\]]\\+\\]:\\&^.\\{4\\}
-setlocal formatoptions=jcnltq
-setlocal iminsert=0
-setlocal imsearch=-1
-setlocal includeexpr=
-setlocal indentexpr=
-setlocal indentkeys=0{,0},0),0],:,0#,!^F,o,O,e
-setlocal noinfercase
-setlocal iskeyword=@,48-57,_,192-255
-setlocal lhistory=10
-setlocal linebreak
-setlocal nolisp
-setlocal lispoptions=
-setlocal nolist
-setlocal matchpairs=(:),{:},[:],<:>
-setlocal modeline
-setlocal modifiable
-setlocal nrformats=bin,hex
-setlocal number
-setlocal numberwidth=4
-setlocal omnifunc=htmlcomplete#CompleteTags
-setlocal nopreserveindent
-setlocal nopreviewwindow
-setlocal quoteescape=\\
-setlocal noreadonly
-setlocal relativenumber
-setlocal norightleft
-setlocal rightleftcmd=search
-setlocal scrollback=-1
-setlocal noscrollbind
-setlocal shiftwidth=2
-setlocal signcolumn=yes
-setlocal smartindent
-setlocal nosmoothscroll
-setlocal softtabstop=-1
-setlocal nospell
-setlocal spellcapcheck=[.?!]\\_[\\])'\"\\t\ ]\\+
-setlocal spellfile=
-setlocal spelllang=en_us,de_de
-setlocal spelloptions=noplainbuffer
-setlocal statuscolumn=%!v:lua.require'snacks.statuscolumn'.get()
-setlocal suffixesadd=
-setlocal noswapfile
-setlocal synmaxcol=3000
-if &syntax != ''
-setlocal syntax=
-endif
-setlocal tabstop=4
-setlocal tagfunc=
-setlocal textwidth=0
-setlocal undofile
-setlocal varsofttabstop=
-setlocal vartabstop=
-setlocal winbar=%#WinBarPath#~%*\ %#WinBarSeparator#/%*\ %#WinBarPath#repos%*\ %#WinBarSeparator#/%*\ %#WinBarPath#nikbrunner%*\ %#WinBarSeparator#/%*\ %#WinBarPath#poc-cmp-adr-mantine-ui%*\ %#WinBarSeparator#/%*\ %#WinBarPath#plans%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#01-monorepo-restructure.md%*
-setlocal winblend=0
-setlocal nowinfixbuf
-setlocal nowinfixheight
-setlocal nowinfixwidth
-setlocal winhighlight=
-setlocal wrap
-setlocal wrapmargin=0
-1
-sil! normal! zo
-16
-sil! normal! zo
-let s:l = 35 - ((34 * winheight(0) + 34) / 69)
-if s:l < 1 | let s:l = 1 | endif
-keepjumps exe s:l
-normal! zt
-keepjumps 35
-normal! 0
-tabnext
-edit ~/repos/nikbrunner/poc-cmp-adr-mantine-ui/apps/playground/src/routes/index.tsx
-argglobal
-1argu
-setlocal keymap=
-setlocal noarabic
-setlocal autoindent
-setlocal nobinary
-setlocal nobreakindent
-setlocal breakindentopt=
-setlocal bufhidden=
-setlocal buflisted
-setlocal buftype=
-setlocal busy=0
-setlocal nocindent
-setlocal cinkeys=0{,0},0),0],:,0#,!^F,o,O,e
-setlocal cinoptions=
-setlocal cinscopedecls=public,protected,private
-setlocal cinwords=if,else,while,do,for,switch
-setlocal colorcolumn=
-setlocal comments=sO:*\ -,mO:*\ \ ,exO:*/,s1:/*,mb:*,ex:*/,://
-setlocal commentstring=//\ %s
+setlocal comments=s1:/*,mb:*,ex:*/,://,b:#,:%,:XCOMM,n:>,fb:-,fb:â€¢
+setlocal commentstring=
 setlocal complete=.,w,b,u,t
 setlocal completefunc=
 setlocal completeslash=
@@ -174,8 +46,8 @@ setlocal cursorlineopt=both
 setlocal nodiff
 setlocal eventignorewin=
 setlocal expandtab
-if &filetype != 'typescriptreact'
-setlocal filetype=typescriptreact
+if &filetype != ''
+setlocal filetype=
 endif
 setlocal fixendofline
 setlocal foldcolumn=0
@@ -190,12 +62,12 @@ setlocal foldnestmax=20
 setlocal foldtext=
 setlocal formatexpr=v:lua.require'conform'.formatexpr()
 setlocal formatlistpat=^\\s*\\d\\+[\\]:.)}\\t\ ]\\s*
-setlocal formatoptions=jncroql
+setlocal formatoptions=clrqoj
 setlocal iminsert=0
 setlocal imsearch=-1
 setlocal includeexpr=
-setlocal indentexpr=GetTypescriptIndent()
-setlocal indentkeys=0{,0},0),0],0,,!^F,o,O,e
+setlocal indentexpr=
+setlocal indentkeys=0{,0},0),0],:,0#,!^F,o,O,e
 setlocal noinfercase
 setlocal iskeyword=@,48-57,_,192-255
 setlocal lhistory=10
@@ -209,7 +81,7 @@ setlocal modifiable
 setlocal nrformats=bin,hex
 setlocal number
 setlocal numberwidth=4
-setlocal omnifunc=v:lua.vim.lsp.omnifunc
+setlocal omnifunc=
 setlocal nopreserveindent
 setlocal nopreviewwindow
 setlocal quoteescape=\\
@@ -219,30 +91,29 @@ setlocal norightleft
 setlocal rightleftcmd=search
 setlocal scrollback=-1
 setlocal noscrollbind
-setlocal shiftwidth=2
+setlocal shiftwidth=4
 setlocal signcolumn=yes
-setlocal nosmartindent
+setlocal smartindent
 setlocal nosmoothscroll
-setlocal softtabstop=-1
+setlocal softtabstop=4
 setlocal nospell
 setlocal spellcapcheck=[.?!]\\_[\\])'\"\\t\ ]\\+
 setlocal spellfile=
 setlocal spelllang=en_us,de_de
-setlocal spelloptions=noplainbuffer
+setlocal spelloptions=
 setlocal statuscolumn=%!v:lua.require'snacks.statuscolumn'.get()
-setlocal suffixesadd=.ts,.d.ts,.tsx,.js,.jsx,.cjs,.mjs
+setlocal suffixesadd=
 setlocal noswapfile
 setlocal synmaxcol=3000
 if &syntax != ''
 setlocal syntax=
 endif
 setlocal tabstop=4
-setlocal tagfunc=v:lua.vim.lsp.tagfunc
+setlocal tagfunc=
 setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#~%*\ %#WinBarSeparator#/%*\ %#WinBarPath#repos%*\ %#WinBarSeparator#/%*\ %#WinBarPath#nikbrunner%*\ %#WinBarSeparator#/%*\ %#WinBarPath#poc-cmp-adr-mantine-ui%*\ %#WinBarSeparator#/%*\ %#WinBarPath#apps%*\ %#WinBarSeparator#/%*\ %#WinBarPath#playground%*\ %#WinBarSeparator#/%*\ %#WinBarPath#src%*\ %#WinBarSeparator#/%*\ %#WinBarPath#routes%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#index.tsx%*\ %#WinBarSeparator##%*\ %#WinBarSymbol#Home%*
 setlocal winblend=0
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -250,14 +121,7 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 16 - ((15 * winheight(0) + 34) / 69)
-if s:l < 1 | let s:l = 1 | endif
-keepjumps exe s:l
-normal! zt
-keepjumps 16
-normal! 0
-tabnext 2
-set stal=1
+tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
 endif

@@ -41,7 +41,7 @@
             "label": "3"
           }
         ],
-        "lastAccessed": 1777133156
+        "lastAccessed": 1777532098
       }
     },
     "~/repos/black-atom-industries/radar.nvim": {
@@ -420,6 +420,21 @@
         "lastAccessed": 1762859777
       }
     },
+    "~/repos/imfusion/web-ui-poc": {
+      "main": {
+        "locks": [
+          {
+            "filename": "oil:///Users/brunner/repos/imfusion/web-ui-poc/packages/web-ui/",
+            "label": "1"
+          },
+          {
+            "filename": "oil:///Users/brunner/repos/imfusion/web-ui-poc/apps/playground/",
+            "label": "2"
+          }
+        ],
+        "lastAccessed": 1777544717
+      }
+    },
     "~/repos/nikbrunner/dcd-notes": {
       "main": {
         "locks": [
@@ -477,7 +492,7 @@
             "label": "3"
           }
         ],
-        "lastAccessed": 1777448433
+        "lastAccessed": 1777536966
       }
     },
     "~/repos/nikbrunner/filen-interview": {

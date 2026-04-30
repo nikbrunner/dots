@@ -18,7 +18,7 @@ adjust-underline-position = 3
 
 # Fonts
 font-size = 14
-font-family = Iosevka Nerd Font
+font-family = RecMonoCasual Nerd Font
 font-style-bold = Bold
 window-inherit-working-directory = true
 unfocused-split-opacity = 1

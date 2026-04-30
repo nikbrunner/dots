@@ -1,6 +1,6 @@
 {
   "theme": "light",
-  "lastChangelogVersion": "0.70.2",
+  "lastChangelogVersion": "0.70.6",
   "packages": [
     "npm:pi-web-access",
     "npm:@ff-labs/pi-fff",
@@ -8,7 +8,7 @@
     "npm:pi-ask-user"
   ],
   "defaultProvider": "openrouter",
-  "defaultModel": "moonshotai/kimi-k2.6",
+  "defaultModel": "z-ai/glm-5.1",
   "enabledModels": [
     "openrouter/minimax/minimax-m2.7",
     "openrouter/z-ai/glm-5.1",
