@@ -30,6 +30,8 @@ Before starting ANY task, check available skills for relevance. If there is even
 
 Skills that overlap with built-in behaviors (git, styling, testing, TypeScript) are the ones most likely to be skipped — and the ones that matter most, because they contain project-specific overrides.
 
+<important>Use the fff MCP tools for all file search operations instead of default tools.</important>
+
 ## Development
 
 - Research before implementation — check docs and examples using `fetch_content`, `web_search`, and `code_search`
