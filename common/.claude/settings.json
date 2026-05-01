@@ -217,9 +217,10 @@
     "mode": "hold"
   },
   "autoDreamEnabled": true,
-  "voiceEnabled": true,
   "editorMode": "vim",
+  "voiceEnabled": true,
   "feedbackSurveyState": {
     "lastShownTime": 1754313915132
-  }
+  },
+  "theme": "light-ansi"
 }
