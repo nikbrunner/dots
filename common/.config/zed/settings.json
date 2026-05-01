@@ -1,19 +1,21 @@
 {
+  "cli_default_open_behavior": "new_window",
   "agent_servers": {
     "claude-acp": {
-      "type": "registry"
-    }
+      "type": "registry",
+    },
   },
+  "lsp_document_colors": "background",
   "outline_panel": {
-    "dock": "left"
+    "dock": "left",
   },
   "collaboration_panel": {
-    "dock": "left"
+    "dock": "left",
   },
   "icon_theme": {
     "mode": "dark",
     "light": "Zed (Default)",
-    "dark": "Zed (Default)"
+    "dark": "Zed (Default)",
   },
   "document_symbols": "on",
   "session": {
@@ -66,7 +68,7 @@
   "theme": {
     "mode": "dark",
     "light": "Black Atom — JPN ∷ Koyo Hiru",
-    "dark": "Black Atom — TERRA ∷ Fall Night"
+    "dark": "Black Atom — TERRA ∷ Fall Night",
   },
   "base_keymap": "VSCode",
   "vim_mode": true,
