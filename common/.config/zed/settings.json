@@ -33,8 +33,8 @@
   "sticky_scroll": {
     "enabled": true,
   },
-  "agent_buffer_font_size": 20.0,
-  "agent_ui_font_size": 20.0,
+  "agent_buffer_font_size": 16.0,
+  "agent_ui_font_size": 16.0,
   "telemetry": {
     "diagnostics": false,
     "metrics": false,
@@ -167,5 +167,5 @@
       },
     },
   },
-  "ui_font_family": "TX-02 ExtraCondensed",
+  "ui_font_family": "TX-02",
 }
