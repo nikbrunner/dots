@@ -13,5 +13,5 @@
     hyperlinks = true
     hyperlinks-file-link-format = "lazygit-edit://{path}:{line}"
     line-numbers = true
-    features = "coracias-caudatus"
+    features = black-atom-dark
     syntax-theme = GitHub
