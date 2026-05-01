@@ -13,6 +13,7 @@ The development lifecycle in 5 phases. Read the phase doc matching the argument 
 ## Arguments
 
 Determine the phase:
+
 1. If `$ARGUMENTS` is set (Claude Code), use its value
 2. If invoked via `/skill:dev-flow <phase>` (Pi), use the argument after the skill name
 3. If no argument provided, show this overview and ask which phase (or auto-detect from context)

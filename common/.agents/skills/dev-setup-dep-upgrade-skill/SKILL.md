@@ -66,7 +66,7 @@ git commit -m "feat: add dep-upgrades project skill"
 
 The template below uses `{{placeholders}}` — replace them with detected/confirmed values.
 
-```markdown
+````markdown
 ---
 name: dev-setup-dep-upgrade-skill
 description: Use when upgrading dependencies, reviewing Dependabot/Renovate PRs, or auditing outdated packages in this project.
@@ -103,6 +103,7 @@ Run the outdated command and gather Dependabot PRs if applicable:
 {{outdated_command}}
 {{#if dependabot}}gh pr list --author "app/dependabot" --state open --json number,title,headRefName{{/if}}
 ```
+````
 
 Present a summary table to the user:
 
@@ -202,7 +203,8 @@ After all upgrades are complete, present:
 - **Deprecation warnings:** anything to address later
 - **New features:** worth exploring in a future session
 - **Skipped:** any deps not upgraded and why
-````
+
+```
 
 ---
 
@@ -247,3 +249,4 @@ After all upgrades are complete, present:
 | `outdated_command` | `cargo outdated`  |
 | `upgrade_command`  | `cargo update -p` |
 | `commit_prefix`    | `build(deps):`    |
+```
