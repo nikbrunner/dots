@@ -41,5 +41,8 @@ opencode = "latest"
 "npm:typescript" = "latest"
 prettier = "latest"
 
+[env]
+_.file = "~/.env"
+
 [settings]
 lockfile = true
