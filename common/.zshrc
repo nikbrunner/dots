@@ -56,7 +56,7 @@ alias :vs='tmux split-window -h -c "#{pane_current_path}"'
 alias :sp='tmux split-window -v -c "#{pane_current_path}"'
 
 claude() {
-  LEAN_CTX_AGENT=1 CLAUDE_CODE_NO_FLICKER=1 command claude "$@"
+  CLAUDE_CODE_NO_FLICKER=1 command claude "$@"
 }
 
 
