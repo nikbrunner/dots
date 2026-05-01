@@ -1,6 +1,10 @@
 {
+  "diff_view_style": "split",
   "cli_default_open_behavior": "new_window",
   "agent_servers": {
+    "pi-acp": {
+      "type": "registry",
+    },
     "claude-acp": {
       "type": "registry",
     },
@@ -35,7 +39,29 @@
     "diagnostics": false,
     "metrics": false,
   },
+  "language_models": {
+    "open_router": {
+      "available_models": [
+        {
+          "name": "google/gemma-3-27b-it",
+          "display_name": "Gemma 3 27B",
+          "max_tokens": 8192,
+        },
+        {
+          "name": "google/gemma-3-12b-it",
+          "display_name": "Gemma 3 12B",
+          "max_tokens": 8192,
+        },
+      ],
+    },
+  },
   "agent": {
+    "commit_message_model": {
+      "provider": "open_router",
+      "model": "google/gemma-3-27b-it",
+    },
+    "default_width": 350.0,
+    "sidebar_side": "right",
     "dock": "right",
     "tool_permissions": {
       "default": "allow",
@@ -54,9 +80,9 @@
   },
   "hide_mouse": "on_typing_and_movement",
   "edit_predictions": {
+    "allow_data_collection": "no",
     "provider": "zed",
     "mode": "eager",
-    "enabled_in_text_threads": false,
   },
   "ssh_connections": [
     {
@@ -93,6 +119,7 @@
     "enabled": false,
   },
   "git_panel": {
+    "tree_view": true,
     "dock": "left",
     "status_style": "icon",
     "sort_by_path": true,
