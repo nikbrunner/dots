@@ -531,7 +531,10 @@ cmd_chores() {
 	if [[ ${#topics_changed[@]} -gt 0 ]]; then
 		# Build a single commit message from staged changes
 		local topic_list
-		topic_list=$(IFS=,; echo "${topics_changed[*]}")
+		topic_list=$(
+			IFS=,
+			echo "${topics_changed[*]}"
+		)
 		(cd "$DOTS_DIR" && git commit -m "chore(dots): update $topic_list")
 		log_okay "Created 1 chore commit: update ${topic_list}"
 	else
