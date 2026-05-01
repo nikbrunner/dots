@@ -1,4 +1,9 @@
 {
+  "agent_servers": {
+    "claude-acp": {
+      "type": "registry"
+    }
+  },
   "outline_panel": {
     "dock": "left"
   },
@@ -59,7 +64,7 @@
   ],
   "cursor_blink": false,
   "theme": {
-    "mode": "light",
+    "mode": "dark",
     "light": "Black Atom — JPN ∷ Koyo Hiru",
     "dark": "Black Atom — TERRA ∷ Fall Night"
   },
