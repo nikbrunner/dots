@@ -585,6 +585,76 @@ show_usage() {
 	echo "                 --dry-run: preview without making changes"
 	echo "                 --no-backup: overwrite existing files"
 	echo "                 --verbose: show detailed output"
+	echo "  clean        - Remove *.backup.* files left by dots link"
+	echo "                 --dry-run: preview without deleting"
+}
+
+# Clean command — remove *.backup.YYYYMMDD_HHMMSS files created by dots link
+cmd_clean() {
+	local dry_run=false
+	for arg in "$@"; do
+		[[ "$arg" == "--dry-run" ]] && dry_run=true
+	done
+
+	# Source symlink functions for process_symlinks_entries
+	# shellcheck disable=SC1091
+	source "$DOTS_DIR/scripts/dots/symlinks.sh"
+
+	local current_os
+	current_os=$("$DOTS_DIR/scripts/dots/detect-os.sh")
+
+	local symlinks_file="$DOTS_DIR/symlinks.yml"
+
+	# Collect unique directories to search (parent dirs of all targets + target dirs for wildcards)
+	declare -A seen_dirs
+	local search_dirs=()
+	while IFS='|' read -r _source target_path; do
+		[[ -z "$target_path" ]] && continue
+		local abs_target="${target_path/\~/$HOME}"
+		local parent_dir
+		parent_dir="$(dirname "$abs_target")"
+		if [[ -z "${seen_dirs[$parent_dir]:-}" ]]; then
+			seen_dirs["$parent_dir"]=1
+			search_dirs+=("$parent_dir")
+		fi
+		if [[ -d "$abs_target" && -z "${seen_dirs[$abs_target]:-}" ]]; then
+			seen_dirs["$abs_target"]=1
+			search_dirs+=("$abs_target")
+		fi
+	done < <(process_symlinks_entries "$symlinks_file" "$current_os")
+
+	local backups=()
+	for dir in "${search_dirs[@]}"; do
+		[[ ! -d "$dir" ]] && continue
+		while IFS= read -r f; do
+			backups+=("$f")
+		done < <(find "$dir" -maxdepth 1 -name "*.backup.????????_??????" 2>/dev/null || true)
+	done
+
+	if [[ ${#backups[@]} -eq 0 ]]; then
+		log_okay "No backup files found"
+		return 0
+	fi
+
+	log_info "Found ${#backups[@]} backup file(s):"
+	for f in "${backups[@]}"; do
+		echo "  $f"
+	done
+	echo ""
+
+	if [[ "$dry_run" == true ]]; then
+		log_info "Dry run — no files deleted"
+		return 0
+	fi
+
+	if confirm "Delete all backup files?"; then
+		for f in "${backups[@]}"; do
+			rm -rf "$f"
+		done
+		log_okay "Deleted ${#backups[@]} backup file(s)"
+	else
+		log_info "Skipped"
+	fi
 }
 
 # Link command
@@ -658,6 +728,10 @@ cmd_open() {
 
 # Main command dispatcher
 case "${1:-}" in
+clean)
+	shift
+	cmd_clean "$@"
+	;;
 link)
 	shift
 	cmd_link "$@"
