@@ -25,7 +25,7 @@
   "session": {
     "trust_all_worktrees": false,
   },
-  "buffer_font_family": "TX-02 ExtraCondensed",
+  "buffer_font_family": "TX-02",
   "which_key": {
     "delay_ms": 250,
     "enabled": true,
