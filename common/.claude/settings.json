@@ -217,10 +217,11 @@
     "mode": "hold"
   },
   "autoDreamEnabled": true,
-  "editorMode": "vim",
   "voiceEnabled": true,
+  "editorMode": "vim",
   "feedbackSurveyState": {
     "lastShownTime": 1754313915132
   },
-  "theme": "light-ansi"
+  "theme": "light-ansi",
+  "model": "opus[1m]"
 }
