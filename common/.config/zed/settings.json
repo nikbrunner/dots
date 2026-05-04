@@ -92,13 +92,13 @@
   ],
   "cursor_blink": false,
   "theme": {
-    "mode": "dark",
-    "light": "Black Atom — JPN ∷ Koyo Hiru",
+    "mode": "light",
+    "light": "Black Atom — Stations ∷ Research",
     "dark": "Black Atom — TERRA ∷ Fall Night",
   },
   "base_keymap": "VSCode",
   "vim_mode": true,
-  "ui_font_size": 16.0,
+  "ui_font_size": 14.0,
   "buffer_line_height": "comfortable",
   "buffer_font_size": 16.0,
   "buffer_font_weight": 400,
@@ -167,5 +167,5 @@
       },
     },
   },
-  "ui_font_family": "TX-02",
+  "ui_font_family": "TX-02 Condensed",
 }
