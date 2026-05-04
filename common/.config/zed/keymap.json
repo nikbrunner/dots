@@ -10,6 +10,8 @@
       "alt-[": "workspace::ToggleLeftDock",
       "alt-]": "workspace::ToggleRightDock",
 
+      ",": null,
+
       // --- App Scope (AWDCS: A) ---
       ", a a": "command_palette::Toggle",
       ", a g": "git_panel::ToggleFocus",
@@ -66,7 +68,7 @@
       // --- Navigation ---
       "H": "pane::ActivatePreviousItem",
       "L": "pane::ActivateNextItem",
-      "space": ["workspace::SendKeystrokes", "c i w"],
+      "-": "pane::RevealInProjectPanel",
 
       // --- Document Scope (AWDCS: D) ---
       ", d f": "buffer_search::Deploy",
@@ -97,7 +99,7 @@
       ", s g b": "editor::BlameHover",
 
       // --- Custom ---
-      "y c": ["workspace::SendKeystrokes", "y y g c c p"],
+      // "y c": ["workspace::SendKeystrokes", "y y g c c p"],
     },
   },
 
