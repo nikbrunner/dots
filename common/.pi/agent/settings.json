@@ -1,5 +1,5 @@
 {
-  "theme": "light",
+  "theme": "dark",
   "lastChangelogVersion": "0.70.6",
   "packages": [
     "npm:pi-web-access",
@@ -8,12 +8,14 @@
     "npm:pi-ask-user"
   ],
   "defaultProvider": "openrouter",
-  "defaultModel": "z-ai/glm-5.1",
+  "defaultModel": "deepseek/deepseek-v4-flash",
   "enabledModels": [
     "openrouter/minimax/minimax-m2.7",
     "openrouter/z-ai/glm-5.1",
     "openrouter/qwen/qwen3.6-plus",
-    "openrouter/moonshotai/kimi-k2.6"
+    "openrouter/moonshotai/kimi-k2.6",
+    "openrouter/deepseek/deepseek-v4-flash",
+    "openrouter/deepseek/deepseek-v4-pro"
   ],
   "hideThinkingBlock": true,
   "compaction": {
