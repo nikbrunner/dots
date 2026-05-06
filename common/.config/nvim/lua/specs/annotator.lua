@@ -52,6 +52,6 @@ return {
     },
     opts = {
         mappings = false,
-        storage = "memory",
+        storage = "state",
     },
 }
