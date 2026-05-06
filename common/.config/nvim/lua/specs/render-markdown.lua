@@ -10,5 +10,26 @@ return {
     opts = {
         render_modes = { "n", "c", "t", "i", "v" },
         completions = { lsp = { enabled = true } },
+        debounce = 250,
+        bullet = {
+            icons = " ",
+        },
+        checkbox = {
+            unchecked = {
+                icon = "󰄰 ",
+            },
+            checked = {
+                icon = "󰗠 ",
+                -- highlight = "RenderMarkdownSuccess",
+                highlight = "@markup.list.checked",
+            },
+            custom = {
+                progress = {
+                    raw = "[~]",
+                    rendered = "󰦕 ",
+                    highlight = "@markup.list.unchecked",
+                },
+            },
+        },
     },
 }
