@@ -17,7 +17,7 @@
     "openrouter/deepseek/deepseek-v4-flash",
     "openrouter/deepseek/deepseek-v4-pro"
   ],
-  "hideThinkingBlock": true,
+  "hideThinkingBlock": false,
   "compaction": {
     "enabled": false
   },
