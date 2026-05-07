@@ -1,13 +1,19 @@
 #:schema https://raw.githubusercontent.com/black-atom-industries/shiplog/main/schema.json
 provider = "openrouter"
+summary_length = 72
+history_count = 10
+
+[openrouter]
 model = "google/gemma-4-26b-a4b-it"
 models = [
   "google/gemma-4-26b-a4b-it",
   "google/gemma-4-31b-it",
-  "deepseek/deepseek-v4-flash",
-  "claude-sonnet-4-6",
   "claude-haiku-4-6",
-
 ]
-summary_length = 72
-history_count = 10
+
+[anthropic]
+model = "claude-sonnet-4-5"
+models = [
+  "claude-sonnet-4-5",
+  "claude-haiku-4-6",
+]
