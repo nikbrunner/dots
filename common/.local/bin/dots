@@ -585,8 +585,83 @@ show_usage() {
 	echo "                 --dry-run: preview without making changes"
 	echo "                 --no-backup: overwrite existing files"
 	echo "                 --verbose: show detailed output"
+	echo "  cleanup      - Remove Pi and Claude sessions older than 2 weeks"
+	echo "                 --dry-run: preview without deleting"
 	echo "  clean        - Remove *.backup.* files left by dots link"
 	echo "                 --dry-run: preview without deleting"
+}
+
+# Cleanup command — remove old Pi and Claude conversation sessions older than 2 weeks
+cmd_cleanup() {
+	local dry_run=false
+	while [[ $# -gt 0 ]]; do
+		case "$1" in
+		--dry-run) dry_run=true ; shift ;;
+		*) shift ;;
+		esac
+	done
+
+	local total_deleted=0
+
+	# ── Pi sessions ──
+	local pi_sessions="$DOTS_DIR/common/.pi/agent/sessions"
+	if [[ -d "$pi_sessions" ]]; then
+		log_info "Pi sessions older than 2 weeks:"
+		local pi_deleted=0
+		if [[ "$dry_run" == true ]]; then
+			while IFS= read -r f; do
+				echo "  would delete: $f"
+				((pi_deleted++)) || true
+			done < <(find "$pi_sessions" -type f -name '*.jsonl' -mtime +14 2>/dev/null)
+		else
+			pi_deleted=$(find "$pi_sessions" -type f -name '*.jsonl' -mtime +14 -delete -print 2>/dev/null | wc -l | tr -d ' ')
+			# Remove empty directories
+			find "$pi_sessions" -type d -empty -delete 2>/dev/null || true
+		fi
+		total_deleted=$((total_deleted + pi_deleted))
+		if [[ "$pi_deleted" -gt 0 ]]; then
+			log_okay "Removed $pi_deleted Pi session file(s)"
+		else
+			log_info "No old Pi sessions found"
+		fi
+	else
+		log_info "No Pi sessions directory found"
+	fi
+
+	echo ""
+
+	# ── Claude sessions ──
+	local claude_sessions="$HOME/.claude/sessions"
+	if [[ -d "$claude_sessions" ]]; then
+		log_info "Claude sessions older than 2 weeks:"
+		local claude_deleted=0
+		if [[ "$dry_run" == true ]]; then
+			while IFS= read -r f; do
+				echo "  would delete: $f"
+				((claude_deleted++)) || true
+			done < <(find "$claude_sessions" -type f -name '*.json' -mtime +14 2>/dev/null)
+		else
+			claude_deleted=$(find "$claude_sessions" -type f -name '*.json' -mtime +14 -delete -print 2>/dev/null | wc -l | tr -d ' ')
+		fi
+		total_deleted=$((total_deleted + claude_deleted))
+		if [[ "$claude_deleted" -gt 0 ]]; then
+			log_okay "Removed $claude_deleted Claude session file(s)"
+		else
+			log_info "No old Claude sessions found"
+		fi
+	else
+		log_info "No Claude sessions directory found"
+	fi
+
+	echo ""
+
+	if [[ "$dry_run" == true ]]; then
+		log_info "Dry run — $total_deleted file(s) would be deleted"
+	elif [[ "$total_deleted" -gt 0 ]]; then
+		log_okay "Cleanup complete: removed $total_deleted session file(s)"
+	else
+		log_okay "Nothing to clean up"
+	fi
 }
 
 # Clean command — remove *.backup.YYYYMMDD_HHMMSS files created by dots link
@@ -728,6 +803,10 @@ cmd_open() {
 
 # Main command dispatcher
 case "${1:-}" in
+cleanup)
+	shift
+	cmd_cleanup "$@"
+	;;
 clean)
 	shift
 	cmd_clean "$@"
