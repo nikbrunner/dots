@@ -51,6 +51,7 @@
     "deny": [],
     "ask": []
   },
+  "model": "opus[1m]",
   "hooks": {
     "Notification": [
       {
@@ -222,6 +223,5 @@
   "feedbackSurveyState": {
     "lastShownTime": 1754313915132
   },
-  "theme": "light-ansi",
-  "model": "opus[1m]"
+  "theme": "light-ansi"
 }
