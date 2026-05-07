@@ -65,7 +65,7 @@ setlocal foldnestmax=20
 setlocal foldtext=
 setlocal formatexpr=v:lua.require'conform'.formatexpr()
 setlocal formatlistpat=^\\s*\\d\\+\\.\\s\\+\\|^\\s*[-*+]\\s\\+\\|^\\[^\\ze[^\\]]\\+\\]:\\&^.\\{4\\}
-setlocal formatoptions=lqctnj
+setlocal formatoptions=jqlctn
 setlocal iminsert=0
 setlocal imsearch=-1
 setlocal includeexpr=
@@ -127,14 +127,14 @@ setlocal wrap
 setlocal wrapmargin=0
 6
 sil! normal! zo
-13
+14
 sil! normal! zo
-let s:l = 17 - ((16 * winheight(0) + 27) / 55)
+let s:l = 17 - ((6 * winheight(0) + 10) / 20)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
 keepjumps 17
-normal! 0
+normal! 015|
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
