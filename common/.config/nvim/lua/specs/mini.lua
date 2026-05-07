@@ -420,7 +420,8 @@ function M.snippets()
     require("mini.snippets").setup({
         snippets = {
             -- Load global snippets (date/time available everywhere)
-            gen_loader.from_file("~/.config/nvim/snippets/global.json"),
+            -- Lua version supports dynamic offsets (tomorrow, yesterday, etc.)
+            gen_loader.from_file("~/.config/nvim/snippets/global.lua"),
 
             -- Load language-specific snippets based on current filetype
             -- Looks for snippets/{lang}.json in runtimepath
