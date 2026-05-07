@@ -5,7 +5,8 @@
     "npm:pi-web-access",
     "npm:@ff-labs/pi-fff",
     "npm:@plannotator/pi-extension",
-    "npm:pi-ask-user"
+    "npm:pi-ask-user",
+    "npm:@samfp/pi-memory"
   ],
   "defaultProvider": "openrouter",
   "defaultModel": "deepseek/deepseek-v4-pro",
