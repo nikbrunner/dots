@@ -32,7 +32,7 @@ return {
             explorer = {
                 view_mode = "tree",
             },
-            {
+            keymaps = {
                 view = {
                     quit = "q",
                     toggle_explorer = "<leader>b",
