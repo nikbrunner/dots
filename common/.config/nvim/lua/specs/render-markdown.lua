@@ -29,6 +29,11 @@ return {
                     rendered = "󰦕 ",
                     highlight = "@markup.list.unchecked",
                 },
+                event = {
+                    raw = "[o]",
+                    rendered = "󰃭 ",
+                    highlight = "RenderMarkdownInfo",
+                },
             },
         },
     },
