@@ -1,10 +1,11 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/black-atom-industries/helm/main/schema.json
 
-appearance: dark
+appearance: light
 enable_layouts: false
 layout: dev
 layout_dir: ~/.config/tmux/layouts
 claude_status_enabled: true
+pi_status_enabled: true
 git_status_enabled: true
 project_dirs:
   - ~/repos
