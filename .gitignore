@@ -1,5 +1,6 @@
 node_modules
 common/.config/zed/prompts/
+common/.config/zed/*.tmp
 **/.DS_Store
 common/.config/bm/cull-cache.json
 common/.config/bm/organize-cache.json
