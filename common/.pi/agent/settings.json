@@ -1,6 +1,6 @@
 {
   "theme": "dark",
-  "lastChangelogVersion": "0.73.0",
+  "lastChangelogVersion": "0.74.0",
   "packages": [
     "npm:pi-web-access",
     "npm:@ff-labs/pi-fff",

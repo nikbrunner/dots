@@ -596,7 +596,10 @@ cmd_cleanup() {
 	local dry_run=false
 	while [[ $# -gt 0 ]]; do
 		case "$1" in
-		--dry-run) dry_run=true ; shift ;;
+		--dry-run)
+			dry_run=true
+			shift
+			;;
 		*) shift ;;
 		esac
 	done
