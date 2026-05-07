@@ -4,17 +4,17 @@ let v:this_session=expand("<sfile>:p")
 doautoall SessionLoadPre
 silent only
 silent tabonly
-cd ~/repos/imfusion/web-ui-poc
+cd ~/repos/nikbrunner/imf-notes
 if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +14 AGENTS.md
+badd +12 logs/2026/2026.05/2026.05.07\ -\ Thu.md
 argglobal
 %argdel
-$argadd ~/repos/imfusion/web-ui-poc/JOURNAL.md
-edit AGENTS.md
+$argadd ./
+edit logs/2026/2026.05/2026.05.07\ -\ Thu.md
 argglobal
 xnoremap <buffer> <silent> [[ :exe "normal! gv"|call search('\%(^#\{1,5\}\s\+\S\|^\S.*\n^[=-]\+$\)', "bsW")
 xnoremap <buffer> <silent> ]] :exe "normal! gv"|call search('\%(^#\{1,5\}\s\+\S\|^\S.*\n^[=-]\+$\)', "sW")
@@ -48,7 +48,7 @@ setlocal cursorline
 setlocal cursorlineopt=both
 setlocal nodiff
 setlocal eventignorewin=
-setlocal expandtab
+setlocal noexpandtab
 if &filetype != 'markdown'
 setlocal filetype=markdown
 endif
@@ -84,7 +84,7 @@ setlocal modifiable
 setlocal nrformats=bin,hex
 setlocal number
 setlocal numberwidth=4
-setlocal omnifunc=
+setlocal omnifunc=htmlcomplete#CompleteTags
 setlocal nopreserveindent
 setlocal nopreviewwindow
 setlocal quoteescape=\\
@@ -94,7 +94,7 @@ setlocal norightleft
 setlocal rightleftcmd=search
 setlocal scrollback=-1
 setlocal noscrollbind
-setlocal shiftwidth=2
+setlocal shiftwidth=0
 setlocal signcolumn=yes
 setlocal smartindent
 setlocal nosmoothscroll
@@ -113,11 +113,11 @@ setlocal syntax=
 endif
 setlocal tabstop=4
 setlocal tagfunc=
-setlocal textwidth=125
+setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarFilename#AGENTS.md%*
+setlocal winbar=%#WinBarPath#logs%*\ %#WinBarSeparator#/%*\ %#WinBarPath#2026%*\ %#WinBarSeparator#/%*\ %#WinBarPath#2026.05%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#2026.05.07\ -\ Thu.md%*
 setlocal winblend=0
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -125,12 +125,16 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal wrap
 setlocal wrapmargin=0
-let s:l = 31 - ((30 * winheight(0) + 25) / 51)
+6
+sil! normal! zo
+11
+sil! normal! zo
+let s:l = 14 - ((13 * winheight(0) + 24) / 49)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 31
-normal! 08|
+keepjumps 14
+normal! 0
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf

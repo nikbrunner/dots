@@ -436,7 +436,7 @@
             "label": "3"
           }
         ],
-        "lastAccessed": 1778083197
+        "lastAccessed": 1778155468
       }
     },
     "~/repos/nikbrunner/dcd-notes": {
@@ -496,7 +496,7 @@
             "label": "3"
           }
         ],
-        "lastAccessed": 1778067353
+        "lastAccessed": 1778156183
       }
     },
     "~/repos/nikbrunner/filen-interview": {
@@ -514,15 +514,11 @@
       "main": {
         "locks": [
           {
-            "filename": "logs/2026/04.2026/24.04.2026 - Fri.md",
-            "label": "1"
-          },
-          {
             "filename": "research/Figma Tutorial.md",
-            "label": "2"
+            "label": "1"
           }
         ],
-        "lastAccessed": 1777554259
+        "lastAccessed": 1778143435
       }
     },
     "~/repos/nikbrunner/imfusion-coding-assignment": {
@@ -584,7 +580,7 @@
             "label": "1"
           }
         ],
-        "lastAccessed": 1776948560
+        "lastAccessed": 1778141033
       }
     },
     "~/repos/nikbrunner/pi-speak": {
