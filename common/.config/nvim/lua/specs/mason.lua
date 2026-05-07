@@ -13,6 +13,7 @@ local packages = {
     "markdown-oxide",
     "lua-language-server",
     "tailwindcss-language-server",
+    "tree-sitter-cli",
     "vtsls",
     "yaml-language-server",
     "taplo",
