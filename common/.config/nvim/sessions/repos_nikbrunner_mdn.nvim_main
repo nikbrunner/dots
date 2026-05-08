@@ -4,17 +4,16 @@ let v:this_session=expand("<sfile>:p")
 doautoall SessionLoadPre
 silent only
 silent tabonly
-cd ~/repos/nikbrunner/notes
+cd ~/repos/nikbrunner/mdn.nvim
 if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +7 02\ -\ Areas/Log/2026/2026.05/2026.05.08\ -\ Fri.md
+badd +82 README.md
 argglobal
 %argdel
-$argadd ./
-edit 02\ -\ Areas/Log/2026/2026.05/2026.05.08\ -\ Fri.md
+edit README.md
 argglobal
 xnoremap <buffer> <silent> [[ :exe "normal! gv"|call search('\%(^#\{1,5\}\s\+\S\|^\S.*\n^[=-]\+$\)', "bsW")
 xnoremap <buffer> <silent> ]] :exe "normal! gv"|call search('\%(^#\{1,5\}\s\+\S\|^\S.*\n^[=-]\+$\)', "sW")
@@ -65,7 +64,7 @@ setlocal foldnestmax=20
 setlocal foldtext=
 setlocal formatexpr=v:lua.require'conform'.formatexpr()
 setlocal formatlistpat=^\\s*\\d\\+\\.\\s\\+\\|^\\s*[-*+]\\s\\+\\|^\\[^\\ze[^\\]]\\+\\]:\\&^.\\{4\\}
-setlocal formatoptions=lqjntc
+setlocal formatoptions=jtcqln
 setlocal iminsert=0
 setlocal imsearch=-1
 setlocal includeexpr=
@@ -84,7 +83,7 @@ setlocal modifiable
 setlocal nrformats=bin,hex
 setlocal number
 setlocal numberwidth=4
-setlocal omnifunc=
+setlocal omnifunc=htmlcomplete#CompleteTags
 setlocal nopreserveindent
 setlocal nopreviewwindow
 setlocal quoteescape=\\
@@ -94,7 +93,7 @@ setlocal norightleft
 setlocal rightleftcmd=search
 setlocal scrollback=-1
 setlocal noscrollbind
-setlocal shiftwidth=4
+setlocal shiftwidth=2
 setlocal signcolumn=yes
 setlocal smartindent
 setlocal nosmoothscroll
@@ -112,12 +111,12 @@ if &syntax != ''
 setlocal syntax=
 endif
 setlocal tabstop=4
-setlocal tagfunc=
-setlocal textwidth=85
+setlocal tagfunc=v:lua.vim.lsp.tagfunc
+setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#02\ -\ Areas%*\ %#WinBarSeparator#/%*\ %#WinBarPath#Log%*\ %#WinBarSeparator#/%*\ %#WinBarPath#2026%*\ %#WinBarSeparator#/%*\ %#WinBarPath#2026.05%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#2026.05.08\ -\ Fri.md%*
+setlocal winbar=%#WinBarFilename#README.md%*
 setlocal winblend=0
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -125,15 +124,11 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal wrap
 setlocal wrapmargin=0
-1
-sil! normal! zo
-3
-sil! normal! zo
-let s:l = 7 - ((6 * winheight(0) + 31) / 62)
+let s:l = 76 - ((17 * winheight(0) + 16) / 32)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 7
+keepjumps 76
 normal! 0
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
