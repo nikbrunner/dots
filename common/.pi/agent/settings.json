@@ -1,26 +1,25 @@
 {
-  "theme": "dark",
-  "lastChangelogVersion": "0.74.0",
+  "theme": "light",
+  "lastChangelogVersion": "0.70.2",
   "packages": [
     "npm:pi-web-access",
     "npm:@ff-labs/pi-fff",
     "npm:@plannotator/pi-extension",
-    "npm:pi-ask-user",
-    "npm:@samfp/pi-memory"
+    "npm:pi-ask-user"
   ],
   "defaultProvider": "openrouter",
-  "defaultModel": "deepseek/deepseek-v4-pro",
+  "defaultModel": "moonshotai/kimi-k2.6",
   "enabledModels": [
     "openrouter/minimax/minimax-m2.7",
     "openrouter/z-ai/glm-5.1",
     "openrouter/qwen/qwen3.6-plus",
     "openrouter/moonshotai/kimi-k2.6",
-    "openrouter/deepseek/deepseek-v4-flash",
-    "openrouter/deepseek/deepseek-v4-pro"
+    "openrouter/deepseek/deepseek-v4-pro",
+    "openrouter/deepseek/deepseek-v4-flash"
   ],
   "hideThinkingBlock": true,
   "compaction": {
     "enabled": false
   },
-  "defaultThinkingLevel": "high"
+  "defaultThinkingLevel": "medium"
 }

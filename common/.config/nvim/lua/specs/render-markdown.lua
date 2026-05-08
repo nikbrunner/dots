@@ -34,6 +34,16 @@ return {
                     rendered = "󰃭 ",
                     highlight = "RenderMarkdownInfo",
                 },
+                migrated = {
+                    raw = "[>]",
+                    rendered = "󰁖 ",
+                    highlight = "RenderMarkdownWarn",
+                },
+                scheduled = {
+                    raw = "[<]",
+                    rendered = "󰸗 ",
+                    highlight = "RenderMarkdownInfo",
+                },
             },
         },
     },
