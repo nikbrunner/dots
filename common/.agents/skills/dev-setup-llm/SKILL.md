@@ -65,11 +65,12 @@ Generate a plan tailored to the repo state. Present for user approval before exe
 
 No existing agent config. Scaffold from scratch based on what the scan found.
 
-| Item        | Description                                                                                                                                                                             |
-| ----------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `AGENTS.md` | Lean project context derived from scanned README/docs/package.json. Max ~50 lines. Only include what the agent would get wrong without.                                                 |
-| `skills/`   | Suggest skills based on detected stack and available global skills. E.g., TS project with tests may benefit from project-specific testing conventions. No fixed mapping — use judgment. |
-| Enforcement | Suggest enforcement mechanisms based on ecosystem. See tool-specific guides for implementation details (Pi: extension; Claude Code: hooks).                                             |
+| Item             | Description                                                                                                                                                                             |
+| ---------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `AGENTS.md`      | Lean project context derived from scanned README/docs/package.json. Max ~50 lines. Only include what the agent would get wrong without.                                                 |
+| `skills/`        | Suggest skills based on detected stack and available global skills. E.g., TS project with tests may benefit from project-specific testing conventions. No fixed mapping — use judgment. |
+| Feedback loops   | Recommend setting up AI feedback loops: TypeScript (convert if JS), `typecheck` script, pre-commit hooks with typecheck + lint-staged. See `dev-setup-pre-commit` for implementation.   |
+| Enforcement      | Suggest enforcement mechanisms based on ecosystem. See tool-specific guides for implementation details (Pi: extension; Claude Code: hooks).                                             |
 
 ### Legacy
 
@@ -117,6 +118,7 @@ Has skills already. Audit for improvements.
 - **Missing coverage** — Suggest new skills based on codebase evolution since last setup.
 - **Orphaned config** — Skills with no matching codebase context, enforcement rules for removed tools.
 - **Redundancy** — Skills that overlap significantly, AGENTS.md lines that duplicate skill content.
+- **Feedback loop gaps** — Missing `typecheck` script, no pre-commit hooks, JS project that should be TS. Recommend `dev-setup-pre-commit` if hooks are absent.
 
 ### Plan format
 
@@ -169,6 +171,18 @@ After execution, run this checklist:
 
 All conventions baked into this skill's decisions.
 
+### AI Feedback Loops
+
+The most powerful thing you can do for an AI-driven project is give the agent ways to verify its own work. Three layers, from cheapest to most expensive:
+
+1. **TypeScript** — free feedback. Every type error the AI would otherwise only catch in a browser becomes a build-time failure. Prefer TypeScript over JavaScript for any AI-driven project.
+2. **`typecheck` script** — a dedicated `package.json` script (`tsc --noEmit` or framework equivalent) that the AI can run after every change. Faster than a full build, catches type errors immediately.
+3. **Pre-commit hooks** — the enforcement layer. Typecheck + lint + tests run before every commit. If anything fails, the commit is blocked and the AI gets the error message.
+
+**Why this works for AI:** Agents don't get frustrated by repetition. A hook that would annoy a human ("I know, I'll fix it after") is perfect for an AI — it just reads the error and tries again. Feedback loops turn "the AI might have broken something" into "the AI will know immediately if it broke something."
+
+When setting up LLM config, always recommend the user also set up pre-commit hooks with at minimum `typecheck` + `lint-staged` (for formatting). Refer to `dev-setup-pre-commit` for implementation.
+
 ### AGENTS.md philosophy
 
 - `AGENTS.md` is the canonical source of truth — tool-specific config files (`CLAUDE.md`, etc.) symlink to it
@@ -217,3 +231,4 @@ metadata:
 ## Cross-References
 
 - `dev-setup-project` — may invoke this skill as Phase 6 of project bootstrapping
+- `dev-setup-pre-commit` — should be invoked after LLM setup to establish AI feedback loops (typecheck, lint-staged, tests in pre-commit)
