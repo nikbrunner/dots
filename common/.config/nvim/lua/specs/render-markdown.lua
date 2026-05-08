@@ -14,6 +14,12 @@ return {
         bullet = {
             icons = " ",
         },
+        win_options = {
+            conceallevel = {
+                default = vim.o.conceallevel,
+                rendered = 0,
+            },
+        },
         checkbox = {
             unchecked = {
                 icon = "󰄰 ",
