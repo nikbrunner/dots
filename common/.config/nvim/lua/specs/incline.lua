@@ -28,7 +28,7 @@ return {
                     relpath = bufname:sub(#git_root + 2)
                 end
                 local display = relpath ~= "" and relpath or filename
-                local ft_icon, ft_hl = require("mini.icons").get("file", filename, { default = true })
+                local ft_icon, ft_hl = require("mini.icons").get("file", filename)
 
                 local function get_git_diff()
                     local summary = vim.b[props.buf].minidiff_summary
@@ -36,18 +36,20 @@ return {
                     if summary == nil then
                         return labels
                     end
-                    if summary.add > 0 then
-                        table.insert(labels, { summary.add .. " ", group = "MiniDiffSignAdd" })
+                    if (summary.add or 0) > 0 then
+                        table.insert(labels, { "+" .. summary.add .. " ", group = "MiniDiffSignAdd" })
                     end
-                    if summary.change > 0 then
-                        table.insert(labels, { summary.change .. " ", group = "MiniDiffSignChange" })
+
+                    if (summary.change or 0) > 0 then
+                        table.insert(labels, { "~" .. summary.change .. " ", group = "MiniDiffSignChange" })
                     end
-                    if summary.delete > 0 then
-                        table.insert(labels, { summary.delete .. " ", group = "MiniDiffSignDelete" })
+
+                    if (summary.delete or 0) > 0 then
+                        table.insert(labels, { "-" .. summary.delete .. " ", group = "MiniDiffSignDelete" })
                     end
+
                     if #labels > 0 then
-                        table.insert(labels, 1, { icons.git .. " " })
-                        table.insert(labels, { ": " })
+                        table.insert(labels, 1, { icons.git .. "  " })
                     end
                     return labels
                 end
@@ -64,8 +66,7 @@ return {
                         end
                     end
                     if #label > 0 then
-                        table.insert(label, 1, { icons.diagnostics .. " " })
-                        table.insert(label, { ": " })
+                        table.insert(label, 1, { " " .. icons.diagnostics .. " " })
                     end
                     return label
                 end
