@@ -65,12 +65,12 @@ Generate a plan tailored to the repo state. Present for user approval before exe
 
 No existing agent config. Scaffold from scratch based on what the scan found.
 
-| Item             | Description                                                                                                                                                                             |
-| ---------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `AGENTS.md`      | Lean project context derived from scanned README/docs/package.json. Max ~50 lines. Only include what the agent would get wrong without.                                                 |
-| `skills/`        | Suggest skills based on detected stack and available global skills. E.g., TS project with tests may benefit from project-specific testing conventions. No fixed mapping — use judgment. |
-| Feedback loops   | Recommend setting up AI feedback loops: TypeScript (convert if JS), `typecheck` script, pre-commit hooks with typecheck + lint-staged. See `dev-setup-pre-commit` for implementation.   |
-| Enforcement      | Suggest enforcement mechanisms based on ecosystem. See tool-specific guides for implementation details (Pi: extension; Claude Code: hooks).                                             |
+| Item           | Description                                                                                                                                                                             |
+| -------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `AGENTS.md`    | Lean project context derived from scanned README/docs/package.json. Max ~50 lines. Only include what the agent would get wrong without.                                                 |
+| `skills/`      | Suggest skills based on detected stack and available global skills. E.g., TS project with tests may benefit from project-specific testing conventions. No fixed mapping — use judgment. |
+| Feedback loops | Recommend setting up AI feedback loops: TypeScript (convert if JS), `typecheck` script, pre-commit hooks with typecheck + lint-staged. See `dev-setup-pre-commit` for implementation.   |
+| Enforcement    | Suggest enforcement mechanisms based on ecosystem. See tool-specific guides for implementation details (Pi: extension; Claude Code: hooks).                                             |
 
 ### Legacy
 
