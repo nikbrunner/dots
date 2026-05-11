@@ -17,6 +17,7 @@ dirty_walkthrough_command: "lazygit -p {}"
 ensure_cloned:
   - git@github.com:nikbrunner/dots
   - git@github.com:nikbrunner/notes
+  - git@github.com:nikbrunner/third-brain
   - git@github.com:nikbrunner/the-black-atom
   - git@github.com:nikbrunner/koyo
   - git@github.com:nikbrunner/nbr.haus

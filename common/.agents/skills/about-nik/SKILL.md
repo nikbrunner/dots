@@ -30,7 +30,8 @@ metadata:
 ## Professional Background
 
 - Self-taught developer (2019-2020)
-- Worked at DealerCenter Digital (2020-2025) as Software Engineer until company lost its investor
+- **ImFusion GmbH** (2026–present) — Senior Frontend Developer Web & UX/UI. Munich-based MedTech/Medical Imaging company (~53 people). React + TypeScript, SCSS/Tailwind, Material UI, Storybook, Figma, Cornerstone.js. Started April 2026.
+- **DealerCenter Digital** (2020–2025) — Software Engineer until company lost its investor
   - BikeCenter: Electron + React + TypeScript + SCSS + Redux + TanStack Query
   - Greenfield storefront: Vendure backend, GraphQL, Tailwind, ShadCN, TanStack Start/Router/Form
   - Developed a custom Design System with SCSS

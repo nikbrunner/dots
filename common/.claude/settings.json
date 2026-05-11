@@ -100,6 +100,17 @@
             "command": "~/.claude/hooks/enforce/warn-any-type.sh"
           }
         ]
+      },
+      {
+        "matcher": "Write|Edit|Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/repos/nikbrunner/third-brain/node_modules/.bin/tsx ~/repos/nikbrunner/third-brain/scripts/detect-memorable.ts",
+            "timeout": 20,
+            "async": true
+          }
+        ]
       }
     ],
     "SessionStart": [
@@ -120,6 +131,16 @@
             "command": "~/.claude/hooks/enforce/session-start.sh"
           }
         ]
+      },
+      {
+        "matcher": "startup|resume",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/repos/nikbrunner/third-brain/node_modules/.bin/tsx ~/repos/nikbrunner/third-brain/scripts/session-start.ts",
+            "timeout": 15
+          }
+        ]
       }
     ],
     "Stop": [
@@ -128,6 +149,15 @@
           {
             "type": "command",
             "command": "~/.local/bin/helm-hook Stop"
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/repos/nikbrunner/third-brain/node_modules/.bin/tsx ~/repos/nikbrunner/third-brain/scripts/consolidate.ts",
+            "timeout": 45
           }
         ]
       }
@@ -175,7 +205,8 @@
     "impeccable@impeccable": true,
     "readwise@readwise-skills": true,
     "plannotator@plannotator": true,
-    "caveman@caveman": false
+    "caveman@caveman": false,
+    "claude-deno-lsp@local-plugins": true
   },
   "extraKnownMarketplaces": {
     "local-plugins": {
@@ -218,11 +249,11 @@
     "mode": "hold"
   },
   "autoDreamEnabled": true,
+  "theme": "light-ansi",
+  "editorMode": "vim",
   "skipAutoPermissionPrompt": true,
   "voiceEnabled": true,
-  "editorMode": "vim",
   "feedbackSurveyState": {
     "lastShownTime": 1754313915132
-  },
-  "theme": "light-ansi"
+  }
 }
