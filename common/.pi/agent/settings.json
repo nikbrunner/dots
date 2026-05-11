@@ -7,21 +7,35 @@
     "npm:@plannotator/pi-extension",
     "npm:pi-ask-user",
     "../../repos/nikbrunner/pi-speak",
+    "../../repos/nikbrunner/third-brain",
     "npm:pi-terminal-theme"
   ],
-  "defaultProvider": "openrouter",
-  "defaultModel": "deepseek/deepseek-v4-flash",
+  "defaultProvider": "opencode-go",
+  "defaultModel": "deepseek-v4-flash",
   "enabledModels": [
     "openrouter/minimax/minimax-m2.7",
     "openrouter/z-ai/glm-5.1",
     "openrouter/qwen/qwen3.6-plus",
     "openrouter/moonshotai/kimi-k2.6",
     "openrouter/deepseek/deepseek-v4-pro",
-    "openrouter/deepseek/deepseek-v4-flash"
+    "openrouter/deepseek/deepseek-v4-flash",
+    "openrouter/tencent/hy3-preview:free",
+    "opencode-go/deepseek-v4-flash",
+    "opencode-go/deepseek-v4-pro",
+    "opencode-go/glm-5",
+    "opencode-go/glm-5.1",
+    "opencode-go/kimi-k2.5",
+    "opencode-go/kimi-k2.6",
+    "opencode-go/mimo-v2.5",
+    "opencode-go/mimo-v2.5-pro",
+    "opencode-go/minimax-m2.5",
+    "opencode-go/minimax-m2.7",
+    "opencode-go/qwen3.5-plus",
+    "opencode-go/qwen3.6-plus"
   ],
   "hideThinkingBlock": true,
   "compaction": {
     "enabled": false
   },
-  "defaultThinkingLevel": "medium"
+  "defaultThinkingLevel": "high"
 }
