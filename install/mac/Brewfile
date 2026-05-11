@@ -29,6 +29,7 @@ brew "aviator-co/tap/av"         # aviator CLI — shell completion in os.zsh
 
 # Casks — desktop apps
 cask "1password"
+cask "mos"
 cask "cameracontroller"
 cask "claude"
 cask "discord"
