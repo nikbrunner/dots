@@ -14,6 +14,45 @@ M.specs = {
 
             -- Configure treesitter to use the markdown parser for mdx files
             vim.treesitter.language.register("markdown", "mdx")
+
+            -- Fix: Stale node range race condition when async parse completes after
+            -- buffer has been modified. nvim_buf_get_text throws "Index out of bounds"
+            -- when a node's range exceeds the buffer's current line count.
+            --
+            -- Affects:
+            --   1. Built-in treesitter fold (#trim! directive in folds query)
+            --   2. render-markdown.nvim (Node.new calling get_node_text on stale capture)
+            --
+            -- Returns empty string on stale ranges instead of crashing.
+            -- The stale state is temporary — next edit/parse cycle resolves it.
+            local orig_get_node_text = vim.treesitter.get_node_text
+            vim.treesitter.get_node_text = function(node, source, opts)
+                if type(source) ~= 'number' then
+                    return orig_get_node_text(node, source, opts)
+                end
+                local ok, result = pcall(orig_get_node_text, node, source, opts)
+                if ok then
+                    return result
+                end
+                return ''
+            end
+
+            -- Override markdown folds query to remove (#trim!) directive,
+            -- which calls get_node_text during fold computation and triggers
+            -- the race condition. Fold computation should be structural,
+            -- not text-dependent.
+            vim.treesitter.query.set('markdown', 'folds', [[
+([
+  (fenced_code_block)
+  (indented_code_block)
+  (list_item
+    (list))
+  (section)
+] @fold)
+
+(section
+  (list) @fold)
+]])
         end,
     },
 
