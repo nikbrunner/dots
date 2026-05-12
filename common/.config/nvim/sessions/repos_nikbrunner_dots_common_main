@@ -4,20 +4,18 @@ let v:this_session=expand("<sfile>:p")
 doautoall SessionLoadPre
 silent only
 silent tabonly
-cd ~/repos/nikbrunner/koyo
+cd ~/repos/nikbrunner/dots/common
 if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +86 README.md
+badd +22 .config/nvim/lua/specs/supermaven.lua
 argglobal
 %argdel
 $argadd ./
-edit README.md
+edit .config/nvim/lua/specs/supermaven.lua
 argglobal
-xnoremap <buffer> <silent> [[ :exe "normal! gv"|call search('\%(^#\{1,5\}\s\+\S\|^\S.*\n^[=-]\+$\)', "bsW")
-xnoremap <buffer> <silent> ]] :exe "normal! gv"|call search('\%(^#\{1,5\}\s\+\S\|^\S.*\n^[=-]\+$\)', "sW")
 setlocal keymap=
 setlocal noarabic
 setlocal autoindent
@@ -34,23 +32,24 @@ setlocal cinoptions=
 setlocal cinscopedecls=public,protected,private
 setlocal cinwords=if,else,while,do,for,switch
 setlocal colorcolumn=
-setlocal comments=fb:*,fb:-,fb:+,n:>
-setlocal commentstring=<!--\ %s\ -->
+setlocal comments=:---,:--
+setlocal commentstring=--\ %s
 setlocal complete=.,w,b,u,t
 setlocal completefunc=
 setlocal completeslash=
 setlocal concealcursor=
-setlocal conceallevel=3
+setlocal conceallevel=0
 setlocal nocopyindent
 setlocal nocursorbind
 setlocal nocursorcolumn
 setlocal cursorline
 setlocal cursorlineopt=both
+setlocal define=\\<function\\|\\<local\\%(\\s\\+function\\)\\=
 setlocal nodiff
 setlocal eventignorewin=
 setlocal expandtab
-if &filetype != 'markdown'
-setlocal filetype=markdown
+if &filetype != 'lua'
+setlocal filetype=lua
 endif
 setlocal fixendofline
 setlocal foldcolumn=0
@@ -64,27 +63,29 @@ setlocal foldminlines=1
 setlocal foldnestmax=20
 setlocal foldtext=
 setlocal formatexpr=v:lua.require'conform'.formatexpr()
-setlocal formatlistpat=^\\s*\\d\\+\\.\\s\\+\\|^\\s*[-*+]\\s\\+\\|^\\[^\\ze[^\\]]\\+\\]:\\&^.\\{4\\}
-setlocal formatoptions=jtcqln
+setlocal formatlistpat=^\\s*\\d\\+[\\]:.)}\\t\ ]\\s*
+setlocal formatoptions=jcroql
 setlocal iminsert=0
 setlocal imsearch=-1
-setlocal includeexpr=
-setlocal indentexpr=
-setlocal indentkeys=0{,0},0),0],:,0#,!^F,o,O,e
+setlocal include=\\<\\%(\\%(do\\|load\\)file\\|require\\)\\s*(
+setlocal includeexpr=v:lua.require'vim._ftplugin.lua'.includeexpr(v:fname)
+setlocal indentexpr=GetLuaIndent()
+setlocal indentkeys=0{,0},0),0],:,0#,!^F,o,O,e,0=end,0=until
 setlocal noinfercase
 setlocal iskeyword=@,48-57,_,192-255
 setlocal lhistory=10
-setlocal linebreak
+setlocal nolinebreak
 setlocal nolisp
 setlocal lispoptions=
 setlocal nolist
-setlocal matchpairs=(:),{:},[:],<:>
+setlocal matchpairs=(:),{:},[:]
 setlocal modeline
 setlocal modifiable
 setlocal nrformats=bin,hex
 setlocal number
 setlocal numberwidth=4
-setlocal omnifunc=
+setlocal omnifunc=v:lua.vim.lsp.omnifunc
+setlocal path=,
 setlocal nopreserveindent
 setlocal nopreviewwindow
 setlocal quoteescape=\\
@@ -105,52 +106,35 @@ setlocal spellfile=
 setlocal spelllang=en_us,de_de
 setlocal spelloptions=noplainbuffer
 setlocal statuscolumn=%!v:lua.require'snacks.statuscolumn'.get()
-setlocal suffixesadd=
+setlocal suffixesadd=.lua
 setlocal noswapfile
 setlocal synmaxcol=3000
 if &syntax != ''
 setlocal syntax=
 endif
 setlocal tabstop=4
-setlocal tagfunc=
-setlocal textwidth=100
+setlocal tagfunc=v:lua.vim.lsp.tagfunc
+setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarFilename#README.md%*
 setlocal winblend=0
 setlocal nowinfixbuf
 setlocal nowinfixheight
 setlocal nowinfixwidth
 setlocal winhighlight=
-setlocal wrap
+setlocal nowrap
 setlocal wrapmargin=0
-1
+17
 sil! normal! zo
-32
+20
 sil! normal! zo
-34
-sil! normal! zo
-88
-sil! normal! zo
-92
-sil! normal! zo
-102
-sil! normal! zo
-130
-sil! normal! zo
-148
-sil! normal! zo
-165
-sil! normal! zo
-198
-sil! normal! zo
-let s:l = 107 - ((51 * winheight(0) + 31) / 62)
+let s:l = 28 - ((27 * winheight(0) + 31) / 63)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 107
-normal! 016|
+keepjumps 28
+normal! 012|
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
@@ -164,6 +148,7 @@ if filereadable(s:sx)
 endif
 let &g:so = s:so_save | let &g:siso = s:siso_save
 set hlsearch
+nohlsearch
 doautoall SessionLoadPost
 unlet SessionLoad
 " vim: set ft=vim :

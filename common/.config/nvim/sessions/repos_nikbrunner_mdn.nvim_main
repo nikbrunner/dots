@@ -10,7 +10,7 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +85 README.md
+badd +61 README.md
 argglobal
 %argdel
 $argadd AGENTS.md
@@ -117,6 +117,7 @@ setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
+setlocal winbar=%#WinBarFilename#README.md%*
 setlocal winblend=0
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -124,11 +125,11 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal wrap
 setlocal wrapmargin=0
-let s:l = 85 - ((42 * winheight(0) + 23) / 46)
+let s:l = 61 - ((19 * winheight(0) + 25) / 50)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 85
+keepjumps 61
 normal! 0
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
