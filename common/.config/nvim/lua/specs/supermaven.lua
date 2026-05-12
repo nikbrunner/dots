@@ -19,9 +19,9 @@ M.spec = {
     event = "InsertEnter",
     opts = {
         keymaps = {
-            accept_suggestion = "<C-y>",
+            accept_suggestion = "<M-y>",
             accept_word = "<M-]>",
-            clear_suggestion = "<M-]>",
+            clear_suggestion = "<M-[>",
         },
         log_level = "off", -- set to "off" to disable logging completely
     },
