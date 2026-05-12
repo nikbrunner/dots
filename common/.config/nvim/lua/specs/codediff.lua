@@ -95,6 +95,81 @@ return {
                 },
             },
         },
+        config = function(_, opts)
+            require("codediff").setup(opts)
+
+            -- Hook into set_tab_keymap to re-apply gf on explorer buffers.
+            -- The view keymaps set gf tab-wide via set_tab_keymap, but the handler
+            -- silently returns for non-diff buffers (explorer, history). This intercepts
+            -- that call and overrides gf on explorer buffers to open the selected file
+            -- in the previous tab.
+            local lifecycle = require("codediff.ui.lifecycle")
+            local orig_set_tab_keymap = lifecycle.set_tab_keymap
+
+            lifecycle.set_tab_keymap = function(tabpage, mode, lhs, rhs, keymap_opts)
+                orig_set_tab_keymap(tabpage, mode, lhs, rhs, keymap_opts)
+
+                if lhs ~= "gf" or mode ~= "n" then
+                    return
+                end
+
+                local active_diffs = require("codediff.ui.lifecycle.session").get_active_diffs()
+                local session = active_diffs[tabpage]
+                if not session then
+                    return
+                end
+
+                local explorer = session.explorer
+                if not explorer or not explorer.bufnr or not vim.api.nvim_buf_is_valid(explorer.bufnr) then
+                    return
+                end
+
+                vim.keymap.set("n", "gf", function()
+                    local node = explorer.tree:get_node()
+                    if not node or not node.data or not node.data.path then
+                        return
+                    end
+                    if node.data.type == "group" or node.data.type == "directory" then
+                        return
+                    end
+
+                    local full_path = explorer.git_root
+                        and (explorer.git_root .. "/" .. node.data.path)
+                        or node.data.path
+
+                    local current_tab = vim.api.nvim_get_current_tabpage()
+                    local tabs = vim.api.nvim_list_tabpages()
+                    local current_idx
+                    for i, tab in ipairs(tabs) do
+                        if tab == current_tab then
+                            current_idx = i
+                            break
+                        end
+                    end
+
+                    local target_tab
+                    if current_idx and current_idx > 1 then
+                        target_tab = tabs[current_idx - 1]
+                    else
+                        vim.cmd("tabnew")
+                        target_tab = vim.api.nvim_get_current_tabpage()
+                        vim.cmd("tabmove 0")
+                    end
+
+                    if vim.api.nvim_get_current_tabpage() ~= target_tab then
+                        vim.api.nvim_set_current_tabpage(target_tab)
+                    end
+
+                    pcall(vim.cmd, "edit " .. vim.fn.fnameescape(full_path))
+                end, {
+                    buffer = explorer.bufnr,
+                    desc = "Open file in previous tab",
+                    noremap = true,
+                    silent = true,
+                    nowait = true,
+                })
+            end
+        end,
     },
     {
         "chpeters/annotator.nvim",
