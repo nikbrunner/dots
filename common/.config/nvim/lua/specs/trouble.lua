@@ -66,7 +66,7 @@ return {
         { "<leader>dP", "<cmd>Trouble diagnostics toggle  filter.buf=0<cr>", desc = "[P]roblems" },
         { "<leader>wP", "<cmd>Trouble diagnostics toggle<cr>", desc = "[P]roblems" },
 
-        { "<leader>sd", "<cmd>Trouble lsp_type_definitions<cr>", desc = "[D]efinition" },
+        { "<leader>sd", "<cmd>Trouble lsp_definitions<cr>", desc = "[D]efinition" },
         { "<leader>st", "<cmd>Trouble lsp_type_definitions<cr>", desc = "[T]ype Definition" },
         { "<leader>sR", "<cmd>Trouble lsp_references<cr>", desc = "[R]eferences" },
         { "<leader>sI", "<cmd>Trouble lsp_implementations<cr>", desc = "[I]mplementations" },
