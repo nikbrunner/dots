@@ -60,6 +60,7 @@ cask "utm"
 cask "whatsapp"
 cask "yoink"
 cask "zed@preview"
+cask "logitech-g-hub"
 
 # Fonts
 cask "font-departure-mono-nerd-font"

@@ -64,11 +64,11 @@ function M.statusline()
 
                     "%=", -- End left alignment
 
-                    { hl = "@type", strings = { lsp_section } },
+                    -- { hl = "@type", strings = { lsp_section } },
 
-                    { hl = ts_hl, strings = { ts_section } },
+                    -- { hl = ts_hl, strings = { ts_section } },
 
-                    { hl = "DiagnosticError", strings = { diagnostics } },
+                    -- { hl = "DiagnosticError", strings = { diagnostics } },
                 })
             end,
         },

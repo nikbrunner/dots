@@ -21,6 +21,7 @@ ensure_cloned:
   - git@github.com:nikbrunner/koyo
   - git@github.com:nikbrunner/nbr.haus
   - git@github.com:nikbrunner/fff-snacks.nvim
+  - git@github.com:nikbrunner/mdn.nvim
   - git@github.com:nikbrunner/review.nvim
   - url: git@github.com:black-atom-industries/helm
     post_clone: make install
