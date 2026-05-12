@@ -31,7 +31,7 @@ vim.opt.swapfile = false
 vim.opt.undofile = true
 vim.opt.undofile = true
 vim.opt.winborder = "solid"
-vim.opt.winbar = "%f"
+-- vim.opt.winbar = "%f"
 vim.opt.wrap = false
 
 -- Assign `http` files as `http` files (currently they are interpreted as `conf`)
