@@ -51,7 +51,6 @@
     "deny": [],
     "ask": []
   },
-  "model": "sonnet[1m]",
   "hooks": {
     "Notification": [
       {
@@ -210,7 +209,7 @@
     }
   },
   "alwaysThinkingEnabled": true,
-  "effortLevel": "high",
+  "effortLevel": "xhigh",
   "advisorModel": "opus",
   "autoUpdatesChannel": "latest",
   "voice": {
@@ -218,11 +217,12 @@
     "mode": "hold"
   },
   "autoDreamEnabled": true,
+  "theme": "light-ansi",
+  "editorMode": "vim",
   "skipAutoPermissionPrompt": true,
   "voiceEnabled": true,
-  "editorMode": "vim",
   "feedbackSurveyState": {
     "lastShownTime": 1754313915132
   },
-  "theme": "light-ansi"
+  "model": "sonnet"
 }
