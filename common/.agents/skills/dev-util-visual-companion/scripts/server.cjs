@@ -89,12 +89,77 @@ const MIME_TYPES = {
 
 const WAITING_PAGE = `<!DOCTYPE html>
 <html>
-<head><meta charset="utf-8"><title>Brainstorm Companion</title>
-<style>body { font-family: system-ui, sans-serif; padding: 2rem; max-width: 800px; margin: 0 auto; }
-h1 { color: #333; } p { color: #666; }</style>
+<head><meta charset="utf-8"><title>Visual Companion</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; }
+  html {
+    background-color: #f6f5f3;
+    background-image: radial-gradient(circle, #c5c0b5 1.2px, transparent 1.2px);
+    background-size: 20px 20px;
+  }
+  body {
+    font-family: system-ui, -apple-system, sans-serif;
+    background: transparent;
+    color: #2c2c2e;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .container {
+    text-align: center;
+    max-width: 400px;
+    position: relative;
+  }
+  .crosshair {
+    font-family: monospace;
+    font-size: 14px;
+    color: #d4d0c8;
+    margin-bottom: 1.5rem;
+    letter-spacing: 2em;
+  }
+  h1 {
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: #8a8780;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 0.75rem;
+  }
+  p {
+    font-size: 0.85rem;
+    color: #b0aca4;
+    font-family: monospace;
+    line-height: 1.6;
+  }
+  .spinner {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border: 1px solid #d4d0c8;
+    margin-top: 1.5rem;
+    animation: vc-pulse 1.2s ease-in-out infinite;
+  }
+  @media (prefers-color-scheme: dark) {
+    html { background-color: #1a1a1c; background-image: radial-gradient(circle, #4a4945 1.2px, transparent 1.2px); background-size: 20px 20px; }
+    body { color: #f0efed; }
+    .crosshair { color: #424143; }
+    h1 { color: #8e8b86; }
+    p { color: #5e5b56; }
+    .spinner { border-color: #424143; }
+  }
+  @keyframes vc-pulse { 0%, 100% { opacity: 0.2; } 50% { opacity: 0.8; } }
+</style>
 </head>
-<body><h1>Brainstorm Companion</h1>
-<p>Waiting for the agent to push a screen...</p></body></html>`;
+<body>
+  <div class="container">
+    <div class="crosshair">+</div>
+    <h1>Visual Companion</h1>
+    <p>Waiting for the agent to push a screen...</p>
+    <div class="spinner"></div>
+  </div>
+</body>
+</html>`;
 
 const frameTemplate = fs.readFileSync(path.join(__dirname, 'frame-template.html'), 'utf-8');
 const helperScript = fs.readFileSync(path.join(__dirname, 'helper.js'), 'utf-8');

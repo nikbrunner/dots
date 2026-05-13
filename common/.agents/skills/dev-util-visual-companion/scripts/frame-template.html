@@ -2,117 +2,145 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Superpowers Brainstorming</title>
+  <title>Visual Companion</title>
   <style>
-    /*
-     * BRAINSTORM COMPANION FRAME TEMPLATE
-     *
-     * This template provides a consistent frame with:
-     * - OS-aware light/dark theming
-     * - Fixed header and selection indicator bar
-     * - Scrollable main content area
-     * - CSS helpers for common UI patterns
-     *
-     * Content is injected via placeholder comment in #claude-content.
-     */
-
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html, body { height: 100%; overflow: hidden; }
 
-    /* ===== THEME VARIABLES ===== */
     :root {
-      --bg-primary: #f5f5f7;
-      --bg-secondary: #ffffff;
-      --bg-tertiary: #e5e5e7;
-      --border: #d1d1d6;
-      --text-primary: #1d1d1f;
-      --text-secondary: #86868b;
-      --text-tertiary: #aeaeb2;
-      --accent: #0071e3;
-      --accent-hover: #0077ed;
+      --paper: #f6f5f3;
+      --paper-raised: #fcfcfa;
+      --paper-mid: #edebe7;
+      --ink: #2c2c2e;
+      --ink-faded: #8a8780;
+      --ink-muted: #b0aca4;
+      --blueprint: #0071e3;
+      --blueprint-bright: #0a84ff;
+      --grid-line: #e2dfd9;
+      --grid-line-bold: #d4d0c8;
       --success: #34c759;
       --warning: #ff9f0a;
       --error: #ff3b30;
-      --selected-bg: #e8f4fd;
+      --selected-bg: rgba(0, 113, 227, 0.08);
       --selected-border: #0071e3;
     }
 
     @media (prefers-color-scheme: dark) {
       :root {
-        --bg-primary: #1d1d1f;
-        --bg-secondary: #2d2d2f;
-        --bg-tertiary: #3d3d3f;
-        --border: #424245;
-        --text-primary: #f5f5f7;
-        --text-secondary: #86868b;
-        --text-tertiary: #636366;
-        --accent: #0a84ff;
-        --accent-hover: #409cff;
+        --paper: #1a1a1c;
+        --paper-raised: #242426;
+        --paper-mid: #2e2e30;
+        --ink: #f0efed;
+        --ink-faded: #8e8b86;
+        --ink-muted: #5e5b56;
+        --blueprint: #0a84ff;
+        --blueprint-bright: #409cff;
+        --grid-line: #333234;
+        --grid-line-bold: #424143;
         --selected-bg: rgba(10, 132, 255, 0.15);
         --selected-border: #0a84ff;
       }
     }
 
+    /* ===== PAPER ===== */
+    html {
+      background-color: var(--paper);
+      background-image: radial-gradient(circle, var(--grid-line) 1.2px, transparent 1.2px);
+      background-size: 20px 20px;
+    }
     body {
+      background: transparent;
       font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-      background: var(--bg-primary);
-      color: var(--text-primary);
+      color: var(--ink);
       display: flex;
       flex-direction: column;
       line-height: 1.5;
     }
 
-    /* ===== FRAME STRUCTURE ===== */
+    /* ===== HEADER ===== */
     .header {
-      background: var(--bg-secondary);
+      background: var(--paper-raised);
       padding: 0.5rem 1.5rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      border-bottom: 1px solid var(--border);
+      border-bottom: 1px solid var(--grid-line-bold);
       flex-shrink: 0;
+      position: relative;
+      z-index: 2;
     }
-    /* Hide static header in v2 mode — replaced by floating status pill */
+    .header::before {
+      content: '+';
+      position: absolute;
+      left: -1px;
+      bottom: -7px;
+      font-family: monospace;
+      font-size: 10px;
+      color: var(--grid-line-bold);
+      line-height: 1;
+    }
+    .header::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -1px;
+      height: 1px;
+      background: var(--grid-line-bold);
+    }
     body:has(.options .option[data-choice]) .header { display: none; }
-    .header h1 { font-size: 0.85rem; font-weight: 500; color: var(--text-secondary); }
-    .header .status { font-size: 0.7rem; color: var(--success); display: flex; align-items: center; gap: 0.4rem; }
-    .header .status::before { content: ''; width: 6px; height: 6px; background: var(--success); border-radius: 50%; }
+    .header h1 {
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: var(--ink-faded);
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+    }
+    .header .status {
+      font-size: 0.65rem;
+      color: var(--success);
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-family: monospace;
+    }
+    .header .status::before {
+      content: '';
+      width: 5px;
+      height: 5px;
+      background: var(--success);
+    }
 
-    /* ===== DYNAMIC ISLAND (bottom-left floating pill) ===== */
+    /* ===== DYNAMIC ISLAND ===== */
     #vc-island {
       display: none;
       position: fixed;
       bottom: 1.25rem;
       left: 1.25rem;
       z-index: 1000;
-      background: var(--bg-secondary);
-      border: 1px solid var(--border);
-      border-radius: 2rem;
-      font-size: 0.8rem;
+      background: var(--paper-raised);
+      border: 1px solid var(--grid-line-bold);
+      font-size: 0.75rem;
       font-weight: 450;
-      color: var(--text-secondary);
+      color: var(--ink-faded);
       align-items: center;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.12);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      overflow: hidden;
+      font-family: monospace;
     }
     #vc-island .vc-island-section {
       display: flex;
       align-items: center;
       gap: 0.5rem;
-      padding: 0.4rem 1rem;
+      padding: 0.35rem 0.85rem;
     }
     #vc-island .vc-island-connection .dot {
-      width: 7px; height: 7px;
-      border-radius: 50%;
+      width: 5px; height: 5px;
       background: var(--success);
       flex-shrink: 0;
     }
     #vc-island .vc-island-separator {
       width: 1px;
       align-self: stretch;
-      background: var(--border);
+      background: var(--grid-line-bold);
       flex-shrink: 0;
     }
     #vc-island .vc-island-selection {
@@ -126,32 +154,139 @@
     #claude-content { padding: 2rem; min-height: 100%; }
 
     .indicator-bar {
-      background: var(--bg-secondary);
-      border-top: 1px solid var(--border);
-      padding: 0.5rem 1.5rem;
+      background: var(--paper-raised);
+      border-top: 1px solid var(--grid-line-bold);
+      padding: 0.4rem 1.5rem;
       flex-shrink: 0;
       text-align: center;
     }
-    /* Hide indicator bar in v2 mode — selection feedback is via floating badge */
     body:has(.options .option[data-choice]) .indicator-bar { display: none; }
     .indicator-bar span {
-      font-size: 0.75rem;
-      color: var(--text-secondary);
+      font-size: 0.7rem;
+      color: var(--ink-faded);
+      font-family: monospace;
     }
-    .indicator-bar .selected-text {
-      color: var(--accent);
-      font-weight: 500;
-    }
+    .indicator-bar .selected-text { color: var(--blueprint); font-weight: 500; }
 
+    /* ===== FLOATING DIALOG (replaces sidebar) ===== */
+    #vc-dialog {
+      display: none;
+      position: fixed;
+      bottom: 4.25rem;
+      right: 1.25rem;
+      z-index: 1001;
+      width: 260px;
+      background: var(--paper-raised);
+      border: 1px solid var(--grid-line-bold);
+      padding: 1rem;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+    #vc-dialog.open { display: flex; }
+    #vc-dialog .vc-dialog-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.6rem;
+    }
+    #vc-dialog .vc-option-letter {
+      background: var(--blueprint);
+      color: white;
+      width: 1.75rem;
+      height: 1.75rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      font-size: 0.8rem;
+      flex-shrink: 0;
+      font-family: monospace;
+    }
+    #vc-dialog .vc-dialog-info { flex: 1; min-width: 0; }
+    #vc-dialog .vc-dialog-info h3 {
+      font-size: 0.85rem;
+      font-weight: 500;
+      margin: 0;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    #vc-dialog .vc-dialog-info p {
+      font-size: 0.75rem;
+      color: var(--ink-faded);
+      margin-top: 0.15rem;
+      line-height: 1.4;
+    }
+    #vc-dialog #vc-feedback {
+      background: var(--paper);
+      border: 1px solid var(--grid-line-bold);
+      padding: 0.6rem;
+      color: var(--ink);
+      font-family: inherit;
+      font-size: 0.8rem;
+      resize: vertical;
+      min-height: 3.5rem;
+    }
+    #vc-dialog #vc-feedback:focus { outline: none; border-color: var(--blueprint); }
+    #vc-dialog .vc-select-btn {
+      background: var(--blueprint);
+      color: white;
+      border: none;
+      padding: 0.55rem;
+      font-size: 0.8rem;
+      font-weight: 500;
+      cursor: pointer;
+      font-family: monospace;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      transition: background 0.15s ease;
+    }
+    #vc-dialog .vc-select-btn:hover { background: var(--blueprint-bright); }
+    #vc-dialog .vc-select-btn:active { opacity: 0.85; }
+
+    /* ===== TOGGLE BUTTON ===== */
+    #vc-toggle {
+      display: none;
+      position: fixed;
+      bottom: 1.25rem;
+      right: 1.25rem;
+      z-index: 1002;
+      width: 2.5rem;
+      height: 2.5rem;
+      border: 1px solid var(--grid-line-bold);
+      background: var(--paper-raised);
+      color: var(--ink-faded);
+      font-size: 1rem;
+      cursor: pointer;
+      font-family: monospace;
+      transition: background 0.2s, color 0.2s, border-color 0.2s;
+      line-height: 1;
+    }
+    #vc-toggle:hover { background: var(--paper-mid); }
+    #vc-toggle.active {
+      background: var(--blueprint);
+      color: white;
+      border-color: var(--blueprint);
+    }
+    #vc-toggle svg {
+      width: 18px;
+      height: 18px;
+      display: block;
+      margin: auto;
+      stroke: currentColor;
+      stroke-width: 2;
+      fill: none;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
 
     /* ===== TYPOGRAPHY ===== */
     h2 { font-size: 1.5rem; font-weight: 600; margin-bottom: 0.5rem; }
     h3 { font-size: 1.1rem; font-weight: 600; margin-bottom: 0.25rem; }
-    .subtitle { color: var(--text-secondary); margin-bottom: 1.5rem; }
+    .subtitle { color: var(--ink-faded); margin-bottom: 1.5rem; }
     .section { margin-bottom: 2rem; }
-    .label { font-size: 0.7rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem; }
+    .label { font-size: 0.7rem; color: var(--ink-faded); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem; }
 
-    /* ===== OPTIONS (full-viewport stacked layout with scroll-snap) ===== */
+    /* ===== OPTIONS ===== */
     .main:has(.options .option) { scroll-snap-type: y mandatory; }
     #claude-content:has(.options .option) { padding: 0; }
     .options { display: flex; flex-direction: column; }
@@ -164,100 +299,7 @@
     }
     .option-mockup { flex: 1; display: flex; flex-direction: column; }
 
-    /* ===== FLOATING TOGGLE BUTTON ===== */
-    #vc-toggle {
-      display: none;
-      position: fixed;
-      bottom: 1.25rem;
-      right: 1.25rem;
-      z-index: 1001;
-      width: 2.5rem;
-      height: 2.5rem;
-      border-radius: 50%;
-      border: 1px solid var(--border);
-      background: var(--bg-secondary);
-      color: var(--text-secondary);
-      font-size: 1.1rem;
-      cursor: pointer;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.12);
-      transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1),
-                  box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1),
-                  background 0.2s cubic-bezier(0.4, 0, 0.2, 1),
-                  color 0.2s cubic-bezier(0.4, 0, 0.2, 1),
-                  right 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-      line-height: 1;
-    }
-    #vc-toggle:hover { transform: scale(1.08); box-shadow: 0 4px 16px rgba(0,0,0,0.18); }
-    #vc-toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-    #vc-toggle:active { transform: scale(0.95); }
-    #vc-toggle.active {
-      background: var(--accent);
-      color: white;
-      border-color: var(--accent);
-      right: calc(min(300px, 30vw) + 1.25rem);
-    }
-
-    /* ===== SIDEBAR OVERLAY ===== */
-    #vc-sidebar {
-      position: fixed;
-      top: 0; right: 0; bottom: 0;
-      width: min(300px, 30vw);
-      z-index: 999;
-      background: var(--bg-secondary);
-      border-left: 1px solid var(--border);
-      box-shadow: -8px 0 24px rgba(0,0,0,0.08);
-      padding: 1.5rem;
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-      transform: translateX(100%);
-      transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-      overflow-y: auto;
-      pointer-events: none;
-    }
-    #vc-sidebar.open { transform: translateX(0); pointer-events: auto; }
-    .vc-sidebar-header { display: flex; align-items: center; gap: 0.75rem; }
-    .vc-option-letter {
-      background: var(--accent);
-      color: white;
-      width: 2rem; height: 2rem;
-      border-radius: 6px;
-      display: flex; align-items: center; justify-content: center;
-      font-weight: 600; font-size: 0.9rem; flex-shrink: 0;
-    }
-    .vc-sidebar-header h3 { font-size: 1rem; margin: 0; }
-    .vc-description { color: var(--text-secondary); font-size: 0.9rem; line-height: 1.5; }
-    #vc-feedback {
-      background: var(--bg-primary);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 0.75rem;
-      color: var(--text-primary);
-      font-family: inherit;
-      font-size: 0.85rem;
-      resize: vertical;
-      min-height: 5rem;
-    }
-    #vc-feedback:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.15); }
-    .vc-select-btn {
-      background: var(--accent);
-      color: white;
-      border: none;
-      border-radius: 8px;
-      padding: 0.75rem;
-      font-size: 0.9rem;
-      font-weight: 500;
-      cursor: pointer;
-      transition: background 0.2s cubic-bezier(0.4, 0, 0.2, 1),
-                  transform 0.1s cubic-bezier(0.4, 0, 0.2, 1),
-                  box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-    .vc-select-btn:hover { background: var(--accent-hover); box-shadow: 0 2px 8px rgba(0, 113, 227, 0.25); }
-    .vc-select-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-    .vc-select-btn:active { transform: scale(0.97); }
-    .vc-spacer { flex: 1; }
-
-    /* ===== SELECTION OVERLAY (Plannotator-style) ===== */
+    /* ===== SELECTION OVERLAY (blueprint style) ===== */
     .vc-overlay {
       position: fixed;
       inset: 0;
@@ -269,142 +311,119 @@
     .vc-overlay-bg {
       position: absolute;
       inset: 0;
-      background: rgba(0,0,0,0.6);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      animation: vc-fade-bg 0.3s ease;
+      background: var(--paper);
+      background-image: radial-gradient(circle, var(--grid-line) 1.2px, transparent 1.2px);
+      background-size: 20px 20px;
     }
     .vc-overlay-inner {
       position: relative;
       text-align: center;
-      color: white;
-      font-family: system-ui, -apple-system, sans-serif;
+      padding: 2.5rem 3rem;
+      background: var(--paper-raised);
+      border: 1px solid var(--grid-line-bold);
+      max-width: 320px;
+    }
+    .vc-overlay-inner::before {
+      content: '+';
+      position: absolute;
+      top: -1px;
+      left: -8px;
+      font-family: monospace;
+      font-size: 12px;
+      color: var(--grid-line-bold);
+    }
+    .vc-overlay-inner::after {
+      content: '+';
+      position: absolute;
+      bottom: -1px;
+      right: -8px;
+      font-family: monospace;
+      font-size: 12px;
+      color: var(--grid-line-bold);
     }
     .vc-overlay-icon {
-      width: 80px;
-      height: 80px;
-      border-radius: 50%;
-      background: var(--success, #34c759);
+      width: 56px;
+      height: 56px;
+      border: 1px solid var(--blueprint);
       display: flex;
       align-items: center;
       justify-content: center;
-      margin: 0 auto 1.5rem;
-      animation: vc-fade-u 0.3s ease;
+      margin: 0 auto 1.25rem;
+    }
+    .vc-overlay-icon svg {
+      width: 24px;
+      height: 24px;
+      stroke: var(--blueprint);
+      stroke-width: 2;
+      fill: none;
+      stroke-linecap: round;
+      stroke-linejoin: round;
     }
     .vc-overlay-title {
-      font-size: 1.5rem;
-      font-weight: 600;
+      font-size: 1rem;
+      font-weight: 500;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      font-family: monospace;
       margin-bottom: 0.25rem;
-      animation: vc-fade-u 0.3s ease 0.1s both;
     }
     .vc-overlay-subtitle {
-      font-size: 1rem;
-      opacity: 0.7;
-      animation: vc-fade-u 0.3s ease 0.2s both;
+      font-size: 0.85rem;
+      color: var(--ink-faded);
+      font-family: monospace;
     }
     .vc-overlay-status {
-      font-size: 0.8rem;
-      opacity: 0.4;
-      margin-top: 1.5rem;
-      animation: vc-fade-u 0.3s ease 0.3s both;
-    }
-    .vc-overlay-link {
-      color: white;
-      text-decoration: underline;
-      cursor: pointer;
-    }
-    .vc-overlay-link:hover {
-      opacity: 0.8;
+      font-size: 0.75rem;
+      color: var(--ink-muted);
+      font-family: monospace;
+      margin-top: 1.25rem;
+      min-height: 1.2em;
     }
     .vc-overlay-btn {
-      margin-top: 1.5rem;
-      padding: 0.6rem 2rem;
-      border-radius: 8px;
-      border: 1px solid rgba(255,255,255,0.3);
+      margin-top: 1rem;
+      padding: 0.5rem 1.5rem;
+      border: 1px solid var(--grid-line-bold);
       background: transparent;
-      color: white;
-      font-size: 0.9rem;
+      color: var(--ink-faded);
+      font-size: 0.8rem;
       cursor: pointer;
-      transition: background 0.2s, border-color 0.2s;
-      animation: vc-fade-u 0.3s ease 0.4s both;
+      font-family: monospace;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
     }
     .vc-overlay-btn:hover {
-      background: rgba(255,255,255,0.1);
-      border-color: rgba(255,255,255,0.6);
-    }
-    @keyframes vc-fade-u {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    @keyframes vc-fade-bg {
-      from { opacity: 0; }
-      to { opacity: 1; }
+      background: var(--paper-mid);
+      border-color: var(--blueprint);
+      color: var(--blueprint);
     }
 
-    /* ===== CARDS (for showing designs/mockups) ===== */
+    /* ===== CONTENT HELPERS ===== */
     .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; }
-    .card {
-      background: var(--bg-secondary);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      overflow: hidden;
-      cursor: pointer;
-      transition: all 0.15s ease;
-    }
-    .card:hover { border-color: var(--accent); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+    .card { background: var(--paper-raised); border: 1px solid var(--grid-line-bold); overflow: hidden; cursor: pointer; transition: border-color 0.15s ease; }
+    .card:hover { border-color: var(--blueprint); }
     .card.selected { border-color: var(--selected-border); border-width: 2px; }
-    .card-image { background: var(--bg-tertiary); aspect-ratio: 16/10; display: flex; align-items: center; justify-content: center; }
+    .card-image { background: var(--paper-mid); aspect-ratio: 16/10; display: flex; align-items: center; justify-content: center; }
     .card-body { padding: 1rem; }
     .card-body h3 { margin-bottom: 0.25rem; }
-    .card-body p { color: var(--text-secondary); font-size: 0.85rem; }
-
-    /* ===== MOCKUP CONTAINER ===== */
-    .mockup {
-      background: var(--bg-secondary);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      overflow: hidden;
-      margin-bottom: 1.5rem;
-    }
-    .mockup-header {
-      background: var(--bg-tertiary);
-      padding: 0.5rem 1rem;
-      font-size: 0.75rem;
-      color: var(--text-secondary);
-      border-bottom: 1px solid var(--border);
-    }
+    .card-body p { color: var(--ink-faded); font-size: 0.85rem; }
+    .mockup { background: var(--paper-raised); border: 1px solid var(--grid-line-bold); overflow: hidden; margin-bottom: 1.5rem; }
+    .mockup-header { background: var(--paper-mid); padding: 0.5rem 1rem; font-size: 0.75rem; color: var(--ink-faded); border-bottom: 1px solid var(--grid-line-bold); }
     .mockup-body { padding: 1.5rem; }
-
-    /* ===== SPLIT VIEW (side-by-side comparison) ===== */
     .split { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
     @media (max-width: 700px) { .split { grid-template-columns: 1fr; } }
-
-    /* ===== PROS/CONS ===== */
     .pros-cons { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1rem 0; }
-    .pros, .cons { background: var(--bg-secondary); border-radius: 8px; padding: 1rem; }
+    .pros, .cons { background: var(--paper-raised); padding: 1rem; }
     .pros h4 { color: var(--success); font-size: 0.85rem; margin-bottom: 0.5rem; }
     .cons h4 { color: var(--error); font-size: 0.85rem; margin-bottom: 0.5rem; }
-    .pros ul, .cons ul { margin-left: 1.25rem; font-size: 0.85rem; color: var(--text-secondary); }
+    .pros ul, .cons ul { margin-left: 1.25rem; font-size: 0.85rem; color: var(--ink-faded); }
     .pros li, .cons li { margin-bottom: 0.25rem; }
-
-    /* ===== PLACEHOLDER (for mockup areas) ===== */
-    .placeholder {
-      background: var(--bg-tertiary);
-      border: 2px dashed var(--border);
-      border-radius: 8px;
-      padding: 2rem;
-      text-align: center;
-      color: var(--text-tertiary);
-    }
-
-    /* ===== INLINE MOCKUP ELEMENTS ===== */
-    .mock-nav { background: var(--accent); color: white; padding: 0.75rem 1rem; display: flex; gap: 1.5rem; font-size: 0.9rem; }
-    .mock-sidebar { background: var(--bg-tertiary); padding: 1rem; min-width: 180px; }
+    .placeholder { background: var(--paper-mid); border: 2px dashed var(--grid-line-bold); padding: 2rem; text-align: center; color: var(--ink-muted); }
+    .mock-nav { background: var(--blueprint); color: white; padding: 0.75rem 1rem; display: flex; gap: 1.5rem; font-size: 0.9rem; }
+    .mock-sidebar { background: var(--paper-mid); padding: 1rem; min-width: 180px; }
     .mock-content { padding: 1.5rem; flex: 1; }
-    .mock-button { background: var(--accent); color: white; border: none; padding: 0.5rem 1rem; border-radius: 6px; font-size: 0.85rem; }
-    .mock-input { background: var(--bg-primary); border: 1px solid var(--border); border-radius: 6px; padding: 0.5rem; width: 100%; }
+    .mock-button { background: var(--blueprint); color: white; border: none; padding: 0.5rem 1rem; font-size: 0.85rem; }
+    .mock-input { background: var(--paper); border: 1px solid var(--grid-line-bold); padding: 0.5rem; width: 100%; }
 
-    /* ===== REDUCED MOTION ===== */
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
     }
@@ -423,26 +442,28 @@
   </div>
 
   <div class="indicator-bar">
-    <span id="indicator-text">Click an option above, then return to the terminal</span>
+    <span id="indicator-text">Click ☰ to select an option</span>
   </div>
 
-  <!-- Visual Companion v2: Dynamic island + Sidebar + Toggle -->
+  <!-- Dynamic island -->
   <div id="vc-island" aria-live="polite">
     <div class="vc-island-section vc-island-connection"><span class="dot"></span> Connected</div>
     <div class="vc-island-separator"></div>
     <div class="vc-island-section vc-island-selection"><span id="vc-island-selection-text"></span></div>
   </div>
-  <button id="vc-toggle" aria-label="Toggle options panel">☰</button>
-  <aside id="vc-sidebar" aria-label="Option details">
-    <div class="vc-sidebar-header">
-      <span class="vc-option-letter" id="vc-letter">A</span>
-      <h3 id="vc-title">Option</h3>
-    </div>
-    <p id="vc-description" class="vc-description"></p>
-    <div class="vc-spacer"></div>
-    <textarea id="vc-feedback" placeholder="Notes for Claude..." rows="4"></textarea>
-    <button id="vc-select" class="vc-select-btn">Select</button>
-  </aside>
 
+  <!-- Toggle button + floating dialog -->
+  <button id="vc-toggle" aria-label="Toggle options panel"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></button>
+  <div id="vc-dialog">
+    <div class="vc-dialog-header">
+      <span class="vc-option-letter" id="vc-letter">A</span>
+      <div class="vc-dialog-info">
+        <h3 id="vc-title">Option</h3>
+        <p id="vc-description"></p>
+      </div>
+    </div>
+    <textarea id="vc-feedback" placeholder="Notes for Claude..." rows="3"></textarea>
+    <button id="vc-select" class="vc-select-btn">Select</button>
+  </div>
 </body>
 </html>

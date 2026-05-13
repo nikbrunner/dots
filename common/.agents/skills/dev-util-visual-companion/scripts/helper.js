@@ -43,18 +43,18 @@
   function initV2() {
     const options = document.querySelectorAll('.option[data-choice]');
     const toggle = document.getElementById('vc-toggle');
-    const sidebar = document.getElementById('vc-sidebar');
+    const dialog = document.getElementById('vc-dialog');
     const island = document.getElementById('vc-island');
 
-    if (!options.length || !toggle || !sidebar) return;
+    if (!options.length || !toggle || !dialog) return;
 
     // Show the floating toggle button + island
     toggle.style.display = 'block';
     if (island) island.style.display = 'flex';
 
-    // Toggle sidebar open/close
+    // Toggle dialog open/close
     toggle.addEventListener('click', () => {
-      const isOpen = sidebar.classList.toggle('open');
+      const isOpen = dialog.classList.toggle('open');
       toggle.classList.toggle('active', isOpen);
     });
 
@@ -154,7 +154,7 @@
       '<div class="vc-overlay-bg"></div>' +
       '<div class="vc-overlay-inner">' +
         '<div class="vc-overlay-icon">' +
-          '<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>' +
+          '<svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>' +
         '</div>' +
         '<h2 class="vc-overlay-title">Selected</h2>' +
         '<p class="vc-overlay-subtitle">' + escapeHtml(selectedTitle) + '</p>' +
