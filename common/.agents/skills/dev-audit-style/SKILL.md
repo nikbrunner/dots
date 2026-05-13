@@ -1,18 +1,28 @@
-# Audit: Style
+---
+name: dev-audit-style
+description: "Audit code style adherence — checks project-specific dev-style-* conventions against actual code."
+argument-hint: "[optional path or scope]"
+user-invocable: true
+metadata:
+  argument-hint: "[optional path or scope]"
+  user-invocable: true
+---
 
-**What this audits:** Code adherence to project-specific `dev:style:*` convention skills.
+# dev:audit:style
+
+Audit code adherence to project-specific style conventions.
 
 ## How
 
-- **`dev:style:*` skills** — detect which apply from project deps/file extensions (e.g., `dev:style:typescript`, `dev:style:react`, `dev:style:css`, `dev:style:tdd`, `dev:style:state`, `dev:style:tanstack`)
+- **`dev:style:*` skills** — detect which apply from project deps/file extensions (e.g., `dev-style-typescript`, `dev-style-react`, `dev-style-css`, `dev-style-tdd`, `dev-style-state`, `dev-style-tanstack`)
 - **LSP diagnostics** — type errors, unused imports, naming violations
 - **Project config** — eslint, tsconfig, biome, prettier rules as baseline
 
 ## Steps
 
-1. Determine scope: use argument path if provided (`$ARGUMENTS` in Claude Code, or `/skill:dev-audit style` args in Pi), otherwise scan `src/` or project source directories.
+1. Determine scope: use argument path if provided, otherwise scan project source directories.
 2. Detect project stack from `package.json`, `tsconfig.json`, file extensions, and dependency list.
-3. Load all matching `dev:style:*` skills via the Skill tool.
+3. Load all matching `dev-style-*` skills.
 4. Run LSP diagnostics on target files — collect type errors, warnings.
 5. Walk each loaded skill's conventions against the actual code:
    - Naming patterns (files, components, hooks, types, variables)
@@ -30,7 +40,7 @@ Flat findings list. Each entry:
 | Field      | Content                              |
 | ---------- | ------------------------------------ |
 | File       | Absolute path with line reference    |
-| Convention | Which `dev:style:*` rule is violated |
+| Convention | Which `dev-style-*` rule is violated |
 | What's off | Concrete description                 |
 | Suggestion | Actionable fix                       |
 

@@ -1,17 +1,27 @@
-# Audit: UI
+---
+name: dev-audit-ui
+description: "Audit UI quality — visual quality, accessibility, responsiveness, and design coherence of frontend interfaces."
+argument-hint: "[optional path or scope]"
+user-invocable: true
+metadata:
+  argument-hint: "[optional path or scope]"
+  user-invocable: true
+---
 
-**What this audits:** Visual quality, accessibility, responsiveness, and design coherence of frontend interfaces.
+# dev:audit:ui
+
+Audit frontend UI quality through technical and design lenses.
 
 ## How
 
 - **`impeccable:audit`** — technical quality scan (a11y, perf, theming, responsive, anti-patterns)
 - **`impeccable:critique`** — design coherence evaluation (hierarchy, IA, emotional resonance, composition)
-- **`impeccable:*`** - Check out if any other of the imppecciable skills are fitting for your use case.
-- **`agent-browser`** (via `dev:util:browser`) — screenshot capture for visual verification when available
+- **`impeccable:*`** — check if any other impeccable skills fit your use case
+- **`dev-util-browser`** — screenshot capture for visual verification when available
 
 ## Steps
 
-1. Determine scope: use argument if provided (`$ARGUMENTS` in Claude Code, or `/skill:dev-audit ui` args in Pi), otherwise fall back to staged changes (`git diff --staged`), then unstaged (`git diff HEAD`).
+1. Determine scope: use argument if provided, otherwise fall back to staged changes (`git diff --staged`), then unstaged (`git diff HEAD`).
 2. Run `impeccable:audit` on the target — produces a severity-rated technical report (a11y violations, perf issues, theme inconsistencies, responsive breakage, AI-slop detection).
 3. Run `impeccable:critique` on the target — produces a design director's critique (visual hierarchy, information architecture, emotional resonance, affordance, composition).
 4. If browser-automation is available, capture screenshots at key breakpoints (mobile, tablet, desktop) for visual evidence.
