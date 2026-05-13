@@ -223,6 +223,5 @@
   "voiceEnabled": true,
   "feedbackSurveyState": {
     "lastShownTime": 1754313915132
-  },
-  "model": "sonnet"
+  }
 }
