@@ -33,9 +33,12 @@ return {
         ---@module "radar"
         ---@type Radar.Config
         opts = {
-            radar = {
-                winblend = 10,
+            keys = {
+                tabs_toggle = "<C-t>",
             },
+            -- radar = {
+            --     winblend = 10,
+            -- },
         },
     },
 }
