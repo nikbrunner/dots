@@ -8,18 +8,22 @@ return {
     ---@module 'render-markdown'
     ---@type render.md.UserConfig
     opts = {
+        max_file_size = 5.0,
+        ignore = function(buf)
+            return vim.api.nvim_buf_line_count(buf) > 2000
+        end,
         render_modes = { "n", "c", "t", "i", "v" },
         completions = { lsp = { enabled = true } },
         debounce = 250,
         bullet = {
             icons = " ",
         },
-        win_options = {
-            conceallevel = {
-                default = vim.o.conceallevel,
-                rendered = 0,
-            },
-        },
+        -- win_options = {
+        --     conceallevel = {
+        --         default = vim.o.conceallevel,
+        --         rendered = 0,
+        --     },
+        -- },
         checkbox = {
             unchecked = {
                 icon = "󰄰 ",
