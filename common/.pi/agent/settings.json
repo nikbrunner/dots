@@ -8,7 +8,8 @@
     "npm:pi-ask-user",
     "../../repos/nikbrunner/pi-speak",
     "../../repos/nikbrunner/third-brain",
-    "npm:pi-terminal-theme"
+    "npm:pi-terminal-theme",
+    "npm:pi-image-subagent"
   ],
   "defaultProvider": "opencode-go",
   "defaultModel": "deepseek-v4-flash",
