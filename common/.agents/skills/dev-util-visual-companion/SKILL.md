@@ -48,16 +48,39 @@ Returns JSON with `url` and `screen_dir`. Tell the user to open the URL.
 
 ### Phase 3: Iterate
 
+Has two modes for collecting user feedback:
+
+**Mode A — Blocking (Plannotator-style, preferred):** Write HTML → block on `wait-for-decision.sh` → get selection back in the same turn. No terminal typing needed from the user.
+
+**Mode B — Turn-based (original):** Write HTML → tell user → they respond in terminal → read `.events` on next turn.
+
+#### Mode A: Blocking Wait
+
 1. **Write HTML fragment** to `$SCREEN_DIR/<name>.html`
    - Semantic filenames: `layout.html`, `sidebar-options.html`
    - Never reuse filenames — each screen is a new file
    - Fragments only — server wraps in frame template
    - Server auto-serves the newest file
 
+2. **Block on selection:**
+
+   ```bash
+   result=$(scripts/wait-for-decision.sh "$SCREEN_DIR" --timeout 300)
+   choice=$(echo "$result" | jq -r '.choice')
+   feedback=$(echo "$result" | jq -r '.feedback // empty')
+   ```
+
+   This long-polls `/api/wait` on the companion server. The script blocks until the user clicks "Select" in the browser (or the timeout expires).
+
+3. **Process the selection** — `$choice` is the `data-choice` value (e.g. `"A"`, `"B"`), `$feedback` is any notes the user typed in the sidebar textarea.
+
+4. **Iterate** — `layout-v2.html` for revisions, then call `wait-for-decision.sh` again. Reset happens automatically per new screen file.
+
+#### Mode B: Turn-based (fallback)
+
+1. **Write HTML fragment** to `$SCREEN_DIR/<name>.html`
 2. **Tell the user** what's on screen, remind them of the URL, end your turn.
-
 3. **On next turn** — read `$SCREEN_DIR/.events` for click selections. Merge with terminal feedback.
-
 4. **Iterate** — `layout-v2.html` for revisions, advance when validated.
 
 ### Phase 4: Export Clean Reference

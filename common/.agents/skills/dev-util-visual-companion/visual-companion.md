@@ -97,12 +97,36 @@ Use `--url-host` to control what hostname is printed in the returned URL JSON.
 
 ## The Loop
 
+The server supports two interaction modes. **Mode A (blocking)** is preferred — it lets the agent get the selection back in the same turn without requiring the user to type in the terminal.
+
+### Mode A: Blocking Wait (Plannotator-style)
+
 1. **Check server is alive**, then **write HTML** to a new file in `screen_dir`:
    - Before each write, check that `$SCREEN_DIR/.server-info` exists. If it doesn't (or `.server-stopped` exists), the server has shut down — restart it with `start-server.sh` before continuing. The server auto-exits after 30 minutes of inactivity.
    - Use semantic filenames: `platform.html`, `visual-style.html`, `layout.html`
    - **Never reuse filenames** — each screen gets a fresh file
    - Use Write tool — **never use cat/heredoc** (dumps noise into terminal)
    - Server automatically serves the newest file
+
+2. **Block until user selects:**
+
+   ```bash
+   result=$(scripts/wait-for-decision.sh "$SCREEN_DIR" --timeout 300)
+   choice=$(echo "$result" | jq -r '.choice')
+   title=$(echo "$result" | jq -r '.text // empty')
+   feedback=$(echo "$result" | jq -r '.feedback // empty')
+   ```
+
+   The `wait-for-decision.sh` script long-polls `/api/wait` on the companion server. It blocks until the user clicks "Select" in the browser sidebar (or the timeout expires). Returns the selection event as JSON.
+
+3. **Process the selection** — `$choice` contains the `data-choice` value (e.g. `"A"`, `"B"`), `$title` is the option title, `$feedback` is any notes from the sidebar textarea.
+
+4. **Iterate or advance** — write `layout-v2.html` for revisions and call `wait-for-decision.sh` again. The decision promise resets automatically when a new HTML file is created.
+
+### Mode B: Turn-based (original, fallback)
+
+1. **Check server is alive**, then **write HTML** to a new file in `screen_dir`:
+   - Same file conventions as Mode A.
 
 2. **Tell user what to expect and end your turn:**
    - Remind them of the URL (every step, not just first)
@@ -116,20 +140,20 @@ Use `--url-host` to control what hostname is printed in the returned URL JSON.
 
 4. **Iterate or advance** — if feedback changes current screen, write a new file (e.g., `layout-v2.html`). Only move to the next question when the current step is validated.
 
-5. **Unload when returning to terminal** — when the next step doesn't need the browser (e.g., a clarifying question, a tradeoff discussion), push a waiting screen to clear the stale content:
+### Unload (both modes)
 
-   ```html
-   <!-- filename: waiting.html (or waiting-2.html, etc.) -->
-   <div
-     style="display:flex;align-items:center;justify-content:center;min-height:60vh"
-   >
-     <p class="subtitle">Continuing in terminal...</p>
-   </div>
-   ```
+When the next step doesn't need the browser (e.g., a clarifying question, a tradeoff discussion), push a waiting screen to clear the stale content:
 
-   This prevents the user from staring at a resolved choice while the conversation has moved on. When the next visual question comes up, push a new content file as usual.
+```html
+<!-- filename: waiting.html (or waiting-2.html, etc.) -->
+<div
+  style="display:flex;align-items:center;justify-content:center;min-height:60vh"
+>
+  <p class="subtitle">Continuing in terminal...</p>
+</div>
+```
 
-6. Repeat until done.
+This prevents the user from staring at a resolved choice while the conversation has moved on. When the next visual question comes up, push a new content file as usual.
 
 ## Writing Content Fragments
 
@@ -305,6 +329,39 @@ When the user clicks options in the browser, their interactions are recorded to 
 The last event is typically the final selection. If `feedback` is present, use it as direct input for the next iteration.
 
 If `.events` doesn't exist, the user didn't interact with the browser — use only their terminal text.
+
+## Blocking Wait Mechanism (Plannotator-style)
+
+Instead of the turn-based flow (write → end turn → read `.events` next turn), the agent can block on a selection directly using long-polling. The server exposes:
+
+### `GET /api/wait`
+
+Long-polling endpoint. Holds the HTTP connection open until the user clicks "Select" in the browser sidebar. Returns the selection event as JSON:
+
+```json
+{"type":"click","choice":"A","text":"Single Column","feedback":"Wider margins please","timestamp":1706000101}
+```
+
+If the user already selected on the current screen, returns immediately with the last selection. The promise resets on each new screen HTML file.
+
+### `POST /api/select`
+
+HTTP fallback for selections. Accepts same JSON shape as the WebSocket event. Primary path is WebSocket; this is a best-effort fallback for environments where WebSocket might be unavailable.
+
+### `wait-for-decision.sh`
+
+Convenience script that wraps the long-poll:
+
+```bash
+result=$(scripts/wait-for-decision.sh "$SCREEN_DIR" --timeout 300)
+choice=$(echo "$result" | jq -r '.choice')
+feedback=$(echo "$result" | jq -r '.feedback // empty')
+```
+
+- Reads port from `$SCREEN_DIR/.server-info`
+- Curls `/api/wait` and blocks until selection or timeout
+- Exits with code 1 on timeout, server shutdown, or cancellation
+- Outputs the selection JSON on stdout
 
 ## Design Tips
 

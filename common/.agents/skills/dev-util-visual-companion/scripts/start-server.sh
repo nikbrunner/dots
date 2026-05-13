@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Start the brainstorm server and output connection info
-# Usage: start-server.sh [--project-dir <path>] [--host <bind-host>] [--url-host <display-host>] [--foreground] [--background]
+# Usage: start-server.sh [--project-dir <path>] [--host <bind-host>] [--url-host <display-host>] [--open] [--foreground] [--background]
 #
 # Starts server on a random high port, outputs JSON with URL.
 # Each session gets its own directory to avoid conflicts.
@@ -11,6 +11,8 @@
 #   --host <bind-host>    Host/interface to bind (default: 127.0.0.1).
 #                         Use 0.0.0.0 in remote/containerized environments.
 #   --url-host <host>     Hostname shown in returned URL JSON.
+#   --open                Open the URL in the default browser automatically.
+#                         Allows window.close() to work (Plannotator-style).
 #   --foreground          Run server in the current terminal (no backgrounding).
 #   --background          Force background mode (overrides Codex auto-foreground).
 
@@ -20,6 +22,7 @@ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 PROJECT_DIR=""
 FOREGROUND="false"
 FORCE_BACKGROUND="false"
+OPEN_BROWSER="false"
 BIND_HOST="127.0.0.1"
 URL_HOST=""
 while [[ $# -gt 0 ]]; do
@@ -35,6 +38,10 @@ while [[ $# -gt 0 ]]; do
     --url-host)
       URL_HOST="$2"
       shift 2
+      ;;
+    --open)
+      OPEN_BROWSER="true"
+      shift
       ;;
     --foreground|--no-daemon)
       FOREGROUND="true"
@@ -142,7 +149,19 @@ for i in {1..50}; do
       echo "{\"error\": \"Server started but was killed. Retry in a persistent terminal with: $SCRIPT_DIR/start-server.sh${PROJECT_DIR:+ --project-dir $PROJECT_DIR} --host $BIND_HOST --url-host $URL_HOST --foreground\"}"
       exit 1
     fi
-    grep "server-started" "$LOG_FILE" | head -1
+    SERVER_LINE=$(grep "server-started" "$LOG_FILE" | head -1)
+    echo "$SERVER_LINE"
+
+    # Open browser if requested (so window.close() works — Plannotator-style)
+    if [[ "$OPEN_BROWSER" == "true" ]]; then
+      VC_URL=$(echo "$SERVER_LINE" | grep -o '"url":"[^"]*"' | head -1 | sed 's/"url":"\(.*\)"/\1/')
+      if [[ -n "$VC_URL" ]]; then
+        case "$(uname)" in
+          Darwin)  open "$VC_URL" 2>/dev/null  ;;
+          Linux)   xdg-open "$VC_URL" 2>/dev/null  ;;
+        esac
+      fi
+    fi
     exit 0
   fi
   sleep 0.1

@@ -152,6 +152,32 @@ function handleRequest(req, res) {
     const contentType = MIME_TYPES[ext] || 'application/octet-stream';
     res.writeHead(200, { 'Content-Type': contentType });
     res.end(fs.readFileSync(filePath));
+  } else if (req.method === 'GET' && req.url === '/api/wait') {
+    // Long-poll: blocks until a selection is made on the current screen
+    decisionPromise.then((decision) => {
+      res.writeHead(200, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify(decision));
+    });
+    req.on('close', () => {
+      // Client disconnected — no cleanup needed
+    });
+  } else if (req.method === 'POST' && req.url === '/api/select') {
+    // HTTP fallback for selection (primary path is WebSocket)
+    let body = '';
+    req.on('data', (chunk) => { body += chunk; });
+    req.on('end', () => {
+      try {
+        const data = JSON.parse(body);
+        if (data.choice && resolveDecision) {
+          resolveDecision(data);
+        }
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ ok: true }));
+      } catch (e) {
+        res.writeHead(400, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ error: 'Invalid JSON' }));
+      }
+    });
   } else {
     res.writeHead(404);
     res.end('Not found');
@@ -232,6 +258,8 @@ function handleMessage(text) {
   if (event.choice) {
     const eventsFile = path.join(SCREEN_DIR, '.events');
     fs.appendFileSync(eventsFile, JSON.stringify(event) + '\n');
+    // Resolve decision promise so /api/wait returns immediately
+    if (resolveDecision) resolveDecision(event);
   }
 }
 
@@ -250,6 +278,17 @@ let lastActivity = Date.now();
 function touchActivity() {
   lastActivity = Date.now();
 }
+
+// ========== Decision Promise (Plannotator-style wait) ==========
+
+let resolveDecision = null;
+let decisionPromise = null;
+
+function resetDecision() {
+  decisionPromise = new Promise((r) => { resolveDecision = r; });
+}
+
+resetDecision();
 
 // ========== File Watching ==========
 
@@ -273,6 +312,13 @@ function startServer() {
   const watcher = fs.watch(SCREEN_DIR, (eventType, filename) => {
     if (!filename || !filename.endsWith('.html')) return;
 
+    // Reset decision immediately for new screens (before debounce).
+    // The 100ms debounce could delay resetDecision long enough that a
+    // subsequent wait-for-decision reads a stale resolved promise.
+    if (!knownFiles.has(filename)) {
+      resetDecision();
+    }
+
     if (debounceTimers.has(filename)) clearTimeout(debounceTimers.get(filename));
     debounceTimers.set(filename, setTimeout(() => {
       debounceTimers.delete(filename);
@@ -285,6 +331,7 @@ function startServer() {
         knownFiles.add(filename);
         const eventsFile = path.join(SCREEN_DIR, '.events');
         if (fs.existsSync(eventsFile)) fs.unlinkSync(eventsFile);
+        resetDecision(); // New screen → reset decision promise
         console.log(JSON.stringify({ type: 'screen-added', file: filePath }));
       } else {
         console.log(JSON.stringify({ type: 'screen-updated', file: filePath }));

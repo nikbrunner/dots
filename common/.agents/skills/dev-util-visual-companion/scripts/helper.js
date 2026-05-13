@@ -122,6 +122,15 @@
 
         sendEvent(event);
 
+        // Also POST to /api/select as HTTP fallback (resolves decision promise server-side)
+        fetch('/api/select', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(event)
+        }).catch(function() {
+          // WebSocket is primary; HTTP is a best-effort fallback
+        });
+
         // Track selection
         selectedChoice = currentChoice;
         updateIsland();
@@ -130,8 +139,67 @@
         selectBtn.textContent = 'Selected \u2714';
         selectBtn.style.background = 'var(--success)';
 
+        // Show auto-close overlay (Plannotator-style)
+        showSelectionOverlay(current ? current.dataset.title || currentChoice : currentChoice);
+
       });
     }
+  }
+
+  function showSelectionOverlay(selectedTitle) {
+    var overlay = document.createElement('div');
+    overlay.id = 'vc-selection-overlay';
+    overlay.className = 'vc-overlay';
+    overlay.innerHTML =
+      '<div class="vc-overlay-bg"></div>' +
+      '<div class="vc-overlay-inner">' +
+        '<div class="vc-overlay-icon">' +
+          '<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>' +
+        '</div>' +
+        '<h2 class="vc-overlay-title">Selected</h2>' +
+        '<p class="vc-overlay-subtitle">' + escapeHtml(selectedTitle) + '</p>' +
+        '<p class="vc-overlay-status" id="vc-close-status">Closing in 3s...</p>' +
+      '</div>';
+    document.body.appendChild(overlay);
+
+    function tryClose(callback) {
+      window.close();
+      setTimeout(function() {
+        if (!window.closed) {
+          callback();
+        }
+      }, 300);
+    }
+
+    // Countdown: 3... 2... 1... close
+    var remaining = 3;
+    var statusEl = document.getElementById('vc-close-status');
+    var timer = setInterval(function() {
+      remaining--;
+      if (remaining > 0) {
+        if (statusEl) statusEl.textContent = 'Closing in ' + remaining + 's...';
+      } else {
+        clearInterval(timer);
+        if (statusEl) statusEl.textContent = '';
+        tryClose(function() {
+          if (statusEl) {
+            statusEl.innerHTML = '';
+          }
+          // Add a visible close button
+          var closeBtn = document.createElement('button');
+          closeBtn.textContent = 'Close Tab';
+          closeBtn.className = 'vc-overlay-btn';
+          closeBtn.onclick = function() { try { window.close(); } catch(e) {} };
+          overlay.querySelector('.vc-overlay-inner').appendChild(closeBtn);
+        });
+      }
+    }, 1000);
+  }
+
+  function escapeHtml(str) {
+    var div = document.createElement('div');
+    div.appendChild(document.createTextNode(str));
+    return div.innerHTML;
   }
 
   function updateIsland() {

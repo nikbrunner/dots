@@ -257,6 +257,90 @@
     .vc-select-btn:active { transform: scale(0.97); }
     .vc-spacer { flex: 1; }
 
+    /* ===== SELECTION OVERLAY (Plannotator-style) ===== */
+    .vc-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .vc-overlay-bg {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      animation: vc-fade-bg 0.3s ease;
+    }
+    .vc-overlay-inner {
+      position: relative;
+      text-align: center;
+      color: white;
+      font-family: system-ui, -apple-system, sans-serif;
+    }
+    .vc-overlay-icon {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: var(--success, #34c759);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1.5rem;
+      animation: vc-fade-u 0.3s ease;
+    }
+    .vc-overlay-title {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+      animation: vc-fade-u 0.3s ease 0.1s both;
+    }
+    .vc-overlay-subtitle {
+      font-size: 1rem;
+      opacity: 0.7;
+      animation: vc-fade-u 0.3s ease 0.2s both;
+    }
+    .vc-overlay-status {
+      font-size: 0.8rem;
+      opacity: 0.4;
+      margin-top: 1.5rem;
+      animation: vc-fade-u 0.3s ease 0.3s both;
+    }
+    .vc-overlay-link {
+      color: white;
+      text-decoration: underline;
+      cursor: pointer;
+    }
+    .vc-overlay-link:hover {
+      opacity: 0.8;
+    }
+    .vc-overlay-btn {
+      margin-top: 1.5rem;
+      padding: 0.6rem 2rem;
+      border-radius: 8px;
+      border: 1px solid rgba(255,255,255,0.3);
+      background: transparent;
+      color: white;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: background 0.2s, border-color 0.2s;
+      animation: vc-fade-u 0.3s ease 0.4s both;
+    }
+    .vc-overlay-btn:hover {
+      background: rgba(255,255,255,0.1);
+      border-color: rgba(255,255,255,0.6);
+    }
+    @keyframes vc-fade-u {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes vc-fade-bg {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
     /* ===== CARDS (for showing designs/mockups) ===== */
     .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; }
     .card {
