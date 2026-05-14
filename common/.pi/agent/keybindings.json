@@ -1,3 +1,5 @@
 {
-  "app.model.select": []
+  "app.model.select": ["ctrl+p"],
+  "app.model.cycleForward": ["ctrl+n"],
+  "app.model.cycleBackward": ["shift+ctrl+n"]
 }
