@@ -10,11 +10,11 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +0 ~/repos/nikbrunner/dots/.gitignore
+badd +74 common/.gitconfig
 argglobal
 %argdel
 $argadd ~/repos/nikbrunner/dots/.gitignore
-edit ~/repos/nikbrunner/dots/.gitignore
+edit common/.gitconfig
 argglobal
 setlocal keymap=
 setlocal noarabic
@@ -32,8 +32,8 @@ setlocal cinoptions=
 setlocal cinscopedecls=public,protected,private
 setlocal cinwords=if,else,while,do,for,switch
 setlocal colorcolumn=
-setlocal comments=:#
-setlocal commentstring=#\ %s
+setlocal comments=:#,:;
+setlocal commentstring=;\ %s
 setlocal complete=.,w,b,u,t
 setlocal completefunc=
 setlocal completeslash=
@@ -46,9 +46,9 @@ setlocal cursorline
 setlocal cursorlineopt=both
 setlocal nodiff
 setlocal eventignorewin=
-setlocal expandtab
-if &filetype != 'gitignore'
-setlocal filetype=gitignore
+setlocal noexpandtab
+if &filetype != 'gitconfig'
+setlocal filetype=gitconfig
 endif
 setlocal fixendofline
 setlocal foldcolumn=0
@@ -63,12 +63,12 @@ setlocal foldnestmax=20
 setlocal foldtext=
 setlocal formatexpr=v:lua.require'conform'.formatexpr()
 setlocal formatlistpat=^\\s*\\d\\+[\\]:.)}\\t\ ]\\s*
-setlocal formatoptions=tcqj
+setlocal formatoptions=qroclj
 setlocal iminsert=0
 setlocal imsearch=-1
 setlocal includeexpr=
-setlocal indentexpr=
-setlocal indentkeys=0{,0},0),0],:,0#,!^F,o,O,e
+setlocal indentexpr=GetGitconfigIndent()
+setlocal indentkeys=o,O,*<Return>,0[,],0;,0#,=,!^F
 setlocal noinfercase
 setlocal iskeyword=@,48-57,_,192-255
 setlocal lhistory=10
@@ -92,11 +92,11 @@ setlocal norightleft
 setlocal rightleftcmd=search
 setlocal scrollback=-1
 setlocal noscrollbind
-setlocal shiftwidth=4
+setlocal shiftwidth=2
 setlocal signcolumn=yes
 setlocal smartindent
 setlocal nosmoothscroll
-setlocal softtabstop=4
+setlocal softtabstop=-1
 setlocal nospell
 setlocal spellcapcheck=[.?!]\\_[\\])'\"\\t\ ]\\+
 setlocal spellfile=
@@ -109,13 +109,13 @@ setlocal synmaxcol=3000
 if &syntax != ''
 setlocal syntax=
 endif
-setlocal tabstop=4
+setlocal tabstop=8
 setlocal tagfunc=
 setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#MiniIconsPurple#󰊢%*\ \ %#WinBarFilename#.gitignore%*%=%#WinBarGitLabel#\ [GIT]%#WinBarGitAdd#\ +1%#WinBarGitLabel#\ %*\ 
+setlocal winbar=%#MiniIconsOrange#󰒓%*\ \ %#WinBarPath#common%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#.gitconfig%*%=%#WinBarGitLabel#\ [GIT]%#WinBarGitAdd#\ +3%#WinBarGitLabel#\ %*\ 
 setlocal winblend=0
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -123,11 +123,11 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 21 - ((20 * winheight(0) + 25) / 51)
+let s:l = 78 - ((22 * winheight(0) + 25) / 51)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 21
+keepjumps 78
 normal! 0
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
