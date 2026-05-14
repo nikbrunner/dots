@@ -18,3 +18,4 @@ skills-lock.json
 /common/.pi/memory/*.db-shm
 /common/.pi/memory/*.db-wal
 /common/.claude/claude-memories/imfusion
+/common/.pi/agent/sessions/--Users-brunner-repos-nikbrunner-dots--
