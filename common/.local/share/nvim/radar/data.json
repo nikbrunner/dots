@@ -48,11 +48,11 @@
       "feat/unified-window-layout": {
         "locks": [
           {
-            "filename": "lua/radar/config.lua",
+            "filename": "README.md",
             "label": "1"
           }
         ],
-        "lastAccessed": 1778683779
+        "lastAccessed": 1778686120
       },
       "main": {
         "locks": [
@@ -501,7 +501,7 @@
             "label": "3"
           }
         ],
-        "lastAccessed": 1778681557
+        "lastAccessed": 1778745070
       }
     },
     "~/repos/nikbrunner/filen-interview": {
