@@ -49,6 +49,12 @@ return {
                 format = "raw_oklch",
                 "oklch%(()[%d.,%s]+()%)",
             },
+            -- oklch(0.656 0.16 54.87) — space-separated CSS-style, no commas
+            -- No explicit format: auto-detected as CSS oklch() which handles space-separated
+            oklch_css = {
+                priority = 5,
+                "()oklch%([^,]-%)()",
+            },
         },
     },
 }
