@@ -54,6 +54,11 @@ return {
                     rendered = "󰸗 ",
                     highlight = "RenderMarkdownInfo",
                 },
+                cancelled = {
+                    raw = "[-]",
+                    rendered = "󰜺 ",
+                    highlight = "RenderMarkdownError",
+                },
             },
         },
     },
