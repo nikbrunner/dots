@@ -51,11 +51,11 @@ Identify three buckets:
 
 Invoke `dev-audit-docs --staged`. Read the findings. Three outcomes:
 
-| Result        | Action                                                                                           |
-| ------------- | ------------------------------------------------------------------------------------------------ |
-| Docs in sync  | Continue.                                                                                        |
+| Result        | Action                                                                                            |
+| ------------- | ------------------------------------------------------------------------------------------------- |
+| Docs in sync  | Continue.                                                                                         |
 | STALE / DRIFT | Apply minimal edits to the flagged docs. Stage them. Fold into this commit, not a separate docs:. |
-| GAP           | Document the new surface or convention. Stage. Fold into this commit.                            |
+| GAP           | Document the new surface or convention. Stage. Fold into this commit.                             |
 
 Do **not** skip Phase 2. If `dev-audit-docs` is not installed, note it and skip gracefully.
 

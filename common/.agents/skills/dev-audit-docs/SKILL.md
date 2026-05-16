@@ -34,12 +34,12 @@ Two invocation modes:
 
 ### 2. Categorize the changes
 
-| Category        | What counts                                                                     |
-| --------------- | ------------------------------------------------------------------------------- |
-| **structural**  | Files added / moved / deleted, new public exports, directory layout changes     |
-| **behavioral**  | Script/CLI/API changes, new components, new hooks, prop/knob/theme changes      |
-| **configuration** | Env vars, package.json scripts, dependencies, tooling config, CI/CD changes   |
-| **patterns**    | Folder conventions, CSS approach, state patterns, hook conventions, module design |
+| Category          | What counts                                                                       |
+| ----------------- | --------------------------------------------------------------------------------- |
+| **structural**    | Files added / moved / deleted, new public exports, directory layout changes       |
+| **behavioral**    | Script/CLI/API changes, new components, new hooks, prop/knob/theme changes        |
+| **configuration** | Env vars, package.json scripts, dependencies, tooling config, CI/CD changes       |
+| **patterns**      | Folder conventions, CSS approach, state patterns, hook conventions, module design |
 
 ### 3. Discover candidate docs
 
@@ -52,42 +52,43 @@ find . -name '*.md' -not -path '*/node_modules/*' -not -path '*/plans/*' \
 
 Group discovered docs by role:
 
-| Doc role           | Match pattern (heuristic)                             |
-| ------------------ | ----------------------------------------------------- |
-| **Project config** | `(./|root/)AGENTS.md`, `CLAUDE.md`, `README.md`       |
-| **Architecture**   | `docs/architecture*.md`, `**/docs/architecture*.md`   |
-| **Component/API**  | `docs/components/*.md`, `docs/hooks/*.md`, `docs/*.md` |
-| **Style**          | `docs/style*.md`, `**/docs/style*.md`, `docs/patterns*.md` |
+| Doc role           | Match pattern (heuristic)                                       |
+| ------------------ | --------------------------------------------------------------- | ------------------------------------------ |
+| **Project config** | `(./                                                            | root/)AGENTS.md`, `CLAUDE.md`, `README.md` |
+| **Architecture**   | `docs/architecture*.md`, `**/docs/architecture*.md`             |
+| **Component/API**  | `docs/components/*.md`, `docs/hooks/*.md`, `docs/*.md`          |
+| **Style**          | `docs/style*.md`, `**/docs/style*.md`, `docs/patterns*.md`      |
 | **Setup**          | `docs/setup*.md`, `docs/getting-started*.md`, `CONTRIBUTING.md` |
-| **Package**        | `packages/*/docs/`, `apps/*/docs/` (deep per-package docs)    |
+| **Package**        | `packages/*/docs/`, `apps/*/docs/` (deep per-package docs)      |
 
 If no docs exist beyond root `README.md`, note the gap and proceed conservatively.
 
 ### 4. Map change categories to candidate docs
 
-| Change type    | Likely doc roles                         |
-| -------------- | ---------------------------------------- |
-| structural     | Project config, Architecture             |
-| behavioral     | Component/API, Package docs, README      |
-| configuration  | Project config, Setup, README            |
-| patterns       | Style, Architecture, Project config      |
+| Change type   | Likely doc roles                    |
+| ------------- | ----------------------------------- |
+| structural    | Project config, Architecture        |
+| behavioral    | Component/API, Package docs, README |
+| configuration | Project config, Setup, README       |
+| patterns      | Style, Architecture, Project config |
 
 ### 5. Read only the relevant candidate docs
 
 Use `grep` or `ffgrep` to check whether any changed symbol, path, or concept appears in the candidate docs. If it does, read that doc. If none match, skip — no drift possible.
 
 Within matched docs, search for:
+
 - The file path or component name being changed
 - Related exports, function names, or CLI flags
 - Previous patterns that the diff replaces
 
 ### 6. Flag each finding
 
-| Finding | Meaning                                                                |
-| ------- | ---------------------------------------------------------------------- |
-| STALE   | Doc describes something now removed, renamed, or relocated.            |
-| GAP     | New behavior or surface not mentioned anywhere.                        |
-| DRIFT   | Pattern described in doc differs from implementation.                  |
+| Finding | Meaning                                                                 |
+| ------- | ----------------------------------------------------------------------- |
+| STALE   | Doc describes something now removed, renamed, or relocated.             |
+| GAP     | New behavior or surface not mentioned anywhere.                         |
+| DRIFT   | Pattern described in doc differs from implementation.                   |
 | SCHEMA  | A doc violates its expected structure (see project-level schema rules). |
 
 **Be conservative.** Minor wording deltas are not drift. When in doubt, don't flag.
@@ -102,11 +103,11 @@ Within matched docs, search for:
 
 ### 8. Present findings — wait before editing
 
-| File                 | Issue  | Suggested fix                                              |
-| -------------------- | ------ | ---------------------------------------------------------- |
-| `AGENTS.md:L18`      | STALE  | Reference to old build command needs updating              |
-| `docs/hooks.md:L42`  | GAP    | New `useThing` hook not documented                         |
-| `docs/style.md:L30`  | DRIFT  | CSS Modules approach differs from described convention     |
+| File                | Issue | Suggested fix                                          |
+| ------------------- | ----- | ------------------------------------------------------ |
+| `AGENTS.md:L18`     | STALE | Reference to old build command needs updating          |
+| `docs/hooks.md:L42` | GAP   | New `useThing` hook not documented                     |
+| `docs/style.md:L30` | DRIFT | CSS Modules approach differs from described convention |
 
 If no drift: report **"Docs in sync."** and exit.
 
