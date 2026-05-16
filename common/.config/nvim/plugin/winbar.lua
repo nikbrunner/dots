@@ -5,8 +5,8 @@ local function setup_highlights()
         return val and string.format("#%06x", val) or nil
     end
 
-    local git_bg = get_attr("DiffChange", "bg")
-    local lsp_bg = get_attr("DiagnosticVirtualTextHint", "bg")
+    local git_bg = get_attr("Normal", "bg")
+    local lsp_bg = get_attr("Normal", "bg")
     local muted = get_attr("Comment", "fg")
 
     vim.api.nvim_set_hl(0, "WinBarGitLabel", { fg = muted, bg = git_bg })
@@ -96,10 +96,10 @@ end
 
 -- { severity, DiagnosticSign group, icon, WinBarLsp group }
 local diagnostic_signs = {
-    { "ERROR", "DiagnosticSignError", "", "WinBarLspError" },
-    { "WARN", "DiagnosticSignWarn", "", "WinBarLspWarn" },
-    { "INFO", "DiagnosticSignInfo", "", "WinBarLspInfo" },
-    { "HINT", "DiagnosticSignHint", "", "WinBarLspHint" },
+    { "ERROR", "DiagnosticSignError", "E", "WinBarLspError" },
+    { "WARN", "DiagnosticSignWarn", "W", "WinBarLspWarn" },
+    { "INFO", "DiagnosticSignInfo", "I", "WinBarLspInfo" },
+    { "HINT", "DiagnosticSignHint", "H", "WinBarLspHint" },
 }
 
 local function build_right(bufnr)
@@ -119,7 +119,7 @@ local function build_right(bufnr)
             table.insert(tokens, "%#WinBarGitDelete# -" .. summary.delete)
         end
         if #tokens > 0 then
-            table.insert(sections, "%#WinBarGitLabel# [GIT]" .. table.concat(tokens, "") .. "%#WinBarGitLabel# %*")
+            table.insert(sections, "%#WinBarGitLabel# [GIT:" .. table.concat(tokens, "") .. "%#WinBarGitLabel#]%*")
         end
     end
 
@@ -128,17 +128,17 @@ local function build_right(bufnr)
     for _, sv in ipairs(diagnostic_signs) do
         local n = #vim.diagnostic.get(bufnr, { severity = vim.diagnostic.severity[sv[1]] })
         if n > 0 then
-            table.insert(diag_tokens, "%#" .. sv[4] .. "# " .. sv[3] .. " " .. n)
+            table.insert(diag_tokens, "%#" .. sv[4] .. "#" .. n .. sv[3])
         end
     end
     if #diag_tokens > 0 then
-        table.insert(sections, "%#WinBarLspLabel# [LSP]" .. table.concat(diag_tokens, "") .. "%#WinBarLspLabel# %*")
+        table.insert(sections, "%#WinBarLspLabel# [LSP: " .. table.concat(diag_tokens, ", ") .. "%#WinBarLspLabel#]%*")
     end
 
     if #sections == 0 then
         return ""
     end
-    return table.concat(sections, "  ") .. " "
+    return table.concat(sections, "") .. " "
 end
 
 local function request_lsp_symbols(bufnr, winnr, left_base, right)
