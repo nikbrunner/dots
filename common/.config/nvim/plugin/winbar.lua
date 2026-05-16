@@ -128,11 +128,11 @@ local function build_right(bufnr)
     for _, sv in ipairs(diagnostic_signs) do
         local n = #vim.diagnostic.get(bufnr, { severity = vim.diagnostic.severity[sv[1]] })
         if n > 0 then
-            table.insert(diag_tokens, "%#" .. sv[4] .. "#" .. n .. sv[3])
+            table.insert(diag_tokens, "%#" .. sv[4] .. "#" .. sv[3] .. n)
         end
     end
     if #diag_tokens > 0 then
-        table.insert(sections, "%#WinBarLspLabel# [LSP: " .. table.concat(diag_tokens, ", ") .. "%#WinBarLspLabel#]%*")
+        table.insert(sections, "%#WinBarLspLabel# [LSP: " .. table.concat(diag_tokens, " ") .. "%#WinBarLspLabel#]%*")
     end
 
     if #sections == 0 then
