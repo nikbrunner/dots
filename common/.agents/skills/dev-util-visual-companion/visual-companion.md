@@ -339,7 +339,13 @@ Instead of the turn-based flow (write → end turn → read `.events` next turn)
 Long-polling endpoint. Holds the HTTP connection open until the user clicks "Select" in the browser sidebar. Returns the selection event as JSON:
 
 ```json
-{"type":"click","choice":"A","text":"Single Column","feedback":"Wider margins please","timestamp":1706000101}
+{
+  "type": "click",
+  "choice": "A",
+  "text": "Single Column",
+  "feedback": "Wider margins please",
+  "timestamp": 1706000101
+}
 ```
 
 If the user already selected on the current screen, returns immediately with the last selection. The promise resets on each new screen HTML file.
