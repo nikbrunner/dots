@@ -34,7 +34,7 @@ return {
         ---@type Radar.Config
         opts = {
             keys = {
-                tabs_toggle = "<C-t>",
+                tabs_toggle = "<leader>t",
             },
             -- radar = {
             --     winblend = 10,
