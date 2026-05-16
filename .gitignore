@@ -20,3 +20,6 @@ skills-lock.json
 /common/.claude/claude-memories/imfusion
 /common/.pi/agent/sessions/--Users-brunner-repos-nikbrunner-dots--
 /radar-debug.log
+/common/.pi/agent/mcp-npx-cache.json
+/common/.pi/agent/mcp-cache.json
+/common/.pi/agent/mcp-oauth/linear/tokens.json

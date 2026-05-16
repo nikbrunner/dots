@@ -1,4 +1,7 @@
 {
-  "mcpServers": {
-  }
+  "mcpServers": {},
+  "imports": [
+    "claude-code",
+    "claude-desktop"
+  ]
 }
