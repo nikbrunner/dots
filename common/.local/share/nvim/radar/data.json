@@ -2,6 +2,23 @@
   "version": 1,
   "projects": {
     "~/repos/black-atom-industries/core": {
+      "69-migrate-color-computation-from-culori-to-colordx": {
+        "locks": [
+          {
+            "filename": "src/themes/terra/black-atom-terra-fall-day-next.ts",
+            "label": "1"
+          },
+          {
+            "filename": "src/lib/walk.ts",
+            "label": "2"
+          },
+          {
+            "filename": "src/lib/create-theme-definition.ts",
+            "label": "3"
+          }
+        ],
+        "lastAccessed": 1778852486
+      },
       "feature/dev-311-monitor-dashboard": {
         "locks": [
           {
@@ -57,15 +74,15 @@
       "main": {
         "locks": [
           {
-            "filename": "lua/radar/ui/mini_radar.lua",
+            "filename": "lua/radar/config.lua",
             "label": "1"
           },
           {
-            "filename": "lua/radar/config.lua",
+            "filename": "lua/radar/window.lua",
             "label": "2"
           }
         ],
-        "lastAccessed": 1778681218
+        "lastAccessed": 1778778144
       }
     },
     "~/repos/black-atom-industries/website": {
@@ -84,7 +101,7 @@
             "label": "3"
           }
         ],
-        "lastAccessed": 1778431543
+        "lastAccessed": 1778748573
       }
     },
     "~/repos/dealercenter-digital/bc-desktop-client": {
@@ -501,7 +518,7 @@
             "label": "3"
           }
         ],
-        "lastAccessed": 1778745740
+        "lastAccessed": 1778921572
       }
     },
     "~/repos/nikbrunner/filen-interview": {
@@ -581,11 +598,11 @@
       "main": {
         "locks": [
           {
-            "filename": "01 - Projects/New Job 2026/Positions/ImFusion - Senior Frontend Developer Web UX.md",
+            "filename": "02 - Areas/Log/2026/2026.05/2026.05.14 - Thu.md",
             "label": "1"
           }
         ],
-        "lastAccessed": 1778661942
+        "lastAccessed": 1778921431
       }
     },
     "~/repos/nikbrunner/pi-speak": {
@@ -600,7 +617,7 @@
             "label": "2"
           }
         ],
-        "lastAccessed": 1778488587
+        "lastAccessed": 1778756389
       },
       "main": {
         "locks": [

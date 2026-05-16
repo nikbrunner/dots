@@ -93,8 +93,8 @@
   "cursor_blink": false,
   "theme": {
     "mode": "light",
-    "light": "Black Atom — Light Dimmed",
-    "dark": "Black Atom — JPN ∷ Murasaki Yoru",
+    "light": "Black Atom — TERRA ∷ Fall Day",
+    "dark": "Black Atom — TERRA ∷ Fall Night",
   },
   "base_keymap": "VSCode",
   "vim_mode": true,

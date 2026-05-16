@@ -7,9 +7,9 @@
     "npm:@plannotator/pi-extension",
     "npm:pi-ask-user",
     "../../repos/nikbrunner/pi-speak",
-    "../../repos/nikbrunner/third-brain",
     "npm:pi-terminal-theme",
-    "npm:pi-image-subagent"
+    "npm:pi-image-subagent",
+    "npm:pi-mcp-adapter"
   ],
   "defaultProvider": "opencode-go",
   "defaultModel": "deepseek-v4-flash",
