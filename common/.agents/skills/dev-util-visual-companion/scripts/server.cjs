@@ -165,6 +165,18 @@ const frameTemplate = fs.readFileSync(path.join(__dirname, 'frame-template.html'
 const helperScript = fs.readFileSync(path.join(__dirname, 'helper.js'), 'utf-8');
 const helperInjection = '<script>\n' + helperScript + '\n</script>';
 
+// Extract companion CSS for standalone exports (strip chrome elements)
+const companionCss = (frameTemplate.match(/<style>([\s\S]*?)<\/style>/))?.[1] || '';
+const exportHideChrome = `
+    .header, .indicator-bar, #vc-island, #vc-toggle, #vc-dialog,
+    .vc-overlay, #vc-selection-overlay { display: none !important; }
+    html, body { height: auto; overflow: auto; }
+    .main { overflow: visible; }
+  `;
+const exportScreenshotStyles = `
+    html, body { min-height: 100vh; }
+  `;
+
 // ========== Helper Functions ==========
 
 function isFullDocument(html) {
@@ -243,6 +255,100 @@ function handleRequest(req, res) {
         res.end(JSON.stringify({ error: 'Invalid JSON' }));
       }
     });
+  } else if (req.method === 'GET' && req.url.startsWith('/api/export')) {
+    // Export any screen file as standalone HTML or screenshot-optimized page
+    const url = new URL(req.url, 'http://' + (req.headers.host || 'localhost'));
+    const fileName = url.searchParams.get('file') || '';
+    const mode = url.searchParams.get('mode') || 'standalone';
+    const viewport = url.searchParams.get('viewport') || '';
+
+    if (!fileName) {
+      res.writeHead(400);
+      res.end('{"error":"file parameter required"}');
+      return;
+    }
+
+    const safeName = path.basename(fileName);
+    if (!safeName.endsWith('.html')) {
+      res.writeHead(400);
+      res.end('{"error":"Only .html files can be exported"}');
+      return;
+    }
+
+    const filePath = path.join(SCREEN_DIR, safeName);
+    if (!fs.existsSync(filePath)) {
+      res.writeHead(404);
+      res.end('{"error":"File not found"}');
+      return;
+    }
+
+    const content = fs.readFileSync(filePath, 'utf-8');
+
+    if (isFullDocument(content)) {
+      // Full documents served as-is
+      res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
+      res.end(content);
+      return;
+    }
+
+    const modeExtra = mode === 'screenshot' ? exportScreenshotStyles : '';
+
+    // Build export: when viewport is set, wrap in a constrained design frame
+    // so the screenshot captures exactly the target device dimensions.
+    var exportDoc;
+    if (viewport && /^\d+x\d*$/.test(viewport)) {
+      var parts = viewport.split('x');
+      var vpW = parts[0];
+      var vpH = parts[1] || 'auto';
+      var frameCss = '\n' +
+        '    html, body { margin:0; padding:0; width:' + vpW + 'px;' +
+        ' background:none !important; }\n' +
+        '    #vc-design-frame {' +
+        ' width:100%;' +
+        ' background:var(--paper-raised);' +
+        ' border:1px solid var(--grid-line-bold); overflow-x:hidden; }\n' +
+        '    #claude-content { padding:2rem; }\n' +
+        '    .header, .indicator-bar, #vc-island, #vc-toggle, #vc-dialog,' +
+        ' .vc-overlay, #vc-selection-overlay { display:none !important; }';
+      exportDoc = '<!DOCTYPE html>\n' +
+        '<html lang="en">\n' +
+        '<head>\n' +
+        '  <meta charset="utf-8">\n' +
+        '  <meta name="viewport" content="width=' + vpW + '">\n' +
+        '  <title>Design Export (' + vpW + 'x' + vpH + ')</title>\n' +
+        '  <style>' + companionCss + '</style>\n' +
+        '  <style>' + frameCss + '</style>\n' +
+        '</head>\n' +
+        '<body>\n' +
+        '  <div id="vc-design-frame">\n' +
+        '    <div id="claude-content">\n' +
+        content + '\n' +
+        '    </div>\n' +
+        '  </div>\n' +
+        '</body>\n' +
+        '</html>';
+    } else {
+      exportDoc = '<!DOCTYPE html>\n' +
+        '<html lang="en">\n' +
+        '<head>\n' +
+        '  <meta charset="utf-8">\n' +
+        '  <meta name="viewport" content="width=device-width, initial-scale=1">\n' +
+        '  <title>Design Export</title>\n' +
+        '  <style>' + companionCss + '</style>\n' +
+        '  <style>' + exportHideChrome + modeExtra + '</style>\n' +
+        '</head>\n' +
+        '<body>\n' +
+        '  <div class="main">\n' +
+        '    <div id="claude-content">\n' +
+        content + '\n' +
+        '    </div>\n' +
+        '  </div>\n' +
+        '</body>\n' +
+        '</html>';
+    }
+
+    res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
+    res.end(exportDoc);
   } else {
     res.writeHead(404);
     res.end('Not found');

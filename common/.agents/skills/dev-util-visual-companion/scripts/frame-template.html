@@ -111,6 +111,66 @@
       background: var(--success);
     }
 
+    /* ===== DEVICE SELECTOR ===== */
+    .vc-device-selector {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    #vc-device-preset {
+      background: var(--paper);
+      border: 1px solid var(--grid-line-bold);
+      padding: 0.2rem 0.45rem;
+      font-size: 0.7rem;
+      font-family: monospace;
+      color: var(--ink);
+      cursor: pointer;
+      appearance: none;
+      -webkit-appearance: none;
+      border-radius: 0;
+    }
+    #vc-device-preset:hover { border-color: var(--blueprint); }
+    #vc-device-preset:focus { outline: none; border-color: var(--blueprint); }
+    .vc-viewport-label {
+      font-size: 0.65rem;
+      color: var(--ink-muted);
+      font-family: monospace;
+      min-width: 4em;
+      text-align: right;
+    }
+    body:has(.options .option[data-choice]) .vc-device-selector { display: none; }
+
+    /* ===== DESIGN FRAME ===== */
+    .main {
+      flex: 1;
+      overflow-y: auto;
+      display: flex;
+      justify-content: center;
+      padding: 1rem;
+    }
+    #vc-design-frame {
+      width: var(--vc-vp-w, 100%);
+      height: var(--vc-vp-h, auto);
+      min-height: var(--vc-vp-h, 100%);
+      background: var(--paper-raised);
+      border: 1px solid var(--grid-line-bold);
+      overflow-y: auto;
+      overflow-x: hidden;
+      position: relative;
+      transition: width 0.2s ease, height 0.2s ease;
+    }
+    #vc-design-frame.vc-frame-fluid {
+      width: 100%;
+      height: auto;
+      background: var(--paper-raised);
+      border: 1px solid var(--grid-line-bold);
+      overflow: visible;
+    }
+    #claude-content { padding: 2rem; }
+    /* options inside design frame need snap-scroll */
+    #vc-design-frame:has(.options .option) { overflow-y: scroll; scroll-snap-type: y mandatory; }
+    #vc-design-frame #claude-content:has(.options .option) { padding: 0; }
+
     /* ===== DYNAMIC ISLAND ===== */
     #vc-island {
       display: none;
@@ -150,8 +210,7 @@
     }
     #vc-island.has-selection .vc-island-selection { display: flex; }
 
-    .main { flex: 1; overflow-y: auto; }
-    #claude-content { padding: 2rem; min-height: 100%; }
+    /* .main and #claude-content moved to DESIGN FRAME section above */
 
     .indicator-bar {
       background: var(--paper-raised);
@@ -287,8 +346,7 @@
     .label { font-size: 0.7rem; color: var(--ink-faded); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem; }
 
     /* ===== OPTIONS ===== */
-    .main:has(.options .option) { scroll-snap-type: y mandatory; }
-    #claude-content:has(.options .option) { padding: 0; }
+    /* .main and #claude-content option overrides moved to DESIGN FRAME section */
     .options { display: flex; flex-direction: column; }
     .option {
       min-height: 100vh;
@@ -432,12 +490,23 @@
 <body>
   <div class="header">
     <h1>Visual Companion</h1>
+    <div class="vc-device-selector">
+      <select id="vc-device-preset">
+        <option value="fluid">Fluid</option>
+        <option value="375x812">Phone</option>
+        <option value="768x1024">Tablet</option>
+        <option value="1280x800">Desktop</option>
+      </select>
+      <span class="vc-viewport-label" id="vc-viewport-label"></span>
+    </div>
     <div class="status">Connected</div>
   </div>
 
   <div class="main">
-    <div id="claude-content">
-      <!-- CONTENT -->
+    <div id="vc-design-frame" class="vc-frame-fluid">
+      <div id="claude-content">
+        <!-- CONTENT -->
+      </div>
     </div>
   </div>
 

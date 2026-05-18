@@ -20,12 +20,11 @@ Decide per-question, not per-session. The test: **would the user understand this
 
 ## Tool Detection
 
-Before starting, check which visual tools are available and OFFER them:
+Before starting, check which visual tools are available:
 
-1. **Stitch MCP** — Check if `stitch` is a connected MCP server. If available, MUST OFFER for mockup generation — it produces higher-fidelity output. The user decides whether to use it.
-2. **agent-browser** — For navigating URLs and capturing screenshots of web apps.
-3. **screencapture** (macOS) — For capturing TUI/desktop apps.
-4. **HTML fallback** — Write HTML fragments directly to the companion server.
+1. **chrome-devtools MCP** — Primary tool for navigating URLs and capturing screenshots of web content.
+2. **screencapture** (macOS) — For capturing TUI/desktop apps.
+3. **HTML fallback** — Write HTML fragments directly to the companion server.
 
 ## The Flow
 
@@ -33,7 +32,7 @@ Before starting, check which visual tools are available and OFFER them:
 
 For redesign work, establish what exists before generating mockups:
 
-- **Web app running locally** -> `agent-browser navigate <url>` then `agent-browser screenshot /tmp/current-state.png`. Read the screenshot.
+- **Web app running locally** -> Navigate with `chrome_devtools_navigate_page`, capture with `chrome_devtools_take_screenshot`.
 - **TUI/desktop app** -> `screencapture -w /tmp/current-state.png` (window capture). Read the screenshot.
 - **User provides** -> Ask for a screenshot path or have them drag-drop.
 - **Greenfield** -> Skip this phase.
@@ -56,13 +55,19 @@ Has two modes for collecting user feedback:
 
 #### Mode A: Blocking Wait
 
-1. **Write HTML fragment** to `$SCREEN_DIR/<name>.html`
+1. **Set the design frame.** Before writing any screens, ask the user:
+
+   > "Is this for desktop, tablet, or phone?"
+   > → Select the matching preset in the companion header (Fluid, Phone 375×812, Tablet 768×1024, Desktop 1280×800).
+   > → The design frame constrains the viewport so the design renders at the target device size.
+
+2. **Write HTML fragment** to `$SCREEN_DIR/<name>.html`
    - Semantic filenames: `layout.html`, `sidebar-options.html`
    - Never reuse filenames — each screen is a new file
    - Fragments only — server wraps in frame template
    - Server auto-serves the newest file
 
-2. **Block on selection:**
+3. **Block on selection:**
 
    ```bash
    result=$(scripts/wait-for-decision.sh "$SCREEN_DIR" --timeout 300)
@@ -72,9 +77,9 @@ Has two modes for collecting user feedback:
 
    This long-polls `/api/wait` on the companion server. The script blocks until the user clicks "Select" in the browser (or the timeout expires).
 
-3. **Process the selection** — `$choice` is the `data-choice` value (e.g. `"A"`, `"B"`), `$feedback` is any notes the user typed in the sidebar textarea.
+4. **Process the selection** — `$choice` is the `data-choice` value (e.g. `"A"`, `"B"`), `$feedback` is any notes the user typed in the sidebar textarea.
 
-4. **Iterate** — `layout-v2.html` for revisions, then call `wait-for-decision.sh` again. Reset happens automatically per new screen file.
+5. **Iterate** — `layout-v2.html` for revisions, then call `wait-for-decision.sh` again. Reset happens automatically per new screen file.
 
 #### Mode B: Turn-based (fallback)
 
@@ -85,14 +90,105 @@ Has two modes for collecting user feedback:
 
 ### Phase 4: Export Clean Reference
 
-When the design is finalized:
+The companion has two export modes that work with any screen file (not just `final-*`):
 
-1. Write the final design as a **full HTML document** (starting with `<!DOCTYPE html>`) — the server serves it without the companion frame. Name it `final-<name>.html`. **Important:** Make the design fill the full viewport (`width: 100vw; min-height: 100vh; margin: 0`) so the screenshot captures it edge-to-edge with no dead space.
-2. Capture a clean screenshot:
-   - Via agent-browser: `agent-browser navigate <url>` -> `agent-browser screenshot <path>`
-   - Or ask the user to screenshot
-3. Save to `design/` at project root (create if needed), with descriptive name: `design/helm-sidebar-v1.png`
-4. Reference from spec/proposal: `![Sidebar design](../../design/helm-sidebar-v1.png)`
+| Mode         | Description                                                                                                          |
+| ------------ | -------------------------------------------------------------------------------------------------------------------- |
+| `standalone` | Self-contained HTML — all design styles, no companion frame. Save as reference or starting point for implementation. |
+| `screenshot` | Same as standalone but viewport-optimized for clean screenshots (fills the window, no dead space).                   |
+
+Both modes accept an optional `&viewport=WxH` parameter (e.g. `&viewport=375x812`) that renders the content inside a constrained design frame at the target device dimensions. Without it, the design renders full width.
+
+#### Via API (inline in agent workflow)
+
+```bash
+# Fetch standalone HTML and save to project
+curl -s "${VC_URL}/api/export?file=layout-v3.html&mode=standalone" > design/layout-v3.html
+
+# Capture screenshot via chrome-devtools MCP
+#   chrome_devtools_navigate_page(url: "${VC_URL}/api/export?file=layout-v3.html&mode=screenshot")
+#   chrome_devtools_take_screenshot(filePath: "design/layout-v3.png", fullPage: true)
+```
+
+The export URL renders:
+
+- All companion CSS (typography, cards, mockups, options, etc.)
+- No header, indicator bar, toggle button, or dialog
+- Clean paper/grid background
+- Design content only
+
+#### Via CLI script
+
+```bash
+# Export any screen file as standalone HTML
+${CLAUDE_SKILL_DIR}/scripts/export.sh "$SCREEN_DIR" layout-v3.html --standalone --output design/layout-v3.html
+
+# Print the screenshot-ready URL (then capture with chrome-devtools)
+${CLAUDE_SKILL_DIR}/scripts/export.sh "$SCREEN_DIR" final-layout.html --screenshot --open
+```
+
+#### Standard workflow
+
+**Ask before saving.** The default is `design/` at project root, but confirm with the user first.
+
+1. Save the design as a screen file (any name — doesn't have to be `final-*`):
+   - Fragment: automatically wrapped with all companion CSS on export
+   - Full document (`<!DOCTYPE html>`): served as-is
+
+2. Ask the user where to save exports. Suggested default: `design/` in the repo root.
+
+3. **Decide screenshot approach based on page type:**
+
+   **Single design page** (layout, dashboard, final mockup, no `.option[data-choice]`):
+   → Export the screen file directly with `fullPage: true`. The entire design is the intended output.
+
+   **Multi-option page after user selected one** (has `.option[data-choice]` elements):
+   → **Write a focused screen file** containing just the selected design first. `fullPage` on the original file would capture all options (including rejected ones), which is useless for documentation. A focused file gives a clean, targeted export.
+
+   ```bash
+   # After user picks option B: write a focused file with just that design
+   cat > "$SCREEN_DIR/selected-option-b.html" << 'EOF'
+   <div class="section">
+     <h2>Selected: Option B</h2>
+     ...only the chosen design...
+   </div>
+   EOF
+   # Then export the focused file
+   ```
+
+4. **Include the design frame viewport in the export URL** — append `&viewport=WxH` matching the device preset selected earlier. This renders the content inside a constrained `#vc-design-frame` at exactly the target device dimensions. Without it, the design renders at full width.
+
+5. Export as standalone HTML and/or screenshot:
+
+   ```bash
+   # Export HTML for coding reference (no viewport — full width)
+   ${CLAUDE_SKILL_DIR}/scripts/export.sh "$SCREEN_DIR" selected-option-b.html --standalone --output design/option-b.html
+
+   # Export screenshot via chrome-devtools MCP —
+   # The design frame is the source of truth for dimensions.
+   # The browser viewport must match it so the capture is exactly the design size:
+   #
+   #   1. chrome_devtools_navigate_page(
+   #        url: "http://localhost:PORT/api/export?file=selected-option-b.html&mode=screenshot&viewport=375x812"
+   #      )
+   #   2. chrome_devtools_resize_page(
+   #        width: <design-frame-width + small-padding>,
+   #        height: <tall-enough-for-content>
+   #      )
+   #   3. chrome_devtools_take_screenshot(
+   #        filePath: "design/option-b.png",
+   #        format: "png",
+   #        fullPage: true
+   #      )
+   ```
+
+   **Why resize the viewport?** chrome-devtools `fullPage: true` captures at the browser viewport width — that's how the tool works. Resizing the viewport to match the design frame (e.g., 380px for a 375px-wide design) is the correct workflow: it sets the capture canvas to the design dimensions. No different from switching to device mode in browser DevTools.
+
+   **Why fullPage:** Ensures all content is captured vertically, even if the design is taller than the viewport.
+
+6. Create `design/` at project root if it doesn't exist
+
+7. Reference from spec/proposal: `![Selected option](../../design/option-b.png)`
 
 ### Phase 5: Stop Server
 

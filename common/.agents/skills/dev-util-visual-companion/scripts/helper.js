@@ -290,6 +290,54 @@
     window.selectedChoice = el.dataset.choice;
   };
 
+  // --- Design Frame (device viewport) ---
+
+  function initDesignFrame() {
+    var preset = document.getElementById('vc-device-preset');
+    var frame = document.getElementById('vc-design-frame');
+    var label = document.getElementById('vc-viewport-label');
+    if (!preset || !frame) return;
+
+    function setViewport(value) {
+      if (value === 'fluid') {
+        frame.style.removeProperty('--vc-vp-w');
+        frame.style.removeProperty('--vc-vp-h');
+        frame.classList.add('vc-frame-fluid');
+        if (label) label.textContent = '';
+      } else {
+        var parts = value.split('x');
+        frame.style.setProperty('--vc-vp-w', parts[0] + 'px');
+        if (parts[1]) {
+          frame.style.setProperty('--vc-vp-h', parts[1] + 'px');
+        } else {
+          frame.style.removeProperty('--vc-vp-h');
+        }
+        frame.classList.remove('vc-frame-fluid');
+        if (label) label.textContent = parts[0] + '\u00d7' + (parts[1] || 'auto');
+      }
+      // Notify server about viewport change (logged, not blocking)
+      sendEvent({ type: 'viewport-change', viewport: value });
+    }
+
+    preset.addEventListener('change', function() {
+      setViewport(preset.value);
+    });
+
+    // Reapply on reload from stored value
+    var saved = sessionStorage.getItem('vc-viewport');
+    if (saved) {
+      preset.value = saved;
+      setViewport(saved);
+    }
+
+    // Persist across reloads within session
+    preset.addEventListener('change', function() {
+      sessionStorage.setItem('vc-viewport', preset.value);
+    });
+
+    setViewport(preset.value);
+  }
+
   // Expose API
   window.selectedChoice = null;
   window.brainstorm = {
@@ -302,8 +350,12 @@
 
   // Wait for DOM to be ready for v2 init
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initV2);
+    document.addEventListener('DOMContentLoaded', function() {
+      initV2();
+      initDesignFrame();
+    });
   } else {
     initV2();
+    initDesignFrame();
   }
 })();
