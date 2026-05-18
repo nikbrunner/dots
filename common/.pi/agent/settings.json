@@ -1,6 +1,6 @@
 {
   "theme": "terminal",
-  "lastChangelogVersion": "0.74.0",
+  "lastChangelogVersion": "0.75.1",
   "packages": [
     "npm:pi-web-access",
     "npm:@ff-labs/pi-fff",
@@ -11,8 +11,8 @@
     "npm:pi-image-subagent",
     "npm:pi-mcp-adapter"
   ],
-  "defaultProvider": "opencode-go",
-  "defaultModel": "deepseek-v4-pro",
+  "defaultProvider": "openrouter",
+  "defaultModel": "deepseek/deepseek-v4-flash",
   "enabledModels": [
     "openrouter/minimax/minimax-m2.7",
     "openrouter/z-ai/glm-5.1",
