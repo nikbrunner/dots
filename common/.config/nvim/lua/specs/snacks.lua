@@ -266,9 +266,27 @@ function M.gh_issue_browse()
     end)
 end
 
+---Open all explorer nodes recursively
+---@param picker snacks.Picker
+local function open_all_explorer_nodes(picker)
+    vim.schedule(function()
+        local Tree = require("snacks.explorer.tree")
+        local root = Tree:find(picker:dir())
+        if not root then
+            return
+        end
+        Tree:walk(root, function(node)
+            if node.dir then
+                node.open = true
+            end
+        end, { all = true })
+        require("snacks.explorer.actions").update(picker, { refresh = true })
+    end)
+end
+
 ---Show explorer filtered to only git-modified and untracked files
 function M.git_explorer()
-    Snacks.picker.explorer({
+    local picker = Snacks.picker.explorer({
         title = "Git Explorer",
         layout = M.layouts.third_pane,
         git_status = true,
@@ -295,6 +313,9 @@ function M.git_explorer()
             return false
         end,
     })
+    if picker then
+        open_all_explorer_nodes(picker)
+    end
 end
 
 -- ============================================================================
@@ -450,8 +471,8 @@ function M.keys()
         { "<leader>wc",          function() Snacks.picker.git_diff() end, desc = "[C]hanges" },
         -- { "<leader>wd",          function() Snacks.picker.files() end, desc = "[D]ocument" },
         { "<leader>wj",          function() Snacks.picker.jumps() end, desc = "[J]umps" },
-        { "<leader>wm",          function() Snacks.picker.git_status() end, desc = "[M]odified Documents" },
-        -- { "<leader>wm",          M.git_explorer, desc = "[M]odified Explorer" },
+        -- { "<leader>wm",          function() Snacks.picker.git_status() end, desc = "[M]odified Documents" },
+        { "<leader>wm",          M.git_explorer, desc = "[M]odified Explorer" },
         { "<leader>wp",          function() Snacks.picker.diagnostics() end, desc = "[P]roblems" },
         { "<leader>wr",          function() Snacks.picker.recent({ filter = { cwd = true } }) end, desc = "[R]ecent Documents" },
         { "<leader>ws",          function() Snacks.picker.lsp_symbols() end, desc = "[S]ymbols" },
