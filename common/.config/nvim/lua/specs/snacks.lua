@@ -296,6 +296,57 @@ function M.git_explorer()
         git_untracked = true,
         diagnostics = false,
         ignored = false,
+        actions = {
+            explorer_toggle_stage = function(picker, item)
+                if not item or item.dir then
+                    return
+                end
+                local is_staged = item.status and item.status:sub(1, 1) == " "
+                local cmd = is_staged
+                    and { "git", "restore", "--staged", item.file }
+                    or { "git", "add", item.file }
+                vim.system(cmd, { cwd = picker:dir() }, function()
+                    vim.schedule(function()
+                        require("snacks.explorer.git").update(picker:dir())
+                        picker:find()
+                    end)
+                end)
+            end,
+            explorer_discard = function(picker, item)
+                if not item or item.dir then
+                    return
+                end
+                local choice = vim.fn.confirm(
+                    "Discard changes to " .. vim.fn.fnamemodify(item.file, ":t") .. "?",
+                    "&Yes\n&No",
+                    2
+                )
+                if choice ~= 1 then
+                    return
+                end
+                vim.system({ "git", "restore", item.file }, { cwd = picker:dir() }, function()
+                    vim.schedule(function()
+                        require("snacks.explorer.git").update(picker:dir())
+                        picker:find()
+                    end)
+                end)
+            end,
+        },
+        win = {
+            list = {
+                keys = {
+                    ["S"] = "explorer_toggle_stage",
+                    ["D"] = "explorer_discard",
+                },
+            },
+        },
+        preview = function(ctx)
+            if ctx.item and ctx.item.status then
+                Snacks.picker.preview.git_status(ctx)
+            else
+                Snacks.picker.preview.file(ctx)
+            end
+        end,
         transform = function(item)
             -- Always keep root directory
             if not item.parent then
