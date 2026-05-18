@@ -10,7 +10,7 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +4 02\ -\ Areas/Log/2026/2026.05/2026.05.16\ -\ Sat.md
+badd +10 02\ -\ Areas/Log/2026/2026.05/2026.05.16\ -\ Sat.md
 argglobal
 %argdel
 $argadd ./
@@ -65,7 +65,7 @@ setlocal foldnestmax=20
 setlocal foldtext=
 setlocal formatexpr=v:lua.require'conform'.formatexpr()
 setlocal formatlistpat=^\\s*\\d\\+\\.\\s\\+\\|^\\s*[-*+]\\s\\+\\|^\\[^\\ze[^\\]]\\+\\]:\\&^.\\{4\\}
-setlocal formatoptions=jtcqln
+setlocal formatoptions=jtlqcn
 setlocal iminsert=0
 setlocal imsearch=-1
 setlocal includeexpr=
@@ -127,11 +127,13 @@ setlocal wrap
 setlocal wrapmargin=0
 1
 sil! normal! zo
-let s:l = 4 - ((3 * winheight(0) + 24) / 49)
+3
+sil! normal! zo
+let s:l = 10 - ((9 * winheight(0) + 20) / 40)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 4
+keepjumps 10
 normal! 0
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'

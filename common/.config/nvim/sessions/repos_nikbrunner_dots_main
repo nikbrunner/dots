@@ -10,12 +10,14 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +137 common/.config/nvim/plugin/winbar.lua
+badd +0 common/.agents/skills/dev-util-visual-companion/test-case.md
 argglobal
 %argdel
 $argadd ~/repos/nikbrunner/dots/common/.agents/skills/improve-codebase-architecture/SKILL.md
-edit common/.config/nvim/plugin/winbar.lua
+edit common/.agents/skills/dev-util-visual-companion/test-case.md
 argglobal
+xnoremap <buffer> <silent> [[ :exe "normal! gv"|call search('\%(^#\{1,5\}\s\+\S\|^\S.*\n^[=-]\+$\)', "bsW")
+xnoremap <buffer> <silent> ]] :exe "normal! gv"|call search('\%(^#\{1,5\}\s\+\S\|^\S.*\n^[=-]\+$\)', "sW")
 setlocal keymap=
 setlocal noarabic
 setlocal autoindent
@@ -32,60 +34,57 @@ setlocal cinoptions=
 setlocal cinscopedecls=public,protected,private
 setlocal cinwords=if,else,while,do,for,switch
 setlocal colorcolumn=
-setlocal comments=:---,:--
-setlocal commentstring=--\ %s
+setlocal comments=fb:*,fb:-,fb:+,n:>
+setlocal commentstring=<!--\ %s\ -->
 setlocal complete=.,w,b,u,t
 setlocal completefunc=
 setlocal completeslash=
 setlocal concealcursor=
-setlocal conceallevel=0
+setlocal conceallevel=3
 setlocal nocopyindent
 setlocal nocursorbind
 setlocal nocursorcolumn
 setlocal cursorline
 setlocal cursorlineopt=both
-setlocal define=\\<function\\|\\<local\\%(\\s\\+function\\)\\=
 setlocal nodiff
 setlocal eventignorewin=
 setlocal expandtab
-if &filetype != 'lua'
-setlocal filetype=lua
+if &filetype != 'markdown'
+setlocal filetype=markdown
 endif
 setlocal fixendofline
 setlocal foldcolumn=0
 setlocal foldenable
 setlocal foldexpr=v:lua.vim.treesitter.foldexpr()
 setlocal foldignore=#
-setlocal foldlevel=0
+setlocal foldlevel=99
 setlocal foldmarker={{{,}}}
 setlocal foldmethod=expr
 setlocal foldminlines=1
 setlocal foldnestmax=20
 setlocal foldtext=
 setlocal formatexpr=v:lua.require'conform'.formatexpr()
-setlocal formatlistpat=^\\s*\\d\\+[\\]:.)}\\t\ ]\\s*
-setlocal formatoptions=jcroql
+setlocal formatlistpat=^\\s*\\d\\+\\.\\s\\+\\|^\\s*[-*+]\\s\\+\\|^\\[^\\ze[^\\]]\\+\\]:\\&^.\\{4\\}
+setlocal formatoptions=jtcqln
 setlocal iminsert=0
 setlocal imsearch=-1
-setlocal include=\\<\\%(\\%(do\\|load\\)file\\|require\\)\\s*(
-setlocal includeexpr=v:lua.require'vim._ftplugin.lua'.includeexpr(v:fname)
-setlocal indentexpr=GetLuaIndent()
-setlocal indentkeys=0{,0},0),0],:,0#,!^F,o,O,e,0=end,0=until
+setlocal includeexpr=
+setlocal indentexpr=
+setlocal indentkeys=0{,0},0),0],:,0#,!^F,o,O,e
 setlocal noinfercase
 setlocal iskeyword=@,48-57,_,192-255
 setlocal lhistory=10
-setlocal nolinebreak
+setlocal linebreak
 setlocal nolisp
 setlocal lispoptions=
 setlocal nolist
-setlocal matchpairs=(:),{:},[:]
+setlocal matchpairs=(:),{:},[:],<:>
 setlocal modeline
 setlocal modifiable
 setlocal nrformats=bin,hex
 setlocal number
 setlocal numberwidth=4
-setlocal omnifunc=v:lua.vim.lua_omnifunc
-setlocal path=,
+setlocal omnifunc=v:lua.vim.lsp.omnifunc
 setlocal nopreserveindent
 setlocal nopreviewwindow
 setlocal quoteescape=\\
@@ -95,7 +94,7 @@ setlocal norightleft
 setlocal rightleftcmd=search
 setlocal scrollback=-1
 setlocal noscrollbind
-setlocal shiftwidth=4
+setlocal shiftwidth=2
 setlocal signcolumn=yes
 setlocal smartindent
 setlocal nosmoothscroll
@@ -106,7 +105,7 @@ setlocal spellfile=
 setlocal spelllang=en_us,de_de
 setlocal spelloptions=noplainbuffer
 setlocal statuscolumn=%!v:lua.require'snacks.statuscolumn'.get()
-setlocal suffixesadd=.lua
+setlocal suffixesadd=
 setlocal noswapfile
 setlocal synmaxcol=3000
 if &syntax != ''
@@ -118,77 +117,25 @@ setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#MiniIconsAzure#󰢱%*\ \ %#WinBarPath#common%*\ %#WinBarSeparator#/%*\ %#WinBarPath#.config%*\ %#WinBarSeparator#/%*\ %#WinBarPath#nvim%*\ %#WinBarSeparator#/%*\ %#WinBarPath#plugin%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#winbar.lua%*\ %#WinBarSeparator##%*\ %#WinBarSymbol#build_right%*%=%#WinBarLspLabel#\ [LSP:\ %#WinBarLspWarn#1W%#WinBarLspLabel#]%*\ 
+setlocal winbar=%#MiniIconsGrey#󰍔%*\ \ %#WinBarPath#common%*\ %#WinBarSeparator#/%*\ %#WinBarPath#.agents%*\ %#WinBarSeparator#/%*\ %#WinBarPath#skills%*\ %#WinBarSeparator#/%*\ %#WinBarPath#dev-util-visual-companion%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#test-case.md%*%=%#WinBarGitLabel#\ [GIT:%#WinBarGitAdd#\ +156%#WinBarGitChange#\ ~24%#WinBarGitDelete#\ -10%#WinBarGitLabel#]%*\ 
 setlocal winblend=0
 setlocal nowinfixbuf
 setlocal nowinfixheight
 setlocal nowinfixwidth
 setlocal winhighlight=
-setlocal nowrap
+setlocal wrap
 setlocal wrapmargin=0
-53
+1
 sil! normal! zo
-62
+11
 sil! normal! zo
-65
+13
 sil! normal! zo
-105
-sil! normal! zo
-110
-sil! normal! zo
-112
-sil! normal! zo
-115
-sil! normal! zo
-118
-sil! normal! zo
-121
-sil! normal! zo
-128
-sil! normal! zo
-130
-sil! normal! zo
-134
-sil! normal! zo
-138
-sil! normal! zo
-144
-sil! normal! zo
-157
-sil! normal! zo
-157
-sil! normal! zo
-159
-sil! normal! zo
-160
-sil! normal! zo
-163
-sil! normal! zo
-166
-sil! normal! zo
-173
-sil! normal! zo
-174
-sil! normal! zo
-175
-sil! normal! zo
-198
-sil! normal! zo
-221
-sil! normal! zo
-225
-sil! normal! zo
-226
-sil! normal! zo
-258
-sil! normal! zo
-261
-sil! normal! zo
-let s:l = 137 - ((23 * winheight(0) + 19) / 38)
+let s:l = 19 - ((18 * winheight(0) + 25) / 50)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 137
+keepjumps 19
 normal! 0
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
