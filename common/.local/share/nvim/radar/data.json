@@ -11,9 +11,25 @@
           {
             "filename": "/test/file2.lua",
             "label": "2"
+          },
+          {
+            "filename": "README.md",
+            "label": "3"
+          },
+          {
+            "filename": "lua/radar/config.lua",
+            "label": "4"
+          },
+          {
+            "filename": "lua/radar/persist/persistence.lua",
+            "label": "5"
+          },
+          {
+            "filename": "radar-debug.log",
+            "label": "6"
           }
         ],
-        "lastAccessed": 1779093867
+        "lastAccessed": 1779219739
       }
     },
     "~/repos/imfusion/web-ui-poc": {
@@ -32,7 +48,7 @@
             "label": "3"
           }
         ],
-        "lastAccessed": 1779119235
+        "lastAccessed": 1779217401
       }
     }
   }

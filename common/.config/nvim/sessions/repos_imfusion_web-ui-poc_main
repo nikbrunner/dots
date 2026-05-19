@@ -10,17 +10,31 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +73 ROADMAP.md
-badd +33 ~/repos/imfusion/web-ui-poc/.claude/worktrees/wireframe-preview/apps/explorer/src/components/doc/controlled-preview/controlled-preview.module.css
+badd +15 ~/repos/imfusion/web-ui-poc/apps/explorer/src/components/knob-panel/knob-section/knob-section.tsx
+badd +4 apps/explorer/src/components/knob-panel/knob-section/knob-section.module.css
 argglobal
 %argdel
 $argadd ~/repos/imfusion/web-ui-poc/.claude/worktrees/wireframe-preview/apps/explorer/src/components/doc/controlled-preview/controlled-preview.module.css
-tabnew +setlocal\ bufhidden=wipe
-tabrewind
-edit ROADMAP.md
+edit ~/repos/imfusion/web-ui-poc/apps/explorer/src/components/knob-panel/knob-section/knob-section.tsx
+let s:save_splitbelow = &splitbelow
+let s:save_splitright = &splitright
+set splitbelow splitright
+wincmd _ | wincmd |
+vsplit
+1wincmd h
+wincmd w
+let &splitbelow = s:save_splitbelow
+let &splitright = s:save_splitright
+wincmd t
+let s:save_winminheight = &winminheight
+let s:save_winminwidth = &winminwidth
+set winminheight=0
+set winheight=1
+set winminwidth=0
+set winwidth=1
+exe 'vert 1resize ' . ((&columns * 91 + 92) / 184)
+exe 'vert 2resize ' . ((&columns * 92 + 92) / 184)
 argglobal
-xnoremap <buffer> <silent> [[ :exe "normal! gv"|call search('\%(^#\{1,5\}\s\+\S\|^\S.*\n^[=-]\+$\)', "bsW")
-xnoremap <buffer> <silent> ]] :exe "normal! gv"|call search('\%(^#\{1,5\}\s\+\S\|^\S.*\n^[=-]\+$\)', "sW")
 setlocal keymap=
 setlocal noarabic
 setlocal autoindent
@@ -37,8 +51,8 @@ setlocal cinoptions=
 setlocal cinscopedecls=public,protected,private
 setlocal cinwords=if,else,while,do,for,switch
 setlocal colorcolumn=
-setlocal comments=fb:*,fb:-,fb:+,n:>
-setlocal commentstring=<!--\ %s\ -->
+setlocal comments=sO:*\ -,mO:*\ \ ,exO:*/,s1:/*,mb:*,ex:*/,://
+setlocal commentstring=//\ %s
 setlocal complete=.,w,b,u,t
 setlocal completefunc=
 setlocal completeslash=
@@ -52,8 +66,8 @@ setlocal cursorlineopt=both
 setlocal nodiff
 setlocal eventignorewin=
 setlocal expandtab
-if &filetype != 'markdown'
-setlocal filetype=markdown
+if &filetype != 'typescriptreact'
+setlocal filetype=typescriptreact
 endif
 setlocal fixendofline
 setlocal foldcolumn=0
@@ -67,27 +81,27 @@ setlocal foldminlines=1
 setlocal foldnestmax=20
 setlocal foldtext=
 setlocal formatexpr=v:lua.require'conform'.formatexpr()
-setlocal formatlistpat=^\\s*\\d\\+\\.\\s\\+\\|^\\s*[-*+]\\s\\+\\|^\\[^\\ze[^\\]]\\+\\]:\\&^.\\{4\\}
-setlocal formatoptions=jtcqln
+setlocal formatlistpat=^\\s*\\d\\+[\\]:.)}\\t\ ]\\s*
+setlocal formatoptions=cjoqlr
 setlocal iminsert=0
 setlocal imsearch=-1
 setlocal includeexpr=
-setlocal indentexpr=
-setlocal indentkeys=0{,0},0),0],:,0#,!^F,o,O,e
+setlocal indentexpr=GetTypescriptIndent()
+setlocal indentkeys=0{,0},0),0],0,,!^F,o,O,e
 setlocal noinfercase
 setlocal iskeyword=@,48-57,_,192-255
 setlocal lhistory=10
-setlocal linebreak
+setlocal nolinebreak
 setlocal nolisp
 setlocal lispoptions=
 setlocal nolist
-setlocal matchpairs=(:),{:},[:],<:>
+setlocal matchpairs=(:),{:},[:]
 setlocal modeline
 setlocal modifiable
 setlocal nrformats=bin,hex
 setlocal number
 setlocal numberwidth=4
-setlocal omnifunc=
+setlocal omnifunc=v:lua.vim.lsp.omnifunc
 setlocal nopreserveindent
 setlocal nopreviewwindow
 setlocal quoteescape=\\
@@ -99,7 +113,7 @@ setlocal scrollback=-1
 setlocal noscrollbind
 setlocal shiftwidth=2
 setlocal signcolumn=yes
-setlocal smartindent
+setlocal nosmartindent
 setlocal nosmoothscroll
 setlocal softtabstop=-1
 setlocal nospell
@@ -108,37 +122,43 @@ setlocal spellfile=
 setlocal spelllang=en_us,de_de
 setlocal spelloptions=noplainbuffer
 setlocal statuscolumn=%!v:lua.require'snacks.statuscolumn'.get()
-setlocal suffixesadd=
+setlocal suffixesadd=.ts,.d.ts,.tsx,.js,.jsx,.cjs,.mjs
 setlocal noswapfile
 setlocal synmaxcol=3000
 if &syntax != ''
 setlocal syntax=
 endif
 setlocal tabstop=4
-setlocal tagfunc=
-setlocal textwidth=125
+setlocal tagfunc=v:lua.vim.lsp.tagfunc
+setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#MiniIconsGrey#󰍔%*\ \ %#WinBarFilename#ROADMAP.md%*%=%#WinBarGitLabel#\ [GIT:%#WinBarGitAdd#\ +1%#WinBarGitChange#\ ~2%#WinBarGitDelete#\ -1%#WinBarGitLabel#]%*\ 
+setlocal winbar=%#MiniIconsBlue#%*\ \ %#WinBarPath#apps%*\ %#WinBarSeparator#/%*\ %#WinBarPath#explorer%*\ %#WinBarSeparator#/%*\ %#WinBarPath#src%*\ %#WinBarSeparator#/%*\ %#WinBarPath#components%*\ %#WinBarSeparator#/%*\ %#WinBarPath#knob-panel%*\ %#WinBarSeparator#/%*\ %#WinBarPath#knob-section%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#knob-section.tsx%*\ %#WinBarSeparator##%*\ %#WinBarSymbol#KnobSection%*%=%#WinBarGitLabel#\ [GIT:%#WinBarGitAdd#\ +3%#WinBarGitChange#\ ~4%#WinBarGitLabel#]%*\ 
 setlocal winblend=0
 setlocal nowinfixbuf
 setlocal nowinfixheight
 setlocal nowinfixwidth
 setlocal winhighlight=
-setlocal wrap
+setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 73 - ((29 * winheight(0) + 21) / 43)
+12
+sil! normal! zo
+14
+sil! normal! zo
+let s:l = 20 - ((19 * winheight(0) + 20) / 40)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 73
-normal! 0
-tabnext
-edit ~/repos/imfusion/web-ui-poc/.claude/worktrees/wireframe-preview/apps/explorer/src/components/doc/controlled-preview/controlled-preview.module.css
+keepjumps 20
+normal! 04|
+wincmd w
 argglobal
-1argu
-balt ROADMAP.md
+if bufexists(fnamemodify("apps/explorer/src/components/knob-panel/knob-section/knob-section.module.css", ":p")) | buffer apps/explorer/src/components/knob-panel/knob-section/knob-section.module.css | else | edit apps/explorer/src/components/knob-panel/knob-section/knob-section.module.css | endif
+if &buftype ==# 'terminal'
+  silent file apps/explorer/src/components/knob-panel/knob-section/knob-section.module.css
+endif
+balt ~/repos/imfusion/web-ui-poc/apps/explorer/src/components/knob-panel/knob-section/knob-section.tsx
 setlocal keymap=
 setlocal noarabic
 setlocal autoindent
@@ -206,7 +226,7 @@ setlocal modifiable
 setlocal nrformats=bin,hex
 setlocal number
 setlocal numberwidth=4
-setlocal omnifunc=csscomplete#CompleteCSS
+setlocal omnifunc=v:lua.vim.lsp.omnifunc
 setlocal nopreserveindent
 setlocal nopreviewwindow
 setlocal quoteescape=\\
@@ -239,7 +259,7 @@ setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#MiniIconsAzure#󰌜%*\ \ %#WinBarPath#.claude%*\ %#WinBarSeparator#/%*\ %#WinBarPath#worktrees%*\ %#WinBarSeparator#/%*\ %#WinBarPath#wireframe-preview%*\ %#WinBarSeparator#/%*\ %#WinBarPath#apps%*\ %#WinBarSeparator#/%*\ %#WinBarPath#explorer%*\ %#WinBarSeparator#/%*\ %#WinBarPath#src%*\ %#WinBarSeparator#/%*\ %#WinBarPath#components%*\ %#WinBarSeparator#/%*\ %#WinBarPath#doc%*\ %#WinBarSeparator#/%*\ %#WinBarPath#controlled-preview%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#controlled-preview.module.css%*%=%#WinBarGitLabel#\ [GIT:%#WinBarGitAdd#\ +46%#WinBarGitChange#\ ~5%#WinBarGitDelete#\ -1%#WinBarGitLabel#]%*\ 
+setlocal winbar=%#MiniIconsAzure#󰌜%*\ \ %#WinBarPath#apps%*\ %#WinBarSeparator#/%*\ %#WinBarPath#explorer%*\ %#WinBarSeparator#/%*\ %#WinBarPath#src%*\ %#WinBarSeparator#/%*\ %#WinBarPath#components%*\ %#WinBarSeparator#/%*\ %#WinBarPath#knob-panel%*\ %#WinBarSeparator#/%*\ %#WinBarPath#knob-section%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#knob-section.module.css%*%=%#WinBarGitLabel#\ [GIT:%#WinBarGitChange#\ ~2%#WinBarGitLabel#]%*\ 
 setlocal winblend=0
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -247,19 +267,25 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 35 - ((34 * winheight(0) + 21) / 43)
+let s:l = 4 - ((3 * winheight(0) + 20) / 40)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 35
+keepjumps 4
 normal! 0
-tabnext 2
+wincmd w
+2wincmd w
+exe 'vert 1resize ' . ((&columns * 91 + 92) / 184)
+exe 'vert 2resize ' . ((&columns * 92 + 92) / 184)
+tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
 endif
 unlet! s:wipebuf
 set winheight=1 winwidth=20
 let &shortmess = s:shortmess_save
+let &winminheight = s:save_winminheight
+let &winminwidth = s:save_winminwidth
 let s:sx = expand("<sfile>:p:r")."x.vim"
 if filereadable(s:sx)
   exe "source " . fnameescape(s:sx)

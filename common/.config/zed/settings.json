@@ -93,8 +93,8 @@
   "cursor_blink": false,
   "theme": {
     "mode": "light",
-    "light": "Black Atom — JPN ∷ Koyo Hiru",
-    "dark": "Black Atom — JPN ∷ Murasaki Yoru",
+    "light": "Black Atom — Light Dimmed",
+    "dark": "Black Atom — Dark",
   },
   "base_keymap": "VSCode",
   "vim_mode": true,
