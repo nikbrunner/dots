@@ -175,6 +175,57 @@ function M.project_switch()
     })
 end
 
+---Pick a worktree for the current repository, switch cwd
+function M.worktree_switch()
+    local git_root = Snacks.git.get_root()
+    if not git_root then
+        vim.notify("Not in a git repository", vim.log.levels.ERROR)
+        return
+    end
+
+    local worktrees = require("lib.git").get_worktrees(git_root)
+
+    -- Filter out the main worktree — only show linked worktrees
+    local linked = vim.tbl_filter(function(wt)
+        return not wt.is_main
+    end, worktrees)
+
+    if #linked == 0 then
+        vim.notify("No linked worktrees found", vim.log.levels.WARN)
+        return
+    end
+
+    local items = {}
+
+    for _, wt in ipairs(linked) do
+        table.insert(items, {
+            text = wt.display,
+            file = wt.path,
+            branch = wt.branch,
+            is_main = wt.is_main,
+        })
+    end
+
+    Snacks.picker({
+        title = "Worktrees",
+        items = items,
+        format = "text",
+        confirm = function(picker, item)
+            picker:close()
+            vim.schedule(function()
+                local chosen_path = item.file
+
+                vim.g._mini_session_switching = true
+                vim.fn.chdir(chosen_path)
+                vim.g._mini_session_switching = false
+
+                local label = item.is_main and "main" or item.branch
+                vim.notify("Switched to " .. label .. " (" .. chosen_path .. ")", vim.log.levels.INFO)
+            end)
+        end,
+    })
+end
+
 ---Find files associated with the current file (same base name)
 function M.associated_files()
     local current_filename = vim.fn.expand("%:t:r")
@@ -268,11 +319,17 @@ end
 
 ---Open all explorer nodes recursively
 ---@param picker snacks.Picker
-local function open_all_explorer_nodes(picker)
+local function open_all_explorer_nodes(picker, retries)
+    retries = retries or 5
     vim.schedule(function()
         local Tree = require("snacks.explorer.tree")
         local root = Tree:find(picker:dir())
-        if not root then
+        if not root or vim.tbl_isempty(root.children or {}) then
+            if retries > 0 then
+                vim.defer_fn(function()
+                    open_all_explorer_nodes(picker, retries - 1)
+                end, 200)
+            end
             return
         end
         Tree:walk(root, function(node)
@@ -286,6 +343,20 @@ end
 
 ---Show explorer filtered to only git-modified and untracked files
 function M.git_explorer()
+    local git_root = vim.fs.root(0, ".git")
+    if not git_root then
+        Snacks.notify("Not in a git repository", { level = "warn", title = "Git Explorer" })
+        return
+    end
+
+    local output = vim.fn.system({ "git", "-C", git_root, "status", "--porcelain" })
+    if output == "" then
+        Snacks.notify("No changes detected", { level = "info", title = "Git Explorer" })
+        return
+    end
+
+    require("snacks.explorer.git")
+
     local picker = Snacks.picker.explorer({
         title = "Git Explorer",
         layout = M.layouts.third_pane,
@@ -295,6 +366,7 @@ function M.git_explorer()
         git_untracked = true,
         diagnostics = false,
         ignored = false,
+        follow_file = false,
         jump = { close = true },
         actions = {
             explorer_toggle_stage = function(picker, item)
@@ -305,9 +377,7 @@ function M.git_explorer()
                 -- " M" = unstaged modified, "M " = staged, "??" = untracked
                 local s = item.status
                 local is_staged = s and s ~= "??" and s:sub(1, 1) ~= " "
-                local cmd = is_staged
-                    and { "git", "restore", "--staged", item.file }
-                    or { "git", "add", item.file }
+                local cmd = is_staged and { "git", "restore", "--staged", item.file } or { "git", "add", item.file }
                 vim.system(cmd, { cwd = picker:dir() }, function()
                     vim.schedule(function()
                         require("snacks.explorer.git").update(picker:dir())
@@ -320,11 +390,8 @@ function M.git_explorer()
                 if not item or item.dir then
                     return
                 end
-                local choice = vim.fn.confirm(
-                    "Discard changes to " .. vim.fn.fnamemodify(item.file, ":t") .. "?",
-                    "&Yes\n&No",
-                    2
-                )
+                local choice =
+                    vim.fn.confirm("Discard changes to " .. vim.fn.fnamemodify(item.file, ":t") .. "?", "&Yes\n&No", 2)
                 if choice ~= 1 then
                     return
                 end
@@ -467,6 +534,9 @@ M.layouts = {
         end
 
         local third_width = math.floor(width / 3)
+        local max_cols = 40
+        local pane_width = math.min(third_width - 2, max_cols)
+        local actual_width = pane_width + 2
 
         ---@type snacks.picker.layout.Config
         return {
@@ -474,8 +544,8 @@ M.layouts = {
             layout = {
                 backdrop = true,
                 row = pos[1],
-                col = pos[2] + (width - third_width),
-                width = third_width - 2,
+                col = pos[2] + (width - actual_width),
+                width = pane_width,
                 height = height - 1,
                 border = "shadow",
                 box = "vertical",
@@ -528,12 +598,12 @@ function M.keys()
         -- { "<leader>wd",          function() Snacks.picker.files() end, desc = "[D]ocument" },
         { "<leader>wj",          function() Snacks.picker.jumps() end, desc = "[J]umps" },
         -- { "<leader>wm",          function() Snacks.picker.git_status() end, desc = "[M]odified Documents" },
-        { "<leader>wm",          M.git_explorer, desc = "[M]odified Explorer" },
+        { "<leader>wm",          function() M.git_explorer() end, desc = "[M]odified Explorer" },
         { "<leader>wp",          function() Snacks.picker.diagnostics() end, desc = "[P]roblems" },
         { "<leader>wr",          function() Snacks.picker.recent({ filter = { cwd = true } }) end, desc = "[R]ecent Documents" },
         { "<leader>ws",          function() Snacks.picker.lsp_symbols() end, desc = "[S]ymbols" },
         -- { "<leader>wt",          function() Snacks.picker.grep({ hidden = true }) end, desc = "[T]ext" },
-        -- { "<leader>ww",          function() Snacks.picker.grep_word() end, desc = "[W]ord" },
+        { "<leader>ww",          M.worktree_switch, desc = "[W]orktrees" },
         { "<leader>wgb",         function() Snacks.picker.git_branches() end, desc = "[B]ranches" },
         { "<leader>wgh",         function() Snacks.picker.git_log() end, desc = "[H]istory" },
         { "<leader>wgH",         function() Snacks.lazygit.log() end, desc = "[H]istory (Lazygit)" },

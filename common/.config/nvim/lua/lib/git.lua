@@ -47,4 +47,61 @@ function M.parse_issue_id_from_branch(branch_name)
     return issue_id and string.upper(issue_id) or nil
 end
 
+---Get all worktrees for a git repository
+---@param git_root string Absolute path to the git repository root
+---@return {path: string, branch: string, is_main: boolean, display: string}[]
+function M.get_worktrees(git_root)
+    local cmd = "git -C " .. vim.fn.shellescape(git_root) .. " worktree list --porcelain"
+    local output = vim.fn.systemlist(cmd)
+
+    if vim.v.shell_error ~= 0 then
+        vim.notify("Failed to list worktrees", vim.log.levels.ERROR)
+        return {}
+    end
+
+    local worktrees = {}
+    local current = nil
+
+    for _, line in ipairs(output) do
+        if line == "" then
+            if current then
+                table.insert(worktrees, current)
+                current = nil
+            end
+        elseif vim.startswith(line, "worktree ") then
+            if current then
+                table.insert(worktrees, current)
+            end
+            local path = line:sub(10)
+            local is_main = #worktrees == 0
+            current = {
+                path = path,
+                branch = "main",
+                is_main = is_main,
+            }
+        elseif current and vim.startswith(line, "branch ") then
+            local ref = line:sub(8)
+            local branch_name = ref:match("refs/heads/(.+)") or ref
+            current.branch = branch_name
+        elseif current and line == "detached" then
+            current.branch = "HEAD"
+        end
+    end
+
+    if current then
+        table.insert(worktrees, current)
+    end
+
+    for _, wt in ipairs(worktrees) do
+        if wt.is_main then
+            wt.display = string.format("main [%s]  %s", wt.branch, wt.path)
+        else
+            local dir_name = vim.fn.fnamemodify(wt.path, ":t")
+            wt.display = string.format("%s  (%s)", wt.branch, dir_name)
+        end
+    end
+
+    return worktrees
+end
+
 return M
