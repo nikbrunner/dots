@@ -290,24 +290,28 @@ function M.git_explorer()
         title = "Git Explorer",
         layout = M.layouts.third_pane,
         git_status = true,
-        follow = true,
-        auto_close = true,
+        auto_close = false,
         git_status_open = true,
         git_untracked = true,
         diagnostics = false,
         ignored = false,
+        jump = { close = true },
         actions = {
             explorer_toggle_stage = function(picker, item)
                 if not item or item.dir then
                     return
                 end
-                local is_staged = item.status and item.status:sub(1, 1) == " "
+                -- Porcelain: first char = index/staging, second = working tree
+                -- " M" = unstaged modified, "M " = staged, "??" = untracked
+                local s = item.status
+                local is_staged = s and s ~= "??" and s:sub(1, 1) ~= " "
                 local cmd = is_staged
                     and { "git", "restore", "--staged", item.file }
                     or { "git", "add", item.file }
                 vim.system(cmd, { cwd = picker:dir() }, function()
                     vim.schedule(function()
                         require("snacks.explorer.git").update(picker:dir())
+                        picker.list:set_target()
                         picker:find()
                     end)
                 end)
@@ -327,6 +331,7 @@ function M.git_explorer()
                 vim.system({ "git", "restore", item.file }, { cwd = picker:dir() }, function()
                     vim.schedule(function()
                         require("snacks.explorer.git").update(picker:dir())
+                        picker.list:set_target()
                         picker:find()
                     end)
                 end)
