@@ -6,8 +6,9 @@ return {
         event = "VeryLazy",
         keys = {
             -- Workspace level
-            { "<leader>wgd", "<cmd>CodeDiff<cr>", desc = "Workspace [D]iff to `master` (CodeDiff)" },
-            { "<leader>wgD", "<cmd>CodeDiff master<cr>", desc = "Workspace [D]iff (CodeDiff)" },
+            -- enew ensures CodeDiff resolves git root from cwd, not a stale buffer path
+            { "<leader>wgd", "<cmd>enew | CodeDiff<cr>", desc = "Workspace [D]iff against working tree (CodeDiff)" },
+            { "<leader>wgD", "<cmd>enew | CodeDiff master<cr>", desc = "Workspace [D]iff against master (CodeDiff)" },
 
             -- Document level
             { "<leader>dgd", "<cmd>CodeDiff file HEAD<cr>", desc = "Document [D]iff (CodeDiff)" },
@@ -18,7 +19,7 @@ return {
                 function()
                     vim.ui.input({ prompt = "Compare against branch: " }, function(branch)
                         if branch and branch ~= "" then
-                            vim.cmd("CodeDiff " .. branch)
+                            vim.cmd("enew | CodeDiff " .. branch)
                         end
                     end)
                 end,
