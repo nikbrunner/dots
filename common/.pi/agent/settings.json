@@ -1,18 +1,21 @@
 {
   "theme": "terminal",
-  "lastChangelogVersion": "0.75.1",
+  "lastChangelogVersion": "0.75.3",
   "packages": [
     "npm:pi-web-access",
     "npm:@ff-labs/pi-fff",
-    "npm:@plannotator/pi-extension",
+    {
+      "source": "npm:@plannotator/pi-extension",
+      "skills": []
+    },
     "npm:pi-ask-user",
     "../../repos/nikbrunner/pi-speak",
     "npm:pi-terminal-theme",
     "npm:pi-image-subagent",
     "npm:pi-mcp-adapter"
   ],
-  "defaultProvider": "openrouter",
-  "defaultModel": "deepseek/deepseek-v4-flash",
+  "defaultProvider": "opencode-go",
+  "defaultModel": "deepseek-v4-flash",
   "enabledModels": [
     "openrouter/minimax/minimax-m2.7",
     "openrouter/z-ai/glm-5.1",

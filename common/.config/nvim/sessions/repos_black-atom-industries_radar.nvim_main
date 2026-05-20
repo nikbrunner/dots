@@ -10,11 +10,11 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +13 lua/radar/persist/persistence.lua
+badd +29 lua/radar/debug.lua
 argglobal
 %argdel
 $argadd ~/repos/black-atom-industries/radar.nvim/lua/radar/ui/tabs.lua
-edit lua/radar/persist/persistence.lua
+edit lua/radar/debug.lua
 argglobal
 setlocal keymap=
 setlocal noarabic
@@ -84,7 +84,7 @@ setlocal modifiable
 setlocal nrformats=bin,hex
 setlocal number
 setlocal numberwidth=4
-setlocal omnifunc=v:lua.vim.lsp.omnifunc
+setlocal omnifunc=v:lua.vim.lua_omnifunc
 setlocal path=,
 setlocal nopreserveindent
 setlocal nopreviewwindow
@@ -118,7 +118,7 @@ setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#MiniIconsAzure#󰢱%*\ \ %#WinBarPath#lua%*\ %#WinBarSeparator#/%*\ %#WinBarPath#radar%*\ %#WinBarSeparator#/%*\ %#WinBarPath#persist%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#persistence.lua%*%=%#WinBarGitLabel#\ [GIT:%#WinBarGitAdd#\ +7%#WinBarGitChange#\ ~9%#WinBarGitDelete#\ -6%#WinBarGitLabel#]%*\ 
+setlocal winbar=%#MiniIconsAzure#󰢱%*\ \ %#WinBarPath#lua%*\ %#WinBarSeparator#/%*\ %#WinBarPath#radar%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#debug.lua%*%=%#WinBarGitLabel#\ [GIT:%#WinBarGitAdd#\ +36%#WinBarGitChange#\ ~9%#WinBarGitLabel#]%*%#WinBarLspLabel#\ [LSP:\ %#WinBarLspWarn#W1\ %#WinBarLspHint#H2%#WinBarLspLabel#]%*\ 
 setlocal winblend=0
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -126,11 +126,11 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 13 - ((12 * winheight(0) + 25) / 50)
+let s:l = 29 - ((22 * winheight(0) + 21) / 43)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 13
+keepjumps 29
 normal! 0
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'

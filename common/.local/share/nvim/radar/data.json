@@ -17,19 +17,27 @@
             "label": "3"
           },
           {
-            "filename": "lua/radar/config.lua",
-            "label": "4"
-          },
-          {
             "filename": "lua/radar/persist/persistence.lua",
             "label": "5"
           },
           {
             "filename": "radar-debug.log",
             "label": "6"
+          },
+          {
+            "filename": "lua/radar/config.lua",
+            "label": "4"
+          },
+          {
+            "filename": "lua/radar/ui/edit.lua",
+            "label": "8"
+          },
+          {
+            "filename": "lua/radar/debug.lua",
+            "label": "7"
           }
         ],
-        "lastAccessed": 1779219739
+        "lastAccessed": 1779282705
       }
     },
     "~/repos/imfusion/web-ui-poc": {
@@ -48,7 +56,29 @@
             "label": "3"
           }
         ],
-        "lastAccessed": 1779217401
+        "lastAccessed": 1779292651
+      }
+    },
+    "~/repos/imfusion/web-ui-poc-appshell": {
+      "feat/explorer-appshell-rework": {
+        "locks": [
+          {
+            "filename": "packages/web-ui/dist/docgen.json",
+            "label": "1"
+          }
+        ],
+        "lastAccessed": 1779288528
+      }
+    },
+    "~/repos/nikbrunner/minifugit.nvim": {
+      "main": {
+        "locks": [
+          {
+            "filename": "ROADMAP.md",
+            "label": "1"
+          }
+        ],
+        "lastAccessed": 1779292966
       }
     }
   }

@@ -10,7 +10,7 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +16 src/themes/default/black-atom-default-light-dimmed.ts
+badd +1 src/themes/default/black-atom-default-light-dimmed.ts
 badd +17 src/themes/default/black-atom-default-dark.ts
 argglobal
 %argdel
@@ -147,7 +147,7 @@ if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
 keepjumps 26
-normal! 033|
+normal! 0
 wincmd w
 argglobal
 if bufexists(fnamemodify("src/themes/default/black-atom-default-dark.ts", ":p")) | buffer src/themes/default/black-atom-default-dark.ts | else | edit src/themes/default/black-atom-default-dark.ts | endif
