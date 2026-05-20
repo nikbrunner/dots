@@ -1,6 +1,7 @@
 ---@type LazyPluginSpec
 return {
-    "vieitesss/minifugit.nvim",
+    -- "nikbrunner/minifugit.nvim",
+    dir = require("lib.config").get_repo_path("nikbrunner/minifugit.nvim"),
     cmd = { "MinifugitStatus" },
     keys = {
         { "gs", "<cmd>MinifugitStatus<cr>", desc = "Git Status" },
@@ -15,7 +16,7 @@ return {
 
             -- Show git diff metadata rows such as `diff --git`, `index`, `---`,
             -- and `+++`.
-            show_metadata = true,
+            show_metadata = false,
 
             -- Diff preview layout: 'stacked', 'split', or 'auto'.
             diff_layout = "split",
@@ -25,10 +26,14 @@ return {
         },
         status = {
             -- Fraction of the editor width used by the status window.
-            width = 0.25,
+            width = 0.35,
 
             -- Minimum status window width in columns.
             min_width = 20,
+
+            -- Layout: 'topleft' (opens far left) or 'replace' (replaces
+            -- current buffer, like Oil).
+            layout = "replace",
         },
     },
 }
