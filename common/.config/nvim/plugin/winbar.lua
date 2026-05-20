@@ -183,9 +183,8 @@ local function request_lsp_symbols(bufnr, winnr, left_base, right)
     end)
 end
 
-local ignore_filetypes = {
+local clear_winbar_filetypes = {
     "minifiles",
-    "oil",
     "help",
     "lazy",
     "mason",
@@ -201,8 +200,12 @@ local function winbar_set()
     local ft = vim.bo[bufnr].filetype
     local bt = vim.bo[bufnr].buftype
 
-    if bt ~= "" or vim.tbl_contains(ignore_filetypes, ft) then
-        vim.api.nvim_set_option_value("winbar", "", { win = winnr })
+    -- Clear winbar for non-file buffers and filetypes that shouldn't show the custom winbar
+    -- Skip oil: it manages its own winbar via config
+    if bt ~= "" or vim.tbl_contains(clear_winbar_filetypes, ft) then
+        if ft ~= "oil" then
+            vim.api.nvim_set_option_value("winbar", "", { win = winnr })
+        end
         return
     end
 
