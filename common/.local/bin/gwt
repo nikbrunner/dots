@@ -587,79 +587,121 @@ wk_list() {
 }
 
 # ========================================================================
-# Switch Command
+# Worktree Picker (shared)
 # ========================================================================
 
-wk_switch() {
+# Shared worktree picker — returns selected path via stdout
+_pick_worktree() {
 	validate_git_repo
 
-	local base_name
-	base_name=$(get_base_repo_name)
-	local parent_dir
-	parent_dir=$(get_repo_parent)
 	local current_path
 	current_path=$(get_repo_root)
 
-	# Find all sibling directories matching base repo name
-	local siblings=()
-	while IFS= read -r -d '' dir; do
-		siblings+=("$dir")
-	done < <(find "$parent_dir" -maxdepth 1 -type d -name "${base_name}*" -print0 2>/dev/null | sort -z)
+	local worktrees=()
+	local worktree_paths=()
 
-	if [ ${#siblings[@]} -eq 0 ]; then
-		print_error "No related worktrees found"
-		exit 1
+	while read -r line; do
+		if [[ "$line" == "worktree "* ]]; then
+			local wt_path="${line#worktree }"
+			local wt_name
+			wt_name=$(basename "$wt_path")
+
+			read -r branch_line
+			local branch=""
+			if [[ "$branch_line" == "branch "* ]]; then
+				branch="${branch_line#branch refs/heads/}"
+			elif [[ "$branch_line" == "detached" ]]; then
+				branch="(detached)"
+			fi
+
+			# Skip bare lines
+			read -r bare_line || bare_line=""
+
+			local marker=""
+			if [[ "$wt_path" == "$current_path" ]]; then
+				marker=" (current)"
+			fi
+
+			local branch_display=""
+			if [[ -n "$branch" ]]; then
+				branch_display=" [$branch]"
+			fi
+
+			worktrees+=("$wt_name$branch_display$marker")
+			worktree_paths+=("$wt_path")
+		fi
+	done < <(git worktree list --porcelain)
+
+	if [ ${#worktrees[@]} -eq 0 ]; then
+		print_error "No worktrees found" >&2
+		return 1
 	fi
 
-	# Build display list
-	local display_items=()
-	for dir in "${siblings[@]}"; do
-		local dir_name
-		dir_name=$(basename "$dir")
-		local marker=""
-		if [[ "$dir" == "$current_path" ]]; then
-			marker=" (current)"
-		fi
-
-		# Try to get branch name if it's a git repo
-		local branch=""
-		if [[ -d "$dir/.git" ]] || [[ -f "$dir/.git" ]]; then
-			branch=$(cd "$dir" && git rev-parse --abbrev-ref HEAD 2>/dev/null || echo "")
-			if [[ -n "$branch" ]]; then
-				branch=" [$branch]"
-			fi
-		fi
-
-		display_items+=("$dir_name$branch$marker")
-	done
-
-	# Show picker
 	local selected
 	if has_gum; then
-		selected=$(printf '%s\n' "${display_items[@]}" | gum filter --placeholder="Select worktree...")
+		selected=$(printf '%s\n' "${worktrees[@]}" | gum filter --placeholder="Select worktree...")
 	elif has_fzf; then
-		selected=$(printf '%s\n' "${display_items[@]}" | fzf --prompt="Select worktree: ")
+		selected=$(printf '%s\n' "${worktrees[@]}" | fzf --prompt="Select worktree: ")
 	else
-		echo "Available worktrees:"
-		for i in "${!display_items[@]}"; do
-			echo "  $((i + 1))) ${display_items[$i]}"
+		echo "Available worktrees:" >&2
+		for i in "${!worktrees[@]}"; do
+			echo "  $((i + 1))) ${worktrees[$i]}" >&2
 		done
-		echo -n "Select (1-${#display_items[@]}): "
+		echo -n "Select (1-${#worktrees[@]}): " >&2
 		read -r choice
-		if [[ "$choice" =~ ^[0-9]+$ ]] && [ "$choice" -ge 1 ] && [ "$choice" -le ${#display_items[@]} ]; then
-			selected="${display_items[$((choice - 1))]}"
+		if [[ "$choice" =~ ^[0-9]+$ ]] && [ "$choice" -ge 1 ] && [ "$choice" -le ${#worktrees[@]} ]; then
+			selected="${worktrees[$((choice - 1))]}"
 		fi
 	fi
 
 	if [ -z "$selected" ]; then
-		echo "No selection made"
+		return 1
+	fi
+
+	for i in "${!worktrees[@]}"; do
+		if [[ "${worktrees[$i]}" == "$selected" ]]; then
+			echo "${worktree_paths[$i]}"
+			return 0
+		fi
+	done
+
+	return 1
+}
+
+# ========================================================================
+# Cd Command (lightweight — outputs path for shell wrapper)
+# ========================================================================
+
+wk_cd() {
+	local selected_path
+	if ! selected_path=$(_pick_worktree); then
+		echo "No worktree selected" >&2
 		exit 0
 	fi
 
-	# Extract directory name (remove branch and marker info)
-	local selected_name
-	selected_name=$(echo "$selected" | sed 's/ \[.*$//' | sed 's/ (current)$//')
-	local selected_path="$parent_dir/$selected_name"
+	local current_path
+	current_path=$(get_repo_root)
+
+	if [[ "$selected_path" == "$current_path" ]]; then
+		exit 0
+	fi
+
+	echo "$selected_path"
+}
+
+# ========================================================================
+# Session Command (opens in tmux)
+# ========================================================================
+
+wk_session() {
+	local selected_path
+	if ! selected_path=$(_pick_worktree); then
+		echo "No worktree selected" >&2
+		exit 0
+	fi
+
+	local current_path
+	current_path=$(get_repo_root)
 
 	if [[ "$selected_path" == "$current_path" ]]; then
 		print_info "Already in this worktree"
@@ -671,9 +713,10 @@ wk_switch() {
 		exit 1
 	fi
 
-	print_info "Opening $selected_name in tmux..."
+	print_info "Opening $(basename "$selected_path") in tmux..."
 	open_in_tmux "$selected_path"
 }
+
 
 # ========================================================================
 # Remove Command
@@ -860,7 +903,8 @@ show_help() {
 	style_header "Commands:"
 	echo "  $(style_command "create")    - Create a new worktree as sibling directory"
 	echo "  $(style_command "list")      - List all worktrees for current repo"
-	echo "  $(style_command "switch")    - Switch to another worktree (opens in tmux)"
+	echo "  $(style_command "cd")        - Switch to a worktree (cd in current shell)"
+	echo "  $(style_command "session")   - Open a worktree in a tmux session"
 	echo "  $(style_command "remove")    - Remove a worktree"
 	echo "  $(style_command "help")      - Show this help message"
 	echo ""
@@ -869,7 +913,8 @@ show_help() {
 	echo "  gwt create -s \"fix login bug\"       # AI-generate branch name"
 	echo "  gwt create -sy \"BCD-123 feature\"    # AI + auto-confirm"
 	echo "  gwt list                            # Show all worktrees"
-	echo "  gwt switch                          # Interactive worktree picker"
+	echo "  gwt cd                              # Pick and cd to worktree"
+	echo "  gwt session                         # Pick and open in tmux"
 	echo "  gwt remove                          # Interactive removal"
 	echo ""
 	style_header "Worktree Placement:"
@@ -878,7 +923,7 @@ show_help() {
 	echo ""
 	style_header "Requirements:"
 	echo "  $git_status git (required)"
-	echo "  $tmux_status tmux (for switch command)"
+	echo "  $tmux_status tmux (for session command)"
 	echo "  $gum_status gum (optional, enhanced UX)"
 	echo "  $fzf_status fzf (optional, fallback picker)"
 	echo "  $claude_status Claude Code (for -s flag)"
@@ -896,7 +941,8 @@ show_menu() {
 	local commands=(
 		"create:Create a new worktree"
 		"list:List all worktrees"
-		"switch:Switch to another worktree"
+		"cd:Switch to a worktree"
+		"session:Open worktree in tmux"
 		"remove:Remove a worktree"
 		"help:Show help"
 	)
@@ -930,7 +976,8 @@ show_menu() {
 	case "$selected" in
 	create) wk_create ;;
 	list) wk_list ;;
-	switch) wk_switch ;;
+	cd) wk_cd ;;
+	session) wk_session ;;
 	remove) wk_remove ;;
 	help) show_help ;;
 	esac
@@ -944,8 +991,11 @@ create)
 list | ls)
 	wk_list
 	;;
-switch | sw)
-	wk_switch
+cd)
+	wk_cd
+	;;
+session | sess)
+	wk_session
 	;;
 remove | rm)
 	wk_remove

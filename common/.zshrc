@@ -89,6 +89,19 @@ alias ,,="fzf -m --preview='bat --color=always {}' --bind 'enter:become(nvim {+}
 # Source 'run' script to enable print -z functionality
 [ -f "$HOME/.local/bin/run" ] && source "$HOME/.local/bin/run"
 
+# gwt wrapper — intercept `gwt cd` to change directory in current shell
+gwt() {
+	if [[ "$1" == "cd" ]]; then
+		local dir
+		dir=$(command gwt "$1" "${@:2}")
+		if [[ -n "$dir" && -d "$dir" ]]; then
+			cd "$dir"
+		fi
+	else
+		command gwt "$@"
+	fi
+}
+
 eval "$(zoxide init zsh)"
 
 # Plugin Configuration (after plugins loaded by os.zsh) ==================
