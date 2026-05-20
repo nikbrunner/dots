@@ -184,26 +184,29 @@ function M.worktree_switch()
     end
 
     local worktrees = require("lib.git").get_worktrees(git_root)
-
-    -- Filter out the main worktree — only show linked worktrees
-    local linked = vim.tbl_filter(function(wt)
-        return not wt.is_main
-    end, worktrees)
-
-    if #linked == 0 then
-        vim.notify("No linked worktrees found", vim.log.levels.WARN)
+    if #worktrees == 0 then
+        vim.notify("No worktrees found", vim.log.levels.WARN)
         return
     end
 
-    local items = {}
+    local cwd = vim.fn.getcwd()
 
-    for _, wt in ipairs(linked) do
-        table.insert(items, {
-            text = wt.display,
-            file = wt.path,
-            branch = wt.branch,
-            is_main = wt.is_main,
-        })
+    -- Build picker items, excluding the current worktree (no-op to select it)
+    local items = {}
+    for _, wt in ipairs(worktrees) do
+        if wt.path ~= cwd then
+            table.insert(items, {
+                text = wt.display,
+                file = wt.path,
+                branch = wt.branch,
+                is_main = wt.is_main,
+            })
+        end
+    end
+
+    if #items == 0 then
+        vim.notify("Already on the only worktree", vim.log.levels.INFO)
+        return
     end
 
     Snacks.picker({
