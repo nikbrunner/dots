@@ -1,9 +1,4 @@
----
-name: dev-util-design-interface
-description: "Generate multiple competing interface designs using parallel sub-agents, then compare and synthesize. Use when designing a new API, component interface, or module boundary."
----
-
-# Design It Twice
+# Design Interface
 
 From John Ousterhout's _A Philosophy of Software Design_: design each interface at least twice with fundamentally different approaches before committing.
 

@@ -29,7 +29,7 @@ dev:audit ux                  # UX heuristics
 
 Audit module boundaries, dependency direction, separation of concerns, coupling, and structural health.
 
-**Uses**: `architecture-reviewer` agent (subagent), LSP call hierarchy, `dev-util-design-interface` for redesign proposals.
+**Uses**: `architecture-reviewer` agent (subagent), LSP call hierarchy, `dev-flow/guides/design-interface` for redesign proposals.
 
 ### Steps
 1. Determine scope (argument → staged → unstaged).
@@ -40,7 +40,7 @@ Audit module boundaries, dependency direction, separation of concerns, coupling,
    - Dependency classification (in-process, local-substitutable, ports & adapters, external)
    - Scalability
 3. Use LSP to verify coupling claims with reference counts.
-4. Optionally invoke `dev-util-design-interface` for redesign proposals.
+4. Optionally invoke `dev-flow/guides/design-interface` for redesign proposals.
 
 ### Output
 Architectural health report: strengths, findings (with paths/severity), dependency map, prioritized recommendations.
@@ -148,6 +148,6 @@ Audit against Nielsen's 10 Usability Heuristics.
 - `dev-style-state` — state architecture patterns
 - `dev-style-react` — component patterns for error boundaries and loading states
 - `dev-impeccable` — deeper UI polish commands
-- `dev-util-design-interface` — redesign proposals
+- `dev-flow/guides/design-interface` — redesign proposals
 - `dev-browser` — screenshot capture via `agent-browser`
 - `dev-commit` — integrates docs audit as pre-commit gate

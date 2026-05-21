@@ -1,6 +1,6 @@
 ---
-name: dev-util-glossary
-description: Extract a DDD-style ubiquitous language glossary from the current conversation, flagging ambiguities and proposing canonical terms. Saves to GLOSSARY.md. Use when user wants to define domain terms, build a glossary, harden terminology, create a ubiquitous language, or mentions "domain model" or "DDD".
+name: dev-setup-glossary
+description: Extract a DDD-style ubiquitous language glossary from the current conversation, flagging ambiguities and proposing canonical terms. Saves to GLOSSARY.md. Use at project inception or when user wants to define domain terms, build a glossary, harden terminology, or mentions "domain model" or "DDD".
 ---
 
 # Ubiquitous Language
