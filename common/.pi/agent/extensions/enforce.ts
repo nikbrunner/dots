@@ -141,11 +141,8 @@ export default function (pi: ExtensionAPI) {
 
     // dots skills — dotfiles management
     if (repo === "dots") {
-      if (/add.*config|new.*config|symlink|dotfile/.test(prompt)) {
-        matches.push("dots-add — Add config to dots");
-      }
-      if (/remove.*config|delete.*config|unlink/.test(prompt)) {
-        matches.push("dots-remove — Remove config from dots");
+      if (/add.*config|new.*config|remove.*config|delete.*config|symlink|unlink|dotfile/.test(prompt)) {
+        matches.push("dots-manage — Add/remove config from dots");
       }
     }
 

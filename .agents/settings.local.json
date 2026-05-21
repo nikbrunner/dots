@@ -1,0 +1,24 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//Users/brunner/repos/nikbrunner/fff-snacks.nvim/**)",
+      "Bash(ls plugin/)",
+      "Bash(lua -v)",
+      "Bash(luarocks --version)",
+      "Bash(luarocks config *)",
+      "Bash(brew list *)",
+      "Bash(git -C /Users/brunner/repos/nikbrunner/dots log --all --oneline -S \"nvim-bin\" --)",
+      "Bash(env)",
+      "Bash(gh repo *)",
+      "Bash(pi --version)",
+      "Bash(git -C ~/repos/nikbrunner/dots status)",
+      "Bash(git -C ~/repos/nikbrunner/dots diff HEAD)",
+      "Bash(git *)",
+      "Bash(nvim --headless -c \"redir @a | hi TabLine | redir END | put a | w! /tmp/hl_test.txt | qa\")",
+      "Read(//tmp/**)",
+      "Bash(nvim --headless -c \"redir @a | hi WinBar | hi WinBarNC | hi StatusLine | hi Pmenu | hi FloatTitle | hi TabLineSel | redir END | put a | w! /tmp/hl_test.txt | qa\")",
+      "Read(//private/tmp/**)",
+      "Bash(nvim --headless -c \"redir @a | hi StatusLineNC | hi CursorLine | hi NormalFloat | hi Comment | hi MiniDiffSignAdd | hi MiniDiffSignDelete | redir END | put a | w! /tmp/hl_test.txt | qa\")"
+    ]
+  }
+}
