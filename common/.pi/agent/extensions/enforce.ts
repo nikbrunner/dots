@@ -99,14 +99,14 @@ export default function (pi: ExtensionAPI) {
       matches.push("dev-flow — Create a plan or PRD");
     }
 
-    // dev-util-commit — committing code
+    // dev-commit — committing code
     if (
       /^commit/.test(prompt) ||
       /lets commit/.test(prompt) ||
       /create a commit/.test(prompt) ||
       /commit (this|these|the)/.test(prompt)
     ) {
-      matches.push("dev-util-commit — Commit format and strategy");
+      matches.push("dev-commit — Commit format and strategy");
     }
 
     // dev-style-tdd — explicit TDD requests

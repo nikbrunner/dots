@@ -40,7 +40,7 @@ I want to redesign the main navigation of this app. Can you help me explore some
 Run from the project root. Creates a `design/` directory for exports.
 
 ```bash
-SKILL_DIR="common/.agents/skills/dev-util-visual-companion"
+SKILL_DIR="common/.agents/skills/dev-visual-companion"
 SCRIPT_DIR="$SKILL_DIR/scripts"
 mkdir -p design
 ```

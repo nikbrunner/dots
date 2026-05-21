@@ -23,11 +23,11 @@ common/.claude/
     ├── dev-flow/              # 1 skill, 5 sub-docs: assess, plan, implement, review, close
     ├── dev-audit/             # 1 skill, 4 sub-docs: ui, style, arch, docs
     ├── dev-style-*/           # 6 coding convention skills (react, typescript, css, tanstack, tdd, state)
-    ├── dev-util-*/            # 5 standalone tools (commit, visual-companion, browser, glossary, design-interface)
-    ├── dev-setup-*/           # 5 bootstrapping (claude, project, openspec, skill, pre-commit)
+    ├── dev-util-*/            # 2 standalone tools (browser, visual-companion)
+    ├── dev-setup-*/           # 7 bootstrapping (claude, project, skill, pre-commit, dep-upgrade, release-please, glossary)
     ├── about-*/               # 8 knowledge skills
     ├── bai-*/                 # 6 BAI GitHub issue tools + bai-create-project
-    ├── dots-*/                # 4 dotfiles skills
+    ├── dots-*/                # 2 dotfiles skills (git-status-cleanup, manage)
     └── penny-*/               # 7 penny skills + penny base
 ```
 

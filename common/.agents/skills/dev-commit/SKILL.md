@@ -1,6 +1,6 @@
 ---
 name: dev-commit
-description: "Commit workflow with staged docs audit, conventional commit format, approval gate, and pre-commit chain. Stages selectively, runs dev-audit-docs, drafts a message, waits for explicit approval, then commits."
+description: "Commit workflow with staged docs audit, conventional commit format, approval gate, and pre-commit chain. Stages selectively, runs dev:audit docs --staged, drafts a message, waits for explicit approval, then commits."
 argument-hint: "[optional message hint or scope hint]"
 user-invocable: true
 metadata:
@@ -12,7 +12,7 @@ metadata:
 
 A disciplined commit ritual. Combines selective staging, doc-audit-before-commit, Conventional Commits, an explicit approval gate, and the project's pre-commit chain.
 
-Depends on `dev-audit-docs` being installed as a user skill.
+Uses `dev:audit docs --staged` (built into dev-audit) for the docs audit phase.
 
 ## When to use
 
@@ -49,7 +49,7 @@ Identify three buckets:
 
 ## Phase 2 — Audit docs
 
-Invoke `dev-audit-docs --staged`. Read the findings. Three outcomes:
+Invoke `dev:audit docs --staged`. Read the findings. Three outcomes:
 
 | Result        | Action                                                                                            |
 | ------------- | ------------------------------------------------------------------------------------------------- |
@@ -57,7 +57,7 @@ Invoke `dev-audit-docs --staged`. Read the findings. Three outcomes:
 | STALE / DRIFT | Apply minimal edits to the flagged docs. Stage them. Fold into this commit, not a separate docs:. |
 | GAP           | Document the new surface or convention. Stage. Fold into this commit.                             |
 
-Do **not** skip Phase 2. If `dev-audit-docs` is not installed, note it and skip gracefully.
+Do **not** skip Phase 2.
 
 ---
 
