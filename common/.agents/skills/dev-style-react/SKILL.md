@@ -1,6 +1,6 @@
 ---
 name: dev-style-react
-description: "My React component architecture -- dumb/smart/partial pattern, folder structure, and composition principles. Load when working in React codebases."
+description: "My React component architecture -- dumb/smart/partial pattern, folder structure, composition principles, and useEffect anti-pattern audit. Load when working in React codebases."
 argument-hint: "topic"
 user-invocable: false
 metadata:
@@ -69,3 +69,34 @@ Fetching and data processing happen in Containers (or Routes), Hooks, or Partial
 
 - Dan Abramov: Smart and Dumb Components (original concept)
 - Jake Trent: Broad vs Deep Split
+
+---
+
+## useEffect Audit
+
+Scan a React codebase for unnecessary or misused `useEffect` calls. Reference: https://react.dev/learn/you-might-not-need-an-effect
+
+### Workflow
+
+1. **Find all useEffect usages.** Grep for `useEffect` across the target path or repo.
+2. **Read each file** containing useEffect. Classify each call against the anti-pattern catalog (see `references/no-use-effect-patterns.md`). Skip legitimate uses (ref-scoped events, animations, WS, analytics on display, focus management).
+3. **For each finding**, record: file path, anti-pattern matched, problematic code, suggested fix.
+4. **Report** grouped by anti-pattern with a summary of counts.
+
+### Anti-Patterns (13 total)
+
+See full catalog with code examples in [references/no-use-effect-patterns.md](references/no-use-effect-patterns.md):
+
+1. Derived State
+2. Expensive Derived Computation
+3. Reset All State on Prop Change
+4. Adjust Some State on Prop Change
+5. Event Logic in Effect
+6. POST / Mutation in Effect
+7. Effect Chains
+8. App Initialization in Effect
+9. Notify Parent via Effect
+10. Pass Data to Parent via Effect
+11. External Store Subscription
+12. Initialize State from Props via Effect
+13. Fetch Without Cleanup

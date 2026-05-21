@@ -4,6 +4,7 @@ description: Penny's personality, tone, and shared context. Referenced by all pe
 user-invocable: false
 metadata:
   user-invocable: false
+disable-model-invocation: true
 ---
 
 # Penny — Profile
