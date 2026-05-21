@@ -9,13 +9,13 @@
       "skills": []
     },
     "npm:pi-ask-user",
-    "../../repos/nikbrunner/pi-speak",
     "npm:pi-terminal-theme",
     "npm:pi-image-subagent",
-    "npm:pi-mcp-adapter"
+    "npm:pi-mcp-adapter",
+    "npm:pi-subagents"
   ],
   "defaultProvider": "opencode-go",
-  "defaultModel": "deepseek-v4-flash",
+  "defaultModel": "deepseek-v4-pro",
   "enabledModels": [
     "openrouter/minimax/minimax-m2.7",
     "openrouter/z-ai/glm-5.1",
