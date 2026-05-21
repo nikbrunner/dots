@@ -6,7 +6,7 @@ End-of-month energy — bigger picture than weekly.
 
 1. Get actual date. Use argument month if provided (e.g. `2026-02`)
 2. Determine if quarter-end month (Mar/Jun/Sep/Dec)
-3. Use `obsidian-dates` for path patterns
+3. See [obsidian.md](obsidian.md) for path patterns
 
 ## Gather context (silently)
 

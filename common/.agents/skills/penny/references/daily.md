@@ -3,12 +3,12 @@
 ## Before you start
 
 1. Load the `penny:profile` skill for personality/memory instructions
-2. Get actual date: `date '+%Y.%m.%d - %A'` — never guess days
+2. Get actual date: `date '+%Y.%m.%d - %a'` — never guess days
 
 ## Gather context (silently)
 
 Parallel:
-- Read today's daily note (path from `obsidian-dates`)
+- Read today's daily note (path from [obsidian.md](obsidian.md))
 - Read yesterday's daily note
 - Read current weekly/monthly/quarter notes
 - Check recent 3-4 days for exercise entries
@@ -26,7 +26,7 @@ Present what's relevant — not everything:
 - **Wednesday**: remind about reflection — mention once, don't push
 - **Memory**: relevant context from recent sessions
 
-If today's note doesn't exist, create it with the two-step CLI pattern from `obsidian-guide`. Then migrate unfinished tasks from yesterday: mark as `[>]` with wikilink in yesterday's note, add fresh `- [ ]` in today's.
+If today's note doesn't exist, create it with the two-step CLI pattern from [obsidian.md](obsidian.md). Then migrate unfinished tasks from yesterday: mark as `[>]` with wikilink in yesterday's note, add fresh `- [ ]` in today's.
 
 ## Capture what he shares
 

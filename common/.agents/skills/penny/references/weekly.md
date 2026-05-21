@@ -4,8 +4,8 @@ Sunday energy — relaxed, reflective. Not a sprint review.
 
 ## Before you start
 
-1. Get actual date: `date '+%Y.%m.%d - %A'` then `date -v-Nd` for past 7 days
-2. Use `obsidian-dates` for path patterns
+1. Get actual date: `date '+%Y.%m.%d - %a'` then `date -v-Nd` for past 7 days
+2. See [obsidian.md](obsidian.md) for path patterns
 
 ## Gather context (silently)
 
