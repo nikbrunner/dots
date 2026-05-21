@@ -15,6 +15,20 @@ For implementations, that benefit from tests or test-driven development, use the
 - When blocked, stop and ask. Present what you tried, what failed, and what you need. Don't force through with assumptions.
 - When all tasks are complete, use the `implementation-reviewer` agent to review the code.
 
+## Commit-gate workflow (when plan has pre-numbered commits)
+
+When the plan's phases include numbered commits (e.g. `1. chore: install CVA`, `2. refactor(button): ...`), use this workflow:
+
+1. **Implement** the work for the current numbered commit — make all changes, run verification (build, typecheck, lint).
+2. **Pause before committing.** Show the user:
+   - A one-paragraph summary of what changed and why
+   - The proposed commit message
+3. **Wait for explicit approval.** A "y" or specific approval phrase is required. If the user pushes back, adjust and re-present.
+4. **Commit** only after approval. Never commit speculatively.
+5. **Advance** to the next numbered commit and repeat.
+
+This gives the user a lightweight code-review gate at every commit boundary — changes are small enough to scan quickly, and nothing lands without sign-off. The plan's commit list is the shared contract; deviations (scope discovered mid-implementation, commits that need splitting) are surfaced as questions, not silent changes.
+
 ## Subagents
 
 If tasks are independent (no shared state, no ordering dependency), dispatch subagents in parallel. Every subagent prompt MUST include:

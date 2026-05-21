@@ -73,6 +73,12 @@ Durable decisions that apply across all phases:
 
 A concise description of this vertical slice. Describe the end-to-end behavior, not layer-by-layer implementation.
 
+### Commits
+
+List the planned commits for this phase as numbered entries. Each commit is the unit of the commit-gate workflow in Phase 3 — the implementer pauses before each one for approval.
+
+1. `type(scope): description` — what this commit covers and why it's atomic
+
 ### Acceptance criteria
 
 - [ ] Criterion 1
