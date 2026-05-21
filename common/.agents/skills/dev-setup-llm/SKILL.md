@@ -164,71 +164,9 @@ After execution, run this checklist:
 
 - `ls -la .agents/skills/*/SKILL.md` — list all skills created
 - `wc -l AGENTS.md` — confirm lean line count (~50 lines for project-level)
-- Test a skill invocation (e.g., `/skill:name` in Claude Code, or let Pi auto-discover)
-- Verify enforcement is active (see tool-specific guides for how to test)
-
-## Conventions
-
-All conventions baked into this skill's decisions.
-
-### AI Feedback Loops
-
-The most powerful thing you can do for an AI-driven project is give the agent ways to verify its own work. Three layers, from cheapest to most expensive:
-
-1. **TypeScript** — free feedback. Every type error the AI would otherwise only catch in a browser becomes a build-time failure. Prefer TypeScript over JavaScript for any AI-driven project.
-2. **`typecheck` script** — a dedicated `package.json` script (`tsc --noEmit` or framework equivalent) that the AI can run after every change. Faster than a full build, catches type errors immediately.
-3. **Pre-commit hooks** — the enforcement layer. Typecheck + lint + tests run before every commit. If anything fails, the commit is blocked and the AI gets the error message.
-
-**Why this works for AI:** Agents don't get frustrated by repetition. A hook that would annoy a human ("I know, I'll fix it after") is perfect for an AI — it just reads the error and tries again. Feedback loops turn "the AI might have broken something" into "the AI will know immediately if it broke something."
-
-When setting up LLM config, always recommend the user also set up pre-commit hooks with at minimum `typecheck` + `lint-staged` (for formatting). Refer to `dev-setup-pre-commit` for implementation.
-
-### AGENTS.md philosophy
-
-- `AGENTS.md` is the canonical source of truth — tool-specific config files (`CLAUDE.md`, etc.) symlink to it
-- Max ~50 lines for project-level files; global `~/.agents/AGENTS.md` can be longer
-- Only content the agent would get wrong without — nothing discoverable from codebase
-- **Decision test:** "Would the agent make a costly mistake without this line? If no, cut it."
-- No workflows, no task instructions, no domain deep-dives — those belong in skills
-
-### Skill conventions
-
-- Directory names use `-` (hyphen), e.g., `dev-testing/`
-- Common namespace prefixes: `bai-`, `dots-`, `dev-`, `penny-`
-- No prefix for general-purpose skills (e.g., `research`, `bugs`)
-- Use `metadata.argument-hint` (spec-compliant) instead of bare `argument-hint`
-- Include `description` in frontmatter (required by spec)
-- Skills live in `.agents/skills/` (shared across all tools)
-- To hide from auto-discovery, use `disable-model-invocation: true` (spec-compliant)
-
-**Skill frontmatter template:**
-
-```yaml
----
-name: dev-setup-llm
-description: One-line description used for discovery
-metadata:
-  argument-hint: "[optional: what arguments look like]"
----
-```
-
-### Enforcement conventions
-
-- Deterministic rules ("always X", "never Y") belong in enforcement, not AGENTS.md
-- See `guides/pi.md` for Pi extension events; see `guides/claude-code.md` for Claude Code hooks
-
-### What gets CUT — full list
-
-- Dev commands discoverable from `package.json`, `Makefile`, `deno.json`, etc.
-- Node/runtime version from `.nvmrc`, `.tool-versions`, `package.json#engines`
-- Path aliases from `tsconfig.json#paths`, `vite.config.*`
-- Auto-generated files inferable from framework
-- Architecture already documented in `docs/`
-- Linting/formatting config discoverable from config files
-- Test setup discoverable from test config and scripts
-- Any line that fails the decision test
+- Verify enforcement is active (see tool-specific guides)
 
 ## Cross-References
 
-- `dev-setup-project` — may invoke this skill as Phase 6 of project bootstrapping
-- `dev-setup-pre-commit` — should be invoked after LLM setup to establish AI feedback loops (typecheck, lint-staged, tests in pre-commit)
+- `dev-setup-project` — may invoke this skill as Phase 6 of bootstrapping
+- `dev-setup-pre-commit` — for AI feedback loops (typecheck + lint-staged in pre-commit hooks)
