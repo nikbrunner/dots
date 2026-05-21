@@ -1,6 +1,6 @@
 ---
 name: dev-util-browser
-description: Browser automation CLI for AI agents — navigate, fill forms, click, screenshot, extract data. Use for any website interaction.
+description: Primary browser automation via agent-browser CLI — navigate, fill, click, screenshot, extract. Falls back to Chrome MCP for DevTools tasks (Lighthouse, perf traces, network analysis).
 allowed-tools: Bash(npx agent-browser:*), Bash(agent-browser:*)
 ---
 
@@ -77,3 +77,16 @@ Refs are **invalidated** after navigation, form submission, or dynamic content c
 - `agent-browser --session-name myapp` auto-saves/restores auth state
 - `agent-browser --auto-connect` reuses user's running Chrome (auth pre-filled)
 - ALWAYS `close` when done to avoid leaked processes
+
+## Chrome MCP Fallback
+
+For **DevTools-level tasks** not available in agent-browser, use the Chrome MCP (`chrome-devtools__*` tools):
+
+| Task | Tool |
+|---|---|
+| Lighthouse performance audit | Chrome MCP |
+| Performance trace (timeline) | Chrome MCP |
+| Memory/heap snapshot | Chrome MCP |
+| Network request inspection (full detail) | Chrome MCP |
+| Console message inspection | Chrome MCP |
+| Everything else | `agent-browser` |
