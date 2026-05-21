@@ -56,7 +56,7 @@
             "label": "3"
           }
         ],
-        "lastAccessed": 1779352319
+        "lastAccessed": 1779364690
       }
     },
     "~/repos/imfusion/web-ui-poc-appshell": {
@@ -68,6 +68,17 @@
           }
         ],
         "lastAccessed": 1779288528
+      }
+    },
+    "~/repos/imfusion/web-ui-poc/.claude/worktrees/modifier-convention-plan": {
+      "worktree-modifier-convention-plan": {
+        "locks": [
+          {
+            "filename": "packages/web-ui/vite.config.ts",
+            "label": "1"
+          }
+        ],
+        "lastAccessed": 1779371948
       }
     },
     "~/repos/nikbrunner/minifugit.nvim": {

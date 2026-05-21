@@ -4,17 +4,17 @@ let v:this_session=expand("<sfile>:p")
 doautoall SessionLoadPre
 silent only
 silent tabonly
-cd ~/repos/black-atom-industries/radar.nvim
+cd ~/repos/imfusion/web-ui-poc/.claude/worktrees/modifier-convention-plan
 if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +0 ~/repos/black-atom-industries/radar.nvim/plans/unified-window-layout.md
+badd +16 plans/05-modifier-convention.md
 argglobal
 %argdel
-$argadd ~/repos/black-atom-industries/radar.nvim/lua/radar/ui/tabs.lua
-edit ~/repos/black-atom-industries/radar.nvim/plans/unified-window-layout.md
+$argadd ~/repos/imfusion/web-ui-poc/.claude/worktrees/wireframe-preview/apps/explorer/src/components/doc/controlled-preview/controlled-preview.module.css
+edit plans/05-modifier-convention.md
 argglobal
 xnoremap <buffer> <silent> [[ :exe "normal! gv"|call search('\%(^#\{1,5\}\s\+\S\|^\S.*\n^[=-]\+$\)', "bsW")
 xnoremap <buffer> <silent> ]] :exe "normal! gv"|call search('\%(^#\{1,5\}\s\+\S\|^\S.*\n^[=-]\+$\)', "sW")
@@ -84,7 +84,7 @@ setlocal modifiable
 setlocal nrformats=bin,hex
 setlocal number
 setlocal numberwidth=4
-setlocal omnifunc=
+setlocal omnifunc=v:lua.vim.lsp.omnifunc
 setlocal nopreserveindent
 setlocal nopreviewwindow
 setlocal quoteescape=\\
@@ -94,8 +94,8 @@ setlocal norightleft
 setlocal rightleftcmd=search
 setlocal scrollback=-1
 setlocal noscrollbind
-setlocal shiftwidth=4
-setlocal signcolumn=yes
+setlocal shiftwidth=2
+setlocal signcolumn=no
 setlocal smartindent
 setlocal nosmoothscroll
 setlocal softtabstop=-1
@@ -112,12 +112,12 @@ if &syntax != ''
 setlocal syntax=
 endif
 setlocal tabstop=4
-setlocal tagfunc=
-setlocal textwidth=0
+setlocal tagfunc=v:lua.vim.lsp.tagfunc
+setlocal textwidth=125
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#MiniIconsGrey#󰍔%*\ \ %#WinBarPath#plans%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#unified-window-layout.md%*%=
+setlocal winbar=%#MiniIconsGrey#󰍔%*\ \ %#WinBarPath#plans%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#05-modifier-convention.md%*%=
 setlocal winblend=0
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -125,12 +125,12 @@ setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal wrap
 setlocal wrapmargin=0
-let s:l = 25 - ((24 * winheight(0) + 27) / 55)
+let s:l = 16 - ((15 * winheight(0) + 20) / 40)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 25
-normal! 0
+keepjumps 16
+normal! 03|
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
