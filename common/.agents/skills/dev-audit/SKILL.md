@@ -90,7 +90,7 @@ Check code adherence to project-specific style conventions.
 
 Audit frontend UI through technical and design lenses.
 
-**Uses**: `dev-impeccable:audit` (a11y, perf, theming), `dev-impeccable:critique` (design coherence), `dev-util-browser` for screenshots.
+**Uses**: `dev-impeccable:audit` (a11y, perf, theming), `dev-impeccable:critique` (design coherence), `dev-browser` for screenshots.
 
 ### Steps
 1. Determine scope.
@@ -113,11 +113,11 @@ Audit frontend UI through technical and design lenses.
 
 Audit against Nielsen's 10 Usability Heuristics.
 
-**Uses**: `dev-util-browser` for screenshots at key states, LSP for tracing state/error handling.
+**Uses**: `dev-browser` for screenshots at key states, LSP for tracing state/error handling.
 
 ### Steps
 1. Determine scope.
-2. Capture screenshots at key states (idle, loading, error, empty, success) using `dev-util-browser`:
+2. Capture screenshots at key states (idle, loading, error, empty, success) using `dev-browser`:
    ```bash
    agent-browser open <url>
    agent-browser screenshot idle.png
@@ -149,5 +149,5 @@ Audit against Nielsen's 10 Usability Heuristics.
 - `dev-style-react` — component patterns for error boundaries and loading states
 - `dev-impeccable` — deeper UI polish commands
 - `dev-util-design-interface` — redesign proposals
-- `dev-util-browser` — screenshot capture via `agent-browser`
+- `dev-browser` — screenshot capture via `agent-browser`
 - `dev-commit` — integrates docs audit as pre-commit gate

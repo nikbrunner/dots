@@ -1,5 +1,5 @@
 ---
-name: dev-util-browser
+name: dev-browser
 description: Primary browser automation via agent-browser CLI — navigate, fill, click, screenshot, extract. Falls back to Chrome MCP for DevTools tasks (Lighthouse, perf traces, network analysis).
 allowed-tools: Bash(npx agent-browser:*), Bash(agent-browser:*)
 ---
