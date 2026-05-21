@@ -1,7 +1,8 @@
 bookmarks:
-    - path: /Users/brunner/repos/nikbrunner/dots
-    - path: /Users/brunner/repos/nikbrunner/notes
-    - path: /Users/brunner/repos/nikbrunner/imf-notes
-    - path: /Users/brunner/repos/imfusion/web-ui-poc
-    - path: /Users/brunner/repos/black-atom-industries/core
-    - path: /Users/brunner/repos/black-atom-industries/helm
+    - path: ~/repos/nikbrunner/dots
+    - path: ~/repos/nikbrunner/notes
+    - path: ~/repos/nikbrunner/imf-notes
+    - path: ~/repos/imfusion/web-ui-poc
+    - path: ~/repos/nikbrunner/minifugit.nvim
+    - path: ~/repos/black-atom-industries/core
+    - path: ~/repos/black-atom-industries/helm
