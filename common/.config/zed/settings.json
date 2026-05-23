@@ -94,7 +94,7 @@
   "theme": {
     "mode": "light",
     "light": "Black Atom — JPN ∷ Koyo Hiru",
-    "dark": "Black Atom — TERRA ∷ Summer Night",
+    "dark": "Black Atom — Dark Dimmed",
   },
   "base_keymap": "VSCode",
   "vim_mode": true,
