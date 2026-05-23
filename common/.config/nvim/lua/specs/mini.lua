@@ -210,10 +210,8 @@ M.auto_create_session_dirs = require("lib.sessions").auto_create_session_dirs
 -- https://github.com/nvim-mini/mini.nvim/issues/987
 function M.sessions()
     require("mini.sessions").setup({
-        -- Auto Load handled manually
         autowrite = true,
         directory = vim.fn.stdpath("config") .. "/sessions/",
-        verbose = { read = true, write = true, delete = true },
         hooks = {
             pre = {
                 -- Save current session before loading a different one
