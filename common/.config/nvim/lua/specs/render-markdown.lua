@@ -3,9 +3,6 @@ return {
         "MeanderingProgrammer/render-markdown.nvim",
         ft = { "markdown" },
         dependencies = { "nvim-treesitter/nvim-treesitter", "nvim-mini/mini.nvim" }, -- if you use the mini.nvim suite
-        -- dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-mini/mini.icons' },        -- if you use standalone mini plugins
-        -- dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-tree/nvim-web-devicons' }, -- if you prefer nvim-web-devicons
-        -- TODO: Setup special links with brackets [[issue] sdfsdf](link) https://github.com/MeanderingProgrammer/render-markdown.nvim#links
         ---@module 'render-markdown'
         ---@type render.md.UserConfig
         opts = {
@@ -17,16 +14,13 @@ return {
             completions = { lsp = { enabled = true } },
             debounce = 250,
             bullet = {
-                icons = " ",
+                icons = "󰛄 ",
             },
             -- win_options = {
             --     conceallevel = {
             --         default = vim.o.conceallevel,
             --         rendered = 0,
             --     },
-            -- },
-            -- pipe_table = {
-            --     enabled = false,
             -- },
             checkbox = {
                 unchecked = {
@@ -66,11 +60,5 @@ return {
                 },
             },
         },
-    },
-    {
-        "ice345/markdown-table-wrap.nvim",
-        ft = "markdown",
-        enabled = false,
-        opts = {},
     },
 }
