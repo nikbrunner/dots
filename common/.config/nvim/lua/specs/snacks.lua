@@ -2,36 +2,6 @@
 local M = {}
 
 -- ============================================================================
--- Lazygit Integration Functions
--- ============================================================================
-
----Edit a file at a specific line from Lazygit
----@param file_path string The file path to edit
----@param line number The line number to jump to
----@return nil
-local function edit_line_from_lazygit(file_path, line)
-    local current_path = vim.fn.expand("%:p")
-    if current_path ~= file_path then
-        vim.cmd("e " .. file_path)
-    end
-    vim.cmd(tostring(line))
-end
-
----Edit a file from Lazygit
----@param file_path string The file path to edit
----@return nil
-local function edit_from_lazygit(file_path)
-    local current_path = vim.fn.expand("%:p")
-    if current_path ~= file_path then
-        vim.cmd("e " .. file_path)
-    end
-end
-
--- Make functions globally available for Lazygit integration
-_G.EditLineFromLazygit = edit_line_from_lazygit
-_G.EditFromLazygit = edit_from_lazygit
-
--- ============================================================================
 -- GitHub PR Context Detection
 -- ============================================================================
 
