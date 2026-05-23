@@ -26,3 +26,4 @@ skills-lock.json
 /common/.local/share/nvim/radar/radar-debug.log
 /plans
 /common/.pi/agent/npm
+/common/.pi/exa-usage.json
