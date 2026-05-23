@@ -45,6 +45,12 @@ vim.opt.wildmode = "longest:full,full"
 
 vim.opt.jumpoptions = "stack"
 
+vim.opt.pumborder = "single"
+vim.opt.pummaxwidth = 60
+vim.o.shortmess = vim.o.shortmess .. "u"
+vim.opt.scrolloffpad = 99
+-- vim.opt.switchbuf = "vsplit"
+
 vim.opt.fillchars = {
     foldopen = "",
     foldclose = "",
@@ -100,3 +106,19 @@ vim.cmd("cabbrev Wa wa")
 vim.cmd("cabbrev git Git")
 
 vim.o.showtabline = 0
+
+pcall(function()
+    require("vim._core.ui2").enable({
+        msg = {
+            targets = {
+                default = "msg",
+                progress = "msg",
+                pager = "pager",
+            },
+            msg = {
+                timeout = 3000,
+                height = 0.5,
+            },
+        },
+    })
+end)
