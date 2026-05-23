@@ -1,4 +1,4 @@
-.PHONY: fmt
+.PHONY: fmt fmt-check
 
 SHELL_PATHS := \
 	scripts/ \
@@ -10,3 +10,6 @@ SHELL_PATHS := \
 fmt:
 	npx prettier --write "**/*.md"
 	shfmt -w $(SHELL_PATHS)
+
+fmt-check:
+	./.githooks/pre-commit

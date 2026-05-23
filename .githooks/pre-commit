@@ -2,6 +2,7 @@
 set -e
 
 SHELL_PATHS="scripts/ common/.local/bin/ arch/.local/bin/ common/.config/tmux/layouts/ common/.config/tmux/scripts/"
+MAKEFILE_PATHS="Makefile install/mac/Makefile install/arch/Makefile"
 
 # Check markdown formatting
 npx prettier --check "**/*.md"
@@ -9,3 +10,16 @@ npx prettier --check "**/*.md"
 # Check shell formatting
 # shellcheck disable=SC2086
 shfmt -d $SHELL_PATHS
+
+# Check Makefile formatting: recipe lines must use tabs, not spaces
+for f in $MAKEFILE_PATHS; do
+	if [ -f "$f" ]; then
+		bad=$(awk 'BEGIN{recipe=0}/^[a-zA-Z0-9._-]+:/{recipe=1;next}recipe&&/^ /&&!/^\t/{print NR": "$0}' "$f" 2>/dev/null || true)
+		if [ -n "$bad" ]; then
+			echo "Makefile recipe lines must use tabs, not spaces:"
+			echo "$f:"
+			echo "$bad"
+			exit 1
+		fi
+	fi
+done
