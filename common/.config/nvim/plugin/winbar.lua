@@ -117,7 +117,7 @@ local function winbar_set()
     -- Clear winbar for non-file buffers and filetypes that shouldn't show the custom winbar
     -- Skip oil: it manages its own winbar via config
     if bt ~= "" or vim.tbl_contains(clear_winbar_filetypes, ft) then
-        if ft ~= "oil" then
+        if ft ~= "oil" and ft ~= "canola" then
             vim.api.nvim_set_option_value("winbar", "", { win = winnr })
         end
         return
