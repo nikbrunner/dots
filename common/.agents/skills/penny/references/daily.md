@@ -8,6 +8,7 @@
 ## Gather context (silently)
 
 Parallel:
+
 - Read today's daily note (path from [obsidian.md](obsidian.md))
 - Read yesterday's daily note
 - Read current weekly/monthly/quarter notes

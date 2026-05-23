@@ -66,40 +66,40 @@ Upgraded list, deprecation warnings, new features, skipped deps.
 
 ### npm
 
-| Placeholder | Value |
-|---|---|
-| `package_manager` | npm |
-| `lock_file` | package-lock.json |
-| `outdated_command` | `npm outdated` |
-| `upgrade_command` | `npm install` |
-| `commit_prefix` | `build(deps):` or `chore(deps):` |
+| Placeholder        | Value                            |
+| ------------------ | -------------------------------- |
+| `package_manager`  | npm                              |
+| `lock_file`        | package-lock.json                |
+| `outdated_command` | `npm outdated`                   |
+| `upgrade_command`  | `npm install`                    |
+| `commit_prefix`    | `build(deps):` or `chore(deps):` |
 
 ### pnpm
 
-| Placeholder | Value |
-|---|---|
-| `package_manager` | pnpm |
-| `lock_file` | pnpm-lock.yaml |
-| `outdated_command` | `pnpm outdated` |
-| `upgrade_command` | `pnpm update` |
-| `commit_prefix` | `build(deps):` or `chore(deps):` |
+| Placeholder        | Value                            |
+| ------------------ | -------------------------------- |
+| `package_manager`  | pnpm                             |
+| `lock_file`        | pnpm-lock.yaml                   |
+| `outdated_command` | `pnpm outdated`                  |
+| `upgrade_command`  | `pnpm update`                    |
+| `commit_prefix`    | `build(deps):` or `chore(deps):` |
 
 ### Go
 
-| Placeholder | Value |
-|---|---|
-| `package_manager` | Go modules |
-| `lock_file` | go.sum |
+| Placeholder        | Value               |
+| ------------------ | ------------------- |
+| `package_manager`  | Go modules          |
+| `lock_file`        | go.sum              |
 | `outdated_command` | `go list -m -u all` |
-| `upgrade_command` | `go get` |
-| `commit_prefix` | `build(deps):` |
+| `upgrade_command`  | `go get`            |
+| `commit_prefix`    | `build(deps):`      |
 
 ### Rust (Cargo)
 
-| Placeholder | Value |
-|---|---|
-| `package_manager` | Cargo |
-| `lock_file` | Cargo.lock |
-| `outdated_command` | `cargo outdated` |
-| `upgrade_command` | `cargo update -p` |
-| `commit_prefix` | `build(deps):` |
+| Placeholder        | Value             |
+| ------------------ | ----------------- |
+| `package_manager`  | Cargo             |
+| `lock_file`        | Cargo.lock        |
+| `outdated_command` | `cargo outdated`  |
+| `upgrade_command`  | `cargo update -p` |
+| `commit_prefix`    | `build(deps):`    |

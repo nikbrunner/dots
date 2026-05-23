@@ -24,16 +24,19 @@ agent-browser screenshot
 ## Essential Commands
 
 ### Navigation & Page
+
 - `agent-browser open <url>` — navigate (also: goto, navigate)
 - `agent-browser close` / `close --all` — close session(s)
 - `agent-browser get text @e1` / `get url` / `get title` — get page info
 
 ### Snapshot (always use `-i` for interactive refs)
+
 - `agent-browser snapshot -i` — get element refs like `@e1`, `@e2`
 - `agent-browser snapshot -i --urls` — also show href URLs
 - `agent-browser snapshot -s "#selector"` — scope to CSS selector
 
 ### Interaction (use @refs from snapshot)
+
 - `agent-browser click @e1` — click element
 - `agent-browser fill @e2 "text"` — clear and type
 - `agent-browser select @e3 "option"` — dropdown
@@ -42,15 +45,18 @@ agent-browser screenshot
 - `agent-browser scroll down 500` — scroll
 
 ### Capture
+
 - `agent-browser screenshot` / `screenshot --full` / `screenshot --annotate`
 - `agent-browser pdf output.pdf`
 
 ### Wait
+
 - `agent-browser wait 2000` — milliseconds
 - `agent-browser wait @e1` — wait for element
 - `agent-browser wait --text "Welcome"` — wait for text
 
 ### Batch (always use for 2+ sequential commands)
+
 ```bash
 agent-browser batch "open https://example.com" "snapshot -i"
 ```
@@ -61,14 +67,14 @@ Refs are **invalidated** after navigation, form submission, or dynamic content c
 
 ## Key Patterns
 
-| Pattern | Where |
-|---|---|
-| Auth / login flows | [references/authentication.md](references/authentication.md) |
-| Full command reference | [references/commands.md](references/commands.md) |
-| Session management | [references/session-management.md](references/session-management.md) |
-| Snapshot refs deep dive | [references/snapshot-refs.md](references/snapshot-refs.md) |
-| Cloud providers (Browserbase, etc.) | `agent-browser -p <provider>` |
-| Config file | `agent-browser.json` in project root |
+| Pattern                             | Where                                                                |
+| ----------------------------------- | -------------------------------------------------------------------- |
+| Auth / login flows                  | [references/authentication.md](references/authentication.md)         |
+| Full command reference              | [references/commands.md](references/commands.md)                     |
+| Session management                  | [references/session-management.md](references/session-management.md) |
+| Snapshot refs deep dive             | [references/snapshot-refs.md](references/snapshot-refs.md)           |
+| Cloud providers (Browserbase, etc.) | `agent-browser -p <provider>`                                        |
+| Config file                         | `agent-browser.json` in project root                                 |
 
 ## Efficiency Tips
 
@@ -82,11 +88,11 @@ Refs are **invalidated** after navigation, form submission, or dynamic content c
 
 For **DevTools-level tasks** not available in agent-browser, use the Chrome MCP (`chrome-devtools__*` tools):
 
-| Task | Tool |
-|---|---|
-| Lighthouse performance audit | Chrome MCP |
-| Performance trace (timeline) | Chrome MCP |
-| Memory/heap snapshot | Chrome MCP |
-| Network request inspection (full detail) | Chrome MCP |
-| Console message inspection | Chrome MCP |
-| Everything else | `agent-browser` |
+| Task                                     | Tool            |
+| ---------------------------------------- | --------------- |
+| Lighthouse performance audit             | Chrome MCP      |
+| Performance trace (timeline)             | Chrome MCP      |
+| Memory/heap snapshot                     | Chrome MCP      |
+| Network request inspection (full detail) | Chrome MCP      |
+| Console message inspection               | Chrome MCP      |
+| Everything else                          | `agent-browser` |

@@ -11,6 +11,7 @@ End-of-month energy — bigger picture than weekly.
 ## Gather context (silently)
 
 Parallel:
+
 - Read all weekly notes from target month
 - Read month note + quarter note
 - Read `penny.md` memory
@@ -24,6 +25,7 @@ Written so he can re-read months later.
 ## Task triage
 
 Go through open tasks one by one or in small batches:
+
 - **Do** → carry to next month
 - **Defer** → park in quarter note
 - **Drop** → remove

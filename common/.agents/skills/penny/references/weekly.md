@@ -51,9 +51,11 @@ Current week's note. Structure:
 Summary (2-3 sentences).
 
 ### Highlights
+
 - 3-5 bullets
 
 ### Naechste Woche
+
 - Intentions and key dates
 ```
 

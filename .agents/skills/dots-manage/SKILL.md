@@ -32,6 +32,7 @@ remove <path>  Remove a config from dots management
 Ask which section this belongs to: `common/` (default), `arch/`, or `macos/`.
 
 The file structure should mirror the home directory:
+
 - `~/.config/foo/bar.conf` → `<section>/.config/foo/bar.conf`
 - `~/.zshrc` → `<section>/.zshrc`
 
@@ -86,6 +87,7 @@ rm "<symlink-path>"
 ```
 
 If the user wants to keep using the config (just unmanaged):
+
 ```bash
 cp "$DOTS_DIR/<section>/<path>" "<original-path>"
 ```

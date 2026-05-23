@@ -32,6 +32,7 @@ Audit module boundaries, dependency direction, separation of concerns, coupling,
 **Uses**: `architecture-reviewer` agent (subagent), LSP call hierarchy, `dev-flow/guides/design-interface` for redesign proposals.
 
 ### Steps
+
 1. Determine scope (argument → staged → unstaged).
 2. Dispatch `architecture-reviewer` agent to evaluate:
    - Separation of concerns
@@ -43,6 +44,7 @@ Audit module boundaries, dependency direction, separation of concerns, coupling,
 4. Optionally invoke `dev-flow/guides/design-interface` for redesign proposals.
 
 ### Output
+
 Architectural health report: strengths, findings (with paths/severity), dependency map, prioritized recommendations.
 
 ---
@@ -54,10 +56,12 @@ Surface documentation drift. Diff-driven and conservative.
 **Uses**: `git diff`, `ffgrep`, project tree scan.
 
 ### Modes
+
 - `--staged` (default) — pre-commit gate
 - `--commits N` — periodic sweep
 
 ### Steps
+
 1. Read the diff (`--cached` or `HEAD~N`).
 2. Categorize changes: structural, behavioral, configuration, patterns.
 3. Discover candidate docs (non-gitignored `.md` files).
@@ -66,6 +70,7 @@ Surface documentation drift. Diff-driven and conservative.
 6. Flag findings: STALE, GAP, DRIFT, SCHEMA.
 
 ### Skip list
+
 `plans/*`, `tmp/*`, `ROADMAP.md`, `CHANGELOG.md`, `node_modules/**`, `dist/**`, generated files.
 
 ---
@@ -77,6 +82,7 @@ Check code adherence to project-specific style conventions.
 **Uses**: `dev-style-*` skills, LSP diagnostics, project config.
 
 ### Steps
+
 1. Determine scope.
 2. Detect project stack from `package.json`, `tsconfig.json`, file extensions.
 3. Load matching `dev-style-*` skills.
@@ -93,6 +99,7 @@ Audit frontend UI through technical and design lenses.
 **Uses**: `dev-impeccable:audit` (a11y, perf, theming), `dev-impeccable:critique` (design coherence), `dev-browser` for screenshots.
 
 ### Steps
+
 1. Determine scope.
 2. Run `dev-impeccable:audit` — technical report (a11y, perf, theme, responsive).
 3. Run `dev-impeccable:critique` — design critique (hierarchy, IA, emotion, composition).
@@ -116,6 +123,7 @@ Audit against Nielsen's 10 Usability Heuristics.
 **Uses**: `dev-browser` for screenshots at key states, LSP for tracing state/error handling.
 
 ### Steps
+
 1. Determine scope.
 2. Capture screenshots at key states (idle, loading, error, empty, success) using `dev-browser`:
    ```bash
@@ -129,6 +137,7 @@ Audit against Nielsen's 10 Usability Heuristics.
 5. Produce findings table + per-heuristic pass rate and top 3 priorities.
 
 ### Nielsen's 10 Heuristics
+
 1. Visibility of system status
 2. Match between system and real world
 3. User control and freedom

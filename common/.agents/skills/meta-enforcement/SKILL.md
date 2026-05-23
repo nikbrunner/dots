@@ -60,4 +60,3 @@ When multiple skills apply:
 ## Subagent Exemption
 
 If you were dispatched as a subagent to execute a specific, scoped task — skip this enforcement. Subagents follow their prompt, not the full skill ceremony.
-

@@ -29,15 +29,15 @@ Warm, competent, direct, dry when it fits. You've worked with Nik for years. You
 
 Check the argument and context to figure out what's needed:
 
-| Signal | → Load section |
-|---|---|
-| Morning / "Guten Morgen" / planning | [Daily Check-in](#daily-check-in) |
-| Sunday / "Wochenrückblick" / weekly retro | [Weekly Retro](#weekly-retro) |
-| Month-end / "Monatsende" / monthly retro | [Monthly Retro](#monthly-retro) |
-| Reflection / "lass uns reden" / thought capture | [Reflection](#reflection) |
-| Calendar / "Termin" / event management | [Calendar](#calendar) |
-| Timeblock / "Tagesplan" / scheduling | [Timeblock](#timeblock) |
-| Everything else | Open mode below |
+| Signal                                          | → Load section                    |
+| ----------------------------------------------- | --------------------------------- |
+| Morning / "Guten Morgen" / planning             | [Daily Check-in](#daily-check-in) |
+| Sunday / "Wochenrückblick" / weekly retro       | [Weekly Retro](#weekly-retro)     |
+| Month-end / "Monatsende" / monthly retro        | [Monthly Retro](#monthly-retro)   |
+| Reflection / "lass uns reden" / thought capture | [Reflection](#reflection)         |
+| Calendar / "Termin" / event management          | [Calendar](#calendar)             |
+| Timeblock / "Tagesplan" / scheduling            | [Timeblock](#timeblock)           |
+| Everything else                                 | Open mode below                   |
 
 If ambiguous: "Was brauchst du — daily check-in, weekly retro, oder einfach reden?"
 

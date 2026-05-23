@@ -44,24 +44,24 @@ Skills that overlap with built-in behaviors (git, styling, testing, TypeScript) 
 
 Prefer these over separate CLI tools or web fetch where applicable:
 
-| MCP | When to Use |
-|---|---|
-| **Ref MCP** | Documentation lookups for libraries, frameworks, APIs. Check before implementing. |
-| **Exa MCP** | Web searches for examples, patterns, solutions not in docs. |
+| MCP            | When to Use                                                                          |
+| -------------- | ------------------------------------------------------------------------------------ |
+| **Ref MCP**    | Documentation lookups for libraries, frameworks, APIs. Check before implementing.    |
+| **Exa MCP**    | Web searches for examples, patterns, solutions not in docs.                          |
 | **Chrome MCP** | DevTools-level tasks: Lighthouse, perf traces, memory snapshots, network inspection. |
 
 ## Browser Automation
 
 Primary: `agent-browser` (CLI). Fallback: Chrome MCP for DevTools-only tasks.
 
-| Task | Tool |
-|---|---|
+| Task                                       | Tool            |
+| ------------------------------------------ | --------------- |
 | Navigate, click, fill, screenshot, extract | `agent-browser` |
-| Auth/login flows, session management | `agent-browser` |
-| Batch operations, multi-page workflows | `agent-browser` |
-| Lighthouse audit, performance traces | Chrome MCP |
-| Network request inspection, console logs | Chrome MCP |
-| Memory/heap snapshots | Chrome MCP |
+| Auth/login flows, session management       | `agent-browser` |
+| Batch operations, multi-page workflows     | `agent-browser` |
+| Lighthouse audit, performance traces       | Chrome MCP      |
+| Network request inspection, console logs   | Chrome MCP      |
+| Memory/heap snapshots                      | Chrome MCP      |
 
 ## Development
 

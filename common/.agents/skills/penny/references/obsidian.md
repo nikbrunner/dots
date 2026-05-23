@@ -17,6 +17,7 @@ obsidian daily                               # Open daily note in Obsidian
 ```
 
 Creating today's daily note (two-step pattern):
+
 ```bash
 DAILY_PATH=$(obsidian daily:path 2>/dev/null)
 obsidian create path="$DAILY_PATH" template="Periodic/Daily Note" 2>/dev/null
