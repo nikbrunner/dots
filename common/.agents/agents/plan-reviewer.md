@@ -17,6 +17,7 @@ You will be given a plan file to review. Read all provided files fully before re
 | ------------------ | ------------------------------------------------------------------------------- |
 | Completeness       | TODOs, placeholders, incomplete tasks, missing steps                            |
 | Spec Alignment     | Plan covers all PRD requirements, no major scope creep, no dropped requirements |
+| Commit Plan        | Does every phase have a `## Commits` heading with actionable, atomic entries?   |
 | Task Decomposition | Tasks have clear boundaries, steps are actionable, dependencies are explicit    |
 | Buildability       | Could an engineer follow this plan without getting stuck or guessing?           |
 | Ordering           | Do phases build on each other logically? Are dependencies respected?            |

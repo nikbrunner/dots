@@ -41,5 +41,7 @@ Offer me a choice with a suggestion based on context.
 
 When reviewer agent approves and the PRD is verified, offer:
 
+> **Before moving to plan:** The plan MUST include a `## Commits` section in each phase that breaks the work into commit-sized slices. Each commit entry is a one-line conventional-commit message with the files it touches, ordered so each commit leaves the repo in a passing state. Mention this requirement when presenting the Continue option so it's on record before planning starts.
+
 - **Continue** — move to [Phase 2 - Plan](./2-plan.md)
 - **Park** — work is tracked (issue filed), not continuing now. Confirm issue properties are set (assignee, type, labels) and end cleanly.
