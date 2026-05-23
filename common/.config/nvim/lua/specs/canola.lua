@@ -220,6 +220,19 @@ return {
                     end
                 end,
             })
+
+            -- Ensure MiniClue triggers in canola buffers (non-listed buftype)
+            vim.api.nvim_create_autocmd("FileType", {
+                pattern = "canola",
+                callback = function(args)
+                    vim.schedule(function()
+                        pcall(require, "mini.clue")
+                        if MiniClue then
+                            MiniClue.ensure_buf_triggers(args.buf)
+                        end
+                    end)
+                end,
+            })
         end,
     },
     {
