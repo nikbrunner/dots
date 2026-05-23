@@ -226,6 +226,9 @@ return {
                 pattern = "canola",
                 callback = function(args)
                     vim.schedule(function()
+                        if not vim.api.nvim_buf_is_valid(args.buf) then
+                            return
+                        end
                         pcall(require, "mini.clue")
                         if MiniClue then
                             MiniClue.ensure_buf_triggers(args.buf)
