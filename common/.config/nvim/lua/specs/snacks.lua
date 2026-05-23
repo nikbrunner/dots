@@ -693,7 +693,7 @@ return {
             },
         },
         notifier = {
-            enabled = true,
+            enabled = false,
             margin = { top = 0, right = 0, bottom = 1, left = 1 },
             -- top_down = false,
             style = "compact",
