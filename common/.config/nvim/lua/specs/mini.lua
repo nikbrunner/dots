@@ -52,7 +52,6 @@ end
 
 function M.icons()
     local circle = "" -- nf-fa-circle (filled)
-    local circle_hl = "MiniIconsGrey"
 
     -- Your explicit file overrides (these survive the circles sweep)
     local file_overrides = {
@@ -70,14 +69,16 @@ function M.icons()
     local mi = require("mini.icons")
 
     -- First setup: establish config table with our overrides
+    -- Default highlights use mi.get() to keep original colors per category
+    local _, default_hl = mi.get("default", "file")
     mi.setup({
         default = {
-            file = { glyph = circle, hl = circle_hl },
+            file = { glyph = circle, hl = default_hl },
             directory = { glyph = circle, hl = "MiniIconsAzure" },
-            extension = { glyph = circle, hl = circle_hl },
-            filetype = { glyph = circle, hl = circle_hl },
-            lsp = { glyph = circle, hl = circle_hl },
-            os = { glyph = circle, hl = circle_hl },
+            extension = { glyph = circle, hl = default_hl },
+            filetype = { glyph = circle, hl = default_hl },
+            lsp = { glyph = circle, hl = default_hl },
+            os = { glyph = circle, hl = default_hl },
         },
         file = file_overrides,
         directory = {},
@@ -87,13 +88,12 @@ function M.icons()
         os = {},
     })
 
-    -- Nuclear: replace ALL built-in icons with circles
-    -- mi.list() returns every built-in entry per category;
-    -- writing them into mi.config makes them overrides,
-    -- then re-setup rebuilds the cache with our circles.
+    -- Nuclear: replace ALL built-in icons with circles,
+    -- keeping the original highlight group per entry (colored circles).
     for _, cat in ipairs({ "directory", "extension", "file", "filetype", "lsp", "os" }) do
         for _, name in ipairs(mi.list(cat)) do
-            mi.config[cat][name] = { glyph = circle, hl = circle_hl }
+            local _, orig_hl = mi.get(cat, name)
+            mi.config[cat][name] = { glyph = circle, hl = orig_hl }
         end
     end
 
@@ -752,6 +752,7 @@ function M.clue()
             { mode = "n", keys = "z" },
             { mode = "n", keys = "y" },
             { mode = "n", keys = "S" },
+            { mode = "n", keys = "Z" },
             { mode = "n", keys = '"' },
             { mode = "x", keys = "'" },
             { mode = "x", keys = "<leader>" },
@@ -767,6 +768,11 @@ function M.clue()
             MiniClue.gen_clues.registers(),
             MiniClue.gen_clues.windows(),
             MiniClue.gen_clues.z(),
+
+            -- Z mappings (ZZ, ZQ, ZR)
+            { mode = "n", keys = "ZZ", desc = "Write & quit" },
+            { mode = "n", keys = "ZQ", desc = "Quit without saving" },
+            { mode = "n", keys = "ZR", desc = "Restart" },
 
             -- App
             { mode = "n", keys = "<leader>a", desc = "[A]pp" },
