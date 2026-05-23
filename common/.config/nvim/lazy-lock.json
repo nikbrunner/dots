@@ -12,7 +12,6 @@
   "flux.nvim": { "branch": "main", "commit": "c0606fcdb5e115d004a3a3f16b06b6bd39c53b1e" },
   "friendly-snippets": { "branch": "main", "commit": "6cd7280adead7f586db6fccbd15d2cac7e2188b9" },
   "gitlinker.nvim": { "branch": "master", "commit": "5e8d9f0deb34b079baf84ffe0abbe0475a6b5372" },
-  "gitpad.nvim": { "branch": "main", "commit": "1e0f6fa335c72c05d1d3635120c572e198e5ae0d" },
   "grug-far.nvim": { "branch": "main", "commit": "5506c2f59dc9ab2ed6c233585412b24d31d51521" },
   "helpview.nvim": { "branch": "main", "commit": "0057599e169ea6ffd53fef77f279cb13b61e174a" },
   "kulala.nvim": { "branch": "main", "commit": "bfe3b3aa1a928d998dbf1036c92272b53a81c261" },
