@@ -19,13 +19,6 @@ end
 -- Disable Ex mode mapping
 M.map("n", "Q", "<nop>", { desc = "Disable Ex Mode" })
 
--- Restart (explicitly save/restore session for reliability with :restart)
-M.map("n", "<leader>R", function()
-    vim.cmd.wa({ bang = true })
-    require("mini.sessions").write(require("lib.sessions").get_session_name())
-    vim.cmd.restart()
-end, { desc = "[R]estart" })
-
 -- Escape clears search highlight, saves, hides notifier
 M.map("n", "<Esc>", function()
     vim.cmd.nohlsearch()
