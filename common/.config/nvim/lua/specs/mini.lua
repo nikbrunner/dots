@@ -21,36 +21,12 @@ function M.statusline()
                     return parent_project_folder .. "/" .. current_project_folder
                 end
 
-                local mode, mode_hl = m.section_mode({ trunc_width = 120 })
+                ---@diagnostic disable-next-line: unused-local
+                local _mode, mode_hl = m.section_mode({ trunc_width = 120 })
                 local git = m.section_git({ trunc_width = 75 })
-                local diagnostics = vim.diagnostic.status()
-                local lsp_status = vim.lsp.status()
-                local lsp_names = table.concat(
-                    vim.iter(vim.lsp.get_clients())
-                        :map(function(c)
-                            return "[" .. c.name .. "]"
-                        end)
-                        :totable(),
-                    " "
-                )
-                local lsp_section = table.concat(vim.list_slice({ lsp_status, lsp_names }, 1, 2), " ")
-
-                -- Treesitter attachment indicator
-                local ts_section = ""
-                local ts_hl = "NonText"
-                local bufnr = vim.api.nvim_get_current_buf()
-                local ok, parser = pcall(vim.treesitter.get_parser, bufnr)
-                if ok and parser then
-                    local lang = parser:lang() or ""
-                    ts_section = " TS " .. lang
-                    ts_hl = "String"
-                else
-                    ts_section = " --"
-                    ts_hl = "NonText"
-                end
 
                 return m.combine_groups({
-                    { hl = mode_hl, strings = { mode } },
+                    { hl = mode_hl, strings = { "  VIN" } },
                     {
                         hl = "@function",
                         strings = (m.is_truncated(100) and {} or { project_name() }),
@@ -64,11 +40,10 @@ function M.statusline()
 
                     "%=", -- End left alignment
 
-                    -- { hl = "@type", strings = { lsp_section } },
-
-                    -- { hl = ts_hl, strings = { ts_section } },
-
-                    -- { hl = "DiagnosticError", strings = { diagnostics } },
+                    {
+                        hl = "@variable.parameter",
+                        strings = { "󰓩  " .. vim.fn.tabpagenr() .. ":" .. vim.fn.tabpagenr("$") .. "" },
+                    },
                 })
             end,
         },
