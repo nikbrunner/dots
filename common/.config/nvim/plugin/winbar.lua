@@ -65,14 +65,6 @@ local function get_ft_icon(bufnr)
     return ""
 end
 
--- { severity, DiagnosticSign group, icon, WinBarLsp group }
-local diagnostic_signs = {
-    { "ERROR", "DiagnosticSignError", "E", "WinBarLspError" },
-    { "WARN", "DiagnosticSignWarn", "W", "WinBarLspWarn" },
-    { "INFO", "DiagnosticSignInfo", "I", "WinBarLspInfo" },
-    { "HINT", "DiagnosticSignHint", "H", "WinBarLspHint" },
-}
-
 local function build_right(bufnr)
     local sections = {}
 
@@ -94,16 +86,10 @@ local function build_right(bufnr)
         end
     end
 
-    -- LSP section: label + counts share lsp_bg
-    local diag_tokens = {}
-    for _, sv in ipairs(diagnostic_signs) do
-        local n = #vim.diagnostic.get(bufnr, { severity = vim.diagnostic.severity[sv[1]] })
-        if n > 0 then
-            table.insert(diag_tokens, "%#" .. sv[4] .. "#" .. sv[3] .. n)
-        end
-    end
-    if #diag_tokens > 0 then
-        table.insert(sections, "%#WinBarLspLabel# [LSP: " .. table.concat(diag_tokens, " ") .. "%#WinBarLspLabel#]%*")
+    -- LSP section: use built-in vim.diagnostic.status()
+    local lsp_status = vim.diagnostic.status(bufnr)
+    if lsp_status ~= "" then
+        table.insert(sections, "%#WinBarLspLabel# [LSP: " .. lsp_status .. "%#WinBarLspLabel#]%*")
     end
 
     if #sections == 0 then
