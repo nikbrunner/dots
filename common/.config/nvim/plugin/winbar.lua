@@ -102,7 +102,6 @@ local clear_winbar_filetypes = {
     "minifiles",
     "help",
     "lazy",
-    "mason",
     "trouble",
     "TelescopePrompt",
     "noice",
