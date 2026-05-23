@@ -12,16 +12,16 @@ return {
             end,
             render_modes = { "n", "c", "t", "i", "v" },
             completions = { lsp = { enabled = true } },
-            debounce = 250,
+            debounce = 1000,
             bullet = {
                 icons = "󰛄 ",
             },
-            -- win_options = {
-            --     conceallevel = {
-            --         default = vim.o.conceallevel,
-            --         rendered = 0,
-            --     },
-            -- },
+            win_options = {
+                conceallevel = {
+                    default = 0,
+                    rendered = vim.o.conceallevel,
+                },
+            },
             checkbox = {
                 unchecked = {
                     icon = "󰄰 ",
