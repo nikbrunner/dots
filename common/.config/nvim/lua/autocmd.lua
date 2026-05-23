@@ -70,7 +70,7 @@ auto("BufReadPost", {
 auto("TextYankPost", {
     group = auto_group("highlight_yank"),
     callback = function()
-        vim.highlight.on_yank()
+        vim.hl.hl_op()
     end,
 })
 
