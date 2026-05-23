@@ -3,7 +3,7 @@ return {
     {
         "black-atom-industries/nvim",
         name = "black-atom",
-        dir = require("lib.config").get_repo_path("black-atom-industries/nvim"),
+        -- dir = require("lib.config").get_repo_path("black-atom-industries/nvim"),
         lazy = false,
         ---@module "black-atom"
         ---@type BlackAtom.Config
@@ -27,7 +27,7 @@ return {
     },
     {
         "black-atom-industries/radar.nvim",
-        dir = require("lib.config").get_repo_path("black-atom-industries/radar.nvim"),
+        -- dir = require("lib.config").get_repo_path("black-atom-industries/radar.nvim"),
         -- lazy = false,
         event = "VimEnter",
         ---@module "radar"

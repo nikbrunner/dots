@@ -1,7 +1,7 @@
 ---@type LazyPluginSpec
 return {
-    -- "nikbrunner/flux.nvim",
-    dir = require("lib.config").get_repo_path("nikbrunner/flux.nvim"),
+    "nikbrunner/flux.nvim",
+    -- dir = require("lib.config").get_repo_path("nikbrunner/flux.nvim"),
     cmd = { "Flux" },
     keys = {
         { "gs", "<cmd>Flux<cr>", desc = "Git Status" },

@@ -10,7 +10,7 @@ return {
     dependencies = {
         {
             "nikbrunner/fff-snacks.nvim",
-            dir = require("lib.config").get_repo_path("nikbrunner/fff-snacks.nvim"),
+            -- dir = require("lib.config").get_repo_path("nikbrunner/fff-snacks.nvim"),
             lazy = false, -- loaded by plugin/fff-snacks.lua on UIEnter
             keys = {
                 {

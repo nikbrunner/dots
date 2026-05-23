@@ -1,65 +1,76 @@
 return {
-    "MeanderingProgrammer/render-markdown.nvim",
-    ft = { "markdown" },
-    dependencies = { "nvim-treesitter/nvim-treesitter", "nvim-mini/mini.nvim" }, -- if you use the mini.nvim suite
-    -- dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-mini/mini.icons' },        -- if you use standalone mini plugins
-    -- dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-tree/nvim-web-devicons' }, -- if you prefer nvim-web-devicons
-    -- TODO: Setup special links with brackets [[issue] sdfsdf](link) https://github.com/MeanderingProgrammer/render-markdown.nvim#links
-    ---@module 'render-markdown'
-    ---@type render.md.UserConfig
-    opts = {
-        max_file_size = 5.0,
-        ignore = function(buf)
-            return vim.api.nvim_buf_line_count(buf) > 2000
-        end,
-        render_modes = { "n", "c", "t", "i", "v" },
-        completions = { lsp = { enabled = true } },
-        debounce = 250,
-        bullet = {
-            icons = " ",
-        },
-        win_options = {
-            conceallevel = {
-                default = vim.o.conceallevel,
-                rendered = 0,
+    {
+        "MeanderingProgrammer/render-markdown.nvim",
+        ft = { "markdown" },
+        dependencies = { "nvim-treesitter/nvim-treesitter", "nvim-mini/mini.nvim" }, -- if you use the mini.nvim suite
+        -- dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-mini/mini.icons' },        -- if you use standalone mini plugins
+        -- dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-tree/nvim-web-devicons' }, -- if you prefer nvim-web-devicons
+        -- TODO: Setup special links with brackets [[issue] sdfsdf](link) https://github.com/MeanderingProgrammer/render-markdown.nvim#links
+        ---@module 'render-markdown'
+        ---@type render.md.UserConfig
+        opts = {
+            max_file_size = 5.0,
+            ignore = function(buf)
+                return vim.api.nvim_buf_line_count(buf) > 2000
+            end,
+            render_modes = { "n", "c", "t", "i", "v" },
+            completions = { lsp = { enabled = true } },
+            debounce = 250,
+            bullet = {
+                icons = " ",
+            },
+            -- win_options = {
+            --     conceallevel = {
+            --         default = vim.o.conceallevel,
+            --         rendered = 0,
+            --     },
+            -- },
+            -- pipe_table = {
+            --     enabled = false,
+            -- },
+            checkbox = {
+                unchecked = {
+                    icon = "󰄰 ",
+                },
+                checked = {
+                    icon = "󰗠 ",
+                    -- highlight = "RenderMarkdownSuccess",
+                    highlight = "@markup.list.checked",
+                },
+                custom = {
+                    progress = {
+                        raw = "[~]",
+                        rendered = "󰦕 ",
+                        highlight = "@markup.list.unchecked",
+                    },
+                    event = {
+                        raw = "[o]",
+                        rendered = "󰃭 ",
+                        highlight = "RenderMarkdownInfo",
+                    },
+                    migrated = {
+                        raw = "[>]",
+                        rendered = "󰁖 ",
+                        highlight = "RenderMarkdownWarn",
+                    },
+                    scheduled = {
+                        raw = "[<]",
+                        rendered = "󰸗 ",
+                        highlight = "RenderMarkdownInfo",
+                    },
+                    cancelled = {
+                        raw = "[-]",
+                        rendered = "󰜺 ",
+                        highlight = "RenderMarkdownError",
+                    },
+                },
             },
         },
-        checkbox = {
-            unchecked = {
-                icon = "󰄰 ",
-            },
-            checked = {
-                icon = "󰗠 ",
-                -- highlight = "RenderMarkdownSuccess",
-                highlight = "@markup.list.checked",
-            },
-            custom = {
-                progress = {
-                    raw = "[~]",
-                    rendered = "󰦕 ",
-                    highlight = "@markup.list.unchecked",
-                },
-                event = {
-                    raw = "[o]",
-                    rendered = "󰃭 ",
-                    highlight = "RenderMarkdownInfo",
-                },
-                migrated = {
-                    raw = "[>]",
-                    rendered = "󰁖 ",
-                    highlight = "RenderMarkdownWarn",
-                },
-                scheduled = {
-                    raw = "[<]",
-                    rendered = "󰸗 ",
-                    highlight = "RenderMarkdownInfo",
-                },
-                cancelled = {
-                    raw = "[-]",
-                    rendered = "󰜺 ",
-                    highlight = "RenderMarkdownError",
-                },
-            },
-        },
+    },
+    {
+        "ice345/markdown-table-wrap.nvim",
+        ft = "markdown",
+        enabled = false,
+        opts = {},
     },
 }

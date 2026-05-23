@@ -1,94 +1,190 @@
 # `nbr.nvim`
 
-Continued from [nbr.nvim](https://github.com/nikbrunner/nbr.nvim/blob/main/README.md).
-
 <a href="https://dotfyle.com/nikbrunner/nbrnvim"><img src="https://dotfyle.com/nikbrunner/nbrnvim/badges/plugins?style=flat" /></a>
 <a href="https://dotfyle.com/nikbrunner/nbrnvim"><img src="https://dotfyle.com/nikbrunner/nbrnvim/badges/leaderkey?style=flat" /></a>
 <a href="https://dotfyle.com/nikbrunner/nbrnvim"><img src="https://dotfyle.com/nikbrunner/nbrnvim/badges/plugin-manager?style=flat" /></a>
 
-This is my personal Neovim configuration.
+My personal Neovim configuration, tailored for frontend web engineering.
 
-I tailored this config to my personal needs as a Frontend Engineer
-mainly working with _React_, _TypeScript_ and _SCSS_.
+This config is managed as part of my [dots](https://github.com/nikbrunner/dots) repo and symlinked to `~/.config/nvim` via `dots link`.
 
 ## Keymap
 
-This editor uses [`AWDCS`](https://github.com/nikbrunner/awdcs) keymap principles.
+This config uses [`AWDCS`](https://github.com/nikbrunner/awdcs) keymap principles.
+
+Leader: `,` — Local leader: `.`
+
+| Prefix | Group | | Prefix | Group |
+| |-|-|-|-|-|
+| `<leader>a` | [A]pp | | `<leader>s` | [S]ymbol |
+| `<leader>d` | [D]ocument | | `<leader>w` | [W]orkspace |
+| `<leader>c` | [C]hange | | `<leader>n` | [N]otes |
+| `<leader>h` | [H]ttp (Kulala) | | `<leader>x` | Trouble/Quickfix |
 
 ## Install
 
-> Install requires Neovim 0.9+.
+### Prerequisites
 
-Clone the repository and install the plugins:
+- Neovim 0.10+
+- A [Nerd Font](https://github.com/ryanoasis/nerd-fonts) (JetBrainsMono Nerd Font recommended)
+- [mise](https://mise.jdx.dev/) or system packages for LSP servers, formatters, and linters
+
+### Setup (via dots)
+
+This is how I manage it — the config lives inside my dotfiles and is symlinked to `~/.config/nvim`:
 
 ```sh
-git clone git@github.com:nikbrunner/nbr ~/.config/nbr
+git clone git@github.com:nikbrunner/dots ~/repos/nikbrunner/dots
+cd ~/repos/nikbrunner/dots
+dots link
+```
+
+Then open Neovim — `lazy.nvim` will bootstrap and install all plugins on first run.
+
+### Setup (NVIM_APPNAME)
+
+Use this method to install alongside an existing Neovim config without conflicts:
+
+```sh
+# Clone the repo
+git clone git@github.com:nikbrunner/nbr.nvim ~/.config/nbr
+
+# Install plugins
 NVIM_APPNAME=nbr nvim --headless +"Lazy! sync" +qa
 ```
 
-Open Neovim with this config, without an alias:
+Open with:
 
 ```sh
-NVIM_APPNAME="nbr" nvim
+NVIM_APPNAME=nbr nvim
 ```
 
-If you want to start this config when running `nvim`, you can set an alias, in your `.bashrc` or `.zshrc`:
+Or set up a shell alias in `.zshrc` / `.bashrc`:
 
 ```sh
-alias nvim="NVIM_APPNAME=nbr nvim"
+alias nbr="NVIM_APPNAME=nbr nvim"
 ```
 
-## Check for errors
+Plugin data lives in `~/.local/share/nbr` and state in `~/.local/state/nbr`, keeping it fully isolated from your default `nvim` config.
 
-Documentation: [Lua Language Server - Usage | Wiki](https://luals.github.io/wiki/usage/).
-
-> Note: The `--configpath` flag seems to be broken and requires a full path.
-> See here: [Settings don't seem to be applied when using linter from CLI · Issue #2038 · LuaLS/lua-language-server](https://github.com/LuaLS/lua-language-server/issues/2038)
+### Setup (standalone — replaces default config)
 
 ```sh
-lua-language-server --check ./lua --logpath=. --configpath=/Users/nikolausbrunner/.config/nvim/.luarc.json
+git clone git@github.com:nikbrunner/nbr.nvim ~/.config/nvim
+nvim --headless +"Lazy! sync" +qa
 ```
 
-## Uninstall
+## Project Structure
 
-To remove everything related to this config, run the following commands:
+```
+nvim/
+├── init.lua                  # Bootstrap — lazy.nvim + module loading
+├── lua/
+│   ├── config.lua            # Colorscheme, paths, dev mode
+│   ├── options.lua           # Vim options & settings
+│   ├── keymaps.lua           # General keymaps
+│   ├── autocmd.lua           # Autocommands
+│   ├── state.lua             # Global runtime state (gh PR context, etc.)
+│   ├── hotreload.lua         # Dev hot-reload support
+│   ├── directory-watcher.lua # Auto-cd to git root
+│   ├── specs/                # Plugin specs (lazy.nvim)
+│   └── lib/                  # Shared utilities (tabline, sessions, git, lsp, …)
+├── lsp/                      # Per-server LSP configs (auto-discovered)
+├── plugin/                   # Immediate-load scripts (claude-edit, tmux, …)
+├── colors/                   # Custom colorscheme overrides
+├── after/queries/            # Treesitter query overrides (markdown)
+├── snippets/                 # Custom snippets (Lua + JSON)
+├── ftplugin/                 # Filetype-specific settings
+├── spell/                   # Spell files (en, de)
+└── sessions/                 # Mini.sessions auto-saved session files
+```
+
+## Plugins
+
+Managed by [lazy.nvim](https://github.com/folke/lazy.nvim). All plugins load lazily unless marked `lazy = false`.
+
+| Plugin                                                                                     | Purpose                                                            |
+| ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------ |
+| [snacks.nvim](https://github.com/folke/snacks.nvim)                                        | Picker, explorer, lazygit, notifier, terminal, git, words, bigfile |
+| [blink.cmp](https://github.com/saghen/blink.cmp)                                           | Autocompletion + signature help                                    |
+| [mini.nvim](https://github.com/echasnovski/mini.nvim)                                      | Sessions, icons, clue, ai, surround, pairs, …                      |
+| [black-atom](https://github.com/black-atom-industries/nvim)                                | Colorscheme (Terra Fall Night default)                             |
+| [radar.nvim](https://github.com/black-atom-industries/radar.nvim)                          | Tab-style buffer bar                                               |
+| [nvim-treesitter](https://github.com/nvim-treesitter/nvim-treesitter)                      | Syntax highlighting & textobjects                                  |
+| [trouble.nvim](https://github.com/folke/trouble.nvim)                                      | Diagnostics list                                                   |
+| [oil.nvim](https://github.com/stevearc/oil.nvim)                                           | File editing (buffer-based)                                        |
+| [conform.nvim](https://github.com/stevearc/conform.nvim)                                   | Formatting                                                         |
+| [nvim-lint](https://github.com/mfussenegger/nvim-lint)                                     | Linting                                                            |
+| [mason.nvim](https://github.com/williamboman/mason.nvim)                                   | LSP server installer                                               |
+| [supermaven-nvim](https://github.com/supermaveninc/supermaven-nvim)                        | AI inline completions                                              |
+| [LuaSnip](https://github.com/L3MON4D3/LuaSnip)                                             | Snippet engine                                                     |
+| [lazydev.nvim](https://github.com/folke/lazydev.nvim)                                      | Lua dev setup for Neovim runtime                                   |
+| [which-key.nvim](https://github.com/folke/which-key.nvim)                                  | Keymap discovery (disabled — using MiniClue)                       |
+| [kulala.nvim](https://github.com/mistweaverco/kulala.nvim)                                 | HTTP client (REST)                                                 |
+| [render-markdown.nvim](https://github.com/MeanderingProgrammer/render-markdown.nvim)       | Markdown rendering                                                 |
+| [helpview.nvim](https://github.com/OXY2DEV/helpview.nvim)                                  | Help doc rendering                                                 |
+| [grug-far.nvim](https://github.com/MagicDuck/grug-far.nvim)                                | Find & replace                                                     |
+| [gitlinker.nvim](https://github.com/linrongbin16/gitlinker.nvim)                           | GitHub permalink                                                   |
+| [gitpad.nvim](https://github.com/yujinyuz/gitpad.nvim)                                     | Git scratch buffer                                                 |
+| [flux.nvim](https://github.com/nikbrunner/flux.nvim)                                       | Git blame viewer (renamed from fugit)                              |
+| [oklch-color-picker.nvim](https://github.com/eero-lehtinen/oklch-color-picker.nvim)        | OKLCH color picker                                                 |
+| [spider.nvim](https://github.com/chrisgrieser/nvim-spider)                                 | Motion by sub-word                                                 |
+| [annotator.nvim](https://github.com/chpeters/annotator.nvim)                               | Annotation rendering                                               |
+| [codediff.nvim](https://github.com/esmuellert/codediff.nvim)                               | Code diff viewer                                                   |
+| [fff.nvim](https://github.com/dmtrKovalenko/fff.nvim)                                      | File finding                                                       |
+| [fff-snacks.nvim](https://github.com/nikbrunner/fff-snacks.nvim)                           | Snacks integration for fff                                         |
+| [qmk.nvim](https://github.com/codethread/qmk.nvim)                                         | QMK keyboard layout visualization                                  |
+| [navigator.nvim](https://github.com/numToStr/Navigator.nvim)                               | Window navigation (tmux integration)                               |
+| [mdn.nvim](https://github.com/nikbrunner/mdn.nvim)                                         | MDN docs                                                           |
+| [review.nvim](https://github.com/nikbrunner/review.nvim)                                   | Code review (codediff dependency)                                  |
+| [treesitter-modules.nvim](https://github.com/MeanderingProgrammer/treesitter-modules.nvim) | Treesitter module management                                       |
+| [treewalker.nvim](https://github.com/aaronik/treewalker.nvim)                              | Treesitter-based navigation                                        |
+| [ts-comments.nvim](https://github.com/folke/ts-comments.nvim)                              | Comment strings per filetype                                       |
+| [ts-error-translator.nvim](https://github.com/dmmulroy/ts-error-translator.nvim)           | TypeScript error translation                                       |
+| [nvim-ts-autotag](https://github.com/windwp/nvim-ts-autotag)                               | Auto-close/rename HTML tags                                        |
+| [whatthejump.nvim](https://github.com/lewis6991/whatthejump.nvim)                          | Jump list visualization                                            |
+| [tsc.nvim](https://github.com/dmmulroy/tsc.nvim)                                           | Type-check project                                                 |
+| [vim-sleuth](https://github.com/tpope/vim-sleuth)                                          | Auto-detect indentation                                            |
+| [nui.nvim](https://github.com/MunifTanjim/nui.nvim)                                        | UI component library (codediff dependency)                         |
+| [markdown-table-wrap.nvim](https://github.com/vasilispher/markdown-table-wrap.nvim)        | Markdown table formatting                                          |
+| [SchemaStore.nvim](https://github.com/b0o/SchemaStore.nvim)                                | JSON schema catalog                                                |
+
+## LSP Servers
+
+Auto-discovered from `lsp/*.lua`. Enabled servers:
+
+`astro` · `bashls` · `biome` · `cssls` · `cssvariables` · `denols` · `eslint` · `gopls` · `jsonls` · `lua_ls` · `marksman` · `md-oxide` · `rust_analyzer` · `tailwindcss` · `taplo` · `tsgo` · `vtsls` · `yamlls`
+
+## Formatting & Linting
+
+- **Formatting**: [conform.nvim](https://github.com/stevearc/conform.nvim) — see `lua/specs/conform.lua`
+- **Linting**: [nvim-lint](https://github.com/mfussenegger/nvim-lint) — see `lua/specs/lint.lua`
+- **Markdown**: `markdown-table-wrap.nvim` for table formatting, `render-markdown.nvim` for rendering
+
+## Development
+
+### Lua Diagnostics
 
 ```sh
-rm -rf ~/.config/nbr
-rm -rf ~/.local/share/nbr
+lua-language-server --check ./lua --logpath=. --configpath="$(pwd)/.luarc.json"
 ```
 
-Make sure you have [a nerd font](https://github.com/ryanoasis/nerd-fonts) installed.
+### Formatting
 
-## TODO
+```sh
+stylua .
+```
 
-[TODO.md](./TODO.md)
+Uses the settings in `stylua.toml` (4-space indent, 125 col width, auto-prefer-double quotes).
+
+## Dev Mode
+
+`config.lua` has a `dev_mode` flag. When enabled, plugins from `black-atom-industries` and `nikbrunner` load from local repos under `~/repos/` instead of downloading from GitHub — enabling hot-reload during development.
 
 ## Links
 
-### General
-
-- [EmmyLua Documentation - Formatting Annotations · sumneko/lua-language-server Wiki](https://github.com/sumneko/lua-language-server/wiki/Formatting-Annotations)
-- [Help - Neovim docs](https://neovim.io/doc/user/index.html)
-
-### Other Configs
-
-- [MariaSolOs/dotfiles](https://github.com/MariaSolOs/dotfiles/blob/main/.config/nvim/lsp/vtsls.lua)
-- [Alexis12119/nvim-config: Generalized and Personalized](https://github.com/Alexis12119/nvim-config)
-- [dotfiles/.config/nvim at mac · MariaSolOs/dotfiles](https://github.com/MariaSolOs/dotfiles/tree/mac/.config/nvim)
-- [0xsamrath/.dotfiles](https://github.com/0xsamrath/.dotfiles)
-- [LunarVim/nvim-basic-ide](https://github.com/LunarVim/nvim-basic-ide)
-- [dot/nvim · folke/dot](https://github.com/folke/dot/tree/master/nvim)
-- [folke/LazyVim: Starter template for lazy Neovim users](https://github.com/folke/LazyVim)
-- [cseickel/dotfiles](https://github.com/cseickel/dotfiles/blob/main/config/nvim/lua/status.lua)
-- [ahmedelgabri/dotfiles](https://github.com/ahmedelgabri/dotfiles/blob/c2e2e3718e769020f1468048e33e60ad8a97edfc/config/.vim/lua/_/lsp.lua#L329-L378)
-- [glepnir/nvim](https://github.com/glepnir/nvim)
-- [craftzdog](https://github.com/craftzdog/dotfiles-public/tree/master/.config/nvim)
-- [harrisoncramer/nvim: My personal Neovim configuration.](https://github.com/harrisoncramer/nvim/tree/main)
-- [GitHub - alex35mil/dotfiles: My dotfiles](https://github.com/alex35mil/dotfiles)
-- [loctvl842/nvim](https://github.com/loctvl842/nvim?search=1)
-- [JoosepAlviste/dotfiles](https://github.com/joosepalviste/dotfiles/)
-
-### Videos
-
-- [(1000) LSP in Neovim (with like 3 lines of code) - YouTube](https://www.youtube.com/watch?v=bTWWFQZqzyI&list=WL&index=2)
+- [Neovim docs](https://neovim.io/doc/user/index.html)
+- [lazy.nvim](https://github.com/folke/lazy.nvim)
+- [snacks.nvim](https://github.com/folke/snacks.nvim)
+- [blink.cmp](https://cmp.saghen.dev/)
+- [AWDCS keymap](https://github.com/nikbrunner/awdcs)

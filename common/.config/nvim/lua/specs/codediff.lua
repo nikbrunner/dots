@@ -241,19 +241,4 @@ return {
             storage = "state",
         },
     },
-    {
-        "nikbrunner/review.nvim",
-        enabled = false,
-        dir = require("lib.config").get_repo_path("nikbrunner/review.nvim"),
-        dependencies = {
-            "esmuellert/codediff.nvim",
-            "MunifTanjim/nui.nvim",
-        },
-        event = "VeryLazy",
-        cmd = "Review",
-        keys = {
-            { "<leader>wgpr", "<cmd>Review<cr>", desc = "[R]eview diff (review.nvim)" },
-        },
-        opts = {},
-    },
 }
