@@ -4,17 +4,17 @@ let v:this_session=expand("<sfile>:p")
 doautoall SessionLoadPre
 silent only
 silent tabonly
-cd ~/repos/imfusion/web-ui-poc
+cd ~/repos/imfusion/web-ui-poc/.claude/worktrees/meta-description-doclinks
 if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +8 ~/repos/imfusion/web-ui-poc/.claude/worktrees/neumorphism-shadows/apps/explorer/src/components/knob-panel/knob-section/knob-section.tsx
+badd +59 ~/repos/imfusion/web-ui-poc/.claude/worktrees/meta-description-doclinks/apps/explorer/src/components/doc/origin/origin.tsx
 argglobal
 %argdel
 $argadd ~/repos/imfusion/web-ui-poc/.claude/worktrees/wireframe-preview/apps/explorer/src/components/doc/controlled-preview/controlled-preview.module.css
-edit ~/repos/imfusion/web-ui-poc/.claude/worktrees/neumorphism-shadows/apps/explorer/src/components/knob-panel/knob-section/knob-section.tsx
+edit ~/repos/imfusion/web-ui-poc/.claude/worktrees/meta-description-doclinks/apps/explorer/src/components/doc/origin/origin.tsx
 argglobal
 setlocal keymap=
 setlocal noarabic
@@ -50,6 +50,7 @@ setlocal expandtab
 if &filetype != 'typescriptreact'
 setlocal filetype=typescriptreact
 endif
+setlocal fillchars=diff:╱,fold:\ ,foldclose:,foldopen:,foldsep:\ 
 setlocal fixendofline
 setlocal foldcolumn=0
 setlocal foldenable
@@ -63,14 +64,14 @@ setlocal foldnestmax=20
 setlocal foldtext=
 setlocal formatexpr=v:lua.require'conform'.formatexpr()
 setlocal formatlistpat=^\\s*\\d\\+[\\]:.)}\\t\ ]\\s*
-setlocal formatoptions=cqlrjo
+setlocal formatoptions=jcroql
 setlocal iminsert=0
 setlocal imsearch=-1
 setlocal includeexpr=
 setlocal indentexpr=GetTypescriptIndent()
 setlocal indentkeys=0{,0},0),0],0,,!^F,o,O,e
 setlocal noinfercase
-setlocal iskeyword=@,48-57,_,192-255
+setlocal iskeyword=@,48-57,_,192-255,#,$
 setlocal lhistory=10
 setlocal nolinebreak
 setlocal nolisp
@@ -115,22 +116,26 @@ setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#MiniIconsBlue#%*\ \ %#WinBarPath#apps%*\ %#WinBarSeparator#/%*\ %#WinBarPath#explorer%*\ %#WinBarSeparator#/%*\ %#WinBarPath#src%*\ %#WinBarSeparator#/%*\ %#WinBarPath#components%*\ %#WinBarSeparator#/%*\ %#WinBarPath#knob-panel%*\ %#WinBarSeparator#/%*\ %#WinBarPath#knob-section%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#knob-section.tsx%*%=%#WinBarGitLabel#\ [GIT:%#WinBarGitChange#\ ~2%#WinBarGitLabel#]%*\ 
+setlocal winbar=%#MiniIconsBlue#%*\ \ %#WinBarPath#apps%*\ %#WinBarSeparator#/%*\ %#WinBarPath#explorer%*\ %#WinBarSeparator#/%*\ %#WinBarPath#src%*\ %#WinBarSeparator#/%*\ %#WinBarPath#components%*\ %#WinBarSeparator#/%*\ %#WinBarPath#doc%*\ %#WinBarSeparator#/%*\ %#WinBarPath#origin%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#origin.tsx%*%=%#WinBarLspLabel#\ [LSP:\ %#WinBarLspError#E7%#WinBarLspLabel#]%*\ 
 setlocal winblend=0
 setlocal nowinfixbuf
 setlocal nowinfixheight
-setlocal winfixwidth
+setlocal nowinfixwidth
 setlocal winhighlight=
-setlocal nowrap
+setlocal wrap
 setlocal wrapmargin=0
-16
+31
 sil! normal! zo
-let s:l = 8 - ((7 * winheight(0) + 22) / 45)
+35
+sil! normal! zo
+42
+sil! normal! zo
+let s:l = 59 - ((39 * winheight(0) + 22) / 45)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 8
-normal! 071|
+keepjumps 59
+normal! 0
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
