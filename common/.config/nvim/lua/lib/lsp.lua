@@ -129,7 +129,7 @@ end
 function M.set_diagnostic_virtual_text()
     vim.diagnostic.config({
         virtual_lines = false,
-        virtual_text = { current_line = false },
+        virtual_text = { current_line = false, prefix = "" },
     })
 end
 

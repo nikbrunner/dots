@@ -51,18 +51,63 @@ function M.statusline()
 end
 
 function M.icons()
-    require("mini.icons").setup({
-        file = {
-            [".eslintrc.js"] = { glyph = "󰱺", hl = "MiniIconsYellow" },
-            [".node-version"] = { glyph = "", hl = "MiniIconsGreen" },
-            [".prettierrc"] = { glyph = "", hl = "MiniIconsPurple" },
-            [".yarnrc.yml"] = { glyph = "", hl = "MiniIconsBlue" },
-            ["eslint.config.js"] = { glyph = "󰱺", hl = "MiniIconsYellow" },
-            ["package.json"] = { glyph = "", hl = "MiniIconsGreen" },
-            ["tsconfig.json"] = { glyph = "", hl = "MiniIconsAzure" },
-            ["tsconfig.build.json"] = { glyph = "", hl = "MiniIconsAzure" },
-            ["yarn.lock"] = { glyph = "", hl = "MiniIconsBlue" },
+    local circle = "" -- nf-fa-circle (filled)
+    local circle_hl = "MiniIconsGrey"
+
+    -- Your explicit file overrides (these survive the circles sweep)
+    local file_overrides = {
+        [".eslintrc.js"] = { glyph = "󰱺", hl = "MiniIconsYellow" },
+        [".node-version"] = { glyph = "", hl = "MiniIconsGreen" },
+        [".prettierrc"] = { glyph = "", hl = "MiniIconsPurple" },
+        [".yarnrc.yml"] = { glyph = "", hl = "MiniIconsBlue" },
+        ["eslint.config.js"] = { glyph = "󰱺", hl = "MiniIconsYellow" },
+        ["package.json"] = { glyph = "", hl = "MiniIconsGreen" },
+        ["tsconfig.json"] = { glyph = "", hl = "MiniIconsAzure" },
+        ["tsconfig.build.json"] = { glyph = "", hl = "MiniIconsAzure" },
+        ["yarn.lock"] = { glyph = "", hl = "MiniIconsBlue" },
+    }
+
+    local mi = require("mini.icons")
+
+    -- First setup: establish config table with our overrides
+    mi.setup({
+        default = {
+            file = { glyph = circle, hl = circle_hl },
+            directory = { glyph = circle, hl = "MiniIconsAzure" },
+            extension = { glyph = circle, hl = circle_hl },
+            filetype = { glyph = circle, hl = circle_hl },
+            lsp = { glyph = circle, hl = circle_hl },
+            os = { glyph = circle, hl = circle_hl },
         },
+        file = file_overrides,
+        directory = {},
+        extension = {},
+        filetype = {},
+        lsp = {},
+        os = {},
+    })
+
+    -- Nuclear: replace ALL built-in icons with circles
+    -- mi.list() returns every built-in entry per category;
+    -- writing them into mi.config makes them overrides,
+    -- then re-setup rebuilds the cache with our circles.
+    for _, cat in ipairs({ "directory", "extension", "file", "filetype", "lsp", "os" }) do
+        for _, name in ipairs(mi.list(cat)) do
+            mi.config[cat][name] = { glyph = circle, hl = circle_hl }
+        end
+    end
+
+    -- Restore our explicit overrides on top of the circles sweep
+    for name, icon_data in pairs(file_overrides) do
+        mi.config.file[name] = icon_data
+    end
+
+    -- Re-initialize cache so everything takes effect
+    mi.setup(mi.config)
+
+    -- LSP diagnostic prefix: filled circle
+    vim.diagnostic.config({
+        virtual_text = { prefix = circle },
     })
 end
 
