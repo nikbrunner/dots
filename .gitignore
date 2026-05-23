@@ -27,3 +27,4 @@ skills-lock.json
 /plans
 /common/.pi/agent/npm
 /common/.pi/exa-usage.json
+/common/.pi/agent/run-history.jsonl
