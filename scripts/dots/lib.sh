@@ -227,14 +227,88 @@ dots_stage_theme() {
     log_okay "Theme changes staged"
 }
 
+# Clean orphaned and stale nvim sessions.
+# Orphaned = cd directory or worktree no longer exists.
+# Stale = modified more than 2 days ago.
+# Prints structured output: ORPHAN:<name> or OLD:<name> per deleted file.
+dots_clean_sessions() {
+    local sessions_dir="$HOME/.config/nvim/sessions"
+    local home="$HOME"
+    # REPOS_BASE_PATH must be set (call load_config first)
+    local repos_dir="${REPOS_BASE_PATH:-$HOME/repos}"
+
+    [[ -d "$sessions_dir" ]] || return 0
+
+    local orphan_count=0 old_count=0
+
+    for f in "$sessions_dir"/*; do
+        [[ -f "$f" ]] || continue
+
+        local name
+        name=$(basename "$f")
+
+        # Extract cd path from session file
+        local cdpath
+        cdpath=$(grep '^cd ' "$f" 2>/dev/null | head -1 | sed 's/^cd //' | sed "s|^~|$home|")
+
+        local orphan=false
+
+        # Check 1: cd directory no longer exists
+        if [[ -n "$cdpath" ]] && [[ ! -d "$cdpath" ]]; then
+            orphan=true
+        fi
+
+        # Check 2: worktree subdir no longer exists (cd points to parent repo)
+        if [[ "$orphan" == "false" ]] && [[ -n "$cdpath" ]] && echo "$name" | grep -q '\.claude_worktrees_'; then
+            local wt
+            wt="${name#*.claude_worktrees_}"
+            wt="${wt%%_*}"
+            if [[ -n "$wt" ]] && ! echo "$cdpath" | grep -q '\.claude/worktrees'; then
+                [[ ! -d "$cdpath/.claude/worktrees/$wt" ]] && orphan=true
+            fi
+        fi
+
+        # Check 3: no cd line — search repos for matching worktree
+        if [[ -z "$cdpath" ]] && echo "$name" | grep -q '\.claude_worktrees_'; then
+            local wt
+            wt="${name#*.claude_worktrees_}"
+            wt="${wt%%_*}"
+            local found=false
+            if [[ -n "$wt" ]]; then
+                while IFS= read -r wt_dir; do
+                    [[ -z "$wt_dir" ]] && continue
+                    found=true
+                    break
+                done < <(find "$repos_dir" -maxdepth 4 -path "*/.claude/worktrees/$wt" -type d 2>/dev/null | head -1)
+            fi
+            [[ "$found" == "false" ]] && orphan=true
+        fi
+
+        if [[ "$orphan" == "true" ]]; then
+            rm -f "$f" && echo "ORPHAN:$name"
+            ((orphan_count++)) || true
+        elif find "$f" -maxdepth 0 -mtime +2 -print 2>/dev/null | grep -q .; then
+            rm -f "$f" && echo "OLD:$name"
+            ((old_count++)) || true
+        fi
+    done
+
+    if [[ $orphan_count -eq 0 && $old_count -eq 0 ]]; then
+        echo "NONE"
+    fi
+}
+
 dots_stage_sessions() {
     local repo_path="$1"
     local sessions_dir="$repo_path/common/.config/nvim/sessions"
 
-    local deleted_count
-    deleted_count=$(find "$sessions_dir" -type f -mtime +2 -delete -print 2>/dev/null | wc -l | tr -d ' ')
-    if [[ "$deleted_count" -gt 0 ]]; then
-        echo "Cleaned up $deleted_count old session(s)"
+    # Clean orphaned and stale sessions
+    local clean_output
+    clean_output=$(dots_clean_sessions)
+    if [[ -n "$clean_output" && "$clean_output" != "NONE" ]]; then
+        while IFS= read -r line; do
+            echo "  $line"
+        done <<<"$clean_output"
     fi
 
     if [[ -z $(git -C "$repo_path" status --porcelain "common/.config/nvim/sessions/" 2>/dev/null) ]]; then

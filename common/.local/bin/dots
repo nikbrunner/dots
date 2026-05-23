@@ -585,10 +585,11 @@ show_usage() {
 	echo "                 --dry-run: preview without making changes"
 	echo "                 --no-backup: overwrite existing files"
 	echo "                 --verbose: show detailed output"
-	echo "  cleanup      - Remove Pi and Claude sessions older than 2 weeks"
-	echo "                 --dry-run: preview without deleting"
-	echo "  clean        - Remove *.backup.* files left by dots link"
-	echo "                 --dry-run: preview without deleting"
+	echo "  cleanup        - Remove Pi and Claude sessions older than 2 weeks"
+	echo "                   --dry-run: preview without deleting"
+	echo "  clean-sessions - Remove orphaned and stale nvim sessions"
+	echo "  clean          - Remove *.backup.* files left by dots link"
+	echo "                   --dry-run: preview without deleting"
 }
 
 # Cleanup command — remove old Pi and Claude conversation sessions older than 2 weeks
@@ -664,6 +665,60 @@ cmd_cleanup() {
 		log_okay "Cleanup complete: removed $total_deleted session file(s)"
 	else
 		log_okay "Nothing to clean up"
+	fi
+}
+
+# Clean-sessions command — remove orphaned and stale nvim sessions
+# Use --raw to output structured ORPHAN:/OLD: lines for scripted consumption
+cmd_clean_sessions() {
+	local raw_output=false
+	for arg in "$@"; do
+		[[ "$arg" == "--raw" ]] && raw_output=true
+	done
+
+	load_config
+
+	local output
+	output=$(dots_clean_sessions)
+
+	if [[ "$raw_output" == true ]]; then
+		# Structured output for scripted consumers (nvim, etc.)
+		echo "$output"
+		return 0
+	fi
+
+	# Human-friendly output
+	log_section "Clean Nvim Sessions"
+	echo ""
+
+	if [[ "$output" == "NONE" ]]; then
+		log_okay "No sessions to clean up"
+		return 0
+	fi
+
+	local orphan_count=0 old_count=0 orphan_names=() old_names=()
+	while IFS= read -r line; do
+		local name
+		if [[ "$line" == ORPHAN:* ]]; then
+			name="${line#ORPHAN:}"
+			orphan_names+=("$name")
+			((orphan_count++)) || true
+			log_info "Orphaned: $name"
+		elif [[ "$line" == OLD:* ]]; then
+			name="${line#OLD:}"
+			old_names+=("$name")
+			((old_count++)) || true
+		fi
+	done <<<"$output"
+
+	echo ""
+	if [[ $orphan_count -gt 0 || $old_count -gt 0 ]]; then
+		local parts=()
+		[[ $orphan_count -gt 0 ]] && parts+=("$orphan_count orphaned")
+		[[ $old_count -gt 0 ]] && parts+=("$old_count old (>2d)")
+		log_okay "Cleaned $(IFS=,; echo "${parts[*]}")"
+	else
+		log_okay "No sessions to clean up"
 	fi
 }
 
@@ -809,6 +864,10 @@ case "${1:-}" in
 cleanup)
 	shift
 	cmd_cleanup "$@"
+	;;
+clean-sessions)
+	shift
+	cmd_clean_sessions "$@"
 	;;
 clean)
 	shift

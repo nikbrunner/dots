@@ -265,103 +265,24 @@ function M.sessions()
     end, { desc = "[D]elete" })
 
     vim.keymap.set("n", "<leader>asc", function()
-        local sessions_dir = vim.fn.stdpath("config") .. "/sessions/"
-        local home = vim.fn.expand("~")
-
-        local auto_dirs = {}
-        for _, dir in ipairs(M.auto_create_session_dirs) do
-            table.insert(auto_dirs, (dir:gsub("^~", home)))
-        end
-        local auto_dirs_sh = table.concat(
-            vim.tbl_map(function(d) return string.format('"%s"', d) end, auto_dirs), " "
-        )
-
-        -- Run cleanup in a background process to avoid blocking the UI
-        local script = string.format(
-            [[
-            sdir="%s"
-            home="%s"
-            orphan_names=""
-            old_count=0
-
-            for f in "$sdir"/*; do
-                [ -f "$f" ] || continue
-                name=$(basename "$f")
-                cdpath=$(grep "^cd " "$f" 2>/dev/null | head -1 | sed 's/^cd //' | sed "s|^~|$home|")
-
-                orphan=false
-
-                # Check 1: cd directory no longer exists
-                if [ -n "$cdpath" ] && [ ! -d "$cdpath" ]; then
-                    orphan=true
-                fi
-
-                # Check 2: worktree subdir no longer exists (cd points to parent repo)
-                if [ "$orphan" = "false" ] && [ -n "$cdpath" ] && echo "$name" | grep -q '\.claude_worktrees_'; then
-                    wt=$(echo "$name" | sed 's/.*\.claude_worktrees_\([^_]*\).*/\1/')
-                    if [ -n "$wt" ] && ! echo "$cdpath" | grep -q '\.claude/worktrees'; then
-                        [ ! -d "$cdpath/.claude/worktrees/$wt" ] && orphan=true
-                    fi
-                fi
-
-                # Check 3: no cd line — search auto_dirs for matching worktree
-                if [ -z "$cdpath" ] && echo "$name" | grep -q '\.claude_worktrees_'; then
-                    wt=$(echo "$name" | sed 's/.*\.claude_worktrees_\([^_]*\).*/\1/')
-                    found=false
-                    for d in %s; do
-                        if find "$d" -maxdepth 4 -path "*/.claude/worktrees/$wt" -type d 2>/dev/null | head -1 | grep -q .; then
-                            found=true
-                            break
-                        fi
-                    done
-                    [ "$found" = "false" ] && orphan=true
-                fi
-
-                if [ "$orphan" = "true" ]; then
-                    rm -f "$f"
-                    [ -n "$orphan_names" ] && orphan_names="$orphan_names|$name" || orphan_names="$name"
-                else
-                    # Check 4: old — modified more than 2 days ago
-                    if find "$f" -maxdepth 0 -mtime +2 -print 2>/dev/null | grep -q .; then
-                        rm -f "$f"
-                        old_count=$((old_count + 1))
-                    fi
-                fi
-            done
-
-            # Output structured result for parsing
-            if [ -n "$orphan_names" ] || [ "$old_count" -gt 0 ]; then
-                [ -n "$orphan_names" ] && echo "ORPHANS:$orphan_names"
-                [ "$old_count" -gt 0 ] && echo "OLD:$old_count"
-            else
-                echo "NONE"
-            fi
-            ]],
-            sessions_dir,
-            home,
-            auto_dirs_sh
-        )
-
-        vim.system({ "bash", "-c", script }, {}, function(result)
+        vim.system({ "dots", "clean-sessions", "--raw" }, {}, function(result)
             vim.schedule(function()
                 local output = vim.trim(result.stdout or "")
-                if output == "NONE" or output == "" then
+                if output == "" or result.code ~= 0 then
                     vim.notify("No sessions to clean up", vim.log.levels.INFO)
                     return
                 end
 
-                local orphans = {}
-                local old_count = 0
+                local orphans, old = {}, {}
                 for _, line in ipairs(vim.split(output, "\n")) do
-                    local orphan_str = line:match("^ORPHANS:(.+)$")
-                    if orphan_str then
-                        for name in orphan_str:gmatch("[^|]+") do
-                            table.insert(orphans, name)
+                    local name = line:match("^ORPHAN:(.+)$")
+                    if name then
+                        table.insert(orphans, name)
+                    else
+                        name = line:match("^OLD:(.+)$")
+                        if name then
+                            table.insert(old, name)
                         end
-                    end
-                    local old = line:match("^OLD:(%d+)$")
-                    if old then
-                        old_count = tonumber(old)
                     end
                 end
 
@@ -369,8 +290,8 @@ function M.sessions()
                 if #orphans > 0 then
                     table.insert(parts, string.format("%d orphaned: %s", #orphans, table.concat(orphans, ", ")))
                 end
-                if old_count > 0 then
-                    table.insert(parts, string.format("%d old (>2d)", old_count))
+                if #old > 0 then
+                    table.insert(parts, string.format("%d old (>2d): %s", #old, table.concat(old, ", ")))
                 end
 
                 if #parts > 0 then
