@@ -752,6 +752,11 @@ return {
                 },
             },
             sources = {
+                lines = {
+                    layout = function()
+                        return M.layouts.smart()
+                    end,
+                },
                 explorer = {
                     mouse = true,
                     replace_netrw = true,
