@@ -21,35 +21,6 @@ local function setup_highlights()
     vim.api.nvim_set_hl(0, "WinBarLspHint", { fg = get_attr("DiagnosticSignHint", "fg"), bg = lsp_bg })
 end
 
-local function range_contains_pos(range, line, char)
-    local start = range.start
-    local stop = range["end"]
-    if line < start.line or line > stop.line then
-        return false
-    end
-    if line == start.line and char < start.character then
-        return false
-    end
-    if line == stop.line and char > stop.character then
-        return false
-    end
-    return true
-end
-
-local function find_symbol_path(symbol_list, line, char, path)
-    if not symbol_list or #symbol_list == 0 then
-        return false
-    end
-    for _, symbol in ipairs(symbol_list) do
-        if symbol.range and range_contains_pos(symbol.range, line, char) then
-            table.insert(path, symbol.name)
-            find_symbol_path(symbol.children, line, char, path)
-            return true
-        end
-    end
-    return false
-end
-
 local function get_relative_path(bufnr)
     local file_path = vim.fn.bufname(bufnr)
     if not file_path or file_path == "" then
@@ -141,48 +112,6 @@ local function build_right(bufnr)
     return table.concat(sections, "") .. " "
 end
 
-local function request_lsp_symbols(bufnr, winnr, left_base, right)
-    local uri = vim.lsp.util.make_text_document_params(bufnr)["uri"]
-    if not uri then
-        return
-    end
-
-    local ok, pos = pcall(vim.api.nvim_win_get_cursor, winnr)
-    if not ok then
-        return
-    end
-    local cursor_line = pos[1] - 1
-    local cursor_char = pos[2]
-
-    vim.lsp.buf_request(bufnr, "textDocument/documentSymbol", {
-        textDocument = { uri = uri },
-    }, function(err, symbols)
-        if not vim.api.nvim_win_is_valid(winnr) then
-            return
-        end
-        if vim.api.nvim_win_get_buf(winnr) ~= bufnr then
-            return
-        end
-        if err or not symbols or #symbols == 0 then
-            return
-        end
-
-        local symbol_breadcrumbs = {}
-        find_symbol_path(symbols, cursor_line, cursor_char, symbol_breadcrumbs)
-
-        if #symbol_breadcrumbs > 0 then
-            local symbol_str = table.concat(
-                vim.tbl_map(function(s)
-                    return "%#WinBarSymbol#" .. s .. "%*"
-                end, symbol_breadcrumbs),
-                " %#WinBarSeparator##%* "
-            )
-            local left = left_base .. " %#WinBarSeparator##%* " .. symbol_str
-            vim.api.nvim_set_option_value("winbar", left .. "%=" .. right, { win = winnr })
-        end
-    end)
-end
-
 local clear_winbar_filetypes = {
     "minifiles",
     "help",
@@ -220,17 +149,7 @@ local function winbar_set()
 
     vim.api.nvim_set_option_value("winbar", left_base .. "%=" .. right, { win = winnr })
 
-    local win_width = vim.api.nvim_win_get_width(winnr)
-    if win_width < 120 then
-        return
-    end
 
-    for _, client in ipairs(vim.lsp.get_clients({ bufnr = bufnr })) do
-        if client.server_capabilities.documentSymbolProvider then
-            request_lsp_symbols(bufnr, winnr, left_base, right)
-            break
-        end
-    end
 end
 
 local augroup = vim.api.nvim_create_augroup("WinBar", { clear = true })
@@ -240,14 +159,6 @@ vim.api.nvim_create_autocmd("ColorScheme", {
     group = augroup,
     callback = setup_highlights,
     desc = "Rebuild winbar highlight groups on theme change",
-})
-
-vim.api.nvim_create_autocmd({ "CursorMoved" }, {
-    group = augroup,
-    callback = function()
-        vim.schedule(winbar_set)
-    end,
-    desc = "Refresh winbar LSP symbols on cursor move",
 })
 
 vim.api.nvim_create_autocmd({ "BufEnter", "DiagnosticChanged" }, {
