@@ -148,8 +148,6 @@ local function winbar_set()
     local right = build_right(bufnr)
 
     vim.api.nvim_set_option_value("winbar", left_base .. "%=" .. right, { win = winnr })
-
-
 end
 
 local augroup = vim.api.nvim_create_augroup("WinBar", { clear = true })
