@@ -6,13 +6,14 @@ A clean, organized dotfiles repository using symlinks for easy management and de
 
 - [Overview](#overview)
 - [Installation](#installation)
+  - [Prerequisites](#prerequisites)
+  - [Complete Machine Setup](#complete-machine-setup)
 - [Usage](#usage)
   - [Core Commands](#core-commands)
   - [Managing Configurations](#managing-configurations)
 - [How It Works](#how-it-works)
+  - [OS-Specific Configurations](#os-specific-configurations)
 - [Black Atom Theme Integration](#black-atom-theme-integration)
-- [Platform Support](#platform-support)
-- [Useful Links](#useful-links)
 
 ## Overview
 
