@@ -15,6 +15,7 @@ local packages = {
     "tailwindcss-language-server",
     "tree-sitter-cli",
     "vtsls",
+    "tsgo",
     "yaml-language-server",
     "taplo",
 

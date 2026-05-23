@@ -36,6 +36,7 @@ end
 return {
     cmd = { "vtsls", "--stdio" },
     filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
+    -- filetypes = {},
     root_dir = function(bufnr, cb)
         local fname = vim.uri_to_fname(vim.uri_from_bufnr(bufnr))
 
