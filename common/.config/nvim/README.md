@@ -92,30 +92,6 @@ git clone git@github.com:nikbrunner/nbr.nvim ~/.config/nvim
 nvim --headless +"Lazy! sync" +qa
 ```
 
-## Project Structure
-
-```
-nvim/
-├── init.lua                  # Bootstrap — lazy.nvim + module loading
-├── lua/
-│   ├── config.lua            # Colorscheme, paths, dev mode
-│   ├── options.lua           # Vim options & settings
-│   ├── keymaps.lua           # General keymaps
-│   ├── autocmd.lua           # Autocommands
-│   ├── state.lua             # Global runtime state (gh PR context, etc.)
-│   ├── hotreload.lua         # Dev hot-reload support
-│   ├── specs/                # Plugin specs (lazy.nvim)
-│   └── lib/                  # Shared utilities (tabline, sessions, git, lsp, …)
-├── lsp/                      # Per-server LSP configs (auto-discovered)
-├── plugin/                   # Immediate-load scripts (claude-edit, tmux, …)
-├── colors/                   # Custom colorscheme overrides
-├── after/queries/            # Treesitter query overrides (markdown)
-├── snippets/                 # Custom snippets (Lua + JSON)
-├── ftplugin/                 # Filetype-specific settings
-├── spell/                   # Spell files (en, de)
-└── sessions/                 # Mini.sessions auto-saved session files
-```
-
 ## Plugins
 
 Managed by [lazy.nvim](https://github.com/folke/lazy.nvim). All plugins load lazily unless marked `lazy = false`.
