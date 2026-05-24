@@ -51,95 +51,120 @@ cmd_pull() {
 	# ── Phase 1: Sync dots repo ──
 	log_section "Phase 1: Sync dots repository"
 
-	local pull_output pull_failed=false
-	if ! pull_output=$(git pull origin main 2>&1); then
-		if ! pull_output=$(git pull origin master 2>&1); then
-			pull_failed=true
+	# Stash uncommitted changes to allow a clean pull
+	local stashed=false
+	local dots_dirty
+	dots_dirty=$(git status --porcelain 2>/dev/null)
+
+	if [[ -n "$dots_dirty" ]]; then
+		log_warn "Dots repo has uncommitted changes:"
+		git status --short
+		echo ""
+		if confirm "Stash changes to allow clean pull?"; then
+			local stash_name
+			stash_name="dots-pull-$(date +%Y%m%d_%H%M%S)"
+			if git stash push -m "$stash_name"; then
+				log_okay "Changes stashed"
+				stashed=true
+			else
+				log_fail "Failed to stash — skipping dots pull"
+			fi
+		else
+			log_info "Skipping dots pull (uncommitted changes present)"
 		fi
 	fi
 
-	if [[ "$pull_failed" == true ]]; then
-		log_fail "Failed to pull dots repo"
-		echo "  ${pull_output//$'\n'/$'\n'  }"
-		return 1
+	if [[ -z "$dots_dirty" || "$stashed" == true ]]; then
+		local pull_output pull_failed=false
+		if ! pull_output=$(git pull origin main 2>&1); then
+			if ! pull_output=$(git pull origin master 2>&1); then
+				pull_failed=true
+			fi
+		fi
+
+		if [[ "$pull_failed" == true ]]; then
+			log_fail "Failed to pull dots repo"
+			echo "  ${pull_output//$'\n'/$'\n'  }"
+		else
+			log_okay "Dots repo pulled"
+		fi
+
+		# Restore stash after pull attempt (regardless of pull result)
+		if [[ "$stashed" == true ]]; then
+			echo ""
+			log_info "Restoring stashed changes..."
+			if git stash pop; then
+				log_okay "Stash restored"
+			else
+				log_warn "Stash pop had conflicts — resolve manually with: git stash pop"
+			fi
+		fi
 	fi
-	log_okay "Dots repo pulled"
 
 	# ── Phase 2: Update symlinks ──
 	echo ""
-	log_section "Phase 3: Update symlinks"
+	log_section "Phase 2: Update symlinks"
 	cmd_link
 
 	# ── Phase 3: Pull all repos ──
 	echo ""
-	log_section "Phase 4: Pull all repositories"
+	log_section "Phase 3: Pull all repositories"
 	load_config
 
-	local pull_json updated_repos=()
-	pull_json=$(helm repos pull --json 2>/dev/null) || pull_json='{"pulled":[],"skipped":[],"failed":[],"summary":{"pulled":0,"skipped":0,"failed":0}}'
+	local updated_repos=()
 
-	# Display pulled repos
-	while IFS= read -r name; do
-		[[ -n "$name" ]] && echo "  ✓ $name" && updated_repos+=("$name")
-	done < <(echo "$pull_json" | yq -r '.pulled[].name' 2>/dev/null)
+	if ! command -v helm &>/dev/null; then
+		log_warn "helm not found — skipping repo pull"
+	else
+		local pull_json
+		pull_json=$(helm repos pull --json 2>/dev/null) || pull_json='{"pulled":[],"skipped":[],"failed":[],"summary":{"pulled":0,"skipped":0,"failed":0}}'
 
-	# Display failed repos
-	while IFS= read -r line; do
-		[[ -n "$line" ]] && echo "  ✗ $line"
-	done < <(echo "$pull_json" | yq -r '.failed[] | .name + ": " + .error' 2>/dev/null)
+		# Display pulled repos
+		while IFS= read -r name; do
+			[[ -n "$name" ]] && echo "  ✓ $name" && updated_repos+=("$name")
+		done < <(echo "$pull_json" | yq -r '.pulled[].name' 2>/dev/null)
 
-	# Summary
-	local p_count s_count f_count
-	p_count=$(echo "$pull_json" | yq '.summary.pulled' 2>/dev/null || echo 0)
-	s_count=$(echo "$pull_json" | yq '.summary.skipped' 2>/dev/null || echo 0)
-	f_count=$(echo "$pull_json" | yq '.summary.failed' 2>/dev/null || echo 0)
-	echo ""
-	log_info "Done: $p_count pulled, $s_count skipped, $f_count failed"
+		# Display failed repos
+		while IFS= read -r line; do
+			[[ -n "$line" ]] && echo "  ✗ $line"
+		done < <(echo "$pull_json" | yq -r '.failed[] | .name + ": " + .error' 2>/dev/null)
 
-	# Handle dirty/diverged repos that helm skipped
-	local problem_repos=()
-	while IFS= read -r line; do
-		[[ -z "$line" ]] && continue
-		local name reason
-		name=$(echo "$line" | yq -p=json '.name' 2>/dev/null)
-		reason=$(echo "$line" | yq -p=json '.reason' 2>/dev/null)
-		case "$reason" in
-		dirty | dirty+behind | dirty+ahead | diverged)
-			local repo_path="$REPOS_BASE_PATH/$name"
-			is_dots_repo "$repo_path" && continue
-			problem_repos+=("$name:$reason")
-			;;
-		esac
-	done < <(echo "$pull_json" | yq -o=json -I=0 '.skipped[]' 2>/dev/null)
-
-	if [[ ${#problem_repos[@]} -gt 0 ]]; then
+		# Summary
+		local p_count s_count f_count
+		p_count=$(echo "$pull_json" | yq '.summary.pulled' 2>/dev/null || echo 0)
+		s_count=$(echo "$pull_json" | yq '.summary.skipped' 2>/dev/null || echo 0)
+		f_count=$(echo "$pull_json" | yq '.summary.failed' 2>/dev/null || echo 0)
 		echo ""
-		log_warn "${#problem_repos[@]} repos need attention:"
-		echo ""
+		log_info "Done: $p_count pulled, $s_count skipped, $f_count failed"
 
-		for entry in "${problem_repos[@]}"; do
-			local name="${entry%%:*}"
-			local state="${entry#*:}"
-			local repo_path="$REPOS_BASE_PATH/$name"
+		# Handle dirty/diverged repos that helm skipped
+		local problem_repos=()
+		while IFS= read -r line; do
+			[[ -z "$line" ]] && continue
+			local name reason
+			name=$(echo "$line" | yq -p=json '.name' 2>/dev/null)
+			reason=$(echo "$line" | yq -p=json '.reason' 2>/dev/null)
+			case "$reason" in
+			dirty | dirty+behind | dirty+ahead | diverged)
+				local repo_path="$REPOS_BASE_PATH/$name"
+				is_dots_repo "$repo_path" && continue
+				problem_repos+=("$name:$reason")
+				;;
+			esac
+		done < <(echo "$pull_json" | yq -o=json -I=0 '.skipped[]' 2>/dev/null)
 
-			if [[ "$hard_reset" == true ]]; then
-				echo -n "  $name ($state) → resetting... "
-				if fullreset_repo "$repo_path"; then
-					log_okay "reset"
-					updated_repos+=("$name")
-				else
-					log_fail "reset failed"
-				fi
-			else
-				echo -e "  ${YELLOW}$name${NC} ($state)"
+		if [[ ${#problem_repos[@]} -gt 0 ]]; then
+			echo ""
+			log_warn "${#problem_repos[@]} repos need attention:"
+			echo ""
 
-				local do_reset=false
-				echo -n "    Reset to remote? (discards local changes) (y/N) "
-				read -r confirm_reset
-				[[ "$confirm_reset" == "y" || "$confirm_reset" == "Y" ]] && do_reset=true
+			for entry in "${problem_repos[@]}"; do
+				local name="${entry%%:*}"
+				local state="${entry#*:}"
+				local repo_path="$REPOS_BASE_PATH/$name"
 
-				if [[ "$do_reset" == true ]]; then
-					echo -n "    → resetting... "
+				if [[ "$hard_reset" == true ]]; then
+					echo -n "  $name ($state) → resetting... "
 					if fullreset_repo "$repo_path"; then
 						log_okay "reset"
 						updated_repos+=("$name")
@@ -147,15 +172,66 @@ cmd_pull() {
 						log_fail "reset failed"
 					fi
 				else
-					echo "    → skipped"
+					echo ""
+					echo -e "  ${_YELLOW}$name${_RESET} ($state)"
+					echo ""
+
+					local action
+					action=$(choose "  What to do?" \
+						"Review in LazyGit" \
+						"Stash, pull, unstash" \
+						"Discard changes (reset to remote)" \
+						"Skip" \
+						"Stop walkthrough")
+
+					case "$action" in
+					"Review in LazyGit")
+						(cd "$repo_path" && lazygit)
+						;;
+					"Stash, pull, unstash")
+						local rstash_name
+						rstash_name="dots-pull-$(date +%Y%m%d_%H%M%S)"
+						if (cd "$repo_path" && git stash push -m "$rstash_name"); then
+							if (cd "$repo_path" && git pull --ff-only 2>&1); then
+								log_okay "$name pulled"
+								updated_repos+=("$name")
+							else
+								log_fail "$name pull failed"
+							fi
+							if (cd "$repo_path" && git stash pop); then
+								log_okay "Stash restored"
+							else
+								log_warn "Stash pop had conflicts in $name — resolve manually"
+							fi
+						else
+							log_fail "Stash failed for $name"
+						fi
+						;;
+					"Discard changes (reset to remote)")
+						echo -n "    → resetting... "
+						if fullreset_repo "$repo_path"; then
+							log_okay "reset"
+							updated_repos+=("$name")
+						else
+							log_fail "reset failed"
+						fi
+						;;
+					"Skip")
+						echo "    → skipped"
+						;;
+					"Stop walkthrough")
+						echo "Stopping walkthrough"
+						break
+						;;
+					esac
 				fi
-			fi
-		done
+			done
+		fi
 	fi
 
 	# ── Phase 4: Rebuild tools ──
 	echo ""
-	log_section "Phase 5: Rebuild tools"
+	log_section "Phase 4: Rebuild tools"
 
 	if [[ "$rebuild_all" == true ]]; then
 		helm repos rebuild --all
