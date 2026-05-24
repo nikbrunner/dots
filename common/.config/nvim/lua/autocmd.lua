@@ -1,7 +1,5 @@
 local auto = vim.api.nvim_create_autocmd
 
-require("hotreload").setup()
-
 local function auto_group(name)
     return vim.api.nvim_create_augroup("nvim_" .. name, { clear = true })
 end
@@ -147,5 +145,22 @@ auto("LspProgress", {
                     or spinner[math.floor(vim.uv.hrtime() / (1e6 * 80)) % #spinner + 1]
             end,
         })
+    end,
+})
+
+local function should_check()
+    local mode = vim.api.nvim_get_mode().mode
+    return not (
+        mode:match("[cR!s]") -- Skip: command-line, replace, ex, select modes
+        or vim.fn.getcmdwintype() ~= "" -- Skip: command-line window is open
+    )
+end
+
+auto({ "FocusGained", "TermLeave", "BufEnter", "WinEnter", "CursorHold", "CursorHoldI" }, {
+    group = vim.api.nvim_create_augroup("hotreload", { clear = true }),
+    callback = function()
+        if should_check() then
+            vim.cmd("checktime")
+        end
     end,
 })
