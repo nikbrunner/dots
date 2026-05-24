@@ -104,7 +104,6 @@ nvim/
 │   ├── autocmd.lua           # Autocommands
 │   ├── state.lua             # Global runtime state (gh PR context, etc.)
 │   ├── hotreload.lua         # Dev hot-reload support
-│   ├── directory-watcher.lua # Auto-cd to git root
 │   ├── specs/                # Plugin specs (lazy.nvim)
 │   └── lib/                  # Shared utilities (tabline, sessions, git, lsp, …)
 ├── lsp/                      # Per-server LSP configs (auto-discovered)
