@@ -13,7 +13,7 @@ fi
 
 # Find all items starting with ".env" and sync each to ~/.<name>
 pass-cli item list "Nik" --filter-type custom --output json |
-	jq -r '.items[] | select(.content.title | startswith(".env")) | .content.title' |
+	jq -r '.items[] | select((.title // "") | startswith(".env")) | .title' |
 	while read -r title; do
 		out_file="$HOME/$title"
 		pass-cli item view --vault-name="Nik" --item-title="$title" --output=json |
