@@ -43,7 +43,7 @@ return {
                 },
             },
         },
-        -- snippets = { preset = "luasnip" },
+        snippets = { preset = "mini_snippets" },
         signature = {
             enabled = true,
         },
