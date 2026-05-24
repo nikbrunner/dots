@@ -55,16 +55,15 @@ mise install
 
 ## 5. ProtonPass + SSH
 
-Start the Proton Pass Desktop app and sign in.
+Run the setup script — it handles login and starts the agent (no PAT needed on macOS):
 
 ```sh
-# Login into the CLI:
-pass-cli login
+./install/proton-pass-setup.sh
+```
 
-# Start SSH agent daemon
-pass-cli ssh-agent daemon start
-export SSH_AUTH_SOCK="$HOME/.ssh/proton-pass-agent.sock"
+Then verify and log into GitHub CLI:
 
+```sh
 # Verify GitHub SSH (should show: "Hi $USER! You've successfully authenticated...")
 ssh -T git@github.com
 

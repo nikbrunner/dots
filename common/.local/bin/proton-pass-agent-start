@@ -1,0 +1,45 @@
+#!/usr/bin/env bash
+# Start the Proton Pass SSH agent daemon.
+#
+# On Linux, pass-cli sessions do not survive reboots (no Keychain equivalent).
+# This script auto-logins using a Personal Access Token stored at
+# ~/.config/pass-cli/pat (local file, 600 perms, never tracked in dots).
+#
+# Handles two startup failure modes:
+#   1. No session + no PAT file → fail fast with instructions
+#   2. Proton Pass app not ready yet (startup race) → retry with timeout
+
+set -euo pipefail
+
+PAT_FILE="$HOME/.config/pass-cli/pat"
+max_wait=30
+elapsed=0
+
+# If no session, try to login via PAT before waiting for app readiness.
+if ! pass-cli test >/dev/null 2>&1; then
+	err=$(pass-cli test 2>&1 || true)
+	if echo "$err" | grep -q "requires an authenticated client"; then
+		if [[ ! -f "$PAT_FILE" ]]; then
+			echo "proton-pass-agent-start: no session and no PAT file at $PAT_FILE" >&2
+			echo "  Run './install/proton-pass-setup.sh' from the dots repo to set up the PAT." >&2
+			echo "  Then save the token: echo 'pst_...' > $PAT_FILE && chmod 600 $PAT_FILE" >&2
+			exit 1
+		fi
+		pass-cli login --pat "$(cat "$PAT_FILE")"
+	fi
+fi
+
+# Wait for Proton Pass app IPC to be reachable.
+until pass-cli test >/dev/null 2>&1; do
+	if ((elapsed >= max_wait)); then
+		echo "proton-pass-agent-start: Proton Pass not reachable after ${max_wait}s, giving up" >&2
+		exit 1
+	fi
+	sleep 1
+	((elapsed += 1))
+done
+
+# Stop any stale daemon before starting to prevent degraded state.
+pass-cli ssh-agent daemon stop >/dev/null 2>&1 || true
+
+exec pass-cli ssh-agent daemon start
