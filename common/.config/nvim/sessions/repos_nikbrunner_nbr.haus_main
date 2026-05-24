@@ -4,17 +4,17 @@ let v:this_session=expand("<sfile>:p")
 doautoall SessionLoadPre
 silent only
 silent tabonly
-cd ~/repos/imfusion/web-ui-poc/.claude/worktrees/neumorphism-shadows
+cd ~/repos/nikbrunner/nbr.haus
 if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +23 apps/explorer/src/components/knob-panel/knob-section/knob-section.tsx
+badd +14 src/routes/__root.tsx
 argglobal
 %argdel
-$argadd ~/repos/imfusion/web-ui-poc/.claude/worktrees/wireframe-preview/apps/explorer/src/components/doc/controlled-preview/controlled-preview.module.css
-edit apps/explorer/src/components/knob-panel/knob-section/knob-section.tsx
+$argadd ./
+edit src/routes/__root.tsx
 argglobal
 setlocal keymap=
 setlocal noarabic
@@ -63,7 +63,7 @@ setlocal foldnestmax=20
 setlocal foldtext=
 setlocal formatexpr=v:lua.require'conform'.formatexpr()
 setlocal formatlistpat=^\\s*\\d\\+[\\]:.)}\\t\ ]\\s*
-setlocal formatoptions=cqlrjo
+setlocal formatoptions=jcroql
 setlocal iminsert=0
 setlocal imsearch=-1
 setlocal includeexpr=
@@ -82,7 +82,7 @@ setlocal modifiable
 setlocal nrformats=bin,hex
 setlocal number
 setlocal numberwidth=4
-setlocal omnifunc=v:lua.vim.lsp.omnifunc
+setlocal omnifunc=
 setlocal nopreserveindent
 setlocal nopreviewwindow
 setlocal quoteescape=\\
@@ -110,29 +110,29 @@ if &syntax != ''
 setlocal syntax=
 endif
 setlocal tabstop=4
-setlocal tagfunc=v:lua.vim.lsp.tagfunc
+setlocal tagfunc=
 setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#MiniIconsGrey#%*\ \ %#WinBarPath#apps%*\ %#WinBarSeparator#/%*\ %#WinBarPath#explorer%*\ %#WinBarSeparator#/%*\ %#WinBarPath#src%*\ %#WinBarSeparator#/%*\ %#WinBarPath#components%*\ %#WinBarSeparator#/%*\ %#WinBarPath#knob-panel%*\ %#WinBarSeparator#/%*\ %#WinBarPath#knob-section%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#knob-section.tsx%*%=%#WinBarGitLabel#\ [GIT:%#WinBarGitChange#\ ~2%#WinBarGitLabel#]%*\ 
+setlocal winbar=%#MiniIconsBlue#%*\ \ %#WinBarPath#src%*\ %#WinBarSeparator#/%*\ %#WinBarPath#routes%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#__root.tsx%*%=
 setlocal winblend=0
 setlocal nowinfixbuf
 setlocal nowinfixheight
-setlocal winfixwidth
+setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowinpinned
 setlocal nowrap
 setlocal wrapmargin=0
-16
+21
 sil! normal! zo
-18
+23
 sil! normal! zo
-let s:l = 23 - ((22 * winheight(0) + 22) / 44)
+let s:l = 14 - ((13 * winheight(0) + 22) / 44)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 23
+keepjumps 14
 normal! 0
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'

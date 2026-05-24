@@ -93,7 +93,7 @@
   "cursor_blink": false,
   "theme": {
     "mode": "light",
-    "light": "Black Atom — JPN ∷ Koyo Hiru",
+    "light": "Black Atom — Light",
     "dark": "Black Atom — Stations ∷ Engineering",
   },
   "base_keymap": "VSCode",

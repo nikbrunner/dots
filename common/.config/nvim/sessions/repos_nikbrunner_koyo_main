@@ -10,7 +10,7 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +68 qmk/moonlander/src/keymap.c
+badd +52 qmk/moonlander/src/keymap.c
 argglobal
 %argdel
 $argadd ./
@@ -118,19 +118,20 @@ setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#MiniIconsBlue#󰙱%*\ \ %#WinBarPath#qmk%*\ %#WinBarSeparator#/%*\ %#WinBarPath#moonlander%*\ %#WinBarSeparator#/%*\ %#WinBarPath#src%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#keymap.c%*%=
+setlocal winbar=%#MiniIconsBlue#%*\ \ %#WinBarPath#qmk%*\ %#WinBarSeparator#/%*\ %#WinBarPath#moonlander%*\ %#WinBarSeparator#/%*\ %#WinBarPath#src%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#keymap.c%*%=
 setlocal winblend=0
 setlocal nowinfixbuf
 setlocal nowinfixheight
 setlocal nowinfixwidth
 setlocal winhighlight=
+setlocal nowinpinned
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 10 - ((9 * winheight(0) + 27) / 55)
+let s:l = 52 - ((37 * winheight(0) + 34) / 69)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 10
+keepjumps 52
 normal! 0
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
