@@ -79,6 +79,7 @@ common/.claude/
 - [Web tool lanes](feedback_browser_automation.md) — agent-browser, Exa, Ref each have their lane
 - [No trash commits](feedback_commit_discipline.md) — Batch debug cycles into one meaningful commit
 - [Visual verification required](feedback_visual_verification.md) — UI changes need screenshot inspection
+- [Markdown table formatting](feedback_table_formatting.md) — prettier owns table style in dots; don't use minimal `|-|-|` separators
 
 ### Symlinks (symlinks.yml)
 
