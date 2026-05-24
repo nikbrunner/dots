@@ -716,7 +716,10 @@ cmd_clean_sessions() {
 		local parts=()
 		[[ $orphan_count -gt 0 ]] && parts+=("$orphan_count orphaned")
 		[[ $old_count -gt 0 ]] && parts+=("$old_count old (>2d)")
-		log_okay "Cleaned $(IFS=,; echo "${parts[*]}")"
+		log_okay "Cleaned $(
+			IFS=,
+			echo "${parts[*]}"
+		)"
 	else
 		log_okay "No sessions to clean up"
 	fi

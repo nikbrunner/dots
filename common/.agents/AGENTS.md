@@ -102,7 +102,6 @@ Before renaming or changing a function signature, use `findReferences` to find a
 - Don't echo back file contents you just read
 - Don't narrate tool calls ("Let me read the file..."). Just do it.
 - Keep explanations proportional to complexity
-- Markdown tables: use minimum separator (`|-|-|`). Never pad with repeated hyphens. No box-drawing / ASCII-art table characters.
 
 ### Sources of Truth
 

@@ -73,14 +73,14 @@ vim.api.nvim_create_autocmd("PackChanged", {
 
 ### Update workflow
 
-| Action | Command |
-|---|---|
-| Review available updates | `:packupdate` (interactive, LSP-powered confirmation buffer) |
-| Review without downloading | `:packupdate ++offline` |
-| Apply all immediately | `:packupdate!` |
-| Delete inactive plugins | `:packdel ++all` |
-| Revert to lockfile | `:packupdate ++offline ++lockfile` |
-| Check for pending updates | `:lua =vim.pack.get(nil, { offline = false })` |
+| Action                     | Command                                                      |
+| -------------------------- | ------------------------------------------------------------ |
+| Review available updates   | `:packupdate` (interactive, LSP-powered confirmation buffer) |
+| Review without downloading | `:packupdate ++offline`                                      |
+| Apply all immediately      | `:packupdate!`                                               |
+| Delete inactive plugins    | `:packdel ++all`                                             |
+| Revert to lockfile         | `:packupdate ++offline ++lockfile`                           |
+| Check for pending updates  | `:lua =vim.pack.get(nil, { offline = false })`               |
 
 ## Plugin Inventory
 
@@ -88,72 +88,72 @@ Complete mapping of every current `specs/*.lua` → `plugin/*.lua` with vim.pack
 
 ### Always-loaded (currently `lazy = false`)
 
-| plugin/*.lua | vim.pack spec |
-|---|---|
-| `mini.lua` | `{ src = "https://github.com/nvim-mini/mini.nvim", name = "mini.nvim", version = "stable" }` |
-| `snacks.lua` | `{ src = "https://github.com/folke/snacks.nvim", name = "snacks.nvim" }` |
-| `treesitter.lua` | `{ src = "https://github.com/nvim-treesitter/nvim-treesitter", name = "nvim-treesitter", version = "main" }` |
-| `treesitter.lua` | `{ src = "https://github.com/MeanderingProgrammer/treesitter-modules.nvim", name = "treesitter-modules.nvim" }` |
+| plugin/\*.lua    | vim.pack spec                                                                                                                        |
+| ---------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| `mini.lua`       | `{ src = "https://github.com/nvim-mini/mini.nvim", name = "mini.nvim", version = "stable" }`                                         |
+| `snacks.lua`     | `{ src = "https://github.com/folke/snacks.nvim", name = "snacks.nvim" }`                                                             |
+| `treesitter.lua` | `{ src = "https://github.com/nvim-treesitter/nvim-treesitter", name = "nvim-treesitter", version = "main" }`                         |
+| `treesitter.lua` | `{ src = "https://github.com/MeanderingProgrammer/treesitter-modules.nvim", name = "treesitter-modules.nvim" }`                      |
 | `treesitter.lua` | `{ src = "https://github.com/nvim-treesitter/nvim-treesitter-textobjects", name = "nvim-treesitter-textobjects", version = "main" }` |
-| `fff.lua` | `{ src = "https://github.com/dmtrKovalenko/fff.nvim", name = "fff.nvim" }` |
-| `black-atom.lua` | `{ src = "https://github.com/black-atom-industries/nvim", name = "black-atom.nvim" }` |
+| `fff.lua`        | `{ src = "https://github.com/dmtrKovalenko/fff.nvim", name = "fff.nvim" }`                                                           |
+| `black-atom.lua` | `{ src = "https://github.com/black-atom-industries/nvim", name = "black-atom.nvim" }`                                                |
 
 ### Currently lazy via event/keys/cmd
 
-| plugin/*.lua | vim.pack spec |
-|---|---|
-| `blink.lua` | `{ src = "https://github.com/Saghen/blink.cmp", name = "blink.cmp", version = vim.version.range("1.*") }` |
-| `blink.lua` | LuaSnip + friendly-snippets (deps in same file) |
-| `conform.lua` | `{ src = "https://github.com/stevearc/conform.nvim", name = "conform.nvim" }` |
-| `lint.lua` | `{ src = "https://github.com/mfussenegger/nvim-lint", name = "nvim-lint" }` |
-| `oil.lua` | `{ src = "https://github.com/stevearc/oil.nvim", name = "oil.nvim" }` |
-| `supermaven.lua` | `{ src = "https://github.com/supermaven-inc/supermaven-nvim", name = "supermaven-nvim" }` |
-| `trouble.lua` | `{ src = "https://github.com/folke/trouble.nvim", name = "trouble.nvim" }` |
-| `typescript.lua` | `{ src = "https://github.com/dmmulroy/tsc.nvim", name = "tsc.nvim" }` |
-| `codediff.lua` | `{ src = "https://github.com/esmuellert/codediff.nvim", name = "codediff.nvim" }` |
-| `gitlinker.lua` | `{ src = "https://github.com/linrongbin16/gitlinker.nvim", name = "gitlinker.nvim" }` |
-| `whatthejump.lua` | `{ src = "https://github.com/lewis6991/whatthejump.nvim", name = "whatthejump.nvim" }` |
-| `ts-autotag.lua` | `{ src = "https://github.com/windwp/nvim-ts-autotag", name = "nvim-ts-autotag" }` |
-| `ts-comments.lua` | `{ src = "https://github.com/folke/ts-comments.nvim", name = "ts-comments.nvim" }` |
-| `treewalker.lua` | `{ src = "https://github.com/aaronik/treewalker.nvim", name = "treewalker.nvim" }` |
+| plugin/\*.lua         | vim.pack spec                                                                                             |
+| --------------------- | --------------------------------------------------------------------------------------------------------- |
+| `blink.lua`           | `{ src = "https://github.com/Saghen/blink.cmp", name = "blink.cmp", version = vim.version.range("1.*") }` |
+| `blink.lua`           | LuaSnip + friendly-snippets (deps in same file)                                                           |
+| `conform.lua`         | `{ src = "https://github.com/stevearc/conform.nvim", name = "conform.nvim" }`                             |
+| `lint.lua`            | `{ src = "https://github.com/mfussenegger/nvim-lint", name = "nvim-lint" }`                               |
+| `oil.lua`             | `{ src = "https://github.com/stevearc/oil.nvim", name = "oil.nvim" }`                                     |
+| `supermaven.lua`      | `{ src = "https://github.com/supermaven-inc/supermaven-nvim", name = "supermaven-nvim" }`                 |
+| `trouble.lua`         | `{ src = "https://github.com/folke/trouble.nvim", name = "trouble.nvim" }`                                |
+| `typescript.lua`      | `{ src = "https://github.com/dmmulroy/tsc.nvim", name = "tsc.nvim" }`                                     |
+| `codediff.lua`        | `{ src = "https://github.com/esmuellert/codediff.nvim", name = "codediff.nvim" }`                         |
+| `gitlinker.lua`       | `{ src = "https://github.com/linrongbin16/gitlinker.nvim", name = "gitlinker.nvim" }`                     |
+| `whatthejump.lua`     | `{ src = "https://github.com/lewis6991/whatthejump.nvim", name = "whatthejump.nvim" }`                    |
+| `ts-autotag.lua`      | `{ src = "https://github.com/windwp/nvim-ts-autotag", name = "nvim-ts-autotag" }`                         |
+| `ts-comments.lua`     | `{ src = "https://github.com/folke/ts-comments.nvim", name = "ts-comments.nvim" }`                        |
+| `treewalker.lua`      | `{ src = "https://github.com/aaronik/treewalker.nvim", name = "treewalker.nvim" }`                        |
 | `render-markdown.lua` | `{ src = "https://github.com/MeanderingProgrammer/render-markdown.nvim", name = "render-markdown.nvim" }` |
-| `annotator.lua` | `{ src = "https://github.com/chpeters/annotator.nvim", name = "annotator.nvim" }` |
-| `spider.lua` | `{ src = "https://github.com/chrisgrieser/nvim-spider", name = "nvim-spider" }` |
-| `schemastore.lua` | `{ src = "https://github.com/b0o/SchemaStore.nvim", name = "SchemaStore.nvim" }` |
-| `vim-sleuth.lua` | `{ src = "https://github.com/tpope/vim-sleuth", name = "vim-sleuth" }` |
+| `annotator.lua`       | `{ src = "https://github.com/chpeters/annotator.nvim", name = "annotator.nvim" }`                         |
+| `spider.lua`          | `{ src = "https://github.com/chrisgrieser/nvim-spider", name = "nvim-spider" }`                           |
+| `schemastore.lua`     | `{ src = "https://github.com/b0o/SchemaStore.nvim", name = "SchemaStore.nvim" }`                          |
+| `vim-sleuth.lua`      | `{ src = "https://github.com/tpope/vim-sleuth", name = "vim-sleuth" }`                                    |
 
 ### Other
 
-| plugin/*.lua | vim.pack spec |
-|---|---|
-| `flux.lua` | `{ src = "https://github.com/nikbrunner/flux.nvim", name = "flux.nvim" }` |
-| `grug.lua` | `{ src = "https://github.com/MagicDuck/grug-far.nvim", name = "grug-far.nvim" }` |
-| `helpview.lua` | `{ src = "https://github.com/OXY2DEV/helpview.nvim", name = "helpview.nvim" }` |
-| `kulala.lua` | `{ src = "https://github.com/mistweaverco/kulala.nvim", name = "kulala.nvim" }` |
-| `mdn.lua` | `{ src = "https://github.com/nikbrunner/mdn.nvim", name = "mdn.nvim" }` |
+| plugin/\*.lua   | vim.pack spec                                                                     |
+| --------------- | --------------------------------------------------------------------------------- |
+| `flux.lua`      | `{ src = "https://github.com/nikbrunner/flux.nvim", name = "flux.nvim" }`         |
+| `grug.lua`      | `{ src = "https://github.com/MagicDuck/grug-far.nvim", name = "grug-far.nvim" }`  |
+| `helpview.lua`  | `{ src = "https://github.com/OXY2DEV/helpview.nvim", name = "helpview.nvim" }`    |
+| `kulala.lua`    | `{ src = "https://github.com/mistweaverco/kulala.nvim", name = "kulala.nvim" }`   |
+| `mdn.lua`       | `{ src = "https://github.com/nikbrunner/mdn.nvim", name = "mdn.nvim" }`           |
 | `navigator.lua` | `{ src = "https://github.com/numToStr/Navigator.nvim", name = "Navigator.nvim" }` |
-| `oklch.lua` | (bundled in mini.nvim, handled by mini config) |
-| `qmk.lua` | `{ src = "https://github.com/codethread/qmk.nvim", name = "qmk.nvim" }` |
-| `lazydev.lua` | `{ src = "https://github.com/folke/lazydev.nvim", name = "lazydev.nvim" }` |
+| `oklch.lua`     | (bundled in mini.nvim, handled by mini config)                                    |
+| `qmk.lua`       | `{ src = "https://github.com/codethread/qmk.nvim", name = "qmk.nvim" }`           |
+| `lazydev.lua`   | `{ src = "https://github.com/folke/lazydev.nvim", name = "lazydev.nvim" }`        |
 
 ### Removed
 
-| Reason | Plugin |
-|---|---|
-| Deleted (Mason→mise) | `mason.lua` |
-| Deleted (gitpad) | `gitpad.lua` |
-| Deleted (fugit→flux) | `fugit.lua` |
-| Disabled (MiniClue) | `which-key.lua` — not in vim.pack list |
+| Reason               | Plugin                                 |
+| -------------------- | -------------------------------------- |
+| Deleted (Mason→mise) | `mason.lua`                            |
+| Deleted (gitpad)     | `gitpad.lua`                           |
+| Deleted (fugit→flux) | `fugit.lua`                            |
+| Disabled (MiniClue)  | `which-key.lua` — not in vim.pack list |
 
 ## Files Changed
 
-| File | Action |
-|---|---|
-| `init.lua` | Replace lazy.nvim bootstrap + `lazy.setup()` with `PackChanged` autocmd + `vim.pack.add()` |
-| `lua/specs/*.lua` | **Delete all** |
-| `plugin/*.lua` | **Create** one per spec with config code |
-| `lazy-lock.json` | **Delete** |
-| `nvim-pack-lock.json` | **Add** to VCS (auto-generated by vim.pack) |
+| File                  | Action                                                                                     |
+| --------------------- | ------------------------------------------------------------------------------------------ |
+| `init.lua`            | Replace lazy.nvim bootstrap + `lazy.setup()` with `PackChanged` autocmd + `vim.pack.add()` |
+| `lua/specs/*.lua`     | **Delete all**                                                                             |
+| `plugin/*.lua`        | **Create** one per spec with config code                                                   |
+| `lazy-lock.json`      | **Delete**                                                                                 |
+| `nvim-pack-lock.json` | **Add** to VCS (auto-generated by vim.pack)                                                |
 
 ### Files NOT changed
 
@@ -233,7 +233,7 @@ vim.pack.add({
 }, { load = true })
 ```
 
-## plugin/*.lua Examples
+## plugin/\*.lua Examples
 
 Each file is the config/setup code extracted from the current spec:
 
