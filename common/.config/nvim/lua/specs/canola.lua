@@ -1,3 +1,75 @@
+---Open canola at git root, filtered to show only changed and untracked files.
+---Uses the canola-git status cache (CanolaReadPost) to decide what to show:
+---clean tracked files are hidden. Restores when the canola buffer is unloaded.
+---@param opts? {float?: boolean}
+local function canola_git_changes(opts)
+    opts = opts or {}
+    local git_root = Snacks.git.get_root()
+    if not git_root then
+        Snacks.notify("Not in a git repository", { level = "warn", title = "Canola Git" })
+        return
+    end
+
+    local config = require("canola.config")
+    local canola = require("canola")
+
+    local orig_enabled = config.hidden.enabled
+    local orig_is_hidden = config._is_hidden_file
+    local did_restore = false
+
+    local function restore()
+        if did_restore then
+            return
+        end
+        did_restore = true
+        config.hidden.enabled = orig_enabled
+        config._is_hidden_file = orig_is_hidden
+    end
+
+    config.hidden.enabled = true
+
+    canola.set_is_hidden_file(function(name, bufnr)
+        if name == ".." then
+            return false
+        end
+        local dir = canola.get_current_dir(bufnr)
+        if not dir then
+            return false
+        end
+        local ok, canola_git = pcall(require, "canola-git")
+        if not ok then
+            return false
+        end
+        local cache = canola_git._cache[dir]
+        if not cache or cache == false then
+            return false
+        end
+        if cache.status[name] then
+            return false
+        end
+        if not cache.tracked[name] then
+            return false
+        end
+        return true
+    end)
+
+    local open_fn = opts.float and canola.open_float or canola.open
+    open_fn(git_root)
+
+    local bufnr = vim.api.nvim_get_current_buf()
+    if vim.bo[bufnr].filetype == "canola" then
+        local group = vim.api.nvim_create_augroup("_canola_git_changes", { clear = true })
+        for _, event in ipairs({ "BufUnload", "BufDelete", "BufWipeout" }) do
+            vim.api.nvim_create_autocmd(event, {
+                group = group,
+                buffer = bufnr,
+                once = true,
+                callback = restore,
+            })
+        end
+    end
+end
+
 return {
     {
         "barrettruth/canola.nvim",
@@ -207,6 +279,11 @@ return {
                     require("canola").open(vim.fn.getcwd())
                 end,
                 desc = "[E]xplorer",
+            },
+            {
+                "<leader>wM",
+                canola_git_changes,
+                desc = "Git Changes Explorer",
             },
         },
         config = function()
