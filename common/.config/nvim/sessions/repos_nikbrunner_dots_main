@@ -10,7 +10,7 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +30 common/.config/nvim/lsp/lua_ls.lua
+badd +37 common/.config/nvim/lsp/lua_ls.lua
 argglobal
 %argdel
 $argadd ./
@@ -127,12 +127,20 @@ setlocal winhighlight=
 setlocal nowinpinned
 setlocal nowrap
 setlocal wrapmargin=0
+7
+sil! normal! zo
+11
+sil! normal! zo
+12
+sil! normal! zo
+13
+sil! normal! zo
 let s:l = 35 - ((34 * winheight(0) + 25) / 50)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
 keepjumps 35
-normal! 0
+normal! 023|
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
