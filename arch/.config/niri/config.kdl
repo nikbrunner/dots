@@ -503,7 +503,7 @@ binds {
     // Open/close the Overview: a zoomed-out view of workspaces and windows.
     // You can also move the mouse into the top-left hot corner,
     // or do a four-finger swipe up on a touchpad.
-    Ctrl+Shift+Alt+Mod+S repeat=false { toggle-overview; }
+    Mod+S repeat=false { toggle-overview; }
 
     // Use script for close with confirmation on protected apps (games, etc.)
     Mod+Q repeat=false { spawn-sh "niri-close-window"; }
