@@ -464,7 +464,7 @@ binds {
     Super+Alt+L hotkey-overlay-title="Lock the Screen: hyprlock" { spawn "hyprlock"; }
 
     // Voice dictation (hyprwhspr)
-    Super+Alt+D hotkey-overlay-title="Voice Dictation" { spawn "hyprwhspr" "record" "toggle"; }
+    Alt+Space hotkey-overlay-title="Voice Dictation" { spawn "hyprwhspr" "record" "toggle"; }
 
     // Wallpaper picker
     Mod+Shift+W hotkey-overlay-title="Wallpaper Picker" { spawn "waypaper"; }

@@ -1,116 +1,99 @@
-// Waybar config for niri - brutalist
 {
-    "layer": "top",
-    "position": "bottom",
-    "height": 35,
-    // "width": 35,
-    // "margin-top": 2,
-    "margin-left": 30,
-    "margin-right": 30,
-    "margin-bottom": 30,
-    "spacing": 5,
-    "reload_style_on_change": true,
-
-    "modules-left": [
-        "user",
-        "pulseaudio",
-        "pulseaudio#microphone",
-        "bluetooth",
-        "network",
-        "custom/vpn",
-        "cpu",
-        "disk",
-        "memory"
-    ],
-    "modules-center": [
-        "niri/workspaces"
-    ],
-    "modules-right": [
-        "tray",
-        "clock"
-    ],
-
-    "niri/workspaces": {
-        "format": "{name}"
+  "layer": "top",
+  "position": "bottom",
+  "height": 35,
+  "margin-left": 30,
+  "margin-right": 30,
+  "margin-bottom": 30,
+  "spacing": 5,
+  "reload_style_on_change": true,
+  "modules-left": [
+    "user",
+    "pulseaudio",
+    "pulseaudio#microphone",
+    "bluetooth",
+    "network",
+    "custom/vpn",
+    "cpu",
+    "disk",
+    "memory"
+  ],
+  "modules-center": [
+    "niri/workspaces"
+  ],
+  "modules-right": [
+    "tray",
+    "clock"
+  ],
+  "niri/workspaces": {
+    "format": "{name}"
+  },
+  "user": {
+    "format": "[{user} \u2191{work_H}:{work_M}]"
+  },
+  "clock": {
+    "format": "[{:%a %Y.%m.%d :: %H:%M %Z}]",
+    "format-alt": "[{:%A %Y.%m.%d :: %H:%M %Z}]",
+    "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>"
+  },
+  "mpd": {
+    "format": "[MPD:{stateIcon} {title}]",
+    "format-stopped": "[MPD:OFF]",
+    "format-disconnected": "",
+    "state-icons": {
+      "paused": "PAUSE",
+      "playing": "PLAY"
     },
-
-    "user": {
-        "format": "[{user} ↑{work_H}:{work_M}]"
-    },
-
-    "clock": {
-        "format": "[{:%a %Y.%m.%d :: %H:%M %Z}]",
-        "format-alt": "[{:%A %Y.%m.%d :: %H:%M %Z}]",
-        "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>"
-    },
-
-    "mpd": {
-        "format": "[MPD:{stateIcon} {title}]",
-        "format-stopped": "[MPD:OFF]",
-        "format-disconnected": "",
-        "state-icons": {
-            "paused": "PAUSE",
-            "playing": "PLAY"
-        },
-        "max-length": 30,
-        "tooltip-format": "{artist} - {album} - {title}"
-    },
-
-    "pulseaudio": {
-        "format": "[OUT:{volume}%]",
-        "format-muted": "[OUT:MUTE]",
-        "on-click": "pavucontrol"
-    },
-
-    "pulseaudio#microphone": {
-        "format": "{format_source}",
-        "format-source": "[MIC:{source_volume}%]",
-        "format-source-muted": "[MIC:MUTE]",
-        "on-click": "pavucontrol -t 4"
-    },
-
-    "bluetooth": {
-        "format": "[BT:{status}]",
-        "format-connected": "[BT:{device_alias}]",
-        "format-connected-battery": "[BT:{device_alias} {device_battery_percentage}%]",
-        "format-disabled": "",
-        "format-off": "",
-        "tooltip-format": "{controller_alias}\n{num_connections} connected",
-        "tooltip-format-connected": "{controller_alias}\n{num_connections} connected\n\n{device_enumerate}",
-        "tooltip-format-enumerate-connected": "{device_alias}",
-        "tooltip-format-enumerate-connected-battery": "{device_alias}\t{device_battery_percentage}%",
-        "on-click": "ghostty -e bluetui"
-    },
-
-    "custom/vpn": {
-        "exec": "ip link show proton0 2>/dev/null && echo '[VPN:ON]' || echo ''",
-        "interval": 5,
-        "tooltip": false
-    },
-
-    "network": {
-        "format-ethernet": "[ETH:{ipaddr}]",
-        "format-wifi": "[WIFI:{ipaddr}]",
-        "format-disconnected": "[NET:OFF]",
-        "tooltip-format": "{ifname}: {ipaddr}/{cidr}\nGateway: {gwaddr}"
-    },
-
-    "disk": {
-        "format": "[DISK:{percentage_used}%]",
-        "path": "/"
-    },
-
-    "cpu": {
-        "format": "[CPU:{usage}%]",
-        "tooltip": false
-    },
-
-    "memory": {
-        "format": "[MEM:{percentage}%]"
-    },
-
-    "tray": {
-        "icon-size": 18,
-        "spacing": 8
-    }
+    "max-length": 30,
+    "tooltip-format": "{artist} - {album} - {title}"
+  },
+  "pulseaudio": {
+    "format": "[OUT:{volume}%]",
+    "format-muted": "[OUT:MUTE]",
+    "on-click": "pavucontrol"
+  },
+  "pulseaudio#microphone": {
+    "format": "{format_source}",
+    "format-source": "[MIC:{source_volume}%]",
+    "format-source-muted": "[MIC:MUTE]",
+    "on-click": "pavucontrol -t 4"
+  },
+  "bluetooth": {
+    "format": "[BT:{status}]",
+    "format-connected": "[BT:{device_alias}]",
+    "format-connected-battery": "[BT:{device_alias} {device_battery_percentage}%]",
+    "format-disabled": "",
+    "format-off": "",
+    "tooltip-format": "{controller_alias}\n{num_connections} connected",
+    "tooltip-format-connected": "{controller_alias}\n{num_connections} connected\n\n{device_enumerate}",
+    "tooltip-format-enumerate-connected": "{device_alias}",
+    "tooltip-format-enumerate-connected-battery": "{device_alias}\t{device_battery_percentage}%",
+    "on-click": "ghostty -e bluetui"
+  },
+  "custom/vpn": {
+    "exec": "ip link show proton0 2>/dev/null && echo '[VPN:ON]' || echo ''",
+    "interval": 5,
+    "tooltip": false
+  },
+  "network": {
+    "format-ethernet": "[ETH:{ipaddr}]",
+    "format-wifi": "[WIFI:{ipaddr}]",
+    "format-disconnected": "[NET:OFF]",
+    "tooltip-format": "{ifname}: {ipaddr}/{cidr}\nGateway: {gwaddr}"
+  },
+  "disk": {
+    "format": "[DISK:{percentage_used}%]",
+    "path": "/"
+  },
+  "cpu": {
+    "format": "[CPU:{usage}%]",
+    "tooltip": false
+  },
+  "memory": {
+    "format": "[MEM:{percentage}%]"
+  },
+  "tray": {
+    "icon-size": 18,
+    "spacing": 8
+  }
 }

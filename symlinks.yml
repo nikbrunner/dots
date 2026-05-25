@@ -66,6 +66,7 @@ arch:
   arch/.local/bin/*: ~/.local/bin
   arch/README.md: ~/README.md
   arch/.config/hypr: ~/.config/hypr
+  arch/.config/hyprwhspr/config.json: ~/.config/hyprwhspr/config.json
   arch/.config/niri: ~/.config/niri
   arch/.config/satty: ~/.config/satty
   arch/.config/waybar: ~/.config/waybar

@@ -46,6 +46,7 @@ fuzzel
 satty
 clipse
 wtype
+hyprwhspr
 
 # Bluetooth
 bluez
