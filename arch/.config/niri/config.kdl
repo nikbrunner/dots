@@ -716,7 +716,7 @@ binds {
     Mod+Shift+E { spawn-sh "niri-power-menu"; }
 
     // Reload niri config and waybar
-    Ctrl+Alt+Shift+R { spawn-sh "killall waybar; niri msg action reload-config; waybar &"; }
+    Ctrl+Alt+Shift+Comma { spawn-sh "killall waybar; niri msg action reload-config; waybar &"; }
 
     Ctrl+Alt+Delete { quit; }
 
