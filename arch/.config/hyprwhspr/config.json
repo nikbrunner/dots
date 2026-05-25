@@ -2,5 +2,6 @@
   "$schema": "https://raw.githubusercontent.com/goodroot/hyprwhspr/main/share/config.schema.json",
   "use_hypr_bindings": false,
   "transcription_backend": "onnx-asr",
+  "cancel_shortcut": "SUPER+ESCAPE",
   "audio_ducking": true
 }
