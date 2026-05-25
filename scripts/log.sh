@@ -67,29 +67,32 @@ confirm() {
 }
 
 # Interactive choice menu (returns selected option)
+# Interactive choice menu (returns selected option)
+# Display output goes to stderr so it's visible even inside $() substitution.
+# The selected option is printed to stdout for capture.
 choose() {
     local header="$1"
     shift
     local options=("$@")
 
-    echo "$header"
+    echo "$header" >&2
     local i=1
     for opt in "${options[@]}"; do
         if [[ "$opt" == "─────────" ]]; then
-            echo "  $opt"
+            echo "  $opt" >&2
         else
-            echo "  [$i] $opt"
-            ((i++))
+            echo "  [$i] $opt" >&2
+            ((i++)) || true
         fi
     done
-    echo -n "Choice: "
+    echo -n "Choice: " >&2
     read -r choice
 
     # Map number to option (skipping separators)
     local j=0
     for opt in "${options[@]}"; do
         if [[ "$opt" != "─────────" ]]; then
-            ((j++))
+            ((j++)) || true
             if [[ "$j" == "$choice" ]]; then
                 echo "$opt"
                 return
