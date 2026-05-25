@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+# GPU monitor — logs temp, fan, power, clocks every 2s to a timestamped file
+OUTDIR="${1:-$HOME}"
+LOGFILE="$OUTDIR/gpu-monitor-$(date +%Y%m%d_%H%M%S).csv"
+
+echo "Logging GPU data to: $LOGFILE"
+echo "Press Ctrl+C to stop."
+echo "timestamp,temp_c,fan_pct,power_w,gfx_clock_mhz,mem_clock_mhz" >"$LOGFILE"
+
+nvidia-smi --loop-ms=2000 --query-gpu=timestamp,temperature.gpu,fan.speed,power.draw,clocks.current.graphics,clocks.current.memory --format=csv,noheader,nounits >>"$LOGFILE" 2>/dev/null &
+
+PID=$!
+trap "kill $PID 2>/dev/null; echo \"\nSaved to: $LOGFILE\"; exit 0" INT TERM
+wait $PID
