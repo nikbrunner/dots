@@ -53,7 +53,7 @@ The `symlinks.yml` file defines all symlinks with OS-specific sections:
 The `dots` CLI sources two shared libraries:
 
 1. `scripts/log.sh` — logging functions (`log_section`, `log_success`, `log_warning`, `log_error`, `log_info`), plus `has_gum`, `confirm`, `choose` helpers. Uses `gum` for enhanced output when available.
-2. `scripts/dots/lib.sh` — config loading (`load_config`), git URL parsing, repo state detection, and automated chore commit functions (`dots_commit_theme`, `dots_commit_sessions`, `dots_commit_radar`, `dots_commit_font`, `dots_commit_lazy_lock`, `dots_commit_bookmarks`).
+2. `scripts/dots/lib.sh` — config loading (`load_config`), git URL parsing, repo state detection, and automated chore staging functions (`dots_stage_*`: font, theme, sessions, pi, radar, lazy-lock, bookmarks, gitconfig, gitconfig.delta, helm, claude-memories). Each stages its files; `cmd_chores` rolls them into a single commit.
 
 `lib.sh` requires `DOTS_DIR` to be set before sourcing and reads helm config from `~/.config/helm/config.yml` for `REPOS_BASE_PATH`.
 
@@ -64,7 +64,7 @@ Theme files in this repo are symlinks to Black Atom adapter repos. `dots link` a
 ## Key Files
 
 - `common/.local/bin/dots` — Main CLI implementation (dispatcher + `cmd_pull`, `cmd_push`, `cmd_chores`, `cmd_link`)
-- `scripts/dots/lib.sh` — Shared library (config loading, repo helpers, chore commit functions)
+- `scripts/dots/lib.sh` — Shared library (config loading, repo helpers, chore staging functions)
 - `scripts/dots/symlinks.sh` — Symlink creation/cleanup logic (also sourceable as a library)
 - `scripts/dots/detect-os.sh` — OS detection (`macos`, `arch`, `linux`)
 - `scripts/dots/theme-link.sh` — Black Atom theme symlink creation
