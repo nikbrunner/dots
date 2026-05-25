@@ -12,7 +12,7 @@ let s:shortmess_save = &shortmess
 set shortmess+=aoO
 argglobal
 %argdel
-$argadd .
+$argadd ./
 argglobal
 enew
 setlocal keymap=
@@ -49,6 +49,7 @@ setlocal expandtab
 if &filetype != ''
 setlocal filetype=
 endif
+setlocal fillchars=diff:╱,fold:\ ,foldclose:,foldopen:,foldsep:\ 
 setlocal fixendofline
 setlocal foldcolumn=0
 setlocal foldenable
