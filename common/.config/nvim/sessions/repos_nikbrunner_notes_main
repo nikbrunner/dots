@@ -10,8 +10,8 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +7 Log/2026/2026.05/2026.05.25\ -\ Mon.md
-badd +0 Log/2026/2026.05/2026.05\ -\ May.md
+badd +1 Log/2026/2026.05/2026.05.25\ -\ Mon.md
+badd +8 Log/2026/2026.05/2026.05\ -\ May.md
 argglobal
 %argdel
 $argadd ./
@@ -156,7 +156,7 @@ if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
 keepjumps 7
-normal! 017|
+normal! 0
 wincmd w
 argglobal
 if bufexists(fnamemodify("Log/2026/2026.05/2026.05\ -\ May.md", ":p")) | buffer Log/2026/2026.05/2026.05\ -\ May.md | else | edit Log/2026/2026.05/2026.05\ -\ May.md | endif
@@ -274,11 +274,11 @@ setlocal winhighlight=
 setlocal nowinpinned
 setlocal wrap
 setlocal wrapmargin=0
-let s:l = 8 - ((7 * winheight(0) + 25) / 50)
+let s:l = 6 - ((5 * winheight(0) + 25) / 50)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 8
+keepjumps 6
 normal! 0
 wincmd w
 2wincmd w

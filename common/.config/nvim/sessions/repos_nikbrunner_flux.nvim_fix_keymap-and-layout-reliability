@@ -4,17 +4,16 @@ let v:this_session=expand("<sfile>:p")
 doautoall SessionLoadPre
 silent only
 silent tabonly
-cd ~/repos/nikbrunner/dots
+cd ~/repos/nikbrunner/flux.nvim
 if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +4 ~/repos/nikbrunner/dots/common/.config/nvim/lua/specs/flux.lua
 argglobal
 %argdel
 $argadd ./
-edit ~/repos/nikbrunner/dots/common/.config/nvim/lua/specs/flux.lua
+edit ~/repos/nikbrunner/flux.nvim/lua/flux/ui/status/preview/display.lua
 argglobal
 setlocal keymap=
 setlocal noarabic
@@ -23,7 +22,7 @@ setlocal nobinary
 setlocal nobreakindent
 setlocal breakindentopt=
 setlocal bufhidden=
-setlocal buflisted
+setlocal nobuflisted
 setlocal buftype=
 setlocal busy=0
 setlocal nocindent
@@ -51,6 +50,7 @@ setlocal expandtab
 if &filetype != 'lua'
 setlocal filetype=lua
 endif
+setlocal fillchars=diff:╱,fold:\ ,foldclose:,foldopen:,foldsep:\ 
 setlocal fixendofline
 setlocal foldcolumn=0
 setlocal foldenable
@@ -118,7 +118,7 @@ setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#MiniIconsAzure#%*\ \ %#WinBarPath#lua%*\ %#WinBarSeparator#/%*\ %#WinBarPath#specs%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#flux.lua%*%=%#WinBarGitLabel#\ [GIT:%#WinBarGitChange#\ ~1%#WinBarGitLabel#]%*\ 
+setlocal winbar=%#MiniIconsAzure#%*\ \ %#WinBarPath#lua%*\ %#WinBarSeparator#/%*\ %#WinBarPath#flux%*\ %#WinBarSeparator#/%*\ %#WinBarPath#ui%*\ %#WinBarSeparator#/%*\ %#WinBarPath#status%*\ %#WinBarSeparator#/%*\ %#WinBarPath#preview%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#display.lua%*%=%#WinBarLspLabel#\ [LSP:\ %#DiagnosticSignWarn#:3\ %#DiagnosticSignHint#:1%##%#WinBarLspLabel#]%*\ 
 setlocal winblend=0
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -127,11 +127,11 @@ setlocal winhighlight=
 setlocal nowinpinned
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 7 - ((6 * winheight(0) + 25) / 50)
+let s:l = 47 - ((21 * winheight(0) + 25) / 50)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 7
+keepjumps 47
 normal! 0
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
@@ -146,6 +146,7 @@ if filereadable(s:sx)
 endif
 let &g:so = s:so_save | let &g:siso = s:siso_save
 set hlsearch
+nohlsearch
 doautoall SessionLoadPost
 unlet SessionLoad
 " vim: set ft=vim :
