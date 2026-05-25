@@ -75,4 +75,6 @@ arch:
   arch/.config/waypaper: ~/.config/waypaper
   arch/.config/systemd/user/pass-ssh-agent.service: ~/.config/systemd/user/pass-ssh-agent.service
   arch/.config/systemd/user/pass-env-sync.service: ~/.config/systemd/user/pass-env-sync.service
+  arch/etc/systemd/system/nvidia-power-limit.service: /etc/systemd/system/nvidia-power-limit.service
+  arch/etc/wlnfancurve.conf: /etc/wlnfancurve.conf
 

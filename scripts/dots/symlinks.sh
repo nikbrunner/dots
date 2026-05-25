@@ -9,6 +9,24 @@ set -e
 # SYMLINKS CONFIGURATION FUNCTIONS
 # ============================================================================
 
+# Helper: check if a path needs sudo
+_needs_sudo() {
+    local path="$1"
+    [[ "$path" == /etc/* || "$path" == /usr/* || "$path" == /opt/* ]] && return 0
+    return 1
+}
+
+# Helper: run a command with sudo if target path needs it
+_sudoexec() {
+    local target_path="$1"
+    shift
+    if _needs_sudo "$target_path"; then
+        sudo "$@"
+    else
+        "$@"
+    fi
+}
+
 # Function to process symlinks configuration with common + OS-specific sections
 # Usage: process_symlinks_entries <symlinks_file> <current_os>
 # Returns: prints "source_path|target_path" pairs for all entries
@@ -139,6 +157,26 @@ create_symlinks_from_config() {
     done < <(process_symlinks_entries "$symlinks_file" "$current_os")
 
     # Now process all expanded entries (including non-wildcards)
+    local needs_sudo=false
+    while IFS='|' read -r source_path target_path; do
+        [[ -z "$source_path" || -z "$target_path" ]] && continue
+        local abs_target="${target_path/\~/$HOME}"
+        if _needs_sudo "$abs_target"; then
+            needs_sudo=true
+            break
+        fi
+    done <"$temp_expanded"
+
+    # Cache sudo credentials upfront if needed
+    if [[ "$needs_sudo" == true ]]; then
+        if [[ "$dry_run" == true ]]; then
+            echo "[DRY] Would need sudo for system paths"
+        else
+            sudo -v
+        fi
+    fi
+
+    # Now process all expanded entries (including non-wildcards)
     while IFS='|' read -r source_path target_path; do
         [[ -z "$source_path" || -z "$target_path" ]] && continue
 
@@ -181,7 +219,7 @@ create_symlinks_from_config() {
             fi
         else
             # Create parent directories if needed
-            mkdir -p "$(dirname "$abs_target")"
+            _sudoexec "$abs_target" mkdir -p "$(dirname "$abs_target")"
 
             if [[ -L "$abs_target" ]]; then
                 # Target is already a symlink
@@ -192,8 +230,8 @@ create_symlinks_from_config() {
                     [[ "$verbose" == true ]] && echo "✓ Symlink OK: $target_path"
                 else
                     # Update symlink
-                    rm "$abs_target"
-                    ln -s "$abs_source" "$abs_target"
+                    _sudoexec "$abs_target" rm "$abs_target"
+                    _sudoexec "$abs_target" ln -s "$abs_source" "$abs_target"
                     updated_links=$((updated_links + 1))
                     [[ "$quiet" != true ]] && echo "⚠ Updated: $target_path"
                 fi
@@ -201,19 +239,19 @@ create_symlinks_from_config() {
                 # Target exists but is not a symlink
                 if [[ "$no_backup" == true ]]; then
                     [[ "$verbose" == true ]] && echo "⚠ Replacing: $target_path"
-                    rm -rf "$abs_target"
+                    _sudoexec "$abs_target" rm -rf "$abs_target"
                 else
                     local backup_name
                     backup_name="$abs_target.backup.$(date +%Y%m%d_%H%M%S)"
                     [[ "$verbose" == true ]] && echo "⚠ Backing up: $target_path -> $(basename "$backup_name")"
-                    mv "$abs_target" "$backup_name"
+                    _sudoexec "$abs_target" mv "$abs_target" "$backup_name"
                 fi
-                ln -s "$abs_source" "$abs_target"
+                _sudoexec "$abs_target" ln -s "$abs_source" "$abs_target"
                 created_links=$((created_links + 1))
                 [[ "$quiet" != true ]] && echo "+ Created: $target_path"
             else
                 # Target doesn't exist
-                ln -s "$abs_source" "$abs_target"
+                _sudoexec "$abs_target" ln -s "$abs_source" "$abs_target"
                 created_links=$((created_links + 1))
                 [[ "$quiet" != true ]] && echo "+ Created: $target_path"
             fi
@@ -296,7 +334,7 @@ cleanup_broken_symlinks_from_config() {
                     [[ "$verbose" == true ]] && echo "✗ [DRY] Would remove broken symlink: $abs_target"
                 else
                     [[ "$verbose" == true ]] && echo "✗ Removing broken symlink: $abs_target"
-                    rm "$abs_target"
+                    _sudoexec "$abs_target" rm "$abs_target"
                 fi
                 broken_count=$((broken_count + 1))
             fi
