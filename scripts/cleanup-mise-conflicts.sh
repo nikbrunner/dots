@@ -1,11 +1,14 @@
 #!/usr/bin/env bash
 # Clean up tooling conflicts left over from the Mason → mise migration.
 #
-# Three gated steps:
+# Gated steps:
 #   1. Remove leftover ~/.local/share/nvim/mason/ (Mason plugin removed in bf7db58).
-#   2. Uninstall Homebrew formulae that overlap with mise-managed tools.
-#   3. Run `mise install` to reconcile.
+#   2. Uninstall Homebrew formulae that overlap with mise-managed tools (macOS).
+#   3. Uninstall pacman/AUR packages that overlap with mise-managed tools (Arch).
+#   4. Run `mise install` to reconcile.
 #
+# Steps 2 and 3 are mutually exclusive in practice — each is gated on its
+# package manager being present, so only the relevant one runs per machine.
 # Idempotent and safe to re-run on any machine.
 
 set -euo pipefail
@@ -84,7 +87,63 @@ fi
 
 echo ""
 
-# ── Step 3: Reconcile mise ───────────────────────────────────────────────────
+# ── Step 3: pacman/AUR duplicates of mise tools (Arch) ───────────────────────
+log_section "Pacman/AUR duplicates of mise tools"
+
+if ! command -v paru &>/dev/null && ! command -v pacman &>/dev/null; then
+    log_info "Not an Arch system (no paru/pacman); skipping pacman overlap step."
+else
+    # Bare mise tool names (drop npm:/go:/pipx: prefixed entries — not native packages).
+    mise_tools=$(mise ls --current 2>/dev/null | awk '{print $1}' | grep -v ':' || true)
+
+    # Detect by binary ownership, not name: Arch package names often diverge from
+    # mise tool names (delta->git-delta, gh->github-cli, node->nodejs, yq->go-yq).
+    # Only offer explicitly-installed packages (pacman -Qe) — the parallel to brew
+    # formulae. Dependency-only overlaps (e.g. lua, nodejs) belong to other software
+    # and must stay; pacman's own checks protect anything still required.
+    pac_overlap=()
+    for tool in $mise_tools; do
+        bin="/usr/bin/$tool"
+        [[ -e "$bin" ]] || continue
+        pkg=$(pacman -Qoq "$bin" 2>/dev/null) || continue
+        [[ -n "$pkg" ]] || continue
+        pacman -Qeq "$pkg" &>/dev/null || continue # explicit installs only
+        pac_ver=$(pacman -Q "$pkg" 2>/dev/null | awk '{print $2}')
+        mise_ver=$(mise current "$tool" 2>/dev/null | awk '{print $1}' || echo "?")
+        pac_overlap+=("$pkg|$tool|$pac_ver|${mise_ver:-?}")
+    done
+
+    if [[ ${#pac_overlap[@]} -eq 0 ]]; then
+        log_okay "No explicitly-installed pacman/AUR packages overlap with mise tools."
+    else
+        log_warn "Provided by both a pacman/AUR package and mise:"
+        echo ""
+        for entry in "${pac_overlap[@]}"; do
+            IFS='|' read -r pkg tool pac_ver mise_ver <<<"$entry"
+            printf "  %-20s (%-14s pacman: %-12s mise: %s)\n" "$pkg" "$tool" "$pac_ver" "$mise_ver"
+        done
+        echo ""
+        log_info "mise shims already take PATH precedence; removing these reclaims disk"
+        log_info "and avoids stale-version confusion. paru will refuse any package still"
+        log_info "required by other software (reported and skipped, not forced)."
+        if confirm "Uninstall the pacman/AUR versions?"; then
+            remover="paru"
+            command -v paru &>/dev/null || remover="sudo pacman"
+            for entry in "${pac_overlap[@]}"; do
+                IFS='|' read -r pkg _ _ _ <<<"$entry"
+                log_info "Removing ${pkg}..."
+                $remover -Rs --noconfirm "$pkg" || log_warn "  Skipped ${pkg} (likely still required by another package)."
+            done
+            log_okay "Pacman/AUR duplicates processed."
+        else
+            log_info "Skipped pacman uninstall."
+        fi
+    fi
+fi
+
+echo ""
+
+# ── Step 4: Reconcile mise ───────────────────────────────────────────────────
 log_section "Reconcile mise"
 
 if confirm "Run 'mise install' now?" true; then
