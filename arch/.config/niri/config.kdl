@@ -281,6 +281,9 @@ spawn-at-startup "waypaper" "--restore"
 // Clipboard manager (clipse)
 spawn-at-startup "clipse" "-listen"
 
+// Export NIRI_SOCKET to systemd (needed by hyprwhspr)
+spawn-at-startup "dbus-update-activation-environment" "--systemd" "WAYLAND_DISPLAY" "XDG_CURRENT_DESKTOP" "NIRI_SOCKET"
+
 // To run a shell command (with variables, pipes, etc.), use spawn-sh-at-startup:
 // spawn-sh-at-startup "qs -c ~/source/qs/MyAwesomeShell"
 
@@ -459,6 +462,9 @@ binds {
 
 
     Super+Alt+L hotkey-overlay-title="Lock the Screen: hyprlock" { spawn "hyprlock"; }
+
+    // Voice dictation (hyprwhspr)
+    Super+Alt+D hotkey-overlay-title="Voice Dictation" { spawn "hyprwhspr" "record" "toggle"; }
 
     // Wallpaper picker
     Mod+Shift+W hotkey-overlay-title="Wallpaper Picker" { spawn "waypaper"; }
@@ -667,20 +673,8 @@ binds {
     // Center all fully visible columns on screen.
     Mod+Shift+Ctrl+C { center-visible-columns; }
 
-    // Finer width adjustments.
-    // This command can also:
-    // * set width in pixels: "1000"
-    // * adjust width in pixels: "-5" or "+5"
-    // * set width as a percentage of screen width: "25%"
-    // * adjust width as a percentage of screen width: "-10%" or "+10%"
-    // Pixel sizes use logical, or scaled, pixels. I.e. on an output with scale 2.0,
-    // set-column-width "100" will make the column occupy 200 physical screen pixels.
-    Mod+Minus { set-column-width "-10%"; }
-    Mod+Equal { set-column-width "+10%"; }
-
-    // Finer height adjustments when in column with other windows.
-    Mod+Shift+Minus { set-window-height "-10%"; }
-    Mod+Shift+Equal { set-window-height "+10%"; }
+    // Mod+Minus/Equal freed up for Super+-/= from Moonlander (zoom in Ghostty)
+    // Use Mod+R for preset column widths, Mod+Shift+R / Mod+Ctrl+R for window heights
 
     // Move the focused window between the floating and the tiling layout.
     // Move window between floating and tiling layout

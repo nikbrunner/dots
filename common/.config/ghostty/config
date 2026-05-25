@@ -2,7 +2,7 @@
 # https://github.com/imrajyavardhan12/spectre-ghostty-config
 
 # Colors
-theme = black-atom-default-dark.conf
+theme = black-atom-stations-engineering.conf
 bold-is-bright = true
 
 # Window
@@ -18,7 +18,7 @@ adjust-underline-position = 3
 
 # Fonts
 font-size = 14
-font-family = MartianMono Nerd Font
+font-family = TX-02
 font-style-bold = Bold
 window-inherit-working-directory = true
 unfocused-split-opacity = 1
@@ -55,6 +55,11 @@ clipboard-trim-trailing-spaces = true
 # Keybinds
 keybind = global:shift+ctrl+alt+space=toggle_quick_terminal
 keybind = cmd+z=toggle_fullscreen
+
+# Zoom (font size) — Moonlander sends Super+-/= 0 on media layer
+keybind = super+minus=decrease_font_size:1
+keybind = super+equal=increase_font_size:1
+keybind = super+zero=reset_font_size
 
 # Quick-terminal
 quick-terminal-position = center
