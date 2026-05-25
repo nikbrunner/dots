@@ -2,7 +2,5 @@ bookmarks:
     - path: ~/repos/nikbrunner/dots
     - path: ~/repos/nikbrunner/notes
     - path: ~/repos/nikbrunner/imf-notes
-    - path: ~/repos/imfusion/web-ui-poc
-    - path: ~/repos/nikbrunner/minifugit.nvim
     - path: ~/repos/black-atom-industries/core
     - path: ~/repos/black-atom-industries/helm
