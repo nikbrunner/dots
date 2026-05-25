@@ -325,7 +325,6 @@ dots_stage_pi() {
     local pi_sessions_dir="$repo_path/common/.pi/agent/sessions"
     local pi_paths=(
         "common/.pi/agent/sessions/"
-        "common/.pi/exa-usage.json"
         "common/.pi/agent/settings.json"
     )
 
@@ -338,8 +337,21 @@ dots_stage_pi() {
         fi
     fi
 
-    local has_changes=false
+    # Filter to only paths that exist on disk or have uncommitted changes
+    local existing_paths=()
     for p in "${pi_paths[@]}"; do
+        if [[ -e "$repo_path/$p" ]] || [[ -n $(git -C "$repo_path" status --porcelain "$p" 2>/dev/null) ]]; then
+            existing_paths+=("$p")
+        fi
+    done
+
+    if [[ ${#existing_paths[@]} -eq 0 ]]; then
+        echo "No pi changes to commit"
+        return 1
+    fi
+
+    local has_changes=false
+    for p in "${existing_paths[@]}"; do
         if [[ -n $(git -C "$repo_path" status --porcelain "$p" 2>/dev/null) ]]; then
             has_changes=true
             break
@@ -351,8 +363,12 @@ dots_stage_pi() {
         return 1
     fi
 
-    (cd "$repo_path" && git add "${pi_paths[@]}")
-    log_okay "Pi changes staged"
+    if (cd "$repo_path" && git add "${existing_paths[@]}"); then
+        log_okay "Pi changes staged"
+    else
+        log_fail "Failed to stage pi changes"
+        return 1
+    fi
 }
 
 dots_stage_radar() {
