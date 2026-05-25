@@ -459,6 +459,7 @@ binds {
     Ctrl+Shift+Alt+Mod+A hotkey-overlay-title="Activity" { spawn "ghostty" "-e" "btop"; }
     Ctrl+Shift+Alt+Mod+B hotkey-overlay-title="Bookmarks" { spawn "ghostty" "--title=bm" "-e" "bm" ; }
     Ctrl+Shift+Alt+Mod+V hotkey-overlay-title="Clipboard History" { spawn "ghostty" "--title=clipse" "--maximize=false" "-e" "clipse"; }
+    Ctrl+Shift+Alt+Mod+S hotkey-overlay-title="ALSA Mixer" { spawn "ghostty" "--title=alsamixer" "--maximize=false" "-e" "alsamixer" "-c" "3"; }
 
 
     Super+Alt+L hotkey-overlay-title="Lock the Screen: hyprlock" { spawn "hyprlock"; }
