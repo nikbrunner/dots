@@ -13,7 +13,7 @@ set shortmess+=aoO
 argglobal
 %argdel
 $argadd ./
-edit ~/repos/nikbrunner/flux.nvim/lua/flux/ui/status/preview/display.lua
+edit ~/repos/nikbrunner/flux.nvim/lua/flux/ui/status/preview/window_state.lua
 argglobal
 setlocal keymap=
 setlocal noarabic
@@ -96,7 +96,7 @@ setlocal rightleftcmd=search
 setlocal scrollback=-1
 setlocal noscrollbind
 setlocal shiftwidth=4
-setlocal signcolumn=yes
+setlocal signcolumn=no
 setlocal smartindent
 setlocal nosmoothscroll
 setlocal softtabstop=-1
@@ -118,20 +118,20 @@ setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#MiniIconsAzure#%*\ \ %#WinBarPath#lua%*\ %#WinBarSeparator#/%*\ %#WinBarPath#flux%*\ %#WinBarSeparator#/%*\ %#WinBarPath#ui%*\ %#WinBarSeparator#/%*\ %#WinBarPath#status%*\ %#WinBarSeparator#/%*\ %#WinBarPath#preview%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#display.lua%*%=%#WinBarLspLabel#\ [LSP:\ %#DiagnosticSignWarn#:3\ %#DiagnosticSignHint#:1%##%#WinBarLspLabel#]%*\ 
+setlocal winbar=%#MiniIconsAzure#%*\ \ %#WinBarPath#lua%*\ %#WinBarSeparator#/%*\ %#WinBarPath#flux%*\ %#WinBarSeparator#/%*\ %#WinBarPath#ui%*\ %#WinBarSeparator#/%*\ %#WinBarPath#status%*\ %#WinBarSeparator#/%*\ %#WinBarPath#preview%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#window_state.lua%*%=%#WinBarLspLabel#\ [LSP:\ %#DiagnosticSignHint#:1%##%#WinBarLspLabel#]%*\ 
 setlocal winblend=0
 setlocal nowinfixbuf
 setlocal nowinfixheight
-setlocal nowinfixwidth
+setlocal winfixwidth
 setlocal winhighlight=
 setlocal nowinpinned
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 47 - ((21 * winheight(0) + 25) / 50)
+let s:l = 71 - ((27 * winheight(0) + 22) / 45)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 47
+keepjumps 71
 normal! 0
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
