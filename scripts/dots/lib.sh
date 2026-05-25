@@ -208,6 +208,8 @@ dots_stage_theme() {
         "common/.config/nvim/lua/config.lua"
         "common/.config/tmux/tmux.conf"
         "common/.config/zed/settings.json"
+        "arch/.config/waybar/theme.css"
+        "arch/.config/niri/theme.kdl"
     )
 
     local has_changes=false
