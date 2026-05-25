@@ -175,6 +175,16 @@ sudo usermod -aG docker "$USER"
 
 Log out and back in for the group change to take effect.
 
+## 14. Git Hooks (contributing to dots)
+
+Wire the repo's pre-commit hook (prettier + shfmt + Makefile checks) so it runs on every commit. `core.hooksPath` is per-clone, so this is needed once per machine:
+
+```sh
+./install/setup-git-hooks.sh
+```
+
+Only relevant if you'll be committing changes to this repo. Format staged work first with `make fmt`.
+
 ---
 
 ## Gaming

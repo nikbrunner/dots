@@ -136,6 +136,16 @@ claude mcp add --scope user --transport http Ref https://api.ref.tools/mcp -H "x
 claude mcp add --scope user chrome-devtools -- npx chrome-devtools-mcp@latest
 ```
 
+## 12. Git Hooks (contributing to dots)
+
+Wire the repo's pre-commit hook (prettier + shfmt + Makefile checks) so it runs on every commit. `core.hooksPath` is per-clone, so this is needed once per machine:
+
+```sh
+./install/setup-git-hooks.sh
+```
+
+Only relevant if you'll be committing changes to this repo. Format staged work first with `make fmt`.
+
 ## Post-Install Checklist
 
 ### App Logins
