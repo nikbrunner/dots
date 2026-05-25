@@ -20,6 +20,8 @@ common:
   common/.config/lazygit/config.yml: ~/.config/lazygit/config.yml
   common/.config/mpd/mpd.conf: ~/.config/mpd/mpd.conf
   common/.config/nvim: ~/.config/nvim
+  common/.config/pacman.conf: ~/.config/pacman.conf
+  common/.config/paru/paru.conf: ~/.config/paru/paru.conf
   common/.config/rmpc: ~/.config/rmpc
   common/.config/tmux: ~/.config/tmux
   common/.config/wezterm: ~/.config/wezterm
@@ -73,3 +75,4 @@ arch:
   arch/.config/waypaper: ~/.config/waypaper
   arch/.config/systemd/user/pass-ssh-agent.service: ~/.config/systemd/user/pass-ssh-agent.service
   arch/.config/systemd/user/pass-env-sync.service: ~/.config/systemd/user/pass-env-sync.service
+
