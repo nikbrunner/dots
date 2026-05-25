@@ -61,9 +61,11 @@ marksman = "prefix:2026-02"
 "npm:@anthropic-ai/claude-code" = "prefix:2"
 "npm:@readwise/cli" = "prefix:0"
 "npm:@tanstack/cli" = "prefix:0"
+"npm:@earendil-works/pi-coding-agent" = "latest"
 
 [env]
 _.file = "~/.env"
 
 [settings]
 lockfile = true
+npm.package_manager = "npm"   # guarantees mise's --ignore-scripts=true default applies
