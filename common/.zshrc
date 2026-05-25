@@ -51,6 +51,8 @@ alias scratch="$EDITOR $HOME/scratchpad.md"
 alias ydl='yt-dlp --audio-format mp3 --embed-thumbnail --embed-metadata --extract-audio'
 alias groot='cd "$(git rev-parse --show-toplevel 2>/dev/null)" || echo "I am not Groot (not in a git repo)"'
 
+alias brewi='outdated=$(brew outdated); [[ -n "$outdated" ]] && fzf --multi <<< $outdated | xargs brew upgrade'
+
 alias :q=exit
 alias :vs='tmux split-window -h -c "#{pane_current_path}"'
 alias :sp='tmux split-window -v -c "#{pane_current_path}"'
