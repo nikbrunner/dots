@@ -51,7 +51,7 @@
     "deny": [],
     "ask": []
   },
-  "model": "opus[1m]",
+  "model": "sonnet[1m]",
   "hooks": {
     "Notification": [
       {
@@ -175,7 +175,8 @@
     "impeccable@impeccable": true,
     "readwise@readwise-skills": true,
     "plannotator@plannotator": true,
-    "caveman@caveman": false
+    "caveman@caveman": false,
+    "figma@claude-plugins-official": true
   },
   "extraKnownMarketplaces": {
     "local-plugins": {
