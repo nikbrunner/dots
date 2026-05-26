@@ -176,13 +176,24 @@ cmd_pull() {
 					echo -e "  ${_YELLOW}$name${_RESET} ($state)"
 					echo ""
 
+					echo "  What to do?"
+					echo "    [1] Review in LazyGit"
+					echo "    [2] Stash, pull, unstash"
+					echo "    [3] Discard changes (reset to remote)"
+					echo "    [4] Skip"
+					echo "    [5] Stop walkthrough"
+					echo -n "  Choice: "
+					read -r choice_inline
+
 					local action
-					action=$(choose "  What to do?" \
-						"Review in LazyGit" \
-						"Stash, pull, unstash" \
-						"Discard changes (reset to remote)" \
-						"Skip" \
-						"Stop walkthrough")
+					case "$choice_inline" in
+					1) action="Review in LazyGit" ;;
+					2) action="Stash, pull, unstash" ;;
+					3) action="Discard changes (reset to remote)" ;;
+					4) action="Skip" ;;
+					5) action="Stop walkthrough" ;;
+					*) action="Skip" ;;
+					esac
 
 					case "$action" in
 					"Review in LazyGit")
