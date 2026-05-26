@@ -1,4 +1,4 @@
-# `nbr.nvim`
+# `Vin`
 
 <a href="https://dotfyle.com/nikbrunner/nbrnvim"><img src="https://dotfyle.com/nikbrunner/nbrnvim/badges/plugins?style=flat" /></a>
 <a href="https://dotfyle.com/nikbrunner/nbrnvim"><img src="https://dotfyle.com/nikbrunner/nbrnvim/badges/leaderkey?style=flat" /></a>
@@ -64,31 +64,32 @@ Then open Neovim — `lazy.nvim` will bootstrap and install all plugins on first
 Use this method to install alongside an existing Neovim config without conflicts:
 
 ```sh
-# Clone the repo
-git clone git@github.com:nikbrunner/nbr.nvim ~/.config/nbr
+# Clone just the nvim config
+npx degit nikbrunner/dots/common/.config/nvim ~/.config/vin
 
 # Install plugins
-NVIM_APPNAME=nbr nvim --headless +"Lazy! sync" +qa
+NVIM_APPNAME=vin nvim --headless +"Lazy! sync" +qa
 ```
 
 Open with:
 
 ```sh
-NVIM_APPNAME=nbr nvim
+NVIM_APPNAME=vin nvim
 ```
 
 Or set up a shell alias in `.zshrc` / `.bashrc`:
 
 ```sh
-alias nbr="NVIM_APPNAME=nbr nvim"
+alias vin="NVIM_APPNAME=vin nvim"
 ```
 
-Plugin data lives in `~/.local/share/nbr` and state in `~/.local/state/nbr`, keeping it fully isolated from your default `nvim` config.
+Plugin data lives in `~/.local/share/vin` and state in `~/.local/state/vin`, keeping it fully isolated from your default `nvim` config.
 
 ### Setup (standalone — replaces default config)
 
 ```sh
-git clone git@github.com:nikbrunner/nbr.nvim ~/.config/nvim
+# Clone just the nvim config
+npx degit nikbrunner/dots/common/.config/nvim ~/.config/nvim
 nvim --headless +"Lazy! sync" +qa
 ```
 
