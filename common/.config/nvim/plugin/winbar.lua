@@ -19,6 +19,13 @@ local function setup_highlights()
     vim.api.nvim_set_hl(0, "WinBarLspWarn", { fg = get_attr("DiagnosticSignWarn", "fg"), bg = lsp_bg })
     vim.api.nvim_set_hl(0, "WinBarLspInfo", { fg = get_attr("DiagnosticSignInfo", "fg"), bg = lsp_bg })
     vim.api.nvim_set_hl(0, "WinBarLspHint", { fg = get_attr("DiagnosticSignHint", "fg"), bg = lsp_bg })
+
+    local normal_fg = get_attr("Normal", "fg")
+    local normal_bg = get_attr("Normal", "bg")
+
+    vim.api.nvim_set_hl(0, "WinBarFilename", { fg = normal_fg, bg = normal_bg, bold = true })
+    vim.api.nvim_set_hl(0, "WinBarPath", { fg = muted, bg = normal_bg })
+    vim.api.nvim_set_hl(0, "WinBarSeparator", { fg = muted, bg = normal_bg })
 end
 
 local function truncate_path(parts, max_len)
