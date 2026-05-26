@@ -21,6 +21,37 @@ local function setup_highlights()
     vim.api.nvim_set_hl(0, "WinBarLspHint", { fg = get_attr("DiagnosticSignHint", "fg"), bg = lsp_bg })
 end
 
+local function truncate_path(parts, max_len)
+    if #parts == 0 then
+        return parts
+    end
+
+    -- Always keep filename (last part); try to fit as many leading dirs as possible
+    local filename = parts[#parts]
+    local ellipsis = "..."
+
+    -- Build from the right: filename, then parent, then grandparent, etc.
+    local keep = { filename }
+    local current_len = #filename
+
+    for i = #parts - 1, 1, -1 do
+        local part = parts[i]
+        local added_len = #part + 1 -- +1 for the separator that will precede it
+        if current_len + added_len > max_len then
+            break
+        end
+        table.insert(keep, 1, part)
+        current_len = current_len + added_len
+    end
+
+    -- If we dropped any leading dirs, prepend ellipsis
+    if #keep < #parts then
+        table.insert(keep, 1, ellipsis)
+    end
+
+    return keep
+end
+
 local function get_relative_path(bufnr)
     local file_path = vim.fn.bufname(bufnr)
     if not file_path or file_path == "" then
@@ -41,6 +72,15 @@ local function get_relative_path(bufnr)
     end
 
     local parts = vim.split(relative_path, "/", { plain = true })
+
+    -- Estimate max path length: try 40 chars, or half the window width if smaller
+    local max_len = math.min(40, math.floor(vim.api.nvim_win_get_width(0) / 2.5))
+    max_len = math.max(max_len, 20) -- absolute floor so it's never unusable
+
+    if #table.concat(parts, "/") > max_len then
+        parts = truncate_path(parts, max_len)
+    end
+
     local highlighted_parts = {}
     for i, part in ipairs(parts) do
         if i == #parts then
@@ -49,7 +89,7 @@ local function get_relative_path(bufnr)
             table.insert(highlighted_parts, "%#WinBarPath#" .. part .. "%*")
         end
     end
-    return table.concat(highlighted_parts, " %#WinBarSeparator#/%* ")
+    return table.concat(highlighted_parts, "%#WinBarSeparator#/%*")
 end
 
 local function get_ft_icon(bufnr)
