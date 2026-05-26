@@ -14,8 +14,8 @@
     "npm:pi-mcp-adapter",
     "npm:pi-subagents"
   ],
-  "defaultProvider": "openrouter",
-  "defaultModel": "deepseek/deepseek-v4-flash",
+  "defaultProvider": "opencode-go",
+  "defaultModel": "kimi-k2.6",
   "enabledModels": [
     "openrouter/minimax/minimax-m2.7",
     "openrouter/z-ai/glm-5.1",
@@ -36,7 +36,7 @@
     "opencode-go/qwen3.5-plus",
     "opencode-go/qwen3.6-plus"
   ],
-  "hideThinkingBlock": false,
+  "hideThinkingBlock": true,
   "compaction": {
     "enabled": false
   },
