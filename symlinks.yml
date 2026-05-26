@@ -20,8 +20,6 @@ common:
   common/.config/lazygit/config.yml: ~/.config/lazygit/config.yml
   common/.config/mpd/mpd.conf: ~/.config/mpd/mpd.conf
   common/.config/nvim: ~/.config/nvim
-  common/.config/pacman.conf: ~/.config/pacman.conf
-  common/.config/paru/paru.conf: ~/.config/paru/paru.conf
   common/.config/rmpc: ~/.config/rmpc
   common/.config/tmux: ~/.config/tmux
   common/.config/wezterm: ~/.config/wezterm
@@ -59,6 +57,8 @@ macos:
   macos/Library/Scripts/pcloud-auto-mount.applescript: ~/Library/Scripts/pcloud-auto-mount.applescript
 
 arch:
+  arch/.config/pacman.conf: ~/.config/pacman.conf
+  arch/.config/paru/paru.conf: ~/.config/paru/paru.conf
   arch/.local/share/applications/*: ~/.local/share/applications
   arch/.config/zsh/os.zsh: ~/.config/zsh/os.zsh
   arch/.config/clipse: ~/.config/clipse
@@ -77,4 +77,3 @@ arch:
   arch/.config/systemd/user/pass-env-sync.service: ~/.config/systemd/user/pass-env-sync.service
   arch/etc/systemd/system/nvidia-power-limit.service: /etc/systemd/system/nvidia-power-limit.service
   arch/etc/wlnfancurve.conf: /etc/wlnfancurve.conf
-
