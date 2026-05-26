@@ -10,7 +10,7 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +78 lua/black-atom/highlights/ui.lua
+badd +24 lua/black-atom/highlights/ui.lua
 argglobal
 %argdel
 $argadd ./
@@ -118,12 +118,13 @@ setlocal textwidth=120
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#MiniIconsAzure#󰢱%*\ \ %#WinBarPath#lua%*\ %#WinBarSeparator#/%*\ %#WinBarPath#black-atom%*\ %#WinBarSeparator#/%*\ %#WinBarPath#highlights%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#ui.lua%*%=%#WinBarGitLabel#\ [GIT:%#WinBarGitChange#\ ~1%#WinBarGitLabel#]%*\ 
+setlocal winbar=%#MiniIconsAzure#%*\ \ %#WinBarPath#lua%*\ %#WinBarSeparator#/%*\ %#WinBarPath#black-atom%*\ %#WinBarSeparator#/%*\ %#WinBarPath#highlights%*\ %#WinBarSeparator#/%*\ %#WinBarFilename#ui.lua%*%=
 setlocal winblend=0
 setlocal nowinfixbuf
 setlocal nowinfixheight
 setlocal nowinfixwidth
 setlocal winhighlight=
+setlocal nowinpinned
 setlocal nowrap
 setlocal wrapmargin=0
 2
@@ -132,11 +133,11 @@ sil! normal! zo
 sil! normal! zo
 10
 sil! normal! zo
-let s:l = 78 - ((44 * winheight(0) + 27) / 55)
+let s:l = 35 - ((34 * winheight(0) + 25) / 50)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 78
+keepjumps 35
 normal! 0
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
@@ -151,6 +152,7 @@ if filereadable(s:sx)
 endif
 let &g:so = s:so_save | let &g:siso = s:siso_save
 set hlsearch
+nohlsearch
 doautoall SessionLoadPost
 unlet SessionLoad
 " vim: set ft=vim :
