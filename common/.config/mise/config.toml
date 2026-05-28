@@ -63,6 +63,8 @@ marksman = "prefix:2026-02"
 "npm:@readwise/cli" = "prefix:0"
 "npm:@tanstack/cli" = "prefix:0"
 "npm:@earendil-works/pi-coding-agent" = "latest"
+zig = "latest"
+zls = "latest"
 
 [env]
 _.file = "~/.env"
