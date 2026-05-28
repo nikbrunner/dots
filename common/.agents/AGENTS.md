@@ -63,6 +63,10 @@ Primary: `agent-browser` (CLI). Fallback: Chrome MCP for DevTools-only tasks.
 | Network request inspection, console logs   | Chrome MCP      |
 | Memory/heap snapshots                      | Chrome MCP      |
 
+## Git
+
+Never automatically `git add` files after making edits. Leave them unstaged so Nik can step through the diff, give feedback, and stage himself. Only run `git add` when explicitly asked ("commit", "stage", "go ahead", or equivalent).
+
 ## Development
 
 - Research before implementation — check docs and examples using `fetch_content`, `web_search`, and `code_search`
