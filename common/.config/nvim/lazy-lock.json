@@ -3,6 +3,7 @@
   "Navigator.nvim": { "branch": "master", "commit": "91d86506ac2a039504d5205d32a1d4bc7aa57072" },
   "SchemaStore.nvim": { "branch": "main", "commit": "6a25868796bb0108145fdb748a43f6d95cf0039c" },
   "annotator.nvim": { "branch": "main", "commit": "5c37f2c954dc37cea9fea4516a79684fb895d7ac" },
+  "black-atom": { "branch": "main", "commit": "a930138681348dff7114afb985fe86e14addbacf" },
   "blink.cmp": { "branch": "main", "commit": "78336bc89ee5365633bcf754d93df01678b5c08f" },
   "canola-collection": { "branch": "main", "commit": "8566c09080c3084db1ffba21dec53e2b4235daed" },
   "canola.nvim": { "branch": "canola", "commit": "3838f1380e9aeea0597a80beb6ab28da73e38525" },
