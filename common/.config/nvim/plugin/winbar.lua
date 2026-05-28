@@ -105,11 +105,7 @@ local function get_ft_icon(bufnr)
     if filename == "" then
         return ""
     end
-    local ok, icon, hl = pcall(require("mini.icons").get, "file", filename)
-    if ok and icon then
-        return "%#" .. hl .. "#" .. icon .. "%*  "
-    end
-    return ""
+    return ""  -- icon disabled
 end
 
 local function build_right(bufnr)

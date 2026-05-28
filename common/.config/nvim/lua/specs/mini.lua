@@ -66,7 +66,7 @@ function M.icons()
         ["yarn.lock"] = { glyph = "", hl = "MiniIconsBlue" },
     }
 
-    local mi = require("mini.icons")
+    local mi = nil -- disabled: no icon customization
 
     -- First setup: establish config table with our overrides
     -- Default highlights use mi.get() to keep original colors per category
@@ -88,22 +88,7 @@ function M.icons()
         os = {},
     })
 
-    -- Nuclear: replace ALL built-in icons with circles,
-    -- keeping the original highlight group per entry (colored circles).
-    for _, cat in ipairs({ "directory", "extension", "file", "filetype", "lsp", "os" }) do
-        for _, name in ipairs(mi.list(cat)) do
-            local _, orig_hl = mi.get(cat, name)
-            mi.config[cat][name] = { glyph = circle, hl = orig_hl }
-        end
-    end
 
-    -- Restore our explicit overrides on top of the circles sweep
-    for name, icon_data in pairs(file_overrides) do
-        mi.config.file[name] = icon_data
-    end
-
-    -- Re-initialize cache so everything takes effect
-    mi.setup(mi.config)
 
     -- LSP diagnostic prefix: filled circle
     vim.diagnostic.config({
@@ -827,7 +812,7 @@ return {
         M.diff()
         M.ai()
         M.statusline()
-        M.icons()
+        -- M.icons() -- disabled: no icon overrides or circles sweep
         M.surround()
         M.test()
         M.sessions()
