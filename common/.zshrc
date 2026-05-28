@@ -35,7 +35,7 @@ alias vin="NVIM_APPNAME=nvim_mnml nvim"
 alias mini="NVIM_APPNAME=nvim-minimax nvim"
 
 alias ls="eza --all --oneline --long --icons --sort=type"
-alias lt="eza --all --tree --icons --git-ignore --sort=type"
+alias lt="eza --all --tree --icons --sort=type"
 alias lg="lazygit"
 alias ld="lazydocker"
 alias tn="tmux new"
