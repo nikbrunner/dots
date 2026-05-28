@@ -1,6 +1,6 @@
 bookmarks:
-    - path: ~/repos/nikbrunner/dots
-    - path: ~/repos/nikbrunner/notes
-    - path: ~/repos/nikbrunner/imf-notes
-    - path: ~/repos/black-atom-industries/core
-    - path: ~/repos/black-atom-industries/helm
+  - path: ~/repos/nikbrunner/dots
+  - path: ~/repos/nikbrunner/notes
+  - path: ~/repos/nikbrunner/imf-notes
+  - path: ~/repos/black-atom-industries/core
+  - path: ~/repos/imfusion/web-ui-poc
