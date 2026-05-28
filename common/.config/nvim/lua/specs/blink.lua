@@ -47,6 +47,9 @@ return {
         signature = {
             enabled = true,
         },
+        appearance = {
+            kind_icons = {},
+        },
         completion = {
             list = {
                 selection = {
@@ -69,28 +72,10 @@ return {
                 auto_show_delay_ms = 350,
                 draw = {
                     columns = {
-                        { "kind_icon", gap = 1 },
+                        -- { "kind_icon", gap = 1 },
                         { "label", "label_description", gap = 1 },
                         { "kind", gap = 1 },
                         { "source_name" },
-                    },
-                    components = {
-                        kind_icon = {
-                            text = function(ctx)
-                                local kind_icon, _, _ = require("mini.icons").get("lsp", ctx.kind)
-                                return kind_icon
-                            end,
-                            highlight = function(ctx)
-                                local _, hl, _ = require("mini.icons").get("lsp", ctx.kind)
-                                return hl
-                            end,
-                        },
-                        kind = {
-                            highlight = function(ctx)
-                                local _, hl, _ = require("mini.icons").get("lsp", ctx.kind)
-                                return hl
-                            end,
-                        },
                     },
                 },
             },
