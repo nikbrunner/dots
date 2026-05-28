@@ -10,11 +10,11 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +16 common/.gitconfig.delta
+badd +76 common/.config/nvim/lua/specs/blink.lua
 argglobal
 %argdel
 $argadd ./
-edit common/.gitconfig.delta
+edit common/.config/nvim/lua/specs/blink.lua
 argglobal
 setlocal keymap=
 setlocal noarabic
@@ -32,8 +32,8 @@ setlocal cinoptions=
 setlocal cinscopedecls=public,protected,private
 setlocal cinwords=if,else,while,do,for,switch
 setlocal colorcolumn=
-setlocal comments=:#
-setlocal commentstring=#\ %s
+setlocal comments=:---,:--
+setlocal commentstring=--\ %s
 setlocal complete=.,w,b,u,t
 setlocal completefunc=
 setlocal completeslash=
@@ -44,11 +44,12 @@ setlocal nocursorbind
 setlocal nocursorcolumn
 setlocal cursorline
 setlocal cursorlineopt=both
+setlocal define=\\<function\\|\\<local\\%(\\s\\+function\\)\\=
 setlocal nodiff
 setlocal eventignorewin=
 setlocal expandtab
-if &filetype != 'conf'
-setlocal filetype=conf
+if &filetype != 'lua'
+setlocal filetype=lua
 endif
 setlocal fixendofline
 setlocal foldcolumn=0
@@ -63,12 +64,13 @@ setlocal foldnestmax=20
 setlocal foldtext=
 setlocal formatexpr=v:lua.require'conform'.formatexpr()
 setlocal formatlistpat=^\\s*\\d\\+[\\]:.)}\\t\ ]\\s*
-setlocal formatoptions=lrcjqo
+setlocal formatoptions=qjlroc
 setlocal iminsert=0
 setlocal imsearch=-1
-setlocal includeexpr=
-setlocal indentexpr=
-setlocal indentkeys=0{,0},0),0],:,0#,!^F,o,O,e
+setlocal include=\\<\\%(\\%(do\\|load\\)file\\|require\\)\\s*(
+setlocal includeexpr=v:lua.require'vim._ftplugin.lua'.includeexpr(v:fname)
+setlocal indentexpr=GetLuaIndent()
+setlocal indentkeys=0{,0},0),0],:,0#,!^F,o,O,e,0=end,0=until
 setlocal noinfercase
 setlocal iskeyword=@,48-57,_,192-255
 setlocal lhistory=10
@@ -82,7 +84,8 @@ setlocal modifiable
 setlocal nrformats=bin,hex
 setlocal number
 setlocal numberwidth=4
-setlocal omnifunc=
+setlocal omnifunc=v:lua.vim.lsp.omnifunc
+setlocal path=,
 setlocal nopreserveindent
 setlocal nopreviewwindow
 setlocal quoteescape=\\
@@ -101,21 +104,21 @@ setlocal nospell
 setlocal spellcapcheck=[.?!]\\_[\\])'\"\\t\ ]\\+
 setlocal spellfile=
 setlocal spelllang=en_us,de_de
-setlocal spelloptions=
+setlocal spelloptions=noplainbuffer
 setlocal statuscolumn=%!v:lua.require'snacks.statuscolumn'.get()
-setlocal suffixesadd=
+setlocal suffixesadd=.lua
 setlocal noswapfile
 setlocal synmaxcol=3000
-if &syntax != 'conf'
-setlocal syntax=conf
+if &syntax != ''
+setlocal syntax=
 endif
 setlocal tabstop=4
-setlocal tagfunc=
+setlocal tagfunc=v:lua.vim.lsp.tagfunc
 setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#MiniIconsGrey#%*\ \ %#WinBarPath#common%*%#WinBarSeparator#/%*%#WinBarFilename#.gitconfig.delta%*%=
+setlocal winbar=%#WinBarPath#common%*%#WinBarSeparator#/%*%#WinBarPath#.config%*%#WinBarSeparator#/%*%#WinBarPath#nvim%*%#WinBarSeparator#/%*%#WinBarPath#lua%*%#WinBarSeparator#/%*%#WinBarPath#specs%*%#WinBarSeparator#/%*%#WinBarFilename#blink.lua%*%=%#WinBarGitLabel#\ [GIT:%#WinBarGitAdd#\ +22%#WinBarGitChange#\ ~2%#WinBarGitDelete#\ -1%#WinBarGitLabel#]%*\ 
 setlocal winblend=0
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -124,12 +127,26 @@ setlocal winhighlight=
 setlocal nowinpinned
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 12 - ((11 * winheight(0) + 25) / 50)
+3
+sil! normal! zo
+28
+sil! normal! zo
+53
+sil! normal! zo
+69
+sil! normal! zo
+73
+sil! normal! zo
+80
+sil! normal! zo
+81
+sil! normal! zo
+let s:l = 77 - ((27 * winheight(0) + 21) / 42)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 12
-normal! 022|
+keepjumps 77
+normal! 044|
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf

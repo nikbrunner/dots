@@ -136,7 +136,7 @@ setlocal textwidth=85
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#MiniIconsGrey#%*\ \ %#WinBarPath#Log%*%#WinBarSeparator#/%*%#WinBarPath#2026%*%#WinBarSeparator#/%*%#WinBarPath#2026.05%*%#WinBarSeparator#/%*%#WinBarFilename#2026.05.26\ -\ Tue.md%*%=
+setlocal winbar=%#WinBarPath#Log%*%#WinBarSeparator#/%*%#WinBarPath#2026%*%#WinBarSeparator#/%*%#WinBarPath#2026.05%*%#WinBarSeparator#/%*%#WinBarFilename#2026.05.26\ -\ Tue.md%*%=
 setlocal winblend=0
 setlocal nowinfixbuf
 setlocal nowinfixheight

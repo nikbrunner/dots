@@ -118,7 +118,7 @@ setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#MiniIconsAzure#%*\ \ %#WinBarPath#...%*%#WinBarSeparator#/%*%#WinBarPath#flux%*%#WinBarSeparator#/%*%#WinBarPath#ui%*%#WinBarSeparator#/%*%#WinBarPath#status%*%#WinBarSeparator#/%*%#WinBarPath#preview%*%#WinBarSeparator#/%*%#WinBarFilename#window_state.lua%*%=%#WinBarLspLabel#\ [LSP:\ %#DiagnosticSignHint#:1%##%#WinBarLspLabel#]%*\ 
+setlocal winbar=%#WinBarPath#...%*%#WinBarSeparator#/%*%#WinBarPath#flux%*%#WinBarSeparator#/%*%#WinBarPath#ui%*%#WinBarSeparator#/%*%#WinBarPath#status%*%#WinBarSeparator#/%*%#WinBarPath#preview%*%#WinBarSeparator#/%*%#WinBarFilename#window_state.lua%*%=%#WinBarLspLabel#\ [LSP:\ %#DiagnosticSignHint#:1%##%#WinBarLspLabel#]%*\ 
 setlocal winblend=0
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -127,11 +127,11 @@ setlocal winhighlight=
 setlocal nowinpinned
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 164 - ((34 * winheight(0) + 34) / 69)
+let s:l = 169 - ((32 * winheight(0) + 30) / 61)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 164
+keepjumps 169
 normal! 021|
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'

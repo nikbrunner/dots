@@ -10,11 +10,47 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
+badd +31 src/themes/default/black-atom-default-light-dimmed.ts
+badd +1 src/themes/default/black-atom-default-light.ts
+badd +19 src/themes/default/black-atom-default-dark.ts
+badd +16 src/themes/default/black-atom-default-dark-dimmed.ts
+badd +73 src/themes/default/create-syntax-light.ts
+badd +1 src/themes/default/create-feedback-light.ts
+badd +1 src/themes/default/create-feedback-dark.ts
+badd +61 src/themes/default/create-syntax-dark.ts
 argglobal
 %argdel
 $argadd ./
+tabnew +setlocal\ bufhidden=wipe
+tabrewind
+edit src/themes/default/black-atom-default-light.ts
+let s:save_splitbelow = &splitbelow
+let s:save_splitright = &splitright
+set splitbelow splitright
+wincmd _ | wincmd |
+vsplit
+wincmd _ | wincmd |
+vsplit
+wincmd _ | wincmd |
+vsplit
+3wincmd h
+wincmd w
+wincmd w
+wincmd w
+let &splitbelow = s:save_splitbelow
+let &splitright = s:save_splitright
+wincmd t
+let s:save_winminheight = &winminheight
+let s:save_winminwidth = &winminwidth
+set winminheight=0
+set winheight=1
+set winminwidth=0
+set winwidth=1
+exe 'vert 1resize ' . ((&columns * 62 + 125) / 250)
+exe 'vert 2resize ' . ((&columns * 62 + 125) / 250)
+exe 'vert 3resize ' . ((&columns * 62 + 125) / 250)
+exe 'vert 4resize ' . ((&columns * 61 + 125) / 250)
 argglobal
-enew
 setlocal keymap=
 setlocal noarabic
 setlocal autoindent
@@ -31,8 +67,8 @@ setlocal cinoptions=
 setlocal cinscopedecls=public,protected,private
 setlocal cinwords=if,else,while,do,for,switch
 setlocal colorcolumn=
-setlocal comments=s1:/*,mb:*,ex:*/,://,b:#,:%,:XCOMM,n:>,fb:-,fb:â€¢
-setlocal commentstring=
+setlocal comments=sO:*\ -,mO:*\ \ ,exO:*/,s1:/*,mb:*,ex:*/,://
+setlocal commentstring=//\ %s
 setlocal complete=.,w,b,u,t
 setlocal completefunc=
 setlocal completeslash=
@@ -46,8 +82,8 @@ setlocal cursorlineopt=both
 setlocal nodiff
 setlocal eventignorewin=
 setlocal expandtab
-if &filetype != ''
-setlocal filetype=
+if &filetype != 'typescript'
+setlocal filetype=typescript
 endif
 setlocal fixendofline
 setlocal foldcolumn=0
@@ -62,12 +98,135 @@ setlocal foldnestmax=20
 setlocal foldtext=
 setlocal formatexpr=v:lua.require'conform'.formatexpr()
 setlocal formatlistpat=^\\s*\\d\\+[\\]:.)}\\t\ ]\\s*
-setlocal formatoptions=tcqj
+setlocal formatoptions=ljocrq
 setlocal iminsert=0
 setlocal imsearch=-1
 setlocal includeexpr=
-setlocal indentexpr=
-setlocal indentkeys=0{,0},0),0],:,0#,!^F,o,O,e
+setlocal indentexpr=GetTypescriptIndent()
+setlocal indentkeys=0{,0},0),0],0,,!^F,o,O,e
+setlocal noinfercase
+setlocal iskeyword=@,48-57,_,192-255,$,#
+setlocal lhistory=10
+setlocal nolinebreak
+setlocal nolisp
+setlocal lispoptions=
+setlocal nolist
+setlocal matchpairs=(:),{:},[:]
+setlocal modeline
+setlocal modifiable
+setlocal nrformats=bin,hex
+setlocal number
+setlocal numberwidth=4
+setlocal omnifunc=v:lua.vim.lsp.omnifunc
+setlocal nopreserveindent
+setlocal nopreviewwindow
+setlocal quoteescape=\\
+setlocal noreadonly
+setlocal relativenumber
+setlocal norightleft
+setlocal rightleftcmd=search
+setlocal scrollback=-1
+setlocal noscrollbind
+setlocal shiftwidth=4
+setlocal signcolumn=yes
+setlocal nosmartindent
+setlocal nosmoothscroll
+setlocal softtabstop=-1
+setlocal nospell
+setlocal spellcapcheck=[.?!]\\_[\\])'\"\\t\ ]\\+
+setlocal spellfile=
+setlocal spelllang=en_us,de_de
+setlocal spelloptions=noplainbuffer
+setlocal statuscolumn=%!v:lua.require'snacks.statuscolumn'.get()
+setlocal suffixesadd=.ts,.d.ts,.tsx,.js,.jsx,.cjs,.mjs
+setlocal noswapfile
+setlocal synmaxcol=3000
+if &syntax != ''
+setlocal syntax=
+endif
+setlocal tabstop=4
+setlocal tagfunc=v:lua.vim.lsp.tagfunc
+setlocal textwidth=0
+setlocal undofile
+setlocal varsofttabstop=
+setlocal vartabstop=
+setlocal winbar=%#WinBarPath#...%*%#WinBarSeparator#/%*%#WinBarFilename#black-atom-default-light.ts%*%=
+setlocal winblend=0
+setlocal nowinfixbuf
+setlocal nowinfixheight
+setlocal nowinfixwidth
+setlocal winhighlight=
+setlocal nowinpinned
+setlocal nowrap
+setlocal wrapmargin=0
+36
+sil! normal! zo
+let s:l = 19 - ((14 * winheight(0) + 22) / 44)
+if s:l < 1 | let s:l = 1 | endif
+keepjumps exe s:l
+normal! zt
+keepjumps 19
+normal! 027|
+wincmd w
+argglobal
+if bufexists(fnamemodify("src/themes/default/black-atom-default-light-dimmed.ts", ":p")) | buffer src/themes/default/black-atom-default-light-dimmed.ts | else | edit src/themes/default/black-atom-default-light-dimmed.ts | endif
+if &buftype ==# 'terminal'
+  silent file src/themes/default/black-atom-default-light-dimmed.ts
+endif
+balt src/themes/default/black-atom-default-light.ts
+setlocal keymap=
+setlocal noarabic
+setlocal autoindent
+setlocal nobinary
+setlocal nobreakindent
+setlocal breakindentopt=
+setlocal bufhidden=
+setlocal buflisted
+setlocal buftype=
+setlocal busy=0
+setlocal nocindent
+setlocal cinkeys=0{,0},0),0],:,0#,!^F,o,O,e
+setlocal cinoptions=
+setlocal cinscopedecls=public,protected,private
+setlocal cinwords=if,else,while,do,for,switch
+setlocal colorcolumn=
+setlocal comments=sO:*\ -,mO:*\ \ ,exO:*/,s1:/*,mb:*,ex:*/,://
+setlocal commentstring=//\ %s
+setlocal complete=.,w,b,u,t
+setlocal completefunc=
+setlocal completeslash=
+setlocal concealcursor=
+setlocal conceallevel=0
+setlocal nocopyindent
+setlocal nocursorbind
+setlocal nocursorcolumn
+setlocal cursorline
+setlocal cursorlineopt=both
+setlocal nodiff
+setlocal eventignorewin=
+setlocal expandtab
+if &filetype != 'typescript'
+setlocal filetype=typescript
+endif
+setlocal fixendofline
+setlocal foldcolumn=0
+setlocal foldenable
+setlocal foldexpr=v:lua.vim.treesitter.foldexpr()
+setlocal foldignore=#
+setlocal foldlevel=99
+setlocal foldmarker={{{,}}}
+setlocal foldmethod=expr
+setlocal foldminlines=1
+setlocal foldnestmax=20
+setlocal foldtext=
+setlocal formatexpr=v:lua.require'conform'.formatexpr()
+setlocal formatlistpat=^\\s*\\d\\+[\\]:.)}\\t\ ]\\s*
+setlocal formatoptions=jcroql
+setlocal iminsert=0
+setlocal imsearch=-1
+setlocal includeexpr=
+setlocal indentexpr=GetTypescriptIndent()
+setlocal indentkeys=0{,0},0),0],0,,!^F,o,O,e
 setlocal noinfercase
 setlocal iskeyword=@,48-57,_,192-255
 setlocal lhistory=10
@@ -81,7 +240,7 @@ setlocal modifiable
 setlocal nrformats=bin,hex
 setlocal number
 setlocal numberwidth=4
-setlocal omnifunc=
+setlocal omnifunc=v:lua.vim.lsp.omnifunc
 setlocal nopreserveindent
 setlocal nopreviewwindow
 setlocal quoteescape=\\
@@ -93,27 +252,28 @@ setlocal scrollback=-1
 setlocal noscrollbind
 setlocal shiftwidth=4
 setlocal signcolumn=yes
-setlocal smartindent
+setlocal nosmartindent
 setlocal nosmoothscroll
-setlocal softtabstop=4
+setlocal softtabstop=-1
 setlocal nospell
 setlocal spellcapcheck=[.?!]\\_[\\])'\"\\t\ ]\\+
 setlocal spellfile=
 setlocal spelllang=en_us,de_de
-setlocal spelloptions=
+setlocal spelloptions=noplainbuffer
 setlocal statuscolumn=%!v:lua.require'snacks.statuscolumn'.get()
-setlocal suffixesadd=
+setlocal suffixesadd=.ts,.d.ts,.tsx,.js,.jsx,.cjs,.mjs
 setlocal noswapfile
 setlocal synmaxcol=3000
 if &syntax != ''
 setlocal syntax=
 endif
 setlocal tabstop=4
-setlocal tagfunc=
+setlocal tagfunc=v:lua.vim.lsp.tagfunc
 setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
+setlocal winbar=%#WinBarPath#...%*%#WinBarSeparator#/%*%#WinBarFilename#black-atom-default-light-dimmed.ts%*%=%#WinBarGitLabel#\ [GIT:%#WinBarGitChange#\ ~19%#WinBarGitLabel#]%*\ 
 setlocal winblend=0
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -122,6 +282,786 @@ setlocal winhighlight=
 setlocal nowinpinned
 setlocal nowrap
 setlocal wrapmargin=0
+let s:l = 28 - ((19 * winheight(0) + 22) / 44)
+if s:l < 1 | let s:l = 1 | endif
+keepjumps exe s:l
+normal! zt
+keepjumps 28
+normal! 0
+wincmd w
+argglobal
+if bufexists(fnamemodify("src/themes/default/black-atom-default-dark-dimmed.ts", ":p")) | buffer src/themes/default/black-atom-default-dark-dimmed.ts | else | edit src/themes/default/black-atom-default-dark-dimmed.ts | endif
+if &buftype ==# 'terminal'
+  silent file src/themes/default/black-atom-default-dark-dimmed.ts
+endif
+balt src/themes/default/black-atom-default-light-dimmed.ts
+setlocal keymap=
+setlocal noarabic
+setlocal autoindent
+setlocal nobinary
+setlocal nobreakindent
+setlocal breakindentopt=
+setlocal bufhidden=
+setlocal buflisted
+setlocal buftype=
+setlocal busy=0
+setlocal nocindent
+setlocal cinkeys=0{,0},0),0],:,0#,!^F,o,O,e
+setlocal cinoptions=
+setlocal cinscopedecls=public,protected,private
+setlocal cinwords=if,else,while,do,for,switch
+setlocal colorcolumn=
+setlocal comments=sO:*\ -,mO:*\ \ ,exO:*/,s1:/*,mb:*,ex:*/,://
+setlocal commentstring=//\ %s
+setlocal complete=.,w,b,u,t
+setlocal completefunc=
+setlocal completeslash=
+setlocal concealcursor=
+setlocal conceallevel=0
+setlocal nocopyindent
+setlocal nocursorbind
+setlocal nocursorcolumn
+setlocal cursorline
+setlocal cursorlineopt=both
+setlocal nodiff
+setlocal eventignorewin=
+setlocal expandtab
+if &filetype != 'typescript'
+setlocal filetype=typescript
+endif
+setlocal fixendofline
+setlocal foldcolumn=0
+setlocal foldenable
+setlocal foldexpr=v:lua.vim.treesitter.foldexpr()
+setlocal foldignore=#
+setlocal foldlevel=99
+setlocal foldmarker={{{,}}}
+setlocal foldmethod=expr
+setlocal foldminlines=1
+setlocal foldnestmax=20
+setlocal foldtext=
+setlocal formatexpr=v:lua.require'conform'.formatexpr()
+setlocal formatlistpat=^\\s*\\d\\+[\\]:.)}\\t\ ]\\s*
+setlocal formatoptions=jcroql
+setlocal iminsert=0
+setlocal imsearch=-1
+setlocal includeexpr=
+setlocal indentexpr=GetTypescriptIndent()
+setlocal indentkeys=0{,0},0),0],0,,!^F,o,O,e
+setlocal noinfercase
+setlocal iskeyword=@,48-57,_,192-255
+setlocal lhistory=10
+setlocal nolinebreak
+setlocal nolisp
+setlocal lispoptions=
+setlocal nolist
+setlocal matchpairs=(:),{:},[:]
+setlocal modeline
+setlocal modifiable
+setlocal nrformats=bin,hex
+setlocal number
+setlocal numberwidth=4
+setlocal omnifunc=v:lua.vim.lsp.omnifunc
+setlocal nopreserveindent
+setlocal nopreviewwindow
+setlocal quoteescape=\\
+setlocal noreadonly
+setlocal relativenumber
+setlocal norightleft
+setlocal rightleftcmd=search
+setlocal scrollback=-1
+setlocal noscrollbind
+setlocal shiftwidth=4
+setlocal signcolumn=yes
+setlocal nosmartindent
+setlocal nosmoothscroll
+setlocal softtabstop=-1
+setlocal nospell
+setlocal spellcapcheck=[.?!]\\_[\\])'\"\\t\ ]\\+
+setlocal spellfile=
+setlocal spelllang=en_us,de_de
+setlocal spelloptions=noplainbuffer
+setlocal statuscolumn=%!v:lua.require'snacks.statuscolumn'.get()
+setlocal suffixesadd=.ts,.d.ts,.tsx,.js,.jsx,.cjs,.mjs
+setlocal noswapfile
+setlocal synmaxcol=3000
+if &syntax != ''
+setlocal syntax=
+endif
+setlocal tabstop=4
+setlocal tagfunc=v:lua.vim.lsp.tagfunc
+setlocal textwidth=0
+setlocal undofile
+setlocal varsofttabstop=
+setlocal vartabstop=
+setlocal winbar=%#WinBarPath#...%*%#WinBarSeparator#/%*%#WinBarFilename#black-atom-default-dark-dimmed.ts%*%=%#WinBarGitLabel#\ [GIT:%#WinBarGitChange#\ ~19%#WinBarGitLabel#]%*\ 
+setlocal winblend=0
+setlocal nowinfixbuf
+setlocal nowinfixheight
+setlocal nowinfixwidth
+setlocal winhighlight=
+setlocal nowinpinned
+setlocal nowrap
+setlocal wrapmargin=0
+let s:l = 24 - ((23 * winheight(0) + 22) / 44)
+if s:l < 1 | let s:l = 1 | endif
+keepjumps exe s:l
+normal! zt
+keepjumps 24
+normal! 05|
+wincmd w
+argglobal
+if bufexists(fnamemodify("src/themes/default/black-atom-default-dark.ts", ":p")) | buffer src/themes/default/black-atom-default-dark.ts | else | edit src/themes/default/black-atom-default-dark.ts | endif
+if &buftype ==# 'terminal'
+  silent file src/themes/default/black-atom-default-dark.ts
+endif
+balt src/themes/default/black-atom-default-light.ts
+setlocal keymap=
+setlocal noarabic
+setlocal autoindent
+setlocal nobinary
+setlocal nobreakindent
+setlocal breakindentopt=
+setlocal bufhidden=
+setlocal buflisted
+setlocal buftype=
+setlocal busy=0
+setlocal nocindent
+setlocal cinkeys=0{,0},0),0],:,0#,!^F,o,O,e
+setlocal cinoptions=
+setlocal cinscopedecls=public,protected,private
+setlocal cinwords=if,else,while,do,for,switch
+setlocal colorcolumn=
+setlocal comments=sO:*\ -,mO:*\ \ ,exO:*/,s1:/*,mb:*,ex:*/,://
+setlocal commentstring=//\ %s
+setlocal complete=.,w,b,u,t
+setlocal completefunc=
+setlocal completeslash=
+setlocal concealcursor=
+setlocal conceallevel=0
+setlocal nocopyindent
+setlocal nocursorbind
+setlocal nocursorcolumn
+setlocal cursorline
+setlocal cursorlineopt=both
+setlocal nodiff
+setlocal eventignorewin=
+setlocal expandtab
+if &filetype != 'typescript'
+setlocal filetype=typescript
+endif
+setlocal fixendofline
+setlocal foldcolumn=0
+setlocal foldenable
+setlocal foldexpr=v:lua.vim.treesitter.foldexpr()
+setlocal foldignore=#
+setlocal foldlevel=99
+setlocal foldmarker={{{,}}}
+setlocal foldmethod=expr
+setlocal foldminlines=1
+setlocal foldnestmax=20
+setlocal foldtext=
+setlocal formatexpr=v:lua.require'conform'.formatexpr()
+setlocal formatlistpat=^\\s*\\d\\+[\\]:.)}\\t\ ]\\s*
+setlocal formatoptions=qolcrj
+setlocal iminsert=0
+setlocal imsearch=-1
+setlocal includeexpr=
+setlocal indentexpr=GetTypescriptIndent()
+setlocal indentkeys=0{,0},0),0],0,,!^F,o,O,e
+setlocal noinfercase
+setlocal iskeyword=@,48-57,_,192-255
+setlocal lhistory=10
+setlocal nolinebreak
+setlocal nolisp
+setlocal lispoptions=
+setlocal nolist
+setlocal matchpairs=(:),{:},[:]
+setlocal modeline
+setlocal modifiable
+setlocal nrformats=bin,hex
+setlocal number
+setlocal numberwidth=4
+setlocal omnifunc=v:lua.vim.lsp.omnifunc
+setlocal nopreserveindent
+setlocal nopreviewwindow
+setlocal quoteescape=\\
+setlocal noreadonly
+setlocal relativenumber
+setlocal norightleft
+setlocal rightleftcmd=search
+setlocal scrollback=-1
+setlocal noscrollbind
+setlocal shiftwidth=4
+setlocal signcolumn=yes
+setlocal nosmartindent
+setlocal nosmoothscroll
+setlocal softtabstop=-1
+setlocal nospell
+setlocal spellcapcheck=[.?!]\\_[\\])'\"\\t\ ]\\+
+setlocal spellfile=
+setlocal spelllang=en_us,de_de
+setlocal spelloptions=noplainbuffer
+setlocal statuscolumn=%!v:lua.require'snacks.statuscolumn'.get()
+setlocal suffixesadd=.ts,.d.ts,.tsx,.js,.jsx,.cjs,.mjs
+setlocal noswapfile
+setlocal synmaxcol=3000
+if &syntax != ''
+setlocal syntax=
+endif
+setlocal tabstop=4
+setlocal tagfunc=v:lua.vim.lsp.tagfunc
+setlocal textwidth=0
+setlocal undofile
+setlocal varsofttabstop=
+setlocal vartabstop=
+setlocal winbar=%#WinBarPath#...%*%#WinBarSeparator#/%*%#WinBarFilename#black-atom-default-dark.ts%*%=%#WinBarGitLabel#\ [GIT:%#WinBarGitChange#\ ~19%#WinBarGitLabel#]%*\ 
+setlocal winblend=0
+setlocal nowinfixbuf
+setlocal nowinfixheight
+setlocal nowinfixwidth
+setlocal winhighlight=
+setlocal nowinpinned
+setlocal nowrap
+setlocal wrapmargin=0
+let s:l = 40 - ((32 * winheight(0) + 22) / 44)
+if s:l < 1 | let s:l = 1 | endif
+keepjumps exe s:l
+normal! zt
+keepjumps 40
+normal! 020|
+wincmd w
+exe 'vert 1resize ' . ((&columns * 62 + 125) / 250)
+exe 'vert 2resize ' . ((&columns * 62 + 125) / 250)
+exe 'vert 3resize ' . ((&columns * 62 + 125) / 250)
+exe 'vert 4resize ' . ((&columns * 61 + 125) / 250)
+tabnext
+edit src/themes/default/create-feedback-light.ts
+let s:save_splitbelow = &splitbelow
+let s:save_splitright = &splitright
+set splitbelow splitright
+wincmd _ | wincmd |
+vsplit
+wincmd _ | wincmd |
+vsplit
+2wincmd h
+wincmd _ | wincmd |
+split
+1wincmd k
+wincmd w
+wincmd w
+wincmd w
+let &splitbelow = s:save_splitbelow
+let &splitright = s:save_splitright
+wincmd t
+let s:save_winminheight = &winminheight
+let s:save_winminwidth = &winminwidth
+set winminheight=0
+set winheight=1
+set winminwidth=0
+set winwidth=1
+exe '1resize ' . ((&lines * 22 + 23) / 47)
+exe 'vert 1resize ' . ((&columns * 83 + 125) / 250)
+exe '2resize ' . ((&lines * 22 + 23) / 47)
+exe 'vert 2resize ' . ((&columns * 83 + 125) / 250)
+exe 'vert 3resize ' . ((&columns * 83 + 125) / 250)
+exe 'vert 4resize ' . ((&columns * 82 + 125) / 250)
+argglobal
+balt src/themes/default/create-syntax-light.ts
+setlocal keymap=
+setlocal noarabic
+setlocal autoindent
+setlocal nobinary
+setlocal nobreakindent
+setlocal breakindentopt=
+setlocal bufhidden=
+setlocal buflisted
+setlocal buftype=
+setlocal busy=0
+setlocal nocindent
+setlocal cinkeys=0{,0},0),0],:,0#,!^F,o,O,e
+setlocal cinoptions=
+setlocal cinscopedecls=public,protected,private
+setlocal cinwords=if,else,while,do,for,switch
+setlocal colorcolumn=
+setlocal comments=sO:*\ -,mO:*\ \ ,exO:*/,s1:/*,mb:*,ex:*/,://
+setlocal commentstring=//\ %s
+setlocal complete=.,w,b,u,t
+setlocal completefunc=
+setlocal completeslash=
+setlocal concealcursor=
+setlocal conceallevel=0
+setlocal nocopyindent
+setlocal nocursorbind
+setlocal nocursorcolumn
+setlocal cursorline
+setlocal cursorlineopt=both
+setlocal nodiff
+setlocal eventignorewin=
+setlocal expandtab
+if &filetype != 'typescript'
+setlocal filetype=typescript
+endif
+setlocal fixendofline
+setlocal foldcolumn=0
+setlocal foldenable
+setlocal foldexpr=v:lua.vim.treesitter.foldexpr()
+setlocal foldignore=#
+setlocal foldlevel=99
+setlocal foldmarker={{{,}}}
+setlocal foldmethod=expr
+setlocal foldminlines=1
+setlocal foldnestmax=20
+setlocal foldtext=
+setlocal formatexpr=v:lua.require'conform'.formatexpr()
+setlocal formatlistpat=^\\s*\\d\\+[\\]:.)}\\t\ ]\\s*
+setlocal formatoptions=oqjlrc
+setlocal iminsert=0
+setlocal imsearch=-1
+setlocal includeexpr=
+setlocal indentexpr=GetTypescriptIndent()
+setlocal indentkeys=0{,0},0),0],0,,!^F,o,O,e
+setlocal noinfercase
+setlocal iskeyword=@,48-57,_,192-255
+setlocal lhistory=10
+setlocal nolinebreak
+setlocal nolisp
+setlocal lispoptions=
+setlocal nolist
+setlocal matchpairs=(:),{:},[:]
+setlocal modeline
+setlocal modifiable
+setlocal nrformats=bin,hex
+setlocal number
+setlocal numberwidth=4
+setlocal omnifunc=v:lua.vim.lsp.omnifunc
+setlocal nopreserveindent
+setlocal nopreviewwindow
+setlocal quoteescape=\\
+setlocal noreadonly
+setlocal relativenumber
+setlocal norightleft
+setlocal rightleftcmd=search
+setlocal scrollback=-1
+setlocal noscrollbind
+setlocal shiftwidth=4
+setlocal signcolumn=yes
+setlocal nosmartindent
+setlocal nosmoothscroll
+setlocal softtabstop=-1
+setlocal nospell
+setlocal spellcapcheck=[.?!]\\_[\\])'\"\\t\ ]\\+
+setlocal spellfile=
+setlocal spelllang=en_us,de_de
+setlocal spelloptions=noplainbuffer
+setlocal statuscolumn=%!v:lua.require'snacks.statuscolumn'.get()
+setlocal suffixesadd=.ts,.d.ts,.tsx,.js,.jsx,.cjs,.mjs
+setlocal noswapfile
+setlocal synmaxcol=3000
+if &syntax != ''
+setlocal syntax=
+endif
+setlocal tabstop=4
+setlocal tagfunc=v:lua.vim.lsp.tagfunc
+setlocal textwidth=0
+setlocal undofile
+setlocal varsofttabstop=
+setlocal vartabstop=
+setlocal winbar=%#WinBarPath#...%*%#WinBarSeparator#/%*%#WinBarPath#default%*%#WinBarSeparator#/%*%#WinBarFilename#create-feedback-light.ts%*%=%#WinBarGitLabel#\ [GIT:%#WinBarGitChange#\ ~4%#WinBarGitLabel#]%*\ 
+setlocal winblend=0
+setlocal nowinfixbuf
+setlocal nowinfixheight
+setlocal nowinfixwidth
+setlocal winhighlight=
+setlocal nowinpinned
+setlocal nowrap
+setlocal wrapmargin=0
+4
+sil! normal! zo
+let s:l = 7 - ((6 * winheight(0) + 10) / 21)
+if s:l < 1 | let s:l = 1 | endif
+keepjumps exe s:l
+normal! zt
+keepjumps 7
+normal! 0
+wincmd w
+argglobal
+if bufexists(fnamemodify("src/themes/default/create-feedback-dark.ts", ":p")) | buffer src/themes/default/create-feedback-dark.ts | else | edit src/themes/default/create-feedback-dark.ts | endif
+if &buftype ==# 'terminal'
+  silent file src/themes/default/create-feedback-dark.ts
+endif
+balt src/themes/default/create-feedback-light.ts
+setlocal keymap=
+setlocal noarabic
+setlocal autoindent
+setlocal nobinary
+setlocal nobreakindent
+setlocal breakindentopt=
+setlocal bufhidden=
+setlocal buflisted
+setlocal buftype=
+setlocal busy=0
+setlocal nocindent
+setlocal cinkeys=0{,0},0),0],:,0#,!^F,o,O,e
+setlocal cinoptions=
+setlocal cinscopedecls=public,protected,private
+setlocal cinwords=if,else,while,do,for,switch
+setlocal colorcolumn=
+setlocal comments=sO:*\ -,mO:*\ \ ,exO:*/,s1:/*,mb:*,ex:*/,://
+setlocal commentstring=//\ %s
+setlocal complete=.,w,b,u,t
+setlocal completefunc=
+setlocal completeslash=
+setlocal concealcursor=
+setlocal conceallevel=0
+setlocal nocopyindent
+setlocal nocursorbind
+setlocal nocursorcolumn
+setlocal cursorline
+setlocal cursorlineopt=both
+setlocal nodiff
+setlocal eventignorewin=
+setlocal expandtab
+if &filetype != 'typescript'
+setlocal filetype=typescript
+endif
+setlocal fixendofline
+setlocal foldcolumn=0
+setlocal foldenable
+setlocal foldexpr=v:lua.vim.treesitter.foldexpr()
+setlocal foldignore=#
+setlocal foldlevel=99
+setlocal foldmarker={{{,}}}
+setlocal foldmethod=expr
+setlocal foldminlines=1
+setlocal foldnestmax=20
+setlocal foldtext=
+setlocal formatexpr=v:lua.require'conform'.formatexpr()
+setlocal formatlistpat=^\\s*\\d\\+[\\]:.)}\\t\ ]\\s*
+setlocal formatoptions=jcroql
+setlocal iminsert=0
+setlocal imsearch=-1
+setlocal includeexpr=
+setlocal indentexpr=GetTypescriptIndent()
+setlocal indentkeys=0{,0},0),0],0,,!^F,o,O,e
+setlocal noinfercase
+setlocal iskeyword=@,48-57,_,192-255
+setlocal lhistory=10
+setlocal nolinebreak
+setlocal nolisp
+setlocal lispoptions=
+setlocal nolist
+setlocal matchpairs=(:),{:},[:]
+setlocal modeline
+setlocal modifiable
+setlocal nrformats=bin,hex
+setlocal number
+setlocal numberwidth=4
+setlocal omnifunc=v:lua.vim.lsp.omnifunc
+setlocal nopreserveindent
+setlocal nopreviewwindow
+setlocal quoteescape=\\
+setlocal noreadonly
+setlocal relativenumber
+setlocal norightleft
+setlocal rightleftcmd=search
+setlocal scrollback=-1
+setlocal noscrollbind
+setlocal shiftwidth=4
+setlocal signcolumn=yes
+setlocal nosmartindent
+setlocal nosmoothscroll
+setlocal softtabstop=-1
+setlocal nospell
+setlocal spellcapcheck=[.?!]\\_[\\])'\"\\t\ ]\\+
+setlocal spellfile=
+setlocal spelllang=en_us,de_de
+setlocal spelloptions=noplainbuffer
+setlocal statuscolumn=%!v:lua.require'snacks.statuscolumn'.get()
+setlocal suffixesadd=.ts,.d.ts,.tsx,.js,.jsx,.cjs,.mjs
+setlocal noswapfile
+setlocal synmaxcol=3000
+if &syntax != ''
+setlocal syntax=
+endif
+setlocal tabstop=4
+setlocal tagfunc=v:lua.vim.lsp.tagfunc
+setlocal textwidth=0
+setlocal undofile
+setlocal varsofttabstop=
+setlocal vartabstop=
+setlocal winbar=%#WinBarPath#...%*%#WinBarSeparator#/%*%#WinBarPath#default%*%#WinBarSeparator#/%*%#WinBarFilename#create-feedback-dark.ts%*%=
+setlocal winblend=0
+setlocal nowinfixbuf
+setlocal nowinfixheight
+setlocal nowinfixwidth
+setlocal winhighlight=
+setlocal nowinpinned
+setlocal nowrap
+setlocal wrapmargin=0
+let s:l = 8 - ((7 * winheight(0) + 10) / 21)
+if s:l < 1 | let s:l = 1 | endif
+keepjumps exe s:l
+normal! zt
+keepjumps 8
+normal! 0
+wincmd w
+argglobal
+if bufexists(fnamemodify("src/themes/default/create-syntax-light.ts", ":p")) | buffer src/themes/default/create-syntax-light.ts | else | edit src/themes/default/create-syntax-light.ts | endif
+if &buftype ==# 'terminal'
+  silent file src/themes/default/create-syntax-light.ts
+endif
+balt src/themes/default/create-feedback-light.ts
+setlocal keymap=
+setlocal noarabic
+setlocal autoindent
+setlocal nobinary
+setlocal nobreakindent
+setlocal breakindentopt=
+setlocal bufhidden=
+setlocal buflisted
+setlocal buftype=
+setlocal busy=0
+setlocal nocindent
+setlocal cinkeys=0{,0},0),0],:,0#,!^F,o,O,e
+setlocal cinoptions=
+setlocal cinscopedecls=public,protected,private
+setlocal cinwords=if,else,while,do,for,switch
+setlocal colorcolumn=
+setlocal comments=sO:*\ -,mO:*\ \ ,exO:*/,s1:/*,mb:*,ex:*/,://
+setlocal commentstring=//\ %s
+setlocal complete=.,w,b,u,t
+setlocal completefunc=
+setlocal completeslash=
+setlocal concealcursor=
+setlocal conceallevel=0
+setlocal nocopyindent
+setlocal nocursorbind
+setlocal nocursorcolumn
+setlocal cursorline
+setlocal cursorlineopt=both
+setlocal nodiff
+setlocal eventignorewin=
+setlocal expandtab
+if &filetype != 'typescript'
+setlocal filetype=typescript
+endif
+setlocal fixendofline
+setlocal foldcolumn=0
+setlocal foldenable
+setlocal foldexpr=v:lua.vim.treesitter.foldexpr()
+setlocal foldignore=#
+setlocal foldlevel=99
+setlocal foldmarker={{{,}}}
+setlocal foldmethod=expr
+setlocal foldminlines=1
+setlocal foldnestmax=20
+setlocal foldtext=
+setlocal formatexpr=v:lua.require'conform'.formatexpr()
+setlocal formatlistpat=^\\s*\\d\\+[\\]:.)}\\t\ ]\\s*
+setlocal formatoptions=oqjlrc
+setlocal iminsert=0
+setlocal imsearch=-1
+setlocal includeexpr=
+setlocal indentexpr=GetTypescriptIndent()
+setlocal indentkeys=0{,0},0),0],0,,!^F,o,O,e
+setlocal noinfercase
+setlocal iskeyword=@,48-57,_,192-255
+setlocal lhistory=10
+setlocal nolinebreak
+setlocal nolisp
+setlocal lispoptions=
+setlocal nolist
+setlocal matchpairs=(:),{:},[:]
+setlocal modeline
+setlocal modifiable
+setlocal nrformats=bin,hex
+setlocal number
+setlocal numberwidth=4
+setlocal omnifunc=v:lua.vim.lsp.omnifunc
+setlocal nopreserveindent
+setlocal nopreviewwindow
+setlocal quoteescape=\\
+setlocal noreadonly
+setlocal relativenumber
+setlocal norightleft
+setlocal rightleftcmd=search
+setlocal scrollback=-1
+setlocal noscrollbind
+setlocal shiftwidth=4
+setlocal signcolumn=yes
+setlocal nosmartindent
+setlocal nosmoothscroll
+setlocal softtabstop=-1
+setlocal nospell
+setlocal spellcapcheck=[.?!]\\_[\\])'\"\\t\ ]\\+
+setlocal spellfile=
+setlocal spelllang=en_us,de_de
+setlocal spelloptions=noplainbuffer
+setlocal statuscolumn=%!v:lua.require'snacks.statuscolumn'.get()
+setlocal suffixesadd=.ts,.d.ts,.tsx,.js,.jsx,.cjs,.mjs
+setlocal noswapfile
+setlocal synmaxcol=3000
+if &syntax != ''
+setlocal syntax=
+endif
+setlocal tabstop=4
+setlocal tagfunc=v:lua.vim.lsp.tagfunc
+setlocal textwidth=0
+setlocal undofile
+setlocal varsofttabstop=
+setlocal vartabstop=
+setlocal winbar=%#WinBarPath#...%*%#WinBarSeparator#/%*%#WinBarPath#default%*%#WinBarSeparator#/%*%#WinBarFilename#create-syntax-light.ts%*%=%#WinBarGitLabel#\ [GIT:%#WinBarGitAdd#\ +3%#WinBarGitChange#\ ~20%#WinBarGitDelete#\ -1%#WinBarGitLabel#]%*\ 
+setlocal winblend=0
+setlocal nowinfixbuf
+setlocal nowinfixheight
+setlocal nowinfixwidth
+setlocal winhighlight=
+setlocal nowinpinned
+setlocal nowrap
+setlocal wrapmargin=0
+8
+sil! normal! zo
+13
+sil! normal! zo
+let s:l = 78 - ((26 * winheight(0) + 22) / 44)
+if s:l < 1 | let s:l = 1 | endif
+keepjumps exe s:l
+normal! zt
+keepjumps 78
+normal! 032|
+wincmd w
+argglobal
+if bufexists(fnamemodify("src/themes/default/create-syntax-dark.ts", ":p")) | buffer src/themes/default/create-syntax-dark.ts | else | edit src/themes/default/create-syntax-dark.ts | endif
+if &buftype ==# 'terminal'
+  silent file src/themes/default/create-syntax-dark.ts
+endif
+balt src/themes/default/create-feedback-light.ts
+setlocal keymap=
+setlocal noarabic
+setlocal autoindent
+setlocal nobinary
+setlocal nobreakindent
+setlocal breakindentopt=
+setlocal bufhidden=
+setlocal buflisted
+setlocal buftype=
+setlocal busy=0
+setlocal nocindent
+setlocal cinkeys=0{,0},0),0],:,0#,!^F,o,O,e
+setlocal cinoptions=
+setlocal cinscopedecls=public,protected,private
+setlocal cinwords=if,else,while,do,for,switch
+setlocal colorcolumn=
+setlocal comments=sO:*\ -,mO:*\ \ ,exO:*/,s1:/*,mb:*,ex:*/,://
+setlocal commentstring=//\ %s
+setlocal complete=.,w,b,u,t
+setlocal completefunc=
+setlocal completeslash=
+setlocal concealcursor=
+setlocal conceallevel=0
+setlocal nocopyindent
+setlocal nocursorbind
+setlocal nocursorcolumn
+setlocal cursorline
+setlocal cursorlineopt=both
+setlocal nodiff
+setlocal eventignorewin=
+setlocal expandtab
+if &filetype != 'typescript'
+setlocal filetype=typescript
+endif
+setlocal fixendofline
+setlocal foldcolumn=0
+setlocal foldenable
+setlocal foldexpr=v:lua.vim.treesitter.foldexpr()
+setlocal foldignore=#
+setlocal foldlevel=99
+setlocal foldmarker={{{,}}}
+setlocal foldmethod=expr
+setlocal foldminlines=1
+setlocal foldnestmax=20
+setlocal foldtext=
+setlocal formatexpr=v:lua.require'conform'.formatexpr()
+setlocal formatlistpat=^\\s*\\d\\+[\\]:.)}\\t\ ]\\s*
+setlocal formatoptions=rqoljc
+setlocal iminsert=0
+setlocal imsearch=-1
+setlocal includeexpr=
+setlocal indentexpr=GetTypescriptIndent()
+setlocal indentkeys=0{,0},0),0],0,,!^F,o,O,e
+setlocal noinfercase
+setlocal iskeyword=@,48-57,_,192-255
+setlocal lhistory=10
+setlocal nolinebreak
+setlocal nolisp
+setlocal lispoptions=
+setlocal nolist
+setlocal matchpairs=(:),{:},[:]
+setlocal modeline
+setlocal modifiable
+setlocal nrformats=bin,hex
+setlocal number
+setlocal numberwidth=4
+setlocal omnifunc=v:lua.vim.lsp.omnifunc
+setlocal nopreserveindent
+setlocal nopreviewwindow
+setlocal quoteescape=\\
+setlocal noreadonly
+setlocal relativenumber
+setlocal norightleft
+setlocal rightleftcmd=search
+setlocal scrollback=-1
+setlocal noscrollbind
+setlocal shiftwidth=4
+setlocal signcolumn=yes
+setlocal nosmartindent
+setlocal nosmoothscroll
+setlocal softtabstop=-1
+setlocal nospell
+setlocal spellcapcheck=[.?!]\\_[\\])'\"\\t\ ]\\+
+setlocal spellfile=
+setlocal spelllang=en_us,de_de
+setlocal spelloptions=noplainbuffer
+setlocal statuscolumn=%!v:lua.require'snacks.statuscolumn'.get()
+setlocal suffixesadd=.ts,.d.ts,.tsx,.js,.jsx,.cjs,.mjs
+setlocal noswapfile
+setlocal synmaxcol=3000
+if &syntax != ''
+setlocal syntax=
+endif
+setlocal tabstop=4
+setlocal tagfunc=v:lua.vim.lsp.tagfunc
+setlocal textwidth=0
+setlocal undofile
+setlocal varsofttabstop=
+setlocal vartabstop=
+setlocal winbar=%#WinBarPath#...%*%#WinBarSeparator#/%*%#WinBarPath#default%*%#WinBarSeparator#/%*%#WinBarFilename#create-syntax-dark.ts%*%=%#WinBarGitLabel#\ [GIT:%#WinBarGitAdd#\ +4%#WinBarGitChange#\ ~20%#WinBarGitDelete#\ -1%#WinBarGitLabel#]%*%#WinBarLspLabel#\ [LSP:\ %#DiagnosticSignWarn#ï±:2\ %#DiagnosticSignHint#ï™:1%##%#WinBarLspLabel#]%*\ 
+setlocal winblend=0
+setlocal nowinfixbuf
+setlocal nowinfixheight
+setlocal nowinfixwidth
+setlocal winhighlight=
+setlocal nowinpinned
+setlocal nowrap
+setlocal wrapmargin=0
+8
+sil! normal! zo
+14
+sil! normal! zo
+let s:l = 81 - ((39 * winheight(0) + 22) / 44)
+if s:l < 1 | let s:l = 1 | endif
+keepjumps exe s:l
+normal! zt
+keepjumps 81
+normal! 010|
+wincmd w
+exe '1resize ' . ((&lines * 22 + 23) / 47)
+exe 'vert 1resize ' . ((&columns * 83 + 125) / 250)
+exe '2resize ' . ((&lines * 22 + 23) / 47)
+exe 'vert 2resize ' . ((&columns * 83 + 125) / 250)
+exe 'vert 3resize ' . ((&columns * 83 + 125) / 250)
+exe 'vert 4resize ' . ((&columns * 82 + 125) / 250)
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
@@ -129,6 +1069,8 @@ endif
 unlet! s:wipebuf
 set winheight=1 winwidth=20
 let &shortmess = s:shortmess_save
+let &winminheight = s:save_winminheight
+let &winminwidth = s:save_winminwidth
 let s:sx = expand("<sfile>:p:r")."x.vim"
 if filereadable(s:sx)
   exe "source " . fnameescape(s:sx)
