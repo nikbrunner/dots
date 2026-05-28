@@ -208,6 +208,18 @@ function M.sessions()
                     end
                 end,
                 write = function()
+                    -- Close codediff tabpages so their scratch buffers don't end up in the session
+                    local ok, codediff = pcall(require, "codediff.ui.lifecycle.session")
+                    if ok and codediff.get_active_diffs then
+                        local active_diffs = codediff.get_active_diffs()
+                        for tabpage, _ in pairs(active_diffs) do
+                            if vim.api.nvim_tabpage_is_valid(tabpage) then
+                                vim.api.nvim_set_current_tabpage(tabpage)
+                                vim.cmd("tabclose")
+                            end
+                        end
+                    end
+
                     -- Delete ephemeral and non-visible buffers before writing session
                     vim.iter(vim.api.nvim_list_bufs())
                         :filter(function(bufnr)
