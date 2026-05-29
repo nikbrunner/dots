@@ -55,6 +55,8 @@ marksman = "prefix:2026-02"
 "npm:yaml-language-server" = "prefix:1"
 "npm:@vtsls/language-server" = "prefix:0"
 "npm:@rslint/tsgo" = "prefix:0"
+"github:Feel-ix-343/markdown-oxide" = "latest"
+
 
 # ── npm packages ──
 "npm:typescript" = "prefix:6"
@@ -71,4 +73,4 @@ _.file = "~/.env"
 
 [settings]
 lockfile = true
-npm.package_manager = "npm"   # guarantees mise's --ignore-scripts=true default applies
+npm.package_manager = "npm" # guarantees mise's --ignore-scripts=true default applies
