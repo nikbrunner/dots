@@ -113,17 +113,6 @@ return {
 
                     ["q"] = { callback = "actions.close", mode = "n" },
 
-                    ["<leader><leader>"] = {
-                        callback = function()
-                            require("snacks.picker").files({
-                                cwd = require("canola").get_current_dir(),
-                            })
-                        end,
-                        mode = "n",
-                        nowait = true,
-                        desc = "Find files in the current directory",
-                    },
-
                     ["<localleader><localleader>"] = {
                         callback = function()
                             require("canola.actions").cd.callback()
