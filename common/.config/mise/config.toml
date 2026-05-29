@@ -61,7 +61,7 @@ marksman = "prefix:2026-02"
 # ── npm packages ──
 "npm:typescript" = "prefix:6"
 "npm:typescript-language-server" = "prefix:5"
-"npm:@anthropic-ai/claude-code" = "prefix:2"
+"npm:@anthropic-ai/claude-code" = { version = "prefix:2", npm_args = "--ignore-scripts=false" }
 "npm:@readwise/cli" = "prefix:0"
 "npm:@tanstack/cli" = "prefix:0"
 "npm:@earendil-works/pi-coding-agent" = "latest"
@@ -73,4 +73,3 @@ _.file = "~/.env"
 
 [settings]
 lockfile = true
-npm.package_manager = "npm" # guarantees mise's --ignore-scripts=true default applies
