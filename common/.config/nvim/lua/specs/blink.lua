@@ -73,9 +73,16 @@ return {
                 draw = {
                     columns = {
                         -- { "kind_icon", gap = 1 },
-                        { "label", "label_description", gap = 1 },
                         { "kind", gap = 1 },
+                        { "label", "label_description", gap = 1 },
                         { "source_name" },
+                    },
+                    components = {
+                        kind = {
+                            text = function(ctx)
+                                return ctx.kind:sub(1, 4):upper()
+                            end,
+                        },
                     },
                 },
             },
