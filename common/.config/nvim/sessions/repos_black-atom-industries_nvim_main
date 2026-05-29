@@ -10,7 +10,7 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +9 ~/repos/black-atom-industries/nvim/lua/black-atom/highlights/plugins/blink_nvim.lua
+badd +53 lua/black-atom/highlights/plugins/mini.lua
 argglobal
 %argdel
 $argadd ~/repos/black-atom-industries/nvim/lua/black-atom/themes/mnml/black-atom-mnml-osman-light.lua
@@ -33,8 +33,8 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe 'vert 1resize ' . ((&columns * 118 + 116) / 233)
-exe 'vert 2resize ' . ((&columns * 114 + 116) / 233)
+exe 'vert 1resize ' . ((&columns * 102 + 102) / 205)
+exe 'vert 2resize ' . ((&columns * 102 + 102) / 205)
 argglobal
 setlocal keymap=
 setlocal noarabic
@@ -264,10 +264,10 @@ setlocal nowinpinned
 setlocal nowrap
 setlocal wrapmargin=0
 wincmd w
-exe 'vert 1resize ' . ((&columns * 118 + 116) / 233)
-exe 'vert 2resize ' . ((&columns * 114 + 116) / 233)
+exe 'vert 1resize ' . ((&columns * 102 + 102) / 205)
+exe 'vert 2resize ' . ((&columns * 102 + 102) / 205)
 tabnext
-edit ~/repos/black-atom-industries/nvim/lua/black-atom/highlights/plugins/blink_nvim.lua
+edit lua/black-atom/highlights/plugins/mini.lua
 argglobal
 setlocal keymap=
 setlocal noarabic
@@ -347,7 +347,7 @@ setlocal relativenumber
 setlocal norightleft
 setlocal rightleftcmd=search
 setlocal scrollback=-1
-setlocal scrollbind
+setlocal noscrollbind
 setlocal shiftwidth=4
 setlocal signcolumn=yes
 setlocal smartindent
@@ -371,7 +371,7 @@ setlocal textwidth=120
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#...%*%#WinBarSeparator#/%*%#WinBarPath#highlights%*%#WinBarSeparator#/%*%#WinBarPath#plugins%*%#WinBarSeparator#/%*%#WinBarFilename#blink_nvim.lua%*%=%#WinBarLspLabel#\ [LSP:\ %#DiagnosticSignHint#:1%##%#WinBarLspLabel#]%*\ 
+setlocal winbar=%#WinBarPath#...%*%#WinBarSeparator#/%*%#WinBarPath#black-atom%*%#WinBarSeparator#/%*%#WinBarPath#highlights%*%#WinBarSeparator#/%*%#WinBarPath#plugins%*%#WinBarSeparator#/%*%#WinBarFilename#mini.lua%*%=
 setlocal winblend=0
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -380,12 +380,16 @@ setlocal winhighlight=
 setlocal nowinpinned
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 5 - ((4 * winheight(0) + 22) / 44)
+3
+sil! normal! zo
+5
+sil! normal! zo
+let s:l = 21 - ((20 * winheight(0) + 22) / 44)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 5
-normal! 0
+keepjumps 21
+normal! 019|
 tabnext 2
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf

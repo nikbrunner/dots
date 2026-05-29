@@ -56,7 +56,7 @@
             "label": "3"
           }
         ],
-        "lastAccessed": 1779988146
+        "lastAccessed": 1780067408
       }
     },
     "~/repos/imfusion/web-ui-poc-appshell": {
@@ -70,6 +70,17 @@
         "lastAccessed": 1779288528
       }
     },
+    "~/repos/imfusion/web-ui-poc/.claude/worktrees/brand-color-token": {
+      "worktree-brand-color-token": {
+        "locks": [
+          {
+            "filename": "apps/explorer/src/styles/variables.css",
+            "label": "1"
+          }
+        ],
+        "lastAccessed": 1780067408
+      }
+    },
     "~/repos/imfusion/web-ui-poc/.claude/worktrees/modifier-convention-plan": {
       "worktree-modifier-convention-plan": {
         "locks": [
@@ -79,6 +90,17 @@
           }
         ],
         "lastAccessed": 1779378687
+      }
+    },
+    "~/repos/nikbrunner/dots": {
+      "main": {
+        "locks": [
+          {
+            "filename": "common/.config/mise/config.toml",
+            "label": "1"
+          }
+        ],
+        "lastAccessed": 1780067409
       }
     },
     "~/repos/nikbrunner/minifugit.nvim": {
@@ -104,7 +126,7 @@
             "label": "2"
           }
         ],
-        "lastAccessed": 1779981945
+        "lastAccessed": 1780067410
       }
     }
   }
