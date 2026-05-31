@@ -7,12 +7,27 @@ set -uo pipefail
 
 # Run a step and track failures without aborting
 errors=()
+PROGRESS_CURRENT=0
+PROGRESS_TOTAL=0
+
+draw_progress() {
+	local width=20
+	local filled=$((PROGRESS_CURRENT * width / PROGRESS_TOTAL))
+	local bar=""
+	for ((i = 0; i < width; i++)); do
+		if ((i < filled)); then bar+="#"; else bar+=" "; fi
+	done
+	# Clear entire line (catches Ghostty escape sequences)
+	printf "\r\033[K[%s]" "$bar"
+}
+
 run_step() {
 	local label="$1"
 	shift
-	if ! "$@" 2>&1; then
+	PROGRESS_CURRENT=$((PROGRESS_CURRENT + 1))
+	# draw_progress
+	if ! "$@" >/dev/null 2>&1; then
 		errors+=("$label")
-		echo "  ✗ $label failed" >&2
 	fi
 }
 
@@ -24,14 +39,14 @@ THEMES_JSON="$DOTS_DIR/common/themes.json"
 NVIM_CONFIG="$DOTS_DIR/common/.config/nvim/lua/config.lua"
 TMUX_CONFIG="$DOTS_DIR/common/.config/tmux/tmux.conf"
 GHOSTTY_CONFIG="$DOTS_DIR/common/.config/ghostty/config"
-GIT_CONFIG="$DOTS_DIR/common/.gitconfig"
+GIT_DELTA_CONFIG="$DOTS_DIR/common/.gitconfig.delta"
 ZED_CONFIG="$DOTS_DIR/common/.config/zed/settings.json"
 NIRI_THEME_LINK="$DOTS_DIR/arch/.config/niri/theme.kdl"
 WAYBAR_THEME="$HOME/.config/waybar/theme.css"
 WAYBAR_THEMES_DIR="$HOME/.config/waybar/themes"
 LAZYGIT_CONFIG="$DOTS_DIR/common/.config/lazygit/config.yml"
 LAZYGIT_THEMES_DIR="$DOTS_DIR/common/.config/lazygit/themes"
-HELM_CONFIG="$HOME/.config/helm/config.yml"
+HELM_CONFIG="$DOTS_DIR/common/.config/black-atom/helm/config.yml"
 
 # Get current theme from nvim config
 get_current_theme() {
@@ -111,22 +126,18 @@ update_zed_theme() {
 # Update Git delta configuration
 update_delta_theme() {
 	local appearance="$1"
-	if [[ "$(uname)" == "Darwin" ]]; then
-		if [[ "$appearance" == "dark" ]]; then
-			sed -i '' 's/^  light = true/  ; light = true/' "$GIT_CONFIG"
-			sed -i '' 's/^  ; dark = true/  dark = true/' "$GIT_CONFIG"
-		else
-			sed -i '' 's/^  dark = true/  ; dark = true/' "$GIT_CONFIG"
-			sed -i '' 's/^  ; light = true/  light = true/' "$GIT_CONFIG"
-		fi
+	local features_line features_target
+	if [[ "$appearance" == "dark" ]]; then
+		features_line="    features = black-atom-dark"
+		features_target="    features = black-atom-light"
 	else
-		if [[ "$appearance" == "dark" ]]; then
-			sed -i 's/^  light = true/  ; light = true/' "$GIT_CONFIG"
-			sed -i 's/^  ; dark = true/  dark = true/' "$GIT_CONFIG"
-		else
-			sed -i 's/^  dark = true/  ; dark = true/' "$GIT_CONFIG"
-			sed -i 's/^  ; light = true/  light = true/' "$GIT_CONFIG"
-		fi
+		features_line="    features = black-atom-light"
+		features_target="    features = black-atom-dark"
+	fi
+	if [[ "$(uname)" == "Darwin" ]]; then
+		sed -i '' "s/$features_target/$features_line/" "$GIT_DELTA_CONFIG"
+	else
+		sed -i "s/$features_target/$features_line/" "$GIT_DELTA_CONFIG"
 	fi
 }
 
@@ -233,60 +244,46 @@ reload_tmux() {
 # Source shared Ghostty reload function
 source "$DOTS_DIR/common/.local/bin/ghostty-reload"
 
-# Restart Neovim instances and restore sessions (tmux-aware)
+# Restart Neovim instances via server sockets (no tmux dependency)
 restart_neovim_instances() {
-	if ! command -v tmux >/dev/null 2>&1; then
-		echo "tmux not found, skipping Neovim restart"
+	local theme
+	theme=$(get_current_theme)
+
+	local tmpdir="${TMPDIR:-/tmp}"
+	local nvim_dir="$tmpdir/nvim.$USER"
+
+	if [[ ! -d "$nvim_dir" ]]; then
+		echo "No nvim server sockets found in $nvim_dir"
 		return 0
 	fi
 
-	# Find tmux panes running Neovim
-	local nvim_panes
-	nvim_panes=$(tmux list-panes -a -F "#{session_name}:#{window_index}.#{pane_index}" -f "#{==:#{pane_current_command},nvim}" 2>/dev/null)
+	local sockets=()
+	while IFS= read -r socket; do
+		sockets+=("$socket")
+	done < <(find "$nvim_dir" -maxdepth 3 -name 'nvim.*' -type s 2>/dev/null || true)
 
-	# Also try alternative search patterns
-	local alt_panes
-	alt_panes=$(tmux list-panes -a -F "#{session_name}:#{window_index}.#{pane_index} #{pane_current_command}" | grep nvim | cut -d' ' -f1 2>/dev/null)
-
-	if [[ -z "$nvim_panes" ]] && [[ -z "$alt_panes" ]]; then
-		echo "No Neovim instances found in tmux"
+	if [[ ${#sockets[@]} -eq 0 ]]; then
+		echo "No nvim server sockets found"
 		return 0
 	fi
 
-	# Use whichever search found results
-	local panes_to_use
-	if [[ -n "$nvim_panes" ]]; then
-		panes_to_use="$nvim_panes"
-	else
-		panes_to_use="$alt_panes"
-	fi
+	echo "Sending :colorscheme $theme to ${#sockets[@]} Neovim instances..."
 
-	local count=0
-	local total_panes
-	total_panes=$(echo "$panes_to_use" | wc -l | tr -d ' ')
-
-	echo "Restarting $total_panes Neovim instances..."
-
-	# Send restart and session restore to each Neovim pane
-	while IFS= read -r pane; do
-		if [[ -n "$pane" ]]; then
-			count=$((count + 1))
-
-			# Send escape first to exit any mode, then restart
-			tmux send-keys -t "$pane" 'Escape' ':restart' 'Enter' 2>/dev/null
-
-			# Moderate delay for restart to complete
-			sleep 0.2
-
-			# Minimal delay between panes
-			sleep 0.1
+	local sent=0 stale=0 failed=0
+	for socket in "${sockets[@]}"; do
+		if nvim --server "$socket" --remote-send ":colorscheme $theme<CR>" 2>/dev/null; then
+			sent=$((sent + 1))
+		else
+			# Non-zero exit means stale socket
+			stale=$((stale + 1))
 		fi
-	done <<<"$panes_to_use"
+	done
 
-	if [[ $count -eq 0 ]]; then
-		echo "No Neovim instances found"
-	else
-		echo "Restarted $count Neovim instances"
+	if [[ $sent -gt 0 ]]; then
+		echo "Updated $sent Neovim instances"
+	fi
+	if [[ $stale -gt 0 ]]; then
+		echo "$stale stale socket(s) skipped"
 	fi
 }
 
@@ -310,6 +307,10 @@ apply_theme() {
 
 	errors=()
 
+	errors=()
+	PROGRESS_CURRENT=0
+	PROGRESS_TOTAL=14
+
 	# Update config files
 	run_step "nvim config" update_nvim_theme "$theme"
 	run_step "tmux config" update_tmux_theme "$theme" "$collection"
@@ -322,31 +323,26 @@ apply_theme() {
 	run_step "helm config" update_helm_theme "$appearance"
 	run_step "macOS appearance" update_macos_appearance "$appearance"
 
-	# Suppress terminal escape sequences (Ghostty sends capability
-	# queries when its config changes, which leak into output)
-	stty -echo 2>/dev/null || true
+	# sleep 0.2
 
-	# Brief pause to let file changes and system appearance settle
-	sleep 0.3
-
-	# Reload configurations (suppress all output from reload functions)
-	echo "Reloading..."
+	# Reload configurations (ghostty deferred — writes escape sequences)
 	run_step "tmux reload" reload_tmux
-	run_step "ghostty reload" reload_ghostty
 	run_step "waybar reload" reload_waybar
 
-	sleep 0.3
+	# Apply theme to running Neovim instances via server sockets
+	run_step "neovim reload" restart_neovim_instances
 
-	# Restore terminal echo before Neovim restarts
-	stty echo 2>/dev/null || true
+	# Clear progress bar line
+	# printf "\r%s\r" "                                        "
 
-	# Restart Neovim instances with new theme
-	run_step "neovim restart" restart_neovim_instances
+	# Ghostty reload last — escape sequences print after output
+	# stty -echo 2>/dev/null || true
+	# run_step "ghostty reload" reload_ghostty
+	# sleep 0.15
+	# stty echo 2>/dev/null || true
 
-	echo ""
 	if [[ ${#errors[@]} -gt 0 ]]; then
-		echo "Done with ${#errors[@]} error(s):"
-		printf "  - %s\n" "${errors[@]}"
+		echo "${#errors[@]} step(s) failed"
 		return 1
 	fi
 	echo "Done."
@@ -367,7 +363,7 @@ validate_environment() {
 	[[ -f "$NVIM_CONFIG" ]] || errors+=("Neovim config not found: $NVIM_CONFIG")
 	[[ -f "$TMUX_CONFIG" ]] || errors+=("tmux config not found: $TMUX_CONFIG")
 	[[ -f "$GHOSTTY_CONFIG" ]] || errors+=("Ghostty config not found: $GHOSTTY_CONFIG")
-	[[ -f "$GIT_CONFIG" ]] || errors+=("Git config not found: $GIT_CONFIG")
+	[[ -f "$GIT_DELTA_CONFIG" ]] || errors+=("Git delta config not found: $GIT_DELTA_CONFIG")
 
 	if [[ ${#errors[@]} -gt 0 ]]; then
 		echo "Environment errors:"
