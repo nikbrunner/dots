@@ -271,6 +271,9 @@ spawn-at-startup "proton-pass" "--silent"
 // Wait for Proton Pass IPC backend before starting the agent (avoids degraded-state race)
 spawn-at-startup "proton-pass-agent-start"
 
+// Notification daemon (required for Electron apps like Signal to not freeze on incoming messages)
+spawn-at-startup "mako"
+
 // This line starts waybar, a commonly used bar for Wayland compositors.
 spawn-at-startup "waybar"
 

@@ -61,6 +61,7 @@ arch:
   arch/.config/paru/paru.conf: ~/.config/paru/paru.conf
   arch/.local/share/applications/*: ~/.local/share/applications
   arch/.config/zsh/os.zsh: ~/.config/zsh/os.zsh
+  arch/.config/mako: ~/.config/mako
   arch/.config/clipse: ~/.config/clipse
   arch/.config/fuzzel: ~/.config/fuzzel
   arch/.config/gamemode.ini: ~/.config/gamemode.ini

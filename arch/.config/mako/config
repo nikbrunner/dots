@@ -1,0 +1,28 @@
+# Mako notification daemon config
+# Colors follow niri theme
+
+# Position
+anchor=top-right
+margin=20
+padding=12
+border-radius=12
+
+# Timeout
+default-timeout=5000
+ignore-timeout=1
+
+# Grouping
+group-by=app-name
+max-visible=5
+
+# Font
+font=monospace 11
+
+# Colors (dark theme, neutral)
+background-color=#1e1e1e
+text-color=#d4d4d4
+border-color=#528bff
+progress-color=#528bff
+
+# Default urgency
+default-all=high

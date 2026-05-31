@@ -47,6 +47,7 @@ satty
 clipse
 wtype
 hyprwhspr
+mako
 
 # Bluetooth
 bluez
