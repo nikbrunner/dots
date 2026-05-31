@@ -168,7 +168,7 @@ if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
 keepjumps 25
-normal! 023|
+normal! 0
 wincmd w
 argglobal
 if bufexists(fnamemodify("src/themes/default/black-atom-default-light-dimmed.ts", ":p")) | buffer src/themes/default/black-atom-default-light-dimmed.ts | else | edit src/themes/default/black-atom-default-light-dimmed.ts | endif
@@ -289,7 +289,7 @@ if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
 keepjumps 36
-normal! 031|
+normal! 0
 wincmd w
 argglobal
 if bufexists(fnamemodify("src/themes/default/black-atom-default-dark-dimmed.ts", ":p")) | buffer src/themes/default/black-atom-default-dark-dimmed.ts | else | edit src/themes/default/black-atom-default-dark-dimmed.ts | endif
@@ -531,7 +531,7 @@ if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
 keepjumps 40
-normal! 020|
+normal! 0
 wincmd w
 2wincmd w
 exe 'vert 1resize ' . ((&columns * 82 + 164) / 328)

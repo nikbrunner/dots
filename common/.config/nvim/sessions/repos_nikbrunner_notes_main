@@ -32,8 +32,8 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe 'vert 1resize ' . ((&columns * 97 + 97) / 194)
-exe 'vert 2resize ' . ((&columns * 96 + 97) / 194)
+exe 'vert 1resize ' . ((&columns * 164 + 164) / 328)
+exe 'vert 2resize ' . ((&columns * 163 + 164) / 328)
 argglobal
 xnoremap <buffer> <silent> [[ :exe "normal! gv"|call search('\%(^#\{1,5\}\s\+\S\|^\S.*\n^[=-]\+$\)', "bsW")
 xnoremap <buffer> <silent> ]] :exe "normal! gv"|call search('\%(^#\{1,5\}\s\+\S\|^\S.*\n^[=-]\+$\)', "sW")
@@ -149,12 +149,12 @@ setlocal wrapmargin=0
 sil! normal! zo
 3
 sil! normal! zo
-let s:l = 9 - ((8 * winheight(0) + 21) / 42)
+let s:l = 9 - ((8 * winheight(0) + 33) / 66)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
 keepjumps 9
-normal! 030|
+normal! 0
 wincmd w
 argglobal
 if bufexists(fnamemodify("Log/2026/2026.05/2026.05\ -\ May.md", ":p")) | buffer Log/2026/2026.05/2026.05\ -\ May.md | else | edit Log/2026/2026.05/2026.05\ -\ May.md | endif
@@ -272,15 +272,15 @@ setlocal winhighlight=
 setlocal nowinpinned
 setlocal wrap
 setlocal wrapmargin=0
-let s:l = 6 - ((5 * winheight(0) + 21) / 42)
+let s:l = 6 - ((5 * winheight(0) + 33) / 66)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
 keepjumps 6
 normal! 0
 wincmd w
-exe 'vert 1resize ' . ((&columns * 97 + 97) / 194)
-exe 'vert 2resize ' . ((&columns * 96 + 97) / 194)
+exe 'vert 1resize ' . ((&columns * 164 + 164) / 328)
+exe 'vert 2resize ' . ((&columns * 163 + 164) / 328)
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
