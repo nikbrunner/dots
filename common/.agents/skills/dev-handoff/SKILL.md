@@ -20,6 +20,7 @@ MAIN_ROOT=$(dirname "$(git rev-parse --absolute-git-dir | sed 's|/worktrees/[^/]
 Save to `${MAIN_ROOT}/handoffs/YYYY-MM-DD-<slug>.md`, where `<slug>` is a short kebab-case identifier for the focus area (e.g. `2026-05-28-brand-color-token.md`).
 
 Before writing:
+
 - Create `${MAIN_ROOT}/handoffs/` if it does not exist.
 - Ensure `handoffs/` is listed in `${MAIN_ROOT}/.gitignore`. Handoffs are ephemeral and must not be tracked.
 - If the session is inside a worktree, mention in the handoff itself which worktree it came from, so the next agent knows the context.
