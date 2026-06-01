@@ -26,7 +26,7 @@ return {
     cmd = { "ConformInfo" },
     init = function()
         vim.g.vin_autoformat_enabled = true
-        vim.o.formatexpr = "v:lua.require'conform'.formatexpr()"
+        -- vim.o.formatexpr = "v:lua.require'conform'.formatexpr()"
 
         -- Assign `http` files as `http` files (currently they are interpreted as `conf`)
         vim.filetype.add({
@@ -50,7 +50,11 @@ return {
 
             if prettier_config ~= nil and not is_prettier then
                 vim.notify(
-                    string.format("There is a `prettier` config (%s), but `%s` is not installed", prettier_config, prettier_cmd),
+                    string.format(
+                        "There is a `prettier` config (%s), but `%s` is not installed",
+                        prettier_config,
+                        prettier_cmd
+                    ),
                     vim.log.levels.WARN,
                     { title = "Conform" }
                 )
@@ -127,18 +131,18 @@ return {
         }
     end,
     keys = {
-        {
-            "gq",
-            mode = { "n", "x" },
-            function()
-                require("conform").format({
-                    async = true,
-                    timeout_ms = 500,
-                    lsp_fallback = true,
-                })
-            end,
-            desc = "Format",
-        },
+        -- {
+        --     "gq",
+        --     mode = { "n", "x" },
+        --     function()
+        --         require("conform").format({
+        --             async = true,
+        --             timeout_ms = 500,
+        --             lsp_fallback = true,
+        --         })
+        --     end,
+        --     desc = "Format",
+        -- },
         {
             "<leader>aof",
             function()
