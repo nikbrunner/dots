@@ -44,7 +44,7 @@
       "main": {
         "locks": [
           {
-            "filename": "ROADMAP.md",
+            "filename": "LOG.md",
             "label": "1"
           },
           {
@@ -56,7 +56,7 @@
             "label": "3"
           }
         ],
-        "lastAccessed": 1780068379
+        "lastAccessed": 1780332057
       }
     },
     "~/repos/imfusion/web-ui-poc-appshell": {
@@ -78,7 +78,7 @@
             "label": "1"
           }
         ],
-        "lastAccessed": 1780069358
+        "lastAccessed": 1780311937
       }
     },
     "~/repos/imfusion/web-ui-poc/.claude/worktrees/modifier-convention-plan": {
@@ -100,7 +100,26 @@
             "label": "1"
           }
         ],
-        "lastAccessed": 1780219732
+        "lastAccessed": 1780331162
+      }
+    },
+    "~/repos/nikbrunner/imf-notes": {
+      "main": {
+        "locks": [
+          {
+            "filename": "logs/2026/2026.06/2026.06.md",
+            "label": "1"
+          },
+          {
+            "filename": "logs/2026/2026.06/2026.06.01 - Mon.md",
+            "label": "2"
+          },
+          {
+            "filename": "projects/web-doc.md",
+            "label": "3"
+          }
+        ],
+        "lastAccessed": 1780331952
       }
     },
     "~/repos/nikbrunner/minifugit.nvim": {
@@ -126,7 +145,7 @@
             "label": "2"
           }
         ],
-        "lastAccessed": 1780067850
+        "lastAccessed": 1780299176
       }
     }
   }

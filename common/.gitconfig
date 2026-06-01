@@ -100,6 +100,9 @@
   # Quick push with upstream set
   p = push -u origin HEAD
 
+  # Add/Stage LOG.md file and commit with chore(docs): update LOG
+  qlog = !git add LOG.md && git commit -m \"chore(docs): update LOG\"
+
 [gpg]
   format = ssh
 

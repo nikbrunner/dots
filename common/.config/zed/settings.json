@@ -94,7 +94,7 @@
   "theme": {
     "mode": "light",
     "light": "Black Atom — Light",
-    "dark": "Black Atom — Dark Dimmed",
+    "dark": "Black Atom — Dark",
   },
   "base_keymap": "VSCode",
   "vim_mode": true,
