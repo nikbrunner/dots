@@ -380,6 +380,10 @@ function M.sessions()
 
                 -- Only create if in specified dir and session doesn't exist
                 if should_auto_create and not MS.detected[session_name] then
+                    -- Skip session creation inside git worktrees (e.g., .claude/worktrees/)
+                    if cwd:find("worktrees", 1, true) then
+                        return
+                    end
                     MS.write(session_name)
                 end
             end,
