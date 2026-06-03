@@ -18,6 +18,7 @@ common:
   common/.config/ghostty: ~/.config/ghostty
   common/.config/kitty: ~/.config/kitty
   common/.config/lazygit/config.yml: ~/.config/lazygit/config.yml
+  common/.config/lazyjira: ~/.config/lazyjira
   common/.config/mpd/mpd.conf: ~/.config/mpd/mpd.conf
   common/.config/nvim: ~/.config/nvim
   common/.config/rmpc: ~/.config/rmpc

@@ -37,6 +37,7 @@ alias mini="NVIM_APPNAME=nvim-minimax nvim"
 alias ls="eza --all --oneline --long --icons --sort=type"
 alias lt="eza --all --tree --icons --sort=type"
 alias lg="lazygit"
+alias lj="lazyjira"
 alias ld="lazydocker"
 alias tn="tmux new"
 alias ta="tmux attach"
@@ -47,7 +48,7 @@ alias lazyvim="NVIM_APPNAME=lazyvim nvim"
 alias gdl="gallery-dl"
 alias npmu="npm-upgrade"
 alias pp="pass-cli"
-alias scratch="$EDITOR $HOME/scratchpad.md"
+alias scratch="\$EDITOR \$HOME/scratchpad.md"
 alias ydl='yt-dlp --audio-format mp3 --embed-thumbnail --embed-metadata --extract-audio'
 alias groot='cd "$(git rev-parse --show-toplevel 2>/dev/null)" || echo "I am not Groot (not in a git repo)"'
 
