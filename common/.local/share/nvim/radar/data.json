@@ -1,6 +1,17 @@
 {
   "version": 1,
   "projects": {
+    "~/repos/black-atom-industries/core": {
+      "summer-themes": {
+        "locks": [
+          {
+            "filename": "src/themes/terra/black-atom-terra-summer-day.ts",
+            "label": "1"
+          }
+        ],
+        "lastAccessed": 1780489842
+      }
+    },
     "~/repos/black-atom-industries/radar.nvim": {
       "main": {
         "locks": [
@@ -40,58 +51,6 @@
         "lastAccessed": 1779358546
       }
     },
-    "~/repos/imfusion/web-ui-poc": {
-      "main": {
-        "locks": [
-          {
-            "filename": "LOG.md",
-            "label": "1"
-          },
-          {
-            "filename": "packages/web-ui/src/knobs/catalog.ts",
-            "label": "2"
-          },
-          {
-            "filename": "packages/web-ui/src/styles/variables/colors.css",
-            "label": "3"
-          }
-        ],
-        "lastAccessed": 1780333729
-      }
-    },
-    "~/repos/imfusion/web-ui-poc-appshell": {
-      "feat/explorer-appshell-rework": {
-        "locks": [
-          {
-            "filename": "packages/web-ui/dist/docgen.json",
-            "label": "1"
-          }
-        ],
-        "lastAccessed": 1779288528
-      }
-    },
-    "~/repos/imfusion/web-ui-poc/.claude/worktrees/brand-color-token": {
-      "worktree-brand-color-token": {
-        "locks": [
-          {
-            "filename": "apps/explorer/src/styles/variables.css",
-            "label": "1"
-          }
-        ],
-        "lastAccessed": 1780311937
-      }
-    },
-    "~/repos/imfusion/web-ui-poc/.claude/worktrees/modifier-convention-plan": {
-      "worktree-modifier-convention-plan": {
-        "locks": [
-          {
-            "filename": "packages/web-ui/vite.config.ts",
-            "label": "1"
-          }
-        ],
-        "lastAccessed": 1779378687
-      }
-    },
     "~/repos/nikbrunner/dots": {
       "main": {
         "locks": [
@@ -100,7 +59,7 @@
             "label": "1"
           }
         ],
-        "lastAccessed": 1780332738
+        "lastAccessed": 1780495198
       }
     },
     "~/repos/nikbrunner/imf-notes": {
@@ -111,7 +70,7 @@
             "label": "1"
           },
           {
-            "filename": "logs/2026/2026.06/2026.06.01 - Mon.md",
+            "filename": "logs/2026/2026.06/2026.06.02 - Tue.md",
             "label": "2"
           },
           {
@@ -119,7 +78,7 @@
             "label": "3"
           }
         ],
-        "lastAccessed": 1780331952
+        "lastAccessed": 1780493344
       }
     },
     "~/repos/nikbrunner/minifugit.nvim": {
@@ -145,7 +104,7 @@
             "label": "2"
           }
         ],
-        "lastAccessed": 1780299176
+        "lastAccessed": 1780493965
       }
     }
   }

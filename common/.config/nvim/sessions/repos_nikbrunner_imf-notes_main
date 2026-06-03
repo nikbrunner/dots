@@ -10,11 +10,11 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +55 ~/repos/nikbrunner/imf-notes/projects/web-doc.md
+badd +8 logs/2026/2026.06/2026.06.03\ -\ Wed.md
 argglobal
 %argdel
 $argadd ./
-edit ~/repos/nikbrunner/imf-notes/projects/web-doc.md
+edit logs/2026/2026.06/2026.06.03\ -\ Wed.md
 argglobal
 xnoremap <buffer> <silent> [[ :exe "normal! gv"|call search('\%(^#\{1,5\}\s\+\S\|^\S.*\n^[=-]\+$\)', "bsW")
 xnoremap <buffer> <silent> ]] :exe "normal! gv"|call search('\%(^#\{1,5\}\s\+\S\|^\S.*\n^[=-]\+$\)', "sW")
@@ -65,7 +65,7 @@ setlocal foldnestmax=20
 setlocal foldtext=
 setlocal formatexpr=
 setlocal formatlistpat=^\\s*\\d\\+\\.\\s\\+\\|^\\s*[-*+]\\s\\+\\|^\\[^\\ze[^\\]]\\+\\]:\\&^.\\{4\\}
-setlocal formatoptions=cntjql
+setlocal formatoptions=lcjnqt
 setlocal iminsert=0
 setlocal imsearch=-1
 setlocal includeexpr=
@@ -104,7 +104,7 @@ setlocal spellcapcheck=[.?!]\\_[\\])'\"\\t\ ]\\+
 setlocal spellfile=
 setlocal spelllang=en_us,de_de
 setlocal spelloptions=noplainbuffer
-setlocal statuscolumn=
+setlocal statuscolumn=%!v:lua.require'snacks.statuscolumn'.get()
 setlocal suffixesadd=
 setlocal noswapfile
 setlocal synmaxcol=3000
@@ -113,27 +113,31 @@ setlocal syntax=
 endif
 setlocal tabstop=4
 setlocal tagfunc=v:lua.vim.lsp.tagfunc
-setlocal textwidth=80
+setlocal textwidth=65
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#projects%*%#WinBarSeparator#/%*%#WinBarFilename#web-doc.md%*%=
+setlocal winbar=%#WinBarPath#logs%*%#WinBarSeparator#/%*%#WinBarPath#2026%*%#WinBarSeparator#/%*%#WinBarPath#2026.06%*%#WinBarSeparator#/%*%#WinBarFilename#2026.06.03\ -\ Wed.md%*%=%#WinBarGitLabel#\ [GIT:%#WinBarGitAdd#\ +5%#WinBarGitChange#\ ~1%#WinBarGitLabel#]%*\ 
 setlocal winblend=0
 setlocal nowinfixbuf
 setlocal nowinfixheight
 setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowinpinned
-setlocal wrap
+setlocal nowrap
 setlocal wrapmargin=0
 1
 sil! normal! zo
-let s:l = 55 - ((25 * winheight(0) + 17) / 34)
+3
+sil! normal! zo
+10
+sil! normal! zo
+let s:l = 8 - ((7 * winheight(0) + 27) / 54)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 55
-normal! 0
+keepjumps 8
+normal! 041|
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf

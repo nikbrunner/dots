@@ -93,8 +93,8 @@
   "cursor_blink": false,
   "theme": {
     "mode": "light",
-    "light": "Black Atom — Light",
-    "dark": "Black Atom — Dark",
+    "light": "Black Atom — TERRA ∷ Summer Day",
+    "dark": "Black Atom — TERRA ∷ Summer Night",
   },
   "base_keymap": "VSCode",
   "vim_mode": true,

@@ -4,7 +4,7 @@ let v:this_session=expand("<sfile>:p")
 doautoall SessionLoadPre
 silent only
 silent tabonly
-cd ~/repos/nikbrunner/dots
+cd ~/repos/nikbrunner/flux.nvim
 if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
@@ -12,7 +12,7 @@ let s:shortmess_save = &shortmess
 set shortmess+=aoO
 argglobal
 %argdel
-$argadd ~/repos/nikbrunner/dots/common/.config/black-atom/helm/bookmarks.yml
+$argadd LOG.md
 argglobal
 enew
 setlocal keymap=
@@ -54,7 +54,7 @@ setlocal foldcolumn=0
 setlocal foldenable
 setlocal foldexpr=v:lua.vim.treesitter.foldexpr()
 setlocal foldignore=#
-setlocal foldlevel=99
+setlocal foldlevel=999
 setlocal foldmarker={{{,}}}
 setlocal foldmethod=expr
 setlocal foldminlines=1
@@ -62,7 +62,7 @@ setlocal foldnestmax=20
 setlocal foldtext=
 setlocal formatexpr=
 setlocal formatlistpat=^\\s*\\d\\+[\\]:.)}\\t\ ]\\s*
-setlocal formatoptions=jqlcro
+setlocal formatoptions=njtlcq
 setlocal iminsert=0
 setlocal imsearch=-1
 setlocal includeexpr=
