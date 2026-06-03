@@ -18,7 +18,7 @@ skills-lock.json
 /common/.pi/memory/*.db-shm
 /common/.pi/memory/*.db-wal
 /common/.claude/claude-memories/imfusion
-/common/.pi/agent/sessions/--Users-brunner-repos-nikbrunner-dots--
+/common/.pi/agent/sessions/
 /radar-debug.log
 /common/.pi/agent/mcp-npx-cache.json
 /common/.pi/agent/mcp-cache.json
