@@ -50,50 +50,6 @@ function M.statusline()
     })
 end
 
-function M.icons()
-    local circle = "" -- nf-fa-circle (filled)
-
-    -- Your explicit file overrides (these survive the circles sweep)
-    local file_overrides = {
-        [".eslintrc.js"] = { glyph = "󰱺", hl = "MiniIconsYellow" },
-        [".node-version"] = { glyph = "", hl = "MiniIconsGreen" },
-        [".prettierrc"] = { glyph = "", hl = "MiniIconsPurple" },
-        [".yarnrc.yml"] = { glyph = "", hl = "MiniIconsBlue" },
-        ["eslint.config.js"] = { glyph = "󰱺", hl = "MiniIconsYellow" },
-        ["package.json"] = { glyph = "", hl = "MiniIconsGreen" },
-        ["tsconfig.json"] = { glyph = "", hl = "MiniIconsAzure" },
-        ["tsconfig.build.json"] = { glyph = "", hl = "MiniIconsAzure" },
-        ["yarn.lock"] = { glyph = "", hl = "MiniIconsBlue" },
-    }
-
-    local mi = nil -- disabled: no icon customization
-
-    -- First setup: establish config table with our overrides
-    -- Default highlights use mi.get() to keep original colors per category
-    local _, default_hl = mi.get("default", "file")
-    mi.setup({
-        default = {
-            file = { glyph = circle, hl = default_hl },
-            directory = { glyph = circle, hl = "MiniIconsAzure" },
-            extension = { glyph = circle, hl = default_hl },
-            filetype = { glyph = circle, hl = default_hl },
-            lsp = { glyph = circle, hl = default_hl },
-            os = { glyph = circle, hl = default_hl },
-        },
-        file = file_overrides,
-        directory = {},
-        extension = {},
-        filetype = {},
-        lsp = {},
-        os = {},
-    })
-
-    -- LSP diagnostic prefix: filled circle
-    vim.diagnostic.config({
-        virtual_text = { prefix = circle },
-    })
-end
-
 function M.surround()
     require("mini.surround").setup({
         mappings = {
@@ -856,7 +812,6 @@ return {
         M.diff()
         M.ai()
         M.statusline()
-        -- M.icons() -- disabled: no icon overrides or circles sweep
         M.surround()
         M.test()
         M.sessions()
