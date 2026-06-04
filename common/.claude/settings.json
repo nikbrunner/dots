@@ -46,6 +46,7 @@
       "mcp__chrome-devtools__*",
       "mcp__exa__*",
       "mcp__linear__*",
+      "mcp__atlassian-rovo-mcp__*",
       "mcp__supabase__*"
     ],
     "deny": [],
