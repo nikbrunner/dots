@@ -1,5 +1,5 @@
 {
-    "global": { "show_profile_name_in_menu_bar": true },
+    "global": { "show_in_menu_bar": false },
     "profiles": [
         {
             "complex_modifications": {
@@ -14,9 +14,7 @@
                             {
                                 "conditions": [
                                     {
-                                        "identifiers": [
-                                            { "is_built_in_keyboard": true }
-                                        ],
+                                        "identifiers": [{ "is_built_in_keyboard": true }],
                                         "type": "device_if"
                                     }
                                 ],
@@ -36,9 +34,7 @@
                             {
                                 "conditions": [
                                     {
-                                        "identifiers": [
-                                            { "is_built_in_keyboard": true }
-                                        ],
+                                        "identifiers": [{ "is_built_in_keyboard": true }],
                                         "type": "device_if"
                                     }
                                 ],
@@ -116,9 +112,7 @@
                             {
                                 "conditions": [
                                     {
-                                        "identifiers": [
-                                            { "is_built_in_keyboard": true }
-                                        ],
+                                        "identifiers": [{ "is_built_in_keyboard": true }],
                                         "type": "device_if"
                                     }
                                 ],
@@ -142,9 +136,7 @@
                             {
                                 "conditions": [
                                     {
-                                        "identifiers": [
-                                            { "is_built_in_keyboard": true }
-                                        ],
+                                        "identifiers": [{ "is_built_in_keyboard": true }],
                                         "type": "device_if"
                                     }
                                 ],
@@ -161,9 +153,7 @@
                             {
                                 "conditions": [
                                     {
-                                        "identifiers": [
-                                            { "is_built_in_keyboard": true }
-                                        ],
+                                        "identifiers": [{ "is_built_in_keyboard": true }],
                                         "type": "device_if"
                                     }
                                 ],
@@ -180,9 +170,7 @@
                             {
                                 "conditions": [
                                     {
-                                        "identifiers": [
-                                            { "is_built_in_keyboard": true }
-                                        ],
+                                        "identifiers": [{ "is_built_in_keyboard": true }],
                                         "type": "device_if"
                                     }
                                 ],
@@ -199,9 +187,7 @@
                             {
                                 "conditions": [
                                     {
-                                        "identifiers": [
-                                            { "is_built_in_keyboard": true }
-                                        ],
+                                        "identifiers": [{ "is_built_in_keyboard": true }],
                                         "type": "device_if"
                                     }
                                 ],
