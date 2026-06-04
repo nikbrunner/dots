@@ -109,6 +109,9 @@ M.map("n", "yc", function()
     vim.fn.cursor(vim.fn.line("."), col)
 end, { desc = "Dupe line (Comment out old one)" })
 
+-- Yank all
+M.map("n", "yA", "mzggVGy`z", { desc = "Yank All" })
+
 -- Select All
 M.map("n", "vA", "ggVG", { desc = "Select All" })
 
