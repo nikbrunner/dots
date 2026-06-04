@@ -41,4 +41,31 @@ return {
             -- },
         },
     },
+    {
+        "black-atom-industries/iter.nvim",
+        dir = require("lib.config").get_repo_path("black-atom-industries/iter.nvim"),
+        cmd = { "Iter" },
+        keys = {
+            { "gs", "<cmd>Iter<cr>", desc = "Git Status" },
+        },
+        opts = {
+            preview = {
+                -- Start diff previews with wrapping disabled.
+                wrap = false,
+
+                -- Show old/new line numbers in diff previews.
+                show_line_numbers = true,
+
+                -- Show git diff metadata rows such as `diff --git`, `index`, `---`,
+                -- and `+++`.
+                show_metadata = false,
+
+                -- Diff preview layout: 'stacked', 'split', or 'auto'.
+                diff_layout = "auto",
+
+                -- Editor width where 'auto' switches from stacked to split.
+                diff_auto_threshold = 120,
+            },
+        },
+    },
 }
