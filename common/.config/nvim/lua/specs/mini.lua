@@ -88,8 +88,6 @@ function M.icons()
         os = {},
     })
 
-
-
     -- LSP diagnostic prefix: filled circle
     vim.diagnostic.config({
         virtual_text = { prefix = circle },
@@ -466,8 +464,13 @@ end
 
 function M.files()
     local MiniFiles = require("mini.files")
+    local invoking_win_pos = { 0, 0 }
+    local preview_enabled = false
 
     MiniFiles.setup({
+        content = {
+            prefix = function() end,
+        },
         mappings = {
             show_help = "g?",
             close = "q",
@@ -488,7 +491,7 @@ function M.files()
         },
         windows = {
             max_number = 3,
-            preview = true,
+            preview = false,
             width_focus = 50,
             width_nofocus = 25,
             width_preview = 65,
@@ -500,7 +503,18 @@ function M.files()
         pattern = "MiniFilesWindowOpen",
         callback = function(args)
             local config = vim.api.nvim_win_get_config(args.data.win_id)
-            config.border = "single"
+            config.border = "solid"
+            vim.api.nvim_win_set_config(args.data.win_id, config)
+        end,
+    })
+
+    -- Anchor explorer to the split it was invoked from
+    vim.api.nvim_create_autocmd("User", {
+        pattern = "MiniFilesWindowUpdate",
+        callback = function(args)
+            local config = vim.api.nvim_win_get_config(args.data.win_id)
+            config.row = config.row + invoking_win_pos[1]
+            config.col = config.col + invoking_win_pos[2]
             vim.api.nvim_win_set_config(args.data.win_id, config)
         end,
     })
@@ -661,6 +675,12 @@ function M.files()
             map("n", "g8", function() setBranch("$HOME/repos/nikbrunner/koyo") end, { buffer = bufid, desc = "nikbrunner - koyo" })
             -- map("n", "g9", function() setBranch("$HOME/repos/dealercenter-digital/bc-desktop-client") end, { buffer = bufid, desc = "DCD - BC Desktop Client" })
 
+            -- Toggle preview
+            map("n", "<C-p>", function()
+                preview_enabled = not preview_enabled
+                MiniFiles.refresh({ windows = { preview = preview_enabled } })
+            end, { buffer = bufid, desc = "Toggle preview" })
+
             -- Picker in MiniFiles directory
             map("n", "<leader><leader>", function()
                 local current_dir = vim.fn.fnamemodify(MiniFiles.get_fs_entry().path, ":h")
@@ -674,8 +694,16 @@ function M.files()
     -- Global keymaps
     local map = vim.keymap.set
     -- stylua: ignore start
-    map("n", "-", function() MiniFiles.open(vim.api.nvim_buf_get_name(0)) end, { desc = "[E]xplorer" })
-    map("n", "<leader>we", function() MiniFiles.open(vim.fn.getcwd()) end, { desc = "[E]xplorer (cwd)" })
+    map("n", "-", function()
+        invoking_win_pos = vim.api.nvim_win_get_position(0)
+        MiniFiles.open(vim.api.nvim_buf_get_name(0))
+    end, { desc = "[E]xplorer" })
+
+    map("n", "_", function()
+        invoking_win_pos = vim.api.nvim_win_get_position(0)
+        MiniFiles.open(vim.fn.getcwd())
+    end, { desc = "[E]xplorer (cwd)" })
+
     -- map("n", "<leader>wf", function() M.git_files() end, { desc = "Git [F]iles (tree)" })
     -- stylua: ignore end
 end
@@ -822,7 +850,7 @@ return {
     lazy = false,
     config = function()
         -- M.hues()
-        -- M.files()
+        M.files()
         M.clue()
         M.git()
         M.diff()

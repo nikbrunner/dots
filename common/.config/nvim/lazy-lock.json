@@ -4,8 +4,6 @@
   "SchemaStore.nvim": { "branch": "main", "commit": "efa62017f59a6346486cc567d70acce965a00b12" },
   "annotator.nvim": { "branch": "main", "commit": "5c37f2c954dc37cea9fea4516a79684fb895d7ac" },
   "blink.cmp": { "branch": "main", "commit": "78336bc89ee5365633bcf754d93df01678b5c08f" },
-  "canola-collection": { "branch": "main", "commit": "8566c09080c3084db1ffba21dec53e2b4235daed" },
-  "canola.nvim": { "branch": "canola", "commit": "3838f1380e9aeea0597a80beb6ab28da73e38525" },
   "codediff.nvim": { "branch": "main", "commit": "29b06f37251f2e010f53a0892573b2ec03d165e2" },
   "conform.nvim": { "branch": "master", "commit": "619363c30309d29ffa631e67c8183f2a72caa373" },
   "fff-snacks.nvim": { "branch": "main", "commit": "e1a57b06d94d237743ec37070216c6d522b3402c" },
