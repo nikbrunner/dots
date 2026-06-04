@@ -80,6 +80,7 @@ return {
             vim.g.canola = {
                 columns = { "git_status", "icon" },
                 watch = true,
+                delete = { wipe = false, recursive = true },
                 hidden = { enabled = false }, -- show hidden files (inverted from oil's show_hidden = true)
                 confirm = false, -- skip_confirm_for_simple_edits = true
                 save = false, -- prompt_save_on_select_new_entry = false
