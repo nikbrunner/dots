@@ -11,7 +11,7 @@ endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
 badd +32 common/.config/black-atom/helm/config.yml
-badd +66 ~/repos/nikbrunner/dots/common/.config/nvim/lua/specs/black-atom.lua
+badd +676 ~/repos/nikbrunner/dots/common/.config/nvim/lua/specs/mini.lua
 argglobal
 %argdel
 $argadd ~/repos/nikbrunner/dots/common/.agents/AGENTS.md
@@ -134,7 +134,7 @@ normal! zt
 keepjumps 32
 normal! 02|
 tabnext
-edit ~/repos/nikbrunner/dots/common/.config/nvim/lua/specs/black-atom.lua
+edit ~/repos/nikbrunner/dots/common/.config/nvim/lua/specs/mini.lua
 argglobal
 setlocal keymap=
 setlocal noarabic
@@ -184,7 +184,7 @@ setlocal foldnestmax=20
 setlocal foldtext=
 setlocal formatexpr=v:lua.vim.lsp.formatexpr()
 setlocal formatlistpat=^\\s*\\d\\+[\\]:.)}\\t\ ]\\s*
-setlocal formatoptions=locjrq
+setlocal formatoptions=jcroql
 setlocal iminsert=0
 setlocal imsearch=-1
 setlocal include=\\<\\%(\\%(do\\|load\\)file\\|require\\)\\s*(
@@ -204,7 +204,7 @@ setlocal modifiable
 setlocal nrformats=bin,hex
 setlocal number
 setlocal numberwidth=4
-setlocal omnifunc=v:lua.vim.lsp.omnifunc
+setlocal omnifunc=v:lua.vim.lua_omnifunc
 setlocal path=,
 setlocal nopreserveindent
 setlocal nopreviewwindow
@@ -238,7 +238,7 @@ setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#lua%*%#WinBarSeparator#/%*%#WinBarPath#specs%*%#WinBarSeparator#/%*%#WinBarFilename#black-atom.lua%*%=%#WinBarGitLabel#\ [GIT:%#WinBarGitAdd#\ +27%#WinBarGitLabel#]%*%#WinBarLspLabel#\ [LSP:\ %#DiagnosticSignWarn#:1%##%#WinBarLspLabel#]%*\ 
+setlocal winbar=%#WinBarPath#lua%*%#WinBarSeparator#/%*%#WinBarPath#specs%*%#WinBarSeparator#/%*%#WinBarFilename#mini.lua%*%=%#WinBarGitLabel#\ [GIT:%#WinBarGitAdd#\ +25%#WinBarGitChange#\ ~5%#WinBarGitDelete#\ -2%#WinBarGitLabel#]%*%#WinBarLspLabel#\ [LSP:\ %#DiagnosticSignWarn#:4%##%#WinBarLspLabel#]%*\ 
 setlocal winblend=0
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -247,18 +247,16 @@ setlocal winhighlight=
 setlocal nowinpinned
 setlocal nowrap
 setlocal wrapmargin=0
-2
+53
 sil! normal! zo
-44
+465
 sil! normal! zo
-51
-sil! normal! zo
-let s:l = 66 - ((22 * winheight(0) + 24) / 48)
+let s:l = 676 - ((40 * winheight(0) + 24) / 48)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 66
-normal! 035|
+keepjumps 676
+normal! 015|
 tabnext 2
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
