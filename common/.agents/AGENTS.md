@@ -129,4 +129,4 @@ Surface these observations rather than silently fixing them. Propose the change,
 Private company context for ImFusion projects — Atlassian MCP defaults,
 Jira project keys, and company-specific skills.
 
-@~/repos/imfusion/brunner/agents/AGENTS.md
+@~/repos/imfusion/~brunner/agents/AGENTS.md
