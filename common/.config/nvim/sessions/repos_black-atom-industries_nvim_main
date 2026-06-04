@@ -10,11 +10,11 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +16 debug/highlights_debug_map.txt
+badd +19 debug/highlights_debug_map.txt
 badd +8 lua/black-atom/config.lua
 argglobal
 %argdel
-$argadd .
+$argadd ./
 edit debug/highlights_debug_map.txt
 let s:save_splitbelow = &splitbelow
 let s:save_splitright = &splitright
@@ -32,8 +32,8 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe 'vert 1resize ' . ((&columns * 155 + 155) / 311)
-exe 'vert 2resize ' . ((&columns * 155 + 155) / 311)
+exe 'vert 1resize ' . ((&columns * 123 + 123) / 246)
+exe 'vert 2resize ' . ((&columns * 122 + 123) / 246)
 argglobal
 setlocal keymap=
 setlocal noarabic
@@ -143,11 +143,11 @@ setlocal winhighlight=
 setlocal nowinpinned
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 16 - ((15 * winheight(0) + 27) / 54)
+let s:l = 19 - ((15 * winheight(0) + 21) / 43)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 16
+keepjumps 19
 normal! 0
 wincmd w
 argglobal
@@ -204,7 +204,7 @@ setlocal foldnestmax=20
 setlocal foldtext=
 setlocal formatexpr=v:lua.vim.lsp.formatexpr()
 setlocal formatlistpat=^\\s*\\d\\+[\\]:.)}\\t\ ]\\s*
-setlocal formatoptions=qcjlor
+setlocal formatoptions=jcroql
 setlocal iminsert=0
 setlocal imsearch=-1
 setlocal include=\\<\\%(\\%(do\\|load\\)file\\|require\\)\\s*(
@@ -224,7 +224,7 @@ setlocal modifiable
 setlocal nrformats=bin,hex
 setlocal number
 setlocal numberwidth=4
-setlocal omnifunc=v:lua.vim.lsp.omnifunc
+setlocal omnifunc=v:lua.vim.lua_omnifunc
 setlocal path=,
 setlocal nopreserveindent
 setlocal nopreviewwindow
@@ -258,7 +258,7 @@ setlocal textwidth=120
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#lua%*%#WinBarSeparator#/%*%#WinBarPath#black-atom%*%#WinBarSeparator#/%*%#WinBarFilename#config.lua%*%=%#WinBarGitLabel#\ [GIT:%#WinBarGitChange#\ ~1%#WinBarGitLabel#]%*%#WinBarLspLabel#\ [LSP:\ %#DiagnosticSignWarn#:2%##%#WinBarLspLabel#]%*\ 
+setlocal winbar=%#WinBarPath#lua%*%#WinBarSeparator#/%*%#WinBarPath#black-atom%*%#WinBarSeparator#/%*%#WinBarFilename#config.lua%*%=%#WinBarGitLabel#\ [GIT:%#WinBarGitChange#\ ~1%#WinBarGitLabel#]%*\ 
 setlocal winblend=0
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -269,16 +269,15 @@ setlocal nowrap
 setlocal wrapmargin=0
 4
 sil! normal! zo
-let s:l = 8 - ((7 * winheight(0) + 27) / 54)
+let s:l = 11 - ((4 * winheight(0) + 21) / 43)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 8
+keepjumps 11
 normal! 016|
 wincmd w
-2wincmd w
-exe 'vert 1resize ' . ((&columns * 155 + 155) / 311)
-exe 'vert 2resize ' . ((&columns * 155 + 155) / 311)
+exe 'vert 1resize ' . ((&columns * 123 + 123) / 246)
+exe 'vert 2resize ' . ((&columns * 122 + 123) / 246)
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf

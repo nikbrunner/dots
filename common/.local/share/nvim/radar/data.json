@@ -57,9 +57,13 @@
           {
             "filename": "common/.config/mise/config.toml",
             "label": "1"
+          },
+          {
+            "filename": "common/.config/nvim/lua/specs/mini.lua",
+            "label": "2"
           }
         ],
-        "lastAccessed": 1780569077
+        "lastAccessed": 1780586540
       }
     },
     "~/repos/nikbrunner/imf-notes": {
