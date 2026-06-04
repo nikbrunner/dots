@@ -660,56 +660,7 @@ function M.files()
         MiniFiles.open(vim.fn.getcwd())
     end, { desc = "[E]xplorer (cwd)" })
 
-    -- map("n", "<leader>wf", function() M.git_files() end, { desc = "Git [F]iles (tree)" })
     -- stylua: ignore end
-end
-
---- Open mini.files filtered to only git modified and untracked files.
---- Directories are shown only if they contain changed files underneath.
-function M.git_files()
-    local MiniFiles = require("mini.files")
-    local git_root = vim.fn.systemlist("git rev-parse --show-toplevel")[1]
-    if vim.v.shell_error ~= 0 then
-        vim.notify("Not in a git repository", vim.log.levels.ERROR)
-        return
-    end
-
-    local changed = {}
-    local parent_dirs = {}
-
-    local function register(file)
-        local abs = git_root .. "/" .. file
-        changed[abs] = true
-        local dir = vim.fn.fnamemodify(abs, ":h")
-        while dir ~= git_root and dir ~= "/" do
-            parent_dirs[dir] = true
-            dir = vim.fn.fnamemodify(dir, ":h")
-        end
-        parent_dirs[git_root] = true
-    end
-
-    for _, f in ipairs(vim.fn.systemlist("git ls-files --modified")) do
-        register(f)
-    end
-    for _, f in ipairs(vim.fn.systemlist("git ls-files --others --exclude-standard")) do
-        register(f)
-    end
-
-    if vim.tbl_isempty(changed) then
-        vim.notify("No modified or untracked files", vim.log.levels.INFO)
-        return
-    end
-
-    MiniFiles.open(git_root, false, {
-        content = {
-            filter = function(fs_entry)
-                if fs_entry.fs_type == "directory" then
-                    return parent_dirs[fs_entry.path] or false
-                end
-                return changed[fs_entry.path] or false
-            end,
-        },
-    })
 end
 
 -- ============================================================================
