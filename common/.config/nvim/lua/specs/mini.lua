@@ -754,6 +754,10 @@ end
 -- MiniPick, MiniExtra, MiniVisits Configuration
 -- ============================================================================
 
+function M.input()
+    require("mini.input").setup()
+end
+
 function M.visits()
     require("mini.visits").setup()
 end
@@ -1073,6 +1077,7 @@ return {
         M.test()
         M.sessions()
         M.snippets()
+        M.input()
         M.visits()
         M.extra()
         M.pick()
