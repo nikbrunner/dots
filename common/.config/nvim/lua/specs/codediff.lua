@@ -3,7 +3,6 @@ return {
         "esmuellert/codediff.nvim",
         dependencies = { "MunifTanjim/nui.nvim" },
         cmd = "CodeDiff",
-        event = "VeryLazy",
         keys = {
             -- Workspace level
             -- enew ensures CodeDiff resolves git root from cwd, not a stale buffer path

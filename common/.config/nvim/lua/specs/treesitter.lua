@@ -127,8 +127,6 @@ M.specs = {
 
     {
         "aaronik/treewalker.nvim",
-        event = "VeryLazy",
-
         -- The following options are the defaults.
         -- Treewalker aims for sane defaults, so these are each individually optional,
         -- and setup() does not need to be called, so the whole opts block is optional as well.

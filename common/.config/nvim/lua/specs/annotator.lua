@@ -1,6 +1,5 @@
 return {
     "chpeters/annotator.nvim",
-    event = "VeryLazy",
     keys = {
         -- Document → Annotate
         {

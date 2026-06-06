@@ -13,7 +13,6 @@
 
 return {
     "eero-lehtinen/oklch-color-picker.nvim",
-    event = "VeryLazy",
     version = "*",
     keys = {
         {
@@ -35,7 +34,6 @@ return {
             italic = false,
             virtual_text = " ",
             ignore_ft = { --
-                "blink-cmp-menu",
                 "snacks_picker_input",
                 "snacks_picker_list",
                 "snacks_picker_preview",

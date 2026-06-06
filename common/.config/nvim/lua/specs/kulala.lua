@@ -7,16 +7,12 @@ return {
         default_env = "local",
         kulala_keymaps_prefix = ".",
     },
-    keys = function()
-        local kulala = require("kulala")
-
-        return {
-            { "[h", kulala.jump_prev, desc = "Previous request" },
-            { "]h", kulala.jump_next, desc = "Next request" },
-            { "<leader>he", kulala.set_selected_env, desc = "Select env" },
-            { "<leader>hr", kulala.run, desc = "Run request" },
-            { "<leader>hs", kulala.search, desc = "Search" },
-            { "<leader>hc", kulala.copy, desc = "Copy request" },
-        }
-    end,
+    keys = {
+        { "[h", function() require("kulala").jump_prev() end, desc = "Previous request" },
+        { "]h", function() require("kulala").jump_next() end, desc = "Next request" },
+        { "<leader>he", function() require("kulala").set_selected_env() end, desc = "Select env" },
+        { "<leader>hr", function() require("kulala").run() end, desc = "Run request" },
+        { "<leader>hs", function() require("kulala").search() end, desc = "Search" },
+        { "<leader>hc", function() require("kulala").copy() end, desc = "Copy request" },
+    },
 }
