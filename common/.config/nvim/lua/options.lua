@@ -46,6 +46,8 @@ vim.opt.wildmode = "longest:full,full"
 vim.opt.jumpoptions = "stack"
 
 vim.opt.pumborder = "single"
+vim.opt.pumblend = 0
+vim.opt.pumheight = 10
 vim.opt.pummaxwidth = 60
 vim.o.shortmess = vim.o.shortmess .. "u"
 vim.opt.scrolloffpad = 99
@@ -70,8 +72,6 @@ vim.opt.undofile = true
 vim.opt.updatetime = 500
 
 vim.opt.cmdheight = 1
-vim.opt.pumheight = 30
-vim.opt.pumblend = 10
 
 vim.opt.showmode = false
 vim.opt.laststatus = 3
