@@ -55,4 +55,4 @@ Phase docs reference these helpers — **load them when indicated**:
 
 ## Further context
 
-If repo path contains `black-atom-industries`, load `about:bai` skill.
+Load `about:me` for personal context, project knowledge, or my tech stack.
