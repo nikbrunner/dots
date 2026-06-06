@@ -67,6 +67,7 @@ marksman = "prefix:2026-02"
 "npm:@earendil-works/pi-coding-agent" = "latest"
 zig = "latest"
 zls = "latest"
+pandoc = "3.10"
 
 [env]
 _.file = "~/.env"
