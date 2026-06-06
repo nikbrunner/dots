@@ -31,3 +31,4 @@ skills-lock.json
 /common/.pi/agent/mcp-oauth/
 /common/.config/lazyjira/auth.json
 /common/.pi/agent/auth.json
+handoffs/
