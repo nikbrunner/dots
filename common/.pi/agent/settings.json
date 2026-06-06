@@ -15,7 +15,7 @@
     "npm:pi-subagents"
   ],
   "defaultProvider": "openrouter",
-  "defaultModel": "minimax/minimax-m2.7",
+  "defaultModel": "xiaomi/mimo-v2.5",
   "enabledModels": [
     "openrouter/minimax/minimax-m2.7",
     "openrouter/z-ai/glm-5.1",
