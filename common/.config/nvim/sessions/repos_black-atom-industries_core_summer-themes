@@ -18,7 +18,7 @@ badd +1 src/themes/default/create-ui-light.ts
 badd +40 src/themes/terra/black-atom-terra-summer-day.ts
 badd +31 ~/repos/black-atom-industries/core/src/themes/terra/black-atom-terra-summer-night.ts
 badd +1 src/themes/mnml/black-atom-mnml-orange-dark.ts
-badd +31 src/themes/mnml/black-atom-mnml-orange-light.ts
+badd +33 src/themes/mnml/black-atom-mnml-orange-light.ts
 argglobal
 %argdel
 $argadd ~/repos/black-atom-industries/core/.gitignore
@@ -592,7 +592,7 @@ setlocal foldnestmax=20
 setlocal foldtext=
 setlocal formatexpr=
 setlocal formatlistpat=^\\s*\\d\\+[\\]:.)}\\t\ ]\\s*
-setlocal formatoptions=jcroql
+setlocal formatoptions=rlcqjo
 setlocal iminsert=0
 setlocal imsearch=-1
 setlocal includeexpr=
@@ -653,12 +653,12 @@ setlocal winhighlight=
 setlocal nowinpinned
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 31 - ((27 * winheight(0) + 24) / 48)
+let s:l = 28 - ((24 * winheight(0) + 24) / 48)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 31
-normal! 028|
+keepjumps 28
+normal! 0
 wincmd w
 2wincmd w
 exe 'vert 1resize ' . ((&columns * 68 + 69) / 138)

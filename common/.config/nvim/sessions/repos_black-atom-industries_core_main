@@ -142,7 +142,7 @@ setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#...%*%#WinBarSeparator#/%*%#WinBarFilename#black-atom-terra-summer-day.ts%*%=%#WinBarGitLabel#\ [GIT:%#WinBarGitChange#\ ~2%#WinBarGitLabel#]%*\ 
+setlocal winbar=%#WinBarPath#...%*%#WinBarSeparator#/%*%#WinBarFilename#black-atom-terra-summer-day.ts%*%=
 setlocal winblend=0
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -156,13 +156,14 @@ if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
 keepjumps 47
-normal! 035|
+normal! 016|
 wincmd w
 argglobal
 if bufexists(fnamemodify("src/themes/default/black-atom-default-dark.ts", ":p")) | buffer src/themes/default/black-atom-default-dark.ts | else | edit src/themes/default/black-atom-default-dark.ts | endif
 if &buftype ==# 'terminal'
   silent file src/themes/default/black-atom-default-dark.ts
 endif
+balt src/themes/terra/black-atom-terra-summer-day.ts
 setlocal keymap=
 setlocal noarabic
 setlocal autoindent
@@ -262,7 +263,7 @@ setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#...%*%#WinBarSeparator#/%*%#WinBarPath#default%*%#WinBarSeparator#/%*%#WinBarFilename#black-atom-default-dark.ts%*%=
+setlocal winbar=%#WinBarPath#...%*%#WinBarSeparator#/%*%#WinBarFilename#black-atom-default-dark.ts%*%=
 setlocal winblend=0
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -271,11 +272,11 @@ setlocal winhighlight=
 setlocal nowinpinned
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 47 - ((28 * winheight(0) + 18) / 36)
+let s:l = 52 - ((31 * winheight(0) + 18) / 36)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 47
+keepjumps 52
 normal! 0
 wincmd w
 exe 'vert 1resize ' . ((&columns * 87 + 87) / 175)
@@ -302,9 +303,9 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe '1resize ' . ((&lines * 17 + 19) / 39)
+exe '1resize ' . ((&lines * 18 + 19) / 39)
 exe 'vert 1resize ' . ((&columns * 87 + 87) / 175)
-exe '2resize ' . ((&lines * 19 + 19) / 39)
+exe '2resize ' . ((&lines * 18 + 19) / 39)
 exe 'vert 2resize ' . ((&columns * 87 + 87) / 175)
 exe 'vert 3resize ' . ((&columns * 87 + 87) / 175)
 argglobal
@@ -419,7 +420,7 @@ setlocal nowrap
 setlocal wrapmargin=0
 4
 sil! normal! zo
-let s:l = 10 - ((5 * winheight(0) + 8) / 16)
+let s:l = 10 - ((8 * winheight(0) + 8) / 17)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
@@ -540,7 +541,7 @@ setlocal winhighlight=
 setlocal nowinpinned
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 8 - ((4 * winheight(0) + 9) / 18)
+let s:l = 8 - ((3 * winheight(0) + 8) / 17)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
@@ -672,9 +673,9 @@ normal! zt
 keepjumps 18
 normal! 024|
 wincmd w
-exe '1resize ' . ((&lines * 17 + 19) / 39)
+exe '1resize ' . ((&lines * 18 + 19) / 39)
 exe 'vert 1resize ' . ((&columns * 87 + 87) / 175)
-exe '2resize ' . ((&lines * 19 + 19) / 39)
+exe '2resize ' . ((&lines * 18 + 19) / 39)
 exe 'vert 2resize ' . ((&columns * 87 + 87) / 175)
 exe 'vert 3resize ' . ((&columns * 87 + 87) / 175)
 tabnext
@@ -952,7 +953,6 @@ if filereadable(s:sx)
 endif
 let &g:so = s:so_save | let &g:siso = s:siso_save
 set hlsearch
-nohlsearch
 doautoall SessionLoadPost
 unlet SessionLoad
 " vim: set ft=vim :
