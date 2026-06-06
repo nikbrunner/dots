@@ -22,6 +22,7 @@ common:
   common/.config/lazyjira: ~/.config/lazyjira
   common/.config/mpd/mpd.conf: ~/.config/mpd/mpd.conf
   common/.config/nvim: ~/.config/nvim
+  common/.config/nvim-minimax: ~/.config/nvim-minimax
   common/.config/rmpc: ~/.config/rmpc
   common/.config/tmux: ~/.config/tmux
   common/.config/wezterm: ~/.config/wezterm
