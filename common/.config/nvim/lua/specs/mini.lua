@@ -428,12 +428,12 @@ function M.files()
             close = "q",
             go_in = "<CR>",
             go_in_plus = "<CR>",
-            go_out = "-",
-            go_out_plus = "_",
+            go_out = "<S-CR>",
+            go_out_plus = "<S-CR>",
             mark_goto = "'",
             mark_set = "m",
             reset = "<BS>",
-            reveal_cwd = "@",
+            reveal_cwd = "~",
             synchronize = "=",
             trim_left = "<",
             trim_right = ">",
@@ -643,18 +643,16 @@ function M.files()
         end,
     })
 
-    -- Global keymaps
-    local map = vim.keymap.set
     -- stylua: ignore start
-    map("n", "-", function()
+    vim.keymap.set("n", "<leader>we", function()
         invoking_win_pos = vim.api.nvim_win_get_position(0)
         MiniFiles.open(vim.api.nvim_buf_get_name(0))
     end, { desc = "[E]xplorer" })
 
-    map("n", "_", function()
+    vim.keymap.set("n", "<leader>wE", function()
         invoking_win_pos = vim.api.nvim_win_get_position(0)
         MiniFiles.open(vim.fn.getcwd())
-    end, { desc = "[E]xplorer (cwd)" })
+    end, { desc = "[E]xplorer" })
 
     -- stylua: ignore end
 end
