@@ -33,6 +33,7 @@ export BAT_THEME="base16"
 # Aliases ================================================================
 alias vin="NVIM_APPNAME=nvim_mnml nvim"
 alias mini="NVIM_APPNAME=nvim-minimax nvim"
+alias edit="NVIM_APPNAME=nvim-edit nvim"
 
 alias ls="eza --all --oneline --long --icons --sort=type"
 alias lt="eza --all --tree --icons --sort=type"
