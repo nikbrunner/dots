@@ -428,8 +428,8 @@ function M.files()
             close = "q",
             go_in = "<CR>",
             go_in_plus = "<CR>",
-            go_out = "<S-CR>",
-            go_out_plus = "<S-CR>",
+            go_out = "-",
+            go_out_plus = "-",
             mark_goto = "'",
             mark_set = "m",
             reset = "<BS>",
@@ -440,6 +440,20 @@ function M.files()
         },
         options = {
             use_as_default_explorer = false,
+            -- Workaround for mini.nvim bug on Neovim >= 0.11: `H.lsp_fs_hook_client`
+            -- in mini/files.lua (~L2866) calls `is_scheme(uri, scheme)`, which does
+            -- `scheme == nil` and `scheme .. ':'`. In Neovim 0.12+ `FileOperationFilter.scheme`
+            -- is decoded as `vim.NIL` (a userdata) instead of Lua `nil`, so both the
+            -- nil-check fails and the concatenation crashes on `=` (synchronize).
+            -- The same hook also emits the `client.supports_method is deprecated`
+            -- warning via `vim.lsp.get_clients({ method = ... })`. Setting
+            -- `lsp_timeout = 0` early-returns from `H.lsp_fs_hook` and avoids both.
+            -- TODO: Remove once upstream lands a `vim.NIL`-aware `is_scheme` fix.
+            -- Trade-off: no LSP-driven import rewrites on file ops inside the explorer.
+            -- Sources:
+            --   https://github.com/nvim-mini/mini.nvim/pull/2340   -- introduced the buggy code
+            --   https://github.com/nvim-mini/mini.nvim/issues/2215 -- parent feature request
+            lsp_timeout = 0,
         },
         windows = {
             max_number = 3,
@@ -633,12 +647,6 @@ function M.files()
                 MiniFiles.refresh({ windows = { preview = preview_enabled } })
             end, { buffer = bufid, desc = "Toggle preview" })
 
-            -- Picker in MiniFiles directory
-            map("n", "<leader><leader>", function()
-                local current_dir = vim.fn.fnamemodify(MiniFiles.get_fs_entry().path, ":h")
-                MiniFiles.close()
-                Snacks.picker.files({ cwd = current_dir })
-            end, { buffer = bufid, desc = "Find files in current directory" })
             -- stylua: ignore end
         end,
     })
