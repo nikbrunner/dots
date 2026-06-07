@@ -7,6 +7,10 @@
     "mini.nvim": {
       "rev": "d5e6f5b843f1d813d9c4bfb242b751dc5ab6f8ae",
       "src": "https://github.com/nvim-mini/mini.nvim"
+    },
+    "supermaven-nvim": {
+      "rev": "07d20fce48a5629686aefb0a7cd4b25e33947d50",
+      "src": "git@github.com:supermaven-inc/supermaven-nvim"
     }
   }
 }
