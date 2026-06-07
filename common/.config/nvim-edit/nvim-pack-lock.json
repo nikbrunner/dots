@@ -8,6 +8,10 @@
       "rev": "619363c30309d29ffa631e67c8183f2a72caa373",
       "src": "git@github.com:stevearc/conform.nvim"
     },
+    "iter.nvim": {
+      "rev": "bd56439d95dc751a26169511db5f238a77aec6c9",
+      "src": "git@github.com:black-atom-industries/iter.nvim.git"
+    },
     "mini.nvim": {
       "rev": "d5e6f5b843f1d813d9c4bfb242b751dc5ab6f8ae",
       "src": "https://github.com/nvim-mini/mini.nvim"
