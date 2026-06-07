@@ -13,6 +13,8 @@ end
 
 vim.opt.rtp:prepend(lazypath)
 
+vim.env.PATH = vim.env.HOME .. "/.local/share/mise/shims:" .. vim.env.PATH
+
 require("config")
 require("options")
 require("lib")
