@@ -182,6 +182,10 @@ local yank_absolute_path = function()
 	end
 end
 
+local function setBranch(path)
+	MF.set_branch({ vim.fn.expand(path) })
+end
+
 -- Buffer-local keymaps for MiniFiles
 vim.api.nvim_create_autocmd("User", {
 	pattern = "MiniFilesBufferCreate",
@@ -189,14 +193,16 @@ vim.api.nvim_create_autocmd("User", {
 		local bufid = args.data.buf_id
 		local map = vim.keymap.set
 
-		local function setBranch(path)
-			MF.set_branch({ vim.fn.expand(path) })
-		end
+		-- Route :w to MF.synchronize via BufWriteCmd (requires buftype=acwrite)
+		vim.bo[bufid].buftype = "acwrite"
+		vim.api.nvim_create_autocmd("BufWriteCmd", {
+			buffer = bufid,
+			callback = function()
+				MF.synchronize()
+			end,
+		})
 
         -- stylua: ignore start
-        -- Synchronize (save) changes
-        map("n", "<C-s>", MF.synchronize, { buffer = bufid, desc = "Synchronize changes" })
-
         -- Path operations
         map("n", "gx", ui_open, { buffer = bufid, desc = "OS open" })
 
