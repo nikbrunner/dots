@@ -39,27 +39,19 @@ vim.o.foldmethod = "expr"
 vim.o.foldexpr = "v:lua.vim.treesitter.foldexpr()"
 vim.o.foldtext = ""
 vim.opt.foldcolumn = "0"
-vim.opt.fillchars:append({ fold = " " })
-
-vim.opt.wildmode = "longest:full,full"
 
 vim.opt.jumpoptions = "stack"
 
-vim.opt.pumborder = "single"
+vim.opt.pumborder = "solid"
 vim.opt.pumblend = 0
 vim.opt.pumheight = 10
 vim.opt.pummaxwidth = 60
-vim.o.shortmess = vim.o.shortmess .. "u"
+-- vim.o.shortmess = vim.o.shortmess .. "uc"
 vim.opt.scrolloffpad = 99
--- vim.opt.switchbuf = "vsplit"
 
-vim.opt.fillchars = {
-    foldopen = "",
-    foldclose = "",
-    fold = " ",
-    foldsep = " ",
-    diff = "╱",
-}
+vim.o.complete = ".,w,b,kspell" -- Use less sources
+vim.o.completeopt = "menuone,noselect,fuzzy,nosort"
+vim.o.completetimeout = 100 -- Limit sources delay
 
 vim.opt.number = true
 vim.opt.relativenumber = true
@@ -98,27 +90,21 @@ vim.opt.signcolumn = "yes"
 vim.opt.splitbelow = true
 vim.opt.splitright = true
 
--- Abbreviations
-vim.cmd("cabbrev W w")
-vim.cmd("cabbrev Wqa wqa")
-vim.cmd("cabbrev Wq wq")
-vim.cmd("cabbrev Wa wa")
-vim.cmd("cabbrev git Git")
-
 vim.o.showtabline = 0
 
-pcall(function()
-    require("vim._core.ui2").enable({
-        msg = {
-            targets = {
-                default = "msg",
-                progress = "msg",
-                pager = "pager",
-            },
-            msg = {
-                timeout = 3000,
-                height = 0.5,
-            },
-        },
-    })
-end)
+-- Disabled because its somehow interfering with mini.completion info window
+-- pcall(function()
+--     require("vim._core.ui2").enable({
+--         msg = {
+--             targets = {
+--                 default = "msg",
+--                 progress = "msg",
+--                 pager = "pager",
+--             },
+--             msg = {
+--                 timeout = 3000,
+--                 height = 0.5,
+--             },
+--         },
+--     })
+-- end)
