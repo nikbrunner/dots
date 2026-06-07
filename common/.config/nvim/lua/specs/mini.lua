@@ -609,10 +609,16 @@ function M.files()
                 MiniFiles.set_branch({ vim.fn.expand(path) })
             end
 
-            -- stylua: ignore start
-            -- Synchronize (save) changes
-            map("n", "<C-s>", MiniFiles.synchronize, { buffer = bufid, desc = "Synchronize changes" })
+            -- Route :w to MF.synchronize via BufWriteCmd (requires buftype=acwrite)
+            vim.bo[bufid].buftype = "acwrite"
+            vim.api.nvim_create_autocmd("BufWriteCmd", {
+                buffer = bufid,
+                callback = function()
+                    MF.synchronize()
+                end,
+            })
 
+            -- stylua: ignore start
             -- Path operations
             map("n", "gx", ui_open, { buffer = bufid, desc = "OS open" })
 
