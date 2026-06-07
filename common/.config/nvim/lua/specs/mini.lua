@@ -740,8 +740,88 @@ function M.clue()
     })
 end
 
-function M.input()
-    require("mini.input").setup()
+function M.completion()
+    local MiniCompletion = require("mini.completion")
+
+    -- Capture the canonical LSP kind names BEFORE the 4-char remap below
+    -- mutates the table. `item.kind` from the LSP response is the numeric
+    -- enum value (6 = Class, 3 = Function, ...); looking it up here gives
+    -- the canonical name so `LspKind*` highlight groups resolve correctly.
+    local lsp_kind_names = vim.deepcopy(vim.lsp.protocol.CompletionItemKind)
+
+    local process_items_opts = { kind_priority = { Text = -1, Snippet = 99 } }
+    local process_items = function(items, base)
+        -- Pre-set `kind_hlgroup` per item so the popup uses the active
+        -- black-atom theme's LspKind* highlight groups. `default_process_items`
+        -- preserves any value already on the item (see `or` in mini.completion),
+        -- so this overrides the mini.icons lsp category that would otherwise be
+        -- applied.
+        for _, item in ipairs(items) do
+            local kind_name = lsp_kind_names[item.kind]
+            if kind_name then
+                item.kind_hlgroup = "LspKind" .. kind_name
+            end
+        end
+        return MiniCompletion.default_process_items(items, base, process_items_opts)
+    end
+
+    for _, item in ipairs(vim.fn.complete_info({ "items" }).items) do
+        print(item.word, "->", item.kind, "(hl:", item.kind_hlgroup, ")")
+    end
+    local on_attach = function(args)
+        vim.bo[args.buf].omnifunc = "v:lua.MiniCompletion.completefunc_lsp"
+    end
+    vim.api.nvim_create_autocmd("LspAttach", { callback = on_attach })
+
+    -- Remap CompletionItemKind to 4-char labels for the native pum kind column
+    local item_kinds = vim.lsp.protocol.CompletionItemKind
+    for i, name in ipairs(item_kinds) do
+        item_kinds[i] = name:sub(1, 4):upper()
+    end
+
+    MiniCompletion.setup({
+        delay = { completion = 100, info = 0, signature = 50 },
+        window = {
+            info = { height = 10, width = 80, border = "solid" },
+            signature = { height = 10, width = 80, border = "solid" },
+        },
+        lsp_completion = {
+            process_items = process_items,
+        },
+    })
+
+    -- Force signature help with <C-k>
+    vim.keymap.set("i", "<C-k>", function()
+        vim.lsp.buf.signature_help()
+    end, { desc = "Signature help" })
+
+    -- CR accepts selected item or inserts newline
+    vim.keymap.set("i", "<CR>", function()
+        if vim.fn.complete_info()["selected"] ~= -1 then
+            return "\25"
+        end
+        return "\r"
+    end, { expr = true })
+
+    -- C-y: pum accept > fallback
+    local termcodes = function(keys)
+        return vim.api.nvim_replace_termcodes(keys, true, false, true)
+    end
+
+    vim.keymap.set("i", "<C-y>", function()
+        if vim.fn.pumvisible() == 1 then
+            local info = vim.fn.complete_info()
+            if info.selected == -1 then
+                return termcodes("<C-n><C-y>")
+            end
+            return termcodes("<C-y>")
+        end
+        return termcodes("<C-y>")
+    end, { expr = true })
+end
+
+function M.cmdline()
+    require("mini.cmdline").setup()
 end
 
 function M.visits()
@@ -825,12 +905,18 @@ function M.pick()
     map("n", "<leader>dj",  function() MiniPick.registry.buffer_jumps() end, { desc = "[J]umps" })
     map("n", "<leader>dp",  function() MiniExtra.pickers.diagnostic({ scope = "current" }) end, { desc = "[P]roblems" })
     map("n", "<leader>ds",  function() MiniExtra.pickers.lsp({ scope = "document_symbol" }) end, { desc = "[S]ymbols" })
-    map("n", "<leader>dt",  function() MiniExtra.pickers.buf_lines() end, { desc = "[T]ext" })
+    map("n", "<leader>dt",  function() MiniExtra.pickers.buf_lines({ scope = "current" }) end, { desc = "[T]ext" })
 
     -- Symbol
     map("n", "<leader>sr",  function() MiniExtra.pickers.lsp({ scope = "references" }) end, { desc = "[R]eferences" })
     map("n", "<leader>si",  function() MiniExtra.pickers.lsp({ scope = "implementation" }) end, { desc = "[I]mplementations" })
     -- stylua: ignore end
+end
+
+function M.input()
+    require("mini.input").setup({
+        scope = "cursor",
+    })
 end
 
 ---@type LazyPluginSpec
@@ -839,22 +925,28 @@ return {
     version = false,
     lazy = false,
     config = function()
-        -- M.hues()
-        M.files()
-        M.clue()
-        M.git()
-        M.diff()
-        M.ai()
+        -- Essential at startup: UI-visible from first frame or session integrity
         M.statusline()
-        M.surround()
-        M.test()
         M.sessions()
-        M.snippets()
-        M.input()
-        M.visits()
-        M.extra()
-        M.pick()
-        -- Start LSP server to show snippets in completion
-        require("mini.snippets").start_lsp_server()
+
+        -- Defer the rest to after startup
+        vim.schedule(function()
+            -- M.hues()
+            M.clue()
+            M.ai()
+            M.surround()
+            M.diff()
+            M.git()
+            M.test()
+            M.files()
+            M.snippets()
+            M.input()
+            M.completion()
+            M.cmdline()
+            M.visits()
+            M.extra()
+            M.pick()
+            require("mini.snippets").start_lsp_server()
+        end)
     end,
 }

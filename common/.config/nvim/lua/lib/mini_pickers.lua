@@ -82,9 +82,6 @@ function M.git_changed()
         source = {
             items = items,
             name = "Git Changed",
-            choose = function(item)
-                vim.cmd.edit(item.path)
-            end,
             preview = function(buf_id, item)
                 local lines
                 if item.status == "M" then
