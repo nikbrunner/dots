@@ -4,18 +4,18 @@
 
 This plan is designed to be worked through over **multiple sessions** — each step is a coherent chunk that you can complete, verify, and commit independently. A suggested session breakdown:
 
-| Session | Steps                                              | Goal                                                  |
-| ------- | -------------------------------------------------- | ----------------------------------------------------- |
-| 1       | Steps 1–3                                          | Bootstrap: empty folder, symlink, alias, minimal init.lua |
-| 2       | Steps 4–5                                          | `plugin/20_keymaps.lua` + `plugin/30_autocmds.lua` (global keymaps + autocmds) |
-| 3       | Step 6                                             | LSP setup (`after/lsp/`)                              |
-| 4       | Step 7.5 (worked example) + Step 7 (mini)         | Port `plugin/50_specs/mini.lua` (the foundational mini.nvim config) |
-| 5–8     | Step 7 (remaining 22 plugins)                      | One or two plugins per session, each verified         |
-| 9       | Step 8 (personal tools)                            | tmux, logger, component, pi-edit                      |
-| 10      | Steps 9–10 (colors, snippets, ftplugin, spell)     | Visual + content files                                |
-| 11      | Steps 11–12 (lib helpers, CLAUDE.md)               | Cleanup + docs                                        |
-| 12      | Steps 13–14 (first launch + verification)          | Smoke test                                            |
-| 13      | Steps 15–16 (cut over + retire)                    | Make `edit`/`vin` the default; remove old config       |
+| Session | Steps                                          | Goal                                                                           |
+| ------- | ---------------------------------------------- | ------------------------------------------------------------------------------ |
+| 1       | Steps 1–3                                      | Bootstrap: empty folder, symlink, alias, minimal init.lua                      |
+| 2       | Steps 4–5                                      | `plugin/20_keymaps.lua` + `plugin/30_autocmds.lua` (global keymaps + autocmds) |
+| 3       | Step 6                                         | LSP setup (`after/lsp/`)                                                       |
+| 4       | Step 7.5 (worked example) + Step 7 (mini)      | Port `plugin/50_specs/mini.lua` (the foundational mini.nvim config)            |
+| 5–8     | Step 7 (remaining 22 plugins)                  | One or two plugins per session, each verified                                  |
+| 9       | Step 8 (personal tools)                        | tmux, logger, component, pi-edit                                               |
+| 10      | Steps 9–10 (colors, snippets, ftplugin, spell) | Visual + content files                                                         |
+| 11      | Steps 11–12 (lib helpers, CLAUDE.md)           | Cleanup + docs                                                                 |
+| 12      | Steps 13–14 (first launch + verification)      | Smoke test                                                                     |
+| 13      | Steps 15–16 (cut over + retire)                | Make `edit`/`vin` the default; remove old config                               |
 
 Each step has its own checkboxes (`- [ ]`) for progress tracking. Commit after each step (or each session) to make rollback easy.
 
@@ -43,12 +43,12 @@ The migration is **additive**, not subtractive: the goal of the first pass is to
 
 The existing aliases are:
 
-| Alias        | App name        | Status                |
-| ------------ | --------------- | --------------------- |
-| `vin`        | `nvim_mnml`     | Current personal — to retire |
-| `mini`       | `nvim-minimax`  | Clean base — keep as reference |
-| `lazyvim`    | `lazyvim`       | LazyVim stock         |
-| `edit`       | `nvim-edit`     | **NEW** — the merged config |
+| Alias     | App name       | Status                         |
+| --------- | -------------- | ------------------------------ |
+| `vin`     | `nvim_mnml`    | Current personal — to retire   |
+| `mini`    | `nvim-minimax` | Clean base — keep as reference |
+| `lazyvim` | `lazyvim`      | LazyVim stock                  |
+| `edit`    | `nvim-edit`    | **NEW** — the merged config    |
 
 **App name**: `nvim-edit` · **Alias**: `edit`. (Short, punchy, evokes the "go in and tweak things" intent of the restart.)
 
@@ -97,28 +97,28 @@ plugin/
 - Number prefixes give explicit control over load order; subdirectory naming follows the same scheme
 - Plugin-specific keymaps (e.g. `<leader>lf` for conform) live in the spec file, not in `plugin/20_keymaps.lua`. The keymaps file is **only for global cross-cutting keymaps** (leader, common motions, terminal mode exit, etc.)
 
-| Old (lazy-based)                          | New (vim.pack + mini, fresh)                                                          |
-| ----------------------------------------- | -------------------------------------------------------------------------------------- |
-| `lua/config.lua`                          | `init.lua` (minimal bootstrap)                                                         |
-| `lua/options.lua`                         | `plugin/10_options.lua`                                                                |
-| `lua/keymaps.lua` + `lib/*.lua` keymaps   | `plugin/20_keymaps.lua` (global only) + plugin-specific keymaps in each spec file       |
-| `lua/autocmd.lua`                         | `plugin/30_autocmds.lua`                                                               |
-| `lua/lsp-config.lua`                      | `after/lsp/init.lua` (per-buffer attach) + per-LSP server configs in `after/lsp/<name>.lua` |
-| `lua/specs/<name>.lua` (24 files)         | **All 24 ported** as `plugin/50_specs/<name>.lua`                                       |
-| `lsp/<server>.lua`                        | `after/lsp/<server>.lua` — **copy as-is**, the file format is already `:h vim.lsp.Config` compatible |
-| `plugin/winbar.lua`                       | `plugin/50_specs/winbar.lua` — own "plugin" spec, treated the same as third-party     |
-| `plugin/tmux.lua`                         | `plugin/50_specs/tmux.lua`                                                             |
-| `plugin/component.lua`                    | `plugin/50_specs/component.lua`                                                        |
-| `plugin/logger.lua`                       | `plugin/50_specs/logger.lua`                                                           |
-| `plugin/claude-edit.lua`                  | `plugin/50_specs/pi-edit.lua` — with `pi -p` backend                                   |
-| `colors/*.lua`                            | `colors/*.lua` — **copy as-is**                                                         |
-| `ftplugin/markdown.lua`                   | `ftplugin/markdown.lua` — copy as-is                                                   |
-| `after/queries/markdown/*`                | `after/queries/markdown/*` — copy as-is                                                 |
-| `snippets/*`                              | `snippets/*` — copy, `mini.snippets` expects the same JSON format                       |
-| `spell/*`                                 | `spell/*` — copy as-is                                                                 |
-| `.luarc.json`, `.luacheckrc`, `stylua.toml` | Personal preferences — `indent_width = 2`, `column_width = 125`                        |
-| `lazy-lock.json`                          | **Delete** — replaced by `nvim-pack-lock.json` (auto-generated by `vim.pack`)           |
-| `lib/sessions.lua` (custom)               | Port as `lua/sessions.lua` — use alongside `mini.sessions` (it complements rather than replaces) |
+| Old (lazy-based)                            | New (vim.pack + mini, fresh)                                                                         |
+| ------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| `lua/config.lua`                            | `init.lua` (minimal bootstrap)                                                                       |
+| `lua/options.lua`                           | `plugin/10_options.lua`                                                                              |
+| `lua/keymaps.lua` + `lib/*.lua` keymaps     | `plugin/20_keymaps.lua` (global only) + plugin-specific keymaps in each spec file                    |
+| `lua/autocmd.lua`                           | `plugin/30_autocmds.lua`                                                                             |
+| `lua/lsp-config.lua`                        | `after/lsp/init.lua` (per-buffer attach) + per-LSP server configs in `after/lsp/<name>.lua`          |
+| `lua/specs/<name>.lua` (24 files)           | **All 24 ported** as `plugin/50_specs/<name>.lua`                                                    |
+| `lsp/<server>.lua`                          | `after/lsp/<server>.lua` — **copy as-is**, the file format is already `:h vim.lsp.Config` compatible |
+| `plugin/winbar.lua`                         | `plugin/50_specs/winbar.lua` — own "plugin" spec, treated the same as third-party                    |
+| `plugin/tmux.lua`                           | `plugin/50_specs/tmux.lua`                                                                           |
+| `plugin/component.lua`                      | `plugin/50_specs/component.lua`                                                                      |
+| `plugin/logger.lua`                         | `plugin/50_specs/logger.lua`                                                                         |
+| `plugin/claude-edit.lua`                    | `plugin/50_specs/pi-edit.lua` — with `pi -p` backend                                                 |
+| `colors/*.lua`                              | `colors/*.lua` — **copy as-is**                                                                      |
+| `ftplugin/markdown.lua`                     | `ftplugin/markdown.lua` — copy as-is                                                                 |
+| `after/queries/markdown/*`                  | `after/queries/markdown/*` — copy as-is                                                              |
+| `snippets/*`                                | `snippets/*` — copy, `mini.snippets` expects the same JSON format                                    |
+| `spell/*`                                   | `spell/*` — copy as-is                                                                               |
+| `.luarc.json`, `.luacheckrc`, `stylua.toml` | Personal preferences — `indent_width = 2`, `column_width = 125`                                      |
+| `lazy-lock.json`                            | **Delete** — replaced by `nvim-pack-lock.json` (auto-generated by `vim.pack`)                        |
+| `lib/sessions.lua` (custom)                 | Port as `lua/sessions.lua` — use alongside `mini.sessions` (it complements rather than replaces)     |
 
 ### Target file structure
 
@@ -216,6 +216,7 @@ end)
 ```
 
 Why this is better than the `pack/mine/` symlink approach:
+
 - Local file edits are picked up on **next `nvim` launch** — no commit, no `:packupdate`
 - No symlink script, no separate `pack/mine/` directory
 - The toggle is a single comment flip
@@ -234,7 +235,7 @@ mkdir -p common/.config/nvim-edit
 Add to `symlinks.yml` (alphabetical position next to `nvim-minimax`):
 
 ```yaml
-  common/.config/nvim-edit: ~/.config/nvim-edit
+common/.config/nvim-edit: ~/.config/nvim-edit
 ```
 
 Then `dots link`.
@@ -313,31 +314,31 @@ After this step, all the plugin files (10/20/30/50_specs) don't exist yet, so th
 
 Port from `common/.config/nvim/lua/keymaps.lua` to `plugin/20_keymaps.lua`. Mapping of original → new:
 
-| Original keymap | New home                                                  |
-| --------------- | --------------------------------------------------------- |
-| `<Esc>` (clear hlsearch, save, hide notifier) | Append to "General mappings" — replace `require('snacks.notifier').hide()` with `MiniNotify.hide()` |
-| `<S-Esc>` (close floats) | `vim.cmd('silent! close')` via `lua`                       |
-| `<C-o>` / `<C-i>` (center on jump) | Manual `zz` centering — keep                                    |
-| `N` / `n` with `zzzv` | `vim.keymap.set('n', 'N', 'Nzzzv', { desc = '...' })`     |
-| `j` / `k` → `gj` / `gk` (visual-line aware) | Add to General mappings                                  |
-| `<C-e>` (toggle buffer in tab) | Add to General mappings                                  |
-| `J` / `K` (move lines in visual) | Add to `xmap`                                              |
-| `<` / `>` (indent in visual, keep selection) | Add to `xmap`                                              |
-| `,` / `.` / `;` (undo points) | Add to `imap`                                              |
-| `x` → `"_x` | Add to `nmap`                                              |
-| `yp` / `yc` (duplicate line) | Add to `nmap`                                              |
-| `yA` (yank all) / `vA` (select all) | Add to `nmap`                                              |
-| `<leader>dya/h/r/R/n` (copy helpers) | Add to `nmap`/`xmap` — port `lib/copy.lua` logic to a local helper or `lua/copy.lua` file |
-| `H` / `L` (tab nav) | Add to `nmap`                                              |
-| `<S-Arrow>` (resize) | Add to `nmap`/`xmap`                                       |
-| `<C-s>` / `<C-q>` | Add to `nmap`                                              |
-| `<leader>dl` (last doc) | Add to `nmap`                                              |
-| `<leader>z` (open in Zed) | Add to `nmap`                                              |
-| `<leader>w.` (cd to git root) | Add to `nmap` — use `vim.fs.root(0, { '.git' })`         |
-| `<leader>ap/ali/all/am` (lazy UI) | **Drop** — no lazy.nvim. Replace with `<leader>ap = :lua print(vim.pack.update and 'vim.pack is the plugin manager')` or similar one-time hint, or just remove |
-| `<leader>i` (show pos) | Add to `nmap`                                              |
-| `<M-t>` (insert date) | Add to `imap`                                              |
-| `<A-u/o/a/U/O/A>` (German umlauts) | Add to `imap`                                              |
+| Original keymap                               | New home                                                                                                                                                       |
+| --------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `<Esc>` (clear hlsearch, save, hide notifier) | Append to "General mappings" — replace `require('snacks.notifier').hide()` with `MiniNotify.hide()`                                                            |
+| `<S-Esc>` (close floats)                      | `vim.cmd('silent! close')` via `lua`                                                                                                                           |
+| `<C-o>` / `<C-i>` (center on jump)            | Manual `zz` centering — keep                                                                                                                                   |
+| `N` / `n` with `zzzv`                         | `vim.keymap.set('n', 'N', 'Nzzzv', { desc = '...' })`                                                                                                          |
+| `j` / `k` → `gj` / `gk` (visual-line aware)   | Add to General mappings                                                                                                                                        |
+| `<C-e>` (toggle buffer in tab)                | Add to General mappings                                                                                                                                        |
+| `J` / `K` (move lines in visual)              | Add to `xmap`                                                                                                                                                  |
+| `<` / `>` (indent in visual, keep selection)  | Add to `xmap`                                                                                                                                                  |
+| `,` / `.` / `;` (undo points)                 | Add to `imap`                                                                                                                                                  |
+| `x` → `"_x`                                   | Add to `nmap`                                                                                                                                                  |
+| `yp` / `yc` (duplicate line)                  | Add to `nmap`                                                                                                                                                  |
+| `yA` (yank all) / `vA` (select all)           | Add to `nmap`                                                                                                                                                  |
+| `<leader>dya/h/r/R/n` (copy helpers)          | Add to `nmap`/`xmap` — port `lib/copy.lua` logic to a local helper or `lua/copy.lua` file                                                                      |
+| `H` / `L` (tab nav)                           | Add to `nmap`                                                                                                                                                  |
+| `<S-Arrow>` (resize)                          | Add to `nmap`/`xmap`                                                                                                                                           |
+| `<C-s>` / `<C-q>`                             | Add to `nmap`                                                                                                                                                  |
+| `<leader>dl` (last doc)                       | Add to `nmap`                                                                                                                                                  |
+| `<leader>z` (open in Zed)                     | Add to `nmap`                                                                                                                                                  |
+| `<leader>w.` (cd to git root)                 | Add to `nmap` — use `vim.fs.root(0, { '.git' })`                                                                                                               |
+| `<leader>ap/ali/all/am` (lazy UI)             | **Drop** — no lazy.nvim. Replace with `<leader>ap = :lua print(vim.pack.update and 'vim.pack is the plugin manager')` or similar one-time hint, or just remove |
+| `<leader>i` (show pos)                        | Add to `nmap`                                                                                                                                                  |
+| `<M-t>` (insert date)                         | Add to `imap`                                                                                                                                                  |
+| `<A-u/o/a/U/O/A>` (German umlauts)            | Add to `imap`                                                                                                                                                  |
 
 `lib/copy.lua` helpers (`file_name`, `get_current_relative_path`, `full_path_from_home`, `full_path`) need to be ported. **Decision**: drop them in the initial pass, then add back as a `lua/copy.lua` file in the new config if you actually use them. Most users don't.
 
@@ -409,33 +410,33 @@ LSP keymaps port:
 
 **Decision**: port every single `lua/specs/<name>.lua` from the old config. Don't filter. Some will overlap with `mini.*` (e.g. `spider.lua` vs `mini.jump`) — that's fine. Future passes can prune.
 
-| Old spec file         | Plugin                                    | Local dev | New file                             |
-| --------------------- | ----------------------------------------- | --------- | ------------------------------------ |
-| `annotator.lua`       | `nvim-lua/annotator.nvim`                 | —         | `plugin/annotator.lua`               |
-| `black-atom.lua`      | `black-atom-industries/nvim` (×3 plugins) | ✓         | `plugin/50_specs/black-atom.lua`      |
-| `blink.lua`           | `saghen/blink.cmp`                        | —         | `plugin/blink.lua`                   |
-| `codediff.lua`        | `esmuellert/codediff.nvim`                | —         | `plugin/codediff.lua`                |
-| `conform.lua`         | `stevearc/conform.nvim`                   | —         | `plugin/50_specs/conform.lua`         |
-| `gitlinker.lua`       | `lewis6991/gitsigns.nvim` + others        | —         | `plugin/gitlinker.lua`               |
-| `grug.lua`            | `grug-far` (or similar)                   | —         | `plugin/grug.lua`                    |
-| `helpview.lua`        | `Helpview` plugin                         | —         | `plugin/helpview.lua`                |
-| `kulala.lua`          | `mistweaverco/kulala.nvim`                | —         | `plugin/kulala.lua`                  |
-| `lazydev.lua`         | `folke/lazydev.nvim`                      | —         | `plugin/lazydev.lua`                 |
-| `lint.lua`            | `mfussenegger/nvim-lint`                  | —         | `plugin/lint.lua`                    |
-| `mdn.lua`             | `EdenEast/mdn.nvim` (or similar)          | —         | `plugin/mdn.lua`                     |
-| `mini.lua`            | `mini.nvim` (custom `setup`s)             | —         | `plugin/mini.lua` (full setup)        |
-| `navigator.lua`       | `navigator.lua`                            | —         | `plugin/navigator.lua`               |
-| `oklch.lua`           | `oklch` (color helper)                    | —         | `plugin/oklch.lua`                   |
-| `qmk.lua`             | `qmk` plugin                              | ✓         | `plugin/qmk.lua`                     |
-| `radar.lua` (in black-atom) | `black-atom-industries/radar.nvim` | ✓         | `plugin/radar.lua`                   |
-| `schemastore.lua`     | `schemastore` (JSON schemas)              | —         | `plugin/schemestore.lua`             |
-| `snacks.lua`          | `folke/snacks.nvim` (subset)              | —         | `plugin/snacks.lua`                  |
-| `spider.lua`          | `spider` (motion plugin)                  | —         | `plugin/spider.lua`                  |
-| `supermaven.lua`      | `supermaven.nvim`                         | —         | `plugin/supermaven.lua`              |
-| `treesitter.lua`      | `nvim-treesitter` (race-fix + MDX)        | —         | `plugin/treesitter.lua`              |
-| `trouble.lua`         | `folke/trouble.nvim`                      | —         | `plugin/trouble.lua`                 |
-| `typescript.lua`     | `typescript` (wrappers)                   | —         | `plugin/typescript.lua`              |
-| `whatthejump.lua`     | `whatthejump`                             | —         | `plugin/whatthejump.lua`             |
+| Old spec file               | Plugin                                    | Local dev | New file                         |
+| --------------------------- | ----------------------------------------- | --------- | -------------------------------- |
+| `annotator.lua`             | `nvim-lua/annotator.nvim`                 | —         | `plugin/annotator.lua`           |
+| `black-atom.lua`            | `black-atom-industries/nvim` (×3 plugins) | ✓         | `plugin/50_specs/black-atom.lua` |
+| `blink.lua`                 | `saghen/blink.cmp`                        | —         | `plugin/blink.lua`               |
+| `codediff.lua`              | `esmuellert/codediff.nvim`                | —         | `plugin/codediff.lua`            |
+| `conform.lua`               | `stevearc/conform.nvim`                   | —         | `plugin/50_specs/conform.lua`    |
+| `gitlinker.lua`             | `lewis6991/gitsigns.nvim` + others        | —         | `plugin/gitlinker.lua`           |
+| `grug.lua`                  | `grug-far` (or similar)                   | —         | `plugin/grug.lua`                |
+| `helpview.lua`              | `Helpview` plugin                         | —         | `plugin/helpview.lua`            |
+| `kulala.lua`                | `mistweaverco/kulala.nvim`                | —         | `plugin/kulala.lua`              |
+| `lazydev.lua`               | `folke/lazydev.nvim`                      | —         | `plugin/lazydev.lua`             |
+| `lint.lua`                  | `mfussenegger/nvim-lint`                  | —         | `plugin/lint.lua`                |
+| `mdn.lua`                   | `EdenEast/mdn.nvim` (or similar)          | —         | `plugin/mdn.lua`                 |
+| `mini.lua`                  | `mini.nvim` (custom `setup`s)             | —         | `plugin/mini.lua` (full setup)   |
+| `navigator.lua`             | `navigator.lua`                           | —         | `plugin/navigator.lua`           |
+| `oklch.lua`                 | `oklch` (color helper)                    | —         | `plugin/oklch.lua`               |
+| `qmk.lua`                   | `qmk` plugin                              | ✓         | `plugin/qmk.lua`                 |
+| `radar.lua` (in black-atom) | `black-atom-industries/radar.nvim`        | ✓         | `plugin/radar.lua`               |
+| `schemastore.lua`           | `schemastore` (JSON schemas)              | —         | `plugin/schemestore.lua`         |
+| `snacks.lua`                | `folke/snacks.nvim` (subset)              | —         | `plugin/snacks.lua`              |
+| `spider.lua`                | `spider` (motion plugin)                  | —         | `plugin/spider.lua`              |
+| `supermaven.lua`            | `supermaven.nvim`                         | —         | `plugin/supermaven.lua`          |
+| `treesitter.lua`            | `nvim-treesitter` (race-fix + MDX)        | —         | `plugin/treesitter.lua`          |
+| `trouble.lua`               | `folke/trouble.nvim`                      | —         | `plugin/trouble.lua`             |
+| `typescript.lua`            | `typescript` (wrappers)                   | —         | `plugin/typescript.lua`          |
+| `whatthejump.lua`           | `whatthejump`                             | —         | `plugin/whatthejump.lua`         |
 
 Each ported spec becomes a file like `plugin/50_specs/conform.lua`:
 
@@ -497,14 +498,14 @@ nmap('<leader>lF', function() require('conform').format({ async = true, lsp_form
 
 **What changed from the old spec:**
 
-| Old (`lua/specs/conform.lua`)        | New (`plugin/50_specs/conform.lua`)                     |
-| ----------------------------------- | ------------------------------------------------------ |
-| Wrapped in `LazyPluginSpec` table    | Top-level code (no wrapper)                            |
-| `init = function() ... end`         | Top-level code (runs once at startup)                  |
-| `event = { 'BufReadPre', ... }`      | `Config.later(function() ... end)` (deferred)          |
-| `opts = { ... }`                    | `require('conform').setup({ ... })` (inline)            |
-| `keys = { { '<leader>lf', ... } }`   | `nmap_leader('lf', ...)` (top-level)                    |
-| Managed by `lazy.nvim`               | Managed by `vim.pack`                                  |
+| Old (`lua/specs/conform.lua`)      | New (`plugin/50_specs/conform.lua`)           |
+| ---------------------------------- | --------------------------------------------- |
+| Wrapped in `LazyPluginSpec` table  | Top-level code (no wrapper)                   |
+| `init = function() ... end`        | Top-level code (runs once at startup)         |
+| `event = { 'BufReadPre', ... }`    | `Config.later(function() ... end)` (deferred) |
+| `opts = { ... }`                   | `require('conform').setup({ ... })` (inline)  |
+| `keys = { { '<leader>lf', ... } }` | `nmap_leader('lf', ...)` (top-level)          |
+| Managed by `lazy.nvim`             | Managed by `vim.pack`                         |
 
 **Verification (per plugin)**:
 
@@ -528,7 +529,7 @@ Copy from `common/.config/nvim/plugin/`, with sub-directory organization:
 
 **`pi-edit.lua`** (replacement for `claude-edit.lua`): same UX (visual select code, run a command, enter instruction, get refactored code) but the backend calls `pi -p` instead of the Anthropic API or `claude` CLI. Implementation sketch:
 
-```lua
+````lua
 -- plugin/50_specs/pi-edit.lua
 local function has_pi()
   return vim.fn.executable("pi") == 1
@@ -571,9 +572,10 @@ vim.api.nvim_create_user_command("PiEdit", function(args)
 end, { range = true, desc = "Pi Edit: refactor selection" })
 
 vim.keymap.set("x", "<leader>pe", ":<C-u>'<,'>PiEdit<CR>", { desc = "[P]i [E]dit" })
-```
+````
 
 Notes:
+
 - `--no-tools` keeps `pi` focused on a single text response (no file editing from the model's side).
 - Adjust the prompt template to taste; this is a starting point.
 
@@ -625,24 +627,25 @@ Snippet format: `nvim-minimax` uses `mini.snippets` with `gen_loader.from_file` 
 
 Don't copy all of `lua/lib/`. Keep only what keymaps/autocmds actually need:
 
-| Old file              | Decision   | Reason                                                |
-| --------------------- | ---------- | ----------------------------------------------------- |
-| `lib/init.lua`        | **DROP**   | lazy-loader for `require('lib.x')` — not needed without lazy. |
-| `lib/colors.lua`      | **DROP**   | Only used by the winbar. Inline the color extraction. |
-| `lib/copy.lua`        | **PORT** (or drop per step 4) | Helper for `<leader>dy*` keymaps. |
-| `lib/files.lua`       | **DROP**   | Only used by `ftplugin/markdown.lua` (for `detect_printwidth`). |
-| `lib/git.lua`         | **CHECK**  | Likely drop — `mini.git` covers it. |
-| `lib/lsp.lua`         | **DROP**   | Custom goto helpers; covered by `switchbuf` (see `nvim-0.12-migration.md`). |
-| `lib/lsp-util.lua`    | **DROP**   | Likely utilities for the dropped `lib/lsp.lua`. |
-| `lib/mini_pickers.lua`| **DROP**   | Replaced by `mini.pick`. |
-| `lib/sessions.lua`    | **PORT**   | Custom session management. Might be worth keeping if it has features `mini.sessions` lacks. |
-| `lib/ui.lua`          | **PORT**   | `close_all_floating_windows` used in `<S-Esc>`. Inline. |
-| `lib/config.lua`      | **PORT**   | `get_repo_path` for the black-atom local repos. The new `vim.pack.add` doesn't support local `dir`, so this whole mechanism needs a rethink. |
-| `lib/periodic.lua`    | **CHECK**  | If used, port. |
+| Old file               | Decision                      | Reason                                                                                                                                       |
+| ---------------------- | ----------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| `lib/init.lua`         | **DROP**                      | lazy-loader for `require('lib.x')` — not needed without lazy.                                                                                |
+| `lib/colors.lua`       | **DROP**                      | Only used by the winbar. Inline the color extraction.                                                                                        |
+| `lib/copy.lua`         | **PORT** (or drop per step 4) | Helper for `<leader>dy*` keymaps.                                                                                                            |
+| `lib/files.lua`        | **DROP**                      | Only used by `ftplugin/markdown.lua` (for `detect_printwidth`).                                                                              |
+| `lib/git.lua`          | **CHECK**                     | Likely drop — `mini.git` covers it.                                                                                                          |
+| `lib/lsp.lua`          | **DROP**                      | Custom goto helpers; covered by `switchbuf` (see `nvim-0.12-migration.md`).                                                                  |
+| `lib/lsp-util.lua`     | **DROP**                      | Likely utilities for the dropped `lib/lsp.lua`.                                                                                              |
+| `lib/mini_pickers.lua` | **DROP**                      | Replaced by `mini.pick`.                                                                                                                     |
+| `lib/sessions.lua`     | **PORT**                      | Custom session management. Might be worth keeping if it has features `mini.sessions` lacks.                                                  |
+| `lib/ui.lua`           | **PORT**                      | `close_all_floating_windows` used in `<S-Esc>`. Inline.                                                                                      |
+| `lib/config.lua`       | **PORT**                      | `get_repo_path` for the black-atom local repos. The new `vim.pack.add` doesn't support local `dir`, so this whole mechanism needs a rethink. |
+| `lib/periodic.lua`     | **CHECK**                     | If used, port.                                                                                                                               |
 
 ### Step 12 — Update `nvim/CLAUDE.md` and add `nvim-edit/CLAUDE.md`
 
 The current `CLAUDE.md` references lazy.nvim commands (`:Lazy install`, `:Lazy update`). Either:
+
 - Delete `nvim-edit/CLAUDE.md` entirely, or
 - Replace with a one-line "see `common/.config/nvim-minimax/` for documentation"
 
@@ -655,6 +658,7 @@ edit
 ```
 
 Expected:
+
 - Pack install prompt (accept to install all listed plugins)
 - `checkhealth` shows no red flags for the LSP servers you have installed
 - Treesitter parsers install on first file open
@@ -735,20 +739,20 @@ After at least a week of using `edit`/`vin` as primary:
 
 ## Resolved decisions
 
-| Question                                  | Decision                                                                            |
-| ----------------------------------------- | ----------------------------------------------------------------------------------- |
-| Name for the new config                   | `nvim-edit` / alias `edit`                                                          |
-| Starting layer                            | **Empty config** — no MiniMax skeleton. Just use `vim.pack` + `mini.*` as libraries. |
-| File organization                         | Minimal `init.lua` (bootstrap + Config helpers) + `plugin/10_options.lua` + `plugin/20_keymaps.lua` + `plugin/30_autocmds.lua` + `plugin/50_specs/*.lua` (one file per plugin spec, including `plugin/50_specs/mini.lua` for mini.nvim config) |
-| Snacks sub-features to port               | lazygit UI + terminal only (drop statuscolumn, bigfile)                             |
-| Bigfile detection                         | Hand-rolled 3-line autocmd in `plugin/30_autocmds.lua` (no `mini.*` equivalent)      |
-| `claude-edit.lua`                         | Port as `pi-edit.lua` with `pi -p` backend                                          |
-| `lib/sessions.lua`                        | Port as `lua/sessions.lua`, use alongside `mini.sessions`                            |
-| Stylua indent                             | 2 spaces                                                                            |
-| Local-dev pattern                         | Edit-line toggle: `vim.pack.add(URL)` ↔ `vim.opt.rtp:prepend(local_path)` (per [neovim#35173](https://github.com/neovim/neovim/discussions/35173)) |
-| Plugin filter in first pass                | **None** — port all 24 specs; prune in a future pass                                |
-| Timeline                                  | Single PR                                                                           |
-| Colorscheme default                       | `miniwinter` (no extra plugin needed)                                               |
+| Question                    | Decision                                                                                                                                                                                                                                       |
+| --------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Name for the new config     | `nvim-edit` / alias `edit`                                                                                                                                                                                                                     |
+| Starting layer              | **Empty config** — no MiniMax skeleton. Just use `vim.pack` + `mini.*` as libraries.                                                                                                                                                           |
+| File organization           | Minimal `init.lua` (bootstrap + Config helpers) + `plugin/10_options.lua` + `plugin/20_keymaps.lua` + `plugin/30_autocmds.lua` + `plugin/50_specs/*.lua` (one file per plugin spec, including `plugin/50_specs/mini.lua` for mini.nvim config) |
+| Snacks sub-features to port | lazygit UI + terminal only (drop statuscolumn, bigfile)                                                                                                                                                                                        |
+| Bigfile detection           | Hand-rolled 3-line autocmd in `plugin/30_autocmds.lua` (no `mini.*` equivalent)                                                                                                                                                                |
+| `claude-edit.lua`           | Port as `pi-edit.lua` with `pi -p` backend                                                                                                                                                                                                     |
+| `lib/sessions.lua`          | Port as `lua/sessions.lua`, use alongside `mini.sessions`                                                                                                                                                                                      |
+| Stylua indent               | 2 spaces                                                                                                                                                                                                                                       |
+| Local-dev pattern           | Edit-line toggle: `vim.pack.add(URL)` ↔ `vim.opt.rtp:prepend(local_path)` (per [neovim#35173](https://github.com/neovim/neovim/discussions/35173))                                                                                             |
+| Plugin filter in first pass | **None** — port all 24 specs; prune in a future pass                                                                                                                                                                                           |
+| Timeline                    | Single PR                                                                                                                                                                                                                                      |
+| Colorscheme default         | `miniwinter` (no extra plugin needed)                                                                                                                                                                                                          |
 
 ## Open items (non-blocking)
 
