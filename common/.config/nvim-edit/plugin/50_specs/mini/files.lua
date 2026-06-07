@@ -10,10 +10,10 @@ MF.setup({
 	mappings = {
 		show_help = "g?",
 		close = "q",
-		go_in = "<CR>",
+		go_in = "<C-l>",
 		go_in_plus = "<CR>",
-		go_out = "-",
-		go_out_plus = "_",
+		go_out = "<C-h>",
+		go_out_plus = "<C-h>",
 		mark_goto = "'",
 		mark_set = "m",
 		reset = "<BS>",
