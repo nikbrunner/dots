@@ -14,6 +14,7 @@
 return {
     "eero-lehtinen/oklch-color-picker.nvim",
     version = "*",
+    event = "VeryLazy",
     keys = {
         {
             "<leader>ac",
