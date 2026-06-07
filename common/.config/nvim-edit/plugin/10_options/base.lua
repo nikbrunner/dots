@@ -3,8 +3,6 @@ vim.g.maplocalleader = "."
 
 vim.opt.mouse = "a"
 
-vim.cmd.colorscheme("miniwinter")
-
 -- Load project-specific .nvim.lua files (run `:trust` to allow execution)
 vim.o.exrc = true
 
