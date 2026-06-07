@@ -1,4 +1,4 @@
-local MiniCompletion = require("mini.completion")
+local MC = require("mini.completion")
 
 -- Capture the canonical LSP kind names BEFORE the 4-char remap below
 -- mutates the table. `item.kind` from the LSP response is the numeric
@@ -19,7 +19,7 @@ local process_items = function(items, base)
 			item.kind_hlgroup = "LspKind" .. kind_name
 		end
 	end
-	return MiniCompletion.default_process_items(items, base, process_items_opts)
+	return MC.default_process_items(items, base, process_items_opts)
 end
 
 for _, item in ipairs(vim.fn.complete_info({ "items" }).items) do
@@ -36,7 +36,7 @@ for i, name in ipairs(item_kinds) do
 	item_kinds[i] = name:sub(1, 4):upper()
 end
 
-MiniCompletion.setup({
+MC.setup({
 	delay = { completion = 100, info = 0, signature = 50 },
 	window = {
 		info = { height = 10, width = 80, border = "solid" },

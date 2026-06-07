@@ -1,9 +1,9 @@
-local MiniFiles = require("mini.files")
+local MF = require("mini.files")
 
 local invoking_win_pos = { 0, 0 }
 local preview_enabled = false
 
-MiniFiles.setup({
+MF.setup({
 	content = {
 		prefix = function() end,
 	},
@@ -72,13 +72,13 @@ vim.api.nvim_create_autocmd("User", {
 -- Split keymaps
 local map_split = function(buf_id, lhs, direction)
 	local rhs = function()
-		local cur_target = MiniFiles.get_explorer_state().target_window
+		local cur_target = MF.get_explorer_state().target_window
 		local new_target = vim.api.nvim_win_call(cur_target, function()
 			vim.cmd(direction .. " split")
 			return vim.api.nvim_get_current_win()
 		end)
-		MiniFiles.set_target_window(new_target)
-		MiniFiles.go_in({ close_on_file = true })
+		MF.set_target_window(new_target)
+		MF.go_in({ close_on_file = true })
 	end
 	local desc = "Split " .. direction
 	vim.keymap.set("n", lhs, rhs, { buffer = buf_id, desc = desc })
@@ -105,7 +105,7 @@ vim.api.nvim_create_autocmd("User", {
 
 		local lines = vim.api.nvim_buf_get_lines(buf_id, 0, -1, false)
 		for i, _ in ipairs(lines) do
-			local entry = MiniFiles.get_fs_entry(buf_id, i)
+			local entry = MF.get_fs_entry(buf_id, i)
 			if entry then
 				local stat = vim.uv.fs_lstat(entry.path)
 				if stat and stat.type == "link" then
@@ -131,7 +131,7 @@ vim.api.nvim_create_autocmd("User", {
 
 -- Path operations
 local yank_path = function()
-	local path = (MiniFiles.get_fs_entry() or {}).path
+	local path = (MF.get_fs_entry() or {}).path
 	if path == nil then
 		return vim.notify("Cursor is not on valid entry")
 	end
@@ -140,7 +140,7 @@ local yank_path = function()
 end
 
 local ui_open = function()
-	local entry = MiniFiles.get_fs_entry()
+	local entry = MF.get_fs_entry()
 	if entry then
 		vim.ui.open(entry.path)
 	end
@@ -148,7 +148,7 @@ end
 
 -- Yank path variants
 local yank_filename = function()
-	local entry = MiniFiles.get_fs_entry()
+	local entry = MF.get_fs_entry()
 	if entry then
 		local name = vim.fn.fnamemodify(entry.path, ":t")
 		vim.fn.setreg("+", name)
@@ -157,7 +157,7 @@ local yank_filename = function()
 end
 
 local yank_relative_path = function()
-	local entry = MiniFiles.get_fs_entry()
+	local entry = MF.get_fs_entry()
 	if entry then
 		local relative_path = vim.fn.fnamemodify(entry.path, ":~:.")
 		vim.fn.setreg("+", relative_path)
@@ -166,7 +166,7 @@ local yank_relative_path = function()
 end
 
 local yank_path_from_home = function()
-	local entry = MiniFiles.get_fs_entry()
+	local entry = MF.get_fs_entry()
 	if entry then
 		local path_from_home = vim.fn.fnamemodify(entry.path, ":~")
 		vim.fn.setreg("+", path_from_home)
@@ -175,7 +175,7 @@ local yank_path_from_home = function()
 end
 
 local yank_absolute_path = function()
-	local entry = MiniFiles.get_fs_entry()
+	local entry = MF.get_fs_entry()
 	if entry then
 		vim.fn.setreg("+", entry.path)
 		vim.notify("Copied absolute path: " .. entry.path, vim.log.levels.INFO)
@@ -190,46 +190,46 @@ vim.api.nvim_create_autocmd("User", {
 		local map = vim.keymap.set
 
 		local function setBranch(path)
-			MiniFiles.set_branch({ vim.fn.expand(path) })
+			MF.set_branch({ vim.fn.expand(path) })
 		end
 
-            -- stylua: ignore start
-            -- Synchronize (save) changes
-            map("n", "<C-s>", MiniFiles.synchronize, { buffer = bufid, desc = "Synchronize changes" })
+        -- stylua: ignore start
+        -- Synchronize (save) changes
+        map("n", "<C-s>", MF.synchronize, { buffer = bufid, desc = "Synchronize changes" })
 
-            -- Path operations
-            map("n", "gx", ui_open, { buffer = bufid, desc = "OS open" })
+        -- Path operations
+        map("n", "gx", ui_open, { buffer = bufid, desc = "OS open" })
 
-            -- Yank variants
-            map("n", "gyp", yank_path, { buffer = bufid, desc = "Yank path" })
-            map("n", "gyn", yank_filename, { buffer = bufid, desc = "Yank filename" })
-            map("n", "gyr", yank_relative_path, { buffer = bufid, desc = "Yank relative path" })
-            map("n", "gyh", yank_path_from_home, { buffer = bufid, desc = "Yank path from home" })
-            map("n", "gya", yank_absolute_path, { buffer = bufid, desc = "Yank absolute path" })
+        -- Yank variants
+        map("n", "gyp", yank_path, { buffer = bufid, desc = "Yank path" })
+        map("n", "gyn", yank_filename, { buffer = bufid, desc = "Yank filename" })
+        map("n", "gyr", yank_relative_path, { buffer = bufid, desc = "Yank relative path" })
+        map("n", "gyh", yank_path_from_home, { buffer = bufid, desc = "Yank path from home" })
+        map("n", "gya", yank_absolute_path, { buffer = bufid, desc = "Yank absolute path" })
 
-            -- Bookmark navigation (g prefix)
-            map("n", "g.", function() setBranch(vim.fn.getcwd()) end, { buffer = bufid, desc = "Current working directory" })
-            map("n", "gh", function() setBranch("$HOME/") end, { buffer = bufid, desc = "Home", nowait = true })
-            map("n", "gc", function() setBranch("$HOME/.config") end, { buffer = bufid, desc = "Config", nowait = true })
-            map("n", "gr", function() setBranch("$HOME/repos") end, { buffer = bufid, desc = "Repos", nowait = true })
-            map("n", "gl", function() setBranch("$HOME/.local/share/nvim/lazy") end, { buffer = bufid, desc = "Lazy Packages", nowait = true })
+        -- Bookmark navigation (g prefix)
+        map("n", "g.", function() setBranch(vim.fn.getcwd()) end, { buffer = bufid, desc = "Current working directory" })
+        map("n", "gh", function() setBranch("$HOME/") end, { buffer = bufid, desc = "Home", nowait = true })
+        map("n", "gc", function() setBranch("$HOME/.config") end, { buffer = bufid, desc = "Config", nowait = true })
+        map("n", "gr", function() setBranch("$HOME/repos") end, { buffer = bufid, desc = "Repos", nowait = true })
+        map("n", "gl", function() setBranch("$HOME/.local/share/nvim/lazy") end, { buffer = bufid, desc = "Lazy Packages", nowait = true })
 
-            -- Project bookmarks (g + number)
-            map("n", "g0", function() setBranch("$HOME/repos/nikbrunner/dots") end, { buffer = bufid, desc = "nbr - dots" })
-            map("n", "g1", function() setBranch("$HOME/repos/nikbrunner/notes") end, { buffer = bufid, desc = "nbr - notes" })
-            map("n", "g2", function() setBranch("$HOME/repos/nikbrunner/scarth-johnson") end, { buffer = bufid, desc = "DCD - Notes" })
-            map("n", "g4", function() setBranch("$HOME/repos/black-atom-industries/core") end, { buffer = bufid, desc = "Black Atom - core" })
-            map("n", "g6", function() setBranch("$HOME/repos/black-atom-industries/livery") end, { buffer = bufid, desc = "Black Atom - radar.nvim" })
-            map("n", "g5", function() setBranch("$HOME/repos/black-atom-industries/nvim") end, { buffer = bufid, desc = "Black Atom - nvim" })
-            map("n", "g7", function() setBranch("$HOME/repos/nikbrunner/nbr.haus") end, { buffer = bufid, desc = "nikbrunner - nbr.haus" })
-            map("n", "g8", function() setBranch("$HOME/repos/nikbrunner/koyo") end, { buffer = bufid, desc = "nikbrunner - koyo" })
-            -- map("n", "g9", function() setBranch("$HOME/repos/dealercenter-digital/bc-desktop-client") end, { buffer = bufid, desc = "DCD - BC Desktop Client" })
+        -- Project bookmarks (g + number)
+        map("n", "g0", function() setBranch("$HOME/repos/nikbrunner/dots") end, { buffer = bufid, desc = "nbr - dots" })
+        map("n", "g1", function() setBranch("$HOME/repos/nikbrunner/notes") end, { buffer = bufid, desc = "nbr - notes" })
+        map("n", "g2", function() setBranch("$HOME/repos/nikbrunner/scarth-johnson") end, { buffer = bufid, desc = "DCD - Notes" })
+        map("n", "g4", function() setBranch("$HOME/repos/black-atom-industries/core") end, { buffer = bufid, desc = "Black Atom - core" })
+        map("n", "g6", function() setBranch("$HOME/repos/black-atom-industries/livery") end, { buffer = bufid, desc = "Black Atom - radar.nvim" })
+        map("n", "g5", function() setBranch("$HOME/repos/black-atom-industries/nvim") end, { buffer = bufid, desc = "Black Atom - nvim" })
+        map("n", "g7", function() setBranch("$HOME/repos/nikbrunner/nbr.haus") end, { buffer = bufid, desc = "nikbrunner - nbr.haus" })
+        map("n", "g8", function() setBranch("$HOME/repos/nikbrunner/koyo") end, { buffer = bufid, desc = "nikbrunner - koyo" })
+        -- map("n", "g9", function() setBranch("$HOME/repos/dealercenter-digital/bc-desktop-client") end, { buffer = bufid, desc = "DCD - BC Desktop Client" })
 
-            -- Toggle preview
-            map("n", "<C-p>", function()
-                preview_enabled = not preview_enabled
-                MiniFiles.refresh({ windows = { preview = preview_enabled } })
-            end, { buffer = bufid, desc = "Toggle preview" })
+        -- Toggle preview
+        map("n", "<C-p>", function()
+            preview_enabled = not preview_enabled
+            MF.refresh({ windows = { preview = preview_enabled } })
+        end, { buffer = bufid, desc = "Toggle preview" })
 
 		-- stylua: ignore end
 	end,
@@ -237,10 +237,10 @@ vim.api.nvim_create_autocmd("User", {
 
 vim.keymap.set("n", "<leader>we", function()
 	invoking_win_pos = vim.api.nvim_win_get_position(0)
-	MiniFiles.open(vim.api.nvim_buf_get_name(0))
+	MF.open(vim.api.nvim_buf_get_name(0))
 end, { desc = "[E]xplorer" })
 
 vim.keymap.set("n", "<leader>wE", function()
 	invoking_win_pos = vim.api.nvim_win_get_position(0)
-	MiniFiles.open(vim.fn.getcwd())
+	MF.open(vim.fn.getcwd())
 end, { desc = "[E]xplorer" })
