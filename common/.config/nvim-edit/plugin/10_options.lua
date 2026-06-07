@@ -51,7 +51,7 @@ vim.opt.scrolloffpad = 99
 
 vim.o.complete = ".,w,b,kspell" -- Use less sources
 vim.o.completeopt = "menuone,noselect,fuzzy,nosort"
-vim.o.completetimeout = 100     -- Limit sources delay
+vim.o.completetimeout = 100 -- Limit sources delay
 
 vim.opt.number = true
 vim.opt.relativenumber = true
@@ -92,19 +92,8 @@ vim.opt.splitright = true
 
 vim.o.showtabline = 0
 
--- Disabled because its somehow interfering with mini.completion info window
--- pcall(function()
---     require("vim._core.ui2").enable({
---         msg = {
---             targets = {
---                 default = "msg",
---                 progress = "msg",
---                 pager = "pager",
---             },
---             msg = {
---                 timeout = 3000,
---                 height = 0.5,
---             },
---         },
---     })
--- end)
+vim.filetype.add({
+	extension = {
+		http = "http",
+	},
+})
