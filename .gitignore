@@ -24,7 +24,6 @@ skills-lock.json
 /common/.pi/agent/mcp-cache.json
 /common/.pi/agent/mcp-oauth/linear/tokens.json
 /common/.local/share/nvim/radar/radar-debug.log
-/plans
 /common/.pi/agent/npm
 /common/.pi/exa-usage.json
 /common/.pi/agent/run-history.jsonl
