@@ -469,7 +469,7 @@ function M.files()
         pattern = "MiniFilesWindowOpen",
         callback = function(args)
             local config = vim.api.nvim_win_get_config(args.data.win_id)
-            config.border = "solid"
+            config.border = "shadow"
             vim.api.nvim_win_set_config(args.data.win_id, config)
         end,
     })
@@ -614,7 +614,7 @@ function M.files()
             vim.api.nvim_create_autocmd("BufWriteCmd", {
                 buffer = bufid,
                 callback = function()
-                    MF.synchronize()
+                    MiniFiles.synchronize()
                 end,
             })
 
@@ -794,7 +794,7 @@ function M.completion()
     end
 
     MiniCompletion.setup({
-        delay = { completion = 100, info = 0, signature = 50 },
+        delay = { completion = 300, info = 50, signature = 50 },
         window = {
             info = { height = 10, width = 80, border = "solid" },
             signature = { height = 10, width = 80, border = "solid" },
@@ -856,8 +856,9 @@ function M.pick()
             config = function()
                 local win_height = vim.api.nvim_win_get_height(0)
                 local win_width = vim.api.nvim_win_get_width(0)
-                local height = math.floor(0.25 * win_height)
+                local height = math.floor(0.35 * win_height)
                 local width = win_width >= 165 and math.floor(0.5 * vim.o.columns) or (win_width - 2)
+
                 return {
                     relative = "win",
                     height = height,
