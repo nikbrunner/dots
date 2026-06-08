@@ -10,15 +10,10 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +16 common/.config/nvim/lua/specs/mini.lua
-badd +15 common/.config/nvim/lua/specs/oklch.lua
-badd +18 plans/archive/canola-migration.md
+badd +868 common/.config/nvim/lua/specs/mini.lua
 argglobal
 %argdel
-$argadd ~/repos/nikbrunner/dots/.gitignore
-tabnew +setlocal\ bufhidden=wipe
-tabnew +setlocal\ bufhidden=wipe
-tabrewind
+$argadd ~/repos/nikbrunner/dots/common/.config/nvim/lua/options.lua
 edit common/.config/nvim/lua/specs/mini.lua
 argglobal
 setlocal keymap=
@@ -62,7 +57,7 @@ setlocal foldcolumn=0
 setlocal foldenable
 setlocal foldexpr=v:lua.vim.treesitter.foldexpr()
 setlocal foldignore=#
-setlocal foldlevel=99
+setlocal foldlevel=0
 setlocal foldmarker={{{,}}}
 setlocal foldmethod=expr
 setlocal foldminlines=1
@@ -124,7 +119,7 @@ setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#common%*%#WinBarSeparator#/%*%#WinBarPath#.config%*%#WinBarSeparator#/%*%#WinBarPath#nvim%*%#WinBarSeparator#/%*%#WinBarPath#lua%*%#WinBarSeparator#/%*%#WinBarPath#specs%*%#WinBarSeparator#/%*%#WinBarFilename#mini.lua%*%=%#WinBarGitLabel#\ [GIT:%#WinBarGitAdd#\ +99%#WinBarGitChange#\ ~11%#WinBarGitDelete#\ -7%#WinBarGitLabel#]%*\ 
+setlocal winbar=%#WinBarPath#common%*%#WinBarSeparator#/%*%#WinBarPath#.config%*%#WinBarSeparator#/%*%#WinBarPath#nvim%*%#WinBarSeparator#/%*%#WinBarPath#lua%*%#WinBarSeparator#/%*%#WinBarPath#specs%*%#WinBarSeparator#/%*%#WinBarFilename#mini.lua%*%=%#WinBarGitLabel#\ [GIT:%#WinBarGitAdd#\ +1%#WinBarGitChange#\ ~7%#WinBarGitLabel#]%*\ 
 setlocal winblend=0
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -133,283 +128,229 @@ setlocal winhighlight=
 setlocal nowinpinned
 setlocal nowrap
 setlocal wrapmargin=0
-743
+8
 sil! normal! zo
-753
+54
 sil! normal! zo
-759
+68
 sil! normal! zo
-782
+72
 sil! normal! zo
-799
+72
+sil! normal! zc
+150
 sil! normal! zo
-811
+151
 sil! normal! zo
-812
+154
 sil! normal! zo
-835
+155
 sil! normal! zo
-840
+158
 sil! normal! zo
-841
+159
 sil! normal! zo
-842
+164
 sil! normal! zo
-916
+167
 sil! normal! zo
-923
+169
 sil! normal! zo
-927
+170
 sil! normal! zo
-let s:l = 16 - ((15 * winheight(0) + 22) / 44)
+179
+sil! normal! zo
+182
+sil! normal! zo
+187
+sil! normal! zo
+192
+sil! normal! zo
+198
+sil! normal! zo
+199
+sil! normal! zo
+200
+sil! normal! zo
+205
+sil! normal! zo
+210
+sil! normal! zo
+216
+sil! normal! zo
+224
+sil! normal! zo
+228
+sil! normal! zo
+232
+sil! normal! zo
+236
+sil! normal! zo
+237
+sil! normal! zo
+238
+sil! normal! zo
+240
+sil! normal! zo
+246
+sil! normal! zo
+248
+sil! normal! zo
+252
+sil! normal! zo
+259
+sil! normal! zo
+262
+sil! normal! zo
+266
+sil! normal! zo
+276
+sil! normal! zo
+278
+sil! normal! zo
+280
+sil! normal! zo
+284
+sil! normal! zo
+291
+sil! normal! zo
+292
+sil! normal! zo
+294
+sil! normal! zo
+300
+sil! normal! zo
+305
+sil! normal! zo
+313
+sil! normal! zo
+320
+sil! normal! zo
+321
+sil! normal! zo
+328
+sil! normal! zo
+329
+sil! normal! zo
+336
+sil! normal! zo
+338
+sil! normal! zo
+359
+sil! normal! zo
+417
+sil! normal! zo
+422
+sil! normal! zo
+423
+sil! normal! zo
+426
+sil! normal! zo
+441
+sil! normal! zo
+458
+sil! normal! zo
+468
+sil! normal! zo
+470
+sil! normal! zo
+478
+sil! normal! zo
+480
+sil! normal! zo
+489
+sil! normal! zo
+490
+sil! normal! zo
+492
+sil! normal! zo
+503
+sil! normal! zo
+505
+sil! normal! zo
+516
+sil! normal! zo
+518
+sil! normal! zo
+523
+sil! normal! zo
+525
+sil! normal! zo
+527
+sil! normal! zo
+530
+sil! normal! zo
+541
+sil! normal! zo
+543
+sil! normal! zo
+549
+sil! normal! zo
+551
+sil! normal! zo
+558
+sil! normal! zo
+560
+sil! normal! zo
+566
+sil! normal! zo
+568
+sil! normal! zo
+575
+sil! normal! zo
+577
+sil! normal! zo
+584
+sil! normal! zo
+586
+sil! normal! zo
+593
+sil! normal! zo
+595
+sil! normal! zo
+602
+sil! normal! zo
+604
+sil! normal! zo
+608
+sil! normal! zo
+614
+sil! normal! zo
+616
+sil! normal! zo
+651
+sil! normal! zo
+661
+sil! normal! zo
+666
+sil! normal! zo
+757
+sil! normal! zo
+796
+sil! normal! zo
+798
+sil! normal! zo
+849
+sil! normal! zo
+854
+sil! normal! zo
+855
+sil! normal! zo
+856
+sil! normal! zo
+862
+sil! normal! zo
+931
+sil! normal! zo
+932
+sil! normal! zo
+let s:l = 868 - ((19 * winheight(0) + 15) / 30)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 16
-normal! 0
-tabnext
-edit plans/archive/canola-migration.md
-argglobal
-xnoremap <buffer> <silent> [[ :exe "normal! gv"|call search('\%(^#\{1,5\}\s\+\S\|^\S.*\n^[=-]\+$\)', "bsW")
-xnoremap <buffer> <silent> ]] :exe "normal! gv"|call search('\%(^#\{1,5\}\s\+\S\|^\S.*\n^[=-]\+$\)', "sW")
-setlocal keymap=
-setlocal noarabic
-setlocal autoindent
-setlocal nobinary
-setlocal nobreakindent
-setlocal breakindentopt=
-setlocal bufhidden=
-setlocal buflisted
-setlocal buftype=
-setlocal busy=0
-setlocal nocindent
-setlocal cinkeys=0{,0},0),0],:,0#,!^F,o,O,e
-setlocal cinoptions=
-setlocal cinscopedecls=public,protected,private
-setlocal cinwords=if,else,while,do,for,switch
-setlocal colorcolumn=
-setlocal comments=fb:*,fb:-,fb:+,n:>
-setlocal commentstring=<!--\ %s\ -->
-setlocal complete=.,w,b,kspell
-setlocal completefunc=v:lua.MiniCompletion.completefunc_lsp
-setlocal completeslash=
-setlocal concealcursor=
-setlocal conceallevel=0
-setlocal nocopyindent
-setlocal nocursorbind
-setlocal nocursorcolumn
-setlocal cursorline
-setlocal cursorlineopt=both
-setlocal nodiff
-setlocal eventignorewin=
-setlocal expandtab
-if &filetype != 'markdown'
-setlocal filetype=markdown
-endif
-setlocal fixendofline
-setlocal foldcolumn=0
-setlocal foldenable
-setlocal foldexpr=v:lua.vim.treesitter.foldexpr()
-setlocal foldignore=#
-setlocal foldlevel=99
-setlocal foldmarker={{{,}}}
-setlocal foldmethod=expr
-setlocal foldminlines=1
-setlocal foldnestmax=20
-setlocal foldtext=
-setlocal formatexpr=
-setlocal formatlistpat=^\\s*\\d\\+\\.\\s\\+\\|^\\s*[-*+]\\s\\+\\|^\\[^\\ze[^\\]]\\+\\]:\\&^.\\{4\\}
-setlocal formatoptions=jtcqln
-setlocal iminsert=0
-setlocal imsearch=-1
-setlocal includeexpr=
-setlocal indentexpr=
-setlocal indentkeys=0{,0},0),0],:,0#,!^F,o,O,e
-setlocal noinfercase
-setlocal iskeyword=@,48-57,_,192-255
-setlocal lhistory=10
-setlocal linebreak
-setlocal nolisp
-setlocal lispoptions=
-setlocal nolist
-setlocal matchpairs=(:),{:},[:],<:>
-setlocal modeline
-setlocal modifiable
-setlocal nrformats=bin,hex
-setlocal number
-setlocal numberwidth=4
-setlocal omnifunc=v:lua.MiniCompletion.completefunc_lsp
-setlocal nopreserveindent
-setlocal nopreviewwindow
-setlocal quoteescape=\\
-setlocal noreadonly
-setlocal relativenumber
-setlocal norightleft
-setlocal rightleftcmd=search
-setlocal scrollback=-1
-setlocal noscrollbind
-setlocal shiftwidth=2
-setlocal signcolumn=yes
-setlocal smartindent
-setlocal nosmoothscroll
-setlocal softtabstop=-1
-setlocal nospell
-setlocal spellcapcheck=[.?!]\\_[\\])'\"\\t\ ]\\+
-setlocal spellfile=
-setlocal spelllang=en_us,de_de
-setlocal spelloptions=noplainbuffer
-setlocal statuscolumn=%!v:lua.require'snacks.statuscolumn'.get()
-setlocal suffixesadd=
-setlocal noswapfile
-setlocal synmaxcol=3000
-if &syntax != ''
-setlocal syntax=
-endif
-setlocal tabstop=4
-setlocal tagfunc=v:lua.vim.lsp.tagfunc
-setlocal textwidth=65
-setlocal undofile
-setlocal varsofttabstop=
-setlocal vartabstop=
-setlocal winbar=%#WinBarPath#plans%*%#WinBarSeparator#/%*%#WinBarPath#archive%*%#WinBarSeparator#/%*%#WinBarFilename#canola-migration.md%*%=
-setlocal winblend=0
-setlocal nowinfixbuf
-setlocal nowinfixheight
-setlocal nowinfixwidth
-setlocal winhighlight=
-setlocal nowinpinned
-setlocal nowrap
-setlocal wrapmargin=0
-let s:l = 18 - ((17 * winheight(0) + 22) / 44)
-if s:l < 1 | let s:l = 1 | endif
-keepjumps exe s:l
-normal! zt
-keepjumps 18
-normal! 0
-tabnext
-edit common/.config/nvim/lua/specs/oklch.lua
-argglobal
-balt common/.config/nvim/lua/specs/mini.lua
-setlocal keymap=
-setlocal noarabic
-setlocal autoindent
-setlocal nobinary
-setlocal nobreakindent
-setlocal breakindentopt=
-setlocal bufhidden=
-setlocal buflisted
-setlocal buftype=
-setlocal busy=0
-setlocal nocindent
-setlocal cinkeys=0{,0},0),0],:,0#,!^F,o,O,e
-setlocal cinoptions=
-setlocal cinscopedecls=public,protected,private
-setlocal cinwords=if,else,while,do,for,switch
-setlocal colorcolumn=
-setlocal comments=:---,:--
-setlocal commentstring=--\ %s
-setlocal complete=.,w,b,kspell
-setlocal completefunc=v:lua.MiniCompletion.completefunc_lsp
-setlocal completeslash=
-setlocal concealcursor=
-setlocal conceallevel=0
-setlocal nocopyindent
-setlocal nocursorbind
-setlocal nocursorcolumn
-setlocal cursorline
-setlocal cursorlineopt=both
-setlocal define=\\<function\\|\\<local\\%(\\s\\+function\\)\\=
-setlocal nodiff
-setlocal eventignorewin=
-setlocal expandtab
-if &filetype != 'lua'
-setlocal filetype=lua
-endif
-setlocal fixendofline
-setlocal foldcolumn=0
-setlocal foldenable
-setlocal foldexpr=v:lua.vim.treesitter.foldexpr()
-setlocal foldignore=#
-setlocal foldlevel=99
-setlocal foldmarker={{{,}}}
-setlocal foldmethod=expr
-setlocal foldminlines=1
-setlocal foldnestmax=20
-setlocal foldtext=
-setlocal formatexpr=v:lua.vim.lsp.formatexpr()
-setlocal formatlistpat=^\\s*\\d\\+[\\]:.)}\\t\ ]\\s*
-setlocal formatoptions=jcroql
-setlocal iminsert=0
-setlocal imsearch=-1
-setlocal include=\\<\\%(\\%(do\\|load\\)file\\|require\\)\\s*(
-setlocal includeexpr=v:lua.require'vim._ftplugin.lua'.includeexpr(v:fname)
-setlocal indentexpr=GetLuaIndent()
-setlocal indentkeys=0{,0},0),0],:,0#,!^F,o,O,e,0=end,0=until
-setlocal noinfercase
-setlocal iskeyword=@,48-57,_,192-255
-setlocal lhistory=10
-setlocal nolinebreak
-setlocal nolisp
-setlocal lispoptions=
-setlocal nolist
-setlocal matchpairs=(:),{:},[:]
-setlocal modeline
-setlocal modifiable
-setlocal nrformats=bin,hex
-setlocal number
-setlocal numberwidth=4
-setlocal omnifunc=v:lua.MiniCompletion.completefunc_lsp
-setlocal path=,
-setlocal nopreserveindent
-setlocal nopreviewwindow
-setlocal quoteescape=\\
-setlocal noreadonly
-setlocal relativenumber
-setlocal norightleft
-setlocal rightleftcmd=search
-setlocal scrollback=-1
-setlocal noscrollbind
-setlocal shiftwidth=4
-setlocal signcolumn=yes
-setlocal smartindent
-setlocal nosmoothscroll
-setlocal softtabstop=-1
-setlocal nospell
-setlocal spellcapcheck=[.?!]\\_[\\])'\"\\t\ ]\\+
-setlocal spellfile=
-setlocal spelllang=en_us,de_de
-setlocal spelloptions=noplainbuffer
-setlocal statuscolumn=%!v:lua.require'snacks.statuscolumn'.get()
-setlocal suffixesadd=.lua
-setlocal noswapfile
-setlocal synmaxcol=3000
-if &syntax != ''
-setlocal syntax=
-endif
-setlocal tabstop=4
-setlocal tagfunc=v:lua.vim.lsp.tagfunc
-setlocal textwidth=0
-setlocal undofile
-setlocal varsofttabstop=
-setlocal vartabstop=
-setlocal winbar=%#WinBarPath#common%*%#WinBarSeparator#/%*%#WinBarPath#.config%*%#WinBarSeparator#/%*%#WinBarPath#nvim%*%#WinBarSeparator#/%*%#WinBarPath#lua%*%#WinBarSeparator#/%*%#WinBarPath#specs%*%#WinBarSeparator#/%*%#WinBarFilename#oklch.lua%*%=%#WinBarGitLabel#\ [GIT:%#WinBarGitAdd#\ +1%#WinBarGitLabel#]%*\ 
-setlocal winblend=0
-setlocal nowinfixbuf
-setlocal nowinfixheight
-setlocal nowinfixwidth
-setlocal winhighlight=
-setlocal nowinpinned
-setlocal nowrap
-setlocal wrapmargin=0
-14
-sil! normal! zo
-let s:l = 15 - ((11 * winheight(0) + 22) / 44)
-if s:l < 1 | let s:l = 1 | endif
-keepjumps exe s:l
-normal! zt
-keepjumps 15
-normal! 023|
-tabnext 2
+keepjumps 868
+normal! 036|
+tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
 endif

@@ -63,7 +63,7 @@
             "label": "2"
           }
         ],
-        "lastAccessed": 1780837967
+        "lastAccessed": 1780925022
       }
     },
     "~/repos/nikbrunner/imf-notes": {
@@ -74,15 +74,19 @@
             "label": "1"
           },
           {
-            "filename": "logs/2026/2026.06/2026.06.02 - Tue.md",
+            "filename": "projects/web-doc.md",
             "label": "2"
           },
           {
-            "filename": "projects/web-doc.md",
+            "filename": "presentations/web-ui-intro-gen-dev-meeting.md",
             "label": "3"
+          },
+          {
+            "filename": "mise.toml",
+            "label": "4"
           }
         ],
-        "lastAccessed": 1780671123
+        "lastAccessed": 1780939085
       }
     },
     "~/repos/nikbrunner/minifugit.nvim": {
@@ -108,7 +112,7 @@
             "label": "2"
           }
         ],
-        "lastAccessed": 1780667929
+        "lastAccessed": 1780905005
       }
     }
   }

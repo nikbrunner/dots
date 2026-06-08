@@ -1,0 +1,1 @@
+- [IMF general dev audience](imf-general-dev-audience.md) — internal dev talks are non-frontend; keep them jargon-free and high-level
