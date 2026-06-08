@@ -32,6 +32,7 @@ yt-dlp = "prefix:2026"
 opencode = "prefix:1"
 bob = "prefix:4"
 tree-sitter = "0.26.8"
+"github:maaslalani/slides" = "latest"
 
 # ── Formatters & linters ──
 stylua = "prefix:2"
