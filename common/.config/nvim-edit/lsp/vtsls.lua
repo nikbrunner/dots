@@ -51,6 +51,7 @@ return {
         local git_root = vim.fs.find(".git", { upward = true, path = fname })[1]
         if git_root then
             cb(vim.fn.fnamemodify(git_root, ":h"))
+            return
         end
 
         local ts_configs = { "tsconfig.json", "tsconfig.jsonc" }
