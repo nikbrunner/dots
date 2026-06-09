@@ -10,7 +10,7 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +53 lua/black-atom/highlights/ui.lua
+badd +56 lua/black-atom/highlights/ui.lua
 badd +133 lua/black-atom/highlights/syntax.lua
 argglobal
 %argdel
@@ -32,8 +32,8 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe 'vert 1resize ' . ((&columns * 102 + 102) / 205)
-exe 'vert 2resize ' . ((&columns * 102 + 102) / 205)
+exe 'vert 1resize ' . ((&columns * 113 + 113) / 227)
+exe 'vert 2resize ' . ((&columns * 113 + 113) / 227)
 argglobal
 setlocal keymap=
 setlocal noarabic
@@ -152,11 +152,11 @@ sil! normal! zo
 sil! normal! zo
 10
 sil! normal! zo
-let s:l = 54 - ((33 * winheight(0) + 22) / 44)
+let s:l = 56 - ((34 * winheight(0) + 21) / 43)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 54
+keepjumps 56
 normal! 0
 wincmd w
 argglobal
@@ -276,16 +276,15 @@ setlocal winhighlight=
 setlocal nowinpinned
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 135 - ((32 * winheight(0) + 22) / 44)
+let s:l = 139 - ((35 * winheight(0) + 21) / 43)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 135
+keepjumps 139
 normal! 0
 wincmd w
-2wincmd w
-exe 'vert 1resize ' . ((&columns * 102 + 102) / 205)
-exe 'vert 2resize ' . ((&columns * 102 + 102) / 205)
+exe 'vert 1resize ' . ((&columns * 113 + 113) / 227)
+exe 'vert 2resize ' . ((&columns * 113 + 113) / 227)
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
@@ -301,6 +300,7 @@ if filereadable(s:sx)
 endif
 let &g:so = s:so_save | let &g:siso = s:siso_save
 set hlsearch
+nohlsearch
 doautoall SessionLoadPost
 unlet SessionLoad
 " vim: set ft=vim :

@@ -1,7 +1,7 @@
 ---
 name: imf-general-dev-audience
 description: "ImFusion's general/company-wide developer audience is non-frontend; keep frontend talks jargon-free and high-level"
-metadata: 
+metadata:
   node_type: memory
   type: project
   originSessionId: 127292c4-dacf-488a-91a0-5005eaec5afd

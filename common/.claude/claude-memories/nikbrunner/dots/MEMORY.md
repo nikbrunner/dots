@@ -73,6 +73,10 @@ common/.claude/
 - [Skills enforcement refactor](project_skills_enforcement_refactor.md) — Done 2026-03-26, merged to main
 - [Visual companion](project_visual_companion.md) — Fully implemented, v2 layout done
 
+### Reference
+
+- [macOS symbolic hotkeys quirk](macos_symbolic_hotkeys_quirk.md) — `defaults write com.apple.symbolichotkeys` doesn't apply; use System Settings UI
+
 ### Feedback
 
 - [Skill discovery discipline](feedback_skill_discovery.md) — Always check skills before using MCP tools directly

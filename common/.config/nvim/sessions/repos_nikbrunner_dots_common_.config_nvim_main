@@ -10,10 +10,10 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +1 ~/.config/nvim/lua/lsp-config.lua
+badd +16 lua/specs/treesitter.lua
 argglobal
 %argdel
-edit ~/.config/nvim/lua/lsp-config.lua
+edit lua/specs/treesitter.lua
 argglobal
 setlocal keymap=
 setlocal noarabic
@@ -33,7 +33,7 @@ setlocal cinwords=if,else,while,do,for,switch
 setlocal colorcolumn=
 setlocal comments=:---,:--
 setlocal commentstring=--\ %s
-setlocal complete=.,w,b,u
+setlocal complete=.,w,b,kspell
 setlocal completefunc=v:lua.MiniCompletion.completefunc_lsp
 setlocal completeslash=
 setlocal concealcursor=
@@ -83,7 +83,7 @@ setlocal modifiable
 setlocal nrformats=bin,hex
 setlocal number
 setlocal numberwidth=4
-setlocal omnifunc=v:lua.vim.lsp.omnifunc
+setlocal omnifunc=v:lua.MiniCompletion.completefunc_lsp
 setlocal path=,
 setlocal nopreserveindent
 setlocal nopreviewwindow
@@ -117,7 +117,7 @@ setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#...%*%#WinBarSeparator#/%*%#WinBarPath#.config%*%#WinBarSeparator#/%*%#WinBarPath#nvim%*%#WinBarSeparator#/%*%#WinBarPath#lua%*%#WinBarSeparator#/%*%#WinBarFilename#lsp-config.lua%*%=%#WinBarGitLabel#\ [GIT:%#WinBarGitAdd#\ +1%#WinBarGitLabel#]%*\ 
+setlocal winbar=%#WinBarPath#lua%*%#WinBarSeparator#/%*%#WinBarPath#specs%*%#WinBarSeparator#/%*%#WinBarFilename#treesitter.lua%*%=%#WinBarLspLabel#\ [LSP:\ %#DiagnosticSignWarn#:1%##%#WinBarLspLabel#]%*\ 
 setlocal winblend=0
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -126,11 +126,11 @@ setlocal winhighlight=
 setlocal nowinpinned
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 99 - ((10 * winheight(0) + 10) / 21)
+let s:l = 16 - ((15 * winheight(0) + 21) / 43)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 99
+keepjumps 16
 normal! 0
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
