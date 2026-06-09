@@ -13,15 +13,15 @@ Before doing anything, check if the project already has pre-commit hooks configu
 
 **Look for:**
 
-| Signal                               | Tool                |
-| ------------------------------------ | ------------------- |
-| `.husky/` directory                  | Husky               |
-| `lefthook.yml` or `.lefthook.yml`    | Lefthook            |
-| `.pre-commit-config.yaml`            | pre-commit (Python) |
-| `.git/hooks/pre-commit` (non-sample) | Manual git hooks    |
-| `"husky"` in package.json deps       | Husky               |
-| `"prepare": "husky"` in scripts      | Husky               |
-| `"lint-staged"` or `"nano-staged"` in package.json | lint-staged / nano-staged (migrate to nano-staged)  |
+| Signal                                             | Tool                                               |
+| -------------------------------------------------- | -------------------------------------------------- |
+| `.husky/` directory                                | Husky                                              |
+| `lefthook.yml` or `.lefthook.yml`                  | Lefthook                                           |
+| `.pre-commit-config.yaml`                          | pre-commit (Python)                                |
+| `.git/hooks/pre-commit` (non-sample)               | Manual git hooks                                   |
+| `"husky"` in package.json deps                     | Husky                                              |
+| `"prepare": "husky"` in scripts                    | Husky                                              |
+| `"lint-staged"` or `"nano-staged"` in package.json | lint-staged / nano-staged (migrate to nano-staged) |
 
 **If an existing setup is found:**
 
@@ -85,16 +85,16 @@ npm install --save-dev nano-staged prettier
 
 **Discuss linting**: Ask the user what linters the project uses (or should use). The nano-staged config should include both formatting AND linting. If the project doesn't have a linter yet, offer to set one up — including the config file (e.g. `eslint.config.mjs`, `.stylelintrc.json`, `luacheckrc`). Common setups:
 
-| Language(s)        | Linter + config to set up                       |
-| ------------------ | ------------------------------------------------ |
-| JS/TS              | `eslint` (or `oxlint` for zero-config speed), `eslint.config.mjs` |
-| CSS/SCSS           | `stylelint`, `.stylelintrc.json`                                   |
-| Lua                | `lua-language-server --check` or `luacheck`, `.luacheckrc`         |
-| Python             | `ruff check`, `pyproject.toml` `[tool.ruff]` section               |
-| Rust               | `cargo clippy` (no config needed)                                  |
-| Go                 | `golangci-lint run`, `.golangci.yml`                               |
-| Shell              | `shellcheck` (no config needed)                                     |
-| Markdown           | `markdownlint`, `.markdownlint.json`                               |
+| Language(s) | Linter + config to set up                                         |
+| ----------- | ----------------------------------------------------------------- |
+| JS/TS       | `eslint` (or `oxlint` for zero-config speed), `eslint.config.mjs` |
+| CSS/SCSS    | `stylelint`, `.stylelintrc.json`                                  |
+| Lua         | `lua-language-server --check` or `luacheck`, `.luacheckrc`        |
+| Python      | `ruff check`, `pyproject.toml` `[tool.ruff]` section              |
+| Rust        | `cargo clippy` (no config needed)                                 |
+| Go          | `golangci-lint run`, `.golangci.yml`                              |
+| Shell       | `shellcheck` (no config needed)                                   |
+| Markdown    | `markdownlint`, `.markdownlint.json`                              |
 
 **Do not silently skip linting.** If the project has no linter, flag it and ask if they want one set up. A pre-commit hook that only runs Prettier leaves linting gaps.
 
@@ -129,7 +129,6 @@ npm run test
 ```
 
 > **Why `--check` instead of `--write`**: Using `--write` in a pre-commit hook silently reformats files, but the changes land in the working tree — not in the staged area. This causes phantom diffs after every commit. `--check` fails the commit instead, so the developer runs `prettier --write .` (or an npm script) explicitly, stages the result, and commits clean.
-
 
 **Create `.prettierrc` (only if no Prettier config exists):**
 

@@ -10,30 +10,30 @@ Incremental adoption of 0.12 and nightly features, one change at a time, from lo
 
 ## Decisions Summary
 
-| # | Feature | Action |
-|---|---|---|
-| 1 | vim.pack | **Deferred** — separate future project |
-| 2 | GH PR detection via `vim.net.request()` | **Adopt** — replace `gh` CLI calls in `detect_gh_pr_context()` |
-| 3 | `vim.diagnostic.status()` in winbar | **Adopt** — simplify `build_right()` |
-| 4 | `inlineCompletion` | **Skip** |
-| 5 | `'pumborder'` / `'pummaxwidth'` | **Adopt** — set in options.lua |
-| 6 | `'shortmess' += u` | **Adopt** — silence undo/redo messages |
-| 7 | `ui2` | **Adopt** — enable in init.lua |
-| 8 | `'scrolloffpad'` | **Adopt** — set in options.lua |
-| 9 | `'switchbuf'` for LSP jumps | **Adopt** — simplify `goto_split/tab_definition()` helpers |
-| 10 | Treesitter built-in selection (`v_an`/`v_in`/`v_al`/`v_il`) | **Keep current plugin** — built-in is additional, zero config |
-| 11 | `:log`, `ZR` → `:restart`, `'messagesopt'` `progress:c` | **Adopt** |
+| #   | Feature                                                     | Action                                                         |
+| --- | ----------------------------------------------------------- | -------------------------------------------------------------- |
+| 1   | vim.pack                                                    | **Deferred** — separate future project                         |
+| 2   | GH PR detection via `vim.net.request()`                     | **Adopt** — replace `gh` CLI calls in `detect_gh_pr_context()` |
+| 3   | `vim.diagnostic.status()` in winbar                         | **Adopt** — simplify `build_right()`                           |
+| 4   | `inlineCompletion`                                          | **Skip**                                                       |
+| 5   | `'pumborder'` / `'pummaxwidth'`                             | **Adopt** — set in options.lua                                 |
+| 6   | `'shortmess' += u`                                          | **Adopt** — silence undo/redo messages                         |
+| 7   | `ui2`                                                       | **Adopt** — enable in init.lua                                 |
+| 8   | `'scrolloffpad'`                                            | **Adopt** — set in options.lua                                 |
+| 9   | `'switchbuf'` for LSP jumps                                 | **Adopt** — simplify `goto_split/tab_definition()` helpers     |
+| 10  | Treesitter built-in selection (`v_an`/`v_in`/`v_al`/`v_il`) | **Keep current plugin** — built-in is additional, zero config  |
+| 11  | `:log`, `ZR` → `:restart`, `'messagesopt'` `progress:c`     | **Adopt**                                                      |
 
 ## Files to Modify
 
-| File | Changes |
-|---|---|
-| `common/.config/nvim/lua/options.lua` | `pumborder`, `pummaxwidth`, `shortmess`, `scrolloffpad`, `messagesopt`, `switchbuf` |
-| `common/.config/nvim/init.lua` | Enable `ui2` |
-| `common/.config/nvim/lua/specs/snacks.lua` | Rewrite `detect_gh_pr_context()` to use `vim.net.request()` |
-| `common/.config/nvim/plugin/winbar.lua` | Replace manual diagnostic counts with `vim.diagnostic.status()` |
-| `common/.config/nvim/lua/lsp-config.lua` | Update jump keymaps to use `switchbuf` instead of custom helpers |
-| `common/.config/nvim/lua/lib/lsp.lua` | Remove `goto_split_definition()` and `goto_tab_definition()` |
+| File                                       | Changes                                                                             |
+| ------------------------------------------ | ----------------------------------------------------------------------------------- |
+| `common/.config/nvim/lua/options.lua`      | `pumborder`, `pummaxwidth`, `shortmess`, `scrolloffpad`, `messagesopt`, `switchbuf` |
+| `common/.config/nvim/init.lua`             | Enable `ui2`                                                                        |
+| `common/.config/nvim/lua/specs/snacks.lua` | Rewrite `detect_gh_pr_context()` to use `vim.net.request()`                         |
+| `common/.config/nvim/plugin/winbar.lua`    | Replace manual diagnostic counts with `vim.diagnostic.status()`                     |
+| `common/.config/nvim/lua/lsp-config.lua`   | Update jump keymaps to use `switchbuf` instead of custom helpers                    |
+| `common/.config/nvim/lua/lib/lsp.lua`      | Remove `goto_split_definition()` and `goto_tab_definition()`                        |
 
 ## Reuse
 
