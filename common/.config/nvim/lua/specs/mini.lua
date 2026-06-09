@@ -426,10 +426,10 @@ function M.files()
         mappings = {
             show_help = "g?",
             close = "q",
-            go_in = "<C-l>",
+            go_in = "<CR>",
             go_in_plus = "<CR>",
-            go_out = "<C-h>",
-            go_out_plus = "<C-h>",
+            go_out = "-",
+            go_out_plus = "_",
             mark_goto = "'",
             mark_set = "m",
             reset = "<BS>",
@@ -657,18 +657,25 @@ function M.files()
         end,
     })
 
-    -- stylua: ignore start
     vim.keymap.set("n", "<leader>we", function()
         invoking_win_pos = vim.api.nvim_win_get_position(0)
         MiniFiles.open(vim.api.nvim_buf_get_name(0))
+    end, { desc = "[E]xplorer" })
+
+    vim.keymap.set("n", "-", function()
+        invoking_win_pos = vim.api.nvim_win_get_position(0)
+        MiniFiles.open(vim.api.nvim_buf_get_name(0))
+    end, { desc = "[E]xplorer" })
+
+    vim.keymap.set("n", "_", function()
+        invoking_win_pos = vim.api.nvim_win_get_position(0)
+        MiniFiles.open(vim.fn.getcwd())
     end, { desc = "[E]xplorer" })
 
     vim.keymap.set("n", "<leader>wE", function()
         invoking_win_pos = vim.api.nvim_win_get_position(0)
         MiniFiles.open(vim.fn.getcwd())
     end, { desc = "[E]xplorer" })
-
-    -- stylua: ignore end
 end
 
 function M.clue()
