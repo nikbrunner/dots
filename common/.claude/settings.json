@@ -52,7 +52,7 @@
     "deny": [],
     "ask": []
   },
-  "model": "sonnet[1m]",
+  "model": "claude-fable-5[1m]",
   "hooks": {
     "Notification": [
       {
@@ -210,7 +210,6 @@
   },
   "alwaysThinkingEnabled": true,
   "effortLevel": "xhigh",
-  "advisorModel": "opus",
   "autoUpdatesChannel": "latest",
   "voice": {
     "enabled": true,
