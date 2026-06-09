@@ -4,6 +4,10 @@
       "rev": "91d86506ac2a039504d5205d32a1d4bc7aa57072",
       "src": "git@github.com:numToStr/Navigator.nvim.git"
     },
+    "arborist.nvim": {
+      "rev": "fdeef56c2840c6772b9f68c5774ed87e9340ec7d",
+      "src": "git@github.com:arborist-ts/arborist.nvim"
+    },
     "black-atom": {
       "rev": "cfcc305e35a4b26bd5e6cad917c4c27cae516538",
       "src": "git@github.com:black-atom-industries/nvim.git"
@@ -20,9 +24,29 @@
       "rev": "d5e6f5b843f1d813d9c4bfb242b751dc5ab6f8ae",
       "src": "https://github.com/nvim-mini/mini.nvim"
     },
+    "nvim-spider": {
+      "rev": "4fdd56a4f45bca13a607632e15a6f9f8d1b1f99e",
+      "src": "git@github.com:chrisgrieser/nvim-spider"
+    },
+    "nvim-ts-autotag": {
+      "rev": "88c1453db4ba7dd24131086fe51fdf74e587d275",
+      "src": "git@github.com:windwp/nvim-ts-autotag"
+    },
     "supermaven-nvim": {
       "rev": "07d20fce48a5629686aefb0a7cd4b25e33947d50",
       "src": "git@github.com:supermaven-inc/supermaven-nvim"
+    },
+    "treewalker.nvim": {
+      "rev": "e1779657d41df2fdf8fd825712051f90e7c9c836",
+      "src": "git@github.com:aaronik/treewalker.nvim"
+    },
+    "ts-comments.nvim": {
+      "rev": "123a9fb12e7229342f807ec9e6de478b1102b041",
+      "src": "git@github.com:folke/ts-comments.nvim"
+    },
+    "vim-sleuth": {
+      "rev": "be69bff86754b1aa5adcbb527d7fcd1635a84080",
+      "src": "git@github.com:tpope/vim-sleuth"
     }
   }
 }
