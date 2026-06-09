@@ -31,6 +31,8 @@ return {
             char_brightness = 1, -- disable auto-adjustment
             explorer = {
                 view_mode = "tree",
+                position = "bottom",
+                height = 10,
             },
             keymaps = {
                 view = {
@@ -45,7 +47,7 @@ return {
                     diff_put = "dp",
                     open_in_prev_tab = "gf",
                     close_on_open_in_prev_tab = false,
-                    toggle_stage = "-",
+                    toggle_stage = "s",
                     hunk_textobject = "ih",
                     show_help = "g?",
                     align_move = "gm",
@@ -57,6 +59,7 @@ return {
                     refresh = "R",
                     open_in_prev_tab = "gf",
                     toggle_view_mode = "i",
+                    toggle_stage = "s",
                     stage_all = "S",
                     unstage_all = "U",
                     restore = "X",
