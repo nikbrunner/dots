@@ -4,16 +4,17 @@ let v:this_session=expand("<sfile>:p")
 doautoall SessionLoadPre
 silent only
 silent tabonly
-cd ~/repos/nikbrunner/dots/common/.config/nvim-edit
+cd ~/repos/nikbrunner/dots
 if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +260 ~/repos/nikbrunner/dots/common/.config/nvim-edit/plugin/50_specs/mini/files.lua
+badd +0 common/.config/nvim-edit/plugin/10_options/base.lua
 argglobal
 %argdel
-edit ~/repos/nikbrunner/dots/common/.config/nvim-edit/plugin/50_specs/mini/files.lua
+$argadd .
+edit common/.config/nvim-edit/plugin/10_options/base.lua
 argglobal
 setlocal keymap=
 setlocal noarabic
@@ -117,7 +118,7 @@ setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#plugin%*%#WinBarSeparator#/%*%#WinBarPath#50_specs%*%#WinBarSeparator#/%*%#WinBarPath#mini%*%#WinBarSeparator#/%*%#WinBarFilename#files.lua%*%=%#WinBarGitLabel#\ [GIT:%#WinBarGitAdd#\ +10%#WinBarGitChange#\ ~4%#WinBarGitLabel#]%*%#WinBarLspLabel#\ [LSP:\ %#DiagnosticSignWarn#W:1%##%#WinBarLspLabel#]%*\ 
+setlocal winbar=%#WinBarPath#...%*%#WinBarSeparator#/%*%#WinBarPath#nvim-edit%*%#WinBarSeparator#/%*%#WinBarPath#plugin%*%#WinBarSeparator#/%*%#WinBarPath#10_options%*%#WinBarSeparator#/%*%#WinBarFilename#base.lua%*%=
 setlocal winblend=0
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -126,14 +127,12 @@ setlocal winhighlight=
 setlocal nowinpinned
 setlocal nowrap
 setlocal wrapmargin=0
-6
-sil! normal! zo
-let s:l = 260 - ((18 * winheight(0) + 18) / 36)
+let s:l = 204 - ((18 * winheight(0) + 18) / 37)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 260
-normal! 022|
+keepjumps 204
+normal! 05|
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf

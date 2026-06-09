@@ -10,10 +10,10 @@ MF.setup({
 	mappings = {
 		show_help = "g?",
 		close = "q",
-		go_in = "<C-l>",
+		go_in = "<CR>",
 		go_in_plus = "<CR>",
-		go_out = "<C-h>",
-		go_out_plus = "<C-h>",
+		go_out = "-",
+		go_out_plus = "_",
 		mark_goto = "'",
 		mark_set = "m",
 		reset = "<BS>",
@@ -23,7 +23,7 @@ MF.setup({
 		trim_right = ">",
 	},
 	options = {
-		use_as_default_explorer = true,
+		use_as_default_explorer = false,
 		-- Workaround for mini.nvim bug on Neovim >= 0.11: `H.lsp_fs_hook_client`
 		-- in mini/files.lua (~L2866) calls `is_scheme(uri, scheme)`, which does
 		-- `scheme == nil` and `scheme .. ':'`. In Neovim 0.12+ `FileOperationFilter.scheme`
@@ -244,6 +244,16 @@ vim.api.nvim_create_autocmd("User", {
 vim.keymap.set("n", "<leader>we", function()
 	invoking_win_pos = vim.api.nvim_win_get_position(0)
 	MF.open(vim.api.nvim_buf_get_name(0))
+end, { desc = "[E]xplorer" })
+
+vim.keymap.set("n", "-", function()
+	invoking_win_pos = vim.api.nvim_win_get_position(0)
+	MF.open(vim.api.nvim_buf_get_name(0))
+end, { desc = "[E]xplorer" })
+
+vim.keymap.set("n", "_", function()
+	invoking_win_pos = vim.api.nvim_win_get_position(0)
+	MF.open(vim.fn.getcwd())
 end, { desc = "[E]xplorer" })
 
 vim.keymap.set("n", "<leader>wE", function()

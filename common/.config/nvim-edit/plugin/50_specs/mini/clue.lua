@@ -32,8 +32,30 @@ MC.setup({
 		MC.gen_clues.g(),
 		MC.gen_clues.marks(),
 		MC.gen_clues.registers(),
-		MC.gen_clues.windows(),
+		MC.gen_clues.square_brackets(),
+		-- This creates a submode for window resize mappings. Try the following:
+		-- - Press `<C-w>s` to make a window split.
+		-- - Press `<C-w>+` to increase height. Clue window still shows clues as if
+		--   `<C-w>` is pressed again. Keep pressing just `+` to increase height.
+		--   Try pressing `-` to decrease height.
+		-- - Stop submode either by `<Esc>` or by any key that is not in submode.
+		MC.gen_clues.windows({ submode_resize = true }),
 		MC.gen_clues.z(),
+
+        -- stylua: ignore start
+        { mode = { 'n', 'x' }, keys = '<Leader>' }, -- Leader triggers
+        { mode =   'n',        keys = '\\' }, -- mini.basics
+        { mode = { 'n', 'x' }, keys = '[' }, -- mini.bracketed
+        { mode = { 'n', 'x' }, keys = ']' },
+        { mode =   'i',        keys = '<C-x>' }, -- Built-in completion
+        { mode = { 'n', 'x' }, keys = 'g' }, -- `g` key
+        { mode = { 'n', 'x' }, keys = "'" }, -- Marks
+        { mode = { 'n', 'x' }, keys = '`' },
+        { mode = { 'n', 'x' }, keys = '"' }, -- Registers
+        { mode = { 'i', 'c' }, keys = '<C-r>' },
+        { mode =   'n',        keys = '<C-w>' }, -- Window commands
+        { mode = { 'n', 'x' }, keys = 's' }, -- `s` key (mini.surround, etc.)
+        { mode = { 'n', 'x' }, keys = 'z' }, -- `z` key
 
 		-- Z mappings (ZZ, ZQ, ZR)
 		{ mode = "n", keys = "ZZ", desc = "Write & quit" },
@@ -70,6 +92,7 @@ MC.setup({
 		{ mode = "n", keys = "<leader>h", desc = "[H]ttp" },
 		{ mode = "n", keys = "<leader>n", desc = "[N]otes" },
 		{ mode = "n", keys = "<leader>x", desc = "Trouble/Quickfix" },
+		-- stylua: ignore end
 	},
 	window = {
 		config = {

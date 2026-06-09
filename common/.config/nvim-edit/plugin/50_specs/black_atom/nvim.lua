@@ -1,5 +1,12 @@
 Edit.now(function()
-	vim.pack.add({ { src = "git@github.com:black-atom-industries/nvim.git", name = "black-atom" } })
+	-- vim.pack.add({
+	-- 	{
+	-- 		src = "git@github.com:black-atom-industries/nvim.git",
+	-- 		name = "black-atom",
+	-- 	},
+	-- })
+	-- Development: comment line above, uncomment below — no other setup needed:
+	vim.opt.rtp:prepend(vim.fn.expand("~/repos/black-atom-industries/nvim"))
 
 	require("black-atom").setup({
 		styles = {
@@ -15,5 +22,5 @@ Edit.now(function()
 		},
 	})
 
-	vim.cmd.colorscheme("black-atom-default-light")
+	vim.cmd.colorscheme("black-atom-terra-summer-night")
 end)
