@@ -14,6 +14,10 @@ _G.Edit = {
 }
 
 
+-- Load project-specific `.nvim.lua` files (run `:trust` to allow execution).
+-- Must live here: the exrc search runs right after init.lua, before plugin/ files.
+vim.o.exrc = true
+
 local gr = vim.api.nvim_create_augroup('nvim-edit', {})
 Edit.new_autocmd = function(event, pattern, callback, desc)
   vim.api.nvim_create_autocmd(event, { group = gr, pattern = pattern, callback = callback, desc = desc })
