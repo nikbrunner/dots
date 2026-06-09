@@ -16,7 +16,7 @@ badd +1 src/themes/default/create-feedback-dark.ts
 badd +39 src/themes/default/create-ui-dark.ts
 badd +1 src/themes/default/create-ui-light.ts
 badd +1 src/themes/terra/black-atom-terra-summer-day.ts
-badd +43 src/themes/terra/black-atom-terra-summer-night.ts
+badd +64 src/themes/terra/black-atom-terra-summer-night.ts
 argglobal
 %argdel
 $argadd ./
@@ -40,8 +40,8 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe 'vert 1resize ' . ((&columns * 147 + 147) / 295)
-exe 'vert 2resize ' . ((&columns * 147 + 147) / 295)
+exe 'vert 1resize ' . ((&columns * 64 + 65) / 130)
+exe 'vert 2resize ' . ((&columns * 65 + 65) / 130)
 argglobal
 setlocal keymap=
 setlocal noarabic
@@ -151,7 +151,7 @@ setlocal winhighlight=
 setlocal nowinpinned
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 20 - ((16 * winheight(0) + 28) / 57)
+let s:l = 20 - ((11 * winheight(0) + 18) / 37)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
@@ -263,7 +263,7 @@ setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#...%*%#WinBarSeparator#/%*%#WinBarPath#terra%*%#WinBarSeparator#/%*%#WinBarFilename#black-atom-terra-summer-night.ts%*%=%#WinBarGitLabel#\ [GIT:%#WinBarGitChange#\ ~3%#WinBarGitLabel#]%*\ 
+setlocal winbar=%#WinBarPath#...%*%#WinBarSeparator#/%*%#WinBarFilename#black-atom-terra-summer-night.ts%*%=%#WinBarGitLabel#\ [GIT:%#WinBarGitChange#\ ~11%#WinBarGitLabel#]%*\ 
 setlocal winblend=0
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -272,16 +272,16 @@ setlocal winhighlight=
 setlocal nowinpinned
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 43 - ((36 * winheight(0) + 28) / 57)
+let s:l = 28 - ((27 * winheight(0) + 18) / 37)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 43
+keepjumps 28
 normal! 0
 wincmd w
 2wincmd w
-exe 'vert 1resize ' . ((&columns * 147 + 147) / 295)
-exe 'vert 2resize ' . ((&columns * 147 + 147) / 295)
+exe 'vert 1resize ' . ((&columns * 64 + 65) / 130)
+exe 'vert 2resize ' . ((&columns * 65 + 65) / 130)
 tabnext
 edit src/themes/default/create-feedback-light.ts
 let s:save_splitbelow = &splitbelow
@@ -304,11 +304,11 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe '1resize ' . ((&lines * 29 + 30) / 60)
-exe 'vert 1resize ' . ((&columns * 147 + 147) / 295)
-exe '2resize ' . ((&lines * 28 + 30) / 60)
-exe 'vert 2resize ' . ((&columns * 147 + 147) / 295)
-exe 'vert 3resize ' . ((&columns * 147 + 147) / 295)
+exe '1resize ' . ((&lines * 19 + 20) / 40)
+exe 'vert 1resize ' . ((&columns * 65 + 65) / 130)
+exe '2resize ' . ((&lines * 18 + 20) / 40)
+exe 'vert 2resize ' . ((&columns * 65 + 65) / 130)
+exe 'vert 3resize ' . ((&columns * 64 + 65) / 130)
 argglobal
 balt src/themes/default/create-syntax-light.ts
 setlocal keymap=
@@ -421,7 +421,7 @@ setlocal nowrap
 setlocal wrapmargin=0
 4
 sil! normal! zo
-let s:l = 10 - ((9 * winheight(0) + 14) / 28)
+let s:l = 10 - ((9 * winheight(0) + 9) / 18)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
@@ -542,7 +542,7 @@ setlocal winhighlight=
 setlocal nowinpinned
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 8 - ((7 * winheight(0) + 13) / 27)
+let s:l = 8 - ((4 * winheight(0) + 8) / 17)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
@@ -667,18 +667,18 @@ setlocal wrapmargin=0
 sil! normal! zo
 13
 sil! normal! zo
-let s:l = 18 - ((13 * winheight(0) + 28) / 57)
+let s:l = 18 - ((9 * winheight(0) + 18) / 37)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
 keepjumps 18
 normal! 024|
 wincmd w
-exe '1resize ' . ((&lines * 29 + 30) / 60)
-exe 'vert 1resize ' . ((&columns * 147 + 147) / 295)
-exe '2resize ' . ((&lines * 28 + 30) / 60)
-exe 'vert 2resize ' . ((&columns * 147 + 147) / 295)
-exe 'vert 3resize ' . ((&columns * 147 + 147) / 295)
+exe '1resize ' . ((&lines * 19 + 20) / 40)
+exe 'vert 1resize ' . ((&columns * 65 + 65) / 130)
+exe '2resize ' . ((&lines * 18 + 20) / 40)
+exe 'vert 2resize ' . ((&columns * 65 + 65) / 130)
+exe 'vert 3resize ' . ((&columns * 64 + 65) / 130)
 tabnext
 edit src/themes/default/create-ui-light.ts
 let s:save_splitbelow = &splitbelow
@@ -697,8 +697,8 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe 'vert 1resize ' . ((&columns * 147 + 147) / 295)
-exe 'vert 2resize ' . ((&columns * 147 + 147) / 295)
+exe 'vert 1resize ' . ((&columns * 65 + 65) / 130)
+exe 'vert 2resize ' . ((&columns * 64 + 65) / 130)
 argglobal
 balt src/themes/default/create-ui-dark.ts
 setlocal keymap=
@@ -809,7 +809,7 @@ setlocal winhighlight=
 setlocal nowinpinned
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 36 - ((29 * winheight(0) + 28) / 57)
+let s:l = 36 - ((19 * winheight(0) + 18) / 37)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
@@ -930,15 +930,15 @@ setlocal winhighlight=
 setlocal nowinpinned
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 48 - ((10 * winheight(0) + 28) / 57)
+let s:l = 48 - ((7 * winheight(0) + 18) / 37)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
 keepjumps 48
 normal! 0
 wincmd w
-exe 'vert 1resize ' . ((&columns * 147 + 147) / 295)
-exe 'vert 2resize ' . ((&columns * 147 + 147) / 295)
+exe 'vert 1resize ' . ((&columns * 65 + 65) / 130)
+exe 'vert 2resize ' . ((&columns * 64 + 65) / 130)
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
