@@ -73,7 +73,9 @@ function _G.Edit.pickers.git_changed()
 	for _, f in ipairs(vim.fn.systemlist("git -C " .. vim.fn.shellescape(git_root) .. " ls-files --modified")) do
 		table.insert(items, { text = "M " .. f, path = git_root .. "/" .. f, status = "M" })
 	end
-	for _, f in ipairs(vim.fn.systemlist("git -C " .. vim.fn.shellescape(git_root) .. " ls-files --others --exclude-standard")) do
+	for _, f in
+		ipairs(vim.fn.systemlist("git -C " .. vim.fn.shellescape(git_root) .. " ls-files --others --exclude-standard"))
+	do
 		table.insert(items, { text = "? " .. f, path = git_root .. "/" .. f, status = "?" })
 	end
 	if #items == 0 then
@@ -183,7 +185,7 @@ function _G.Edit.pickers.worktree_switch()
 	})
 end
 
-function _G.Edit.pickers.associated_files()
+function _G.Edit.pickers.related_documents()
 	local MiniPick = require("mini.pick")
 	local current_filename = vim.fn.expand("%:t:r")
 	local base_name = current_filename:match("^([^.]+)") or current_filename
