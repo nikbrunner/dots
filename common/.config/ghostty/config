@@ -18,7 +18,7 @@ adjust-underline-position = 3
 
 # Fonts
 font-size = 14
-font-family = TX-02
+font-family = RecMonoDuotone Nerd Font
 font-style-bold = Bold
 font-thicken = false
 window-inherit-working-directory = true

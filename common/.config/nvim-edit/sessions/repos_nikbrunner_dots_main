@@ -10,11 +10,29 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +0 common/.config/nvim-edit/plugin/10_options/base.lua
+badd +28 ~/repos/nikbrunner/dots/common/.config/nvim-edit/plugin/50_specs/mini/files.lua
 argglobal
 %argdel
-$argadd .
-edit common/.config/nvim-edit/plugin/10_options/base.lua
+$argadd ./
+edit ~/repos/nikbrunner/dots/common/.config/nvim-edit/plugin/50_specs/mini/files.lua
+let s:save_splitbelow = &splitbelow
+let s:save_splitright = &splitright
+set splitbelow splitright
+wincmd _ | wincmd |
+vsplit
+1wincmd h
+wincmd w
+let &splitbelow = s:save_splitbelow
+let &splitright = s:save_splitright
+wincmd t
+let s:save_winminheight = &winminheight
+let s:save_winminwidth = &winminwidth
+set winminheight=0
+set winheight=1
+set winminwidth=0
+set winwidth=1
+exe 'vert 1resize ' . ((&columns * 128 + 128) / 257)
+exe 'vert 2resize ' . ((&columns * 128 + 128) / 257)
 argglobal
 setlocal keymap=
 setlocal noarabic
@@ -47,7 +65,7 @@ setlocal cursorlineopt=screenline,number
 setlocal define=\\<function\\|\\<local\\%(\\s\\+function\\)\\=
 setlocal nodiff
 setlocal eventignorewin=
-setlocal expandtab
+setlocal noexpandtab
 if &filetype != 'lua'
 setlocal filetype=lua
 endif
@@ -69,7 +87,7 @@ setlocal iminsert=0
 setlocal imsearch=-1
 setlocal include=\\<\\%(\\%(do\\|load\\)file\\|require\\)\\s*(
 setlocal includeexpr=v:lua.require'vim._ftplugin.lua'.includeexpr(v:fname)
-setlocal indentexpr=GetLuaIndent()
+setlocal indentexpr=v:lua.require'arborist.indent'.indentexpr()
 setlocal indentkeys=0{,0},0),0],:,0#,!^F,o,O,e,0=end,0=until
 setlocal infercase
 setlocal iskeyword=@,48-57,_,192-255,-
@@ -95,11 +113,11 @@ setlocal norightleft
 setlocal rightleftcmd=search
 setlocal scrollback=-1
 setlocal noscrollbind
-setlocal shiftwidth=4
+setlocal shiftwidth=0
 setlocal signcolumn=yes
 setlocal smartindent
 setlocal nosmoothscroll
-setlocal softtabstop=4
+setlocal softtabstop=-1
 setlocal nospell
 setlocal spellcapcheck=[.?!]\\_[\\])'\"\\t\ ]\\+
 setlocal spellfile=
@@ -112,14 +130,14 @@ setlocal synmaxcol=3000
 if &syntax != ''
 setlocal syntax=
 endif
-setlocal tabstop=4
+setlocal tabstop=2
 setlocal tagfunc=v:lua.vim.lsp.tagfunc
 setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#...%*%#WinBarSeparator#/%*%#WinBarPath#nvim-edit%*%#WinBarSeparator#/%*%#WinBarPath#plugin%*%#WinBarSeparator#/%*%#WinBarPath#10_options%*%#WinBarSeparator#/%*%#WinBarFilename#base.lua%*%=
-setlocal winblend=0
+setlocal winbar=%#WinBarPath#plugin%*%#WinBarSeparator#/%*%#WinBarPath#50_specs%*%#WinBarSeparator#/%*%#WinBarPath#mini%*%#WinBarSeparator#/%*%#WinBarFilename#files.lua%*%=%#WinBarGitLabel#\ [GIT:%#WinBarGitChange#\ ~1%#WinBarGitLabel#]%*\ 
+setlocal winblend=10
 setlocal nowinfixbuf
 setlocal nowinfixheight
 setlocal nowinfixwidth
@@ -127,12 +145,144 @@ setlocal winhighlight=
 setlocal nowinpinned
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 204 - ((18 * winheight(0) + 18) / 37)
+6
+sil! normal! zo
+let s:l = 28 - ((27 * winheight(0) + 24) / 49)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 204
-normal! 05|
+keepjumps 28
+normal! 034|
+wincmd w
+argglobal
+enew | setl bt=help
+help MiniFiles.config@en
+balt ~/repos/nikbrunner/dots/common/.config/nvim-edit/plugin/50_specs/mini/files.lua
+let s:cpo_save=&cpo
+set cpo&vim
+nnoremap <buffer> <silent> q <Cmd>close
+let &cpo=s:cpo_save
+unlet s:cpo_save
+setlocal keymap=
+setlocal noarabic
+setlocal autoindent
+setlocal nobinary
+setlocal breakindent
+setlocal breakindentopt=list:-1
+setlocal bufhidden=
+setlocal nobuflisted
+setlocal buftype=help
+setlocal busy=0
+setlocal nocindent
+setlocal cinkeys=0{,0},0),0],:,0#,!^F,o,O,e
+setlocal cinoptions=
+setlocal cinscopedecls=public,protected,private
+setlocal cinwords=if,else,while,do,for,switch
+setlocal colorcolumn=+1
+setlocal comments=
+setlocal commentstring=
+setlocal complete=.,w,b,kspell
+setlocal completefunc=v:lua.MiniCompletion.completefunc_lsp
+setlocal completeslash=
+setlocal concealcursor=nc
+setlocal conceallevel=2
+setlocal nocopyindent
+setlocal nocursorbind
+setlocal nocursorcolumn
+setlocal cursorline
+setlocal cursorlineopt=screenline,number
+setlocal nodiff
+setlocal eventignorewin=
+setlocal noexpandtab
+if &filetype != 'help'
+setlocal filetype=help
+endif
+setlocal fixendofline
+setlocal foldcolumn=0
+setlocal nofoldenable
+setlocal foldexpr=v:lua.vim.treesitter.foldexpr()
+setlocal foldignore=#
+setlocal foldlevel=99
+setlocal foldmarker={{{,}}}
+setlocal foldmethod=manual
+setlocal foldminlines=1
+setlocal foldnestmax=10
+setlocal foldtext=
+setlocal formatexpr=v:lua.require'conform'.formatexpr()
+setlocal formatlistpat=^\\s*[0-9\\-\\+\\*]\\+[\\.\\)]*\\s\\+
+setlocal formatoptions=n1jtrql
+setlocal iminsert=0
+setlocal imsearch=-1
+setlocal includeexpr=
+setlocal indentexpr=
+setlocal indentkeys=0{,0},0),0],:,0#,!^F,o,O,e
+setlocal infercase
+setlocal iskeyword=!-~,^*,^|,^\",192-255
+setlocal keywordprg=:help!
+setlocal lhistory=10
+setlocal linebreak
+setlocal nolisp
+setlocal lispoptions=
+setlocal nolist
+setlocal matchpairs=(:),{:},[:]
+setlocal modeline
+setlocal nomodifiable
+setlocal nrformats=bin,hex
+setlocal nonumber
+setlocal numberwidth=4
+setlocal omnifunc=HelpComplete
+setlocal nopreserveindent
+setlocal nopreviewwindow
+setlocal quoteescape=\\
+setlocal readonly
+setlocal norelativenumber
+setlocal norightleft
+setlocal rightleftcmd=search
+setlocal scrollback=-1
+setlocal noscrollbind
+setlocal shiftwidth=2
+setlocal signcolumn=yes
+setlocal smartindent
+setlocal nosmoothscroll
+setlocal softtabstop=0
+setlocal nospell
+setlocal spellcapcheck=[.?!]\\_[\\])'\"\\t\ ]\\+
+setlocal spellfile=
+setlocal spelllang=en_us,de_de
+setlocal spelloptions=camel,noplainbuffer
+setlocal statuscolumn=
+setlocal suffixesadd=
+setlocal noswapfile
+setlocal synmaxcol=3000
+if &syntax != ''
+setlocal syntax=
+endif
+setlocal tabstop=8
+setlocal tagfunc=
+setlocal textwidth=78
+setlocal undofile
+setlocal varsofttabstop=
+setlocal vartabstop=
+setlocal winblend=10
+setlocal nowinfixbuf
+setlocal nowinfixheight
+setlocal nowinfixwidth
+setlocal winhighlight=
+setlocal nowinpinned
+setlocal nowrap
+setlocal wrapmargin=0
+silent! normal! zE
+let &fdl = &fdl
+let s:l = 652 - ((44 * winheight(0) + 25) / 50)
+if s:l < 1 | let s:l = 1 | endif
+keepjumps exe s:l
+normal! zt
+keepjumps 652
+normal! 0
+wincmd w
+2wincmd w
+exe 'vert 1resize ' . ((&columns * 128 + 128) / 257)
+exe 'vert 2resize ' . ((&columns * 128 + 128) / 257)
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
@@ -140,6 +290,8 @@ endif
 unlet! s:wipebuf
 set winheight=1 winwidth=20
 let &shortmess = s:shortmess_save
+let &winminheight = s:save_winminheight
+let &winminwidth = s:save_winminwidth
 let s:sx = expand("<sfile>:p:r")."x.vim"
 if filereadable(s:sx)
   exe "source " . fnameescape(s:sx)
