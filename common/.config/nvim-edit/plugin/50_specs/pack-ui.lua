@@ -161,6 +161,21 @@ local function run_update(names, title)
 			-- (silent pcall) leaving an empty float — polling the buffer is
 			-- robust against every cleanup ordering.
 			local conf_buf = ev.buf
+
+			-- Apply path: PackChanged fires per applied plugin. vim.pack's own
+			-- buffer cleanup doesn't always land (observed interactively), so
+			-- shortly after the last event we delete the buffer ourselves if
+			-- it is still around — the watchdog below then restores the list.
+			local pack_changed_au = vim.api.nvim_create_autocmd("PackChanged", {
+				callback = function()
+					vim.defer_fn(function()
+						if vim.api.nvim_buf_is_loaded(conf_buf) then
+							pcall(vim.api.nvim_buf_delete, conf_buf, { force = true })
+						end
+					end, 1000)
+				end,
+			})
+
 			local timer = vim.uv.new_timer()
 			timer:start(
 				400,
@@ -171,6 +186,7 @@ local function run_update(names, title)
 					end
 					timer:stop()
 					timer:close()
+					pcall(vim.api.nvim_del_autocmd, pack_changed_au)
 					-- Skip if the user explicitly closed the UI (close() resets mode)
 					if state.mode == "update" then
 						show_list()
