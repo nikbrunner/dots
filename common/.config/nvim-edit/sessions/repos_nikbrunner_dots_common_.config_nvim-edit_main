@@ -10,7 +10,7 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +89 plugin/10_options/base.lua
+badd +99 plugin/10_options/base.lua
 argglobal
 %argdel
 edit plugin/10_options/base.lua
@@ -126,11 +126,11 @@ setlocal winhighlight=
 setlocal nowinpinned
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 89 - ((27 * winheight(0) + 23) / 47)
+let s:l = 99 - ((35 * winheight(0) + 23) / 47)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 89
+keepjumps 99
 normal! 03|
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
