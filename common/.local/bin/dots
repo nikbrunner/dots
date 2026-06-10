@@ -672,6 +672,7 @@ show_usage() {
 	echo "                 --dry-run: preview without making changes"
 	echo "                 --no-backup: overwrite existing files"
 	echo "                 --verbose: show detailed output"
+	echo "                 --prune-stale: remove symlinks.yml entries for files no longer in repo"
 	echo "  cleanup        - Remove Pi and Claude sessions older than 2 weeks"
 	echo "                   --dry-run: preview without deleting"
 	echo "  clean-sessions - Remove orphaned and stale nvim sessions"

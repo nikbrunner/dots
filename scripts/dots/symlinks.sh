@@ -94,7 +94,7 @@ expand_wildcard_entry() {
 
 # Function to create symlinks from symlinks configuration
 # Usage: create_symlinks_from_config <symlinks_file> <current_os> [options...]
-# Options: --dry-run, --no-backup, --quiet, --verbose
+# Options: --dry-run, --no-backup, --quiet, --verbose, --prune-stale
 create_symlinks_from_config() {
     local symlinks_file="$1"
     local current_os="$2"
@@ -105,6 +105,7 @@ create_symlinks_from_config() {
     local no_backup=false
     local quiet=false
     local verbose=false
+    local prune_stale=false
 
     for arg in "$@"; do
         case $arg in
@@ -119,6 +120,9 @@ create_symlinks_from_config() {
             ;;
         --verbose)
             verbose=true
+            ;;
+        --prune-stale)
+            prune_stale=true
             ;;
         esac
     done
@@ -143,6 +147,8 @@ create_symlinks_from_config() {
     local updated_links=0
     local valid_links=0
     local errors=0
+    local stale_entries=0
+    local pruned_entries=0
 
     # First, expand wildcards and collect all entries to process
     local temp_expanded
@@ -190,8 +196,27 @@ create_symlinks_from_config() {
 
         # Verify source exists
         if [[ ! -e "$abs_source" ]]; then
-            echo "✗ Source not found: $abs_source"
-            errors=$((errors + 1))
+            # Stale entry — source file removed from repo but still listed
+            if [[ "$prune_stale" == true ]]; then
+                if [[ "$dry_run" == true ]]; then
+                    echo "⚠ [DRY] Would prune stale entry: $source_path"
+                    pruned_entries=$((pruned_entries + 1))
+                else
+                    # Auto-remove from both common and OS-specific sections
+                    # (del is a no-op for non-existent keys, so this is safe)
+                    if yq eval "del(.common.\"$source_path\") | del(.$current_os.\"$source_path\")" -i "$symlinks_file" >/dev/null 2>&1; then
+                        echo "⚠ Pruned stale entry: $source_path"
+                        pruned_entries=$((pruned_entries + 1))
+                    else
+                        echo "✗ Failed to prune stale entry: $source_path"
+                        errors=$((errors + 1))
+                    fi
+                fi
+            else
+                echo "⚠ Stale entry: $source_path (file no longer in repo)"
+                echo "    Run with --prune-stale to auto-remove from symlinks.yml"
+                stale_entries=$((stale_entries + 1))
+            fi
             continue
         fi
 
@@ -268,6 +293,8 @@ create_symlinks_from_config() {
         echo "Symlink operation complete:"
     fi
     echo "  Total: $total_links | Created: $created_links | Updated: $updated_links | Valid: $valid_links"
+    [[ "$pruned_entries" -gt 0 ]] && echo "  Pruned stale entries: $pruned_entries"
+    [[ "$stale_entries" -gt 0 ]] && echo "  Stale entries: $stale_entries (run with --prune-stale to clean)"
     [[ "$errors" -gt 0 ]] && echo "  Errors: $errors"
 
     return $errors
@@ -461,6 +488,7 @@ DRY_RUN=false
 NO_BACKUP=false
 QUIET=false
 VERBOSE=false
+PRUNE_STALE=false
 for arg in "$@"; do
     case $arg in
     --dry-run)
@@ -475,9 +503,12 @@ for arg in "$@"; do
     --verbose)
         VERBOSE=true
         ;;
+    --prune-stale)
+        PRUNE_STALE=true
+        ;;
     *)
         echo "Unknown option: $arg"
-        echo "Usage: $0 [--dry-run] [--no-backup] [--quiet] [--verbose]"
+        echo "Usage: $0 [--dry-run] [--no-backup] [--quiet] [--verbose] [--prune-stale]"
         exit 1
         ;;
     esac
@@ -521,6 +552,7 @@ options=()
 [[ "$NO_BACKUP" == true ]] && options+=(--no-backup)
 [[ "$QUIET" == true ]] && options+=(--quiet)
 [[ "$VERBOSE" == true ]] && options+=(--verbose)
+[[ "$PRUNE_STALE" == true ]] && options+=(--prune-stale)
 
 if create_symlinks_from_config "$SYMLINKS_FILE" "$CURRENT_OS" "${options[@]}"; then
     echo ""
