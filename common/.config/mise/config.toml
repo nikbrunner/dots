@@ -11,6 +11,7 @@ uv = "prefix:0"
 # ── CLI tools ──
 atuin = "prefix:18"
 bat = "prefix:0"
+bob = "prefix:4"
 delta = "prefix:0"
 docker-cli = "prefix:29"
 eza = "prefix:0"
@@ -21,57 +22,62 @@ git-lfs = "prefix:3"
 gum = "prefix:0"
 jq = "prefix:1"
 lazygit = "prefix:0"
+opencode = "prefix:1"
+pandoc = "3.10"
 ripgrep = "prefix:15"
 tmux = "prefix:3"
+tree-sitter = "0.26.8"
 yazi = "prefix:26"
 yq = "prefix:4"
-zoxide = "prefix:0"
 yt-dlp = "prefix:2026"
-"pipx:gallery-dl" = "prefix:1"
-"pipx:eyeD3" = "prefix:0"
-opencode = "prefix:1"
-bob = "prefix:4"
-tree-sitter = "0.26.8"
+zig = "latest"
+zls = "latest"
+zoxide = "prefix:0"
 "github:maaslalani/slides" = "latest"
+"npm:@anthropic-ai/claude-code" = { version = "prefix:2", npm_args = "--ignore-scripts=false" }
+"npm:@earendil-works/pi-coding-agent" = "latest"
+"npm:@readwise/cli" = "prefix:0"
+"npm:@tanstack/cli" = "prefix:0"
+"npm:typescript" = "prefix:6"
+"pipx:eyeD3" = "prefix:0"
+"pipx:gallery-dl" = "prefix:1"
 
 # ── Formatters & linters ──
-stylua = "prefix:2"
-shellcheck = "prefix:0"
-shfmt = "prefix:3"
+biome = "prefix:2"
 golangci-lint = "prefix:2"
 prettier = "prefix:3"
-biome = "prefix:2"
+shfmt = "prefix:3"
+shellcheck = "prefix:0"
+stylua = "prefix:2"
 
 # ── LSP servers ──
 lua-language-server = "prefix:3"
-taplo = "prefix:0"
-rust-analyzer = "prefix:2026-05"
 marksman = "prefix:2026-02"
+rust-analyzer = "prefix:2026-05"
+taplo = "prefix:0"
 "go:golang.org/x/tools/gopls" = "prefix:0"
-"npm:@astrojs/language-server" = "prefix:2"
-"npm:bash-language-server" = "prefix:5"
-"npm:vscode-langservers-extracted" = "prefix:4"
-"npm:css-variables-language-server" = "prefix:2"
-"npm:@tailwindcss/language-server" = "prefix:0"
-"npm:yaml-language-server" = "prefix:1"
-"npm:@vtsls/language-server" = "prefix:0"
-"npm:@rslint/tsgo" = "prefix:0"
 "github:Feel-ix-343/markdown-oxide" = "latest"
-
-
-# ── npm packages ──
-"npm:typescript" = "prefix:6"
+"npm:@astrojs/language-server" = "prefix:2"
+"npm:@rslint/tsgo" = "prefix:0"
+"npm:@tailwindcss/language-server" = "prefix:0"
+"npm:@vtsls/language-server" = "prefix:0"
+"npm:bash-language-server" = "prefix:5"
+"npm:css-variables-language-server" = "prefix:2"
 "npm:typescript-language-server" = "prefix:5"
-"npm:@anthropic-ai/claude-code" = { version = "prefix:2", npm_args = "--ignore-scripts=false" }
-"npm:@readwise/cli" = "prefix:0"
-"npm:@tanstack/cli" = "prefix:0"
-"npm:@earendil-works/pi-coding-agent" = "latest"
-zig = "latest"
-zls = "latest"
-pandoc = "3.10"
+"npm:vscode-langservers-extracted" = "prefix:4"
+"npm:yaml-language-server" = "prefix:1"
+
+# ── MCP servers ──
+"npm:chrome-devtools-mcp" = "1.2.0"
+"npm:exa-mcp-server" = "3.2.1"
 
 [env]
 _.file = "~/.env"
+# Pinned via mise so it stays in sync across machines. The Claude Code
+# CLI is installed as an npm dependency above; the `ANTHROPIC_MODEL`
+# env var is authoritative and overrides any `model` field in
+# `~/.claude/settings.json` (per https://code.claude.com/docs/en/env-vars).
+ANTHROPIC_MODEL = "claude-sonnet-4-6"
 
 [settings]
 lockfile = true
