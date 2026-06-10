@@ -3,7 +3,46 @@ local ME = require("mini.extra")
 
 require("mini.visits").setup()
 
+ME.setup()
+
 MP.setup({
+	mappings = {
+		caret_left = "<Left>",
+		caret_right = "<Right>",
+
+		choose = "<CR>",
+		choose_in_split = "<C-s>",
+		choose_in_tabpage = "<C-t>",
+		choose_in_vsplit = "<C-v>",
+		choose_marked = "<M-CR>",
+
+		delete_char = "<BS>",
+		delete_char_right = "<Del>",
+		delete_left = "<C-u>",
+		delete_word = "<C-w>",
+
+		mark = "<C-x>",
+		mark_all = "<C-a>",
+
+		move_down = "<C-n>",
+		move_start = "<C-g>",
+		move_up = "<C-p>",
+
+		paste = "<C-r>",
+
+		refine = "<C-Space>",
+		refine_marked = "<M-Space>",
+
+		scroll_down = "<C-d>",
+		scroll_left = "<C-h>",
+		scroll_right = "<C-l>",
+		scroll_up = "<C-u>",
+
+		stop = "<Esc>",
+
+		toggle_info = "<S-Tab>",
+		toggle_preview = "<Tab>",
+	},
 	window = {
 		config = function()
 			local win_height = vim.api.nvim_win_get_height(0)
@@ -26,7 +65,7 @@ MP.registry.smart_files = Edit.pickers.smart_files
 MP.registry.git_changed = Edit.pickers.git_changed
 MP.registry.project_switch = Edit.pickers.project_switch
 MP.registry.worktree_switch = Edit.pickers.worktree_switch
-MP.registry.associated_files = Edit.pickers.associated_files
+MP.registry.related_documents = Edit.pickers.related_documents
 MP.registry.buffer_jumps = Edit.pickers.buffer_jumps
 
 -- Keymaps
@@ -67,7 +106,7 @@ map("n", "<leader>wgh", function() ME.pickers.git_commits() end, { desc = "[H]is
 map("n", "<leader>ww",  function() MP.registry.worktree_switch() end, { desc = "[W]orktrees" })
 
 -- Document
-map("n", "<leader>da",  function() MP.registry.associated_files() end, { desc = "[A]ssociated Documents" })
+map("n", "<leader>dr",  function() MP.registry.related_documents() end, { desc = "[R]elated Documents" })
 map("n", "<leader>dc",  function() ME.pickers.git_hunks({ path = vim.fn.expand("%") }) end, { desc = "[C]hanges" })
 map("n", "<leader>dj",  function() MP.registry.buffer_jumps() end, { desc = "[J]umps" })
 map("n", "<leader>dp",  function() ME.pickers.diagnostic({ scope = "current" }) end, { desc = "[P]roblems" })
