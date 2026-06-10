@@ -1,5 +1,7 @@
 Edit.later(function()
-	vim.pack.add({ "git@github.com:black-atom-industries/iter.nvim.git" })
+	-- vim.pack.add({ "git@github.com:black-atom-industries/iter.nvim.git" })
+
+	vim.opt.rtp:prepend(vim.fn.expand("~/repos/black-atom-industries/iter.nvim"))
 
 	require("iter").setup({
 		preview = {
