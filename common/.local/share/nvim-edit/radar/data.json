@@ -1,0 +1,119 @@
+{
+  "version": 1,
+  "projects": {
+    "~/repos/black-atom-industries/core": {
+      "summer-themes": {
+        "locks": [
+          {
+            "filename": "src/themes/terra/black-atom-terra-summer-day.ts",
+            "label": "1"
+          }
+        ],
+        "lastAccessed": 1780564117
+      }
+    },
+    "~/repos/black-atom-industries/radar.nvim": {
+      "main": {
+        "locks": [
+          {
+            "filename": "/test/file1.lua",
+            "label": "1"
+          },
+          {
+            "filename": "/test/file2.lua",
+            "label": "2"
+          },
+          {
+            "filename": "README.md",
+            "label": "3"
+          },
+          {
+            "filename": "lua/radar/persist/persistence.lua",
+            "label": "5"
+          },
+          {
+            "filename": "radar-debug.log",
+            "label": "6"
+          },
+          {
+            "filename": "lua/radar/config.lua",
+            "label": "4"
+          },
+          {
+            "filename": "lua/radar/ui/edit.lua",
+            "label": "8"
+          },
+          {
+            "filename": "lua/radar/debug.lua",
+            "label": "7"
+          }
+        ],
+        "lastAccessed": 1779358546
+      }
+    },
+    "~/repos/nikbrunner/dots": {
+      "main": {
+        "locks": [
+          {
+            "filename": "common/.config/mise/config.toml",
+            "label": "1"
+          },
+          {
+            "filename": "common/.config/nvim/lua/specs/mini.lua",
+            "label": "2"
+          }
+        ],
+        "lastAccessed": 1781032914
+      }
+    },
+    "~/repos/nikbrunner/imf-notes": {
+      "main": {
+        "locks": [
+          {
+            "filename": "logs/2026/2026.06/2026.06.md",
+            "label": "1"
+          },
+          {
+            "filename": "projects/web-doc.md",
+            "label": "2"
+          },
+          {
+            "filename": "presentations/web-ui-intro-gen-dev-meeting.md",
+            "label": "3"
+          },
+          {
+            "filename": "mise.toml",
+            "label": "4"
+          }
+        ],
+        "lastAccessed": 1781017846
+      }
+    },
+    "~/repos/nikbrunner/minifugit.nvim": {
+      "main": {
+        "locks": [
+          {
+            "filename": "ROADMAP.md",
+            "label": "1"
+          }
+        ],
+        "lastAccessed": 1779356522
+      }
+    },
+    "~/repos/nikbrunner/notes": {
+      "main": {
+        "locks": [
+          {
+            "filename": "05 - Meta/Templates/Daily Note.md",
+            "label": "1"
+          },
+          {
+            "filename": "Log/2026/2026.05/2026.05.22 - Fri.md",
+            "label": "2"
+          }
+        ],
+        "lastAccessed": 1781017771
+      }
+    }
+  }
+}
