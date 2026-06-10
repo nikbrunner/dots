@@ -234,66 +234,72 @@ dots_stage_theme() {
 # Orphaned = cd directory or worktree no longer exists.
 # Stale = modified more than 2 days ago.
 # Prints structured output: ORPHAN:<name> or OLD:<name> per deleted file.
+# Nvim config dirs whose sessions/ are managed by chores (NVIM_APPNAME dirs)
+DOTS_NVIM_CONFIGS=("nvim" "nvim-edit")
+
 dots_clean_sessions() {
-    local sessions_dir="$HOME/.config/nvim/sessions"
     local home="$HOME"
     # REPOS_BASE_PATH must be set (call load_config first)
     local repos_dir="${REPOS_BASE_PATH:-$HOME/repos}"
 
-    [[ -d "$sessions_dir" ]] || return 0
-
     local orphan_count=0 old_count=0
+    local nvim_config sessions_dir
 
-    for f in "$sessions_dir"/*; do
-        [[ -f "$f" ]] || continue
+    for nvim_config in "${DOTS_NVIM_CONFIGS[@]}"; do
+        sessions_dir="$HOME/.config/$nvim_config/sessions"
+        [[ -d "$sessions_dir" ]] || continue
 
-        local name
-        name=$(basename "$f")
+        for f in "$sessions_dir"/*; do
+            [[ -f "$f" ]] || continue
 
-        # Extract cd path from session file
-        local cdpath
-        cdpath=$(grep '^cd ' "$f" 2>/dev/null | head -1 | sed 's/^cd //' | sed "s|^~|$home|")
+            local name
+            name=$(basename "$f")
 
-        local orphan=false
+            # Extract cd path from session file
+            local cdpath
+            cdpath=$(grep '^cd ' "$f" 2>/dev/null | head -1 | sed 's/^cd //' | sed "s|^~|$home|")
 
-        # Check 1: cd directory no longer exists
-        if [[ -n "$cdpath" ]] && [[ ! -d "$cdpath" ]]; then
-            orphan=true
-        fi
+            local orphan=false
 
-        # Check 2: worktree subdir no longer exists (cd points to parent repo)
-        if [[ "$orphan" == "false" ]] && [[ -n "$cdpath" ]] && echo "$name" | grep -q '\.claude_worktrees_'; then
-            local wt
-            wt="${name#*.claude_worktrees_}"
-            wt="${wt%%_*}"
-            if [[ -n "$wt" ]] && ! echo "$cdpath" | grep -q '\.claude/worktrees'; then
-                [[ ! -d "$cdpath/.claude/worktrees/$wt" ]] && orphan=true
+            # Check 1: cd directory no longer exists
+            if [[ -n "$cdpath" ]] && [[ ! -d "$cdpath" ]]; then
+                orphan=true
             fi
-        fi
 
-        # Check 3: no cd line — search repos for matching worktree
-        if [[ -z "$cdpath" ]] && echo "$name" | grep -q '\.claude_worktrees_'; then
-            local wt
-            wt="${name#*.claude_worktrees_}"
-            wt="${wt%%_*}"
-            local found=false
-            if [[ -n "$wt" ]]; then
-                while IFS= read -r wt_dir; do
-                    [[ -z "$wt_dir" ]] && continue
-                    found=true
-                    break
-                done < <(find "$repos_dir" -maxdepth 4 -path "*/.claude/worktrees/$wt" -type d 2>/dev/null | head -1)
+            # Check 2: worktree subdir no longer exists (cd points to parent repo)
+            if [[ "$orphan" == "false" ]] && [[ -n "$cdpath" ]] && echo "$name" | grep -q '\.claude_worktrees_'; then
+                local wt
+                wt="${name#*.claude_worktrees_}"
+                wt="${wt%%_*}"
+                if [[ -n "$wt" ]] && ! echo "$cdpath" | grep -q '\.claude/worktrees'; then
+                    [[ ! -d "$cdpath/.claude/worktrees/$wt" ]] && orphan=true
+                fi
             fi
-            [[ "$found" == "false" ]] && orphan=true
-        fi
 
-        if [[ "$orphan" == "true" ]]; then
-            rm -f "$f" && echo "ORPHAN:$name"
-            ((orphan_count++)) || true
-        elif find "$f" -maxdepth 0 -mtime +2 -print 2>/dev/null | grep -q .; then
-            rm -f "$f" && echo "OLD:$name"
-            ((old_count++)) || true
-        fi
+            # Check 3: no cd line — search repos for matching worktree
+            if [[ -z "$cdpath" ]] && echo "$name" | grep -q '\.claude_worktrees_'; then
+                local wt
+                wt="${name#*.claude_worktrees_}"
+                wt="${wt%%_*}"
+                local found=false
+                if [[ -n "$wt" ]]; then
+                    while IFS= read -r wt_dir; do
+                        [[ -z "$wt_dir" ]] && continue
+                        found=true
+                        break
+                    done < <(find "$repos_dir" -maxdepth 4 -path "*/.claude/worktrees/$wt" -type d 2>/dev/null | head -1)
+                fi
+                [[ "$found" == "false" ]] && orphan=true
+            fi
+
+            if [[ "$orphan" == "true" ]]; then
+                rm -f "$f" && echo "ORPHAN:$name"
+                ((orphan_count++)) || true
+            elif find "$f" -maxdepth 0 -mtime +2 -print 2>/dev/null | grep -q .; then
+                rm -f "$f" && echo "OLD:$name"
+                ((old_count++)) || true
+            fi
+        done
     done
 
     if [[ $orphan_count -eq 0 && $old_count -eq 0 ]]; then
@@ -303,7 +309,6 @@ dots_clean_sessions() {
 
 dots_stage_sessions() {
     local repo_path="$1"
-    local sessions_dir="$repo_path/common/.config/nvim/sessions"
 
     # Clean orphaned and stale sessions
     local clean_output
@@ -314,12 +319,20 @@ dots_stage_sessions() {
         done <<<"$clean_output"
     fi
 
-    if [[ -z $(git -C "$repo_path" status --porcelain "common/.config/nvim/sessions/" 2>/dev/null) ]]; then
+    local nvim_config staged=false
+    for nvim_config in "${DOTS_NVIM_CONFIGS[@]}"; do
+        local sessions_path="common/.config/$nvim_config/sessions/"
+        if [[ -n $(git -C "$repo_path" status --porcelain "$sessions_path" 2>/dev/null) ]]; then
+            (cd "$repo_path" && git add "$sessions_path")
+            staged=true
+        fi
+    done
+
+    if [[ "$staged" == false ]]; then
         echo "No session changes to commit"
         return 1
     fi
 
-    (cd "$repo_path" && git add "common/.config/nvim/sessions/")
     log_okay "Session changes staged"
 }
 
@@ -376,14 +389,21 @@ dots_stage_pi() {
 
 dots_stage_radar() {
     local repo_path="$1"
-    local radar_file="common/.local/share/nvim/radar/data.json"
 
-    if [[ -z $(git -C "$repo_path" status --porcelain "$radar_file" 2>/dev/null) ]]; then
+    local nvim_config staged=false
+    for nvim_config in "${DOTS_NVIM_CONFIGS[@]}"; do
+        local radar_file="common/.local/share/$nvim_config/radar/data.json"
+        if [[ -n $(git -C "$repo_path" status --porcelain "$radar_file" 2>/dev/null) ]]; then
+            (cd "$repo_path" && git add "$radar_file")
+            staged=true
+        fi
+    done
+
+    if [[ "$staged" == false ]]; then
         echo "No radar changes to commit"
         return 1
     fi
 
-    (cd "$repo_path" && git add "$radar_file")
     log_okay "Radar changes staged"
 }
 

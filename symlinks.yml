@@ -40,6 +40,7 @@ common:
   common/.hushlogin: ~/.hushlogin
   common/.ideavimrc: ~/.ideavimrc
   common/.local/share/nvim/radar: ~/.local/share/nvim/radar
+  common/.local/share/nvim-edit/radar: ~/.local/share/nvim-edit/radar
   common/.ripgreprc: ~/.ripgreprc
   common/.ssh/allowed_signers: ~/.ssh/allowed_signers
   common/.ssh/config: ~/.ssh/config
