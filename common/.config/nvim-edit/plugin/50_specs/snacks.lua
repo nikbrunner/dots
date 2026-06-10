@@ -7,12 +7,9 @@ Edit.later(function()
 	vim.pack.add({ "git@github.com:folke/snacks.nvim" })
 
 	require("snacks").setup({
-		bigfile = { enabled = false },
-		statuscolumn = { enabled = false },
-		notifier = { enabled = false },
-		input = { enabled = false },
-		scroll = { enabled = false },
-		gitbrowse = { enabled = true },
+		gitbrowse = {
+			enabled = true,
+		},
 		terminal = {
 			win = {
 				border = "solid",
