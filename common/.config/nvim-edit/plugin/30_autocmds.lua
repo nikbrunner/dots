@@ -65,6 +65,33 @@ Edit.new_autocmd("FocusGained", nil, function()
 	end
 end, "Close buffers of deleted files")
 
+-- Big file guard: disable expensive features for files over 1MB
+local BIGFILE_SIZE = 1024 * 1024
+
+Edit.new_autocmd("BufReadPre", nil, function(ev)
+	local name = vim.api.nvim_buf_get_name(ev.buf)
+	local stat = name ~= "" and vim.uv.fs_stat(name) or nil
+	if not (stat and stat.size > BIGFILE_SIZE) then
+		return
+	end
+	vim.b[ev.buf].bigfile = true
+	vim.b[ev.buf].minihipatterns_disable = true
+	vim.b[ev.buf].miniindentscope_disable = true
+end, "Flag big files")
+
+-- Scheduled so it runs after arborist's FileType handler has started treesitter
+Edit.new_autocmd("FileType", nil, function(ev)
+	if not vim.b[ev.buf].bigfile then
+		return
+	end
+	vim.schedule(function()
+		if vim.api.nvim_buf_is_valid(ev.buf) then
+			vim.treesitter.stop(ev.buf)
+			vim.bo[ev.buf].syntax = ""
+		end
+	end)
+end, "Disable treesitter in big files")
+
 -- Check for external file changes (pairs with 'autoread')
 local function should_check()
 	local mode = vim.api.nvim_get_mode().mode
