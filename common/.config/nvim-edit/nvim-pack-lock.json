@@ -88,6 +88,10 @@
       "rev": "3c804c1480991e4837514900b22b9358cfd64fa1",
       "src": "git@github.com:codethread/qmk.nvim"
     },
+    "quicker.nvim": {
+      "rev": "4a6883cb13fe097a20a046eb55f6dffd239276e3",
+      "src": "git@github.com:stevearc/quicker.nvim.git"
+    },
     "radar.nvim": {
       "rev": "6942cf4a4f4c870cf04a1201d9fdfcebf59d4ffe",
       "src": "git@github.com:black-atom-industries/radar.nvim"
