@@ -8,12 +8,12 @@ local json_schemas = ok and schemastore.json.schemas() or {}
 
 ---@type vim.lsp.Config
 return {
-    cmd = { "vscode-json-language-server", "--stdio" },
-    filetypes = { "json", "jsonc" },
-    settings = {
-        json = {
-            validate = { enable = true },
-            schemas = json_schemas,
-        },
-    },
+	cmd = { "vscode-json-language-server", "--stdio" },
+	filetypes = { "json", "jsonc" },
+	settings = {
+		json = {
+			validate = { enable = true },
+			schemas = json_schemas,
+		},
+	},
 }

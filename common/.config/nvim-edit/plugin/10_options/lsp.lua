@@ -57,7 +57,6 @@ vim.api.nvim_create_autocmd("SessionLoadPost", {
 	callback = enable_lsp,
 })
 
-
 vim.api.nvim_create_autocmd("LspAttach", {
 	nested = true,
 	group = vim.api.nvim_create_augroup("UserLspConfig", {}),
