@@ -186,6 +186,9 @@ map("n", "<leader>w.", function()
 	end
 end, { desc = "[.] Set Root" })
 
+-- Plugin management keymaps (<leader>ap / <leader>aP) live in
+-- plugin/50_specs/pack-ui.lua.
+
 map("n", "<leader>ali", "<cmd>checkhealth vim.lsp<CR>", { desc = "LSP [I]nfo" })
 map("n", "<leader>all", function()
 	vim.cmd("tabedit " .. vim.lsp.log.get_filename())
