@@ -23,7 +23,7 @@ MF.setup({
 		trim_right = ">",
 	},
 	options = {
-		use_as_default_explorer = false,
+		use_as_default_explorer = true,
 		-- Workaround for mini.nvim bug on Neovim >= 0.11: `H.lsp_fs_hook_client`
 		-- in mini/files.lua (~L2866) calls `is_scheme(uri, scheme)`, which does
 		-- `scheme == nil` and `scheme .. ':'`. In Neovim 0.12+ `FileOperationFilter.scheme`
