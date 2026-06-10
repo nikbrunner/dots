@@ -67,11 +67,13 @@ function _G.Edit.pickers.git_changed()
 		vim.notify("Not in a git repository", vim.log.levels.ERROR)
 		return
 	end
+	-- Run git from the repo root so `git ls-files` returns paths relative
+	-- to the root regardless of the current cwd.
 	local items = {}
-	for _, f in ipairs(vim.fn.systemlist("git ls-files --modified")) do
+	for _, f in ipairs(vim.fn.systemlist("git -C " .. vim.fn.shellescape(git_root) .. " ls-files --modified")) do
 		table.insert(items, { text = "M " .. f, path = git_root .. "/" .. f, status = "M" })
 	end
-	for _, f in ipairs(vim.fn.systemlist("git ls-files --others --exclude-standard")) do
+	for _, f in ipairs(vim.fn.systemlist("git -C " .. vim.fn.shellescape(git_root) .. " ls-files --others --exclude-standard")) do
 		table.insert(items, { text = "? " .. f, path = git_root .. "/" .. f, status = "?" })
 	end
 	if #items == 0 then
@@ -91,6 +93,12 @@ function _G.Edit.pickers.git_changed()
 					lines = vim.fn.readfile(item.path)
 				end
 				vim.api.nvim_buf_set_lines(buf_id, 0, -1, false, lines)
+			end,
+			choose = function(item)
+				local target = MiniPick.get_picker_state().windows.target
+				vim.api.nvim_win_call(target, function()
+					vim.cmd.edit(vim.fn.fnameescape(item.path))
+				end)
 			end,
 		},
 	})
