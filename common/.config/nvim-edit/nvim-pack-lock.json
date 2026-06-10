@@ -17,7 +17,7 @@
       "src": "git@github.com:arborist-ts/arborist.nvim"
     },
     "black-atom": {
-      "rev": "cfcc305e35a4b26bd5e6cad917c4c27cae516538",
+      "rev": "1a53b7ac0282a45e66b38c88b4a37200ecfcd638",
       "src": "git@github.com:black-atom-industries/nvim.git"
     },
     "codediff.nvim": {
@@ -45,7 +45,7 @@
       "src": "git@github.com:OXY2DEV/helpview.nvim"
     },
     "iter.nvim": {
-      "rev": "bd56439d95dc751a26169511db5f238a77aec6c9",
+      "rev": "5acc402dc9034c9861b6b7b65e555b4a6504c789",
       "src": "git@github.com:black-atom-industries/iter.nvim.git"
     },
     "kulala.nvim": {
@@ -61,7 +61,7 @@
       "src": "git@github.com:nikbrunner/mdn.nvim"
     },
     "mini.nvim": {
-      "rev": "d5e6f5b843f1d813d9c4bfb242b751dc5ab6f8ae",
+      "rev": "ff8b3580935818ef2f21bdd651f057a2ae071eab",
       "src": "https://github.com/nvim-mini/mini.nvim"
     },
     "nui.nvim": {
