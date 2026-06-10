@@ -26,14 +26,14 @@ export RIPGREP_CONFIG_PATH=$HOME/.ripgreprc
 # Globals ================================================================
 export DOTS_DIR="$HOME/repos/nikbrunner/dots"
 export SSH_AUTH_SOCK="$HOME/.ssh/proton-pass-agent.sock"
+export NVIM_APPNAME=nvim-edit
 export EDITOR="nvim"
 export MANPAGER='nvim +Man!'
 export BAT_THEME="base16"
 
 # Aliases ================================================================
-alias vin="NVIM_APPNAME=nvim_mnml nvim"
-alias mini="NVIM_APPNAME=nvim-minimax nvim"
 alias edit="NVIM_APPNAME=nvim-edit nvim"
+alias vin="NVIM_APPNAME=nvim_mnml nvim"
 
 alias ls="eza --all --oneline --long --icons --sort=type"
 alias lt="eza --all --tree --icons --sort=type"
