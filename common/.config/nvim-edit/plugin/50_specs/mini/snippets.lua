@@ -5,6 +5,9 @@
 -- - 'snippets/<lang>.json' via from_lang loader (e.g. markdown.json)
 
 Edit.later(function()
+	-- Community snippet collection, picked up by the from_lang loader below
+	vim.pack.add({ "git@github.com:rafamadriz/friendly-snippets" })
+
 	local snippets = require("mini.snippets")
 	local config_path = vim.fn.stdpath("config")
 
