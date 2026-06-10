@@ -124,10 +124,10 @@ bindkey '^g' push-line-or-edit
 [[ -f "$HOME/.atuin/bin/env" ]] && . "$HOME/.atuin/bin/env"
 command -v atuin &>/dev/null && eval "$(atuin init zsh)"
 
-# Minimal Prompt (gray path, green branch, red job count, yellow $)
+# Minimal prompt: gray path + green branch on line 1, yellow $ on line 2
 autoload -Uz vcs_info
-precmd() { vcs_info; }
 zstyle ':vcs_info:git:*' formats ' %F{green}%b%f'
+precmd_functions+=(vcs_info)
 setopt PROMPT_SUBST
 PROMPT='%F{gray}%~%f${vcs_info_msg_0_}%(1j. %F{red}[%j]%f.)
 %F{yellow}$%f '
