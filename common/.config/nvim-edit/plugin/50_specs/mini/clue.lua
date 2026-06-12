@@ -21,6 +21,8 @@ MC.setup({
 		{ mode = "n", keys = "Z" },
 		{ mode = "n", keys = '"' },
 		{ mode = "x", keys = "'" },
+		{ mode = "x", keys = "a" },
+		{ mode = "x", keys = "i" },
 		{ mode = "x", keys = "<leader>" },
 		{ mode = "x", keys = "`" },
 		{ mode = "x", keys = "g" },
@@ -42,20 +44,24 @@ MC.setup({
 		MC.gen_clues.windows({ submode_resize = true }),
 		MC.gen_clues.z(),
 
-        -- stylua: ignore start
-        { mode = { 'n', 'x' }, keys = '<Leader>' }, -- Leader triggers
-        { mode =   'n',        keys = '\\' }, -- mini.basics
-        { mode = { 'n', 'x' }, keys = '[' }, -- mini.bracketed
-        { mode = { 'n', 'x' }, keys = ']' },
-        { mode =   'i',        keys = '<C-x>' }, -- Built-in completion
-        { mode = { 'n', 'x' }, keys = 'g' }, -- `g` key
-        { mode = { 'n', 'x' }, keys = "'" }, -- Marks
-        { mode = { 'n', 'x' }, keys = '`' },
-        { mode = { 'n', 'x' }, keys = '"' }, -- Registers
-        { mode = { 'i', 'c' }, keys = '<C-r>' },
-        { mode =   'n',        keys = '<C-w>' }, -- Window commands
-        { mode = { 'n', 'x' }, keys = 's' }, -- `s` key (mini.surround, etc.)
-        { mode = { 'n', 'x' }, keys = 'z' }, -- `z` key
+		-- stylua: ignore start
+		{ mode = { 'n', 'x' }, keys = '<Leader>' }, -- Leader triggers
+		{ mode =   'n',        keys = '\\' }, -- mini.basics
+		{ mode = { 'n', 'x' }, keys = '[' }, -- mini.bracketed
+		{ mode = { 'n', 'x' }, keys = ']' },
+		{ mode =   'i',        keys = '<C-x>' }, -- Built-in completion
+		{ mode = { 'n', 'x' }, keys = 'g' }, -- `g` key
+		{ mode = { 'n', 'x' }, keys = "'" }, -- Marks
+		{ mode = { 'n', 'x' }, keys = '`' },
+		{ mode = { 'n', 'x' }, keys = '"' }, -- Registers
+		{ mode = { 'i', 'c' }, keys = '<C-r>' },
+		{ mode =   'n',        keys = '<C-w>' }, -- Window commands
+		{ mode = { 'n', 'x' }, keys = 's' }, -- `s` key (mini.surround, etc.)
+		{ mode = { 'n', 'x' }, keys = 'z' }, -- `z` key
+
+		-- mini.ai (around/inside prefixes) - shows identifier hints in popup
+		{ mode = "x", keys = "a" }, -- `a` key (mini.ai around)
+		{ mode = "x", keys = "i" }, -- `i` key (mini.ai inside)
 
 		-- Z mappings (ZZ, ZQ, ZR)
 		{ mode = "n", keys = "ZZ", desc = "Write & quit" },
