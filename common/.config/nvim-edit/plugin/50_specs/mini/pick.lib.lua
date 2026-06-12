@@ -190,6 +190,7 @@ function _G.Edit.pickers.related_documents()
 	local current_filename = vim.fn.expand("%:t:r")
 	local base_name = current_filename:match("^([^.]+)") or current_filename
 	local current_path = vim.fn.expand("%:.")
+	local current_dir = vim.fn.fnamemodify(current_path, ":h")
 	local items = vim.tbl_filter(function(f)
 		return f ~= current_path
 	end, vim.fn.systemlist({ "rg", "--files", "--glob", "**/" .. base_name .. ".*" }))
@@ -197,6 +198,14 @@ function _G.Edit.pickers.related_documents()
 		vim.notify("No associated files found", vim.log.levels.INFO)
 		return
 	end
+	table.sort(items, function(a, b)
+		local a_colocated = vim.fn.fnamemodify(a, ":h") == current_dir
+		local b_colocated = vim.fn.fnamemodify(b, ":h") == current_dir
+		if a_colocated ~= b_colocated then
+			return a_colocated
+		end
+		return a < b
+	end)
 	MiniPick.start({ source = { items = items, name = "Associated Files" } })
 end
 
