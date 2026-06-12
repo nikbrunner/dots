@@ -14,16 +14,14 @@ Edit.later(function()
 	snippets.setup({
 		snippets = {
 			snippets.gen_loader.from_file(config_path .. "/snippets/global.lua"),
-			snippets.gen_loader.from_lang({
-				lang_patterns = {
-					-- Recognize special injected language of markdown tree-sitter parser
-					markdown_inline = { "markdown.json" },
-				},
-			}),
+			snippets.gen_loader.from_lang(),
+		},
+		mappings = {
+			expand = "<C-j>",
+			jump_next = "<C-l>",
+			jump_prev = "<C-h>",
 		},
 	})
 
-	-- Show snippets at cursor as candidates in the mini.completion menu
-	-- (requires this dedicated in-process LSP server).
-	MiniSnippets.start_lsp_server()
+	snippets.start_lsp_server({ match = false })
 end)
