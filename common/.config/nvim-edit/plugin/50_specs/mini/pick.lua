@@ -18,7 +18,7 @@ mini_pick.setup({
 
 		delete_char = "<BS>",
 		delete_char_right = "<Del>",
-		delete_left = "<C-u>",
+		delete_left = "<C-h>",
 		delete_word = "<C-w>",
 
 		mark = "<C-x>",
