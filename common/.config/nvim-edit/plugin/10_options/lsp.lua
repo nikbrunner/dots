@@ -83,6 +83,16 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		vim.keymap.set("n", "<leader>sa", vim.lsp.buf.code_action, { buffer = ev.buf, desc = "[A]ction" })
 		vim.keymap.set("n", "<leader>sn", vim.lsp.buf.rename, { buffer = ev.buf, desc = "Re[n]ame" })
 
+		vim.keymap.set("n", "<leader>wP", function()
+			vim.fn.setqflist(vim.diagnostic.toqflist(vim.diagnostic.get()))
+			vim.cmd.copen()
+		end, { buffer = ev.buf, desc = "[P]roblems (Quickfix)" })
+
+		vim.keymap.set("n", "<leader>dP", function()
+			vim.fn.setqflist(vim.diagnostic.toqflist(vim.diagnostic.get(0)))
+			vim.cmd.copen()
+		end, { buffer = ev.buf, desc = "[P]roblems (Quickfix)" })
+
 		-- vim.keymap.set(
 		-- 	"n",
 		-- 	"<leader>sV",
