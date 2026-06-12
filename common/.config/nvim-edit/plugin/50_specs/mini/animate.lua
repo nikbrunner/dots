@@ -1,5 +1,22 @@
 Edit.later(function()
-	require("mini.animate").setup()
+	local animate = require("mini.animate")
+	animate.setup({
+		cursor = {
+			timing = animate.gen_timing.linear({ duration = 100, unit = "total" }),
+		},
+		scroll = {
+			timing = animate.gen_timing.linear({ duration = 100, unit = "total" }),
+		},
+		resize = {
+			timing = animate.gen_timing.linear({ duration = 100, unit = "total" }),
+		},
+		open = {
+			timing = animate.gen_timing.linear({ duration = 80, unit = "total" }),
+		},
+		close = {
+			timing = animate.gen_timing.linear({ duration = 80, unit = "total" }),
+		},
+	})
 
 	-- Disable in floating/special buffers where animations are distracting
 	vim.api.nvim_create_autocmd("FileType", {
