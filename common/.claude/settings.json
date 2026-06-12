@@ -176,12 +176,6 @@
     "figma@claude-plugins-official": true
   },
   "extraKnownMarketplaces": {
-    "local-plugins": {
-      "source": {
-        "source": "directory",
-        "path": "/Users/nbr/.claude/plugins/marketplaces/local-plugins"
-      }
-    },
     "impeccable": {
       "source": {
         "source": "github",
@@ -221,6 +215,5 @@
   "voiceEnabled": true,
   "feedbackSurveyState": {
     "lastShownTime": 1754313915132
-  },
-  "model": "sonnet[1m]"
+  }
 }
