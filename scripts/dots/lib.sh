@@ -206,6 +206,7 @@ dots_stage_theme() {
         "common/.config/ghostty/config"
         "common/.config/lazygit/config.yml"
         "common/.config/nvim/lua/config.lua"
+        "common/.config/nvim-edit/plugin/50_specs/black_atom/nvim.lua"
         "common/.config/tmux/tmux.conf"
         "common/.config/zed/settings.json"
         "common/.config/black-atom/helm/config.yml"
