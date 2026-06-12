@@ -129,6 +129,21 @@ vim.api.nvim_create_autocmd("User", {
 	end,
 })
 
+-- Wipe buffer when file is deleted via mini.files
+vim.api.nvim_create_autocmd("User", {
+	pattern = "MiniFilesActionDelete",
+	callback = function(event)
+		local path = event.data.from
+		if path then
+			for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+				if vim.api.nvim_buf_is_valid(buf) and vim.api.nvim_buf_get_name(buf) == path then
+					MiniBufremove.wipeout(buf, true)
+				end
+			end
+		end
+	end,
+})
+
 -- Path operations
 local yank_path = function()
 	local path = (MF.get_fs_entry() or {}).path
