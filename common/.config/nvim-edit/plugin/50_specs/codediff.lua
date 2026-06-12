@@ -11,7 +11,6 @@ Edit.later(function()
 		char_brightness = 1, -- disable auto-adjustment
 		explorer = {
 			view_mode = "tree",
-			position = "bottom",
 			height = 10,
 		},
 		keymaps = {
