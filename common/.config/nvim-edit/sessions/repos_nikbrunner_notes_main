@@ -4,144 +4,17 @@ let v:this_session=expand("<sfile>:p")
 doautoall SessionLoadPre
 silent only
 silent tabonly
-cd ~/repos/nikbrunner/dots
+cd ~/repos/nikbrunner/notes
 if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +34 common/.config/black-atom/livery/config.json
-badd +19 common/.agents/AGENTS.md
-badd +0 common/.config/nvim-edit/plugin/50_specs/mini/ai.lua
+badd +12 Log/2026/2026.06/2026.06\ -\ June.md
 argglobal
 %argdel
-$argadd ~/.config/lazygit/config.yml
-tabnew +setlocal\ bufhidden=wipe
-tabrewind
-edit common/.config/black-atom/livery/config.json
-argglobal
-setlocal keymap=
-setlocal noarabic
-setlocal autoindent
-setlocal nobinary
-setlocal breakindent
-setlocal breakindentopt=list:-1
-setlocal bufhidden=
-setlocal buflisted
-setlocal buftype=
-setlocal busy=0
-setlocal nocindent
-setlocal cinkeys=0{,0},0),0],:,0#,!^F,o,O,e
-setlocal cinoptions=
-setlocal cinscopedecls=public,protected,private
-setlocal cinwords=if,else,while,do,for,switch
-setlocal colorcolumn=+1
-setlocal comments=
-setlocal commentstring=
-setlocal complete=.,w,b,kspell
-setlocal completefunc=v:lua.MiniCompletion.completefunc_lsp
-setlocal completeslash=
-setlocal concealcursor=
-setlocal conceallevel=0
-setlocal nocopyindent
-setlocal nocursorbind
-setlocal nocursorcolumn
-setlocal cursorline
-setlocal cursorlineopt=screenline,number
-setlocal nodiff
-setlocal eventignorewin=
-setlocal expandtab
-if &filetype != 'json'
-setlocal filetype=json
-endif
-setlocal fixendofline
-setlocal foldcolumn=0
-setlocal foldenable
-setlocal foldexpr=v:lua.vim.treesitter.foldexpr()
-setlocal foldignore=#
-setlocal foldlevel=99
-setlocal foldmarker={{{,}}}
-setlocal foldmethod=expr
-setlocal foldminlines=1
-setlocal foldnestmax=10
-setlocal foldtext=
-setlocal formatexpr=v:lua.require'conform'.formatexpr()
-setlocal formatlistpat=^\\s*[0-9\\-\\+\\*]\\+[\\.\\)]*\\s\\+
-setlocal formatoptions=rqnl1j
-setlocal iminsert=0
-setlocal imsearch=-1
-setlocal includeexpr=
-setlocal indentexpr=v:lua.require'arborist.indent'.indentexpr()
-setlocal indentkeys=0{,0},0),0[,0],!^F,o,O,e
-setlocal infercase
-setlocal iskeyword=@,48-57,_,192-255,-
-setlocal lhistory=10
-setlocal linebreak
-setlocal nolisp
-setlocal lispoptions=
-setlocal list
-setlocal matchpairs=(:),{:},[:]
-setlocal modeline
-setlocal modifiable
-setlocal nrformats=bin,hex
-setlocal number
-setlocal numberwidth=4
-setlocal omnifunc=v:lua.MiniCompletion.completefunc_lsp
-setlocal nopreserveindent
-setlocal nopreviewwindow
-setlocal quoteescape=\\
-setlocal noreadonly
-setlocal relativenumber
-setlocal norightleft
-setlocal rightleftcmd=search
-setlocal scrollback=-1
-setlocal noscrollbind
-setlocal scrolloff=4
-setlocal shiftwidth=2
-setlocal signcolumn=yes
-setlocal nosmartindent
-setlocal nosmoothscroll
-setlocal softtabstop=-1
-setlocal nospell
-setlocal spellcapcheck=[.?!]\\_[\\])'\"\\t\ ]\\+
-setlocal spellfile=
-setlocal spelllang=en_us,de_de
-setlocal spelloptions=camel,noplainbuffer
-setlocal statuscolumn=
-setlocal suffixesadd=
-setlocal noswapfile
-setlocal synmaxcol=3000
-if &syntax != ''
-setlocal syntax=
-endif
-setlocal tabstop=2
-setlocal tagfunc=
-setlocal textwidth=0
-setlocal undofile
-setlocal varsofttabstop=
-setlocal vartabstop=
-setlocal virtualedit=block
-setlocal winbar=%#WinBarPath#...%*%#WinBarSeparator#/%*%#WinBarPath#.config%*%#WinBarSeparator#/%*%#WinBarPath#black-atom%*%#WinBarSeparator#/%*%#WinBarPath#livery%*%#WinBarSeparator#/%*%#WinBarFilename#config.json%*%=%#WinBarGitLabel#\ [GIT:%#WinBarGitChange#\ ~1%#WinBarGitLabel#]%*\ 
-setlocal winblend=10
-setlocal nowinfixbuf
-setlocal nowinfixheight
-setlocal nowinfixwidth
-setlocal winhighlight=
-setlocal nowinpinned
-setlocal nowrap
-setlocal wrapmargin=0
-1
-sil! normal! zo
-3
-sil! normal! zo
-let s:l = 7 - ((6 * winheight(0) + 26) / 53)
-if s:l < 1 | let s:l = 1 | endif
-keepjumps exe s:l
-normal! zt
-keepjumps 7
-normal! 0
-tabnext
-edit common/.agents/AGENTS.md
+$argadd ./
+edit Log/2026/2026.06/2026.06\ -\ June.md
 let s:save_splitbelow = &splitbelow
 let s:save_splitright = &splitright
 set splitbelow splitright
@@ -158,8 +31,8 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe 'vert 1resize ' . ((&columns * 133 + 134) / 268)
-exe 'vert 2resize ' . ((&columns * 134 + 134) / 268)
+exe 'vert 1resize ' . ((&columns * 101 + 102) / 204)
+exe 'vert 2resize ' . ((&columns * 102 + 102) / 204)
 argglobal
 xnoremap <buffer> $ g$
 onoremap <buffer> $ g$
@@ -274,7 +147,7 @@ setlocal textwidth=80
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#common%*%#WinBarSeparator#/%*%#WinBarPath#.agents%*%#WinBarSeparator#/%*%#WinBarFilename#AGENTS.md%*%=%#WinBarGitLabel#\ [GIT:%#WinBarGitAdd#\ +2%#WinBarGitChange#\ ~1%#WinBarGitDelete#\ -6%#WinBarGitLabel#]%*\ 
+setlocal winbar=%#WinBarPath#Log%*%#WinBarSeparator#/%*%#WinBarPath#2026%*%#WinBarSeparator#/%*%#WinBarPath#2026.06%*%#WinBarSeparator#/%*%#WinBarFilename#2026.06\ -\ June.md%*%=%#WinBarGitLabel#\ [GIT:%#WinBarGitAdd#\ +1%#WinBarGitLabel#]%*\ 
 setlocal winblend=10
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -285,22 +158,34 @@ setlocal nowrap
 setlocal wrapmargin=0
 1
 sil! normal! zo
-7
+21
 sil! normal! zo
-20
-sil! normal! zo
-let s:l = 19 - ((18 * winheight(0) + 26) / 53)
+let s:l = 20 - ((16 * winheight(0) + 18) / 37)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 19
+keepjumps 20
 normal! 0
 wincmd w
 argglobal
-if bufexists(fnamemodify("common/.config/nvim-edit/plugin/50_specs/mini/ai.lua", ":p")) | buffer common/.config/nvim-edit/plugin/50_specs/mini/ai.lua | else | edit common/.config/nvim-edit/plugin/50_specs/mini/ai.lua | endif
+if bufexists(fnamemodify("Log/2026/2026.06/2026.06\ -\ June.md", ":p")) | buffer Log/2026/2026.06/2026.06\ -\ June.md | else | edit Log/2026/2026.06/2026.06\ -\ June.md | endif
 if &buftype ==# 'terminal'
-  silent file common/.config/nvim-edit/plugin/50_specs/mini/ai.lua
+  silent file Log/2026/2026.06/2026.06\ -\ June.md
 endif
+xnoremap <buffer> $ g$
+onoremap <buffer> $ g$
+nnoremap <buffer> $ g$
+xnoremap <buffer> 0 g0
+onoremap <buffer> 0 g0
+nnoremap <buffer> 0 g0
+xnoremap <buffer> <silent> [[ :exe "normal! gv"|call search('\%(^#\{1,5\}\s\+\S\|^\S.*\n^[=-]\+$\)', "bsW")
+xnoremap <buffer> <silent> ]] :exe "normal! gv"|call search('\%(^#\{1,5\}\s\+\S\|^\S.*\n^[=-]\+$\)', "sW")
+xnoremap <buffer> j gj
+onoremap <buffer> j gj
+nnoremap <buffer> j gj
+xnoremap <buffer> k gk
+onoremap <buffer> k gk
+nnoremap <buffer> k gk
 setlocal keymap=
 setlocal noarabic
 setlocal autoindent
@@ -317,8 +202,8 @@ setlocal cinoptions=
 setlocal cinscopedecls=public,protected,private
 setlocal cinwords=if,else,while,do,for,switch
 setlocal colorcolumn=+1
-setlocal comments=:---,:--
-setlocal commentstring=--\ %s
+setlocal comments=fb:*,fb:-,fb:+,n:>
+setlocal commentstring=<!--\ %s\ -->
 setlocal complete=.,w,b,kspell
 setlocal completefunc=v:lua.MiniCompletion.completefunc_lsp
 setlocal completeslash=
@@ -329,12 +214,11 @@ setlocal nocursorbind
 setlocal nocursorcolumn
 setlocal cursorline
 setlocal cursorlineopt=screenline,number
-setlocal define=\\<function\\|\\<local\\%(\\s\\+function\\)\\=
 setlocal nodiff
 setlocal eventignorewin=
-setlocal noexpandtab
-if &filetype != 'lua'
-setlocal filetype=lua
+setlocal expandtab
+if &filetype != 'markdown'
+setlocal filetype=markdown
 endif
 setlocal fixendofline
 setlocal foldcolumn=0
@@ -348,14 +232,13 @@ setlocal foldminlines=1
 setlocal foldnestmax=10
 setlocal foldtext=
 setlocal formatexpr=v:lua.require'conform'.formatexpr()
-setlocal formatlistpat=^\\s*[0-9\\-\\+\\*]\\+[\\.\\)]*\\s\\+
-setlocal formatoptions=n1jrql
+setlocal formatlistpat=^\\s*\\d\\+\\.\\s\\+\\|^\\s*[-*+]\\s\\+\\|^\\[^\\ze[^\\]]\\+\\]:\\&^.\\{4\\}
+setlocal formatoptions=j1tqln
 setlocal iminsert=0
 setlocal imsearch=-1
-setlocal include=\\<\\%(\\%(do\\|load\\)file\\|require\\)\\s*(
-setlocal includeexpr=v:lua.require'vim._ftplugin.lua'.includeexpr(v:fname)
+setlocal includeexpr=
 setlocal indentexpr=v:lua.require'arborist.indent'.indentexpr()
-setlocal indentkeys=0{,0},0),0],:,0#,!^F,o,O,e,0=end,0=until
+setlocal indentkeys=0{,0},0),0],:,0#,!^F,o,O,e
 setlocal infercase
 setlocal iskeyword=@,48-57,_,192-255,-
 setlocal lhistory=10
@@ -363,14 +246,13 @@ setlocal linebreak
 setlocal nolisp
 setlocal lispoptions=
 setlocal list
-setlocal matchpairs=(:),{:},[:]
+setlocal matchpairs=(:),{:},[:],<:>
 setlocal modeline
 setlocal modifiable
 setlocal nrformats=bin,hex
 setlocal number
 setlocal numberwidth=4
 setlocal omnifunc=v:lua.MiniCompletion.completefunc_lsp
-setlocal path=,
 setlocal nopreserveindent
 setlocal nopreviewwindow
 setlocal quoteescape=\\
@@ -380,7 +262,7 @@ setlocal norightleft
 setlocal rightleftcmd=search
 setlocal scrollback=-1
 setlocal noscrollbind
-setlocal shiftwidth=0
+setlocal shiftwidth=2
 setlocal signcolumn=yes
 setlocal smartindent
 setlocal nosmoothscroll
@@ -391,19 +273,19 @@ setlocal spellfile=
 setlocal spelllang=en_us,de_de
 setlocal spelloptions=camel,noplainbuffer
 setlocal statuscolumn=
-setlocal suffixesadd=.lua
+setlocal suffixesadd=
 setlocal noswapfile
 setlocal synmaxcol=3000
 if &syntax != ''
 setlocal syntax=
 endif
-setlocal tabstop=2
+setlocal tabstop=4
 setlocal tagfunc=v:lua.vim.lsp.tagfunc
-setlocal textwidth=0
+setlocal textwidth=80
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#...%*%#WinBarSeparator#/%*%#WinBarPath#nvim-edit%*%#WinBarSeparator#/%*%#WinBarPath#plugin%*%#WinBarSeparator#/%*%#WinBarPath#50_specs%*%#WinBarSeparator#/%*%#WinBarPath#mini%*%#WinBarSeparator#/%*%#WinBarFilename#ai.lua%*%=%#WinBarGitLabel#\ [GIT:%#WinBarGitAdd#\ +11%#WinBarGitChange#\ ~1%#WinBarGitLabel#]%*\ 
+setlocal winbar=%#WinBarPath#Log%*%#WinBarSeparator#/%*%#WinBarPath#2026%*%#WinBarSeparator#/%*%#WinBarPath#2026.06%*%#WinBarSeparator#/%*%#WinBarFilename#2026.06\ -\ June.md%*%=
 setlocal winblend=10
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -414,17 +296,19 @@ setlocal nowrap
 setlocal wrapmargin=0
 1
 sil! normal! zo
-let s:l = 8 - ((7 * winheight(0) + 26) / 53)
+21
+sil! normal! zo
+let s:l = 16 - ((13 * winheight(0) + 18) / 37)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 8
-normal! 05|
+keepjumps 16
+normal! 0
 wincmd w
 2wincmd w
-exe 'vert 1resize ' . ((&columns * 133 + 134) / 268)
-exe 'vert 2resize ' . ((&columns * 134 + 134) / 268)
-tabnext 2
+exe 'vert 1resize ' . ((&columns * 101 + 102) / 204)
+exe 'vert 2resize ' . ((&columns * 102 + 102) / 204)
+tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
 endif

@@ -34,7 +34,7 @@ setlocal colorcolumn=+1
 setlocal comments=s1:/*,mb:*,ex:*/,://,b:#,:%,:XCOMM,n:>,fb:-,fb:â€¢
 setlocal commentstring=
 setlocal complete=.,w,b,kspell
-setlocal completefunc=v:lua.MiniCompletion.completefunc_lsp
+setlocal completefunc=
 setlocal completeslash=
 setlocal concealcursor=
 setlocal conceallevel=0
@@ -49,7 +49,6 @@ setlocal expandtab
 if &filetype != ''
 setlocal filetype=
 endif
-setlocal fillchars=eob:\ ,fold:â•Œ,horiz:\ ,horizdown:\ ,horizup:\ ,msgsep:\ ,vert:\ ,verthoriz:\ ,vertleft:\ ,vertright:\ 
 setlocal fixendofline
 setlocal foldcolumn=0
 setlocal foldenable
@@ -82,7 +81,7 @@ setlocal modifiable
 setlocal nrformats=bin,hex
 setlocal number
 setlocal numberwidth=4
-setlocal omnifunc=v:lua.MiniCompletion.completefunc_lsp
+setlocal omnifunc=
 setlocal nopreserveindent
 setlocal nopreviewwindow
 setlocal quoteescape=\\

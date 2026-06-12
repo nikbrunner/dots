@@ -10,10 +10,10 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +99 plugin/10_options/base.lua
+badd +22 plugin/50_specs/black_atom/iter.lua
 argglobal
 %argdel
-edit plugin/10_options/base.lua
+edit plugin/50_specs/black_atom/iter.lua
 argglobal
 setlocal keymap=
 setlocal noarabic
@@ -50,6 +50,7 @@ setlocal noexpandtab
 if &filetype != 'lua'
 setlocal filetype=lua
 endif
+setlocal fillchars=eob:\ ,fold:╌,horiz:\ ,horizdown:\ ,horizup:\ ,msgsep:\ ,vert:\ ,verthoriz:\ ,vertleft:\ ,vertright:\ 
 setlocal fixendofline
 setlocal foldcolumn=0
 setlocal foldenable
@@ -83,7 +84,7 @@ setlocal modifiable
 setlocal nrformats=bin,hex
 setlocal number
 setlocal numberwidth=4
-setlocal omnifunc=v:lua.MiniCompletion.completefunc_lsp
+setlocal omnifunc=v:lua.vim.lua_omnifunc
 setlocal path=,
 setlocal nopreserveindent
 setlocal nopreviewwindow
@@ -117,7 +118,7 @@ setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#plugin%*%#WinBarSeparator#/%*%#WinBarPath#10_options%*%#WinBarSeparator#/%*%#WinBarFilename#base.lua%*%=
+setlocal winbar=%#WinBarPath#plugin%*%#WinBarSeparator#/%*%#WinBarPath#50_specs%*%#WinBarSeparator#/%*%#WinBarPath#black_atom%*%#WinBarSeparator#/%*%#WinBarFilename#iter.lua%*%=%#WinBarGitLabel#\ [GIT:%#WinBarGitAdd#\ +1%#WinBarGitChange#\ ~1%#WinBarGitDelete#\ -8%#WinBarGitLabel#]%*%#WinBarLspLabel#\ [LSP:\ %#DiagnosticSignWarn#:1%##%#WinBarLspLabel#]%*\ 
 setlocal winblend=10
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -126,12 +127,16 @@ setlocal winhighlight=
 setlocal nowinpinned
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 99 - ((35 * winheight(0) + 23) / 47)
+1
+sil! normal! zo
+6
+sil! normal! zo
+let s:l = 22 - ((15 * winheight(0) + 22) / 44)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 99
-normal! 03|
+keepjumps 22
+normal! 0
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf

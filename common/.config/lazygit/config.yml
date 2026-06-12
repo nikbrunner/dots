@@ -8,27 +8,27 @@ gui:
   # Theme colors managed by pick-theme
   theme:
     activeBorderColor:
-      - "#bab06f"
+      - "#dca23a"
       - bold
     inactiveBorderColor:
-      - "#a0a27e"
+      - "#946996"
     optionsTextColor:
-      - "#7dac86"
+      - "#8cb6c5"
     selectedLineBgColor:
-      - "#334133"
+      - "#5b3e47"
     cherryPickedCommitBgColor:
-      - "#152318"
+      - "#452a32"
     cherryPickedCommitFgColor:
-      - "#bab06f"
+      - "#dca23a"
     unstagedChangesColor:
-      - "#c88f7b"
+      - "#ff857b"
     defaultFgColor:
-      - "#dfcbaa"
+      - "#d4bfd6"
     searchingActiveBorderColor:
-      - "#bab06f"
+      - "#dca23a"
 
   authorColors:
-    "*": "#ba929d"
+    "*": "#d49bb2"
   branchColors:
     "main": "#e74c3c"
     "master": "#e74c3c"
@@ -38,7 +38,7 @@ gui:
   scrollPastBottom: true # enable scrolling past the bottom
   sidePanelWidth: 0.25 # number from 0 to 1
   expandFocusedSidePanel: true
-  mainPanelSplitMode: flexible # one of 'horizontal' | 'flexible' | 'vertical'
+  mainPanelSplitMode: horizontal # one of 'horizontal' | 'flexible' | 'vertical'
   portraitMode: auto # one of 'auto' | 'never' | 'always'
   enlargedSideViewLocation: left # one of 'left' | 'top'
   # theme:
