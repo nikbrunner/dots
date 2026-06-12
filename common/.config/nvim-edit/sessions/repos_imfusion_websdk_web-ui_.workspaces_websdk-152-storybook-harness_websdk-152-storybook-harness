@@ -10,11 +10,11 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +30 packages/web-ui/.storybook/main.ts
+badd +17 ~/repos/imfusion/websdk/web-ui/.workspaces/websdk-152-storybook-harness/packages/web-ui/src/docgen/gen-docgen.ts
 argglobal
 %argdel
-$argadd ~/repos/imfusion/websdk/web-ui/.workspaces/websdk-152-storybook-harness/packages/web-ui/src/components/chip/chip.tsx
-edit packages/web-ui/.storybook/main.ts
+$argadd packages/web-ui/src/components/chip/chip.tsx
+edit ~/repos/imfusion/websdk/web-ui/.workspaces/websdk-152-storybook-harness/packages/web-ui/src/docgen/gen-docgen.ts
 argglobal
 setlocal keymap=
 setlocal noarabic
@@ -80,20 +80,20 @@ setlocal matchpairs=(:),{:},[:]
 setlocal modeline
 setlocal modifiable
 setlocal nrformats=bin,hex
-setlocal nonumber
+setlocal number
 setlocal numberwidth=4
 setlocal omnifunc=v:lua.MiniCompletion.completefunc_lsp
 setlocal nopreserveindent
 setlocal nopreviewwindow
 setlocal quoteescape=\\
 setlocal noreadonly
-setlocal norelativenumber
+setlocal relativenumber
 setlocal norightleft
 setlocal rightleftcmd=search
 setlocal scrollback=-1
 setlocal noscrollbind
 setlocal shiftwidth=2
-setlocal signcolumn=no
+setlocal signcolumn=yes
 setlocal nosmartindent
 setlocal nosmoothscroll
 setlocal softtabstop=-1
@@ -115,7 +115,7 @@ setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#packages%*%#WinBarSeparator#/%*%#WinBarPath#web-ui%*%#WinBarSeparator#/%*%#WinBarPath#.storybook%*%#WinBarSeparator#/%*%#WinBarFilename#main.ts%*%=%#WinBarGitLabel#\ [GIT:%#WinBarGitAdd#\ +1%#WinBarGitLabel#]%*\ 
+setlocal winbar=%#WinBarPath#packages%*%#WinBarSeparator#/%*%#WinBarPath#web-ui%*%#WinBarSeparator#/%*%#WinBarPath#src%*%#WinBarSeparator#/%*%#WinBarPath#docgen%*%#WinBarSeparator#/%*%#WinBarFilename#gen-docgen.ts%*%=%#WinBarGitLabel#\ [GIT:%#WinBarGitChange#\ ~1%#WinBarGitLabel#]%*\ 
 setlocal winblend=10
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -124,15 +124,11 @@ setlocal winhighlight=
 setlocal nowinpinned
 setlocal nowrap
 setlocal wrapmargin=0
-9
-sil! normal! zo
-23
-sil! normal! zo
-let s:l = 30 - ((29 * winheight(0) + 22) / 44)
+let s:l = 17 - ((16 * winheight(0) + 19) / 38)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 30
+keepjumps 17
 normal! 0
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
