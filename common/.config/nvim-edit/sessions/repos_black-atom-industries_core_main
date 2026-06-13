@@ -10,11 +10,11 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +33 src/themes/terra/black-atom-terra-summer-night.ts
+badd +46 src/themes/jpn/create-ui-dark.ts
 argglobal
 %argdel
 $argadd ./
-edit src/themes/terra/black-atom-terra-summer-night.ts
+edit src/themes/jpn/create-ui-dark.ts
 argglobal
 setlocal keymap=
 setlocal noarabic
@@ -67,10 +67,10 @@ setlocal formatoptions=n1jrql
 setlocal iminsert=0
 setlocal imsearch=-1
 setlocal includeexpr=
-setlocal indentexpr=GetTypescriptIndent()
+setlocal indentexpr=v:lua.require'arborist.indent'.indentexpr()
 setlocal indentkeys=0{,0},0),0],0,,!^F,o,O,e
 setlocal infercase
-setlocal iskeyword=@,48-57,_,192-255,-,#,$
+setlocal iskeyword=@,48-57,_,192-255,-,$,#
 setlocal lhistory=10
 setlocal linebreak
 setlocal nolisp
@@ -92,22 +92,23 @@ setlocal norightleft
 setlocal rightleftcmd=search
 setlocal scrollback=-1
 setlocal noscrollbind
-setlocal shiftwidth=2
+setlocal scrolloff=4
+setlocal shiftwidth=4
 setlocal signcolumn=yes
 setlocal nosmartindent
 setlocal nosmoothscroll
-setlocal softtabstop=0
+setlocal softtabstop=-1
 setlocal nospell
 setlocal spellcapcheck=[.?!]\\_[\\])'\"\\t\ ]\\+
 setlocal spellfile=
 setlocal spelllang=en_us,de_de
-setlocal spelloptions=camel
+setlocal spelloptions=camel,noplainbuffer
 setlocal statuscolumn=
 setlocal suffixesadd=.ts,.d.ts,.tsx,.js,.jsx,.cjs,.mjs
 setlocal noswapfile
 setlocal synmaxcol=3000
-if &syntax != 'typescript'
-setlocal syntax=typescript
+if &syntax != ''
+setlocal syntax=
 endif
 setlocal tabstop=2
 setlocal tagfunc=v:lua.vim.lsp.tagfunc
@@ -115,8 +116,9 @@ setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#...%*%#WinBarSeparator#/%*%#WinBarPath#terra%*%#WinBarSeparator#/%*%#WinBarFilename#black-atom-terra-summer-night.ts%*%=%#WinBarGitLabel#\ [GIT:%#WinBarGitChange#\ ~4%#WinBarGitLabel#]%*\ 
-setlocal winblend=0
+setlocal virtualedit=block
+setlocal winbar=%#WinBarPath#src%*%#WinBarSeparator#/%*%#WinBarPath#themes%*%#WinBarSeparator#/%*%#WinBarPath#jpn%*%#WinBarSeparator#/%*%#WinBarFilename#create-ui-dark.ts%*%=%#WinBarGitLabel#\ [GIT:%#WinBarGitChange#\ ~1%#WinBarGitLabel#]%*\ 
+setlocal winblend=10
 setlocal nowinfixbuf
 setlocal nowinfixheight
 setlocal nowinfixwidth
@@ -124,12 +126,16 @@ setlocal winhighlight=
 setlocal nowinpinned
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 33 - ((22 * winheight(0) + 21) / 42)
+4
+sil! normal! zo
+11
+sil! normal! zo
+let s:l = 11 - ((10 * winheight(0) + 15) / 31)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 33
-normal! 013|
+keepjumps 11
+normal! 0
 lcd ~/repos/black-atom-industries/core
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
