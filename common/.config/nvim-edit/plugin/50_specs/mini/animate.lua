@@ -22,6 +22,8 @@ Edit.later(function()
 	vim.api.nvim_create_autocmd("FileType", {
 		group = vim.api.nvim_create_augroup("mini-animate-disable", { clear = true }),
 		pattern = { --
+			"iter",
+			"iter-diff",
 			"minifiles",
 			"minipick",
 			"notify",
