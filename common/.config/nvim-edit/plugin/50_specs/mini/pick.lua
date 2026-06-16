@@ -34,8 +34,8 @@ mini_pick.setup({
 		refine_marked = "<M-Space>",
 
 		scroll_down = "<C-d>",
-		-- scroll_left = "<C-h>",
-		-- scroll_right = "<C-l>",
+		scroll_left = "",
+		scroll_right = "",
 		scroll_up = "<C-u>",
 
 		stop = "<Esc>",
