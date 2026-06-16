@@ -65,7 +65,7 @@
       "src": "git@github.com:folke/lazydev.nvim"
     },
     "mdn.nvim": {
-      "rev": "ea27d2649065f0801c795aed9f627dbf54f9bb97",
+      "rev": "bdd0f9703119fa63b927163c96a5f6b37394924d",
       "src": "git@github.com:nikbrunner/mdn.nvim"
     },
     "mini.nvim": {
