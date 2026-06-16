@@ -98,7 +98,7 @@
     },
     "quicker.nvim": {
       "rev": "4a6883cb13fe097a20a046eb55f6dffd239276e3",
-      "src": "git@github.com:stevearc/quicker.nvim.git"
+      "src": "git@github.com:stevearc/quicker.nvim"
     },
     "radar.nvim": {
       "rev": "6942cf4a4f4c870cf04a1201d9fdfcebf59d4ffe",
