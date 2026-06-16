@@ -10,14 +10,10 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +19 plugin/50_specs/tabline.lua
+badd +200 plugin/50_specs/pack-ui.lua
 argglobal
 %argdel
-$argadd ~/repos/nikbrunner/dots/common/.config/nvim-edit/TODO.md
-set stal=2
-tabnew +setlocal\ bufhidden=wipe
-tabrewind
-edit plugin/50_specs/tabline.lua
+edit plugin/50_specs/pack-ui.lua
 argglobal
 setlocal keymap=
 setlocal noarabic
@@ -98,7 +94,6 @@ setlocal norightleft
 setlocal rightleftcmd=search
 setlocal scrollback=-1
 setlocal noscrollbind
-setlocal scrolloff=4
 setlocal shiftwidth=0
 setlocal signcolumn=yes
 setlocal smartindent
@@ -122,8 +117,7 @@ setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal virtualedit=block
-setlocal winbar=%#WinBarPath#plugin%*%#WinBarSeparator#/%*%#WinBarPath#50_specs%*%#WinBarSeparator#/%*%#WinBarFilename#tabline.lua%*%=
+setlocal winbar=%#WinBarPath#plugin%*%#WinBarSeparator#/%*%#WinBarPath#50_specs%*%#WinBarSeparator#/%*%#WinBarFilename#pack-ui.lua%*%=%#WinBarLspLabel#\ [LSP:\ %#DiagnosticSignWarn#:3%##%#WinBarLspLabel#]%*\ 
 setlocal winblend=10
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -132,142 +126,29 @@ setlocal winhighlight=
 setlocal nowinpinned
 setlocal nowrap
 setlocal wrapmargin=0
-1
+66
 sil! normal! zo
-6
+116
 sil! normal! zo
-let s:l = 21 - ((20 * winheight(0) + 30) / 60)
+140
+sil! normal! zo
+143
+sil! normal! zo
+180
+sil! normal! zo
+183
+sil! normal! zo
+209
+sil! normal! zo
+269
+sil! normal! zo
+let s:l = 200 - ((40 * winheight(0) + 23) / 47)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 21
-normal! 0
-tabnext
-edit plugin/50_specs/tabline.lua
-argglobal
-setlocal keymap=
-setlocal noarabic
-setlocal autoindent
-setlocal nobinary
-setlocal breakindent
-setlocal breakindentopt=list:-1
-setlocal bufhidden=
-setlocal buflisted
-setlocal buftype=
-setlocal busy=0
-setlocal nocindent
-setlocal cinkeys=0{,0},0),0],:,0#,!^F,o,O,e
-setlocal cinoptions=
-setlocal cinscopedecls=public,protected,private
-setlocal cinwords=if,else,while,do,for,switch
-setlocal colorcolumn=+1
-setlocal comments=:---,:--
-setlocal commentstring=--\ %s
-setlocal complete=.,w,b,kspell
-setlocal completefunc=v:lua.MiniCompletion.completefunc_lsp
-setlocal completeslash=
-setlocal concealcursor=
-setlocal conceallevel=0
-setlocal nocopyindent
-setlocal nocursorbind
-setlocal nocursorcolumn
-setlocal cursorline
-setlocal cursorlineopt=screenline,number
-setlocal define=\\<function\\|\\<local\\%(\\s\\+function\\)\\=
-setlocal nodiff
-setlocal eventignorewin=
-setlocal noexpandtab
-if &filetype != 'lua'
-setlocal filetype=lua
-endif
-setlocal fixendofline
-setlocal foldcolumn=0
-setlocal foldenable
-setlocal foldexpr=v:lua.vim.treesitter.foldexpr()
-setlocal foldignore=#
-setlocal foldlevel=99
-setlocal foldmarker={{{,}}}
-setlocal foldmethod=expr
-setlocal foldminlines=1
-setlocal foldnestmax=10
-setlocal foldtext=
-setlocal formatexpr=v:lua.require'conform'.formatexpr()
-setlocal formatlistpat=^\\s*[0-9\\-\\+\\*]\\+[\\.\\)]*\\s\\+
-setlocal formatoptions=n1jrql
-setlocal iminsert=0
-setlocal imsearch=-1
-setlocal include=\\<\\%(\\%(do\\|load\\)file\\|require\\)\\s*(
-setlocal includeexpr=v:lua.require'vim._ftplugin.lua'.includeexpr(v:fname)
-setlocal indentexpr=v:lua.require'arborist.indent'.indentexpr()
-setlocal indentkeys=0{,0},0),0],:,0#,!^F,o,O,e,0=end,0=until
-setlocal infercase
-setlocal iskeyword=@,48-57,_,192-255,-
-setlocal lhistory=10
-setlocal linebreak
-setlocal nolisp
-setlocal lispoptions=
-setlocal list
-setlocal matchpairs=(:),{:},[:]
-setlocal modeline
-setlocal modifiable
-setlocal nrformats=bin,hex
-setlocal number
-setlocal numberwidth=4
-setlocal omnifunc=v:lua.MiniCompletion.completefunc_lsp
-setlocal path=,
-setlocal nopreserveindent
-setlocal nopreviewwindow
-setlocal quoteescape=\\
-setlocal noreadonly
-setlocal relativenumber
-setlocal norightleft
-setlocal rightleftcmd=search
-setlocal scrollback=-1
-setlocal noscrollbind
-setlocal scrolloff=4
-setlocal shiftwidth=0
-setlocal signcolumn=yes
-setlocal smartindent
-setlocal nosmoothscroll
-setlocal softtabstop=-1
-setlocal nospell
-setlocal spellcapcheck=[.?!]\\_[\\])'\"\\t\ ]\\+
-setlocal spellfile=
-setlocal spelllang=en_us,de_de
-setlocal spelloptions=camel,noplainbuffer
-setlocal statuscolumn=
-setlocal suffixesadd=.lua
-setlocal noswapfile
-setlocal synmaxcol=3000
-if &syntax != ''
-setlocal syntax=
-endif
-setlocal tabstop=2
-setlocal tagfunc=v:lua.vim.lsp.tagfunc
-setlocal textwidth=0
-setlocal undofile
-setlocal varsofttabstop=
-setlocal vartabstop=
-setlocal virtualedit=block
-setlocal winbar=%#WinBarPath#plugin%*%#WinBarSeparator#/%*%#WinBarPath#50_specs%*%#WinBarSeparator#/%*%#WinBarFilename#tabline.lua%*%=
-setlocal winblend=10
-setlocal nowinfixbuf
-setlocal nowinfixheight
-setlocal nowinfixwidth
-setlocal winhighlight=
-setlocal nowinpinned
-setlocal nowrap
-setlocal wrapmargin=0
-1
-sil! normal! zo
-let s:l = 31 - ((15 * winheight(0) + 30) / 60)
-if s:l < 1 | let s:l = 1 | endif
-keepjumps exe s:l
-normal! zt
-keepjumps 31
+keepjumps 200
 normal! 0
 tabnext 1
-set stal=1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
 endif

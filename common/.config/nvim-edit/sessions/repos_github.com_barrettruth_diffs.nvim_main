@@ -4,18 +4,17 @@ let v:this_session=expand("<sfile>:p")
 doautoall SessionLoadPre
 silent only
 silent tabonly
-cd ~/repos/nikbrunner/mdn.nvim
+cd ~/repos/github.com/barrettruth/diffs.nvim
 if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +25 lua/mdn/config.lua
 argglobal
 %argdel
 $argadd ./
-edit lua/mdn/config.lua
 argglobal
+enew
 setlocal keymap=
 setlocal noarabic
 setlocal autoindent
@@ -32,24 +31,23 @@ setlocal cinoptions=
 setlocal cinscopedecls=public,protected,private
 setlocal cinwords=if,else,while,do,for,switch
 setlocal colorcolumn=+1
-setlocal comments=:---,:--
-setlocal commentstring=--\ %s
+setlocal comments=s1:/*,mb:*,ex:*/,://,b:#,:%,:XCOMM,n:>,fb:-,fb:â€¢
+setlocal commentstring=
 setlocal complete=.,w,b,kspell
-setlocal completefunc=v:lua.MiniCompletion.completefunc_lsp
+setlocal completefunc=
 setlocal completeslash=
 setlocal concealcursor=
 setlocal conceallevel=0
 setlocal nocopyindent
 setlocal nocursorbind
 setlocal nocursorcolumn
-setlocal cursorline
+setlocal nocursorline
 setlocal cursorlineopt=screenline,number
-setlocal define=\\<function\\|\\<local\\%(\\s\\+function\\)\\=
 setlocal nodiff
 setlocal eventignorewin=
 setlocal expandtab
-if &filetype != 'lua'
-setlocal filetype=lua
+if &filetype != ''
+setlocal filetype=
 endif
 setlocal fixendofline
 setlocal foldcolumn=0
@@ -64,13 +62,12 @@ setlocal foldnestmax=10
 setlocal foldtext=
 setlocal formatexpr=v:lua.require'conform'.formatexpr()
 setlocal formatlistpat=^\\s*[0-9\\-\\+\\*]\\+[\\.\\)]*\\s\\+
-setlocal formatoptions=n1jrql
+setlocal formatoptions=rqnl1j
 setlocal iminsert=0
 setlocal imsearch=-1
-setlocal include=\\<\\%(\\%(do\\|load\\)file\\|require\\)\\s*(
-setlocal includeexpr=v:lua.require'vim._ftplugin.lua'.includeexpr(v:fname)
-setlocal indentexpr=v:lua.require'arborist.indent'.indentexpr()
-setlocal indentkeys=0{,0},0),0],:,0#,!^F,o,O,e,0=end,0=until
+setlocal includeexpr=
+setlocal indentexpr=
+setlocal indentkeys=0{,0},0),0],:,0#,!^F,o,O,e
 setlocal infercase
 setlocal iskeyword=@,48-57,_,192-255,-
 setlocal lhistory=10
@@ -82,59 +79,49 @@ setlocal matchpairs=(:),{:},[:]
 setlocal modeline
 setlocal modifiable
 setlocal nrformats=bin,hex
-setlocal number
+setlocal nonumber
 setlocal numberwidth=4
-setlocal omnifunc=v:lua.MiniCompletion.completefunc_lsp
-setlocal path=,
+setlocal omnifunc=
 setlocal nopreserveindent
 setlocal nopreviewwindow
 setlocal quoteescape=\\
 setlocal noreadonly
-setlocal relativenumber
+setlocal norelativenumber
 setlocal norightleft
 setlocal rightleftcmd=search
 setlocal scrollback=-1
 setlocal noscrollbind
 setlocal shiftwidth=2
-setlocal signcolumn=yes
+setlocal signcolumn=no
 setlocal smartindent
 setlocal nosmoothscroll
-setlocal softtabstop=-1
+setlocal softtabstop=0
 setlocal nospell
 setlocal spellcapcheck=[.?!]\\_[\\])'\"\\t\ ]\\+
 setlocal spellfile=
 setlocal spelllang=en_us,de_de
-setlocal spelloptions=camel,noplainbuffer
-setlocal statuscolumn=
-setlocal suffixesadd=.lua
+setlocal spelloptions=camel
+setlocal statuscolumn=%!v:lua.require'iter.ui.status.preview.rail'.statuscolumn()
+setlocal suffixesadd=
 setlocal noswapfile
 setlocal synmaxcol=3000
 if &syntax != ''
 setlocal syntax=
 endif
 setlocal tabstop=2
-setlocal tagfunc=v:lua.vim.lsp.tagfunc
+setlocal tagfunc=
 setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#lua%*%#WinBarSeparator#/%*%#WinBarPath#mdn%*%#WinBarSeparator#/%*%#WinBarFilename#config.lua%*%=%#WinBarGitLabel#\ [GIT:%#WinBarGitChange#\ ~2%#WinBarGitLabel#]%*\ 
 setlocal winblend=10
 setlocal nowinfixbuf
 setlocal nowinfixheight
 setlocal nowinfixwidth
-setlocal winhighlight=
+setlocal winhighlight=DiffAdd:DiffsDiffAdd,DiffDelete:DiffsDiffDelete,DiffChange:DiffsDiffChange,DiffText:DiffsDiffText
 setlocal nowinpinned
 setlocal nowrap
 setlocal wrapmargin=0
-15
-sil! normal! zo
-let s:l = 22 - ((21 * winheight(0) + 26) / 53)
-if s:l < 1 | let s:l = 1 | endif
-keepjumps exe s:l
-normal! zt
-keepjumps 22
-normal! 0
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
