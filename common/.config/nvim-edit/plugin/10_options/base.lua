@@ -58,7 +58,7 @@ vim.o.guifont         = 'JetBrainsMono Nerd Font:h16'            -- Only used by
 
 -- Special UI symbols. More is set via 'mini.basics' later.
 vim.o.fillchars       = 'eob: ,fold:╌'
-vim.o.listchars       = 'extends:…,nbsp:␣,precedes:…,tab:> '
+-- vim.o.listchars       = 'extends:…,nbsp:␣,precedes:…,tab:> '
 
 -- Folds (see `:h fold-commands`, `:h zM`, `:h zR`, `:h zA`, `:h zj`)
 vim.o.foldlevel       = 99     -- Start with all folds open
