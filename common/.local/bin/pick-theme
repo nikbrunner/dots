@@ -37,6 +37,7 @@ THEMES_JSON="$DOTS_DIR/common/themes.json"
 
 # Tool configurations
 NVIM_CONFIG="$DOTS_DIR/common/.config/nvim/lua/config.lua"
+NVIM_SPEC_CONFIG="$DOTS_DIR/common/.config/nvim-edit/plugin/50_specs/black_atom/nvim.lua"
 TMUX_CONFIG="$DOTS_DIR/common/.config/tmux/tmux.conf"
 GHOSTTY_CONFIG="$DOTS_DIR/common/.config/ghostty/config"
 GIT_DELTA_CONFIG="$DOTS_DIR/common/.gitconfig.delta"
@@ -80,6 +81,16 @@ update_nvim_theme() {
 		sed -i '' "s/colorscheme = .*/colorscheme = \"$theme\",/" "$NVIM_CONFIG"
 	else
 		sed -i "s/colorscheme = .*/colorscheme = \"$theme\",/" "$NVIM_CONFIG"
+	fi
+}
+
+# Update Neovim black-atom spec configuration
+update_nvim_spec_theme() {
+	local theme="$1"
+	if [[ "$(uname)" == "Darwin" ]]; then
+		sed -i '' "s/vim.cmd.colorscheme(\".*\")/vim.cmd.colorscheme(\"$theme\")/" "$NVIM_SPEC_CONFIG"
+	else
+		sed -i "s/vim.cmd.colorscheme(\".*\")/vim.cmd.colorscheme(\"$theme\")/" "$NVIM_SPEC_CONFIG"
 	fi
 }
 
@@ -309,10 +320,11 @@ apply_theme() {
 
 	errors=()
 	PROGRESS_CURRENT=0
-	PROGRESS_TOTAL=14
+	PROGRESS_TOTAL=15
 
 	# Update config files
 	run_step "nvim config" update_nvim_theme "$theme"
+	run_step "nvim spec config" update_nvim_spec_theme "$theme"
 	run_step "tmux config" update_tmux_theme "$theme" "$collection"
 	run_step "ghostty config" update_ghostty_theme "$theme"
 	run_step "zed config" update_zed_theme "$theme"
@@ -361,6 +373,7 @@ validate_environment() {
 	# Check configuration files
 	[[ -f "$THEMES_JSON" ]] || errors+=("Themes registry not found: $THEMES_JSON")
 	[[ -f "$NVIM_CONFIG" ]] || errors+=("Neovim config not found: $NVIM_CONFIG")
+	[[ -f "$NVIM_SPEC_CONFIG" ]] || errors+=("Neovim spec config not found: $NVIM_SPEC_CONFIG")
 	[[ -f "$TMUX_CONFIG" ]] || errors+=("tmux config not found: $TMUX_CONFIG")
 	[[ -f "$GHOSTTY_CONFIG" ]] || errors+=("Ghostty config not found: $GHOSTTY_CONFIG")
 	[[ -f "$GIT_DELTA_CONFIG" ]] || errors+=("Git delta config not found: $GIT_DELTA_CONFIG")
