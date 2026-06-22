@@ -1,4 +1,4 @@
 {
-  "defaultModel": "anthropic/claude-sonnet-4-6",
+  "defaultModel": "openrouter/google/gemini-2.5-flash-lite",
   "maxImagesPerCall": 10
 }
