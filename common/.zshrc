@@ -53,6 +53,7 @@ alias pp="pass-cli"
 alias scratch="\$EDITOR \$HOME/scratchpad.md"
 alias ydl='yt-dlp --audio-format mp3 --embed-thumbnail --embed-metadata --extract-audio'
 alias groot='cd "$(git rev-parse --show-toplevel 2>/dev/null)" || echo "I am not Groot (not in a git repo)"'
+alias noise="exec ffplay -hide_banner -loglevel error -nodisp -f lavfi 'anoisesrc=color=brown:amplitude=0.354,lowpass=f=550:poles=1,bass=g=12:f=60,afade=t=in:d=3'"
 
 alias brewi='outdated=$(brew outdated); [[ -n "$outdated" ]] && fzf --multi <<< $outdated | xargs brew upgrade'
 
