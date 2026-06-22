@@ -22,5 +22,5 @@ Edit.now(function()
 		},
 	})
 
-	vim.cmd.colorscheme("black-atom-terra-fall-day")
+	vim.cmd.colorscheme("black-atom-paper-brown-light")
 end)
