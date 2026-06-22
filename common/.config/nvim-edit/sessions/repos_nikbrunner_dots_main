@@ -10,12 +10,26 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +15 ~/repos/nikbrunner/dots/common/.config/nvim-edit/plugin/50_specs/black_atom/nvim.lua
+badd +7 README.md
 argglobal
 %argdel
 $argadd ~/.config/lazygit/config.yml
-edit ~/repos/nikbrunner/dots/common/.config/nvim-edit/plugin/50_specs/black_atom/nvim.lua
+edit README.md
 argglobal
+xnoremap <buffer> $ g$
+onoremap <buffer> $ g$
+nnoremap <buffer> $ g$
+xnoremap <buffer> 0 g0
+onoremap <buffer> 0 g0
+nnoremap <buffer> 0 g0
+xnoremap <buffer> <silent> [[ :exe "normal! gv"|call search('\%(^#\{1,5\}\s\+\S\|^\S.*\n^[=-]\+$\)', "bsW")
+xnoremap <buffer> <silent> ]] :exe "normal! gv"|call search('\%(^#\{1,5\}\s\+\S\|^\S.*\n^[=-]\+$\)', "sW")
+xnoremap <buffer> j gj
+onoremap <buffer> j gj
+nnoremap <buffer> j gj
+xnoremap <buffer> k gk
+onoremap <buffer> k gk
+nnoremap <buffer> k gk
 setlocal keymap=
 setlocal noarabic
 setlocal autoindent
@@ -32,8 +46,8 @@ setlocal cinoptions=
 setlocal cinscopedecls=public,protected,private
 setlocal cinwords=if,else,while,do,for,switch
 setlocal colorcolumn=+1
-setlocal comments=:---,:--
-setlocal commentstring=--\ %s
+setlocal comments=fb:*,fb:-,fb:+,n:>
+setlocal commentstring=<!--\ %s\ -->
 setlocal complete=.,w,b,kspell
 setlocal completefunc=v:lua.MiniCompletion.completefunc_lsp
 setlocal completeslash=
@@ -44,12 +58,11 @@ setlocal nocursorbind
 setlocal nocursorcolumn
 setlocal cursorline
 setlocal cursorlineopt=screenline,number
-setlocal define=\\<function\\|\\<local\\%(\\s\\+function\\)\\=
 setlocal nodiff
 setlocal eventignorewin=
-setlocal noexpandtab
-if &filetype != 'lua'
-setlocal filetype=lua
+setlocal expandtab
+if &filetype != 'markdown'
+setlocal filetype=markdown
 endif
 setlocal fixendofline
 setlocal foldcolumn=0
@@ -63,14 +76,13 @@ setlocal foldminlines=1
 setlocal foldnestmax=10
 setlocal foldtext=
 setlocal formatexpr=v:lua.require'conform'.formatexpr()
-setlocal formatlistpat=^\\s*[0-9\\-\\+\\*]\\+[\\.\\)]*\\s\\+
-setlocal formatoptions=n1jrql
+setlocal formatlistpat=^\\s*\\d\\+\\.\\s\\+\\|^\\s*[-*+]\\s\\+\\|^\\[^\\ze[^\\]]\\+\\]:\\&^.\\{4\\}
+setlocal formatoptions=j1tqln
 setlocal iminsert=0
 setlocal imsearch=-1
-setlocal include=\\<\\%(\\%(do\\|load\\)file\\|require\\)\\s*(
-setlocal includeexpr=v:lua.require'vim._ftplugin.lua'.includeexpr(v:fname)
+setlocal includeexpr=
 setlocal indentexpr=v:lua.require'arborist.indent'.indentexpr()
-setlocal indentkeys=0{,0},0),0],:,0#,!^F,o,O,e,0=end,0=until
+setlocal indentkeys=0{,0},0),0],:,0#,!^F,o,O,e
 setlocal infercase
 setlocal iskeyword=@,48-57,_,192-255,-
 setlocal lhistory=10
@@ -78,14 +90,13 @@ setlocal linebreak
 setlocal nolisp
 setlocal lispoptions=
 setlocal list
-setlocal matchpairs=(:),{:},[:]
+setlocal matchpairs=(:),{:},[:],<:>
 setlocal modeline
 setlocal modifiable
 setlocal nrformats=bin,hex
 setlocal number
 setlocal numberwidth=4
 setlocal omnifunc=v:lua.MiniCompletion.completefunc_lsp
-setlocal path=,
 setlocal nopreserveindent
 setlocal nopreviewwindow
 setlocal quoteescape=\\
@@ -96,7 +107,7 @@ setlocal rightleftcmd=search
 setlocal scrollback=-1
 setlocal noscrollbind
 setlocal scrolloff=4
-setlocal shiftwidth=0
+setlocal shiftwidth=2
 setlocal signcolumn=yes
 setlocal smartindent
 setlocal nosmoothscroll
@@ -107,20 +118,20 @@ setlocal spellfile=
 setlocal spelllang=en_us,de_de
 setlocal spelloptions=camel,noplainbuffer
 setlocal statuscolumn=
-setlocal suffixesadd=.lua
+setlocal suffixesadd=
 setlocal noswapfile
 setlocal synmaxcol=3000
 if &syntax != ''
 setlocal syntax=
 endif
-setlocal tabstop=2
+setlocal tabstop=4
 setlocal tagfunc=v:lua.vim.lsp.tagfunc
-setlocal textwidth=0
+setlocal textwidth=80
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
 setlocal virtualedit=block
-setlocal winbar=%#WinBarPath#plugin%*%#WinBarSeparator#/%*%#WinBarPath#50_specs%*%#WinBarSeparator#/%*%#WinBarPath#black_atom%*%#WinBarSeparator#/%*%#WinBarFilename#nvim.lua%*%=%#WinBarGitLabel#\ [GIT:%#WinBarGitChange#\ ~1%#WinBarGitLabel#]%*\ 
+setlocal winbar=%#WinBarFilename#README.md%*%=%#WinBarLspLabel#\ [LSP:\ %#DiagnosticSignInfo#:6%##%#WinBarLspLabel#]%*\ 
 setlocal winblend=10
 setlocal nowinfixbuf
 setlocal winfixheight
@@ -131,12 +142,14 @@ setlocal nowrap
 setlocal wrapmargin=0
 1
 sil! normal! zo
-let s:l = 15 - ((12 * winheight(0) + 20) / 40)
+28
+sil! normal! zo
+let s:l = 7 - ((6 * winheight(0) + 19) / 38)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 15
-normal! 021|
+keepjumps 7
+normal! 0
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf

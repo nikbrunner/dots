@@ -10,11 +10,11 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +0 ./
+badd +1430 .obsidian/snippets/typo.css
 argglobal
 %argdel
 $argadd ./
-edit ./
+edit .obsidian/snippets/typo.css
 argglobal
 setlocal keymap=
 setlocal noarabic
@@ -32,8 +32,8 @@ setlocal cinoptions=
 setlocal cinscopedecls=public,protected,private
 setlocal cinwords=if,else,while,do,for,switch
 setlocal colorcolumn=+1
-setlocal comments=s1:/*,mb:*,ex:*/,://,b:#,:%,:XCOMM,n:>,fb:-,fb:‚Ä¢
-setlocal commentstring=
+setlocal comments=s1:/*,mb:*,ex:*/
+setlocal commentstring=/*\ %s\ */
 setlocal complete=.,w,b,kspell
 setlocal completefunc=v:lua.MiniCompletion.completefunc_lsp
 setlocal completeslash=
@@ -47,8 +47,8 @@ setlocal cursorlineopt=screenline,number
 setlocal nodiff
 setlocal eventignorewin=
 setlocal expandtab
-if &filetype != ''
-setlocal filetype=
+if &filetype != 'css'
+setlocal filetype=css
 endif
 setlocal fixendofline
 setlocal foldcolumn=0
@@ -63,12 +63,13 @@ setlocal foldnestmax=10
 setlocal foldtext=
 setlocal formatexpr=v:lua.require'conform'.formatexpr()
 setlocal formatlistpat=^\\s*[0-9\\-\\+\\*]\\+[\\.\\)]*\\s\\+
-setlocal formatoptions=rqnl1j
+setlocal formatoptions=n1jrql
 setlocal iminsert=0
 setlocal imsearch=-1
+setlocal include=^\\s*@import\\s\\+\\%(url(\\)\\=
 setlocal includeexpr=
-setlocal indentexpr=
-setlocal indentkeys=0{,0},0),0],:,0#,!^F,o,O,e
+setlocal indentexpr=v:lua.require'arborist.indent'.indentexpr()
+setlocal indentkeys=0{,0},!^F,o,O
 setlocal infercase
 setlocal iskeyword=@,48-57,_,192-255,-
 setlocal lhistory=10
@@ -92,16 +93,17 @@ setlocal norightleft
 setlocal rightleftcmd=search
 setlocal scrollback=-1
 setlocal noscrollbind
-setlocal shiftwidth=2
+setlocal scrolloff=4
+setlocal shiftwidth=4
 setlocal signcolumn=yes
-setlocal smartindent
+setlocal nosmartindent
 setlocal nosmoothscroll
-setlocal softtabstop=0
+setlocal softtabstop=-1
 setlocal nospell
 setlocal spellcapcheck=[.?!]\\_[\\])'\"\\t\ ]\\+
 setlocal spellfile=
 setlocal spelllang=en_us,de_de
-setlocal spelloptions=camel
+setlocal spelloptions=camel,noplainbuffer
 setlocal statuscolumn=
 setlocal suffixesadd=
 setlocal noswapfile
@@ -110,12 +112,13 @@ if &syntax != ''
 setlocal syntax=
 endif
 setlocal tabstop=2
-setlocal tagfunc=
+setlocal tagfunc=v:lua.vim.lsp.tagfunc
 setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#~%*%#WinBarSeparator#/%*%#WinBarPath#repos%*%#WinBarSeparator#/%*%#WinBarPath#nikbrunner%*%#WinBarSeparator#/%*%#WinBarFilename#notes%*%=
+setlocal virtualedit=block
+setlocal winbar=%#WinBarPath#.obsidian%*%#WinBarSeparator#/%*%#WinBarPath#snippets%*%#WinBarSeparator#/%*%#WinBarFilename#typo.css%*%=%#WinBarGitLabel#\ [GIT:%#WinBarGitAdd#\ +1387%#WinBarGitChange#\ ~33%#WinBarGitDelete#\ -112%#WinBarGitLabel#]%*%#WinBarLspLabel#\ [LSP:\ %#DiagnosticSignError#ÔÅó:42%##%#WinBarLspLabel#]%*\ 
 setlocal winblend=10
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -124,11 +127,11 @@ setlocal winhighlight=
 setlocal nowinpinned
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 1 - ((0 * winheight(0) + 22) / 45)
+let s:l = 958 - ((25 * winheight(0) + 21) / 43)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 1
+keepjumps 958
 normal! 0
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
@@ -143,7 +146,6 @@ if filereadable(s:sx)
 endif
 let &g:so = s:so_save | let &g:siso = s:siso_save
 set hlsearch
-nohlsearch
 doautoall SessionLoadPost
 unlet SessionLoad
 " vim: set ft=vim :

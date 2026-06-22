@@ -1,6 +1,6 @@
 {
   "theme": "terminal",
-  "lastChangelogVersion": "0.79.0",
+  "lastChangelogVersion": "0.79.10",
   "packages": [
     "npm:pi-web-access",
     "npm:@ff-labs/pi-fff",
@@ -15,7 +15,7 @@
     "npm:pi-subagents"
   ],
   "defaultProvider": "openrouter",
-  "defaultModel": "minimax/minimax-m3",
+  "defaultModel": "z-ai/glm-5.2",
   "enabledModels": [
     "openrouter/minimax/minimax-m2.7",
     "openrouter/z-ai/glm-5.1",
@@ -24,7 +24,9 @@
     "openrouter/deepseek/deepseek-v4-flash",
     "openrouter/xiaomi/mimo-v2.5",
     "openrouter/xiaomi/mimo-v2.5-pro",
-    "openrouter/minimax/minimax-m3"
+    "openrouter/minimax/minimax-m3",
+    "opencode-go/glm-5.2",
+    "openrouter/z-ai/glm-5.2"
   ],
   "hideThinkingBlock": false,
   "compaction": {
