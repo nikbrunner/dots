@@ -8,6 +8,24 @@ metadata:
 
 # Neovim Development
 
+## Triage: surface problems first
+
+Most nvim config issues are surface-level — a wrong option name, a renamed
+API, a typo, a missing `opts` key. Before reaching for headless verification
+or plugin source:
+
+1. Check the **plugin README** and its `doc/` help tags.
+   `:h <plugin>-<symbol>` or read `<plugin>/doc/*.txt` directly.
+2. Check the relevant **nvim help tag**: `:h <api>` / `$VIMRUNTIME/doc/*.txt`.
+3. If on nightly and an API looks moved/renamed, check `news.txt`.
+
+Only escalate to headless verification / plugin source inspection when the docs
+don't answer it. "Let me read how the plugin implements this" is a rabbit hole,
+not a first move. If the doc lookup doesn't reproduce your symptom, say so
+explicitly before going deeper — most of the time it means the problem is
+elsewhere (config wiring, load order, another plugin), not in the plugin's
+internals.
+
 ## Core Principle
 
 I run **Neovim nightly** (via `bob`) — APIs move between builds. Never trust memory for `vim.*` APIs, help tags, or plugin module names. Verify against the **locally installed docs** first; they always match the running version. Web docs describe stable and are often behind.
@@ -31,7 +49,7 @@ Plugin docs live inside the installed plugin's `doc/` directory, e.g. mini.nvim 
 ls "$(NVIM_APPNAME=nvim-edit nvim --clean --headless --cmd 'lua io.write(vim.fn.stdpath("data"))' --cmd 'q')/site/pack/core/opt/mini.nvim/doc/"
 ```
 
-## Headless Verification
+## Headless Verification (only when docs are insufficient)
 
 ```bash
 # Does this API exist in the running build?
