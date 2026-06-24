@@ -10,7 +10,9 @@
       "alt-[": "workspace::ToggleLeftDock",
       "alt-]": "workspace::ToggleRightDock",
 
-      ",": null,
+      // NOTE: `,` is nulled in the vim normal/visual blocks below (scoped),
+      // not here — a global null loses to the default's context-scoped
+      // `vim::RepeatFindReversed` binding.
 
       // --- App Scope (AWDCS: A) ---
       ", a a": "command_palette::Toggle",
@@ -65,6 +67,10 @@
   {
     "context": "Editor && vim_mode == normal && !VimWaiting && !menu",
     "bindings": {
+      // Kill the default `,` (vim::RepeatFindReversed) so it stops racing
+      // the leader sequences. Must be scoped here to win precedence.
+      ",": null,
+
       // --- Navigation ---
       "H": "pane::ActivatePreviousItem",
       "L": "pane::ActivateNextItem",
@@ -109,6 +115,7 @@
   {
     "context": "Editor && vim_mode == visual && !VimWaiting && !menu",
     "bindings": {
+      ",": null,
       "g a": "agent::AddSelectionToThread",
       "v": "editor::SelectLargerSyntaxNode",
       "V": "editor::SelectSmallerSyntaxNode",
