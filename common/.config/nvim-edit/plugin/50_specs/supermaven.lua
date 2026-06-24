@@ -11,7 +11,7 @@ local function toggle_inline_completion()
 	end
 end
 
-Edit.later(function()
+Edit.now(function()
 	vim.pack.add({ "git@github.com:supermaven-inc/supermaven-nvim" })
 
 	require("supermaven-nvim").setup({
