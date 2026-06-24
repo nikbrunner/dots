@@ -11,7 +11,7 @@ endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
 badd +22 logs/2026/2026.06/2026.06.22\ -\ Mon.md
-badd +4 logs/2026/2026.06/2026.06.24\ -\ Wed.md
+badd +18 logs/2026/2026.06/2026.06.25\ -\ Thu.md
 argglobal
 %argdel
 $argadd ./
@@ -161,7 +161,7 @@ normal! zt
 keepjumps 21
 normal! 0
 tabnext
-edit logs/2026/2026.06/2026.06.24\ -\ Wed.md
+edit logs/2026/2026.06/2026.06.25\ -\ Thu.md
 argglobal
 xnoremap <buffer> $ g$
 onoremap <buffer> $ g$
@@ -224,7 +224,7 @@ setlocal foldnestmax=10
 setlocal foldtext=
 setlocal formatexpr=v:lua.require'conform'.formatexpr()
 setlocal formatlistpat=^\\s*\\d\\+\\.\\s\\+\\|^\\s*[-*+]\\s\\+\\|^\\[^\\ze[^\\]]\\+\\]:\\&^.\\{4\\}
-setlocal formatoptions=1jtqln
+setlocal formatoptions=j1tqln
 setlocal iminsert=0
 setlocal imsearch=-1
 setlocal includeexpr=
@@ -276,7 +276,7 @@ setlocal textwidth=80
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#logs%*%#WinBarSeparator#/%*%#WinBarPath#2026%*%#WinBarSeparator#/%*%#WinBarPath#2026.06%*%#WinBarSeparator#/%*%#WinBarFilename#2026.06.24\ -\ Wed.md%*%=
+setlocal winbar=%#WinBarPath#logs%*%#WinBarSeparator#/%*%#WinBarPath#2026%*%#WinBarSeparator#/%*%#WinBarPath#2026.06%*%#WinBarSeparator#/%*%#WinBarFilename#2026.06.25\ -\ Thu.md%*%=%#WinBarGitLabel#\ [GIT:%#WinBarGitChange#\ ~6%#WinBarGitLabel#]%*\ 
 setlocal winblend=10
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -289,16 +289,14 @@ setlocal wrapmargin=0
 sil! normal! zo
 8
 sil! normal! zo
-18
+10
 sil! normal! zo
-20
-sil! normal! zo
-let s:l = 4 - ((3 * winheight(0) + 18) / 37)
+let s:l = 18 - ((17 * winheight(0) + 18) / 37)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 4
-normal! 03|
+keepjumps 18
+normal! 023|
 tabnext 2
 set stal=1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
