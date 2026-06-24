@@ -1,7 +1,8 @@
 {
   "$schema": "https://json.schemastore.org/claude-code-settings.json",
   "env": {
-    "DISABLE_AUTOUPDATER": "0"
+    "DISABLE_AUTOUPDATER": "0",
+    "ENABLE_TOOL_SEARCH": "true"
   },
   "includeCoAuthoredBy": false,
   "permissions": {
@@ -100,6 +101,17 @@
             "command": "~/.claude/hooks/enforce/warn-any-type.sh"
           }
         ]
+      },
+      {
+        "matcher": "Bash|PowerShell|Grep|Glob|Read|Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "repowise-augment",
+            "timeout": 10,
+            "statusMessage": "Checking codebase context..."
+          }
+        ]
       }
     ],
     "SessionStart": [
@@ -173,7 +185,8 @@
     "typescript-lsp@claude-plugins-official": true,
     "impeccable@impeccable": true,
     "plannotator@plannotator": true,
-    "figma@claude-plugins-official": true
+    "figma@claude-plugins-official": true,
+    "repowise@repowise": true
   },
   "extraKnownMarketplaces": {
     "impeccable": {
@@ -194,14 +207,14 @@
         "repo": "backnotprop/plannotator"
       }
     },
-    "caveman": {
+    "repowise": {
       "source": {
         "source": "github",
-        "repo": "JuliusBrussee/caveman"
+        "repo": "repowise-dev/repowise"
       }
     }
   },
-  "alwaysThinkingEnabled": true,
+  "alwaysThinkingEnabled": false,
   "effortLevel": "xhigh",
   "autoUpdatesChannel": "latest",
   "voice": {
@@ -215,5 +228,17 @@
   "voiceEnabled": true,
   "feedbackSurveyState": {
     "lastShownTime": 1754313915132
+  },
+  "mcpServers": {
+    "repowise": {
+      "command": "/Users/brunner/.local/pipx/venvs/repowise/bin/repowise",
+      "args": [
+        "mcp",
+        "/Users/brunner/repos/imfusion/websdk/web-ui/.workspaces/websdk-152-storybook-harness",
+        "--transport",
+        "stdio"
+      ],
+      "description": "repowise: codebase intelligence — docs, graph, git signals, dead code, decisions"
+    }
   }
 }
