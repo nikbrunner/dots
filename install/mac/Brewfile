@@ -21,6 +21,7 @@ brew "mole"                      # not in mise registry
 brew "mpd"                       # music player daemon — dots has mpd.conf
 brew "rmpc"                      # mpd client TUI — dots has rmpc config
 brew "btop"
+brew "ngrok"
 
 # Custom formula / taps
 brew "agent-browser"
