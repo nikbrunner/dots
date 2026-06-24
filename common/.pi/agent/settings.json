@@ -32,5 +32,5 @@
   "compaction": {
     "enabled": false
   },
-  "defaultThinkingLevel": "high"
+  "defaultThinkingLevel": "medium"
 }

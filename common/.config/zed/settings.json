@@ -1,15 +1,19 @@
 {
+  "disable_ai": false,
   "search": {
-    "center_on_match": true
+    "center_on_match": true,
   },
   "use_smartcase_search": true,
   "file_finder": {
-    "modal_max_width": "medium"
+    "modal_max_width": "medium",
   },
-  "diff_view_style": "split",
+  "diff_view_style": "unified",
   "cli_default_open_behavior": "new_window",
   "agent_servers": {
     "pi-acp": {
+      "default_config_options": {
+        "thought_level": "medium",
+      },
       "type": "registry",
     },
   },
@@ -23,7 +27,7 @@
   "icon_theme": {
     "mode": "dark",
     "light": "Zed (Default)",
-    "dark": "Zed (Default)",
+    "dark": "Catppuccin Macchiato",
   },
   "document_symbols": "on",
   "session": {
@@ -64,9 +68,10 @@
     "terminal_init_command": "",
     "expand_terminal_card": false,
     "commit_message_model": {
-      "provider": "open_router",
-      "model": "google/gemma-3-27b-it",
+      "provider": "openrouter",
+      "model": "google/gemma-4-26b-a4b-it",
     },
+    "commit_message_instructions": "Use the Conventional Commits format: <type>(<scope>): <description>. Infer issue number number from branch and append it in brackets and capitalized like (WEBSDK-123). Also follow previous commit messages.",
     "default_width": 350.0,
     "sidebar_side": "right",
     "dock": "right",
@@ -74,8 +79,8 @@
       "default": "allow",
     },
     "inline_assistant_model": {
-      "provider": "anthropic",
-      "model": "claude-opus-4-6-latest",
+      "provider": "openrouter",
+      "model": "z-ai/glm-5.2",
       "enable_thinking": false,
     },
     "use_modifier_to_send": true,
@@ -99,9 +104,9 @@
   ],
   "cursor_blink": false,
   "theme": {
-    "mode": "dark",
-    "light": "Black Atom — PAPER ∷ Blue Light",
-    "dark": "One Dark",
+    "mode": "light",
+    "light": "Black Atom — TERRA ∷ Summer Day",
+    "dark": "Black Atom — TERRA ∷ Summer Night",
   },
   "base_keymap": "VSCode",
   "vim_mode": true,
@@ -153,7 +158,15 @@
   "lsp": {
     "vtsls": {
       "settings": {
+        "javascript": {
+          "updateImportsOnFileMove": {
+            "enabled": "always",
+          },
+        },
         "typescript": {
+          "updateImportsOnFileMove": {
+            "enabled": "always",
+          },
           "preferences": {
             "importModuleSpecifier": "relative",
           },
