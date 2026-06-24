@@ -1,11 +1,16 @@
-require("mini.surround").setup({
-	mappings = {
-		add = "Sa", -- Add surrounding in Normal and Visual modes
-		delete = "Sd", -- Delete surrounding
-		find = "Sf", -- Find surrounding (to the right)
-		find_left = "SF", -- Find surrounding (to the left)
-		highlight = "Sh", -- Highlight surrounding
-		replace = "Sr", -- Replace surrounding
-		update_n_lines = "Sn", -- Update `n_lines`
-	},
-})
+-- Deferred via `Edit.later`: surround mappings (Sa/Sd/Sr/…) are editing
+-- actions that never fire on the first frame, so the ~2.7ms setup() can
+-- move off the startup critical path.
+Edit.later(function()
+	require("mini.surround").setup({
+		mappings = {
+			add = "Sa", -- Add surrounding in Normal and Visual modes
+			delete = "Sd", -- Delete surrounding
+			find = "Sf", -- Find surrounding (to the right)
+			find_left = "SF", -- Find surrounding (to the left)
+			highlight = "Sh", -- Highlight surrounding
+			replace = "Sr", -- Replace surrounding
+			update_n_lines = "Sn", -- Update `n_lines`
+		},
+	})
+end)

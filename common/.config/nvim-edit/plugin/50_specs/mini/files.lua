@@ -1,9 +1,14 @@
-local MF = require("mini.files")
+-- Deferred via `Edit.later`: mini.files is invoked on demand via the
+-- <leader>we / - / _ keymaps set at the bottom of this file. The `User`
+-- autocmds (MiniFilesBufferCreate, etc.) only fire when MF.open runs,
+-- which is itself deferred here — so registration order is preserved.
+Edit.later(function()
+	local MF = require("mini.files")
 
-local invoking_win_pos = { 0, 0 }
-local preview_enabled = false
+	local invoking_win_pos = { 0, 0 }
+	local preview_enabled = false
 
-MF.setup({
+	MF.setup({
 	content = {
 		prefix = function() end,
 	},
@@ -275,3 +280,4 @@ vim.keymap.set("n", "<leader>wE", function()
 	invoking_win_pos = vim.api.nvim_win_get_position(0)
 	MF.open(vim.fn.getcwd())
 end, { desc = "[E]xplorer" })
+end)

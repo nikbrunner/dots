@@ -1,6 +1,10 @@
-local MC = require("mini.clue")
+-- Deferred via `Edit.later`: mini.clue (which-key-style hints) only shows
+-- when a trigger key (<leader>, g, etc.) is pressed. vim.schedule runs
+-- before any user input is processed, so triggers are always intercepted.
+Edit.later(function()
+	local MC = require("mini.clue")
 
-MC.setup({
+	MC.setup({
 	triggers = {
 		{ mode = "c", keys = "<C-r>" },
 		{ mode = "i", keys = "<C-r>" },
@@ -107,3 +111,4 @@ MC.setup({
 		delay = 0,
 	},
 })
+end)
