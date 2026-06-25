@@ -23,5 +23,11 @@ Edit.later(function()
 		},
 	})
 
-	snippets.start_lsp_server({ match = false })
+	snippets.start_lsp_server({
+		match = false,
+		before_attach = function(buf_id)
+			return vim.api.nvim_buf_is_loaded(buf_id)
+				and (vim.bo[buf_id].buftype == "" or vim.bo[buf_id].buftype == "acwrite")
+		end,
+	})
 end)
