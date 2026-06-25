@@ -10,15 +10,14 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +22 logs/2026/2026.06/2026.06.22\ -\ Mon.md
-badd +18 logs/2026/2026.06/2026.06.25\ -\ Thu.md
+badd +13 logs/2026/2026.06/2026.06.25\ -\ Thu.md
 argglobal
 %argdel
 $argadd ./
 set stal=2
 tabnew +setlocal\ bufhidden=wipe
 tabrewind
-edit logs/2026/2026.06/2026.06.22\ -\ Mon.md
+edit logs/2026/2026.06/2026.06.25\ -\ Thu.md
 argglobal
 xnoremap <buffer> $ g$
 onoremap <buffer> $ g$
@@ -64,7 +63,7 @@ setlocal cursorline
 setlocal cursorlineopt=screenline,number
 setlocal nodiff
 setlocal eventignorewin=
-setlocal noexpandtab
+setlocal expandtab
 if &filetype != 'markdown'
 setlocal filetype=markdown
 endif
@@ -81,7 +80,7 @@ setlocal foldnestmax=10
 setlocal foldtext=
 setlocal formatexpr=v:lua.require'conform'.formatexpr()
 setlocal formatlistpat=^\\s*\\d\\+\\.\\s\\+\\|^\\s*[-*+]\\s\\+\\|^\\[^\\ze[^\\]]\\+\\]:\\&^.\\{4\\}
-setlocal formatoptions=j1tqln
+setlocal formatoptions=1jtqln
 setlocal iminsert=0
 setlocal imsearch=-1
 setlocal includeexpr=
@@ -100,7 +99,7 @@ setlocal modifiable
 setlocal nrformats=bin,hex
 setlocal number
 setlocal numberwidth=4
-setlocal omnifunc=v:lua.MiniCompletion.completefunc_lsp
+setlocal omnifunc=htmlcomplete#CompleteTags
 setlocal nopreserveindent
 setlocal nopreviewwindow
 setlocal quoteescape=\\
@@ -127,13 +126,13 @@ setlocal synmaxcol=3000
 if &syntax != ''
 setlocal syntax=
 endif
-setlocal tabstop=8
+setlocal tabstop=4
 setlocal tagfunc=v:lua.vim.lsp.tagfunc
 setlocal textwidth=80
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#logs%*%#WinBarSeparator#/%*%#WinBarPath#2026%*%#WinBarSeparator#/%*%#WinBarPath#2026.06%*%#WinBarSeparator#/%*%#WinBarFilename#2026.06.22\ -\ Mon.md%*%=%#WinBarGitLabel#\ [GIT:%#WinBarGitAdd#\ +5%#WinBarGitChange#\ ~1%#WinBarGitDelete#\ -2%#WinBarGitLabel#]%*\ 
+setlocal winbar=%#WinBarPath#logs%*%#WinBarSeparator#/%*%#WinBarPath#2026%*%#WinBarSeparator#/%*%#WinBarPath#2026.06%*%#WinBarSeparator#/%*%#WinBarFilename#2026.06.25\ -\ Thu.md%*%=
 setlocal winblend=10
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -146,20 +145,16 @@ setlocal wrapmargin=0
 sil! normal! zo
 8
 sil! normal! zo
-15
+16
 sil! normal! zo
-17
+18
 sil! normal! zo
-30
-sil! normal! zo
-32
-sil! normal! zo
-let s:l = 21 - ((20 * winheight(0) + 18) / 37)
+let s:l = 13 - ((12 * winheight(0) + 26) / 52)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 21
-normal! 0
+keepjumps 13
+normal! 030|
 tabnext
 edit logs/2026/2026.06/2026.06.25\ -\ Thu.md
 argglobal
@@ -224,7 +219,7 @@ setlocal foldnestmax=10
 setlocal foldtext=
 setlocal formatexpr=v:lua.require'conform'.formatexpr()
 setlocal formatlistpat=^\\s*\\d\\+\\.\\s\\+\\|^\\s*[-*+]\\s\\+\\|^\\[^\\ze[^\\]]\\+\\]:\\&^.\\{4\\}
-setlocal formatoptions=j1tqln
+setlocal formatoptions=1jtqln
 setlocal iminsert=0
 setlocal imsearch=-1
 setlocal includeexpr=
@@ -243,7 +238,7 @@ setlocal modifiable
 setlocal nrformats=bin,hex
 setlocal number
 setlocal numberwidth=4
-setlocal omnifunc=v:lua.MiniCompletion.completefunc_lsp
+setlocal omnifunc=htmlcomplete#CompleteTags
 setlocal nopreserveindent
 setlocal nopreviewwindow
 setlocal quoteescape=\\
@@ -276,7 +271,7 @@ setlocal textwidth=80
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#logs%*%#WinBarSeparator#/%*%#WinBarPath#2026%*%#WinBarSeparator#/%*%#WinBarPath#2026.06%*%#WinBarSeparator#/%*%#WinBarFilename#2026.06.25\ -\ Thu.md%*%=%#WinBarGitLabel#\ [GIT:%#WinBarGitChange#\ ~6%#WinBarGitLabel#]%*\ 
+setlocal winbar=%#WinBarPath#logs%*%#WinBarSeparator#/%*%#WinBarPath#2026%*%#WinBarSeparator#/%*%#WinBarPath#2026.06%*%#WinBarSeparator#/%*%#WinBarFilename#2026.06.25\ -\ Thu.md%*%=%#WinBarGitLabel#\ [GIT:%#WinBarGitAdd#\ +26%#WinBarGitChange#\ ~5%#WinBarGitLabel#]%*\ 
 setlocal winblend=10
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -289,15 +284,17 @@ setlocal wrapmargin=0
 sil! normal! zo
 8
 sil! normal! zo
-10
+16
 sil! normal! zo
-let s:l = 18 - ((17 * winheight(0) + 18) / 37)
+18
+sil! normal! zo
+let s:l = 13 - ((12 * winheight(0) + 26) / 52)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 18
-normal! 023|
-tabnext 2
+keepjumps 13
+normal! 0
+tabnext 1
 set stal=1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf

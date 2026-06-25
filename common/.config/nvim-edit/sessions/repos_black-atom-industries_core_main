@@ -11,7 +11,7 @@ endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
 badd +1 src/themes/paper/black-atom-paper-brown-dark.ts
-badd +32 src/themes/mnml/black-atom-mnml-mono-dark.ts
+badd +51 src/themes/mnml/black-atom-mnml-mono-dark.ts
 argglobal
 %argdel
 $argadd ./
@@ -148,13 +148,14 @@ if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
 keepjumps 20
-normal! 032|
+normal! 0
 wincmd w
 argglobal
 if bufexists(fnamemodify("src/themes/mnml/black-atom-mnml-mono-dark.ts", ":p")) | buffer src/themes/mnml/black-atom-mnml-mono-dark.ts | else | edit src/themes/mnml/black-atom-mnml-mono-dark.ts | endif
 if &buftype ==# 'terminal'
   silent file src/themes/mnml/black-atom-mnml-mono-dark.ts
 endif
+balt src/themes/paper/black-atom-paper-brown-dark.ts
 setlocal keymap=
 setlocal noarabic
 setlocal autoindent
@@ -231,6 +232,7 @@ setlocal norightleft
 setlocal rightleftcmd=search
 setlocal scrollback=-1
 setlocal noscrollbind
+setlocal scrolloff=4
 setlocal shiftwidth=4
 setlocal signcolumn=yes
 setlocal nosmartindent
@@ -254,6 +256,7 @@ setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
+setlocal virtualedit=block
 setlocal winbar=%#WinBarPath#...%*%#WinBarSeparator#/%*%#WinBarFilename#black-atom-mnml-mono-dark.ts%*%=
 setlocal winblend=10
 setlocal nowinfixbuf
@@ -263,11 +266,11 @@ setlocal winhighlight=
 setlocal nowinpinned
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 32 - ((31 * winheight(0) + 25) / 51)
+let s:l = 7 - ((6 * winheight(0) + 25) / 51)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 32
+keepjumps 7
 normal! 0
 wincmd w
 2wincmd w
