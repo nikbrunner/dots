@@ -1,4 +1,10 @@
 {
+  "relative_line_numbers": "enabled",
+  "soft_wrap": "prefer_line",
+  "preview_tabs": {
+    "enable_preview_from_file_finder": true,
+  },
+  "ui_font_weight": 400.0,
   "disable_ai": false,
   "search": {
     "center_on_match": true,
@@ -25,9 +31,9 @@
     "dock": "left",
   },
   "icon_theme": {
-    "mode": "dark",
+    "mode": "system",
     "light": "Zed (Default)",
-    "dark": "Catppuccin Macchiato",
+    "dark": "Zed (Default)",
   },
   "document_symbols": "on",
   "session": {
@@ -41,8 +47,8 @@
   "sticky_scroll": {
     "enabled": true,
   },
-  "agent_buffer_font_size": 16.0,
-  "agent_ui_font_size": 16.0,
+  "agent_buffer_font_size": 14.0,
+  "agent_ui_font_size": 14.0,
   "telemetry": {
     "diagnostics": false,
     "metrics": false,
@@ -104,9 +110,9 @@
   ],
   "cursor_blink": false,
   "theme": {
-    "mode": "light",
-    "light": "Black Atom — TERRA ∷ Summer Day",
-    "dark": "Black Atom — TERRA ∷ Summer Night",
+    "mode": "system",
+    "light": "Black Atom — Light",
+    "dark": "Black Atom — Dark Dimmed",
   },
   "base_keymap": "VSCode",
   "vim_mode": true,
@@ -151,7 +157,8 @@
   },
   "format_on_save": "on",
   "terminal": {
-    "line_height": "standard",
+    "font_size": 14.0,
+    "line_height": "comfortable",
     "working_directory": "current_project_directory",
     "font_family": "TX-02 Condensed",
   },
@@ -187,5 +194,5 @@
       },
     },
   },
-  "ui_font_family": "TX-02 Condensed",
+  "ui_font_family": "TX-02",
 }

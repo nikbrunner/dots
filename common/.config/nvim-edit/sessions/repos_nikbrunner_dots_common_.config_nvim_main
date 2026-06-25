@@ -1,0 +1,564 @@
+let SessionLoad = 1
+let s:so_save = &g:so | let s:siso_save = &g:siso | setg so=0 siso=0 | setl so=-1 siso=-1
+let v:this_session=expand("<sfile>:p")
+doautoall SessionLoadPre
+silent only
+silent tabonly
+cd ~/repos/nikbrunner/dots/common/.config/nvim
+if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
+  let s:wipebuf = bufnr('%')
+endif
+let s:shortmess_save = &shortmess
+set shortmess+=aoO
+badd +1 .
+badd +20 ~/repos/nikbrunner/dots/common/.config/nvim-edit/plugin/50_specs/supermaven.lua
+badd +21 ~/repos/nikbrunner/dots/common/.config/nvim-edit/plugin/50_specs/mini/snippets.lua
+badd +51 snippets/global.lua
+argglobal
+%argdel
+$argadd ~/repos/nikbrunner/dots/common/.config/nvim-edit/plugin/50_specs/supermaven.lua
+set stal=2
+tabnew +setlocal\ bufhidden=wipe
+tabrewind
+edit .
+argglobal
+setlocal keymap=
+setlocal noarabic
+setlocal autoindent
+setlocal nobinary
+setlocal breakindent
+setlocal breakindentopt=list:-1
+setlocal bufhidden=
+setlocal buflisted
+setlocal buftype=
+setlocal busy=0
+setlocal nocindent
+setlocal cinkeys=0{,0},0),0],:,0#,!^F,o,O,e
+setlocal cinoptions=
+setlocal cinscopedecls=public,protected,private
+setlocal cinwords=if,else,while,do,for,switch
+setlocal colorcolumn=+1
+setlocal comments=s1:/*,mb:*,ex:*/,://,b:#,:%,:XCOMM,n:>,fb:-,fb:â€¢
+setlocal commentstring=
+setlocal complete=.,w,b,kspell
+setlocal completefunc=v:lua.MiniCompletion.completefunc_lsp
+setlocal completeslash=
+setlocal concealcursor=
+setlocal conceallevel=0
+setlocal nocopyindent
+setlocal nocursorbind
+setlocal nocursorcolumn
+setlocal cursorline
+setlocal cursorlineopt=screenline,number
+setlocal nodiff
+setlocal eventignorewin=
+setlocal expandtab
+if &filetype != ''
+setlocal filetype=
+endif
+setlocal fixendofline
+setlocal foldcolumn=0
+setlocal foldenable
+setlocal foldexpr=v:lua.vim.treesitter.foldexpr()
+setlocal foldignore=#
+setlocal foldlevel=99
+setlocal foldmarker={{{,}}}
+setlocal foldmethod=expr
+setlocal foldminlines=1
+setlocal foldnestmax=10
+setlocal foldtext=
+setlocal formatexpr=v:lua.require'conform'.formatexpr()
+setlocal formatlistpat=^\\s*[0-9\\-\\+\\*]\\+[\\.\\)]*\\s\\+
+setlocal formatoptions=rqnl1j
+setlocal iminsert=0
+setlocal imsearch=-1
+setlocal includeexpr=
+setlocal indentexpr=
+setlocal indentkeys=0{,0},0),0],:,0#,!^F,o,O,e
+setlocal infercase
+setlocal iskeyword=@,48-57,_,192-255,-
+setlocal lhistory=10
+setlocal linebreak
+setlocal nolisp
+setlocal lispoptions=
+setlocal list
+setlocal matchpairs=(:),{:},[:]
+setlocal modeline
+setlocal modifiable
+setlocal nrformats=bin,hex
+setlocal number
+setlocal numberwidth=4
+setlocal omnifunc=v:lua.MiniCompletion.completefunc_lsp
+setlocal nopreserveindent
+setlocal nopreviewwindow
+setlocal quoteescape=\\
+setlocal noreadonly
+setlocal relativenumber
+setlocal norightleft
+setlocal rightleftcmd=search
+setlocal scrollback=-1
+setlocal noscrollbind
+setlocal shiftwidth=2
+setlocal signcolumn=yes
+setlocal smartindent
+setlocal nosmoothscroll
+setlocal softtabstop=0
+setlocal nospell
+setlocal spellcapcheck=[.?!]\\_[\\])'\"\\t\ ]\\+
+setlocal spellfile=
+setlocal spelllang=en_us,de_de
+setlocal spelloptions=camel
+setlocal statuscolumn=
+setlocal suffixesadd=
+setlocal noswapfile
+setlocal synmaxcol=3000
+if &syntax != ''
+setlocal syntax=
+endif
+setlocal tabstop=2
+setlocal tagfunc=
+setlocal textwidth=0
+setlocal undofile
+setlocal varsofttabstop=
+setlocal vartabstop=
+setlocal winbar=%#WinBarPath#...%*%#WinBarSeparator#/%*%#WinBarPath#nikbrunner%*%#WinBarSeparator#/%*%#WinBarPath#dots%*%#WinBarSeparator#/%*%#WinBarPath#common%*%#WinBarSeparator#/%*%#WinBarPath#.config%*%#WinBarSeparator#/%*%#WinBarFilename#nvim%*%=
+setlocal winblend=10
+setlocal nowinfixbuf
+setlocal nowinfixheight
+setlocal nowinfixwidth
+setlocal winhighlight=
+setlocal nowinpinned
+setlocal nowrap
+setlocal wrapmargin=0
+let s:l = 1 - ((0 * winheight(0) + 26) / 52)
+if s:l < 1 | let s:l = 1 | endif
+keepjumps exe s:l
+normal! zt
+keepjumps 1
+normal! 0
+tabnext
+edit ~/repos/nikbrunner/dots/common/.config/nvim-edit/plugin/50_specs/supermaven.lua
+let s:save_splitbelow = &splitbelow
+let s:save_splitright = &splitright
+set splitbelow splitright
+wincmd _ | wincmd |
+vsplit
+wincmd _ | wincmd |
+vsplit
+2wincmd h
+wincmd w
+wincmd w
+let &splitbelow = s:save_splitbelow
+let &splitright = s:save_splitright
+wincmd t
+let s:save_winminheight = &winminheight
+let s:save_winminwidth = &winminwidth
+set winminheight=0
+set winheight=1
+set winminwidth=0
+set winwidth=1
+exe 'vert 1resize ' . ((&columns * 101 + 153) / 306)
+exe 'vert 2resize ' . ((&columns * 101 + 153) / 306)
+exe 'vert 3resize ' . ((&columns * 102 + 153) / 306)
+argglobal
+balt .
+setlocal keymap=
+setlocal noarabic
+setlocal autoindent
+setlocal nobinary
+setlocal breakindent
+setlocal breakindentopt=list:-1
+setlocal bufhidden=
+setlocal buflisted
+setlocal buftype=
+setlocal busy=0
+setlocal nocindent
+setlocal cinkeys=0{,0},0),0],:,0#,!^F,o,O,e
+setlocal cinoptions=
+setlocal cinscopedecls=public,protected,private
+setlocal cinwords=if,else,while,do,for,switch
+setlocal colorcolumn=+1
+setlocal comments=:---,:--
+setlocal commentstring=--\ %s
+setlocal complete=.,w,b,kspell
+setlocal completefunc=v:lua.MiniCompletion.completefunc_lsp
+setlocal completeslash=
+setlocal concealcursor=
+setlocal conceallevel=0
+setlocal nocopyindent
+setlocal nocursorbind
+setlocal nocursorcolumn
+setlocal cursorline
+setlocal cursorlineopt=screenline,number
+setlocal define=\\<function\\|\\<local\\%(\\s\\+function\\)\\=
+setlocal nodiff
+setlocal eventignorewin=
+setlocal noexpandtab
+if &filetype != 'lua'
+setlocal filetype=lua
+endif
+setlocal fixendofline
+setlocal foldcolumn=0
+setlocal foldenable
+setlocal foldexpr=v:lua.vim.treesitter.foldexpr()
+setlocal foldignore=#
+setlocal foldlevel=99
+setlocal foldmarker={{{,}}}
+setlocal foldmethod=expr
+setlocal foldminlines=1
+setlocal foldnestmax=10
+setlocal foldtext=
+setlocal formatexpr=v:lua.require'conform'.formatexpr()
+setlocal formatlistpat=^\\s*[0-9\\-\\+\\*]\\+[\\.\\)]*\\s\\+
+setlocal formatoptions=n1jrql
+setlocal iminsert=0
+setlocal imsearch=-1
+setlocal include=\\<\\%(\\%(do\\|load\\)file\\|require\\)\\s*(
+setlocal includeexpr=v:lua.require'vim._ftplugin.lua'.includeexpr(v:fname)
+setlocal indentexpr=v:lua.require'arborist.indent'.indentexpr()
+setlocal indentkeys=0{,0},0),0],:,0#,!^F,o,O,e,0=end,0=until
+setlocal infercase
+setlocal iskeyword=@,48-57,_,192-255,-
+setlocal lhistory=10
+setlocal linebreak
+setlocal nolisp
+setlocal lispoptions=
+setlocal list
+setlocal matchpairs=(:),{:},[:]
+setlocal modeline
+setlocal modifiable
+setlocal nrformats=bin,hex
+setlocal number
+setlocal numberwidth=4
+setlocal omnifunc=v:lua.MiniCompletion.completefunc_lsp
+setlocal path=,
+setlocal nopreserveindent
+setlocal nopreviewwindow
+setlocal quoteescape=\\
+setlocal noreadonly
+setlocal relativenumber
+setlocal norightleft
+setlocal rightleftcmd=search
+setlocal scrollback=-1
+setlocal noscrollbind
+setlocal shiftwidth=0
+setlocal signcolumn=yes
+setlocal smartindent
+setlocal nosmoothscroll
+setlocal softtabstop=-1
+setlocal nospell
+setlocal spellcapcheck=[.?!]\\_[\\])'\"\\t\ ]\\+
+setlocal spellfile=
+setlocal spelllang=en_us,de_de
+setlocal spelloptions=camel,noplainbuffer
+setlocal statuscolumn=
+setlocal suffixesadd=.lua
+setlocal noswapfile
+setlocal synmaxcol=3000
+if &syntax != ''
+setlocal syntax=
+endif
+setlocal tabstop=2
+setlocal tagfunc=v:lua.vim.lsp.tagfunc
+setlocal textwidth=0
+setlocal undofile
+setlocal varsofttabstop=
+setlocal vartabstop=
+setlocal winbar=%#WinBarPath#plugin%*%#WinBarSeparator#/%*%#WinBarPath#50_specs%*%#WinBarSeparator#/%*%#WinBarFilename#supermaven.lua%*%=%#WinBarGitLabel#\ [GIT:%#WinBarGitAdd#\ +5%#WinBarGitLabel#]%*\ 
+setlocal winblend=10
+setlocal nowinfixbuf
+setlocal nowinfixheight
+setlocal nowinfixwidth
+setlocal winhighlight=
+setlocal nowinpinned
+setlocal nowrap
+setlocal wrapmargin=0
+14
+sil! normal! zo
+let s:l = 22 - ((21 * winheight(0) + 26) / 52)
+if s:l < 1 | let s:l = 1 | endif
+keepjumps exe s:l
+normal! zt
+keepjumps 22
+normal! 0
+wincmd w
+argglobal
+if bufexists(fnamemodify("~/repos/nikbrunner/dots/common/.config/nvim-edit/plugin/50_specs/mini/snippets.lua", ":p")) | buffer ~/repos/nikbrunner/dots/common/.config/nvim-edit/plugin/50_specs/mini/snippets.lua | else | edit ~/repos/nikbrunner/dots/common/.config/nvim-edit/plugin/50_specs/mini/snippets.lua | endif
+if &buftype ==# 'terminal'
+  silent file ~/repos/nikbrunner/dots/common/.config/nvim-edit/plugin/50_specs/mini/snippets.lua
+endif
+setlocal keymap=
+setlocal noarabic
+setlocal autoindent
+setlocal nobinary
+setlocal breakindent
+setlocal breakindentopt=list:-1
+setlocal bufhidden=
+setlocal buflisted
+setlocal buftype=
+setlocal busy=0
+setlocal nocindent
+setlocal cinkeys=0{,0},0),0],:,0#,!^F,o,O,e
+setlocal cinoptions=
+setlocal cinscopedecls=public,protected,private
+setlocal cinwords=if,else,while,do,for,switch
+setlocal colorcolumn=+1
+setlocal comments=:---,:--
+setlocal commentstring=--\ %s
+setlocal complete=.,w,b,kspell
+setlocal completefunc=v:lua.MiniCompletion.completefunc_lsp
+setlocal completeslash=
+setlocal concealcursor=
+setlocal conceallevel=0
+setlocal nocopyindent
+setlocal nocursorbind
+setlocal nocursorcolumn
+setlocal cursorline
+setlocal cursorlineopt=screenline,number
+setlocal define=\\<function\\|\\<local\\%(\\s\\+function\\)\\=
+setlocal nodiff
+setlocal eventignorewin=
+setlocal noexpandtab
+if &filetype != 'lua'
+setlocal filetype=lua
+endif
+setlocal fixendofline
+setlocal foldcolumn=0
+setlocal foldenable
+setlocal foldexpr=v:lua.vim.treesitter.foldexpr()
+setlocal foldignore=#
+setlocal foldlevel=99
+setlocal foldmarker={{{,}}}
+setlocal foldmethod=expr
+setlocal foldminlines=1
+setlocal foldnestmax=10
+setlocal foldtext=
+setlocal formatexpr=v:lua.require'conform'.formatexpr()
+setlocal formatlistpat=^\\s*[0-9\\-\\+\\*]\\+[\\.\\)]*\\s\\+
+setlocal formatoptions=n1jrql
+setlocal iminsert=0
+setlocal imsearch=-1
+setlocal include=\\<\\%(\\%(do\\|load\\)file\\|require\\)\\s*(
+setlocal includeexpr=v:lua.require'vim._ftplugin.lua'.includeexpr(v:fname)
+setlocal indentexpr=v:lua.require'arborist.indent'.indentexpr()
+setlocal indentkeys=0{,0},0),0],:,0#,!^F,o,O,e,0=end,0=until
+setlocal infercase
+setlocal iskeyword=@,48-57,_,192-255,-
+setlocal lhistory=10
+setlocal linebreak
+setlocal nolisp
+setlocal lispoptions=
+setlocal list
+setlocal matchpairs=(:),{:},[:]
+setlocal modeline
+setlocal modifiable
+setlocal nrformats=bin,hex
+setlocal number
+setlocal numberwidth=4
+setlocal omnifunc=v:lua.MiniCompletion.completefunc_lsp
+setlocal path=,
+setlocal nopreserveindent
+setlocal nopreviewwindow
+setlocal quoteescape=\\
+setlocal noreadonly
+setlocal relativenumber
+setlocal norightleft
+setlocal rightleftcmd=search
+setlocal scrollback=-1
+setlocal noscrollbind
+setlocal shiftwidth=0
+setlocal signcolumn=yes
+setlocal smartindent
+setlocal nosmoothscroll
+setlocal softtabstop=-1
+setlocal nospell
+setlocal spellcapcheck=[.?!]\\_[\\])'\"\\t\ ]\\+
+setlocal spellfile=
+setlocal spelllang=en_us,de_de
+setlocal spelloptions=camel,noplainbuffer
+setlocal statuscolumn=
+setlocal suffixesadd=.lua
+setlocal noswapfile
+setlocal synmaxcol=3000
+if &syntax != ''
+setlocal syntax=
+endif
+setlocal tabstop=2
+setlocal tagfunc=v:lua.vim.lsp.tagfunc
+setlocal textwidth=0
+setlocal undofile
+setlocal varsofttabstop=
+setlocal vartabstop=
+setlocal winbar=%#WinBarPath#plugin%*%#WinBarSeparator#/%*%#WinBarPath#50_specs%*%#WinBarSeparator#/%*%#WinBarPath#mini%*%#WinBarSeparator#/%*%#WinBarFilename#snippets.lua%*%=%#WinBarGitLabel#\ [GIT:%#WinBarGitChange#\ ~2%#WinBarGitLabel#]%*\ 
+setlocal winblend=10
+setlocal nowinfixbuf
+setlocal nowinfixheight
+setlocal nowinfixwidth
+setlocal winhighlight=
+setlocal nowinpinned
+setlocal nowrap
+setlocal wrapmargin=0
+7
+sil! normal! zo
+14
+sil! normal! zo
+let s:l = 21 - ((17 * winheight(0) + 26) / 52)
+if s:l < 1 | let s:l = 1 | endif
+keepjumps exe s:l
+normal! zt
+keepjumps 21
+normal! 05|
+wincmd w
+argglobal
+if bufexists(fnamemodify("snippets/global.lua", ":p")) | buffer snippets/global.lua | else | edit snippets/global.lua | endif
+if &buftype ==# 'terminal'
+  silent file snippets/global.lua
+endif
+setlocal keymap=
+setlocal noarabic
+setlocal autoindent
+setlocal nobinary
+setlocal breakindent
+setlocal breakindentopt=list:-1
+setlocal bufhidden=
+setlocal buflisted
+setlocal buftype=
+setlocal busy=0
+setlocal nocindent
+setlocal cinkeys=0{,0},0),0],:,0#,!^F,o,O,e
+setlocal cinoptions=
+setlocal cinscopedecls=public,protected,private
+setlocal cinwords=if,else,while,do,for,switch
+setlocal colorcolumn=+1
+setlocal comments=:---,:--
+setlocal commentstring=--\ %s
+setlocal complete=.,w,b,kspell
+setlocal completefunc=v:lua.MiniCompletion.completefunc_lsp
+setlocal completeslash=
+setlocal concealcursor=
+setlocal conceallevel=0
+setlocal nocopyindent
+setlocal nocursorbind
+setlocal nocursorcolumn
+setlocal cursorline
+setlocal cursorlineopt=screenline,number
+setlocal define=\\<function\\|\\<local\\%(\\s\\+function\\)\\=
+setlocal nodiff
+setlocal eventignorewin=
+setlocal expandtab
+if &filetype != 'lua'
+setlocal filetype=lua
+endif
+setlocal fixendofline
+setlocal foldcolumn=0
+setlocal foldenable
+setlocal foldexpr=v:lua.vim.treesitter.foldexpr()
+setlocal foldignore=#
+setlocal foldlevel=0
+setlocal foldmarker={{{,}}}
+setlocal foldmethod=expr
+setlocal foldminlines=1
+setlocal foldnestmax=10
+setlocal foldtext=
+setlocal formatexpr=v:lua.require'conform'.formatexpr()
+setlocal formatlistpat=^\\s*[0-9\\-\\+\\*]\\+[\\.\\)]*\\s\\+
+setlocal formatoptions=n1jrql
+setlocal iminsert=0
+setlocal imsearch=-1
+setlocal include=\\<\\%(\\%(do\\|load\\)file\\|require\\)\\s*(
+setlocal includeexpr=v:lua.require'vim._ftplugin.lua'.includeexpr(v:fname)
+setlocal indentexpr=v:lua.require'arborist.indent'.indentexpr()
+setlocal indentkeys=0{,0},0),0],:,0#,!^F,o,O,e,0=end,0=until
+setlocal infercase
+setlocal iskeyword=@,48-57,_,192-255,-
+setlocal lhistory=10
+setlocal linebreak
+setlocal nolisp
+setlocal lispoptions=
+setlocal list
+setlocal matchpairs=(:),{:},[:]
+setlocal modeline
+setlocal modifiable
+setlocal nrformats=bin,hex
+setlocal number
+setlocal numberwidth=4
+setlocal omnifunc=v:lua.MiniCompletion.completefunc_lsp
+setlocal path=,
+setlocal nopreserveindent
+setlocal nopreviewwindow
+setlocal quoteescape=\\
+setlocal noreadonly
+setlocal relativenumber
+setlocal norightleft
+setlocal rightleftcmd=search
+setlocal scrollback=-1
+setlocal noscrollbind
+setlocal shiftwidth=4
+setlocal signcolumn=yes
+setlocal smartindent
+setlocal nosmoothscroll
+setlocal softtabstop=-1
+setlocal nospell
+setlocal spellcapcheck=[.?!]\\_[\\])'\"\\t\ ]\\+
+setlocal spellfile=
+setlocal spelllang=en_us,de_de
+setlocal spelloptions=camel,noplainbuffer
+setlocal statuscolumn=
+setlocal suffixesadd=.lua
+setlocal noswapfile
+setlocal synmaxcol=3000
+if &syntax != ''
+setlocal syntax=
+endif
+setlocal tabstop=2
+setlocal tagfunc=v:lua.vim.lsp.tagfunc
+setlocal textwidth=0
+setlocal undofile
+setlocal varsofttabstop=
+setlocal vartabstop=
+setlocal winbar=%#WinBarPath#snippets%*%#WinBarSeparator#/%*%#WinBarFilename#global.lua%*%=
+setlocal winblend=10
+setlocal nowinfixbuf
+setlocal nowinfixheight
+setlocal nowinfixwidth
+setlocal winhighlight=
+setlocal nowinpinned
+setlocal nowrap
+setlocal wrapmargin=0
+50
+sil! normal! zo
+51
+sil! normal! zo
+53
+sil! normal! zo
+let s:l = 86 - ((23 * winheight(0) + 26) / 52)
+if s:l < 1 | let s:l = 1 | endif
+keepjumps exe s:l
+normal! zt
+keepjumps 86
+normal! 0
+wincmd w
+2wincmd w
+exe 'vert 1resize ' . ((&columns * 101 + 153) / 306)
+exe 'vert 2resize ' . ((&columns * 101 + 153) / 306)
+exe 'vert 3resize ' . ((&columns * 102 + 153) / 306)
+tabnext 2
+set stal=1
+if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
+  silent exe 'bwipe ' . s:wipebuf
+endif
+unlet! s:wipebuf
+set winheight=1 winwidth=20
+let &shortmess = s:shortmess_save
+let &winminheight = s:save_winminheight
+let &winminwidth = s:save_winminwidth
+let s:sx = expand("<sfile>:p:r")."x.vim"
+if filereadable(s:sx)
+  exe "source " . fnameescape(s:sx)
+endif
+let &g:so = s:so_save | let &g:siso = s:siso_save
+set hlsearch
+nohlsearch
+doautoall SessionLoadPost
+unlet SessionLoad
+" vim: set ft=vim :

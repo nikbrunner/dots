@@ -10,7 +10,7 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +13 logs/2026/2026.06/2026.06.25\ -\ Thu.md
+badd +70 logs/2026/2026.06/2026.06.25\ -\ Thu.md
 argglobal
 %argdel
 $argadd ./
@@ -80,7 +80,7 @@ setlocal foldnestmax=10
 setlocal foldtext=
 setlocal formatexpr=v:lua.require'conform'.formatexpr()
 setlocal formatlistpat=^\\s*\\d\\+\\.\\s\\+\\|^\\s*[-*+]\\s\\+\\|^\\[^\\ze[^\\]]\\+\\]:\\&^.\\{4\\}
-setlocal formatoptions=1jtqln
+setlocal formatoptions=j1tqln
 setlocal iminsert=0
 setlocal imsearch=-1
 setlocal includeexpr=
@@ -132,7 +132,7 @@ setlocal textwidth=80
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#logs%*%#WinBarSeparator#/%*%#WinBarPath#2026%*%#WinBarSeparator#/%*%#WinBarPath#2026.06%*%#WinBarSeparator#/%*%#WinBarFilename#2026.06.25\ -\ Thu.md%*%=
+setlocal winbar=%#WinBarPath#logs%*%#WinBarSeparator#/%*%#WinBarPath#2026%*%#WinBarSeparator#/%*%#WinBarPath#2026.06%*%#WinBarSeparator#/%*%#WinBarFilename#2026.06.25\ -\ Thu.md%*%=%#WinBarGitLabel#\ [GIT:%#WinBarGitAdd#\ +17%#WinBarGitChange#\ ~12%#WinBarGitDelete#\ -1%#WinBarGitLabel#]%*\ 
 setlocal winblend=10
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -149,12 +149,18 @@ sil! normal! zo
 sil! normal! zo
 18
 sil! normal! zo
-let s:l = 13 - ((12 * winheight(0) + 26) / 52)
+19
+sil! normal! zo
+65
+sil! normal! zo
+67
+sil! normal! zo
+let s:l = 68 - ((14 * winheight(0) + 21) / 42)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 13
-normal! 030|
+keepjumps 68
+normal! 0
 tabnext
 edit logs/2026/2026.06/2026.06.25\ -\ Thu.md
 argglobal
@@ -219,7 +225,7 @@ setlocal foldnestmax=10
 setlocal foldtext=
 setlocal formatexpr=v:lua.require'conform'.formatexpr()
 setlocal formatlistpat=^\\s*\\d\\+\\.\\s\\+\\|^\\s*[-*+]\\s\\+\\|^\\[^\\ze[^\\]]\\+\\]:\\&^.\\{4\\}
-setlocal formatoptions=1jtqln
+setlocal formatoptions=j1tqln
 setlocal iminsert=0
 setlocal imsearch=-1
 setlocal includeexpr=
@@ -288,7 +294,13 @@ sil! normal! zo
 sil! normal! zo
 18
 sil! normal! zo
-let s:l = 13 - ((12 * winheight(0) + 26) / 52)
+19
+sil! normal! zo
+65
+sil! normal! zo
+67
+sil! normal! zo
+let s:l = 13 - ((12 * winheight(0) + 21) / 42)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
