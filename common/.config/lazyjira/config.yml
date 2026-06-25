@@ -1,6 +1,21 @@
 # https://github.com/textfuel/lazyjira/blob/main/docs/Config.md
 gui:
   theme: default
+  sidePanelWidth: 125
+  issueListFields:
+    - key
+    - type
+    - status
+    - priority
+    - summary
+
+issueTabs:
+  - name: Assigned
+    jql: project = {{.ProjectKey}} AND assignee=currentUser() AND statusCategory != Done ORDER BY statusCategory DESC, priority DESC, updated DESC
+  - name: All
+    jql: project = {{.ProjectKey}} AND statusCategory != Done ORDER BY updated DESC
+  - name: By status
+    jql: project = {{.ProjectKey}} AND statusCategory != Done ORDER BY statusCategory DESC, updated DESC
 
 customCommands:
   - key: "ctrl+y"
