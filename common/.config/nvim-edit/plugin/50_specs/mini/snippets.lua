@@ -23,11 +23,6 @@ Edit.later(function()
 		},
 	})
 
-	snippets.start_lsp_server({
-		match = false,
-		before_attach = function(buf_id)
-			return vim.api.nvim_buf_is_loaded(buf_id)
-				and (vim.bo[buf_id].buftype == "" or vim.bo[buf_id].buftype == "acwrite")
-		end,
-	})
+	-- No start_lsp_server() — blink.cmp uses mini.snippets directly via
+	-- the "mini_snippets" preset (see plugin/50_specs/blink.lua).
 end)

@@ -20,6 +20,11 @@
       "rev": "1a53b7ac0282a45e66b38c88b4a37200ecfcd638",
       "src": "git@github.com:black-atom-industries/nvim.git"
     },
+    "blink.cmp": {
+      "rev": "78336bc89ee5365633bcf754d93df01678b5c08f",
+      "src": "git@github.com:saghen/blink.cmp",
+      "version": "1.0.0 - 2.0.0"
+    },
     "codediff.nvim": {
       "rev": "7608f3b436ce1f84a4888f75e53079caa981a2e9",
       "src": "git@github.com:esmuellert/codediff.nvim"
