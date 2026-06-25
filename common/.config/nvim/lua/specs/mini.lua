@@ -739,11 +739,11 @@ function M.clue()
             { mode = "n", keys = "<leader>dy", desc = "[Y]ank" },
             { mode = "n", keys = "<leader>dg", desc = "[G]it" },
 
-            -- Symbol
-            { mode = "n", keys = "<leader>s", desc = "[S]ymbol" },
-            { mode = "n", keys = "<leader>sl", desc = "[L]og" },
-            { mode = "n", keys = "<leader>sc", desc = "[C]alls" },
-            { mode = "n", keys = "<leader>sg", desc = "[G]it" },
+            -- Symbol (leaderless; `s` neutralized in keymaps.lua)
+            { mode = "n", keys = "s", desc = "[S]ymbol" },
+            { mode = "n", keys = "sl", desc = "[L]og" },
+            { mode = "n", keys = "sc", desc = "[C]alls" },
+            { mode = "n", keys = "sg", desc = "[G]it" },
 
             -- Other
             { mode = "n", keys = "<leader>c", desc = "[C]hange" },
@@ -929,9 +929,9 @@ function M.pick()
     map("n", "<leader>ds",  function() MiniExtra.pickers.lsp({ scope = "document_symbol" }) end, { desc = "[S]ymbols" })
     map("n", "<leader>dt",  function() MiniExtra.pickers.buf_lines({ scope = "current" }) end, { desc = "[T]ext" })
 
-    -- Symbol
-    map("n", "<leader>sr",  function() MiniExtra.pickers.lsp({ scope = "references" }) end, { desc = "[R]eferences" })
-    map("n", "<leader>si",  function() MiniExtra.pickers.lsp({ scope = "implementation" }) end, { desc = "[I]mplementations" })
+    -- Symbol (leaderless; `s` neutralized in keymaps.lua)
+    map("n", "sr",  function() MiniExtra.pickers.lsp({ scope = "references" }) end, { desc = "[R]eferences" })
+    map("n", "si",  function() MiniExtra.pickers.lsp({ scope = "implementation" }) end, { desc = "[I]mplementations" })
     -- stylua: ignore end
 end
 

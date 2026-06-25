@@ -91,7 +91,7 @@ return {
         { "<leader>wgr", function() Snacks.gitbrowse() end,        desc = "[R]emote (GitHub)" },
         { "<leader>wgs", function() Snacks.lazygit() end,          desc = "[S]tatus (Lazygit)" },
         { "<leader>dgH", function() Snacks.lazygit.log_file() end, desc = "[H]istory (Lazygit)" },
-        { "<leader>sgb", function() Snacks.git.blame_line() end,   desc = "[B]lame" },
+        { "sgb", function() Snacks.git.blame_line() end,   desc = "[B]lame" },
         -- stylua: ignore end
     },
 }

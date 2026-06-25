@@ -19,6 +19,11 @@ end
 -- Disable Ex mode mapping
 M.map("n", "Q", "<nop>", { desc = "Disable Ex Mode" })
 
+-- Neutralize `s` so two-key `s<key>` Symbol bindings (leaderless AWDCS S
+-- scope) resolve. `s` is normally substitute (delete char + insert);
+-- use `cl` for that. Mirrors the same change in Zed.
+M.map("n", "s", "<nop>", { desc = "Disable substitute (leaderless Symbol prefix)" })
+
 -- Escape clears search highlight, saves, hides notifier
 M.map("n", "<Esc>", function()
     vim.cmd.nohlsearch()

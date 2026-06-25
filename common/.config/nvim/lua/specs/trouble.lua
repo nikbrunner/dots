@@ -66,13 +66,13 @@ return {
         { "<leader>dP", "<cmd>Trouble diagnostics toggle  filter.buf=0<cr>", desc = "[P]roblems" },
         { "<leader>wP", "<cmd>Trouble diagnostics toggle<cr>", desc = "[P]roblems" },
 
-        { "<leader>sd", "<cmd>Trouble lsp_definitions<cr>", desc = "[D]efinition" },
-        { "<leader>st", "<cmd>Trouble lsp_type_definitions<cr>", desc = "[T]ype Definition" },
-        { "<leader>sR", "<cmd>Trouble lsp_references<cr>", desc = "[R]eferences" },
-        { "<leader>sI", "<cmd>Trouble lsp_implementations<cr>", desc = "[I]mplementations" },
+        { "sd", "<cmd>Trouble lsp_definitions<cr>", desc = "[D]efinition" },
+        { "st", "<cmd>Trouble lsp_type_definitions<cr>", desc = "[T]ype Definition" },
+        { "sR", "<cmd>Trouble lsp_references<cr>", desc = "[R]eferences" },
+        { "sI", "<cmd>Trouble lsp_implementations<cr>", desc = "[I]mplementations" },
 
-        { "<leader>sci", "<cmd>Trouble lsp_incoming_calls<cr>", desc = "[I]ncoming" },
-        { "<leader>sco", "<cmd>Trouble lsp_outgoing_calls<cr>", desc = "[O]utgoing" },
+        { "sci", "<cmd>Trouble lsp_incoming_calls<cr>", desc = "[I]ncoming" },
+        { "sco", "<cmd>Trouble lsp_outgoing_calls<cr>", desc = "[O]utgoing" },
         {
             "[q",
             function()
