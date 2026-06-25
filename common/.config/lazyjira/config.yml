@@ -1,3 +1,13 @@
 # https://github.com/textfuel/lazyjira/blob/main/docs/Config.md
 gui:
   theme: default
+
+customCommands:
+  - key: "ctrl+y"
+    name: "Copy as markdown link"
+    command: "s=$(printf %s {{.Summary | shellescape}} | tr -d '[]'); printf '[%s %s](%s)' {{.Key | shellescape}} \"$s\" {{.URL | shellescape}} | (command -v pbcopy >/dev/null && pbcopy || wl-copy)"
+    suspend: false
+  - key: "y"
+    name: "Copy key + summary"
+    command: "s=$(printf %s {{.Summary | shellescape}} | tr -d '[]'); printf '%s %s' {{.Key | shellescape}} \"$s\" | (command -v pbcopy >/dev/null && pbcopy || wl-copy)"
+    suspend: false
