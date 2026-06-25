@@ -38,11 +38,11 @@
   {
     "context": "Workspace",
     "bindings": {
+      // , , and , w d both → file_finder::Toggle. Kept both: , , for fast access, , w d for AWDCS consistency.
       ", ,": "file_finder::Toggle",
       ", w d": "file_finder::Toggle",
       ", w r": "tab_switcher::Toggle",
       ", w s": "project_symbols::Toggle",
-      ", w f": "pane::DeploySearch",
       ", w t": "pane::DeploySearch",
       ", w e": "project_panel::ToggleFocus",
       ", w p": "diagnostics::Deploy",
@@ -71,6 +71,15 @@
       // the leader sequences. Must be scoped here to win precedence.
       ",": null,
 
+      // Neutralize `s` so two-key `s<key>` Symbol bindings resolve. The default
+      // `s` = vim::Substitute fires instantly (operator, not a keymap binding),
+      // so `null` does NOT suppress it. `vim::PushSneak` is the documented
+      // override: it replaces substitute with a wait-for-input state.
+      // `sd`/`sr`/etc. resolve as more-specific bindings before sneak's jump.
+      // Use `cl` for substitute (s no longer substitutes).
+      "s": "vim::PushSneak",
+
+      // Deliberate: H/L = pane prev/next (matches nvim tab nav). Loses vim WindowTop/WindowBottom.
       // --- Navigation ---
       "H": "pane::ActivatePreviousItem",
       "L": "pane::ActivateNextItem",
@@ -80,9 +89,10 @@
       ", d f": "buffer_search::Deploy",
       ", d s": "outline::Toggle",
       ", d l": "pane::AlternateFile",
-      ", d p": "editor::GoToDiagnostic",
+      ", d p": "diagnostics::DeployCurrentFile",
       ", d y p": "workspace::CopyRelativePath",
       ", d y a": "workspace::CopyPath",
+      ", d y n": "editor::CopyFileName",
       ", d g r": "git::RestoreFile",
       ", d g s": "git::StageFile",
 
@@ -90,19 +100,20 @@
       ", c r": "git::Restore",
       ", c s": "git::StageAndNext",
       ", c d": "editor::ToggleSelectedDiffHunks",
-      ", c g": "editor::ToggleSelectedDiffHunks",
-      "] c": "editor::GoToNextChange",
-      "[ c": "editor::GoToPreviousChange",
+      "] c": "editor::GoToHunk",
+      "[ c": "editor::GoToPreviousHunk",
 
-      // --- Symbol Scope (AWDCS: S) ---
-      ", s d": "editor::GoToDefinition",
-      ", s r": "editor::FindAllReferences",
-      ", s i": "editor::Hover",
-      ", s n": "editor::Rename",
-      ", s a": "editor::ToggleCodeActions",
-      ", s t": "editor::GoToTypeDefinition",
-      ", s shift-i": "editor::GoToImplementation",
-      ", s g b": "editor::BlameHover",
+      // --- Symbol Scope (AWDCS: S) — leaderless; `s` neutralized above ---
+      "sd": "editor::GoToDefinition",
+      "sV": "editor::GoToDefinitionSplit",
+      "sr": "editor::FindAllReferences",
+      "si": "editor::GoToImplementation",
+      "sh": "editor::Hover",
+      "sn": "editor::Rename",
+      "sa": "editor::ToggleCodeActions",
+      "st": "editor::GoToTypeDefinition",
+      "sD": "editor::GoToDeclaration",
+      "sgb": "editor::BlameHover",
 
       // --- Custom ---
       // "y c": ["workspace::SendKeystrokes", "y y g c c p"],
@@ -116,7 +127,9 @@
     "context": "Editor && vim_mode == visual && !VimWaiting && !menu",
     "bindings": {
       ",": null,
+      // Deliberate: A = SelectAll, g a = agent::AddSelectionToThread. Loses default A=InsertAfter, g a=SelectAllMatches.
       "g a": "agent::AddSelectionToThread",
+      // Deliberate: v/V = tree-sitter select larger/smaller (mini.ai/grug style). Loses visual-mode toggle.
       "v": "editor::SelectLargerSyntaxNode",
       "V": "editor::SelectSmallerSyntaxNode",
       "A": "editor::SelectAll",
@@ -127,20 +140,13 @@
   },
 
   // ============================================================
-  // Editor — Vim Insert
-  // ============================================================
-  {
-    "context": "Editor && vim_mode == insert && !menu",
-    "bindings": {},
-  },
-
-  // ============================================================
   // Project Panel
   // ============================================================
   {
     "context": "ProjectPanel && not_editing",
     "bindings": {
       "escape": "project_panel::ToggleFocus",
+      "q": "project_panel::ToggleFocus",
       ", e e": "workspace::ToggleLeftDock",
       "h": "project_panel::CollapseSelectedEntry",
       "j": "menu::SelectNext",
@@ -160,6 +166,16 @@
       "shift-a": "project_panel::NewDirectory",
       "shift-y": "workspace::CopyRelativePath",
       "g y": "workspace::CopyPath",
+    },
+  },
+
+  // ============================================================
+  // Git Panel
+  // ============================================================
+  {
+    "context": "GitPanel && !edit_prediction",
+    "bindings": {
+      "q": "git_panel::ToggleFocus",
     },
   },
 
