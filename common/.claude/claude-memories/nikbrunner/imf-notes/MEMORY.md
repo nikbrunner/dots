@@ -1,1 +1,2 @@
 - [IMF general dev audience](imf-general-dev-audience.md) — internal dev talks are non-frontend; keep them jargon-free and high-level
+- [Repo paths](reference-repo-paths.md) — ImFusion repos live under ~/repos/imfusion/websdk/, not ~/repos/imfusion/ directly

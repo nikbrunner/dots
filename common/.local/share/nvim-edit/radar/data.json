@@ -74,26 +74,22 @@
             "label": "2"
           }
         ],
-        "lastAccessed": 1782407811
+        "lastAccessed": 1782905133
       }
     },
     "~/repos/nikbrunner/imf-notes": {
       "main": {
         "locks": [
           {
-            "filename": "logs/2026/2026.06/2026.06.24 - Wed.md",
+            "filename": "logs/2026/2026.06/2026.06.md",
             "label": "1"
           },
           {
-            "filename": "logs/2026/2026.06/2026.06.md",
-            "label": "2"
-          },
-          {
             "filename": "projects/web-ui.md",
-            "label": "3"
+            "label": "2"
           }
         ],
-        "lastAccessed": 1782385966
+        "lastAccessed": 1782904630
       }
     },
     "~/repos/nikbrunner/minifugit.nvim": {
@@ -111,15 +107,15 @@
       "main": {
         "locks": [
           {
-            "filename": "05 - Meta/Templates/Daily Note.md",
+            "filename": "Log/2026/2026.06/2026.06.25 - Thu.md",
             "label": "1"
           },
           {
-            "filename": "Log/2026/2026.06/2026.06.25 - Thu.md",
+            "filename": "Log/2026/2026.06/2026.06 - June.md",
             "label": "2"
           }
         ],
-        "lastAccessed": 1782375408
+        "lastAccessed": 1782806142
       }
     }
   }

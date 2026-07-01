@@ -85,8 +85,8 @@
       "default": "allow",
     },
     "inline_assistant_model": {
-      "provider": "openrouter",
-      "model": "z-ai/glm-5.2",
+      "provider": "anthropic",
+      "model": "claude-sonnet-4-6",
       "enable_thinking": false,
     },
     "use_modifier_to_send": true,
@@ -112,7 +112,7 @@
   "theme": {
     "mode": "system",
     "light": "Black Atom — Light",
-    "dark": "Black Atom — Dark Dimmed",
+    "dark": "Black Atom — JPN ∷ Koyo Yoru",
   },
   "base_keymap": "VSCode",
   "vim_mode": true,

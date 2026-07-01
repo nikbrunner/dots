@@ -9,6 +9,9 @@ pi_status_enabled: true
 git_status_enabled: true
 project_dirs:
   - ~/repos
+
+git_providers:
+  bitbucket.imfusion.com: imfusion
 default_session_dir: ~/repos
 lazygit_popup:
   width: 100%
