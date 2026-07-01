@@ -126,13 +126,8 @@ vim.api.nvim_create_autocmd("User", {
 	end,
 })
 
--- LSP rename integration with Snacks
-vim.api.nvim_create_autocmd("User", {
-	pattern = "MiniFilesActionRename",
-	callback = function(event)
-		pcall(Snacks.rename.on_rename_file, event.data.from, event.data.to)
-	end,
-})
+-- Note: mini.files is LSP-aware for create/delete/rename on Neovim >= 0.11
+-- (willRenameFiles / didRenameFiles), so no external rename hook is needed.
 
 -- Wipe buffer when file is deleted via mini.files
 vim.api.nvim_create_autocmd("User", {

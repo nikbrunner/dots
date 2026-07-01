@@ -171,34 +171,6 @@ if vim.fn.argc(-1) == 0 or (vim.fn.argc(-1) == 1 and vim.fn.argv(0) == ".") then
 		end,
 	})
 
-	-- Auto-switch sessions on TermLeave event (like closing the lazygit terminal)
-	vim.api.nvim_create_autocmd({ "TermLeave" }, {
-		callback = function(event)
-			-- Skip if project_switch is in progress
-			if vim.g._mini_session_switching then
-				return
-			end
-
-			-- Only proceed if it's a Snacks terminal (skip fzf-lua and others)
-			local buf = event.buf or vim.api.nvim_get_current_buf()
-			if vim.bo[buf].filetype ~= "snacks_terminal" then
-				return
-			end
-
-			-- Don't load session if we're already in a session load
-			if vim.g.SessionLoad == 1 then
-				return
-			end
-
-			local session_name = get_session_name()
-
-			-- Load existing session or create new one
-			if MS.detected[session_name] then
-				MS.read(session_name)
-			end
-		end,
-	})
-
 	-- Auto-create session on VimLeave for specified directories
 	vim.api.nvim_create_autocmd({ "VimLeave" }, {
 		callback = function()

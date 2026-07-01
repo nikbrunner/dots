@@ -83,5 +83,13 @@ Edit.later(function()
 		},
 	})
 
+	-- Copy a shareable permalink to the clipboard (work Bitbucket Server included).
 	vim.keymap.set({ "n", "v" }, "<leader>dyg", "<CMD>GitLink<CR>", { desc = "[G]it Link" })
+
+	-- Open the browse URL of the current line/selection in the system browser.
+	-- Replaces the old snacks.gitbrowse binding; uses gitlinker's browse router,
+	-- so work Bitbucket Server links work here too.
+	vim.keymap.set({ "n", "v" }, "<leader>wgr", function()
+		require("gitlinker").link({ action = require("gitlinker.actions").system })
+	end, { desc = "[R]emote: open in browser" })
 end)
