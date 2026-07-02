@@ -1,6 +1,7 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/black-atom-industries/helm/main/schema.json
 
 appearance: light
+theme: black-atom-default-dark-dimmed
 enable_layouts: false
 layout: dev
 layout_dir: ~/.config/tmux/layouts
