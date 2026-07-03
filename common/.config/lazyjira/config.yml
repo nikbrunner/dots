@@ -2,6 +2,11 @@
 gui:
   theme: default
   sidePanelWidth: 125
+  statusIcons:
+    Backlog: "💤"
+    Open: "📬"
+    In Progress: "⚡"
+    Resolved: "✅"
   issueListFields:
     - key
     - type
@@ -11,18 +16,29 @@ gui:
 
 issueTabs:
   - name: Assigned
-    jql: project = {{.ProjectKey}} AND assignee=currentUser() AND statusCategory != Done ORDER BY statusCategory DESC, priority DESC, updated DESC
+    jql: project = {{.ProjectKey}} AND assignee=currentUser() AND statusCategory != Done ORDER BY status ASC, priority ASC, updated ASC
   - name: All
     jql: project = {{.ProjectKey}} AND statusCategory != Done ORDER BY updated DESC
-  - name: By status
-    jql: project = {{.ProjectKey}} AND statusCategory != Done ORDER BY statusCategory DESC, updated DESC
+
+fields:
+  - id: status
+  - id: priority
+  - id: assignee
+  - id: reporter
+  - id: issuetype
+  - id: sprint
+  - id: labels
+  - id: components
+  - id: duedate
+    name: "Due Date"
+    type: text
 
 customCommands:
   - key: "ctrl+y"
     name: "Copy as markdown link"
-    command: "s=$(printf %s {{.Summary | shellescape}} | tr -d '[]'); printf '[%s %s](%s)' {{.Key | shellescape}} \"$s\" {{.URL | shellescape}} | (command -v pbcopy >/dev/null && pbcopy || wl-copy)"
+    command: 's=$(printf %s {{.Summary | shellescape}} | tr -d ''[]''); printf ''[%s %s](%s)'' {{.Key | shellescape}} "$s" {{.URL | shellescape}} | (command -v pbcopy >/dev/null && pbcopy || wl-copy)'
     suspend: false
   - key: "y"
     name: "Copy key + summary"
-    command: "s=$(printf %s {{.Summary | shellescape}} | tr -d '[]'); printf '%s %s' {{.Key | shellescape}} \"$s\" | (command -v pbcopy >/dev/null && pbcopy || wl-copy)"
+    command: 's=$(printf %s {{.Summary | shellescape}} | tr -d ''[]''); printf ''%s %s'' {{.Key | shellescape}} "$s" | (command -v pbcopy >/dev/null && pbcopy || wl-copy)'
     suspend: false
