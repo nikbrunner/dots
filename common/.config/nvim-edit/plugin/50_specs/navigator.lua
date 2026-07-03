@@ -1,10 +1,37 @@
+-- <C-h/j/k/l> navigation between nvim splits and herdr panes.
+-- Inlined from vim-herdr-navigation/editor/nvim.lua (paulbkim-dev).
+-- Drops numToStr/Navigator.nvim — this calls herdr directly when at a split
+-- edge, and falls back to tmux (TmuxNavigate*) or plain wincmd when not
+-- inside a herdr pane, so the same config works everywhere.
+
 Edit.later(function()
-	vim.pack.add({ "git@github.com:numToStr/Navigator.nvim.git" })
+	local function nav(wincmd, dir)
+		local prev = vim.api.nvim_get_current_win()
+		vim.cmd("wincmd " .. wincmd)
+		if vim.api.nvim_get_current_win() ~= prev then
+			return -- moved within Neovim
+		end
+		-- At a split edge: cross into the surrounding multiplexer.
+		if vim.env.HERDR_PANE_ID and vim.env.HERDR_PANE_ID ~= "" then
+			local herdr = vim.env.HERDR_BIN_PATH
+			if herdr == nil or herdr == "" then
+				herdr = "herdr"
+			end
+			vim.fn.system({ herdr, "pane", "focus", "--direction", dir, "--current" })
+		elseif vim.env.TMUX and vim.env.TMUX ~= "" then
+			local tmux = { left = "Left", down = "Down", up = "Up", right = "Right" }
+			pcall(vim.cmd, "TmuxNavigate" .. tmux[dir])
+		end
+	end
 
-	require("Navigator").setup()
+	local function map(lhs, wincmd, dir, desc)
+		vim.keymap.set("n", lhs, function()
+			nav(wincmd, dir)
+		end, { silent = true, noremap = true, desc = desc })
+	end
 
-	vim.keymap.set("n", "<C-h>", "<CMD>NavigatorLeft<CR>", { noremap = true })
-	vim.keymap.set("n", "<C-l>", "<CMD>NavigatorRight<CR>", { noremap = true })
-	vim.keymap.set("n", "<C-k>", "<CMD>NavigatorUp<CR>", { noremap = true })
-	vim.keymap.set("n", "<C-j>", "<CMD>NavigatorDown<CR>", { noremap = true })
+	map("<C-h>", "h", "left", "Navigate left (vim/herdr)")
+	map("<C-j>", "j", "down", "Navigate down (vim/herdr)")
+	map("<C-k>", "k", "up", "Navigate up (vim/herdr)")
+	map("<C-l>", "l", "right", "Navigate right (vim/herdr)")
 end)

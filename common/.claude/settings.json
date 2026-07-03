@@ -53,7 +53,7 @@
     "deny": [],
     "ask": []
   },
-  "model": "sonnet",
+  "model": "fable",
   "hooks": {
     "Notification": [
       {
@@ -61,6 +61,17 @@
           {
             "type": "command",
             "command": "~/.local/bin/helm-hook Notification"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/enforce/warn-any-type.sh"
           }
         ]
       }
@@ -93,24 +104,12 @@
         ]
       }
     ],
-    "PostToolUse": [
+    "SessionEnd": [
       {
-        "matcher": "Write|Edit",
         "hooks": [
           {
             "type": "command",
-            "command": "~/.claude/hooks/enforce/warn-any-type.sh"
-          }
-        ]
-      },
-      {
-        "matcher": "Bash|PowerShell|Grep|Glob|Read|Edit|Write",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "repowise-augment",
-            "timeout": 10,
-            "statusMessage": "Checking codebase context..."
+            "command": "~/.local/bin/helm-hook SessionEnd"
           }
         ]
       }
@@ -133,6 +132,16 @@
             "command": "~/.claude/hooks/enforce/session-start.sh"
           }
         ]
+      },
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash '/Users/brunner/.claude/hooks/herdr-agent-state.sh' session",
+            "timeout": 10
+          }
+        ]
       }
     ],
     "Stop": [
@@ -141,16 +150,6 @@
           {
             "type": "command",
             "command": "~/.local/bin/helm-hook Stop"
-          }
-        ]
-      }
-    ],
-    "SessionEnd": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "~/.local/bin/helm-hook SessionEnd"
           }
         ]
       }
@@ -181,14 +180,14 @@
     "command": "~/.local/bin/claude-statusline"
   },
   "enabledPlugins": {
-    "lua-lsp@claude-plugins-official": true,
-    "frontend-design@claude-plugins-official": true,
-    "typescript-lsp@claude-plugins-official": true,
-    "impeccable@impeccable": true,
-    "plannotator@plannotator": true,
     "figma@claude-plugins-official": true,
+    "frontend-design@claude-plugins-official": true,
     "gopls-lsp@claude-plugins-official": true,
-    "rust-analyzer-lsp@claude-plugins-official": true
+    "impeccable@impeccable": true,
+    "lua-lsp@claude-plugins-official": true,
+    "plannotator@plannotator": true,
+    "rust-analyzer-lsp@claude-plugins-official": true,
+    "typescript-lsp@claude-plugins-official": true
   },
   "extraKnownMarketplaces": {
     "impeccable": {
@@ -197,22 +196,16 @@
         "repo": "pbakaus/impeccable"
       }
     },
-    "readwise-skills": {
-      "source": {
-        "source": "github",
-        "repo": "readwiseio/readwise-skills"
-      }
-    },
     "plannotator": {
       "source": {
         "source": "github",
         "repo": "backnotprop/plannotator"
       }
     },
-    "repowise": {
+    "readwise-skills": {
       "source": {
         "source": "github",
-        "repo": "repowise-dev/repowise"
+        "repo": "readwiseio/readwise-skills"
       }
     }
   },
@@ -230,16 +223,5 @@
   "feedbackSurveyState": {
     "lastShownTime": 1754313915132
   },
-  "mcpServers": {
-    "repowise": {
-      "command": "/Users/brunner/.local/pipx/venvs/repowise/bin/repowise",
-      "args": [
-        "mcp",
-        "/Users/brunner/repos/imfusion/websdk/web-ui/.workspaces/websdk-152-storybook-harness",
-        "--transport",
-        "stdio"
-      ],
-      "description": "repowise: codebase intelligence — docs, graph, git signals, dead code, decisions"
-    }
-  }
+  "mcpServers": {}
 }

@@ -17,6 +17,11 @@ common:
   "common/.config/black-atom/*": ~/.config/black-atom
   common/.config/gh/config.yml: ~/.config/gh/config.yml
   common/.config/ghostty: ~/.config/ghostty
+  common/.config/herdr/config.toml: ~/.config/herdr/config.toml
+  common/.config/herdr/session.json: ~/.config/herdr/session.json
+  common/.config/herdr/session-history.json: ~/.config/herdr/session-history.json
+  common/.config/herdr/plugins.json: ~/.config/herdr/plugins.json
+  common/.config/herdr/plugins: ~/.config/herdr/plugins
   common/.config/kitty: ~/.config/kitty
   common/.config/lazygit/config.yml: ~/.config/lazygit/config.yml
   common/.config/lazyjira: ~/.config/lazyjira
