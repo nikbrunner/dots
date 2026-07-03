@@ -70,6 +70,9 @@ taplo = "prefix:0"
 # ── MCP servers ──
 "npm:chrome-devtools-mcp" = "1.2.0"
 "npm:exa-mcp-server" = "3.2.1"
+tfenv = "latest"
+java = "21"
+lazydocker = "latest"
 
 [env]
 _.file = "~/.env"
