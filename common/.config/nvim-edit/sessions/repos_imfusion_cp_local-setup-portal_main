@@ -4,18 +4,32 @@ let v:this_session=expand("<sfile>:p")
 doautoall SessionLoadPre
 silent only
 silent tabonly
-cd ~/repos/nikbrunner/dots
+cd ~/repos/imfusion/cp/local-setup-portal
 if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +60 common/.config/tmux/keymaps.conf
+badd +122 README.md
 argglobal
 %argdel
-$argadd ~/repos/nikbrunner/dots/common/.config/nvim-edit/plugin/50_specs/mini/completion.lua
-edit common/.config/tmux/keymaps.conf
+$argadd ./
+edit README.md
 argglobal
+xnoremap <buffer> $ g$
+onoremap <buffer> $ g$
+nnoremap <buffer> $ g$
+xnoremap <buffer> 0 g0
+onoremap <buffer> 0 g0
+nnoremap <buffer> 0 g0
+xnoremap <buffer> <silent> [[ :exe "normal! gv"|call search('\%(^#\{1,5\}\s\+\S\|^\S.*\n^[=-]\+$\)', "bsW")
+xnoremap <buffer> <silent> ]] :exe "normal! gv"|call search('\%(^#\{1,5\}\s\+\S\|^\S.*\n^[=-]\+$\)', "sW")
+xnoremap <buffer> j gj
+onoremap <buffer> j gj
+nnoremap <buffer> j gj
+xnoremap <buffer> k gk
+onoremap <buffer> k gk
+nnoremap <buffer> k gk
 setlocal keymap=
 setlocal noarabic
 setlocal autoindent
@@ -32,8 +46,8 @@ setlocal cinoptions=
 setlocal cinscopedecls=public,protected,private
 setlocal cinwords=if,else,while,do,for,switch
 setlocal colorcolumn=+1
-setlocal comments=:#
-setlocal commentstring=#\ %s
+setlocal comments=fb:*,fb:-,fb:+,n:>
+setlocal commentstring=<!--\ %s\ -->
 setlocal complete=.,w,b,kspell
 setlocal completefunc=
 setlocal completeslash=
@@ -47,8 +61,8 @@ setlocal cursorlineopt=screenline,number
 setlocal nodiff
 setlocal eventignorewin=
 setlocal expandtab
-if &filetype != 'conf'
-setlocal filetype=conf
+if &filetype != 'markdown'
+setlocal filetype=markdown
 endif
 setlocal fixendofline
 setlocal foldcolumn=0
@@ -62,12 +76,12 @@ setlocal foldminlines=1
 setlocal foldnestmax=10
 setlocal foldtext=
 setlocal formatexpr=v:lua.require'conform'.formatexpr()
-setlocal formatlistpat=^\\s*[0-9\\-\\+\\*]\\+[\\.\\)]*\\s\\+
-setlocal formatoptions=n1jrql
+setlocal formatlistpat=^\\s*\\d\\+\\.\\s\\+\\|^\\s*[-*+]\\s\\+\\|^\\[^\\ze[^\\]]\\+\\]:\\&^.\\{4\\}
+setlocal formatoptions=ntl1qj
 setlocal iminsert=0
 setlocal imsearch=-1
 setlocal includeexpr=
-setlocal indentexpr=
+setlocal indentexpr=v:lua.require'arborist.indent'.indentexpr()
 setlocal indentkeys=0{,0},0),0],:,0#,!^F,o,O,e
 setlocal infercase
 setlocal iskeyword=@,48-57,_,192-255,-
@@ -76,13 +90,13 @@ setlocal linebreak
 setlocal nolisp
 setlocal lispoptions=
 setlocal list
-setlocal matchpairs=(:),{:},[:]
+setlocal matchpairs=(:),{:},[:],<:>
 setlocal modeline
 setlocal modifiable
 setlocal nrformats=bin,hex
 setlocal number
 setlocal numberwidth=4
-setlocal omnifunc=
+setlocal omnifunc=v:lua.vim.lsp.omnifunc
 setlocal nopreserveindent
 setlocal nopreviewwindow
 setlocal quoteescape=\\
@@ -92,7 +106,7 @@ setlocal norightleft
 setlocal rightleftcmd=search
 setlocal scrollback=-1
 setlocal noscrollbind
-setlocal shiftwidth=4
+setlocal shiftwidth=2
 setlocal signcolumn=yes
 setlocal smartindent
 setlocal nosmoothscroll
@@ -101,36 +115,57 @@ setlocal nospell
 setlocal spellcapcheck=[.?!]\\_[\\])'\"\\t\ ]\\+
 setlocal spellfile=
 setlocal spelllang=en_us,de_de
-setlocal spelloptions=camel
+setlocal spelloptions=camel,noplainbuffer
 setlocal statuscolumn=
 setlocal suffixesadd=
 setlocal noswapfile
 setlocal synmaxcol=3000
-if &syntax != 'conf'
-setlocal syntax=conf
+if &syntax != ''
+setlocal syntax=
 endif
-setlocal tabstop=2
-setlocal tagfunc=
-setlocal textwidth=0
+setlocal tabstop=4
+setlocal tagfunc=v:lua.vim.lsp.tagfunc
+setlocal textwidth=80
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#common%*%#WinBarSeparator#/%*%#WinBarPath#.config%*%#WinBarSeparator#/%*%#WinBarPath#tmux%*%#WinBarSeparator#/%*%#WinBarFilename#keymaps.conf%*%=%#WinBarGitLabel#\ [GIT:%#WinBarGitAdd#\ +2%#WinBarGitChange#\ ~1%#WinBarGitLabel#]%*\ 
+setlocal winbar=%#WinBarFilename#README.md%*%=%#WinBarGitLabel#\ [GIT:%#WinBarGitAdd#\ +2%#WinBarGitChange#\ ~7%#WinBarGitDelete#\ -1%#WinBarGitLabel#]%*\ 
 setlocal winblend=10
 setlocal nowinfixbuf
 setlocal nowinfixheight
 setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowinpinned
-setlocal nowrap
+setlocal wrap
 setlocal wrapmargin=0
-let s:l = 60 - ((38 * winheight(0) + 21) / 43)
+1
+sil! normal! zo
+3
+sil! normal! zo
+26
+sil! normal! zo
+41
+sil! normal! zo
+43
+sil! normal! zo
+55
+sil! normal! zo
+68
+sil! normal! zo
+86
+sil! normal! zo
+99
+sil! normal! zo
+119
+sil! normal! zo
+134
+sil! normal! zo
+let s:l = 131 - ((22 * winheight(0) + 23) / 46)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 60
+keepjumps 131
 normal! 0
-lcd ~/repos/nikbrunner/dots
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf

@@ -22,5 +22,5 @@ Edit.now(function()
 		},
 	})
 
-	vim.cmd.colorscheme("black-atom-jpn-koyo-yoru")
+	vim.cmd.colorscheme("black-atom-default-light")
 end)

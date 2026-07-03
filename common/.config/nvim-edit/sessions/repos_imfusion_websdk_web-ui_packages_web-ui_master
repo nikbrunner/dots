@@ -4,17 +4,17 @@ let v:this_session=expand("<sfile>:p")
 doautoall SessionLoadPre
 silent only
 silent tabonly
-cd ~/repos/nikbrunner/dots
+cd ~/repos/imfusion/websdk/web-ui/packages/web-ui
 if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +60 common/.config/tmux/keymaps.conf
+badd +57 ~/repos/imfusion/websdk/web-ui/.claude/settings.json
 argglobal
 %argdel
-$argadd ~/repos/nikbrunner/dots/common/.config/nvim-edit/plugin/50_specs/mini/completion.lua
-edit common/.config/tmux/keymaps.conf
+$argadd ./
+edit ~/repos/imfusion/websdk/web-ui/.claude/settings.json
 argglobal
 setlocal keymap=
 setlocal noarabic
@@ -32,8 +32,8 @@ setlocal cinoptions=
 setlocal cinscopedecls=public,protected,private
 setlocal cinwords=if,else,while,do,for,switch
 setlocal colorcolumn=+1
-setlocal comments=:#
-setlocal commentstring=#\ %s
+setlocal comments=
+setlocal commentstring=
 setlocal complete=.,w,b,kspell
 setlocal completefunc=
 setlocal completeslash=
@@ -47,8 +47,8 @@ setlocal cursorlineopt=screenline,number
 setlocal nodiff
 setlocal eventignorewin=
 setlocal expandtab
-if &filetype != 'conf'
-setlocal filetype=conf
+if &filetype != 'json'
+setlocal filetype=json
 endif
 setlocal fixendofline
 setlocal foldcolumn=0
@@ -63,12 +63,12 @@ setlocal foldnestmax=10
 setlocal foldtext=
 setlocal formatexpr=v:lua.require'conform'.formatexpr()
 setlocal formatlistpat=^\\s*[0-9\\-\\+\\*]\\+[\\.\\)]*\\s\\+
-setlocal formatoptions=n1jrql
+setlocal formatoptions=rqnl1j
 setlocal iminsert=0
 setlocal imsearch=-1
 setlocal includeexpr=
-setlocal indentexpr=
-setlocal indentkeys=0{,0},0),0],:,0#,!^F,o,O,e
+setlocal indentexpr=v:lua.require'arborist.indent'.indentexpr()
+setlocal indentkeys=0{,0},0),0[,0],!^F,o,O,e
 setlocal infercase
 setlocal iskeyword=@,48-57,_,192-255,-
 setlocal lhistory=10
@@ -82,7 +82,7 @@ setlocal modifiable
 setlocal nrformats=bin,hex
 setlocal number
 setlocal numberwidth=4
-setlocal omnifunc=
+setlocal omnifunc=v:lua.vim.lsp.omnifunc
 setlocal nopreserveindent
 setlocal nopreviewwindow
 setlocal quoteescape=\\
@@ -92,22 +92,22 @@ setlocal norightleft
 setlocal rightleftcmd=search
 setlocal scrollback=-1
 setlocal noscrollbind
-setlocal shiftwidth=4
+setlocal shiftwidth=2
 setlocal signcolumn=yes
-setlocal smartindent
+setlocal nosmartindent
 setlocal nosmoothscroll
 setlocal softtabstop=-1
 setlocal nospell
 setlocal spellcapcheck=[.?!]\\_[\\])'\"\\t\ ]\\+
 setlocal spellfile=
 setlocal spelllang=en_us,de_de
-setlocal spelloptions=camel
+setlocal spelloptions=camel,noplainbuffer
 setlocal statuscolumn=
 setlocal suffixesadd=
 setlocal noswapfile
 setlocal synmaxcol=3000
-if &syntax != 'conf'
-setlocal syntax=conf
+if &syntax != ''
+setlocal syntax=
 endif
 setlocal tabstop=2
 setlocal tagfunc=
@@ -115,7 +115,7 @@ setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#common%*%#WinBarSeparator#/%*%#WinBarPath#.config%*%#WinBarSeparator#/%*%#WinBarPath#tmux%*%#WinBarSeparator#/%*%#WinBarFilename#keymaps.conf%*%=%#WinBarGitLabel#\ [GIT:%#WinBarGitAdd#\ +2%#WinBarGitChange#\ ~1%#WinBarGitLabel#]%*\ 
+setlocal winbar=%#WinBarPath#...%*%#WinBarSeparator#/%*%#WinBarPath#websdk%*%#WinBarSeparator#/%*%#WinBarPath#web-ui%*%#WinBarSeparator#/%*%#WinBarPath#.claude%*%#WinBarSeparator#/%*%#WinBarFilename#settings.json%*%=
 setlocal winblend=10
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -124,13 +124,22 @@ setlocal winhighlight=
 setlocal nowinpinned
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 60 - ((38 * winheight(0) + 21) / 43)
+1
+sil! normal! zo
+38
+sil! normal! zo
+39
+sil! normal! zo
+40
+sil! normal! zo
+41
+sil! normal! zo
+let s:l = 51 - ((17 * winheight(0) + 16) / 33)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 60
-normal! 0
-lcd ~/repos/nikbrunner/dots
+keepjumps 51
+normal! 012|
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
@@ -144,7 +153,6 @@ if filereadable(s:sx)
 endif
 let &g:so = s:so_save | let &g:siso = s:siso_save
 set hlsearch
-nohlsearch
 doautoall SessionLoadPost
 unlet SessionLoad
 " vim: set ft=vim :

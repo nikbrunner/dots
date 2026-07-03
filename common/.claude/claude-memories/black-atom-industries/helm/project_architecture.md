@@ -1,7 +1,10 @@
 ---
-name: Helm Architecture
-description: Current file structure, mode list, and package layout for the helm TUI
-type: project
+name: helm-architecture
+description: "Current file structure, mode list, and package layout for the helm TUI"
+metadata: 
+  node_type: memory
+  type: project
+  originSessionId: f635f850-6405-49f4-be75-ca1051bf2364
 ---
 
 Helm is a Go TUI for tmux session management (Bubbletea/Lipgloss).
@@ -43,6 +46,14 @@ ModeNormal, ModeConfirmKill, ModeCreate, ModeCreatePath, ModePickDirectory, Mode
 - **`--initial-view` flag**: Start helm in a specific mode (bookmarks, projects, clone)
 - **OpenSpec**: Behavioral specs in `openspec/` directory, used for change proposals
 - **Self-session pinning**: Current tmux session shown at top of session list with separator
+
+## Theming (2026-07-02)
+
+- helm is a **Black Atom adapter**: `black-atom-adapter.json` + Eta template `internal/ui/theme/collection.template.go` generate 38 committed self-registering Go theme files (`make themes`, needs deno). Registry in `internal/ui/theme/registry.go`.
+- `theme:` config key / `HELM_THEME` env selects a theme; empty = ANSI-16 + reverse-video fallback (`selectedBase()` in styles.go branches on `ui.HasTheme`).
+- Warn buttons use Fg.Error on Bg.Negative (diff-delete pairing) — `ui.fg.contrast` is only right on `ui.bg.contrast` (title bar), looks washed out on the negative tint.
+- Paper collection themes exist only in local core (unpublished > JSR 0.4.0); regenerate with `deno run -A ~/repos/black-atom-industries/core/src/cli/index.ts generate` until next core release.
+- Nik's dots config (`~/repos/nikbrunner/dots/common/.config/black-atom/helm/config.yml`) is **hardlinked** (same inode) to `~/.config/black-atom/helm/config.yml`; it sets `theme: black-atom-default-light` matching his ghostty theme.
 
 **Why:** Future sessions need accurate file locations and feature awareness.
 

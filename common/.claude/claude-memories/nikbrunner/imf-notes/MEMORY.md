@@ -1,2 +1,5 @@
 - [IMF general dev audience](imf-general-dev-audience.md) — internal dev talks are non-frontend; keep them jargon-free and high-level
-- [Repo paths](reference-repo-paths.md) — ImFusion repos live under ~/repos/imfusion/websdk/, not ~/repos/imfusion/ directly
+- [Repo paths](reference-repo-paths.md) — ImFusion repos live under per-project subfolders (websdk/, cp/, etc.), never directly in ~/repos/imfusion/
+- [web-ui/portal shift](project-web-ui-portal-shift.md) — web-ui work now driven by imfusion-portal-fe's real needs, not backlog order
+- [Close-out portfolio check-in](feedback-close-out-portfolio-checkin.md) — close mode must check full Jira portfolio, never auto-carry open tickets without asking
+- [Lean Jira tickets](feedback-lean-jira-tickets.md) — no dates/process narration/redundant subtask lists in ticket bodies; state current truth only
