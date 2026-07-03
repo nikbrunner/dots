@@ -53,6 +53,7 @@
     "deny": [],
     "ask": []
   },
+  "model": "sonnet",
   "hooks": {
     "Notification": [
       {
@@ -186,7 +187,8 @@
     "impeccable@impeccable": true,
     "plannotator@plannotator": true,
     "figma@claude-plugins-official": true,
-    "repowise@repowise": true
+    "gopls-lsp@claude-plugins-official": true,
+    "rust-analyzer-lsp@claude-plugins-official": true
   },
   "extraKnownMarketplaces": {
     "impeccable": {
@@ -221,7 +223,7 @@
     "mode": "hold"
   },
   "autoDreamEnabled": true,
-  "theme": "light-ansi",
+  "theme": "auto",
   "editorMode": "vim",
   "skipAutoPermissionPrompt": true,
   "voiceEnabled": true,
