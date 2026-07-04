@@ -588,6 +588,12 @@ cmd_chores() {
 	fi
 	echo ""
 
+	# Herdr session changes
+	if dots_stage_herdr "$DOTS_DIR"; then
+		topics_changed+=("herdr")
+	fi
+	echo ""
+
 	# Gitconfig changes
 	if dots_stage_gitconfig "$DOTS_DIR"; then
 		topics_changed+=("gitconfig")
