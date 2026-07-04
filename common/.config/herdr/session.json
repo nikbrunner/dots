@@ -9,7 +9,7 @@
         "13": 13,
         "3": 2
       },
-      "next_public_pane_number": 24,
+      "next_public_pane_number": 26,
       "public_tab_numbers": [
         2,
         3
@@ -23,7 +23,13 @@
           },
           "panes": {
             "3": {
-              "cwd": "/Users/brunner/repos/nikbrunner/dots"
+              "cwd": "/Users/brunner/repos/nikbrunner/dots",
+              "agent_session": {
+                "source": "herdr:pi",
+                "agent": "pi",
+                "kind": "path",
+                "value": "/Users/brunner/.pi/agent/sessions/--Users-brunner-repos-nikbrunner-dots--/2026-07-04T10-33-59-806Z_019f2cb1-38fe-7bc5-868c-a9df13ff46af.jsonl"
+              }
             }
           },
           "zoomed": false,
@@ -52,8 +58,8 @@
       "custom_name": null,
       "identity_cwd": "/Users/brunner/repos/black-atom-industries/livery",
       "public_pane_numbers": {
-        "4": 1,
-        "5": 2
+        "5": 2,
+        "4": 1
       },
       "next_public_pane_number": 12,
       "public_tab_numbers": [
