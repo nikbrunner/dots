@@ -1,0 +1,10 @@
+name = "dots"
+description = "Dotfiles"
+working_dir = "~/repos/nikbrunner/dots"
+
+[[tabs]]
+name = "agent"
+
+[[tabs]]
+name = "code"
+command = "edit"

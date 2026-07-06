@@ -1,0 +1,20 @@
+name = "core"
+description = "Black Atom Industries core"
+working_dir = "~/repos/black-atom-industries/core"
+
+[[tabs]]
+name = "agent"
+
+[[tabs]]
+name = "code"
+command = "edit"
+
+[[tabs]]
+name = "server"
+
+[[tabs.panes]]
+label = "Server"
+
+[[tabs.panes]]
+label = "Terminal"
+split = "right"

@@ -107,3 +107,11 @@ key = "alt+shift+o"
 type = "plugin_action"
 command = "third774.last-workspace.toggle"
 description = "last workspace"
+
+# https://github.com/cloudmanic/herdr-plus
+# native project picker — supports split panes; picker-plus's project source does not
+[[keys.command]]
+key = "alt+p"
+type = "plugin_action"
+command = "cloudmanic.herdr-plus.projects"
+description = "herdr-plus: projects"

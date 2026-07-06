@@ -1,0 +1,10 @@
+name = "imf-notes"
+description = "ImFusion notes"
+working_dir = "~/repos/nikbrunner/imf-notes"
+
+[[tabs]]
+name = "agent"
+
+[[tabs]]
+name = "code"
+command = "edit"

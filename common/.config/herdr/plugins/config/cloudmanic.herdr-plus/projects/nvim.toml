@@ -1,0 +1,20 @@
+name = "nvim (black-atom)"
+description = "Black Atom Industries nvim adapter"
+working_dir = "~/repos/black-atom-industries/nvim"
+
+[[tabs]]
+name = "agent"
+
+[[tabs]]
+name = "code"
+command = "edit"
+
+[[tabs]]
+name = "server"
+
+[[tabs.panes]]
+label = "Server"
+
+[[tabs.panes]]
+label = "Terminal"
+split = "right"

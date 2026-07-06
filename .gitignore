@@ -33,3 +33,4 @@ skills-lock.json
 /common/.pi/pi-acp/session-map.json
 handoffs/
 /.repowise
+common/.config/herdr/plugins/github/*/
