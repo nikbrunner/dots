@@ -6,10 +6,12 @@
       "custom_name": null,
       "identity_cwd": "/Users/brunner/repos/nikbrunner/dots",
       "public_pane_numbers": {
-        "3": 2,
-        "13": 13
+        "123": 79,
+        "121": 78,
+        "2": 13,
+        "45": 46
       },
-      "next_public_pane_number": 26,
+      "next_public_pane_number": 81,
       "public_tab_numbers": [
         2,
         3
@@ -19,49 +21,160 @@
         {
           "custom_name": "HERDR",
           "layout": {
-            "Pane": 3
-          },
-          "panes": {
-            "3": {
-              "cwd": "/Users/brunner/repos/nikbrunner/dots",
-              "agent_session": {
-                "source": "herdr:pi",
-                "agent": "pi",
-                "kind": "path",
-                "value": "/Users/brunner/.pi/agent/sessions/--Users-brunner-repos-nikbrunner-dots--/2026-07-04T10-33-59-806Z_019f2cb1-38fe-7bc5-868c-a9df13ff46af.jsonl"
+            "Split": {
+              "direction": "Horizontal",
+              "ratio": 0.5,
+              "first": {
+                "Pane": 45
+              },
+              "second": {
+                "Split": {
+                  "direction": "Horizontal",
+                  "ratio": 0.5,
+                  "first": {
+                    "Pane": 121
+                  },
+                  "second": {
+                    "Pane": 123
+                  }
+                }
               }
             }
           },
-          "zoomed": false,
-          "focused": 3,
-          "root_pane": 3
+          "panes": {
+            "123": {
+              "cwd": "/Users/brunner/repos/nikbrunner/dots/common/.config/herdr/plugins/github/herdr-picker-plus-24891de4026e",
+              "label": "Picker Plus",
+              "launch_argv": [
+                "./target/release/herdr-picker-plus",
+                "ui"
+              ]
+            },
+            "45": {
+              "cwd": "/Users/brunner/repos/nikbrunner/dots",
+              "agent_session": {
+                "source": "herdr:claude",
+                "agent": "claude",
+                "kind": "id",
+                "value": "8460ae4b-3249-4b2d-9ee4-a40de3674fda"
+              }
+            },
+            "121": {
+              "cwd": "/Users/brunner/repos/nikbrunner/dots/common/.config/herdr/plugins/github/herdr-picker-plus-24891de4026e",
+              "label": "Picker Plus",
+              "launch_argv": [
+                "./target/release/herdr-picker-plus",
+                "ui"
+              ]
+            }
+          },
+          "zoomed": true,
+          "focused": 45,
+          "root_pane": 45
         },
         {
           "custom_name": null,
           "layout": {
-            "Pane": 13
+            "Pane": 2
           },
           "panes": {
-            "13": {
+            "2": {
               "cwd": "/Users/brunner/repos/nikbrunner/dots"
             }
           },
           "zoomed": false,
-          "focused": 13,
-          "root_pane": 13
+          "focused": 2,
+          "root_pane": 2
         }
       ],
       "active_tab": 0
     },
     {
-      "id": "w2",
-      "custom_name": null,
-      "identity_cwd": "/Users/brunner/repos/black-atom-industries/livery",
+      "id": "wM",
+      "custom_name": "web-ui",
+      "identity_cwd": "/Users/brunner/repos/imfusion/websdk/web-ui",
       "public_pane_numbers": {
-        "5": 2,
-        "4": 1
+        "115": 1,
+        "116": 2,
+        "117": 3,
+        "118": 4
       },
-      "next_public_pane_number": 12,
+      "next_public_pane_number": 7,
+      "public_tab_numbers": [
+        1,
+        2,
+        3
+      ],
+      "next_public_tab_number": 4,
+      "tabs": [
+        {
+          "custom_name": "agent",
+          "layout": {
+            "Pane": 115
+          },
+          "panes": {
+            "115": {
+              "cwd": "/Users/brunner/repos/imfusion/websdk/web-ui"
+            }
+          },
+          "zoomed": false,
+          "focused": 115,
+          "root_pane": 115
+        },
+        {
+          "custom_name": "code",
+          "layout": {
+            "Pane": 116
+          },
+          "panes": {
+            "116": {
+              "cwd": "/Users/brunner/repos/imfusion/websdk/web-ui"
+            }
+          },
+          "zoomed": false,
+          "focused": 116,
+          "root_pane": 116
+        },
+        {
+          "custom_name": "server",
+          "layout": {
+            "Split": {
+              "direction": "Horizontal",
+              "ratio": 0.5,
+              "first": {
+                "Pane": 117
+              },
+              "second": {
+                "Pane": 118
+              }
+            }
+          },
+          "panes": {
+            "117": {
+              "cwd": "/Users/brunner/repos/imfusion/websdk/web-ui",
+              "label": "Server"
+            },
+            "118": {
+              "cwd": "/Users/brunner/repos/imfusion/websdk/web-ui",
+              "label": "Terminal"
+            }
+          },
+          "zoomed": false,
+          "focused": 117,
+          "root_pane": 117
+        }
+      ],
+      "active_tab": 0
+    },
+    {
+      "id": "wN",
+      "custom_name": "project: dots",
+      "identity_cwd": "/Users/brunner/repos/nikbrunner/dots",
+      "public_pane_numbers": {
+        "126": 1,
+        "127": 2
+      },
+      "next_public_pane_number": 4,
       "public_tab_numbers": [
         1,
         2
@@ -69,38 +182,32 @@
       "next_public_tab_number": 3,
       "tabs": [
         {
-          "custom_name": null,
+          "custom_name": "agent",
           "layout": {
-            "Pane": 4
+            "Pane": 126
           },
           "panes": {
-            "4": {
-              "cwd": "/Users/brunner/repos/black-atom-industries/livery",
-              "agent_session": {
-                "source": "herdr:claude",
-                "agent": "claude",
-                "kind": "id",
-                "value": "6374ae24-82e7-45ee-8f9d-3679300afd0c"
-              }
+            "126": {
+              "cwd": "/Users/brunner/repos/nikbrunner/dots"
             }
           },
           "zoomed": false,
-          "focused": 4,
-          "root_pane": 4
+          "focused": 126,
+          "root_pane": 126
         },
         {
-          "custom_name": null,
+          "custom_name": "code",
           "layout": {
-            "Pane": 5
+            "Pane": 127
           },
           "panes": {
-            "5": {
-              "cwd": "/Users/brunner/repos/black-atom-industries/livery"
+            "127": {
+              "cwd": "/Users/brunner/repos/nikbrunner/dots"
             }
           },
           "zoomed": false,
-          "focused": 5,
-          "root_pane": 5
+          "focused": 127,
+          "root_pane": 127
         }
       ],
       "active_tab": 0
@@ -108,7 +215,7 @@
   ],
   "active": 0,
   "selected": 0,
-  "sidebar_width": 35,
+  "sidebar_width": 36,
   "sidebar_section_split": 0.55813956,
   "collapsed_space_keys": []
 }
