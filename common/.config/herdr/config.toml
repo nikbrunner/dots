@@ -63,43 +63,36 @@ type = "plugin_action"
 command = "vim-herdr-navigation.right"
 description = "navigate right (vim/herdr)"
 
-# https://herdrplus.com/
-[[keys.command]]
-key = "prefix+up"
-type = "plugin_action"
-command = "cloudmanic.herdr-plus.projects"
-description = "herdr-plus: projects"
-
-[[keys.command]]
-key = "prefix+down"
-type = "plugin_action"
-command = "cloudmanic.herdr-plus.quick-actions"
-description = "herdr-plus: quick actions"
-
 [[keys.command]]
 key = "alt+shift+f"
 type = "pane"
 command = "pick-font"
+description = "Pick a font"
 
-[[keys.command]]
-key = "alt+shift+p"
-type = "pane"
-command = "tmux-file-picker -g"
+# Currently not working in a agent window in herdr
+# [[keys.command]]
+# key = "alt+shift+p"
+# type = "pane"
+# command = "tmux-file-picker -g"
+# description = "Pick a file"
 
 [[keys.command]]
 key = "alt+shift+g"
 type = "pane"
 command = "lazygit"
+description = "Open LazyGit"
 
 [[keys.command]]
 key = "alt+shift+d"
 type = "pane"
 command = "lazydocker"
+description = "Open LazyDocker"
 
 [[keys.command]]
 key = "alt+shift+j"
 type = "pane"
 command = "lazyjira"
+description = "Open LazyJira"
 
 # https://github.com/thanhdat77/herdr-picker-plus
 [[keys.command]]
