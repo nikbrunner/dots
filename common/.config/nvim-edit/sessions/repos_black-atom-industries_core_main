@@ -10,11 +10,11 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +31 src/themes/default/black-atom-default-dark.ts
+badd +1 src/themes/default/black-atom-default-dark.ts
 badd +33 src/themes/default/black-atom-default-dark-dimmed.ts
 badd +42 src/themes/default/black-atom-default-light-dimmed.ts
-badd +36 src/themes/default/black-atom-default-light.ts
-badd +15 src/config.ts
+badd +26 src/themes/default/black-atom-default-light.ts
+badd +1 src/config.ts
 badd +307 src/types/themes.ts
 argglobal
 %argdel
@@ -45,10 +45,10 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe 'vert 1resize ' . ((&columns * 56 + 112) / 224)
-exe 'vert 2resize ' . ((&columns * 55 + 112) / 224)
-exe 'vert 3resize ' . ((&columns * 55 + 112) / 224)
-exe 'vert 4resize ' . ((&columns * 55 + 112) / 224)
+exe 'vert 1resize ' . ((&columns * 61 + 123) / 246)
+exe 'vert 2resize ' . ((&columns * 61 + 123) / 246)
+exe 'vert 3resize ' . ((&columns * 60 + 123) / 246)
+exe 'vert 4resize ' . ((&columns * 61 + 123) / 246)
 argglobal
 setlocal keymap=
 setlocal noarabic
@@ -158,12 +158,12 @@ setlocal winhighlight=
 setlocal nowinpinned
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 32 - ((27 * winheight(0) + 21) / 42)
+let s:l = 32 - ((31 * winheight(0) + 24) / 48)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
 keepjumps 32
-normal! 020|
+normal! 021|
 wincmd w
 argglobal
 if bufexists(fnamemodify("src/themes/default/black-atom-default-dark-dimmed.ts", ":p")) | buffer src/themes/default/black-atom-default-dark-dimmed.ts | else | edit src/themes/default/black-atom-default-dark-dimmed.ts | endif
@@ -279,12 +279,12 @@ setlocal winhighlight=
 setlocal nowinpinned
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 33 - ((31 * winheight(0) + 21) / 42)
+let s:l = 33 - ((32 * winheight(0) + 24) / 48)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
 keepjumps 33
-normal! 020|
+normal! 021|
 wincmd w
 argglobal
 if bufexists(fnamemodify("src/themes/default/black-atom-default-light-dimmed.ts", ":p")) | buffer src/themes/default/black-atom-default-light-dimmed.ts | else | edit src/themes/default/black-atom-default-light-dimmed.ts | endif
@@ -400,12 +400,12 @@ setlocal winhighlight=
 setlocal nowinpinned
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 33 - ((29 * winheight(0) + 21) / 42)
+let s:l = 33 - ((32 * winheight(0) + 24) / 48)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
 keepjumps 33
-normal! 023|
+normal! 024|
 wincmd w
 argglobal
 if bufexists(fnamemodify("src/themes/default/black-atom-default-light.ts", ":p")) | buffer src/themes/default/black-atom-default-light.ts | else | edit src/themes/default/black-atom-default-light.ts | endif
@@ -512,7 +512,7 @@ setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#...%*%#WinBarSeparator#/%*%#WinBarFilename#black-atom-default-light.ts%*%=%#WinBarGitLabel#\ [GIT:%#WinBarGitAdd#\ +1%#WinBarGitChange#\ ~6%#WinBarGitLabel#]%*\ 
+setlocal winbar=%#WinBarPath#...%*%#WinBarSeparator#/%*%#WinBarFilename#black-atom-default-light.ts%*%=
 setlocal winblend=10
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -521,18 +521,18 @@ setlocal winhighlight=
 setlocal nowinpinned
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 36 - ((31 * winheight(0) + 21) / 42)
+let s:l = 29 - ((28 * winheight(0) + 24) / 48)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 36
+keepjumps 29
 normal! 0
 wincmd w
 4wincmd w
-exe 'vert 1resize ' . ((&columns * 56 + 112) / 224)
-exe 'vert 2resize ' . ((&columns * 55 + 112) / 224)
-exe 'vert 3resize ' . ((&columns * 55 + 112) / 224)
-exe 'vert 4resize ' . ((&columns * 55 + 112) / 224)
+exe 'vert 1resize ' . ((&columns * 61 + 123) / 246)
+exe 'vert 2resize ' . ((&columns * 61 + 123) / 246)
+exe 'vert 3resize ' . ((&columns * 60 + 123) / 246)
+exe 'vert 4resize ' . ((&columns * 61 + 123) / 246)
 tabnext
 edit src/config.ts
 let s:save_splitbelow = &splitbelow
@@ -551,8 +551,8 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe 'vert 1resize ' . ((&columns * 111 + 112) / 224)
-exe 'vert 2resize ' . ((&columns * 112 + 112) / 224)
+exe 'vert 1resize ' . ((&columns * 123 + 123) / 246)
+exe 'vert 2resize ' . ((&columns * 122 + 123) / 246)
 argglobal
 balt src/themes/default/black-atom-default-light-dimmed.ts
 setlocal keymap=
@@ -663,7 +663,7 @@ setlocal winhighlight=
 setlocal nowinpinned
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 11 - ((10 * winheight(0) + 21) / 42)
+let s:l = 11 - ((10 * winheight(0) + 24) / 48)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
@@ -784,15 +784,15 @@ setlocal winhighlight=
 setlocal nowinpinned
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 10 - ((9 * winheight(0) + 21) / 42)
+let s:l = 10 - ((9 * winheight(0) + 24) / 48)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
 keepjumps 10
 normal! 0
 wincmd w
-exe 'vert 1resize ' . ((&columns * 111 + 112) / 224)
-exe 'vert 2resize ' . ((&columns * 112 + 112) / 224)
+exe 'vert 1resize ' . ((&columns * 123 + 123) / 246)
+exe 'vert 2resize ' . ((&columns * 122 + 123) / 246)
 tabnext 1
 set stal=1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'

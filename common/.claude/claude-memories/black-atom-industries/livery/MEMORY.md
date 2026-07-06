@@ -2,8 +2,9 @@
 
 ## Project Status
 
-- [design-brainstorm-2026-03-21.md](design-brainstorm-2026-03-21.md) — UI rework on feat/ui-rework-foundation: tokens working, /dev routes replace Storybook, Phase 1 active
-- [session-2026-03-19-20-handover.md](session-2026-03-19-20-handover.md) — Project status as of 2026-04-08, open issues, branch state
+- [warm-precision-epic-status.md](warm-precision-epic-status.md) — Epic #49 CLOSED + MERGED to main (1f8ac18, 07-05); dev-local.sh swap replaced by deno `links`, hooks installed, `deno check src/` (never shell globs), MSRV 1.82; backlog: 8 issues; settings-iteration issue still wanted (scope TBD)
+- [design-brainstorm-2026-03-21.md](design-brainstorm-2026-03-21.md) — (historical) early UI rework phase, superseded by the Warm Precision epic
+- [session-2026-03-19-20-handover.md](session-2026-03-19-20-handover.md) — (historical) status as of 2026-04-08
 
 ## Architecture
 
@@ -22,6 +23,7 @@
 - [feedback-personal-config.md](feedback-personal-config.md) — Update Nik's dots config after adding new apps/fields
 - [feedback-stitch-abandoned.md](feedback-stitch-abandoned.md) — Stitch/Google abandoned, no Google tool dependencies
 - [feedback-wait-for-explicit-action.md](feedback-wait-for-explicit-action.md) — Don't act on follow-up questions; wait for explicit action requests
+- [feedback-cheap-subagent-models.md](feedback-cheap-subagent-models.md) — Use haiku/sonnet for subagents; Fable-priced agents burn the session limit
 
 ## Git Workflow
 
