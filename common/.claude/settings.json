@@ -53,7 +53,7 @@
     "deny": [],
     "ask": []
   },
-  "model": "fable",
+  "model": "sonnet",
   "hooks": {
     "Notification": [
       {
