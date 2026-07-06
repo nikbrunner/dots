@@ -100,3 +100,10 @@ key = "alt+s"
 type = "plugin_action"
 command = "herdr-picker-plus.open"
 description = "picker plus: open"
+
+# https://github.com/third774/herdr-last-workspace
+[[keys.command]]
+key = "alt+shift+o"
+type = "plugin_action"
+command = "third774.last-workspace.toggle"
+description = "last workspace"
