@@ -1,41 +1,52 @@
 {
-    "system_appearance": true,
-    "apps": {
-        "ghostty": {
-            "enabled": true,
-            "config_path": "~/.config/ghostty/config"
-        },
-        "nvim": {
-            "enabled": true,
-            "config_path": "~/.config/nvim-edit/plugin/50_specs/black_atom/nvim.lua",
-            "match_pattern": "vim\\.cmd\\.colorscheme\\(\"[^\"]*\"\\)",
-            "replace_template": "vim.cmd.colorscheme(\"{themeKey}\")"
-        },
-        "tmux": {
-            "enabled": true,
-            "config_path": "~/.config/tmux/tmux.conf",
-            "themes_path": "~/repos/black-atom-industries/tmux/themes"
-        },
-        "delta": {
-            "enabled": true,
-            "config_path": "~/.gitconfig.delta"
-        },
-        "lazygit": {
-            "enabled": true,
-            "config_path": "~/.config/lazygit/config.yml",
-            "themes_path": "~/repos/black-atom-industries/lazygit/themes"
-        },
-        "zed": {
-            "enabled": true,
-            "config_path": "~/.config/zed/settings.json"
-        },
-        "obsidian": {
-            "enabled": true,
-            "config_path": "~/repos/nikbrunner/notes/.obsidian/appearance.json"
-        },
-        "helm": {
-            "enabled": true,
-            "config_path": "~/.config/black-atom/helm/config.yml"
-        }
+  "system_appearance": true,
+  "keymappings": {
+    "toggle_window": "super+ctrl+alt+shift+KeyT"
+  },
+  "apps": {
+    "helm": {
+      "enabled": true,
+      "config_path": "~/.config/black-atom/helm/config.yml",
+      "match_pattern": "^theme:\\s*\\S*$",
+      "replace_template": "theme: {themeKey}"
+    },
+    "nvim": {
+      "enabled": true,
+      "config_path": "~/.config/nvim-edit/plugin/50_specs/black_atom/nvim.lua",
+      "match_pattern": "vim\\.cmd\\.colorscheme\\(\"[^\"]*\"\\)",
+      "replace_template": "vim.cmd.colorscheme(\"{themeKey}\")"
+    },
+    "obsidian": {
+      "enabled": true,
+      "config_path": "~/repos/nikbrunner/notes/.obsidian/appearance.json"
+    },
+    "zed": {
+      "enabled": true,
+      "config_path": "~/.config/zed/settings.json"
+    },
+    "tmux": {
+      "enabled": true,
+      "config_path": "~/.config/tmux/tmux.conf",
+      "themes_path": "~/repos/black-atom-industries/tmux/themes",
+      "match_pattern": "^source-file\\s+.+/themes/.+\\.conf$",
+      "replace_template": "source-file {themesPath}/{collectionKey}/{themeKey}.conf"
+    },
+    "delta": {
+      "enabled": true,
+      "config_path": "~/.gitconfig.delta",
+      "match_pattern": "features\\s*=\\s*black-atom-(dark|light)",
+      "replace_template": "features = black-atom-{appearance}"
+    },
+    "lazygit": {
+      "enabled": true,
+      "config_path": "~/.config/lazygit/config.yml",
+      "themes_path": "~/repos/black-atom-industries/lazygit/themes"
+    },
+    "ghostty": {
+      "enabled": true,
+      "config_path": "~/.config/ghostty/config",
+      "match_pattern": "^theme\\s*=\\s*.+$",
+      "replace_template": "theme = {themeKey}.conf"
     }
+  }
 }
