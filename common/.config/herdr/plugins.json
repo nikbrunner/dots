@@ -5,34 +5,61 @@
     "version": "0.1.0",
     "min_herdr_version": "0.7.0",
     "description": "Seamless Ctrl+h/j/k/l navigation across herdr panes and Vim/Neovim splits",
-    "manifest_path": "/Users/brunner/.config/herdr/plugins/github/vim-herdr-navigation-a8bf42123d81/herdr-plugin.toml",
-    "plugin_root": "/Users/brunner/.config/herdr/plugins/github/vim-herdr-navigation-a8bf42123d81",
+    "manifest_path": "/Users/brunner/repos/nikbrunner/dots/common/.config/herdr/plugins/github/vim-herdr-navigation-a8bf42123d81/herdr-plugin.toml",
+    "plugin_root": "/Users/brunner/repos/nikbrunner/dots/common/.config/herdr/plugins/github/vim-herdr-navigation-a8bf42123d81",
     "enabled": true,
-    "platforms": ["linux", "macos"],
+    "platforms": [
+      "linux",
+      "macos"
+    ],
     "actions": [
       {
         "id": "down",
         "title": "Navigate down (Vim/herdr)",
-        "contexts": ["global"],
-        "command": ["bash", "navigate.sh", "down"]
+        "contexts": [
+          "global"
+        ],
+        "command": [
+          "bash",
+          "navigate.sh",
+          "down"
+        ]
       },
       {
         "id": "left",
         "title": "Navigate left (Vim/herdr)",
-        "contexts": ["global"],
-        "command": ["bash", "navigate.sh", "left"]
+        "contexts": [
+          "global"
+        ],
+        "command": [
+          "bash",
+          "navigate.sh",
+          "left"
+        ]
       },
       {
         "id": "right",
         "title": "Navigate right (Vim/herdr)",
-        "contexts": ["global"],
-        "command": ["bash", "navigate.sh", "right"]
+        "contexts": [
+          "global"
+        ],
+        "command": [
+          "bash",
+          "navigate.sh",
+          "right"
+        ]
       },
       {
         "id": "up",
         "title": "Navigate up (Vim/herdr)",
-        "contexts": ["global"],
-        "command": ["bash", "navigate.sh", "up"]
+        "contexts": [
+          "global"
+        ],
+        "command": [
+          "bash",
+          "navigate.sh",
+          "up"
+        ]
       }
     ],
     "source": {
@@ -42,6 +69,62 @@
       "resolved_commit": "53e318c772c4d3b7fbd904ac43bcf3e5b5d8b244",
       "managed_path": "/Users/brunner/.config/herdr/plugins/github/vim-herdr-navigation-a8bf42123d81",
       "installed_unix_ms": 1783101742514
+    }
+  },
+  {
+    "plugin_id": "herdr-picker-plus",
+    "name": "Picker Plus",
+    "version": "0.2.0",
+    "min_herdr_version": "0.7.0",
+    "description": "Move anywhere in your Herdr workflow: search workspaces, SSH servers, agents, projects, actions, directories, and plugin integrations from one native picker.",
+    "manifest_path": "/Users/brunner/repos/nikbrunner/dots/common/.config/herdr/plugins/github/herdr-picker-plus-24891de4026e/herdr-plugin.toml",
+    "plugin_root": "/Users/brunner/repos/nikbrunner/dots/common/.config/herdr/plugins/github/herdr-picker-plus-24891de4026e",
+    "enabled": true,
+    "platforms": [
+      "linux",
+      "macos"
+    ],
+    "build": [
+      {
+        "command": [
+          "cargo",
+          "build",
+          "--release"
+        ]
+      }
+    ],
+    "actions": [
+      {
+        "id": "open",
+        "title": "Picker Plus: open",
+        "contexts": [
+          "workspace",
+          "global"
+        ],
+        "command": [
+          "./target/release/herdr-picker-plus",
+          "open"
+        ]
+      }
+    ],
+    "panes": [
+      {
+        "id": "picker",
+        "title": "Picker Plus",
+        "placement": "overlay",
+        "command": [
+          "./target/release/herdr-picker-plus",
+          "ui"
+        ]
+      }
+    ],
+    "source": {
+      "kind": "github",
+      "owner": "thanhdat77",
+      "repo": "herdr-picker-plus",
+      "resolved_commit": "07f881fa238cd0083f1017d05d0421ddd0d776a1",
+      "managed_path": "/Users/brunner/.config/herdr/plugins/github/herdr-picker-plus-24891de4026e",
+      "installed_unix_ms": 1783324898138
     }
   }
 ]
