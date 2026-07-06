@@ -1,0 +1,6 @@
+[Unit]
+Description=Regenerate zoxide seed.txt and seed the zoxide database
+
+[Service]
+Type=oneshot
+ExecStart=%h/.local/bin/zoxide-seed-sync

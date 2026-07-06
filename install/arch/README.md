@@ -117,6 +117,13 @@ Clone configured repos:
 helm setup
 ```
 
+Seed zoxide with all cloned repo paths (also runs hourly via systemd timer):
+
+```sh
+zoxide-seed-sync
+systemctl --user enable --now zoxide-seed-sync.timer
+```
+
 ## 9. Neovim
 
 Install neovim plugins via [lazy.nvim](https://github.com/folke/lazy.nvim).

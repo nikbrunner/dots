@@ -35,6 +35,7 @@ common:
   common/.config/yazi: ~/.config/yazi
   common/.config/yt-dlp/config: ~/.config/yt-dlp/config
   common/.config/zed: ~/.config/zed
+  common/.config/zoxide/seed.txt: ~/.config/zoxide/seed.txt
   common/.config/bm: ~/.config/bm
   common/.config/mise: ~/.config/mise
   common/.gitconfig: ~/.gitconfig
@@ -59,6 +60,7 @@ macos:
   macos/.config/karabiner: ~/.config/karabiner
   macos/Library/Application Support/Claude/claude_desktop_config.json: ~/Library/Application Support/Claude/claude_desktop_config.json
   macos/Library/LaunchAgents/com.pcloud.automount.plist: ~/Library/LaunchAgents/com.pcloud.automount.plist
+  macos/Library/LaunchAgents/dev.nbr.zoxide-seed-sync.plist: ~/Library/LaunchAgents/dev.nbr.zoxide-seed-sync.plist
   macos/Library/LaunchAgents/homebrew.mxcl.mpd.plist: ~/Library/LaunchAgents/homebrew.mxcl.mpd.plist
   macos/Library/LaunchAgents/me.proton.pass-ssh-agent.plist: ~/Library/LaunchAgents/me.proton.pass-ssh-agent.plist
   macos/Library/LaunchAgents/me.proton.pass-env-sync.plist: ~/Library/LaunchAgents/me.proton.pass-env-sync.plist
@@ -84,5 +86,7 @@ arch:
   arch/.config/waypaper: ~/.config/waypaper
   arch/.config/systemd/user/pass-ssh-agent.service: ~/.config/systemd/user/pass-ssh-agent.service
   arch/.config/systemd/user/pass-env-sync.service: ~/.config/systemd/user/pass-env-sync.service
+  arch/.config/systemd/user/zoxide-seed-sync.service: ~/.config/systemd/user/zoxide-seed-sync.service
+  arch/.config/systemd/user/zoxide-seed-sync.timer: ~/.config/systemd/user/zoxide-seed-sync.timer
   arch/etc/systemd/system/nvidia-power-limit.service: /etc/systemd/system/nvidia-power-limit.service
   arch/etc/wlnfancurve.conf: /etc/wlnfancurve.conf
