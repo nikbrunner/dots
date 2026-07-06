@@ -256,15 +256,24 @@ vim.api.nvim_create_autocmd("User", {
 	end,
 })
 
-vim.keymap.set("n", "<leader>we", function()
+local function open_for_buf()
 	invoking_win_pos = vim.api.nvim_win_get_position(0)
-	MF.open(vim.api.nvim_buf_get_name(0))
-end, { desc = "[E]xplorer" })
+	local path = vim.api.nvim_buf_get_name(0)
+	if vim.fn.filereadable(path) == 1 or vim.fn.isdirectory(path) == 1 then
+		MF.open(path)
+	else
+		local dir = vim.fn.fnamemodify(path, ":h")
+		if vim.fn.isdirectory(dir) == 1 then
+			MF.open(dir)
+		else
+			MF.open(vim.fn.getcwd())
+		end
+	end
+end
 
-vim.keymap.set("n", "-", function()
-	invoking_win_pos = vim.api.nvim_win_get_position(0)
-	MF.open(vim.api.nvim_buf_get_name(0))
-end, { desc = "[E]xplorer" })
+vim.keymap.set("n", "<leader>we", open_for_buf, { desc = "[E]xplorer" })
+
+vim.keymap.set("n", "-", open_for_buf, { desc = "[E]xplorer" })
 
 vim.keymap.set("n", "_", function()
 	invoking_win_pos = vim.api.nvim_win_get_position(0)
