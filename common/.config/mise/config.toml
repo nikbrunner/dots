@@ -77,11 +77,10 @@ lazydocker = "latest"
 
 [env]
 _.file = "~/.env"
-# Pinned via mise so it stays in sync across machines. The Claude Code
-# CLI is installed as an npm dependency above; the `ANTHROPIC_MODEL`
-# env var is authoritative and overrides any `model` field in
-# `~/.claude/settings.json` (per https://code.claude.com/docs/en/env-vars).
-ANTHROPIC_MODEL = "claude-sonnet-4-6"
 
 [settings]
 lockfile = true
+# Supply-chain buffer: hide releases younger than 2 days from fuzzy resolution
+# (`outdated`/`up`/`latest`), giving time for compromised releases to be yanked.
+# Bypass per-tool with: MISE_MINIMUM_RELEASE_AGE=0 mise up <tool>
+# minimum_release_age = "2d"
