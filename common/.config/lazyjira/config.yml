@@ -36,7 +36,7 @@ fields:
 customCommands:
   - key: "ctrl+y"
     name: "Copy as markdown link"
-    command: 's=$(printf %s {{.Summary | shellescape}} | tr -d ''[]''); printf ''[%s %s](%s)'' {{.Key | shellescape}} "$s" {{.URL | shellescape}} | (command -v pbcopy >/dev/null && pbcopy || wl-copy)'
+    command: 's=$(printf %s {{.Summary | shellescape}} | tr -d ''[]''); printf ''[%s %s](%s/browse/%s)'' {{.Key | shellescape}} "$s" {{.JiraHost | shellescape}} {{.Key | shellescape}} | (command -v pbcopy >/dev/null && pbcopy || wl-copy)'
     suspend: false
   - key: "y"
     name: "Copy key + summary"
