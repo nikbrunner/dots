@@ -1,6 +1,6 @@
-name = "Black Atom :: nvim"
-description = "Black Atom Industries `nvim` adapter"
-working_dir = "~/repos/black-atom-industries/nvim"
+name = "Black Atom :: Livery"
+description = "Black Atom Industries - Livery"
+working_dir = "~/repos/black-atom-industries/Livery"
 
 [[tabs]]
 name = "agent"

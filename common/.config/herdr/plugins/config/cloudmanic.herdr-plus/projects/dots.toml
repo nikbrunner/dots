@@ -1,4 +1,4 @@
-name = "dots"
+name = "nbr :: dots"
 description = "Dotfiles"
 working_dir = "~/repos/nikbrunner/dots"
 

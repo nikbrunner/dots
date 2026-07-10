@@ -1,4 +1,4 @@
-name = "web-ui"
+name = "ImFusion :: Web UI"
 description = "ImFusion websdk web-ui"
 working_dir = "~/repos/imfusion/websdk/web-ui"
 

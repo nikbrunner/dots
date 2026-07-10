@@ -1,5 +1,5 @@
-name = "core"
-description = "Black Atom Industries core"
+name = "Black Atom :: Core"
+description = "Black Atom Industries - Core"
 working_dir = "~/repos/black-atom-industries/core"
 
 [[tabs]]
