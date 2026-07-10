@@ -37,6 +37,7 @@ zoxide = "prefix:0"
 "github:maaslalani/slides" = "latest"
 "npm:@anthropic-ai/claude-code" = { version = "prefix:2", npm_args = "--ignore-scripts=false" }
 "npm:@earendil-works/pi-coding-agent" = "latest"
+"npm:@openai/codex" = "latest"
 "npm:@readwise/cli" = "prefix:0"
 "npm:@tanstack/cli" = "prefix:0"
 "npm:typescript" = "prefix:6"
