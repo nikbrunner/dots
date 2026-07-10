@@ -29,7 +29,45 @@ git clone https://github.com/nikbrunner/dots.git ~/repos/nikbrunner/dots
 cd ~/repos/nikbrunner/dots
 ```
 
-## 4. Dependencies & Runtimes
+## 4. Prepare Mac Security (Gatekeeper / Developer Tools)
+
+Do this **before** installing runtimes and running dev servers.
+
+**The problem:** Vite/Storybook (and other JS tooling) execute ad-hoc, linker-signed binaries — `esbuild`,
+native `.node` addons like `lightningcss`, `swc`, `rollup`. On every first exec, macOS Gatekeeper assesses
+them: `syspolicyd` (policy/signature check) and `trustd` (trust chain) fire. Because these assessments are
+serialized, a cold Storybook start pins `syspolicyd` near 100% and **the whole terminal grinds** — every
+subsequent command queues behind the backlog.
+
+Measured on this repo: `syspolicyd` idle ≈ 5% → **≈ 78%** during Storybook cold start, with `trustd` ≈ 24%
+alongside. `node` itself is fine (properly Developer ID signed); the culprit is the ad-hoc `node_modules`
+binaries.
+
+**The fix:** grant your terminal the Developer Tools entitlement so `syspolicyd` skips assessment for software
+run under it.
+
+> System Settings → Privacy & Security → **Developer Tools** → **+** → add your terminal app (Ghostty) → enable.
+
+- One-time. Persists across reboots.
+- **Reboot afterwards** — `syspolicyd` caches policy in memory and only re-reads the grant cleanly after a
+  restart. Restarting only the terminal app is **not** enough (learned the hard way).
+- `sudo killall syspolicyd` just restarts the daemon (launchd respawns it); it does **not** disable Gatekeeper.
+- Avoid `sudo spctl --global-disable` — it drops Gatekeeper for the whole system, not just dev tooling. The
+  Developer Tools grant is the surgical fix.
+
+**Verify** after reboot — start Storybook, then in another shell:
+
+```sh
+# Should stay near idle (single digits), NOT spike to ~78%
+ps -Ao pcpu,comm | grep -E 'syspolicyd|/usr/libexec/trustd$' | sort -rn | head -3
+```
+
+Background reading:
+
+- https://sigpipe.macromates.com/2020/macos-catalina-slow-by-design/
+- https://github.com/drduh/macOS-Security-and-Privacy-Guide
+
+## 5. Dependencies & Runtimes
 
 Install brew packages (system deps + casks). Check `./Brewfile` for the list.
 
@@ -53,7 +91,7 @@ mise trust
 mise install
 ```
 
-## 5. ProtonPass + SSH
+## 6. ProtonPass + SSH
 
 Run the setup script — it handles login and starts the agent (no PAT needed on macOS):
 
@@ -73,13 +111,13 @@ gh auth login
 
 If SSH fails, fix it before continuing — nothing downstream works without GitHub SSH.
 
-## 6. Switch git remote to SSH
+## 7. Switch git remote to SSH
 
 ```sh
 git remote set-url origin git@github.com:nikbrunner/dots.git
 ```
 
-## 7. Symlinks
+## 8. Symlinks
 
 ```sh
 # Create symlinks from symlinks.yml
@@ -88,7 +126,7 @@ git remote set-url origin git@github.com:nikbrunner/dots.git
 
 After that, the dot binaries from `~/.local/bin` will be available in your `$PATH`.
 
-## 8. Env Sync
+## 9. Env Sync
 
 Pull API keys and env vars from ProtonPass into `~/.env` and `~/.env.*`.
 
@@ -96,7 +134,7 @@ Pull API keys and env vars from ProtonPass into `~/.env` and `~/.env.*`.
 pp-env-sync
 ```
 
-## 9. helm + Repos
+## 10. helm + Repos
 
 > [!NOTE]
 > Currently, helm only supports GitHub repos.
@@ -119,7 +157,7 @@ Seed zoxide with all cloned repo paths (also runs hourly via LaunchAgent):
 zoxide-seed-sync
 ```
 
-## 10. Neovim
+## 11. Neovim
 
 Install neovim plugins via [lazy.nvim](https://github.com/folke/lazy.nvim).
 
@@ -132,17 +170,23 @@ Enter Neovim to see if plugins are installed.
 > [!NOTE]
 > On entering Neovim, the Mason plugins configured in `common/.config/nvim/lua/specs/mason.lua` will be installed.
 
-## 11. Claude Code MCP Servers
+## 12. Claude Code MCP Servers
 
-Configure MCP servers for Claude Code (requires Step 8 env sync for API keys).
+Configure MCP servers for Claude Code (requires Step 9 env sync for API keys).
 
 ```sh
 claude mcp add --scope user exa -e "EXA_API_KEY=$EXA_API_KEY" -- npx -y exa-mcp-server
-claude mcp add --scope user --transport http Ref https://api.ref.tools/mcp -H "x-ref-api-key: $REF_API_KEY"
+claude mcp add --scope user --transport http atlassian-rovo-mcp https://mcp.atlassian.com/v1/mcp/authv2
+claude mcp add --scope user fff -- "$HOME/.local/bin/fff-mcp"
 claude mcp add --scope user chrome-devtools -- npx chrome-devtools-mcp@latest
 ```
 
-## 12. Git Hooks (contributing to dots)
+> [!NOTE]
+> `claude mcp add --scope user` writes to whichever config `CLAUDE_CONFIG_DIR` points at (default `~/.claude`). If you also
+> use the `claude-work` identity (see `.zshrc`), re-run the same commands with `CLAUDE_CONFIG_DIR=~/.claude-work` set —
+> it's a separate config dir and won't inherit these automatically.
+
+## 13. Git Hooks (contributing to dots)
 
 Wire the repo's pre-commit hook (prettier + shfmt + Makefile checks) so it runs on every commit. `core.hooksPath` is per-clone, so this is needed once per machine:
 
