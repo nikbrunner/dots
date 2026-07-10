@@ -1,0 +1,292 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# herdr-file-picker — fzf file picker for herdr
+#
+# Designed to run inside a herdr `type = "pane"` custom-command binding.
+# herdr injects HERDR_ACTIVE_PANE_ID / HERDR_ACTIVE_PANE_CWD for the pane that
+# had focus when the binding fired (the "calling" pane). This script lists the
+# files in that pane's working directory, lets you pick with fzf, and pastes
+# the selection back into the calling pane via `herdr pane send-text`.
+#
+# Toggles (active inside fzf):
+#   Alt-I       toggle gitignore filtering (fd respects .gitignore by default)
+#   Alt-D       change the search directory (pick from configured roots)
+#   Alt-R       pick a README from your refs dir, paste its absolute path
+#   Alt-Enter   paste the selected file's *directory* path instead
+#   Tab         multi-select
+#   Ctrl-D / U  scroll the preview half a page
+#
+# Flags:
+#   -g, --git-root   relativize pasted paths to the git root
+#
+# Config: ~/.config/herdr-file-picker/config  (sourced if present)
+#   dir_roots=(...)        dirs searched by Alt-D (default: ~/repos then ~)
+#   dir_excludes=(...)      patterns excluded everywhere (see defaults below)
+#   dir_max_depth=N         max depth for the Alt-D directory search
+#   fd_flags="..."          extra fd flags for file listing
+#   refs_dir="..."          root for Alt-R README references (default ~/repos)
+
+_load_config() {
+	# Defaults
+	dir_roots=()
+	dir_excludes=(node_modules .cache .npm .pnpm __pycache__ .venv Library Caches .Trash)
+	dir_max_depth=8
+	fd_flags="-H --type f --exclude .git"
+	refs_dir="$HOME/repos"
+
+	local config_file="${XDG_CONFIG_HOME:-$HOME/.config}/herdr-file-picker/config"
+	if [[ -f "$config_file" ]]; then
+		# shellcheck source=/dev/null
+		source "$config_file"
+	fi
+}
+
+main() {
+	if [[ -z "${HERDR_ACTIVE_PANE_ID:-}" ]]; then
+		echo "Error: HERDR_ACTIVE_PANE_ID is not set." >&2
+		echo "Run this via a herdr [[keys.command]] type=\"pane\" binding." >&2
+		exit 1
+	fi
+
+	local target_pane="$HERDR_ACTIVE_PANE_ID"
+
+	# --- detect agent on the calling pane (for @-prefix output) ---
+	# herdr already knows the agent; no process-scraping needed. Empty = shell/editor → raw.
+	local target_agent=""
+	if command -v jq >/dev/null 2>&1; then
+		target_agent=$(herdr pane get "$target_pane" 2>/dev/null | jq -r '.result.pane.agent // empty' 2>/dev/null || true)
+	fi
+	local at_prefix=false
+	[[ -n "$target_agent" ]] && at_prefix=true
+
+	_load_config
+
+	# --- resolve the calling pane's working directory (search root) ---
+	local pane_dir="${HERDR_ACTIVE_PANE_CWD:-}"
+	if [[ -z "$pane_dir" ]]; then
+		pane_dir="${PWD:-$HOME}"
+	fi
+
+	# --- argument parsing ---
+	local use_git_root=false path_arg=""
+	while [[ $# -gt 0 ]]; do
+		case "$1" in
+			--git-root|-g) use_git_root=true; shift ;;
+			-*) echo "Error: Unknown option '$1'" >&2; exit 1 ;;
+			*)
+				if [[ -n "$path_arg" ]]; then
+					echo "Error: Only one path argument is allowed." >&2; exit 1
+				fi
+				path_arg="$1"; shift ;;
+		esac
+	done
+
+	local search_dir="${path_arg:-$pane_dir}"
+	[[ "$search_dir" != /* ]] && search_dir="$pane_dir/$search_dir"
+
+	# realpath (grealpath on macOS) — resolves .., symlinks, canonicalizes.
+	local realpath_cmd="realpath"
+	[[ "$OSTYPE" == "darwin"* ]] && realpath_cmd="grealpath"
+	if ! command -v "$realpath_cmd" >/dev/null 2>&1; then
+		echo "Error: Required command '$realpath_cmd' not found." >&2
+		[[ "$OSTYPE" == "darwin"* ]] && echo "Install via: brew install coreutils" >&2
+		exit 1
+	fi
+	search_dir=$("$realpath_cmd" -m "$search_dir")
+	[[ -d "$search_dir" ]] || { echo "Error: Directory '$search_dir' does not exist." >&2; exit 1; }
+
+	# --- git root (for -g) ---
+	local git_root=""
+	git_root=$(git -C "$search_dir" rev-parse --show-toplevel 2>/dev/null || true)
+	if $use_git_root && [[ -z "$git_root" ]]; then
+		echo "Error: --git-root flag used, but not inside a git repository." >&2
+		exit 1
+	fi
+
+	# --- tool detection ---
+	local fd_cmd
+	if command -v fd >/dev/null 2>&1; then fd_cmd="fd"
+	elif command -v fdfind >/dev/null 2>&1; then fd_cmd="fdfind"
+	else echo "Error: Required command 'fd' or 'fdfind' not found." >&2; exit 1; fi
+
+	local preview_bin="cat"
+	if command -v bat >/dev/null 2>&1; then preview_bin="bat --style=numbers --color=always"
+	elif command -v batcat >/dev/null 2>&1; then preview_bin="batcat --style=numbers --color=always"; fi
+
+	local dir_preview_cmd='ls -ap --color=always {}'
+	command -v tree >/dev/null 2>&1 && dir_preview_cmd='tree -C {} | head -n 30'
+
+	# --- build exclude args + roots for the Alt-D directory picker ---
+	local fd_exclude_args=""
+	for pattern in "${dir_excludes[@]}"; do
+		fd_exclude_args+=" --exclude $pattern"
+	done
+
+	refs_dir="${refs_dir/#\~/$HOME}"
+	local fd_search_roots=""
+	if [[ ${#dir_roots[@]} -gt 0 ]]; then
+		for root in "${dir_roots[@]}"; do
+			local expanded_root="${root/#\~/$HOME}"
+			[[ -d "$expanded_root" ]] && fd_search_roots+=" '$expanded_root'"
+		done
+	fi
+	[[ -z "$fd_search_roots" ]] && fd_search_roots="'$HOME'"
+
+	# --- temp state files ---
+	local dir_file dir_mode_file readme_file
+	dir_file=$(mktemp);     echo "$search_dir" > "$dir_file"
+	dir_mode_file=$(mktemp); echo "false" > "$dir_mode_file"
+	readme_file=$(mktemp)
+
+	# Alt-D directory picker (own script so fzf escaping stays sane)
+	# Alt-D directory picker (own script so fzf escaping stays sane)
+	local dir_picker_script
+	dir_picker_script=$(mktemp)
+	cat > "$dir_picker_script" <<PICKER_EOF
+#!/usr/bin/env bash
+selected=\$($fd_cmd -H --type d --max-depth $dir_max_depth --exclude .git $fd_exclude_args . $fd_search_roots 2>/dev/null | awk '!seen[\$0]++' | fzf --reverse --preview '$dir_preview_cmd')
+[[ -n "\$selected" ]] && printf '%s' "\$selected"
+PICKER_EOF
+	chmod +x "$dir_picker_script"
+
+	# Alt-R README reference picker (absolute path output)
+	local readme_picker_script
+	readme_picker_script=$(mktemp)
+	local readme_preview_cmd="cat {}"
+	if command -v bat >/dev/null 2>&1; then readme_preview_cmd="bat --style=numbers --color=always {}"
+	elif command -v batcat >/dev/null 2>&1; then readme_preview_cmd="batcat --style=numbers --color=always {}"; fi
+	cat > "$readme_picker_script" <<PICKER_EOF
+#!/usr/bin/env bash
+selected=\$($fd_cmd -d 3 --type f 'README' '$refs_dir' 2>/dev/null | fzf --reverse --preview '$readme_preview_cmd')
+[[ -n "\$selected" ]] && printf '%s' "\$selected"
+PICKER_EOF
+	chmod +x "$readme_picker_script"
+	# File-listing commands as their own temp scripts: the binds then only
+	# reference a path, avoiding any quote/parenthesis escaping issues inside
+	# fzf's transform() reloads. Both read the current search dir from dir_file
+	# so they stay correct after Alt-D changes it.
+	local list_script list_script_no_ignore
+	list_script=$(mktemp)
+	list_script_no_ignore=$(mktemp)
+	printf '#!/usr/bin/env bash\ncd "$(cat %q)" || exit 0\nexec %s\n' "$dir_file" "$fd_cmd $fd_flags" > "$list_script"
+	printf '#!/usr/bin/env bash\ncd "$(cat %q)" || exit 0\nexec %s\n' "$dir_file" "$fd_cmd $fd_flags --no-ignore" > "$list_script_no_ignore"
+	chmod +x "$list_script" "$list_script_no_ignore"
+
+	trap "rm -f '$dir_file' '$dir_mode_file' '$readme_file' '$dir_picker_script' '$readme_picker_script' '$list_script' '$list_script_no_ignore'" EXIT
+
+	# Preview prepends the current search dir (read live from dir_file) so it
+	# resolves correctly even after Alt-D moves to a different directory.
+	local preview_cmd="$preview_bin \"\$(cat '$dir_file')/{}\" 2>/dev/null || cat \"\$(cat '$dir_file')/{}\" 2>/dev/null"
+
+	local header_line="ALT-I: gitignore | ALT-D: chdir | ALT-R: refs | ALT-ENTER: dir path"
+	local fzf_header="$search_dir
+$header_line"
+
+	local fzf_opts=(
+		--multi
+		--reverse
+		--ansi
+		--preview "$preview_cmd"
+		--preview-window 'right,50%,border-left,<100(down,50%,border-top)'
+		--prompt 'gitignore:ON> '
+		--bind "alt-i:transform:[[ ! \$FZF_PROMPT =~ ON ]] &&
+		    echo \"change-prompt(gitignore:ON> )+reload($list_script)\" ||
+		    echo \"change-prompt(gitignore:OFF> )+reload($list_script_no_ignore)\""
+		--bind "alt-d:execute($dir_picker_script > '$dir_file')+reload($list_script)+transform:[[ -s '$dir_file' ]] && echo \"change-header(\$(cat '$dir_file')
+$header_line)\""
+		--bind "ctrl-d:preview-half-page-down"
+		--bind "ctrl-u:preview-half-page-up"
+		--bind "alt-enter:execute-silent(echo true > '$dir_mode_file')+accept"
+		--bind "alt-r:execute($readme_picker_script > '$readme_file')+abort"
+	)
+
+	local selected_files_str
+	selected_files_str=$(cd "$search_dir" && \
+		"$list_script" | \
+		fzf "${fzf_opts[@]}" --header "$fzf_header" \
+		|| true)
+
+	# --- resolve final state ---
+	local final_search_dir
+	final_search_dir=$(cat "$dir_file")
+	local dir_was_changed=false
+	if [[ "$final_search_dir" != "$search_dir" ]]; then
+		dir_was_changed=true
+		search_dir="$final_search_dir"
+	fi
+
+	local dir_mode=false
+	[[ "$(cat "$dir_mode_file")" == "true" ]] && dir_mode=true
+
+	local readme_abs_path
+	readme_abs_path=$(cat "$readme_file")
+
+	if [[ -z "$selected_files_str" && -z "$readme_abs_path" ]]; then
+		exit 0
+	fi
+
+	# --- collect selected file paths ---
+	local selected_files=()
+	while IFS= read -r line; do
+		[[ -n "$line" ]] && selected_files+=("$line")
+	done <<<"$selected_files_str"
+
+	# --- build the output paths ---
+	local relative_paths=()
+	if [[ -n "$readme_abs_path" ]]; then
+		# Alt-R: output the absolute README path verbatim.
+		relative_paths=("$readme_abs_path")
+	else
+		if $use_git_root; then
+			# Relativize each path to the git root.
+			for p in "${selected_files[@]}"; do
+				local abs
+				abs=$("$realpath_cmd" -m "$search_dir/$p")
+				relative_paths+=("$("$realpath_cmd" --relative-to="$git_root" "$abs")")
+			done
+		elif $dir_was_changed; then
+			# Search dir moved via Alt-D: emit absolute paths.
+			for p in "${selected_files[@]}"; do
+				relative_paths+=("$("$realpath_cmd" -m "$search_dir/$p")")
+			done
+		else
+			# search_dir == pane_dir: paths are already correct & relative.
+			relative_paths=("${selected_files[@]}")
+		fi
+	fi
+
+	# Alt-Enter: convert file paths to their directory paths.
+	if $dir_mode; then
+		local dir_paths=() unique_dirs=()
+		local -A seen=()
+		for path in "${relative_paths[@]}"; do dir_paths+=("$(dirname "$path")"); done
+		for dir in "${dir_paths[@]}"; do
+			if [[ -z "${seen[$dir]:-}" ]]; then seen[$dir]=1; unique_dirs+=("$dir"); fi
+		done
+		relative_paths=("${unique_dirs[@]}")
+	fi
+
+	# --- output formatting ---
+	# Agent panes (claude/pi/codex/gemini): prefix each path with '@', clean (unescaped).
+	# Everything else (shell/editor): shell-escape so paths with spaces stay intact.
+	local files_oneline
+	if $at_prefix; then
+		local at_paths=()
+		for path in "${relative_paths[@]}"; do at_paths+=("@$path"); done
+		files_oneline=$(printf "%s " "${at_paths[@]}")
+	else
+		local escaped_paths=()
+		for path in "${relative_paths[@]}"; do
+			local escaped
+			printf -v escaped "%q" "$path"
+			escaped_paths+=("$escaped")
+		done
+		files_oneline=$(printf "%s " "${escaped_paths[@]}")
+	fi
+
+	# --- paste into the calling pane ---
+	herdr pane send-text "$target_pane" "$files_oneline"
+}
+
+main "$@"

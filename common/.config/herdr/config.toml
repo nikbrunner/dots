@@ -3,13 +3,13 @@ onboarding = false
 # https://herdr.dev/docs/configuration/
 # https://herdr.dev/plugins/
 
-
 [theme]
 name = "terminal"
 
 [ui.toast]
-delivery = "system"
+# delivery = "system"
 
+delivery = "herdr"
 [ui]
 show_agent_labels_on_pane_borders = true
 agent_panel_sort = "spaces"
@@ -21,19 +21,29 @@ resume_agents_on_restore = true
 [experimental]
 pane_history = true
 
+switch_ascii_input_source_in_prefix = true
 [keys]
+prefix = "ctrl+,"
+
 switch_tab = "alt+1..9"
 switch_workspace = "alt+shift+1..9"
 focus_agent = "ctrl+alt+1..9"
 
-prefix = "ctrl+,"
+copy_mode = "alt+esc"
+rename_tab = "alt+n"
+open_notification_target = "alt+N"
+
 previous_tab = "alt+h"
 next_tab = "alt+l"
-previous_workspace = "alt+j"
-next_workspace = "alt+k"
+close_tab = "alt+shift+q"
+previous_workspace = "alt+k"
+next_workspace = "alt+j"
+previous_agent = "alt+ctrl+k"
+next_agent = "alt+ctrl+j"
 
-close_pane = "prefix+q"
-zoom = "prefix+z"
+last_pane = "alt+o"
+close_pane = "alt+q"
+zoom = "alt+z"
 
 navigate_workspace_up = "k"
 navigate_workspace_down = "j"
@@ -69,12 +79,11 @@ type = "pane"
 command = "pick-font"
 description = "Pick a font"
 
-# Currently not working in a agent window in herdr
-# [[keys.command]]
-# key = "alt+shift+p"
-# type = "pane"
-# command = "tmux-file-picker -g"
-# description = "Pick a file"
+[[keys.command]]
+key = "alt+shift+p"
+type = "pane"
+command = "herdr-file-picker -g"
+description = "Pick a file"
 
 [[keys.command]]
 key = "alt+shift+g"
@@ -101,13 +110,6 @@ type = "plugin_action"
 command = "herdr-picker-plus.open"
 description = "picker plus: open"
 
-# https://github.com/third774/herdr-last-workspace
-[[keys.command]]
-key = "alt+shift+o"
-type = "plugin_action"
-command = "third774.last-workspace.toggle"
-description = "last workspace"
-
 # https://github.com/cloudmanic/herdr-plus
 # native project picker — supports split panes; picker-plus's project source does not
 [[keys.command]]
@@ -115,3 +117,10 @@ key = "alt+p"
 type = "plugin_action"
 command = "cloudmanic.herdr-plus.projects"
 description = "herdr-plus: projects"
+
+# https://github.com/third774/herdr-last-workspace
+[[keys.command]]
+key = "alt+shift+o"
+type = "plugin_action"
+command = "third774.last-workspace.toggle"
+description = "last workspace"
