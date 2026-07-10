@@ -30,6 +30,8 @@ _sudoexec() {
 # Function to process symlinks configuration with common + OS-specific sections
 # Usage: process_symlinks_entries <symlinks_file> <current_os>
 # Returns: prints "source_path|target_path" pairs for all entries
+# A source's value may be a single target string or a list of targets
+# (for one source symlinked into multiple destinations).
 process_symlinks_entries() {
     local symlinks_file="$1"
     local current_os="$2"
@@ -39,11 +41,16 @@ process_symlinks_entries() {
         return 1
     fi
 
-    # Process common section first
-    yq eval '.common | to_entries | .[] | .key + "|" + .value' "$symlinks_file" 2>/dev/null
+    local scalar_expr='to_entries | .[] | select(.value | tag != "!!seq") | .key + "|" + .value'
+    local list_expr='to_entries | .[] | select(.value | tag == "!!seq") | .key as $k | .value[] | $k + "|" + .'
+
+    # Process common section first (scalar targets, then list targets)
+    yq eval ".common | $scalar_expr" "$symlinks_file" 2>/dev/null
+    yq eval ".common | $list_expr" "$symlinks_file" 2>/dev/null
 
     # Process OS-specific section
-    yq eval ".$current_os | to_entries | .[] | .key + \"|\" + .value" "$symlinks_file" 2>/dev/null
+    yq eval ".$current_os | $scalar_expr" "$symlinks_file" 2>/dev/null
+    yq eval ".$current_os | $list_expr" "$symlinks_file" 2>/dev/null
 }
 
 # ============================================================================

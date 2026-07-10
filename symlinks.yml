@@ -1,58 +1,82 @@
 common:
+  # Agents (Claude Code, Pi) ==============================================
+  # claude-work is an isolated CLAUDE_CONFIG_DIR for a second Anthropic
+  # account (see the claude-work() function in .zshrc), sharing the same
+  # AGENTS.md/agents/settings/skills as the primary ~/.claude. Its hooks
+  # dir (~/.claude-work/hooks) is a manual home->home symlink to
+  # ~/.claude/hooks, not managed here — ~/.claude/hooks/enforce is itself
+  # a wildcard-expanded target, not a single dots-repo source, so it
+  # can't be listed as a second target above without re-triggering it.
   common/.pi: ~/.pi
-  common/.agents/AGENTS.md: ~/.claude/CLAUDE.md
-  common/.agents/agents: ~/.claude/agents
-  common/.claude/settings.json: ~/.claude/settings.json
-  common/.agents/skills: ~/.claude/skills
+  common/.agents/AGENTS.md: [~/.claude/CLAUDE.md, ~/.claude-work/CLAUDE.md]
+  common/.agents/agents: [~/.claude/agents, ~/.claude-work/agents]
+  common/.claude/settings.json: [~/.claude/settings.json, ~/.claude-work/settings.json]
+  common/.agents/skills: [~/.claude/skills, ~/.claude-work/skills]
   common/.agents: ~/.agents
   "common/.claude/hooks/enforce/*": ~/.claude/hooks/enforce
   common/.claude/plugins/local-marketplace: ~/.claude/plugins/marketplaces/local-plugins
   common/.local/bin/claude-hooks: ~/.local/bin/claude-hooks
+
+  # Shell (zsh, git completion) ===========================================
   common/.config/.zsh/_git: ~/.config/.zsh/_git
   common/.config/.zsh/git-completion.bash: ~/.config/.zsh/git-completion.bash
-  common/.config/atuin/config.toml: ~/.config/atuin/config.toml
-  common/.config/av/config.yaml: ~/.config/av/config.yaml
-  common/.config/bat/config: ~/.config/bat/config
-  common/.config/bob/config.json: ~/.config/bob/config.json
-  "common/.config/black-atom/*": ~/.config/black-atom
+  common/.zshenv: ~/.zshenv
+  common/.zshrc: ~/.zshrc
+  common/.local/bin/*: ~/.local/bin
+
+  # Git =====================================================================
+  common/.gitconfig: ~/.gitconfig
+  common/.gitconfig.delta: ~/.gitconfig.delta
+  common/.gitignore: ~/.gitignore
   common/.config/gh/config.yml: ~/.config/gh/config.yml
+  common/.config/lazygit/config.yml: ~/.config/lazygit/config.yml
+
+  # Editors & Terminals ====================================================
+  common/.config/nvim: ~/.config/nvim
+  common/.config/nvim-minimax: ~/.config/nvim-minimax
+  common/.config/nvim-edit: ~/.config/nvim-edit
+  common/.vimrc: ~/.vimrc
+  common/.ideavimrc: ~/.ideavimrc
+  common/.config/zed: ~/.config/zed
   common/.config/ghostty: ~/.config/ghostty
+  common/.config/kitty: ~/.config/kitty
+  common/.config/wezterm: ~/.config/wezterm
+  common/.config/tmux: ~/.config/tmux
+
+  # Herdr ===================================================================
   common/.config/herdr/config.toml: ~/.config/herdr/config.toml
   common/.config/herdr/session.json: ~/.config/herdr/session.json
   common/.config/herdr/session-history.json: ~/.config/herdr/session-history.json
   common/.config/herdr/plugins.json: ~/.config/herdr/plugins.json
   common/.config/herdr/plugins: ~/.config/herdr/plugins
-  common/.config/kitty: ~/.config/kitty
-  common/.config/lazygit/config.yml: ~/.config/lazygit/config.yml
+
+  # Theming =================================================================
+  "common/.config/black-atom/*": ~/.config/black-atom
+  common/themes.json: ~/themes.json
+
+  # CLI Tools ===============================================================
+  common/.config/atuin/config.toml: ~/.config/atuin/config.toml
+  common/.config/av/config.yaml: ~/.config/av/config.yaml
+  common/.config/bat/config: ~/.config/bat/config
+  common/.config/bob/config.json: ~/.config/bob/config.json
+  common/.config/bm: ~/.config/bm
   common/.config/lazyjira: ~/.config/lazyjira
-  common/.config/mpd/mpd.conf: ~/.config/mpd/mpd.conf
-  common/.config/nvim: ~/.config/nvim
-  common/.config/nvim-minimax: ~/.config/nvim-minimax
-  common/.config/nvim-edit: ~/.config/nvim-edit
+  common/.config/mise: ~/.config/mise
   common/.config/rmpc: ~/.config/rmpc
-  common/.config/tmux: ~/.config/tmux
-  common/.config/wezterm: ~/.config/wezterm
+  common/.config/mpd/mpd.conf: ~/.config/mpd/mpd.conf
   common/.config/yazi: ~/.config/yazi
   common/.config/yt-dlp/config: ~/.config/yt-dlp/config
-  common/.config/zed: ~/.config/zed
   common/.config/zoxide/seed.txt: ~/.config/zoxide/seed.txt
-  common/.config/bm: ~/.config/bm
-  common/.config/mise: ~/.config/mise
-  common/.gitconfig: ~/.gitconfig
-  common/.gitconfig.delta: ~/.gitconfig.delta
-  common/.gitignore: ~/.gitignore
-  common/.hushlogin: ~/.hushlogin
-  common/.ideavimrc: ~/.ideavimrc
-  common/.local/share/nvim/radar: ~/.local/share/nvim/radar
-  common/.local/share/nvim-edit/radar: ~/.local/share/nvim-edit/radar
   common/.ripgreprc: ~/.ripgreprc
+
+  # SSH =====================================================================
   common/.ssh/allowed_signers: ~/.ssh/allowed_signers
   common/.ssh/config: ~/.ssh/config
-  common/.vimrc: ~/.vimrc
-  common/.zshenv: ~/.zshenv
-  common/.zshrc: ~/.zshrc
-  common/.local/bin/*: ~/.local/bin
-  common/themes.json: ~/themes.json
+
+  # Misc ====================================================================
+  common/.hushlogin: ~/.hushlogin
+  common/.local/share/nvim/radar: ~/.local/share/nvim/radar
+  common/.local/share/nvim-edit/radar: ~/.local/share/nvim-edit/radar
 
 macos:
   macos/.config/davit/config.toml: ~/.config/davit/config.toml

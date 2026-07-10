@@ -68,10 +68,15 @@ alias :q=exit
 alias :vs='tmux split-window -h -c "#{pane_current_path}"'
 alias :sp='tmux split-window -v -c "#{pane_current_path}"'
 
-claude() {
-  CLAUDE_CODE_NO_FLICKER=1 command claude "$@"
-}
+# Claude
+alias claude='CLAUDE_CODE_NO_FLICKER=1 claude'
 
+claude-work() {
+	ANTHROPIC_API_KEY="$ANTHROPIC_API_KEY_IMFUSION" \
+		CLAUDE_CONFIG_DIR="$HOME/.claude-work" \
+		CLAUDE_CODE_NO_FLICKER=1 \
+		command claude "$@"
+}
 
 # Yazi ==================================================================
 function y() {
