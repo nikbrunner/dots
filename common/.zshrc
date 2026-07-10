@@ -52,7 +52,14 @@ alias npmu="npm-upgrade"
 alias pp="pass-cli"
 alias scratch="\$EDITOR \$HOME/scratchpad.md"
 alias ydl='yt-dlp --audio-format mp3 --embed-thumbnail --embed-metadata --extract-audio'
-alias groot='cd "$(git rev-parse --show-toplevel 2>/dev/null)" || echo "I am not Groot (not in a git repo)"'
+alias mise-edge='mise upgrade --interactive --minimum-release-age 0s'
+unalias groot 2>/dev/null
+groot() {
+  local dir
+  dir=$(git rev-parse --git-common-dir 2>/dev/null) || { echo "I am not Groot (not in a git repo)"; return 1; }
+  # parent of the common .git dir is the main worktree root (works in worktrees and plain repos)
+  cd "$(cd "$dir" && pwd)/.."
+}
 alias noise="exec ffplay -hide_banner -loglevel error -nodisp -f lavfi 'anoisesrc=color=brown:amplitude=0.354,lowpass=f=550:poles=1,bass=g=12:f=60,afade=t=in:d=3'"
 
 alias brewi='outdated=$(brew outdated); [[ -n "$outdated" ]] && fzf --multi <<< $outdated | xargs brew upgrade'
@@ -137,5 +144,3 @@ PROMPT='%F{gray}%~%f${vcs_info_msg_0_}%(1j. %F{red}[%j]%f.)
 # mise — runtime and tool version manager (MUST run last, after all
 # PATH modifications, so mise's tool paths win precedence over user dirs).
 command -v mise &>/dev/null && eval "$(mise activate zsh)"
-
-
