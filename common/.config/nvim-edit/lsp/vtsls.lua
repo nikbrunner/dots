@@ -1,5 +1,10 @@
 -- Install with: @vtsls/language-server
 -- https://github.com/MariaSolOs/dotfiles/blob/main/.config/nvim/lsp/vtsls.lua
+--
+-- DISABLED (Jul 2026): trial run of tsgo (lsp/tsgo.lua). Kept for easy revert
+-- if refactor code actions are needed. tsgo doesn't implement refactors yet
+-- (microsoft/typescript-go#4005). To revert: flip filetypes back on below and
+-- disable tsgo.lua's filetypes.
 
 ---@see https://github.com/typescript-language-server/typescript-language-server/blob/master/docs/configuration.md
 local shared_jsts_settings = {
@@ -35,7 +40,8 @@ end
 ---@type vim.lsp.Config
 return {
 	cmd = { "vtsls", "--stdio" },
-	filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
+	-- filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
+	filetypes = {}, -- Disabled: trial run of tsgo
 	-- filetypes = {},
 	root_dir = function(bufnr, cb)
 		local fname = vim.uri_to_fname(vim.uri_from_bufnr(bufnr))
