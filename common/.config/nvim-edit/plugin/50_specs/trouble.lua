@@ -1,5 +1,4 @@
 -- Diagnostics, references, and symbol lists.
--- (The old snacks.picker integration was dropped — mini.pick is the picker here.)
 
 Edit.later(function()
 	vim.pack.add({ "git@github.com:folke/trouble.nvim" })

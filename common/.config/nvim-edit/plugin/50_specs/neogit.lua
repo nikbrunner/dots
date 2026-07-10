@@ -3,7 +3,7 @@
 -- Dependencies: all optional. This config reuses plugins already in the
 -- stack — no new installs:
 --   - codediff.nvim  → diff viewer (replaces iter's diffs.nvim previews)
---   - mini.pick      → fuzzy finder backend
+--   - snacks.nvim    → fuzzy finder backend
 --
 -- Replaces the `gs` (Git Status) mapping that black_atom/iter.nvim owned
 -- (iter.lua is disabled as iter.lua.disabled).
@@ -19,7 +19,7 @@ Edit.later(function()
 
 		integrations = {
 			codediff = true,
-			mini_pick = true,
+			snacks = true,
 		},
 
 		-- Open the status buffer in a new tab (Magit-like full-screen flow).
