@@ -1,0 +1,49 @@
+#!/usr/bin/env bash
+# ccstatusline custom-command widget: prompt-cache expiry countdown.
+# Reads the Claude Code statusline JSON on stdin and prints
+# "cache 4m23s" (green/yellow/red) or "cache COLD".
+#
+# Last API activity is approximated by the transcript file's mtime.
+# TTL is detected from the transcript: if the most recent cache write
+# used the 1h bucket (subscription), count down from 1h; otherwise 5m.
+
+input=$(cat)
+transcript=$(echo "$input" | jq -r '.transcript_path // empty')
+if [ -z "$transcript" ] || [ ! -f "$transcript" ]; then
+	exit 0
+fi
+
+mtime=$(stat -f %m "$transcript" 2>/dev/null || stat -c %Y "$transcript" 2>/dev/null)
+[ -z "$mtime" ] && exit 0
+now=$(date +%s)
+
+ttl=300
+if tail -c 262144 "$transcript" | grep -o '"ephemeral_1h_input_tokens":[0-9]*' | tail -1 | grep -qv ':0$'; then
+	ttl=3600
+fi
+
+remaining=$((mtime + ttl - now))
+
+if [ "$remaining" -le 0 ]; then
+	printf '\033[31mcache COLD\033[0m'
+	exit 0
+fi
+
+if [ "$remaining" -ge 3600 ]; then
+	label=$(printf '%dh%02dm' $((remaining / 3600)) $(((remaining % 3600) / 60)))
+elif [ "$remaining" -ge 60 ]; then
+	label="$((remaining / 60))m$((remaining % 60))s"
+else
+	label="${remaining}s"
+fi
+
+# green while comfortable, yellow in the last fifth of the TTL, red under 60s
+warn=$((ttl / 5))
+if [ "$remaining" -le 60 ]; then
+	color='\033[31m'
+elif [ "$remaining" -le "$warn" ]; then
+	color='\033[33m'
+else
+	color='\033[32m'
+fi
+printf "${color}cache %s\033[0m" "$label"

@@ -60,6 +60,7 @@ common:
   common/.config/bat/config: ~/.config/bat/config
   common/.config/bob/config.json: ~/.config/bob/config.json
   common/.config/bm: ~/.config/bm
+  common/.config/ccstatusline: ~/.config/ccstatusline
   common/.config/lazyjira: ~/.config/lazyjira
   common/.config/mise: ~/.config/mise
   common/.config/rmpc: ~/.config/rmpc
