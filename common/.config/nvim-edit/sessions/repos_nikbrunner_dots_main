@@ -10,29 +10,15 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +8 common/.config/herdr/config.toml
+badd +3 common/.config/herdr/install-plugins.sh
+badd +121 common/.config/herdr/config.toml
 argglobal
 %argdel
-$argadd ~/repos/nikbrunner/dots/common/.config/nvim-edit/plugin/50_specs/mini/completion.lua
-edit common/.config/herdr/config.toml
-let s:save_splitbelow = &splitbelow
-let s:save_splitright = &splitright
-set splitbelow splitright
-wincmd _ | wincmd |
-vsplit
-1wincmd h
-wincmd w
-let &splitbelow = s:save_splitbelow
-let &splitright = s:save_splitright
-wincmd t
-let s:save_winminheight = &winminheight
-let s:save_winminwidth = &winminwidth
-set winminheight=0
-set winheight=1
-set winminwidth=0
-set winwidth=1
-exe 'vert 1resize ' . ((&columns * 144 + 144) / 289)
-exe 'vert 2resize ' . ((&columns * 144 + 144) / 289)
+$argadd common/.config/lazygit/config.yml
+set stal=2
+tabnew +setlocal\ bufhidden=wipe
+tabrewind
+edit common/.config/herdr/install-plugins.sh
 argglobal
 setlocal keymap=
 setlocal noarabic
@@ -50,7 +36,7 @@ setlocal cinoptions=
 setlocal cinscopedecls=public,protected,private
 setlocal cinwords=if,else,while,do,for,switch
 setlocal colorcolumn=+1
-setlocal comments=:#
+setlocal comments=b:#
 setlocal commentstring=#\ %s
 setlocal complete=.,w,b,kspell
 setlocal completefunc=
@@ -63,10 +49,11 @@ setlocal nocursorcolumn
 setlocal cursorline
 setlocal cursorlineopt=screenline,number
 setlocal nodiff
+setlocal errorformat=%f:%l:%c:\ %trror:\ %m\ [SC%n],%f:%l:%c:\ %tarning:\ %m\ [SC%n],%f:%l:%c:\ %tote:\ %m\ [SC%n],%-G%.%#
 setlocal eventignorewin=
 setlocal expandtab
-if &filetype != 'toml'
-setlocal filetype=toml
+if &filetype != 'sh'
+setlocal filetype=sh
 endif
 setlocal fixendofline
 setlocal foldcolumn=0
@@ -81,12 +68,12 @@ setlocal foldnestmax=10
 setlocal foldtext=
 setlocal formatexpr=v:lua.require'conform'.formatexpr()
 setlocal formatlistpat=^\\s*[0-9\\-\\+\\*]\\+[\\.\\)]*\\s\\+
-setlocal formatoptions=rqnl1j
+setlocal formatoptions=n1jrql
 setlocal iminsert=0
 setlocal imsearch=-1
 setlocal includeexpr=
 setlocal indentexpr=v:lua.require'arborist.indent'.indentexpr()
-setlocal indentkeys=0{,0},0),0],:,0#,!^F,o,O,e
+setlocal indentkeys=0{,0},0),0],!^F,o,O,e,0=then,0=do,0=else,0=elif,0=fi,0=esac,0=done,0=end,),0=;;,0=;&,0=fin,0=fil,0=fip,0=fir,0=fix
 setlocal infercase
 setlocal iskeyword=@,48-57,_,192-255,-
 setlocal lhistory=10
@@ -94,6 +81,7 @@ setlocal linebreak
 setlocal nolisp
 setlocal lispoptions=
 setlocal list
+setlocal makeprg=shellcheck\ -f\ gcc
 setlocal matchpairs=(:),{:},[:]
 setlocal modeline
 setlocal modifiable
@@ -110,11 +98,11 @@ setlocal norightleft
 setlocal rightleftcmd=search
 setlocal scrollback=-1
 setlocal noscrollbind
-setlocal shiftwidth=2
+setlocal shiftwidth=4
 setlocal signcolumn=yes
-setlocal smartindent
+setlocal nosmartindent
 setlocal nosmoothscroll
-setlocal softtabstop=0
+setlocal softtabstop=-1
 setlocal nospell
 setlocal spellcapcheck=[.?!]\\_[\\])'\"\\t\ ]\\+
 setlocal spellfile=
@@ -127,13 +115,13 @@ setlocal synmaxcol=3000
 if &syntax != ''
 setlocal syntax=
 endif
-setlocal tabstop=2
-setlocal tagfunc=
+setlocal tabstop=4
+setlocal tagfunc=v:lua.vim.lsp.tagfunc
 setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#common%*%#WinBarSeparator#/%*%#WinBarPath#.config%*%#WinBarSeparator#/%*%#WinBarPath#herdr%*%#WinBarSeparator#/%*%#WinBarFilename#config.toml%*%=%#WinBarGitLabel#\ [GIT:%#WinBarGitAdd#\ +3%#WinBarGitChange#\ ~2%#WinBarGitDelete#\ -3%#WinBarGitLabel#]%*\ 
+setlocal winbar=%#WinBarPath#common%*%#WinBarSeparator#/%*%#WinBarPath#.config%*%#WinBarSeparator#/%*%#WinBarPath#herdr%*%#WinBarSeparator#/%*%#WinBarFilename#install-plugins.sh%*%=
 setlocal winblend=10
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -142,19 +130,17 @@ setlocal winhighlight=
 setlocal nowinpinned
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 35 - ((34 * winheight(0) + 28) / 57)
+let s:l = 4 - ((3 * winheight(0) + 20) / 41)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 35
-normal! 018|
+keepjumps 4
+normal! 0
 lcd ~/repos/nikbrunner/dots
-wincmd w
+tabnext
+edit ~/repos/nikbrunner/dots/common/.config/herdr/config.toml
 argglobal
-if bufexists(fnamemodify("~/repos/nikbrunner/dots/common/.config/herdr/config.toml", ":p")) | buffer ~/repos/nikbrunner/dots/common/.config/herdr/config.toml | else | edit ~/repos/nikbrunner/dots/common/.config/herdr/config.toml | endif
-if &buftype ==# 'terminal'
-  silent file ~/repos/nikbrunner/dots/common/.config/herdr/config.toml
-endif
+balt ~/repos/nikbrunner/dots/common/.config/herdr/install-plugins.sh
 setlocal keymap=
 setlocal noarabic
 setlocal autoindent
@@ -254,7 +240,7 @@ setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#common%*%#WinBarSeparator#/%*%#WinBarPath#.config%*%#WinBarSeparator#/%*%#WinBarPath#herdr%*%#WinBarSeparator#/%*%#WinBarFilename#config.toml%*%=%#WinBarGitLabel#\ [GIT:%#WinBarGitAdd#\ +10%#WinBarGitChange#\ ~3%#WinBarGitLabel#]%*\ 
+setlocal winbar=%#WinBarPath#common%*%#WinBarSeparator#/%*%#WinBarPath#.config%*%#WinBarSeparator#/%*%#WinBarPath#herdr%*%#WinBarSeparator#/%*%#WinBarFilename#config.toml%*%=
 setlocal winblend=10
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -263,25 +249,21 @@ setlocal winhighlight=
 setlocal nowinpinned
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 39 - ((38 * winheight(0) + 28) / 57)
+let s:l = 122 - ((19 * winheight(0) + 20) / 41)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 39
+keepjumps 122
 normal! 016|
 lcd ~/repos/nikbrunner/dots
-wincmd w
-exe 'vert 1resize ' . ((&columns * 144 + 144) / 289)
-exe 'vert 2resize ' . ((&columns * 144 + 144) / 289)
 tabnext 1
+set stal=1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
 endif
 unlet! s:wipebuf
 set winheight=1 winwidth=20
 let &shortmess = s:shortmess_save
-let &winminheight = s:save_winminheight
-let &winminwidth = s:save_winminwidth
 let s:sx = expand("<sfile>:p:r")."x.vim"
 if filereadable(s:sx)
   exe "source " . fnameescape(s:sx)
