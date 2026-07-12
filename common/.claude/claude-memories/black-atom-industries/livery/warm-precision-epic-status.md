@@ -1,7 +1,7 @@
 ---
 name: warm-precision-epic-status
 description: "Warm Precision epic (#49) — CLOSED and MERGED to main 2026-07-05 (merge 1f8ac18, pushed); dev-local.sh swap REPLACED by deno links; hooks installed and verified; conventions + current toolchain facts"
-metadata: 
+metadata:
   node_type: memory
   type: project
   originSessionId: 6374ae24-82e7-45ee-8f9d-3679300afd0c
@@ -17,7 +17,7 @@ commits (Nik authorized commits, no pushing — branch is 7 ahead of origin):
 - **#64 Apply Rail** (needs-review): AdapterStatusRow primitive + ApplyRail replaced ApplyStrip
   (0291441 / 7a4c79d / 8476dc1). **Revised per Nik 07-05 morning (50d9a57): rail is permanently
   docked — never hidden.** `mode` prop idle/active/settled; idle previews enabled adapters as
-  pending rows under READY; the 1.2s clean beat only *settles* (hands keys back), esc BACK.
+  pending rows under READY; the 1.2s clean beat only _settles_ (hands keys back), esc BACK.
   Footer result-pip + `a REOPEN` removed. Board 3f still shows the old dismiss choreography —
   reconcile on next design re-import.
 - **#62 VERIFY PATH** (needs-review): backend `verify_app_path` in `file_ops/verify.rs` +

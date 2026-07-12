@@ -1,7 +1,7 @@
 ---
 name: feedback-cheap-subagent-models
 description: Use cheaper models (haiku/sonnet) for subagents — Nik hit his session limit from Fable-priced agents
-metadata: 
+metadata:
   node_type: memory
   type: feedback
   originSessionId: 6374ae24-82e7-45ee-8f9d-3679300afd0c

@@ -72,13 +72,22 @@ main() {
 	local use_git_root=false path_arg=""
 	while [[ $# -gt 0 ]]; do
 		case "$1" in
-			--git-root|-g) use_git_root=true; shift ;;
-			-*) echo "Error: Unknown option '$1'" >&2; exit 1 ;;
-			*)
-				if [[ -n "$path_arg" ]]; then
-					echo "Error: Only one path argument is allowed." >&2; exit 1
-				fi
-				path_arg="$1"; shift ;;
+		--git-root | -g)
+			use_git_root=true
+			shift
+			;;
+		-*)
+			echo "Error: Unknown option '$1'" >&2
+			exit 1
+			;;
+		*)
+			if [[ -n "$path_arg" ]]; then
+				echo "Error: Only one path argument is allowed." >&2
+				exit 1
+			fi
+			path_arg="$1"
+			shift
+			;;
 		esac
 	done
 
@@ -94,7 +103,10 @@ main() {
 		exit 1
 	fi
 	search_dir=$("$realpath_cmd" -m "$search_dir")
-	[[ -d "$search_dir" ]] || { echo "Error: Directory '$search_dir' does not exist." >&2; exit 1; }
+	[[ -d "$search_dir" ]] || {
+		echo "Error: Directory '$search_dir' does not exist." >&2
+		exit 1
+	}
 
 	# --- git root (for -g) ---
 	local git_root=""
@@ -106,12 +118,18 @@ main() {
 
 	# --- tool detection ---
 	local fd_cmd
-	if command -v fd >/dev/null 2>&1; then fd_cmd="fd"
-	elif command -v fdfind >/dev/null 2>&1; then fd_cmd="fdfind"
-	else echo "Error: Required command 'fd' or 'fdfind' not found." >&2; exit 1; fi
+	if command -v fd >/dev/null 2>&1; then
+		fd_cmd="fd"
+	elif command -v fdfind >/dev/null 2>&1; then
+		fd_cmd="fdfind"
+	else
+		echo "Error: Required command 'fd' or 'fdfind' not found." >&2
+		exit 1
+	fi
 
 	local preview_bin="cat"
-	if command -v bat >/dev/null 2>&1; then preview_bin="bat --style=numbers --color=always"
+	if command -v bat >/dev/null 2>&1; then
+		preview_bin="bat --style=numbers --color=always"
 	elif command -v batcat >/dev/null 2>&1; then preview_bin="batcat --style=numbers --color=always"; fi
 
 	local dir_preview_cmd='ls -ap --color=always {}'
@@ -135,15 +153,17 @@ main() {
 
 	# --- temp state files ---
 	local dir_file dir_mode_file readme_file
-	dir_file=$(mktemp);     echo "$search_dir" > "$dir_file"
-	dir_mode_file=$(mktemp); echo "false" > "$dir_mode_file"
+	dir_file=$(mktemp)
+	echo "$search_dir" >"$dir_file"
+	dir_mode_file=$(mktemp)
+	echo "false" >"$dir_mode_file"
 	readme_file=$(mktemp)
 
 	# Alt-D directory picker (own script so fzf escaping stays sane)
 	# Alt-D directory picker (own script so fzf escaping stays sane)
 	local dir_picker_script
 	dir_picker_script=$(mktemp)
-	cat > "$dir_picker_script" <<PICKER_EOF
+	cat >"$dir_picker_script" <<PICKER_EOF
 #!/usr/bin/env bash
 selected=\$($fd_cmd -H --type d --max-depth $dir_max_depth --exclude .git $fd_exclude_args . $fd_search_roots 2>/dev/null | awk '!seen[\$0]++' | fzf --reverse --preview '$dir_preview_cmd')
 [[ -n "\$selected" ]] && printf '%s' "\$selected"
@@ -154,9 +174,10 @@ PICKER_EOF
 	local readme_picker_script
 	readme_picker_script=$(mktemp)
 	local readme_preview_cmd="cat {}"
-	if command -v bat >/dev/null 2>&1; then readme_preview_cmd="bat --style=numbers --color=always {}"
+	if command -v bat >/dev/null 2>&1; then
+		readme_preview_cmd="bat --style=numbers --color=always {}"
 	elif command -v batcat >/dev/null 2>&1; then readme_preview_cmd="batcat --style=numbers --color=always {}"; fi
-	cat > "$readme_picker_script" <<PICKER_EOF
+	cat >"$readme_picker_script" <<PICKER_EOF
 #!/usr/bin/env bash
 selected=\$($fd_cmd -d 3 --type f 'README' '$refs_dir' 2>/dev/null | fzf --reverse --preview '$readme_preview_cmd')
 [[ -n "\$selected" ]] && printf '%s' "\$selected"
@@ -169,8 +190,8 @@ PICKER_EOF
 	local list_script list_script_no_ignore
 	list_script=$(mktemp)
 	list_script_no_ignore=$(mktemp)
-	printf '#!/usr/bin/env bash\ncd "$(cat %q)" || exit 0\nexec %s\n' "$dir_file" "$fd_cmd $fd_flags" > "$list_script"
-	printf '#!/usr/bin/env bash\ncd "$(cat %q)" || exit 0\nexec %s\n' "$dir_file" "$fd_cmd $fd_flags --no-ignore" > "$list_script_no_ignore"
+	printf '#!/usr/bin/env bash\ncd "$(cat %q)" || exit 0\nexec %s\n' "$dir_file" "$fd_cmd $fd_flags" >"$list_script"
+	printf '#!/usr/bin/env bash\ncd "$(cat %q)" || exit 0\nexec %s\n' "$dir_file" "$fd_cmd $fd_flags --no-ignore" >"$list_script_no_ignore"
 	chmod +x "$list_script" "$list_script_no_ignore"
 
 	trap "rm -f '$dir_file' '$dir_mode_file' '$readme_file' '$dir_picker_script' '$readme_picker_script' '$list_script' '$list_script_no_ignore'" EXIT
@@ -202,10 +223,10 @@ $header_line)\""
 	)
 
 	local selected_files_str
-	selected_files_str=$(cd "$search_dir" && \
-		"$list_script" | \
-		fzf "${fzf_opts[@]}" --header "$fzf_header" \
-		|| true)
+	selected_files_str=$(cd "$search_dir" &&
+		"$list_script" |
+		fzf "${fzf_opts[@]}" --header "$fzf_header" ||
+		true)
 
 	# --- resolve final state ---
 	local final_search_dir
@@ -262,7 +283,10 @@ $header_line)\""
 		local -A seen=()
 		for path in "${relative_paths[@]}"; do dir_paths+=("$(dirname "$path")"); done
 		for dir in "${dir_paths[@]}"; do
-			if [[ -z "${seen[$dir]:-}" ]]; then seen[$dir]=1; unique_dirs+=("$dir"); fi
+			if [[ -z "${seen[$dir]:-}" ]]; then
+				seen[$dir]=1
+				unique_dirs+=("$dir")
+			fi
 		done
 		relative_paths=("${unique_dirs[@]}")
 	fi

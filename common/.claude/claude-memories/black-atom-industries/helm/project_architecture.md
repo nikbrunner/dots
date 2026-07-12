@@ -1,7 +1,7 @@
 ---
 name: helm-architecture
 description: "Current file structure, mode list, and package layout for the helm TUI"
-metadata: 
+metadata:
   node_type: memory
   type: project
   originSessionId: f635f850-6405-49f4-be75-ca1051bf2364

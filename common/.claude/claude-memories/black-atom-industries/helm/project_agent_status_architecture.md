@@ -1,7 +1,7 @@
 ---
 name: agent-status-architecture
 description: "How helm tracks Claude/Pi status since the 2026-07-03 rework — unified internal/agent package, 1s poll, liveness check, JSON status files"
-metadata: 
+metadata:
   node_type: memory
   type: project
   originSessionId: 3c805cd6-fccf-407c-aa8e-abaf23699f5e
@@ -20,7 +20,7 @@ Since 2026-07-03, agent status lives in one package, `internal/agent` (the old
   matched against `Kind.BinaryNames` (interpreter-prefixed forms like
   `node .../claude` count). No live process → status file deleted.
 - Status files are JSON since the hook rework (`{"state","ts","tool","session_id",
-  "transcript","cwd"}`); legacy `state:timestamp` still parses. `background_tasks`
+"transcript","cwd"}`); legacy `state:timestamp` still parses. `background_tasks`
   in Stop payloads keeps state `working`.
 - Multi-instance (implemented 2026-07-03): one file per agent instance —
   `<session>.<session_id>.status`. `agent.GetStatuses` returns a slice sorted
@@ -31,7 +31,7 @@ Since 2026-07-03, agent status lives in one package, `internal/agent` (the old
   `Kind.ownsFile` handles this; don't do plain `HasSuffix` matching on status files.
 - Pitfall (fixed 2026-07-03): the hook must resolve the tmux session via
   `tmux display-message -t "$TMUX_PANE"` — without a target it reports the
-  *focused client's* session, so agent statuses got written into whatever
+  _focused client's_ session, so agent statuses got written into whatever
   session the user was looking at when the hook fired (root cause of
   "agent missing from panel while clearly running").
 

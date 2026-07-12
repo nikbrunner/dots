@@ -1,7 +1,7 @@
 ---
 name: feedback-lean-jira-tickets
-description: "Jira ticket descriptions must be lean, not process narration — no dates, no \"re-scoped on X\", no restating what Jira UI already shows"
-metadata: 
+description: 'Jira ticket descriptions must be lean, not process narration — no dates, no "re-scoped on X", no restating what Jira UI already shows'
+metadata:
   node_type: memory
   type: feedback
   originSessionId: d90b7a31-d18f-4a6b-aa8b-902deaa11eae

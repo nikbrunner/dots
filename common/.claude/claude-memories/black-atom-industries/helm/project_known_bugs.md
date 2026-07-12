@@ -1,7 +1,7 @@
 ---
 name: known-bugs-and-investigation-notes
 description: "Open bugs, intermittent issues, and investigation findings for future debugging"
-metadata: 
+metadata:
   node_type: memory
   type: project
   originSessionId: 3c805cd6-fccf-407c-aa8e-abaf23699f5e
