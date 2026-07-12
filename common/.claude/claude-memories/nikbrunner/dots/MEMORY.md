@@ -76,6 +76,7 @@ common/.claude/
 ### Reference
 
 - [macOS symbolic hotkeys quirk](macos_symbolic_hotkeys_quirk.md) — `defaults write com.apple.symbolichotkeys` doesn't apply; use System Settings UI
+- [Claude statusline & cache](claude_statusline_and_cache.md) — ccstatusline setup, cache TTL 1h personal/5m work, PreCompact can't inject compact instructions
 
 ### Feedback
 

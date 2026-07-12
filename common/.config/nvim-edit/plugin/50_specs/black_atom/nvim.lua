@@ -10,7 +10,7 @@ Edit.now(function()
 
 	require("black-atom").setup({
 		styles = {
-			transparency = "none",
+			transparency = "partial",
 			cmp_kind_color_mode = "bg",
 			diagnostics = {
 				background = true,
@@ -22,5 +22,5 @@ Edit.now(function()
 		},
 	})
 
-	vim.cmd.colorscheme("black-atom-terra-summer-night")
+	vim.cmd.colorscheme("black-atom-default-dark-dimmed")
 end)
