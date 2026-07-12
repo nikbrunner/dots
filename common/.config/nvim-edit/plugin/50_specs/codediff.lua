@@ -30,7 +30,7 @@ Edit.later(function()
 				hunk_textobject = "ih",
 				show_help = "g?",
 				align_move = "gm",
-				toggle_layout = "t",
+				toggle_layout = "l",
 			},
 			explorer = {
 				select = "<CR>",
