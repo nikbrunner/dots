@@ -45,8 +45,7 @@ common:
 
   # Herdr ===================================================================
   common/.config/herdr/config.toml: ~/.config/herdr/config.toml
-  common/.config/herdr/session.json: ~/.config/herdr/session.json
-  common/.config/herdr/session-history.json: ~/.config/herdr/session-history.json
+
   common/.config/herdr/plugins.json: ~/.config/herdr/plugins.json
   common/.config/herdr/plugins: ~/.config/herdr/plugins
 

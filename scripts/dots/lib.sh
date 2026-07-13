@@ -458,30 +458,6 @@ dots_stage_bookmarks() {
     log_okay "Bookmarks changes staged"
 }
 
-dots_stage_herdr() {
-    local repo_path="$1"
-    local herdr_files=(
-        "common/.config/herdr/session.json"
-        "common/.config/herdr/session-history.json"
-    )
-
-    local has_changes=false
-    for file in "${herdr_files[@]}"; do
-        if [[ -n $(git -C "$repo_path" status --porcelain "$file" 2>/dev/null) ]]; then
-            has_changes=true
-            break
-        fi
-    done
-
-    if [[ "$has_changes" == false ]]; then
-        echo "No herdr changes to commit"
-        return 1
-    fi
-
-    (cd "$repo_path" && git add "${herdr_files[@]}")
-    log_okay "Herdr changes staged"
-}
-
 # Resolve a Claude project directory name to a readable org/repo path
 # by matching against actual directories in the repos base path.
 # Example: -Users-nbr-repos-black-atom-industries-core → black-atom-industries/core
