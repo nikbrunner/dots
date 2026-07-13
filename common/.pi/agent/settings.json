@@ -14,8 +14,8 @@
     "npm:pi-mcp-adapter",
     "npm:pi-subagents"
   ],
-  "defaultProvider": "openai",
-  "defaultModel": "gpt-5.6-luna",
+  "defaultProvider": "openrouter",
+  "defaultModel": "z-ai/glm-5.2",
   "enabledModels": [
     "openrouter/minimax/minimax-m2.7",
     "openrouter/z-ai/glm-5.1",
