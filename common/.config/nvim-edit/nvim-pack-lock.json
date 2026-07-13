@@ -46,15 +46,15 @@
       "src": "git@github.com:linrongbin16/gitlinker.nvim"
     },
     "grug-far.nvim": {
-      "rev": "c69859c1d5427ab5fc7ed12380ab521b4e336691",
+      "rev": "1cc080f55706b38aabfa97d40acb6adf59ac4a5a",
       "src": "git@github.com:MagicDuck/grug-far.nvim"
     },
     "helpview.nvim": {
-      "rev": "0057599e169ea6ffd53fef77f279cb13b61e174a",
+      "rev": "06006b471890f19efeb199ffab5da49a2d624619",
       "src": "git@github.com:OXY2DEV/helpview.nvim"
     },
     "kulala.nvim": {
-      "rev": "7fba542e4300c0d915f64da8a759f68ca1bd6b77",
+      "rev": "91cf892008c773ce74ac392c4c12ddff775b7619",
       "src": "git@github.com:mistweaverco/kulala.nvim"
     },
     "lazydev.nvim": {
@@ -66,7 +66,7 @@
       "src": "git@github.com:nikbrunner/mdn.nvim"
     },
     "mini.nvim": {
-      "rev": "dc8a9918c3b1bc18a5fcd04d39b6d658074c0886",
+      "rev": "db41c4076105a63caec12612d11228348f55a109",
       "src": "https://github.com/nvim-mini/mini.nvim"
     },
     "nui.nvim": {
@@ -86,7 +86,7 @@
       "src": "git@github.com:windwp/nvim-ts-autotag"
     },
     "oklch-color-picker.nvim": {
-      "rev": "0c9b7c6a8bb2acebb54bc3ad8868c18e12610eec",
+      "rev": "8bf807853ccd7b7772fdc56951278a5347bb6d59",
       "src": "git@github.com:eero-lehtinen/oklch-color-picker.nvim"
     },
     "qmk.nvim": {
