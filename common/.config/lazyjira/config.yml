@@ -15,10 +15,14 @@ gui:
     - summary
 
 issueTabs:
-  - name: Assigned
-    jql: project = {{.ProjectKey}} AND assignee=currentUser() AND statusCategory != Done ORDER BY status ASC, priority ASC, updated ASC
+  - name: WEBSDK
+    jql: project = WEBSDK AND assignee=currentUser() AND statusCategory != Done ORDER BY status ASC, priority ASC, updated ASC
+  - name: Cloud Platform
+    jql: project = CP AND assignee=currentUser() AND statusCategory != Done ORDER BY status ASC, priority ASC, updated ASC
+  - name: Labels Server
+    jql: project = LS AND assignee=currentUser() AND statusCategory != Done ORDER BY status ASC, priority ASC, updated ASC
   - name: All
-    jql: project = {{.ProjectKey}} AND statusCategory != Done ORDER BY updated DESC
+    jql: assignee=currentUser() AND statusCategory != Done ORDER BY project ASC, status ASC, priority ASC, updated ASC
 
 fields:
   - id: status
