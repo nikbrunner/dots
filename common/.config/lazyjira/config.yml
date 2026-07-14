@@ -40,9 +40,26 @@ fields:
 customCommands:
   - key: "ctrl+y"
     name: "Copy as markdown link"
-    command: 's=$(printf %s {{.Summary | shellescape}} | tr -d ''[]''); printf ''[%s %s](%s/browse/%s)'' {{.Key | shellescape}} "$s" {{.JiraHost | shellescape}} {{.Key | shellescape}} | (command -v pbcopy >/dev/null && pbcopy || wl-copy)'
+    command: |
+      s=$(printf %s {{.Summary | shellescape}} | tr -d '[]')
+      link=$(printf '[%s %s](%s/browse/%s)' {{.Key | shellescape}} "$s" {{.JiraHost | shellescape}} {{.Key | shellescape}})
+      printf '%s' "$link" | (command -v pbcopy >/dev/null && pbcopy || wl-copy)
+      command -v herdr >/dev/null && herdr notification show "Copied markdown link" --body "$link" --sound done
     suspend: false
   - key: "y"
     name: "Copy key + summary"
-    command: 's=$(printf %s {{.Summary | shellescape}} | tr -d ''[]''); printf ''%s %s'' {{.Key | shellescape}} "$s" | (command -v pbcopy >/dev/null && pbcopy || wl-copy)'
+    command: |
+      s=$(printf %s {{.Summary | shellescape}} | tr -d '[]')
+      out=$(printf '%s %s' {{.Key | shellescape}} "$s")
+      printf '%s' "$out" | (command -v pbcopy >/dev/null && pbcopy || wl-copy)
+      command -v herdr >/dev/null && herdr notification show "Copied key + summary" --body "$out" --sound done
+    suspend: false
+  - key: "b"
+    name: "Copy as branch name"
+    command: |
+      key=$(printf %s {{.Key | shellescape}} | tr '[:upper:]' '[:lower:]')
+      slug=$(printf %s {{.Summary | shellescape}} | tr '[:upper:]' '[:lower:]' | sed -E 's/[^a-z0-9]+/-/g; s/^-+//; s/-+$//')
+      out=$(printf '%s-%s' "$key" "$slug" | cut -c1-50 | sed -E 's/-+$//')
+      printf '%s' "$out" | (command -v pbcopy >/dev/null && pbcopy || wl-copy)
+      command -v herdr >/dev/null && herdr notification show "Copied branch name" --body "$out" --sound done
     suspend: false
