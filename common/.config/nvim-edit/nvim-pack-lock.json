@@ -33,10 +33,6 @@
       "rev": "619363c30309d29ffa631e67c8183f2a72caa373",
       "src": "git@github.com:stevearc/conform.nvim"
     },
-    "filepaths_ls.nvim": {
-      "rev": "c5ebc0aa1cb0c7dc4509be834ca54f2c8364c11b",
-      "src": "https://github.com/antonk52/filepaths_ls.nvim"
-    },
     "friendly-snippets": {
       "rev": "6cd7280adead7f586db6fccbd15d2cac7e2188b9",
       "src": "git@github.com:rafamadriz/friendly-snippets"

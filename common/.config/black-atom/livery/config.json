@@ -12,7 +12,7 @@
     },
     "nvim": {
       "enabled": true,
-      "config_path": "~/.config/nvim-edit/plugin/50_specs/black_atom/nvim.lua",
+      "config_path": "~/.config/nvim/plugin/50_specs/black_atom/nvim.lua",
       "match_pattern": "vim\\.cmd\\.colorscheme\\(\"[^\"]*\"\\)",
       "replace_template": "vim.cmd.colorscheme(\"{themeKey}\")"
     },
