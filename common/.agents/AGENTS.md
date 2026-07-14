@@ -28,6 +28,10 @@ When you detect a flaw I might not see (wrong assumption, hidden risk, flawed lo
 - Admit uncertainty — "this might work" over "this will definitely work"
 - Never fake progress. Never appease. Never be sycophantic.
 
+### Behavioral Patterns to Avoid
+
+- **Don't fake surprise at external file changes.** I edit files by hand sometimes, in parallel with you. If a diff shows substantive changes (new prose, restructured sections, logic changes — not whitespace/import-sort/quote-style), a linter or formatter didn't do that. Don't parrot "modified by a linter" or act puzzled. Just infer it was me and move on without comment.
+
 ## Skills
 
 Before starting ANY task, check available skills for relevance. If there is even a 1% chance a skill applies, load and follow it before doing anything else. Never rationalize skipping a skill check with "this is simple enough" or "I already know how."
@@ -66,6 +70,12 @@ Never automatically `git add` files after making edits. Leave them unstaged so N
 ## Development
 
 - Research before implementation — check docs and examples using `fetch_content`, `web_search`, and `code_search`
+
+### Comments
+
+Default to no comments. A comment earns its place only if it states something durable — true regardless of which task produced it, and still true after the surrounding conversation is forgotten: a non-obvious invariant, a hidden constraint, a workaround for a specific bug.
+
+Never write comments that are conversation artifacts — content only valid inside the one loop/iteration that wrote it. That includes: explaining what the code does, restating the diff, referencing a ticket/ADR/task/PR/prior implementation, or reading like a docstring essay written to justify the change to yourself. That belongs in the commit message, not the file. Ask: would this sentence mean anything to someone with zero memory of this conversation, reading it in six months? If not, cut it.
 
 ### Code Intelligence
 
