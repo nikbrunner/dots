@@ -1,0 +1,196 @@
+#!/usr/bin/env bash
+# ccu — Claude Code cost breakdown per repo, split by imfusion vs personal.
+#
+# ccusage's --project flag matches basenames only, which collide across
+# unrelated repos (e.g. two repos named "web-ui"), so this re-renders
+# ccusage's per-project JSON, matching on the full encoded project path
+# instead. Repo roots are found on disk so worktrees and subdirectories
+# of the same repo fold into one row. Requires gum for table rendering
+# (multi-line model cells need gum; plain `column -t` can't align them).
+set -e
+
+if ! command -v gum &>/dev/null; then
+	echo "ccu: requires 'gum' to render tables (brew install gum)" >&2
+	exit 1
+fi
+
+usage() {
+	cat <<-EOF
+		Usage: ccu <command> [ccusage-flags...]
+
+		Commands:
+		  imfusion   Cost breakdown for ~/repos/imfusion
+		  personal   Cost breakdown excluding ~/repos/imfusion
+		  help       Show this help
+
+		Any extra flags are passed through to 'ccusage claude daily'
+		(e.g. --since 20260701, --until 20260714).
+	EOF
+}
+
+cmd="$1"
+shift || true
+
+case "$cmd" in
+imfusion)
+	mode="include"
+	prefix="$HOME/repos/imfusion"
+	;;
+personal)
+	mode="exclude"
+	prefix="$HOME/repos/imfusion"
+	;;
+help | --help | -h | "")
+	usage
+	exit 0
+	;;
+*)
+	echo "ccu: unknown command '$cmd'" >&2
+	usage >&2
+	exit 1
+	;;
+esac
+
+marker=$(echo "$prefix" | sed "s|^$HOME|-Users-$(whoami)|; s|/|-|g")
+
+# The Today/Yesterday/This week/Last week/This month summary needs data
+# back to the earlier of "start of last week" or "start of this month";
+# default --since accordingly unless the caller already passed one.
+last_week_start=$(date -v-monday -v-7d +%Y%m%d)
+month_start=$(date +%Y%m01)
+default_since=$([[ "$last_week_start" < "$month_start" ]] && echo "$last_week_start" || echo "$month_start")
+has_since=false
+for arg in "$@"; do
+	case "$arg" in
+	-s | --since) has_since=true ;;
+	esac
+done
+extra_args=("$@")
+if [[ "$has_since" == false ]]; then
+	extra_args=(--since "$default_since" "${extra_args[@]}")
+fi
+
+# Map every known git repo root under $HOME to its ccusage-encoded key
+# (real_path\tencoded_key) so we can match project keys back to real repos
+# and recover a readable basename.
+repo_roots=$(find "$HOME" -maxdepth 6 -type d -name .git 2>/dev/null |
+	sed 's|/\.git$||' |
+	awk -v home="$HOME" -v user="$(whoami)" '{
+		path = $0
+		encoded = path
+		sub("^" home, "-Users-" user, encoded)
+		gsub("/", "-", encoded)
+		print path "\t" encoded
+	}' | sort -u -t $'\t' -k2)
+
+# Emits two CSV blocks separated by a line of "===": the time-window
+# summary (Window,Cost) and the per-project breakdown (Project,Cost,Models).
+render() {
+	bunx ccusage claude daily --instances --json "${extra_args[@]}" |
+		python3 -c "
+import json, re, sys
+from datetime import date, timedelta
+
+marker = sys.argv[1]
+mode = sys.argv[2]
+
+root_map = []
+for line in sys.argv[3].splitlines():
+    if not line:
+        continue
+    real_path, encoded = line.split('\t')
+    root_map.append((encoded, real_path.rsplit('/', 1)[-1]))
+root_map.sort(key=lambda kv: -len(kv[0]))
+
+data = json.load(sys.stdin)
+
+matched = {
+    key: entries
+    for key, entries in data['projects'].items()
+    if (mode == 'include') == (marker in key)
+}
+
+def day_cost(day):
+    return day.get('totalCost', sum(m['cost'] for m in day['modelBreakdowns']))
+
+today = date.today()
+this_monday = today - timedelta(days=today.weekday())
+last_monday = this_monday - timedelta(days=7)
+this_month_start = today.replace(day=1)
+
+windows = [
+    ('Today', today, today),
+    ('Yesterday', today - timedelta(days=1), today - timedelta(days=1)),
+    ('This week', this_monday, today),
+    ('Last week', last_monday, this_monday - timedelta(days=1)),
+    ('This month', this_month_start, today),
+]
+window_totals = {label: 0.0 for label, _, _ in windows}
+
+for entries in matched.values():
+    for day in entries:
+        d = date.fromisoformat(day['date'])
+        cost = day_cost(day)
+        for label, start, end in windows:
+            if start <= d <= end:
+                window_totals[label] += cost
+
+print('Window,Cost')
+for label, _, _ in windows:
+    print(f'{label},\${window_totals[label]:.2f}')
+
+print('===')
+
+def canonical(key):
+    for encoded, name in root_map:
+        if key == encoded or key.startswith(encoded + '-'):
+            return encoded, name
+    return key, key.rsplit('-', 1)[-1]
+
+def short_model(model):
+    m = model.removeprefix('claude-')
+    return re.sub(r'-\d{8}\$', '', m)
+
+groups = {}
+for key, entries in matched.items():
+    root, name = canonical(key)
+    g = groups.setdefault(root, {'name': name, 'total': 0.0, 'models': {}})
+    for day in entries:
+        for mb in day['modelBreakdowns']:
+            model = short_model(mb['modelName'])
+            g['models'][model] = g['models'].get(model, 0.0) + mb['cost']
+            g['total'] += mb['cost']
+
+print('Project,Cost,Models')
+if not groups:
+    print('(none),\$0.00,–')
+else:
+    rows = sorted(groups.values(), key=lambda g: -g['total'])
+    model_w = max(
+        (len(m) for g in rows for m in g['models']),
+        default=0,
+    )
+    cost_w = max(
+        (len(f'{c:.2f}') for g in rows for c in g['models'].values()),
+        default=0,
+    )
+    for g in rows:
+        parts = sorted(g['models'].items(), key=lambda kv: -kv[1])
+        shown = '\n'.join(f'{m:<{model_w}}  \${c:>{cost_w}.2f}' for m, c in parts)
+        print(f\"{g['name']},\${g['total']:.2f},\\\"{shown}\\\"\")
+    grand_total = sum(g['total'] for g in rows)
+    print(f'TOTAL,\${grand_total:.2f},')
+" "$marker" "$mode" "$repo_roots"
+}
+
+render_table() {
+	printf '%s\n' "$1" | gum table -s , --print --border rounded --widths ""
+}
+
+output=$(render)
+summary_csv=$(printf '%s\n' "$output" | sed -n '1,/^===$/p' | sed '$d')
+projects_csv=$(printf '%s\n' "$output" | sed -n '/^===$/,$p' | tail -n +2)
+
+render_table "$summary_csv"
+echo
+render_table "$projects_csv"
