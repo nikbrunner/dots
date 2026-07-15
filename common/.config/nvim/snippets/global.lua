@@ -7,48 +7,48 @@
 --- wday: os.date("*t").wday (1=Sun, 2=Mon, ..., 7=Sat)
 --- target: 1=Sun, 2=Mon, ..., 7=Sat
 local function days_until_next(target)
-    local wday = os.date("*t").wday
-    local diff = target - wday
-    if diff <= 0 then
-        diff = diff + 7
-    end
-    return diff
+	local wday = os.date("*t").wday
+	local diff = target - wday
+	if diff <= 0 then
+		diff = diff + 7
+	end
+	return diff
 end
 
 local function format_date(offset_days)
-    local time = os.time() + (offset_days or 0) * 86400
-    local date = os.date("*t", time)
+	local time = os.time() + (offset_days or 0) * 86400
+	local date = os.date("*t", time)
 
-    local day_names = { "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" }
-    local day_name = day_names[date.wday]
+	local day_names = { "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" }
+	local day_name = day_names[date.wday]
 
-    return string.format("%04d.%02d.%02d - %s", date.year, date.month, date.day, day_name)
+	return string.format("%04d.%02d.%02d - %s", date.year, date.month, date.day, day_name)
 end
 
 local function format_month(offset_months)
-    local date = os.date("*t")
+	local date = os.date("*t")
 
-    local month = date.month + (offset_months or 0)
-    local year = date.year
+	local month = date.month + (offset_months or 0)
+	local year = date.year
 
-    while month > 12 do
-        month = month - 12
-        year = year + 1
-    end
-    while month < 1 do
-        month = month + 12
-        year = year - 1
-    end
+	while month > 12 do
+		month = month - 12
+		year = year + 1
+	end
+	while month < 1 do
+		month = month + 12
+		year = year - 1
+	end
 
-    local month_names = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" }
+	local month_names = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" }
 
-    return string.format("%04d.%02d - %s", year, month, month_names[month])
+	return string.format("%04d.%02d - %s", year, month, month_names[month])
 end
 
 --- Must return a TABLE (not a function directly).
 --- The function element inside is called by traverse_raw_snippets on each expand.
 return {
-    function()
+	function()
     -- stylua: ignore start
     return {
       -- Today
@@ -87,6 +87,6 @@ return {
       -- Time
       { prefix = "time", body = os.date("%H:%M"),                                                desc = "Time (HH:MM)" },
     }
-        -- stylua: ignore end
-    end,
+		-- stylua: ignore end
+	end,
 }

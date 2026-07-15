@@ -1,8 +1,8 @@
 local palette = require("mini.hues").make_palette({
-    background = "#232019",
-    foreground = "#b2d7a8",
-    saturation = "medium",
-    accent = "bg",
+	background = "#232019",
+	foreground = "#b2d7a8",
+	saturation = "medium",
+	accent = "bg",
 })
 
 --   accent = "#e1c88e",

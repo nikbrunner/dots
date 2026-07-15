@@ -33,8 +33,6 @@ common:
 
   # Editors & Terminals ====================================================
   common/.config/nvim: ~/.config/nvim
-  common/.config/nvim-minimax: ~/.config/nvim-minimax
-  common/.config/nvim-edit: ~/.config/nvim-edit
   common/.vimrc: ~/.vimrc
   common/.ideavimrc: ~/.ideavimrc
   common/.config/zed: ~/.config/zed
