@@ -33,19 +33,29 @@ switch_workspace = "alt+shift+1..9"
 focus_agent = "ctrl+alt+1..9"
 
 copy_mode = "alt+esc"
-rename_tab = "alt+n"
-open_notification_target = "alt+N"
 
+open_notification_target = "prefix+,"
+
+last_pane = "alt+o"
+
+rename_tab = "alt+n"
+new_tab = "alt+t"
 previous_tab = "alt+h"
 next_tab = "alt+l"
-close_tab = "alt+shift+q"
+close_tab = "alt+q"
+
 previous_workspace = "alt+k"
 next_workspace = "alt+j"
+new_workspace = "alt+shift+t"
+close_workspace = "alt+shift+q"
+rename_workspace = "alt+shift+n"
+
+new_worktree = "alt+ctrl+n"
+open_worktree = "alt+ctrl+o"
+
 previous_agent = "alt+ctrl+k"
 next_agent = "alt+ctrl+j"
 
-last_pane = "alt+o"
-close_pane = "alt+q"
 zoom = "alt+z"
 
 navigate_workspace_up = "k"
