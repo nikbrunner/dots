@@ -1,9 +1,12 @@
-
 fpath=("/Users/nbr/.zsh/completions" $fpath)
 autoload -Uz compinit
 compinit
 
-for f in ~/.env ~/.env.*(N); do [[ -r "$f" ]] && { set -a; source "$f"; set +a; }; done
+for f in ~/.env ~/.env.*(N); do [[ -r "$f" ]] && {
+    set -a
+    source "$f"
+    set +a
+}; done
 
 # Git completion (fpath must be set before compinit in os.zsh) ===========
 zstyle ':completion:*:*:git:*' script ~/.config/.zsh/git-completion.bash
@@ -27,15 +30,11 @@ export RIPGREP_CONFIG_PATH=$HOME/.ripgreprc
 # Globals ================================================================
 export DOTS_DIR="$HOME/repos/nikbrunner/dots"
 export SSH_AUTH_SOCK="$HOME/.ssh/proton-pass-agent.sock"
-export NVIM_APPNAME="nvim-edit"
 export EDITOR="nvim"
 export MANPAGER='nvim +Man!'
 export BAT_THEME="base16"
 
 # Aliases ================================================================
-alias edit="NVIM_APPNAME=nvim-edit nvim"
-alias vin="NVIM_APPNAME=nvim_mnml nvim"
-
 alias ls="eza --all --oneline --long --icons --sort=type"
 alias lt="eza --all --tree --icons --sort=type"
 alias lg="lazygit"
@@ -55,10 +54,13 @@ alias ydl='yt-dlp --audio-format mp3 --embed-thumbnail --embed-metadata --extrac
 alias mise-edge='mise upgrade --interactive --minimum-release-age 0s'
 unalias groot 2>/dev/null
 groot() {
-  local dir
-  dir=$(git rev-parse --git-common-dir 2>/dev/null) || { echo "I am not Groot (not in a git repo)"; return 1; }
-  # parent of the common .git dir is the main worktree root (works in worktrees and plain repos)
-  cd "$(cd "$dir" && pwd)/.."
+    local dir
+    dir=$(git rev-parse --git-common-dir 2>/dev/null) || {
+        echo "I am not Groot (not in a git repo)"
+        return 1
+    }
+    # parent of the common .git dir is the main worktree root (works in worktrees and plain repos)
+    cd "$(cd "$dir" && pwd)/.."
 }
 alias noise="exec ffplay -hide_banner -loglevel error -nodisp -f lavfi 'anoisesrc=color=brown:amplitude=0.354,lowpass=f=550:poles=1,bass=g=12:f=60,afade=t=in:d=3'"
 
@@ -72,20 +74,20 @@ alias :sp='tmux split-window -v -c "#{pane_current_path}"'
 alias claude='CLAUDE_CODE_NO_FLICKER=1 claude'
 
 claude-work() {
-	ANTHROPIC_API_KEY="$ANTHROPIC_API_KEY_IMFUSION" \
-		CLAUDE_CONFIG_DIR="$HOME/.claude-work" \
-		CLAUDE_CODE_NO_FLICKER=1 \
-		command claude "$@"
+    ANTHROPIC_API_KEY="$ANTHROPIC_API_KEY_IMFUSION" \
+        CLAUDE_CONFIG_DIR="$HOME/.claude-work" \
+        CLAUDE_CODE_NO_FLICKER=1 \
+        command claude "$@"
 }
 
 # Yazi ==================================================================
 function y() {
-	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")"
-	yazi "$@" --cwd-file="$tmp"
-	if cwd="$(cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
-		cd -- "$cwd"
-	fi
-	rm -f -- "$tmp"
+    local tmp="$(mktemp -t "yazi-cwd.XXXXXX")"
+    yazi "$@" --cwd-file="$tmp"
+    if cwd="$(cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
+        cd -- "$cwd"
+    fi
+    rm -f -- "$tmp"
 }
 
 # fzf ====================================================================
@@ -109,15 +111,15 @@ alias ,,="fzf -m --preview='bat --color=always {}' --bind 'enter:become(nvim {+}
 
 # gwt wrapper — intercept `gwt cd` to change directory in current shell
 gwt() {
-	if [[ "$1" == "cd" ]]; then
-		local dir
-		dir=$(command gwt "$1" "${@:2}")
-		if [[ -n "$dir" && -d "$dir" ]]; then
-			cd "$dir"
-		fi
-	else
-		command gwt "$@"
-	fi
+    if [[ "$1" == "cd" ]]; then
+        local dir
+        dir=$(command gwt "$1" "${@:2}")
+        if [[ -n "$dir" && -d "$dir" ]]; then
+            cd "$dir"
+        fi
+    else
+        command gwt "$@"
+    fi
 }
 
 eval "$(zoxide init zsh --cmd cd)"
