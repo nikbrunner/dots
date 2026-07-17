@@ -144,12 +144,21 @@
         "type": "reset-timer"
       },
       {
+        "id": "01de3da5-1eb6-440d-9a4e-7e1418f60bea",
+        "type": "separator",
+        "character": ","
+      },
+      {
+        "id": "fceb75c6-e30f-498a-bc1d-e69a2919fb39",
+        "type": "session-usage"
+      },
+      {
         "id": "f18cf806-0754-4253-86c8-2b4c5c1841d5",
         "type": "separator",
         "character": ","
       },
       {
-        "id": "f6d43904-14d2-4f9b-b3a1-19a1fd48aaf5",
+        "id": "b239ebd9-f104-461f-9f79-b8e32674c802",
         "type": "weekly-sonnet-usage"
       },
       {
@@ -175,7 +184,8 @@
   "flexMode": "full-minus-40",
   "compactThreshold": 60,
   "colorLevel": 3,
-  "inheritSeparatorColors": false,
+  "defaultPadding": "",
+  "inheritSeparatorColors": true,
   "globalBold": false,
   "gitCacheTtlSeconds": 5,
   "minimalistMode": false,
