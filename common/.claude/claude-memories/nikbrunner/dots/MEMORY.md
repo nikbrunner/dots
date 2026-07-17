@@ -67,6 +67,7 @@ common/.claude/
 - [OpenSpec integration](project_openspec_integration.md) — Paused, evaluating incrementally
 - [Livery](project_livery.md) — BAI desktop theme manager (Tauri v2 + React)
 - [Vendor-agnostic skills](project_vendor_agnostic_skills.md) — Long-term goal, no ready solution
+- [mdn.nvim](project_mdn_nvim.md) — Stays a separate repo (test suite is the reason); loading race fixed 2026-07-16
 
 ### Completed Projects
 
