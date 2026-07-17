@@ -18,6 +18,7 @@
 ~/repos/black-atom-industries/iter.nvim
 ~/repos/black-atom-industries/lazygit
 ~/repos/black-atom-industries/livery
+~/repos/black-atom-industries/livery-worktrees
 ~/repos/black-atom-industries/niri
 ~/repos/black-atom-industries/nvim
 ~/repos/black-atom-industries/obsidian
