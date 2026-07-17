@@ -22,5 +22,5 @@ Edit.now(function()
 		},
 	})
 
-	vim.cmd.colorscheme("black-atom-default-dark-dimmed")
+	vim.cmd.colorscheme("black-atom-default-light")
 end)
