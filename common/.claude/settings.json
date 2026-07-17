@@ -53,7 +53,7 @@
     "deny": [],
     "ask": []
   },
-  "model": "claude-sonnet-5",
+  "model": "sonnet",
   "hooks": {
     "Notification": [
       {
@@ -211,14 +211,17 @@
     }
   },
   "alwaysThinkingEnabled": false,
+  "advisorModel": "opus",
   "autoUpdatesChannel": "latest",
+  "tui": "fullscreen",
   "voice": {
     "enabled": true,
     "mode": "hold"
   },
   "autoDreamEnabled": true,
-  "theme": "auto",
+  "theme": "light",
   "editorMode": "vim",
+  "agentPushNotifEnabled": true,
   "skipAutoPermissionPrompt": true,
   "voiceEnabled": true,
   "feedbackSurveyState": {
