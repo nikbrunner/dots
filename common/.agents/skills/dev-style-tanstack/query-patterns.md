@@ -5,7 +5,7 @@
 Hooks that compose multiple queries into a domain API (e.g. `useUserProfile` calling `useUser` + `usePermissions`) live in the same topic folder as the query hooks they orchestrate — not in `hooks/`.
 
 ```
-queries/
+api/
 ├── user/
 │   ├── query-key.ts
 │   ├── use-user.ts
@@ -22,7 +22,7 @@ If consumed by only one container, co-locate it there instead. See `dev:style:re
 Best for small API surfaces. Co-locates queries and mutations per topic.
 
 ```
-queries/
+api/
 ├── use-brands.ts
 ├── use-env.ts
 └── use-settings.ts
@@ -33,7 +33,7 @@ queries/
 Single query + derived memoized values + multiple mutations. Returns `{ query, ...derived, ...mutations }`.
 
 ```tsx
-// queries/use-brands.ts
+// api/use-brands.ts
 const TOPIC = "brands" as const;
 const queryKey = (keys: string[] = []) => [TOPIC, ...keys] as const;
 
@@ -95,7 +95,7 @@ Key conventions:
 When a topic hook grows large (many mutations, complex derived logic), split into co-located files:
 
 ```
-queries/
+api/
 ├── use-settings.ts          # Main hook + query + orchestration
 ├── use-settings.types.ts    # Shared types (query/mutation options)
 ├── use-settings.lib.ts      # Pure logic (derivations, selectors -- testable without hooks)
@@ -232,8 +232,11 @@ See: https://tanstack.com/query/latest/docs/framework/react/guides/render-optimi
 
 For medium API surfaces. Separate files per query/mutation with shared key definitions.
 
+Default root is `src/api/` (technical separation — see `dev:style:react`
+`folder-structure.md`), not nested under a `features/` domain folder.
+
 ```
-queries/
+api/
 ├── settings/
 │   ├── query-key.ts
 │   ├── use-settings.ts
@@ -245,6 +248,44 @@ queries/
 │   ├── use-users.ts
 │   └── use-create-user.ts
 ```
+
+### Entity file: the reusable layer
+
+Within a topic folder, `queryOptions()`/`mutationOptions()` factories are the
+thing that actually gets reused — a route `loader` calls
+`ensureQueryData(factory())` directly, a component calls
+`useQuery(factory())`/`useMutation(factory())` through a thin hook. Pull that
+factory layer into its own file, named after the **entity it covers** (not
+generically `api.ts`, and not one file per hook):
+
+```
+api/licenses/
+├── users.ts                     # queryOptions/mutationOptions for user-scoped licenses
+├── organizations.ts             # queryOptions/mutationOptions for org-scoped licenses + org members
+├── use-user-licenses.ts         # useQuery(usersQueries.licenses())
+├── use-organization-licenses.ts # useQuery(organizationsQueries.licenses())
+├── use-organization-members.ts  # useQuery(organizationsQueries.members())
+└── use-assign-user-license.ts   # useMutation(usersQueries.assignLicense())
+```
+
+A topic folder is one file per **entity**, not one file per topic and not
+one file per hook:
+
+- If every query/mutation in a topic concerns one entity, one file
+  (`licenses.ts`) covers the whole topic.
+- If a topic spans multiple entities (e.g. licenses scoped to users vs.
+  licenses scoped to organizations), split into one file per entity
+  (`users.ts`, `organizations.ts`) — still inside the topic folder.
+- Hooks stay thin siblings that import the factory and wrap it in
+  `useQuery`/`useMutation`. Don't inline the raw fetch call or the
+  `queryOptions` factory into the hook file — that breaks loader prefetch,
+  since a loader can't call a hook.
+
+Raw fetch functions themselves are *not* a reuse boundary in practice —
+audit shows they're called from exactly one factory each. Don't default to
+a shared `api.ts`/`queries.ts` file "in case" a fetch function gets reused;
+add that split only if a raw fetch function actually gets a second
+independent caller.
 
 ## Complexity 3: API Folder with Query Option Factories
 

@@ -8,15 +8,15 @@ src/
 ├── containers/          # Smart Containers
 ├── partials/            # Compositions
 ├── hooks/               # UI utilities, shared event hooks (no server state)
-├── queries/             # TanStack Query hooks → see dev:style:tanstack
+├── api/                 # TanStack Query hooks + queryOptions/mutationOptions factories → see dev:style:tanstack
 ├── lib/                 # Utilities, helpers
 └── types/               # Shared type definitions
 ```
 
-### hooks/ vs queries/
+### hooks/ vs api/
 
 - `hooks/` — UI utilities and shared event hooks: `useDebounce`, `useMediaQuery`, `useClickOutside`, `useKeyboardShortcut`. No server state, no TanStack Query.
-- `queries/` — All TanStack Query hooks, including orchestration hooks that compose multiple queries (e.g. `useUserProfile`). Organized by topic. See `dev:style:tanstack` for structure.
+- `api/` — All TanStack Query hooks, including orchestration hooks that compose multiple queries (e.g. `useUserProfile`), plus the `queryOptions`/`mutationOptions` factories a route loader prefetches with. Organized by topic, one file per entity within a topic. See `dev:style:tanstack` for structure. Not nested under a `features/` domain folder — kept at the technical-separation root alongside `components/`, `hooks/`, etc.
 
 ## Multi-File Components
 
