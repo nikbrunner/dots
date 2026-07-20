@@ -47,7 +47,7 @@ return {
                     diff_put = "dp",
                     open_in_prev_tab = "gf",
                     close_on_open_in_prev_tab = false,
-                    toggle_stage = "s",
+                    toggle_stage = "S",
                     hunk_textobject = "ih",
                     show_help = "g?",
                     align_move = "gm",
