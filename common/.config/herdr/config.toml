@@ -7,22 +7,34 @@ onboarding = false
 name = "terminal"
 
 [theme.custom]
-accent = "##4EC983"
+accent = "#4EC983"
 
 [ui.toast]
-# delivery = "system"
-
 delivery = "herdr"
+
 [ui]
-show_agent_labels_on_pane_borders = true
+accent = "#4EC983"
 agent_panel_sort = "spaces"
-accent = "green"
+show_agent_labels_on_pane_borders = true
+prompt_new_tab_name = false
+hide_tab_bar_when_single_tab = true
+
+# https://herdr.dev/docs/configuration/#sidebar-row-layouts
+[ui.sidebar.agents]
+row_gap = 1
+rows = [["state_icon", "workspace", "tab"], ["agent"]]
+
+[ui.sidebar.spaces]
+row_gap = 1
+rows = [["state_icon", "workspace"], ["branch", "git_status"]]
+
 
 [session]
 resume_agents_on_restore = true
 
 [experimental]
 pane_history = true
+kitty_graphics = true
 
 switch_ascii_input_source_in_prefix = true
 [keys]
