@@ -36,6 +36,7 @@ copy_mode = "alt+esc"
 
 open_notification_target = "prefix+,"
 
+close_pane = "alt+x"
 last_pane = "alt+o"
 
 rename_tab = "alt+n"
@@ -52,6 +53,7 @@ rename_workspace = "alt+shift+n"
 
 new_worktree = "alt+ctrl+n"
 open_worktree = "alt+ctrl+o"
+delete_worktree_checkout = "alt+ctrl+d"
 
 previous_agent = "alt+ctrl+k"
 next_agent = "alt+ctrl+j"
@@ -116,6 +118,12 @@ type = "pane"
 command = "lazyjira"
 description = "Open LazyJira"
 
+[[keys.command]]
+key = "alt+shift+h"
+type = "pane"
+command = "hunk diff"
+description = "Open Hunk"
+
 # https://github.com/thanhdat77/herdr-picker-plus
 [[keys.command]]
 key = "alt+s"
@@ -137,3 +145,6 @@ key = "alt+shift+o"
 type = "plugin_action"
 command = "third774.last-workspace.toggle"
 description = "last workspace"
+
+[update]
+channel = "preview"
