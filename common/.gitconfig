@@ -12,7 +12,7 @@
 
 [core]
   editor = nvim
-  pager = delta
+	pager = hunk pager
 
 [merge]
   tool = vscode

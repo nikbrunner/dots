@@ -8,6 +8,7 @@
 
 ## Architecture
 
+- [theme-provisioning-taxonomy.md](theme-provisioning-taxonomy.md) — 3-class provisioning model (External/Linked/Merged), why not 5; #34 MERGED 07-18; follow-ups #66 settings iteration, #65 GUI e2e, #35 wizard
 - [architecture-decisions.md](architecture-decisions.md) — TS/Rust boundary, consolidated updaters, file_ops, tauri-specta, keymappings
 - [tauri-learnings.md](tauri-learnings.md) — FS scoping gotchas, webview limitations, debugging tips
 - [nvim-updater-research.md](nvim-updater-research.md) — Socket-based live reload, platform-specific paths

@@ -10,7 +10,7 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +7 logs/2026/2026.07/2026.07.16\ -\ Thu.md
+badd +12 logs/2026/2026.07/2026.07.16\ -\ Thu.md
 argglobal
 %argdel
 edit logs/2026/2026.07/2026.07.16\ -\ Thu.md
@@ -141,11 +141,11 @@ setlocal wrapmargin=0
 sil! normal! zo
 7
 sil! normal! zo
-let s:l = 14 - ((13 * winheight(0) + 17) / 35)
+let s:l = 12 - ((11 * winheight(0) + 19) / 38)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 14
+keepjumps 12
 normal! 0
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'

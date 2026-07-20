@@ -51,6 +51,17 @@
         "lastAccessed": 1779358546
       }
     },
+    "~/repos/imfusion/websdk/web-ui": {
+      "master": {
+        "locks": [
+          {
+            "filename": "packages/web-ui/src/tokens/showcase.stories.tsx",
+            "label": "1"
+          }
+        ],
+        "lastAccessed": 1784568554
+      }
+    },
     "~/repos/nikbrunner/dots": {
       "main": {
         "locks": [
@@ -63,7 +74,7 @@
             "label": "2"
           }
         ],
-        "lastAccessed": 1784302650
+        "lastAccessed": 1784572402
       }
     },
     "~/repos/nikbrunner/imf-notes": {
@@ -86,7 +97,7 @@
             "label": "4"
           }
         ],
-        "lastAccessed": 1784285160
+        "lastAccessed": 1784538793
       }
     },
     "~/repos/nikbrunner/minifugit.nvim": {
