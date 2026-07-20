@@ -186,7 +186,7 @@
   "colorLevel": 3,
   "defaultPadding": "",
   "inheritSeparatorColors": true,
-  "globalBold": false,
+  "globalBold": true,
   "gitCacheTtlSeconds": 5,
   "minimalistMode": false,
   "powerline": {
