@@ -53,7 +53,7 @@
     "deny": [],
     "ask": []
   },
-  "model": "sonnet",
+  "model": "fable",
   "hooks": {
     "Notification": [
       {
@@ -188,7 +188,8 @@
     "lua-lsp@claude-plugins-official": true,
     "plannotator@plannotator": true,
     "rust-analyzer-lsp@claude-plugins-official": true,
-    "typescript-lsp@claude-plugins-official": true
+    "typescript-lsp@claude-plugins-official": true,
+    "storybook@storybook": true
   },
   "extraKnownMarketplaces": {
     "impeccable": {
@@ -208,6 +209,13 @@
         "source": "github",
         "repo": "readwiseio/readwise-skills"
       }
+    },
+    "storybook": {
+      "source": {
+        "source": "github",
+        "repo": "storybookjs/mcp",
+        "ref": "main"
+      }
     }
   },
   "alwaysThinkingEnabled": false,
@@ -219,7 +227,7 @@
     "mode": "hold"
   },
   "autoDreamEnabled": true,
-  "theme": "light",
+  "theme": "dark-ansi",
   "editorMode": "vim",
   "agentPushNotifEnabled": true,
   "skipAutoPermissionPrompt": true,
