@@ -30,12 +30,12 @@ Edit.later(function()
 				hunk_textobject = "ih",
 				show_help = "g?",
 				align_move = "gm",
-				toggle_layout = "l",
 			},
 			explorer = {
 				select = "<CR>",
 				hover = "K",
 				refresh = "R",
+				toggle_layout = "t",
 				open_in_prev_tab = "gf",
 				toggle_view_mode = "i",
 				toggle_stage = "s",
