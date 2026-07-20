@@ -205,11 +205,9 @@ dots_stage_theme() {
     local theme_files=(
         "common/.config/ghostty/config"
         "common/.config/lazygit/config.yml"
-        "common/.config/nvim/lua/config.lua"
-        "common/.config/nvim-edit/plugin/50_specs/black_atom/nvim.lua"
+        "common/.config/nvim/plugin/50_specs/black_atom/nvim.lua"
         "common/.config/tmux/tmux.conf"
         "common/.config/zed/settings.json"
-        "common/.config/black-atom/helm/config.yml"
         "arch/.config/waybar/theme.css"
         "arch/.config/niri/theme.kdl"
     )
@@ -227,8 +225,12 @@ dots_stage_theme() {
         return 1
     fi
 
-    (cd "$repo_path" && git add "${theme_files[@]}")
-    log_okay "Theme changes staged"
+    if (cd "$repo_path" && git add "${theme_files[@]}"); then
+        log_okay "Theme changes staged"
+    else
+        log_fail "Failed to stage theme changes"
+        return 1
+    fi
 }
 
 # Clean orphaned and stale nvim sessions.
@@ -341,7 +343,6 @@ dots_stage_pi() {
     local repo_path="$1"
     local pi_sessions_dir="$repo_path/common/.pi/agent/sessions"
     local pi_paths=(
-        "common/.pi/agent/sessions/"
         "common/.pi/agent/settings.json"
     )
 
@@ -586,7 +587,7 @@ dots_stage_gitconfig_delta() {
 
 dots_stage_helm_config() {
     local repo_path="$1"
-    local helm_config="common/.config/helm/config.yml"
+    local helm_config="common/.config/black-atom/helm/config.yml"
 
     if [[ -z $(git -C "$repo_path" status --porcelain "$helm_config" 2>/dev/null) ]]; then
         echo "No helm config changes to commit"
