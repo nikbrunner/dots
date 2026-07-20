@@ -40,6 +40,7 @@
 ~/repos/nikbrunner/dots
 ~/repos/nikbrunner/fff-snacks.nvim
 ~/repos/nikbrunner/fonts
+~/repos/nikbrunner/herdr
 ~/repos/nikbrunner/imf-notes
 ~/repos/nikbrunner/imfusion-coding-assignment
 ~/repos/nikbrunner/koyo
