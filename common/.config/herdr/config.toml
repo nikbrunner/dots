@@ -65,7 +65,7 @@ rename_workspace = "alt+shift+n"
 
 new_worktree = "alt+ctrl+n"
 open_worktree = "alt+ctrl+o"
-delete_worktree_checkout = "alt+ctrl+d"
+remove_worktree = "alt+ctrl+d"
 
 previous_agent = "alt+ctrl+k"
 next_agent = "alt+ctrl+j"
