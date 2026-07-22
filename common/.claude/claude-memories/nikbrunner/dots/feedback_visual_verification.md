@@ -13,4 +13,4 @@ For UI changes, "tests pass, build succeeds, lint clean" is NOT sufficient verif
 - For any task involving visual output (TUI, web UI, terminal rendering), verification MUST include: build → launch → screenshot/screencapture → Read the image to inspect
 - Subagent prompts for UI work must explicitly include visual verification steps
 - Don't trust "it looks good" claims from subagents for visual work — always capture and inspect
-- Load `dev:visual-companion` or use `screencapture -w` / `agent-browser screenshot` as part of the verification loop
+- Load `dev-illustrator` (sideshow-based) or use `screencapture -w` / `agent-browser screenshot` as part of the verification loop

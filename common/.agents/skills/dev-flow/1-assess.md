@@ -23,7 +23,7 @@ Based on my prompt, explore the codebase, gather context, and try to make an ear
 - **Trivial/Small without PRD** — If I confirm a trivial or small scope that doesn't need a PRD, skip straight to [Phase 3 - Implement](./3-implement.md).
 - **If scope is unclear**, ask clarifying questions.
 - For **medium** and **large** tasks, please use the [interview](./guides/interview.md) to nail down the scope and requirements.
-- If provided helpful during assessment, you can also suggest using the `dev:util:visual-companion` skill to help with visualization.
+- If helpful during assessment, you can also suggest using the `dev-illustrator` skill to help with visualization.
 
 ## Write a PRD
 

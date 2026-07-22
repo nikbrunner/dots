@@ -12,7 +12,7 @@ For GitHub issues, invoke the `about:gh-cli` skill use the CLI correctly.
 
 ## Finalizing the plan
 
-If needed, use the `[interview](./guides/interview.md)` and the `dev:util:visual-companion` skill to finalize the plan.
+If needed, use the `[interview](./guides/interview.md)` and the `dev-illustrator` skill to finalize the plan.
 
 Also look out for `dev:style:*` skills that can and should be applied to the plan.
 

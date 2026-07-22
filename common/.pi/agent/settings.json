@@ -12,7 +12,8 @@
     "npm:pi-terminal-theme",
     "npm:pi-image-subagent",
     "npm:pi-mcp-adapter",
-    "npm:pi-subagents"
+    "npm:pi-subagents",
+    "npm:sideshow"
   ],
   "defaultProvider": "opencode-go",
   "defaultModel": "kimi-k3",

@@ -23,7 +23,7 @@ common/.claude/
     ├── dev-flow/              # 1 skill, 5 sub-docs: assess, plan, implement, review, close
     ├── dev-audit/             # 1 skill, 4 sub-docs: ui, style, arch, docs
     ├── dev-style-*/           # 6 coding convention skills (react, typescript, css, tanstack, tdd, state)
-    ├── dev-util-*/            # 2 standalone tools (browser, visual-companion)
+    ├── dev-util-*/            # standalone tools (browser); visual-companion retired 2026-07-22 → dev-illustrator (sideshow-based)
     ├── dev-setup-*/           # 7 bootstrapping (claude, project, skill, pre-commit, dep-upgrade, release-please, glossary)
     ├── about-*/               # 8 knowledge skills
     ├── bai-*/                 # 6 BAI GitHub issue tools + bai-create-project
@@ -72,7 +72,7 @@ common/.claude/
 ### Completed Projects
 
 - [Skills enforcement refactor](project_skills_enforcement_refactor.md) — Done 2026-03-26, merged to main
-- [Visual companion](project_visual_companion.md) — Fully implemented, v2 layout done
+- [Visual companion](project_visual_companion.md) — Retired 2026-07-22, replaced by sideshow-based dev-illustrator
 
 ### Reference
 
