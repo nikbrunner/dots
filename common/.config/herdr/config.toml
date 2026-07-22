@@ -4,29 +4,66 @@ onboarding = false
 # https://herdr.dev/plugins/
 
 [theme]
-name = "terminal"
+# name = "terminal"
+# name = "catppuccin-latte"
 
 [theme.custom]
-accent = "yellow"
+accent = "#c67b36"   # accents.a10 (darkYellow)
+panel_bg = "#eee4cf" # ui.bg.panel
+# surface_dim draws the sidebar separator + section divider (and the
+# scrollbar track) — must sit below bg but above overlay0's darkness.
+surface_dim = "#d6cdb4"
+surface0 = "#e4dec8"    # ui.bg.active
+surface1 = "#d6cdb4"    # step below l10 (hand-derived, not in core)
+# overlay0 doubles as the unfocused pane-border color (herdr has no
+# dedicated border token; focused borders/popups use accent).
+overlay0 = "#798940" # primaries.m30
+overlay1 = "#506e2c" # primaries.m20
+text = "#00280f"     # ui.fg.default
+subtext0 = "#26541c" # ui.fg.subtle
+red = "#ac6e59"
+green = "#768c00"
+yellow = "#a19021"
+blue = "#5a8f65"
+teal = "#459178"
+mauve = "#b67c8d"    # palette.magenta
+peach = "#c67b36"    # palette.darkYellow
 
 [ui.toast]
 delivery = "herdr"
 
 [ui]
-accent = "yellow"
-agent_panel_sort = "spaces"
+agent_panel_sort = "priority"
 show_agent_labels_on_pane_borders = true
 prompt_new_tab_name = false
 hide_tab_bar_when_single_tab = true
 
 # https://herdr.dev/docs/configuration/#sidebar-row-layouts
 [ui.sidebar.agents]
-row_gap = 1
-rows = [["state_icon", "workspace", "tab"], ["agent"]]
+row_gap = 0
+rows = [
+  [
+    "state_icon",
+    "workspace",
+    "agent",
+  ],
+  [
+    { token = "terminal_title_stripped", dim = true },
+  ],
+]
 
 [ui.sidebar.spaces]
-row_gap = 1
-rows = [["state_icon", "workspace"], ["branch", "git_status"]]
+row_gap = 0
+rows = [
+  [
+    "state_icon",
+    { token = "workspace", bold = true },
+  ],
+  [
+    "branch",
+    "git_status",
+  ],
+]
 
 
 [session]
@@ -135,6 +172,12 @@ key = "alt+shift+h"
 type = "pane"
 command = "hunk diff"
 description = "Open Hunk"
+
+[[keys.command]]
+key = "ctrl+shift+t"
+type = "pane"
+command = "tuxedo"
+description = "Open Tasks"
 
 # https://github.com/thanhdat77/herdr-picker-plus
 [[keys.command]]
