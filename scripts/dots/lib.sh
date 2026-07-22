@@ -574,6 +574,19 @@ dots_stage_helm_config() {
     log_okay "Helm config changes staged"
 }
 
+dots_stage_claude_settings() {
+    local repo_path="$1"
+    local claude_settings="common/.claude/settings.json"
+
+    if [[ -z $(git -C "$repo_path" status --porcelain "$claude_settings" 2>/dev/null) ]]; then
+        echo "No claude settings changes to commit"
+        return 1
+    fi
+
+    (cd "$repo_path" && git add "$claude_settings")
+    log_okay "Claude settings changes staged"
+}
+
 dots_stage_claude_memories() {
     local repo_path="$1"
     local memories_dir="$repo_path/common/.claude/claude-memories"

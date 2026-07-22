@@ -546,64 +546,27 @@ cmd_chores() {
 
 	local topics_changed=()
 
-	# Theme and font changes
-	if dots_stage_theme "$DOTS_DIR"; then
-		topics_changed+=("themes")
-	fi
-	echo ""
+	# stager function → topic label (order matters for output)
+	local -A stagers=(
+		[dots_stage_theme]="themes"
+		[dots_stage_sessions]="sessions"
+		[dots_stage_pi]="pi"
+		[dots_stage_radar]="radar"
+		[dots_stage_lazy_lock]="lazy-lock"
+		[dots_stage_bookmarks]="bookmarks"
+		[dots_stage_gitconfig]="gitconfig"
+		[dots_stage_gitconfig_delta]="gitconfig.delta"
+		[dots_stage_helm_config]="helm"
+		[dots_stage_claude_settings]="claude-settings"
+		[dots_stage_claude_memories]="claude-memories"
+	)
 
-	# Session changes (includes cleanup of old sessions)
-	if dots_stage_sessions "$DOTS_DIR"; then
-		topics_changed+=("sessions")
-	fi
-	echo ""
-
-	# Pi changes (sessions, exa usage, agent settings)
-	if dots_stage_pi "$DOTS_DIR"; then
-		topics_changed+=("pi")
-	fi
-	echo ""
-
-	# Radar changes
-	if dots_stage_radar "$DOTS_DIR"; then
-		topics_changed+=("radar")
-	fi
-	echo ""
-
-	# Lazy-lock changes
-	if dots_stage_lazy_lock "$DOTS_DIR"; then
-		topics_changed+=("lazy-lock")
-	fi
-	echo ""
-
-	# Bookmarks changes
-	if dots_stage_bookmarks "$DOTS_DIR"; then
-		topics_changed+=("bookmarks")
-	fi
-	echo ""
-
-	# Gitconfig changes
-	if dots_stage_gitconfig "$DOTS_DIR"; then
-		topics_changed+=("gitconfig")
-	fi
-	echo ""
-
-	# Gitconfig delta changes
-	if dots_stage_gitconfig_delta "$DOTS_DIR"; then
-		topics_changed+=("gitconfig.delta")
-	fi
-	echo ""
-
-	# Helm config changes
-	if dots_stage_helm_config "$DOTS_DIR"; then
-		topics_changed+=("helm")
-	fi
-	echo ""
-
-	# Claude Code memory snapshots
-	if dots_stage_claude_memories "$DOTS_DIR"; then
-		topics_changed+=("claude-memories")
-	fi
+	for stager in "${!stagers[@]}"; do
+		if $stager "$DOTS_DIR"; then
+			topics_changed+=("${stagers[$stager]}")
+		fi
+		echo ""
+	done
 
 	# Summary
 	echo ""
@@ -630,13 +593,13 @@ cmd_chores() {
 		log_warn "Remaining uncommitted changes:"
 		git status --short
 
-		if ! _inside_lazygit; then
+		if ! _inside_lazygit && [[ -z "$PI_CODING_AGENT" && -z "$CLAUDE_VERSION" ]]; then
 			echo -n "Open LazyGit? (y/N) "
 			read -r open_lazygit_choice
 			if [[ "$open_lazygit_choice" == "y" || "$open_lazygit_choice" == "Y" ]]; then
 				lazygit
 			fi
-		else
+		elif _inside_lazygit; then
 			echo ""
 			log_info "Skipping LazyGit prompt (already inside LazyGit)"
 		fi
