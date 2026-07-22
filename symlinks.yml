@@ -8,7 +8,7 @@ common:
   # a wildcard-expanded target, not a single dots-repo source, so it
   # can't be listed as a second target above without re-triggering it.
   common/.pi: ~/.pi
-  common/.agents/AGENTS.md: [~/.claude/CLAUDE.md, ~/.claude-work/CLAUDE.md]
+  common/.agents/AGENTS.md: [~/.claude/CLAUDE.md, ~/.claude-work/CLAUDE.md, ~/.pi/agent/AGENTS.md]
   common/.agents/agents: [~/.claude/agents, ~/.claude-work/agents]
   common/.claude/settings.json: [~/.claude/settings.json, ~/.claude-work/settings.json]
   common/.agents/skills: [~/.claude/skills, ~/.claude-work/skills]

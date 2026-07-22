@@ -37,6 +37,7 @@ The `symlinks.yml` file defines all symlinks with OS-specific sections:
 - **Processing order**: `common` section loads first, then platform-specific section
 - **Wildcard patterns**: `"common/.local/bin/*": "~/.local/bin"` links individual files
 - **Backups**: Existing files are backed up as `.<name>.backup.YYYYMMDD_HHMMSS`
+- **Repo-internal targets**: When a target's directory resolves into the repo itself (e.g. `~/.pi/agent` via the `common/.pi: ~/.pi` dir-link), the link is created repo-relative so it stays portable when committed
 
 ### Managing Configurations
 

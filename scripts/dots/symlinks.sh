@@ -27,6 +27,43 @@ _sudoexec() {
     fi
 }
 
+# Helper: compute a relative path from one absolute directory to an absolute path
+# Usage: _relative_path <from_dir> <to_path>
+_relative_path() {
+    local from="$1"
+    local to="$2"
+    local common="$from"
+    local ups=""
+
+    while [[ "$to" != "$common/"* ]]; do
+        common="${common%/*}"
+        ups="../$ups"
+    done
+
+    printf '%s%s\n' "$ups" "${to#"$common"/}"
+}
+
+# Helper: print the canonical link text for a symlink at abs_target pointing to
+# abs_source. When the link physically lives inside the dots repo (its parent
+# directory resolves through another symlink into dots_dir, e.g. ~/.pi ->
+# common/.pi), the link text is repo-relative so the committed link stays
+# portable across machines with different absolute paths.
+# Usage: _canonical_link_text <abs_source> <abs_target> <resolved_dots_dir>
+_canonical_link_text() {
+    local abs_source="$1"
+    local abs_target="$2"
+    local resolved_dots_dir="$3"
+
+    local resolved_target_dir
+    resolved_target_dir="$(cd "$(dirname "$abs_target")" 2>/dev/null && pwd -P)"
+
+    if [[ -n "$resolved_target_dir" && "$resolved_target_dir" == "$resolved_dots_dir"/* ]]; then
+        _relative_path "$resolved_target_dir" "$abs_source"
+    else
+        printf '%s\n' "$abs_source"
+    fi
+}
+
 # Function to process symlinks configuration with common + OS-specific sections
 # Usage: process_symlinks_entries <symlinks_file> <current_os>
 # Returns: prints "source_path|target_path" pairs for all entries
@@ -147,6 +184,8 @@ create_symlinks_from_config() {
 
     local dots_dir
     dots_dir="$(dirname "$symlinks_file")"
+    local resolved_dots_dir
+    resolved_dots_dir="$(cd "$dots_dir" && pwd -P)"
 
     # Initialize counters
     local total_links=0
@@ -227,12 +266,15 @@ create_symlinks_from_config() {
             continue
         fi
 
+        local expected_text
+        expected_text="$(_canonical_link_text "$abs_source" "$abs_target" "$resolved_dots_dir")"
+
         if [[ "$dry_run" == true ]]; then
             # Dry run mode - just show what would happen
             if [[ -L "$abs_target" ]]; then
                 local current_target
                 current_target=$(readlink "$abs_target" 2>/dev/null)
-                if [[ "$current_target" == "$abs_source" ]]; then
+                if [[ "$current_target" == "$expected_text" ]]; then
                     valid_links=$((valid_links + 1))
                     [[ "$verbose" == true ]] && echo "✓ [DRY] Symlink OK: $target_path"
                 else
@@ -257,13 +299,13 @@ create_symlinks_from_config() {
                 # Target is already a symlink
                 local current_target
                 current_target=$(readlink "$abs_target" 2>/dev/null)
-                if [[ "$current_target" == "$abs_source" ]]; then
+                if [[ "$current_target" == "$expected_text" ]]; then
                     valid_links=$((valid_links + 1))
                     [[ "$verbose" == true ]] && echo "✓ Symlink OK: $target_path"
                 else
                     # Update symlink
                     _sudoexec "$abs_target" rm "$abs_target"
-                    _sudoexec "$abs_target" ln -s "$abs_source" "$abs_target"
+                    _sudoexec "$abs_target" ln -s "$expected_text" "$abs_target"
                     updated_links=$((updated_links + 1))
                     [[ "$quiet" != true ]] && echo "⚠ Updated: $target_path"
                 fi
@@ -278,12 +320,12 @@ create_symlinks_from_config() {
                     [[ "$verbose" == true ]] && echo "⚠ Backing up: $target_path -> $(basename "$backup_name")"
                     _sudoexec "$abs_target" mv "$abs_target" "$backup_name"
                 fi
-                _sudoexec "$abs_target" ln -s "$abs_source" "$abs_target"
+                _sudoexec "$abs_target" ln -s "$expected_text" "$abs_target"
                 created_links=$((created_links + 1))
                 [[ "$quiet" != true ]] && echo "+ Created: $target_path"
             else
                 # Target doesn't exist
-                _sudoexec "$abs_target" ln -s "$abs_source" "$abs_target"
+                _sudoexec "$abs_target" ln -s "$expected_text" "$abs_target"
                 created_links=$((created_links + 1))
                 [[ "$quiet" != true ]] && echo "+ Created: $target_path"
             fi
@@ -336,6 +378,8 @@ cleanup_broken_symlinks_from_config() {
 
     local dots_dir
     dots_dir="$(dirname "$symlinks_file")"
+    local resolved_dots_dir
+    resolved_dots_dir="$(cd "$dots_dir" && pwd -P)"
 
     local broken_count=0
 
@@ -363,7 +407,9 @@ cleanup_broken_symlinks_from_config() {
             current_target=$(readlink "$abs_target" 2>/dev/null)
 
             # Check if symlink is broken or points to wrong target
-            if [[ "$current_target" != "$abs_source" ]] || [[ ! -e "$abs_source" ]]; then
+            local expected_text
+            expected_text="$(_canonical_link_text "$abs_source" "$abs_target" "$resolved_dots_dir")"
+            if [[ "$current_target" != "$expected_text" ]] || [[ ! -e "$abs_source" ]]; then
                 if [[ "$dry_run" == true ]]; then
                     [[ "$verbose" == true ]] && echo "✗ [DRY] Would remove broken symlink: $abs_target"
                 else
@@ -407,6 +453,8 @@ check_symlinks_from_config() {
 
     local dots_dir
     dots_dir="$(dirname "$symlinks_file")"
+    local resolved_dots_dir
+    resolved_dots_dir="$(cd "$dots_dir" && pwd -P)"
 
     local total_links=0
     local valid_links=0
@@ -437,12 +485,14 @@ check_symlinks_from_config() {
         if [[ -L "$abs_target" ]]; then
             local current_target
             current_target=$(readlink "$abs_target" 2>/dev/null)
-            if [[ "$current_target" == "$abs_source" ]]; then
+            local expected_text
+            expected_text="$(_canonical_link_text "$abs_source" "$abs_target" "$resolved_dots_dir")"
+            if [[ "$current_target" == "$expected_text" ]]; then
                 valid_links=$((valid_links + 1))
                 [[ "$verbose" == true ]] && echo "✓ $target_path"
             else
                 wrong_target_links=$((wrong_target_links + 1))
-                [[ "$verbose" == true ]] && echo "⚠ Wrong target: $target_path -> $current_target (expected: $abs_source)"
+                [[ "$verbose" == true ]] && echo "⚠ Wrong target: $target_path -> $current_target (expected: $expected_text)"
             fi
 
             if [[ ! -e "$abs_target" ]]; then
