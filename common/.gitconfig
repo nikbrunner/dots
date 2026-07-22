@@ -12,7 +12,7 @@
 
 [core]
   editor = nvim
-	pager = hunk pager
+  pager = hunk pager
 
 [merge]
   tool = vscode
@@ -21,37 +21,37 @@
 [pull]
   rebase = true
 
-[mergetool "vscode"]
-  cmd = code --wait $MERGED
+; [mergetool "vscode"]
+;   cmd = code --wait $MERGED
 
 [rebase]
   autosquash = true
   updateRefs = true
 
 [diff]
-  tool = vscode
+  ; tool = vscode
   colorMoved = default
 
 [push]
   autoSetupRemote = true
 
-[difftool "vscode"]
-  cmd = code --wait --diff $LOCAL $REMOTE
+; [difftool "vscode"]
+;   cmd = code --wait --diff $LOCAL $REMOTE
 
-[include]
-  path = ~/.gitconfig.delta
-
+; [include]
+;   path = ~/.gitconfig.delta
+;
 [includeIf "gitdir:~/repos/imfusion/"]
   path = ~/.gitconfig.work
 
-[pager]
-  diff = delta
-  log = delta
-  reflog = delta
-  show = delta
+; [pager]
+;   diff = delta
+;   log = delta
+;   reflog = delta
+;   show = delta
 
-[interactive]
-  diffFilter = delta --color-only
+; [interactive]
+;   diffFilter = delta --color-only
 
 [alias]
   ship = !shiplog commit -sy

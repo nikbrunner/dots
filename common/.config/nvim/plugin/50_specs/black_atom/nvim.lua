@@ -22,5 +22,5 @@ Edit.now(function()
 		},
 	})
 
-	vim.cmd.colorscheme("black-atom-jpn-murasaki-yoru")
+	vim.cmd.colorscheme("black-atom-terra-summer-day")
 end)
