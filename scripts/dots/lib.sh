@@ -409,30 +409,6 @@ dots_stage_radar() {
     log_okay "Radar changes staged"
 }
 
-dots_stage_font() {
-    local repo_path="$1"
-    local ghostty_file="common/.config/ghostty/config"
-
-    # Check if ghostty config has changes
-    if [[ -z $(git -C "$repo_path" status --porcelain "$ghostty_file" 2>/dev/null) ]]; then
-        echo "No font changes to commit"
-        return 1
-    fi
-
-    # Check if ONLY font-family line changed (not theme or other settings)
-    local diff_lines
-    diff_lines=$(git -C "$repo_path" diff "$ghostty_file" 2>/dev/null | grep '^[+-]' | grep -v '^[+-][+-][+-]' | grep -v '^[+-]$' || true)
-
-    # If changes include non-font lines, skip (let theme staging handle it)
-    if echo "$diff_lines" | grep -qv 'font-'; then
-        echo "Ghostty has non-font changes, skipping font staging"
-        return 1
-    fi
-
-    (cd "$repo_path" && git add "$ghostty_file")
-    log_okay "Font changes staged"
-}
-
 dots_stage_lazy_lock() {
     local repo_path="$1"
     local lazy_lock_file="common/.config/nvim/lazy-lock.json"

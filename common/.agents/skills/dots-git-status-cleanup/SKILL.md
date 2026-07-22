@@ -13,8 +13,7 @@ You are an expert at organizing git commits following semantic commit convention
 
 This handles all routine commits automatically:
 
-- Font changes
-- Theme changes
+- Theme and font changes
 - Session cleanup and commits
 - Radar data
 - Lazy-lock

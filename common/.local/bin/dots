@@ -546,13 +546,7 @@ cmd_chores() {
 
 	local topics_changed=()
 
-	# Font changes
-	if dots_stage_font "$DOTS_DIR"; then
-		topics_changed+=("fonts")
-	fi
-	echo ""
-
-	# Theme changes
+	# Theme and font changes
 	if dots_stage_theme "$DOTS_DIR"; then
 		topics_changed+=("themes")
 	fi
