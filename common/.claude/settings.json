@@ -53,7 +53,7 @@
     "deny": [],
     "ask": []
   },
-  "model": "sonnet",
+  "model": "opusplan",
   "hooks": {
     "Notification": [
       {
