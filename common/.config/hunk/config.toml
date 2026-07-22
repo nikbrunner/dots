@@ -1,0 +1,13 @@
+# https://github.com/modem-dev/hunk
+
+# "auto" probes the terminal background via OSC 11 and picks
+# github-light-default above 0.5 relative luminance, github-dark-default
+# below. It follows the terminal's colors, not the OS appearance setting.
+theme = "auto"
+
+mode = "auto"
+vcs = "git"
+line_numbers = true
+wrap_lines = false
+menu_bar = true
+agent_notes = false
