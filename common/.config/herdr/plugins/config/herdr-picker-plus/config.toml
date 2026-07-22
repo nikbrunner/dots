@@ -73,7 +73,7 @@ inherit_herdr = true
 # Keep roots short; zoxide should handle most frequent directories.
 [[roots]]
 path = "~/repos"
-max_depth = 3
+max_depth = 4
 
 # Optional agent aliases. All match fields are optional and matched as text contains.
 # Aliases become extra search terms for matching agent panes.
