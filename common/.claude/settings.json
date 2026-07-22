@@ -53,7 +53,7 @@
     "deny": [],
     "ask": []
   },
-  "model": "opus",
+  "model": "sonnet",
   "hooks": {
     "Notification": [
       {
@@ -189,7 +189,8 @@
     "plannotator@plannotator": true,
     "rust-analyzer-lsp@claude-plugins-official": true,
     "typescript-lsp@claude-plugins-official": true,
-    "storybook@storybook": true
+    "storybook@storybook": true,
+    "sideshow@sideshow": true
   },
   "extraKnownMarketplaces": {
     "impeccable": {
@@ -215,6 +216,12 @@
         "source": "github",
         "repo": "storybookjs/mcp",
         "ref": "main"
+      }
+    },
+    "sideshow": {
+      "source": {
+        "source": "github",
+        "repo": "modem-dev/sideshow"
       }
     }
   },
