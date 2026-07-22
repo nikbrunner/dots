@@ -14,8 +14,8 @@
     "npm:pi-mcp-adapter",
     "npm:pi-subagents"
   ],
-  "defaultProvider": "openrouter",
-  "defaultModel": "z-ai/glm-5.2",
+  "defaultProvider": "opencode-go",
+  "defaultModel": "kimi-k3",
   "enabledModels": [
     "openrouter/minimax/minimax-m2.7",
     "openrouter/z-ai/glm-5.1",
@@ -28,9 +28,9 @@
     "opencode-go/glm-5.2",
     "openrouter/z-ai/glm-5.2"
   ],
-  "hideThinkingBlock": false,
+  "hideThinkingBlock": true,
   "compaction": {
     "enabled": false
   },
-  "defaultThinkingLevel": "medium"
+  "defaultThinkingLevel": "max"
 }
