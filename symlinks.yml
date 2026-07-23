@@ -8,9 +8,11 @@ common:
   # a wildcard-expanded target, not a single dots-repo source, so it
   # can't be listed as a second target above without re-triggering it.
   common/.pi: ~/.pi
-  common/.agents/AGENTS.md: [~/.claude/CLAUDE.md, ~/.claude-work/CLAUDE.md, ~/.pi/agent/AGENTS.md]
+  common/.agents/AGENTS.md:
+    [~/.claude/CLAUDE.md, ~/.claude-work/CLAUDE.md, ~/.pi/agent/AGENTS.md]
   common/.agents/agents: [~/.claude/agents, ~/.claude-work/agents]
-  common/.claude/settings.json: [~/.claude/settings.json, ~/.claude-work/settings.json]
+  common/.claude/settings.json:
+    [~/.claude/settings.json, ~/.claude-work/settings.json]
   common/.agents/skills: [~/.claude/skills, ~/.claude-work/skills]
   common/.agents: ~/.agents
   "common/.claude/hooks/enforce/*": ~/.claude/hooks/enforce
@@ -42,10 +44,7 @@ common:
   common/.config/tmux: ~/.config/tmux
 
   # Herdr ===================================================================
-  common/.config/herdr/config.toml: ~/.config/herdr/config.toml
-
-  common/.config/herdr/plugins.json: ~/.config/herdr/plugins.json
-  common/.config/herdr/plugins: ~/.config/herdr/plugins
+  common/.config/herdr: ~/.config/herdr
 
   # Theming =================================================================
   "common/.config/black-atom/*": ~/.config/black-atom

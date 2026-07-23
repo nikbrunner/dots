@@ -1,0 +1,5 @@
+{
+  "version": "0.7.5-preview.2026-07-21-0f10e1453a7f",
+  "body": "Preview build 2026-07-21-0f10e1453a7f\n\nBuilt from `0f10e1453a7f` on `master`.\nBase stable: v0.7.5\nCompare: https://github.com/ogulcancelik/herdr/compare/v0.7.5...0f10e1453a7f9fda357352bb65ce17fa26fda447\n\n### Fixed\n- Add agent automation to docs sidebar",
+  "show_on_startup": true
+}

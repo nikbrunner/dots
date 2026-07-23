@@ -1,0 +1,33 @@
+{
+  "version": 3,
+  "workspaces": [
+    {
+      "tabs": [
+        {
+          "panes": {
+            "1": {
+              "ansi": "~/repos/nikbrunner/dots \u001b[0m\u001b[38;5;2mmain\u001b[0m\r\n\u001b[0m\u001b[38;5;3m$\u001b[0m ",
+              "lines": 2
+            }
+          }
+        },
+        {
+          "panes": {
+            "2": {
+              "ansi": "~/repos/nikbrunner/dots \u001b[0m\u001b[38;5;2mmain\u001b[0m\r\n\u001b[0m\u001b[38;5;3m$\u001b[0m \u001b[0m\u001b[1m\u001b[7m%\u001b[0m                                                                                                                                                                                                    ~/repos/nikbrunner/dots \u001b[0m\u001b[38;5;2mmain\u001b[0m\r\n\u001b[0m\u001b[38;5;3m$\u001b[0m ",
+              "lines": 3
+            }
+          }
+        },
+        {
+          "panes": {
+            "3": {
+              "ansi": "~/repos/nikbrunner/dots \u001b[0m\u001b[38;5;2mmain\u001b[0m\r\n\u001b[0m\u001b[38;5;3m$\u001b[0m ",
+              "lines": 2
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

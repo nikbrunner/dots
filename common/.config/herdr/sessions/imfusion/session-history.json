@@ -1,0 +1,161 @@
+{
+  "version": 3,
+  "workspaces": [
+    {
+      "tabs": [
+        {
+          "panes": {
+            "1": {
+              "ansi": "~/repos/nikbrunner/imf-notes \u001b[0m\u001b[38;5;2mmain\u001b[0m\r\n\u001b[0m\u001b[38;5;3m$\u001b[0m ",
+              "lines": 2
+            }
+          }
+        },
+        {
+          "panes": {
+            "2": {
+              "ansi": "~/repos/nikbrunner/imf-notes \u001b[0m\u001b[38;5;2mmain\u001b[0m\r\n\u001b[0m\u001b[38;5;3m$\u001b[0m \u001b[0m\u001b[1m\u001b[7m%\u001b[0m                                                                                                                                                                               ~/repos/nikbrunner/imf-notes \u001b[0m\u001b[38;5;2mmain\u001b[0m\r\n\u001b[0m\u001b[38;5;3m$\u001b[0m ",
+              "lines": 3
+            }
+          }
+        }
+      ]
+    },
+    {
+      "tabs": [
+        {
+          "panes": {
+            "14": {
+              "ansi": "~/repos/imfusion/brunner/agents \u001b[0m\u001b[38;5;2mmaster\u001b[0m\r\n~/repos/imfusion/brunner/agents \u001b[0m\u001b[38;5;2mmaster\u001b[0m\r\n\u001b[0m\u001b[38;5;3m$\u001b[0m \u001b[0m\u001b[38;5;2mclear\u001b[0m\u001b[1m\u001b[7m%\u001b[0m                                                                                                                                                                          ~/repos/imfusion/brunner/agents \u001b[0m\u001b[38;5;2mmaster\u001b[0m\r\n\u001b[0m\u001b[38;5;3m$\u001b[0m ",
+              "lines": 4
+            }
+          }
+        },
+        {
+          "panes": {
+            "15": {
+              "ansi": "~/repos/imfusion/brunner/agents \u001b[0m\u001b[38;5;2mmaster\u001b[0m\r\n~/repos/imfusion/brunner/agents \u001b[0m\u001b[38;5;2mmaster\u001b[0m\r\n\u001b[0m\u001b[38;5;3m$\u001b[0m \u001b[0m\u001b[1m\u001b[7m%\u001b[0m                                                                                                                                                                               ~/repos/imfusion/brunner/agents \u001b[0m\u001b[38;5;2mmaster\u001b[0m\r\n\u001b[0m\u001b[38;5;3m$\u001b[0m ",
+              "lines": 4
+            }
+          }
+        }
+      ]
+    },
+    {
+      "tabs": [
+        {
+          "panes": {
+            "3": {
+              "ansi": "~/repos/imfusion/websdk/web-ui \u001b[0m\u001b[38;5;2mmaster\u001b[0m\r\n\u001b[0m\u001b[38;5;3m$\u001b[0m \u001b[0m\u001b[1m\u001b[7m%\u001b[0m                                                                                                                                                                               ~/repos/imfusion/websdk/web-ui \u001b[0m\u001b[38;5;2mmaster\u001b[0m\r\n\u001b[0m\u001b[38;5;3m$\u001b[0m ",
+              "lines": 3
+            }
+          }
+        },
+        {
+          "panes": {
+            "4": {
+              "ansi": "~/repos/imfusion/websdk/web-ui \u001b[0m\u001b[38;5;2mmaster\u001b[0m\r\n\u001b[0m\u001b[38;5;3m$\u001b[0m ",
+              "lines": 2
+            }
+          }
+        },
+        {
+          "panes": {
+            "5": {
+              "ansi": "~/repos/imfusion/websdk/web-ui \u001b[0m\u001b[38;5;2mmaster\u001b[0m\r\n\u001b[0m\u001b[38;5;3m$\u001b[0m \u001b[0m\u001b[1m\u001b[7m%\u001b[0m                                                                                                                                                                               ~/repos/imfusion/websdk/web-ui \u001b[0m\u001b[38;5;2mmaster\u001b[0m\r\n\u001b[0m\u001b[38;5;3m$\u001b[0m ",
+              "lines": 3
+            }
+          }
+        }
+      ]
+    },
+    {
+      "tabs": [
+        {
+          "panes": {
+            "13": {
+              "ansi": "~/repos/imfusion/websdk/web-sdk \u001b[0m\u001b[38;5;2mmaster\u001b[0m\r\n\u001b[0m\u001b[38;5;3m$\u001b[0m \u001b[0m\u001b[1m\u001b[7m%\u001b[0m                                                                                                                                                                               ~/repos/imfusion/websdk/web-sdk \u001b[0m\u001b[38;5;2mmaster\u001b[0m\r\n\u001b[0m\u001b[38;5;3m$\u001b[0m ",
+              "lines": 3
+            }
+          }
+        }
+      ]
+    },
+    {
+      "tabs": [
+        {
+          "panes": {
+            "6": {
+              "ansi": "~/repos/imfusion/cp/imfusion-portal \u001b[0m\u001b[38;5;2mmain\u001b[0m\r\n\u001b[0m\u001b[38;5;3m$\u001b[0m ",
+              "lines": 2
+            }
+          }
+        },
+        {
+          "panes": {
+            "9": {
+              "ansi": "~/repos/imfusion/cp/imfusion-portal \u001b[0m\u001b[38;5;2mmain\u001b[0m\r\n\u001b[0m\u001b[38;5;3m$\u001b[0m ",
+              "lines": 2
+            }
+          }
+        },
+        {
+          "panes": {
+            "10": {
+              "ansi": "~/repos/imfusion/cp/imfusion-portal \u001b[0m\u001b[38;5;2mmain\u001b[0m\r\n\u001b[0m\u001b[38;5;3m$\u001b[0m \u001b[0m\u001b[38;5;2mcd\u001b[0m \u001b[0m\u001b[4mlocal-setup\u001b[0m\r\n~/repos/imfusion/cp/imfusion-portal/local-setup \u001b[0m\u001b[38;5;2mmain\u001b[0m\r\n\u001b[0m\u001b[38;5;3m$\u001b[0m ",
+              "lines": 4
+            }
+          }
+        }
+      ]
+    },
+    {
+      "tabs": [
+        {
+          "panes": {
+            "24": {
+              "ansi": "~/repos/imfusion/cp/keycloak \u001b[0m\u001b[38;5;2mmain\u001b[0m\r\n\u001b[0m\u001b[38;5;3m$\u001b[0m \u001b[0m\u001b[1m\u001b[7m%\u001b[0m                                                                                                                                                                               ~/repos/imfusion/cp/keycloak \u001b[0m\u001b[38;5;2mmain\u001b[0m\r\n\u001b[0m\u001b[38;5;3m$\u001b[0m ",
+              "lines": 3
+            }
+          }
+        }
+      ]
+    },
+    {
+      "tabs": [
+        {
+          "panes": {
+            "26": {
+              "ansi": "~/repos/imfusion/cp/license-server \u001b[0m\u001b[38;5;2mmain\u001b[0m\r\n\u001b[0m\u001b[38;5;3m$\u001b[0m ",
+              "lines": 2
+            }
+          }
+        }
+      ]
+    },
+    {
+      "tabs": [
+        {
+          "panes": {
+            "28": {
+              "ansi": "~/repos/imfusion/cp/registration-service \u001b[0m\u001b[38;5;2mmain\u001b[0m\r\n\u001b[0m\u001b[38;5;3m$\u001b[0m ",
+              "lines": 2
+            }
+          }
+        }
+      ]
+    },
+    {
+      "tabs": [
+        {
+          "panes": {
+            "30": {
+              "ansi": "~/repos/imfusion/cp/imfusion-portal-CP-89 \u001b[0m\u001b[38;5;2mCP-89-reimplement-portal-fe\u001b[0m\r\n\u001b[0m\u001b[38;5;3m$\u001b[0m ",
+              "lines": 2
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

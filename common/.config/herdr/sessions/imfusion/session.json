@@ -1,0 +1,404 @@
+{
+  "version": 3,
+  "workspaces": [
+    {
+      "id": "wQ",
+      "custom_name": "[NBR] Notes",
+      "identity_cwd": "/Users/brunner/repos/nikbrunner/imf-notes",
+      "worktree_space": {
+        "key": "/Users/brunner/repos/nikbrunner/imf-notes/.git",
+        "label": "imf-notes",
+        "repo_root": "/Users/brunner/repos/nikbrunner/imf-notes",
+        "checkout_path": "/Users/brunner/repos/nikbrunner/imf-notes",
+        "is_linked_worktree": false
+      },
+      "public_pane_numbers": {
+        "2": 52,
+        "1": 24
+      },
+      "next_public_pane_number": 68,
+      "public_tab_numbers": [
+        3,
+        5
+      ],
+      "next_public_tab_number": 6,
+      "tabs": [
+        {
+          "custom_name": "note",
+          "layout": {
+            "Pane": 1
+          },
+          "panes": {
+            "1": {
+              "cwd": "/Users/brunner/repos/nikbrunner/imf-notes"
+            }
+          },
+          "zoomed": false,
+          "focused": 1,
+          "root_pane": 1
+        },
+        {
+          "custom_name": null,
+          "layout": {
+            "Pane": 2
+          },
+          "panes": {
+            "2": {
+              "cwd": "/Users/brunner/repos/nikbrunner/imf-notes"
+            }
+          },
+          "zoomed": false,
+          "focused": 2,
+          "root_pane": 2
+        }
+      ],
+      "active_tab": 0
+    },
+    {
+      "id": "w11",
+      "custom_name": "[NBR] Agents",
+      "identity_cwd": "/Users/brunner/repos/imfusion/brunner/agents",
+      "public_pane_numbers": {
+        "15": 2,
+        "14": 1
+      },
+      "next_public_pane_number": 13,
+      "public_tab_numbers": [
+        1,
+        2
+      ],
+      "next_public_tab_number": 3,
+      "tabs": [
+        {
+          "custom_name": null,
+          "layout": {
+            "Pane": 14
+          },
+          "panes": {
+            "14": {
+              "cwd": "/Users/brunner/repos/imfusion/brunner/agents"
+            }
+          },
+          "zoomed": false,
+          "focused": 14,
+          "root_pane": 14
+        },
+        {
+          "custom_name": "code",
+          "layout": {
+            "Pane": 15
+          },
+          "panes": {
+            "15": {
+              "cwd": "/Users/brunner/repos/imfusion/brunner/agents"
+            }
+          },
+          "zoomed": false,
+          "focused": 15,
+          "root_pane": 15
+        }
+      ],
+      "active_tab": 0
+    },
+    {
+      "id": "wM",
+      "custom_name": "[WEB] UI",
+      "identity_cwd": "/Users/brunner/repos/imfusion/websdk/web-ui",
+      "worktree_space": {
+        "key": "/Users/brunner/repos/imfusion/websdk/web-ui/.git",
+        "label": "web-ui",
+        "repo_root": "/Users/brunner/repos/imfusion/websdk/web-ui",
+        "checkout_path": "/Users/brunner/repos/imfusion/websdk/web-ui",
+        "is_linked_worktree": false
+      },
+      "public_pane_numbers": {
+        "5": 426,
+        "3": 307,
+        "4": 425
+      },
+      "next_public_pane_number": 430,
+      "public_tab_numbers": [
+        9,
+        14,
+        15
+      ],
+      "next_public_tab_number": 16,
+      "tabs": [
+        {
+          "custom_name": "agent",
+          "layout": {
+            "Pane": 3
+          },
+          "panes": {
+            "3": {
+              "cwd": "/Users/brunner/repos/imfusion/websdk/web-ui"
+            }
+          },
+          "zoomed": false,
+          "focused": 3,
+          "root_pane": 3
+        },
+        {
+          "custom_name": "code",
+          "layout": {
+            "Pane": 4
+          },
+          "panes": {
+            "4": {
+              "cwd": "/Users/brunner/repos/imfusion/websdk/web-ui"
+            }
+          },
+          "zoomed": false,
+          "focused": 4,
+          "root_pane": 4
+        },
+        {
+          "custom_name": "serv",
+          "layout": {
+            "Pane": 5
+          },
+          "panes": {
+            "5": {
+              "cwd": "/Users/brunner/repos/imfusion/websdk/web-ui"
+            }
+          },
+          "zoomed": false,
+          "focused": 5,
+          "root_pane": 5
+        }
+      ],
+      "active_tab": 1
+    },
+    {
+      "id": "w1G",
+      "custom_name": "[WEB] SDK",
+      "identity_cwd": "/Users/brunner/repos/imfusion/websdk/web-sdk",
+      "public_pane_numbers": {
+        "13": 1
+      },
+      "next_public_pane_number": 3,
+      "public_tab_numbers": [
+        1
+      ],
+      "next_public_tab_number": 2,
+      "tabs": [
+        {
+          "custom_name": null,
+          "layout": {
+            "Pane": 13
+          },
+          "panes": {
+            "13": {
+              "cwd": "/Users/brunner/repos/imfusion/websdk/web-sdk"
+            }
+          },
+          "zoomed": false,
+          "focused": 13,
+          "root_pane": 13
+        }
+      ],
+      "active_tab": 0
+    },
+    {
+      "id": "w1J",
+      "custom_name": "[CP] UMP",
+      "identity_cwd": "/Users/brunner/repos/imfusion/cp/imfusion-portal",
+      "worktree_space": {
+        "key": "/Users/brunner/repos/imfusion/cp/imfusion-portal/.git",
+        "label": "imfusion-portal",
+        "repo_root": "/Users/brunner/repos/imfusion/cp/imfusion-portal",
+        "checkout_path": "/Users/brunner/repos/imfusion/cp/imfusion-portal",
+        "is_linked_worktree": false
+      },
+      "public_pane_numbers": {
+        "10": 3,
+        "9": 2,
+        "6": 1
+      },
+      "next_public_pane_number": 10,
+      "public_tab_numbers": [
+        1,
+        2,
+        3
+      ],
+      "next_public_tab_number": 5,
+      "tabs": [
+        {
+          "custom_name": "agent",
+          "layout": {
+            "Pane": 6
+          },
+          "panes": {
+            "6": {
+              "cwd": "/Users/brunner/repos/imfusion/cp/imfusion-portal"
+            }
+          },
+          "zoomed": false,
+          "focused": 6,
+          "root_pane": 6
+        },
+        {
+          "custom_name": "code",
+          "layout": {
+            "Pane": 9
+          },
+          "panes": {
+            "9": {
+              "cwd": "/Users/brunner/repos/imfusion/cp/imfusion-portal"
+            }
+          },
+          "zoomed": false,
+          "focused": 9,
+          "root_pane": 9
+        },
+        {
+          "custom_name": "server",
+          "layout": {
+            "Pane": 10
+          },
+          "panes": {
+            "10": {
+              "cwd": "/Users/brunner/repos/imfusion/cp/imfusion-portal/local-setup"
+            }
+          },
+          "zoomed": false,
+          "focused": 10,
+          "root_pane": 10
+        }
+      ],
+      "active_tab": 0
+    },
+    {
+      "id": "w1K",
+      "custom_name": "[CP] Keycloak",
+      "identity_cwd": "/Users/brunner/repos/imfusion/cp/keycloak",
+      "public_pane_numbers": {
+        "24": 1
+      },
+      "next_public_pane_number": 3,
+      "public_tab_numbers": [
+        1
+      ],
+      "next_public_tab_number": 2,
+      "tabs": [
+        {
+          "custom_name": null,
+          "layout": {
+            "Pane": 24
+          },
+          "panes": {
+            "24": {
+              "cwd": "/Users/brunner/repos/imfusion/cp/keycloak"
+            }
+          },
+          "zoomed": false,
+          "focused": 24,
+          "root_pane": 24
+        }
+      ],
+      "active_tab": 0
+    },
+    {
+      "id": "w1M",
+      "custom_name": "[CP] License Server",
+      "identity_cwd": "/Users/brunner/repos/imfusion/cp/license-server",
+      "public_pane_numbers": {
+        "26": 1
+      },
+      "next_public_pane_number": 3,
+      "public_tab_numbers": [
+        1
+      ],
+      "next_public_tab_number": 2,
+      "tabs": [
+        {
+          "custom_name": null,
+          "layout": {
+            "Pane": 26
+          },
+          "panes": {
+            "26": {
+              "cwd": "/Users/brunner/repos/imfusion/cp/license-server"
+            }
+          },
+          "zoomed": false,
+          "focused": 26,
+          "root_pane": 26
+        }
+      ],
+      "active_tab": 0
+    },
+    {
+      "id": "w1N",
+      "custom_name": "[CP] Registration Service",
+      "identity_cwd": "/Users/brunner/repos/imfusion/cp/registration-service",
+      "public_pane_numbers": {
+        "28": 1
+      },
+      "next_public_pane_number": 3,
+      "public_tab_numbers": [
+        1
+      ],
+      "next_public_tab_number": 2,
+      "tabs": [
+        {
+          "custom_name": null,
+          "layout": {
+            "Pane": 28
+          },
+          "panes": {
+            "28": {
+              "cwd": "/Users/brunner/repos/imfusion/cp/registration-service"
+            }
+          },
+          "zoomed": false,
+          "focused": 28,
+          "root_pane": 28
+        }
+      ],
+      "active_tab": 0
+    },
+    {
+      "id": "w1P",
+      "custom_name": null,
+      "identity_cwd": "/Users/brunner/repos/imfusion/cp/imfusion-portal-CP-89",
+      "worktree_space": {
+        "key": "/Users/brunner/repos/imfusion/cp/imfusion-portal/.git",
+        "label": "imfusion-portal",
+        "repo_root": "/Users/brunner/repos/imfusion/cp/imfusion-portal",
+        "checkout_path": "/Users/brunner/repos/imfusion/cp/imfusion-portal-CP-89",
+        "is_linked_worktree": true
+      },
+      "public_pane_numbers": {
+        "30": 1
+      },
+      "next_public_pane_number": 2,
+      "public_tab_numbers": [
+        1
+      ],
+      "next_public_tab_number": 2,
+      "tabs": [
+        {
+          "custom_name": null,
+          "layout": {
+            "Pane": 30
+          },
+          "panes": {
+            "30": {
+              "cwd": "/Users/brunner/repos/imfusion/cp/imfusion-portal-CP-89"
+            }
+          },
+          "zoomed": false,
+          "focused": 30,
+          "root_pane": 30
+        }
+      ],
+      "active_tab": 0
+    }
+  ],
+  "active": 4,
+  "selected": 4,
+  "sidebar_width": 33,
+  "sidebar_section_split": 0.55813956,
+  "collapsed_space_keys": []
+}
