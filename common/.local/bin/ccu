@@ -83,8 +83,8 @@ repo_roots=$(find "$HOME" -maxdepth 6 -type d -name .git 2>/dev/null |
 		print path "\t" encoded
 	}' | sort -u -t $'\t' -k2)
 
-# Emits two CSV blocks separated by a line of "===": the time-window
-# summary (Window,Cost) and the per-project breakdown (Project,Cost,Models).
+# Emits the time-window breakdown as CSV (Window,Cost,Project,Models),
+# each window expanded into its top projects and their per-model costs.
 render() {
 	bunx ccusage claude daily --instances --json "${extra_args[@]}" |
 		python3 -c "
@@ -110,8 +110,53 @@ matched = {
     if (mode == 'include') == (marker in key)
 }
 
-def day_cost(day):
-    return day.get('totalCost', sum(m['cost'] for m in day['modelBreakdowns']))
+# Paths with no repo root on disk (removed worktrees, scratch dirs) would
+# otherwise each become a row labelled by a trailing segment like
+# \"workspace\", so they collapse to their first two path segments below
+# \$HOME, marked with a trailing \"/…\". Matching cannot go through the
+# filesystem: these paths are typically already deleted, and ccusage
+# encodes \".\" to \"-\" as well, so a real path never reproduces the key.
+home_prefix = sys.argv[4] + '-'
+
+def canonical(key):
+    for encoded, name in root_map:
+        if key == encoded or key.startswith(encoded + '-'):
+            return encoded, name
+    rest = key[len(home_prefix):] if key.startswith(home_prefix) else key
+    segs = [s for s in rest.split('-') if s]
+    root = home_prefix + '-'.join(segs[:2])
+    return root, '/'.join(segs[:2]) + '/…'
+
+def short_model(model):
+    m = model.removeprefix('claude-')
+    return re.sub(r'-\d{8}\$', '', m)
+
+# Fable is not on the ImFusion API plan; that spend lands on a personal
+# subscription, so in imfusion mode it is shown parenthesised and excluded
+# from the primary (billable) cost.
+UNBILLED = 'fable-5'
+split_billing = mode == 'include'
+
+def model_label(model):
+    return f'({model})' if split_billing and model == UNBILLED else model
+
+def format_models(models, model_w, cost_w):
+    parts = sorted(models.items(), key=lambda kv: -kv[1])
+    return '\n'.join(
+        f'{model_label(m):<{model_w}}  \${c:>{cost_w}.2f}' for m, c in parts
+    )
+
+def cost_cell(g):
+    if not split_billing or not g['unbilled']:
+        return f\"\${g['total']:.2f}\"
+    return f\"\${g['total'] - g['unbilled']:.2f} (\${g['total']:.2f})\"
+
+def cell_widths(groups):
+    model_w = max(
+        (len(model_label(m)) for g in groups for m in g['models']), default=0
+    )
+    cost_w = max((len(f'{c:.2f}') for g in groups for c in g['models'].values()), default=0)
+    return model_w, cost_w
 
 today = date.today()
 this_monday = today - timedelta(days=today.weekday())
@@ -125,72 +170,73 @@ windows = [
     ('Last week', last_monday, this_monday - timedelta(days=1)),
     ('This month', this_month_start, today),
 ]
-window_totals = {label: 0.0 for label, _, _ in windows}
+# window -> project root -> {name, total, models}
+window_groups = {label: {} for label, _, _ in windows}
 
-for entries in matched.values():
-    for day in entries:
-        d = date.fromisoformat(day['date'])
-        cost = day_cost(day)
-        for label, start, end in windows:
-            if start <= d <= end:
-                window_totals[label] += cost
-
-print('Window,Cost')
-for label, _, _ in windows:
-    print(f'{label},\${window_totals[label]:.2f}')
-
-print('===')
-
-def canonical(key):
-    for encoded, name in root_map:
-        if key == encoded or key.startswith(encoded + '-'):
-            return encoded, name
-    return key, key.rsplit('-', 1)[-1]
-
-def short_model(model):
-    m = model.removeprefix('claude-')
-    return re.sub(r'-\d{8}\$', '', m)
-
-groups = {}
 for key, entries in matched.items():
     root, name = canonical(key)
-    g = groups.setdefault(root, {'name': name, 'total': 0.0, 'models': {}})
     for day in entries:
+        d = date.fromisoformat(day['date'])
+        in_windows = [label for label, start, end in windows if start <= d <= end]
+        if not in_windows:
+            continue
         for mb in day['modelBreakdowns']:
             model = short_model(mb['modelName'])
-            g['models'][model] = g['models'].get(model, 0.0) + mb['cost']
-            g['total'] += mb['cost']
+            for label in in_windows:
+                g = window_groups[label].setdefault(
+                    root, {'name': name, 'total': 0.0, 'unbilled': 0.0, 'models': {}}
+                )
+                g['models'][model] = g['models'].get(model, 0.0) + mb['cost']
+                g['total'] += mb['cost']
+                if model == UNBILLED:
+                    g['unbilled'] += mb['cost']
 
-print('Project,Cost,Models')
-if not groups:
-    print('(none),\$0.00,–')
-else:
-    rows = sorted(groups.values(), key=lambda g: -g['total'])
-    model_w = max(
-        (len(m) for g in rows for m in g['models']),
-        default=0,
-    )
-    cost_w = max(
-        (len(f'{c:.2f}') for g in rows for c in g['models'].values()),
-        default=0,
-    )
-    for g in rows:
-        parts = sorted(g['models'].items(), key=lambda kv: -kv[1])
-        shown = '\n'.join(f'{m:<{model_w}}  \${c:>{cost_w}.2f}' for m, c in parts)
-        print(f\"{g['name']},\${g['total']:.2f},\\\"{shown}\\\"\")
-    grand_total = sum(g['total'] for g in rows)
-    print(f'TOTAL,\${grand_total:.2f},')
-" "$marker" "$mode" "$repo_roots"
+TOP_N = 5
+
+all_window_groups = [g for gs in window_groups.values() for g in gs.values()]
+w_model_w, w_cost_w = cell_widths(all_window_groups)
+
+print('Window,Cost,Project,Models')
+for label, _, _ in windows:
+    ranked = sorted(window_groups[label].values(), key=lambda g: -g['total'])
+    if not ranked:
+        print(f'{label},\$0.00,–,–')
+        continue
+    window_agg = {
+        'total': sum(g['total'] for g in ranked),
+        'unbilled': sum(g['unbilled'] for g in ranked),
+    }
+    rows, rest = ranked[:TOP_N], ranked[TOP_N:]
+    rest_agg = {
+        'total': sum(g['total'] for g in rest),
+        'unbilled': sum(g['unbilled'] for g in rest),
+    }
+    name_w = max(len(g['name']) for g in rows)
+    proj_cost_w = max(len(cost_cell(g)) for g in ranked)
+    for i, g in enumerate(rows):
+        window_cell = label if i == 0 else ''
+        window_cost = cost_cell(window_agg) if i == 0 else ''
+        proj = f\"{g['name']:<{name_w}}  {cost_cell(g):>{proj_cost_w}}\"
+        models = format_models(g['models'], w_model_w, w_cost_w)
+        print(f'{window_cell},{window_cost},\"{proj}\",\"{models}\"')
+    if rest:
+        label_cell = f'+{len(rest)} more'
+        print(f',,\"{label_cell:<{name_w}}  {cost_cell(rest_agg):>{proj_cost_w}}\",')
+
+grand = {'total': 0.0, 'unbilled': 0.0}
+for entries in matched.values():
+    for day in entries:
+        for mb in day['modelBreakdowns']:
+            grand['total'] += mb['cost']
+            if short_model(mb['modelName']) == UNBILLED:
+                grand['unbilled'] += mb['cost']
+print(f'TOTAL,{cost_cell(grand)},,')
+
+" "$marker" "$mode" "$repo_roots" "-Users-$(whoami)"
 }
 
 render_table() {
 	printf '%s\n' "$1" | gum table -s , --print --border rounded --widths ""
 }
 
-output=$(render)
-summary_csv=$(printf '%s\n' "$output" | sed -n '1,/^===$/p' | sed '$d')
-projects_csv=$(printf '%s\n' "$output" | sed -n '/^===$/,$p' | tail -n +2)
-
-render_table "$summary_csv"
-echo
-render_table "$projects_csv"
+render_table "$(render)"
