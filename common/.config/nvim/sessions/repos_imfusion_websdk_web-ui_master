@@ -10,7 +10,7 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +28 docs/user-guide/GettingStarted.mdx
+badd +45 docs/user-guide/GettingStarted.mdx
 argglobal
 %argdel
 $argadd packages/web-ui/src/components/code/code.tsx
@@ -115,7 +115,7 @@ setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#...%*%#WinBarSeparator#/%*%#WinBarPath#user-guide%*%#WinBarSeparator#/%*%#WinBarFilename#GettingStarted.mdx%*%=
+setlocal winbar=%#WinBarPath#docs%*%#WinBarSeparator#/%*%#WinBarPath#user-guide%*%#WinBarSeparator#/%*%#WinBarFilename#GettingStarted.mdx%*%=%#WinBarGitLabel#\ [GIT:%#WinBarGitDelete#\ -2%#WinBarGitLabel#]%*\ 
 setlocal winblend=10
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -124,23 +124,11 @@ setlocal winhighlight=
 setlocal nowinpinned
 setlocal nowrap
 setlocal wrapmargin=0
-7
-sil! normal! zo
-9
-sil! normal! zo
-42
-sil! normal! zo
-43
-sil! normal! zo
-53
-sil! normal! zo
-58
-sil! normal! zo
-let s:l = 30 - ((29 * winheight(0) + 21) / 42)
+let s:l = 10 - ((9 * winheight(0) + 27) / 55)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 30
+keepjumps 10
 normal! 0
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
