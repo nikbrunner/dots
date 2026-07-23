@@ -183,6 +183,42 @@ selected=\$($fd_cmd -d 3 --type f 'README' '$refs_dir' 2>/dev/null | fzf --rever
 [[ -n "\$selected" ]] && printf '%s' "\$selected"
 PICKER_EOF
 	chmod +x "$readme_picker_script"
+	# Prefixes each path with a colored git status char and a US separator, and
+	# emits dirty paths before clean ones. Outside a repo every row gets a blank
+	# marker so the field layout stays uniform.
+	local annotate_script
+	annotate_script=$(mktemp)
+	cat >"$annotate_script" <<'ANNOTATE_EOF'
+#!/usr/bin/env bash
+git rev-parse --show-toplevel >/dev/null 2>&1 || { sed $'s/^/  \x1f/'; exit 0; }
+status_map=$(git status --porcelain=v1 -uall -z 2>/dev/null |
+	while IFS= read -r -d '' entry; do
+		case "${entry:0:2}" in
+		R* | C*) IFS= read -r -d '' _orig || true ;;
+		esac
+		printf '%s\t%s\n' "${entry:3}" "${entry:0:2}"
+	done)
+awk -F'\t' -v prefix="$(git rev-parse --show-prefix 2>/dev/null)" '
+NR==FNR { if (NF==2) st[$1]=$2; next }
+{
+  code = ((prefix $0) in st) ? st[prefix $0] : ""
+  gsub(/ /, "", code)
+  if (code == "") { clean[++nc] = "  \x1f" $0; next }
+  c = substr(code, 1, 1)
+  if (c == "?")      col = "\033[35m"
+  else if (c == "D") col = "\033[31m"
+  else if (c == "A") col = "\033[32m"
+  else if (c == "R") col = "\033[36m"
+  else               col = "\033[33m"
+  dirty[++nd] = col c "\033[0m \x1f" $0
+}
+END {
+  for (i = 1; i <= nd; i++) print dirty[i]
+  for (i = 1; i <= nc; i++) print clean[i]
+}' <(printf '%s\n' "$status_map") -
+ANNOTATE_EOF
+	chmod +x "$annotate_script"
+
 	# File-listing commands as their own temp scripts: the binds then only
 	# reference a path, avoiding any quote/parenthesis escaping issues inside
 	# fzf's transform() reloads. Both read the current search dir from dir_file
@@ -190,8 +226,8 @@ PICKER_EOF
 	local list_script list_script_no_ignore
 	list_script=$(mktemp)
 	list_script_no_ignore=$(mktemp)
-	printf '#!/usr/bin/env bash\ncd "$(cat %q)" || exit 0\nexec %s\n' "$dir_file" "$fd_cmd $fd_flags" >"$list_script"
-	printf '#!/usr/bin/env bash\ncd "$(cat %q)" || exit 0\nexec %s\n' "$dir_file" "$fd_cmd $fd_flags --no-ignore" >"$list_script_no_ignore"
+	printf '#!/usr/bin/env bash\ncd "$(cat %q)" || exit 0\n%s | %q\n' "$dir_file" "$fd_cmd $fd_flags" "$annotate_script" >"$list_script"
+	printf '#!/usr/bin/env bash\ncd "$(cat %q)" || exit 0\n%s | %q\n' "$dir_file" "$fd_cmd $fd_flags --no-ignore" "$annotate_script" >"$list_script_no_ignore"
 	chmod +x "$list_script" "$list_script_no_ignore"
 
 	# fzf shell-quotes {} on substitution, so it must be passed as a standalone
@@ -199,11 +235,15 @@ PICKER_EOF
 	# does not exist. The script cds into the live search dir instead.
 	local preview_script
 	preview_script=$(mktemp)
-	printf '#!/usr/bin/env bash\ncd "$(cat %q)" || exit 0\n%s -- "$1" 2>/dev/null || cat -- "$1" 2>/dev/null\n' \
-		"$dir_file" "$preview_bin" >"$preview_script"
+	cat >"$preview_script" <<PREVIEW_EOF
+#!/usr/bin/env bash
+cd "\$(cat $(printf '%q' "$dir_file"))" || exit 0
+f=\${1#*\$'\\x1f'}
+$preview_bin -- "\$f" 2>/dev/null || cat -- "\$f" 2>/dev/null
+PREVIEW_EOF
 	chmod +x "$preview_script"
 
-	trap "rm -f '$dir_file' '$dir_mode_file' '$readme_file' '$dir_picker_script' '$readme_picker_script' '$list_script' '$list_script_no_ignore' '$preview_script'" EXIT
+	trap "rm -f '$dir_file' '$dir_mode_file' '$readme_file' '$dir_picker_script' '$readme_picker_script' '$list_script' '$list_script_no_ignore' '$preview_script' '$annotate_script'" EXIT
 
 	local preview_cmd="$preview_script {}"
 
@@ -215,6 +255,12 @@ $header_line"
 		--multi
 		--reverse
 		--ansi
+		--delimiter $'\x1f'
+		--nth 2
+		--with-nth 1,2
+		# Gives earlier entries a bounded score bonus, so the dirty block the
+		# annotator emits first keeps its weight while the query is typed.
+		--scheme history
 		--preview "$preview_cmd"
 		--preview-window 'right,50%,border-left,<100(down,50%,border-top)'
 		--prompt 'gitignore:ON> '
@@ -257,6 +303,7 @@ $header_line)\""
 	# --- collect selected file paths ---
 	local selected_files=()
 	while IFS= read -r line; do
+		line="${line#*$'\x1f'}"
 		[[ -n "$line" ]] && selected_files+=("$line")
 	done <<<"$selected_files_str"
 
