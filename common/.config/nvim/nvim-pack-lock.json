@@ -69,6 +69,10 @@
       "rev": "de740991c12411b663994b2860f1a4fd0937c130",
       "src": "git@github.com:MunifTanjim/nui.nvim"
     },
+    "nvim-dora": {
+      "rev": "2bba547a6bfa1943a9bbafa4d32fc50b7b47445e",
+      "src": "git@github.com:beardedsakimonkey/nvim-dora.git"
+    },
     "nvim-lint": {
       "rev": "a219b2c9e5b4765e5c845aba119dad55806fcaf1",
       "src": "git@github.com:mfussenegger/nvim-lint"

@@ -275,13 +275,13 @@ vim.keymap.set("n", "<leader>we", open_for_buf, { desc = "[E]xplorer" })
 
 vim.keymap.set("n", "-", open_for_buf, { desc = "[E]xplorer" })
 
-vim.keymap.set("n", "_", function()
-	invoking_win_pos = vim.api.nvim_win_get_position(0)
-	MF.open(vim.fn.getcwd())
-end, { desc = "[E]xplorer" })
-
-vim.keymap.set("n", "<leader>wE", function()
-	invoking_win_pos = vim.api.nvim_win_get_position(0)
-	MF.open(vim.fn.getcwd())
-end, { desc = "[E]xplorer" })
-end)
+-- vim.keymap.set("n", "_", function()
+-- 	invoking_win_pos = vim.api.nvim_win_get_position(0)
+-- 	MF.open(vim.fn.getcwd())
+-- end, { desc = "[E]xplorer" })
+--
+-- vim.keymap.set("n", "<leader>wE", function()
+-- 	invoking_win_pos = vim.api.nvim_win_get_position(0)
+-- 	MF.open(vim.fn.getcwd())
+-- end, { desc = "[E]xplorer" })
+-- end)
