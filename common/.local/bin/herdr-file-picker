@@ -194,11 +194,18 @@ PICKER_EOF
 	printf '#!/usr/bin/env bash\ncd "$(cat %q)" || exit 0\nexec %s\n' "$dir_file" "$fd_cmd $fd_flags --no-ignore" >"$list_script_no_ignore"
 	chmod +x "$list_script" "$list_script_no_ignore"
 
-	trap "rm -f '$dir_file' '$dir_mode_file' '$readme_file' '$dir_picker_script' '$readme_picker_script' '$list_script' '$list_script_no_ignore'" EXIT
+	# fzf shell-quotes {} on substitution, so it must be passed as a standalone
+	# argument — interpolating it into a path string yields "dir/'name'", which
+	# does not exist. The script cds into the live search dir instead.
+	local preview_script
+	preview_script=$(mktemp)
+	printf '#!/usr/bin/env bash\ncd "$(cat %q)" || exit 0\n%s -- "$1" 2>/dev/null || cat -- "$1" 2>/dev/null\n' \
+		"$dir_file" "$preview_bin" >"$preview_script"
+	chmod +x "$preview_script"
 
-	# Preview prepends the current search dir (read live from dir_file) so it
-	# resolves correctly even after Alt-D moves to a different directory.
-	local preview_cmd="$preview_bin \"\$(cat '$dir_file')/{}\" 2>/dev/null || cat \"\$(cat '$dir_file')/{}\" 2>/dev/null"
+	trap "rm -f '$dir_file' '$dir_mode_file' '$readme_file' '$dir_picker_script' '$readme_picker_script' '$list_script' '$list_script_no_ignore' '$preview_script'" EXIT
+
+	local preview_cmd="$preview_script {}"
 
 	local header_line="ALT-I: gitignore | ALT-D: chdir | ALT-R: refs | ALT-ENTER: dir path"
 	local fzf_header="$search_dir
