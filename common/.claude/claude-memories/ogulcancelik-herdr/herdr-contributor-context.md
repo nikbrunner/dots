@@ -1,7 +1,7 @@
 ---
 name: herdr-contributor-context
 description: "Nik is an external contributor to ogulcancelik/herdr, uses it as a daily driver; strict approval-gated contribution process applies"
-metadata: 
+metadata:
   node_type: memory
   type: project
   originSessionId: f8fe62fd-a00d-49a3-9ea9-8a726b7e7725

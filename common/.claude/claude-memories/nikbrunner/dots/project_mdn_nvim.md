@@ -1,7 +1,7 @@
 ---
 name: project-mdn-nvim
 description: mdn.nvim stays a separate plugin repo (tests are the reason); loading race fixed 2026-07-16
-metadata: 
+metadata:
   node_type: memory
   type: project
   originSessionId: 42aeaf9b-9db2-417f-9b99-34b744082ab4

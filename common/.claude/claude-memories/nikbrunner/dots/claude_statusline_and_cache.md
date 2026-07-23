@@ -1,7 +1,7 @@
 ---
 name: claude-statusline-and-cache
 description: ccstatusline replaced custom statusline; cache TTL facts (1h personal / 5m work); PreCompact hooks cannot inject instructions
-metadata: 
+metadata:
   node_type: memory
   type: project
   originSessionId: 22f10b99-08fc-48f7-9731-cddb07ec7461

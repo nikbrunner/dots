@@ -1,7 +1,7 @@
 ---
 name: herdr-dev-workflow
 description: "Verified herdr dev-environment facts on Nik's Mac — Zig workaround, dev/stable isolation, restart and seeding gotchas"
-metadata: 
+metadata:
   node_type: memory
   type: project
   originSessionId: da731df3-ce91-4dc5-8b2a-0d25f592108f

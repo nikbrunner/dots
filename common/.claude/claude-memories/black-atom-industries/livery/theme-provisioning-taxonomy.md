@@ -1,7 +1,7 @@
 ---
 name: theme-provisioning-taxonomy
 description: "The 3-class theme provisioning model (External/Linked/Merged) decided 2026-07-18, why it's three and not five, and the"
-metadata: 
+metadata:
   node_type: memory
   type: project
   originSessionId: 0a3bf6dc-4682-4da3-a206-881878178936
@@ -18,7 +18,7 @@ by ONE question — who consumes the managed theme files:
 
 Rejected on the way: "Unmanaged" (livery still manages switching), "Referenced" for tmux
 (mechanism detail, not a consumer difference — tmux scans nothing, symlinks + pointer make it
-ordinary Linked), "Installed" for obsidian (its specialness is a *setup precondition* — the vault
+ordinary Linked), "Installed" for obsidian (its specialness is a _setup precondition_ — the vault
 path — not a different consumer; the vault themes dir derives from config_path like ghostty/zed).
 Nik's rule: keep class count as low as honestly possible; every class needs a one-sentence
 definition. Preconditions and switch pointers are per-adapter metadata, NOT classes.

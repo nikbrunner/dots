@@ -43,11 +43,11 @@ function UserContainer() {
 
 ## Co-Location Rules
 
-| Hook scope                                | Location                                           |
-| ----------------------------------------- | -------------------------------------------------- |
-| Used by one component/container           | Co-located in its folder                           |
-| UI utility or shared event hook           | Top-level `hooks/` directory                       |
-| Query wrapper or topic orchestration hook | `api/` topic folder (see `dev:style:tanstack`)     |
+| Hook scope                                | Location                                       |
+| ----------------------------------------- | ---------------------------------------------- |
+| Used by one component/container           | Co-located in its folder                       |
+| UI utility or shared event hook           | Top-level `hooks/` directory                   |
+| Query wrapper or topic orchestration hook | `api/` topic folder (see `dev:style:tanstack`) |
 
 ## When to Extract a Hook
 

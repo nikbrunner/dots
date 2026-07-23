@@ -1,7 +1,7 @@
 ---
 name: herdr-discussion-contribution-strategy
 description: "Nik's evolving approach to posting GitHub Discussions as an external contributor to herdr, after discussion"
-metadata: 
+metadata:
   node_type: memory
   type: feedback
   originSessionId: 3e3398c0-1a58-462a-b63d-d083824bbba0
@@ -25,6 +25,7 @@ not just having the idea adopted.
 
 **How to apply:** Two things to bring up if Nik is drafting a similar
 discussion post in the future:
+
 1. Link the branch/diff in the post itself (not just prose + screenshots).
 2. If the real goal is landing a merged PR (not just idea-adoption), say so
    explicitly and directly in the post — e.g. "this is ready to go, happy to

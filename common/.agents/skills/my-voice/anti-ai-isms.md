@@ -46,7 +46,7 @@ Other format tells:
 ## Tickets, PRs, commits
 
 - Self-narrating preambles: "This PR introduces...", "This commit adds...", "This ticket covers..."
-- Describing *what* changed (visible in the diff) instead of *why*
+- Describing _what_ changed (visible in the diff) instead of _why_
 - "Comprehensive tests", "robust error handling" and other buzzword pairs
 - Section scaffolding and exhaustive checklists on a 20-line change. Description scope must match diff scope
 - Imperative mood, reason included, done

@@ -21,9 +21,9 @@ Two that fail most often, so they are repeated here: no em-dashes ever (comma, o
 
 > Speak both in the senate and to every man, whoever he may be, appropriately, not with any affectation: use plain discourse.
 >
-> Marcus Aurelius, *Meditations* VIII.30
+> Marcus Aurelius, _Meditations_ VIII.30
 
-I read the *Meditations* often and this line is one I actually try to live by. The bigger word is almost never the more precise one, it is the one that performs. When two phrasings both work, the plainer is correct, and the temptation to reach past it is vanity rather than clarity. Same standard for every reader: no register shift because the audience is senior.
+I read the _Meditations_ often and this line is one I actually try to live by. The bigger word is almost never the more precise one, it is the one that performs. When two phrasings both work, the plainer is correct, and the temptation to reach past it is vanity rather than clarity. Same standard for every reader: no register shift because the audience is senior.
 
 - First person, thinking out loud. Opinions are owned: "I think", "for me", "my gut says". No fake neutrality, no both-sides symmetry.
 - Rhythm: a long, winding sentence chained with "and / but / so", then a short punch. Vary sentence length hard. Uniform rhythm reads generated.

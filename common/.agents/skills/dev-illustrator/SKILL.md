@@ -83,6 +83,6 @@ Self-verification also catches mechanical mistakes, not just design ones — e.g
 ## Design reminders
 
 - The design guide's own house style (flat, no gradients/shadows, two font weights) is for sideshow-native diagrams/boards. When the deliverable is a mockup of a component meant to live elsewhere (e.g. a skeuomorphic/industrial/retro UI for the user's own app), the mockup should look like the real target, not like a sideshow card — don't flatten it to match the viewer's chrome.
-- html: use theme CSS variables for dark mode when the surface *is* sideshow-native chrome; a mockup previewing an external design system's look intentionally overrides them.
+- html: use theme CSS variables for dark mode when the surface _is_ sideshow-native chrome; a mockup previewing an external design system's look intentionally overrides them.
 - mermaid: short wrapped labels, vertical layout for architecture
 - Fetch `mcp__plugin_sideshow_sideshow__get_design_guide` fresh each session rather than trusting this summary for anything beyond the basics — it is the source of truth and evolves independently of this skill.

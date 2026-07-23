@@ -281,7 +281,7 @@ one file per hook:
   `queryOptions` factory into the hook file — that breaks loader prefetch,
   since a loader can't call a hook.
 
-Raw fetch functions themselves are *not* a reuse boundary in practice —
+Raw fetch functions themselves are _not_ a reuse boundary in practice —
 audit shows they're called from exactly one factory each. Don't default to
 a shared `api.ts`/`queries.ts` file "in case" a fetch function gets reused;
 add that split only if a raw fetch function actually gets a second
