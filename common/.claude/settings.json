@@ -53,7 +53,7 @@
     "deny": [],
     "ask": []
   },
-  "model": "claude-opus-4-8[1m]",
+  "model": "sonnet",
   "hooks": {
     "Notification": [
       {
