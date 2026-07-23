@@ -1,4 +1,0 @@
-{
-  "diagnostics.globals": ["vim", "WhichKeyIgnoreLabel"],
-  "diagnostics.disable": ["lowercase-global"]
-}
