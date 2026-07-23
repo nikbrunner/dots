@@ -113,6 +113,10 @@
       "rev": "07d20fce48a5629686aefb0a7cd4b25e33947d50",
       "src": "git@github.com:supermaven-inc/supermaven-nvim"
     },
+    "touchup.nvim": {
+      "rev": "ffd9365ae3e6af6b55d882f0b5760f543882bba8",
+      "src": "git@github.com:noisesfromspace/touchup.nvim"
+    },
     "treewalker.nvim": {
       "rev": "cfe3c69396233ddbbd6b581b00868985f78ffd9e",
       "src": "git@github.com:aaronik/treewalker.nvim"
