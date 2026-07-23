@@ -53,7 +53,7 @@
     "deny": [],
     "ask": []
   },
-  "model": "opusplan",
+  "model": "claude-opus-4-8[1m]",
   "hooks": {
     "Notification": [
       {

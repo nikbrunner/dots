@@ -112,7 +112,7 @@
   "theme": {
     "mode": "system",
     "light": "Black Atom — TERRA ∷ Summer Day",
-    "dark": "Black Atom — JPN ∷ Murasaki Yoru",
+    "dark": "Black Atom — Dark Dimmed",
   },
   "base_keymap": "VSCode",
   "vim_mode": true,
