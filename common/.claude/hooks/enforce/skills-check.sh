@@ -49,6 +49,13 @@ if echo "$prompt_lower" | grep -qiE '(^(audit|review)|run.*(audit|review)|check.
     matches+=("dev:audit — Audit code quality (ui, style, arch, docs)")
 fi
 
+# my-voice — writing on Nik's behalf
+if echo "$prompt_lower" | grep -qiE '(on my behalf|in my (voice|tone|style))' ||
+    { echo "$prompt_lower" | grep -qiE '(write|draft|formulate|rephrase|reword|compose|schreib)' &&
+        echo "$prompt_lower" | grep -qiE '(ticket|jira|issue|pr |pull request|description|email|mail|message|post|journal|blog|readme|announcement|nachricht)'; }; then
+    matches+=("my-voice — Write in Nik's personal voice")
+fi
+
 # dots:add / dots:remove — dotfiles management
 if [[ "$REPO" == "dots" ]]; then
     if echo "$prompt_lower" | grep -qiE '(add.*config|new.*config|symlink|dotfile)'; then

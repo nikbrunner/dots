@@ -64,6 +64,8 @@ Theme files in this repo are symlinks to Black Atom adapter repos. `dots link` a
 
 ## Key Files
 
+- `common/.agents/skills/` — Agent skills, symlinked to `~/.claude/skills` and `~/.claude-work/skills`. New skills go here (`common/.claude/skills` is only a repo-internal symlink to this directory)
+- `common/.agents/AGENTS.md` — Canonical global agent instructions, symlinked to `~/.claude/CLAUDE.md` and `~/.pi/agent/AGENTS.md`
 - `common/.local/bin/dots` — Main CLI implementation (dispatcher + `cmd_pull`, `cmd_push`, `cmd_chores`, `cmd_link`)
 - `scripts/dots/lib.sh` — Shared library (config loading, repo helpers, chore staging functions)
 - `scripts/dots/symlinks.sh` — Symlink creation/cleanup logic (also sourceable as a library)

@@ -6,11 +6,15 @@ Skills + hooks architecture with SessionStart enforcement injection.
 
 ### Structure
 
+**Authoring locations (verified 2026-07-23): skills live in `common/.agents/skills/` and global instructions in `common/.agents/AGENTS.md` — NOT under `common/.claude/`. `common/.claude/skills` and the repo `CLAUDE.md` are just repo-internal symlinks into `.agents/`. symlinks.yml links `common/.agents/skills` → `~/.claude/skills` + `~/.claude-work/skills`, and `common/.agents/AGENTS.md` → `~/.claude/CLAUDE.md` + `~/.pi/agent/AGENTS.md`.**
+
 ```
-common/.claude/
-├── CLAUDE.md              # Communication, blind spot rule, 1% skill check threshold
-├── settings.json          # Hooks config, permissions, plugins
+common/.agents/
+├── AGENTS.md              # Canonical global instructions (blind spot rule, 1% skill check)
 ├── agents/                # Custom agent files (pruned 2026-03-30)
+└── skills/                # Restructured 2026-03-30
+common/.claude/
+├── settings.json          # Hooks config, permissions, plugins
 ├── hooks/
 │   └── enforce/           # Deterministic enforcement
 │       ├── session-start.sh      # SessionStart: injects meta-enforcement skill
@@ -18,7 +22,7 @@ common/.claude/
 │       ├── warn-any-type.sh      # PostToolUse: warns on `: any` in TypeScript
 │       ├── current-datetime.sh   # UserPromptSubmit: injects current date/time
 │       └── skills-check.sh       # UserPromptSubmit: smart skill suggestion (tightened 2026-03-30)
-└── skills/                # Restructured 2026-03-30
+common/.agents/skills/
     ├── meta-enforcement/      # Injected at session start (hidden)
     ├── dev-flow/              # 1 skill, 5 sub-docs: assess, plan, implement, review, close
     ├── dev-audit/             # 1 skill, 4 sub-docs: ui, style, arch, docs
@@ -89,8 +93,8 @@ common/.claude/
 
 ### Symlinks (symlinks.yml)
 
-- `common/.claude/CLAUDE.md` → `~/.claude/CLAUDE.md`
-- `common/.claude/agents` → `~/.claude/agents`
-- `common/.claude/settings.json` → `~/.claude/settings.json`
-- `common/.claude/skills` → `~/.claude/skills`
+- `common/.agents/AGENTS.md` → `~/.claude/CLAUDE.md`, `~/.claude-work/CLAUDE.md`, `~/.pi/agent/AGENTS.md`
+- `common/.agents/agents` → `~/.claude/agents`, `~/.claude-work/agents`
+- `common/.agents/skills` → `~/.claude/skills`, `~/.claude-work/skills`
+- `common/.claude/settings.json` → `~/.claude/settings.json`, `~/.claude-work/settings.json`
 - `"common/.claude/hooks/enforce/*"` → `~/.claude/hooks/enforce`
