@@ -39,7 +39,8 @@ Replacement rule: the plainest word that survives. "Use" not "leverage", "import
 
 Other format tells:
 
-- Title Case Headers, emoji-per-bullet, bold on every line, horizontal rules between short sections
+- Title Case Headers, bold on every line, horizontal rules between short sections
+- Emoji used as structural decoration: one per bullet, one per heading, a 🚀 on the summary line. The tell is emoji-as-formatting, not emoji as such. Inline in conversational text they're fine.
 - Curly quotes pasted into plain-text contexts
 
 ## Tickets, PRs, commits

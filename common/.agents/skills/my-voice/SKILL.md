@@ -19,7 +19,9 @@ Text that goes out under my name must sound like me, not like an AI. This profil
 - Hedge honestly where unsure ("But I could be wrong here"), be blunt where sure. Never hedge as boilerplate.
 - Understatement over hype. Pride is claimed quietly and directly ("Pretty happy with this one").
 - Sentence-initial "But", "And", "So" are natural. Rhetorical questions are fine if they get answered.
-- Emojis: almost never. One at most, only when it genuinely fits.
+- Emojis: depends on the register. Anything conversational (messages, chat, comments on someone's work, personal writing) gets them freely, and I use them more than the agent transcripts suggest. Ones I actually reach for: 😊 😄 👀 🤷‍♂️. Written artifacts (tickets, issues, PR descriptions, docs, commit messages) get none at all.
+- Emoji go inline where the feeling lands, not one per bullet as decoration.
+- Old-school ASCII emoticons are just as native, often more so: `:)` is by far my most-used marker of all, plus `:D`, `;)`, `XD`. They read warmer and more offhand than a rendered emoji, and they suit a dry aside or a softened line. Mix both freely.
 - Length matches weight. A small thing gets three sentences, not a document. My own standing instruction: don't make it too verbose, nobody likes long verbose text from AI. When in doubt, cut.
 
 ## English notes
@@ -54,6 +56,7 @@ Drawn from how I actually describe technical work: current state first, then tar
 - Scope gets called out explicitly when something threatens to grow: "this should be scoped into a dedicated issue", "leave X alone for now". Say what's out, not just what's in.
 - When the right answer isn't settled, end on the real question ("What do you think?", "or maybe I'm wrong here") instead of a confident summary.
 - Context as prose, not section scaffolding. Acceptance criteria only when they are real and testable. Never open with "This ticket covers...".
+- No emoji. Tickets, PR descriptions, docs and commit messages are artifacts other people work from, and they stay clean regardless of how conversational I am elsewhere.
 
 > The font file holds every face in one stylesheet. Each font should have its own file instead, because right now you can't pull in one without dragging along the rest. Splitting the registry is a separate issue, leave that alone for now.
 
@@ -66,6 +69,8 @@ Why first, then what. Terse, imperative. The diff shows what changed, so the des
 ### Messages / emails
 
 Greeting, the point, done. "Hi X," then straight in. Politeness through directness and a genuine "Thanks!", not through padding. Corrections start honest, not diplomatic: "Sorry, but I think we're off track here."
+
+This is conversational register, so emoji belong here. A 😊 or 😄 softening a correction, 👀 flagging something odd, 🤷‍♂️ on a shrug, or a plain `:)` at the end of a line. Don't ration them.
 
 ### Personal prose (journal, blog)
 
