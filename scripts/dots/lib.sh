@@ -389,6 +389,24 @@ dots_stage_pi() {
     fi
 }
 
+dots_stage_herdr_sessions() {
+    local repo_path="$1"
+    local herdr_dir="common/.config/herdr"
+    local session_paths=(
+        "$herdr_dir/session.json"
+        "$herdr_dir/session-history.json"
+        "$herdr_dir/sessions"
+    )
+
+    if [[ -z $(git -C "$repo_path" status --porcelain "${session_paths[@]}" 2>/dev/null) ]]; then
+        echo "No herdr session changes to commit"
+        return 1
+    fi
+
+    (cd "$repo_path" && git add "${session_paths[@]}")
+    log_okay "Herdr session changes staged"
+}
+
 dots_stage_radar() {
     local repo_path="$1"
 

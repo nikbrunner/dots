@@ -35,3 +35,4 @@ skills-lock.json
 handoffs/
 /.repowise
 common/.config/herdr/plugins/github/*/
+common/.config/herdr/**/*.log
