@@ -37,6 +37,10 @@
       "rev": "6cd7280adead7f586db6fccbd15d2cac7e2188b9",
       "src": "git@github.com:rafamadriz/friendly-snippets"
     },
+    "fyler.nvim": {
+      "rev": "bc1f8e420f566dd3b3db1f0aff2e6932947bdd71",
+      "src": "https://github.com/FylerOrg/fyler.nvim"
+    },
     "gitlinker.nvim": {
       "rev": "a1b74070bbd5e50128190c85b09f1431ea5fbd83",
       "src": "git@github.com:linrongbin16/gitlinker.nvim"
