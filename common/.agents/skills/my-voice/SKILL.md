@@ -1,6 +1,6 @@
 ---
 name: my-voice
-description: My personal writing voice for anything written on my behalf: tickets, issues, PR descriptions, emails, messages, posts, journal prose, docs. German and English. Load when asked to write, draft, formulate, or rephrase text I will sign, or when output gets published under my name.
+description: "My personal writing voice for anything written on my behalf: tickets, issues, PR descriptions, emails, messages, posts, journal prose, docs. German and English. Load when asked to write, draft, formulate, or rephrase text I will sign, or when output gets published under my name."
 ---
 
 # My Voice
