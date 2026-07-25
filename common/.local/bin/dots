@@ -841,6 +841,10 @@ cmd_clean() {
 
 # Link command
 cmd_link() {
+	echo "→ Building tools..."
+	"$DOTS_DIR/scripts/dots/build-tools.sh" "$@"
+
+	echo ""
 	echo "→ Creating symlinks..."
 	"$DOTS_DIR/scripts/dots/symlinks.sh" "$@"
 

@@ -18,12 +18,14 @@ dots/
 ├── macos/                # macOS-specific configs
 ├── arch/                 # Arch Linux-specific configs
 ├── install/              # Machine bootstrap & dependency management
-└── scripts/              # Runtime management scripts
+├── scripts/              # Runtime management scripts
+└── tools/                # Go sources, built into common/.local/bin/
 ```
 
 ## Commands
 
 - **`dots`** — Dotfiles management. Run `dots` with no args for usage. See `common/.local/bin/dots`.
+- **`ccu`** — Agent spend per repo, split work vs personal. See `tools/ccu/README.md`.
 - **`shiplog`** — AI-powered git operations (commit, branch). Run `shiplog --help` for usage. See [nikbrunner/shiplog](https://github.com/nikbrunner/shiplog).
 - **`helm`** — External tool for multi-repo management (pull, push, status, rebuild). Invoked by `dots pull` and `dots push`.
 

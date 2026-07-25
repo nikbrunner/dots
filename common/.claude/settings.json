@@ -134,6 +134,15 @@
         ]
       },
       {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/enforce/record-repo-root.sh"
+          }
+        ]
+      },
+      {
         "matcher": "*",
         "hooks": [
           {
@@ -150,6 +159,14 @@
           {
             "type": "command",
             "command": "~/.local/bin/helm-hook Stop"
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/enforce/record-repo-root.sh"
           }
         ]
       }

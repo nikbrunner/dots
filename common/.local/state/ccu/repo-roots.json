@@ -1,0 +1,22 @@
+{
+  "nikbrunner/dots": {
+    "root": "~/repos/nikbrunner/dots",
+    "owner": "nikbrunner",
+    "name": "dots",
+    "work": false,
+    "session_dirs": [
+      "~/repos/nikbrunner/dots"
+    ],
+    "last_seen": "2026-07-25"
+  },
+  "websdk/web-ui": {
+    "root": "~/repos/imfusion/websdk/web-ui",
+    "owner": "websdk",
+    "name": "web-ui",
+    "work": true,
+    "session_dirs": [
+      "~/repos/imfusion/websdk/web-ui"
+    ],
+    "last_seen": "2026-07-25"
+  }
+}

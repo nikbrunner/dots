@@ -18,6 +18,10 @@ common:
   "common/.claude/hooks/enforce/*": ~/.claude/hooks/enforce
   common/.claude/plugins/local-marketplace: ~/.claude/plugins/marketplaces/local-plugins
   common/.local/bin/claude-hooks: ~/.local/bin/claude-hooks
+  # Which repo each agent session ran in, written by ccu-record and read by
+  # ccu. Tracked because a worktree recorded on one machine cannot be
+  # reconstructed anywhere else once it is deleted.
+  common/.local/state/ccu/repo-roots.json: ~/.local/state/ccu/repo-roots.json
 
   # Shell (zsh, git completion) ===========================================
   common/.config/.zsh/_git: ~/.config/.zsh/_git
