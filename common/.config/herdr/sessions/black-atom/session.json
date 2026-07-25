@@ -40,7 +40,7 @@
         "4": 2,
         "3": 1
       },
-      "next_public_pane_number": 4,
+      "next_public_pane_number": 5,
       "public_tab_numbers": [
         1,
         2,
@@ -92,10 +92,78 @@
         }
       ],
       "active_tab": 2
+    },
+    {
+      "id": "w5",
+      "custom_name": "nvim",
+      "identity_cwd": "/Users/brunner/repos/black-atom-industries/nvim",
+      "public_pane_numbers": {
+        "9": 3,
+        "8": 2,
+        "7": 1
+      },
+      "next_public_pane_number": 5,
+      "public_tab_numbers": [
+        1,
+        2,
+        3
+      ],
+      "next_public_tab_number": 4,
+      "tabs": [
+        {
+          "custom_name": "agent",
+          "layout": {
+            "Pane": 7
+          },
+          "panes": {
+            "7": {
+              "cwd": "/Users/brunner/repos/black-atom-industries/nvim",
+              "agent_session": {
+                "source": "herdr:claude",
+                "agent": "claude",
+                "kind": "id",
+                "value": "b20256ff-0298-4f27-a5d2-f6d8d5bb5d17"
+              }
+            }
+          },
+          "zoomed": false,
+          "focused": 7,
+          "root_pane": 7
+        },
+        {
+          "custom_name": "code",
+          "layout": {
+            "Pane": 8
+          },
+          "panes": {
+            "8": {
+              "cwd": "/Users/brunner/repos/black-atom-industries/nvim"
+            }
+          },
+          "zoomed": false,
+          "focused": 8,
+          "root_pane": 8
+        },
+        {
+          "custom_name": "server",
+          "layout": {
+            "Pane": 9
+          },
+          "panes": {
+            "9": {
+              "cwd": "/Users/brunner/repos/black-atom-industries/nvim"
+            }
+          },
+          "zoomed": false,
+          "focused": 9,
+          "root_pane": 9
+        }
+      ],
+      "active_tab": 1
     }
   ],
-  "active": 1,
-  "selected": 1,
+  "active": 2,
+  "selected": 2,
   "sidebar_width": 26,
   "sidebar_section_split": 0.5,
   "collapsed_space_keys": []

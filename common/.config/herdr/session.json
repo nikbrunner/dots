@@ -6,11 +6,12 @@
       "custom_name": null,
       "identity_cwd": "/Users/brunner/repos/nikbrunner/dots",
       "public_pane_numbers": {
+        "2": 4,
+        "17": 12,
         "3": 5,
-        "1": 1,
-        "2": 4
+        "1": 1
       },
-      "next_public_pane_number": 10,
+      "next_public_pane_number": 18,
       "public_tab_numbers": [
         1,
         2,
@@ -21,15 +22,39 @@
         {
           "custom_name": null,
           "layout": {
-            "Pane": 1
+            "Split": {
+              "direction": "Horizontal",
+              "ratio": 0.5,
+              "first": {
+                "Pane": 1
+              },
+              "second": {
+                "Pane": 17
+              }
+            }
           },
           "panes": {
+            "17": {
+              "cwd": "/Users/brunner/repos/nikbrunner/dots",
+              "agent_session": {
+                "source": "herdr:claude",
+                "agent": "claude",
+                "kind": "id",
+                "value": "cfea8535-cf2d-41b7-81dc-71b043d5a332"
+              }
+            },
             "1": {
-              "cwd": "/Users/brunner/repos/nikbrunner/dots"
+              "cwd": "/Users/brunner/repos/nikbrunner/dots",
+              "agent_session": {
+                "source": "herdr:claude",
+                "agent": "claude",
+                "kind": "id",
+                "value": "a3e3c27b-8e58-4caf-9f1b-0925edb139d2"
+              }
             }
           },
           "zoomed": false,
-          "focused": 1,
+          "focused": 17,
           "root_pane": 1
         },
         {
@@ -61,7 +86,7 @@
           "root_pane": 3
         }
       ],
-      "active_tab": 1
+      "active_tab": 0
     },
     {
       "id": "w2",
