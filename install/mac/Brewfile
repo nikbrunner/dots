@@ -24,6 +24,7 @@ brew "mpd"                       # music player daemon — dots has mpd.conf
 brew "rmpc"                      # mpd client TUI — dots has rmpc config
 brew "btop"
 brew "ngrok"
+brew "handy"                     # https://handy.computer
 
 # Custom formula / taps
 brew "agent-browser"
