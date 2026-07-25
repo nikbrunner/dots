@@ -5,7 +5,7 @@
 -- Options, keymaps, autocmds live in plugin/10_*.lua (auto-loaded).
 -- Plugin specs live in plugin/50_specs/*.lua (auto-loaded).
 
--- Disable netrw entirely — mini.files is the file explorer. Must be set
+-- Disable netrw entirely — fyler is the file explorer. Must be set
 -- here, before runtime plugins (incl. netrw) are sourced.
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1

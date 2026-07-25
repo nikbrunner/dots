@@ -1,5 +1,5 @@
 -- Picker backend (files/grep/lsp/git/...) and small QoL utilities
--- (toggles, terminal, lazygit). mini.files stays the explorer; mini.visits
+-- (toggles, terminal, lazygit). fyler is the explorer; mini.visits
 -- stays for frecency data (see mini/visits.lua). neogit owns its own git
 -- status/log UI — this spec does not add lazygit/gitbrowse keymaps that
 -- would collide with it.

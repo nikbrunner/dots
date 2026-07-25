@@ -1,4 +1,6 @@
-Edit.later(function()
+-- Loads eagerly with args so `nvim <dir>` is hijacked before the directory
+-- buffer settles; deferred otherwise.
+Edit.now_if_args(function()
 	vim.pack.add({ "https://github.com/FylerOrg/fyler.nvim" })
 
 	local function natural(str)
@@ -92,6 +94,7 @@ Edit.later(function()
 
 	require("fyler").setup({
 		auto_confirm_simple_mutation = true,
+		use_as_default_explorer = true,
 		integrations = {
 			icon = "mini_icons",
 		},
