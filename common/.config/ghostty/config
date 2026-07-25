@@ -2,7 +2,7 @@
 # https://github.com/imrajyavardhan12/spectre-ghostty-config
 
 # Colors
-theme = black-atom-terra-summer-day.conf
+theme = black-atom-jpn-murasaki-yoru.conf
 bold-is-bright = true
 
 # Window
@@ -13,15 +13,14 @@ window-vsync = true
 # Advanced
 custom-shader = ./shaders/boo.glsl
 
-# adjust-cell-height = 25%
-adjust-cursor-thickness = 3
+adjust-cell-height = 25%
 adjust-underline-position = 3
 
 # Fonts
 font-size = 14
-font-family = TX-02 Condensed
-font-family-bold = TX-02 Bold Condensed
-font-thicken = true
+font-family = TX-02
+font-style-bold = Bold
+font-thicken = false
 window-inherit-working-directory = true
 unfocused-split-opacity = 1
 window-inherit-font-size = true
@@ -32,6 +31,7 @@ window-decoration = auto
 # background-blur = 65
 
 # Cursor
+adjust-cursor-thickness = 5
 cursor-style-blink = false
 cursor-style = block
 

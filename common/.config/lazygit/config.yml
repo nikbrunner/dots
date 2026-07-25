@@ -9,27 +9,27 @@ gui:
   # Theme colors managed by pick-theme
   theme:
     activeBorderColor:
-      - "#c67b36"
+      - "#dca23a"
       - bold
     inactiveBorderColor:
-      - "#26541c"
+      - "#946996"
     optionsTextColor:
-      - "#5a8f65"
+      - "#8cb6c5"
     selectedLineBgColor:
-      - "#ffeedd"
+      - "#5b3e47"
     cherryPickedCommitBgColor:
-      - "#e4dec8"
+      - "#452a32"
     cherryPickedCommitFgColor:
-      - "#c67b36"
+      - "#dca23a"
     unstagedChangesColor:
-      - "#ac6e59"
+      - "#ff857b"
     defaultFgColor:
-      - "#00280f"
+      - "#d4bfd6"
     searchingActiveBorderColor:
-      - "#a19021"
+      - "#dca23a"
 
   authorColors:
-    "*": "#b67c8d"
+    "*": "#d49bb2"
   branchColors:
     "main": "#e74c3c"
     "master": "#e74c3c"
@@ -72,7 +72,7 @@ git:
         replace: "DEV-$1 "
   pagers:
     - colorArg: always
-      pager: hunk pager --mode split --pager --no-line-numbers --no-hunk-headers --theme github-light-default
+      pager: hunk pager --mode split --pager --no-line-numbers --no-hunk-headers --theme github-dark-default
   merging:
     # only applicable to unix users
     manualCommit: false

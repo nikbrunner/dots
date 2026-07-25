@@ -10,11 +10,12 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +16 common/.config/ghostty/config
+badd +88 common/.config/lazygit/config.yml
 argglobal
 %argdel
 $argadd common/.claude/settings.json
-edit common/.config/ghostty/config
+edit common/.config/lazygit/config.yml
+tcd ~/repos/nikbrunner/dots
 argglobal
 setlocal keymap=
 setlocal noarabic
@@ -32,7 +33,7 @@ setlocal cinoptions=
 setlocal cinscopedecls=public,protected,private
 setlocal cinwords=if,else,while,do,for,switch
 setlocal colorcolumn=
-setlocal comments=s1:/*,mb:*,ex:*/,://,b:#,:%,:XCOMM,n:>,fb:-,fb:â€¢
+setlocal comments=:#
 setlocal commentstring=#\ %s
 setlocal complete=.,w,b,kspell
 setlocal completefunc=
@@ -45,11 +46,10 @@ setlocal nocursorcolumn
 setlocal cursorline
 setlocal cursorlineopt=screenline,number
 setlocal nodiff
-setlocal errorformat=%f:%l:%m,%m
 setlocal eventignorewin=
 setlocal expandtab
-if &filetype != 'ghostty'
-setlocal filetype=ghostty
+if &filetype != 'yaml'
+setlocal filetype=yaml
 endif
 setlocal fixendofline
 setlocal foldcolumn=0
@@ -64,12 +64,12 @@ setlocal foldnestmax=10
 setlocal foldtext=
 setlocal formatexpr=v:lua.require'conform'.formatexpr()
 setlocal formatlistpat=^\\s*[0-9\\-\\+\\*]\\+[\\.\\)]*\\s\\+
-setlocal formatoptions=rqnl1j
+setlocal formatoptions=n1jrql
 setlocal iminsert=0
 setlocal imsearch=-1
 setlocal includeexpr=
-setlocal indentexpr=
-setlocal indentkeys=0{,0},0),0],:,0#,!^F,o,O,e
+setlocal indentexpr=v:lua.require'arborist.indent'.indentexpr()
+setlocal indentkeys=!^F,o,O,0},0],<:>,0-
 setlocal infercase
 setlocal iskeyword=@,48-57,_,192-255,-
 setlocal lhistory=10
@@ -77,14 +77,13 @@ setlocal linebreak
 setlocal nolisp
 setlocal lispoptions=
 setlocal list
-setlocal makeprg=ghostty\ +validate-config\ --config-file=%:S
 setlocal matchpairs=(:),{:},[:]
 setlocal modeline
 setlocal modifiable
 setlocal nrformats=bin,hex
 setlocal number
 setlocal numberwidth=4
-setlocal omnifunc=syntaxcomplete#Complete
+setlocal omnifunc=v:lua.vim.lsp.omnifunc
 setlocal nopreserveindent
 setlocal nopreviewwindow
 setlocal quoteescape=\\
@@ -96,9 +95,9 @@ setlocal scrollback=-1
 setlocal noscrollbind
 setlocal shiftwidth=2
 setlocal signcolumn=yes
-setlocal smartindent
+setlocal nosmartindent
 setlocal nosmoothscroll
-setlocal softtabstop=0
+setlocal softtabstop=-1
 setlocal nospell
 setlocal spellcapcheck=[.?!]\\_[\\])'\"\\t\ ]\\+
 setlocal spellfile=
@@ -112,27 +111,26 @@ if &syntax != ''
 setlocal syntax=
 endif
 setlocal tabstop=2
-setlocal tagfunc=
+setlocal tagfunc=v:lua.vim.lsp.tagfunc
 setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#common%*%#WinBarSeparator#/%*%#WinBarPath#.config%*%#WinBarSeparator#/%*%#WinBarPath#ghostty%*%#WinBarSeparator#/%*%#WinBarFilename#config%*%=%#WinBarGitLabel#\ [GIT:%#WinBarGitAdd#\ +1%#WinBarGitChange#\ ~5%#WinBarGitLabel#]%*\ 
+setlocal winbar=%#WinBarPath#common%*%#WinBarSeparator#/%*%#WinBarPath#.config%*%#WinBarSeparator#/%*%#WinBarPath#lazygit%*%#WinBarSeparator#/%*%#WinBarFilename#config.yml%*%=%#WinBarGitLabel#\ [GIT:%#WinBarGitChange#\ ~11%#WinBarGitLabel#]%*\ 
 setlocal winblend=10
 setlocal nowinfixbuf
-setlocal nowinfixheight
-setlocal nowinfixwidth
+setlocal winfixheight
+setlocal winfixwidth
 setlocal winhighlight=
 setlocal nowinpinned
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 12 - ((11 * winheight(0) + 27) / 55)
+let s:l = 88 - ((32 * winheight(0) + 24) / 49)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 12
-normal! 0
-lcd ~/repos/nikbrunner/dots
+keepjumps 88
+normal! 012|
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
@@ -146,7 +144,6 @@ if filereadable(s:sx)
 endif
 let &g:so = s:so_save | let &g:siso = s:siso_save
 set hlsearch
-nohlsearch
 doautoall SessionLoadPost
 unlet SessionLoad
 " vim: set ft=vim :

@@ -1,6 +1,6 @@
 {
   "theme": "terminal",
-  "lastChangelogVersion": "0.80.10",
+  "lastChangelogVersion": "0.82.0",
   "packages": [
     "npm:pi-web-access",
     "npm:@ff-labs/pi-fff",
@@ -15,8 +15,8 @@
     "npm:pi-subagents",
     "npm:sideshow"
   ],
-  "defaultProvider": "opencode-go",
-  "defaultModel": "kimi-k3",
+  "defaultProvider": "openrouter",
+  "defaultModel": "z-ai/glm-5.2",
   "enabledModels": [
     "openrouter/minimax/minimax-m2.7",
     "openrouter/z-ai/glm-5.1",
