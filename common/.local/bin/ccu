@@ -14,6 +14,11 @@ if ! command -v gum &>/dev/null; then
 	exit 1
 fi
 
+if ! command -v ccusage &>/dev/null; then
+	echo "ccu: requires 'ccusage' (mise install npm:ccusage)" >&2
+	exit 1
+fi
+
 usage() {
 	cat <<-EOF
 		Usage: ccu <command> [ccusage-flags...]
@@ -22,6 +27,9 @@ usage() {
 		  imfusion   Cost breakdown for ~/repos/imfusion
 		  personal   Cost breakdown excluding ~/repos/imfusion
 		  help       Show this help
+
+		Each prints the cost-per-window table, then a per-repo tree of
+		skill, subagent and MCP usage share.
 
 		Any extra flags are passed through to 'ccusage claude daily'
 		(e.g. --since 20260701, --until 20260714).
@@ -60,9 +68,28 @@ last_week_start=$(date -v-monday -v-7d +%Y%m%d)
 month_start=$(date +%Y%m01)
 default_since=$([[ "$last_week_start" < "$month_start" ]] && echo "$last_week_start" || echo "$month_start")
 has_since=false
+tools_since="$default_since"
+tools_until=""
+take_next=""
 for arg in "$@"; do
+	case "$take_next" in
+	since)
+		tools_since="$arg"
+		take_next=""
+		continue
+		;;
+	until)
+		tools_until="$arg"
+		take_next=""
+		continue
+		;;
+	esac
 	case "$arg" in
-	-s | --since) has_since=true ;;
+	-s | --since)
+		has_since=true
+		take_next=since
+		;;
+	-u | --until) take_next=until ;;
 	esac
 done
 extra_args=("$@")
@@ -70,10 +97,14 @@ if [[ "$has_since" == false ]]; then
 	extra_args=(--since "$default_since" "${extra_args[@]}")
 fi
 
-# Map every known git repo root under $HOME to its ccusage-encoded key
+# Map every known git repo root to its ccusage-encoded key
 # (real_path\tencoded_key) so we can match project keys back to real repos
-# and recover a readable basename.
-repo_roots=$(find "$HOME" -maxdepth 6 -type d -name .git 2>/dev/null |
+# and recover a readable basename. Scanning all of $HOME would drag in
+# hundreds of vendored checkouts under .cache and .config for no gain, so
+# only the trees that hold real working repos are searched.
+repo_search_roots=("$HOME/repos")
+[[ -d "$HOME/.herdr/worktrees" ]] && repo_search_roots+=("$HOME/.herdr/worktrees")
+repo_roots=$(find "${repo_search_roots[@]}" -maxdepth 4 -type d -name .git 2>/dev/null |
 	sed 's|/\.git$||' |
 	awk -v home="$HOME" -v user="$(whoami)" '{
 		path = $0
@@ -83,10 +114,177 @@ repo_roots=$(find "$HOME" -maxdepth 6 -type d -name .git 2>/dev/null |
 		print path "\t" encoded
 	}' | sort -u -t $'\t' -k2)
 
+# Attribution lives only in the raw transcripts, which record tokens and
+# not cost, so this reports share of weighted tokens rather than dollars.
+render_tools() {
+	python3 -c "$(
+		cat <<'PY'
+import collections, json, os, sys
+from datetime import datetime, timezone
+
+marker, mode, roots_raw = sys.argv[1], sys.argv[2], sys.argv[3]
+since = sys.argv[4] or None
+until = sys.argv[5] or None
+
+root_map = []
+for line in roots_raw.splitlines():
+    if not line:
+        continue
+    real_path, encoded = line.split('\t')
+    root_map.append((encoded, real_path.rsplit('/', 1)[-1]))
+root_map.sort(key=lambda kv: -len(kv[0]))
+
+home_prefix = '-Users-' + os.path.basename(os.path.expanduser('~')) + '-'
+
+
+def canonical(key):
+    for encoded, name in root_map:
+        if key == encoded or key.startswith(encoded + '-'):
+            return encoded, name
+    rest = key[len(home_prefix):] if key.startswith(home_prefix) else key
+    segs = [s for s in rest.split('-') if s]
+    # Worktrees hang off a "<tool>-worktrees-<branch>" path; fold them into
+    # the tool that owns them rather than ranking each branch separately.
+    if 'worktrees' in segs:
+        segs = segs[:segs.index('worktrees')]
+        return home_prefix + '-'.join(segs), '/'.join(segs)
+    return home_prefix + '-'.join(segs[:2]), '/'.join(segs[:2]) + '/…'
+
+
+# Output dominates cost, cache reads are nearly free; weighting by these
+# ratios keeps a Fable-heavy skill from looking as expensive as an Opus one.
+WEIGHTS = {'input_tokens': 1.0, 'output_tokens': 5.0,
+           'cache_creation_input_tokens': 1.25, 'cache_read_input_tokens': 0.1}
+
+
+def weigh(usage):
+    return sum(w * (usage.get(k) or 0) for k, w in WEIGHTS.items())
+
+
+def local_date(ts):
+    return (datetime.fromisoformat(ts.replace('Z', '+00:00'))
+            .astimezone().strftime('%Y%m%d'))
+
+
+projects_dir = os.path.expanduser('~/.claude/projects')
+# repo -> kind -> name -> weighted tokens
+tally = collections.defaultdict(
+    lambda: collections.defaultdict(collections.Counter))
+totals = collections.Counter()
+unattributed = collections.Counter()
+
+for project in sorted(os.listdir(projects_dir)):
+    if (mode == 'include') != (marker in project):
+        continue
+    root, name = canonical(project)
+    base = os.path.join(projects_dir, project)
+    transcripts = []
+    for dirpath, _dirnames, filenames in os.walk(base):
+        for fn in filenames:
+            if fn.endswith('.jsonl'):
+                transcripts.append(os.path.join(dirpath, fn))
+    for path in transcripts:
+        try:
+            mtime = datetime.fromtimestamp(os.path.getmtime(path))
+        except OSError:
+            continue
+        # A file cannot hold records written after its last write.
+        if since and mtime.strftime('%Y%m%d') < since:
+            continue
+        seen = set()
+        try:
+            fh = open(path, encoding='utf-8')
+        except OSError:
+            continue
+        with fh:
+            for line in fh:
+                if '"assistant"' not in line:
+                    continue
+                try:
+                    rec = json.loads(line)
+                except ValueError:
+                    continue
+                if rec.get('type') != 'assistant':
+                    continue
+                # Streaming writes the same request several times; the usage
+                # block repeats in full, so counting lines would multiply it.
+                req = rec.get('requestId')
+                if not req or req in seen:
+                    continue
+                seen.add(req)
+                ts = rec.get('timestamp')
+                if not ts:
+                    continue
+                day = local_date(ts)
+                if (since and day < since) or (until and day > until):
+                    continue
+                usage = (rec.get('message') or {}).get('usage') or {}
+                cost = weigh(usage)
+                if not cost:
+                    continue
+                hits = []
+                if rec.get('attributionSkill'):
+                    hits.append(('skills', rec['attributionSkill']))
+                if rec.get('attributionAgent'):
+                    hits.append(('subagents', rec['attributionAgent']))
+                if rec.get('attributionMcpServer'):
+                    hits.append(('mcp', rec['attributionMcpServer']))
+                totals[name] += cost
+                if not hits:
+                    unattributed[name] += cost
+                for kind, label in hits:
+                    tally[name][kind][label] += cost
+
+grand = sum(totals.values())
+if not grand:
+    print('No usage found for this scope and range.')
+    raise SystemExit(0)
+
+TOP_N = 8
+# Repos below a percent round to 0% and only pad the output.
+MIN_SHARE = 0.01
+skipped = 0
+for repo, total in sorted(totals.items(), key=lambda kv: -kv[1]):
+    kinds = tally.get(repo)
+    if not kinds:
+        continue
+    if total / grand < MIN_SHARE:
+        skipped += 1
+        continue
+    print(f'{repo}  {total / grand:.0%}')
+    present = [k for k in ('skills', 'subagents', 'mcp') if kinds.get(k)]
+    rest_cost = unattributed.get(repo, 0.0)
+    for ki, kind in enumerate(present):
+        last_kind = ki == len(present) - 1 and not rest_cost
+        print(('└─ ' if last_kind else '├─ ') + kind)
+        ranked = kinds[kind].most_common()
+        items = ranked[:TOP_N]
+        spill = ranked[TOP_N:]
+        rows = list(items)
+        if spill:
+            rows.append((f'+{len(spill)} more', sum(c for _, c in spill)))
+        width = max(len(label) for label, _ in rows)
+        for ii, (label, cost) in enumerate(rows):
+            stem = '   ' if last_kind else '│  '
+            branch = '└─ ' if ii == len(rows) - 1 else '├─ '
+            print(f'{stem}{branch}{label:<{width}}  {cost / grand:>4.0%}')
+    # Most turns carry no attribution at all; naming that share keeps the
+    # children readable as a share of the repo rather than of each other.
+    if rest_cost:
+        print(f'└─ unattributed  {rest_cost / grand:.0%}')
+    print()
+
+if skipped:
+    noun = 'repo' if skipped == 1 else 'repos'
+    print(f'({skipped} {noun} below {MIN_SHARE:.0%} omitted)')
+PY
+	)" "$marker" "$mode" "$repo_roots" "${tools_since:-}" "${tools_until:-}"
+}
+
 # Emits the time-window breakdown as CSV (Window,Cost,Project,Models),
 # each window expanded into its top projects and their per-model costs.
 render() {
-	bunx ccusage claude daily --instances --json "${extra_args[@]}" |
+	ccusage claude daily --instances --json "${extra_args[@]}" |
 		python3 -c "
 import json, re, sys
 from datetime import date, timedelta
@@ -240,3 +438,5 @@ render_table() {
 }
 
 render_table "$(render)"
+echo
+render_tools
