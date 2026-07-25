@@ -4,18 +4,17 @@ let v:this_session=expand("<sfile>:p")
 doautoall SessionLoadPre
 silent only
 silent tabonly
-cd ~/repos/nikbrunner/dots
+cd ~/repos/black-atom-industries/nvim
 if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +132 common/.config/nvim/plugin/50_specs/fyler.lua
+badd +20 lua/black-atom/highlights/ui.lua
 argglobal
 %argdel
-$argadd common/.config/nvim/plugin/50_specs/fyler.lua
-edit common/.config/nvim/plugin/50_specs/fyler.lua
-tcd ~/repos/nikbrunner/dots
+edit lua/black-atom/highlights/ui.lua
+tcd ~/repos/black-atom-industries/nvim
 argglobal
 setlocal keymap=
 setlocal noarabic
@@ -48,7 +47,7 @@ setlocal cursorlineopt=screenline,number
 setlocal define=\\<function\\|\\<local\\%(\\s\\+function\\)\\=
 setlocal nodiff
 setlocal eventignorewin=
-setlocal noexpandtab
+setlocal expandtab
 if &filetype != 'lua'
 setlocal filetype=lua
 endif
@@ -85,7 +84,7 @@ setlocal modifiable
 setlocal nrformats=bin,hex
 setlocal number
 setlocal numberwidth=4
-setlocal omnifunc=v:lua.vim.lua_omnifunc
+setlocal omnifunc=v:lua.vim.lsp.omnifunc
 setlocal path=,
 setlocal nopreserveindent
 setlocal nopreviewwindow
@@ -96,7 +95,7 @@ setlocal norightleft
 setlocal rightleftcmd=search
 setlocal scrollback=-1
 setlocal noscrollbind
-setlocal shiftwidth=0
+setlocal shiftwidth=4
 setlocal signcolumn=yes
 setlocal smartindent
 setlocal nosmoothscroll
@@ -113,63 +112,33 @@ setlocal synmaxcol=3000
 if &syntax != ''
 setlocal syntax=
 endif
-setlocal tabstop=2
+setlocal tabstop=4
 setlocal tagfunc=v:lua.vim.lsp.tagfunc
-setlocal textwidth=0
+setlocal textwidth=120
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#...%*%#WinBarSeparator#/%*%#WinBarPath#.config%*%#WinBarSeparator#/%*%#WinBarPath#nvim%*%#WinBarSeparator#/%*%#WinBarPath#plugin%*%#WinBarSeparator#/%*%#WinBarPath#50_specs%*%#WinBarSeparator#/%*%#WinBarFilename#fyler.lua%*%=%#WinBarLspLabel#\ [LSP:\ %#DiagnosticSignWarn#:2%##%#WinBarLspLabel#]%*\ 
+setlocal winbar=%#WinBarPath#lua%*%#WinBarSeparator#/%*%#WinBarPath#black-atom%*%#WinBarSeparator#/%*%#WinBarPath#highlights%*%#WinBarSeparator#/%*%#WinBarFilename#ui.lua%*%=%#WinBarGitLabel#\ [GIT:%#WinBarGitChange#\ ~1%#WinBarGitLabel#]%*\ 
 setlocal winblend=10
 setlocal nowinfixbuf
-setlocal winfixheight
-setlocal winfixwidth
+setlocal nowinfixheight
+setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowinpinned
 setlocal nowrap
 setlocal wrapmargin=0
+2
+sil! normal! zo
 3
 sil! normal! zo
-6
+10
 sil! normal! zo
-14
-sil! normal! zo
-16
-sil! normal! zo
-17
-sil! normal! zo
-30
-sil! normal! zo
-39
-sil! normal! zo
-40
-sil! normal! zo
-44
-sil! normal! zo
-63
-sil! normal! zo
-95
-sil! normal! zo
-108
-sil! normal! zo
-109
-sil! normal! zo
-110
-sil! normal! zo
-117
-sil! normal! zo
-122
-sil! normal! zo
-131
-sil! normal! zo
-133
-sil! normal! zo
-let s:l = 134 - ((27 * winheight(0) + 24) / 49)
+let s:l = 20 - ((19 * winheight(0) + 23) / 47)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 134
-normal! 0
+keepjumps 20
+normal! 043|
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
