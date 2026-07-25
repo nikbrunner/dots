@@ -8,3 +8,14 @@
 2026-07-23T17:01:18.522398Z  INFO herdr::logging: herdr starting event="app.startup" subsystem="client" outcome="started" pid=84602
 2026-07-23T17:01:18.522631Z  INFO herdr::client: connecting to server path=/Users/brunner/.config/herdr/sessions/imfusion/herdr-client.sock
 2026-07-23T17:01:18.772471Z  INFO herdr::client: handshake succeeded version=17 encoding=SemanticFrame
+2026-07-24T07:45:36.490076Z  INFO herdr::logging: herdr exiting event="app.shutdown" subsystem="client" outcome="completed" pid=84602
+2026-07-24T07:46:01.276360Z  INFO herdr::logging: herdr starting event="app.startup" subsystem="client" outcome="started" pid=4422
+2026-07-24T07:46:01.276428Z  INFO herdr::client: connecting to server path=/Users/brunner/.config/herdr/sessions/imfusion/herdr-client.sock
+2026-07-24T07:46:01.380892Z  INFO herdr::client: handshake succeeded version=17 encoding=SemanticFrame
+2026-07-24T07:46:23.593095Z  INFO herdr::logging: herdr exiting event="app.shutdown" subsystem="client" outcome="completed" pid=4422
+2026-07-24T07:46:28.141858Z  INFO herdr::logging: herdr starting event="app.startup" subsystem="client" outcome="started" pid=6025
+2026-07-24T07:46:28.141892Z  INFO herdr::client: connecting to server path=/Users/brunner/.config/herdr/sessions/imfusion/herdr-client.sock
+2026-07-24T07:46:28.191159Z  INFO herdr::client: handshake succeeded version=17 encoding=SemanticFrame
+2026-07-24T08:50:56.865210Z  INFO herdr::logging: herdr starting event="app.startup" subsystem="client" outcome="started" pid=3924
+2026-07-24T08:50:56.865439Z  INFO herdr::client: connecting to server path=/Users/brunner/.config/herdr/sessions/imfusion/herdr-client.sock
+2026-07-24T08:50:57.011992Z  INFO herdr::client: handshake succeeded version=17 encoding=SemanticFrame

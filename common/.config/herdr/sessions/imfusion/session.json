@@ -13,16 +13,30 @@
         "is_linked_worktree": false
       },
       "public_pane_numbers": {
-        "2": 52,
-        "1": 24
+        "1": 24,
+        "2": 52
       },
-      "next_public_pane_number": 68,
+      "next_public_pane_number": 76,
       "public_tab_numbers": [
-        3,
-        5
+        5,
+        3
       ],
       "next_public_tab_number": 6,
       "tabs": [
+        {
+          "custom_name": "agent",
+          "layout": {
+            "Pane": 2
+          },
+          "panes": {
+            "2": {
+              "cwd": "/Users/brunner/repos/nikbrunner/imf-notes"
+            }
+          },
+          "zoomed": false,
+          "focused": 2,
+          "root_pane": 2
+        },
         {
           "custom_name": "note",
           "layout": {
@@ -36,20 +50,6 @@
           "zoomed": false,
           "focused": 1,
           "root_pane": 1
-        },
-        {
-          "custom_name": null,
-          "layout": {
-            "Pane": 2
-          },
-          "panes": {
-            "2": {
-              "cwd": "/Users/brunner/repos/nikbrunner/imf-notes"
-            }
-          },
-          "zoomed": false,
-          "focused": 2,
-          "root_pane": 2
         }
       ],
       "active_tab": 0
@@ -59,8 +59,8 @@
       "custom_name": "[NBR] Agents",
       "identity_cwd": "/Users/brunner/repos/imfusion/brunner/agents",
       "public_pane_numbers": {
-        "15": 2,
-        "14": 1
+        "4": 2,
+        "3": 1
       },
       "next_public_pane_number": 13,
       "public_tab_numbers": [
@@ -72,30 +72,30 @@
         {
           "custom_name": null,
           "layout": {
-            "Pane": 14
+            "Pane": 3
           },
           "panes": {
-            "14": {
+            "3": {
               "cwd": "/Users/brunner/repos/imfusion/brunner/agents"
             }
           },
           "zoomed": false,
-          "focused": 14,
-          "root_pane": 14
+          "focused": 3,
+          "root_pane": 3
         },
         {
           "custom_name": "code",
           "layout": {
-            "Pane": 15
+            "Pane": 4
           },
           "panes": {
-            "15": {
+            "4": {
               "cwd": "/Users/brunner/repos/imfusion/brunner/agents"
             }
           },
           "zoomed": false,
-          "focused": 15,
-          "root_pane": 15
+          "focused": 4,
+          "root_pane": 4
         }
       ],
       "active_tab": 0
@@ -112,48 +112,20 @@
         "is_linked_worktree": false
       },
       "public_pane_numbers": {
-        "5": 426,
-        "3": 307,
-        "4": 425
+        "5": 307,
+        "6": 425,
+        "73": 440
       },
-      "next_public_pane_number": 430,
+      "next_public_pane_number": 450,
       "public_tab_numbers": [
         9,
         14,
-        15
+        16
       ],
-      "next_public_tab_number": 16,
+      "next_public_tab_number": 17,
       "tabs": [
         {
           "custom_name": "agent",
-          "layout": {
-            "Pane": 3
-          },
-          "panes": {
-            "3": {
-              "cwd": "/Users/brunner/repos/imfusion/websdk/web-ui"
-            }
-          },
-          "zoomed": false,
-          "focused": 3,
-          "root_pane": 3
-        },
-        {
-          "custom_name": "code",
-          "layout": {
-            "Pane": 4
-          },
-          "panes": {
-            "4": {
-              "cwd": "/Users/brunner/repos/imfusion/websdk/web-ui"
-            }
-          },
-          "zoomed": false,
-          "focused": 4,
-          "root_pane": 4
-        },
-        {
-          "custom_name": "serv",
           "layout": {
             "Pane": 5
           },
@@ -165,16 +137,44 @@
           "zoomed": false,
           "focused": 5,
           "root_pane": 5
+        },
+        {
+          "custom_name": "code",
+          "layout": {
+            "Pane": 6
+          },
+          "panes": {
+            "6": {
+              "cwd": "/Users/brunner/repos/imfusion/websdk/web-ui"
+            }
+          },
+          "zoomed": false,
+          "focused": 6,
+          "root_pane": 6
+        },
+        {
+          "custom_name": null,
+          "layout": {
+            "Pane": 73
+          },
+          "panes": {
+            "73": {
+              "cwd": "/Users/brunner/repos/imfusion/websdk/web-ui"
+            }
+          },
+          "zoomed": false,
+          "focused": 73,
+          "root_pane": 73
         }
       ],
-      "active_tab": 1
+      "active_tab": 0
     },
     {
       "id": "w1G",
       "custom_name": "[WEB] SDK",
       "identity_cwd": "/Users/brunner/repos/imfusion/websdk/web-sdk",
       "public_pane_numbers": {
-        "13": 1
+        "8": 1
       },
       "next_public_pane_number": 3,
       "public_tab_numbers": [
@@ -185,16 +185,16 @@
         {
           "custom_name": null,
           "layout": {
-            "Pane": 13
+            "Pane": 8
           },
           "panes": {
-            "13": {
+            "8": {
               "cwd": "/Users/brunner/repos/imfusion/websdk/web-sdk"
             }
           },
           "zoomed": false,
-          "focused": 13,
-          "root_pane": 13
+          "focused": 8,
+          "root_pane": 8
         }
       ],
       "active_tab": 0
@@ -211,11 +211,11 @@
         "is_linked_worktree": false
       },
       "public_pane_numbers": {
-        "10": 3,
-        "9": 2,
-        "6": 1
+        "11": 3,
+        "9": 1,
+        "10": 2
       },
-      "next_public_pane_number": 10,
+      "next_public_pane_number": 11,
       "public_tab_numbers": [
         1,
         2,
@@ -225,20 +225,6 @@
       "tabs": [
         {
           "custom_name": "agent",
-          "layout": {
-            "Pane": 6
-          },
-          "panes": {
-            "6": {
-              "cwd": "/Users/brunner/repos/imfusion/cp/imfusion-portal"
-            }
-          },
-          "zoomed": false,
-          "focused": 6,
-          "root_pane": 6
-        },
-        {
-          "custom_name": "code",
           "layout": {
             "Pane": 9
           },
@@ -252,18 +238,32 @@
           "root_pane": 9
         },
         {
-          "custom_name": "server",
+          "custom_name": "code",
           "layout": {
             "Pane": 10
           },
           "panes": {
             "10": {
-              "cwd": "/Users/brunner/repos/imfusion/cp/imfusion-portal/local-setup"
+              "cwd": "/Users/brunner/repos/imfusion/cp/imfusion-portal"
             }
           },
           "zoomed": false,
           "focused": 10,
           "root_pane": 10
+        },
+        {
+          "custom_name": "server",
+          "layout": {
+            "Pane": 11
+          },
+          "panes": {
+            "11": {
+              "cwd": "/Users/brunner/repos/imfusion/cp/imfusion-portal/local-setup"
+            }
+          },
+          "zoomed": false,
+          "focused": 11,
+          "root_pane": 11
         }
       ],
       "active_tab": 0
@@ -273,9 +273,9 @@
       "custom_name": "[CP] Keycloak",
       "identity_cwd": "/Users/brunner/repos/imfusion/cp/keycloak",
       "public_pane_numbers": {
-        "24": 1
+        "12": 1
       },
-      "next_public_pane_number": 3,
+      "next_public_pane_number": 4,
       "public_tab_numbers": [
         1
       ],
@@ -284,16 +284,16 @@
         {
           "custom_name": null,
           "layout": {
-            "Pane": 24
+            "Pane": 12
           },
           "panes": {
-            "24": {
+            "12": {
               "cwd": "/Users/brunner/repos/imfusion/cp/keycloak"
             }
           },
           "zoomed": false,
-          "focused": 24,
-          "root_pane": 24
+          "focused": 12,
+          "root_pane": 12
         }
       ],
       "active_tab": 0
@@ -303,7 +303,7 @@
       "custom_name": "[CP] License Server",
       "identity_cwd": "/Users/brunner/repos/imfusion/cp/license-server",
       "public_pane_numbers": {
-        "26": 1
+        "13": 1
       },
       "next_public_pane_number": 3,
       "public_tab_numbers": [
@@ -314,16 +314,16 @@
         {
           "custom_name": null,
           "layout": {
-            "Pane": 26
+            "Pane": 13
           },
           "panes": {
-            "26": {
+            "13": {
               "cwd": "/Users/brunner/repos/imfusion/cp/license-server"
             }
           },
           "zoomed": false,
-          "focused": 26,
-          "root_pane": 26
+          "focused": 13,
+          "root_pane": 13
         }
       ],
       "active_tab": 0
@@ -333,7 +333,7 @@
       "custom_name": "[CP] Registration Service",
       "identity_cwd": "/Users/brunner/repos/imfusion/cp/registration-service",
       "public_pane_numbers": {
-        "28": 1
+        "14": 1
       },
       "next_public_pane_number": 3,
       "public_tab_numbers": [
@@ -344,16 +344,16 @@
         {
           "custom_name": null,
           "layout": {
-            "Pane": 28
+            "Pane": 14
           },
           "panes": {
-            "28": {
+            "14": {
               "cwd": "/Users/brunner/repos/imfusion/cp/registration-service"
             }
           },
           "zoomed": false,
-          "focused": 28,
-          "root_pane": 28
+          "focused": 14,
+          "root_pane": 14
         }
       ],
       "active_tab": 0
@@ -370,34 +370,99 @@
         "is_linked_worktree": true
       },
       "public_pane_numbers": {
-        "30": 1
+        "28": 6,
+        "26": 4,
+        "23": 2,
+        "83": 44,
+        "24": 3
       },
-      "next_public_pane_number": 2,
+      "next_public_pane_number": 49,
       "public_tab_numbers": [
-        1
+        1,
+        2,
+        3
       ],
-      "next_public_tab_number": 2,
+      "next_public_tab_number": 4,
       "tabs": [
         {
-          "custom_name": null,
+          "custom_name": "agent",
           "layout": {
-            "Pane": 30
+            "Pane": 83
           },
           "panes": {
-            "30": {
+            "83": {
+              "cwd": "/Users/brunner/repos/imfusion/cp/imfusion-portal-CP-89",
+              "agent_session": {
+                "source": "herdr:claude",
+                "agent": "claude",
+                "kind": "id",
+                "value": "8a63b2d1-92ba-4633-93a2-2f19aa2d312e"
+              }
+            }
+          },
+          "zoomed": false,
+          "focused": 83,
+          "root_pane": 83
+        },
+        {
+          "custom_name": "code",
+          "layout": {
+            "Pane": 23
+          },
+          "panes": {
+            "23": {
               "cwd": "/Users/brunner/repos/imfusion/cp/imfusion-portal-CP-89"
             }
           },
           "zoomed": false,
-          "focused": 30,
-          "root_pane": 30
+          "focused": 23,
+          "root_pane": 23
+        },
+        {
+          "custom_name": "server",
+          "layout": {
+            "Split": {
+              "direction": "Horizontal",
+              "ratio": 0.5,
+              "first": {
+                "Pane": 24
+              },
+              "second": {
+                "Split": {
+                  "direction": "Vertical",
+                  "ratio": 0.5,
+                  "first": {
+                    "Pane": 26
+                  },
+                  "second": {
+                    "Pane": 28
+                  }
+                }
+              }
+            }
+          },
+          "panes": {
+            "26": {
+              "cwd": "/Users/brunner/repos/imfusion/cp/imfusion-portal-CP-89/frontend",
+              "label": "fe server"
+            },
+            "24": {
+              "cwd": "/Users/brunner/repos/imfusion/cp/imfusion-portal-CP-89/fe"
+            },
+            "28": {
+              "cwd": "/Users/brunner/repos/imfusion/cp/imfusion-portal-CP-89/fe"
+            }
+          },
+          "zoomed": false,
+          "focused": 24,
+          "root_pane": 24
         }
       ],
       "active_tab": 0
     }
   ],
-  "active": 4,
-  "selected": 4,
+  "active": 8,
+  "selected": 8,
   "sidebar_width": 33,
   "sidebar_section_split": 0.55813956,
   "collapsed_space_keys": []
