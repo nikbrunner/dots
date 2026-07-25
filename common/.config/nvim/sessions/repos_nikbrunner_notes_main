@@ -10,10 +10,11 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +0 01\ -\ Projects/Sonder/Sonder\ Concept.md
+badd +23 01\ -\ Projects/Sonder/Sonder\ Concept.md
 argglobal
 %argdel
 edit 01\ -\ Projects/Sonder/Sonder\ Concept.md
+tcd ~/repos/nikbrunner/notes
 argglobal
 xnoremap <buffer> $ g$
 onoremap <buffer> $ g$
@@ -59,7 +60,7 @@ setlocal cursorline
 setlocal cursorlineopt=screenline,number
 setlocal nodiff
 setlocal eventignorewin=
-setlocal noexpandtab
+setlocal expandtab
 if &filetype != 'markdown'
 setlocal filetype=markdown
 endif
@@ -76,7 +77,7 @@ setlocal foldnestmax=10
 setlocal foldtext=
 setlocal formatexpr=v:lua.require'conform'.formatexpr()
 setlocal formatlistpat=^\\s*\\d\\+\\.\\s\\+\\|^\\s*[-*+]\\s\\+\\|^\\[^\\ze[^\\]]\\+\\]:\\&^.\\{4\\}
-setlocal formatoptions=j1tqln
+setlocal formatoptions=1jtqln
 setlocal iminsert=0
 setlocal imsearch=-1
 setlocal includeexpr=
@@ -109,7 +110,7 @@ setlocal shiftwidth=4
 setlocal signcolumn=yes
 setlocal smartindent
 setlocal nosmoothscroll
-setlocal softtabstop=-1
+setlocal softtabstop=4
 setlocal nospell
 setlocal spellcapcheck=[.?!]\\_[\\])'\"\\t\ ]\\+
 setlocal spellfile=
@@ -122,7 +123,7 @@ setlocal synmaxcol=3000
 if &syntax != ''
 setlocal syntax=
 endif
-setlocal tabstop=8
+setlocal tabstop=4
 setlocal tagfunc=v:lua.vim.lsp.tagfunc
 setlocal textwidth=80
 setlocal undofile
@@ -131,15 +132,15 @@ setlocal vartabstop=
 setlocal winbar=%#WinBarPath#01\ -\ Projects%*%#WinBarSeparator#/%*%#WinBarPath#Sonder%*%#WinBarSeparator#/%*%#WinBarFilename#Sonder\ Concept.md%*%=
 setlocal winblend=10
 setlocal nowinfixbuf
-setlocal nowinfixheight
-setlocal nowinfixwidth
+setlocal winfixheight
+setlocal winfixwidth
 setlocal winhighlight=
 setlocal nowinpinned
 setlocal nowrap
 setlocal wrapmargin=0
 9
 sil! normal! zo
-let s:l = 23 - ((22 * winheight(0) + 27) / 55)
+let s:l = 23 - ((22 * winheight(0) + 25) / 50)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
