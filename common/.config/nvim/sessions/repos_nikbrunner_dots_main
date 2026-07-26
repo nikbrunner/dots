@@ -10,11 +10,11 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +132 common/.config/nvim/plugin/50_specs/fyler.lua
+badd +18 common/.config/herdr/plugins/config/cloudmanic.herdr-plus/worktrees/default.toml
 argglobal
 %argdel
 $argadd common/.config/nvim/plugin/50_specs/fyler.lua
-edit common/.config/nvim/plugin/50_specs/fyler.lua
+edit common/.config/herdr/plugins/config/cloudmanic.herdr-plus/worktrees/default.toml
 tcd ~/repos/nikbrunner/dots
 argglobal
 setlocal keymap=
@@ -33,8 +33,8 @@ setlocal cinoptions=
 setlocal cinscopedecls=public,protected,private
 setlocal cinwords=if,else,while,do,for,switch
 setlocal colorcolumn=
-setlocal comments=:---,:--
-setlocal commentstring=--\ %s
+setlocal comments=:#
+setlocal commentstring=#\ %s
 setlocal complete=.,w,b,kspell
 setlocal completefunc=
 setlocal completeslash=
@@ -45,12 +45,11 @@ setlocal nocursorbind
 setlocal nocursorcolumn
 setlocal cursorline
 setlocal cursorlineopt=screenline,number
-setlocal define=\\<function\\|\\<local\\%(\\s\\+function\\)\\=
 setlocal nodiff
 setlocal eventignorewin=
-setlocal noexpandtab
-if &filetype != 'lua'
-setlocal filetype=lua
+setlocal expandtab
+if &filetype != 'toml'
+setlocal filetype=toml
 endif
 setlocal fixendofline
 setlocal foldcolumn=0
@@ -65,13 +64,12 @@ setlocal foldnestmax=10
 setlocal foldtext=
 setlocal formatexpr=v:lua.require'conform'.formatexpr()
 setlocal formatlistpat=^\\s*[0-9\\-\\+\\*]\\+[\\.\\)]*\\s\\+
-setlocal formatoptions=n1jrql
+setlocal formatoptions=rqnl1j
 setlocal iminsert=0
 setlocal imsearch=-1
-setlocal include=\\<\\%(\\%(do\\|load\\)file\\|require\\)\\s*(
-setlocal includeexpr=v:lua.require'vim._ftplugin.lua'.includeexpr(v:fname)
+setlocal includeexpr=
 setlocal indentexpr=v:lua.require'arborist.indent'.indentexpr()
-setlocal indentkeys=0{,0},0),0],:,0#,!^F,o,O,e,0=end,0=until
+setlocal indentkeys=0{,0},0),0],:,0#,!^F,o,O,e
 setlocal infercase
 setlocal iskeyword=@,48-57,_,192-255,-
 setlocal lhistory=10
@@ -85,8 +83,7 @@ setlocal modifiable
 setlocal nrformats=bin,hex
 setlocal number
 setlocal numberwidth=4
-setlocal omnifunc=v:lua.vim.lua_omnifunc
-setlocal path=,
+setlocal omnifunc=v:lua.vim.lsp.omnifunc
 setlocal nopreserveindent
 setlocal nopreviewwindow
 setlocal quoteescape=\\
@@ -96,7 +93,7 @@ setlocal norightleft
 setlocal rightleftcmd=search
 setlocal scrollback=-1
 setlocal noscrollbind
-setlocal shiftwidth=0
+setlocal shiftwidth=2
 setlocal signcolumn=yes
 setlocal smartindent
 setlocal nosmoothscroll
@@ -107,19 +104,19 @@ setlocal spellfile=
 setlocal spelllang=en_us,de_de
 setlocal spelloptions=camel,noplainbuffer
 setlocal statuscolumn=
-setlocal suffixesadd=.lua
+setlocal suffixesadd=
 setlocal noswapfile
 setlocal synmaxcol=3000
 if &syntax != ''
 setlocal syntax=
 endif
 setlocal tabstop=2
-setlocal tagfunc=v:lua.vim.lsp.tagfunc
+setlocal tagfunc=
 setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#...%*%#WinBarSeparator#/%*%#WinBarPath#.config%*%#WinBarSeparator#/%*%#WinBarPath#nvim%*%#WinBarSeparator#/%*%#WinBarPath#plugin%*%#WinBarSeparator#/%*%#WinBarPath#50_specs%*%#WinBarSeparator#/%*%#WinBarFilename#fyler.lua%*%=%#WinBarLspLabel#\ [LSP:\ %#DiagnosticSignWarn#:2%##%#WinBarLspLabel#]%*\ 
+setlocal winbar=%#WinBarPath#...%*%#WinBarSeparator#/%*%#WinBarPath#worktrees%*%#WinBarSeparator#/%*%#WinBarFilename#default.toml%*%=
 setlocal winblend=10
 setlocal nowinfixbuf
 setlocal winfixheight
@@ -128,47 +125,11 @@ setlocal winhighlight=
 setlocal nowinpinned
 setlocal nowrap
 setlocal wrapmargin=0
-3
-sil! normal! zo
-6
-sil! normal! zo
-14
-sil! normal! zo
-16
-sil! normal! zo
-17
-sil! normal! zo
-30
-sil! normal! zo
-39
-sil! normal! zo
-40
-sil! normal! zo
-44
-sil! normal! zo
-63
-sil! normal! zo
-95
-sil! normal! zo
-108
-sil! normal! zo
-109
-sil! normal! zo
-110
-sil! normal! zo
-117
-sil! normal! zo
-122
-sil! normal! zo
-131
-sil! normal! zo
-133
-sil! normal! zo
-let s:l = 134 - ((27 * winheight(0) + 24) / 49)
+let s:l = 18 - ((17 * winheight(0) + 21) / 43)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 134
+keepjumps 18
 normal! 0
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'

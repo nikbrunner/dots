@@ -98,11 +98,11 @@
       "custom_name": "nvim",
       "identity_cwd": "/Users/brunner/repos/black-atom-industries/nvim",
       "public_pane_numbers": {
-        "9": 3,
         "8": 2,
-        "7": 1
+        "7": 1,
+        "9": 3
       },
-      "next_public_pane_number": 5,
+      "next_public_pane_number": 7,
       "public_tab_numbers": [
         1,
         2,
