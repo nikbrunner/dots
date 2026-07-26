@@ -1,13 +1,85 @@
 {
+  "black-atom-industries/adapter-template": {
+    "root": "~/repos/black-atom-industries/adapter-template",
+    "owner": "black-atom-industries",
+    "name": "adapter-template",
+    "work": false,
+    "session_dirs": [
+      "~/repos/black-atom-industries/adapter-template"
+    ],
+    "last_seen": "2026-07-26"
+  },
+  "black-atom-industries/atlas": {
+    "root": "~/repos/black-atom-industries/atlas",
+    "owner": "black-atom-industries",
+    "name": "atlas",
+    "work": false,
+    "session_dirs": [
+      "~/repos/black-atom-industries/atlas"
+    ],
+    "last_seen": "2026-07-26"
+  },
+  "github/cloudmanic.herdr-plus-0cce37b56fb9": {
+    "root": "~/repos/nikbrunner/dots/common/.config/herdr/plugins/github/cloudmanic.herdr-plus-0cce37b56fb9",
+    "owner": "github",
+    "name": "cloudmanic.herdr-plus-0cce37b56fb9",
+    "work": false,
+    "session_dirs": [
+      "~/repos/nikbrunner/dots/common/.config/herdr/plugins/github/cloudmanic.herdr-plus-0cce37b56fb9"
+    ],
+    "last_seen": "2026-07-26"
+  },
+  "github/herdr-navigator-3a5a6fa5dfb5": {
+    "root": "~/repos/nikbrunner/dots/common/.config/herdr/plugins/github/herdr-navigator-3a5a6fa5dfb5",
+    "owner": "github",
+    "name": "herdr-navigator-3a5a6fa5dfb5",
+    "work": false,
+    "session_dirs": [
+      "~/repos/nikbrunner/dots/common/.config/herdr/plugins/github/herdr-navigator-3a5a6fa5dfb5"
+    ],
+    "last_seen": "2026-07-26"
+  },
+  "github/herdr-plugin-workspace-manager-bf9e2ab2c0b6": {
+    "root": "~/repos/nikbrunner/dots/common/.config/herdr/plugins/github/herdr-plugin-workspace-manager-bf9e2ab2c0b6",
+    "owner": "github",
+    "name": "herdr-plugin-workspace-manager-bf9e2ab2c0b6",
+    "work": false,
+    "session_dirs": [
+      "~/repos/nikbrunner/dots/common/.config/herdr/plugins/github/herdr-plugin-workspace-manager-bf9e2ab2c0b6"
+    ],
+    "last_seen": "2026-07-26"
+  },
+  "nikbrunner/bc-web-client": {
+    "root": "~/repos/nikbrunner/bc-web-client",
+    "owner": "nikbrunner",
+    "name": "bc-web-client",
+    "work": false,
+    "session_dirs": [
+      "~/repos/nikbrunner/bc-web-client"
+    ],
+    "last_seen": "2026-07-26"
+  },
   "nikbrunner/dots": {
     "root": "~/repos/nikbrunner/dots",
     "owner": "nikbrunner",
     "name": "dots",
     "work": false,
     "session_dirs": [
-      "~/repos/nikbrunner/dots"
+      "~/.herdr/worktrees/dots/worktree-rapid-stone-2f36",
+      "~/repos/nikbrunner/dots",
+      "~/repos/nikbrunner/dots/common/.config/herdr/plugins/config/herdr-navigator"
     ],
-    "last_seen": "2026-07-25"
+    "last_seen": "2026-07-26"
+  },
+  "nikbrunner/koyo": {
+    "root": "~/repos/nikbrunner/koyo",
+    "owner": "nikbrunner",
+    "name": "koyo",
+    "work": false,
+    "session_dirs": [
+      "~/repos/nikbrunner/koyo"
+    ],
+    "last_seen": "2026-07-26"
   },
   "websdk/web-ui": {
     "root": "~/repos/imfusion/websdk/web-ui",
