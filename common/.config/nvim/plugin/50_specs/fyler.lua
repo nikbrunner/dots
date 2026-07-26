@@ -101,6 +101,9 @@ Edit.now_if_args(function()
 		extensions = {
 			git = { enabled = true, inline = false },
 		},
+		win_opts = {
+			cursorline = true,
+		},
 		indent_guides = false,
 		ui = {
 			hidden_items = { switches = {} },
