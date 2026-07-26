@@ -1,0 +1,63 @@
+[picker]
+reuse_existing = true
+create_missing = true
+engine = "nucleo"
+
+source_order = [
+  "workspace",
+  "agent",
+  "root",
+  # "zoxide",
+  # "server",
+  # "quick",
+  # "plugin",
+  # "project",
+  # "session",
+]
+
+source_priority_boost = 5
+agent_sort = "herdr"
+preview = false
+detailed_rows = true
+check_updates = true
+
+# Vim-style normal mode: j/k move, source keys filter, and / starts searching.
+vim_mode = true
+
+# Start searching immediately after a Vim source-filter key.
+vim_filter_search = true
+
+[notifications]
+enabled = true
+audio = false
+sound = "default"
+custom_sound = "" # Example: "~/sounds/navigator.wav"
+
+[jump_back]
+enabled = true
+pin_previous = true
+
+[sources]
+open_workspaces = true
+herdr_plus_projects = true
+zoxide = true
+roots = true
+agents = true
+servers = false
+sessions = false
+herdr_plus_quick_actions = false
+
+[theme]
+inherit_herdr = true
+
+# Keep roots short; zoxide should handle most frequent directories.
+[[roots]]
+path = "~/repos"
+max_depth = 3
+
+[[roots]]
+path = "~/repos/imfusion"
+max_depth = 3
+
+[sessions]
+local = true
