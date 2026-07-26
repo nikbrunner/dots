@@ -4,63 +4,23 @@
 -- status/log UI — this spec does not add lazygit/gitbrowse keymaps that
 -- would collide with it.
 
-local function get_window_relative_flow_config()
-	local win = vim.api.nvim_get_current_win()
-	local win_config = vim.api.nvim_win_get_config(win)
-	local win_pos = vim.api.nvim_win_get_position(win)
-	local win_width = vim.api.nvim_win_get_width(win)
-	local win_height = vim.api.nvim_win_get_height(win)
-
-	local editor_width = vim.o.columns
-	local editor_height = vim.o.lines
-
-	local win_col = win_pos[2]
-	local win_row = win_pos[1]
-
-	if win_config.relative and win_config.relative ~= "" then
-		win_col = win_config.col or win_col
-		win_row = win_config.row or win_row
-	end
-
-	local picker_width = math.min(win_width - 4, math.floor(editor_width * 0.4))
-	local picker_height = math.floor(win_height * 0.3)
-
-	local target_col = win_col + math.floor((win_width - picker_width) / 2)
-	local target_row = win_row + math.floor(win_height * 0.67)
-
-	if target_col < 0 then
-		target_col = 0
-	end
-	if target_col + picker_width > editor_width then
-		target_col = editor_width - picker_width
-	end
-	if target_row < 0 then
-		target_row = 0
-	end
-	if target_row + picker_height > editor_height then
-		target_row = editor_height - picker_height
-	end
-
-	return {
-		preview = "main",
-		layout = {
-			backdrop = false,
-			col = target_col,
-			width = picker_width,
-			min_width = 50,
-			row = target_row,
-			height = picker_height,
-			min_height = 10,
-			box = "vertical",
-			border = "solid",
-			title = "{title} {live} {flags}",
-			title_pos = "center",
-			{ win = "preview", title = "{preview}", width = 0.6, border = "left" },
-			{ win = "input", height = 1, border = "solid" },
-			{ win = "list", border = "none" },
-		},
-	}
-end
+local flow_layout = {
+	preview = "main",
+	layout = {
+		relative = "win",
+		backdrop = false,
+		width = 0,
+		max_width = 120,
+		row = -1,
+		height = 0.3,
+		min_height = 10,
+		box = "vertical",
+		border = "solid",
+		{ win = "preview", title = "{preview}", width = 0.6, border = "left" },
+		{ win = "input", height = 1, border = "solid", title = "{title} {live} {flags}", title_pos = "center" },
+		{ win = "list", border = "none" },
+	},
+}
 
 Edit.later(function()
 	vim.pack.add({ "git@github.com:folke/snacks.nvim" })
@@ -115,7 +75,7 @@ Edit.later(function()
 			ui_select = true,
 			-- Every picker uses the flow layout, positioned relative to the
 			-- current window rather than the whole editor.
-			layout = get_window_relative_flow_config,
+			layout = flow_layout,
 			matcher = {
 				cwd_bonus = true,
 				frecency = true,
