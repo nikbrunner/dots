@@ -135,7 +135,6 @@ zoom = "alt+z"
 navigate_workspace_up = "k"
 navigate_workspace_down = "j"
 
-# https://github.com/paulbkim-dev/vim-herdr-navigation
 [[keys.command]]
 key = "ctrl+h"
 type = "plugin_action"
@@ -202,27 +201,25 @@ type = "pane"
 command = "tuxedo"
 description = "Open Tasks"
 
-# https://github.com/thanhdat77/herdr-picker-plus
 [[keys.command]]
 key = "alt+s"
 type = "plugin_action"
-command = "herdr-picker-plus.open"
-description = "picker plus: open"
+command = "herdr-navigator.open"
+description = "jump to anything"
 
-# https://github.com/cloudmanic/herdr-plus
-# native project picker — supports split panes; picker-plus's project source does not
 [[keys.command]]
 key = "alt+p"
 type = "plugin_action"
 command = "cloudmanic.herdr-plus.projects"
 description = "herdr-plus: projects"
 
-# https://github.com/third774/herdr-last-workspace
 [[keys.command]]
 key = "alt+shift+o"
 type = "plugin_action"
-command = "third774.last-workspace.toggle"
-description = "last workspace"
+command = "herdr-navigator.jump-back"
+description = "jump to previous workspace"
 
-[update]
-channel = "preview"
+[[keys.command]]
+key = "cmd+r"
+type = "plugin_action"
+command = "persiyanov.reviewr.toggle"
