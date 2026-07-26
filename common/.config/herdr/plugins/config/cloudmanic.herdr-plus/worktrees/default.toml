@@ -1,0 +1,20 @@
+repo = "*"
+
+[[tabs]]
+name = "code"
+
+[[tabs.panes]]
+label = "agent"
+command = "claude"
+
+[[tabs.panes]]
+label = "editor"
+command = "nvim"
+split = "right"
+
+[[tabs]]
+name = "git"
+command = "lazygit"
+
+[[tabs]]
+name = "shell"
