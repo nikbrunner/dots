@@ -59,7 +59,7 @@ delivery = "herdr"
 agent_panel_sort = "priority"
 show_agent_labels_on_pane_borders = true
 prompt_new_tab_name = false
-hide_tab_bar_when_single_tab = true
+hide_tab_bar_when_single_tab = false
 
 # https://herdr.dev/docs/configuration/#sidebar-row-layouts
 [ui.sidebar.agents]
@@ -98,7 +98,7 @@ kitty_graphics = true
 
 switch_ascii_input_source_in_prefix = true
 [keys]
-prefix = "ctrl+,"
+prefix = "ctrl+a"
 
 switch_tab = "alt+1..9"
 switch_workspace = "alt+shift+1..9"
