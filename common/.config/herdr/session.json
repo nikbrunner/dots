@@ -14,10 +14,11 @@
       },
       "public_pane_numbers": {
         "3": 5,
+        "125": 77,
         "2": 4,
         "38": 29
       },
-      "next_public_pane_number": 70,
+      "next_public_pane_number": 78,
       "public_tab_numbers": [
         1,
         2,
@@ -28,7 +29,16 @@
         {
           "custom_name": null,
           "layout": {
-            "Pane": 38
+            "Split": {
+              "direction": "Horizontal",
+              "ratio": 0.5,
+              "first": {
+                "Pane": 38
+              },
+              "second": {
+                "Pane": 125
+              }
+            }
           },
           "panes": {
             "38": {
@@ -37,12 +47,15 @@
                 "source": "herdr:claude",
                 "agent": "claude",
                 "kind": "id",
-                "value": "a7190c05-ce04-406a-bda9-fdce5199fb28"
+                "value": "c951559c-ed7d-4a20-bde7-d32e6dee29a0"
               }
+            },
+            "125": {
+              "cwd": "/Users/brunner/repos/nikbrunner/dots"
             }
           },
-          "zoomed": false,
-          "focused": 38,
+          "zoomed": true,
+          "focused": 125,
           "root_pane": 38
         },
         {

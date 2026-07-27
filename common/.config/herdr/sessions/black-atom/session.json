@@ -36,9 +36,9 @@
       "custom_name": "Livery",
       "identity_cwd": "/Users/brunner/repos/black-atom-industries/livery",
       "public_pane_numbers": {
-        "5": 3,
         "4": 2,
-        "3": 1
+        "3": 1,
+        "5": 3
       },
       "next_public_pane_number": 5,
       "public_tab_numbers": [
@@ -98,9 +98,9 @@
       "custom_name": "nvim",
       "identity_cwd": "/Users/brunner/repos/black-atom-industries/nvim",
       "public_pane_numbers": {
+        "9": 3,
         "8": 2,
-        "7": 1,
-        "9": 3
+        "7": 1
       },
       "next_public_pane_number": 7,
       "public_tab_numbers": [
@@ -162,8 +162,8 @@
       "active_tab": 1
     }
   ],
-  "active": 2,
-  "selected": 2,
+  "active": 1,
+  "selected": 1,
   "sidebar_width": 26,
   "sidebar_section_split": 0.5,
   "collapsed_space_keys": []

@@ -34,23 +34,45 @@ channel = "preview"
 # peach = "#c67b36"    # palette.darkYellow
 
 [theme.custom]
+# paper blue light
+# Monochrome theme: palette.* is all one blue, so the semantic colors come
+# from ui.fg.* feedback instead — otherwise git status and agent states
+# would be indistinguishable.
+accent = "#002469"      # accents.a10
+panel_bg = "#dadee3"    # ui.bg.panel
+surface_dim = "#c5cbd2" # l10 — sidebar separators, scrollbar track
+surface0 = "#dadee3"    # ui.bg.panel (bg.active is lighter than default here)
+surface1 = "#c5cbd2"    # l10
+overlay0 = "#558ac0"    # primaries.m30 — unfocused pane borders
+overlay1 = "#497eb3"    # primaries.m20
+text = "#002469"        # ui.fg.default
+subtext0 = "#32669a"    # ui.fg.subtle
+red = "#f14d4c"         # ui.fg.negative
+green = "#819e00"       # ui.fg.positive
+yellow = "#cd7b00"      # ui.fg.warn
+blue = "#00a3e9"        # ui.fg.info
+teal = "#497eb3"        # primaries.m20
+mauve = "#004f8b"       # accents.a20
+peach = "#cd7b00"       # ui.fg.warn
+
+# [theme.custom]
 # murasaki yoru
-accent = "#dca23a"      # accents.a10 (darkYellow)
-panel_bg = "#250d15"    # ui.bg.panel
-surface_dim = "#452a32"
-surface0 = "#351b23"    # ui.bg.active
-surface1 = "#452a32"    # step below l10 (hand-derived, not in core)
-overlay0 = "#7d5178"    # primaries.m30
-overlay1 = "#946996"    # primaries.m40
-text = "#d4bfd6"        # ui.fg.default
-subtext0 = "#946996"    # ui.fg.subtle
-red = "#ff857b"
-green = "#80bda2"
-yellow = "#dca23a"
-blue = "#8cb6c5"
-teal = "#72bdbc"
-mauve = "#d49bb2"       # palette.magenta
-peach = "#e89a47"       # palette.darkYellow
+# accent = "#dca23a"      # accents.a10 (darkYellow)
+# panel_bg = "#250d15"    # ui.bg.panel
+# surface_dim = "#452a32"
+# surface0 = "#351b23"    # ui.bg.active
+# surface1 = "#452a32"    # step below l10 (hand-derived, not in core)
+# overlay0 = "#7d5178"    # primaries.m30
+# overlay1 = "#946996"    # primaries.m40
+# text = "#d4bfd6"        # ui.fg.default
+# subtext0 = "#946996"    # ui.fg.subtle
+# red = "#ff857b"
+# green = "#80bda2"
+# yellow = "#dca23a"
+# blue = "#8cb6c5"
+# teal = "#72bdbc"
+# mauve = "#d49bb2"       # palette.magenta
+# peach = "#e89a47"       # palette.darkYellow
 
 [ui.toast]
 delivery = "herdr"
