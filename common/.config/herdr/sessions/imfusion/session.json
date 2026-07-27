@@ -43,8 +43,8 @@
       "custom_name": "[NBR] Agents",
       "identity_cwd": "/Users/brunner/repos/imfusion/brunner/agents",
       "public_pane_numbers": {
-        "3": 1,
-        "4": 2
+        "4": 2,
+        "3": 1
       },
       "next_public_pane_number": 13,
       "public_tab_numbers": [
@@ -97,8 +97,8 @@
       },
       "public_pane_numbers": {
         "6": 425,
-        "5": 307,
-        "73": 440
+        "73": 440,
+        "5": 307
       },
       "next_public_pane_number": 452,
       "public_tab_numbers": [
@@ -195,9 +195,9 @@
         "is_linked_worktree": false
       },
       "public_pane_numbers": {
-        "9": 1,
         "10": 2,
-        "11": 3
+        "11": 3,
+        "9": 1
       },
       "next_public_pane_number": 11,
       "public_tab_numbers": [
@@ -354,11 +354,11 @@
         "is_linked_worktree": true
       },
       "public_pane_numbers": {
-        "83": 44,
-        "28": 6,
-        "24": 3,
         "26": 4,
-        "23": 2
+        "23": 2,
+        "83": 44,
+        "24": 3,
+        "28": 6
       },
       "next_public_pane_number": 49,
       "public_tab_numbers": [
@@ -426,15 +426,15 @@
             }
           },
           "panes": {
+            "24": {
+              "cwd": "/Users/brunner/repos/imfusion/cp/imfusion-portal-CP-89/fe"
+            },
             "28": {
               "cwd": "/Users/brunner/repos/imfusion/cp/imfusion-portal-CP-89/fe"
             },
             "26": {
               "cwd": "/Users/brunner/repos/imfusion/cp/imfusion-portal-CP-89/frontend",
               "label": "fe server"
-            },
-            "24": {
-              "cwd": "/Users/brunner/repos/imfusion/cp/imfusion-portal-CP-89/fe"
             }
           },
           "zoomed": false,
@@ -445,8 +445,8 @@
       "active_tab": 1
     }
   ],
-  "active": 2,
-  "selected": 2,
+  "active": 0,
+  "selected": 0,
   "sidebar_width": 33,
   "sidebar_section_split": 0.55813956,
   "collapsed_space_keys": []
