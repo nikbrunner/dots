@@ -72,6 +72,7 @@ git:
         replace: "DEV-$1 "
   pagers:
     - colorArg: always
+      # pager: delta --paging=never
       pager: hunk pager --mode split --pager --no-line-numbers --no-hunk-headers --theme github-light-default
   merging:
     # only applicable to unix users

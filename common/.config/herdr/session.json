@@ -13,11 +13,13 @@
         "is_linked_worktree": false
       },
       "public_pane_numbers": {
-        "4": 5,
+        "10": 95,
         "1": 29,
+        "4": 5,
+        "16": 101,
         "3": 4
       },
-      "next_public_pane_number": 93,
+      "next_public_pane_number": 102,
       "public_tab_numbers": [
         1,
         2,
@@ -28,21 +30,51 @@
         {
           "custom_name": null,
           "layout": {
-            "Pane": 1
+            "Split": {
+              "direction": "Horizontal",
+              "ratio": 0.5,
+              "first": {
+                "Split": {
+                  "direction": "Horizontal",
+                  "ratio": 0.5,
+                  "first": {
+                    "Pane": 1
+                  },
+                  "second": {
+                    "Pane": 16
+                  }
+                }
+              },
+              "second": {
+                "Pane": 10
+              }
+            }
           },
           "panes": {
+            "10": {
+              "cwd": "/Users/brunner/repos/nikbrunner/dots",
+              "agent_session": {
+                "source": "herdr:claude",
+                "agent": "claude",
+                "kind": "id",
+                "value": "2b355551-82e6-4eda-ab74-35ef032d5ead"
+              }
+            },
+            "16": {
+              "cwd": "/Users/brunner/repos/nikbrunner/dots"
+            },
             "1": {
               "cwd": "/Users/brunner/repos/nikbrunner/dots",
               "agent_session": {
                 "source": "herdr:claude",
                 "agent": "claude",
                 "kind": "id",
-                "value": "baa48d15-ebf7-4200-8e6d-c46c63e4573d"
+                "value": "355e96e7-695c-4aad-b43d-b847087a0a18"
               }
             }
           },
-          "zoomed": false,
-          "focused": 1,
+          "zoomed": true,
+          "focused": 16,
           "root_pane": 1
         },
         {
@@ -81,8 +113,8 @@
       "custom_name": "Notes",
       "identity_cwd": "/Users/brunner/repos/nikbrunner/notes",
       "public_pane_numbers": {
-        "5": 1,
-        "6": 3
+        "6": 3,
+        "5": 1
       },
       "next_public_pane_number": 5,
       "public_tab_numbers": [

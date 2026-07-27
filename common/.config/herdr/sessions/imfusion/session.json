@@ -13,8 +13,8 @@
         "is_linked_worktree": false
       },
       "public_pane_numbers": {
-        "2": 77,
-        "1": 24
+        "1": 24,
+        "2": 77
       },
       "next_public_pane_number": 94,
       "public_tab_numbers": [
@@ -55,52 +55,6 @@
       "active_tab": 0
     },
     {
-      "id": "w11",
-      "custom_name": "[NBR] Agents",
-      "identity_cwd": "/Users/brunner/repos/imfusion/brunner/agents",
-      "public_pane_numbers": {
-        "4": 2,
-        "3": 1
-      },
-      "next_public_pane_number": 13,
-      "public_tab_numbers": [
-        1,
-        2
-      ],
-      "next_public_tab_number": 3,
-      "tabs": [
-        {
-          "custom_name": null,
-          "layout": {
-            "Pane": 3
-          },
-          "panes": {
-            "3": {
-              "cwd": "/Users/brunner/repos/imfusion/brunner/agents"
-            }
-          },
-          "zoomed": false,
-          "focused": 3,
-          "root_pane": 3
-        },
-        {
-          "custom_name": "code",
-          "layout": {
-            "Pane": 4
-          },
-          "panes": {
-            "4": {
-              "cwd": "/Users/brunner/repos/imfusion/brunner/agents"
-            }
-          },
-          "zoomed": false,
-          "focused": 4,
-          "root_pane": 4
-        }
-      ],
-      "active_tab": 0
-    },
-    {
       "id": "wM",
       "custom_name": "[WEB] UI",
       "identity_cwd": "/Users/brunner/repos/imfusion/websdk/web-ui",
@@ -113,8 +67,8 @@
       },
       "public_pane_numbers": {
         "6": 425,
-        "7": 440,
-        "5": 307
+        "5": 307,
+        "7": 440
       },
       "next_public_pane_number": 453,
       "public_tab_numbers": [
@@ -150,7 +104,7 @@
                 "source": "herdr:claude",
                 "agent": "claude",
                 "kind": "id",
-                "value": "0f3de2f5-ae84-4e7f-aa19-965c2c104ac9"
+                "value": "cf44c9f3-07fb-4b22-b865-f082acf1dd38"
               }
             }
           },
@@ -217,9 +171,9 @@
         "is_linked_worktree": false
       },
       "public_pane_numbers": {
-        "9": 1,
         "10": 2,
-        "11": 3
+        "11": 3,
+        "9": 1
       },
       "next_public_pane_number": 11,
       "public_tab_numbers": [
@@ -376,9 +330,9 @@
         "is_linked_worktree": true
       },
       "public_pane_numbers": {
+        "17": 3,
         "15": 44,
         "18": 4,
-        "17": 3,
         "16": 2,
         "19": 6
       },
@@ -461,8 +415,8 @@
       "active_tab": 0
     }
   ],
-  "active": 0,
-  "selected": 0,
+  "active": 1,
+  "selected": 1,
   "sidebar_width": 33,
   "sidebar_section_split": 0.55813956,
   "collapsed_space_keys": []

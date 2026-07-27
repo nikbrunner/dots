@@ -19,6 +19,26 @@
     ],
     "last_seen": "2026-07-26"
   },
+  "black-atom-industries/core": {
+    "root": "~/repos/black-atom-industries/core",
+    "owner": "black-atom-industries",
+    "name": "core",
+    "work": false,
+    "session_dirs": [
+      "~/repos/black-atom-industries/core"
+    ],
+    "last_seen": "2026-07-27"
+  },
+  "cp/imfusion-portal": {
+    "root": "~/repos/imfusion/cp/imfusion-portal",
+    "owner": "cp",
+    "name": "imfusion-portal",
+    "work": true,
+    "session_dirs": [
+      "~/repos/imfusion/cp/imfusion-portal-CP-89"
+    ],
+    "last_seen": "2026-07-27"
+  },
   "github/cloudmanic.herdr-plus-0cce37b56fb9": {
     "root": "~/repos/nikbrunner/dots/common/.config/herdr/plugins/github/cloudmanic.herdr-plus-0cce37b56fb9",
     "owner": "github",
@@ -49,6 +69,16 @@
     ],
     "last_seen": "2026-07-26"
   },
+  "github/vim-herdr-navigation-a8bf42123d81": {
+    "root": "~/repos/nikbrunner/dots/common/.config/herdr/plugins/github/vim-herdr-navigation-a8bf42123d81",
+    "owner": "github",
+    "name": "vim-herdr-navigation-a8bf42123d81",
+    "work": false,
+    "session_dirs": [
+      "~/repos/nikbrunner/dots/common/.config/herdr/plugins/github/vim-herdr-navigation-a8bf42123d81"
+    ],
+    "last_seen": "2026-07-27"
+  },
   "nikbrunner/bc-web-client": {
     "root": "~/repos/nikbrunner/bc-web-client",
     "owner": "nikbrunner",
@@ -71,6 +101,17 @@
     ],
     "last_seen": "2026-07-26"
   },
+  "nikbrunner/imf-notes": {
+    "root": "~/repos/nikbrunner/imf-notes",
+    "owner": "nikbrunner",
+    "name": "imf-notes",
+    "work": true,
+    "session_dirs": [
+      "~/repos/nikbrunner/imf-notes",
+      "~/repos/nikbrunner/imf-notes/logs/2026/2026.07"
+    ],
+    "last_seen": "2026-07-27"
+  },
   "nikbrunner/koyo": {
     "root": "~/repos/nikbrunner/koyo",
     "owner": "nikbrunner",
@@ -80,6 +121,16 @@
       "~/repos/nikbrunner/koyo"
     ],
     "last_seen": "2026-07-26"
+  },
+  "nikbrunner/notes": {
+    "root": "~/repos/nikbrunner/notes",
+    "owner": "nikbrunner",
+    "name": "notes",
+    "work": false,
+    "session_dirs": [
+      "~/repos/nikbrunner/notes"
+    ],
+    "last_seen": "2026-07-27"
   },
   "websdk/web-ui": {
     "root": "~/repos/imfusion/websdk/web-ui",
