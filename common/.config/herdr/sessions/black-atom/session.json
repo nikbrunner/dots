@@ -40,7 +40,7 @@
         "3": 1,
         "5": 3
       },
-      "next_public_pane_number": 5,
+      "next_public_pane_number": 6,
       "public_tab_numbers": [
         1,
         2,
@@ -98,9 +98,9 @@
       "custom_name": "nvim",
       "identity_cwd": "/Users/brunner/repos/black-atom-industries/nvim",
       "public_pane_numbers": {
+        "7": 1,
         "9": 3,
-        "8": 2,
-        "7": 1
+        "8": 2
       },
       "next_public_pane_number": 7,
       "public_tab_numbers": [
@@ -160,10 +160,93 @@
         }
       ],
       "active_tab": 1
+    },
+    {
+      "id": "w8",
+      "custom_name": "core",
+      "identity_cwd": "/Users/brunner/repos/black-atom-industries/core",
+      "public_pane_numbers": {
+        "21": 3,
+        "22": 4,
+        "20": 2,
+        "19": 1
+      },
+      "next_public_pane_number": 6,
+      "public_tab_numbers": [
+        1,
+        2,
+        3
+      ],
+      "next_public_tab_number": 5,
+      "tabs": [
+        {
+          "custom_name": "code",
+          "layout": {
+            "Split": {
+              "direction": "Horizontal",
+              "ratio": 0.5,
+              "first": {
+                "Pane": 19
+              },
+              "second": {
+                "Pane": 20
+              }
+            }
+          },
+          "panes": {
+            "19": {
+              "cwd": "/Users/brunner/repos/black-atom-industries/core",
+              "label": "agent",
+              "agent_session": {
+                "source": "herdr:claude",
+                "agent": "claude",
+                "kind": "id",
+                "value": "b01dafb5-a4e9-45b2-be76-f3a4ef20fb59"
+              }
+            },
+            "20": {
+              "cwd": "/Users/brunner/repos/black-atom-industries/core",
+              "label": "editor"
+            }
+          },
+          "zoomed": false,
+          "focused": 19,
+          "root_pane": 19
+        },
+        {
+          "custom_name": "git",
+          "layout": {
+            "Pane": 21
+          },
+          "panes": {
+            "21": {
+              "cwd": "/Users/brunner/repos/black-atom-industries/core"
+            }
+          },
+          "zoomed": false,
+          "focused": 21,
+          "root_pane": 21
+        },
+        {
+          "custom_name": "shell",
+          "layout": {
+            "Pane": 22
+          },
+          "panes": {
+            "22": {
+              "cwd": "/Users/brunner/repos/black-atom-industries/core"
+            }
+          },
+          "zoomed": false,
+          "focused": 22,
+          "root_pane": 22
+        }
+      ],
+      "active_tab": 2
     }
   ],
-  "active": 1,
-  "selected": 1,
+  "active": 3,
+  "selected": 3,
   "sidebar_width": 26,
   "sidebar_section_split": 0.5,
   "collapsed_space_keys": []

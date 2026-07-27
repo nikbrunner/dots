@@ -10,10 +10,10 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +16 logs/2026/2026.07/2026.07.24\ -\ Fri.md
+badd +13 logs/2026/2026.07/2026.07.27\ -\ Mon.md
 argglobal
 %argdel
-edit logs/2026/2026.07/2026.07.24\ -\ Fri.md
+edit logs/2026/2026.07/2026.07.27\ -\ Mon.md
 tcd ~/repos/nikbrunner/imf-notes
 argglobal
 xnoremap <buffer> $ g$
@@ -77,7 +77,7 @@ setlocal foldnestmax=10
 setlocal foldtext=
 setlocal formatexpr=v:lua.require'conform'.formatexpr()
 setlocal formatlistpat=^\\s*\\d\\+\\.\\s\\+\\|^\\s*[-*+]\\s\\+\\|^\\[^\\ze[^\\]]\\+\\]:\\&^.\\{4\\}
-setlocal formatoptions=1qntjl
+setlocal formatoptions=j1tqln
 setlocal iminsert=0
 setlocal imsearch=-1
 setlocal includeexpr=
@@ -96,7 +96,7 @@ setlocal modifiable
 setlocal nrformats=bin,hex
 setlocal number
 setlocal numberwidth=4
-setlocal omnifunc=v:lua.vim.lsp.omnifunc
+setlocal omnifunc=htmlcomplete#CompleteTags
 setlocal nopreserveindent
 setlocal nopreviewwindow
 setlocal quoteescape=\\
@@ -129,25 +129,45 @@ setlocal textwidth=80
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#...%*%#WinBarSeparator#/%*%#WinBarFilename#2026.07.24\ -\ Fri.md%*%=
+setlocal winbar=%#WinBarPath#logs%*%#WinBarSeparator#/%*%#WinBarPath#2026%*%#WinBarSeparator#/%*%#WinBarPath#2026.07%*%#WinBarSeparator#/%*%#WinBarFilename#2026.07.27\ -\ Mon.md%*%=%#WinBarGitLabel#\ [GIT:%#WinBarGitAdd#\ +3%#WinBarGitLabel#]%*\ 
 setlocal winblend=10
 setlocal nowinfixbuf
-setlocal winfixheight
-setlocal winfixwidth
+setlocal nowinfixheight
+setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowinpinned
 setlocal nowrap
 setlocal wrapmargin=0
 1
 sil! normal! zo
-12
+15
 sil! normal! zo
-let s:l = 16 - ((11 * winheight(0) + 11) / 23)
+17
+sil! normal! zo
+19
+sil! normal! zo
+30
+sil! normal! zo
+32
+sil! normal! zo
+15
+sil! normal! zo
+15
+sil! normal! zo
+17
+sil! normal! zo
+19
+sil! normal! zo
+30
+sil! normal! zo
+32
+sil! normal! zo
+let s:l = 11 - ((10 * winheight(0) + 21) / 43)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 16
-normal! 05|
+keepjumps 11
+normal! 0
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
