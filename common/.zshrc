@@ -164,7 +164,8 @@ autoload -Uz vcs_info
 zstyle ':vcs_info:git:*' formats ' %F{green}%b%f'
 precmd_functions+=(vcs_info)
 setopt PROMPT_SUBST
-PROMPT='%F{gray}%~%f${vcs_info_msg_0_}%(1j. %F{red}[%j]%f.)
+[[ -n $SSH_CONNECTION ]] && host_color=red || host_color=gray
+PROMPT='%F{$host_color}󰢹 %m%f %F{gray}%~%f${vcs_info_msg_0_}%(1j. %F{red}[%j]%f.)
 %F{yellow}$%f '
 
 # mise — runtime and tool version manager (MUST run last, after all
