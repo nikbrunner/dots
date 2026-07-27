@@ -6,8 +6,15 @@ herdr plugin install paulbkim-dev/vim-herdr-navigation --yes
 # https://github.com/thanhdat77/herdr-picker-plus
 herdr plugin install thanhdat77/herdr-picker-plus --yes
 
-# https://github.com/third774/herdr-last-workspace
-herdr plugin install persiyanov.reviewr --yes
+# https://github.com/persiyanov/herdr-reviewr
+herdr plugin install persiyanov/herdr-reviewr --yes
+
+# The workspace.created hook below re-registers herdr-plus via `plugin link`,
+# which switches its source to local. Installing from GitHub then refuses until
+# that link is dropped, so unlink first when a previous run left one behind.
+herdr plugin list --json 2>/dev/null |
+    python3 -c 'import json,sys; sys.exit(0 if any(p["plugin_id"]=="cloudmanic.herdr-plus" and p["source"]["kind"]=="local" for p in json.load(sys.stdin)["result"]["plugins"]) else 1)' 2>/dev/null &&
+    herdr plugin unlink cloudmanic.herdr-plus >/dev/null
 
 # https://github.com/cloudmanic/herdr-plus
 herdr plugin install cloudmanic/herdr-plus --yes
