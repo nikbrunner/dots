@@ -325,13 +325,13 @@
       "repo": "herdr-picker-plus",
       "resolved_commit": "68064d53d25c53b6947d50c5ba440e9dc3b47b21",
       "managed_path": "/Users/brunner/.config/herdr/plugins/github/herdr-navigator-3a5a6fa5dfb5",
-      "installed_unix_ms": 1785086262634
+      "installed_unix_ms": 1785136692561
     }
   },
   {
     "plugin_id": "persiyanov.reviewr",
     "name": "reviewr",
-    "version": "0.24.1",
+    "version": "0.25.0",
     "min_herdr_version": "0.7.0",
     "description": "Review agent-written diffs beside the chat and add line comments to the agent input.",
     "manifest_path": "/Users/brunner/repos/nikbrunner/dots/common/.config/herdr/plugins/github/persiyanov.reviewr-e87b654a74f8/herdr-plugin.toml",
@@ -416,9 +416,9 @@
       "kind": "github",
       "owner": "persiyanov",
       "repo": "herdr-reviewr",
-      "resolved_commit": "27309ecb68435700d58dffd32d518ed998998462",
+      "resolved_commit": "f1dd491e47ef55410eca7c73daebe3726f06bda0",
       "managed_path": "/Users/brunner/.config/herdr/plugins/github/persiyanov.reviewr-e87b654a74f8",
-      "installed_unix_ms": 1785086798397
+      "installed_unix_ms": 1785136703863
     }
   },
   {
@@ -490,7 +490,7 @@
       "repo": "vim-herdr-navigation",
       "resolved_commit": "53e318c772c4d3b7fbd904ac43bcf3e5b5d8b244",
       "managed_path": "/Users/brunner/.config/herdr/plugins/github/vim-herdr-navigation-a8bf42123d81",
-      "installed_unix_ms": 1785086261737
+      "installed_unix_ms": 1785136691636
     }
   }
 ]
