@@ -22,8 +22,6 @@ brew "mole"                      # not in mise registry
 brew "mpd"                       # music player daemon — dots has mpd.conf
 brew "rmpc"                      # mpd client TUI — dots has rmpc config
 brew "btop"
-brew "ngrok"
-brew "handy"                     # https://handy.computer
 
 # Custom formula / taps
 brew "agent-browser"
@@ -41,11 +39,13 @@ cask "figma"
 cask "filen"
 cask "ghostty"
 cask "google-chrome"
+cask "handy"                     # https://handy.computer
 cask "helium-browser"
 cask "homerow"
 cask "karabiner-elements"
 cask "linear"
 cask "mattermost"
+cask "ngrok"
 cask "obsidian"
 cask "proton-drive"
 cask "proton-pass"
