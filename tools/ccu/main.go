@@ -135,8 +135,8 @@ func report(work bool, args []string) int {
 		fmt.Fprintln(os.Stderr, "ccu: cannot determine home directory")
 		return 1
 	}
-	projectsDir := filepath.Join(home, ".claude", "projects")
-	resolver := NewResolver(filepath.Join(home, "repos"), projectsDir)
+	projectDirs := claudeProjectDirs(home)
+	resolver := NewResolver(filepath.Join(home, "repos"), projectDirs)
 
 	// repo -> agent -> spend
 	byRepo := map[string]map[string]AgentSpend{}
@@ -152,7 +152,7 @@ func report(work bool, args []string) int {
 
 	if agents["claude"] {
 		costs, attribution, err := claudeSpend(work, since, until, passthrough,
-			projectsDir, resolver)
+			projectDirs, resolver)
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "ccu: %v\n", err)
 			return 1
@@ -200,11 +200,26 @@ func report(work bool, args []string) int {
 	return 0
 }
 
+// claudeProjectDirs lists the transcript stores to read. A second Anthropic
+// account runs with its own CLAUDE_CONFIG_DIR (see the claude-work shell
+// function), and its sessions are just as real as the primary account's.
+func claudeProjectDirs(home string) []string {
+	var dirs []string
+	for _, base := range []string{".claude", ".claude-work"} {
+		dir := filepath.Join(home, base, "projects")
+		if info, err := os.Stat(dir); err == nil && info.IsDir() {
+			dirs = append(dirs, dir)
+		}
+	}
+	return dirs
+}
+
 // claudeSpend joins ccusage dollars with transcript attribution.
 func claudeSpend(work bool, since, until string, passthrough []string,
-	projectsDir string, resolver *Resolver,
+	projectDirs []string, resolver *Resolver,
 ) (map[string]*Cost, map[string]*Attribution, error) {
-	data, err := RunCcusage(append([]string{"--since", since}, passthrough...))
+	data, err := RunCcusage(append([]string{"--since", since}, passthrough...),
+		projectDirs)
 	if err != nil {
 		return nil, nil, fmt.Errorf("ccusage failed: %w", err)
 	}
@@ -232,22 +247,26 @@ func claudeSpend(work bool, since, until string, passthrough []string,
 		}
 	}
 
+	// The same repo can appear under both accounts, so attribution accumulates
+	// per repo across every store rather than per directory.
 	attribution := map[string]*Attribution{}
-	entries, _ := os.ReadDir(projectsDir)
-	for _, entry := range entries {
-		if !entry.IsDir() {
-			continue
+	for _, projectsDir := range projectDirs {
+		entries, _ := os.ReadDir(projectsDir)
+		for _, entry := range entries {
+			if !entry.IsDir() {
+				continue
+			}
+			project := resolver.Resolve(entry.Name())
+			if isWorkProject(entry.Name(), project) != work {
+				continue
+			}
+			att := attribution[project.Name]
+			if att == nil {
+				att = newAttribution()
+				attribution[project.Name] = att
+			}
+			ScanProject(filepath.Join(projectsDir, entry.Name()), since, until, att)
 		}
-		project := resolver.Resolve(entry.Name())
-		if isWorkProject(entry.Name(), project) != work {
-			continue
-		}
-		att := attribution[project.Name]
-		if att == nil {
-			att = newAttribution()
-			attribution[project.Name] = att
-		}
-		ScanProject(filepath.Join(projectsDir, entry.Name()), since, until, att)
 	}
 	return costs, attribution, nil
 }

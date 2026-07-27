@@ -18,7 +18,7 @@ type Resolver struct {
 	roots       []repoRoot        // repos found on disk
 	byName      map[string]string // basename -> path, for worktree fallback
 	recorded    map[string]string // project key -> repo root, from the ledger
-	projectsDir string
+	projectDirs []string          // transcript stores, one per Claude account
 	cache       map[string]Project
 }
 
@@ -34,11 +34,11 @@ type Project struct {
 	Path string
 }
 
-func NewResolver(reposDir, projectsDir string) *Resolver {
+func NewResolver(reposDir string, projectDirs []string) *Resolver {
 	r := &Resolver{
 		byName:      map[string]string{},
 		recorded:    loadLedger().sessionIndex(),
-		projectsDir: projectsDir,
+		projectDirs: projectDirs,
 		cache:       map[string]Project{},
 	}
 
@@ -139,8 +139,13 @@ func (r *Resolver) guess(key string) Project {
 }
 
 // sessionCwd reads the working directory recorded in a project's transcripts.
+// The same key can exist under more than one account, and either copy answers.
 func (r *Resolver) sessionCwd(key string) string {
-	matches, _ := filepath.Glob(filepath.Join(r.projectsDir, key, "*.jsonl"))
+	var matches []string
+	for _, dir := range r.projectDirs {
+		found, _ := filepath.Glob(filepath.Join(dir, key, "*.jsonl"))
+		matches = append(matches, found...)
+	}
 	for _, path := range matches {
 		fh, err := os.Open(path)
 		if err != nil {

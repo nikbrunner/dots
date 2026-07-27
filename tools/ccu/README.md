@@ -103,6 +103,14 @@ an MCP server at once, so they don't sum to the repo total. And `unattributed`
 is usually the biggest line. Most turns carry no attribution at all. It's a
 leftover, not a category.
 
+## Two Claude accounts
+
+A second Anthropic account runs with its own `CLAUDE_CONFIG_DIR` (the
+`claude-work` shell function), so its sessions land in `~/.claude-work` instead
+of `~/.claude`. ccu reads both, and passes both to ccusage as a
+comma-separated `CLAUDE_CONFIG_DIR`. Left alone, ccusage reads only `~/.claude`
+and every work session silently disappears from the report.
+
 ## Work vs personal
 
 A repo is work if its path or git remote mentions `imfusion`, or its name is in
