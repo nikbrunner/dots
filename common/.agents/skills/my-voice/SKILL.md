@@ -68,9 +68,12 @@ Drawn from how I actually describe technical work: current state first, then tar
 - Opinion is marked with "I think", never "in my opinion" or "arguably". A firm requirement gets no marker at all: the bare "should be" is the requirement.
 - Firm and unsure look different on the page. A requirement is a short imperative sentence ("Shadow should be optional."). A guess runs longer and hedges out loud ("that's just my guess", "maybe that's the wrong approach"). Don't flatten both into the same confident middle register.
 - Scope gets called out explicitly when something threatens to grow: "this should be scoped into a dedicated issue", "leave X alone for now". Say what's out, not just what's in.
+- **No solutions, just scope.** Don't write how to solve it. A ticket waits in the backlog while the code moves, so an approach written now is often wrong by the time someone starts, and worse than nothing because it reads as decided. A durable detail (a fixed API, a path, a version floor) can stay as one clause. Anything needing explanation isn't durable.
 - When the right answer isn't settled, end on the real question ("What do you think?", "or maybe I'm wrong here") instead of a confident summary.
 - Context as prose, not section scaffolding. Acceptance criteria only when they are real and testable. Never open with "This ticket covers...".
-- Three to five short paragraphs, plus a list of asks if there are several. Past that the scope is wrong, not the prose: split the ticket instead of writing more of it. Reasoning that only justifies the framing belongs in a comment, not the description.
+- **Two or three sentences is the normal size.** Not the floor, the typical case. A paragraph or two is already a big ticket, and past that the scope is wrong rather than the prose: split it instead of writing more. Write the short version first. Drafting long and trimming produces a compromise, not the right text.
+- The failure mode is always length. If a draft runs three paragraphs, don't ask which words to tighten, ask which two sentences would survive on their own. They're usually the whole ticket.
+- Reasoning that only justifies the framing belongs in a comment, not the description.
 - If the ticket would tell someone to make a small fix I could make right now, make the fix and leave it out. A description is for work that needs deciding or scheduling, not for a two-minute edit.
 - No emoji. Tickets, PR descriptions, docs and commit messages are artifacts other people work from, and they stay clean regardless of how conversational I am elsewhere.
 
