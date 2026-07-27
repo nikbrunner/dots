@@ -13,13 +13,11 @@
         "is_linked_worktree": false
       },
       "public_pane_numbers": {
-        "10": 95,
-        "1": 29,
         "4": 5,
-        "16": 101,
-        "3": 4
+        "3": 4,
+        "19": 104
       },
-      "next_public_pane_number": 102,
+      "next_public_pane_number": 113,
       "public_tab_numbers": [
         1,
         2,
@@ -30,52 +28,16 @@
         {
           "custom_name": null,
           "layout": {
-            "Split": {
-              "direction": "Horizontal",
-              "ratio": 0.5,
-              "first": {
-                "Split": {
-                  "direction": "Horizontal",
-                  "ratio": 0.5,
-                  "first": {
-                    "Pane": 1
-                  },
-                  "second": {
-                    "Pane": 16
-                  }
-                }
-              },
-              "second": {
-                "Pane": 10
-              }
-            }
+            "Pane": 19
           },
           "panes": {
-            "10": {
-              "cwd": "/Users/brunner/repos/nikbrunner/dots",
-              "agent_session": {
-                "source": "herdr:claude",
-                "agent": "claude",
-                "kind": "id",
-                "value": "2b355551-82e6-4eda-ab74-35ef032d5ead"
-              }
-            },
-            "16": {
+            "19": {
               "cwd": "/Users/brunner/repos/nikbrunner/dots"
-            },
-            "1": {
-              "cwd": "/Users/brunner/repos/nikbrunner/dots",
-              "agent_session": {
-                "source": "herdr:claude",
-                "agent": "claude",
-                "kind": "id",
-                "value": "355e96e7-695c-4aad-b43d-b847087a0a18"
-              }
             }
           },
-          "zoomed": true,
-          "focused": 16,
-          "root_pane": 1
+          "zoomed": false,
+          "focused": 19,
+          "root_pane": 19
         },
         {
           "custom_name": null,
