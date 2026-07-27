@@ -13,11 +13,11 @@
         "is_linked_worktree": false
       },
       "public_pane_numbers": {
-        "38": 29,
+        "3": 5,
         "2": 4,
-        "3": 5
+        "38": 29
       },
-      "next_public_pane_number": 68,
+      "next_public_pane_number": 70,
       "public_tab_numbers": [
         1,
         2,
@@ -37,7 +37,7 @@
                 "source": "herdr:claude",
                 "agent": "claude",
                 "kind": "id",
-                "value": "aff35672-3f99-4b1d-970e-074b73a0f035"
+                "value": "a7190c05-ce04-406a-bda9-fdce5199fb28"
               }
             }
           },
@@ -81,8 +81,8 @@
       "custom_name": "Notes",
       "identity_cwd": "/Users/brunner/repos/nikbrunner/notes",
       "public_pane_numbers": {
-        "29": 1,
-        "31": 3
+        "31": 3,
+        "29": 1
       },
       "next_public_pane_number": 5,
       "public_tab_numbers": [
