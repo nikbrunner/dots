@@ -4,7 +4,10 @@
     [
       {
         "id": "3bf084ae-5d17-4b1f-97fc-37cd8b222c77",
-        "type": "claude-account-email"
+        "type": "custom-command",
+        "commandPath": "~/.local/bin/claude-account-label",
+        "preserveColors": true,
+        "timeout": 1000
       },
       {
         "id": "1aa8d15c-e7cf-4460-ab29-7eb6b71384e9",
@@ -185,6 +188,7 @@
   "compactThreshold": 60,
   "colorLevel": 3,
   "defaultPadding": "",
+  "defaultPaddingSide": "both",
   "inheritSeparatorColors": true,
   "globalBold": true,
   "gitCacheTtlSeconds": 5,
@@ -201,5 +205,6 @@
     "endCaps": [],
     "autoAlign": false,
     "continueThemeAcrossLines": false
-  }
+  },
+  "overrideForegroundColor": "blue"
 }
