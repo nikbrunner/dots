@@ -44,7 +44,6 @@ common:
   common/.config/zed: ~/.config/zed
   common/.config/ghostty: ~/.config/ghostty
   common/.config/kitty: ~/.config/kitty
-  common/.config/wezterm: ~/.config/wezterm
   common/.config/tmux: ~/.config/tmux
 
   # Herdr ===================================================================

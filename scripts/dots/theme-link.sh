@@ -163,8 +163,6 @@ fi
 # Process each adapter
 process_adapter "ghostty" "conf" "common/.config/ghostty/themes"
 echo ""
-process_adapter "wezterm" "toml" "common/.config/wezterm/colors"
-echo ""
 process_adapter "zed" "json" "common/.config/zed/themes"
 echo ""
 process_adapter "niri" "kdl" "arch/.config/niri/themes"
