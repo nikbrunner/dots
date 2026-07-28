@@ -47,7 +47,18 @@ common:
   common/.config/tmux: ~/.config/tmux
 
   # Herdr ===================================================================
-  common/.config/herdr: ~/.config/herdr
+  # Linked per entry so ~/.config/herdr is a real directory: work-scoped
+  # session state under sessions/ stays out of the repo, and the daemon's
+  # sockets and logs land outside the working tree.
+  common/.config/herdr/.plugins.lock: ~/.config/herdr/.plugins.lock
+  common/.config/herdr/config.toml: ~/.config/herdr/config.toml
+  common/.config/herdr/install-plugins.sh: ~/.config/herdr/install-plugins.sh
+  common/.config/herdr/plugins: ~/.config/herdr/plugins
+  common/.config/herdr/plugins.json: ~/.config/herdr/plugins.json
+  common/.config/herdr/release-notes.json: ~/.config/herdr/release-notes.json
+  common/.config/herdr/session-history.json: ~/.config/herdr/session-history.json
+  common/.config/herdr/session.json: ~/.config/herdr/session.json
+  common/.config/herdr/sessions/black-atom: ~/.config/herdr/sessions/black-atom
 
   # Theming =================================================================
   "common/.config/black-atom/*": ~/.config/black-atom
