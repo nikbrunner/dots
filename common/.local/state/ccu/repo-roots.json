@@ -29,13 +29,24 @@
     ],
     "last_seen": "2026-07-27"
   },
+  "black-atom-industries/nvim": {
+    "root": "~/repos/black-atom-industries/nvim",
+    "owner": "black-atom-industries",
+    "name": "nvim",
+    "work": false,
+    "session_dirs": [
+      "~/repos/black-atom-industries/nvim"
+    ],
+    "last_seen": "2026-07-27"
+  },
   "cp/imfusion-portal": {
     "root": "~/repos/imfusion/cp/imfusion-portal",
     "owner": "cp",
     "name": "imfusion-portal",
     "work": true,
     "session_dirs": [
-      "~/repos/imfusion/cp/imfusion-portal-CP-89"
+      "~/repos/imfusion/cp/imfusion-portal-CP-89",
+      "~/repos/imfusion/cp/imfusion-portal-CP-89/fe"
     ],
     "last_seen": "2026-07-27"
   },
@@ -95,11 +106,13 @@
     "name": "dots",
     "work": false,
     "session_dirs": [
+      "~/.claude/jobs/83245695/tmp/wt-prompt-bold",
       "~/.herdr/worktrees/dots/worktree-rapid-stone-2f36",
       "~/repos/nikbrunner/dots",
-      "~/repos/nikbrunner/dots/common/.config/herdr/plugins/config/herdr-navigator"
+      "~/repos/nikbrunner/dots/common/.config/herdr/plugins/config/herdr-navigator",
+      "~/repos/nikbrunner/dots/common/.config/nvim"
     ],
-    "last_seen": "2026-07-26"
+    "last_seen": "2026-07-27"
   },
   "nikbrunner/imf-notes": {
     "root": "~/repos/nikbrunner/imf-notes",
@@ -138,8 +151,13 @@
     "name": "web-ui",
     "work": true,
     "session_dirs": [
-      "~/repos/imfusion/websdk/web-ui"
+      "~/.herdr/worktrees/web-ui/improve-stop-hook",
+      "~/.herdr/worktrees/web-ui/websdk-133-image-display-options",
+      "~/repos/imfusion/websdk/web-ui",
+      "~/repos/imfusion/websdk/web-ui/.workspaces/WEBSDK-133-image-display-options",
+      "~/repos/imfusion/websdk/web-ui/.workspaces/websdk-149-corner-radius-control",
+      "~/repos/imfusion/websdk/web-ui/node_modules/@base-ui"
     ],
-    "last_seen": "2026-07-25"
+    "last_seen": "2026-07-28"
   }
 }
