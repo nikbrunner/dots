@@ -38,15 +38,15 @@ channel = "preview"
 # Monochrome theme: palette.* is all one blue, so the semantic colors come
 # from ui.fg.* feedback instead — otherwise git status and agent states
 # would be indistinguishable.
-accent = "#002469"      # accents.a10
-panel_bg = "#dadee3"    # ui.bg.panel
+accent = "#245EFF"      # accents.a10
+panel_bg = "#e4e8ef"    # ui.bg.panel
 surface_dim = "#c5cbd2" # l10 — sidebar separators, scrollbar track
 surface0 = "#dadee3"    # ui.bg.panel (bg.active is lighter than default here)
 surface1 = "#c5cbd2"    # l10
-overlay0 = "#558ac0"    # primaries.m30 — unfocused pane borders
-overlay1 = "#497eb3"    # primaries.m20
-text = "#002469"        # ui.fg.default
-subtext0 = "#32669a"    # ui.fg.subtle
+overlay0 = "##c5cbd2"   # primaries.m30 — unfocused pane borders
+overlay1 = "#aeb4bb"    # primaries.m20
+text = "#040089"        # ui.fg.default
+subtext0 = "##dadee3"   # ui.fg.subtle
 red = "#f14d4c"         # ui.fg.negative
 green = "#819e00"       # ui.fg.positive
 yellow = "#cd7b00"      # ui.fg.warn
