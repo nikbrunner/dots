@@ -7,6 +7,8 @@ gui:
     Open: "📬"
     In Progress: "⚡"
     Resolved: "✅"
+    Done: "✅"
+    Closed: "❌"
   issueListFields:
     - key
     - type
@@ -16,13 +18,13 @@ gui:
 
 issueTabs:
   - name: WEBSDK
-    jql: project = WEBSDK AND assignee=currentUser() AND statusCategory != Done ORDER BY status ASC, priority ASC, updated ASC
+    jql: project = WEBSDK AND assignee=currentUser() AND (statusCategory != Done OR resolutiondate >= -7d) ORDER BY statusCategory ASC, resolutiondate DESC, status ASC, priority ASC, updated ASC
   - name: Cloud Platform
-    jql: project = CP AND assignee=currentUser() AND statusCategory != Done ORDER BY status ASC, priority ASC, updated ASC
+    jql: project = CP AND assignee=currentUser() AND (statusCategory != Done OR resolutiondate >= -7d) ORDER BY statusCategory ASC, resolutiondate DESC, status ASC, priority ASC, updated ASC
   - name: Labels Server
-    jql: project = LS AND assignee=currentUser() AND statusCategory != Done ORDER BY status ASC, priority ASC, updated ASC
+    jql: project = LS AND assignee=currentUser() AND (statusCategory != Done OR resolutiondate >= -7d) ORDER BY statusCategory ASC, resolutiondate DESC, status ASC, priority ASC, updated ASC
   - name: All
-    jql: assignee=currentUser() AND statusCategory != Done ORDER BY project ASC, status ASC, priority ASC, updated ASC
+    jql: assignee=currentUser() AND (statusCategory != Done OR resolutiondate >= -7d) ORDER BY project ASC, statusCategory ASC, resolutiondate DESC, status ASC, priority ASC, updated ASC
 
 fields:
   - id: status
