@@ -61,22 +61,19 @@ vim.api.nvim_create_autocmd("LspAttach", {
 	nested = true,
 	group = vim.api.nvim_create_augroup("UserLspConfig", {}),
 	callback = function(ev)
-		-- local lib = require("lib.lsp")
+		vim.keymap.set("n", "sp", function()
+			vim.diagnostic.config({ virtual_lines = true })
 
-		-- LSP Diagnostics
-		-- vim.keymap.set("n", "<leader>sp", function()
-		-- 	lib.set_diagnostic_virtual_lines()
-		--
-		-- 	vim.api.nvim_create_autocmd("CursorMoved", {
-		-- 		group = vim.api.nvim_create_augroup("symbol-problems", {}),
-		-- 		desc = "User(once): Reset diagnostics virtual lines",
-		-- 		once = true,
-		-- 		callback = function()
-		-- 			lib.set_diagnostic_virtual_text()
-		-- 			return true
-		-- 		end,
-		-- 	})
-		-- end, { buffer = ev.buf, desc = "[P]roblems (Inline)" })
+			vim.api.nvim_create_autocmd("CursorMoved", {
+				group = vim.api.nvim_create_augroup("symbol-problems", {}),
+				desc = "User(once): Reset diagnostics virtual lines",
+				once = true,
+				callback = function()
+					vim.diagnostic.config({ virtual_lines = false })
+					return true
+				end,
+			})
+		end, { buffer = ev.buf, desc = "[P]roblems (Inline)" })
 
 		-- tsgo trial: confirm the native TS LSP actually attached
 		local client = vim.lsp.get_client_by_id(ev.data.client_id)
@@ -84,27 +81,30 @@ vim.api.nvim_create_autocmd("LspAttach", {
 			vim.notify("tsgo attached (TS 7 native LSP)", vim.log.levels.INFO, { title = "LSP" })
 		end
 
-		vim.keymap.set("n", "<leader>sh", vim.lsp.buf.hover, { buffer = ev.buf, desc = "[H]over Info" })
 		vim.keymap.set("i", "<C-k>", vim.lsp.buf.signature_help, { buffer = ev.buf, desc = "Signature Help" })
-		vim.keymap.set("n", "<leader>sa", vim.lsp.buf.code_action, { buffer = ev.buf, desc = "[A]ction" })
-		vim.keymap.set("n", "<leader>sn", vim.lsp.buf.rename, { buffer = ev.buf, desc = "Re[n]ame" })
 
-		vim.keymap.set("n", "<leader>wP", function()
-			vim.fn.setqflist(vim.diagnostic.toqflist(vim.diagnostic.get()))
-			vim.cmd.copen()
-		end, { buffer = ev.buf, desc = "[P]roblems (Quickfix)" })
+		vim.keymap.set("n", "sh", vim.lsp.buf.hover, { buffer = ev.buf, desc = "[H]over Info" })
+		vim.keymap.set("n", "sa", vim.lsp.buf.code_action, { buffer = ev.buf, desc = "[A]ction" })
+		vim.keymap.set("n", "sn", vim.lsp.buf.rename, { buffer = ev.buf, desc = "Re[n]ame" })
+
+		vim.keymap.set("n", "sV", function()
+			vim.cmd.vsplit()
+			vim.lsp.buf.definition()
+		end, { buffer = ev.buf, desc = "[D]efinition in Split" })
+
+		vim.keymap.set("n", "sT", function()
+			vim.cmd("tab split")
+			vim.lsp.buf.definition()
+		end, { buffer = ev.buf, desc = "[D]efinition in Tab" })
 
 		vim.keymap.set("n", "<leader>dP", function()
 			vim.fn.setqflist(vim.diagnostic.toqflist(vim.diagnostic.get(0)))
 			vim.cmd.copen()
 		end, { buffer = ev.buf, desc = "[P]roblems (Quickfix)" })
 
-		-- vim.keymap.set(
-		-- 	"n",
-		-- 	"<leader>sV",
-		-- 	lib.goto_split_definition,
-		-- 	{ buffer = ev.buf, desc = "[D]efinition in Split" }
-		-- )
-		-- vim.keymap.set("n", "<leader>sT", lib.goto_tab_definition, { buffer = ev.buf, desc = "[D]efinition in Tab" })
+		vim.keymap.set("n", "<leader>wP", function()
+			vim.fn.setqflist(vim.diagnostic.toqflist(vim.diagnostic.get()))
+			vim.cmd.copen()
+		end, { buffer = ev.buf, desc = "[P]roblems (Quickfix)" })
 	end,
 })

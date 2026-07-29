@@ -213,7 +213,8 @@ Edit.later(function()
 	map("n", "<leader>dt",  function() Snacks.picker.lines() end, { desc = "[T]ext" })
 
 	-- Symbol
-	map("n", "<leader>sr",  function() Snacks.picker.lsp_references() end, { desc = "[R]eferences" })
-	map("n", "<leader>si",  function() Snacks.picker.lsp_implementations() end, { desc = "[I]mplementations" })
+	map("n", "sd",  function() Snacks.picker.lsp_definitions() end, { desc = "[D]efinitions" })
+	map("n", "sr",  function() Snacks.picker.lsp_references() end, { desc = "[R]eferences" })
+	map("n", "si",  function() Snacks.picker.lsp_implementations() end, { desc = "[I]mplementations" })
 	-- stylua: ignore end
 end)
