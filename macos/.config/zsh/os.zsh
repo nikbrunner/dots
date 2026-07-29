@@ -16,7 +16,11 @@ export NVM_DIR=$HOME/.nvm
 myip=$(ipconfig getifaddr en0 2>/dev/null || echo "Not connected")
 
 # ZSH Completion (must be before plugins that use compdef) ===================
-autoload -Uz compinit && compinit
+# -C trusts the existing ~/.zcompdump instead of restatting every completion
+# script, which costs ~300ms per shell. Run `compinit` (no -C) or delete
+# ~/.zcompdump after installing a tool whose completions are missing.
+typeset -U fpath
+autoload -Uz compinit && compinit -C
 
 # ZSH Plugins (Homebrew) =====================================================
 source "$(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh"

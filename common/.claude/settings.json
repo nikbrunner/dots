@@ -194,8 +194,7 @@
   },
   "statusLine": {
     "type": "command",
-    "command": "ccstatusline",
-    "refreshInterval": 5
+    "command": "claude-statusline"
   },
   "enabledPlugins": {
     "figma@claude-plugins-official": true,

@@ -1,6 +1,6 @@
 ---
 name: claude-statusline-and-cache
-description: ccstatusline replaced custom statusline; cache TTL facts (1h personal / 5m work); PreCompact hooks cannot inject instructions
+description: statusline is a bash script (node spawning saturates Gatekeeper); cache TTL facts (1h personal / 5m work); PreCompact hooks cannot inject instructions
 metadata:
   node_type: memory
   type: project
@@ -9,8 +9,9 @@ metadata:
 
 # Claude Code statusline & prompt-cache setup (2026-07-10, commit c1a1e01f)
 
-- Statusline is **ccstatusline** (mise-pinned `npm:ccstatusline = prefix:2`), config at `common/.config/ccstatusline/settings.json`, `refreshInterval: 5`. The old hand-rolled `claude-statusline` script was deleted (git history has it).
-- Cache countdown widget: `common/.local/bin/claude-cache-countdown` — custom-command widget on the cache line; reads transcript mtime + detects TTL from `ephemeral_1h/5m_input_tokens` buckets.
+- Statusline is `common/.local/bin/claude-statusline` — bash + one `jq` call, no `refreshInterval` (renders on events only). Shows account, model, repo/branch, context %, 5h and 7d rate limits, session cost.
+- **Never use a node-based statusline here.** A node statusline on a timer spawns a fresh `node` every render. Un-stapled binaries (Apple cannot staple a notarization ticket to a bare Mach-O, only to .app/.pkg/.dmg/.kext) get a full Gatekeeper crypto validation on every exec, which saturates `syspolicyd` and slows *every* exec machine-wide — measured ~1ms to ~75ms for unrelated binaries, with multi-second stalls. Diagnose with `log stream --predicate 'senderImagePath CONTAINS "AppleSystemPolicy"'` (kernel messages carry unredacted paths; `eslogger` needs Full Disk Access). Emergency relief: `fuckoff` alias = `sudo killall syspolicyd`.
+- Signing *quality* is not the predictor of exec cost — ad-hoc-signed `rg` runs at ~2ms while Developer-ID-signed `node` costs ~35ms. Stapling and spawn rate are what matter.
 - **Cache TTL facts (verified from transcripts)**: personal Max subscription = 1h TTL; ImFusion work account = 5m TTL. API docs default is 5m; Claude Code opts subscriptions into 1h.
 - **PreCompact hooks CANNOT inject compaction instructions** — verified empirically 2026-07-10: hook output with `hookSpecificOutput.additionalContext` fails schema validation (PreCompact has no hookSpecificOutput variant; only decision/systemMessage). CLAUDE.md also does not influence the compaction summarizer.
 - `/park` resolution: no automation possible; Nik keeps a clipboard string `/compact PARK this session for a cold restart: …` (ticket/branch, goal, decisions+why, rejected approaches, one next step, no code blocks). Worth using for breaks > 1h (personal) / > 5m (work) on heavy sessions.
