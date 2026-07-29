@@ -24,4 +24,4 @@ export EDITOR="nvim"
 # interactive shell. These TUIs bind Ctrl+h/j/k/l themselves, so the keys are
 # forwarded into the pane instead of moving herdr's pane focus.
 # Leave such a pane with prefix+h/j/k/l — they do not cross out at an edge.
-export HERDR_NAV_PASSTHROUGH_RE='^(lazygit|lazydocker|lazyjira|hunk|tuxedo)$'
+export HERDR_NAV_PASSTHROUGH_RE='^(lazygit|lazyjira)$'
