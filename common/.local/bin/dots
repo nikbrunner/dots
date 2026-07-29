@@ -555,6 +555,7 @@ cmd_chores() {
 		[dots_stage_radar]="radar"
 		[dots_stage_lazy_lock]="lazy-lock"
 		[dots_stage_bookmarks]="bookmarks"
+		[dots_stage_ccu_roots]="ccu-roots"
 		[dots_stage_gitconfig]="gitconfig"
 		[dots_stage_gitconfig_delta]="gitconfig.delta"
 		[dots_stage_helm_config]="helm"
