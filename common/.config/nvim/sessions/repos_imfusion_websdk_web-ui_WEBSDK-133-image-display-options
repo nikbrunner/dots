@@ -4,17 +4,17 @@ let v:this_session=expand("<sfile>:p")
 doautoall SessionLoadPre
 silent only
 silent tabonly
-cd ~/repos/black-atom-industries/core
+cd ~/repos/imfusion/websdk/web-ui
 if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +30 src/themes/paper/black-atom-paper-blue-light.ts
+badd +89 src/integrations/image-display-options/image-display-options-view.tsx
 argglobal
 %argdel
-edit src/themes/paper/black-atom-paper-blue-light.ts
-tcd ~/repos/black-atom-industries/core
+edit src/integrations/image-display-options/image-display-options-view.tsx
+tcd ~/repos/imfusion/websdk/web-ui
 argglobal
 setlocal keymap=
 setlocal noarabic
@@ -47,8 +47,8 @@ setlocal cursorlineopt=screenline,number
 setlocal nodiff
 setlocal eventignorewin=
 setlocal expandtab
-if &filetype != 'typescript'
-setlocal filetype=typescript
+if &filetype != 'typescriptreact'
+setlocal filetype=typescriptreact
 endif
 setlocal fixendofline
 setlocal foldcolumn=0
@@ -92,7 +92,7 @@ setlocal norightleft
 setlocal rightleftcmd=search
 setlocal scrollback=-1
 setlocal noscrollbind
-setlocal shiftwidth=4
+setlocal shiftwidth=2
 setlocal signcolumn=yes
 setlocal nosmartindent
 setlocal nosmoothscroll
@@ -115,20 +115,20 @@ setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#...%*%#WinBarSeparator#/%*%#WinBarPath#paper%*%#WinBarSeparator#/%*%#WinBarFilename#black-atom-paper-blue-light.ts%*%=%#WinBarGitLabel#\ [GIT:%#WinBarGitChange#\ ~14%#WinBarGitLabel#]%*\ 
+setlocal winbar=%#WinBarPath#...%*%#WinBarSeparator#/%*%#WinBarFilename#image-display-options-view.tsx%*%=
 setlocal winblend=10
 setlocal nowinfixbuf
-setlocal nowinfixheight
-setlocal nowinfixwidth
+setlocal winfixheight
+setlocal winfixwidth
 setlocal winhighlight=
 setlocal nowinpinned
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 30 - ((29 * winheight(0) + 21) / 43)
+let s:l = 89 - ((28 * winheight(0) + 30) / 60)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 30
+keepjumps 89
 normal! 0
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'

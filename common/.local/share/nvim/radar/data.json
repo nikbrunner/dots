@@ -52,6 +52,27 @@
       }
     },
     "~/repos/imfusion/websdk/web-ui": {
+      "WEBSDK-133-image-display-options": {
+        "locks": [
+          {
+            "filename": "src/components/toggle/toggle.tsx",
+            "label": "1"
+          },
+          {
+            "filename": "src/components/toggle/toggle.module.css",
+            "label": "2"
+          },
+          {
+            "filename": "src/components/toggle-group/toggle-group.module.css",
+            "label": "3"
+          },
+          {
+            "filename": ".claude/settings.json",
+            "label": "4"
+          }
+        ],
+        "lastAccessed": 1785253564
+      },
       "master": {
         "locks": [
           {
@@ -59,7 +80,7 @@
             "label": "1"
           }
         ],
-        "lastAccessed": 1785151799
+        "lastAccessed": 1785256767
       }
     },
     "~/repos/nikbrunner/dots": {
@@ -74,7 +95,7 @@
             "label": "2"
           }
         ],
-        "lastAccessed": 1785146731
+        "lastAccessed": 1785254095
       }
     },
     "~/repos/nikbrunner/imf-notes": {
@@ -97,7 +118,7 @@
             "label": "4"
           }
         ],
-        "lastAccessed": 1785148018
+        "lastAccessed": 1785252734
       }
     },
     "~/repos/nikbrunner/minifugit.nvim": {
