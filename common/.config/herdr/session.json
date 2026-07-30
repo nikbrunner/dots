@@ -13,8 +13,8 @@
         "is_linked_worktree": false
       },
       "public_pane_numbers": {
-        "4": 185,
         "3": 4,
+        "4": 185,
         "1": 138
       },
       "next_public_pane_number": 195,
@@ -74,15 +74,15 @@
           "root_pane": 4
         }
       ],
-      "active_tab": 1
+      "active_tab": 0
     },
     {
       "id": "w3",
       "custom_name": "Notes",
       "identity_cwd": "/Users/brunner/repos/nikbrunner/notes",
       "public_pane_numbers": {
-        "5": 1,
-        "6": 3
+        "6": 3,
+        "5": 1
       },
       "next_public_pane_number": 5,
       "public_tab_numbers": [
