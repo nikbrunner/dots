@@ -1,0 +1,50 @@
+#!/usr/bin/env bash
+# Is Gatekeeper stalling every exec right now, and which binary is causing it?
+#
+# macOS re-runs a full signature validation on every exec of a binary whose
+# notarization ticket cannot be cached. Apple only staples tickets to
+# .app/.pkg/.dmg/.kext, so bare CLI binaries (node, codex, claude) get
+# re-validated forever. A process spawning those in a loop saturates syspolicyd
+# and every unrelated exec on the machine queues behind it — measured ~1ms to
+# ~1000ms for lazygit.
+#
+# The kernel's AppleSystemPolicy messages carry unredacted paths; the syspolicyd
+# userspace ones redact them to <private>. eslogger needs Full Disk Access.
+
+secs="${1:-5}"
+
+printf '\033[1msyspolicyd\033[0m  '
+cpu=$(ps -o %cpu= -p "$(pgrep -x syspolicyd | head -1)" 2>/dev/null | tr -d ' ')
+printf '%s%% CPU (lifetime avg)\n' "${cpu:-?}"
+
+printf '\033[1mexec cost\033[0m   '
+bench() {
+	local n=0 end=$((SECONDS + 1))
+	while ((SECONDS < end)); do
+		"$1" --version >/dev/null 2>&1
+		n=$((n + 1))
+	done
+	[ "$n" -gt 0 ] && awk -v n="$n" 'BEGIN{printf "%.1fms", 1000/n}' || echo "?"
+}
+printf 'true=%s' "$(bench /usr/bin/true)"
+command -v lazygit >/dev/null && printf '  lazygit=%s' "$(bench "$(command -v lazygit)")"
+printf '\n'
+
+printf '\033[1mvalidations\033[0m sampling %ss...\r' "$secs"
+hits=$(timeout "$secs" log stream --predicate 'senderImagePath CONTAINS "AppleSystemPolicy"' \
+	--style compact --info 2>/dev/null |
+	grep -oE 'for process: /[^ ]*' | sed 's|for process: ||')
+
+n=$(printf '%s' "$hits" | grep -c . || true)
+rate=$((n / secs))
+
+if [ "$n" -eq 0 ]; then
+	printf '\033[1mvalidations\033[0m \033[32m0/sec — healthy\033[0m       \n'
+else
+	if [ "$rate" -ge 100 ]; then c='\033[1;31m'; else c='\033[38;5;179m'; fi
+	printf "\033[1mvalidations\033[0m ${c}%s/sec\033[0m               \n" "$rate"
+	printf '%s' "$hits" | sort | uniq -c | sort -rn | head -5 |
+		while read -r count path; do
+			printf '  %6s  %s\n' "$count" "${path/#$HOME/~}"
+		done
+fi
