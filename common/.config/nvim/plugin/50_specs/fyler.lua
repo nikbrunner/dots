@@ -92,6 +92,29 @@ Edit.now_if_args(function()
 		instance:follow({ target_path = vim.fs.joinpath(root, target) })
 	end
 
+	-- Fyler sizes floats against the editor even when `relative = "win"`, so the
+	-- percentages are resolved here against the current window instead. Absolute
+	-- values still get fyler's unconditional -2 on height and row, so both are
+	-- pre-compensated.
+	---@param opts? table
+	---@return table
+	local function centered_in_window(opts)
+		local win_width = vim.api.nvim_win_get_width(0)
+		local win_height = vim.api.nvim_win_get_height(0)
+		local width = math.floor(win_width * 0.6)
+		local height = math.floor(win_height * 0.8)
+
+		return vim.tbl_extend("force", {
+			kind = "floating",
+			relative = "win",
+			border = "shadow",
+			width = width,
+			height = height + 2,
+			col = math.floor((win_width - width) / 2),
+			row = math.floor((win_height - height) / 2) + 2,
+		}, opts or {})
+	end
+
 	require("fyler").setup({
 		auto_confirm_simple_mutation = true,
 		use_as_default_explorer = true,
@@ -145,18 +168,18 @@ Edit.now_if_args(function()
 	})
 
 	vim.keymap.set("n", "-", function()
-		require("fyler").open()
+		require("fyler").open(centered_in_window())
 	end, { desc = "Open Fyler" })
 
 	vim.keymap.set("n", "<leader>we", function()
-		require("fyler").open()
+		require("fyler").open(centered_in_window())
 	end, { desc = "Open Fyler" })
 
 	vim.keymap.set("n", "_", function()
-		require("fyler").open({ root_path = vim.fn.getcwd() })
+		require("fyler").open(centered_in_window({ root_path = vim.fn.getcwd() }))
 	end, { desc = "Open Fyler (Root)" })
 
 	vim.keymap.set("n", "<leader>wE", function()
-		require("fyler").open({ root_path = vim.fn.getcwd() })
+		require("fyler").open(centered_in_window({ root_path = vim.fn.getcwd() }))
 	end, { desc = "Open Fyler (Root)" })
 end)
