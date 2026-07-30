@@ -13,51 +13,31 @@
         "is_linked_worktree": false
       },
       "public_pane_numbers": {
-        "9": 136,
-        "4": 5,
-        "11": 138,
-        "1": 104,
-        "3": 4
+        "4": 185,
+        "3": 4,
+        "1": 138
       },
-      "next_public_pane_number": 141,
+      "next_public_pane_number": 195,
       "public_tab_numbers": [
         1,
         2,
-        3
+        8
       ],
-      "next_public_tab_number": 4,
+      "next_public_tab_number": 9,
       "tabs": [
         {
           "custom_name": null,
           "layout": {
-            "Split": {
-              "direction": "Horizontal",
-              "ratio": 0.5,
-              "first": {
-                "Pane": 1
-              },
-              "second": {
-                "Pane": 11
-              }
-            }
+            "Pane": 1
           },
           "panes": {
-            "11": {
-              "cwd": "/Users/brunner/repos/nikbrunner/dots",
-              "agent_session": {
-                "source": "herdr:claude",
-                "agent": "claude",
-                "kind": "id",
-                "value": "c7276bee-5e24-471d-a6b4-6cf4bd227abe"
-              }
-            },
             "1": {
               "cwd": "/Users/brunner/repos/nikbrunner/dots",
               "agent_session": {
                 "source": "herdr:claude",
                 "agent": "claude",
                 "kind": "id",
-                "value": "c41367f2-070c-4fd5-ba4e-484db3414662"
+                "value": "200038fa-9412-4d95-a7c8-d7d775bf0fce"
               }
             }
           },
@@ -68,21 +48,9 @@
         {
           "custom_name": null,
           "layout": {
-            "Split": {
-              "direction": "Horizontal",
-              "ratio": 0.5,
-              "first": {
-                "Pane": 3
-              },
-              "second": {
-                "Pane": 9
-              }
-            }
+            "Pane": 3
           },
           "panes": {
-            "9": {
-              "cwd": "/Users/brunner/repos/nikbrunner/dots"
-            },
             "3": {
               "cwd": "/Users/brunner/repos/nikbrunner/dots"
             }
@@ -106,7 +74,7 @@
           "root_pane": 4
         }
       ],
-      "active_tab": 0
+      "active_tab": 1
     },
     {
       "id": "w3",
@@ -130,13 +98,7 @@
           },
           "panes": {
             "5": {
-              "cwd": "/Users/brunner/repos/nikbrunner/notes",
-              "agent_session": {
-                "source": "herdr:claude",
-                "agent": "claude",
-                "kind": "id",
-                "value": "7b117e99-0a59-4ff8-ba43-dc43d3ff6f6a"
-              }
+              "cwd": "/Users/brunner/repos/nikbrunner/notes"
             }
           },
           "zoomed": false,

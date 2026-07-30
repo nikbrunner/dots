@@ -36,9 +36,9 @@
       "custom_name": "Livery",
       "identity_cwd": "/Users/brunner/repos/black-atom-industries/livery",
       "public_pane_numbers": {
-        "4": 3,
+        "2": 1,
         "3": 2,
-        "2": 1
+        "4": 3
       },
       "next_public_pane_number": 6,
       "public_tab_numbers": [
@@ -166,9 +166,9 @@
       "custom_name": "core",
       "identity_cwd": "/Users/brunner/repos/black-atom-industries/core",
       "public_pane_numbers": {
-        "9": 2,
-        "11": 4,
-        "10": 3
+        "8": 2,
+        "9": 3,
+        "10": 4
       },
       "next_public_pane_number": 9,
       "public_tab_numbers": [
@@ -181,12 +181,26 @@
         {
           "custom_name": "code",
           "layout": {
+            "Pane": 8
+          },
+          "panes": {
+            "8": {
+              "cwd": "/Users/brunner/repos/black-atom-industries/core",
+              "label": "editor"
+            }
+          },
+          "zoomed": false,
+          "focused": 8,
+          "root_pane": 8
+        },
+        {
+          "custom_name": "git",
+          "layout": {
             "Pane": 9
           },
           "panes": {
             "9": {
-              "cwd": "/Users/brunner/repos/black-atom-industries/core",
-              "label": "editor"
+              "cwd": "/Users/brunner/repos/black-atom-industries/core"
             }
           },
           "zoomed": false,
@@ -194,7 +208,7 @@
           "root_pane": 9
         },
         {
-          "custom_name": "git",
+          "custom_name": "shell",
           "layout": {
             "Pane": 10
           },
@@ -206,27 +220,13 @@
           "zoomed": false,
           "focused": 10,
           "root_pane": 10
-        },
-        {
-          "custom_name": "shell",
-          "layout": {
-            "Pane": 11
-          },
-          "panes": {
-            "11": {
-              "cwd": "/Users/brunner/repos/black-atom-industries/core"
-            }
-          },
-          "zoomed": false,
-          "focused": 11,
-          "root_pane": 11
         }
       ],
       "active_tab": 0
     }
   ],
-  "active": 3,
-  "selected": 3,
+  "active": 2,
+  "selected": 2,
   "sidebar_width": 26,
   "sidebar_section_split": 0.5,
   "collapsed_space_keys": []

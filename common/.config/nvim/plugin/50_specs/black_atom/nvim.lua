@@ -10,7 +10,7 @@ Edit.now(function()
 
 	require("black-atom").setup({
 		styles = {
-			transparency = "partial",
+			transparency = "none",
 			cmp_kind_color_mode = "bg",
 			diagnostics = {
 				background = true,

@@ -10,7 +10,7 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +11 common/.config/herdr/plugins/config/cloudmanic.herdr-plus/worktrees/default.toml
+badd +23 common/.config/herdr/plugins/config/cloudmanic.herdr-plus/worktrees/default.toml
 argglobal
 %argdel
 $argadd common/.config/nvim/plugin/50_specs/fyler.lua
@@ -116,19 +116,21 @@ setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#...%*%#WinBarSeparator#/%*%#WinBarPath#worktrees%*%#WinBarSeparator#/%*%#WinBarFilename#default.toml%*%=
+setlocal winbar=%#WinBarPath#...%*%#WinBarSeparator#/%*%#WinBarPath#worktrees%*%#WinBarSeparator#/%*%#WinBarFilename#default.toml%*%=%#WinBarGitLabel#\ [GIT:%#WinBarGitAdd#\ +3%#WinBarGitChange#\ ~7%#WinBarGitLabel#]%*\ 
 setlocal winblend=10
 setlocal nowinfixbuf
+setlocal nowinfixheight
+setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowinpinned
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 13 - ((6 * winheight(0) + 11) / 22)
+let s:l = 23 - ((21 * winheight(0) + 21) / 43)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 13
-normal! 0
+keepjumps 23
+normal! 015|
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
