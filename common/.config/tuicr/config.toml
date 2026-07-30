@@ -2,7 +2,7 @@ appearance = "system"            # or "dark" / "light"
 theme_light = "catppuccin-latte"
 theme_dark = "catppuccin-latte"
 
-diff_view = "side-by-side" # or "unified"
+diff_view = "unified" # unified" | "side-by-side"
 
 ignore_whitespace = false # ignore all whitespace in local VCS diffs
 
