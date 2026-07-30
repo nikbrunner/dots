@@ -1,20 +1,27 @@
 repo = "*"
 
 [[tabs]]
-name = "code"
+Name = "agents"
 
 [[tabs.panes]]
-label = "agent"
+label = "agent I"
 command = "claude"
 
 [[tabs.panes]]
-label = "editor"
-command = "nvim"
+label = "agent II"
 split = "right"
 
 [[tabs]]
-name = "git"
-command = "lazygit"
+name = "code"
+command = "nvim"
 
 [[tabs]]
-name = "shell"
+name = "serve"
+
+[[tabs.panes]]
+label = "server I"
+split = "right"
+
+[[tabs.panes]]
+label = "server II"
+split = "right"
