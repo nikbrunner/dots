@@ -78,6 +78,7 @@ tfenv = "latest"
 java = "21"
 lazydocker = "latest"
 "github:agavra/tuicr" = "0.19.1"
+aws = { version = "latest", symlink_bins = "true" }
 
 [env]
 _.file = "~/.env"
