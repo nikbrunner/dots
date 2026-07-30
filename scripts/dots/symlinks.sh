@@ -437,6 +437,97 @@ cleanup_broken_symlinks_from_config() {
     return 0
 }
 
+# Function to remove symlinks whose entry was deleted from symlinks.yml.
+# Diffs the working tree's symlinks.yml against HEAD; any target that
+# disappeared from the config but still exists as a symlink pointing into
+# the dots repo is removed. Catches orphans that cleanup_broken_symlinks_from_config
+# can't see, since that function only checks entries still present in the file.
+# Usage: cleanup_removed_symlink_entries <symlinks_file> <current_os> [--dry-run] [--verbose]
+cleanup_removed_symlink_entries() {
+    local symlinks_file="$1"
+    local current_os="$2"
+    shift 2
+
+    local dry_run=false
+    local verbose=false
+    for arg in "$@"; do
+        case $arg in
+        --dry-run) dry_run=true ;;
+        --verbose) verbose=true ;;
+        esac
+    done
+
+    local dots_dir
+    dots_dir="$(dirname "$symlinks_file")"
+    local resolved_dots_dir
+    resolved_dots_dir="$(cd "$dots_dir" && pwd -P)"
+
+    if ! git -C "$dots_dir" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+        return 0
+    fi
+
+    if ! git -C "$dots_dir" cat-file -e HEAD:symlinks.yml 2>/dev/null; then
+        return 0
+    fi
+
+    local old_symlinks_file
+    old_symlinks_file=$(mktemp)
+    git -C "$dots_dir" show "HEAD:symlinks.yml" >"$old_symlinks_file" 2>/dev/null
+
+    local old_entries new_entries removed_entries
+    old_entries=$(mktemp)
+    new_entries=$(mktemp)
+    removed_entries=$(mktemp)
+
+    process_symlinks_entries "$old_symlinks_file" "$current_os" | sort -u >"$old_entries"
+    process_symlinks_entries "$symlinks_file" "$current_os" | sort -u >"$new_entries"
+    comm -23 "$old_entries" "$new_entries" >"$removed_entries"
+
+    local removed_count=0
+
+    while IFS='|' read -r source_path target_path; do
+        [[ -z "$source_path" || -z "$target_path" ]] && continue
+        # Wildcard entries can't be expanded against a deleted source dir; skip.
+        [[ "$source_path" == *"*" ]] && continue
+
+        local abs_target="${target_path/\~/$HOME}"
+        local abs_source="$dots_dir/$source_path"
+
+        if [[ -L "$abs_target" ]]; then
+            local current_target
+            current_target=$(readlink "$abs_target" 2>/dev/null)
+            local expected_text
+            expected_text="$(_canonical_link_text "$abs_source" "$abs_target" "$resolved_dots_dir")"
+
+            # Only remove if it still points at the entry that was deleted,
+            # not some unrelated symlink that happens to share the target path.
+            if [[ "$current_target" == "$expected_text" ]]; then
+                if [[ "$dry_run" == true ]]; then
+                    [[ "$verbose" == true ]] && echo "✗ [DRY] Would remove orphaned symlink: $abs_target (entry removed from symlinks.yml)"
+                else
+                    [[ "$verbose" == true ]] && echo "✗ Removing orphaned symlink: $abs_target (entry removed from symlinks.yml)"
+                    _sudoexec "$abs_target" rm "$abs_target"
+                fi
+                removed_count=$((removed_count + 1))
+            fi
+        fi
+    done <"$removed_entries"
+
+    rm -f "$old_symlinks_file" "$old_entries" "$new_entries" "$removed_entries"
+
+    if [[ "$removed_count" -eq 0 ]]; then
+        [[ "$verbose" == true ]] && echo "✓ No orphaned symlinks from removed entries found"
+    else
+        if [[ "$dry_run" == true ]]; then
+            echo "Found $removed_count orphaned symlinks from removed entries (dry run)"
+        else
+            echo "Cleaned up $removed_count orphaned symlinks from removed entries"
+        fi
+    fi
+
+    return 0
+}
+
 # Function to check status of symlinks from symlinks configuration
 # Usage: check_symlinks_from_config <symlinks_file> <current_os> [--verbose]
 check_symlinks_from_config() {
@@ -599,6 +690,15 @@ if [[ "$DRY_RUN" == true ]]; then
     cleanup_broken_symlinks_from_config "$SYMLINKS_FILE" "$CURRENT_OS" --dry-run --verbose
 else
     cleanup_broken_symlinks_from_config "$SYMLINKS_FILE" "$CURRENT_OS" --verbose
+fi
+echo ""
+
+# Clean up symlinks whose entry was deleted from symlinks.yml since last commit
+echo "→ Cleaning symlinks from removed entries..."
+if [[ "$DRY_RUN" == true ]]; then
+    cleanup_removed_symlink_entries "$SYMLINKS_FILE" "$CURRENT_OS" --dry-run --verbose
+else
+    cleanup_removed_symlink_entries "$SYMLINKS_FILE" "$CURRENT_OS" --verbose
 fi
 echo ""
 
