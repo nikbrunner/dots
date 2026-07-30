@@ -1,23 +1,17 @@
--- Picker backend (files/grep/lsp/git/...) and small QoL utilities
--- (toggles, terminal, lazygit). fyler is the explorer; mini.visits
--- stays for frecency data (see mini/visits.lua). neogit owns its own git
--- status/log UI — this spec does not add lazygit/gitbrowse keymaps that
--- would collide with it.
-
 local flow_layout = {
 	preview = "main",
 	layout = {
 		relative = "win",
 		backdrop = false,
 		width = 0,
-		max_width = 120,
+		max_width = 200,
 		row = -1,
-		height = 0.3,
+		height = 0.15,
 		min_height = 10,
 		box = "vertical",
-		border = "solid",
+		border = "none",
 		{ win = "preview", title = "{preview}", width = 0.6, border = "left" },
-		{ win = "input", height = 1, border = "solid", title = "{title} {live} {flags}", title_pos = "center" },
+		{ win = "input", height = 1, border = "none", title = "{title} {live} {flags}", title_pos = "left" },
 		{ win = "list", border = "none" },
 	},
 }
