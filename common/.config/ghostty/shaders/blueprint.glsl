@@ -20,6 +20,13 @@ const float DRIFT_MAX = 55.0; // px of travel between opposite screen edges
 const float SWAY      = 1.1;  // px of idle breathing
 const float SWAY_RATE = 0.22;
 
+const float PARALLAX_MAJOR = 0.35;  // major sheet drifts slower than the minor
+const float FADE_RADIUS    = 380.0; // px, grid clears around the cursor
+const float FADE_DEPTH     = 1.0;   // ink removed at the center of that circle
+
+const float HOP_MIN  = 45.0;  // px of cursor travel below which paper ignores it
+const float HOP_FULL = 220.0; // px at which a jump earns the full shift
+
 // Text covers a small fraction of a terminal, so a spread average is dominated
 // by background. Gives us both the light/dark bit and the glyph-mask reference.
 vec3 sampleBackground() {
@@ -64,6 +71,12 @@ vec2 paperOffset() {
     vec2 from = restOffset(iPreviousCursor.xy);
     vec2 to   = restOffset(iCurrentCursor.xy);
 
+    // Line-stepping restarts the clock on every keypress, which without this
+    // reads as jitter: each press re-enters the steep part of the curve. Short
+    // hops are damped toward the previous rest, so only real jumps move paper.
+    float hop = distance(iCurrentCursor.xy, iPreviousCursor.xy);
+    to = mix(from, to, smoothstep(HOP_MIN, HOP_FULL, hop));
+
     // Exponential approach rather than a fixed-length tween. An interrupting move
     // inherits whatever position the last one reached, so reversals stay smooth
     // instead of snapping back to the previous cursor's resting spot.
@@ -84,28 +97,39 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord) {
     // 0 at background, 1 on a glyph. Keeps the grid off the text.
     float textness = smoothstep(0.02, 0.20, distance(src, bg));
 
-    vec2 p = fragCoord + paperOffset();
+    // Two sheets at different heights. The majors lag, so the pair reads as
+    // depth rather than one flat texture sliding.
+    vec2 drift = paperOffset();
+    vec2 pMinor = fragCoord + drift;
+    vec2 pMajor = fragCoord + drift * PARALLAX_MAJOR;
 
-    float vMajor = isMajor(p.x) ? 1.0 : 0.0;
-    float hMajor = isMajor(p.y) ? 1.0 : 0.0;
+    // Minor sheet: dashed, skipping the cells the major sheet owns.
+    float vMinorLine = lineMask(pMinor.x, MINOR_W) * dashMask(pMinor.y)
+                     * (isMajor(pMinor.x) ? 0.0 : 1.0);
+    float hMinorLine = lineMask(pMinor.y, MINOR_W) * dashMask(pMinor.x)
+                     * (isMajor(pMinor.y) ? 0.0 : 1.0);
+    float minor = max(vMinorLine, hMinorLine);
 
-    float vLine = lineMask(p.x, mix(MINOR_W, MAJOR_W, vMajor));
-    float hLine = lineMask(p.y, mix(MINOR_W, MAJOR_W, hMajor));
-
-    // Minor lines are dashed along their run; major lines stay solid.
-    vLine *= max(vMajor, dashMask(p.y));
-    hLine *= max(hMajor, dashMask(p.x));
-
-    float minor = max(vLine * (1.0 - vMajor), hLine * (1.0 - hMajor));
-    float major = max(vLine * vMajor, hLine * hMajor);
+    // Major sheet: solid, every MAJOR-th line in its own space.
+    float vMajor = isMajor(pMajor.x) ? 1.0 : 0.0;
+    float hMajor = isMajor(pMajor.y) ? 1.0 : 0.0;
+    float vMajorLine = lineMask(pMajor.x, MAJOR_W) * vMajor;
+    float hMajorLine = lineMask(pMajor.y, MAJOR_W) * hMajor;
+    float major = max(vMajorLine, hMajorLine);
 
     // Crosshair ticks where major lines would cross.
-    vec2 toJoin = abs(fract(p / CELL) - 0.5) * CELL;
+    vec2 toJoin = abs(fract(pMajor / CELL) - 0.5) * CELL;
     float armX = (1.0 - smoothstep(TICK - 1.0, TICK + 1.0, toJoin.x)) * hMajor;
     float armY = (1.0 - smoothstep(TICK - 1.0, TICK + 1.0, toJoin.y)) * vMajor;
-    float tick = max(armX * lineMask(p.y, MAJOR_W), armY * lineMask(p.x, MAJOR_W));
+    float tick = max(armX * lineMask(pMajor.y, MAJOR_W),
+                     armY * lineMask(pMajor.x, MAJOR_W));
 
     float ink = max(max(minor * MINOR_A, major * MAJOR_A), tick * TICK_A);
+
+    // Clear the paper where the work is. Cursor xy is its top-left corner.
+    vec2 cursorMid = iCurrentCursor.xy + vec2(iCurrentCursor.z, -iCurrentCursor.w) * 0.5;
+    float toCursor = distance(fragCoord, cursorMid);
+    ink *= 1.0 - FADE_DEPTH * (1.0 - smoothstep(0.0, FADE_RADIUS, toCursor));
 
     // Light background darkens, dark background lightens.
     vec3 target = vec3(1.0 - step(0.5, luminance(bg)));
