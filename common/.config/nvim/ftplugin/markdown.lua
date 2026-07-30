@@ -1,6 +1,7 @@
 vim.opt_local.wrap = false
 vim.opt_local.linebreak = true
 vim.opt_local.textwidth = 80
+vim.opt_local.formatexpr = ""
 
 vim.opt_local.formatoptions:append("t") -- Auto-wrap text using textwidth
 vim.opt_local.formatoptions:remove("l") -- Allow wrapping of long lines in insert mode
