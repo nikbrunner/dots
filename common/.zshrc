@@ -85,7 +85,7 @@ alias brewi='outdated=$(brew outdated); [[ -n "$outdated" ]] && fzf --multi <<< 
 # syspolicyd wedges under heavy process spawning and re-validates every exec of
 # an adhoc-signed binary (nvim, lazygit), costing seconds per launch. launchd
 # restarts it immediately; running shells recover without a relaunch.
-alias fuckoff='sudo killall syspolicyd'
+alias syspolicylog='log stream --predicate 'senderImagePath CONTAINS "AppleSystemPolicy"' --style compact --info'
 
 alias :q=exit
 alias :vs='tmux split-window -h -c "#{pane_current_path}"'
