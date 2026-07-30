@@ -176,8 +176,12 @@
     "name": "web-ui",
     "work": true,
     "session_dirs": [
+      "~/.herdr/worktrees/web-ui/improve-react-patterns-skill",
       "~/.herdr/worktrees/web-ui/improve-stop-hook",
+      "~/.herdr/worktrees/web-ui/showcase-improvements",
       "~/.herdr/worktrees/web-ui/websdk-133-image-display-options",
+      "~/.herdr/worktrees/web-ui/websdk-209-web-ui-replace-shiki-with-tanstack-high",
+      "~/.herdr/worktrees/web-ui/worktree-websdk-207-web-ui-setup-tanstack-intent",
       "~/repos/imfusion/websdk/web-ui",
       "~/repos/imfusion/websdk/web-ui/.workspaces/WEBSDK-133-image-display-options",
       "~/repos/imfusion/websdk/web-ui/.workspaces/mcp-resilience",
@@ -185,6 +189,6 @@
       "~/repos/imfusion/websdk/web-ui/.workspaces/websdk-149-corner-radius-control",
       "~/repos/imfusion/websdk/web-ui/node_modules/@base-ui"
     ],
-    "last_seen": "2026-07-29"
+    "last_seen": "2026-07-30"
   }
 }

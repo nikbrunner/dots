@@ -38,20 +38,20 @@
 ; [difftool "vscode"]
 ;   cmd = code --wait --diff $LOCAL $REMOTE
 
-; [include]
-;   path = ~/.gitconfig.delta
-;
+[include]
+  path = ~/.gitconfig.delta
+
 [includeIf "gitdir:~/repos/imfusion/"]
   path = ~/.gitconfig.work
 
-; [pager]
-;   diff = delta
-;   log = delta
-;   reflog = delta
-;   show = delta
+[pager]
+  diff = delta
+  log = delta
+  reflog = delta
+  show = delta
 
-; [interactive]
-;   diffFilter = delta --color-only
+[interactive]
+  diffFilter = delta --color-only
 
 [alias]
   ship = !shiplog commit -sy
