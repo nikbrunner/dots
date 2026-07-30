@@ -19,8 +19,6 @@ channel = "preview"
 # surface_dim = "#d6cdb4"
 # surface0 = "#e4dec8"    # ui.bg.active
 # surface1 = "#d6cdb4"    # step below l10 (hand-derived, not in core)
-# # overlay0 doubles as the unfocused pane-border color (herdr has no
-# # dedicated border token; focused borders/popups use accent).
 # overlay0 = "#798940" # primaries.m30
 # overlay1 = "#506e2c" # primaries.m20
 # text = "#00280f"     # ui.fg.default
@@ -33,11 +31,8 @@ channel = "preview"
 # mauve = "#b67c8d"    # palette.magenta
 # peach = "#c67b36"    # palette.darkYellow
 
-[theme.custom]
 # paper blue light
-# Monochrome theme: palette.* is all one blue, so the semantic colors come
-# from ui.fg.* feedback instead — otherwise git status and agent states
-# would be indistinguishable.
+[theme.custom]
 accent = "#245EFF"      # accents.a10
 panel_bg = "#e4e8ef"    # ui.bg.panel
 surface_dim = "#c5cbd2" # l10 — sidebar separators, scrollbar track
@@ -212,10 +207,10 @@ command = "lazyjira"
 description = "Open LazyJira"
 
 [[keys.command]]
-key = "alt+shift+h"
+key = "alt+shift+r"
 type = "pane"
-command = "hunk diff"
-description = "Open Hunk"
+command = "tuicr -w"
+description = "Open Tuicr"
 
 [[keys.command]]
 key = "ctrl+shift+t"

@@ -78,6 +78,7 @@ taplo = "prefix:0"
 tfenv = "latest"
 java = "21"
 lazydocker = "latest"
+"github:agavra/tuicr" = "0.19.1"
 
 [env]
 _.file = "~/.env"
