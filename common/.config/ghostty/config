@@ -6,8 +6,8 @@ theme = black-atom-paper-blue-light.conf
 bold-is-bright = true
 
 # Window
-window-padding-x = 50
-window-padding-y = 25
+window-padding-x = 15
+window-padding-y = 15
 window-vsync = true
 
 # Advanced

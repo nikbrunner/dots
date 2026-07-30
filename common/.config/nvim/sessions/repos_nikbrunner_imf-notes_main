@@ -10,7 +10,7 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +4 logs/2026/2026.07/2026.07.30\ -\ Thu.md
+badd +9 logs/2026/2026.07/2026.07.30\ -\ Thu.md
 argglobal
 %argdel
 edit logs/2026/2026.07/2026.07.30\ -\ Thu.md
@@ -75,7 +75,7 @@ setlocal foldmethod=expr
 setlocal foldminlines=1
 setlocal foldnestmax=10
 setlocal foldtext=
-setlocal formatexpr=v:lua.require'conform'.formatexpr()
+setlocal formatexpr=
 setlocal formatlistpat=^\\s*\\d\\+\\.\\s\\+\\|^\\s*[-*+]\\s\\+\\|^\\[^\\ze[^\\]]\\+\\]:\\&^.\\{4\\}
 setlocal formatoptions=j1tqln
 setlocal iminsert=0
@@ -106,11 +106,11 @@ setlocal norightleft
 setlocal rightleftcmd=search
 setlocal scrollback=-1
 setlocal noscrollbind
-setlocal shiftwidth=2
+setlocal shiftwidth=4
 setlocal signcolumn=yes
 setlocal smartindent
 setlocal nosmoothscroll
-setlocal softtabstop=-1
+setlocal softtabstop=4
 setlocal nospell
 setlocal spellcapcheck=[.?!]\\_[\\])'\"\\t\ ]\\+
 setlocal spellfile=
@@ -129,7 +129,7 @@ setlocal textwidth=80
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#logs%*%#WinBarSeparator#/%*%#WinBarPath#2026%*%#WinBarSeparator#/%*%#WinBarPath#2026.07%*%#WinBarSeparator#/%*%#WinBarFilename#2026.07.30\ -\ Thu.md%*%=
+setlocal winbar=%#WinBarPath#logs%*%#WinBarSeparator#/%*%#WinBarPath#2026%*%#WinBarSeparator#/%*%#WinBarPath#2026.07%*%#WinBarSeparator#/%*%#WinBarFilename#2026.07.30\ -\ Thu.md%*%=%#WinBarGitLabel#\ [GIT:%#WinBarGitAdd#\ +4%#WinBarGitChange#\ ~3%#WinBarGitDelete#\ -1%#WinBarGitLabel#]%*\ 
 setlocal winblend=10
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -140,11 +140,23 @@ setlocal nowrap
 setlocal wrapmargin=0
 1
 sil! normal! zo
-let s:l = 6 - ((5 * winheight(0) + 26) / 52)
+8
+sil! normal! zo
+14
+sil! normal! zo
+24
+sil! normal! zo
+28
+sil! normal! zo
+33
+sil! normal! zo
+39
+sil! normal! zo
+let s:l = 26 - ((20 * winheight(0) + 23) / 47)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 6
+keepjumps 26
 normal! 0
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'

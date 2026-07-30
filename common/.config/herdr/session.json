@@ -14,11 +14,11 @@
       },
       "public_pane_numbers": {
         "3": 4,
+        "2": 200,
         "4": 185,
-        "21": 200,
-        "1": 138
+        "1": 203
       },
-      "next_public_pane_number": 201,
+      "next_public_pane_number": 210,
       "public_tab_numbers": [
         1,
         2,
@@ -36,32 +36,20 @@
                 "Pane": 1
               },
               "second": {
-                "Pane": 21
+                "Pane": 2
               }
             }
           },
           "panes": {
-            "21": {
-              "cwd": "/Users/brunner/repos/nikbrunner/dots",
-              "agent_session": {
-                "source": "herdr:claude",
-                "agent": "claude",
-                "kind": "id",
-                "value": "86dac493-b8e7-4d55-b828-b96e25ac02ee"
-              }
-            },
             "1": {
-              "cwd": "/Users/brunner/repos/nikbrunner/dots",
-              "agent_session": {
-                "source": "herdr:claude",
-                "agent": "claude",
-                "kind": "id",
-                "value": "0e547b2f-c5c2-4a5e-aa94-87d7271ce2d4"
-              }
+              "cwd": "/Users/brunner/repos/nikbrunner/dots"
+            },
+            "2": {
+              "cwd": "/Users/brunner/repos/nikbrunner/dots"
             }
           },
           "zoomed": false,
-          "focused": 21,
+          "focused": 2,
           "root_pane": 1
         },
         {
@@ -93,7 +81,7 @@
           "root_pane": 4
         }
       ],
-      "active_tab": 0
+      "active_tab": 1
     },
     {
       "id": "w3",
@@ -137,6 +125,36 @@
           "zoomed": false,
           "focused": 6,
           "root_pane": 6
+        }
+      ],
+      "active_tab": 0
+    },
+    {
+      "id": "w4",
+      "custom_name": "Miho",
+      "identity_cwd": "/Users/brunner/repos/nikbrunner/notes",
+      "public_pane_numbers": {
+        "7": 1
+      },
+      "next_public_pane_number": 2,
+      "public_tab_numbers": [
+        1
+      ],
+      "next_public_tab_number": 2,
+      "tabs": [
+        {
+          "custom_name": null,
+          "layout": {
+            "Pane": 7
+          },
+          "panes": {
+            "7": {
+              "cwd": "/Users/brunner/repos/nikbrunner/notes"
+            }
+          },
+          "zoomed": false,
+          "focused": 7,
+          "root_pane": 7
         }
       ],
       "active_tab": 0
