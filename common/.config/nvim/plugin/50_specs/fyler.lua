@@ -103,6 +103,10 @@ Edit.now_if_args(function()
 		},
 		win_opts = {
 			cursorline = true,
+			-- Fyler pins its window and never unpins it, so the replace-kind
+			-- window would keep blocking `wincmd =` after showing a file again.
+			winfixwidth = false,
+			winfixheight = false,
 		},
 		indent_guides = false,
 		ui = {

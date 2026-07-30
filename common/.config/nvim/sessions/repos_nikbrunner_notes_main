@@ -150,8 +150,6 @@ setlocal vartabstop=
 setlocal winbar=%#WinBarPath#...%*%#WinBarSeparator#/%*%#WinBarFilename#Design\ Prompt.md%*%=
 setlocal winblend=10
 setlocal nowinfixbuf
-setlocal winfixheight
-setlocal winfixwidth
 setlocal winhighlight=
 setlocal nowinpinned
 setlocal nowrap

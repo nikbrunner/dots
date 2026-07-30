@@ -35,6 +35,18 @@ Edit.new_autocmd("VimResized", nil, function()
 	vim.cmd("tabnext " .. current_tab)
 end, "Equalize splits on resize")
 
+-- Equalize splits when windows are created or closed.
+-- Scheduled because WinClosed fires before the window is removed from the layout.
+Edit.new_autocmd({ "WinNew", "WinClosed" }, nil, function(event)
+	local win = event.event == "WinClosed" and tonumber(event.match) or vim.api.nvim_get_current_win()
+	if win and vim.api.nvim_win_is_valid(win) and vim.api.nvim_win_get_config(win).relative ~= "" then
+		return
+	end
+	vim.schedule(function()
+		vim.cmd.wincmd("=")
+	end)
+end, "Equalize splits on window open/close")
+
 -- Close buffers whose files no longer exist on disk
 Edit.new_autocmd("FocusGained", nil, function()
 	local closed_buffers = {}
