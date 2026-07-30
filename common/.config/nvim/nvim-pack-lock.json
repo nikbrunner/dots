@@ -69,10 +69,6 @@
       "rev": "db41c4076105a63caec12612d11228348f55a109",
       "src": "https://github.com/nvim-mini/mini.nvim"
     },
-    "msgarea.nvim": {
-      "rev": "8b6e178f39c7fe3cd13ddf818139db810ed6644a",
-      "src": "https://github.com/edisj/msgarea.nvim"
-    },
     "nui.nvim": {
       "rev": "de740991c12411b663994b2860f1a4fd0937c130",
       "src": "git@github.com:MunifTanjim/nui.nvim"
@@ -92,10 +88,6 @@
     "oklch-color-picker.nvim": {
       "rev": "8bf807853ccd7b7772fdc56951278a5347bb6d59",
       "src": "git@github.com:eero-lehtinen/oklch-color-picker.nvim"
-    },
-    "pack-ui.nvim": {
-      "rev": "608fe1139753bc12637837c621fb8e51988a564e",
-      "src": "https://github.com/jtprogru/pack-ui.nvim"
     },
     "qmk.nvim": {
       "rev": "3c804c1480991e4837514900b22b9358cfd64fa1",
