@@ -28,6 +28,7 @@ if vim.fn.exists('syntax_on') ~= 1 then vim.cmd('syntax enable') end
 -- UI =========================================================================
 vim.o.breakindent     = true                -- Indent wrapped lines to match line start
 vim.o.breakindentopt  = 'list:-1'           -- Add padding for lists (if 'wrap' is set)
+vim.o.cmdheight       = 0                   -- Reclaim the cmdline row; messages go to :messages
 vim.o.cursorline      = true                -- Enable current line highlighting
 vim.o.inccommand      = 'split'             -- Preview :substitute results in a split
 vim.o.laststatus      = 3                   -- Single global statusline
