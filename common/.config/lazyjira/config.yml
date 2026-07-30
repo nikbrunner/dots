@@ -17,14 +17,39 @@ gui:
     - summary
 
 issueTabs:
+  - name: WIP
+    jql: assignee = currentUser() AND status = "In Progress" ORDER BY updated DESC
+  - name: Today
+    jql: assignee = currentUser() AND updated >= startOfDay() ORDER BY updated DESC
+  - name: Yesterday
+    jql: assignee = currentUser() AND updated >= startOfDay(-1) AND updated < startOfDay() ORDER BY updated DESC
+  - name: Last 7 Days
+    jql: assignee = currentUser() AND updated >= startOfDay(-6) ORDER BY updated DESC
+    maxResults: 100
+  - name: Done This Week
+    jql: assignee = currentUser() AND statusCategory = Done AND resolutiondate >= -7d ORDER BY resolutiondate DESC
   - name: WEBSDK
     jql: project = WEBSDK AND assignee=currentUser() AND (statusCategory != Done OR resolutiondate >= -7d) ORDER BY statusCategory ASC, resolutiondate DESC, status ASC, priority ASC, updated ASC
   - name: Cloud Platform
     jql: project = CP AND assignee=currentUser() AND (statusCategory != Done OR resolutiondate >= -7d) ORDER BY statusCategory ASC, resolutiondate DESC, status ASC, priority ASC, updated ASC
-  - name: Labels Server
-    jql: project = LS AND assignee=currentUser() AND (statusCategory != Done OR resolutiondate >= -7d) ORDER BY statusCategory ASC, resolutiondate DESC, status ASC, priority ASC, updated ASC
-  - name: All
-    jql: assignee=currentUser() AND (statusCategory != Done OR resolutiondate >= -7d) ORDER BY project ASC, statusCategory ASC, resolutiondate DESC, status ASC, priority ASC, updated ASC
+  # currently disabled because I have no issues here
+  # - name: Labels Server
+  #   jql: project = LS AND assignee=currentUser() AND (statusCategory != Done OR resolutiondate >= -7d) ORDER BY statusCategory ASC, resolutiondate DESC, status ASC, priority ASC, updated ASC
+  - name: Created
+    jql: reporter = currentUser() ORDER BY created DESC
+    maxResults: 20
+  - name: No Parent
+    jql: reporter = currentUser() AND parent IS EMPTY AND issuetype != Epic AND statusCategory != Done ORDER BY created ASC
+  - name: No Epic
+    jql: reporter = currentUser() AND "Epic Link" IS EMPTY AND issuetype != Epic AND statusCategory != Done ORDER BY created ASC
+  - name: No Component
+    jql: reporter = currentUser() AND component IS EMPTY AND statusCategory != Done ORDER BY created ASC
+  - name: No Sprint
+    jql: reporter = currentUser() AND sprint IS EMPTY AND status != Backlog AND statusCategory != Done ORDER BY created ASC
+  - name: No Priority
+    jql: reporter = currentUser() AND priority = "Default" AND statusCategory != Done ORDER BY created ASC
+  - name: Stale
+    jql: assignee = currentUser() AND statusCategory != Done AND updated <= -14d ORDER BY updated ASC
 
 fields:
   - id: status
