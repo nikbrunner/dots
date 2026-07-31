@@ -2,18 +2,18 @@
 // background, so it tracks light/dark without reading the palette (Ghostty
 // exposes no palette uniform).
 
-const float CELL      = 22.0; // minor cell size in px
-const float MAJOR     = 5.0;  // heavy line every N cells
+const float CELL      = 30.0; // minor cell size in px
+const float MAJOR     = 6.0;  // heavy line every N cells
 const float MINOR_W   = 1.0;
 const float MAJOR_W   = 1.2;
 const float DASH      = 5.0;  // dash period in px
 const float DASH_DUTY = 0.55; // lit fraction of the dash period
 const float TICK      = 3.5;  // crosshair arm length in px, at major joins
 
-const float MINOR_A   = 0.22;
+const float MINOR_A   = 0.30;
 const float MAJOR_A   = 0.42;
 const float TICK_A    = 0.55;
-const float CONTRAST  = 0.22; // how far the grid pushes away from background
+const float CONTRAST  = 0.32; // how far the grid pushes away from background
 
 const float DRIFT_TAU = 0.28; // approach time constant; ~95% settled at 3x this
 const float DRIFT_MAX = 55.0; // px of travel between opposite screen edges
@@ -21,11 +21,16 @@ const float SWAY      = 1.1;  // px of idle breathing
 const float SWAY_RATE = 0.22;
 
 const float PARALLAX_MAJOR = 0.35;  // major sheet drifts slower than the minor
-const float FADE_RADIUS    = 380.0; // px, grid clears around the cursor
-const float FADE_DEPTH     = 1.0;   // ink removed at the center of that circle
 
 const float HOP_MIN  = 45.0;  // px of cursor travel below which paper ignores it
 const float HOP_FULL = 220.0; // px at which a jump earns the full shift
+
+const float PARALLAX_DECO = 0.15; // deepest sheet, so it drifts the least
+const float DECO_TILE     = 3.0;  // decorations repeat every N screens
+const float DECO_W        = 1.5;  // heavier than the grid, so marks read as drawn on
+const float DECO_A        = 0.30;
+const float DECO_PROT_R   = 150.0; // protractor radius in px, not a tile fraction
+const float DECO_SCALE_STEP = 14.0;
 
 // Text covers a small fraction of a terminal, so a spread average is dominated
 // by background. Gives us both the light/dark bit and the glyph-mask reference.
@@ -57,6 +62,64 @@ float dashMask(float along) {
 bool isMajor(float coord) {
     float cell = floor(coord / CELL);
     return abs(fract(cell / MAJOR)) < 0.001;
+}
+
+// Perpendicular distance to an infinite line, as a stroke.
+float strokeLine(vec2 p, vec2 origin, float angle, float width) {
+    vec2 dir = vec2(cos(angle), sin(angle));
+    vec2 rel = p - origin;
+    float d = abs(rel.x * dir.y - rel.y * dir.x);
+    return 1.0 - smoothstep(width - 0.5, width + 0.5, d);
+}
+
+// A circle's outline, optionally only part of the way round.
+float strokeArc(vec2 p, vec2 origin, float radius, float width,
+                float fromAngle, float toAngle) {
+    vec2 rel = p - origin;
+    float d = abs(length(rel) - radius);
+    float ring = 1.0 - smoothstep(width - 0.5, width + 0.5, d);
+    float a = atan(rel.y, rel.x);
+    return ring * step(fromAngle, a) * step(a, toAngle);
+}
+
+// A finite segment rather than an infinite line: ends where the stroke stops.
+float strokeSegment(vec2 p, vec2 a, vec2 b, float width) {
+    vec2 pa = p - a;
+    vec2 ba = b - a;
+    float h = clamp(dot(pa, ba) / dot(ba, ba), 0.0, 1.0);
+    return 1.0 - smoothstep(width - 0.5, width + 0.5, length(pa - ba * h));
+}
+
+// A ruler edge: ticks perpendicular to `angle`, every `spacing`, every fifth
+// one longer, running for `len` from the origin.
+float strokeScale(vec2 p, vec2 origin, float angle, float len,
+                  float spacing, float width) {
+    vec2 dir = vec2(cos(angle), sin(angle));
+    vec2 nrm = vec2(-dir.y, dir.x);
+    vec2 rel = p - origin;
+    float along = dot(rel, dir);
+    float off   = dot(rel, nrm);
+    if (along < 0.0 || along > len) return 0.0;
+
+    float idx  = floor(along / spacing + 0.5);
+    float snap = idx * spacing;
+    float tall = (abs(fract(idx / 5.0)) < 0.001) ? 9.0 : 4.5;
+    if (off < 0.0 || off > tall) return 0.0;
+
+    return 1.0 - smoothstep(width - 0.5, width + 0.5, abs(along - snap));
+}
+
+// Radiating ticks around a centre, as on a protractor.
+float strokeRadial(vec2 p, vec2 origin, float radius, float len,
+                   float stepDeg, float width) {
+    vec2 rel = p - origin;
+    float r = length(rel);
+    if (r < radius || r > radius + len) return 0.0;
+
+    float deg = atan(rel.y, rel.x) * 57.29578;
+    float snap = floor(deg / stepDeg + 0.5) * stepDeg;
+    float arc = abs(deg - snap) * 0.01745 * r;
+    return 1.0 - smoothstep(width - 0.5, width + 0.5, arc);
 }
 
 // Where the paper rests for a given cursor position. A fragment shader keeps no
@@ -124,12 +187,50 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord) {
     float tick = max(armX * lineMask(pMajor.y, MAJOR_W),
                      armY * lineMask(pMajor.x, MAJOR_W));
 
-    float ink = max(max(minor * MINOR_A, major * MAJOR_A), tick * TICK_A);
+    // Decoration sheet: the deepest layer, so it drifts least. Tiled far larger
+    // than the screen so the angles read as drafted one-offs, not as a lattice.
+    vec2 sheet = iResolution.xy * DECO_TILE;
+    vec2 pDeco = mod(fragCoord + drift * PARALLAX_DECO, sheet);
+    float deco = 0.0;
 
-    // Clear the paper where the work is. Cursor xy is its top-left corner.
-    vec2 cursorMid = iCurrentCursor.xy + vec2(iCurrentCursor.z, -iCurrentCursor.w) * 0.5;
-    float toCursor = distance(fragCoord, cursorMid);
-    ink *= 1.0 - FADE_DEPTH * (1.0 - smoothstep(0.0, FADE_RADIUS, toCursor));
+    // Everything is set out from one corner, the way the mat's angle guides are.
+    // Scattering marks at unrelated spots is what reads as random.
+    vec2 origin = sheet * vec2(0.06, 0.08);
+
+    // The angle fan: long guides radiating from that origin across the sheet.
+    deco = max(deco, strokeLine(pDeco, origin, 0.2618, DECO_W)); // 15
+    deco = max(deco, strokeLine(pDeco, origin, 0.5236, DECO_W)); // 30
+    deco = max(deco, strokeLine(pDeco, origin, 0.7854, DECO_W)); // 45
+    deco = max(deco, strokeLine(pDeco, origin, 1.0472, DECO_W)); // 60
+    deco = max(deco, strokeLine(pDeco, origin, 1.3090, DECO_W)); // 75
+
+    // A matching fan from the opposite corner, so the sheet reads symmetric.
+    vec2 origin2 = sheet * vec2(0.94, 0.08);
+    deco = max(deco, strokeLine(pDeco, origin2, -0.5236, DECO_W));
+    deco = max(deco, strokeLine(pDeco, origin2, -0.7854, DECO_W));
+    deco = max(deco, strokeLine(pDeco, origin2, -1.0472, DECO_W));
+
+    // Protractor at the origin: small and densely ticked, as on the real mat.
+    float protR = DECO_PROT_R;
+    deco = max(deco, strokeArc(pDeco, origin, protR, DECO_W, 0.0, 3.14159265));
+    deco = max(deco, strokeRadial(pDeco, origin, protR, 7.0, 5.0, DECO_W));
+    deco = max(deco, strokeRadial(pDeco, origin, protR - 4.0, 4.0, 15.0, DECO_W));
+
+    // Angle marks where two guides cross: small arcs spanning the wedge between
+    // them, which is what makes a crossing look measured rather than incidental.
+    vec2 cross1 = origin + vec2(cos(0.7854), sin(0.7854)) * sheet.y * 0.34;
+    deco = max(deco, strokeArc(pDeco, cross1, 26.0, DECO_W, 2.0, 3.6));
+    vec2 cross2 = origin + vec2(cos(0.5236), sin(0.5236)) * sheet.y * 0.58;
+    deco = max(deco, strokeArc(pDeco, cross2, 20.0, DECO_W, 2.4, 3.9));
+
+    // Ruler edges along the two axes through the origin.
+    deco = max(deco, strokeScale(pDeco, origin, 0.0, sheet.x * 0.88,
+                                 DECO_SCALE_STEP, DECO_W));
+    deco = max(deco, strokeScale(pDeco, origin, 1.5708, sheet.y * 0.84,
+                                 DECO_SCALE_STEP, DECO_W));
+
+    float ink = max(max(max(minor * MINOR_A, major * MAJOR_A), tick * TICK_A),
+                    deco * DECO_A);
 
     // Light background darkens, dark background lightens.
     vec3 target = vec3(1.0 - step(0.5, luminance(bg)));
