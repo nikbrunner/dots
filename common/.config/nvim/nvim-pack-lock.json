@@ -5,7 +5,7 @@
       "src": "git@github.com:numToStr/Navigator.nvim.git"
     },
     "SchemaStore.nvim": {
-      "rev": "6ff1f21b2e2b77ec59f7433ce2d9fbc052d908ac",
+      "rev": "9f98b46e1dd61aeb666989c344d76517df63af55",
       "src": "git@github.com:b0o/SchemaStore.nvim"
     },
     "annotator.nvim": {
@@ -17,7 +17,7 @@
       "src": "git@github.com:arborist-ts/arborist.nvim"
     },
     "black-atom": {
-      "rev": "f78ae5f15532d014cf42c642681ad517743a8ffd",
+      "rev": "7127b54df45933259a9b98a345869ccb4a08be23",
       "src": "git@github.com:black-atom-industries/nvim.git"
     },
     "blink.cmp": {
@@ -26,7 +26,7 @@
       "version": "1.0.0 - 2.0.0"
     },
     "codediff.nvim": {
-      "rev": "7608f3b436ce1f84a4888f75e53079caa981a2e9",
+      "rev": "26e5ff7465e8c0471c670a05afe09566d50cd051",
       "src": "git@github.com:esmuellert/codediff.nvim"
     },
     "conform.nvim": {
@@ -38,7 +38,7 @@
       "src": "git@github.com:rafamadriz/friendly-snippets"
     },
     "fyler.nvim": {
-      "rev": "bc1f8e420f566dd3b3db1f0aff2e6932947bdd71",
+      "rev": "322c79d446884e9939a958294e6108ae8cfbdb12",
       "src": "https://github.com/FylerOrg/fyler.nvim"
     },
     "gitlinker.nvim": {
@@ -46,7 +46,7 @@
       "src": "git@github.com:linrongbin16/gitlinker.nvim"
     },
     "grug-far.nvim": {
-      "rev": "1cc080f55706b38aabfa97d40acb6adf59ac4a5a",
+      "rev": "6e05398cf6cad05b3fb46569db96b1ccfcbbd402",
       "src": "git@github.com:MagicDuck/grug-far.nvim"
     },
     "helpview.nvim": {
@@ -54,7 +54,7 @@
       "src": "git@github.com:OXY2DEV/helpview.nvim"
     },
     "kulala.nvim": {
-      "rev": "91cf892008c773ce74ac392c4c12ddff775b7619",
+      "rev": "e4e8615dc07d9423f3dd52ad5af962db09d26a52",
       "src": "git@github.com:mistweaverco/kulala.nvim"
     },
     "lazydev.nvim": {
@@ -62,11 +62,11 @@
       "src": "git@github.com:folke/lazydev.nvim"
     },
     "mdn.nvim": {
-      "rev": "bdd0f9703119fa63b927163c96a5f6b37394924d",
+      "rev": "024dbc7fc5bde4fc1eb1394e9bf4b531ae66c7e5",
       "src": "git@github.com:nikbrunner/mdn.nvim"
     },
     "mini.nvim": {
-      "rev": "db41c4076105a63caec12612d11228348f55a109",
+      "rev": "8bf5c57bc82dd590932faa41bfde9fd6d40a9433",
       "src": "https://github.com/nvim-mini/mini.nvim"
     },
     "nui.nvim": {
@@ -110,11 +110,11 @@
       "src": "git@github.com:supermaven-inc/supermaven-nvim"
     },
     "touchup.nvim": {
-      "rev": "ffd9365ae3e6af6b55d882f0b5760f543882bba8",
+      "rev": "9410a8640262f9b43ce04b0779d2c66134ae311b",
       "src": "git@github.com:noisesfromspace/touchup.nvim"
     },
     "treewalker.nvim": {
-      "rev": "cfe3c69396233ddbbd6b581b00868985f78ffd9e",
+      "rev": "afa598a8a380602d6a488b1ce7f7db619606cbfb",
       "src": "git@github.com:aaronik/treewalker.nvim"
     },
     "trouble.nvim": {
