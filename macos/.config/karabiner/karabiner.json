@@ -77,32 +77,6 @@
                                 },
                                 "to": [],
                                 "type": "basic"
-                            },
-                            {
-                                "description": "Disable HYPER + '<'",
-                                "manipulators": [
-                                    {
-                                        "from": {
-                                            "key_code": "<",
-                                            "modifiers": { "mandatory": ["command", "control", "option", "shift"] }
-                                        },
-                                        "to": [{ "key_code": "f14" }],
-                                        "type": "basic"
-                                    }
-                                ]
-                            },
-                            {
-                                "description": "Disable HYPER + '>'",
-                                "manipulators": [
-                                    {
-                                        "from": {
-                                            "key_code": ">",
-                                            "modifiers": { "mandatory": ["command", "control", "option", "shift"] }
-                                        },
-                                        "to": [{ "key_code": "f15" }],
-                                        "type": "basic"
-                                    }
-                                ]
                             }
                         ]
                     },
