@@ -2,25 +2,42 @@
 // background, so it tracks light/dark without reading the palette (Ghostty
 // exposes no palette uniform).
 
-const float CELL      = 30.0; // minor cell size in px
+// ── The four knobs ──────────────────────────────────────────────────────────
+// Everything below derives from these. Reach past them only to change what the
+// sheet *is*, not how strong, how big, how lively, or how busy it looks.
+
+const float INTENSITY = 0.35; // overall ink strength against the background
+const float SCALE     = 1.0;  // minor cell as a multiple of one terminal row
+const float MOTION    = 2.0;  // drift and sway multiplier; 0.0 pins the paper
+const float DETAIL    = 1.0;  // decoration presence; 0.0 leaves a bare grid
+
+// ── Derived ─────────────────────────────────────────────────────────────────
+
+// The cursor is exactly one cell, so its height is the font size. Ghostty has
+// no font-size uniform; this is the way to read it. Guarded because the cursor
+// can report zero height while hidden.
+float cellSize() {
+    float row = clamp(iCurrentCursor.w, 8.0, 80.0);
+    return row * SCALE;
+}
+
 const float MAJOR     = 6.0;  // heavy line every N cells
 const float MINOR_W   = 1.0;
 const float MAJOR_W   = 1.2;
-const float DASH      = 5.0;  // dash period in px
 const float DASH_DUTY = 0.55; // lit fraction of the dash period
-const float TICK      = 3.5;  // crosshair arm length in px, at major joins
 
+const float CONTRAST  = INTENSITY;
 const float MINOR_A   = 0.30;
 const float MAJOR_A   = 0.42;
 const float TICK_A    = 0.55;
-const float CONTRAST  = 0.32; // how far the grid pushes away from background
 
-const float DRIFT_TAU = 0.28; // approach time constant; ~95% settled at 3x this
-const float DRIFT_MAX = 55.0; // px of travel between opposite screen edges
-const float SWAY      = 1.1;  // px of idle breathing
+const float DRIFT_TAU = 0.28;           // ~95% settled at 3x this
+const float DRIFT_MAX = 55.0 * MOTION;  // px of travel between opposite edges
+const float SWAY      = 1.1 * MOTION;   // px of idle breathing
 const float SWAY_RATE = 0.22;
 
-const float PARALLAX_MAJOR = 0.35;  // major sheet drifts slower than the minor
+const float PARALLAX_MAJOR = 0.35; // major sheet drifts slower than the minor
+const float PARALLAX_DECO  = 0.15; // deepest sheet, so it drifts the least
 
 const float HOP_MIN  = 45.0;  // px of cursor travel below which paper ignores it
 const float HOP_FULL = 220.0; // px at which a jump earns the full shift
@@ -28,12 +45,10 @@ const float HOP_FULL = 220.0; // px at which a jump earns the full shift
 const float EDGE_FADE  = 320.0; // px inset over which the grid falls off
 const float EDGE_DEPTH = 1.0;   // ink removed at the window border
 
-const float PARALLAX_DECO = 0.15; // deepest sheet, so it drifts the least
-const float DECO_TILE     = 3.0;  // decorations repeat every N screens
-const float DECO_W        = 1.5;  // heavier than the grid, so marks read as drawn on
-const float DECO_A        = 0.30;
-const float DECO_PROT_R   = 150.0; // protractor radius in px, not a tile fraction
-const float DECO_SCALE_STEP = 14.0;
+const float DECO_W          = 1.5; // heavier than the grid, so marks read drawn on
+const float DECO_A          = 0.30 * DETAIL;
+const float DECO_PROT_R_CELLS   = 5.0;   // protractor radius, in minor cells
+const float DECO_SCALE_STEP_REL = 0.467; // ruler tick spacing, per minor cell
 const float DECO_NUM        = 2.0; // px per bitmap pixel, so digits are 6x10
 
 // Text covers a small fraction of a terminal, so a spread average is dominated
@@ -55,17 +70,18 @@ float luminance(vec3 c) {
 
 // Distance in px to the nearest gridline, per axis.
 float lineMask(float coord, float width) {
-    float d = abs(fract(coord / CELL) - 0.5) * CELL;
+    float cell = cellSize();
+    float d = abs(fract(coord / cell) - 0.5) * cell;
     return 1.0 - smoothstep(width * 0.5 - 0.5, width * 0.5 + 0.5, d);
 }
 
 float dashMask(float along) {
-    return step(fract(along / DASH), DASH_DUTY);
+    return step(fract(along / (cellSize() * 0.167)), DASH_DUTY);
 }
 
 bool isMajor(float coord) {
-    float cell = floor(coord / CELL);
-    return abs(fract(cell / MAJOR)) < 0.001;
+    float n = floor(coord / cellSize());
+    return abs(fract(n / MAJOR)) < 0.001;
 }
 
 // Digits as 3x5 bitmaps, rows packed low bit first, three bits per row.
@@ -219,68 +235,66 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord) {
     float major = max(vMajorLine, hMajorLine);
 
     // Crosshair ticks where major lines would cross.
-    vec2 toJoin = abs(fract(pMajor / CELL) - 0.5) * CELL;
-    float armX = (1.0 - smoothstep(TICK - 1.0, TICK + 1.0, toJoin.x)) * hMajor;
-    float armY = (1.0 - smoothstep(TICK - 1.0, TICK + 1.0, toJoin.y)) * vMajor;
+    float cell = cellSize();
+    float arm = cell * 0.117;
+    vec2 toJoin = abs(fract(pMajor / cell) - 0.5) * cell;
+    float armX = (1.0 - smoothstep(arm - 1.0, arm + 1.0, toJoin.x)) * hMajor;
+    float armY = (1.0 - smoothstep(arm - 1.0, arm + 1.0, toJoin.y)) * vMajor;
     float tick = max(armX * lineMask(pMajor.y, MAJOR_W),
                      armY * lineMask(pMajor.x, MAJOR_W));
 
-    // Decoration sheet: the deepest layer, so it drifts least. Tiled far larger
-    // than the screen so the angles read as drafted one-offs, not as a lattice.
-    vec2 sheet = iResolution.xy * DECO_TILE;
-    vec2 pDeco = mod(fragCoord + drift * PARALLAX_DECO, sheet);
+    // Decoration sheet: the deepest layer, so it drifts least.
+    vec2 sheet = iResolution.xy;
+    vec2 pDeco = fragCoord + drift * PARALLAX_DECO;
     float deco = 0.0;
 
     // Everything is set out from one corner, the way the mat's angle guides are.
     // Scattering marks at unrelated spots is what reads as random.
-    vec2 origin = sheet * vec2(0.06, 0.08);
+    vec2 origin = sheet * vec2(0.88, 0.86);
 
     // The angle fan: long guides radiating from that origin across the sheet.
-    deco = max(deco, strokeLine(pDeco, origin, 0.2618, DECO_W)); // 15
-    deco = max(deco, strokeLine(pDeco, origin, 0.5236, DECO_W)); // 30
-    deco = max(deco, strokeLine(pDeco, origin, 0.7854, DECO_W)); // 45
-    deco = max(deco, strokeLine(pDeco, origin, 1.0472, DECO_W)); // 60
-    deco = max(deco, strokeLine(pDeco, origin, 1.3090, DECO_W)); // 75
-
-    // A matching fan from the opposite corner, so the sheet reads symmetric.
-    vec2 origin2 = sheet * vec2(0.94, 0.08);
-    deco = max(deco, strokeLine(pDeco, origin2, -0.5236, DECO_W));
-    deco = max(deco, strokeLine(pDeco, origin2, -0.7854, DECO_W));
-    deco = max(deco, strokeLine(pDeco, origin2, -1.0472, DECO_W));
+    deco = max(deco, strokeLine(pDeco, origin, 3.4034, DECO_W)); // 195
+    deco = max(deco, strokeLine(pDeco, origin, 3.6652, DECO_W)); // 210
+    deco = max(deco, strokeLine(pDeco, origin, 3.9270, DECO_W)); // 225
+    deco = max(deco, strokeLine(pDeco, origin, 4.1888, DECO_W)); // 240
+    deco = max(deco, strokeLine(pDeco, origin, 4.4506, DECO_W)); // 255
 
     // Protractor at the origin: small and densely ticked, as on the real mat.
-    float protR = DECO_PROT_R;
-    deco = max(deco, strokeArc(pDeco, origin, protR, DECO_W, 0.0, 3.14159265));
+    float protR = cellSize() * DECO_PROT_R_CELLS;
+    deco = max(deco, strokeArc(pDeco, origin, protR, DECO_W, -3.14159265, 0.0));
     deco = max(deco, strokeRadial(pDeco, origin, protR, 7.0, 5.0, DECO_W));
     deco = max(deco, strokeRadial(pDeco, origin, protR - 4.0, 4.0, 15.0, DECO_W));
 
     // Angle marks where two guides cross: small arcs spanning the wedge between
     // them, which is what makes a crossing look measured rather than incidental.
-    vec2 cross1 = origin + vec2(cos(0.7854), sin(0.7854)) * sheet.y * 0.34;
-    deco = max(deco, strokeArc(pDeco, cross1, 26.0, DECO_W, 2.0, 3.6));
-    vec2 cross2 = origin + vec2(cos(0.5236), sin(0.5236)) * sheet.y * 0.58;
-    deco = max(deco, strokeArc(pDeco, cross2, 20.0, DECO_W, 2.4, 3.9));
+    vec2 cross1 = origin + vec2(cos(3.9270), sin(3.9270)) * sheet.y * 0.30;
+    deco = max(deco, strokeArc(pDeco, cross1, 26.0, DECO_W, -3.6, -2.0));
+    vec2 cross2 = origin + vec2(cos(3.6652), sin(3.6652)) * sheet.y * 0.52;
+    deco = max(deco, strokeArc(pDeco, cross2, 20.0, DECO_W, -3.9, -2.4));
 
     // Ruler edges along the two axes through the origin.
-    deco = max(deco, strokeScale(pDeco, origin, 0.0, sheet.x * 0.88,
-                                 DECO_SCALE_STEP, DECO_W));
-    deco = max(deco, strokeScale(pDeco, origin, 1.5708, sheet.y * 0.84,
-                                 DECO_SCALE_STEP, DECO_W));
+    float scaleStep = cellSize() * DECO_SCALE_STEP_REL;
+    float scaleLenH = sheet.x * 0.80;
+    float scaleLenV = sheet.y * 0.78;
+    deco = max(deco, strokeScale(pDeco, origin, 3.14159265, scaleLenH,
+                                 scaleStep, DECO_W));
+    deco = max(deco, strokeScale(pDeco, origin, -1.5708, scaleLenV,
+                                 scaleStep, DECO_W));
 
     // Numbers against every fifth tick, where the scale runs long.
-    float major5 = DECO_SCALE_STEP * 5.0;
+    float major5 = scaleStep * 5.0;
     vec2 relH = pDeco - origin;
-    if (relH.y > 8.0 && relH.y < 8.0 + 5.0 * DECO_NUM && relH.x > 0.0
-        && relH.x < sheet.x * 0.88) {
-        float idx = floor(relH.x / major5 + 0.5);
-        vec2 base = vec2(idx * major5 + 3.0, 8.0);
+    if (relH.y < -8.0 && relH.y > -(8.0 + 5.0 * DECO_NUM) && relH.x < 0.0
+        && relH.x > -scaleLenH) {
+        float idx = floor(-relH.x / major5 + 0.5);
+        vec2 base = vec2(-idx * major5 + 3.0, -8.0 - 5.0 * DECO_NUM);
         deco = max(deco, number(relH, base, int(idx) * 5, DECO_NUM));
     }
     vec2 relV = pDeco - origin;
-    if (relV.x > 8.0 && relV.x < 8.0 + 12.0 * DECO_NUM && relV.y > 0.0
-        && relV.y < sheet.y * 0.84) {
-        float idx = floor(relV.y / major5 + 0.5);
-        vec2 base = vec2(8.0, idx * major5 - 2.0 * DECO_NUM);
+    if (relV.x < -8.0 && relV.x > -(8.0 + 12.0 * DECO_NUM) && relV.y < 0.0
+        && relV.y > -scaleLenV) {
+        float idx = floor(-relV.y / major5 + 0.5);
+        vec2 base = vec2(-8.0 - 12.0 * DECO_NUM, -idx * major5 - 2.0 * DECO_NUM);
         deco = max(deco, number(relV, base, int(idx) * 5, DECO_NUM));
     }
 
