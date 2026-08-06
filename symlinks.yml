@@ -23,6 +23,10 @@ common:
   # reconstructed anywhere else once it is deleted.
   common/.local/state/ccu/repo-roots.json: ~/.local/state/ccu/repo-roots.json
 
+  # Codex CLI ===============================================================
+  # Link only the config; authentication, sessions, and runtime state remain local.
+  common/.codex/config.toml: ~/.codex/config.toml
+
   # Shell (zsh, git completion) ===========================================
   common/.config/.zsh/_git: ~/.config/.zsh/_git
   common/.config/.zsh/git-completion.bash: ~/.config/.zsh/git-completion.bash
