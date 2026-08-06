@@ -16,7 +16,7 @@
     "herdr": {
       "enabled": true,
       "config_path": "~/.config/herdr/config.toml",
-      "themes_path": "~/.config/black-atom/themes/herdr"
+      "themes_path": "/Users/brunner/repos/black-atom-industries/herdr/themes"
     },
     "helm": {
       "enabled": true,
