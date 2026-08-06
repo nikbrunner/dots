@@ -10,10 +10,10 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +1 README.md
+badd +4 CONVENTIONS.md
 argglobal
 %argdel
-edit README.md
+edit CONVENTIONS.md
 tcd ~/repos/imfusion/cp/labels-web/frontend
 argglobal
 xnoremap <buffer> $ g$
@@ -96,7 +96,7 @@ setlocal modifiable
 setlocal nrformats=bin,hex
 setlocal number
 setlocal numberwidth=4
-setlocal omnifunc=htmlcomplete#CompleteTags
+setlocal omnifunc=v:lua.vim.lsp.omnifunc
 setlocal nopreserveindent
 setlocal nopreviewwindow
 setlocal quoteescape=\\
@@ -129,7 +129,7 @@ setlocal textwidth=80
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarFilename#README.md%*%=%#WinBarLspLabel#\ [LSP:\ %#DiagnosticSignInfo#:2%##%#WinBarLspLabel#]%*\ 
+setlocal winbar=%#WinBarFilename#CONVENTIONS.md%*%=
 setlocal winblend=10
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -140,15 +140,11 @@ setlocal nowrap
 setlocal wrapmargin=0
 1
 sil! normal! zo
-44
-sil! normal! zo
-56
-sil! normal! zo
-let s:l = 45 - ((39 * winheight(0) + 24) / 49)
+let s:l = 4 - ((3 * winheight(0) + 10) / 21)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 45
+keepjumps 4
 normal! 0
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'

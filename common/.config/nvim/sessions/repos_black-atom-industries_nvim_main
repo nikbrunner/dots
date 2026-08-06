@@ -10,8 +10,8 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +21 lua/black-atom/highlights/syntax.lua
-badd +0 lua/black-atom/config.lua
+badd +25 lua/black-atom/highlights/syntax.lua
+badd +1 lua/black-atom/config.lua
 argglobal
 %argdel
 edit lua/black-atom/highlights/syntax.lua
@@ -31,8 +31,8 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe 'vert 1resize ' . ((&columns * 121 + 121) / 243)
-exe 'vert 2resize ' . ((&columns * 121 + 121) / 243)
+exe 'vert 1resize ' . ((&columns * 26 + 26) / 53)
+exe 'vert 2resize ' . ((&columns * 26 + 26) / 53)
 tcd ~/repos/black-atom-industries/nvim
 argglobal
 setlocal keymap=
@@ -137,7 +137,7 @@ setlocal textwidth=120
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#lua%*%#WinBarSeparator#/%*%#WinBarPath#black-atom%*%#WinBarSeparator#/%*%#WinBarPath#highlights%*%#WinBarSeparator#/%*%#WinBarFilename#syntax.lua%*%=%#WinBarGitLabel#\ [GIT:%#WinBarGitChange#\ ~1%#WinBarGitLabel#]%*\ 
+setlocal winbar=%#WinBarPath#...%*%#WinBarSeparator#/%*%#WinBarFilename#syntax.lua%*%=%#WinBarGitLabel#\ [GIT:%#WinBarGitChange#\ ~1%#WinBarGitLabel#]%*\ 
 setlocal winblend=10
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -152,11 +152,11 @@ sil! normal! zo
 sil! normal! zo
 10
 sil! normal! zo
-let s:l = 21 - ((20 * winheight(0) + 27) / 54)
+let s:l = 17 - ((16 * winheight(0) + 10) / 21)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 21
+keepjumps 17
 normal! 0
 wincmd w
 argglobal
@@ -282,15 +282,15 @@ sil! normal! zo
 sil! normal! zo
 19
 sil! normal! zo
-let s:l = 30 - ((29 * winheight(0) + 27) / 54)
+let s:l = 30 - ((29 * winheight(0) + 10) / 21)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
 keepjumps 30
 normal! 026|
 wincmd w
-exe 'vert 1resize ' . ((&columns * 121 + 121) / 243)
-exe 'vert 2resize ' . ((&columns * 121 + 121) / 243)
+exe 'vert 1resize ' . ((&columns * 26 + 26) / 53)
+exe 'vert 2resize ' . ((&columns * 26 + 26) / 53)
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf

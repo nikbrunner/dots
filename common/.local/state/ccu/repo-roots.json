@@ -40,6 +40,16 @@
     ],
     "last_seen": "2026-07-27"
   },
+  "black-atom-industries/website": {
+    "root": "~/repos/black-atom-industries/website",
+    "owner": "black-atom-industries",
+    "name": "website",
+    "work": false,
+    "session_dirs": [
+      "~/repos/black-atom-industries/website"
+    ],
+    "last_seen": "2026-08-06"
+  },
   "cp/imfusion-portal": {
     "root": "~/repos/imfusion/cp/imfusion-portal",
     "owner": "cp",
@@ -191,11 +201,14 @@
     "work": true,
     "session_dirs": [
       "~/.herdr/worktrees/web-ui/classname-construction-convention",
+      "~/.herdr/worktrees/web-ui/hw-probe-tmp",
       "~/.herdr/worktrees/web-ui/imfusion-logo-improvements",
       "~/.herdr/worktrees/web-ui/improve-react-patterns-skill",
       "~/.herdr/worktrees/web-ui/improve-stop-hook",
       "~/.herdr/worktrees/web-ui/showcase-improvements",
       "~/.herdr/worktrees/web-ui/skills-improvements-ii",
+      "~/.herdr/worktrees/web-ui/tanstack-intent",
+      "~/.herdr/worktrees/web-ui/teardown-selftest",
       "~/.herdr/worktrees/web-ui/websdk-133-image-display-options",
       "~/.herdr/worktrees/web-ui/websdk-205-web-ui-improve-logo-variants",
       "~/.herdr/worktrees/web-ui/websdk-209-web-ui-replace-shiki-with-tanstack-high",
@@ -209,6 +222,6 @@
       "~/repos/imfusion/websdk/web-ui/node_modules/@base-ui",
       "~/repos/imfusion/websdk/web-ui/src/llms/skills"
     ],
-    "last_seen": "2026-08-05"
+    "last_seen": "2026-08-06"
   }
 }

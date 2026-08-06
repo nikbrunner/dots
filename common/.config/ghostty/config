@@ -2,7 +2,7 @@
 # https://github.com/imrajyavardhan12/spectre-ghostty-config
 
 # Colors
-theme = black-atom-paper-blue-dark.conf
+theme = black-atom-jpn-koyo-yoru.conf
 bold-is-bright = true
 
 # Window
@@ -18,7 +18,7 @@ adjust-underline-position = 3
 
 # Fonts
 font-size = 13
-font-family = TX-02
+font-family = Kode Mono
 font-style-bold = Bold
 font-thicken = false
 window-inherit-working-directory = true
@@ -27,8 +27,8 @@ window-inherit-font-size = true
 window-theme = system
 window-decoration = auto
 
-background-opacity = 0.95
-background-blur = 65
+# background-opacity = 0.9
+# background-blur = 65
 
 # Cursor
 adjust-cursor-thickness = 5
