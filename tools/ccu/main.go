@@ -35,7 +35,7 @@ Flags:
 ` + periodHelp + `
 Both agents are included unless one is named.
 
-Prints one tree per repo: cost, models, and the skills, subagents and
+Prints one tree per repo: cost, models, and the skills, subagents, tools and
 MCP servers that drove it.
 `
 
@@ -191,8 +191,8 @@ func report(work bool, args []string) int {
 	Report{
 		Scope: scope,
 		Span:  period.Describe(),
-		// Only Claude's spend can land on the personal plan.
-		SplitBilling: work && agents["claude"],
+		// Pi's Codex values and Claude's Fable values are subscription equivalents.
+		SplitBilling: agents["claude"] || agents["pi"],
 		Repos:        repos,
 		SingleAgent:  len(agents) == 1,
 	}.Render(out)
@@ -240,7 +240,7 @@ func claudeSpend(work bool, since, until string, passthrough []string,
 				model := shortModel(mb.ModelName)
 				cost.Total += mb.Cost
 				cost.Models[model] += mb.Cost
-				if model == unbilledModel {
+				if isUnbilledModel(model) {
 					cost.Unbilled += mb.Cost
 				}
 			}

@@ -23,7 +23,18 @@ func configDirsFor(projectDirs []string) string {
 // Fable is not on the ImFusion API plan; that spend lands on a personal
 // subscription, so in work mode it is shown parenthesised and excluded from
 // the primary (billable) figure.
-const unbilledModel = "fable-5"
+const (
+	unbilledModel        = "fable-5"
+	subscriptionProvider = "openai-codex/"
+)
+
+func isSubscriptionModel(model string) bool {
+	return strings.HasPrefix(model, subscriptionProvider)
+}
+
+func isUnbilledModel(model string) bool {
+	return model == unbilledModel || isSubscriptionModel(model)
+}
 
 var dateSuffix = regexp.MustCompile(`-\d{8}$`)
 
@@ -92,7 +103,7 @@ func apportion(perModel, poolPerModel, costPerModel map[string]float64) (total, 
 		}
 		dollars := costPerModel[model] * tokens / pool
 		total += dollars
-		if model == unbilledModel {
+		if isUnbilledModel(model) {
 			unbilled += dollars
 		}
 	}

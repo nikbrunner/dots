@@ -53,22 +53,16 @@ type PiSession struct {
 // ScanPi reads every Pi session in range, keyed by working directory.
 func ScanPi(since, until string) []PiSession {
 	base := filepath.Join(homeDir(), ".pi", "agent", "sessions")
-	dirs, err := os.ReadDir(base)
-	if err != nil {
-		return nil
-	}
 	var out []PiSession
-	for _, d := range dirs {
-		if !d.IsDir() {
-			continue
+	filepath.WalkDir(base, func(path string, d os.DirEntry, err error) error {
+		if err != nil || d.IsDir() || !strings.HasSuffix(path, ".jsonl") {
+			return nil
 		}
-		files, _ := filepath.Glob(filepath.Join(base, d.Name(), "*.jsonl"))
-		for _, f := range files {
-			if s := scanPiFile(f, since, until); s != nil {
-				out = append(out, *s)
-			}
+		if s := scanPiFile(path, since, until); s != nil {
+			out = append(out, *s)
 		}
-	}
+		return nil
+	})
 	return out
 }
 
@@ -108,7 +102,7 @@ func scanPiFile(path, since, until string) *PiSession {
 		}
 
 		session.Cost.Total += cost
-		session.Cost.Models[rec.Message.Model] += cost
+		session.Cost.Models[piModelLabel(rec.Message.Provider, rec.Message.Model)] += cost
 
 		// A turn's cost is mostly its accumulated context rather than the call
 		// it happens to make, so a turn calling several tools splits evenly
@@ -172,7 +166,10 @@ func piReport(work bool, since, until string, resolver *Resolver) (map[string]*C
 		}
 		cost.Total += s.Cost.Total
 		for model, dollars := range s.Cost.Models {
-			cost.Models[shortPiModel(model)] += dollars
+			cost.Models[model] += dollars
+			if isSubscriptionModel(model) {
+				cost.Unbilled += dollars
+			}
 		}
 
 		att := attribution[project.Name]
@@ -195,10 +192,9 @@ func piReport(work bool, since, until string, resolver *Resolver) (map[string]*C
 // piPool is the synthetic model key that makes apportioning a no-op.
 const piPool = "\x00pi"
 
-// shortPiModel drops the provider prefix that makes model names too wide.
-func shortPiModel(model string) string {
-	if _, name, found := strings.Cut(model, "/"); found {
-		return name
+func piModelLabel(provider, model string) string {
+	if provider == "" || strings.Contains(model, "/") {
+		return model
 	}
-	return model
+	return provider + "/" + model
 }

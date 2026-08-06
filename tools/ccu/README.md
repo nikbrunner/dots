@@ -22,7 +22,7 @@ web-ui  $1,046.94 ($2,034.82)  (96%)
 ├─ mcp
 │  ├─ chrome-devtools:evaluate_script   $64.61
 │  └─ chrome-devtools:take_screenshot   $53.51
-└─ unattributed  $1,365.66
+└─ no attributed action  $1,365.66
 ```
 
 ## Two agents, three sources
@@ -44,23 +44,28 @@ but carry no prices. So ccu reads both and joins them per repo.
 ```
 
 Pi is the easy one. It writes `cost.total` into every assistant message, so ccu
-reads its session files and nothing else. No ccusage, no weighting, no
-apportioning. Those numbers are exact.
+reads every session file, including nested subagents, and nothing else. No
+ccusage, no weighting, no apportioning. Model labels retain the provider, so
+Codex and other providers stay visible. `openai-codex` keeps Pi's API-equivalent
+value as a subscription equivalent: it appears in brackets and stays out of the
+primary billed total.
 
 Both agents show up in the same tree, one branch each, when a repo saw both:
 
 ```
-dots  $261.86  (17%)
+personal  ·  today  ·  $261.31 ($261.86)
+billed API spend, figure in brackets includes subscription equivalents
+
+dots  $261.31 ($261.86)  (17%)
 ├─ claude  $261.31
 │  ├─ models
-│  │  ├─ fable-5    $73.24
-│  │  └─ opus-4-8   $71.98
+│  │  └─ opus-4-8   $261.31
 │  └─ skills
 │     ├─ dev-commit   $9.04
 │     └─ dev-nvim     $6.03
-└─ pi  $0.55
+└─ pi  $0.00 ($0.55)
    ├─ models
-   │  └─ minimax-m2.7  $0.55
+   │  └─ openai-codex/gpt-5.6-sol (subscription)  $0.55
    └─ tools
       ├─ bash   $0.22
       └─ read   $0.10
@@ -99,9 +104,9 @@ Doing it per model is the whole point. Otherwise an Opus-heavy skill reads the
 same as a Fable-heavy one, and they are nowhere near the same money.
 
 Two things to keep in mind. The sections overlap, one turn can carry a skill and
-an MCP server at once, so they don't sum to the repo total. And `unattributed`
-is usually the biggest line. Most turns carry no attribution at all. It's a
-leftover, not a category.
+an MCP server at once, so they don't sum to the repo total. And `no attributed
+action` is usually the biggest line. It covers turns with no observed skill,
+subagent, MCP, or tool action. It is a leftover, not a category.
 
 ## Two Claude accounts
 

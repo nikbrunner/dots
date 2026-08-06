@@ -44,8 +44,12 @@ type record struct {
 	MCPServer string `json:"attributionMcpServer"`
 	MCPTool   string `json:"attributionMcpTool"`
 	Message   struct {
-		Model string `json:"model"`
-		Usage usage  `json:"usage"`
+		Model   string `json:"model"`
+		Usage   usage  `json:"usage"`
+		Content []struct {
+			Type string `json:"type"`
+			Name string `json:"name"`
+		} `json:"content"`
 	} `json:"message"`
 }
 
@@ -148,8 +152,23 @@ func scanFile(path, since, until string, into *Attribution) {
 			into.add("mcp", label, model, tokens)
 			hits++
 		}
-		if hits == 0 {
+		if hits > 0 {
+			continue
+		}
+
+		var tools []string
+		for _, block := range rec.Message.Content {
+			if block.Type == "tool_use" && block.Name != "" {
+				tools = append(tools, block.Name)
+			}
+		}
+		if len(tools) == 0 {
 			into.Unattributed[model] += tokens
+			continue
+		}
+		share := tokens / float64(len(tools))
+		for _, tool := range tools {
+			into.add("tools", tool, model, share)
 		}
 	}
 }

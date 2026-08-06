@@ -7,8 +7,9 @@ import (
 )
 
 const (
-	topN     = 6    // labels shown per section before the rest roll up
-	minShare = 0.01 // repos under this only pad the output
+	topN               = 6    // labels shown per section before the rest roll up
+	minShare           = 0.01 // repos under this only pad the output
+	noAttributedAction = "no attributed action"
 	// A single long MCP tool name would otherwise push the amount column past
 	// every other row and break the alignment it exists for.
 	maxLabel = 34
@@ -96,8 +97,7 @@ func (r Report) Render(out *strings.Builder) {
 	fmt.Fprintf(out, "%s  ·  %s  ·  %s\n",
 		r.Scope, r.Span, money(grand, grandUnbilled, r.SplitBilling))
 	if r.SplitBilling && grandUnbilled > 0 {
-		fmt.Fprintf(out, "billable, (%s on the personal plan brings it to the "+
-			"figure in brackets)\n", unbilledModel)
+		out.WriteString("billed API spend, figure in brackets includes subscription equivalents\n")
 	}
 	out.WriteString("\n")
 
@@ -178,7 +178,7 @@ func (r Report) renderSections(out *strings.Builder, agent AgentSpend, indent st
 			}
 		}
 		if total, unbilled := apportion(att.Unattributed, att.Total, pool); total > 0 {
-			sections = append(sections, section{"unattributed",
+			sections = append(sections, section{noAttributedAction,
 				[]row{{"", total, unbilled}}})
 		}
 	}
@@ -189,7 +189,7 @@ func (r Report) renderSections(out *strings.Builder, agent AgentSpend, indent st
 	depth := len([]rune(indent))
 	labelEnd, cellW := 0, 0
 	for _, sec := range sections {
-		if sec.title == "unattributed" {
+		if sec.title == noAttributedAction {
 			labelEnd = max(labelEnd, depth+3+len(sec.title))
 			cellW = max(cellW, len("$"+comma(sec.rows[0].total)))
 			continue
@@ -207,9 +207,9 @@ func (r Report) renderSections(out *strings.Builder, agent AgentSpend, indent st
 		if last {
 			head, stem = indent+"└─ ", indent+"   "
 		}
-		// Most turns carry no attribution at all; naming that share keeps the
-		// labels above readable as a share of the repo.
-		if sec.title == "unattributed" {
+		// Text-only turns have no action to charge, so show them separately from
+		// the labels above.
+		if sec.title == noAttributedAction {
 			fmt.Fprintf(out, "%s%s%*s\n", head,
 				leader(sec.title, labelEnd-depth-3),
 				cellW, "$"+comma(sec.rows[0].total))
@@ -267,6 +267,9 @@ func capRows(rows []row) []row {
 }
 
 func displayLabel(r row, split bool) string {
+	if isSubscriptionModel(r.label) {
+		return r.label + " (subscription)"
+	}
 	if split && r.label == unbilledModel {
 		return "(" + r.label + ")"
 	}
