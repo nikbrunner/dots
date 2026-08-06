@@ -13,6 +13,11 @@
       "config_path": "~/.config/lazygit/config.yml",
       "themes_path": "~/.config/black-atom/themes/lazygit"
     },
+    "herdr": {
+      "enabled": true,
+      "config_path": "~/.config/herdr/config.toml",
+      "themes_path": "~/.config/black-atom/themes/herdr"
+    },
     "helm": {
       "enabled": true,
       "config_path": "~/.config/black-atom/helm/config.yml",

@@ -3,9 +3,11 @@ onboarding = false
 # https://herdr.dev/docs/configuration/
 # https://herdr.dev/plugins/
 
+# BEGIN BLACK ATOM LIVERY THEME
 [theme]
 # name = "terminal"
 # name = "catppuccin-latte"
+# END BLACK ATOM LIVERY THEME
 
 [update]
 channel = "preview"
