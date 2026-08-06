@@ -1,0 +1,1 @@
+- [No agent-config edits](no-agent-config-edits.md) — install the library, skip intent hooks and AGENTS.md writes

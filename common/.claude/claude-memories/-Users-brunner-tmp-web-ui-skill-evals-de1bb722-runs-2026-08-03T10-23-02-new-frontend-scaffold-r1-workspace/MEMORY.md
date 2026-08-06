@@ -1,0 +1,1 @@
+- [TypeScript pinned to 5.9](typescript-pinned-to-5-9.md) — typescript-eslint peer-caps below TS 6.1, so the compiler can't go to 7 alone

@@ -112,7 +112,7 @@
   "theme": {
     "mode": "system",
     "light": "Black Atom — PAPER ∷ Blue Light",
-    "dark": "Black Atom — JPN ∷ Murasaki Yoru",
+    "dark": "Black Atom — PAPER ∷ Blue Dark",
   },
   "base_keymap": "VSCode",
   "vim_mode": true,

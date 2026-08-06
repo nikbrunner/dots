@@ -25,9 +25,10 @@
     "name": "core",
     "work": false,
     "session_dirs": [
-      "~/repos/black-atom-industries/core"
+      "~/repos/black-atom-industries/core",
+      "~/repos/black-atom-industries/core/.agents"
     ],
-    "last_seen": "2026-07-27"
+    "last_seen": "2026-08-05"
   },
   "black-atom-industries/nvim": {
     "root": "~/repos/black-atom-industries/nvim",
@@ -45,10 +46,13 @@
     "name": "imfusion-portal",
     "work": true,
     "session_dirs": [
+      "~/repos/imfusion/cp/imfusion-portal",
       "~/repos/imfusion/cp/imfusion-portal-CP-89",
-      "~/repos/imfusion/cp/imfusion-portal-CP-89/fe"
+      "~/repos/imfusion/cp/imfusion-portal-CP-89/fe",
+      "~/repos/imfusion/cp/imfusion-portal-CP-89/fe/.claude/skills",
+      "~/repos/imfusion/cp/imfusion-portal-CP-89/fe/src/partials"
     ],
-    "last_seen": "2026-07-27"
+    "last_seen": "2026-08-05"
   },
   "cp/labels-web": {
     "root": "~/repos/imfusion/cp/labels-web",
@@ -150,6 +154,16 @@
     ],
     "last_seen": "2026-07-26"
   },
+  "nikbrunner/lazyjira": {
+    "root": "~/repos/nikbrunner/lazyjira",
+    "owner": "nikbrunner",
+    "name": "lazyjira",
+    "work": false,
+    "session_dirs": [
+      "~/repos/nikbrunner/lazyjira"
+    ],
+    "last_seen": "2026-07-31"
+  },
   "nikbrunner/notes": {
     "root": "~/repos/nikbrunner/notes",
     "owner": "nikbrunner",
@@ -176,10 +190,14 @@
     "name": "web-ui",
     "work": true,
     "session_dirs": [
+      "~/.herdr/worktrees/web-ui/classname-construction-convention",
+      "~/.herdr/worktrees/web-ui/imfusion-logo-improvements",
       "~/.herdr/worktrees/web-ui/improve-react-patterns-skill",
       "~/.herdr/worktrees/web-ui/improve-stop-hook",
       "~/.herdr/worktrees/web-ui/showcase-improvements",
+      "~/.herdr/worktrees/web-ui/skills-improvements-ii",
       "~/.herdr/worktrees/web-ui/websdk-133-image-display-options",
+      "~/.herdr/worktrees/web-ui/websdk-205-web-ui-improve-logo-variants",
       "~/.herdr/worktrees/web-ui/websdk-209-web-ui-replace-shiki-with-tanstack-high",
       "~/.herdr/worktrees/web-ui/worktree-websdk-207-web-ui-setup-tanstack-intent",
       "~/repos/imfusion/websdk/web-ui",
@@ -187,8 +205,10 @@
       "~/repos/imfusion/websdk/web-ui/.workspaces/mcp-resilience",
       "~/repos/imfusion/websdk/web-ui/.workspaces/shadow-hardness-control",
       "~/repos/imfusion/websdk/web-ui/.workspaces/websdk-149-corner-radius-control",
-      "~/repos/imfusion/websdk/web-ui/node_modules/@base-ui"
+      "~/repos/imfusion/websdk/web-ui/.workspaces/websdk-207-skills",
+      "~/repos/imfusion/websdk/web-ui/node_modules/@base-ui",
+      "~/repos/imfusion/websdk/web-ui/src/llms/skills"
     ],
-    "last_seen": "2026-07-30"
+    "last_seen": "2026-08-05"
   }
 }

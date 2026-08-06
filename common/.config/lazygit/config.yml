@@ -1,5 +1,7 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/jesseduffield/lazygit/master/schema/config.json
 # https://github.com/jesseduffield/lazygit/blob/master/docs/Config.md
+services:
+  "bitbucket.imfusion.com": "bitbucketServer:bitbucket.imfusion.com"
 os:
   edit: '[ -z "$NVIM" ] && (nvim -- {{filename}}) || (nvim --server "$NVIM" --remote-send "<C-\\><C-n>:close<CR>" && nvim --server "$NVIM" --remote {{filename}})'
   editAtLine: '[ -z "$NVIM" ] && (nvim +{{line}} -- {{filename}}) || (nvim --server "$NVIM" --remote-send "<C-\\><C-n>:close<CR>" && nvim --server "$NVIM" --remote {{filename}} && nvim --server "$NVIM" --remote-send ":{{line}}<CR>")'
@@ -9,31 +11,31 @@ gui:
   # Theme colors managed by pick-theme
   theme:
     activeBorderColor:
-      - "#002469"
+      - "#f2f6f9"
       - bold
     inactiveBorderColor:
-      - "#32669a"
+      - "#839caf"
     optionsTextColor:
-      - "#679dd4"
+      - "#a7bac9"
     selectedLineBgColor:
-      - "#c5cbd2"
+      - "#224c6a"
     cherryPickedCommitBgColor:
-      - "#dadee3"
+      - "#053b5e"
     cherryPickedCommitFgColor:
-      - "#002469"
+      - "#f2f6f9"
     unstagedChangesColor:
-      - "#f14d4c"
+      - "#dd7577"
     defaultFgColor:
-      - "#002469"
+      - "#eef2f5"
     searchingActiveBorderColor:
-      - "#558ac0"
+      - "#839caf"
 
   authorColors:
-    "*": "#558ac0"
+    "*": "#839caf"
   branchColors:
     "main": "#e74c3c"
     "master": "#e74c3c"
-    "^bcd": "#3EE7B1"
+    "^(?i)(websdk|cp)-": "#3EE7B1"
   # stuff relating to the UI
   scrollHeight: 10 # how many lines you scroll by
   scrollPastBottom: true # enable scrolling past the bottom
@@ -57,19 +59,11 @@ git:
   commit:
     autoWrapCommitMessage: true
     autoWrapWidth: 72
-  commitPrefixes:
-    bc-desktop-client:
-      - pattern: "^bcd-(\\d{4}).*"
-        replace: "BCD-$1 "
-    bc-web-client-poc:
-      - pattern: "^bcd-(\\d{4}).*"
-        replace: "BCD-$1 "
-    bc-homepage:
-      - pattern: "^bcd-(\\d{4}).*"
-        replace: "BCD-$1 "
-    terra-core.nvim:
-      - pattern: "^feature/dev-(\\d{3}).*"
-        replace: "DEV-$1 "
+  commitPrefix:
+    - pattern: "^(?i)websdk-(\\d+).*"
+      replace: "[WEBSDK-$1] "
+    - pattern: "^(?i)cp-(\\d+).*"
+      replace: "[CP-$1] "
   pagers:
     - colorArg: always
       pager: delta --paging=never

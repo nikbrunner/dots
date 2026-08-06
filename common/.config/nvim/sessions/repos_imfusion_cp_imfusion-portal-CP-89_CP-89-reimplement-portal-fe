@@ -10,11 +10,12 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +12 fe/src/components/hero-panel/HeroPanel.tsx
-badd +25 fe/src/components/hero-panel/HeroPanel.module.css
+badd +18 fe/src/partials/public/header.tsx
+badd +1 fe/src/styles/global.css
 argglobal
 %argdel
-edit fe/src/components/hero-panel/HeroPanel.tsx
+$argadd fe/src/routes/_public/index.tsx
+edit fe/src/partials/public/header.tsx
 let s:save_splitbelow = &splitbelow
 let s:save_splitright = &splitright
 set splitbelow splitright
@@ -31,8 +32,8 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe 'vert 1resize ' . ((&columns * 134 + 134) / 268)
-exe 'vert 2resize ' . ((&columns * 133 + 134) / 268)
+exe 'vert 1resize ' . ((&columns * 138 + 138) / 276)
+exe 'vert 2resize ' . ((&columns * 137 + 138) / 276)
 tcd ~/repos/imfusion/cp/imfusion-portal-CP-89
 argglobal
 setlocal keymap=
@@ -134,7 +135,7 @@ setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#...%*%#WinBarSeparator#/%*%#WinBarPath#src%*%#WinBarSeparator#/%*%#WinBarPath#components%*%#WinBarSeparator#/%*%#WinBarPath#hero-panel%*%#WinBarSeparator#/%*%#WinBarFilename#HeroPanel.tsx%*%=
+setlocal winbar=%#WinBarPath#fe%*%#WinBarSeparator#/%*%#WinBarPath#src%*%#WinBarSeparator#/%*%#WinBarPath#partials%*%#WinBarSeparator#/%*%#WinBarPath#public%*%#WinBarSeparator#/%*%#WinBarFilename#header.tsx%*%=%#WinBarGitLabel#\ [GIT:%#WinBarGitAdd#\ +1%#WinBarGitChange#\ ~3%#WinBarGitLabel#]%*%#WinBarLspLabel#\ [LSP:\ %#DiagnosticSignError#:1%##%#WinBarLspLabel#]%*\ 
 setlocal winblend=10
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -143,29 +144,24 @@ setlocal winhighlight=
 setlocal nowinpinned
 setlocal nowrap
 setlocal wrapmargin=0
-21
+8
 sil! normal! zo
-23
+10
 sil! normal! zo
-25
+14
 sil! normal! zo
-34
-sil! normal! zo
-35
-sil! normal! zo
-let s:l = 15 - ((14 * winheight(0) + 31) / 63)
+let s:l = 19 - ((18 * winheight(0) + 31) / 62)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 15
-normal! 0
+keepjumps 19
+normal! 016|
 wincmd w
 argglobal
-if bufexists(fnamemodify("~/repos/imfusion/cp/imfusion-portal-CP-89/fe/src/components/hero-panel/HeroPanel.module.css", ":p")) | buffer ~/repos/imfusion/cp/imfusion-portal-CP-89/fe/src/components/hero-panel/HeroPanel.module.css | else | edit ~/repos/imfusion/cp/imfusion-portal-CP-89/fe/src/components/hero-panel/HeroPanel.module.css | endif
+if bufexists(fnamemodify("~/repos/imfusion/cp/imfusion-portal-CP-89/fe/src/styles/global.css", ":p")) | buffer ~/repos/imfusion/cp/imfusion-portal-CP-89/fe/src/styles/global.css | else | edit ~/repos/imfusion/cp/imfusion-portal-CP-89/fe/src/styles/global.css | endif
 if &buftype ==# 'terminal'
-  silent file ~/repos/imfusion/cp/imfusion-portal-CP-89/fe/src/components/hero-panel/HeroPanel.module.css
+  silent file ~/repos/imfusion/cp/imfusion-portal-CP-89/fe/src/styles/global.css
 endif
-balt ~/repos/imfusion/cp/imfusion-portal-CP-89/fe/src/components/hero-panel/HeroPanel.tsx
 setlocal keymap=
 setlocal noarabic
 setlocal autoindent
@@ -233,7 +229,7 @@ setlocal modifiable
 setlocal nrformats=bin,hex
 setlocal number
 setlocal numberwidth=4
-setlocal omnifunc=csscomplete#CompleteCSS
+setlocal omnifunc=v:lua.vim.lsp.omnifunc
 setlocal nopreserveindent
 setlocal nopreviewwindow
 setlocal quoteescape=\\
@@ -266,7 +262,7 @@ setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#...%*%#WinBarSeparator#/%*%#WinBarPath#hero-panel%*%#WinBarSeparator#/%*%#WinBarFilename#HeroPanel.module.css%*%=
+setlocal winbar=%#WinBarPath#fe%*%#WinBarSeparator#/%*%#WinBarPath#src%*%#WinBarSeparator#/%*%#WinBarPath#styles%*%#WinBarSeparator#/%*%#WinBarFilename#global.css%*%=
 setlocal winblend=10
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -275,21 +271,16 @@ setlocal winhighlight=
 setlocal nowinpinned
 setlocal nowrap
 setlocal wrapmargin=0
-91
-sil! normal! zo
-102
-sil! normal! zo
-166
-sil! normal! zo
-let s:l = 25 - ((21 * winheight(0) + 31) / 63)
+let s:l = 1 - ((0 * winheight(0) + 31) / 62)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 25
-normal! 02|
+keepjumps 1
+normal! 06|
 wincmd w
-exe 'vert 1resize ' . ((&columns * 134 + 134) / 268)
-exe 'vert 2resize ' . ((&columns * 133 + 134) / 268)
+2wincmd w
+exe 'vert 1resize ' . ((&columns * 138 + 138) / 276)
+exe 'vert 2resize ' . ((&columns * 137 + 138) / 276)
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
