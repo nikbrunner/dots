@@ -1,6 +1,6 @@
 // Note which repo a session's directory belongs to, so a worktree can still be
 // traced back to its source repo after being deleted. The ledger it writes is
-// read by `ccu`. See tools/ccu-record.
+// read by `bic`. See tools/bic.
 //
 // session_start is the anchor because it always fires; session_shutdown is
 // skipped on Ctrl+C and on a closed terminal. agent_end repeats the record for
@@ -11,7 +11,7 @@ import { spawn } from "node:child_process";
 
 function record() {
   try {
-    const child = spawn("ccu", ["record", "-cwd", process.cwd()], {
+    const child = spawn("bic", ["record", "-cwd", process.cwd()], {
       stdio: "ignore",
       detached: true,
     });

@@ -1,9 +1,9 @@
-// ccu reports Claude Code spend per repository, split between work and
+// borrowed intelligence cost reports agent spend per repository, split between work and
 // personal, and shows which models, skills, subagents and MCP servers drove it.
 //
 // Cost comes from ccusage, which prices tokens but knows nothing about what
 // spent them. Attribution lives only in the raw transcripts, which count tokens
-// but carry no prices. ccu joins the two per repository.
+// but carry no prices. borrowed intelligence cost joins the two per repository.
 //
 // See README.md for how the pieces fit together.
 package main
@@ -17,7 +17,7 @@ import (
 	"time"
 )
 
-const usageText = `Usage: ccu <command> [flags]
+const usageText = `Usage: bic <command> [flags]
 
 Commands:
   imfusion            Spend on work repositories
@@ -65,7 +65,7 @@ func main() {
 	case "help", "-h", "--help":
 		fmt.Print(usageText)
 	default:
-		fmt.Fprintf(os.Stderr, "ccu: unknown command %q\n\n", args[0])
+		fmt.Fprintf(os.Stderr, "bic: unknown command %q\n\n", args[0])
 		fmt.Fprint(os.Stderr, usageText)
 		os.Exit(1)
 	}
@@ -125,14 +125,14 @@ func report(work bool, args []string) int {
 	agents, rest := parseAgents(args)
 	period, passthrough, err := parseRange(rest)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "ccu: %v\n\n%s", err, periodHelp)
+		fmt.Fprintf(os.Stderr, "bic: %v\n\n%s", err, periodHelp)
 		return 1
 	}
 	since, until := period.Since, period.Until
 
 	home, err := os.UserHomeDir()
 	if err != nil {
-		fmt.Fprintln(os.Stderr, "ccu: cannot determine home directory")
+		fmt.Fprintln(os.Stderr, "bic: cannot determine home directory")
 		return 1
 	}
 	projectDirs := claudeProjectDirs(home)
@@ -154,7 +154,7 @@ func report(work bool, args []string) int {
 		costs, attribution, err := claudeSpend(work, since, until, passthrough,
 			projectDirs, resolver)
 		if err != nil {
-			fmt.Fprintf(os.Stderr, "ccu: %v\n", err)
+			fmt.Fprintf(os.Stderr, "bic: %v\n", err)
 			return 1
 		}
 		for repo, cost := range costs {

@@ -11,7 +11,7 @@ import (
 // Resolver turns a ccusage project key into the repository it belongs to.
 //
 // Sources are tried strongest first: a checkout under the repo tree, then the
-// ledger recorded by `ccu record`, then git itself, and only then guesswork
+// ledger recorded by `bic record`, then git itself, and only then guesswork
 // from the path. Everything below the ledger exists for sessions that predate
 // it, or for directories that have since been deleted.
 type Resolver struct {

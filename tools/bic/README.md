@@ -1,6 +1,6 @@
-# ccu
+# borrowed intelligence cost
 
-What Claude Code costs me, per repo, split into work and personal. And which
+What my coding agents cost, per repo, split into work and personal. And which
 models, skills, subagents and MCP servers actually spent it.
 
 ```
@@ -29,7 +29,7 @@ web-ui  $1,046.94 ($2,034.82)  (96%)
 
 Claude Code needs two sources joined. ccusage knows the dollars. It has no idea
 what spent them. The transcripts know exactly that, skill, subagent, MCP tool,
-but carry no prices. So ccu reads both and joins them per repo.
+but carry no prices. So bic reads both and joins them per repo.
 
 ```
   ccusage                          transcripts (~/.claude/projects)
@@ -43,9 +43,9 @@ but carry no prices. So ccu reads both and joins them per repo.
                    joined per repository
 ```
 
-Pi is the easy one. It writes `cost.total` into every assistant message, so ccu
-reads every session file, including nested subagents, and nothing else. No
-ccusage, no weighting, no apportioning. Model labels retain the provider, so
+Pi is the easy one. It writes `cost.total` into every assistant message, so bic
+reads every session file, including nested subagents. No ccusage, no weighting,
+no apportioning. Model labels retain the provider, so
 Codex and other providers stay visible. `openai-codex` keeps Pi's API-equivalent
 value as a subscription equivalent: it appears in brackets and stays out of the
 primary billed total.
@@ -112,7 +112,7 @@ subagent, MCP, or tool action. It is a leftover, not a category.
 
 A second Anthropic account runs with its own `CLAUDE_CONFIG_DIR` (the
 `claude-work` shell function), so its sessions land in `~/.claude-work` instead
-of `~/.claude`. ccu reads both, and passes both to ccusage as a
+of `~/.claude`. bic reads both, and passes both to ccusage as a
 comma-separated `CLAUDE_CONFIG_DIR`. Left alone, ccusage reads only `~/.claude`
 and every work session silently disappears from the report.
 
@@ -138,13 +138,13 @@ Leave it alone and six branches become six projects, none counted as work. Git
 can answer this, but only while the worktree exists. And I delete those the
 moment a branch merges.
 
-So `ccu record` writes the answer down while it's still true. Both agents call
+So `bic record` writes the answer down while it's still true. Both agents call
 it on events that always fire. Session end is no good, it gets skipped on
 Ctrl+C, on a closed terminal, on a crash.
 
 ```
   Claude Code  SessionStart, Stop  ─┐
-                                    ├─→  ccu record  ─→  ledger
+                                    ├─→  bic record  ─→  ledger
   Pi           session_start,      ─┘         │
                agent_end                      └─ git rev-parse --git-common-dir
 ```
@@ -196,18 +196,18 @@ The guessing shrinks over time as the ledger fills up.
 ## Commands
 
 ```
-ccu imfusion            spend on work repos
-ccu personal            spend on everything else
-ccu record [-cwd DIR]   note a session's repo (hooks)
+bic imfusion            spend on work repos
+bic personal            spend on everything else
+bic record [-cwd DIR]   note a session's repo (hooks)
 ```
 
 The period goes behind `-p`, not `--since`, because most periods have a start
 and an end and cramming that into a start-only flag fights it:
 
 ```
-ccu imfusion -p last week
-ccu personal -p yesterday
-ccu imfusion -p last 7 days --pi
+bic imfusion -p last week
+bic personal -p yesterday
+bic imfusion -p last 7 days --pi
 ```
 
 Quotes are optional. Everything after `-p` up to the next flag is the period.
@@ -220,7 +220,7 @@ is this month. A closed range prints its dates in the header, so `last week`
 says which week it meant.
 
 `-s`/`-u` still take explicit `YYYYMMDD` and override `-p`. `--claude` or
-`--pi` narrow to one agent. Flags ccu doesn't recognise go through to
+`--pi` narrow to one agent. Flags bic doesn't recognise go through to
 `ccusage claude daily`.
 
 ## Layout
