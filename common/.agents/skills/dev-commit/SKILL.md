@@ -1,6 +1,6 @@
 ---
 name: dev-commit
-description: "Commit workflow with staged docs audit, conventional commit format, approval gate, and pre-commit chain. Stages selectively, runs dev:audit docs --staged, drafts a message, waits for explicit approval, then commits."
+description: "Commit workflow with staged docs audit, ticket-prefixed imperative messages, approval gate, and pre-commit chain. Stages selectively, runs dev:audit docs --staged, drafts a message, waits for explicit approval, then commits."
 argument-hint: "[optional message hint or scope hint]"
 user-invocable: true
 metadata:
@@ -65,24 +65,34 @@ Do **not** skip Phase 2.
 
 Invoke `my-voice` before drafting. Commit messages are published under Nik's name, so the anti-AI-isms apply to the subject and body.
 
-**Format:**
+### The project's format wins
+
+Every repo sets its own commit grammar, and this skill defers to it. Look in this order and stop at the first hit:
+
+1. **A project commit skill** — `.agents/skills/*-commit/SKILL.md` (or `.claude/skills/`). If one exists, its format section is the spec. Follow it exactly.
+2. **AGENTS.md / CLAUDE.md** — a stated commit convention.
+3. **`git log --oneline -30`** — read the dominant pattern off the history and match it.
+4. **The default below**, when the project says nothing.
+
+Applies to the whole grammar, not just the type list: ticket-key placement (leading `[ABC-123]` vs. trailing `(ABC-123)`), scope vocabulary, whether bodies are bullets or prose. Where the project skill and the log disagree, the skill wins and the divergence is worth mentioning to Nik.
+
+### Default format
+
+Used when no project convention exists.
 
 ```
-<type>(<scope>): <description>
+[<ticket>] <summary>
 ```
 
-**Type:** `feat`, `fix`, `refactor`, `chore`, `docs`, `perf`, `ci`, `test`.
+**Subject** — imperative mood ("add X", not "added X"), under 70 chars, focused on _why_ not _what_. Do not use a `type(scope):` prefix.
 
-**Scope** — determined by which files changed. Project-level scope rules (from AGENTS.md, CLAUDE.md) override these defaults:
+**Ticket or issue** — when the commit is tied to one, prepend its key in square brackets: `[WEBSDK-123] add X`. Omit the brackets when none applies.
 
-- If changes are isolated to one module, package, or directory, use that as scope.
-- Pick scope casing conventions from the project's prior commit log.
-- If changes span multiple areas, omit scope.
-- Config-only or docs-only changes: omit scope.
+**Breaking change** — put `BREAKING:` after the optional ticket: `[WEBSDK-123] BREAKING: remove the v1 API`. Without a ticket, use `BREAKING: remove the v1 API`.
 
-**Subject** — imperative mood ("add X", not "added X"), under 70 chars, focused on _why_ not _what_.
+**Body** (optional) — use when the diff is large or non-obvious. Use bullets, not prose. Each bullet states what changed and why in the same breath, wraps at 72 characters, and never echoes the file list.
 
-**Body** (optional) — use when the diff is large or non-obvious. Summarize the rationale or the moving parts in 2–4 lines. Never echo the file list.
+Include links to related tickets, PRs, or other resources when useful.
 
 ---
 
@@ -104,9 +114,9 @@ Always use a heredoc to preserve formatting:
 
 ```sh
 git commit -m "$(cat <<'EOF'
-type(scope): subject line under 70 chars
+[WEBSDK-123] subject line under 70 chars
 
-Optional body. Wrapped around column 72. Explains the why.
+- Moving part and why it changed, wrapped around column 72.
 EOF
 )"
 ```
@@ -133,7 +143,7 @@ After success, confirm with `git log --oneline -3` and `git status -s`.
 
 ## Rules
 
-- **Conventional Commits.** Match the format above. The git history is read by humans and tools.
+- **Commit format.** Follow the selected project convention, or the default above.
 - **Atomic commits.** One logical change per commit. Tooling churn ≠ feature change ≠ doc sweep.
 - **Approval required.** Stage and show; never commit on autopilot.
 - **No `--no-verify`** unless the user explicitly requests it. Hook failures point at real problems.
