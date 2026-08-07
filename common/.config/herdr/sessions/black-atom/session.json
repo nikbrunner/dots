@@ -36,10 +36,10 @@
       "custom_name": "Core",
       "identity_cwd": "/Users/brunner/repos/black-atom-industries/core",
       "public_pane_numbers": {
+        "4": 4,
         "5": 10,
-        "3": 3,
         "2": 2,
-        "4": 4
+        "3": 3
       },
       "next_public_pane_number": 20,
       "public_tab_numbers": [
@@ -115,11 +115,11 @@
       "custom_name": "Livery",
       "identity_cwd": "/Users/brunner/repos/black-atom-industries/livery",
       "public_pane_numbers": {
-        "7": 2,
+        "6": 1,
         "8": 3,
-        "6": 1
+        "7": 2
       },
-      "next_public_pane_number": 8,
+      "next_public_pane_number": 9,
       "public_tab_numbers": [
         1,
         2,
@@ -177,9 +177,9 @@
       "custom_name": "Neovim",
       "identity_cwd": "/Users/brunner/repos/black-atom-industries/nvim",
       "public_pane_numbers": {
+        "10": 2,
         "11": 3,
-        "9": 1,
-        "10": 2
+        "9": 1
       },
       "next_public_pane_number": 9,
       "public_tab_numbers": [
@@ -263,10 +263,40 @@
         }
       ],
       "active_tab": 0
+    },
+    {
+      "id": "wA",
+      "custom_name": "shiplog",
+      "identity_cwd": "/Users/brunner/repos/black-atom-industries/shiplog",
+      "public_pane_numbers": {
+        "14": 1
+      },
+      "next_public_pane_number": 4,
+      "public_tab_numbers": [
+        1
+      ],
+      "next_public_tab_number": 2,
+      "tabs": [
+        {
+          "custom_name": null,
+          "layout": {
+            "Pane": 14
+          },
+          "panes": {
+            "14": {
+              "cwd": "/Users/brunner/repos/black-atom-industries/shiplog"
+            }
+          },
+          "zoomed": false,
+          "focused": 14,
+          "root_pane": 14
+        }
+      ],
+      "active_tab": 0
     }
   ],
-  "active": 2,
-  "selected": 2,
+  "active": 5,
+  "selected": 5,
   "sidebar_width": 26,
   "sidebar_section_split": 0.5,
   "collapsed_space_keys": []

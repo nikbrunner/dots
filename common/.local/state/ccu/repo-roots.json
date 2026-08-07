@@ -50,6 +50,16 @@
     ],
     "last_seen": "2026-07-27"
   },
+  "black-atom-industries/shiplog": {
+    "root": "~/repos/black-atom-industries/shiplog",
+    "owner": "black-atom-industries",
+    "name": "shiplog",
+    "work": false,
+    "session_dirs": [
+      "~/repos/black-atom-industries/shiplog"
+    ],
+    "last_seen": "2026-08-07"
+  },
   "black-atom-industries/website": {
     "root": "~/repos/black-atom-industries/website",
     "owner": "black-atom-industries",
@@ -152,6 +162,16 @@
       "~/repos/nikbrunner/dots/common/.config/nvim/sessions"
     ],
     "last_seen": "2026-07-30"
+  },
+  "nikbrunner/herdr-navigator": {
+    "root": "~/repos/nikbrunner/herdr-navigator",
+    "owner": "nikbrunner",
+    "name": "herdr-navigator",
+    "work": false,
+    "session_dirs": [
+      "~/repos/nikbrunner/herdr-navigator"
+    ],
+    "last_seen": "2026-08-07"
   },
   "nikbrunner/imf-notes": {
     "root": "~/repos/nikbrunner/imf-notes",
