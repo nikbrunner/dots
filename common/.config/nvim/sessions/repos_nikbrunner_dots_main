@@ -10,11 +10,11 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +11 common/.pi/agent/models-store.json
+badd +66 symlinks.yml
 argglobal
 %argdel
 $argadd macos/.config/karabiner/karabiner.json
-edit common/.pi/agent/models-store.json
+edit symlinks.yml
 tcd ~/repos/nikbrunner/dots
 argglobal
 setlocal keymap=
@@ -33,8 +33,8 @@ setlocal cinoptions=
 setlocal cinscopedecls=public,protected,private
 setlocal cinwords=if,else,while,do,for,switch
 setlocal colorcolumn=
-setlocal comments=
-setlocal commentstring=
+setlocal comments=:#
+setlocal commentstring=#\ %s
 setlocal complete=.,w,b,kspell
 setlocal completefunc=
 setlocal completeslash=
@@ -48,8 +48,8 @@ setlocal cursorlineopt=screenline,number
 setlocal nodiff
 setlocal eventignorewin=
 setlocal expandtab
-if &filetype != 'json'
-setlocal filetype=json
+if &filetype != 'yaml'
+setlocal filetype=yaml
 endif
 setlocal fixendofline
 setlocal foldcolumn=0
@@ -64,12 +64,12 @@ setlocal foldnestmax=10
 setlocal foldtext=
 setlocal formatexpr=v:lua.require'conform'.formatexpr()
 setlocal formatlistpat=^\\s*[0-9\\-\\+\\*]\\+[\\.\\)]*\\s\\+
-setlocal formatoptions=rqnl1j
+setlocal formatoptions=n1jrql
 setlocal iminsert=0
 setlocal imsearch=-1
 setlocal includeexpr=
 setlocal indentexpr=v:lua.require'arborist.indent'.indentexpr()
-setlocal indentkeys=0{,0},0),0[,0],!^F,o,O,e
+setlocal indentkeys=!^F,o,O,0},0],<:>,0-
 setlocal infercase
 setlocal iskeyword=@,48-57,_,192-255,-
 setlocal lhistory=10
@@ -111,12 +111,12 @@ if &syntax != ''
 setlocal syntax=
 endif
 setlocal tabstop=2
-setlocal tagfunc=
+setlocal tagfunc=v:lua.vim.lsp.tagfunc
 setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#...%*%#WinBarSeparator#/%*%#WinBarFilename#models-store.json%*%=
+setlocal winbar=%#WinBarFilename#symlinks.yml%*%=%#WinBarGitLabel#\ [GIT:%#WinBarGitAdd#\ +3%#WinBarGitLabel#]%*\ 
 setlocal winblend=10
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -125,11 +125,11 @@ setlocal winhighlight=
 setlocal nowinpinned
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 11 - ((10 * winheight(0) + 10) / 21)
+let s:l = 64 - ((40 * winheight(0) + 25) / 50)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 11
+keepjumps 64
 normal! 0
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'

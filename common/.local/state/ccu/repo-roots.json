@@ -30,6 +30,16 @@
     ],
     "last_seen": "2026-08-05"
   },
+  "black-atom-industries/livery": {
+    "root": "~/repos/black-atom-industries/livery",
+    "owner": "black-atom-industries",
+    "name": "livery",
+    "work": false,
+    "session_dirs": [
+      "~/repos/black-atom-industries/livery"
+    ],
+    "last_seen": "2026-08-07"
+  },
   "black-atom-industries/nvim": {
     "root": "~/repos/black-atom-industries/nvim",
     "owner": "black-atom-industries",
@@ -209,6 +219,8 @@
       "~/.herdr/worktrees/web-ui/skills-improvements-ii",
       "~/.herdr/worktrees/web-ui/tanstack-intent",
       "~/.herdr/worktrees/web-ui/teardown-selftest",
+      "~/.herdr/worktrees/web-ui/teardown-skill-selftest",
+      "~/.herdr/worktrees/web-ui/teardown-skill-selftest-2",
       "~/.herdr/worktrees/web-ui/websdk-133-image-display-options",
       "~/.herdr/worktrees/web-ui/websdk-205-web-ui-improve-logo-variants",
       "~/.herdr/worktrees/web-ui/websdk-209-web-ui-replace-shiki-with-tanstack-high",

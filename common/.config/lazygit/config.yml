@@ -11,27 +11,27 @@ gui:
   # Theme colors managed by pick-theme
   theme:
     activeBorderColor:
-      - "#e49e22"
+      - "#4ec983"
       - bold
     inactiveBorderColor:
-      - "#b19b7c"
+      - "#7b8187"
     optionsTextColor:
-      - "#b5a4d7"
+      - "#6a6f76"
     selectedLineBgColor:
-      - "#4a3d50"
+      - "#25292f"
     cherryPickedCommitBgColor:
-      - "#3a2d3f"
+      - "#1b2025"
     cherryPickedCommitFgColor:
-      - "#e49e22"
+      - "#4ec983"
     unstagedChangesColor:
-      - "#fe838f"
+      - "#e97292"
     defaultFgColor:
-      - "#ead2b2"
+      - "#e5ecf3"
     searchingActiveBorderColor:
-      - "#e49e22"
+      - "#7b8187"
 
   authorColors:
-    "*": "#e19b73"
+    "*": "#7faaff"
   branchColors:
     "main": "#e74c3c"
     "master": "#e74c3c"
@@ -64,9 +64,9 @@ git:
       replace: "[WEBSDK-$1] "
     - pattern: "^(?i)cp-(\\d+).*"
       replace: "[CP-$1] "
-  pagers:
+  diffRenderers:
     - colorArg: always
-      pager: delta --paging=never
+      command: delta --paging=never
   merging:
     # only applicable to unix users
     manualCommit: false

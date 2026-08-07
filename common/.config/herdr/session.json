@@ -13,12 +13,11 @@
         "is_linked_worktree": false
       },
       "public_pane_numbers": {
-        "1": 203,
+        "4": 185,
         "3": 4,
-        "24": 233,
-        "4": 185
+        "24": 233
       },
-      "next_public_pane_number": 240,
+      "next_public_pane_number": 246,
       "public_tab_numbers": [
         1,
         2,
@@ -29,34 +28,16 @@
         {
           "custom_name": null,
           "layout": {
-            "Split": {
-              "direction": "Horizontal",
-              "ratio": 0.5,
-              "first": {
-                "Pane": 1
-              },
-              "second": {
-                "Pane": 24
-              }
-            }
+            "Pane": 24
           },
           "panes": {
             "24": {
-              "cwd": "/Users/brunner/repos/nikbrunner/dots",
-              "agent_session": {
-                "source": "herdr:pi",
-                "agent": "pi",
-                "kind": "path",
-                "value": "/Users/brunner/.pi/agent/sessions/--Users-brunner-repos-nikbrunner-dots--/2026-08-06T12-39-08-663Z_019fd715-a877-7980-ad7b-99e83832d60b.jsonl"
-              }
-            },
-            "1": {
               "cwd": "/Users/brunner/repos/nikbrunner/dots"
             }
           },
           "zoomed": false,
-          "focused": 1,
-          "root_pane": 1
+          "focused": 24,
+          "root_pane": 24
         },
         {
           "custom_name": null,
@@ -94,8 +75,8 @@
       "custom_name": "Notes",
       "identity_cwd": "/Users/brunner/repos/nikbrunner/notes",
       "public_pane_numbers": {
-        "5": 1,
-        "6": 3
+        "6": 3,
+        "5": 1
       },
       "next_public_pane_number": 5,
       "public_tab_numbers": [
@@ -164,10 +145,10 @@
             }
           },
           "panes": {
-            "8": {
+            "7": {
               "cwd": "/Users/brunner/repos/nikbrunner/notes"
             },
-            "7": {
+            "8": {
               "cwd": "/Users/brunner/repos/nikbrunner/notes"
             }
           },
