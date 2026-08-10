@@ -18,6 +18,12 @@ trust_level = "trusted"
 [projects."/Users/brunner/repos/imfusion/cp/imfusion-portal"]
 trust_level = "trusted"
 
+[projects."/Users/brunner/repos/nikbrunner/herdr-navigator"]
+trust_level = "trusted"
+
+[projects."/Users/brunner/repos/black-atom-industries/livery"]
+trust_level = "trusted"
+
 [tui]
 session_picker_view = "dense"
 status_line = [
