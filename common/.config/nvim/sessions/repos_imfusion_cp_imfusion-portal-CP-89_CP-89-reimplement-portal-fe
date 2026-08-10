@@ -10,11 +10,11 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +1 fe/.agents/skills/imf-web-ui-frontend-conventions/references/data.md
+badd +40 local-setup/README.md
 argglobal
 %argdel
 $argadd fe/.agents/skills/imf-web-ui-frontend-conventions/references/data.md
-edit fe/.agents/skills/imf-web-ui-frontend-conventions/references/data.md
+edit local-setup/README.md
 tcd ~/repos/imfusion/cp/imfusion-portal-CP-89
 argglobal
 xnoremap <buffer> $ g$
@@ -130,7 +130,7 @@ setlocal textwidth=80
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#...%*%#WinBarSeparator#/%*%#WinBarPath#references%*%#WinBarSeparator#/%*%#WinBarFilename#data.md%*%=%#WinBarGitLabel#\ [GIT:%#WinBarGitAdd#\ +1%#WinBarGitChange#\ ~4%#WinBarGitDelete#\ -12%#WinBarGitLabel#]%*\ 
+setlocal winbar=%#WinBarPath#local-setup%*%#WinBarSeparator#/%*%#WinBarFilename#README.md%*%=%#WinBarLspLabel#\ [LSP:\ %#DiagnosticSignInfo#:2%##%#WinBarLspLabel#]%*\ 
 setlocal winblend=10
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -141,11 +141,13 @@ setlocal nowrap
 setlocal wrapmargin=0
 1
 sil! normal! zo
-let s:l = 1 - ((0 * winheight(0) + 39) / 78)
+45
+sil! normal! zo
+let s:l = 40 - ((11 * winheight(0) + 19) / 39)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 1
+keepjumps 40
 normal! 0
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'

@@ -4,17 +4,17 @@ let v:this_session=expand("<sfile>:p")
 doautoall SessionLoadPre
 silent only
 silent tabonly
-cd ~/repos/nikbrunner/imf-notes
+cd ~/repos/imfusion/websdk/web-ui
 if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +4 logs/2026/2026.08/2026.08.10\ -\ Mon.md
+badd +33 CHANGELOG.md
 argglobal
 %argdel
-edit logs/2026/2026.08/2026.08.10\ -\ Mon.md
-tcd ~/repos/nikbrunner/imf-notes
+edit CHANGELOG.md
+tcd ~/repos/imfusion/websdk/web-ui
 argglobal
 xnoremap <buffer> $ g$
 onoremap <buffer> $ g$
@@ -77,7 +77,7 @@ setlocal foldnestmax=10
 setlocal foldtext=
 setlocal formatexpr=
 setlocal formatlistpat=^\\s*\\d\\+\\.\\s\\+\\|^\\s*[-*+]\\s\\+\\|^\\[^\\ze[^\\]]\\+\\]:\\&^.\\{4\\}
-setlocal formatoptions=jt1qln
+setlocal formatoptions=qjtn1l
 setlocal iminsert=0
 setlocal imsearch=-1
 setlocal includeexpr=
@@ -96,7 +96,7 @@ setlocal modifiable
 setlocal nrformats=bin,hex
 setlocal number
 setlocal numberwidth=4
-setlocal omnifunc=v:lua.vim.lsp.omnifunc
+setlocal omnifunc=htmlcomplete#CompleteTags
 setlocal nopreserveindent
 setlocal nopreviewwindow
 setlocal quoteescape=\\
@@ -123,13 +123,13 @@ setlocal synmaxcol=3000
 if &syntax != ''
 setlocal syntax=
 endif
-setlocal tabstop=2
+setlocal tabstop=4
 setlocal tagfunc=v:lua.vim.lsp.tagfunc
 setlocal textwidth=80
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#logs%*%#WinBarSeparator#/%*%#WinBarPath#2026%*%#WinBarSeparator#/%*%#WinBarPath#2026.08%*%#WinBarSeparator#/%*%#WinBarFilename#2026.08.10\ -\ Mon.md%*%=
+setlocal winbar=%#WinBarFilename#CHANGELOG.md%*%=
 setlocal winblend=10
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -140,16 +140,12 @@ setlocal nowrap
 setlocal wrapmargin=0
 1
 sil! normal! zo
-14
-sil! normal! zo
-16
-sil! normal! zo
-let s:l = 4 - ((3 * winheight(0) + 34) / 69)
+let s:l = 33 - ((32 * winheight(0) + 33) / 66)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 4
-normal! 0
+keepjumps 33
+normal! 023|
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf

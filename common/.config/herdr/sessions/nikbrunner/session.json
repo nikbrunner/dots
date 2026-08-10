@@ -6,11 +6,10 @@
       "custom_name": null,
       "identity_cwd": "/Users/brunner/repos/nikbrunner/dots",
       "public_pane_numbers": {
-        "56": 17,
-        "2": 2,
-        "72": 27
+        "72": 27,
+        "2": 2
       },
-      "next_public_pane_number": 28,
+      "next_public_pane_number": 48,
       "public_tab_numbers": [
         1,
         2
@@ -20,40 +19,16 @@
         {
           "custom_name": "Agents",
           "layout": {
-            "Split": {
-              "direction": "Horizontal",
-              "ratio": 0.5,
-              "first": {
-                "Pane": 56
-              },
-              "second": {
-                "Pane": 72
-              }
-            }
+            "Pane": 72
           },
           "panes": {
-            "56": {
-              "cwd": "/Users/brunner/repos/nikbrunner/dots",
-              "agent_session": {
-                "source": "herdr:pi",
-                "agent": "pi",
-                "kind": "path",
-                "value": "/Users/brunner/.pi/agent/sessions/--Users-brunner-repos-nikbrunner-dots--/2026-08-10T08-01-21-204Z_019feab0-c534-7670-abbf-f1bd637b5271.jsonl"
-              }
-            },
             "72": {
-              "cwd": "/Users/brunner/repos/nikbrunner/dots",
-              "agent_session": {
-                "source": "herdr:pi",
-                "agent": "pi",
-                "kind": "path",
-                "value": "/Users/brunner/.pi/agent/sessions/--Users-brunner-repos-nikbrunner-dots--/2026-08-10T07-04-16-969Z_019fea7c-8549-7672-8ffa-9080d66106f0.jsonl"
-              }
+              "cwd": "/Users/brunner/repos/nikbrunner/dots"
             }
           },
           "zoomed": false,
-          "focused": 56,
-          "root_pane": 56
+          "focused": 72,
+          "root_pane": 72
         },
         {
           "custom_name": "Code",
@@ -73,48 +48,12 @@
       "active_tab": 0
     },
     {
-      "id": "w3",
-      "custom_name": "herdr-navigator",
-      "identity_cwd": "/Users/brunner/repos/black-atom-industries/helm.herdr",
-      "public_pane_numbers": {
-        "8": 1
-      },
-      "next_public_pane_number": 39,
-      "public_tab_numbers": [
-        1
-      ],
-      "next_public_tab_number": 2,
-      "tabs": [
-        {
-          "custom_name": null,
-          "layout": {
-            "Pane": 8
-          },
-          "panes": {
-            "8": {
-              "cwd": "/Users/brunner/repos/black-atom-industries/helm.herdr",
-              "agent_session": {
-                "source": "herdr:claude",
-                "agent": "claude",
-                "kind": "id",
-                "value": "4c1ba2ba-e731-4409-8915-2f5d5de0a617"
-              }
-            }
-          },
-          "zoomed": false,
-          "focused": 8,
-          "root_pane": 8
-        }
-      ],
-      "active_tab": 0
-    },
-    {
       "id": "w5",
       "custom_name": "mdn.nvim",
       "identity_cwd": "/Users/brunner/repos/nikbrunner/mdn.nvim",
       "public_pane_numbers": {
-        "43": 1,
-        "62": 4
+        "62": 4,
+        "43": 1
       },
       "next_public_pane_number": 6,
       "public_tab_numbers": [
@@ -130,13 +69,7 @@
           },
           "panes": {
             "43": {
-              "cwd": "/Users/brunner/repos/nikbrunner/mdn.nvim",
-              "agent_session": {
-                "source": "herdr:claude",
-                "agent": "claude",
-                "kind": "id",
-                "value": "4e8f7662-c141-4614-8044-016bb6b91707"
-              }
+              "cwd": "/Users/brunner/repos/nikbrunner/mdn.nvim"
             }
           },
           "zoomed": false,
@@ -158,7 +91,7 @@
           "root_pane": 62
         }
       ],
-      "active_tab": 0
+      "active_tab": 1
     }
   ],
   "active": 0,
