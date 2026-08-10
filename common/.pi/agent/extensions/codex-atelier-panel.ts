@@ -14,7 +14,8 @@ interface UsageWindow {
 
 interface UsageSnapshot {
 	provider?: string;
-	fiveHour?: UsageWindow;
+	planType?: string;
+	email?: string;
 	weekly?: UsageWindow;
 	fetchedAt?: number;
 }
@@ -25,6 +26,7 @@ declare global {
 
 interface CodexCredential {
 	accountId?: string;
+	access?: string;
 	refresh?: string;
 }
 
@@ -52,6 +54,7 @@ function readCredential(value: unknown): CodexCredential | undefined {
 	const record = value as Record<string, unknown>;
 	return {
 		...(typeof record.accountId === "string" ? { accountId: record.accountId } : {}),
+		...(typeof record.access === "string" ? { access: record.access } : {}),
 		...(typeof record.refresh === "string" ? { refresh: record.refresh } : {}),
 	};
 }
@@ -61,13 +64,16 @@ function readSavedCredential(value: unknown): CodexCredential | undefined {
 	return readCredential(value.credential);
 }
 
+function getActiveCredential(): CodexCredential | undefined {
+	const auth = readJson(join(getAgentDir(), "auth.json"));
+	return readCredential(auth?.["openai-codex"]);
+}
+
 function getCurrentAccountLabel(): string | undefined {
-	const agentDir = getAgentDir();
-	const auth = readJson(join(agentDir, "auth.json"));
-	const active = readCredential(auth?.["openai-codex"]);
+	const active = getActiveCredential();
 	if (!active) return undefined;
 
-	const store = readJson(join(agentDir, "codex-accounts.json"));
+	const store = readJson(join(getAgentDir(), "codex-accounts.json"));
 	const accounts = store?.accounts;
 	if (typeof accounts !== "object" || accounts === null || Array.isArray(accounts)) return undefined;
 
@@ -86,11 +92,41 @@ function isCodexProvider(provider: string | undefined): boolean {
 	return /^openai-codex(?:-\d+)?$/.test(provider ?? "");
 }
 
-function formatWindow(window: UsageWindow | undefined): string {
-	if (window?.usedPercent === undefined) return "unavailable";
-	const used = Math.max(0, Math.min(100, window.usedPercent));
-	const remaining = Math.round(100 - used);
-	return `${renderProgressBar(used)} ${Math.round(used)}% used · ${remaining}% left · resets ${formatReset(window.resetAt)}`;
+function getTokenMetadata(token: string | undefined): { planType?: string; email?: string } {
+	if (!token) return {};
+	try {
+		const payload = JSON.parse(Buffer.from(token.split(".")[1] ?? "", "base64url").toString("utf8")) as Record<string, unknown>;
+		const auth = payload["https://api.openai.com/auth"] as Record<string, unknown> | undefined;
+		const profile = payload["https://api.openai.com/profile"] as Record<string, unknown> | undefined;
+		return {
+			...(typeof auth?.chatgpt_plan_type === "string" ? { planType: auth.chatgpt_plan_type } : {}),
+			...(typeof profile?.email === "string" ? { email: profile.email } : {}),
+		};
+	} catch {
+		return {};
+	}
+}
+
+function maskEmail(email: string): string {
+	const [local, domain] = email.split("@");
+	if (!local || !domain) return "***";
+	const [domainName, ...suffix] = domain.split(".");
+	return `${local.slice(0, 2)}***@${domainName?.[0] ?? ""}***${domainName?.slice(-1) ?? ""}${suffix.length ? `.${suffix.join(".")}` : ""}`;
+}
+
+function boldText(text: string): string {
+	return [...text].map((character) => {
+		const code = character.codePointAt(0);
+		if (code === undefined) return character;
+		if (code >= 65 && code <= 90) return String.fromCodePoint(code + 0x1d400 - 65);
+		if (code >= 97 && code <= 122) return String.fromCodePoint(code + 0x1d41a - 97);
+		if (code >= 48 && code <= 57) return String.fromCodePoint(code + 0x1d7ce - 48);
+		return character;
+	}).join("");
+}
+
+function formatUsageRow(label: string, value: string): string {
+	return `${label.padEnd(8, "⠀")} ${value}`;
 }
 
 function renderProgressBar(usedPercent: number): string {
@@ -119,15 +155,33 @@ function emitPanel(
 	const snapshot = globalThis.piCodexLimit;
 	const provider = snapshot?.provider ?? ctx.model?.provider;
 	const accountLabel = isCodexProvider(provider) ? getCurrentAccountLabel() : undefined;
-	const accountRow = { text: `Account: ${accountLabel ?? "not saved"}`, role: "primary" as const };
+	const metadata = getTokenMetadata(getActiveCredential()?.access);
+	const plan = snapshot?.planType ?? metadata.planType ?? "unknown";
+	const email = snapshot?.email ?? metadata.email;
+	const accountRow = { text: formatUsageRow("Account:", `${accountLabel ? boldText(accountLabel) : "not saved"} (${plan})`), role: "accent" as const };
 	const rows = !isCodexProvider(provider)
 		? [{ text: "Only available for openai-codex", role: "muted" as const }]
 		: snapshot
 			? [
 					accountRow,
-					{ text: `5-hour: ${formatWindow(snapshot.fiveHour)}`, role: "primary" as const },
-					{ text: `Weekly: ${formatWindow(snapshot.weekly)}`, role: "accent" as const },
-					{ text: `Updated: ${formatUpdated(snapshot.fetchedAt)}`, role: "muted" as const },
+					{ text: formatUsageRow("Email:", email ? maskEmail(email) : "unknown"), role: "primary" as const },
+					{
+						text: formatUsageRow(
+							"Limit:",
+							snapshot.weekly?.usedPercent === undefined
+								? "unavailable"
+								: `${renderProgressBar(Math.max(0, Math.min(100, snapshot.weekly.usedPercent)))} ${Math.round(Math.max(0, Math.min(100, snapshot.weekly.usedPercent)))}%`,
+						),
+						role: "primary" as const,
+					},
+					{
+						text: formatUsageRow("Reset:", formatResetDetails(snapshot.weekly?.resetAt)),
+						role: "muted" as const,
+					},
+					{
+						text: formatUsageRow("Updated:", formatFetched(snapshot.fetchedAt)),
+						role: "muted" as const,
+					},
 			  ]
 			: [accountRow, { text: "Waiting for Codex usage data", role: "muted" as const }];
 
@@ -138,7 +192,7 @@ function emitPanel(
 		revision,
 		panel: {
 			id: PANEL_ID,
-			title: "Codex limits",
+			title: "CODEX",
 			rows,
 			role: "cache",
 		},
@@ -146,9 +200,14 @@ function emitPanel(
 	});
 }
 
-function formatUpdated(timestamp: number | undefined): string {
+function formatFetched(timestamp: number | undefined): string {
 	if (timestamp === undefined) return "unknown";
-	return new Date(timestamp).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+	return new Date(timestamp).toLocaleString();
+}
+
+function formatResetDetails(resetAt: number | undefined): string {
+	if (resetAt === undefined) return "unknown";
+	return `${formatReset(resetAt)} (${formatFetched(resetAt * 1000)})`;
 }
 
 export default function (pi: ExtensionAPI): void {
