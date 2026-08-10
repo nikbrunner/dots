@@ -19,9 +19,3 @@ export PATH="$HOME/.local/bin:$PATH"
 # pre-commit hook, sudoedit. Without this they fall back to vi.
 export EDITOR="nvim"
 
-# vim-herdr-navigation reads this from the herdr process env, so it must be set
-# here rather than in .zshrc — the plugin action is a herdr subprocess, not an
-# interactive shell. These TUIs bind Ctrl+h/j/k/l themselves, so the keys are
-# forwarded into the pane instead of moving herdr's pane focus.
-# Leave such a pane with prefix+h/j/k/l — they do not cross out at an edge.
-export HERDR_NAV_PASSTHROUGH_RE='^(lazygit|lazyjira)$'

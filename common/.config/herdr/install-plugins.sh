@@ -1,7 +1,7 @@
 #!/bin/sh
 
-# https://github.com/paulbkim-dev/vim-herdr-navigation
-herdr plugin install paulbkim-dev/vim-herdr-navigation --yes
+# https://github.com/aimdevlee/herdr-nvim-nav
+herdr plugin install aimdevlee/herdr-nvim-nav --yes
 
 # https://github.com/thanhdat77/herdr-picker-plus
 herdr plugin install thanhdat77/herdr-picker-plus --yes

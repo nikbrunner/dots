@@ -53,6 +53,10 @@
       "rev": "06006b471890f19efeb199ffab5da49a2d624619",
       "src": "git@github.com:OXY2DEV/helpview.nvim"
     },
+    "herdr-nvim-nav": {
+      "rev": "ec047fd6d8d0269d54a34e9405af28d8aad4c8f0",
+      "src": "https://github.com/aimdevlee/herdr-nvim-nav"
+    },
     "kulala.nvim": {
       "rev": "e4e8615dc07d9423f3dd52ad5af962db09d26a52",
       "src": "git@github.com:mistweaverco/kulala.nvim"
