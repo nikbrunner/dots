@@ -14,7 +14,8 @@
     "npm:pi-mcp-adapter",
     "npm:pi-subagents",
     "npm:sideshow",
-    "npm:pi-atelier"
+    "npm:pi-atelier",
+    "npm:pi-codex-limit"
   ],
   "defaultProvider": "openai-codex",
   "defaultModel": "gpt-5.6-terra",
