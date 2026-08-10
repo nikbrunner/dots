@@ -10,8 +10,8 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +3 logs/2026/2026.08/2026.08.07\ -\ Fri.md
-badd +4 logs/2026/2026.08/2026.08.10\ -\ Mon.md
+badd +28 logs/2026/2026.08/2026.08.07\ -\ Fri.md
+badd +18 logs/2026/2026.08/2026.08.10\ -\ Mon.md
 argglobal
 %argdel
 edit logs/2026/2026.08/2026.08.07\ -\ Fri.md
@@ -96,7 +96,7 @@ setlocal foldnestmax=10
 setlocal foldtext=
 setlocal formatexpr=
 setlocal formatlistpat=^\\s*\\d\\+\\.\\s\\+\\|^\\s*[-*+]\\s\\+\\|^\\[^\\ze[^\\]]\\+\\]:\\&^.\\{4\\}
-setlocal formatoptions=1ntljq
+setlocal formatoptions=j1tqln
 setlocal iminsert=0
 setlocal imsearch=-1
 setlocal includeexpr=
@@ -115,7 +115,7 @@ setlocal modifiable
 setlocal nrformats=bin,hex
 setlocal number
 setlocal numberwidth=4
-setlocal omnifunc=htmlcomplete#CompleteTags
+setlocal omnifunc=v:lua.vim.lsp.omnifunc
 setlocal nopreserveindent
 setlocal nopreviewwindow
 setlocal quoteescape=\\
@@ -159,8 +159,6 @@ setlocal nowrap
 setlocal wrapmargin=0
 1
 sil! normal! zo
-3
-sil! normal! zo
 7
 sil! normal! zo
 9
@@ -181,11 +179,11 @@ sil! normal! zo
 sil! normal! zo
 48
 sil! normal! zo
-let s:l = 3 - ((2 * winheight(0) + 33) / 66)
+let s:l = 28 - ((27 * winheight(0) + 33) / 66)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 3
+keepjumps 28
 normal! 0
 wincmd w
 argglobal
@@ -255,7 +253,7 @@ setlocal foldnestmax=10
 setlocal foldtext=
 setlocal formatexpr=
 setlocal formatlistpat=^\\s*\\d\\+\\.\\s\\+\\|^\\s*[-*+]\\s\\+\\|^\\[^\\ze[^\\]]\\+\\]:\\&^.\\{4\\}
-setlocal formatoptions=1ntljq
+setlocal formatoptions=jntlq1
 setlocal iminsert=0
 setlocal imsearch=-1
 setlocal includeexpr=
@@ -301,7 +299,7 @@ setlocal synmaxcol=3000
 if &syntax != ''
 setlocal syntax=
 endif
-setlocal tabstop=2
+setlocal tabstop=4
 setlocal tagfunc=v:lua.vim.lsp.tagfunc
 setlocal textwidth=80
 setlocal undofile
@@ -318,12 +316,18 @@ setlocal nowrap
 setlocal wrapmargin=0
 1
 sil! normal! zo
-let s:l = 4 - ((3 * winheight(0) + 33) / 66)
+7
+sil! normal! zo
+9
+sil! normal! zo
+13
+sil! normal! zo
+let s:l = 18 - ((17 * winheight(0) + 33) / 66)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 4
-normal! 0
+keepjumps 18
+normal! 07|
 wincmd w
 2wincmd w
 exe 'vert 1resize ' . ((&columns * 167 + 167) / 335)

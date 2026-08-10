@@ -36,10 +36,10 @@
       "custom_name": "Core",
       "identity_cwd": "/Users/brunner/repos/black-atom-industries/core",
       "public_pane_numbers": {
-        "3": 3,
         "2": 2,
-        "4": 4,
-        "5": 10
+        "3": 3,
+        "5": 10,
+        "4": 4
       },
       "next_public_pane_number": 20,
       "public_tab_numbers": [
@@ -115,11 +115,11 @@
       "custom_name": "Livery",
       "identity_cwd": "/Users/brunner/repos/black-atom-industries/livery",
       "public_pane_numbers": {
-        "8": 3,
+        "6": 1,
         "7": 2,
-        "6": 1
+        "8": 3
       },
-      "next_public_pane_number": 12,
+      "next_public_pane_number": 14,
       "public_tab_numbers": [
         1,
         2,

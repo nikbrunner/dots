@@ -6,12 +6,11 @@
       "custom_name": null,
       "identity_cwd": "/Users/brunner/repos/nikbrunner/dots",
       "public_pane_numbers": {
-        "54": 16,
         "56": 17,
-        "1": 1,
-        "2": 2
+        "2": 2,
+        "72": 27
       },
-      "next_public_pane_number": 21,
+      "next_public_pane_number": 28,
       "public_tab_numbers": [
         1,
         2
@@ -25,10 +24,10 @@
               "direction": "Horizontal",
               "ratio": 0.5,
               "first": {
-                "Pane": 1
+                "Pane": 56
               },
               "second": {
-                "Pane": 56
+                "Pane": 72
               }
             }
           },
@@ -39,41 +38,35 @@
                 "source": "herdr:pi",
                 "agent": "pi",
                 "kind": "path",
-                "value": "/Users/brunner/.pi/agent/sessions/--Users-brunner-repos-nikbrunner-dots--/2026-08-10T07-28-59-483Z_019fea93-245b-71aa-8d47-59e1741139cc.jsonl"
+                "value": "/Users/brunner/.pi/agent/sessions/--Users-brunner-repos-nikbrunner-dots--/2026-08-10T08-01-21-204Z_019feab0-c534-7670-abbf-f1bd637b5271.jsonl"
               }
             },
-            "1": {
-              "cwd": "/Users/brunner/repos/nikbrunner/dots"
+            "72": {
+              "cwd": "/Users/brunner/repos/nikbrunner/dots",
+              "agent_session": {
+                "source": "herdr:pi",
+                "agent": "pi",
+                "kind": "path",
+                "value": "/Users/brunner/.pi/agent/sessions/--Users-brunner-repos-nikbrunner-dots--/2026-08-10T07-04-16-969Z_019fea7c-8549-7672-8ffa-9080d66106f0.jsonl"
+              }
             }
           },
           "zoomed": false,
           "focused": 56,
-          "root_pane": 1
+          "root_pane": 56
         },
         {
           "custom_name": "Code",
           "layout": {
-            "Split": {
-              "direction": "Horizontal",
-              "ratio": 0.5,
-              "first": {
-                "Pane": 2
-              },
-              "second": {
-                "Pane": 54
-              }
-            }
+            "Pane": 2
           },
           "panes": {
             "2": {
               "cwd": "/Users/brunner/repos/nikbrunner/dots"
-            },
-            "54": {
-              "cwd": "/Users/brunner/repos/nikbrunner/dots"
             }
           },
           "zoomed": false,
-          "focused": 54,
+          "focused": 2,
           "root_pane": 2
         }
       ],
@@ -86,7 +79,7 @@
       "public_pane_numbers": {
         "8": 1
       },
-      "next_public_pane_number": 36,
+      "next_public_pane_number": 39,
       "public_tab_numbers": [
         1
       ],
@@ -120,13 +113,15 @@
       "custom_name": "mdn.nvim",
       "identity_cwd": "/Users/brunner/repos/nikbrunner/mdn.nvim",
       "public_pane_numbers": {
-        "43": 1
+        "43": 1,
+        "62": 4
       },
-      "next_public_pane_number": 4,
+      "next_public_pane_number": 6,
       "public_tab_numbers": [
-        1
+        1,
+        2
       ],
-      "next_public_tab_number": 2,
+      "next_public_tab_number": 3,
       "tabs": [
         {
           "custom_name": null,
@@ -135,12 +130,32 @@
           },
           "panes": {
             "43": {
-              "cwd": "/Users/brunner/repos/nikbrunner/mdn.nvim"
+              "cwd": "/Users/brunner/repos/nikbrunner/mdn.nvim",
+              "agent_session": {
+                "source": "herdr:claude",
+                "agent": "claude",
+                "kind": "id",
+                "value": "4e8f7662-c141-4614-8044-016bb6b91707"
+              }
             }
           },
           "zoomed": false,
           "focused": 43,
           "root_pane": 43
+        },
+        {
+          "custom_name": null,
+          "layout": {
+            "Pane": 62
+          },
+          "panes": {
+            "62": {
+              "cwd": "/Users/brunner/repos/nikbrunner/mdn.nvim"
+            }
+          },
+          "zoomed": false,
+          "focused": 62,
+          "root_pane": 62
         }
       ],
       "active_tab": 0
