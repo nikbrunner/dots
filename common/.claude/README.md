@@ -56,6 +56,7 @@ See `dev:start` skill for the canonical pipeline tree with all review gates.
 | `dev:edit-article`        | DAG-based article editing                         |
 | `dev:arch-review`         | Architecture review with deep module eval         |
 | `dev:bugs`                | Bug hunting with TDD fix plans                    |
+| `dev-how-to-test`         | Generate a human, black-box acceptance checklist  |
 
 ## TODOs
 

@@ -159,4 +159,5 @@ Audit against Nielsen's 10 Usability Heuristics.
 - `dev-impeccable` — deeper UI polish commands
 - `dev-flow/guides/design-interface` — redesign proposals
 - `dev-browser` — screenshot capture via `agent-browser`
+- `dev-how-to-test` — generate a human black-box checklist from changed user journeys
 - `dev-commit` — integrates docs audit as pre-commit gate
