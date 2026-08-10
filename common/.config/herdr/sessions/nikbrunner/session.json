@@ -6,10 +6,10 @@
       "custom_name": null,
       "identity_cwd": "/Users/brunner/repos/nikbrunner/dots",
       "public_pane_numbers": {
-        "72": 27,
-        "2": 2
+        "2": 2,
+        "72": 27
       },
-      "next_public_pane_number": 48,
+      "next_public_pane_number": 49,
       "public_tab_numbers": [
         1,
         2
@@ -52,8 +52,8 @@
       "custom_name": "mdn.nvim",
       "identity_cwd": "/Users/brunner/repos/nikbrunner/mdn.nvim",
       "public_pane_numbers": {
-        "62": 4,
-        "43": 1
+        "43": 1,
+        "62": 4
       },
       "next_public_pane_number": 6,
       "public_tab_numbers": [
