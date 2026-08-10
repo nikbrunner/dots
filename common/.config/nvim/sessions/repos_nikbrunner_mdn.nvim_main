@@ -4,7 +4,7 @@ let v:this_session=expand("<sfile>:p")
 doautoall SessionLoadPre
 silent only
 silent tabonly
-cd ~/repos/imfusion/cp/imfusion-portal
+cd ~/repos/nikbrunner/mdn.nvim
 if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
@@ -12,7 +12,6 @@ let s:shortmess_save = &shortmess
 set shortmess+=aoO
 argglobal
 %argdel
-tcd ~/repos/imfusion/cp/imfusion-portal
 argglobal
 enew
 setlocal keymap=

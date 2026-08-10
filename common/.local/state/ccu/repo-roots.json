@@ -30,6 +30,26 @@
     ],
     "last_seen": "2026-08-05"
   },
+  "black-atom-industries/helm.herdr": {
+    "root": "~/repos/black-atom-industries/helm.herdr",
+    "owner": "black-atom-industries",
+    "name": "helm.herdr",
+    "work": false,
+    "session_dirs": [
+      "~/repos/black-atom-industries/helm.herdr"
+    ],
+    "last_seen": "2026-08-10"
+  },
+  "black-atom-industries/helm.tmux": {
+    "root": "~/repos/black-atom-industries/helm.tmux",
+    "owner": "black-atom-industries",
+    "name": "helm.tmux",
+    "work": false,
+    "session_dirs": [
+      "~/repos/black-atom-industries/helm.tmux"
+    ],
+    "last_seen": "2026-08-10"
+  },
   "black-atom-industries/livery": {
     "root": "~/repos/black-atom-industries/livery",
     "owner": "black-atom-industries",
@@ -203,6 +223,16 @@
       "~/repos/nikbrunner/lazyjira"
     ],
     "last_seen": "2026-07-31"
+  },
+  "nikbrunner/mdn.nvim": {
+    "root": "~/repos/nikbrunner/mdn.nvim",
+    "owner": "nikbrunner",
+    "name": "mdn.nvim",
+    "work": false,
+    "session_dirs": [
+      "~/repos/nikbrunner/mdn.nvim"
+    ],
+    "last_seen": "2026-08-10"
   },
   "nikbrunner/notes": {
     "root": "~/repos/nikbrunner/notes",

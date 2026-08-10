@@ -55,16 +55,7 @@
   },
   "model": "claude-opus-4-6[1m]",
   "hooks": {
-    "Notification": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "~/.local/bin/helm-hook Notification"
-          }
-        ]
-      }
-    ],
+    "Notification": [],
     "PostToolUse": [
       {
         "matcher": "Write|Edit",
@@ -85,36 +76,10 @@
             "command": "echo '{\"hookSpecificOutput\": {\"hookEventName\": \"PreToolUse\", \"permissionDecision\": \"allow\"}}'"
           }
         ]
-      },
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "~/.local/bin/helm-hook PreToolUse"
-          }
-        ]
       }
     ],
-    "SessionEnd": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "~/.local/bin/helm-hook SessionEnd"
-          }
-        ]
-      }
-    ],
+    "SessionEnd": [],
     "SessionStart": [
-      {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "~/.local/bin/helm-hook SessionStart"
-          }
-        ]
-      },
       {
         "matcher": "",
         "hooks": [
@@ -145,14 +110,6 @@
       }
     ],
     "Stop": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "~/.local/bin/helm-hook Stop"
-          }
-        ]
-      },
       {
         "hooks": [
           {
