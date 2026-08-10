@@ -48,3 +48,4 @@ macos/.config/karabiner/automatic_backups/
 
 # Compiled from tools/ by scripts/dots/build-tools.sh
 common/.local/bin/bic
+/common/.pi/agent/codex-accounts.json
