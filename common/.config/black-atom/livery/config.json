@@ -20,7 +20,7 @@
     },
     "helm": {
       "enabled": true,
-      "config_path": "~/.config/black-atom/helm/config.yml",
+      "config_path": "~/.config/black-atom/helm-tmux/config.yml",
       "match_pattern": "^theme:\\s*\\S*$",
       "replace_template": "theme: {themeKey}"
     },
