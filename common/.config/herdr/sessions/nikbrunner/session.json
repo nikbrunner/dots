@@ -8,8 +8,8 @@
       "public_pane_numbers": {
         "54": 16,
         "56": 17,
-        "2": 2,
-        "1": 1
+        "1": 1,
+        "2": 2
       },
       "next_public_pane_number": 21,
       "public_tab_numbers": [
@@ -65,10 +65,10 @@
             }
           },
           "panes": {
-            "54": {
+            "2": {
               "cwd": "/Users/brunner/repos/nikbrunner/dots"
             },
-            "2": {
+            "54": {
               "cwd": "/Users/brunner/repos/nikbrunner/dots"
             }
           },
@@ -86,7 +86,7 @@
       "public_pane_numbers": {
         "8": 1
       },
-      "next_public_pane_number": 35,
+      "next_public_pane_number": 36,
       "public_tab_numbers": [
         1
       ],
@@ -146,8 +146,8 @@
       "active_tab": 0
     }
   ],
-  "active": 1,
-  "selected": 1,
+  "active": 0,
+  "selected": 0,
   "sidebar_width": 26,
   "sidebar_section_split": 0.5,
   "collapsed_space_keys": []
