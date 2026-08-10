@@ -453,17 +453,17 @@ dots_stage_bookmarks() {
     log_okay "Bookmarks changes staged"
 }
 
-dots_stage_ccu_roots() {
+dots_stage_agentcost_roots() {
     local repo_path="$1"
     local roots_file="common/.local/state/ccu/repo-roots.json"
 
     if [[ -z $(git -C "$repo_path" status --porcelain "$roots_file" 2>/dev/null) ]]; then
-        echo "No ccu repo-roots changes to commit"
+        echo "No agentcost repo-roots changes to commit"
         return 1
     fi
 
     (cd "$repo_path" && git add "$roots_file")
-    log_okay "Ccu repo-roots changes staged"
+    log_okay "Agentcost repo-roots changes staged"
 }
 
 # Resolve a Claude project directory name to a readable org/repo path
