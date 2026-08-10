@@ -551,6 +551,7 @@ cmd_chores() {
 		[dots_stage_theme]="themes"
 		[dots_stage_sessions]="sessions"
 		[dots_stage_herdr_sessions]="herdr-sessions"
+		[dots_stage_herdr_config]="herdr-config"
 		[dots_stage_pi]="pi"
 		[dots_stage_radar]="radar"
 		[dots_stage_lazy_lock]="lazy-lock"

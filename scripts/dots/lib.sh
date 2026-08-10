@@ -407,6 +407,19 @@ dots_stage_herdr_sessions() {
     log_okay "Herdr session changes staged"
 }
 
+dots_stage_herdr_config() {
+    local repo_path="$1"
+    local herdr_config="common/.config/herdr/config.toml"
+
+    if [[ -z $(git -C "$repo_path" status --porcelain "$herdr_config" 2>/dev/null) ]]; then
+        echo "No herdr config changes to commit"
+        return 1
+    fi
+
+    (cd "$repo_path" && git add "$herdr_config")
+    log_okay "Herdr config changes staged"
+}
+
 dots_stage_radar() {
     local repo_path="$1"
 
