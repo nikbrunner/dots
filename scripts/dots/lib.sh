@@ -594,7 +594,7 @@ dots_stage_gitconfig_delta() {
 
 dots_stage_helm_config() {
     local repo_path="$1"
-    local helm_config="common/.config/black-atom/helm/config.yml"
+    local helm_config="common/.config/black-atom/helm-tmux/config.yml"
 
     if [[ -z $(git -C "$repo_path" status --porcelain "$helm_config" 2>/dev/null) ]]; then
         echo "No helm config changes to commit"

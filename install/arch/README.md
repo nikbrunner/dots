@@ -107,8 +107,8 @@ pp-env-sync
 
 ```sh
 mkdir -p ~/repos/black-atom-industries/
-git clone git@github.com:black-atom-industries/helm.git ~/repos/black-atom-industries/helm
-cd ~/repos/black-atom-industries/helm && make install
+git clone git@github.com:black-atom-industries/helm.tmux.git ~/repos/black-atom-industries/helm.tmux
+cd ~/repos/black-atom-industries/helm.tmux && make install
 ```
 
 Clone configured repos:
