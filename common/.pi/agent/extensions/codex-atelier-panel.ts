@@ -1,4 +1,7 @@
 import type { ExtensionAPI, ExtensionContext } from "@earendil-works/pi-coding-agent";
+import { existsSync, readFileSync } from "node:fs";
+import { homedir } from "node:os";
+import { join } from "node:path";
 
 const CHANNEL = "pi-atelier:sidebar-panels";
 const SOURCE = "codex-atelier-panel";
@@ -18,6 +21,65 @@ interface UsageSnapshot {
 
 declare global {
 	var piCodexLimit: UsageSnapshot | undefined;
+}
+
+interface CodexCredential {
+	accountId?: string;
+	refresh?: string;
+}
+
+function getAgentDir(): string {
+	const override = process.env.PI_CODING_AGENT_DIR?.trim();
+	if (!override) return join(homedir(), ".pi", "agent");
+	if (override === "~") return homedir();
+	if (override.startsWith("~/")) return join(homedir(), override.slice(2));
+	return override;
+}
+
+function readJson(path: string): Record<string, unknown> | undefined {
+	if (!existsSync(path)) return undefined;
+	try {
+		const value: unknown = JSON.parse(readFileSync(path, "utf8"));
+		if (typeof value !== "object" || value === null || Array.isArray(value)) return undefined;
+		return value as Record<string, unknown>;
+	} catch {
+		return undefined;
+	}
+}
+
+function readCredential(value: unknown): CodexCredential | undefined {
+	if (typeof value !== "object" || value === null || Array.isArray(value)) return undefined;
+	const record = value as Record<string, unknown>;
+	return {
+		...(typeof record.accountId === "string" ? { accountId: record.accountId } : {}),
+		...(typeof record.refresh === "string" ? { refresh: record.refresh } : {}),
+	};
+}
+
+function readSavedCredential(value: unknown): CodexCredential | undefined {
+	if (typeof value !== "object" || value === null || Array.isArray(value) || !("credential" in value)) return undefined;
+	return readCredential(value.credential);
+}
+
+function getCurrentAccountLabel(): string | undefined {
+	const agentDir = getAgentDir();
+	const auth = readJson(join(agentDir, "auth.json"));
+	const active = readCredential(auth?.["openai-codex"]);
+	if (!active) return undefined;
+
+	const store = readJson(join(agentDir, "codex-accounts.json"));
+	const accounts = store?.accounts;
+	if (typeof accounts !== "object" || accounts === null || Array.isArray(accounts)) return undefined;
+
+	for (const [label, value] of Object.entries(accounts)) {
+		const account = readSavedCredential(value);
+		if (active.accountId && account?.accountId === active.accountId) return label;
+	}
+	for (const [label, value] of Object.entries(accounts)) {
+		const account = readSavedCredential(value);
+		if (active.refresh && account?.refresh === active.refresh) return label;
+	}
+	return undefined;
 }
 
 function isCodexProvider(provider: string | undefined): boolean {
@@ -56,15 +118,18 @@ function emitPanel(
 ): void {
 	const snapshot = globalThis.piCodexLimit;
 	const provider = snapshot?.provider ?? ctx.model?.provider;
+	const accountLabel = isCodexProvider(provider) ? getCurrentAccountLabel() : undefined;
+	const accountRow = { text: `Account: ${accountLabel ?? "not saved"}`, role: "primary" as const };
 	const rows = !isCodexProvider(provider)
 		? [{ text: "Only available for openai-codex", role: "muted" as const }]
 		: snapshot
 			? [
+					accountRow,
 					{ text: `5-hour: ${formatWindow(snapshot.fiveHour)}`, role: "primary" as const },
 					{ text: `Weekly: ${formatWindow(snapshot.weekly)}`, role: "accent" as const },
 					{ text: `Updated: ${formatUpdated(snapshot.fetchedAt)}`, role: "muted" as const },
 			  ]
-			: [{ text: "Waiting for Codex usage data", role: "muted" as const }];
+			: [accountRow, { text: "Waiting for Codex usage data", role: "muted" as const }];
 
 	pi.events.emit(CHANNEL, {
 		version: 1,
