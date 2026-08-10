@@ -23,20 +23,20 @@ brew "mpd"                       # music player daemon — dots has mpd.conf
 brew "rmpc"                      # mpd client TUI — dots has rmpc config
 brew "btop"
 
+# lazyjira runs from a local fork, built by `lazyjira-sync` (common/.local/bin).
+
 # Custom formula / taps
 brew "agent-browser"
 brew "protonpass/tap/pass-cli"
 brew "aviator-co/tap/av"         # aviator CLI — shell completion in os.zsh
 
 # Casks — desktop apps
-cask "1password"
 cask "cameracontroller"
 cask "claude"
 cask "discord"
 cask "betterdisplay"
 cask "docker-desktop"
 cask "figma"
-cask "filen"
 cask "ghostty"
 cask "google-chrome"
 cask "handy"                     # https://handy.computer
@@ -54,15 +54,14 @@ cask "raycast"
 cask "reader"
 cask "shottr"
 cask "signal"
-cask "soundsource"
 cask "steam"
 cask "superwhisper"
 cask "utm"
 cask "vlc"
 cask "whatsapp"
-cask "yoink"
 cask "zed@preview"
 cask "logitech-g-hub"
+cask "vorssaint"
 
 # Fonts
 cask "font-departure-mono-nerd-font"

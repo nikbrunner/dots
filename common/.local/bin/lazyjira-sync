@@ -1,0 +1,34 @@
+#!/bin/bash
+
+# lazyjira-sync - Build the lazyjira fork from source and link it into ~/.local/bin
+#
+# lazyjira runs from a local fork rather than the upstream brew formula.
+# The fork's go.mod keeps the upstream module path (github.com/textfuel/lazyjira/v2)
+# so pulls and PRs against upstream stay conflict-free, which is why
+# `go install github.com/nikbrunner/...` cannot work and this builds from a clone.
+
+set -euo pipefail
+
+REPO_URL="git@github.com:nikbrunner/lazyjira.git"
+REPO_DIR="${LAZYJIRA_REPO_DIR:-$HOME/repos/nikbrunner/lazyjira}"
+LINK_PATH="$HOME/.local/bin/lazyjira"
+
+if [[ ! -d $REPO_DIR ]]; then
+	echo "Cloning lazyjira fork into $REPO_DIR"
+	mkdir -p "$(dirname "$REPO_DIR")"
+	git clone "$REPO_URL" "$REPO_DIR"
+fi
+
+if ! command -v go >/dev/null 2>&1; then
+	echo "lazyjira-sync: go is required to build (mise install go)" >&2
+	exit 1
+fi
+
+echo "Building lazyjira in $REPO_DIR"
+make -C "$REPO_DIR" build
+
+mkdir -p "$(dirname "$LINK_PATH")"
+ln -sf "$REPO_DIR/lazyjira" "$LINK_PATH"
+
+echo "Linked $LINK_PATH -> $REPO_DIR/lazyjira"
+"$LINK_PATH" --version
