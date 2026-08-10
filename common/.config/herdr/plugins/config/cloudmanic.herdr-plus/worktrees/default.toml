@@ -1,27 +1,31 @@
 repo = "*"
 
 [[tabs]]
-Name = "agents"
+Name = "Agents"
 
 [[tabs.panes]]
-label = "agent I"
+label = "Agent I"
 command = "claude"
 
 [[tabs.panes]]
-label = "agent II"
+label = "Agent II"
 split = "right"
 
 [[tabs]]
-name = "code"
+name = "Review"
+command = "tuicr -w"
+
+[[tabs]]
+name = "Code"
 command = "nvim"
 
 [[tabs]]
-name = "serve"
+name = "Servers"
 
 [[tabs.panes]]
-label = "server I"
+label = "Server I"
 split = "right"
 
 [[tabs.panes]]
-label = "server II"
+label = "Server II"
 split = "right"

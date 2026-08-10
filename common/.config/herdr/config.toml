@@ -242,7 +242,7 @@ description = "Open Tasks"
 [[keys.command]]
 key = "alt+s"
 type = "plugin_action"
-command = "herdr-navigator.open"
+command = "helm-herdr.open"
 description = "jump to anything"
 
 [[keys.command]]
@@ -254,7 +254,7 @@ description = "herdr-plus: projects"
 [[keys.command]]
 key = "alt+shift+o"
 type = "plugin_action"
-command = "herdr-navigator.jump-back"
+command = "helm-herdr.jump-back"
 description = "jump to previous workspace"
 
 [[keys.command]]
