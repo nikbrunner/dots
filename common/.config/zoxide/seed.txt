@@ -14,7 +14,9 @@
 ~/repos/black-atom-industries/claude
 ~/repos/black-atom-industries/core
 ~/repos/black-atom-industries/ghostty
-~/repos/black-atom-industries/helm
+~/repos/black-atom-industries/helm.herdr
+~/repos/black-atom-industries/helm.tmux
+~/repos/black-atom-industries/herdr
 ~/repos/black-atom-industries/iter.nvim
 ~/repos/black-atom-industries/lazygit
 ~/repos/black-atom-industries/livery
@@ -32,6 +34,7 @@
 ~/repos/black-atom-industries/zed
 ~/repos/imfusion/brunner
 ~/repos/imfusion/cp
+~/repos/imfusion/misc
 ~/repos/imfusion/projects
 ~/repos/imfusion/websdk
 ~/repos/nikbrunner/bc-desktop-client
@@ -44,6 +47,7 @@
 ~/repos/nikbrunner/imf-notes
 ~/repos/nikbrunner/imfusion-coding-assignment
 ~/repos/nikbrunner/koyo
+~/repos/nikbrunner/lazyjira
 ~/repos/nikbrunner/mdn.nvim
 ~/repos/nikbrunner/nbr.haus
 ~/repos/nikbrunner/notes

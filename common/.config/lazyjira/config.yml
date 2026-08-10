@@ -9,12 +9,28 @@ gui:
     Resolved: "✅"
     Done: "✅"
     Closed: "❌"
+    WON'T FIX: "🚫"
+  typeIcons:
+    Epic: "🗻"
+    Task: "📋"
+    Sub-task: "🔗"
+    New Feature: "✨"
+    Bug: "🐞"
+    Test: "🧪"
+  priorityIcons:
+    Blocker: "🛑"
+    Critical: "🔴"
+    Major: "🟠"
+    Default: "⚪️"
+    Minor: "🔵"
+    Trivial: "⚫️"
   issueListFields:
     - key
     - type
     - status
     - priority
     - summary
+    - updated
 
 issueTabs:
   - name: WIP
@@ -38,10 +54,9 @@ issueTabs:
   - name: Created
     jql: reporter = currentUser() ORDER BY created DESC
     maxResults: 20
+  # On this instance parent and "Epic Link" mirror each other, so one tab covers both.
   - name: No Parent
     jql: reporter = currentUser() AND parent IS EMPTY AND issuetype != Epic AND statusCategory != Done ORDER BY created ASC
-  - name: No Epic
-    jql: reporter = currentUser() AND "Epic Link" IS EMPTY AND issuetype != Epic AND statusCategory != Done ORDER BY created ASC
   - name: No Component
     jql: reporter = currentUser() AND component IS EMPTY AND statusCategory != Done ORDER BY created ASC
   - name: No Sprint
@@ -54,15 +69,13 @@ issueTabs:
 fields:
   - id: status
   - id: priority
+  - id: issuetype
+  - id: parent
+  - id: sprint
+  - id: components
+  - id: labels
   - id: assignee
   - id: reporter
-  - id: issuetype
-  - id: sprint
-  - id: labels
-  - id: components
-  - id: duedate
-    name: "Due Date"
-    type: text
 
 customCommands:
   - key: "ctrl+y"

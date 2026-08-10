@@ -1,6 +1,6 @@
-appearance = "system"            # or "dark" / "light"
-theme_light = "catppuccin-latte"
-theme_dark = "catppuccin-latte"
+appearance = "system" # or "dark" / "light"
+# theme_light = "catppuccin-latte"
+# theme_dark = "catppuccin-latte"
 
 diff_view = "unified" # unified" | "side-by-side"
 
