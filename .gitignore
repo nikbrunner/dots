@@ -39,6 +39,12 @@ common/.config/herdr/**/*.log
 common/.config/herdr/plugins/config/herdr-navigator/jump-back-workspace
 common/.config/herdr/plugins/config/herdr-navigator/update-check
 common/.config/herdr/plugins/config/herdr-navigator/pinned-entries.json
+common/.config/herdr/plugins/config/helm-herdr/jump-back-workspace
+common/.config/herdr/plugins/config/helm-herdr/update-check
+common/.config/herdr/plugins/config/helm-herdr/pinned-entries.json
+common/.config/herdr/plugins/config/official.browser/browser.json
+common/.pi/agent/missions/
+macos/.config/karabiner/automatic_backups/
 
 # Compiled from tools/ by scripts/dots/build-tools.sh
 common/.local/bin/bic

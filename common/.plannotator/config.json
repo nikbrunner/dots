@@ -1,0 +1,12 @@
+{
+  "diffOptions": {
+    "defaultDiffType": "uncommitted",
+    "fontFamily": "JetBrains Mono",
+    "diffStyle": "unified",
+    "lineBgIntensity": "subtle",
+    "tabSize": 4,
+    "hideWhitespace": true
+  },
+  "conventionalComments": true,
+  "pfmReminder": true
+}

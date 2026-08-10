@@ -63,6 +63,7 @@ common:
   common/.config/herdr/session-history.json: ~/.config/herdr/session-history.json
   common/.config/herdr/session.json: ~/.config/herdr/session.json
   common/.config/herdr/sessions/black-atom: ~/.config/herdr/sessions/black-atom
+  common/.config/herdr/sessions/nikbrunner: ~/.config/herdr/sessions/nikbrunner
 
   # Theming =================================================================
   "common/.config/black-atom/*": ~/.config/black-atom
@@ -83,6 +84,8 @@ common:
   common/.config/yazi: ~/.config/yazi
   common/.config/yt-dlp/config: ~/.config/yt-dlp/config
   common/.config/zoxide/seed.txt: ~/.config/zoxide/seed.txt
+  common/.plannotator/config.json: ~/.plannotator/config.json
+  common/.plannotator/hooks/compound/enterplanmode-improve-hook.txt: ~/.plannotator/hooks/compound/enterplanmode-improve-hook.txt
   common/.ripgreprc: ~/.ripgreprc
 
   # SSH =====================================================================
@@ -99,12 +102,9 @@ macos:
   macos/.config/zsh/os.zsh: ~/.config/zsh/os.zsh
   macos/.config/karabiner: ~/.config/karabiner
   macos/Library/Application Support/Claude/claude_desktop_config.json: ~/Library/Application Support/Claude/claude_desktop_config.json
-  macos/Library/LaunchAgents/com.pcloud.automount.plist: ~/Library/LaunchAgents/com.pcloud.automount.plist
   macos/Library/LaunchAgents/dev.nbr.zoxide-seed-sync.plist: ~/Library/LaunchAgents/dev.nbr.zoxide-seed-sync.plist
-  macos/Library/LaunchAgents/homebrew.mxcl.mpd.plist: ~/Library/LaunchAgents/homebrew.mxcl.mpd.plist
   macos/Library/LaunchAgents/me.proton.pass-ssh-agent.plist: ~/Library/LaunchAgents/me.proton.pass-ssh-agent.plist
   macos/Library/LaunchAgents/me.proton.pass-env-sync.plist: ~/Library/LaunchAgents/me.proton.pass-env-sync.plist
-  macos/Library/Scripts/pcloud-auto-mount.applescript: ~/Library/Scripts/pcloud-auto-mount.applescript
 
 arch:
   arch/.config/pacman.conf: ~/.config/pacman.conf
