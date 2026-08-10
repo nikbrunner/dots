@@ -1,4 +1,4 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/black-atom-industries/helm/main/schema.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/black-atom-industries/helm.tmux/main/schema.json
 
 appearance: light
 theme: black-atom-default-dark-dimmed
@@ -28,7 +28,9 @@ ensure_cloned:
   - git@github.com:nikbrunner/flux.nvim
   - git@github.com:nikbrunner/mdn.nvim
   - git@github.com:nikbrunner/review.nvim
-  - url: git@github.com:black-atom-industries/helm
+  - url: git@github.com:nikbrunner/lazyjira
+    post_clone: lazyjira-sync
+  - url: git@github.com:black-atom-industries/helm.tmux
     post_clone: make install
   - url: git@github.com:black-atom-industries/shiplog
     post_clone: deno task install
