@@ -28,7 +28,13 @@ function formatWindow(window: UsageWindow | undefined): string {
 	if (window?.usedPercent === undefined) return "unavailable";
 	const used = Math.max(0, Math.min(100, window.usedPercent));
 	const remaining = Math.round(100 - used);
-	return `${remaining}% left, resets ${formatReset(window.resetAt)}`;
+	return `${renderProgressBar(used)} ${Math.round(used)}% used · ${remaining}% left · resets ${formatReset(window.resetAt)}`;
+}
+
+function renderProgressBar(usedPercent: number): string {
+	const width = 12;
+	const filled = Math.round((usedPercent / 100) * width);
+	return `[${"█".repeat(filled)}${"·".repeat(width - filled)}]`;
 }
 
 function formatReset(resetAt: number | undefined): string {
