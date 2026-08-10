@@ -42,7 +42,7 @@ Hook registration in `settings.json`:
         "hooks": [
           {
             "type": "command",
-            "command": "~/.claude/hooks/enforce/semantic-commits.sh"
+            "command": "~/.claude/hooks/enforce/warn-any-type.sh"
           }
         ]
       }

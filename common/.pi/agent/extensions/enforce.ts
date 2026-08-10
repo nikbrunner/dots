@@ -1,15 +1,13 @@
 /**
  * enforce.ts — Global enforcement extension for Pi
  *
- * Ports the 5 Claude Code hooks from common/.claude/hooks/enforce/:
+ * Ports the Claude Code hooks from common/.claude/hooks/enforce/:
  *   - current-datetime.sh  → before_agent_start : inject date/time into system prompt
  *   - session-start.sh     → session_start       : inject meta-enforcement skill content
  *   - skills-check.sh      → input               : keyword-match → suggest relevant skills
- *   - semantic-commits.sh  → tool_call (bash)    : block non-semantic git commits
  */
 
 import type { ExtensionAPI } from "@mariozechner/pi-coding-agent";
-import { isToolCallEventType } from "@mariozechner/pi-coding-agent";
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { homedir } from "node:os";
@@ -152,57 +150,5 @@ export default function (pi: ExtensionAPI) {
     }
 
     return { action: "continue" };
-  });
-
-  // ─── 4. semantic-commits: block git commits without semantic prefix ───────────
-
-  pi.on("tool_call", async (event, _ctx) => {
-    if (!isToolCallEventType("bash", event)) return;
-
-    const command: string = event.input.command ?? "";
-    const firstLine = command.split("\n")[0];
-
-    if (!/^git commit/.test(firstLine.trim())) return;
-
-    // Extract commit message from -m "..." or heredoc
-    let msg = "";
-
-    // Heredoc: find first non-blank line between heredoc delimiter and EOF
-    if (command.includes("cat <<")) {
-      const heredocMatch = command.match(
-        /cat <<['"]?EOF['"]?\n([\s\S]*?)\n\s*EOF/,
-      );
-      if (heredocMatch) {
-        msg =
-          heredocMatch[1]
-            .split("\n")
-            .find((l) => l.trim().length > 0)
-            ?.trim() ?? "";
-      }
-    }
-
-    // -m "msg" or -m 'msg'
-    if (!msg) {
-      const mMatch = firstLine.match(/-m\s+["'](.+?)["']/);
-      if (mMatch) msg = mMatch[1];
-    }
-
-    // -m msg (no quotes)
-    if (!msg) {
-      const mBare = firstLine.match(/-m\s+([^"'\s]\S*)/);
-      if (mBare) msg = mBare[1];
-    }
-
-    // Can't extract message — allow (might be amend, interactive, etc.)
-    if (!msg) return;
-
-    const semanticPrefix =
-      /^\s*(feat|fix|refactor|chore|docs|style|test|ci|perf)(\(.+\))?(!)?:/;
-    if (semanticPrefix.test(msg)) return;
-
-    return {
-      block: true,
-      reason: `Commit message must start with a semantic prefix.\nValid: feat:, fix:, refactor:, chore:, docs:, style:, test:, ci:, perf:\nExample: feat(nvim): add telescope extension\nYour message: ${msg}`,
-    };
   });
 }
