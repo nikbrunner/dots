@@ -12,10 +12,6 @@ label = "Agent II"
 split = "right"
 
 [[tabs]]
-name = "Review"
-command = "tuicr -w"
-
-[[tabs]]
 name = "Code"
 command = "nvim"
 
