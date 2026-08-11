@@ -80,7 +80,7 @@
             "label": "1"
           }
         ],
-        "lastAccessed": 1786357952
+        "lastAccessed": 1786443139
       }
     },
     "~/repos/nikbrunner/dots": {
@@ -93,9 +93,13 @@
           {
             "filename": "common/.config/nvim/lua/specs/mini.lua",
             "label": "2"
+          },
+          {
+            "filename": "common/.config/ghostty/config",
+            "label": "3"
           }
         ],
-        "lastAccessed": 1786369046
+        "lastAccessed": 1786446384
       }
     },
     "~/repos/nikbrunner/imf-notes": {
@@ -106,7 +110,7 @@
             "label": "1"
           }
         ],
-        "lastAccessed": 1786351099
+        "lastAccessed": 1786444051
       }
     },
     "~/repos/nikbrunner/minifugit.nvim": {
@@ -132,7 +136,7 @@
             "label": "2"
           }
         ],
-        "lastAccessed": 1786088842
+        "lastAccessed": 1786441210
       }
     }
   }

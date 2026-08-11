@@ -4,17 +4,17 @@ let v:this_session=expand("<sfile>:p")
 doautoall SessionLoadPre
 silent only
 silent tabonly
-cd ~/repos/nikbrunner/imf-notes
+cd ~/repos/black-atom-industries/helm.herdr
 if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +25 logs/2026/2026.08/2026.08.10\ -\ Mon.md
-badd +15 logs/2026/2026.08/2026.08.11\ -\ Tue.md
+badd +6 README.md
+badd +3 docs/architecture.md
 argglobal
 %argdel
-edit logs/2026/2026.08/2026.08.10\ -\ Mon.md
+edit README.md
 let s:save_splitbelow = &splitbelow
 let s:save_splitright = &splitright
 set splitbelow splitright
@@ -31,9 +31,9 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe 'vert 1resize ' . ((&columns * 89 + 89) / 179)
-exe 'vert 2resize ' . ((&columns * 89 + 89) / 179)
-tcd ~/repos/nikbrunner/imf-notes
+exe 'vert 1resize ' . ((&columns * 91 + 91) / 183)
+exe 'vert 2resize ' . ((&columns * 91 + 91) / 183)
+tcd ~/repos/black-atom-industries/helm.herdr
 argglobal
 xnoremap <buffer> $ g$
 onoremap <buffer> $ g$
@@ -96,7 +96,7 @@ setlocal foldnestmax=10
 setlocal foldtext=
 setlocal formatexpr=
 setlocal formatlistpat=^\\s*\\d\\+\\.\\s\\+\\|^\\s*[-*+]\\s\\+\\|^\\[^\\ze[^\\]]\\+\\]:\\&^.\\{4\\}
-setlocal formatoptions=j1tqln
+setlocal formatoptions=tlj1nq
 setlocal iminsert=0
 setlocal imsearch=-1
 setlocal includeexpr=
@@ -148,7 +148,7 @@ setlocal textwidth=80
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#...%*%#WinBarSeparator#/%*%#WinBarPath#2026%*%#WinBarSeparator#/%*%#WinBarPath#2026.08%*%#WinBarSeparator#/%*%#WinBarFilename#2026.08.10\ -\ Mon.md%*%=%#WinBarGitLabel#\ [GIT:%#WinBarGitChange#\ ~4%#WinBarGitLabel#]%*\ 
+setlocal winbar=%#WinBarFilename#README.md%*%=
 setlocal winblend=10
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -159,31 +159,19 @@ setlocal nowrap
 setlocal wrapmargin=0
 1
 sil! normal! zo
-9
-sil! normal! zo
-11
-sil! normal! zo
-16
-sil! normal! zo
-18
-sil! normal! zo
-68
-sil! normal! zo
-70
-sil! normal! zo
-let s:l = 25 - ((24 * winheight(0) + 33) / 66)
+let s:l = 6 - ((5 * winheight(0) + 38) / 77)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 25
+keepjumps 6
 normal! 0
 wincmd w
 argglobal
-if bufexists(fnamemodify("~/repos/nikbrunner/imf-notes/logs/2026/2026.08/2026.08.11\ -\ Tue.md", ":p")) | buffer ~/repos/nikbrunner/imf-notes/logs/2026/2026.08/2026.08.11\ -\ Tue.md | else | edit ~/repos/nikbrunner/imf-notes/logs/2026/2026.08/2026.08.11\ -\ Tue.md | endif
+if bufexists(fnamemodify("~/repos/black-atom-industries/helm.herdr/docs/architecture.md", ":p")) | buffer ~/repos/black-atom-industries/helm.herdr/docs/architecture.md | else | edit ~/repos/black-atom-industries/helm.herdr/docs/architecture.md | endif
 if &buftype ==# 'terminal'
-  silent file ~/repos/nikbrunner/imf-notes/logs/2026/2026.08/2026.08.11\ -\ Tue.md
+  silent file ~/repos/black-atom-industries/helm.herdr/docs/architecture.md
 endif
-balt ~/repos/nikbrunner/imf-notes/logs/2026/2026.08/2026.08.10\ -\ Mon.md
+balt ~/repos/black-atom-industries/helm.herdr/README.md
 xnoremap <buffer> $ g$
 onoremap <buffer> $ g$
 nnoremap <buffer> $ g$
@@ -245,7 +233,7 @@ setlocal foldnestmax=10
 setlocal foldtext=
 setlocal formatexpr=
 setlocal formatlistpat=^\\s*\\d\\+\\.\\s\\+\\|^\\s*[-*+]\\s\\+\\|^\\[^\\ze[^\\]]\\+\\]:\\&^.\\{4\\}
-setlocal formatoptions=j1tqln
+setlocal formatoptions=1jtqln
 setlocal iminsert=0
 setlocal imsearch=-1
 setlocal includeexpr=
@@ -297,7 +285,7 @@ setlocal textwidth=80
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#...%*%#WinBarSeparator#/%*%#WinBarPath#2026%*%#WinBarSeparator#/%*%#WinBarPath#2026.08%*%#WinBarSeparator#/%*%#WinBarFilename#2026.08.11\ -\ Tue.md%*%=
+setlocal winbar=%#WinBarPath#docs%*%#WinBarSeparator#/%*%#WinBarFilename#architecture.md%*%=
 setlocal winblend=10
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -308,19 +296,15 @@ setlocal nowrap
 setlocal wrapmargin=0
 1
 sil! normal! zo
-10
-sil! normal! zo
-12
-sil! normal! zo
-let s:l = 15 - ((14 * winheight(0) + 33) / 66)
+let s:l = 9 - ((8 * winheight(0) + 38) / 77)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 15
-normal! 04|
+keepjumps 9
+normal! 0
 wincmd w
-exe 'vert 1resize ' . ((&columns * 89 + 89) / 179)
-exe 'vert 2resize ' . ((&columns * 89 + 89) / 179)
+exe 'vert 1resize ' . ((&columns * 91 + 91) / 183)
+exe 'vert 2resize ' . ((&columns * 91 + 91) / 183)
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf

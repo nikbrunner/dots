@@ -161,7 +161,7 @@ new_workspace = "alt+shift+t"
 close_workspace = "alt+shift+q"
 rename_workspace = "alt+shift+n"
 
-new_worktree = "alt+ctrl+n"
+new_worktree = "alt+ctrl+t"
 open_worktree = "alt+ctrl+o"
 remove_worktree = "alt+ctrl+d"
 

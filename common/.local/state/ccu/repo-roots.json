@@ -111,12 +111,13 @@
     "work": true,
     "session_dirs": [
       "~/repos/imfusion/cp/labels-web",
+      "~/repos/imfusion/cp/labels-web/.worktrees/CP-130-integrate-with-labels-server",
       "~/repos/imfusion/cp/labels-web/.worktrees/bootstrap-frontend",
       "~/repos/imfusion/cp/labels-web/.worktrees/bootstrap-frontend/frontend",
       "~/repos/imfusion/cp/labels-web/.worktrees/bootstrap-frontend/frontend/.agents/skills",
       "~/repos/imfusion/cp/labels-web/frontend"
     ],
-    "last_seen": "2026-07-29"
+    "last_seen": "2026-08-11"
   },
   "github/cloudmanic.herdr-plus-0cce37b56fb9": {
     "root": "~/repos/nikbrunner/dots/common/.config/herdr/plugins/github/cloudmanic.herdr-plus-0cce37b56fb9",
@@ -263,6 +264,7 @@
       "~/.herdr/worktrees/web-ui/classname-construction-convention",
       "~/.herdr/worktrees/web-ui/hw-probe-tmp",
       "~/.herdr/worktrees/web-ui/imfusion-logo-improvements",
+      "~/.herdr/worktrees/web-ui/improve-frontend-audit",
       "~/.herdr/worktrees/web-ui/improve-react-patterns-skill",
       "~/.herdr/worktrees/web-ui/improve-stop-hook",
       "~/.herdr/worktrees/web-ui/showcase-improvements",
@@ -283,8 +285,9 @@
       "~/repos/imfusion/websdk/web-ui/.workspaces/websdk-149-corner-radius-control",
       "~/repos/imfusion/websdk/web-ui/.workspaces/websdk-207-skills",
       "~/repos/imfusion/websdk/web-ui/node_modules/@base-ui",
-      "~/repos/imfusion/websdk/web-ui/src/llms/skills"
+      "~/repos/imfusion/websdk/web-ui/src/llms/skills",
+      "~/repos/imfusion/websdk/websdk-169-storybook-controls"
     ],
-    "last_seen": "2026-08-10"
+    "last_seen": "2026-08-11"
   }
 }

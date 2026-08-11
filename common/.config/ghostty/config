@@ -11,15 +11,15 @@ window-padding-y = 15
 window-vsync = true
 
 # Advanced
-# custom-shader = ./shaders/blueprint.glsl
+custom-shader = ./shaders/blueprint.glsl
 
 adjust-cell-height = 25%
 adjust-underline-position = 3
 
 # Fonts
 font-size = 13
-font-family = TX-02 Condensed
-font-family-bold = TX-02 Bold Condensed
+font-family = ComicCodeLigatures Nerd Font
+font-style-bold = Bold
 font-thicken = false
 window-inherit-working-directory = true
 unfocused-split-opacity = 1

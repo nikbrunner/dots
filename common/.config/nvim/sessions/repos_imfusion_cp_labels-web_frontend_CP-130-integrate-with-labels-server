@@ -4,18 +4,17 @@ let v:this_session=expand("<sfile>:p")
 doautoall SessionLoadPre
 silent only
 silent tabonly
-cd ~/repos/imfusion/cp/imfusion-portal-CP-89
+cd ~/repos/imfusion/cp/labels-web/frontend
 if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +1 fe/src/routes/app/route.tsx
+badd +74 src/routes/projects/\$projectId.tsx
 argglobal
 %argdel
-$argadd fe/.agents/skills/imf-web-ui-frontend-conventions/references/data.md
-edit fe/src/routes/app/route.tsx
-tcd ~/repos/imfusion/cp/imfusion-portal-CP-89
+edit src/routes/projects/\$projectId.tsx
+tcd ~/repos/imfusion/cp/labels-web/frontend
 argglobal
 setlocal keymap=
 setlocal noarabic
@@ -116,7 +115,7 @@ setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#fe%*%#WinBarSeparator#/%*%#WinBarPath#src%*%#WinBarSeparator#/%*%#WinBarPath#routes%*%#WinBarSeparator#/%*%#WinBarPath#app%*%#WinBarSeparator#/%*%#WinBarFilename#route.tsx%*%=
+setlocal winbar=%#WinBarPath#src%*%#WinBarSeparator#/%*%#WinBarPath#routes%*%#WinBarSeparator#/%*%#WinBarPath#projects%*%#WinBarSeparator#/%*%#WinBarFilename#$projectId.tsx%*%=
 setlocal winblend=10
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -125,12 +124,16 @@ setlocal winhighlight=
 setlocal nowinpinned
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 31 - ((30 * winheight(0) + 33) / 66)
+61
+sil! normal! zo
+78
+sil! normal! zo
+let s:l = 74 - ((23 * winheight(0) + 25) / 50)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 31
-normal! 0
+keepjumps 74
+normal! 019|
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
