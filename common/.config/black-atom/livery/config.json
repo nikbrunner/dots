@@ -5,30 +5,13 @@
   },
   "apps": {
     "obsidian": {
-      "enabled": true,
-      "config_path": "~/repos/nikbrunner/notes/.obsidian/appearance.json"
+      "enabled": false,
+      "config_path": ""
     },
     "lazygit": {
       "enabled": true,
       "config_path": "~/.config/lazygit/config.yml",
       "themes_path": "~/.config/black-atom/themes/lazygit"
-    },
-    "herdr": {
-      "enabled": true,
-      "config_path": "~/.config/herdr/config.toml",
-      "themes_path": "/Users/brunner/repos/black-atom-industries/herdr/themes"
-    },
-    "helm": {
-      "enabled": true,
-      "config_path": "~/.config/black-atom/helm-tmux/config.yml",
-      "match_pattern": "^theme:\\s*\\S*$",
-      "replace_template": "theme: {themeKey}"
-    },
-    "delta": {
-      "enabled": true,
-      "config_path": "~/.gitconfig.delta",
-      "match_pattern": "features\\s*=\\s*black-atom-(dark|light)",
-      "replace_template": "features = black-atom-{appearance}"
     },
     "ghostty": {
       "enabled": true,
@@ -36,11 +19,26 @@
       "match_pattern": "^theme\\s*=\\s*.+$",
       "replace_template": "theme = {themeKey}.conf"
     },
-    "nvim": {
+    "helm-tmux": {
       "enabled": true,
-      "config_path": "~/.config/nvim/plugin/50_specs/black_atom/nvim.lua",
-      "match_pattern": "vim\\.cmd\\.colorscheme\\(\"[^\"]*\"\\)",
-      "replace_template": "vim.cmd.colorscheme(\"{themeKey}\")"
+      "config_path": "~/.config/black-atom/helm-tmux/config.yml",
+      "match_pattern": "^theme:\\s*\\S*$",
+      "replace_template": "theme: {themeKey}"
+    },
+    "zed": {
+      "enabled": true,
+      "config_path": "~/.config/zed/settings.json"
+    },
+    "herdr": {
+      "enabled": true,
+      "config_path": "~/.config/herdr/config.toml",
+      "themes_path": "~/.config/black-atom/themes/herdr"
+    },
+    "delta": {
+      "enabled": true,
+      "config_path": "~/.gitconfig.delta",
+      "match_pattern": "features\\s*=\\s*black-atom-(dark|light)",
+      "replace_template": "features = black-atom-{appearance}"
     },
     "tmux": {
       "enabled": true,
@@ -49,9 +47,11 @@
       "match_pattern": "^source-file\\s+.+/themes/.+\\.conf$",
       "replace_template": "source-file {themesPath}/{themeKey}.conf"
     },
-    "zed": {
+    "nvim": {
       "enabled": true,
-      "config_path": "~/.config/zed/settings.json"
+      "config_path": "~/.config/nvim/plugin/50_specs/black_atom/nvim.lua",
+      "match_pattern": "vim\\.cmd\\.colorscheme\\(\"[^\"]*\"\\)",
+      "replace_template": "vim.cmd.colorscheme(\"{themeKey}\")"
     }
   }
 }
