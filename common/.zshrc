@@ -101,6 +101,15 @@ claude-work() {
         command claude "$@"
 }
 
+claude-repair() {
+    local root
+    root="$(mise where npm:@anthropic-ai/claude-code)/node_modules" || return 1
+
+    # https://github.com/jdx/aube/pull/613
+    NODE_PATH="$root/.mise/node_modules" \
+        command node "$root"/.mise/@anthropic-ai+claude-code@*/node_modules/@anthropic-ai/claude-code/install.cjs
+}
+
 # Yazi ==================================================================
 function y() {
     local tmp="$(mktemp -t "yazi-cwd.XXXXXX")"
