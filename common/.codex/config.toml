@@ -1,4 +1,4 @@
-model = "gpt-5.6-terra"
+model = "gpt-5.6-luna"
 model_reasoning_effort = "medium"
 approvals_reviewer = "auto_review"
 service_tier = "default"
@@ -22,6 +22,9 @@ trust_level = "trusted"
 trust_level = "trusted"
 
 [projects."/Users/brunner/repos/black-atom-industries/livery"]
+trust_level = "trusted"
+
+[projects."/Users/brunner/repos/imfusion/cp/labels-rest-api"]
 trust_level = "trusted"
 
 [tui]
@@ -67,3 +70,9 @@ trusted_hash = "sha256:4e62f91b83d02845b0289064e7880e53411938334686ec2bc35db8206
 
 [hooks.state."/Users/brunner/.codex/hooks.json:subagent_start:0:0"]
 trusted_hash = "sha256:bdee2ac509ad84c8a697aaf540882f70cfa8fc86549624afd6d05ccb30e4d2bd"
+
+[hooks.state."/Users/brunner/repos/imfusion/cp/labels-web/frontend/.codex/hooks.json:pre_tool_use:0:0"]
+trusted_hash = "sha256:8d5de4fe94b3e8d605f429c703ab38d951cce57f148c3eda7af6b3b1a7b9cfbc"
+
+[hooks.state."/Users/brunner/repos/imfusion/cp/labels-web/frontend/.codex/hooks.json:session_start:0:0"]
+trusted_hash = "sha256:47b2666732ff5d2ba1f7089565acdb72a82bf025e285c372d7d1801dc6a06aaf"
