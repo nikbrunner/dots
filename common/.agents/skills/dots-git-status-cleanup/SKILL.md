@@ -40,32 +40,33 @@ For non-routine changes, use single-file commits unless files are tightly relate
 - Configuration files for different tools should never be in the same commit
 - New features should be separate from refactoring
 
-### 4. Follow semantic commit conventions
+### 4. Follow the `dev-commit` message format
 
-- Use prefixes: `feat:`, `fix:`, `refactor:`, `chore:`, `docs:`
-- Include scope when helpful: `feat(nvim):`, `fix(tmux):`
-- Write clear, concise commit messages
+Use the message grammar from `dev-commit`, Phase 3:
 
-### 5. Handle special cases
+```
+[<ticket>] <summary>
+```
 
-- New configuration files → `feat:` commits
-- Bug fixes → `fix:` commits
-- Code cleanup/reorganization → `refactor:` commits
-- Documentation changes → `docs:` commits
-- Dependency updates → `chore:` commits
+- Use imperative mood: `add X`, not `added X`
+- Keep the subject under 70 characters
+- Focus on why rather than repeating the diff
+- Do not use a `type(scope):` prefix
+- Prepend a ticket key in square brackets when the change has one
+- Add a body only for a large or non-obvious diff; use bullets wrapped at 72 characters
 
 ## Example commit message formats
 
 **Single file (preferred):**
 
 ```
-feat(nvim): add date insertion keymaps
+add date insertion keymaps
 ```
 
 **Multiple related files (only when necessary):**
 
 ```
-feat(nvim): use local review.nvim fork with improved keymaps
+use local review.nvim fork for its improved keymaps
 ```
 
 ## Your goal
