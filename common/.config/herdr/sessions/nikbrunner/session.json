@@ -6,9 +6,9 @@
       "custom_name": null,
       "identity_cwd": "/Users/brunner/repos/nikbrunner/dots",
       "public_pane_numbers": {
-        "8": 55,
         "1": 27,
-        "2": 2
+        "2": 2,
+        "8": 55
       },
       "next_public_pane_number": 58,
       "public_tab_numbers": [
@@ -32,9 +32,6 @@
             }
           },
           "panes": {
-            "8": {
-              "cwd": "/Users/brunner/repos/nikbrunner/dots"
-            },
             "1": {
               "cwd": "/Users/brunner/repos/nikbrunner/dots",
               "agent_session": {
@@ -43,10 +40,13 @@
                 "kind": "path",
                 "value": "/Users/brunner/.pi/agent/sessions/--Users-brunner-repos-nikbrunner-dots--/2026-08-11T14-28-56-524Z_019ff139-fa4c-7fc1-93af-1cb27b2edded.jsonl"
               }
+            },
+            "8": {
+              "cwd": "/Users/brunner/repos/nikbrunner/dots"
             }
           },
           "zoomed": false,
-          "focused": 8,
+          "focused": 1,
           "root_pane": 1
         },
         {
