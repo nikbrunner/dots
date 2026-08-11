@@ -6,8 +6,8 @@
       "custom_name": null,
       "identity_cwd": "/Users/brunner/repos/nikbrunner/dots",
       "public_pane_numbers": {
-        "1": 27,
         "2": 2,
+        "1": 27,
         "8": 55
       },
       "next_public_pane_number": 58,
@@ -42,11 +42,17 @@
               }
             },
             "8": {
-              "cwd": "/Users/brunner/repos/nikbrunner/dots"
+              "cwd": "/Users/brunner/repos/nikbrunner/dots",
+              "agent_session": {
+                "source": "herdr:pi",
+                "agent": "pi",
+                "kind": "path",
+                "value": "/Users/brunner/.pi/agent/sessions/--Users-brunner-repos-nikbrunner-dots--/2026-08-11T15-11-55-798Z_019ff161-5596-79d5-bf46-dc60fe6595ff.jsonl"
+              }
             }
           },
           "zoomed": false,
-          "focused": 1,
+          "focused": 8,
           "root_pane": 1
         },
         {
@@ -71,8 +77,8 @@
       "custom_name": "mdn.nvim",
       "identity_cwd": "/Users/brunner/repos/nikbrunner/mdn.nvim",
       "public_pane_numbers": {
-        "3": 1,
-        "4": 4
+        "4": 4,
+        "3": 1
       },
       "next_public_pane_number": 6,
       "public_tab_numbers": [
