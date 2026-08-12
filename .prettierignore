@@ -4,5 +4,3 @@ common/.pi/agent/sessions/
 
 # Claude Code writes these through symlinks, so its formatting wins over
 # prettier's. The README documents the directory and stays formatted.
-common/.claude/claude-memories/**/*.md
-!common/.claude/claude-memories/README.md

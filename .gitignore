@@ -17,7 +17,7 @@ skills-lock.json
 /common/.pi/agent/pi-fff
 /common/.pi/memory/*.db-shm
 /common/.pi/memory/*.db-wal
-/common/.claude/claude-memories/imfusion
+/common/.claude/claude-memories/
 /common/.pi/agent/sessions/
 /radar-debug.log
 /common/.pi/agent/mcp-npx-cache.json

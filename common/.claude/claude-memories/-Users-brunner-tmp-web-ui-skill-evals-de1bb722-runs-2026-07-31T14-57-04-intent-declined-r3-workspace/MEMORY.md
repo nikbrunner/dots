@@ -1,1 +1,0 @@
-- [Agent config is off-limits](agent-config-off-limits.md) — install deps, but never write hooks or AGENTS.md; read shipped skills from node_modules instead

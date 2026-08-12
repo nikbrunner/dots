@@ -9,6 +9,3 @@ Public
 Pictures
 
 .DS_Store
-
-# Claude memories referencing imfusion projects
-.claude/claude-memories/**/*imfusion*

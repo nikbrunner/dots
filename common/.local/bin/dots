@@ -561,7 +561,6 @@ cmd_chores() {
 		[dots_stage_gitconfig_delta]="gitconfig.delta"
 		[dots_stage_helm_config]="helm"
 		[dots_stage_claude_settings]="claude-settings"
-		[dots_stage_claude_memories]="claude-memories"
 	)
 
 	for stager in "${!stagers[@]}"; do
@@ -863,11 +862,6 @@ cmd_link() {
 	echo ""
 	echo "→ Linking Black Atom themes..."
 	"$DOTS_DIR/scripts/dots/theme-link.sh" "$@"
-
-	echo ""
-	echo "→ Linking Claude memories..."
-	load_config
-	dots_link_claude_memories "$DOTS_DIR"
 }
 
 # Shared push function
