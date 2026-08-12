@@ -4,6 +4,7 @@
 # Everything else (CLI tools, runtimes) lives in common/.config/mise/config.toml.
 
 tap "protonpass/tap"
+tap "y3owk1n/tap"
 
 # Shell & git (system deps mise doesn't cover)
 brew "coreutils"
@@ -45,6 +46,7 @@ cask "homerow"
 cask "karabiner-elements"
 cask "linear"
 cask "mattermost"
+cask "neru"
 cask "ngrok"
 cask "obsidian"
 cask "proton-drive"
