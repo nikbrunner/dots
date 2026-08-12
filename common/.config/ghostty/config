@@ -62,6 +62,8 @@ keybind = cmd+z=toggle_fullscreen
 keybind = super+minus=decrease_font_size:1
 keybind = super+equal=increase_font_size:1
 keybind = super+zero=reset_font_size
+keybind = super+h=previous_tab
+keybind = super+l=next_tab
 
 # Quick-terminal
 quick-terminal-position = center
