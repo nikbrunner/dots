@@ -5,7 +5,6 @@ Name = "Agents"
 
 [[tabs.panes]]
 label = "Agent I"
-command = "claude"
 
 [[tabs.panes]]
 label = "Agent II"
