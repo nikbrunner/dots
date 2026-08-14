@@ -37,12 +37,11 @@
       "identity_cwd": "/Users/brunner/repos/nikbrunner/dots",
       "public_pane_numbers": {
         "2": 27,
-        "3": 2,
-        "4": 69,
         "12": 82,
-        "17": 85
+        "4": 69,
+        "3": 2
       },
-      "next_public_pane_number": 86,
+      "next_public_pane_number": 87,
       "public_tab_numbers": [
         1,
         2,
@@ -57,16 +56,7 @@
               "direction": "Horizontal",
               "ratio": 0.5,
               "first": {
-                "Split": {
-                  "direction": "Horizontal",
-                  "ratio": 0.5,
-                  "first": {
-                    "Pane": 2
-                  },
-                  "second": {
-                    "Pane": 17
-                  }
-                }
+                "Pane": 2
               },
               "second": {
                 "Pane": 12
@@ -74,9 +64,6 @@
             }
           },
           "panes": {
-            "17": {
-              "cwd": "/Users/brunner/repos/nikbrunner/dots"
-            },
             "12": {
               "cwd": "/Users/brunner/repos/nikbrunner/dots"
             },
@@ -86,12 +73,12 @@
                 "source": "herdr:claude",
                 "agent": "claude",
                 "kind": "id",
-                "value": "5d713543-e96c-44cb-92cd-1c05bb75691e"
+                "value": "932fcf8c-c017-4aaf-994f-1aec216ece24"
               }
             }
           },
-          "zoomed": true,
-          "focused": 17,
+          "zoomed": false,
+          "focused": 2,
           "root_pane": 2
         },
         {
