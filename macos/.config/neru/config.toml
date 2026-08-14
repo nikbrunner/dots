@@ -41,10 +41,10 @@ text = "#111111"
 # See https://github.com/y3owk1n/neru/blob/main/docs/CONFIGURATION.md#hotkeys
 # See https://github.com/y3owk1n/neru/blob/main/docs/CLI.md
 [hotkeys]
-"Primary+Shift+F" = "hints"
-# "Primary+Shift+G" = "grid"
-# "Primary+Shift+C" = "recursive_grid"
-"Primary+Shift+S" = "scroll"
+"Ctrl+Alt+Space" = "hints"
+"Ctrl+Alt+G" = "grid"
+# "Ctrl+Alt+G" = "recursive_grid"
+"Ctrl+Alt+S" = "scroll"
 
 # Macros — named action sequences, reused from any binding.
 # Written by hand, not recorded. $1, $2 ... are the call's arguments.
@@ -125,8 +125,9 @@ visible_check_enabled = false
 "Right" = "action move_mouse_relative --dx=10 --dy=0"
 
 [hints.ui]
-font_size = 10
-font_family = ""     # Empty = system font
+font_size = 16
+font_family = "TX-02"
+background_color = "#B3FB8F19"
 border_radius = -1   # -1 = auto pill
 padding_x = -1       # -1 = auto based on font size
 padding_y = -1       # -1 = auto based on font size
@@ -187,6 +188,8 @@ enable_gc = false                           # Periodic memory cleanup (adds CPU 
 "`" = "toggle-cursor-follow-selection"
 "Space" = "action reset"
 "Backspace" = "action backspace"
+"Return" = ["action left_click --bail-on-error", "idle"]
+"Shift+Return" = ["action right_click --bail-on-error", "idle"]
 "Shift+L" = "action left_click"
 "Shift+R" = "action right_click"
 "Shift+M" = "action middle_click"
@@ -198,9 +201,10 @@ enable_gc = false                           # Periodic memory cleanup (adds CPU 
 "Right" = "action move_mouse_relative --dx=10 --dy=0"
 
 [grid.ui]
-font_size = 10
-font_family = ""
+font_size = 16
+font_family = "TX-02"
 border_width = 1
+background_color = "#B3FB8F19"
 
 # Recursive grid mode (recommended)
 # See https://github.com/y3owk1n/neru/blob/main/docs/CONFIGURATION.md#recursive_grid
@@ -222,6 +226,8 @@ duration_ms = 50 # Recursive-grid animation duration in milliseconds
 "`" = "toggle-cursor-follow-selection"
 "Space" = "action reset"
 "Backspace" = "action backspace"
+"Return" = ["action left_click --bail-on-error", "idle"]
+"Shift+Return" = ["action right_click --bail-on-error", "idle"]
 "Shift+L" = "action left_click"
 "Shift+R" = "action right_click"
 "Shift+M" = "action middle_click"
@@ -234,8 +240,9 @@ duration_ms = 50 # Recursive-grid animation duration in milliseconds
 
 [recursive_grid.ui]
 line_width = 1
-font_size = 10
-font_family = ""
+font_size = 16
+font_family = "TX-02"
+line_color = "#B3FB8F19"
 label_background = false                  # Add rounded backgrounds behind cell labels
 label_background_padding_x = -1
 label_background_padding_y = -1
