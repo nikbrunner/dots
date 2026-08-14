@@ -96,22 +96,14 @@ Check code adherence to project-specific style conventions.
 
 Audit frontend UI through technical and design lenses.
 
-**Uses**: `dev-impeccable:audit` (a11y, perf, theming), `dev-impeccable:critique` (design coherence), `dev-browser` for screenshots.
+**Uses**: `dev-impeccable:audit` (a11y, perf, theming), `dev-impeccable:critique` (design coherence), Chrome DevTools MCP for screenshots.
 
 ### Steps
 
 1. Determine scope.
 2. Run `dev-impeccable:audit` — technical report (a11y, perf, theme, responsive).
 3. Run `dev-impeccable:critique` — design critique (hierarchy, IA, emotion, composition).
-4. Capture screenshots at key breakpoints if browser available:
-   ```bash
-   agent-browser open <url>
-   agent-browser set viewport 375 812   # mobile
-   agent-browser screenshot mobile.png
-   agent-browser set viewport 1280 720  # desktop
-   agent-browser screenshot desktop.png
-   agent-browser close
-   ```
+4. Capture screenshots at key breakpoints if browser available: `navigate_page` to the URL, then `resize_page` to 375x812 (mobile) and 1280x720 (desktop), calling `take_screenshot` at each.
 5. Merge findings into combined report.
 
 ---
@@ -120,18 +112,12 @@ Audit frontend UI through technical and design lenses.
 
 Audit against Nielsen's 10 Usability Heuristics.
 
-**Uses**: `dev-browser` for screenshots at key states, LSP for tracing state/error handling.
+**Uses**: Chrome DevTools MCP for screenshots at key states, LSP for tracing state/error handling.
 
 ### Steps
 
 1. Determine scope.
-2. Capture screenshots at key states (idle, loading, error, empty, success) using `dev-browser`:
-   ```bash
-   agent-browser open <url>
-   agent-browser screenshot idle.png
-   # trigger each state, capture
-   agent-browser close
-   ```
+2. Capture screenshots at key states (idle, loading, error, empty, success): `navigate_page` to the URL, `take_screenshot` for idle, then trigger each state and capture again.
 3. Walk each heuristic (visibility, real-world match, user control, consistency, error prevention, recognition, efficiency, minimalism, error recovery, help).
 4. Classify each finding: Violation, Weakness, or Pass.
 5. Produce findings table + per-heuristic pass rate and top 3 priorities.
@@ -158,6 +144,5 @@ Audit against Nielsen's 10 Usability Heuristics.
 - `dev-style-react` — component patterns for error boundaries and loading states
 - `dev-impeccable` — deeper UI polish commands
 - `dev-flow/guides/design-interface` — redesign proposals
-- `dev-browser` — screenshot capture via `agent-browser`
 - `dev-how-to-test` — generate a human black-box checklist from changed user journeys
 - `dev-commit` — integrates docs audit as pre-commit gate

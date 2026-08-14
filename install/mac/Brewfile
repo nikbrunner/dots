@@ -27,7 +27,6 @@ brew "btop"
 # lazyjira runs from a local fork, built by `lazyjira-sync` (common/.local/bin).
 
 # Custom formula / taps
-brew "agent-browser"
 brew "protonpass/tap/pass-cli"
 brew "aviator-co/tap/av"         # aviator CLI — shell completion in os.zsh
 

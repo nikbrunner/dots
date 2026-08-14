@@ -45,7 +45,7 @@ Your review scope is strictly limited to structural completeness and cleanliness
    - Environment-specific configs are updated consistently across all environments
    - Feature flags or toggles are properly configured if used
 
-6. **Visual and practical testing**: For web projects use `dev:util:browser` skill to verify visual and interactive elements:
+6. **Visual and practical testing**: For web projects use Chrome DevTools MCP to verify visual and interactive elements:
    - Visual regression testing
    - Accessibility testing
    - Verify the defined user story flows

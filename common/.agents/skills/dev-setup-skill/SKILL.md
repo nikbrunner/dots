@@ -12,7 +12,7 @@ Template for creating dev-\* concept skills consistently. Not for process/review
 
 **IMPORTANT**:
 
-- Before creating a new skill, use the Ref MCP, Exa MCP, and agent-browser CLI to research the topic and about its key principles and anti-patterns.
+- Before creating a new skill, use the Ref MCP and Exa MCP to research the topic and about its key principles and anti-patterns.
 - Also keep track which breaking changes are either happend or are planned. A project could use an older version of a tool.
 - Also check if there is overlapping topics with other `dev-*` skills and if cross-references, or even a restructure is needed.
 

@@ -17,7 +17,7 @@ Create `HOW_TO_TEST.md` in the project root. It is a handoff for a human tester,
 2. Read the project README and relevant user-facing docs.
 3. Identify the app's real entry point, test account or fixture needs, supported platforms, and the changed user journeys.
 4. Use the optional argument to focus the checklist when provided.
-5. Determine and run the relevant existing checks before creating the document: targeted tests, typecheck/lint/build where relevant, and browser automation with `agent-browser` when a runnable UI is available. Do not change code to make these checks pass.
+5. Determine and run the relevant existing checks before creating the document: targeted tests, typecheck/lint/build where relevant, and browser automation with Chrome DevTools MCP when a runnable UI is available. Do not change code to make these checks pass.
 6. Do not invent behavior. Mark unknown setup values as `[fill in]` rather than guessing.
 
 ## What to write

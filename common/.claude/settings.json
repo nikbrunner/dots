@@ -165,7 +165,7 @@
     "rust-analyzer-lsp@claude-plugins-official": true,
     "typescript-lsp@claude-plugins-official": true,
     "storybook@storybook": true,
-    "sideshow@sideshow": true
+    "superpowers@claude-plugins-official": true
   },
   "extraKnownMarketplaces": {
     "impeccable": {
@@ -193,10 +193,16 @@
         "ref": "main"
       }
     },
-    "sideshow": {
+    "claude-community": {
       "source": {
         "source": "github",
-        "repo": "modem-dev/sideshow"
+        "repo": "anthropics/claude-plugins-community"
+      }
+    },
+    "gvzdv-plugins": {
+      "source": {
+        "source": "github",
+        "repo": "gvzdv/claudish-to-english"
       }
     }
   },

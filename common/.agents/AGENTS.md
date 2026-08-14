@@ -119,19 +119,16 @@ In docs, comments, and any durable prose: state what _is_, in positive present-t
 
 Prefer these over generic web fetch or ad-hoc CLI tools.
 
-Driving a browser and inspecting one are separate jobs with separate tools. Pick by the job, not by a hierarchy:
-
 | Job                                                    | Tool                    |
 | ------------------------------------------------------ | ----------------------- |
 | Web search — examples, patterns, solutions not in docs | **Exa MCP**             |
-| Navigate, click, fill, screenshot, extract             | **`agent-browser`** CLI |
-| Auth/login flows, session persistence                  | **`agent-browser`** CLI |
-| Batch operations, multi-page workflows                 | **`agent-browser`** CLI |
-| Lighthouse audits, performance traces                  | **Chrome DevTools MCP** |
-| Network request inspection, console logs               | **Chrome DevTools MCP** |
-| Memory/heap snapshots                                  | **Chrome DevTools MCP** |
+| Anything in a browser                                  | **Chrome DevTools MCP** |
 
-`agent-browser` is the default for driving because a shell invocation costs ~50 tokens against several thousand for a snapshot returned through MCP — over a long session that difference is the context budget left for actual work. Reach for Chrome DevTools MCP when the task needs DevTools-grade instrumentation, which `agent-browser` does not expose.
+Chrome DevTools MCP covers both driving (navigate, click, fill, screenshot, extract) and inspecting (Lighthouse, performance traces, network requests, console, heap snapshots). It launches Chrome itself via Puppeteer, so the OS default browser is never involved.
+
+It runs against its own profile under `$HOME/.cache/chrome-devtools-mcp/`, not the daily Chrome, so logged-in sessions are not inherited. Auth-dependent work needs a fresh login in that profile, or a server flag (`--autoConnect` / `--browserUrl`) to attach to a debuggable Chrome. Those flags live in the MCP server config, which dots does not track for Claude Code, so setting one is a manual step plus a restart.
+
+Snapshots and screenshots return through MCP and cost real context. Prefer `take_snapshot` over `take_screenshot` when the question is about structure or text rather than pixels.
 
 If the chosen tool fails, say so and stop. Don't silently switch lanes.
 
