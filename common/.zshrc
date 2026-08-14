@@ -136,6 +136,28 @@ alias gbr='branch-picker'
 alias ,,="fzf -m --preview='bat --color=always {}' --bind 'enter:become(nvim {+}),ctrl-y:execute-silent(echo {} | pbcopy)+abort'"
 
 # Custom Script Functions ================================================
+herdr-report-parent() {
+    [[ "$HERDR_ENV" == "1" && -n "$HERDR_PANE_ID" ]] || return 0
+
+    local common_dir parent
+    common_dir="$(git -C "$PWD" rev-parse --git-common-dir 2>/dev/null)"
+    if [[ -n "$common_dir" ]]; then
+        parent="$(cd "$common_dir/.." 2>/dev/null && pwd -P)"
+        parent="${parent:t}"
+    fi
+
+    if [[ -n "$parent" ]]; then
+        herdr pane report-metadata "$HERDR_PANE_ID" \
+            --source user:git-parent \
+            --token "parent=$parent" >/dev/null 2>&1
+    else
+        herdr pane report-metadata "$HERDR_PANE_ID" \
+            --source user:git-parent \
+            --clear-token parent >/dev/null 2>&1
+    fi
+}
+precmd_functions+=(herdr-report-parent)
+
 # Source 'run' script to enable print -z functionality
 [ -f "$HOME/.local/bin/run" ] && source "$HOME/.local/bin/run"
 
