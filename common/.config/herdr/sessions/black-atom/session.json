@@ -37,9 +37,9 @@
       "identity_cwd": "/Users/brunner/repos/black-atom-industries/core",
       "public_pane_numbers": {
         "3": 3,
-        "2": 2,
+        "5": 10,
         "4": 4,
-        "5": 10
+        "2": 2
       },
       "next_public_pane_number": 20,
       "public_tab_numbers": [
@@ -115,9 +115,9 @@
       "custom_name": "Livery",
       "identity_cwd": "/Users/brunner/repos/black-atom-industries/livery",
       "public_pane_numbers": {
+        "6": 1,
         "7": 2,
-        "8": 3,
-        "6": 1
+        "8": 3
       },
       "next_public_pane_number": 27,
       "public_tab_numbers": [
@@ -134,13 +134,7 @@
           },
           "panes": {
             "6": {
-              "cwd": "/Users/brunner/repos/black-atom-industries/livery",
-              "agent_session": {
-                "source": "herdr:pi",
-                "agent": "pi",
-                "kind": "path",
-                "value": "/Users/brunner/.pi/agent/sessions/--Users-brunner-repos-black-atom-industries-livery--/2026-08-11T08-36-30-740Z_019feff7-5194-7135-b584-abbaf8848859.jsonl"
-              }
+              "cwd": "/Users/brunner/repos/black-atom-industries/livery"
             }
           },
           "zoomed": false,
@@ -176,18 +170,18 @@
           "root_pane": 8
         }
       ],
-      "active_tab": 0
+      "active_tab": 2
     },
     {
       "id": "w5",
       "custom_name": "Neovim",
       "identity_cwd": "/Users/brunner/repos/black-atom-industries/nvim",
       "public_pane_numbers": {
-        "9": 1,
+        "10": 2,
         "11": 3,
-        "10": 2
+        "9": 1
       },
-      "next_public_pane_number": 9,
+      "next_public_pane_number": 11,
       "public_tab_numbers": [
         1,
         2,
@@ -202,7 +196,13 @@
           },
           "panes": {
             "9": {
-              "cwd": "/Users/brunner/repos/black-atom-industries/nvim"
+              "cwd": "/Users/brunner/repos/black-atom-industries/nvim",
+              "agent_session": {
+                "source": "herdr:pi",
+                "agent": "pi",
+                "kind": "path",
+                "value": "/Users/brunner/.pi/agent/sessions/--Users-brunner-repos-black-atom-industries-nvim--/2026-08-12T09-12-38-113Z_019ff53e-bfe1-74a5-b1a9-fc3afc89cdd3.jsonl"
+              }
             }
           },
           "zoomed": false,

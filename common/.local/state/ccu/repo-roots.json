@@ -110,6 +110,8 @@
     "name": "labels-web",
     "work": true,
     "session_dirs": [
+      "~/repos/imfusion/cp/CP-130-integrate-with-labels-server",
+      "~/repos/imfusion/cp/CP-130-integrate-with-labels-server/frontend",
       "~/repos/imfusion/cp/labels-web",
       "~/repos/imfusion/cp/labels-web/.worktrees/CP-130-integrate-with-labels-server",
       "~/repos/imfusion/cp/labels-web/.worktrees/bootstrap-frontend",
@@ -117,7 +119,7 @@
       "~/repos/imfusion/cp/labels-web/.worktrees/bootstrap-frontend/frontend/.agents/skills",
       "~/repos/imfusion/cp/labels-web/frontend"
     ],
-    "last_seen": "2026-08-11"
+    "last_seen": "2026-08-12"
   },
   "github/cloudmanic.herdr-plus-0cce37b56fb9": {
     "root": "~/repos/nikbrunner/dots/common/.config/herdr/plugins/github/cloudmanic.herdr-plus-0cce37b56fb9",
@@ -159,6 +161,16 @@
     ],
     "last_seen": "2026-07-27"
   },
+  "nikbrunner/airship": {
+    "root": "~/repos/nikbrunner/airship",
+    "owner": "nikbrunner",
+    "name": "airship",
+    "work": false,
+    "session_dirs": [
+      "~/repos/nikbrunner/airship"
+    ],
+    "last_seen": "2026-08-14"
+  },
   "nikbrunner/bc-web-client": {
     "root": "~/repos/nikbrunner/bc-web-client",
     "owner": "nikbrunner",
@@ -168,6 +180,16 @@
       "~/repos/nikbrunner/bc-web-client"
     ],
     "last_seen": "2026-07-26"
+  },
+  "nikbrunner/dooing": {
+    "root": "~/repos/nikbrunner/dooing",
+    "owner": "nikbrunner",
+    "name": "dooing",
+    "work": false,
+    "session_dirs": [
+      "~/repos/nikbrunner/dooing"
+    ],
+    "last_seen": "2026-08-12"
   },
   "nikbrunner/dots": {
     "root": "~/repos/nikbrunner/dots",
@@ -276,6 +298,7 @@
       "~/.herdr/worktrees/web-ui/websdk-133-image-display-options",
       "~/.herdr/worktrees/web-ui/websdk-205-web-ui-improve-logo-variants",
       "~/.herdr/worktrees/web-ui/websdk-209-web-ui-replace-shiki-with-tanstack-high",
+      "~/.herdr/worktrees/web-ui/websdk-211-web-ui-improve-consumer-llm-hook-flow-a",
       "~/.herdr/worktrees/web-ui/worktree-websdk-207-web-ui-setup-tanstack-intent",
       "~/repos/imfusion/websdk/changelog-enforcement",
       "~/repos/imfusion/websdk/web-ui",
@@ -288,6 +311,6 @@
       "~/repos/imfusion/websdk/web-ui/src/llms/skills",
       "~/repos/imfusion/websdk/websdk-169-storybook-controls"
     ],
-    "last_seen": "2026-08-11"
+    "last_seen": "2026-08-13"
   }
 }

@@ -80,7 +80,7 @@
             "label": "1"
           }
         ],
-        "lastAccessed": 1786466434
+        "lastAccessed": 1786609693
       }
     },
     "~/repos/nikbrunner/dots": {
@@ -99,18 +99,22 @@
             "label": "3"
           }
         ],
-        "lastAccessed": 1786471723
+        "lastAccessed": 1786608525
       }
     },
     "~/repos/nikbrunner/imf-notes": {
       "main": {
         "locks": [
           {
-            "filename": "logs/2026/2026.08/2026.08.10 - Mon.md",
+            "filename": "logs/2026/2026.08/2026.08.14 - Fri.md",
             "label": "1"
+          },
+          {
+            "filename": "TIMESHEET.md",
+            "label": "2"
           }
         ],
-        "lastAccessed": 1786444051
+        "lastAccessed": 1786695592
       }
     },
     "~/repos/nikbrunner/minifugit.nvim": {
@@ -136,7 +140,7 @@
             "label": "2"
           }
         ],
-        "lastAccessed": 1786465983
+        "lastAccessed": 1786693129
       }
     }
   }

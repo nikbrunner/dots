@@ -13,9 +13,9 @@
         "is_linked_worktree": false
       },
       "public_pane_numbers": {
-        "4": 185,
-        "3": 4,
-        "24": 233
+        "1": 233,
+        "2": 4,
+        "3": 185
       },
       "next_public_pane_number": 246,
       "public_tab_numbers": [
@@ -28,16 +28,30 @@
         {
           "custom_name": null,
           "layout": {
-            "Pane": 24
+            "Pane": 1
           },
           "panes": {
-            "24": {
+            "1": {
               "cwd": "/Users/brunner/repos/nikbrunner/dots"
             }
           },
           "zoomed": false,
-          "focused": 24,
-          "root_pane": 24
+          "focused": 1,
+          "root_pane": 1
+        },
+        {
+          "custom_name": null,
+          "layout": {
+            "Pane": 2
+          },
+          "panes": {
+            "2": {
+              "cwd": "/Users/brunner/repos/nikbrunner/dots"
+            }
+          },
+          "zoomed": false,
+          "focused": 2,
+          "root_pane": 2
         },
         {
           "custom_name": null,
@@ -52,20 +66,6 @@
           "zoomed": false,
           "focused": 3,
           "root_pane": 3
-        },
-        {
-          "custom_name": null,
-          "layout": {
-            "Pane": 4
-          },
-          "panes": {
-            "4": {
-              "cwd": "/Users/brunner/repos/nikbrunner/dots"
-            }
-          },
-          "zoomed": false,
-          "focused": 4,
-          "root_pane": 4
         }
       ],
       "active_tab": 0
@@ -75,8 +75,8 @@
       "custom_name": "Notes",
       "identity_cwd": "/Users/brunner/repos/nikbrunner/notes",
       "public_pane_numbers": {
-        "6": 3,
-        "5": 1
+        "5": 3,
+        "4": 1
       },
       "next_public_pane_number": 5,
       "public_tab_numbers": [
@@ -85,6 +85,20 @@
       ],
       "next_public_tab_number": 3,
       "tabs": [
+        {
+          "custom_name": null,
+          "layout": {
+            "Pane": 4
+          },
+          "panes": {
+            "4": {
+              "cwd": "/Users/brunner/repos/nikbrunner/notes"
+            }
+          },
+          "zoomed": false,
+          "focused": 4,
+          "root_pane": 4
+        },
         {
           "custom_name": null,
           "layout": {
@@ -98,20 +112,6 @@
           "zoomed": false,
           "focused": 5,
           "root_pane": 5
-        },
-        {
-          "custom_name": null,
-          "layout": {
-            "Pane": 6
-          },
-          "panes": {
-            "6": {
-              "cwd": "/Users/brunner/repos/nikbrunner/notes"
-            }
-          },
-          "zoomed": false,
-          "focused": 6,
-          "root_pane": 6
         }
       ],
       "active_tab": 0
@@ -121,8 +121,8 @@
       "custom_name": "Miho",
       "identity_cwd": "/Users/brunner/repos/nikbrunner/notes",
       "public_pane_numbers": {
-        "8": 2,
-        "7": 1
+        "6": 1,
+        "7": 2
       },
       "next_public_pane_number": 3,
       "public_tab_numbers": [
@@ -137,24 +137,24 @@
               "direction": "Horizontal",
               "ratio": 0.5,
               "first": {
-                "Pane": 7
+                "Pane": 6
               },
               "second": {
-                "Pane": 8
+                "Pane": 7
               }
             }
           },
           "panes": {
-            "7": {
+            "6": {
               "cwd": "/Users/brunner/repos/nikbrunner/notes"
             },
-            "8": {
+            "7": {
               "cwd": "/Users/brunner/repos/nikbrunner/notes"
             }
           },
           "zoomed": false,
-          "focused": 7,
-          "root_pane": 7
+          "focused": 6,
+          "root_pane": 6
         }
       ],
       "active_tab": 0
@@ -164,9 +164,39 @@
       "custom_name": "LazyJira",
       "identity_cwd": "/Users/brunner/repos/nikbrunner/lazyjira",
       "public_pane_numbers": {
-        "9": 1
+        "8": 1
       },
       "next_public_pane_number": 27,
+      "public_tab_numbers": [
+        1
+      ],
+      "next_public_tab_number": 2,
+      "tabs": [
+        {
+          "custom_name": null,
+          "layout": {
+            "Pane": 8
+          },
+          "panes": {
+            "8": {
+              "cwd": "/Users/brunner/repos/nikbrunner/lazyjira"
+            }
+          },
+          "zoomed": false,
+          "focused": 8,
+          "root_pane": 8
+        }
+      ],
+      "active_tab": 0
+    },
+    {
+      "id": "w6",
+      "custom_name": "herdr-navigator",
+      "identity_cwd": "/Users/brunner",
+      "public_pane_numbers": {
+        "9": 1
+      },
+      "next_public_pane_number": 2,
       "public_tab_numbers": [
         1
       ],
@@ -179,42 +209,12 @@
           },
           "panes": {
             "9": {
-              "cwd": "/Users/brunner/repos/nikbrunner/lazyjira"
+              "cwd": "/Users/brunner"
             }
           },
           "zoomed": false,
           "focused": 9,
           "root_pane": 9
-        }
-      ],
-      "active_tab": 0
-    },
-    {
-      "id": "w6",
-      "custom_name": "herdr-navigator",
-      "identity_cwd": "/Users/brunner/repos/nikbrunner/herdr-navigator",
-      "public_pane_numbers": {
-        "28": 1
-      },
-      "next_public_pane_number": 2,
-      "public_tab_numbers": [
-        1
-      ],
-      "next_public_tab_number": 2,
-      "tabs": [
-        {
-          "custom_name": null,
-          "layout": {
-            "Pane": 28
-          },
-          "panes": {
-            "28": {
-              "cwd": "/Users/brunner/repos/nikbrunner/herdr-navigator"
-            }
-          },
-          "zoomed": false,
-          "focused": 28,
-          "root_pane": 28
         }
       ],
       "active_tab": 0
