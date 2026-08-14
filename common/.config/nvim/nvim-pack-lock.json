@@ -33,10 +33,6 @@
       "rev": "619363c30309d29ffa631e67c8183f2a72caa373",
       "src": "git@github.com:stevearc/conform.nvim"
     },
-    "dooing": {
-      "rev": "bc461143ce49335c0058a25f317da6ce5fed29be",
-      "src": "https://github.com/atiladefreitas/dooing"
-    },
     "friendly-snippets": {
       "rev": "6cd7280adead7f586db6fccbd15d2cac7e2188b9",
       "src": "git@github.com:rafamadriz/friendly-snippets"
