@@ -4,17 +4,14 @@
     "toggle_window": "super+ctrl+alt+shift+KeyT"
   },
   "apps": {
-    "tmux": {
+    "herdr": {
       "enabled": true,
-      "config_path": "~/.config/tmux/tmux.conf",
-      "themes_path": "~/.config/tmux/themes",
-      "match_pattern": "^source-file\\s+.+/themes/.+\\.conf$",
-      "replace_template": "source-file {themesPath}/{themeKey}.conf"
+      "config_path": "~/.config/herdr/config.toml",
+      "themes_path": "~/.local/share/black-atom/themes/herdr"
     },
-    "lazygit": {
+    "zed": {
       "enabled": true,
-      "config_path": "~/.config/lazygit/config.yml",
-      "themes_path": "~/.local/share/black-atom/themes/lazygit"
+      "config_path": "~/.config/zed/settings.json"
     },
     "helm-tmux": {
       "enabled": true,
@@ -22,9 +19,59 @@
       "match_pattern": "^theme:\\s*\\S*$",
       "replace_template": "theme: {themeKey}"
     },
-    "zed": {
+    "tmux": {
       "enabled": true,
-      "config_path": "~/.config/zed/settings.json"
+      "config_path": "~/.config/tmux/tmux.conf",
+      "themes_path": "~/.config/tmux/themes",
+      "match_pattern": "^source-file\\s+.+/themes/.+\\.conf$",
+      "replace_template": "source-file {themesPath}/{themeKey}.conf"
+    },
+    "nvim": {
+      "enabled": true,
+      "config_path": "~/.config/nvim/plugin/50_specs/black_atom/nvim.lua",
+      "match_pattern": "vim\\.cmd\\.colorscheme\\(\"[^\"]*\"\\)",
+      "replace_template": "vim.cmd.colorscheme(\"{themeKey}\")",
+      "settings_path": "~/.config/nvim/init.lua",
+      "settings": {
+        "term_colors": true,
+        "styles": {
+          "transparency": "none",
+          "ending_tildes": false,
+          "cmp_kind_color_mode": "bg",
+          "dark_sidebars": true,
+          "dark_floats": true,
+          "diagnostics": {
+            "undercurl": false,
+            "background": false
+          },
+          "syntax": {
+            "comments": {
+              "bold": false,
+              "italic": true
+            },
+            "keywords": {
+              "bold": true,
+              "italic": false
+            },
+            "functions": {
+              "bold": false,
+              "italic": false
+            },
+            "strings": {
+              "bold": false,
+              "italic": false
+            },
+            "variables": {
+              "bold": false,
+              "italic": false
+            },
+            "messages": {
+              "bold": true,
+              "italic": false
+            }
+          }
+        }
+      }
     },
     "ghostty": {
       "enabled": true,
@@ -32,16 +79,10 @@
       "match_pattern": "^theme\\s*=\\s*.+$",
       "replace_template": "theme = {themeKey}.conf"
     },
-    "nvim": {
+    "lazygit": {
       "enabled": true,
-      "config_path": "~/.config/nvim/plugin/50_specs/black_atom/nvim.lua",
-      "match_pattern": "vim\\.cmd\\.colorscheme\\(\"[^\"]*\"\\)",
-      "replace_template": "vim.cmd.colorscheme(\"{themeKey}\")"
-    },
-    "herdr": {
-      "enabled": true,
-      "config_path": "~/.config/herdr/config.toml",
-      "themes_path": "~/.local/share/black-atom/themes/herdr"
+      "config_path": "~/.config/lazygit/config.yml",
+      "themes_path": "~/.local/share/black-atom/themes/lazygit"
     },
     "obsidian": {
       "enabled": true,
