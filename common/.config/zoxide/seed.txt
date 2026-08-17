@@ -6,6 +6,7 @@
 ~/.config/nvim
 
 # Repos
+~/repos/black-atom-industries/.claude
 ~/repos/black-atom-industries/.github
 ~/repos/black-atom-industries/.github-private
 ~/repos/black-atom-industries/adapter-template
@@ -36,8 +37,10 @@
 ~/repos/imfusion/misc
 ~/repos/imfusion/projects
 ~/repos/imfusion/websdk
+~/repos/nikbrunner/airship
 ~/repos/nikbrunner/bc-desktop-client
 ~/repos/nikbrunner/bc-web-client
+~/repos/nikbrunner/black-atom
 ~/repos/nikbrunner/bm
 ~/repos/nikbrunner/dots
 ~/repos/nikbrunner/fff-snacks.nvim
@@ -53,6 +56,7 @@
 ~/repos/nikbrunner/pi-speak
 ~/repos/nikbrunner/plans
 ~/repos/nikbrunner/the-black-atom
+~/repos/nikbrunner/themes
 ~/repos/nikbrunner/tmux-file-picker
 ~/repos/nikbrunner/wallpapers
 ~/repos/qmk/qmk_firmware
