@@ -6,10 +6,10 @@
       "custom_name": null,
       "identity_cwd": "/Users/brunner/repos/black-atom-industries",
       "public_pane_numbers": {
-        "1": 3,
-        "19": 5,
         "20": 6,
-        "2": 4
+        "2": 4,
+        "1": 3,
+        "19": 5
       },
       "next_public_pane_number": 7,
       "public_tab_numbers": [
@@ -59,10 +59,10 @@
             }
           },
           "panes": {
-            "2": {
+            "20": {
               "cwd": "/Users/brunner/repos/nikbrunner/black-atom"
             },
-            "20": {
+            "2": {
               "cwd": "/Users/brunner/repos/nikbrunner/black-atom"
             }
           },
@@ -78,9 +78,9 @@
       "custom_name": "Core",
       "identity_cwd": "/Users/brunner/repos/black-atom-industries/core",
       "public_pane_numbers": {
-        "5": 10,
+        "4": 4,
         "3": 2,
-        "4": 4
+        "5": 10
       },
       "next_public_pane_number": 21,
       "public_tab_numbers": [
@@ -141,11 +141,11 @@
       "custom_name": "Livery",
       "identity_cwd": "/Users/brunner/repos/black-atom-industries/livery",
       "public_pane_numbers": {
+        "7": 34,
         "8": 2,
         "9": 3,
-        "10": 27,
-        "7": 34,
-        "6": 1
+        "6": 1,
+        "10": 27
       },
       "next_public_pane_number": 46,
       "public_tab_numbers": [
@@ -170,10 +170,10 @@
             }
           },
           "panes": {
-            "6": {
+            "7": {
               "cwd": "/Users/brunner/repos/black-atom-industries/livery"
             },
-            "7": {
+            "6": {
               "cwd": "/Users/brunner/repos/black-atom-industries/livery"
             }
           },
@@ -210,10 +210,10 @@
             }
           },
           "panes": {
-            "9": {
+            "10": {
               "cwd": "/Users/brunner/repos/black-atom-industries/livery"
             },
-            "10": {
+            "9": {
               "cwd": "/Users/brunner/repos/black-atom-industries/livery"
             }
           },
@@ -229,9 +229,9 @@
       "custom_name": "Neovim",
       "identity_cwd": "/Users/brunner/repos/black-atom-industries/nvim",
       "public_pane_numbers": {
+        "12": 2,
         "13": 3,
-        "11": 1,
-        "12": 2
+        "11": 1
       },
       "next_public_pane_number": 11,
       "public_tab_numbers": [
@@ -291,8 +291,8 @@
       "custom_name": "herdr",
       "identity_cwd": "/Users/brunner/repos/black-atom-industries/herdr",
       "public_pane_numbers": {
-        "14": 1,
-        "15": 5
+        "15": 5,
+        "14": 1
       },
       "next_public_pane_number": 9,
       "public_tab_numbers": [

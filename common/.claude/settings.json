@@ -218,12 +218,11 @@
   "editorMode": "vim",
   "agentPushNotifEnabled": true,
   "skipAutoPermissionPrompt": true,
-  "voiceEnabled": true,
-  "feedbackSurveyState": {
-    "lastShownTime": 1754313915132
-  },
-  "mcpServers": {},
   "autoMode": {
+    "soft_deny": [
+      "$defaults",
+      "Bash(rm:-rf /Users/brunner/repos/imfusion/cp/imfusion-portal-CP-89/*)"
+    ],
     "environment": [
       "### Org-wide",
       "**Organization**: ImFusion (bitbucket.imfusion.com — cp/imfusion-portal repo)",
@@ -249,10 +248,12 @@
       "**Trusted repo**: /Users/brunner/repos/imfusion/cp/imfusion-portal-CP-89/fe and its remote ssh://bitbucket.imfusion.com:7999/cp/imfusion-portal.git",
       "**Org-specific CLIs**: tanstack (Tanstack docs CLI, per global CLAUDE.md), agent-browser",
       "**routine under brunner/ prefix**: routine developer workflow under /Users/brunner/repos/imfusion/ (npm, npx, tanstack, git) is expected"
-    ],
-    "soft_deny": [
-      "$defaults",
-      "Bash(rm:-rf /Users/brunner/repos/imfusion/cp/imfusion-portal-CP-89/*)"
     ]
-  }
+  },
+  "voiceEnabled": true,
+  "feedbackSurveyState": {
+    "lastShownTime": 1754313915132
+  },
+  "mcpServers": {},
+  "model": "opus"
 }

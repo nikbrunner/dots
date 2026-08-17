@@ -10,11 +10,11 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +2 fe/src/api/registration/index.ts
+badd +116 fe/src/routes/_app/users.tsx
 argglobal
 %argdel
 $argadd fe/.agents/skills/imf-web-ui-frontend-conventions/references/data.md
-edit fe/src/api/registration/index.ts
+edit fe/src/routes/_app/users.tsx
 tcd ~/repos/imfusion/cp/imfusion-portal-CP-89
 argglobal
 setlocal keymap=
@@ -48,8 +48,8 @@ setlocal cursorlineopt=screenline,number
 setlocal nodiff
 setlocal eventignorewin=
 setlocal expandtab
-if &filetype != 'typescript'
-setlocal filetype=typescript
+if &filetype != 'typescriptreact'
+setlocal filetype=typescriptreact
 endif
 setlocal fixendofline
 setlocal foldcolumn=0
@@ -71,7 +71,7 @@ setlocal includeexpr=
 setlocal indentexpr=v:lua.require'arborist.indent'.indentexpr()
 setlocal indentkeys=0{,0},0),0],0,,!^F,o,O,e
 setlocal infercase
-setlocal iskeyword=@,48-57,_,192-255,-,#,$
+setlocal iskeyword=@,48-57,_,192-255,-,$,#
 setlocal lhistory=10
 setlocal linebreak
 setlocal nolisp
@@ -116,7 +116,7 @@ setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#fe%*%#WinBarSeparator#/%*%#WinBarPath#src%*%#WinBarSeparator#/%*%#WinBarPath#api%*%#WinBarSeparator#/%*%#WinBarPath#registration%*%#WinBarSeparator#/%*%#WinBarFilename#index.ts%*%=
+setlocal winbar=%#WinBarPath#fe%*%#WinBarSeparator#/%*%#WinBarPath#src%*%#WinBarSeparator#/%*%#WinBarPath#routes%*%#WinBarSeparator#/%*%#WinBarPath#_app%*%#WinBarSeparator#/%*%#WinBarFilename#users.tsx%*%=%#WinBarGitLabel#\ [GIT:%#WinBarGitChange#\ ~13%#WinBarGitDelete#\ -4%#WinBarGitLabel#]%*%#WinBarLspLabel#\ [LSP:\ %#DiagnosticSignError#:10%##%#WinBarLspLabel#]%*\ 
 setlocal winblend=10
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -125,12 +125,14 @@ setlocal winhighlight=
 setlocal nowinpinned
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 2 - ((1 * winheight(0) + 37) / 75)
+38
+sil! normal! zo
+let s:l = 4 - ((3 * winheight(0) + 28) / 56)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 2
-normal! 010|
+keepjumps 4
+normal! 0
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
@@ -144,6 +146,7 @@ if filereadable(s:sx)
 endif
 let &g:so = s:so_save | let &g:siso = s:siso_save
 set hlsearch
+nohlsearch
 doautoall SessionLoadPost
 unlet SessionLoad
 " vim: set ft=vim :
