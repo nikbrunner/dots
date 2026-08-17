@@ -4,32 +4,18 @@ let v:this_session=expand("<sfile>:p")
 doautoall SessionLoadPre
 silent only
 silent tabonly
-cd ~/repos/imfusion/cp/labels-rest-api
+cd ~/repos/black-atom-industries/herdr
 if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +31 README.md
+badd +0 themes/collection.template.toml
 argglobal
 %argdel
-edit README.md
-tcd ~/repos/imfusion/cp/labels-rest-api
+edit themes/collection.template.toml
+tcd ~/repos/black-atom-industries/herdr
 argglobal
-xnoremap <buffer> $ g$
-onoremap <buffer> $ g$
-nnoremap <buffer> $ g$
-xnoremap <buffer> 0 g0
-onoremap <buffer> 0 g0
-nnoremap <buffer> 0 g0
-xnoremap <buffer> <silent> [[ :exe "normal! gv"|call search('\%(^#\{1,5\}\s\+\S\|^\S.*\n^[=-]\+$\)', "bsW")
-xnoremap <buffer> <silent> ]] :exe "normal! gv"|call search('\%(^#\{1,5\}\s\+\S\|^\S.*\n^[=-]\+$\)', "sW")
-xnoremap <buffer> j gj
-onoremap <buffer> j gj
-nnoremap <buffer> j gj
-xnoremap <buffer> k gk
-onoremap <buffer> k gk
-nnoremap <buffer> k gk
 setlocal keymap=
 setlocal noarabic
 setlocal autoindent
@@ -46,8 +32,8 @@ setlocal cinoptions=
 setlocal cinscopedecls=public,protected,private
 setlocal cinwords=if,else,while,do,for,switch
 setlocal colorcolumn=
-setlocal comments=fb:*,fb:-,fb:+,n:>
-setlocal commentstring=<!--\ %s\ -->
+setlocal comments=:#
+setlocal commentstring=#\ %s
 setlocal complete=.,w,b,kspell
 setlocal completefunc=
 setlocal completeslash=
@@ -61,8 +47,8 @@ setlocal cursorlineopt=screenline,number
 setlocal nodiff
 setlocal eventignorewin=
 setlocal expandtab
-if &filetype != 'markdown'
-setlocal filetype=markdown
+if &filetype != 'toml'
+setlocal filetype=toml
 endif
 setlocal fixendofline
 setlocal foldcolumn=0
@@ -75,9 +61,9 @@ setlocal foldmethod=expr
 setlocal foldminlines=1
 setlocal foldnestmax=10
 setlocal foldtext=
-setlocal formatexpr=
-setlocal formatlistpat=^\\s*\\d\\+\\.\\s\\+\\|^\\s*[-*+]\\s\\+\\|^\\[^\\ze[^\\]]\\+\\]:\\&^.\\{4\\}
-setlocal formatoptions=j1tqln
+setlocal formatexpr=v:lua.require'conform'.formatexpr()
+setlocal formatlistpat=^\\s*[0-9\\-\\+\\*]\\+[\\.\\)]*\\s\\+
+setlocal formatoptions=rqnl1j
 setlocal iminsert=0
 setlocal imsearch=-1
 setlocal includeexpr=
@@ -90,13 +76,13 @@ setlocal linebreak
 setlocal nolisp
 setlocal lispoptions=
 setlocal list
-setlocal matchpairs=(:),{:},[:],<:>
+setlocal matchpairs=(:),{:},[:]
 setlocal modeline
 setlocal modifiable
 setlocal nrformats=bin,hex
 setlocal number
 setlocal numberwidth=4
-setlocal omnifunc=htmlcomplete#CompleteTags
+setlocal omnifunc=v:lua.vim.lsp.omnifunc
 setlocal nopreserveindent
 setlocal nopreviewwindow
 setlocal quoteescape=\\
@@ -106,7 +92,7 @@ setlocal norightleft
 setlocal rightleftcmd=search
 setlocal scrollback=-1
 setlocal noscrollbind
-setlocal shiftwidth=3
+setlocal shiftwidth=4
 setlocal signcolumn=yes
 setlocal smartindent
 setlocal nosmoothscroll
@@ -123,13 +109,13 @@ setlocal synmaxcol=3000
 if &syntax != ''
 setlocal syntax=
 endif
-setlocal tabstop=4
-setlocal tagfunc=v:lua.vim.lsp.tagfunc
-setlocal textwidth=80
+setlocal tabstop=2
+setlocal tagfunc=
+setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarFilename#README.md%*%=
+setlocal winbar=%#WinBarPath#themes%*%#WinBarSeparator#/%*%#WinBarFilename#collection.template.toml%*%=%#WinBarLspLabel#\ [LSP:\ %#DiagnosticSignError#:166%##%#WinBarLspLabel#]%*\ 
 setlocal winblend=10
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -138,17 +124,11 @@ setlocal winhighlight=
 setlocal nowinpinned
 setlocal nowrap
 setlocal wrapmargin=0
-1
-sil! normal! zo
-59
-sil! normal! zo
-91
-sil! normal! zo
-let s:l = 33 - ((32 * winheight(0) + 34) / 68)
+let s:l = 7 - ((6 * winheight(0) + 28) / 56)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 33
+keepjumps 7
 normal! 0
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'

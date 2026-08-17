@@ -4,17 +4,17 @@ let v:this_session=expand("<sfile>:p")
 doautoall SessionLoadPre
 silent only
 silent tabonly
-cd ~/repos/imfusion/websdk/websdk-169-storybook-controls
+cd ~/repos/nikbrunner/black-atom
 if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +120 ~/repos/imfusion/websdk/websdk-169-storybook-controls/.storybook/addons/compound-controls/compound-controls.tsx
+badd +17 adapters/herdr/themes/collection.template.toml
 argglobal
 %argdel
-$argadd ~/repos/imfusion/websdk/websdk-169-storybook-controls/.storybook/addons/compound-controls/compound-controls.tsx
-edit ~/repos/imfusion/websdk/websdk-169-storybook-controls/.storybook/addons/compound-controls/compound-controls.tsx
+edit adapters/herdr/themes/collection.template.toml
+tcd ~/repos/nikbrunner/black-atom
 argglobal
 setlocal keymap=
 setlocal noarabic
@@ -32,8 +32,8 @@ setlocal cinoptions=
 setlocal cinscopedecls=public,protected,private
 setlocal cinwords=if,else,while,do,for,switch
 setlocal colorcolumn=
-setlocal comments=sO:*\ -,mO:*\ \ ,exO:*/,s1:/*,mb:*,ex:*/,://
-setlocal commentstring=//\ %s
+setlocal comments=:#
+setlocal commentstring=#\ %s
 setlocal complete=.,w,b,kspell
 setlocal completefunc=
 setlocal completeslash=
@@ -47,8 +47,8 @@ setlocal cursorlineopt=screenline,number
 setlocal nodiff
 setlocal eventignorewin=
 setlocal expandtab
-if &filetype != 'typescriptreact'
-setlocal filetype=typescriptreact
+if &filetype != 'toml'
+setlocal filetype=toml
 endif
 setlocal fixendofline
 setlocal foldcolumn=0
@@ -63,14 +63,14 @@ setlocal foldnestmax=10
 setlocal foldtext=
 setlocal formatexpr=v:lua.require'conform'.formatexpr()
 setlocal formatlistpat=^\\s*[0-9\\-\\+\\*]\\+[\\.\\)]*\\s\\+
-setlocal formatoptions=n1jrql
+setlocal formatoptions=rqnl1j
 setlocal iminsert=0
 setlocal imsearch=-1
 setlocal includeexpr=
 setlocal indentexpr=v:lua.require'arborist.indent'.indentexpr()
-setlocal indentkeys=0{,0},0),0],0,,!^F,o,O,e
+setlocal indentkeys=0{,0},0),0],:,0#,!^F,o,O,e
 setlocal infercase
-setlocal iskeyword=@,48-57,_,192-255,-,$,#
+setlocal iskeyword=@,48-57,_,192-255,-
 setlocal lhistory=10
 setlocal linebreak
 setlocal nolisp
@@ -92,9 +92,9 @@ setlocal norightleft
 setlocal rightleftcmd=search
 setlocal scrollback=-1
 setlocal noscrollbind
-setlocal shiftwidth=2
+setlocal shiftwidth=4
 setlocal signcolumn=yes
-setlocal nosmartindent
+setlocal smartindent
 setlocal nosmoothscroll
 setlocal softtabstop=-1
 setlocal nospell
@@ -103,19 +103,19 @@ setlocal spellfile=
 setlocal spelllang=en_us,de_de
 setlocal spelloptions=camel,noplainbuffer
 setlocal statuscolumn=
-setlocal suffixesadd=.ts,.d.ts,.tsx,.js,.jsx,.cjs,.mjs
+setlocal suffixesadd=
 setlocal noswapfile
 setlocal synmaxcol=3000
 if &syntax != ''
 setlocal syntax=
 endif
 setlocal tabstop=2
-setlocal tagfunc=v:lua.vim.lsp.tagfunc
+setlocal tagfunc=
 setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#...%*%#WinBarSeparator#/%*%#WinBarPath#compound-controls%*%#WinBarSeparator#/%*%#WinBarFilename#compound-controls.tsx%*%=
+setlocal winbar=%#WinBarPath#...%*%#WinBarSeparator#/%*%#WinBarPath#herdr%*%#WinBarSeparator#/%*%#WinBarPath#themes%*%#WinBarSeparator#/%*%#WinBarFilename#collection.template.toml%*%=%#WinBarLspLabel#\ [LSP:\ %#DiagnosticSignError#:166%##%#WinBarLspLabel#]%*\ 
 setlocal winblend=10
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -124,11 +124,11 @@ setlocal winhighlight=
 setlocal nowinpinned
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 120 - ((18 * winheight(0) + 33) / 66)
+let s:l = 23 - ((22 * winheight(0) + 27) / 54)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 120
+keepjumps 23
 normal! 0
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'

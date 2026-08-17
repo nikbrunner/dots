@@ -17,7 +17,7 @@
     "npm:pi-codex-account"
   ],
   "defaultProvider": "openai-codex",
-  "defaultModel": "gpt-5.6-terra",
+  "defaultModel": "gpt-5.6-luna",
   "enabledModels": [
     "openai-codex/gpt-5.6-terra",
     "openai-codex/gpt-5.6-sol",
@@ -27,6 +27,6 @@
   "compaction": {
     "enabled": false
   },
-  "defaultThinkingLevel": "medium",
+  "defaultThinkingLevel": "high",
   "tuiMode": "fullscreen"
 }

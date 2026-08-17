@@ -19,6 +19,16 @@
     ],
     "last_seen": "2026-07-26"
   },
+  "black-atom-industries/black-atom": {
+    "root": "~/repos/black-atom-industries/black-atom",
+    "owner": "black-atom-industries",
+    "name": "black-atom",
+    "work": false,
+    "session_dirs": [
+      "~/repos/black-atom-industries/black-atom"
+    ],
+    "last_seen": "2026-08-16"
+  },
   "black-atom-industries/core": {
     "root": "~/repos/black-atom-industries/core",
     "owner": "black-atom-industries",
@@ -50,15 +60,26 @@
     ],
     "last_seen": "2026-08-10"
   },
+  "black-atom-industries/herdr": {
+    "root": "~/repos/black-atom-industries/herdr",
+    "owner": "black-atom-industries",
+    "name": "herdr",
+    "work": false,
+    "session_dirs": [
+      "~/repos/black-atom-industries/herdr"
+    ],
+    "last_seen": "2026-08-16"
+  },
   "black-atom-industries/livery": {
     "root": "~/repos/black-atom-industries/livery",
     "owner": "black-atom-industries",
     "name": "livery",
     "work": false,
     "session_dirs": [
-      "~/repos/black-atom-industries/livery"
+      "~/repos/black-atom-industries/livery",
+      "~/repos/black-atom-industries/livery/src-tauri"
     ],
-    "last_seen": "2026-08-07"
+    "last_seen": "2026-08-16"
   },
   "black-atom-industries/nvim": {
     "root": "~/repos/black-atom-industries/nvim",
@@ -167,7 +188,8 @@
     "name": "airship",
     "work": false,
     "session_dirs": [
-      "~/repos/nikbrunner/airship"
+      "~/repos/nikbrunner/airship",
+      "~/repos/nikbrunner/airship/packages/overlay/src"
     ],
     "last_seen": "2026-08-14"
   },
@@ -180,6 +202,16 @@
       "~/repos/nikbrunner/bc-web-client"
     ],
     "last_seen": "2026-07-26"
+  },
+  "nikbrunner/black-atom": {
+    "root": "~/repos/nikbrunner/black-atom",
+    "owner": "nikbrunner",
+    "name": "black-atom",
+    "work": false,
+    "session_dirs": [
+      "~/repos/nikbrunner/black-atom"
+    ],
+    "last_seen": "2026-08-17"
   },
   "nikbrunner/dooing": {
     "root": "~/repos/nikbrunner/dooing",
@@ -299,6 +331,7 @@
       "~/.herdr/worktrees/web-ui/websdk-205-web-ui-improve-logo-variants",
       "~/.herdr/worktrees/web-ui/websdk-209-web-ui-replace-shiki-with-tanstack-high",
       "~/.herdr/worktrees/web-ui/websdk-211-web-ui-improve-consumer-llm-hook-flow-a",
+      "~/.herdr/worktrees/web-ui/websdk-211-web-ui-improve-consumer-llm-hook-flow-a/docs",
       "~/.herdr/worktrees/web-ui/worktree-websdk-207-web-ui-setup-tanstack-intent",
       "~/repos/imfusion/websdk/changelog-enforcement",
       "~/repos/imfusion/websdk/web-ui",
@@ -311,6 +344,6 @@
       "~/repos/imfusion/websdk/web-ui/src/llms/skills",
       "~/repos/imfusion/websdk/websdk-169-storybook-controls"
     ],
-    "last_seen": "2026-08-13"
+    "last_seen": "2026-08-14"
   }
 }
