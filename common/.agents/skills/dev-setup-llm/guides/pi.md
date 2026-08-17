@@ -54,7 +54,7 @@ Key events for enforcement:
 Minimal extension template:
 
 ```typescript
-import type { ExtensionAPI } from "@mariozechner/pi-coding-agent";
+import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
 
 export default function (pi: ExtensionAPI) {
   pi.on("before_agent_start", async (event, _ctx) => {
