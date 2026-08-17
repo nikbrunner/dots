@@ -1,9 +1,9 @@
 import type { ExtensionAPI, ExtensionContext } from "@earendil-works/pi-coding-agent";
-import { truncateToWidth } from "@earendil-works/pi-tui";
+import { truncateToWidth, visibleWidth } from "@earendil-works/pi-tui";
 import { execFile } from "node:child_process";
 import { existsSync, readFileSync } from "node:fs";
 import { homedir } from "node:os";
-import { join } from "node:path";
+import { join, resolve } from "node:path";
 import { stripVTControlCharacters } from "node:util";
 
 const MCP_STATUS_CHANNEL = "pi-mcp-adapter/status/v1";
@@ -54,6 +54,12 @@ function getAgentDir(): string {
 	if (override === "~") return homedir();
 	if (override.startsWith("~/")) return join(homedir(), override.slice(2));
 	return override;
+}
+
+function formatCwd(cwd: string): string {
+	const home = homedir();
+	if (cwd === home) return "~";
+	return cwd.startsWith(`${home}/`) ? `~${cwd.slice(home.length)}` : cwd;
 }
 
 function readJson(path: string): Record<string, unknown> | undefined {
@@ -211,6 +217,7 @@ export default function (pi: ExtensionAPI): void {
 	let requestRender = (): void => {};
 	let state: "ready" | "working" | "error" = "ready";
 	let dirty = false;
+	let linkedWorktree = false;
 	let dirtyRefreshGeneration = 0;
 	let dirtyRefreshTimer: ReturnType<typeof setTimeout> | undefined;
 	let mcp: McpStatusSnapshot | undefined;
@@ -237,6 +244,17 @@ export default function (pi: ExtensionAPI): void {
 			if (active) refreshDirty(cwd);
 		}, 750);
 	};
+	const refreshWorktreeState = (cwd: string): void => {
+		execFile("git", ["rev-parse", "--git-dir", "--git-common-dir"], { cwd }, (error, stdout) => {
+			if (!active) return;
+			const [gitDir, commonDir] = stdout.trim().split("\n");
+			linkedWorktree = !error
+				&& gitDir !== undefined
+				&& commonDir !== undefined
+				&& resolve(cwd, gitDir) !== resolve(cwd, commonDir);
+			repaint();
+		});
+	};
 
 	pi.events.on(MCP_STATUS_CHANNEL, (snapshot: unknown) => {
 		if (!active || !isMcpStatusSnapshot(snapshot)) return;
@@ -249,6 +267,7 @@ export default function (pi: ExtensionAPI): void {
 		state = ctx.isIdle() ? "ready" : "working";
 		refreshActiveAccount();
 		refreshDirty(ctx.cwd);
+		refreshWorktreeState(ctx.cwd);
 		ctx.ui.setFooter((tui, theme, footerData) => {
 			requestRender = (): void => tui.requestRender();
 			const unsubscribe = footerData.onBranchChange(() => {
@@ -257,10 +276,33 @@ export default function (pi: ExtensionAPI): void {
 			});
 
 			const separator = theme.fg("dim", " │ ");
-			const line = (label: string, parts: string[], width: number): string => {
-				const prefix = theme.bold(theme.fg("accent", label.padEnd(9)));
-				return truncateToWidth(prefix + parts.join(separator), width, theme.fg("dim", "…"));
+			type FooterRow = { label: string; parts: string[] };
+			const rawLine = ({ label, parts }: FooterRow): string => {
+				const prefix = theme.bold(theme.fg("warning", label.padEnd(10)));
+				return prefix + parts.join(separator);
 			};
+			const renderLine = (row: FooterRow, width: number): string =>
+				truncateToWidth(rawLine(row), width, theme.fg("dim", "…"));
+			const renderRows = (rows: FooterRow[], width: number): string[] => {
+				const fallback = rows.map((row) => renderLine(row, width));
+				if (width < 110) return fallback;
+
+				const columnCount = Math.max(...rows.map((row) => row.parts.length));
+				const columnWidths = Array.from({ length: columnCount }, (_, index) =>
+					Math.max(...rows.map((row) => visibleWidth(row.parts[index] ?? ""))),
+				);
+				const aligned = rows.map((row) => ({
+					...row,
+					parts: row.parts.map((part, index) =>
+						index === row.parts.length - 1
+							? part
+							: part + " ".repeat(columnWidths[index] - visibleWidth(part)),
+					),
+				}));
+				const lines = aligned.map(rawLine);
+				return lines.every((value) => visibleWidth(value) <= width) ? lines : fallback;
+			};
+			const indicator = (label: string): string => theme.fg("warning", `${label} `);
 			const stateText = (): string => {
 				const color = state === "ready" ? "success" : state === "working" ? "warning" : "error";
 				return theme.bold(theme.fg(color, `${state === "working" ? "●" : state === "error" ? "×" : "✓"} ${state}`));
@@ -272,9 +314,9 @@ export default function (pi: ExtensionAPI): void {
 				const value = percent === null ? "?" : `${percent.toFixed(compact ? 0 : 1)}%`;
 				const color = (percent ?? 0) > 90 ? "error" : (percent ?? 0) > 70 ? "warning" : "success";
 				const details = compact
-					? `ctx ${value}/${formatTokens(context.contextWindow)}`
-					: `context ${percent === null ? "" : `${meter(percent, 12)} `}${value} / ${formatTokens(context.contextWindow)}`;
-				return theme.fg(color, details);
+					? `${value}/${formatTokens(context.contextWindow)}`
+					: `${percent === null ? "" : `${meter(percent, 12)} `}${value} / ${formatTokens(context.contextWindow)}`;
+				return indicator(compact ? "ctx" : "context") + theme.fg(color, details);
 			};
 
 			return {
@@ -288,30 +330,44 @@ export default function (pi: ExtensionAPI): void {
 					const wide = width >= 100;
 					const medium = width >= 68;
 					const branch = footerData.getGitBranch();
+					const workspace = [`${indicator("cwd")}${theme.bold(formatCwd(ctx.cwd))}`];
+					if (branch) workspace.push(`${indicator("branch")}${branch}${dirty ? theme.fg("warning", "*") : ""}`);
+					if (linkedWorktree) workspace.push(theme.fg("muted", "worktree"));
+
 					const model = ctx.model?.id;
 					const thinking = ctx.thinkingLevel ?? (ctx.model?.reasoning ? "off" : undefined);
 					const agent = [stateText()];
-					if (model) agent.push(wide ? `model ${theme.bold(model)}` : theme.bold(model));
-					if (thinking && wide) agent.push(`thinking ${thinking}`);
-					if (branch && medium) agent.push(`git ${branch}${dirty ? theme.fg("warning", "*") : ""}`);
+					if (model) agent.push(`${indicator("model")}${theme.bold(model)}`);
+					if (thinking && wide) {
+						agent.push(`${indicator("thinking")}${theme.fg("dim", thinking)}`);
+					}
 					if (medium) {
 						const enabled = mcp ? mcp.servers.length - mcp.disabledCount : undefined;
 						const mcpStatus = mcp
 							? wide ? `MCP ${mcp.connectedCount} connected / ${enabled} enabled` : `MCP ${mcp.connectedCount}/${enabled}`
 							: formatMcpFooterStatus(footerData.getExtensionStatuses().get("mcp") ?? "", wide);
-						if (mcpStatus) agent.push(mcpStatus);
+						if (mcpStatus) {
+							const color = mcp
+								? mcp.connectedCount === enabled ? "success" : mcp.connectedCount === 0 ? "error" : "warning"
+								: "accent";
+							const value = mcpStatus.replace(/^MCP:?\s*/, "");
+							agent.push(indicator("MCP") + theme.fg(color, value));
+						}
 					}
 
 					const totals = usageTotals(ctx);
 					const subscription = isCodexProvider(ctx.model?.provider) || ctx.model?.provider === "kimi-coding";
 					const session = [
-						`${wide ? "input " : "↑"}${formatTokens(totals.usage.input)}`,
-						`${wide ? "output " : "↓"}${formatTokens(totals.usage.output)}`,
+						`${indicator(wide ? "input" : "↑")}${formatTokens(totals.usage.input)}`,
+						`${indicator(wide ? "output" : "↓")}${formatTokens(totals.usage.output)}`,
 					];
 					const context = contextText(!wide);
 					if (context) session.push(context);
-					if (totals.cacheHit !== undefined && medium) session.push(`${wide ? "latest cache " : "cache "}${totals.cacheHit.toFixed(0)}%`);
-					session.push(`${wide ? "cost " : ""}$${totals.usage.cost.total.toFixed(3)}${subscription ? theme.fg("accent", " (sub)") : ""}`);
+					const cache = totals.cacheHit === undefined
+						? undefined
+						: indicator(wide ? "latest cache" : "cache") + `${totals.cacheHit.toFixed(0)}%`;
+					if (medium && cache) session.push(cache);
+					session.push(`${indicator(wide ? "cost" : "$")}${totals.usage.cost.total.toFixed(3)}${subscription ? theme.fg("dim", " (sub)") : ""}`);
 
 					const providerDetails: string[] = [];
 					const provider = ctx.model?.provider;
@@ -336,17 +392,27 @@ export default function (pi: ExtensionAPI): void {
 						const used = weekly?.usedPercent === undefined ? undefined : clampPercent(weekly.usedPercent);
 						const reset = formatReset(weekly?.resetAt);
 						const label = activeAccount?.label;
+						const quotaColor = (used ?? 0) >= 90 ? "error" : (used ?? 0) >= 70 ? "warning" : "success";
 						if (wide) {
-							if (label) providerDetails.push(`account ${theme.bold(label)}`);
-							if (used !== undefined) providerDetails.push(`weekly ${used.toFixed(0)}% used${reset ? ` · resets ${reset}` : ""}`);
+							if (label) providerDetails.push(`${indicator("account")}${theme.bold(label)}`);
+							if (used !== undefined) providerDetails.push(`${indicator("weekly")}${theme.fg(quotaColor, `${used.toFixed(0)}% used`)}`);
+							if (reset) providerDetails.push(indicator("resets") + theme.fg("dim", reset));
 						} else if (label || used !== undefined) {
-							providerDetails.push(`${label ? `${theme.bold(label)} ` : ""}${used === undefined ? "" : `${used.toFixed(0)}%${reset ? `/${reset}` : ""}`}`.trim());
+							const compact = [
+								label ? indicator("acct") + theme.bold(label) : undefined,
+								used === undefined ? undefined : indicator("week") + theme.fg(quotaColor, `${used.toFixed(0)}%`),
+								reset ? indicator("reset") + theme.fg("dim", reset) : undefined,
+							].filter((value): value is string => value !== undefined);
+							providerDetails.push(compact.join(" "));
 						}
 					}
 
-					const lines = [line("AGENT", agent, width), line("SESSION", session, width)];
-					if (providerDetails.length > 0) lines.push(line("PROVIDER", providerDetails, width));
-					return lines;
+					const rows = [
+						{ label: "AGENT", parts: agent },
+						{ label: "SESSION", parts: session },
+					];
+					if (providerDetails.length > 0) rows.push({ label: "PROVIDER", parts: providerDetails });
+					return [renderLine({ label: "WORKSPACE", parts: [workspace.join("  ")] }, width), ...renderRows(rows, width)];
 				},
 			};
 		});
