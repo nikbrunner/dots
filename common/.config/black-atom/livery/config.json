@@ -4,28 +4,6 @@
     "toggle_window": "super+ctrl+alt+shift+KeyT"
   },
   "apps": {
-    "herdr": {
-      "enabled": true,
-      "config_path": "~/.config/herdr/config.toml",
-      "themes_path": "~/.local/share/black-atom/themes/herdr"
-    },
-    "zed": {
-      "enabled": true,
-      "config_path": "~/.config/zed/settings.json"
-    },
-    "helm-tmux": {
-      "enabled": true,
-      "config_path": "~/.config/black-atom/helm-tmux/config.yml",
-      "match_pattern": "^theme:\\s*\\S*$",
-      "replace_template": "theme: {themeKey}"
-    },
-    "tmux": {
-      "enabled": true,
-      "config_path": "~/.config/tmux/tmux.conf",
-      "themes_path": "~/.config/tmux/themes",
-      "match_pattern": "^source-file\\s+.+/themes/.+\\.conf$",
-      "replace_template": "source-file {themesPath}/{themeKey}.conf"
-    },
     "nvim": {
       "enabled": true,
       "config_path": "~/.config/nvim/plugin/50_specs/black_atom/nvim.lua",
@@ -73,26 +51,48 @@
         }
       }
     },
+    "tmux": {
+      "enabled": true,
+      "config_path": "~/.config/tmux/tmux.conf",
+      "themes_path": "~/.config/tmux/themes",
+      "match_pattern": "^source-file\\s+.+/themes/.+\\.conf$",
+      "replace_template": "source-file {themesPath}/{themeKey}.conf"
+    },
     "ghostty": {
       "enabled": true,
       "config_path": "~/.config/ghostty/config",
       "match_pattern": "^theme\\s*=\\s*.+$",
       "replace_template": "theme = {themeKey}.conf"
     },
-    "lazygit": {
+    "zed": {
       "enabled": true,
-      "config_path": "~/.config/lazygit/config.yml",
-      "themes_path": "~/.local/share/black-atom/themes/lazygit"
-    },
-    "obsidian": {
-      "enabled": true,
-      "config_path": "~/repos/nikbrunner/notes/.obsidian/appearance.json"
+      "config_path": "~/.config/zed/settings.json"
     },
     "delta": {
       "enabled": true,
       "config_path": "~/.gitconfig.delta",
       "match_pattern": "features\\s*=\\s*black-atom-(dark|light)",
       "replace_template": "features = black-atom-{appearance}"
+    },
+    "lazygit": {
+      "enabled": true,
+      "config_path": "~/.config/lazygit/config.yml",
+      "themes_path": "~/.local/share/black-atom/themes/lazygit"
+    },
+    "herdr": {
+      "enabled": true,
+      "config_path": "~/.config/herdr/config.toml",
+      "themes_path": "~/.local/share/black-atom/themes/herdr"
+    },
+    "obsidian": {
+      "enabled": true,
+      "config_path": "~/repos/nikbrunner/notes/.obsidian/appearance.json"
+    },
+    "helm-tmux": {
+      "enabled": true,
+      "config_path": "~/.config/black-atom/helm-tmux/config.yml",
+      "match_pattern": "^theme:\\s*\\S*$",
+      "replace_template": "theme: {themeKey}"
     }
   }
 }
