@@ -4,20 +4,17 @@
     "toggle_window": "super+ctrl+alt+shift+KeyT"
   },
   "apps": {
-    "obsidian": {
-      "enabled": false,
-      "config_path": ""
+    "tmux": {
+      "enabled": true,
+      "config_path": "~/.config/tmux/tmux.conf",
+      "themes_path": "~/.config/tmux/themes",
+      "match_pattern": "^source-file\\s+.+/themes/.+\\.conf$",
+      "replace_template": "source-file {themesPath}/{themeKey}.conf"
     },
     "lazygit": {
       "enabled": true,
       "config_path": "~/.config/lazygit/config.yml",
-      "themes_path": "~/.config/black-atom/themes/lazygit"
-    },
-    "ghostty": {
-      "enabled": true,
-      "config_path": "~/.config/ghostty/config",
-      "match_pattern": "^theme\\s*=\\s*.+$",
-      "replace_template": "theme = {themeKey}.conf"
+      "themes_path": "~/.local/share/black-atom/themes/lazygit"
     },
     "helm-tmux": {
       "enabled": true,
@@ -29,29 +26,32 @@
       "enabled": true,
       "config_path": "~/.config/zed/settings.json"
     },
-    "herdr": {
+    "ghostty": {
       "enabled": true,
-      "config_path": "~/.config/herdr/config.toml",
-      "themes_path": "~/.config/black-atom/themes/herdr"
-    },
-    "delta": {
-      "enabled": true,
-      "config_path": "~/.gitconfig.delta",
-      "match_pattern": "features\\s*=\\s*black-atom-(dark|light)",
-      "replace_template": "features = black-atom-{appearance}"
-    },
-    "tmux": {
-      "enabled": true,
-      "config_path": "~/.config/tmux/tmux.conf",
-      "themes_path": "~/.config/tmux/themes",
-      "match_pattern": "^source-file\\s+.+/themes/.+\\.conf$",
-      "replace_template": "source-file {themesPath}/{themeKey}.conf"
+      "config_path": "~/.config/ghostty/config",
+      "match_pattern": "^theme\\s*=\\s*.+$",
+      "replace_template": "theme = {themeKey}.conf"
     },
     "nvim": {
       "enabled": true,
       "config_path": "~/.config/nvim/plugin/50_specs/black_atom/nvim.lua",
       "match_pattern": "vim\\.cmd\\.colorscheme\\(\"[^\"]*\"\\)",
       "replace_template": "vim.cmd.colorscheme(\"{themeKey}\")"
+    },
+    "herdr": {
+      "enabled": true,
+      "config_path": "~/.config/herdr/config.toml",
+      "themes_path": "~/.local/share/black-atom/themes/herdr"
+    },
+    "obsidian": {
+      "enabled": true,
+      "config_path": "~/repos/nikbrunner/notes/.obsidian/appearance.json"
+    },
+    "delta": {
+      "enabled": true,
+      "config_path": "~/.gitconfig.delta",
+      "match_pattern": "features\\s*=\\s*black-atom-(dark|light)",
+      "replace_template": "features = black-atom-{appearance}"
     }
   }
 }
