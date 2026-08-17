@@ -4,6 +4,7 @@
 
 -- General ====================================================================
 vim.g.mapleader       = ',' -- Use `,` as <Leader> key
+vim.g.maplocalleader  = '.' -- Use `.` as <LocalLeader> key
 
 vim.o.mouse           = 'a'            -- Enable mouse
 vim.o.mousescroll     = 'ver:25,hor:6' -- Customize mouse scroll
