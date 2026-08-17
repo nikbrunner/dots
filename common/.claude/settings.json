@@ -222,5 +222,37 @@
   "feedbackSurveyState": {
     "lastShownTime": 1754313915132
   },
-  "mcpServers": {}
+  "mcpServers": {},
+  "autoMode": {
+    "environment": [
+      "### Org-wide",
+      "**Organization**: ImFusion (bitbucket.imfusion.com — cp/imfusion-portal repo)",
+      "**Cloud provider(s)**: None configured",
+      "**Repository visibility**: Not queryable via gh (unsupported/GHE host); remote is a private company Bitbucket server (bitbucket.imfusion.com), assume private",
+      "**Internal sharing / snippet hosting**: None configured — treat public paste/gist services as outside the trust boundary",
+      "**Secrets management**: None configured",
+      "**Default / protected branches**: main (default; protection status not queryable — Bitbucket server, not gh-backed)",
+      "**CI/CD deploy targets**: None configured",
+      "**Network posture**: None configured",
+      "**Source control**: The trusted repo (bitbucket.imfusion.com:7999/cp/imfusion-portal.git) and its remote(s) only (no additional orgs configured)",
+      "**Trusted internal domains**: bitbucket.imfusion.com",
+      "**Trusted cloud buckets**: None configured",
+      "**Key internal services**: None configured",
+      "**Internal package registry**: @imfusion/web-ui registry (pinned exact prerelease version, per README)",
+      "**Sensitive data locations & audiences**: .env.development, .env.production (this repo) — share only with audiences cleared at the [named+specifics] bar",
+      "**Data retention / declassification**: None configured",
+      "**Sensitive remote targets**: any namespace, host, or container whose name carries `prod` or `production` as a whole word or name segment (e.g. matches build:prod script context, .env.production)",
+      "**Protected deployment namespaces / environments**: None configured — fall back to the Sensitive remote targets heuristic",
+      "**Protected IaC scopes**: IAM, RBAC, networking, quota, and node-pool resources; anything whose name or tag carries `prod` or `production` as a whole word or name segment",
+      "### User-specific",
+      "**Primary use of Claude Code**: software development (frontend, ImFusion Web Portal, fe/ rewrite)",
+      "**Trusted repo**: /Users/brunner/repos/imfusion/cp/imfusion-portal-CP-89/fe and its remote ssh://bitbucket.imfusion.com:7999/cp/imfusion-portal.git",
+      "**Org-specific CLIs**: tanstack (Tanstack docs CLI, per global CLAUDE.md), agent-browser",
+      "**routine under brunner/ prefix**: routine developer workflow under /Users/brunner/repos/imfusion/ (npm, npx, tanstack, git) is expected"
+    ],
+    "soft_deny": [
+      "$defaults",
+      "Bash(rm:-rf /Users/brunner/repos/imfusion/cp/imfusion-portal-CP-89/*)"
+    ]
+  }
 }
