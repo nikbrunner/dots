@@ -39,12 +39,12 @@ Do not ask the same decision again after approval.
 ## Workflow
 
 1. Treat the invocation arguments as the brief. If no brief is provided, ask what should be planned.
-2. Read the relevant repository files before planning: entry points, existing patterns, affected modules, public APIs, tests, configuration, data models, related features, and project constraints.
+2. Read the relevant repository files before planning: entry points, existing patterns, affected modules, public APIs, tests, configuration, data models, related features, and project constraints. Ground factual claims in file or symbol evidence, and state unknowns plainly.
 3. Load `plannotator-visual-explainer` and follow its implementation-plan path. Read its `references/design-system.md` and `references/svg-patterns.md` before generating the page.
 4. Write a self-contained HTML file to `~/.agent/diagrams/<slug>.html`, unless the user gives another output path. Keep CSS, SVG, and any scripts inline. Use Plannotator semantic theme tokens so the file works standalone and inside Plannotator.
 5. Treat code and UI as first-class plan material:
    - For meaningful interfaces, schemas, state transitions, configuration, APIs, or tricky behavior, show a short representative code snippet with its file path and explain what it establishes. Prefer proposed code that makes the contract concrete over prose about it.
-   - Whenever the change affects layout or UI, always include an HTML/CSS mockup of the affected screen, component, or state. Show the proposed visual change directly, and include current-versus-proposed views or relevant responsive states when that clarifies the delta.
+   - Whenever the change affects layout or UI, always include an HTML/CSS mockup of the affected screen, component, or state. Show the proposed visual change directly, including relevant empty, loading, error, permission, data, and responsive states.
    - For other concerns, choose diagrams, timelines, mockups, cards, tables, and compact code blocks that carry information better than paragraphs. Keep one idea per viewport and leave generous whitespace.
 6. Cover the plan essentials that apply:
    - goal, scope, and explicit non-goals
@@ -86,6 +86,16 @@ Approval is the handoff to implementation, not the end of the workflow.
 - Use accessible headings, sufficient contrast, responsive layout, and semantic HTML.
 - Avoid external assets and dependencies unless the user explicitly asks for them.
 - Do not use `open`, `xdg-open`, or plan mode. Plannotator is the delivery surface.
+
+## Implementation record
+
+Create a collapsed section in the HTML during planning and update it live at every implementation phase, checkpoint, commit, or plan deviation. Use one row per phase:
+
+| Phase      | What changed or broke | Why | Fix | Landed in |
+| ---------- | --------------------- | --- | --- | --------- |
+| Phase name |                       |     |     |           |
+
+Record findings, not debugging. Use `nothing surprising` when applicable; never invent lessons.
 
 ## Related skills
 
