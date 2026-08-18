@@ -72,9 +72,9 @@ if [[ ${#matches[@]} -gt 0 ]]; then
     for match in "${matches[@]}"; do
         skill_list="${skill_list}\n  -> ${match}"
     done
-    context="SKILL ACTIVATION CHECK — Before responding, invoke the relevant skill(s):\n${skill_list}\n\nACTION: Use the Skill tool BEFORE any response. Current context: repo=${REPO}, owner=${REPO_OWNER}"
+    context="SKILL CHECK — The following skill(s) may apply:\n${skill_list}\n\nUse a suggested skill only when it genuinely fits the task. Do not load one merely because it was suggested; if none apply, continue normally. Current context: repo=${REPO}, owner=${REPO_OWNER}"
 else
-    context="Skills check: Before responding, scan the available skills list and invoke any relevant skill first. Current context: repo=${REPO}, owner=${REPO_OWNER}, cwd=${CWD}"
+    context="Skills check: No specific skill match was found. Continue normally, and invoke a skill only if one clearly applies. Current context: repo=${REPO}, owner=${REPO_OWNER}, cwd=${CWD}"
 fi
 
 # Escape for JSON
