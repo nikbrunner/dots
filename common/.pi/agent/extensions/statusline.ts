@@ -330,8 +330,10 @@ export default function (pi: ExtensionAPI): void {
 					const wide = width >= 100;
 					const medium = width >= 68;
 					const branch = footerData.getGitBranch();
+					const sessionName = pi.getSessionName();
 					const workspace = [`${indicator("cwd")}${theme.bold(formatCwd(ctx.cwd))}`];
 					if (branch) workspace.push(`${indicator("branch")}${branch}${dirty ? theme.fg("warning", "*") : ""}`);
+					if (sessionName) workspace.push(`${indicator("session")}${theme.bold(sessionName)}`);
 					if (linkedWorktree) workspace.push(theme.fg("muted", "worktree"));
 
 					const model = ctx.model?.id;
@@ -418,6 +420,7 @@ export default function (pi: ExtensionAPI): void {
 		});
 	});
 
+	pi.on("session_info_changed", () => repaint());
 	pi.on("before_provider_request", () => {
 		refreshActiveAccount();
 		repaint();
