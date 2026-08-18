@@ -37,6 +37,16 @@ Create the plan as a readable HTML artifact, not a Markdown plan and not a plan-
 
    Wait for the review. Address returned annotations directly, revise the HTML when needed, and re-open it for approval. If the session closes without feedback, report that briefly.
 
+## After approval
+
+Approval is the handoff to implementation, not the end of the workflow.
+
+1. Treat the approved HTML plan as the implementation contract. Re-read it and raise blocking questions before editing.
+2. Announce and load `superpowers:executing-plans`. When tasks are independent and execution stays in the current session, use `superpowers:subagent-driven-development` instead.
+3. Follow the supporting Superpowers workflow. First use `superpowers:using-git-worktrees` to detect whether the current directory is already an isolated worktree. If it is, continue there. Only create a new worktree when needed and after that skill's consent gate. Then use relevant domain and TDD skills during implementation, `superpowers:verification-before-completion` before claiming success, and `superpowers:finishing-a-development-branch` after all tasks and checks pass.
+4. Execute the approved tasks without reopening the planning phase or widening scope. For UI changes, render the result and compare it with the approved mockup.
+5. Stop and ask if the plan has a blocking gap, the implementation is blocked, or verification fails.
+
 ## Quality rules
 
 - Make the first viewport answer what is changing and why.
