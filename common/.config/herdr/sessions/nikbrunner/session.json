@@ -65,13 +65,7 @@
           },
           "panes": {
             "16": {
-              "cwd": "/Users/brunner/repos/nikbrunner/dots",
-              "agent_session": {
-                "source": "herdr:pi",
-                "agent": "pi",
-                "kind": "path",
-                "value": "/Users/brunner/.pi/agent/sessions/--Users-brunner-repos-nikbrunner-dots--/2026-08-18T09-51-28-606Z_01a01448-775e-7f4c-94d1-34e427ba62e0.jsonl"
-              }
+              "cwd": "/Users/brunner/repos/nikbrunner/dots"
             },
             "2": {
               "cwd": "/Users/brunner/repos/nikbrunner/dots",
@@ -79,12 +73,12 @@
                 "source": "herdr:pi",
                 "agent": "pi",
                 "kind": "path",
-                "value": "/Users/brunner/.pi/agent/sessions/--Users-brunner-repos-nikbrunner-dots--/2026-08-18T09-46-55-593Z_01a01444-4ce9-7766-b692-313ee78ed38f.jsonl"
+                "value": "/Users/brunner/.pi/agent/sessions/--Users-brunner-repos-nikbrunner-dots--/2026-08-18T10-01-51-629Z_01a01451-f90d-7c28-bcbe-6d4b7a64d47f.jsonl"
               }
             }
           },
           "zoomed": false,
-          "focused": 16,
+          "focused": 2,
           "root_pane": 2
         },
         {
@@ -123,12 +117,12 @@
       "custom_name": "black-atom",
       "identity_cwd": "/Users/brunner/repos/nikbrunner/black-atom",
       "public_pane_numbers": {
-        "5": 3,
         "6": 1,
+        "7": 2,
         "13": 39,
-        "7": 2
+        "5": 3
       },
-      "next_public_pane_number": 41,
+      "next_public_pane_number": 43,
       "public_tab_numbers": [
         3,
         1,
@@ -151,6 +145,9 @@
             }
           },
           "panes": {
+            "13": {
+              "cwd": "/Users/brunner/.local/share/black-atom"
+            },
             "5": {
               "cwd": "/Users/brunner/repos/nikbrunner/black-atom",
               "agent_session": {
@@ -159,9 +156,6 @@
                 "kind": "id",
                 "value": "98d63bcb-def8-4938-bb7e-c8923a25185f"
               }
-            },
-            "13": {
-              "cwd": "/Users/brunner/.local/share/black-atom"
             }
           },
           "zoomed": false,
@@ -230,8 +224,8 @@
       "active_tab": 0
     }
   ],
-  "active": 2,
-  "selected": 2,
+  "active": 1,
+  "selected": 1,
   "sidebar_width": 26,
   "sidebar_section_split": 0.5,
   "collapsed_space_keys": []
