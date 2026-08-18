@@ -27,6 +27,6 @@
   "compaction": {
     "enabled": false
   },
-  "defaultThinkingLevel": "xhigh",
+  "defaultThinkingLevel": "high",
   "tuiMode": "fullscreen"
 }

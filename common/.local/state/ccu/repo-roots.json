@@ -111,6 +111,16 @@
     ],
     "last_seen": "2026-08-06"
   },
+  "brunner/agents": {
+    "root": "~/repos/imfusion/brunner/agents",
+    "owner": "brunner",
+    "name": "agents",
+    "work": true,
+    "session_dirs": [
+      "~/repos/imfusion/brunner/agents"
+    ],
+    "last_seen": "2026-08-18"
+  },
   "cp/imfusion-portal": {
     "root": "~/repos/imfusion/cp/imfusion-portal",
     "owner": "cp",
