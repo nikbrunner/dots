@@ -12,6 +12,30 @@ metadata:
 
 Create the plan as a readable HTML artifact, not a Markdown plan and not a plan-mode session. Show the intended solution, not just a list of work. Use visual structure, representative code, and UI sketches to make relationships, sequence, behavior, and decisions easy to scan. Do not implement the planned change.
 
+## Interview
+
+### Initial brief
+
+- Treat the invocation arguments as the brief.
+- If none are provided, ask for the brief first.
+
+### Grilling
+
+> Interview me relentlessly about every aspect of this plan until we reach a shared understanding.
+
+- Focus on decisions that affect the plan or implementation.
+- Find facts in the codebase instead of asking the user for them.
+- Carry resolved decisions into the plan and implementation.
+
+### Commit gate
+
+Ask whether implementation should:
+
+- **Review before commit** — stop after verification with all changes uncommitted.
+- **Continue through commit** — follow the selected implementation mode's normal commit workflow.
+
+Do not ask the same decision again after approval.
+
 ## Workflow
 
 1. Treat the invocation arguments as the brief. If no brief is provided, ask what should be planned.
@@ -47,7 +71,10 @@ Approval is the handoff to implementation, not the end of the workflow.
    - **Subagent-driven** — announce and load `superpowers:subagent-driven-development`. Use fresh implementer and reviewer subagents per task, then a broad final review, without pausing for human check-ins between tasks. This fits plans with mostly independent tasks that stay in the current session.
 3. If the selected mode conflicts with the plan's task shape, explain the conflict and ask before editing. Otherwise follow the supporting Superpowers workflow. First use `superpowers:using-git-worktrees` to detect whether the current directory is already an isolated worktree. If it is, continue there. Only create a new worktree when needed and after that skill's consent gate. Then use relevant domain and TDD skills during implementation, `superpowers:verification-before-completion` before claiming success, and `superpowers:finishing-a-development-branch` after all tasks and checks pass.
 4. Execute the approved tasks without reopening the planning phase or widening scope. For UI changes, render the result and compare it with the approved mockup.
-5. Stop and ask if the plan has a blocking gap, the implementation is blocked, or verification fails.
+5. Apply the interview's commit-gate choice:
+   - **Review before commit:** keep all implementation changes uncommitted. In subagent-driven mode, preserve the task and review loops but instruct implementers not to commit. After verification, show changed files, checks, visual validation, and residual risks. Stop for review, iterate on feedback if needed, and continue to the selected Superpowers finishing/commit workflow only after explicit approval.
+   - **Continue through commit:** follow the selected Superpowers mode's normal commit and finishing workflow.
+6. Stop and ask if the plan has a blocking gap, the implementation is blocked, or verification fails.
 
 ## Quality rules
 
@@ -64,3 +91,5 @@ Approval is the handoff to implementation, not the end of the workflow.
 
 - `plannotator-visual-explainer` — plan-page structure, theme tokens, and diagram patterns
 - `plannotator-annotate` — browser review and approval workflow
+- `superpowers:executing-plans` — human-in-the-loop implementation after approval
+- `superpowers:subagent-driven-development` — reviewed subagent implementation for independent tasks
