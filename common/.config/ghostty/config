@@ -12,6 +12,7 @@ window-vsync = true
 
 # Advanced
 custom-shader = ./shaders/blueprint.glsl
+custom-shader = ./shaders/boo.glsl
 
 adjust-cell-height = 25%
 adjust-underline-position = 3
