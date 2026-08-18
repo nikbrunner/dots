@@ -53,6 +53,7 @@
     "deny": [],
     "ask": []
   },
+  "model": "opus",
   "hooks": {
     "Notification": [],
     "PostToolUse": [
@@ -164,7 +165,8 @@
     "rust-analyzer-lsp@claude-plugins-official": true,
     "typescript-lsp@claude-plugins-official": true,
     "storybook@storybook": true,
-    "superpowers@claude-plugins-official": true
+    "superpowers@claude-plugins-official": true,
+    "nopus@nopus": true
   },
   "extraKnownMarketplaces": {
     "impeccable": {
@@ -202,6 +204,12 @@
       "source": {
         "source": "github",
         "repo": "gvzdv/claudish-to-english"
+      }
+    },
+    "nopus": {
+      "source": {
+        "source": "github",
+        "repo": "Vistyy/nopus"
       }
     }
   },
@@ -254,6 +262,5 @@
   "feedbackSurveyState": {
     "lastShownTime": 1754313915132
   },
-  "mcpServers": {},
-  "model": "opus"
+  "mcpServers": {}
 }

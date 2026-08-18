@@ -14,7 +14,7 @@
     "npm:pi-subagents",
     "npm:pi-codex-limit",
     "npm:pi-codex-account",
-    "npm:speak-like-you-eat"
+    "npm:@syzom/nopus"
   ],
   "defaultProvider": "openai-codex",
   "defaultModel": "gpt-5.6-luna",
@@ -27,6 +27,6 @@
   "compaction": {
     "enabled": false
   },
-  "defaultThinkingLevel": "off",
+  "defaultThinkingLevel": "xhigh",
   "tuiMode": "fullscreen"
 }

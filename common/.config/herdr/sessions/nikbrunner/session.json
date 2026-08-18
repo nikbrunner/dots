@@ -36,11 +36,12 @@
       "custom_name": null,
       "identity_cwd": "/Users/brunner/repos/nikbrunner/dots",
       "public_pane_numbers": {
-        "2": 104,
         "4": 69,
+        "16": 109,
+        "2": 104,
         "3": 2
       },
-      "next_public_pane_number": 108,
+      "next_public_pane_number": 113,
       "public_tab_numbers": [
         1,
         2,
@@ -51,15 +52,39 @@
         {
           "custom_name": "Agents",
           "layout": {
-            "Pane": 2
+            "Split": {
+              "direction": "Horizontal",
+              "ratio": 0.5,
+              "first": {
+                "Pane": 2
+              },
+              "second": {
+                "Pane": 16
+              }
+            }
           },
           "panes": {
+            "16": {
+              "cwd": "/Users/brunner/repos/nikbrunner/dots",
+              "agent_session": {
+                "source": "herdr:pi",
+                "agent": "pi",
+                "kind": "path",
+                "value": "/Users/brunner/.pi/agent/sessions/--Users-brunner-repos-nikbrunner-dots--/2026-08-18T09-51-28-606Z_01a01448-775e-7f4c-94d1-34e427ba62e0.jsonl"
+              }
+            },
             "2": {
-              "cwd": "/Users/brunner/repos/nikbrunner/dots"
+              "cwd": "/Users/brunner/repos/nikbrunner/dots",
+              "agent_session": {
+                "source": "herdr:pi",
+                "agent": "pi",
+                "kind": "path",
+                "value": "/Users/brunner/.pi/agent/sessions/--Users-brunner-repos-nikbrunner-dots--/2026-08-18T09-46-55-593Z_01a01444-4ce9-7766-b692-313ee78ed38f.jsonl"
+              }
             }
           },
           "zoomed": false,
-          "focused": 2,
+          "focused": 16,
           "root_pane": 2
         },
         {
@@ -91,18 +116,19 @@
           "root_pane": 4
         }
       ],
-      "active_tab": 1
+      "active_tab": 0
     },
     {
       "id": "wB",
       "custom_name": "black-atom",
       "identity_cwd": "/Users/brunner/repos/nikbrunner/black-atom",
       "public_pane_numbers": {
+        "5": 3,
         "6": 1,
-        "7": 2,
-        "5": 3
+        "13": 39,
+        "7": 2
       },
-      "next_public_pane_number": 35,
+      "next_public_pane_number": 41,
       "public_tab_numbers": [
         3,
         1,
@@ -113,11 +139,29 @@
         {
           "custom_name": null,
           "layout": {
-            "Pane": 5
+            "Split": {
+              "direction": "Horizontal",
+              "ratio": 0.5,
+              "first": {
+                "Pane": 5
+              },
+              "second": {
+                "Pane": 13
+              }
+            }
           },
           "panes": {
             "5": {
-              "cwd": "/Users/brunner/repos/nikbrunner/black-atom"
+              "cwd": "/Users/brunner/repos/nikbrunner/black-atom",
+              "agent_session": {
+                "source": "herdr:claude",
+                "agent": "claude",
+                "kind": "id",
+                "value": "98d63bcb-def8-4938-bb7e-c8923a25185f"
+              }
+            },
+            "13": {
+              "cwd": "/Users/brunner/.local/share/black-atom"
             }
           },
           "zoomed": false,
@@ -186,8 +230,8 @@
       "active_tab": 0
     }
   ],
-  "active": 1,
-  "selected": 1,
+  "active": 2,
+  "selected": 2,
   "sidebar_width": 26,
   "sidebar_section_split": 0.5,
   "collapsed_space_keys": []
