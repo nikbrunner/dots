@@ -6,8 +6,8 @@
       "custom_name": "notes",
       "identity_cwd": "/Users/brunner/repos/nikbrunner/notes",
       "public_pane_numbers": {
-        "33": 3,
-        "1": 1
+        "1": 1,
+        "33": 3
       },
       "next_public_pane_number": 4,
       "public_tab_numbers": [
@@ -30,10 +30,10 @@
             }
           },
           "panes": {
-            "1": {
+            "33": {
               "cwd": "/Users/brunner/repos/nikbrunner/notes"
             },
-            "33": {
+            "1": {
               "cwd": "/Users/brunner/repos/nikbrunner/notes"
             }
           },
@@ -49,12 +49,12 @@
       "custom_name": null,
       "identity_cwd": "/Users/brunner/repos/nikbrunner/dots",
       "public_pane_numbers": {
-        "16": 109,
         "2": 104,
         "3": 2,
+        "16": 109,
         "4": 69
       },
-      "next_public_pane_number": 118,
+      "next_public_pane_number": 124,
       "public_tab_numbers": [
         1,
         2,
@@ -130,12 +130,12 @@
       "custom_name": "black-atom",
       "identity_cwd": "/Users/brunner/repos/nikbrunner/black-atom",
       "public_pane_numbers": {
-        "6": 1,
-        "7": 2,
         "5": 3,
+        "7": 2,
+        "6": 1,
         "13": 39
       },
-      "next_public_pane_number": 50,
+      "next_public_pane_number": 54,
       "public_tab_numbers": [
         3,
         1,
@@ -158,16 +158,10 @@
             }
           },
           "panes": {
-            "5": {
-              "cwd": "/Users/brunner/repos/nikbrunner/black-atom",
-              "agent_session": {
-                "source": "herdr:claude",
-                "agent": "claude",
-                "kind": "id",
-                "value": "d3a7109d-32c5-4c02-97e2-93cb94b26591"
-              }
-            },
             "13": {
+              "cwd": "/Users/brunner/repos/nikbrunner/black-atom"
+            },
+            "5": {
               "cwd": "/Users/brunner/repos/nikbrunner/black-atom"
             }
           },
@@ -237,8 +231,8 @@
       "active_tab": 0
     }
   ],
-  "active": 2,
-  "selected": 2,
+  "active": 1,
+  "selected": 1,
   "sidebar_width": 26,
   "sidebar_section_split": 0.5,
   "collapsed_space_keys": []
