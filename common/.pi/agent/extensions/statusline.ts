@@ -44,6 +44,25 @@ interface ActiveCodexAccount {
 	label?: string;
 }
 
+interface GitStatus {
+	added: number;
+	changed: number;
+	deleted: number;
+	untracked: number;
+}
+
+function parseGitStatus(output: string): GitStatus {
+	const status: GitStatus = { added: 0, changed: 0, deleted: 0, untracked: 0 };
+	for (const line of output.split("\n")) {
+		const code = line.slice(0, 2);
+		if (code === "??") status.untracked++;
+		else if (code.includes("D")) status.deleted++;
+		else if (code.includes("A")) status.added++;
+		else if (code.length === 2) status.changed++;
+	}
+	return status;
+}
+
 declare global {
 	var piCodexLimit: CodexLimitSnapshot | undefined;
 }
@@ -217,6 +236,7 @@ export default function (pi: ExtensionAPI): void {
 	let requestRender = (): void => {};
 	let state: "ready" | "working" | "error" = "ready";
 	let dirty = false;
+	let gitStatus: GitStatus | undefined;
 	let linkedWorktree = false;
 	let dirtyRefreshGeneration = 0;
 	let dirtyRefreshTimer: ReturnType<typeof setTimeout> | undefined;
@@ -231,9 +251,11 @@ export default function (pi: ExtensionAPI): void {
 	};
 	const refreshDirty = (cwd: string): void => {
 		const generation = ++dirtyRefreshGeneration;
+		gitStatus = undefined;
 		execFile("git", ["status", "--porcelain", "--untracked-files=normal"], { cwd }, (error, stdout) => {
 			if (!active || generation !== dirtyRefreshGeneration) return;
-			dirty = !error && stdout.length > 0;
+			gitStatus = error ? undefined : parseGitStatus(stdout);
+			dirty = gitStatus !== undefined && Object.values(gitStatus).some((count) => count > 0);
 			repaint();
 		});
 	};
@@ -333,6 +355,15 @@ export default function (pi: ExtensionAPI): void {
 					const sessionName = pi.getSessionName();
 					const workspace = [`${indicator("cwd")}${theme.bold(formatCwd(ctx.cwd))}`];
 					if (branch) workspace.push(`${indicator("branch")}${branch}${dirty ? theme.fg("warning", "*") : ""}`);
+					if (branch && gitStatus) {
+						const statusParts = [
+							gitStatus.add > 0 ? theme.fg("success", `+${gitStatus.add}`) : undefined,
+							gitStatus.changed > 0 ? theme.fg("warning", `~${gitStatus.changed}`) : undefined,
+							gitStatus.deleted > 0 ? theme.fg("error", `-${gitStatus.deleted}`) : undefined,
+							gitStatus.untracked > 0 ? theme.fg("accent", `?${gitStatus.untracked}`) : undefined,
+						].filter((part): part is string => part !== undefined);
+						workspace.push(`${indicator("status")}${statusParts.length > 0 ? statusParts.join(" ") : theme.fg("success", "clean")}`);
+					}
 					if (sessionName) workspace.push(`${indicator("session")}${theme.bold(sessionName)}`);
 					if (linkedWorktree) workspace.push(theme.fg("muted", "worktree"));
 
