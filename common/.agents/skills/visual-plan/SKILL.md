@@ -27,6 +27,18 @@ Create the plan as a readable HTML artifact, not a Markdown plan and not a plan-
 - Find facts in the codebase instead of asking the user for them.
 - Carry resolved decisions into the plan and implementation.
 
+### Contract audit
+
+Before closing the interview, audit every changed persisted field, API result, and user-visible state across its full path:
+
+- Trace it from input and persistence through backend operations, IPC bindings, frontend state, rendering, tests, fixtures, detection/setup code, and relevant docs.
+- Record representation changes explicitly — for example, stored vs expanded paths, serialized vs hydrated defaults, legacy vs current schema, and generated vs hand-authored files.
+- Define invariants for compatibility, empty and missing values, partial failure, retries, concurrent saves, and supported platforms. Turn each user-owned choice into a focused interview question.
+- Build a small behavior matrix covering legacy, current, mixed, empty, missing, success, partial-success, and failure cases. Include at least one acceptance criterion for every row that can change user-visible behavior.
+- Check indirect registries, capability metadata, auto-detection, setup flows, generated bindings, dev fixtures, and durable documentation. A plan is ready only when these consumers have an owner or an explicit non-goal.
+
+State unknowns plainly. Do not treat a new type or a passing unit test as proof that the end-to-end contract is covered.
+
 ### Commit gate
 
 Ask whether implementation should:
