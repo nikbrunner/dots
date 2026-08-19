@@ -41,10 +41,11 @@ text = "#111111"
 # See https://github.com/y3owk1n/neru/blob/main/docs/CONFIGURATION.md#hotkeys
 # See https://github.com/y3owk1n/neru/blob/main/docs/CLI.md
 [hotkeys]
-"Ctrl+Alt+Space" = "hints"
-"Ctrl+Alt+G" = "grid"
+"Primary+Shift+Ctrl+Alt+f" = "hints"
+# "Ctrl+Alt+G" = "grid"
 # "Ctrl+Alt+G" = "recursive_grid"
-"Ctrl+Alt+S" = "scroll"
+# "Ctrl+Alt+S" = "scroll"
+"Primary+Shift+Ctrl+Alt+j" = "scroll"
 
 # Macros — named action sequences, reused from any binding.
 # Written by hand, not recorded. $1, $2 ... are the call's arguments.
@@ -128,11 +129,11 @@ visible_check_enabled = false
 font_size = 16
 font_family = "TX-02"
 background_color = "#B3FB8F19"
-border_radius = -1   # -1 = auto pill
-padding_x = -1       # -1 = auto based on font size
-padding_y = -1       # -1 = auto based on font size
+border_radius = -1             # -1 = auto pill
+padding_x = -1                 # -1 = auto based on font size
+padding_y = -1                 # -1 = auto based on font size
 border_width = 1
-placement = "bottom" # top, center, bottom
+placement = "bottom"           # top, center, bottom
 
 [hints.search_input_ui]
 font_size = 10
