@@ -83,6 +83,21 @@
         "lastAccessed": 1787065208
       }
     },
+    "~/repos/nikbrunner/black-atom": {
+      "main": {
+        "locks": [
+          {
+            "filename": "core/src/themes/jpn/create-ui-dark.ts",
+            "label": "1"
+          },
+          {
+            "filename": "adapters/herdr/themes/collection.template.toml",
+            "label": "2"
+          }
+        ],
+        "lastAccessed": 1787125122
+      }
+    },
     "~/repos/nikbrunner/dots": {
       "main": {
         "locks": [
@@ -97,16 +112,24 @@
           {
             "filename": "common/.config/ghostty/config",
             "label": "3"
+          },
+          {
+            "filename": "macos/.config/neru/config.toml",
+            "label": "4"
+          },
+          {
+            "filename": "common/.config/herdr/config.toml",
+            "label": "5"
           }
         ],
-        "lastAccessed": 1787061067
+        "lastAccessed": 1787145362
       }
     },
     "~/repos/nikbrunner/imf-notes": {
       "main": {
         "locks": [
           {
-            "filename": "logs/2026/2026.08/2026.08.14 - Fri.md",
+            "filename": "logs/2026/2026.08/2026.08.19 - Wed.md",
             "label": "1"
           },
           {
@@ -114,7 +137,7 @@
             "label": "2"
           }
         ],
-        "lastAccessed": 1787065314
+        "lastAccessed": 1787139661
       }
     },
     "~/repos/nikbrunner/minifugit.nvim": {
@@ -140,7 +163,7 @@
             "label": "2"
           }
         ],
-        "lastAccessed": 1787047436
+        "lastAccessed": 1787126676
       }
     }
   }

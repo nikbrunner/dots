@@ -6,8 +6,7 @@
       "custom_name": "notes",
       "identity_cwd": "/Users/brunner/repos/nikbrunner/notes",
       "public_pane_numbers": {
-        "33": 3,
-        "1": 1
+        "1": 3
       },
       "next_public_pane_number": 4,
       "public_tab_numbers": [
@@ -18,21 +17,9 @@
         {
           "custom_name": null,
           "layout": {
-            "Split": {
-              "direction": "Horizontal",
-              "ratio": 0.5,
-              "first": {
-                "Pane": 1
-              },
-              "second": {
-                "Pane": 33
-              }
-            }
+            "Pane": 1
           },
           "panes": {
-            "33": {
-              "cwd": "/Users/brunner/repos/nikbrunner/notes"
-            },
             "1": {
               "cwd": "/Users/brunner/repos/nikbrunner/notes"
             }
@@ -49,11 +36,13 @@
       "custom_name": null,
       "identity_cwd": "/Users/brunner/repos/nikbrunner/dots",
       "public_pane_numbers": {
-        "3": 2,
+        "4": 69,
         "2": 104,
-        "4": 69
+        "16": 138,
+        "17": 139,
+        "3": 2
       },
-      "next_public_pane_number": 127,
+      "next_public_pane_number": 140,
       "public_tab_numbers": [
         1,
         2,
@@ -64,17 +53,23 @@
         {
           "custom_name": "Agents",
           "layout": {
-            "Pane": 2
+            "Split": {
+              "direction": "Horizontal",
+              "ratio": 0.5,
+              "first": {
+                "Pane": 2
+              },
+              "second": {
+                "Pane": 16
+              }
+            }
           },
           "panes": {
+            "16": {
+              "cwd": "/Users/brunner/repos/nikbrunner/dots"
+            },
             "2": {
-              "cwd": "/Users/brunner/repos/nikbrunner/dots",
-              "agent_session": {
-                "source": "herdr:pi",
-                "agent": "pi",
-                "kind": "path",
-                "value": "/Users/brunner/.pi/agent/sessions/--Users-brunner-repos-nikbrunner-dots--/2026-08-18T09-46-55-593Z_01a01444-4ce9-7766-b692-313ee78ed38f.jsonl"
-              }
+              "cwd": "/Users/brunner/repos/nikbrunner/dots"
             }
           },
           "zoomed": false,
@@ -84,9 +79,21 @@
         {
           "custom_name": "Code",
           "layout": {
-            "Pane": 3
+            "Split": {
+              "direction": "Horizontal",
+              "ratio": 0.5,
+              "first": {
+                "Pane": 3
+              },
+              "second": {
+                "Pane": 17
+              }
+            }
           },
           "panes": {
+            "17": {
+              "cwd": "/Users/brunner/repos/nikbrunner/dots"
+            },
             "3": {
               "cwd": "/Users/brunner/repos/nikbrunner/dots"
             }
@@ -117,12 +124,13 @@
       "custom_name": "black-atom",
       "identity_cwd": "/Users/brunner/repos/nikbrunner/black-atom",
       "public_pane_numbers": {
-        "6": 1,
-        "13": 39,
+        "9": 2,
+        "7": 1,
         "5": 3,
-        "7": 2
+        "6": 39,
+        "8": 64
       },
-      "next_public_pane_number": 54,
+      "next_public_pane_number": 65,
       "public_tab_numbers": [
         3,
         1,
@@ -140,12 +148,12 @@
                 "Pane": 5
               },
               "second": {
-                "Pane": 13
+                "Pane": 6
               }
             }
           },
           "panes": {
-            "13": {
+            "6": {
               "cwd": "/Users/brunner/repos/nikbrunner/black-atom"
             },
             "5": {
@@ -159,40 +167,58 @@
         {
           "custom_name": null,
           "layout": {
-            "Pane": 6
-          },
-          "panes": {
-            "6": {
-              "cwd": "/Users/brunner/repos/nikbrunner/black-atom"
+            "Split": {
+              "direction": "Horizontal",
+              "ratio": 0.5,
+              "first": {
+                "Pane": 7
+              },
+              "second": {
+                "Pane": 8
+              }
             }
-          },
-          "zoomed": false,
-          "focused": 6,
-          "root_pane": 6
-        },
-        {
-          "custom_name": null,
-          "layout": {
-            "Pane": 7
           },
           "panes": {
             "7": {
+              "cwd": "/Users/brunner/repos/nikbrunner/black-atom",
+              "agent_session": {
+                "source": "herdr:pi",
+                "agent": "pi",
+                "kind": "path",
+                "value": "/Users/brunner/.pi/agent/sessions/--Users-brunner-repos-nikbrunner-black-atom--/2026-08-19T07-56-16-427Z_01a01905-5aab-7083-bf18-00fec50ec405.jsonl"
+              }
+            },
+            "8": {
               "cwd": "/Users/brunner/repos/nikbrunner/black-atom"
             }
           },
           "zoomed": false,
           "focused": 7,
           "root_pane": 7
+        },
+        {
+          "custom_name": null,
+          "layout": {
+            "Pane": 9
+          },
+          "panes": {
+            "9": {
+              "cwd": "/Users/brunner/repos/nikbrunner/black-atom"
+            }
+          },
+          "zoomed": false,
+          "focused": 9,
+          "root_pane": 9
         }
       ],
-      "active_tab": 0
+      "active_tab": 1
     },
     {
       "id": "wC",
       "custom_name": "helm.herdr",
       "identity_cwd": "/Users/brunner/repos/black-atom-industries/helm.herdr",
       "public_pane_numbers": {
-        "8": 1
+        "10": 1
       },
       "next_public_pane_number": 12,
       "public_tab_numbers": [
@@ -203,16 +229,16 @@
         {
           "custom_name": null,
           "layout": {
-            "Pane": 8
+            "Pane": 10
           },
           "panes": {
-            "8": {
+            "10": {
               "cwd": "/Users/brunner/repos/black-atom-industries/helm.herdr"
             }
           },
           "zoomed": false,
-          "focused": 8,
-          "root_pane": 8
+          "focused": 10,
+          "root_pane": 10
         }
       ],
       "active_tab": 0
@@ -220,7 +246,7 @@
   ],
   "active": 1,
   "selected": 1,
-  "sidebar_width": 26,
+  "sidebar_width": 36,
   "sidebar_section_split": 0.5,
   "collapsed_space_keys": []
 }
