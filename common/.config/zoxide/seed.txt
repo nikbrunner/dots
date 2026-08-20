@@ -55,6 +55,7 @@
 ~/repos/nikbrunner/notes
 ~/repos/nikbrunner/pi-speak
 ~/repos/nikbrunner/plans
+~/repos/nikbrunner/src
 ~/repos/nikbrunner/the-black-atom
 ~/repos/nikbrunner/themes
 ~/repos/nikbrunner/tmux-file-picker
