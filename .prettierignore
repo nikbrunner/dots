@@ -1,6 +1,7 @@
 # Pi extensions (project-local, have their own prettier config)
 common/.pi/agent/extensions/
 common/.pi/agent/sessions/
+common/.pi/agent/git/
 
 # Claude Code writes these through symlinks, so its formatting wins over
 # prettier's. The README documents the directory and stays formatted.

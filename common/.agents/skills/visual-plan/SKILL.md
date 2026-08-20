@@ -10,7 +10,7 @@ metadata:
 
 # Visual Plan
 
-Create a readable HTML plan that shows the intended solution. Do not implement the planned change before approval. Approval is the handoff into the implementation workflow below.
+Create a readable HTML plan that shows the intended solution. Do not implement the planned change before approval. An independent plan review comes before human approval. Approval is the handoff into the implementation workflow below.
 
 ## Scope
 
@@ -22,8 +22,9 @@ Prefer an ordinary Markdown plan for small, linear changes with no meaningful UI
 
 1. Treat the invocation arguments as the initial brief. If there is no brief, ask for one.
 2. Inspect the repository before asking questions. Find entry points, existing patterns, affected modules, public interfaces, tests, configuration, and related features.
-3. Ask one focused question at a time for decisions that materially affect the plan. Resolve facts from the repository instead of asking the user to supply them.
-4. Stop interviewing when the scope, non-goals, acceptance criteria, and remaining owner decisions are clear. Do not invent answers for missing facts.
+3. For a change with two or more interacting boundaries, identify the first tracer slice before refining the plan. Start with the smallest externally observable outcome, trace its path through the real boundaries, name temporary seams such as mocks or fixtures, and define the command, screen, or test that proves the slice works. Mark this `not applicable` for small linear changes.
+4. Ask one focused question at a time for decisions that materially affect the brief or its tracer slices. Use unresolved slice boundaries, temporary seams, proof steps, and owner decisions to choose the questions. Resolve facts from the repository instead of asking the user to supply them.
+5. Stop interviewing when the scope, non-goals, tracer slices, acceptance criteria, and remaining owner decisions are clear. Do not invent answers for missing facts.
 
 ## Contract audit
 
@@ -34,6 +35,8 @@ Apply every audit that matches the change. A combined API, state, and UI change 
 - **CLI or refactor:** trace public callers, streams, exit codes, configuration, compatibility constraints, and failure behavior.
 
 Record representation changes such as stored versus expanded paths, serialized versus hydrated defaults, legacy versus current schema, and generated versus hand-authored files. Include a behavior matrix for the relevant legacy, current, mixed, empty, missing, success, partial-success, and failure cases. Give every changed user-visible row an observable acceptance criterion.
+
+For a change with two or more interacting boundaries, define vertical tracer slices. Each slice names its externally observable outcome, boundary path, temporary seams, prerequisites, and proof. Prefer a sequence that keeps something runnable and testable over a horizontal sequence that completes one technical layer at a time. Keep the slice map `not applicable` for small linear changes.
 
 Check indirect registries, capability metadata, auto-detection, setup flows, generated bindings, development fixtures, and durable documentation when the change can affect them. State unknowns plainly and assign each unresolved choice to its owner.
 
@@ -72,12 +75,15 @@ Use only sections that serve the change. The first viewport must answer what is 
 - goal, scope, and explicit non-goals
 - current state and proposed design
 - implementation sequence and dependencies, without time estimates
+- vertical tracer slices, each with its observable proof and temporary seams, when the change crosses multiple boundaries
 - affected files and important interfaces or contracts
 - risks, mitigations, and owner decisions
 - proposed commit sequence, when the change has natural commit boundaries
 - test strategy and observable acceptance criteria
 
 When useful, pre-plan commits as an ordered list. Give each proposed commit a small scope, an imperative intent, its affected area, and the validation that should pass before it lands. Keep the plan at one commit when splitting would make review harder. Record the actual commit IDs in the implementation record later.
+
+For multi-boundary changes, organize the implementation around vertical slices rather than database/service/API/frontend layers. Each slice must leave an observable path working, even when it uses a named mock or fixture that a later slice replaces. Include the proof command, screen, or test for each slice and the barrier it is intended to expose.
 
 Show the solution rather than describing it abstractly:
 
@@ -88,7 +94,21 @@ Show the solution rather than describing it abstractly:
 
 Include a collapsed implementation record with a planning row and the columns `Phase`, `What changed`, `Why`, `Fix`, and `Landed in`. Record current facts only, for example `Planning | Plan drafted | ... | plans/<slug>.html`. After approval, update it at each implementation phase, checkpoint, commit, or plan deviation. Record findings, not debugging, and never invent entries.
 
-### 4. Deliver for approval
+### 4. Review the plan independently
+
+Before opening the human approval gate, read the `superpowers:writing-plans` plan-document-reviewer prompt and dispatch a fresh general-purpose reviewer with the plan and the repository evidence it relies on. In Pi, use the built-in `reviewer` agent; on other platforms, use the equivalent fresh general-purpose reviewer. The reviewer checks:
+
+- completeness, placeholders, scope, non-goals, owner decisions, and acceptance criteria
+- contract-audit coverage and buildability against the repository
+- affected files, interfaces, dependencies, sequencing, and risks
+- for each tracer slice, whether the boundary path is executable, its temporary seams are named, its proof is observable, and its hidden prerequisites are accounted for
+- whether diagrams, mockups, and snippets agree with the written proposal
+
+The reviewer reports findings only. It does not implement or approve the plan. Address every blocking or important finding in the HTML, then rerun the reviewer when the plan changes materially. A missing reviewer capability is an incomplete review, not an approval; report it before continuing.
+
+This review is separate from Plannotator. The subagent checks technical coherence; the human uses Plannotator to judge the proposal and leave annotations.
+
+### 5. Deliver for approval
 
 Run the gate with structured output so approval, denial, annotations, and tool errors are distinguishable:
 
@@ -98,7 +118,7 @@ trap 'rm -f "$result_file"' EXIT
 plannotator annotate "$plan_file" --gate --json --result-file "$result_file"
 ```
 
-Read and validate the result JSON before reporting an outcome. Use the decision and annotations fields emitted by Plannotator as the authority; do not infer approval from the process exit code alone. If annotations are returned, address them in the HTML and run the gate again. If the result is approved, report the approved artifact path and continue with **After approval**. If it is denied, report the denial and stop unless the user asks for a revision. Do not start implementation without an approval result.
+Read and validate the result JSON before reporting an outcome. Use the decision and annotations fields emitted by Plannotator as the authority; do not infer approval from the process exit code alone. If annotations are returned, address them in the HTML, rerun the independent plan review when the changes are material, and run the gate again. If the result is approved, report the approved artifact path and continue with **After approval**. If it is denied, report the denial and stop unless the user asks for a revision. Do not start implementation without an approval result.
 
 If the browser or Plannotator is unavailable, the command times out, exits without a result file, or produces malformed JSON, preserve the HTML, report the exact command failure, and classify the review as incomplete and unapproved. Removing the result file before each attempt prevents stale approval data from being mistaken for the current review. Never treat a timeout or missing result as approval or denial. Never claim approval from a successful HTML write or a command that only opened the page.
 
@@ -117,14 +137,14 @@ If the browser or Plannotator is unavailable, the command times out, exits witho
 Treat the approved HTML plan as the implementation contract. Re-read it and raise blocking questions before editing.
 
 1. Ask the user to choose an implementation mode:
-   - **Human-in-the-loop** — announce and load `superpowers:executing-plans`. Review the plan, create todos, execute tasks with checkpoints, and stop for questions or blockers. Let that workflow own its commit decision; do not add a second commit-gate question here.
-   - **Subagent-driven** — announce and load `superpowers:subagent-driven-development`. Use fresh implementer and reviewer subagents per task, then a broad final review, without pausing for human check-ins between tasks. Use this when the plan has mostly independent tasks that fit the current session. Before starting, ask whether to enable the **commit gate** for this run.
-2. If the selected mode conflicts with the plan's task shape, explain the conflict and ask before editing. Otherwise follow the supporting Superpowers workflow. First use `superpowers:using-git-worktrees` to detect whether the current directory is already an isolated worktree. If it is, continue there. Only create a new worktree when needed and after that skill's consent gate. Then use relevant domain and TDD skills during implementation, `superpowers:verification-before-completion` before claiming success, and `superpowers:finishing-a-development-branch` after all tasks and checks pass.
+   - **Human-in-the-loop** — announce and load `superpowers:executing-plans`. Review the plan, create todos, execute tasks with checkpoints, and stop for questions or blockers. Before handing the work to `superpowers:finishing-a-development-branch`, announce and load `superpowers:requesting-code-review`. Read its code-reviewer prompt and dispatch a fresh general-purpose reviewer against the approved plan and complete diff. In Pi, use the built-in `reviewer` agent; on other platforms, use the equivalent fresh general-purpose reviewer. Address Important and Critical findings, rerun affected verification, and request a scoped re-review. For UI or other visual changes, also use `plannotator review` when a human comparison with the approved artifact adds value. Let the execution workflow own its commit decision; do not add a second commit-gate question here.
+   - **Subagent-driven** — announce and load `superpowers:subagent-driven-development`. Use fresh implementer and reviewer subagents per task, then a broad final review, without pausing for human check-ins between tasks. That workflow's task reviews and final whole-branch review satisfy the implementation-review gate; do not dispatch a duplicate review from this skill. Use this when the plan has mostly independent tasks that fit the current session. Before starting, ask whether to enable the **commit gate** for this run.
+2. If the selected mode conflicts with the plan's task shape, explain the conflict and ask before editing. Otherwise follow the supporting Superpowers workflow. First use `superpowers:using-git-worktrees` to detect whether the current directory is already an isolated worktree. If it is, continue there. Only create a new worktree when needed and after that skill's consent gate. Then use relevant domain and TDD skills during implementation, `superpowers:verification-before-completion` before claiming success, and `superpowers:finishing-a-development-branch` after review and all checks pass.
 3. When using subagent-driven mode, keep the commit-gate choice for the whole run and do not ask it again at the end:
-   - **Commit gate enabled** — finish implementation and verification, update the plan, prepare the proposed commit sequence, then stop before `git add`, `git commit`, or `git push` and ask for approval.
+   - **Commit gate enabled** — finish implementation, reviews, and verification, update the plan, prepare the proposed commit sequence, then stop before `git add`, `git commit`, or `git push` and ask for approval.
    - **Commit gate disabled** — continue through the normal commit workflow after verification.
-4. Execute the approved tasks without reopening the planning phase or widening scope. For UI changes, render the result and compare it with the approved mockup. Follow the proposed commit sequence when it still fits; record deviations and actual commit IDs in the implementation record.
-5. Stop and ask if the plan has a blocking gap, implementation is blocked, or verification fails.
+4. Execute the approved tasks without reopening the planning phase or widening scope. For multi-boundary changes, implement and prove one vertical slice at a time before moving to the next. For UI changes, render the result and compare it with the approved mockup. Follow the proposed commit sequence when it still fits; record deviations, review findings, and actual commit IDs in the implementation record.
+5. Stop and ask if the plan has a blocking gap, implementation is blocked, review cannot be completed, or verification fails.
 
 ## Subagent commit gate
 
@@ -154,5 +174,8 @@ If implementation stops because of a blocker, failed verification, a declined co
 
 - `plannotator-visual-explainer` — plan-page structure, theme tokens, and diagram patterns
 - `plannotator-annotate` — browser review and approval workflow
+- `plannotator-review` — human visual review of the implementation when useful
+- `superpowers:writing-plans` — plan-document reviewer prompt and plan decomposition guidance
 - `superpowers:executing-plans` — human-in-the-loop implementation after approval
+- `superpowers:requesting-code-review` — independent implementation review in the human-in-the-loop path
 - `superpowers:subagent-driven-development` — reviewed subagent implementation for independent tasks
