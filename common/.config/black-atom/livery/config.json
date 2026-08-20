@@ -1,4 +1,5 @@
 {
+  "version": 2,
   "system_appearance": true,
   "keymappings": {
     "toggle_window": "super+ctrl+alt+shift+KeyT"
@@ -86,7 +87,10 @@
     },
     "obsidian": {
       "enabled": true,
-      "config_path": "~/repos/nikbrunner/notes/.obsidian/appearance.json"
+      "config_folders": [
+        "/Users/brunner/repos/nikbrunner/notes/.obsidian",
+        "/Users/brunner/repos/nikbrunner/imf-notes/.obsidian"
+      ]
     },
     "helm-tmux": {
       "enabled": true,
