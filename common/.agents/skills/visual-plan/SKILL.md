@@ -12,6 +12,10 @@ metadata:
 
 Create a readable HTML plan that shows the intended solution. Do not implement the planned change before approval. An independent plan review comes before human approval. Approval is the handoff into the implementation workflow below.
 
+## Standalone artifact
+
+Write the plan for a future reader who has never seen this conversation. State the current design, constraints, and rationale directly. Do not include conversation residue such as `we decided`, `as discussed`, references to previous iterations, abandoned alternatives, or claims whose meaning depends on the conversation. Keep a useful rationale when it explains the design, but express it as a present fact or explicit owner decision. Apply this rule to prose, headings, labels, snippets, open questions, and the implementation record.
+
 ## Scope
 
 Use this skill for implementation plans that benefit from visual structure: UI changes, stateful workflows, APIs, data flow, migrations, architecture changes, CLI behavior, and refactors with meaningful relationships to explain.
@@ -81,7 +85,7 @@ Use only sections that serve the change. The first viewport must answer what is 
 - proposed commit sequence, when the change has natural commit boundaries
 - test strategy and observable acceptance criteria
 
-When useful, pre-plan commits as an ordered list. Give each proposed commit a small scope, an imperative intent, its affected area, and the validation that should pass before it lands. Keep the plan at one commit when splitting would make review harder. Record the actual commit IDs in the implementation record later.
+When useful, pre-plan commits as an ordered list. Give each proposed commit a small scope, an imperative intent, its affected area, and the validation that should pass before it lands. Keep the plan at one commit when splitting would make review harder. Record the proposed commit sequence in the post-implementation update; report actual commit IDs after the commit without reopening the plan.
 
 For multi-boundary changes, organize the implementation around vertical slices rather than database/service/API/frontend layers. Each slice must leave an observable path working, even when it uses a named mock or fixture that a later slice replaces. Include the proof command, screen, or test for each slice and the barrier it is intended to expose.
 
@@ -92,7 +96,7 @@ Show the solution rather than describing it abstractly:
 - Use short representative code for meaningful interfaces, schemas, configuration, or tricky behavior. Label each snippet with its proposed file path and mark illustrative code when the repository does not contain the target subsystem.
 - Use timelines for sequence and dependency only. Never include time estimates.
 
-Include a collapsed implementation record with a planning row and the columns `Phase`, `What changed`, `Why`, `Fix`, and `Landed in`. Record current facts only, for example `Planning | Plan drafted | ... | plans/<slug>.html`. After approval, update it at each implementation phase, checkpoint, commit, or plan deviation. Record findings, not debugging, and never invent entries.
+Include a collapsed implementation record with a planning row and the columns `Phase`, `What changed`, `Why`, `Fix`, and `Landed in`. Record current facts only, for example `Planning | Plan drafted | ... | plans/<slug>.html`. Update it once after implementation completes, using the **After implementation** section. Record findings, not debugging, and never invent entries.
 
 ### 4. Review the plan independently
 
@@ -102,6 +106,7 @@ Before opening the human approval gate, read the `superpowers:writing-plans` pla
 - contract-audit coverage and buildability against the repository
 - affected files, interfaces, dependencies, sequencing, and risks
 - for each tracer slice, whether the boundary path is executable, its temporary seams are named, its proof is observable, and its hidden prerequisites are accounted for
+- whether the artifact is understandable without the conversation, with no residue in prose, headings, labels, snippets, open questions, or the implementation record
 - whether diagrams, mockups, and snippets agree with the written proposal
 
 The reviewer reports findings only. It does not implement or approve the plan. Address every blocking or important finding in the HTML, then rerun the reviewer when the plan changes materially. A missing reviewer capability is an incomplete review, not an approval; report it before continuing.
@@ -141,9 +146,9 @@ Treat the approved HTML plan as the implementation contract. Re-read it and rais
    - **Subagent-driven** — announce and load `superpowers:subagent-driven-development`. Use fresh implementer and reviewer subagents per task, then a broad final review, without pausing for human check-ins between tasks. That workflow's task reviews and final whole-branch review satisfy the implementation-review gate; do not dispatch a duplicate review from this skill. Use this when the plan has mostly independent tasks that fit the current session. Before starting, ask whether to enable the **commit gate** for this run.
 2. If the selected mode conflicts with the plan's task shape, explain the conflict and ask before editing. Otherwise follow the supporting Superpowers workflow. First use `superpowers:using-git-worktrees` to detect whether the current directory is already an isolated worktree. If it is, continue there. Only create a new worktree when needed and after that skill's consent gate. Then use relevant domain and TDD skills during implementation, `superpowers:verification-before-completion` before claiming success, and `superpowers:finishing-a-development-branch` after review and all checks pass.
 3. When using subagent-driven mode, keep the commit-gate choice for the whole run and do not ask it again at the end:
-   - **Commit gate enabled** — finish implementation, reviews, and verification, update the plan, prepare the proposed commit sequence, then stop before `git add`, `git commit`, or `git push` and ask for approval.
+   - **Commit gate enabled** — finish implementation, reviews, and verification, prepare the post-implementation plan update and proposed commit sequence, then stop before `git add`, `git commit`, or `git push` and ask for approval.
    - **Commit gate disabled** — continue through the normal commit workflow after verification.
-4. Execute the approved tasks without reopening the planning phase or widening scope. For multi-boundary changes, implement and prove one vertical slice at a time before moving to the next. For UI changes, render the result and compare it with the approved mockup. Follow the proposed commit sequence when it still fits; record deviations, review findings, and actual commit IDs in the implementation record.
+4. Execute the approved tasks without reopening the planning phase or widening scope. For multi-boundary changes, implement and prove one vertical slice at a time before moving to the next. For UI changes, render the result and compare it with the approved mockup. Follow the proposed commit sequence when it still fits. Keep the approved plan unchanged while implementation is running.
 5. Stop and ask if the plan has a blocking gap, implementation is blocked, review cannot be completed, or verification fails.
 
 ## Subagent commit gate
@@ -151,10 +156,9 @@ Treat the approved HTML plan as the implementation contract. Re-read it and rais
 When the subagent-driven commit gate is enabled:
 
 1. Complete the implementation, reviews, and agreed verification without committing or pushing.
-2. Update the implementation record, including the final verification result and proposed commit message or sequence.
-3. If implementation is complete, rename the tracked plan to its `-completed.html` filename before requesting approval so the final plan is part of the reviewed change.
-4. Show the changed files, verification evidence, plan path, and proposed commit sequence. Ask for approval to stage and commit.
-5. If approved, continue the normal commit workflow and record the actual commit IDs. If declined, leave all changes uncommitted and keep the final plan available for review.
+2. Prepare the changed-file list, verification evidence, and proposed commit sequence for the **After implementation** section. Do not edit the plan here.
+3. Ask for approval to stage and commit.
+4. If approved, continue the normal commit workflow and report the actual commit IDs after the commit without reopening the plan. If declined, leave all changes uncommitted and keep the approved plan available for review.
 
 When the subagent-driven commit gate is disabled, follow the normal commit workflow.
 
@@ -162,10 +166,10 @@ When the subagent-driven commit gate is disabled, follow the normal commit workf
 
 When implementation is complete:
 
-1. Run the agreed verification and record the result in the implementation record.
-2. If subagent-driven mode uses the commit gate, follow the **Subagent commit gate** section before staging or committing.
-3. Otherwise, let the selected implementation workflow handle its commit decision and record each landed commit or state that the changes remain uncommitted by choice.
-4. If the plan has not already been renamed during the commit-gate handoff, rename it from `plans/<slug>.html` to `plans/<slug>-completed.html`. If that destination exists, append `-2`, `-3`, and so on rather than overwriting it.
+1. Run the agreed verification and update the implementation record with the final verification result, completed phases, deviations, review findings, and proposed commit sequence.
+2. Rename the plan from `plans/<slug>.html` to `plans/<slug>-completed.html`. If that destination exists, append `-2`, `-3`, and so on rather than overwriting it.
+3. If subagent-driven mode uses the commit gate, follow the **Subagent commit gate** section before staging or committing.
+4. Otherwise, let the selected implementation workflow handle its commit decision. Report actual commit IDs after the commit without reopening the plan.
 5. Update the final implementation-record row with the completed filename and report that path to the user.
 
 If implementation stops because of a blocker, failed verification, a declined commit gate, or an explicit pause, record the current status and residual work and report the available plan path.
@@ -174,6 +178,7 @@ If implementation stops because of a blocker, failed verification, a declined co
 
 - `plannotator-visual-explainer` — plan-page structure, theme tokens, and diagram patterns
 - `plannotator-annotate` — browser review and approval workflow
+- `dev:commit` — selective final commit and commit approval workflow
 - `plannotator-review` — human visual review of the implementation when useful
 - `superpowers:writing-plans` — plan-document reviewer prompt and plan decomposition guidance
 - `superpowers:executing-plans` — human-in-the-loop implementation after approval
