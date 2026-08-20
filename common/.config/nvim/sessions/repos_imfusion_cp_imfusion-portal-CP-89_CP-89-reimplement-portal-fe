@@ -10,7 +10,7 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +145 fe/tmp/HANDOFF.md
+badd +1 fe/tmp/HANDOFF.md
 badd +61 .gitignore
 argglobal
 %argdel
@@ -32,8 +32,8 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe 'vert 1resize ' . ((&columns * 139 + 139) / 279)
-exe 'vert 2resize ' . ((&columns * 139 + 139) / 279)
+exe 'vert 1resize ' . ((&columns * 168 + 168) / 337)
+exe 'vert 2resize ' . ((&columns * 168 + 168) / 337)
 tcd ~/repos/imfusion/cp/imfusion-portal-CP-89
 argglobal
 xnoremap <buffer> $ g$
@@ -116,7 +116,7 @@ setlocal modifiable
 setlocal nrformats=bin,hex
 setlocal number
 setlocal numberwidth=4
-setlocal omnifunc=htmlcomplete#CompleteTags
+setlocal omnifunc=v:lua.vim.lsp.omnifunc
 setlocal nopreserveindent
 setlocal nopreviewwindow
 setlocal quoteescape=\\
@@ -160,11 +160,11 @@ setlocal nowrap
 setlocal wrapmargin=0
 1
 sil! normal! zo
-41
+43
 sil! normal! zo
-83
+70
 sil! normal! zo
-let s:l = 145 - ((53 * winheight(0) + 31) / 62)
+let s:l = 145 - ((66 * winheight(0) + 38) / 77)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
@@ -285,7 +285,7 @@ setlocal winhighlight=
 setlocal nowinpinned
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 61 - ((31 * winheight(0) + 31) / 62)
+let s:l = 61 - ((38 * winheight(0) + 38) / 77)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
@@ -293,8 +293,8 @@ keepjumps 61
 normal! 0
 wincmd w
 2wincmd w
-exe 'vert 1resize ' . ((&columns * 139 + 139) / 279)
-exe 'vert 2resize ' . ((&columns * 139 + 139) / 279)
+exe 'vert 1resize ' . ((&columns * 168 + 168) / 337)
+exe 'vert 2resize ' . ((&columns * 168 + 168) / 337)
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
@@ -310,6 +310,7 @@ if filereadable(s:sx)
 endif
 let &g:so = s:so_save | let &g:siso = s:siso_save
 set hlsearch
+nohlsearch
 doautoall SessionLoadPost
 unlet SessionLoad
 " vim: set ft=vim :

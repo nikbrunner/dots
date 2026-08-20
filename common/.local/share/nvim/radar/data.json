@@ -80,7 +80,7 @@
             "label": "1"
           }
         ],
-        "lastAccessed": 1787065208
+        "lastAccessed": 1787158277
       }
     },
     "~/repos/nikbrunner/black-atom": {
@@ -95,7 +95,7 @@
             "label": "2"
           }
         ],
-        "lastAccessed": 1787125122
+        "lastAccessed": 1787244323
       }
     },
     "~/repos/nikbrunner/dots": {
@@ -120,9 +120,13 @@
           {
             "filename": "common/.config/herdr/config.toml",
             "label": "5"
+          },
+          {
+            "filename": "common/.config/black-atom/livery/config.json",
+            "label": "6"
           }
         ],
-        "lastAccessed": 1787145362
+        "lastAccessed": 1787244245
       }
     },
     "~/repos/nikbrunner/imf-notes": {
@@ -137,7 +141,7 @@
             "label": "2"
           }
         ],
-        "lastAccessed": 1787139661
+        "lastAccessed": 1787152258
       }
     },
     "~/repos/nikbrunner/minifugit.nvim": {
@@ -155,15 +159,11 @@
       "main": {
         "locks": [
           {
-            "filename": "05 - Meta/Templates/Daily Note.md",
+            "filename": "Log/2026/2026.08/2026.08.20 - Thu.md",
             "label": "1"
-          },
-          {
-            "filename": "Log/2026/2026.05/2026.05.22 - Fri.md",
-            "label": "2"
           }
         ],
-        "lastAccessed": 1787126676
+        "lastAccessed": 1787244258
       }
     }
   }
