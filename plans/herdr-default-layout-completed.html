@@ -1,0 +1,431 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Herdr Default Layout Implementation Plan</title>
+  <style>
+    :root {
+      --background: oklch(0.97 0.005 260);
+      --foreground: oklch(0.18 0.02 260);
+      --card: oklch(1 0 0);
+      --card-foreground: oklch(0.18 0.02 260);
+      --primary: oklch(0.5 0.25 280);
+      --primary-foreground: oklch(1 0 0);
+      --secondary: oklch(0.5 0.18 180);
+      --secondary-foreground: oklch(1 0 0);
+      --muted: oklch(0.92 0.01 260);
+      --muted-foreground: oklch(0.4 0.02 260);
+      --accent: oklch(0.6 0.22 50);
+      --accent-foreground: oklch(0.18 0.02 260);
+      --destructive: oklch(0.5 0.25 25);
+      --destructive-foreground: oklch(1 0 0);
+      --success: oklch(0.45 0.2 150);
+      --success-foreground: oklch(1 0 0);
+      --warning: oklch(0.55 0.18 85);
+      --warning-foreground: oklch(0.18 0.02 260);
+      --border: oklch(0.88 0.01 260);
+      --input: oklch(0.92 0.01 260);
+      --ring: oklch(0.5 0.25 280);
+      --code-bg: oklch(0.92 0.01 260);
+      --font-sans: "Inter", system-ui, -apple-system, sans-serif;
+      --font-mono: "JetBrains Mono", "Fira Code", ui-monospace, monospace;
+      --font-display: ui-serif, Georgia, "Times New Roman", serif;
+      --radius: 0.625rem;
+    }
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: var(--font-sans); background: var(--background); color: var(--foreground); line-height: 1.65; font-size: 15px; -webkit-font-smoothing: antialiased; }
+    .container { max-width: 1080px; margin: 0 auto; padding: 64px 24px; }
+    .eyebrow, .label, .section-number, .tag, .badge, .code-label, th { font-family: var(--font-mono); }
+    .eyebrow { font-size: .72rem; font-weight: 500; text-transform: uppercase; letter-spacing: .06em; color: var(--muted-foreground); }
+    h1, h2, h3 { font-family: var(--font-display); font-weight: 500; }
+    header h1 { font-size: 2.15rem; margin: 8px 0 24px; line-height: 1.18; }
+    p { max-width: 70ch; }
+    .prompt-box { background: var(--muted); border: 1.5px solid var(--border); border-radius: var(--radius); padding: 18px 24px; }
+    .prompt-label { font-family: var(--font-mono); font-size: .7rem; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: var(--muted-foreground); display: block; margin-bottom: 4px; }
+    .prompt-box p { font-size: .92rem; color: var(--muted-foreground); }
+    .summary-strip { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin: 32px 0; }
+    .stat-card, .card { border: 1.5px solid var(--border); border-radius: var(--radius); background: var(--card); }
+    .stat-card { padding: 16px 20px; text-align: center; }
+    .stat-value { font-family: var(--font-display); font-size: 1.8rem; display: block; }
+    .stat-label { font-family: var(--font-mono); font-size: .68rem; text-transform: uppercase; letter-spacing: .05em; color: var(--muted-foreground); display: block; margin-top: 3px; }
+    section { margin-top: 72px; }
+    .section-header { display: flex; align-items: baseline; gap: 16px; margin-bottom: 26px; padding-bottom: 8px; border-bottom: 1.5px solid var(--border); }
+    .section-number { font-size: .75rem; font-weight: 600; color: var(--primary); }
+    .section-header h2 { font-size: 1.45rem; }
+    .lead { font-size: 1.05rem; margin-bottom: 20px; }
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+    .card { padding: 22px; }
+    .card h3 { font-size: 1.08rem; margin-bottom: 8px; }
+    .card p, .card li { color: var(--muted-foreground); font-size: .92rem; }
+    ul { padding-left: 20px; }
+    li + li { margin-top: 7px; }
+    .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+    .tag { font-size: .68rem; padding: 3px 8px; border-radius: calc(var(--radius) - 4px); background: var(--muted); color: var(--muted-foreground); }
+    .tag.highlight { background: color-mix(in oklab, var(--primary) 12%, transparent); color: var(--primary); }
+    .diagram-panel { border: 1.5px solid var(--border); border-radius: var(--radius); padding: 24px; margin: 24px 0; background: var(--card); }
+    .diagram-caption { font-family: var(--font-mono); font-size: .72rem; color: var(--muted-foreground); display: block; margin-top: 8px; text-align: center; }
+    .layout-tabs { display: flex; gap: 6px; margin-bottom: 8px; }
+    .layout-tab { flex: 1; padding: 8px; border-radius: 6px; background: var(--muted); text-align: center; font-family: var(--font-mono); font-size: .76rem; color: var(--muted-foreground); }
+    .layout-tab.active { background: color-mix(in oklab, var(--primary) 16%, var(--card)); color: var(--primary); border: 1px solid var(--primary); }
+    .workspace-preview { display: grid; grid-template-columns: 70% 30%; grid-template-rows: 65% 35%; height: 290px; gap: 6px; }
+    .pane { border: 1.5px solid var(--border); border-radius: 8px; background: var(--muted); display: flex; align-items: center; justify-content: center; font-family: var(--mono); font-size: .9rem; }
+    .pane.primary { grid-row: 1 / 3; border-color: var(--primary); background: color-mix(in oklab, var(--primary) 7%, var(--card)); }
+    .server-preview { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; height: 290px; gap: 6px; }
+    .server-preview .pane { border-color: var(--secondary); background: color-mix(in oklab, var(--secondary) 6%, var(--card)); }
+    .mock-note { margin-top: 10px; color: var(--muted-foreground); font-size: .86rem; }
+    .code-panel { background: var(--code-bg); border-radius: var(--radius); padding: 22px; overflow-x: auto; margin: 18px 0; border: 1.5px solid var(--border); }
+    .code-label { font-size: .7rem; color: var(--muted-foreground); display: block; margin-bottom: 8px; }
+    pre { font-family: var(--font-mono); font-size: .82rem; line-height: 1.55; color: var(--foreground); white-space: pre; }
+    .kw { color: var(--primary); } .str { color: var(--success); } .cm { color: var(--muted-foreground); font-style: italic; }
+    .milestones { display: flex; flex-direction: column; }
+    .milestone { display: grid; grid-template-columns: 110px 28px 1fr; gap: 0 18px; }
+    .milestone .when { text-align: right; font-family: var(--font-mono); font-size: .75rem; color: var(--muted-foreground); padding-top: 4px; }
+    .dot-col { display: flex; flex-direction: column; align-items: center; }
+    .dot { width: 14px; height: 14px; border-radius: 50%; background: var(--card); border: 3px solid var(--primary); flex-shrink: 0; }
+    .line { width: 2px; flex: 1; background: var(--border); margin: 4px 0; }
+    .milestone:last-child .line { display: none; }
+    .milestone .body { padding-bottom: 38px; }
+    .milestone h3 { font-size: 1.12rem; margin-bottom: 4px; }
+    .milestone p { color: var(--muted-foreground); font-size: .9rem; }
+    table { width: 100%; border-collapse: collapse; border: 1.5px solid var(--border); background: var(--card); border-radius: var(--radius); overflow: hidden; display: table; }
+    th, td { text-align: left; padding: 14px 16px; border-bottom: 1px solid var(--border); vertical-align: top; }
+    th { font-size: .68rem; text-transform: uppercase; letter-spacing: .05em; color: var(--muted-foreground); background: var(--muted); }
+    td { font-size: .88rem; }
+    tr:last-child td { border-bottom: 0; }
+    .badge { display: inline-block; font-size: .66rem; font-weight: 600; padding: 2px 8px; border-radius: 5px; text-transform: uppercase; }
+    .badge.med { background: color-mix(in oklab, var(--warning) 15%, transparent); color: var(--warning); }
+    .badge.low { background: color-mix(in oklab, var(--success) 15%, transparent); color: var(--success); }
+    .badge.new { background: color-mix(in oklab, var(--primary) 13%, transparent); color: var(--primary); }
+    .callout { border-left: 3px solid var(--primary); padding: 16px 22px; background: var(--card); border-radius: 0 var(--radius) var(--radius) 0; margin: 18px 0; }
+    .callout h3 { font-size: 1rem; margin-bottom: 4px; }
+    .callout p { color: var(--muted-foreground); font-size: .9rem; }
+    details { border: 1.5px solid var(--border); border-radius: var(--radius); margin: 16px 0; background: var(--card); }
+    summary { font-weight: 500; padding: 16px 22px; cursor: pointer; list-style: none; }
+    summary::before { content: "▸"; display: inline-block; margin-right: 8px; transition: transform .2s; }
+    details[open] summary::before { transform: rotate(90deg); }
+    .details-body { padding: 0 22px 22px; overflow-x: auto; }
+    .file-list code { font-family: var(--font-mono); font-size: .78rem; }
+    .checklist { list-style: none; padding-left: 0; }
+    .checklist li::before { content: "□"; color: var(--primary); margin-right: 9px; font-family: var(--font-mono); }
+    @media (max-width: 760px) {
+      .summary-strip, .two-col { grid-template-columns: 1fr; }
+      .milestone { grid-template-columns: 76px 22px 1fr; gap: 0 10px; }
+      table { display: block; overflow-x: auto; }
+      .workspace-preview, .server-preview { height: 220px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="container">
+    <header>
+      <span class="eyebrow">Implementation plan · dots / Herdr</span>
+      <h1>Apply one default layout to every new Herdr workspace</h1>
+      <div class="prompt-box">
+        <span class="prompt-label">Brief</span>
+        <p>Every new workspace and worktree gets the same static two-tab layout. Neovim starts in the Nvim pane; every other pane stays at its idle login shell. The setup lives in dots and does not depend on a third-party layout plugin.</p>
+      </div>
+    </header>
+
+    <div class="summary-strip">
+      <div class="stat-card"><span class="stat-value">1</span><span class="stat-label">Local plugin</span></div>
+      <div class="stat-card"><span class="stat-value">2</span><span class="stat-label">Tabs</span></div>
+      <div class="stat-card"><span class="stat-value">7</span><span class="stat-label">Named panes</span></div>
+      <div class="stat-card"><span class="stat-value">1</span><span class="stat-label">Started command</span></div>
+    </div>
+
+    <section>
+      <div class="section-header"><span class="section-number">01</span><h2>Scope</h2></div>
+      <p class="lead">A small local plugin subscribes to Herdr’s <code>workspace.created</code> event. Herdr 0.8 emits that event for ordinary workspaces and worktree workspaces, so one path covers both cases.</p>
+      <div class="two-col">
+        <article class="card">
+          <h3>Included</h3>
+          <ul>
+            <li>Create the Work and Servers tabs in fresh workspaces.</li>
+            <li>Name all seven panes and start Neovim only in the Nvim pane.</li>
+            <li>Track and link the local plugin through dots.</li>
+            <li>Make the install script the source of truth instead of a tracked runtime registry.</li>
+            <li>Remove herdr-plus and its worktree layout.</li>
+            <li>Unlink the stale, untracked herdr-navigator plugin.</li>
+          </ul>
+        </article>
+        <article class="card">
+          <h3>Not included</h3>
+          <ul>
+            <li>Per-repository or per-branch layouts.</li>
+            <li>Automatic server, shell-command, or agent startup.</li>
+            <li>A layout picker or editable layout schema.</li>
+            <li>Changes to existing or restored workspaces.</li>
+            <li>Installation of 3mmdrew/herdr-layout.</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-header"><span class="section-number">02</span><h2>Current state and target</h2></div>
+      <div class="two-col">
+        <article class="card">
+          <h3>Current</h3>
+          <p><code>cloudmanic.herdr-plus</code> applies a tracked TOML layout only to worktrees. Ordinary workspaces keep Herdr’s single pane. Its project picker is bound to <code>alt+p</code>.</p>
+          <div class="tags"><span class="tag">worktree only</span><span class="tag">third-party config</span></div>
+        </article>
+        <article class="card">
+          <h3>Target</h3>
+          <p><code>dots.default-layout</code> owns one static layout and applies it to every new workspace, including workspaces created for new or opened worktrees. Herdr’s event context supplies the workspace, tab, and root-pane IDs.</p>
+          <div class="tags"><span class="tag highlight">all new workspaces</span><span class="tag highlight">owned in dots</span></div>
+        </article>
+      </div>
+      <div class="callout">
+        <h3>Plugin audit</h3>
+        <p>The live registry contains <code>herdr-navigator</code>, but <code>install-plugins.sh</code> does not track it. Its local manifest is unavailable and its job overlaps with the tracked <code>helm-herdr</code> plugin. The implementation unlinks it instead of adding it to the installer. The generated <code>plugins.json</code> registry also stops being tracked and symlinked, so <code>install-plugins.sh</code> becomes the portable source of truth.</p>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-header"><span class="section-number">03</span><h2>Resulting layout</h2></div>
+      <div class="two-col">
+        <article class="card">
+          <div class="layout-tabs"><div class="layout-tab active">Work</div><div class="layout-tab">Servers</div></div>
+          <div class="workspace-preview">
+            <div class="pane primary">Nvim</div>
+            <div class="pane">Agent</div>
+            <div class="pane">Shell</div>
+          </div>
+          <p class="mock-note">Nvim gets 70% of the width and starts Neovim. Agent gets 65% of the right column’s height.</p>
+        </article>
+        <article class="card">
+          <div class="layout-tabs"><div class="layout-tab">Work</div><div class="layout-tab active">Servers</div></div>
+          <div class="server-preview">
+            <div class="pane">Server I</div>
+            <div class="pane">Server II</div>
+            <div class="pane">Server III</div>
+            <div class="pane">Server IV</div>
+          </div>
+          <p class="mock-note">Four equal panes. The Work tab remains focused after setup.</p>
+        </article>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-header"><span class="section-number">04</span><h2>Event and command flow</h2></div>
+      <div class="diagram-panel">
+        <svg viewBox="0 0 920 300" xmlns="http://www.w3.org/2000/svg" style="width:100%">
+          <style>
+            .box { fill: var(--card); stroke: var(--border); stroke-width: 1.5; }
+            .new { fill: color-mix(in oklab, var(--primary) 8%, transparent); stroke: var(--primary); stroke-width: 1.5; }
+            .ok { fill: color-mix(in oklab, var(--success) 8%, transparent); stroke: var(--success); stroke-width: 1.5; }
+            .title { font-family: var(--font-sans); font-size: 13px; font-weight: 600; fill: var(--foreground); }
+            .sub { font-family: var(--font-mono); font-size: 10px; fill: var(--muted-foreground); }
+            .edge { stroke: var(--muted-foreground); stroke-width: 1.5; }
+            .edge-label { font-family: var(--font-mono); font-size: 9px; fill: var(--muted-foreground); }
+          </style>
+          <defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="var(--muted-foreground)"/></marker></defs>
+          <rect x="20" y="100" width="150" height="64" rx="10" class="box"/>
+          <text x="95" y="125" text-anchor="middle" class="title">Herdr</text>
+          <text x="95" y="144" text-anchor="middle" class="sub">workspace created</text>
+          <line x1="170" y1="132" x2="250" y2="132" class="edge" marker-end="url(#arrow)"/>
+          <text x="210" y="119" text-anchor="middle" class="edge-label">workspace.created</text>
+          <rect x="250" y="100" width="170" height="64" rx="10" class="new"/>
+          <text x="335" y="125" text-anchor="middle" class="title">Local plugin hook</text>
+          <text x="335" y="144" text-anchor="middle" class="sub">apply-layout.sh</text>
+          <line x1="420" y1="132" x2="500" y2="132" class="edge" marker-end="url(#arrow)"/>
+          <text x="460" y="119" text-anchor="middle" class="edge-label">tab + pane lists</text>
+          <path d="M570 90 L650 132 L570 174 L490 132 Z" class="box"/>
+          <text x="570" y="128" text-anchor="middle" class="title">Fresh?</text>
+          <text x="570" y="145" text-anchor="middle" class="sub">1 tab, 1 pane</text>
+          <line x1="650" y1="132" x2="730" y2="132" class="edge" marker-end="url(#arrow)"/>
+          <text x="690" y="119" text-anchor="middle" class="edge-label">yes</text>
+          <rect x="730" y="100" width="170" height="64" rx="10" class="ok"/>
+          <text x="815" y="125" text-anchor="middle" class="title">Build layout</text>
+          <text x="815" y="144" text-anchor="middle" class="sub">rename, split, create tab</text>
+          <path d="M570 174 C570 230 470 238 400 238" fill="none" class="edge" marker-end="url(#arrow)"/>
+          <text x="505" y="230" text-anchor="middle" class="edge-label">no: log and leave untouched</text>
+          <rect x="250" y="212" width="150" height="52" rx="10" class="box"/>
+          <text x="325" y="243" text-anchor="middle" class="title">Exit cleanly</text>
+        </svg>
+        <span class="diagram-caption">Only a fresh workspace is mutated. Existing and restored workspaces never enter this flow.</span>
+      </div>
+      <div class="code-panel">
+        <span class="code-label">common/.config/herdr/local-plugins/default-layout/herdr-plugin.toml</span>
+        <pre><code><span class="kw">id</span> = <span class="str">"dots.default-layout"</span>
+<span class="kw">name</span> = <span class="str">"Dots Default Layout"</span>
+<span class="kw">version</span> = <span class="str">"0.1.0"</span>
+<span class="kw">min_herdr_version</span> = <span class="str">"0.8.0"</span>
+<span class="kw">platforms</span> = [<span class="str">"linux"</span>, <span class="str">"macos"</span>]
+
+[[events]]
+<span class="kw">on</span> = <span class="str">"workspace.created"</span>
+<span class="kw">command</span> = [<span class="str">"sh"</span>, <span class="str">"apply-layout.sh"</span>]</code></pre>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-header"><span class="section-number">05</span><h2>Vertical slices</h2></div>
+      <div class="milestones">
+        <div class="milestone">
+          <div class="when">Slice 1</div><div class="dot-col"><span class="dot"></span><span class="line"></span></div>
+          <div class="body">
+            <h3>Turn one fresh workspace into the final layout</h3>
+            <p>Create the manifest, POSIX shell hook, and a fake-Herdr test. The test supplies event IDs, records CLI calls, and returns deterministic JSON IDs. It proves tab names, pane names, split directions, ratios, command order, and the no-command rule.</p>
+            <div class="tags"><span class="tag">temporary seam: fake herdr CLI</span><span class="tag">proof: sh test.sh</span></div>
+          </div>
+        </div>
+        <div class="milestone">
+          <div class="when">Slice 2</div><div class="dot-col"><span class="dot"></span><span class="line"></span></div>
+          <div class="body">
+            <h3>Register through dots and prove both creation paths</h3>
+            <p>Link the local source through <code>symlinks.yml</code> and <code>install-plugins.sh</code>. Before installation, the script removes <code>~/.config/herdr/plugins.json</code> only when it is a symlink; Herdr then recreates a regular machine-local registry. The tracked <code>smoke-test.sh</code> installs cleanup traps before creating anything, records each resource ID immediately, creates a disposable ordinary workspace and a worktree workspace, waits for two tabs and seven named panes, checks process state and geometry, then removes workspace resources before branches and temporary directories.</p>
+            <div class="tags"><span class="tag">boundary: dots → plugin registry → live Herdr</span><span class="tag">proof: sh smoke-test.sh</span></div>
+          </div>
+        </div>
+        <div class="milestone">
+          <div class="when">Slice 3</div><div class="dot-col"><span class="dot"></span><span class="line"></span></div>
+          <div class="body">
+            <h3>Remove overlapping plugin state</h3>
+            <p>Uninstall herdr-plus, remove its installer entry, layout file, and <code>alt+p</code> keybinding. Unlink the untracked herdr-navigator entry. A final registry check must contain only tracked plugins plus <code>dots.default-layout</code>.</p>
+            <div class="tags"><span class="tag">proof: herdr plugin list --json</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-header"><span class="section-number">06</span><h2>Files and contracts</h2></div>
+      <table class="file-list">
+        <thead><tr><th>File</th><th>Change</th><th>Responsibility</th></tr></thead>
+        <tbody>
+          <tr><td><code>common/.config/herdr/local-plugins/default-layout/herdr-plugin.toml</code></td><td><span class="badge new">new</span></td><td>Register the local plugin and its single event hook.</td></tr>
+          <tr><td><code>common/.config/herdr/local-plugins/default-layout/apply-layout.sh</code></td><td><span class="badge new">new</span></td><td>Guard fresh state, build both tabs, report failures.</td></tr>
+          <tr><td><code>common/.config/herdr/local-plugins/default-layout/test.sh</code></td><td><span class="badge new">new</span></td><td>Exercise the hook against a deterministic fake Herdr CLI.</td></tr>
+          <tr><td><code>common/.config/herdr/local-plugins/default-layout/smoke-test.sh</code></td><td><span class="badge new">new</span></td><td>Create disposable workspace and worktree cases against live Herdr, inspect their topology and processes, then clean them up.</td></tr>
+          <tr><td><code>common/.config/herdr/install-plugins.sh</code></td><td>modify</td><td>Remove a legacy registry symlink, link the local default-layout plugin, and install helm-herdr, nvim-nav, and reviewr from GitHub. After installation, <code>plugins.json</code> is a regular machine-local file.</td></tr>
+          <tr><td><code>symlinks.yml</code></td><td>modify</td><td>Link <code>local-plugins</code> and stop deploying the generated <code>plugins.json</code> registry.</td></tr>
+          <tr><td><code>common/.config/herdr/plugins.json</code></td><td>delete</td><td>Let Herdr keep its machine-local generated registry; the installer remains portable.</td></tr>
+          <tr><td><code>common/.config/herdr/config.toml</code></td><td>modify</td><td>Remove the obsolete herdr-plus project-picker binding only.</td></tr>
+          <tr><td><code>common/.config/herdr/plugins/config/cloudmanic.herdr-plus/worktrees/default.toml</code></td><td>delete</td><td>Remove the replaced worktree-specific layout.</td></tr>
+        </tbody>
+      </table>
+      <div class="code-panel">
+        <span class="code-label">common/.config/herdr/install-plugins.sh registry guard</span>
+        <pre><code><span class="cm"># Herdr owns its generated plugin registry.</span>
+plugins_registry=<span class="str">"$HOME/.config/herdr/plugins.json"</span>
+<span class="kw">if</span> [ -L <span class="str">"$plugins_registry"</span> ]; <span class="kw">then</span>
+  rm <span class="str">"$plugins_registry"</span>
+<span class="kw">fi</span></code></pre>
+      </div>
+      <div class="code-panel">
+        <span class="code-label">apply-layout.sh command contract</span>
+        <pre><code><span class="cm"># Inputs injected by Herdr</span>
+HERDR_BIN_PATH, HERDR_WORKSPACE_ID, HERDR_TAB_ID, HERDR_PANE_ID
+
+<span class="cm"># Existing root becomes Work / Nvim</span>
+tab rename → pane rename → split right 0.70 → split Agent down 0.65
+
+<span class="cm"># New tab becomes a 2 × 2 Servers grid</span>
+tab create --no-focus → split right 0.50
+→ split Server I down 0.50 → split Server II down 0.50
+
+<span class="cm"># Start the only automatic command, then focus Work</span>
+pane run Nvim nvim → tab focus Work
+
+<span class="cm"># Every CLI response is parsed with jq; any mutation failure stops the script.</span></code></pre>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-header"><span class="section-number">07</span><h2>Behavior matrix</h2></div>
+      <table>
+        <thead><tr><th>Case</th><th>Expected behavior</th><th>Observable proof</th></tr></thead>
+        <tbody>
+          <tr><td>New ordinary workspace</td><td>Work and Servers tabs appear. Work stays focused. Seven panes have the planned names and ratios; Neovim runs only in Nvim.</td><td><code>tab list</code> returns 2 tabs, <code>pane list</code> returns 7 panes, <code>.result.layout.splits</code> matches the planned directions and 0.70, 0.65, and 0.50 ratios within a small numeric tolerance, Nvim reports a foreground <code>nvim</code> process, and every other pane reports only its idle login shell.</td></tr>
+          <tr><td>New or newly opened worktree workspace</td><td>The same static layout appears through <code>workspace.created</code>.</td><td>Disposable worktree smoke test returns the same labels and counts.</td></tr>
+          <tr><td>Restored or existing workspace</td><td>No change.</td><td>No <code>workspace.created</code> invocation; current topology remains intact.</td></tr>
+          <tr><td>Event reaches a non-fresh workspace</td><td>The hook logs a skip and exits without mutation.</td><td>Fake-Herdr test starts with two tabs and confirms zero mutation calls.</td></tr>
+          <tr><td>Missing event IDs</td><td>The hook exits non-zero before mutation and records the error in the plugin log.</td><td>Test omits each required ID and checks failure plus zero mutation calls.</td></tr>
+          <tr><td>CLI command fails after setup begins</td><td>The hook stops, leaves the workspace usable, and sends a Herdr notification. It does not guess at rollback.</td><td>Fake CLI fails on one split; later calls are absent and notification is recorded.</td></tr>
+          <tr><td>Plugin absent or disabled</td><td>Herdr keeps its normal single-pane workspace.</td><td><code>herdr plugin list --plugin dots.default-layout --json</code> exposes registration state.</td></tr>
+          <tr><td>Tracked registry symlink from an older checkout</td><td>The installer removes only the symlink before plugin commands run. Herdr recreates <code>plugins.json</code> outside the repository.</td><td><code>test -f ~/.config/herdr/plugins.json &amp;&amp; test ! -L ~/.config/herdr/plugins.json</code> passes after installation.</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <div class="section-header"><span class="section-number">08</span><h2>Verification and acceptance</h2></div>
+      <div class="two-col">
+        <article class="card">
+          <h3>Automated checks</h3>
+          <ul class="checklist">
+            <li><code>sh -n apply-layout.sh test.sh smoke-test.sh</code></li>
+            <li><code>shellcheck apply-layout.sh test.sh smoke-test.sh</code></li>
+            <li><code>sh test.sh</code></li>
+            <li><code>dots link</code> without missing-source errors</li>
+            <li><code>~/.config/herdr/install-plugins.sh</code> after linking</li>
+            <li><code>test -f ~/.config/herdr/plugins.json &amp;&amp; test ! -L ~/.config/herdr/plugins.json</code></li>
+            <li><code>sh smoke-test.sh</code> against the running Herdr session</li>
+            <li><code>herdr plugin list --plugin dots.default-layout --json</code></li>
+          </ul>
+        </article>
+        <article class="card">
+          <h3>Live checks</h3>
+          <ul class="checklist">
+            <li>Create and inspect one disposable workspace.</li>
+            <li>Create and inspect one worktree from a temporary Git repository.</li>
+            <li>Confirm Work stays focused, Nvim runs <code>nvim</code>, and every other pane stays at its login shell.</li>
+            <li>Assert split directions and ratios through <code>.result.layout.splits</code> with numeric tolerance.</li>
+            <li>Remove all disposable workspaces, worktrees, branches, and temporary directories through traps.</li>
+            <li>Confirm cloudmanic.herdr-plus and herdr-navigator are absent.</li>
+          </ul>
+        </article>
+      </div>
+      <div class="callout">
+        <h3>Acceptance</h3>
+        <p>A newly created ordinary workspace and a newly created worktree both show the two planned tabs, seven names, planned ratios, and Neovim running only in Nvim. Existing workspaces remain unchanged. The live plugin list matches the tracked installer, and <code>plugins.json</code> is a regular machine-local file.</p>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-header"><span class="section-number">09</span><h2>Risks</h2></div>
+      <table>
+        <thead><tr><th>Risk</th><th>Level</th><th>Mitigation</th></tr></thead>
+        <tbody>
+          <tr><td>Herdr changes event or CLI response contracts in a preview release.</td><td><span class="badge med">medium</span></td><td>Use the installed binary’s documented CLI, parse named JSON fields, and keep a live smoke test. The manifest uses <code>0.8.0</code> because Herdr accepts only plain semantic versions.</td></tr>
+          <tr><td>The hook runs after the user already changed a fresh workspace.</td><td><span class="badge med">medium</span></td><td>Check for exactly one tab and one pane immediately before the first mutation.</td></tr>
+          <tr><td>A mutation fails after part of the layout exists.</td><td><span class="badge med">medium</span></td><td>Stop at the first failure and notify. Avoid destructive rollback of a workspace the user may already be using.</td></tr>
+          <tr><td><code>jq</code> is missing on a restored machine.</td><td><span class="badge low">low</span></td><td><code>jq</code> is already tracked in <code>common/.config/mise/config.toml</code>; validate it before mutation.</td></tr>
+          <tr><td>Unrelated edits in <code>config.toml</code> are overwritten.</td><td><span class="badge low">low</span></td><td>Remove only the herdr-plus keybinding block and preserve the current file contents.</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <div class="section-header"><span class="section-number">10</span><h2>Commit shape</h2></div>
+      <article class="card">
+        <h3>One focused commit</h3>
+        <p><code>feat(herdr): apply a default workspace layout</code></p>
+        <p>The plugin source, dots registration, conflict removal, tests, and plan belong together. Splitting them would leave either an unregistered plugin or an installer that points at missing files.</p>
+      </article>
+    </section>
+
+    <section>
+      <div class="section-header"><span class="section-number">11</span><h2>Implementation record</h2></div>
+      <details>
+        <summary>Current record</summary>
+        <div class="details-body">
+          <table>
+            <thead><tr><th>Phase</th><th>What changed</th><th>Why</th><th>Fix</th><th>Landed in</th></tr></thead>
+            <tbody>
+              <tr><td>Planning</td><td>Plan approved</td><td>Define the event contract, layout geometry, cleanup, and proof before editing Herdr config.</td><td>Independent technical review and Plannotator approval completed.</td><td><code>plans/herdr-default-layout-completed.html</code></td></tr>
+              <tr><td>Implementation</td><td>Local layout plugin and tests added</td><td>Apply one static layout to ordinary and worktree workspaces without third-party layout plugins.</td><td>Added the event hook, fake-CLI tests, live smoke test, dots links, and installer registration.</td><td>Uncommitted</td></tr>
+              <tr><td>Compatibility</td><td>Runtime contracts aligned with Herdr 0.8 preview</td><td>Herdr accepts plain semantic manifest versions and reports the idle login shell as foreground.</td><td>Use <code>min_herdr_version = "0.8.0"</code>; accept only an empty process list or the pane’s shell PID.</td><td>Uncommitted</td></tr>
+              <tr><td>Review</td><td>Task and final reviews completed</td><td>Catch empty-topology, readiness-race, and assertion gaps before handoff.</td><td>One task fix round and one final fix wave passed scoped re-review.</td><td>Uncommitted</td></tr>
+              <tr><td>Verification</td><td>Syntax, ShellCheck, fake tests, live smoke, registry, and diff hygiene passed</td><td>Prove both workspace creation paths and cleanup from the parent session.</td><td>All checks exited zero; four expected plugin IDs remain; staged files: 0.</td><td>Uncommitted</td></tr>
+              <tr><td>Follow-up</td><td>Neovim starts in the Nvim pane</td><td>Open new workspaces ready for editing while every other pane stays idle.</td><td>Added one <code>pane run … nvim</code> call and process-aware fake/live assertions.</td><td>Uncommitted</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
+    </section>
+  </main>
+</body>
+</html>

@@ -57,8 +57,8 @@ common:
   common/.config/herdr/.plugins.lock: ~/.config/herdr/.plugins.lock
   common/.config/herdr/config.toml: ~/.config/herdr/config.toml
   common/.config/herdr/install-plugins.sh: ~/.config/herdr/install-plugins.sh
+  common/.config/herdr/local-plugins: ~/.config/herdr/local-plugins
   common/.config/herdr/plugins: ~/.config/herdr/plugins
-  common/.config/herdr/plugins.json: ~/.config/herdr/plugins.json
   common/.config/herdr/release-notes.json: ~/.config/herdr/release-notes.json
   common/.config/herdr/session-history.json: ~/.config/herdr/session-history.json
   common/.config/herdr/session.json: ~/.config/herdr/session.json
