@@ -6,13 +6,13 @@
       "custom_name": "notes",
       "identity_cwd": "/Users/brunner/repos/nikbrunner/notes",
       "public_pane_numbers": {
-        "252": 4,
-        "251": 3,
-        "255": 7,
-        "253": 5,
-        "254": 6,
         "250": 2,
-        "249": 1
+        "255": 7,
+        "252": 4,
+        "249": 1,
+        "251": 3,
+        "253": 5,
+        "254": 6
       },
       "next_public_pane_number": 8,
       "public_tab_numbers": [
@@ -45,6 +45,10 @@
             }
           },
           "panes": {
+            "249": {
+              "cwd": "/Users/brunner/repos/nikbrunner/notes",
+              "label": "Nvim"
+            },
             "250": {
               "cwd": "/Users/brunner/repos/nikbrunner/notes",
               "label": "Agent"
@@ -52,10 +56,6 @@
             "251": {
               "cwd": "/Users/brunner/repos/nikbrunner/notes",
               "label": "Shell"
-            },
-            "249": {
-              "cwd": "/Users/brunner/repos/nikbrunner/notes",
-              "label": "Nvim"
             }
           },
           "zoomed": false,
@@ -95,21 +95,21 @@
             }
           },
           "panes": {
-            "253": {
+            "255": {
               "cwd": "/Users/brunner/repos/nikbrunner/notes",
-              "label": "Server II"
-            },
-            "254": {
-              "cwd": "/Users/brunner/repos/nikbrunner/notes",
-              "label": "Server III"
+              "label": "Server IV"
             },
             "252": {
               "cwd": "/Users/brunner/repos/nikbrunner/notes",
               "label": "Server I"
             },
-            "255": {
+            "254": {
               "cwd": "/Users/brunner/repos/nikbrunner/notes",
-              "label": "Server IV"
+              "label": "Server III"
+            },
+            "253": {
+              "cwd": "/Users/brunner/repos/nikbrunner/notes",
+              "label": "Server II"
             }
           },
           "zoomed": false,
@@ -125,12 +125,12 @@
       "identity_cwd": "/Users/brunner/repos/nikbrunner/dots/common/.config/herdr/sounds",
       "public_pane_numbers": {
         "241": 1,
-        "244": 4,
         "245": 5,
-        "246": 6,
+        "243": 3,
         "247": 7,
         "291": 14,
-        "243": 3,
+        "244": 4,
+        "246": 6,
         "242": 2
       },
       "next_public_pane_number": 17,
@@ -221,21 +221,21 @@
             }
           },
           "panes": {
-            "247": {
+            "245": {
               "cwd": "/Users/brunner/repos/nikbrunner/dots",
-              "label": "Server IV"
-            },
-            "246": {
-              "cwd": "/Users/brunner/repos/nikbrunner/dots",
-              "label": "Server III"
+              "label": "Server II"
             },
             "244": {
               "cwd": "/Users/brunner/repos/nikbrunner/dots",
               "label": "Server I"
             },
-            "245": {
+            "246": {
               "cwd": "/Users/brunner/repos/nikbrunner/dots",
-              "label": "Server II"
+              "label": "Server III"
+            },
+            "247": {
+              "cwd": "/Users/brunner/repos/nikbrunner/dots",
+              "label": "Server IV"
             }
           },
           "zoomed": false,
@@ -264,13 +264,13 @@
       "custom_name": "black-atom",
       "identity_cwd": "/Users/brunner/repos/nikbrunner/black-atom",
       "public_pane_numbers": {
-        "258": 1,
-        "261": 4,
-        "262": 5,
         "263": 6,
-        "260": 3,
         "259": 2,
-        "264": 7
+        "264": 7,
+        "262": 5,
+        "258": 1,
+        "260": 3,
+        "261": 4
       },
       "next_public_pane_number": 9,
       "public_tab_numbers": [
@@ -353,10 +353,6 @@
             }
           },
           "panes": {
-            "262": {
-              "cwd": "/Users/brunner/repos/nikbrunner/black-atom",
-              "label": "Server II"
-            },
             "261": {
               "cwd": "/Users/brunner/repos/nikbrunner/black-atom",
               "label": "Server I"
@@ -368,6 +364,10 @@
             "263": {
               "cwd": "/Users/brunner/repos/nikbrunner/black-atom",
               "label": "Server III"
+            },
+            "262": {
+              "cwd": "/Users/brunner/repos/nikbrunner/black-atom",
+              "label": "Server II"
             }
           },
           "zoomed": false,
@@ -382,15 +382,16 @@
       "custom_name": "helm.herdr",
       "identity_cwd": "/Users/brunner/repos/black-atom-industries/helm.herdr",
       "public_pane_numbers": {
-        "266": 1,
-        "267": 2,
-        "268": 3,
-        "270": 5,
         "269": 4,
         "271": 6,
-        "272": 7
+        "272": 7,
+        "267": 2,
+        "266": 1,
+        "270": 5,
+        "296": 10,
+        "268": 3
       },
-      "next_public_pane_number": 10,
+      "next_public_pane_number": 11,
       "public_tab_numbers": [
         1,
         2
@@ -404,7 +405,16 @@
               "direction": "Horizontal",
               "ratio": 0.7,
               "first": {
-                "Pane": 266
+                "Split": {
+                  "direction": "Horizontal",
+                  "ratio": 0.5,
+                  "first": {
+                    "Pane": 266
+                  },
+                  "second": {
+                    "Pane": 296
+                  }
+                }
               },
               "second": {
                 "Split": {
@@ -421,6 +431,17 @@
             }
           },
           "panes": {
+            "296": {
+              "cwd": "/Users/brunner/repos/black-atom-industries/helm.herdr"
+            },
+            "266": {
+              "cwd": "/Users/brunner/repos/black-atom-industries/helm.herdr",
+              "label": "Nvim"
+            },
+            "268": {
+              "cwd": "/Users/brunner/repos/black-atom-industries/helm.herdr",
+              "label": "Shell"
+            },
             "267": {
               "cwd": "/Users/brunner/repos/black-atom-industries/helm.herdr",
               "label": "Agent",
@@ -430,18 +451,10 @@
                 "kind": "path",
                 "value": "/Users/brunner/.pi/agent/sessions/--Users-brunner-repos-black-atom-industries-helm.herdr--/2026-08-20T17-11-36-850Z_01a02028-2492-79d6-9663-af6c4a09ecf4.jsonl"
               }
-            },
-            "268": {
-              "cwd": "/Users/brunner/repos/black-atom-industries/helm.herdr",
-              "label": "Shell"
-            },
-            "266": {
-              "cwd": "/Users/brunner/repos/black-atom-industries/helm.herdr",
-              "label": "Nvim"
             }
           },
-          "zoomed": false,
-          "focused": 267,
+          "zoomed": true,
+          "focused": 296,
           "root_pane": 266
         },
         {
@@ -477,21 +490,21 @@
             }
           },
           "panes": {
-            "269": {
+            "271": {
               "cwd": "/Users/brunner/repos/black-atom-industries/helm.herdr",
-              "label": "Server I"
-            },
-            "272": {
-              "cwd": "/Users/brunner/repos/black-atom-industries/helm.herdr",
-              "label": "Server IV"
+              "label": "Server III"
             },
             "270": {
               "cwd": "/Users/brunner/repos/black-atom-industries/helm.herdr",
               "label": "Server II"
             },
-            "271": {
+            "272": {
               "cwd": "/Users/brunner/repos/black-atom-industries/helm.herdr",
-              "label": "Server III"
+              "label": "Server IV"
+            },
+            "269": {
+              "cwd": "/Users/brunner/repos/black-atom-industries/helm.herdr",
+              "label": "Server I"
             }
           },
           "zoomed": false,
