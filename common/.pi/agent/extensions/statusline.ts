@@ -371,7 +371,7 @@ export default function (pi: ExtensionAPI): void {
 					const thinking = ctx.thinkingLevel ?? (ctx.model?.reasoning ? "off" : undefined);
 					const agent = [stateText()];
 					if (model) agent.push(`${indicator("model")}${theme.bold(model)}`);
-					if (thinking && wide) {
+					if (thinking) {
 						agent.push(`${indicator("thinking")}${theme.fg("dim", thinking)}`);
 					}
 					if (medium) {
