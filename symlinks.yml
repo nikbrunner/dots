@@ -64,6 +64,7 @@ common:
   common/.config/herdr/session.json: ~/.config/herdr/session.json
   common/.config/herdr/sessions/black-atom: ~/.config/herdr/sessions/black-atom
   common/.config/herdr/sessions/nikbrunner: ~/.config/herdr/sessions/nikbrunner
+  common/.config/herdr/sounds: ~/.config/herdr/sounds
 
   # Theming =================================================================
   "common/.config/black-atom/*": ~/.config/black-atom
