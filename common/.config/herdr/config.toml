@@ -81,6 +81,10 @@ tab_bar_right = [
 ]
 tab_bar_right_separator = " | "
 
+[ui.sound]
+enabled = true
+done_path = "./sounds/i_love_the_smell_of_the_bomb.mp3"
+request_path = "./sounds/i_cant_build_there.mp3"
 
 [session]
 resume_agents_on_restore = true
@@ -91,7 +95,7 @@ kitty_graphics = true
 
 switch_ascii_input_source_in_prefix = true
 [keys]
-prefix = "ctrl+a"
+prefix = "ctrl+,"
 
 switch_tab = "alt+1..9"
 switch_workspace = "alt+shift+1..9"
