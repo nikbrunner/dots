@@ -220,7 +220,6 @@ Only relevant if you'll be committing changes to this repo. Format staged work f
 
 - [ ] **Neovim** - Run `bob install stable && bob use stable`
 - [ ] **Karabiner-Elements** - Grant permissions, import rules
-- [ ] **Neru** - Grant Accessibility permission, then run `neru services install`
 - [ ] **Keyboard** - Set key repeat rate / delay in System Settings
 - [ ] **Keyboard** - Disable Hypr and Meh Keybings from Mac System Settings
 - [ ] **ProtonPass** - Enable browser extension

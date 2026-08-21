@@ -101,7 +101,6 @@ common:
 macos:
   macos/.config/davit/config.toml: ~/.config/davit/config.toml
   macos/.config/karabiner: ~/.config/karabiner
-  macos/.config/neru/config.toml: ~/.config/neru/config.toml
   macos/.config/zsh/os.zsh: ~/.config/zsh/os.zsh
   macos/.local/bin/open-design-mcp: ~/.local/bin/open-design-mcp
   macos/Library/Application Support/Claude/claude_desktop_config.json: ~/Library/Application Support/Claude/claude_desktop_config.json
