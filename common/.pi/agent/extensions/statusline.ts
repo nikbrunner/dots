@@ -5,6 +5,12 @@ import { existsSync, readFileSync } from "node:fs";
 import { homedir } from "node:os";
 import { join, resolve } from "node:path";
 import { stripVTControlCharacters } from "node:util";
+import {
+	formatFooterRowLabel,
+	formatSessionWidget,
+	getAlignedColumnWidths,
+	type FooterRow,
+} from "./lib/statusline-layout";
 
 const MCP_STATUS_CHANNEL = "pi-mcp-adapter/status/v1";
 
@@ -234,6 +240,7 @@ export default function (pi: ExtensionAPI): void {
 	const runtimeStartedAt = Date.now();
 	let active = true;
 	let requestRender = (): void => {};
+	let updateSessionWidget = (): void => {};
 	let state: "ready" | "working" | "error" = "ready";
 	let dirty = false;
 	let gitStatus: GitStatus | undefined;
@@ -290,6 +297,25 @@ export default function (pi: ExtensionAPI): void {
 		refreshActiveAccount();
 		refreshDirty(ctx.cwd);
 		refreshWorktreeState(ctx.cwd);
+
+		const setSessionWidget = (): void => {
+			if (ctx.mode !== "tui") return;
+			ctx.ui.setHeader(undefined);
+			ctx.ui.setWidget("session-name", (_tui, theme) => ({
+				invalidate(): void {},
+				render(width: number): string[] {
+					const parts = formatSessionWidget(pi.getSessionName());
+					if (!parts || width <= 0) return [];
+					const frameBefore = theme.fg("muted", parts.before);
+					const name = theme.bold(theme.fg("accent", parts.name));
+					const frameAfter = theme.fg("muted", parts.after);
+					return [truncateToWidth(frameBefore + name + frameAfter, width)];
+				},
+			}), { placement: "aboveEditor" });
+		};
+		updateSessionWidget = setSessionWidget;
+		setSessionWidget();
+
 		ctx.ui.setFooter((tui, theme, footerData) => {
 			requestRender = (): void => tui.requestRender();
 			const unsubscribe = footerData.onBranchChange(() => {
@@ -298,21 +324,13 @@ export default function (pi: ExtensionAPI): void {
 			});
 
 			const separator = theme.fg("dim", " │ ");
-			type FooterRow = { label: string; parts: string[] };
-			const rawLine = ({ label, parts }: FooterRow): string => {
-				const prefix = theme.bold(theme.fg("warning", label.padEnd(10)));
-				return prefix + parts.join(separator);
-			};
-			const renderLine = (row: FooterRow, width: number): string =>
-				truncateToWidth(rawLine(row), width, theme.fg("dim", "…"));
+			const rawLine = ({ label, parts }: FooterRow, compact = false): string =>
+				theme.bold(theme.fg("warning", formatFooterRowLabel(label, compact))) + parts.join(separator);
+			const renderLine = (row: FooterRow, width: number, compact = false): string =>
+				truncateToWidth(rawLine(row, compact), width, theme.fg("dim", "…"));
 			const renderRows = (rows: FooterRow[], width: number): string[] => {
-				const fallback = rows.map((row) => renderLine(row, width));
-				if (width < 110) return fallback;
-
-				const columnCount = Math.max(...rows.map((row) => row.parts.length));
-				const columnWidths = Array.from({ length: columnCount }, (_, index) =>
-					Math.max(...rows.map((row) => visibleWidth(row.parts[index] ?? ""))),
-				);
+				const compact = width < 110;
+				const columnWidths = getAlignedColumnWidths(rows, visibleWidth);
 				const aligned = rows.map((row) => ({
 					...row,
 					parts: row.parts.map((part, index) =>
@@ -321,10 +339,12 @@ export default function (pi: ExtensionAPI): void {
 							: part + " ".repeat(columnWidths[index] - visibleWidth(part)),
 					),
 				}));
-				const lines = aligned.map(rawLine);
-				return lines.every((value) => visibleWidth(value) <= width) ? lines : fallback;
+				return aligned.map((row) =>
+					truncateToWidth(rawLine(row, compact), width, theme.fg("dim", "…")),
+				);
 			};
-			const indicator = (label: string): string => theme.fg("warning", `${label} `);
+			const indicator = (label: string, compactLabel = label, compact = false): string =>
+				theme.fg("warning", `${compact ? compactLabel : label} `);
 			const stateText = (): string => {
 				const color = state === "ready" ? "success" : state === "working" ? "warning" : "error";
 				return theme.bold(theme.fg(color, `${state === "working" ? "●" : state === "error" ? "×" : "✓"} ${state}`));
@@ -338,7 +358,7 @@ export default function (pi: ExtensionAPI): void {
 				const details = compact
 					? `${value}/${formatTokens(context.contextWindow)}`
 					: `${percent === null ? "" : `${meter(percent, 12)} `}${value} / ${formatTokens(context.contextWindow)}`;
-				return indicator(compact ? "ctx" : "context") + theme.fg(color, details);
+				return indicator("context", "ctx", compact) + theme.fg(color, details);
 			};
 
 			return {
@@ -349,12 +369,13 @@ export default function (pi: ExtensionAPI): void {
 				invalidate(): void {},
 				render(width: number): string[] {
 					if (width <= 0) return [];
-					const wide = width >= 100;
+					const wide = width >= 110;
+					const compact = !wide;
 					const medium = width >= 68;
 					const branch = footerData.getGitBranch();
-					const sessionName = pi.getSessionName();
-					const workspace = [`${indicator("cwd")}${theme.bold(formatCwd(ctx.cwd))}`];
-					if (branch) workspace.push(`${indicator("branch")}${branch}${dirty ? theme.fg("warning", "*") : ""}`);
+					const workspace = [`${indicator("cwd", "dir", compact)}${theme.bold(formatCwd(ctx.cwd))}`];
+					const git: string[] = [];
+					if (branch) git.push(`${indicator("branch", "br", compact)}${branch}${dirty ? theme.fg("warning", "*") : ""}`);
 					if (branch && gitStatus) {
 						const statusParts = [
 							gitStatus.add > 0 ? theme.fg("success", `+${gitStatus.add}`) : undefined,
@@ -362,17 +383,16 @@ export default function (pi: ExtensionAPI): void {
 							gitStatus.deleted > 0 ? theme.fg("error", `-${gitStatus.deleted}`) : undefined,
 							gitStatus.untracked > 0 ? theme.fg("accent", `?${gitStatus.untracked}`) : undefined,
 						].filter((part): part is string => part !== undefined);
-						workspace.push(`${indicator("status")}${statusParts.length > 0 ? statusParts.join(" ") : theme.fg("success", "clean")}`);
+						git.push(`${indicator("status", "git", compact)}${statusParts.length > 0 ? statusParts.join(" ") : theme.fg("success", "clean")}`);
 					}
-					if (sessionName) workspace.push(`${indicator("session")}${theme.bold(sessionName)}`);
-					if (linkedWorktree) workspace.push(theme.fg("muted", "worktree"));
+					if (linkedWorktree) git.push(theme.fg("muted", "worktree"));
 
 					const model = ctx.model?.id;
 					const thinking = ctx.thinkingLevel ?? (ctx.model?.reasoning ? "off" : undefined);
 					const agent = [stateText()];
-					if (model) agent.push(`${indicator("model")}${theme.bold(model)}`);
+					if (model) agent.push(`${indicator("model", "mdl", compact)}${theme.bold(model)}`);
 					if (thinking) {
-						agent.push(`${indicator("thinking")}${theme.fg("dim", thinking)}`);
+						agent.push(`${indicator("thinking", "th", compact)}${theme.fg("dim", thinking)}`);
 					}
 					if (medium) {
 						const enabled = mcp ? mcp.servers.length - mcp.disabledCount : undefined;
@@ -384,7 +404,7 @@ export default function (pi: ExtensionAPI): void {
 								? mcp.connectedCount === enabled ? "success" : mcp.connectedCount === 0 ? "error" : "warning"
 								: "accent";
 							const value = mcpStatus.replace(/^MCP:?\s*/, "");
-							agent.push(indicator("MCP") + theme.fg(color, value));
+							agent.push(indicator("MCP", "mcp", compact) + theme.fg(color, value));
 						}
 					}
 
@@ -394,11 +414,11 @@ export default function (pi: ExtensionAPI): void {
 						`${indicator(wide ? "input" : "↑")}${formatTokens(totals.usage.input)}`,
 						`${indicator(wide ? "output" : "↓")}${formatTokens(totals.usage.output)}`,
 					];
-					const context = contextText(!wide);
+					const context = contextText(compact);
 					if (context) session.push(context);
 					const cache = totals.cacheHit === undefined
 						? undefined
-						: indicator(wide ? "latest cache" : "cache") + `${totals.cacheHit.toFixed(0)}%`;
+						: indicator("latest cache", "hit", compact) + `${totals.cacheHit.toFixed(0)}%`;
 					if (medium && cache) session.push(cache);
 					session.push(`${indicator(wide ? "cost" : "$")}${totals.usage.cost.total.toFixed(3)}${subscription ? theme.fg("dim", " (sub)") : ""}`);
 
@@ -430,28 +450,30 @@ export default function (pi: ExtensionAPI): void {
 							if (label) providerDetails.push(`${indicator("account")}${theme.bold(label)}`);
 							if (used !== undefined) providerDetails.push(`${indicator("weekly")}${theme.fg(quotaColor, `${used.toFixed(0)}% used`)}`);
 							if (reset) providerDetails.push(indicator("resets") + theme.fg("dim", reset));
-						} else if (label || used !== undefined) {
-							const compact = [
-								label ? indicator("acct") + theme.bold(label) : undefined,
-								used === undefined ? undefined : indicator("week") + theme.fg(quotaColor, `${used.toFixed(0)}%`),
-								reset ? indicator("reset") + theme.fg("dim", reset) : undefined,
-							].filter((value): value is string => value !== undefined);
-							providerDetails.push(compact.join(" "));
+						} else {
+							if (label) providerDetails.push(indicator("account", "acct", compact) + theme.bold(label));
+							if (used !== undefined) providerDetails.push(indicator("weekly", "wk", compact) + theme.fg(quotaColor, `${used.toFixed(0)}%`));
+							if (reset) providerDetails.push(indicator("resets", "rst", compact) + theme.fg("dim", reset));
 						}
 					}
 
-					const rows = [
+					const rows: FooterRow[] = [];
+					if (git.length > 0) rows.push({ label: "GIT", parts: git });
+					rows.push(
 						{ label: "AGENT", parts: agent },
 						{ label: "SESSION", parts: session },
-					];
+					);
 					if (providerDetails.length > 0) rows.push({ label: "PROVIDER", parts: providerDetails });
-					return [renderLine({ label: "WORKSPACE", parts: [workspace.join("  ")] }, width), ...renderRows(rows, width)];
+					return [renderLine({ label: "WORKSPACE", parts: [workspace.join("  ")] }, width, compact), ...renderRows(rows, width)];
 				},
 			};
 		});
 	});
 
-	pi.on("session_info_changed", () => repaint());
+	pi.on("session_info_changed", () => {
+		updateSessionWidget();
+		repaint();
+	});
 	pi.on("before_provider_request", () => {
 		refreshActiveAccount();
 		repaint();
@@ -478,7 +500,12 @@ export default function (pi: ExtensionAPI): void {
 	pi.on("thinking_level_select", () => repaint());
 	pi.on("tool_execution_end", (_event, ctx) => refreshDirty(ctx.cwd));
 	pi.on("user_bash", (event) => scheduleDirtyRefresh(event.cwd));
-	pi.on("session_shutdown", () => {
+	pi.on("session_shutdown", (_event, ctx) => {
+		if (ctx.mode === "tui") {
+			ctx.ui.setHeader(undefined);
+			ctx.ui.setWidget("session-name", undefined);
+		}
+		updateSessionWidget = (): void => {};
 		active = false;
 		dirtyRefreshGeneration++;
 		if (dirtyRefreshTimer) clearTimeout(dirtyRefreshTimer);
