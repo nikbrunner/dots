@@ -1,5 +1,10 @@
 {
-  "mcpServers": {},
+  "mcpServers": {
+    "open-design": {
+      "command": "open-design-mcp",
+      "args": []
+    }
+  },
   "imports": [
     "claude-code",
     "claude-desktop"

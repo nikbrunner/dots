@@ -1,0 +1,10 @@
+#!/bin/sh
+set -eu
+
+export OD_SIDECAR_IPC_PATH="/tmp/open-design/ipc/release-stable/daemon.sock"
+export OD_MCP_BOOTSTRAP_COMMAND="/usr/bin/open"
+export OD_MCP_BOOTSTRAP_ARGS='["-g","-j","/Applications/Open Design.app","--args","--headless"]'
+
+exec "$HOME/.local/share/mise/installs/node/lts/bin/node" \
+  "/Applications/Open Design.app/Contents/Resources/app/prebundled/daemon/daemon-cli.mjs" \
+  mcp "$@"
