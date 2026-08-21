@@ -80,6 +80,7 @@ java = "21"
 lazydocker = "latest"
 "github:agavra/tuicr" = "latest"
 aws = { version = "latest", symlink_bins = "true" }
+pipx = "latest"
 
 [env]
 _.file = "~/.env"
