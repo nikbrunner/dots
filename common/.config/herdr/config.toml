@@ -83,8 +83,8 @@ tab_bar_right_separator = " | "
 
 [ui.sound]
 enabled = true
-done_path = "./sounds/i_love_the_smell_of_the_bomb.mp3"
-request_path = "./sounds/i_cant_build_there.mp3"
+done_path = "./sounds/434612__jensenk__completed.mp3"
+request_path = "./sounds/434611__jensenk__pauseoff.mp3"
 
 [session]
 resume_agents_on_restore = true
