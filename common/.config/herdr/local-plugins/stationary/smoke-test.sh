@@ -42,7 +42,7 @@ trap cleanup EXIT HUP INT TERM
 TMP_DIR=$(mktemp -d)
 REPO_PATH="$TMP_DIR/repo"
 WORKTREE_PATH="$TMP_DIR/worktree"
-WORKTREE_BRANCH=default-layout-smoke
+WORKTREE_BRANCH=stationary-smoke
 mkdir -p "$REPO_PATH"
 git -C "$REPO_PATH" init -q
 git -C "$REPO_PATH" config user.name "Herdr Smoke Test"
@@ -51,11 +51,11 @@ printf 'smoke\n' >"$REPO_PATH/README.md"
 git -C "$REPO_PATH" add README.md
 git -C "$REPO_PATH" commit -qm initial
 
-RESULT=$(herdr workspace create --cwd "$REPO_PATH" --label default-layout-smoke-ordinary --no-focus)
+RESULT=$(herdr workspace create --cwd "$REPO_PATH" --label stationary-smoke-ordinary --no-focus)
 ORDINARY_WORKSPACE_ID=$(printf '%s\n' "$RESULT" | jq -er '.result.workspace.workspace_id')
 
 RESULT=$(herdr worktree create --cwd "$REPO_PATH" --branch "$WORKTREE_BRANCH" \
-    --base HEAD --path "$WORKTREE_PATH" --label default-layout-smoke-worktree --no-focus)
+    --base HEAD --path "$WORKTREE_PATH" --label stationary-smoke-worktree --no-focus)
 WORKTREE_WORKSPACE_ID=$(printf '%s\n' "$RESULT" | jq -er '.result.workspace.workspace_id')
 
 layout_has_exact_labels() {
@@ -68,9 +68,9 @@ layout_has_exact_labels() {
     ($tabs | map(select(.label == "Servers")) | if length == 1 then .[0].tab_id else null end) as $servers_id |
     ([ $tabs[].label ] | sort) == ["Servers", "Work"] and
     ([ $panes[].label ] | sort) ==
-      ["Agent", "Nvim", "Server I", "Server II", "Server III", "Server IV", "Shell"] and
+      ["Agent", "Nvim", "Server I", "Server II", "Server III", "Server IV", "Shell I", "Shell II"] and
     ([ $panes[] | select(.tab_id == $work_id) | .label ] | sort) ==
-      ["Agent", "Nvim", "Shell"] and
+      ["Agent", "Nvim", "Shell I", "Shell II"] and
     ([ $panes[] | select(.tab_id == $servers_id) | .label ] | sort) ==
       ["Server I", "Server II", "Server III", "Server IV"]
   ' >/dev/null
@@ -153,16 +153,20 @@ verify_layout() {
   ' >/dev/null
 
     work_pane_id=$(printf '%s\n' "$panes" | jq -er --arg id "$work_tab_id" '.result.panes[] | select(.tab_id == $id) | .pane_id' | head -n 1)
+    nvim_pane_id=$(printf '%s\n' "$panes" | jq -er --arg id "$work_tab_id" '.result.panes[] | select(.tab_id == $id and .label == "Nvim") | .pane_id')
     servers_pane_id=$(printf '%s\n' "$panes" | jq -er --arg id "$servers_tab_id" '.result.panes[] | select(.tab_id == $id) | .pane_id' | head -n 1)
     work_layout=$(herdr pane layout --pane "$work_pane_id")
     servers_layout=$(herdr pane layout --pane "$servers_pane_id")
 
-    printf '%s\n' "$work_layout" | jq -e '
+    printf '%s\n' "$work_layout" | jq -e --arg nvim_id "$nvim_pane_id" '
     def near($n): ((. - $n) | fabs) < 0.001;
-    .result.layout.splits as $s |
-    ($s | length) == 2 and
-    any($s[]; .direction == "right" and (.ratio | near(0.70))) and
-    any($s[]; .direction == "down" and (.ratio | near(0.65)))
+    .result.layout as $layout |
+    $layout.splits as $s |
+    $layout.focused_pane_id == $nvim_id and
+    ($s | length) == 3 and
+    ([ $s[] | select(.direction == "right" and (.ratio | near(0.25))) ] | length) == 1 and
+    ([ $s[] | select(.direction == "down" and (.ratio | near(0.65))) ] | length) == 1 and
+    ([ $s[] | select(.direction == "down" and (.ratio | near(0.80))) ] | length) == 1
   ' >/dev/null
     printf '%s\n' "$servers_layout" | jq -e '
     def near($n): ((. - $n) | fabs) < 0.001;
@@ -181,4 +185,4 @@ wait_for_expected_processes "$ORDINARY_WORKSPACE_ID"
 wait_for_expected_processes "$WORKTREE_WORKSPACE_ID"
 verify_layout "$ORDINARY_WORKSPACE_ID"
 verify_layout "$WORKTREE_WORKSPACE_ID"
-printf 'ok - ordinary and worktree workspaces received the default layout and started Nvim\n'
+printf 'ok - ordinary and worktree workspaces received the Stationary layout and started Nvim\n'

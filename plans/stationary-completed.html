@@ -1,0 +1,411 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Stationary — Declarative Herdr Layouts</title>
+  <style>
+    :root {
+      --background: oklch(0.97 0.005 260);
+      --foreground: oklch(0.18 0.02 260);
+      --card: oklch(1 0 0);
+      --card-foreground: oklch(0.18 0.02 260);
+      --primary: oklch(0.5 0.25 280);
+      --primary-foreground: oklch(1 0 0);
+      --secondary: oklch(0.5 0.18 180);
+      --secondary-foreground: oklch(1 0 0);
+      --muted: oklch(0.92 0.01 260);
+      --muted-foreground: oklch(0.4 0.02 260);
+      --accent: oklch(0.6 0.22 50);
+      --accent-foreground: oklch(0.18 0.02 260);
+      --destructive: oklch(0.5 0.25 25);
+      --destructive-foreground: oklch(1 0 0);
+      --success: oklch(0.45 0.2 150);
+      --success-foreground: oklch(1 0 0);
+      --warning: oklch(0.55 0.18 85);
+      --warning-foreground: oklch(0.18 0.02 260);
+      --border: oklch(0.88 0.01 260);
+      --input: oklch(0.92 0.01 260);
+      --ring: oklch(0.5 0.25 280);
+      --code-bg: oklch(0.92 0.01 260);
+      --font-sans: "Inter", system-ui, -apple-system, sans-serif;
+      --font-mono: "JetBrains Mono", "Fira Code", ui-monospace, monospace;
+      --font-display: ui-serif, Georgia, "Times New Roman", serif;
+      --radius: 0.625rem;
+    }
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: var(--font-sans);
+      background: var(--background);
+      color: var(--foreground);
+      line-height: 1.65;
+      font-size: 15px;
+      -webkit-font-smoothing: antialiased;
+    }
+    .container { max-width: 1080px; margin: 0 auto; padding: 64px 24px 96px; }
+    .eyebrow, .prompt-label, .stat-label, .section-number, .code-label, .tag, .badge, .phase, th {
+      font-family: var(--font-mono);
+    }
+    .eyebrow { font-size: .72rem; font-weight: 500; text-transform: uppercase; letter-spacing: .06em; color: var(--muted-foreground); }
+    h1, h2, h3 { font-family: var(--font-display); font-weight: 500; }
+    h1 { font-size: 2rem; margin: 8px 0 24px; line-height: 1.2; }
+    h2 { font-size: 1.4rem; }
+    h3 { font-size: 1.08rem; margin-bottom: 6px; }
+    p { max-width: 68ch; }
+    .prompt-box, .card, .diagram-panel, .code-panel, .layout-card, details, .table-wrap {
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--card);
+    }
+    .prompt-box { background: var(--muted); padding: 16px 24px; }
+    .prompt-label { font-size: .7rem; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: var(--muted-foreground); display: block; margin-bottom: 4px; }
+    .prompt-box p, .muted { color: var(--muted-foreground); }
+    .summary-strip { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin: 32px 0; }
+    .stat-card { border: 1.5px solid var(--border); border-radius: var(--radius); padding: 16px; text-align: center; background: var(--card); }
+    .stat-value { font-family: var(--font-display); font-size: 1.8rem; display: block; }
+    .stat-label { font-size: .68rem; text-transform: uppercase; letter-spacing: .06em; color: var(--muted-foreground); }
+    section { margin-top: 72px; }
+    .section-header { display: flex; align-items: baseline; gap: 16px; margin-bottom: 24px; padding-bottom: 8px; border-bottom: 1.5px solid var(--border); }
+    .section-number { font-size: .75rem; font-weight: 600; color: var(--primary); }
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+    .card { padding: 22px 24px; }
+    .card ul { padding-left: 20px; margin-top: 10px; }
+    .card li + li { margin-top: 6px; }
+    .tags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 12px; }
+    .tag { font-size: .68rem; padding: 2px 8px; border-radius: calc(var(--radius) - 4px); background: var(--muted); color: var(--muted-foreground); }
+    .tag.highlight { background: color-mix(in oklab, var(--primary) 12%, transparent); color: var(--primary); }
+    .layout-card { padding: 20px; }
+    .tab-bar { display: flex; gap: 6px; margin-bottom: 10px; }
+    .tab { font-family: var(--font-mono); font-size: .72rem; padding: 5px 10px; border-radius: 6px; background: var(--muted); color: var(--muted-foreground); }
+    .tab.active { background: color-mix(in oklab, var(--primary) 14%, var(--card)); color: var(--primary); }
+    .work-grid { display: grid; grid-template-columns: 1fr 3fr; height: 235px; gap: 6px; }
+    .work-column { display: grid; gap: 6px; }
+    .work-column.left { grid-template-rows: 65fr 35fr; }
+    .work-column.right { grid-template-rows: 80fr 20fr; }
+    .server-grid { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; height: 235px; gap: 6px; }
+    .pane { display: grid; place-items: center; border: 1.5px solid var(--border); border-radius: 8px; background: var(--muted); font-family: var(--font-mono); font-size: .82rem; color: var(--muted-foreground); }
+    .pane.focused { border-color: var(--primary); background: color-mix(in oklab, var(--primary) 8%, var(--card)); color: var(--primary); }
+    .diagram-panel { padding: 24px; }
+    .diagram-caption { font-family: var(--font-mono); font-size: .72rem; color: var(--muted-foreground); display: block; margin-top: 8px; text-align: center; }
+    .code-panel { background: var(--code-bg); padding: 24px; overflow-x: auto; }
+    .code-label { font-size: .7rem; color: var(--muted-foreground); display: block; margin-bottom: 10px; }
+    pre { font-family: var(--font-mono); font-size: .82rem; line-height: 1.6; white-space: pre; }
+    .kw { color: var(--primary); } .str { color: var(--success); } .num { color: var(--warning); } .cm { color: var(--muted-foreground); font-style: italic; }
+    .contract-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+    .contract-grid .card { min-height: 150px; }
+    .milestones { display: flex; flex-direction: column; }
+    .milestone { display: grid; grid-template-columns: 90px 28px 1fr; gap: 0 18px; }
+    .phase { text-align: right; font-size: .75rem; color: var(--muted-foreground); padding-top: 3px; }
+    .dot-col { display: flex; flex-direction: column; align-items: center; }
+    .dot { width: 14px; height: 14px; border-radius: 50%; background: var(--card); border: 3px solid var(--primary); flex-shrink: 0; }
+    .line { width: 2px; flex: 1; background: var(--border); margin: 4px 0; }
+    .milestone:last-child .line { display: none; }
+    .milestone-body { padding-bottom: 38px; }
+    .milestone-body p { color: var(--muted-foreground); font-size: .9rem; }
+    .table-wrap { overflow: hidden; }
+    table { border-collapse: collapse; width: 100%; }
+    th, td { text-align: left; padding: 14px 18px; border-bottom: 1px solid var(--border); vertical-align: top; }
+    th { font-size: .68rem; text-transform: uppercase; letter-spacing: .05em; color: var(--muted-foreground); background: var(--muted); }
+    td { font-size: .88rem; }
+    tr:last-child td { border-bottom: 0; }
+    .badge { font-size: .66rem; font-weight: 600; padding: 2px 7px; border-radius: 5px; text-transform: uppercase; }
+    .badge.med { color: var(--warning); background: color-mix(in oklab, var(--warning) 14%, transparent); }
+    .badge.low { color: var(--success); background: color-mix(in oklab, var(--success) 14%, transparent); }
+    .badge.new { color: var(--primary); background: color-mix(in oklab, var(--primary) 12%, transparent); }
+    .acceptance { list-style: none; }
+    .acceptance li { position: relative; padding-left: 28px; margin: 10px 0; }
+    .acceptance li::before { content: "□"; position: absolute; left: 0; color: var(--primary); font-family: var(--font-mono); }
+    details { margin-top: 16px; }
+    summary { font-weight: 500; padding: 16px 22px; cursor: pointer; list-style: none; }
+    summary::before { content: "▸"; display: inline-block; margin-right: 8px; }
+    details[open] summary::before { transform: rotate(90deg); }
+    .details-body { padding: 0 22px 22px; overflow-x: auto; }
+    code { font-family: var(--font-mono); font-size: .88em; }
+    @media (max-width: 760px) {
+      .summary-strip, .two-col, .contract-grid { grid-template-columns: 1fr; }
+      .milestone { grid-template-columns: 70px 20px 1fr; gap: 0 10px; }
+      .container { padding: 36px 16px 72px; }
+      th, td { padding: 11px 12px; }
+    }
+  </style>
+</head>
+<body>
+<main class="container">
+  <header>
+    <span class="eyebrow">Implementation plan · Dots / Herdr</span>
+    <h1>Stationary: declarative Herdr layouts</h1>
+    <div class="prompt-box">
+      <span class="prompt-label">Brief</span>
+      <p>Turn the local plugin into Stationary, with Herdr workspace layouts defined in a compact named TOML recipe. Layout keys contain tab keys; each tab declares an inline root pane and ordered split records. The plugin manifest selects the recipe by name.</p>
+    </div>
+    <div class="summary-strip">
+      <div class="stat-card"><span class="stat-value">1</span><span class="stat-label">Recipe file</span></div>
+      <div class="stat-card"><span class="stat-value">2</span><span class="stat-label">Named tabs</span></div>
+      <div class="stat-card"><span class="stat-value">0</span><span class="stat-label">New runtimes</span></div>
+      <div class="stat-card"><span class="stat-value">1</span><span class="stat-label">Commit boundary</span></div>
+    </div>
+  </header>
+
+  <section>
+    <div class="section-header"><span class="section-number">01</span><h2>Scope and outcome</h2></div>
+    <div class="two-col">
+      <article class="card">
+        <h3>Current design</h3>
+        <p><code>local-plugins/default-layout/apply-layout.sh</code> contains every tab label, pane label, split direction, ratio, command, and focus decision as shell statements.</p>
+        <div class="tags"><span class="tag">POSIX shell</span><span class="tag">jq</span><span class="tag">hardcoded topology</span></div>
+      </article>
+      <article class="card">
+        <h3>Proposed design</h3>
+        <p><code>local-plugins/stationary/layouts.toml</code> owns the topology. The renamed Stationary hook validates the selected layout, interprets ordered split records, and preserves the fresh-workspace and failure guards.</p>
+        <div class="tags"><span class="tag highlight">TOML recipe</span><span class="tag">yq → JSON</span><span class="tag">generic executor</span></div>
+      </article>
+    </div>
+    <div class="card" style="margin-top:24px">
+      <h3>Explicit non-goals</h3>
+      <ul>
+        <li>No project-specific auto-selection, per-workspace overrides, or interactive picker.</li>
+        <li>No recursive geometry language, arbitrary pane moves, agent startup, or new Go/Rust binary.</li>
+        <li>No change to the Servers tab, Nvim startup, final focus, or fresh-workspace guard. Work gains one idle shell below Nvim.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-header"><span class="section-number">02</span><h2>Target default layout</h2></div>
+    <div class="two-col">
+      <div class="layout-card">
+        <div class="tab-bar"><span class="tab active">Work</span><span class="tab">Servers</span></div>
+        <div class="work-grid">
+          <div class="work-column left"><div class="pane">Agent</div><div class="pane">Shell I</div></div>
+          <div class="work-column right"><div class="pane focused">Nvim · running nvim</div><div class="pane">Shell II</div></div>
+        </div>
+      </div>
+      <div class="layout-card">
+        <div class="tab-bar"><span class="tab">Work</span><span class="tab active">Servers</span></div>
+        <div class="server-grid">
+          <div class="pane">Server I</div><div class="pane">Server II</div>
+          <div class="pane">Server III</div><div class="pane">Server IV</div>
+        </div>
+      </div>
+    </div>
+    <p class="muted" style="margin-top:14px">Work uses 25/75 columns. Agent/Shell I is 65/35; Nvim/Shell II is 80/20. Servers keeps its existing 50/50 grid.</p>
+  </section>
+
+  <section>
+    <div class="section-header"><span class="section-number">03</span><h2>Recipe contract</h2></div>
+    <div class="code-panel">
+      <span class="code-label">common/.config/herdr/local-plugins/stationary/layouts.toml</span>
+<pre><code><span class="kw">[layouts.default]</span>
+focus = <span class="str">"Work"</span>
+
+<span class="kw">[layouts.default.tabs.Work]</span>
+order = <span class="num">1</span>
+root = { pane = <span class="str">"Agent"</span> }
+splits = [
+  { source = <span class="str">"Agent"</span>, direction = <span class="str">"right"</span>, ratio = <span class="num">0.25</span>, pane = <span class="str">"Nvim"</span>, run = <span class="str">"nvim"</span>, focus = <span class="kw">true</span> },
+  { source = <span class="str">"Agent"</span>, direction = <span class="str">"down"</span>, ratio = <span class="num">0.65</span>, pane = <span class="str">"Shell I"</span> },
+  { source = <span class="str">"Nvim"</span>, direction = <span class="str">"down"</span>, ratio = <span class="num">0.80</span>, pane = <span class="str">"Shell II"</span> },
+]
+
+<span class="kw">[layouts.default.tabs.Servers]</span>
+order = <span class="num">2</span>
+root = { pane = <span class="str">"Server I"</span> }
+splits = [
+  { source = <span class="str">"Server I"</span>, direction = <span class="str">"right"</span>, ratio = <span class="num">0.50</span>, pane = <span class="str">"Server II"</span> },
+  { source = <span class="str">"Server I"</span>, direction = <span class="str">"down"</span>, ratio = <span class="num">0.50</span>, pane = <span class="str">"Server III"</span> },
+  { source = <span class="str">"Server II"</span>, direction = <span class="str">"down"</span>, ratio = <span class="num">0.50</span>, pane = <span class="str">"Server IV"</span> },
+]</code></pre>
+    </div>
+    <div class="contract-grid" style="margin-top:24px">
+      <article class="card"><h3>Keys carry names</h3><p class="muted"><code>default</code> is the layout key. <code>Work</code> and <code>Servers</code> are tab keys. Each tab needs one header; roots and splits stay compact inside it.</p></article>
+      <article class="card"><h3>Order is explicit</h3><p class="muted">Tab records use unique contiguous <code>order</code> values. Split array order is TOML document order. The first tab reuses the event tab and root pane.</p></article>
+      <article class="card"><h3>Commands are optional</h3><p class="muted"><code>run</code> is an optional non-empty, single-line shell command string on a root or split pane. Commands run after all topology mutations.</p></article>
+      <article class="card"><h3>Focus follows creation</h3><p class="muted">A tab may mark at most one root or split pane with <code>focus = true</code>. Split focus maps directly to Herdr’s <code>pane split --focus</code>; no marker leaves the root focused. The layout names the final tab.</p></article>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-header"><span class="section-number">04</span><h2>Runtime flow</h2></div>
+    <div class="diagram-panel">
+      <svg viewBox="0 0 900 250" xmlns="http://www.w3.org/2000/svg" style="width:100%">
+        <style>
+          .box { fill: var(--card); stroke: var(--border); stroke-width: 1.5; }
+          .new { fill: color-mix(in oklab, var(--primary) 8%, transparent); stroke: var(--primary); stroke-width: 1.5; }
+          .ok { fill: color-mix(in oklab, var(--success) 8%, transparent); stroke: var(--success); stroke-width: 1.5; }
+          .title { font-family: var(--font-sans); font-size: 13px; font-weight: 600; fill: var(--foreground); }
+          .sub { font-family: var(--font-mono); font-size: 10px; fill: var(--muted-foreground); }
+          .edge { stroke: var(--muted-foreground); stroke-width: 1.5; }
+          .edge-label { font-family: var(--font-mono); font-size: 9px; fill: var(--muted-foreground); }
+        </style>
+        <defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="var(--muted-foreground)"/></marker></defs>
+        <rect x="20" y="92" width="145" height="60" rx="10" class="box"/>
+        <text x="92" y="116" text-anchor="middle" class="title">Stationary event</text><text x="92" y="136" text-anchor="middle" class="sub">apply-layout.sh default</text>
+        <line x1="165" y1="122" x2="220" y2="122" class="edge" marker-end="url(#arrow)"/>
+        <rect x="220" y="92" width="140" height="60" rx="10" class="new"/>
+        <text x="290" y="116" text-anchor="middle" class="title">layouts.toml</text><text x="290" y="136" text-anchor="middle" class="sub">layouts["default"]</text>
+        <line x1="360" y1="122" x2="415" y2="122" class="edge" marker-end="url(#arrow)"/>
+        <text x="388" y="111" text-anchor="middle" class="edge-label">yq</text>
+        <rect x="415" y="92" width="150" height="60" rx="10" class="new"/>
+        <text x="490" y="116" text-anchor="middle" class="title">Preflight</text><text x="490" y="136" text-anchor="middle" class="sub">JSON + jq validation</text>
+        <line x1="565" y1="122" x2="620" y2="122" class="edge" marker-end="url(#arrow)"/>
+        <rect x="620" y="92" width="125" height="60" rx="10" class="new"/>
+        <text x="682" y="116" text-anchor="middle" class="title">Interpreter</text><text x="682" y="136" text-anchor="middle" class="sub">ordered splits</text>
+        <line x1="745" y1="122" x2="800" y2="122" class="edge" marker-end="url(#arrow)"/>
+        <rect x="800" y="92" width="80" height="60" rx="10" class="ok"/>
+        <text x="840" y="116" text-anchor="middle" class="title">Herdr</text><text x="840" y="136" text-anchor="middle" class="sub">CLI JSON</text>
+        <path d="M490 152 V205 H290 V152" fill="none" stroke="var(--destructive)" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#arrow)"/>
+        <text x="390" y="220" text-anchor="middle" class="edge-label">invalid recipe: notify, leave workspace unchanged</text>
+      </svg>
+      <span class="diagram-caption">The complete document and every named layout are parsed and validated before any tab or pane mutation.</span>
+    </div>
+    <div class="card" style="margin-top:24px">
+      <h3>Execution contract</h3>
+      <p>The hook keeps logical pane names mapped to opaque Herdr pane IDs. For each ordered tab it renames or creates the root, applies splits in recipe order, records returned IDs, and passes <code>--focus</code> only while creating the pane marked by the recipe. After all topology mutations it runs optional commands and focuses the layout’s named tab. A root focus marker requires no pane command.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-header"><span class="section-number">05</span><h2>Validation and failure behavior</h2></div>
+    <div class="card" style="margin-bottom:24px">
+      <h3>Closed v1 schema</h3>
+      <ul>
+        <li>The document is a table with exactly one key, <code>layouts</code>. <code>layouts</code> is a non-empty table keyed by unique, non-empty, single-line layout names. Every layout is validated, including layouts not selected for this event.</li>
+        <li>The hook accepts exactly one non-empty layout-name argument. The selected layout must exist. Each layout is a table with exactly <code>focus</code> and <code>tabs</code>; <code>focus</code> is a string naming one of its tabs and <code>tabs</code> is a non-empty table.</li>
+        <li>Each tab value is a table with exactly <code>order</code>, <code>root</code>, and <code>splits</code>. Tab keys are non-empty, single-line labels without control characters. Orders are unique contiguous integers from 1.</li>
+        <li><code>root</code> is a table with allowed keys <code>pane,run,focus</code>; <code>pane</code> is required. <code>splits</code> is an array of tables with exactly the required <code>source,direction,ratio,pane</code> keys and optional <code>run,focus</code> keys. Unknown keys fail preflight.</li>
+        <li>Ratios are JSON numbers strictly between 0 and 1. Directions are <code>right</code> or <code>down</code>. Every present <code>focus</code> is a boolean.</li>
+        <li>Pane labels are unique within a tab, non-empty, single-line strings without control characters. Every split source names the root or an earlier split pane.</li>
+        <li><code>run</code>, when present, is a non-empty single-line string without control characters. Each tab has zero or one <code>focus = true</code>; zero means its root pane.</li>
+        <li>Empty split arrays are valid for one-pane tabs. TOML numeric spelling is not preserved: yq/jq emits canonical CLI values such as <code>0.25</code>, <code>0.5</code>, <code>0.65</code>, and <code>0.8</code>.</li>
+      </ul>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Case</th><th>Expected behavior</th><th>Observable proof</th></tr></thead>
+        <tbody>
+          <tr><td>Valid <code>default</code></td><td>Build four Work panes and four Server panes, run Nvim once, focus Nvim in Work.</td><td>Exact fake-CLI transcript and live topology/process checks pass.</td></tr>
+          <tr><td>Missing recipe or <code>yq</code></td><td>Exit before mutation, log the missing dependency or file, and show a configuration-failure notification.</td><td>No rename, split, run, or focus reaches Herdr.</td></tr>
+          <tr><td>Unknown layout argument</td><td>Reject the selector and notify before mutation.</td><td>Log names the missing layout; workspace remains one tab and one pane.</td></tr>
+          <tr><td>Malformed TOML or schema</td><td>Reject invalid document/layout/tab structures, unknown keys, wrong field types, invalid order/direction/ratio, duplicate panes, forward sources, unsafe commands, and multiple focus markers, then notify.</td><td>Table-driven invalid document and recipe fixtures fail before the first mutation.</td></tr>
+          <tr><td>Non-fresh workspace</td><td>Skip the recipe unchanged.</td><td>Existing fresh-state unit cases remain green.</td></tr>
+          <tr><td>Invalid unselected layout</td><td>Reject the complete document before applying the selected layout.</td><td>A fixture with valid <code>default</code> and invalid sibling layout records no mutations.</td></tr>
+          <tr><td>Herdr mutation failure</td><td>Stop immediately and notify that the workspace may be partial.</td><td>Existing forced-split failure test remains green.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-header"><span class="section-number">06</span><h2>Implementation slices</h2></div>
+    <div class="milestones">
+      <div class="milestone">
+        <div class="phase">Slice 1</div><div class="dot-col"><span class="dot"></span><span class="line"></span></div>
+        <div class="milestone-body">
+          <h3>Compile one named recipe into the target layout</h3>
+          <p>Start red by requiring exactly one layout argument; the current static hook wrongly succeeds without it. Add <code>layouts.toml</code>, pass <code>default</code> from the manifest, then prove recipe control with a temporary copied plugin fixture whose Work ratio is <code>0.20</code>. The path is TOML → yq → validated JSON → shell interpreter → recorded Herdr calls. The copied recipe and fake CLI are the temporary seams; <code>sh test.sh</code> is the proof.</p>
+          <div class="tags"><span class="tag">TDD red/green</span><span class="tag">exact call transcript</span><span class="tag">four-pane Work tab</span></div>
+        </div>
+      </div>
+      <div class="milestone">
+        <div class="phase">Slice 2</div><div class="dot-col"><span class="dot"></span><span class="line"></span></div>
+        <div class="milestone-body">
+          <h3>Reject invalid recipes before mutation</h3>
+          <p>Add literal invalid fixtures for missing layouts, malformed values, and broken references. Prove each case leaves the fake workspace untouched before implementing the validator branches; dependency checks remain direct shell preflight.</p>
+          <div class="tags"><span class="tag">preflight</span><span class="tag">table-driven fixtures</span><span class="tag">safe failure</span></div>
+        </div>
+      </div>
+      <div class="milestone">
+        <div class="phase">Slice 3</div><div class="dot-col"><span class="dot"></span></div>
+        <div class="milestone-body">
+          <h3>Migrate registration and prove the recipe against live Herdr</h3>
+          <p>Update <code>install-plugins.sh</code> to unlink <code>dots.default-layout</code> when registered and link <code>stationary</code>. Apply that migration to the running Herdr session, assert only <code>dots.stationary</code> is registered, then run the disposable ordinary-workspace and worktree smoke cases. Verify both tabs, all eight pane labels, three Work splits, three Server splits, focused Nvim, seven idle panes, and exactly one Nvim process before cleanup.</p>
+          <div class="tags"><span class="tag">plugin registry migration</span><span class="tag">live Herdr</span><span class="tag">ordinary + worktree</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-header"><span class="section-number">07</span><h2>Affected files and checks</h2></div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>File</th><th>Change</th><th>Responsibility</th></tr></thead>
+        <tbody>
+          <tr><td><code>.../local-plugins/default-layout/</code> → <code>stationary/</code></td><td>rename</td><td>Match the plugin’s general responsibility.</td></tr>
+          <tr><td><code>.../stationary/layouts.toml</code></td><td><span class="badge new">new</span></td><td>Named layouts, keyed tabs, inline roots, ordered splits, commands, and focus.</td></tr>
+          <tr><td><code>.../stationary/herdr-plugin.toml</code></td><td>modify</td><td>Use ID <code>dots.stationary</code>, name <code>Stationary</code>, pass <code>default</code> as argv, and bump the minor version.</td></tr>
+          <tr><td><code>.../stationary/apply-layout.sh</code></td><td>modify</td><td>Use the <code>dots.stationary</code> log prefix; parse, validate, interpret, and preserve mutation failure handling.</td></tr>
+          <tr><td><code>.../stationary/test.sh</code></td><td>modify</td><td>Prove recipe compilation, invalid preflight, and exact Herdr calls.</td></tr>
+          <tr><td><code>.../stationary/smoke-test.sh</code></td><td>modify</td><td>Prove the recipe-driven result against the installed Herdr CLI.</td></tr>
+          <tr><td><code>common/.config/herdr/install-plugins.sh</code></td><td>modify</td><td>Conditionally unlink <code>dots.default-layout</code>, then link and enable <code>local-plugins/stationary</code>.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="two-col" style="margin-top:24px">
+      <article class="card">
+        <h3>Automated checks</h3>
+        <ul class="acceptance">
+          <li><code>sh -n apply-layout.sh test.sh smoke-test.sh</code></li>
+          <li><code>shellcheck apply-layout.sh test.sh smoke-test.sh install-plugins.sh</code></li>
+          <li><code>sh test.sh</code></li>
+          <li><code>sh smoke-test.sh</code> inside Herdr</li>
+          <li>Scoped <code>git diff --check</code></li>
+        </ul>
+      </article>
+      <article class="card">
+        <h3>Acceptance criteria</h3>
+        <ul class="acceptance">
+          <li>Changing a ratio in TOML changes the live split without shell edits.</li>
+          <li>Tab keys become Herdr tab labels; pane names resolve split sources.</li>
+          <li>A focused split is created with <code>--focus</code>; an unmarked tab keeps its root focused.</li>
+          <li>The manifest-selected layout is the only recipe applied.</li>
+          <li><code>herdr plugin list</code> reports <code>dots.stationary</code> and no <code>dots.default-layout</code>.</li>
+          <li>Invalid recipes never mutate a fresh workspace.</li>
+          <li>Work matches the four-pane reference; Servers remains the existing 2×2 grid.</li>
+        </ul>
+      </article>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-header"><span class="section-number">08</span><h2>Risks and mitigations</h2></div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Risk</th><th>Level</th><th>Mitigation</th></tr></thead>
+        <tbody>
+          <tr><td>A malformed recipe leaves half a layout.</td><td><span class="badge med">medium</span></td><td>Parse the complete TOML and validate every named layout before the first rename.</td></tr>
+          <tr><td>The old plugin registration points at the renamed directory.</td><td><span class="badge med">medium</span></td><td>Conditionally unlink <code>dots.default-layout</code>, link <code>dots.stationary</code>, and assert registry state before smoke testing.</td></tr>
+          <tr><td>Tab map order changes across parsers.</td><td><span class="badge med">medium</span></td><td>Use explicit contiguous <code>order</code> values rather than TOML key order.</td></tr>
+          <tr><td>Pane labels contain unsafe line separators.</td><td><span class="badge med">medium</span></td><td>Reject empty labels and control characters before producing the interpreter stream.</td></tr>
+          <tr><td>The recipe language grows beyond Herdr primitives.</td><td><span class="badge low">low</span></td><td>Keep v1 to root panes, right/down splits, optional run commands, per-pane focus markers, and final tab focus.</td></tr>
+          <tr><td><code>yq</code> is absent on a machine.</td><td><span class="badge low">low</span></td><td>Mise already manages yq; preflight reports the missing dependency without mutation.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="card" style="margin-top:24px">
+      <h3>Commit shape</h3>
+      <p>One focused commit: <code>add Stationary layout recipes</code>. Splitting the rename, schema, and interpreter would leave the plugin temporarily unusable and make review harder.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-header"><span class="section-number">09</span><h2>Artifact record</h2></div>
+    <details>
+      <summary>Current artifact metadata</summary>
+      <div class="details-body">
+        <table>
+          <thead><tr><th>Phase</th><th>What changed</th><th>Why</th><th>Fix</th><th>Landed in</th></tr></thead>
+          <tbody>
+          <tr><td>Planning</td><td>A reviewable implementation contract exists.</td><td>Stationary needs one durable source for its recipe schema, migration, execution, and proof.</td><td>The artifact specifies compact TOML, complete preflight, registry migration, TDD slices, and live checks.</td><td><code>plans/stationary-completed.html</code></td></tr>
+          <tr><td>Implementation</td><td>Stationary reads named TOML layouts and applies the default four-pane Work tab plus the Servers grid.</td><td>Layout geometry, pane commands, and focus belong in one editable recipe.</td><td>The POSIX hook parses with yq, validates every layout with jq, resolves logical pane IDs, delays commands, and migrates the plugin registry.</td><td>Unstaged working tree</td></tr>
+          <tr><td>Review</td><td>Task and final reviews found two text-handling boundary gaps.</td><td>Recipe labels must remain safe and byte-consistent through validation and lookup.</td><td>Validation rejects C1 and Unicode separators; map lookups use <code>read -r</code> and cover literal backslashes.</td><td>Review clean</td></tr>
+          <tr><td>Verification</td><td>Syntax, ShellCheck, ten unit groups, live ordinary/worktree smoke, registry state, plugin event logs, and scoped diff checks pass.</td><td>The recipe interpreter crosses TOML, shell, Herdr CLI, and live plugin boundaries.</td><td>Fresh controller verification confirms Stationary enabled, the old registration absent, and no staged files.</td><td>Proposed commit: <code>add Stationary layout recipes</code></td></tr>
+          <tr><td>Layout tuning</td><td>The default Work tab uses the live Black Atom geometry.</td><td>The narrower Agent column and shorter Shell II leave more room for Nvim.</td><td>Set Work ratios to <code>0.25</code>, <code>0.65</code>, and <code>0.80</code>; keep Servers unchanged.</td><td>Staged working tree</td></tr>
+        </tbody>
+        </table>
+      </div>
+    </details>
+  </section>
+</main>
+</body>
+</html>
