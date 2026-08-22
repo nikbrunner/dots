@@ -17,7 +17,7 @@
  *   3. Restart Pi (or use /reload)
  */
 
-import type { ExtensionAPI } from "@mariozechner/pi-coding-agent";
+import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
 
 export default function (pi: ExtensionAPI) {
   const hookScript = `${process.env.HOME}/.local/bin/helm-tmux-pi-hook.sh`;

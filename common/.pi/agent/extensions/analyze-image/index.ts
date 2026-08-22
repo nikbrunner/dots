@@ -2,8 +2,8 @@ import { spawn } from "node:child_process";
 import * as fs from "node:fs";
 import * as os from "node:os";
 import * as path from "node:path";
-import type { Message } from "@mariozechner/pi-ai";
-import type { ExtensionAPI } from "@mariozechner/pi-coding-agent";
+import type { Message } from "@earendil-works/pi-ai";
+import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
 import { Type } from "@sinclair/typebox";
 
 const supportedExtensions = new Set([".png", ".jpg", ".jpeg", ".gif", ".webp", ".bmp"]);
@@ -103,7 +103,7 @@ export default function (pi: ExtensionAPI) {
 		async execute(_id, params, signal, _onUpdate, ctx) {
 			const config = loadConfig();
 			if (params.images.length === 0 || params.images.length > config.maxImagesPerCall) {
-				return { content: [{ type: "text", text: `Expected 1-${config.maxImagesPerCall} images.` }], isError: true };
+				return { content: [{ type: "text", text: `Expected 1-${config.maxImagesPerCall} images.` }], isError: true, details: {} };
 			}
 			const images = params.images.map((image: string) => {
 				const absolutePath = path.resolve(ctx.cwd, image);
@@ -115,9 +115,9 @@ export default function (pi: ExtensionAPI) {
 			const prompt = `Read and analyze these image files:\n${images.map((image) => `- ${image}`).join("\n")}\n\nQuestion: ${params.question}`;
 			const result = await analyze(params.model ?? config.defaultModel, prompt, ctx.cwd, signal);
 			if (result.exitCode !== 0 || !result.output) {
-				return { content: [{ type: "text", text: `Image analysis failed: ${result.stderr || "Subagent returned no analysis."}` }], isError: true };
+				return { content: [{ type: "text", text: `Image analysis failed: ${result.stderr || "Subagent returned no analysis."}` }], isError: true, details: {} };
 			}
-			return { content: [{ type: "text", text: result.output }] };
+			return { content: [{ type: "text", text: result.output }], details: {} };
 		},
 	});
 }

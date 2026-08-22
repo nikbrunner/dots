@@ -378,7 +378,7 @@ export default function (pi: ExtensionAPI): void {
 					if (branch) git.push(`${indicator("branch", "br", compact)}${branch}${dirty ? theme.fg("warning", "*") : ""}`);
 					if (branch && gitStatus) {
 						const statusParts = [
-							gitStatus.add > 0 ? theme.fg("success", `+${gitStatus.add}`) : undefined,
+							gitStatus.added > 0 ? theme.fg("success", `+${gitStatus.added}`) : undefined,
 							gitStatus.changed > 0 ? theme.fg("warning", `~${gitStatus.changed}`) : undefined,
 							gitStatus.deleted > 0 ? theme.fg("error", `-${gitStatus.deleted}`) : undefined,
 							gitStatus.untracked > 0 ? theme.fg("accent", `?${gitStatus.untracked}`) : undefined,
