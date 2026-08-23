@@ -22,5 +22,5 @@ Edit.now(function()
 		},
 	})
 
-	vim.cmd.colorscheme("black-atom-stations-operations")
+	vim.cmd.colorscheme("black-atom-terra-fall-night")
 end)
