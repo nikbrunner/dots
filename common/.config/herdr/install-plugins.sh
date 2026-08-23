@@ -20,3 +20,6 @@ herdr plugin install black-atom-industries/helm.herdr --yes
 
 # https://github.com/persiyanov/herdr-reviewr
 herdr plugin install persiyanov/herdr-reviewr --yes
+
+# https://github.com/zenbu-labs/terminal-browser/tree/main/herdr-plugin
+herdr plugin install zenbu-labs/terminal-browser/herdr-plugin --yes
