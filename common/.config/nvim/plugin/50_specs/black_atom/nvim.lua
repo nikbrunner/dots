@@ -1,12 +1,12 @@
 Edit.now(function()
 	-- vim.pack.add({
 	-- 	{
-	-- 		src = "git@github.com:black-atom-industries/nvim.git",
+	-- 		src = "git@github.com:nikbrunner/black-atom.git",
 	-- 		name = "black-atom",
 	-- 	},
 	-- })
 	-- Development: comment line above, uncomment below — no other setup needed:
-	vim.opt.rtp:prepend(vim.fn.expand("~/repos/black-atom-industries/nvim"))
+	vim.opt.rtp:prepend(vim.fn.expand("~/repos/nikbrunner/black-atom/adapters/nvim"))
 
 	require("black-atom").setup({
 		styles = {

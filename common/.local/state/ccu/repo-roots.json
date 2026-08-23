@@ -221,9 +221,10 @@
     "work": false,
     "session_dirs": [
       "~/repos/nikbrunner/black-atom",
+      "~/repos/nikbrunner/black-atom-theme-catalog-rebuild",
       "~/repos/nikbrunner/black-atom/livery"
     ],
-    "last_seen": "2026-08-18"
+    "last_seen": "2026-08-23"
   },
   "nikbrunner/dooing": {
     "root": "~/repos/nikbrunner/dooing",
