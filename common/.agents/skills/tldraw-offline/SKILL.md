@@ -2,7 +2,6 @@
 name: tldraw-offline
 description: Operate the user's tldraw offline canvas app, including open .tldraw or .tldr files. Use whenever a task involves inspecting, editing, arranging, connecting, linting, or scripting a tldraw Desktop canvas.
 ---
-
 <!-- installed-by:tldraw-desktop-agent-skills -->
 
 # tldraw canvas operator
@@ -47,7 +46,7 @@ curl -s http://localhost:7236/readme
 - `POST /api/search`: run JavaScript with an `api` object. Use this to discover docs, read shapes and bindings, capture screenshots, and query the editor API reference.
 - `POST /api/docs/create`: create a new named `.tldraw` file, open it in a new window, and save it to disk. Use this when the task needs a fresh document rather than an already-open one.
 - `POST /api/doc/:id/exec`: run JavaScript with a live tldraw `editor` scoped to one document. Use this for canvas edits.
-- `POST /api/doc/:id/script-workspace`: expose a locally owned document's live script paths for direct durable document-script and asset edits.
+- `POST /api/doc/:id/script-workspace`: expose a locally owned document's live script paths for direct durable board-script and asset edits.
 - `GET /api/doc/:id/script-status`: inspect a locally owned document's watcher state for `script/**` edits and find `errorLogPath`.
 
 The code-taking POST endpoints accept raw JavaScript as the request body (`content-type: text/plain`) or a JSON body `{"code": "..."}`, and wrap the code in an async function so top-level `await` works. Prefer raw bodies for shell use.
@@ -85,7 +84,7 @@ A local doc also reports `sharedToLan`. True means the board is open to LAN righ
 
 ## Scripts on a shared board
 
-Writing or editing a document script for a board that is (or may become) shared changes what the script may do, because **every participant's editor runs the whole bundle** — `config.js` before it mounts, `main.js` after — and nothing elects a writer:
+Writing or editing a board script for a board that is (or may become) shared changes what the script may do, because **every participant's editor runs the whole bundle** — `config.js` before it mounts, `main.js` after — and nothing elects a writer:
 
 - Registration and rendering (`config.js` utils, view-only reactions) must run on every client, identically. A client that doesn't register a script-defined shape type renders an inert placeholder instead.
 - Writes happen once per client unless guarded. Gate them on `ctx.app.board.isHost` — true in the editor that owns the file, false in one that joined — and keep continuous work (`tick` handlers, timers, simulations) behind the same guard. A never-shared board has one editor and it is the host, so the guard is correct offline too.
@@ -110,7 +109,7 @@ curl -s -X POST http://localhost:$PORT/api/docs/create \
 `api.recipes` (via `/api/search`) is an object keyed by recipe `id`; read one in full with `api.recipes['<id>']`. Query it when a task matches one of the worked recipes:
 
 - `stack-existing-boxes` — Stack existing boxes
-- `add-durable-behavior-with-a-document-script` — Add durable behavior with a document script
+- `add-durable-behavior-with-a-board-script` — Add durable behavior with a board script
 - `editable-furniture-with-anchored-internals` — Editable furniture with anchored internals
 - `scripts-on-a-board-shared-over-lan` — Scripts on a board shared over LAN
 - `clickable-card-or-button-ui` — Clickable card or button UI
@@ -128,21 +127,23 @@ For durable UI behavior on a locally owned document, open `/script-workspace`, w
 
 ## Shape format
 
-`api.getShapes()`, `/exec`, and document scripts all use raw tldraw SDK records. Create shapes with normal tldraw partials. Prefer importing primitives from `'tldraw'` when the host import map is active — in an `/exec` snippet use `await import('tldraw')` (a snippet can't use a static `import`); a document script can use a top-level `import { createShapeId } from 'tldraw'`. The `helpers` bag carries only editor-bound conveniences (not SDK primitives) — import primitives from `'tldraw'` directly. Read `api.imports` (from `/api/search`) for the full list of importable symbols:
+`api.getShapes()`, `/exec`, and board scripts all use raw tldraw SDK records. Create shapes with normal tldraw partials. Prefer importing primitives from `'tldraw'` when the host import map is active — in an `/exec` snippet use `await import('tldraw')` (a snippet can't use a static `import`); a board script can use a top-level `import { createShapeId } from 'tldraw'`. The `helpers` bag carries only editor-bound conveniences (not SDK primitives) — import primitives from `'tldraw'` directly. Read `api.imports` (from `/api/search`) for the full list of importable symbols:
 
 ```js
-const { createShapeId, toRichText } = await import("tldraw");
+const { createShapeId, toRichText } = await import('tldraw')
 editor.createShape({
-  id: createShapeId("box1"),
-  type: "geo",
-  x: 100,
-  y: 100,
-  props: { geo: "rectangle", w: 300, h: 200, richText: toRichText("Label") },
-});
-await helpers.saveDoc();
+	id: createShapeId('box1'),
+	type: 'geo',
+	x: 100,
+	y: 100,
+	props: { geo: 'rectangle', w: 300, h: 200, richText: toRichText('Label') },
+})
+await helpers.saveDoc()
 ```
 
 The `helpers.saveDoc()` call above is only for `ownership: 'local'`. Omit it for a remote doc; its edits sync to the host working copy and only the host saves the archive.
+
+Saving a local doc is your job, not the user's. Whenever a local doc reports `unsavedChanges: true` — including after script-workspace edits, which mark the doc unsaved — save it yourself with a one-line exec snippet: `{"code": "await helpers.saveDoc()"}`. Never ask the user to save or press Cmd+S.
 
 Use `api.getShapes(doc.id)` to inspect existing raw shape records before mutating them.
 
@@ -179,7 +180,7 @@ Before any bulk or destructive edit (deleting all shapes on a page, clearing a d
 
 ## Durable script pattern: editable furniture, anchored internals
 
-Use this when a document script draws a board that users should rearrange or restyle while script-owned animation/game pieces still follow it.
+Use this when a board script draws a board that users should rearrange or restyle while script-owned animation/game pieces still follow it.
 
 - Create user-facing furniture with stable ids and `helpers.createShapeIfMissing` / `helpers.createShapesIfMissing`; never delete and redraw it on rerun.
 - Pick one visible anchor per interactive system, such as a track or table felt.
