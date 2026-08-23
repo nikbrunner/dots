@@ -8,7 +8,8 @@ Edit.now(function()
 	-- Development: comment line above, uncomment below — no other setup needed:
 	vim.opt.rtp:prepend(vim.fn.expand("~/repos/nikbrunner/black-atom/adapters/nvim"))
 
-	require("black-atom").setup({
+	---@type BlackAtom.Config
+	vim.g.black_atom_core_config = {
 		styles = {
 			transparency = "partial",
 			cmp_kind_color_mode = "bg",
@@ -20,7 +21,7 @@ Edit.now(function()
 				variables = {},
 			},
 		},
-	})
+	}
 
 	vim.cmd.colorscheme("black-atom-terra-fall-night")
 end)
