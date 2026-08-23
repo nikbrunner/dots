@@ -33,6 +33,7 @@ run_step() {
 
 # Configuration
 DOTS_DIR="${DOTS_DIR:-$HOME/repos/nikbrunner/dots}"
+BLACK_ATOM_DIR="${BLACK_ATOM_DIR:-$HOME/repos/nikbrunner/black-atom}"
 THEMES_JSON="$DOTS_DIR/common/themes.json"
 
 # Tool configurations
@@ -98,11 +99,11 @@ update_nvim_spec_theme() {
 update_tmux_theme() {
 	local theme="$1"
 	local collection="$2"
-	local theme_path="~/repos/black-atom-industries/tmux/themes/$collection/${theme}.conf"
+	local theme_path="$BLACK_ATOM_DIR/adapters/tmux/themes/$collection/${theme}.conf"
 	if [[ "$(uname)" == "Darwin" ]]; then
-		sed -i '' "s|source-file .*/black-atom-industries/tmux/themes/.*/.*\.conf|source-file $theme_path|" "$TMUX_CONFIG"
+		sed -i '' "s|^source-file .*\.conf$|source-file $theme_path|" "$TMUX_CONFIG"
 	else
-		sed -i "s|source-file .*/black-atom-industries/tmux/themes/.*/.*\.conf|source-file $theme_path|" "$TMUX_CONFIG"
+		sed -i "s|^source-file .*\.conf$|source-file $theme_path|" "$TMUX_CONFIG"
 	fi
 }
 
@@ -159,7 +160,7 @@ update_niri_theme() {
 
 	local theme="$1"
 	local collection="$2"
-	local theme_source="$HOME/repos/black-atom-industries/niri/themes/$collection/${theme}.kdl"
+	local theme_source="$BLACK_ATOM_DIR/adapters/niri/themes/$collection/${theme}.kdl"
 
 	# Only update if niri config directory exists
 	if [[ -d "$(dirname "$NIRI_THEME_LINK")" ]]; then
