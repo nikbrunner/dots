@@ -2,6 +2,6 @@ bookmarks:
     - path: ~/repos/nikbrunner/dots
     - path: ~/repos/nikbrunner/notes
     - path: ~/repos/nikbrunner/imf-notes
-    - path: ~/repos/black-atom-industries/core
+    - path: ~/repos/nikbrunner/black-atom
     - path: ~/repos/imfusion/websdk/web-ui
-    - path: ~/repos/black-atom-industries/nvim
+    - path: ~/repos/nikbrunner/black-atom/adapters/nvim
