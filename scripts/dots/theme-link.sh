@@ -66,7 +66,7 @@ create_relative_symlink() {
         local target_dir
         target_dir=$(dirname "$target")
         local expected_rel
-        expected_rel=$(python3 -c "import os.path; print(os.path.relpath('$source', '$target_dir'))")
+        expected_rel=$(python3 -c "import os.path; print(os.path.relpath('$source', os.path.realpath('$target_dir')))")
 
         if [[ "$current_target" == "$expected_rel" ]]; then
             status="existing"
@@ -83,7 +83,7 @@ create_relative_symlink() {
         echo "  [DRY] $target"
     else
         rm -f "$target"
-        ln -s "$(python3 -c "import os.path; print(os.path.relpath('$source', '$(dirname "$target")'))")" "$target"
+        ln -s "$(python3 -c "import os.path; print(os.path.relpath('$source', os.path.realpath('$(dirname "$target")')))")" "$target"
         [[ "$QUIET" != true ]] && echo "  $status: $(basename "$target")"
     fi
 
@@ -97,7 +97,7 @@ process_adapter() {
     local extension="$2"
     local dots_target_dir="$3"
 
-    local adapter_dir="$BLACK_ATOM_DIR/$adapter"
+    local adapter_dir="$BLACK_ATOM_DIR/adapters/$adapter"
     local target_dir="$DOTS_DIR/$dots_target_dir"
 
     if [[ ! -d "$adapter_dir" ]]; then
@@ -170,6 +170,8 @@ echo ""
 process_adapter "waybar" "css" "arch/.config/waybar/themes"
 echo ""
 process_adapter "lazygit" "yml" "common/.config/lazygit/themes"
+echo ""
+process_adapter "tmux" "conf" "common/.config/tmux/themes"
 
 echo ""
 if [[ "$DRY_RUN" == "true" ]]; then
