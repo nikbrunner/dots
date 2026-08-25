@@ -4,6 +4,10 @@ import type { Component } from "@earendil-works/pi-tui";
 export interface TopbarProviderContext {
 	theme: ExtensionContext["ui"]["theme"];
 	sessionName?: string;
+	focus?: string;
+	focusPending?: boolean;
+	currentState?: string;
+	summaryPending?: boolean;
 	lastResponse?: string;
 }
 

@@ -1,13 +1,32 @@
 {
   "shortcut": "ctrl+shift+t",
-  "maxHeight": 20,
+  "padding": {
+    "top": 0,
+    "right": 2,
+    "bottom": 1,
+    "left": 1
+  },
   "gap": 1,
+  "maxHeight": 20,
   "background": {
     "source": "terminal",
     "darken": 0.1
   },
+  "border-bottom": false,
   "providers": [
-    { "provider": "session-name", "maxLines": 1 },
-    { "provider": "last-response", "maxLines": 3 }
+    {
+      "provider": "session-name",
+      "maxLines": 1
+    },
+    {
+      "provider": "conversation-state",
+      "maxLines": 6,
+      "summary": {
+        "enabled": true,
+        "model": "openai-codex/gpt-5.6-luna",
+        "minIntervalMs": 10000,
+        "maxTokens": 80
+      }
+    }
   ]
 }

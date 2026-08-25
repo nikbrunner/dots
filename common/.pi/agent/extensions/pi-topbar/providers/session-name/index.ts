@@ -1,10 +1,11 @@
 import { Text } from "@earendil-works/pi-tui";
+import { getTopbarColor } from "../../lib/layout";
 import type { TopbarProvider } from "../types";
 
 const sessionNameProvider: TopbarProvider = {
 	id: "session-name",
 	render({ sessionName, theme }) {
-		return sessionName ? new Text(theme.bold(sessionName), 0, 0) : undefined;
+		return sessionName ? new Text(theme.fg(getTopbarColor("session"), theme.bold(sessionName)), 0, 0) : undefined;
 	},
 };
 

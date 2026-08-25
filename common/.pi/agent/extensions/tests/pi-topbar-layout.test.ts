@@ -2,6 +2,11 @@ import {
 	addSectionGaps,
 	clipTopbarLines,
 	DEFAULT_TOPBAR_SHORTCUT,
+	applyTopbarPadding,
+	getSpinnerFrame,
+	getTopbarColor,
+	getTopbarContentMaxHeight,
+	alignTopbarLabel,
 	layoutTopbarSections,
 	nextTopbarView,
 	type TopbarView,
@@ -38,6 +43,44 @@ Deno.test("derives compact height from providers and caps expanded output global
 	const clipped = clipTopbarLines(layoutTopbarSections(sections, maxLines, true, 1), true, 4);
 	if (JSON.stringify(clipped) !== JSON.stringify(["Session", "", "one", "two"])) {
 		throw new Error(`Unexpected clipped layout: ${JSON.stringify(clipped)}`);
+	}
+});
+
+Deno.test("reserves one row only when the bottom border is enabled", () => {
+	if (getTopbarContentMaxHeight(20, true) !== 19 || getTopbarContentMaxHeight(20, false) !== 20) {
+		throw new Error("Unexpected content height for border setting");
+	}
+});
+
+Deno.test("applies independent top, right, bottom, and left padding", () => {
+	const padded = applyTopbarPadding(["content"], { top: 1, right: 2, bottom: 1, left: 3 });
+	const expected = ["", "   content  ", ""];
+	if (JSON.stringify(padded) !== JSON.stringify(expected)) {
+		throw new Error(`Unexpected padded lines: ${JSON.stringify(padded)}`);
+	}
+});
+
+Deno.test("keeps topbar color roles distinct", () => {
+	if (getTopbarColor("session") !== "warning") {
+		throw new Error("Expected session to use the terminal warning color");
+	}
+	if (getTopbarColor("session") === getTopbarColor("focus")) {
+		throw new Error("Expected session and focus to use different colors");
+	}
+	if (getTopbarColor("focus") === getTopbarColor("now")) {
+		throw new Error("Expected focus and now to use different colors");
+	}
+});
+
+Deno.test("aligns topbar labels to the same value column", () => {
+	if (alignTopbarLabel("Focus:") !== "Focus:" || alignTopbarLabel("Now:") !== "Now:  ") {
+		throw new Error("Expected labels to share a fixed width");
+	}
+});
+
+Deno.test("cycles spinner frames predictably", () => {
+	if (getSpinnerFrame(0) !== "⠋" || getSpinnerFrame(80) !== "⠙") {
+		throw new Error("Unexpected spinner frame");
 	}
 });
 
