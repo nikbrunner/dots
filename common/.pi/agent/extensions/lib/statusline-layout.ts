@@ -19,17 +19,6 @@ export function formatFooterRowLabel(label: string, compact: boolean): string {
 	return displayLabel.padEnd(compact ? 5 : 10);
 }
 
-export interface SessionWidgetParts {
-	before: string;
-	name: string;
-	after: string;
-}
-
-export function formatSessionWidget(sessionName: string | undefined): SessionWidgetParts | undefined {
-	const name = sessionName?.trim();
-	return name ? { before: "╭─ ", name, after: " ─╮" } : undefined;
-}
-
 export function getAlignedColumnWidths(
 	rows: FooterRow[],
 	measure: (value: string) => number = (value) => Array.from(value).length,

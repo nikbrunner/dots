@@ -7,7 +7,6 @@ import { join, resolve } from "node:path";
 import { stripVTControlCharacters } from "node:util";
 import {
 	formatFooterRowLabel,
-	formatSessionWidget,
 	getAlignedColumnWidths,
 	type FooterRow,
 } from "./lib/statusline-layout";
@@ -240,7 +239,6 @@ export default function (pi: ExtensionAPI): void {
 	const runtimeStartedAt = Date.now();
 	let active = true;
 	let requestRender = (): void => {};
-	let updateSessionWidget = (): void => {};
 	let state: "ready" | "working" | "error" = "ready";
 	let dirty = false;
 	let gitStatus: GitStatus | undefined;
@@ -297,24 +295,6 @@ export default function (pi: ExtensionAPI): void {
 		refreshActiveAccount();
 		refreshDirty(ctx.cwd);
 		refreshWorktreeState(ctx.cwd);
-
-		const setSessionWidget = (): void => {
-			if (ctx.mode !== "tui") return;
-			ctx.ui.setHeader(undefined);
-			ctx.ui.setWidget("session-name", (_tui, theme) => ({
-				invalidate(): void {},
-				render(width: number): string[] {
-					const parts = formatSessionWidget(pi.getSessionName());
-					if (!parts || width <= 0) return [];
-					const frameBefore = theme.fg("muted", parts.before);
-					const name = theme.bold(theme.fg("accent", parts.name));
-					const frameAfter = theme.fg("muted", parts.after);
-					return [truncateToWidth(frameBefore + name + frameAfter, width)];
-				},
-			}), { placement: "aboveEditor" });
-		};
-		updateSessionWidget = setSessionWidget;
-		setSessionWidget();
 
 		ctx.ui.setFooter((tui, theme, footerData) => {
 			requestRender = (): void => tui.requestRender();
@@ -471,7 +451,6 @@ export default function (pi: ExtensionAPI): void {
 	});
 
 	pi.on("session_info_changed", () => {
-		updateSessionWidget();
 		repaint();
 	});
 	pi.on("before_provider_request", () => {
@@ -500,12 +479,7 @@ export default function (pi: ExtensionAPI): void {
 	pi.on("thinking_level_select", () => repaint());
 	pi.on("tool_execution_end", (_event, ctx) => refreshDirty(ctx.cwd));
 	pi.on("user_bash", (event) => scheduleDirtyRefresh(event.cwd));
-	pi.on("session_shutdown", (_event, ctx) => {
-		if (ctx.mode === "tui") {
-			ctx.ui.setHeader(undefined);
-			ctx.ui.setWidget("session-name", undefined);
-		}
-		updateSessionWidget = (): void => {};
+	pi.on("session_shutdown", (_event, _ctx) => {
 		active = false;
 		dirtyRefreshGeneration++;
 		if (dirtyRefreshTimer) clearTimeout(dirtyRefreshTimer);

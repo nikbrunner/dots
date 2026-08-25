@@ -1,7 +1,6 @@
 import {
 	compactFooterLabel,
 	formatFooterRowLabel,
-	formatSessionWidget,
 	getAlignedColumnWidths,
 	type FooterRow,
 } from "../lib/statusline-layout.ts";
@@ -21,15 +20,6 @@ Deno.test("uses compact row labels", () => {
 
 Deno.test("leaves a gap after compact row labels", () => {
 	assertEquals(formatFooterRowLabel("PROVIDER", true), "PROV ");
-});
-
-Deno.test("returns fixed-widget content for named sessions", () => {
-	assertEquals(formatSessionWidget("Refactor statusline"), {
-		before: "╭─ ",
-		name: "Refactor statusline",
-		after: " ─╮",
-	});
-	assertEquals(formatSessionWidget(undefined), undefined);
 });
 
 Deno.test("keeps compact rows aligned when shortened labels fit", () => {
