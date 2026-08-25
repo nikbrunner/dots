@@ -11,6 +11,12 @@ export interface TopbarPadding {
 	left: number;
 }
 
+export interface TopbarLine {
+	label: string;
+	renderedLabel: string;
+	value: string;
+}
+
 export function applyTopbarPadding(lines: string[], padding: TopbarPadding): string[] {
 	const horizontalPadding = (line: string): string =>
 		line.length > 0 ? `${" ".repeat(padding.left)}${line}${" ".repeat(padding.right)}` : line;
@@ -66,6 +72,10 @@ export function getTopbarContentMaxHeight(maxHeight: number, borderBottom: boole
 
 export function alignTopbarLabel(label: string): string {
 	return label.padEnd(TOPBAR_LABEL_WIDTH);
+}
+
+export function getTopbarValueIndent(label: string): number {
+	return alignTopbarLabel(label).length + 1;
 }
 
 export function getSpinnerFrame(now: number): string {

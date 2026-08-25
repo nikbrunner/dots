@@ -6,7 +6,7 @@ import {
 	getSpinnerFrame,
 	getTopbarColor,
 	getTopbarContentMaxHeight,
-	alignTopbarLabel,
+	getTopbarValueIndent,	alignTopbarLabel,
 	layoutTopbarSections,
 	nextTopbarView,
 	type TopbarView,
@@ -43,6 +43,12 @@ Deno.test("derives compact height from providers and caps expanded output global
 	const clipped = clipTopbarLines(layoutTopbarSections(sections, maxLines, true, 1), true, 4);
 	if (JSON.stringify(clipped) !== JSON.stringify(["Session", "", "one", "two"])) {
 		throw new Error(`Unexpected clipped layout: ${JSON.stringify(clipped)}`);
+	}
+});
+
+Deno.test("anchors wrapped values after the shared label column", () => {
+	if (getTopbarValueIndent("Focus:") !== 7 || getTopbarValueIndent("Now:") !== 7) {
+		throw new Error("Expected both values to share the same continuation indent");
 	}
 });
 
