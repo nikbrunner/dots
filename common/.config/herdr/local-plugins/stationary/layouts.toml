@@ -6,8 +6,8 @@ order = 1
 root = { pane = "Agent" }
 splits = [
   { source = "Agent", direction = "right", ratio = 0.25, pane = "Nvim", run = "nvim", focus = true },
-  { source = "Agent", direction = "down", ratio = 0.65, pane = "Shell I" },
-  { source = "Nvim", direction = "down", ratio = 0.80, pane = "Shell II" },
+  # { source = "Agent", direction = "down", ratio = 0.65, pane = "Shell I" },
+  { source = "Nvim", direction = "down", ratio = 0.80, pane = "Shell" },
 ]
 
 [layouts.default.tabs.Servers]
