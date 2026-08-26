@@ -13,6 +13,10 @@ contains "herdr pane split --current --direction right --cwd \"\$target_repo\" -
 contains "herdr agent start \"\$agent_name\" --kind \"\$harness\" --pane \"\$child_id\""
 contains "herdr agent prompt \"\$agent_name\" \"\$child_prompt\""
 contains 'ask one focused question in the current conversation'
+contains 'The final response must contain only the copy-ready handoff'
+contains 'Repository:'
+contains 'Remaining issues:'
+contains 'Suggested next step:'
 if contains 'herdr-dispatch'; then
     printf 'wrapper binary is still referenced\n' >&2
     exit 1
