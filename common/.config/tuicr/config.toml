@@ -1,5 +1,5 @@
-appearance = "system" # or "dark" / "light"
-# theme_light = "catppuccin-latte"
+# appearance = "system" # or "dark" / "light"
+theme_light = "catppuccin-latte"
 # theme_dark = "catppuccin-latte"
 
 diff_view = "unified" # unified" | "side-by-side"
@@ -12,9 +12,5 @@ comment_vim = true              # vim modal editing in the review comment box
 review_watch_interval_ms = 1000 # set to 0 to disable persisted-review polling
 
 comment_types = [
-  { id = "note", label = "question", definition = "ask for clarification", color = "yellow" },
-  { id = "suggestion", definition = "possible improvements" },
-  { id = "issue", definition = "problems to fix" },
-  { id = "praise", definition = "positive feedback" },
-  { id = "nit", label = "nitpick", definition = "small optional tweaks", color = "#d19a66" },
+  { id = "annotation", label = "Annotation", definition = "annotate the code", color = "yellow" },
 ]
