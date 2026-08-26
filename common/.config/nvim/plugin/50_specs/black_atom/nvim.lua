@@ -11,7 +11,7 @@ Edit.now(function()
 	---@type BlackAtom.Config
 	vim.g.black_atom_core_config = {
 		styles = {
-			transparency = "partial",
+			transparency = "none",
 			cmp_kind_color_mode = "bg",
 			diagnostics = {
 				background = true,
@@ -23,5 +23,5 @@ Edit.now(function()
 		},
 	}
 
-	vim.cmd.colorscheme("black-atom-terra-fall-night")
+	vim.cmd.colorscheme("black-atom-mnml-47-light")
 end)
