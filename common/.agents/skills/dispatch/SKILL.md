@@ -33,6 +33,19 @@ This skill requires `HERDR_ENV=1`. If it is not `1`, explain that dispatch must 
 
 Build a concise child prompt containing the selected repository, the user's task, relevant current-session context, known constraints, and the instruction to implement, verify, and stop. Do not paste the raw conversation. Tell the child that it owns the task in a fresh pane and should not perform unrelated work.
 
+The current pane is the only execution location. Send these boundary instructions literally, alongside the task details:
+
+```text
+You are the dispatched worker.
+Work directly in the selected repository and in this pane.
+Do not launch reviewers or other agents.
+Do not invoke Pi subagent tools, workflow orchestration, worktrees, or Herdr commands.
+Do not inspect or switch to another repository.
+Follow directly applicable task skills in this pane; ignore unrelated skills.
+```
+
+The child may follow directly applicable task skills in this pane, but must not delegate this task to another agent or reviewer.
+
 The final response must contain only the copy-ready handoff, with no introduction, progress report, summary, conclusion, or other surrounding text. Use these labels and fill them with concrete details:
 
 ```text

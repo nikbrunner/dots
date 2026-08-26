@@ -17,6 +17,13 @@ contains 'The final response must contain only the copy-ready handoff'
 contains 'Repository:'
 contains 'Remaining issues:'
 contains 'Suggested next step:'
+contains 'The current pane is the only execution location'
+contains 'not delegate this task'
+contains 'Do not invoke Pi subagent tools'
+contains 'Do not inspect or switch to another repository'
+contains 'ignore unrelated skills'
+contains 'You are the dispatched worker.'
+contains 'Do not launch reviewers or other agents.'
 if contains 'herdr-dispatch'; then
     printf 'wrapper binary is still referenced\n' >&2
     exit 1
