@@ -1,5 +1,5 @@
 {
-    "global": { "show_in_menu_bar": false },
+    "global": { "show_additional_menu_items": true },
     "profiles": [
         {
             "complex_modifications": {
@@ -402,7 +402,10 @@
                 }
             ],
             "name": "No Modifications",
-            "virtual_hid_keyboard": { "country_code": 0 }
+            "virtual_hid_keyboard": {
+                "country_code": 0,
+                "keyboard_type_v2": "ansi"
+            }
         }
     ]
 }
