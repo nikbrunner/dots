@@ -50,3 +50,4 @@ common/.local/bin/bic
 /common/.pi/agent/codex-accounts.json
 /.pi-subagents
 /common/.pi/agent/fff/history
+/.superpowers/brainstorm
