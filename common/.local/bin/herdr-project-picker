@@ -1,0 +1,192 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+usage() {
+	printf 'Usage: %s --result-file PATH [--query TEXT] [--root PATH ...] [--harness]\n' "$0" >&2
+}
+
+canonical_dir() {
+	(cd -- "$1" && pwd -P)
+}
+
+repo_root() {
+	local path=$1
+	local root
+	root=$(git -C "$path" rev-parse --show-toplevel 2>/dev/null) || return 1
+	canonical_dir "$root"
+}
+
+collect_repositories() {
+	local root git_dir repo
+	for root in "${roots[@]}"; do
+		[[ -d "$root" ]] || continue
+
+		if repo=$(repo_root "$root"); then
+			printf '%s\n' "$repo"
+		fi
+
+		while IFS= read -r git_dir; do
+			if repo=$(repo_root "$(dirname -- "$git_dir")"); then
+				printf '%s\n' "$repo"
+			fi
+		done < <(
+			find "$root" \
+				\( -name node_modules -o -name .cache -o -name .npm -o \
+				-name .pnpm -o -name Library -o -name Caches -o -name .Trash -o \
+				-name __pycache__ -o -name .venv \) -prune \
+				-o -type d -name .git -print 2>/dev/null
+		)
+	done | sort -u
+}
+
+choose_value() {
+	local prompt=$1
+	shift
+	local values=()
+	local value selection
+	values=("$@")
+
+	if command -v fzf >/dev/null 2>&1; then
+		if selection=$(printf '%s\n' "${values[@]}" | fzf \
+			--reverse \
+			--height=100% \
+			--prompt="$prompt" \
+			--query="$query" \
+			--preview='ls -la -- {}' \
+			--preview-window=right:45%); then
+			printf '%s\n' "$selection"
+		fi
+		return 0
+	fi
+
+	if command -v gum >/dev/null 2>&1; then
+		if selection=$(printf '%s\n' "${values[@]}" | gum choose --header="$prompt"); then
+			printf '%s\n' "$selection"
+		fi
+		return 0
+	fi
+
+	printf '%s\n' "$prompt" >&2
+	for value in "${!values[@]}"; do
+		printf '%d) %s\n' "$((value + 1))" "${values[$value]}" >&2
+	done
+	printf 'Selection: ' >&2
+	if ! IFS= read -r selection; then
+		return 0
+	fi
+	[[ "$selection" =~ ^[0-9]+$ ]] || return 0
+	((selection >= 1 && selection <= ${#values[@]})) || return 0
+	printf '%s\n' "${values[$((selection - 1))]}"
+}
+
+read_manual_path() {
+	local selection
+	if command -v gum >/dev/null 2>&1; then
+		gum input --header='Repository path' --placeholder="$HOME/repos/project"
+		return 0
+	fi
+	printf 'Repository path: ' >&2
+	IFS= read -r selection || true
+	printf '%s\n' "$selection"
+}
+
+result_file=''
+query=''
+harness_mode=false
+roots=()
+
+while [[ $# -gt 0 ]]; do
+	case "$1" in
+	--result-file)
+		[[ $# -ge 2 ]] || {
+			usage
+			exit 2
+		}
+		result_file=$2
+		shift 2
+		;;
+	--query)
+		[[ $# -ge 2 ]] || {
+			usage
+			exit 2
+		}
+		query=$2
+		shift 2
+		;;
+	--root)
+		[[ $# -ge 2 ]] || {
+			usage
+			exit 2
+		}
+		roots+=("$2")
+		shift 2
+		;;
+	--harness)
+		harness_mode=true
+		shift
+		;;
+	--help | -h)
+		usage
+		exit 0
+		;;
+	*)
+		usage
+		exit 2
+		;;
+	esac
+done
+
+[[ -n "$result_file" ]] || {
+	usage
+	exit 2
+}
+mkdir -p "$(dirname -- "$result_file")"
+: >"$result_file"
+
+if $harness_mode; then
+	choices=(pi claude codex)
+	selection=$(choose_value 'Harness> ' "${choices[@]}") || selection=''
+	if [[ -z "$selection" ]]; then
+		printf '__DISPATCH_PICKER_CANCELLED__\n'
+		exit 0
+	fi
+	case "$selection" in
+	pi | claude | codex)
+		printf '%s\n' "$selection" >"$result_file"
+		printf '__DISPATCH_PICKER_SELECTED__\n'
+		exit 0
+		;;
+	*)
+		printf 'Unsupported harness: %s\n' "$selection" >&2
+		exit 1
+		;;
+	esac
+fi
+
+if [[ ${#roots[@]} -eq 0 ]]; then
+	roots=("$PWD" "$HOME/repos" "$HOME/src" "$HOME/projects" "$HOME/work")
+fi
+
+mapfile -t repositories < <(collect_repositories)
+repositories+=(__DISPATCH_ENTER_PATH__)
+selection=$(choose_value 'Repository> ' "${repositories[@]}") || selection=''
+
+if [[ -z "$selection" ]]; then
+	printf '__DISPATCH_PICKER_CANCELLED__\n'
+	exit 0
+fi
+
+if [[ "$selection" == __DISPATCH_ENTER_PATH__ ]]; then
+	selection=$(read_manual_path)
+	[[ -n "$selection" ]] || {
+		printf '__DISPATCH_PICKER_CANCELLED__\n'
+		exit 0
+	}
+fi
+
+selected_root=$(repo_root "$selection") || {
+	printf 'Not a Git repository: %s\n' "$selection" >&2
+	exit 1
+}
+printf '%s\n' "$selected_root" >"$result_file"
+printf '__DISPATCH_PICKER_SELECTED__\n'

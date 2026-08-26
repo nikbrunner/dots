@@ -1,0 +1,23 @@
+{
+  "skill_name": "dispatch",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I’m in the dots repo. The issue is actually in imf-notes. Dispatch an agent to fix the broken link handling there, using the current session context, and keep this chat usable while it works.",
+      "expected_output": "Selects imf-notes, starts a real Herdr child pane in that repository, and returns without waiting.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "Please spin up a Claude Code sidekick in whichever repo this brief points to: the lazyjira sync command is writing stale credentials. Make the fix and stop. Do not make me copy a transcript or choose a Pi package.",
+      "expected_output": "Uses the project picker or an unambiguous inferred repository, launches Claude Code in a real Herdr pane, and does not block on completion.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "There’s a small Codex fix needed in another project. Find the right repository from this context, open it in a separate Herdr pane, and let Codex handle it. I want to continue talking here immediately.",
+      "expected_output": "Honors the explicit Codex choice, selects a repository safely, and launches without synchronous delegation or a Pi-only API.",
+      "files": []
+    }
+  ]
+}
