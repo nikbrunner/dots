@@ -6,12 +6,12 @@
       "custom_name": "notes",
       "identity_cwd": "/Users/brunner/repos/nikbrunner/notes",
       "public_pane_numbers": {
+        "3": 4,
+        "2": 2,
         "6": 6,
         "5": 7,
         "1": 1,
-        "3": 4,
         "7": 8,
-        "2": 2,
         "4": 5
       },
       "next_public_pane_number": 9,
@@ -45,13 +45,13 @@
             }
           },
           "panes": {
-            "2": {
-              "cwd": "/Users/brunner/repos/nikbrunner/notes",
-              "label": "Nvim"
-            },
             "1": {
               "cwd": "/Users/brunner/repos/nikbrunner/notes",
               "label": "Agent"
+            },
+            "2": {
+              "cwd": "/Users/brunner/repos/nikbrunner/notes",
+              "label": "Nvim"
             },
             "3": {
               "cwd": "/Users/brunner/repos/nikbrunner/notes",
@@ -95,6 +95,14 @@
             }
           },
           "panes": {
+            "7": {
+              "cwd": "/Users/brunner/repos/nikbrunner/notes",
+              "label": "Server IV"
+            },
+            "5": {
+              "cwd": "/Users/brunner/repos/nikbrunner/notes",
+              "label": "Server III"
+            },
             "6": {
               "cwd": "/Users/brunner/repos/nikbrunner/notes",
               "label": "Server II"
@@ -102,14 +110,6 @@
             "4": {
               "cwd": "/Users/brunner/repos/nikbrunner/notes",
               "label": "Server I"
-            },
-            "5": {
-              "cwd": "/Users/brunner/repos/nikbrunner/notes",
-              "label": "Server III"
-            },
-            "7": {
-              "cwd": "/Users/brunner/repos/nikbrunner/notes",
-              "label": "Server IV"
             }
           },
           "zoomed": false,
@@ -124,13 +124,13 @@
       "custom_name": "dots",
       "identity_cwd": "/Users/brunner/repos/nikbrunner/dots",
       "public_pane_numbers": {
-        "12": 7,
-        "14": 8,
         "8": 1,
         "13": 6,
-        "52": 27,
+        "14": 8,
         "11": 5,
-        "48": 23
+        "12": 7,
+        "48": 23,
+        "52": 27
       },
       "next_public_pane_number": 32,
       "public_tab_numbers": [
@@ -170,7 +170,7 @@
             }
           },
           "zoomed": false,
-          "focused": 52,
+          "focused": 8,
           "root_pane": 8
         },
         {
@@ -206,21 +206,21 @@
             }
           },
           "panes": {
-            "11": {
-              "cwd": "/Users/brunner/repos/nikbrunner/dots",
-              "label": "Server I"
-            },
-            "13": {
-              "cwd": "/Users/brunner/repos/nikbrunner/dots",
-              "label": "Server II"
-            },
             "12": {
               "cwd": "/Users/brunner/repos/nikbrunner/dots",
               "label": "Server III"
             },
+            "11": {
+              "cwd": "/Users/brunner/repos/nikbrunner/dots",
+              "label": "Server I"
+            },
             "14": {
               "cwd": "/Users/brunner/repos/nikbrunner/dots",
               "label": "Server IV"
+            },
+            "13": {
+              "cwd": "/Users/brunner/repos/nikbrunner/dots",
+              "label": "Server II"
             }
           },
           "zoomed": false,
@@ -256,14 +256,14 @@
         "is_linked_worktree": false
       },
       "public_pane_numbers": {
-        "16": 2,
-        "20": 6,
-        "21": 8,
         "22": 13,
-        "17": 4,
+        "16": 2,
         "18": 5,
-        "15": 1,
-        "19": 7
+        "20": 6,
+        "19": 7,
+        "17": 4,
+        "21": 8,
+        "15": 1
       },
       "next_public_pane_number": 43,
       "public_tab_numbers": [
@@ -297,13 +297,13 @@
             }
           },
           "panes": {
-            "17": {
-              "cwd": "/Users/brunner/repos/nikbrunner/black-atom",
-              "label": "Shell II"
-            },
             "16": {
               "cwd": "/Users/brunner/repos/nikbrunner/black-atom",
               "label": "Nvim"
+            },
+            "17": {
+              "cwd": "/Users/brunner/repos/nikbrunner/black-atom",
+              "label": "Shell II"
             },
             "15": {
               "cwd": "/Users/brunner/repos/nikbrunner/black-atom",
@@ -353,6 +353,10 @@
             }
           },
           "panes": {
+            "19": {
+              "cwd": "/Users/brunner/repos/nikbrunner/black-atom",
+              "label": "Server III"
+            },
             "21": {
               "cwd": "/Users/brunner/repos/nikbrunner/black-atom",
               "label": "Server IV"
@@ -360,10 +364,6 @@
             "20": {
               "cwd": "/Users/brunner/repos/nikbrunner/black-atom",
               "label": "Server II"
-            },
-            "19": {
-              "cwd": "/Users/brunner/repos/nikbrunner/black-atom",
-              "label": "Server III"
             },
             "18": {
               "cwd": "/Users/brunner/repos/nikbrunner/black-atom",
@@ -396,11 +396,11 @@
       "custom_name": "helm.herdr",
       "identity_cwd": "/Users/brunner/repos/black-atom-industries/helm.herdr",
       "public_pane_numbers": {
-        "27": 8,
-        "25": 7,
         "24": 5,
-        "23": 1,
-        "26": 6
+        "25": 7,
+        "26": 6,
+        "27": 8,
+        "23": 1
       },
       "next_public_pane_number": 28,
       "public_tab_numbers": [
@@ -461,10 +461,6 @@
               "cwd": "/Users/brunner/repos/black-atom-industries/helm.herdr",
               "label": "Server I"
             },
-            "25": {
-              "cwd": "/Users/brunner/repos/black-atom-industries/helm.herdr",
-              "label": "Server III"
-            },
             "27": {
               "cwd": "/Users/brunner/repos/black-atom-industries/helm.herdr",
               "label": "Server IV"
@@ -472,6 +468,10 @@
             "26": {
               "cwd": "/Users/brunner/repos/black-atom-industries/helm.herdr",
               "label": "Server II"
+            },
+            "25": {
+              "cwd": "/Users/brunner/repos/black-atom-industries/helm.herdr",
+              "label": "Server III"
             }
           },
           "zoomed": false,
@@ -494,12 +494,12 @@
       },
       "public_pane_numbers": {
         "31": 5,
-        "34": 8,
+        "30": 4,
         "33": 6,
-        "29": 2,
         "32": 7,
-        "28": 1,
-        "30": 4
+        "34": 8,
+        "29": 2,
+        "28": 1
       },
       "next_public_pane_number": 28,
       "public_tab_numbers": [
@@ -532,10 +532,6 @@
             }
           },
           "panes": {
-            "30": {
-              "cwd": "/Users/brunner/.herdr/worktrees/black-atom/rework-structure",
-              "label": "Shell II"
-            },
             "29": {
               "cwd": "/Users/brunner/.herdr/worktrees/black-atom/rework-structure",
               "label": "Nvim"
@@ -543,6 +539,10 @@
             "28": {
               "cwd": "/Users/brunner/.herdr/worktrees/black-atom/rework-structure",
               "label": "Agent"
+            },
+            "30": {
+              "cwd": "/Users/brunner/.herdr/worktrees/black-atom/rework-structure",
+              "label": "Shell II"
             }
           },
           "zoomed": false,
@@ -582,14 +582,6 @@
             }
           },
           "panes": {
-            "32": {
-              "cwd": "/Users/brunner/.herdr/worktrees/black-atom/rework-structure",
-              "label": "Server III"
-            },
-            "34": {
-              "cwd": "/Users/brunner/.herdr/worktrees/black-atom/rework-structure",
-              "label": "Server IV"
-            },
             "31": {
               "cwd": "/Users/brunner/.herdr/worktrees/black-atom/rework-structure",
               "label": "Server I"
@@ -597,6 +589,14 @@
             "33": {
               "cwd": "/Users/brunner/.herdr/worktrees/black-atom/rework-structure",
               "label": "Server II"
+            },
+            "34": {
+              "cwd": "/Users/brunner/.herdr/worktrees/black-atom/rework-structure",
+              "label": "Server IV"
+            },
+            "32": {
+              "cwd": "/Users/brunner/.herdr/worktrees/black-atom/rework-structure",
+              "label": "Server III"
             }
           },
           "zoomed": false,
