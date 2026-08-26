@@ -37,6 +37,15 @@
       "pluginName": "example-skills",
       "installedAt": "2026-08-19T10:59:25.303Z",
       "updatedAt": "2026-08-19T10:59:25.303Z"
+    },
+    "documentation-writer": {
+      "source": "github/awesome-copilot",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/github/awesome-copilot.git",
+      "skillPath": "skills/documentation-writer/SKILL.md",
+      "skillFolderHash": "016d8040a3f91c8360b1003e74fbf29f34c283f5",
+      "installedAt": "2026-08-26T14:42:42.255Z",
+      "updatedAt": "2026-08-26T14:42:42.255Z"
     }
   },
   "dismissed": {
