@@ -103,16 +103,25 @@ invert = true
 ## with ^ or end with $, they'll match anywhere in the command.
 ## For details on the supported regular expression syntax, see
 ## https://docs.rs/regex/latest/regex/#syntax
-# history_filter = []
+history_filter = [
+  "^ls$",                                                        # exclude bare 'ls', but not 'ls -la'
+  "^cd ",                                                        # exclude cd commands
+  "^pwd$",
+  "^clear$",
+  "^exit$",
+  "--password",                                                  # exclude anything with a password flag
+  '(?i)(--token|--secret|--api[-_]?key)(=|\s)',
+  '(?i)(authorization:\s*bearer|x-api-key:|cookie:)',
+  '(?i)^export\s+\w*(password|token|secret|api[_-]?key)\w*\s*=',
+  '(?i)^setenv\s+\w*(password|token|secret|api[_-]?key)\w*\s+',
+]
 
 ## prevent commands run with cwd matching any of these regexes from being written
 ## to history. Note that these regular expressions are unanchored, i.e. if they don't
 ## start with ^ or end with $, they'll match anywhere in CWD.
 ## For details on the supported regular expression syntax, see
 ## https://docs.rs/regex/latest/regex/#syntax
-# cwd_filter = [
-#   "^/very/secret/area",
-# ]
+cwd_filter = ["^/tmp", "/node_modules/"]
 
 ## Configure the maximum height of the preview to show.
 ## Useful when you have long scripts in your history that you want to distinguish
@@ -263,6 +272,7 @@ name = "autumn"
 # debug = true
 
 [search]
+filters = ["workspace", "session", "global"]
 ## The list of enabled filter modes, in order of priority.
 ## The "workspace" mode is skipped when not in a workspace or workspaces = false.
 ## Default filter mode can be overridden with the filter_mode setting.
