@@ -65,12 +65,15 @@ layout_has_exact_labels() {
     $tabs.result.tabs as $tabs |
     $panes.result.panes as $panes |
     ($tabs | map(select(.label == "Work")) | if length == 1 then .[0].tab_id else null end) as $work_id |
+    ($tabs | map(select(.label == "Edit")) | if length == 1 then .[0].tab_id else null end) as $edit_id |
     ($tabs | map(select(.label == "Servers")) | if length == 1 then .[0].tab_id else null end) as $servers_id |
-    ([ $tabs[].label ] | sort) == ["Servers", "Work"] and
+    ([ $tabs[].label ] | sort) == ["Edit", "Servers", "Work"] and
     ([ $panes[].label ] | sort) ==
-      ["Agent", "Nvim", "Server I", "Server II", "Server III", "Server IV", "Shell"] and
+      ["Agent", "Agent I", "Agent II", "Nvim", "Server I", "Server II", "Server III", "Server IV"] and
     ([ $panes[] | select(.tab_id == $work_id) | .label ] | sort) ==
-      ["Agent", "Nvim", "Shell"] and
+      ["Agent", "Agent I", "Agent II"] and
+    ([ $panes[] | select(.tab_id == $edit_id) | .label ] | sort) ==
+      ["Nvim"] and
     ([ $panes[] | select(.tab_id == $servers_id) | .label ] | sort) ==
       ["Server I", "Server II", "Server III", "Server IV"]
   ' >/dev/null
@@ -101,24 +104,11 @@ process_is_idle() {
   ' >/dev/null
 }
 
-process_is_nvim() {
-    herdr pane process-info --pane "$1" | jq -e '
-    .result.process_info.foreground_processes as $processes |
-    ($processes | length) == 1 and
-    ($processes[0] |
-      .name == "nvim" or
-      .argv0 == "nvim" or
-      (.argv0 | endswith("/nvim")))
-  ' >/dev/null
-}
-
 processes_match_layout() {
     panes=$1
     while IFS='	' read -r pane_id label; do
-        case "$label" in
-        Nvim) process_is_nvim "$pane_id" || return 1 ;;
-        *) process_is_idle "$pane_id" || return 1 ;;
-        esac
+        : "$label"
+        process_is_idle "$pane_id" || return 1
     done <<EOF
 $(printf '%s\n' "$panes" | jq -r '.result.panes[] | [.pane_id, .label] | @tsv')
 EOF
@@ -147,26 +137,29 @@ verify_layout() {
     layout_has_exact_labels "$tabs" "$panes"
 
     work_tab_id=$(printf '%s\n' "$tabs" | jq -er '.result.tabs[] | select(.label == "Work") | .tab_id')
+    edit_tab_id=$(printf '%s\n' "$tabs" | jq -er '.result.tabs[] | select(.label == "Edit") | .tab_id')
     servers_tab_id=$(printf '%s\n' "$tabs" | jq -er '.result.tabs[] | select(.label == "Servers") | .tab_id')
     herdr workspace get "$workspace_id" | jq -e --arg id "$work_tab_id" '
     .result.workspace.active_tab_id == $id
   ' >/dev/null
 
     work_pane_id=$(printf '%s\n' "$panes" | jq -er --arg id "$work_tab_id" '.result.panes[] | select(.tab_id == $id) | .pane_id' | head -n 1)
-    nvim_pane_id=$(printf '%s\n' "$panes" | jq -er --arg id "$work_tab_id" '.result.panes[] | select(.tab_id == $id and .label == "Nvim") | .pane_id')
+    agent_one_pane_id=$(printf '%s\n' "$panes" | jq -er --arg id "$work_tab_id" '.result.panes[] | select(.tab_id == $id and .label == "Agent I") | .pane_id')
+    edit_pane_id=$(printf '%s\n' "$panes" | jq -er --arg id "$edit_tab_id" '.result.panes[] | select(.tab_id == $id) | .pane_id')
     servers_pane_id=$(printf '%s\n' "$panes" | jq -er --arg id "$servers_tab_id" '.result.panes[] | select(.tab_id == $id) | .pane_id' | head -n 1)
     work_layout=$(herdr pane layout --pane "$work_pane_id")
+    edit_layout=$(herdr pane layout --pane "$edit_pane_id")
     servers_layout=$(herdr pane layout --pane "$servers_pane_id")
 
-    printf '%s\n' "$work_layout" | jq -e --arg nvim_id "$nvim_pane_id" '
+    printf '%s\n' "$work_layout" | jq -e --arg agent_one_id "$agent_one_pane_id" '
     def near($n): ((. - $n) | fabs) < 0.001;
     .result.layout as $layout |
     $layout.splits as $s |
-    $layout.focused_pane_id == $nvim_id and
+    $layout.focused_pane_id == $agent_one_id and
     ($s | length) == 2 and
-    ([ $s[] | select(.direction == "right" and (.ratio | near(0.25))) ] | length) == 1 and
-    ([ $s[] | select(.direction == "down" and (.ratio | near(0.80))) ] | length) == 1
+    ([ $s[] | select(.direction == "right" and (.ratio | near(0.50))) ] | length) == 2
   ' >/dev/null
+    printf '%s\n' "$edit_layout" | jq -e '.result.layout.splits | length == 0' >/dev/null
     printf '%s\n' "$servers_layout" | jq -e '
     def near($n): ((. - $n) | fabs) < 0.001;
     .result.layout.splits as $s |
@@ -190,26 +183,32 @@ ORDINARY_PANE_IDS=$(printf '%s\n' "$ORDINARY_PANES" | jq -er --arg tab_id "$ORDI
     '.result.panes[] | select(.tab_id == $tab_id) | .pane_id' | sort)
 ORDINARY_AGENT_ID=$(printf '%s\n' "$ORDINARY_PANES" | jq -er \
     --arg tab_id "$ORDINARY_WORK_TAB_ID" '.result.panes[] | select(.tab_id == $tab_id and .label == "Agent") | .pane_id')
-ORDINARY_NVIM_ID=$(printf '%s\n' "$ORDINARY_PANES" | jq -er \
-    --arg tab_id "$ORDINARY_WORK_TAB_ID" '.result.panes[] | select(.tab_id == $tab_id and .label == "Nvim") | .pane_id')
 herdr workspace focus "$ORDINARY_WORKSPACE_ID" >/dev/null
-herdr pane resize --pane "$ORDINARY_AGENT_ID" --direction right --amount 0.05 >/dev/null
-herdr pane resize --pane "$ORDINARY_NVIM_ID" --direction up --amount 0.1 >/dev/null
+herdr pane resize --pane "$ORDINARY_AGENT_ID" --direction right --amount 0.1 >/dev/null
+previous_action_id=$(herdr plugin log list --plugin dots.stationary --limit 1 | jq -r '.result.logs[0].log_id // empty')
 herdr plugin action invoke reapply --plugin dots.stationary >/dev/null
+action_completed=0
 for attempt in $(seq 1 40); do
     action_log=$(herdr plugin log list --plugin dots.stationary --limit 1)
-    if printf '%s\n' "$action_log" | jq -e \
-        '.result.logs[0].action_id == "reapply" and .result.logs[0].finished_unix_ms != null' >/dev/null; then
+    if printf '%s\n' "$action_log" | jq -e --arg previous_action_id "$previous_action_id" \
+        '.result.logs[0].action_id == "reapply" and
+         .result.logs[0].log_id != $previous_action_id and
+         .result.logs[0].finished_unix_ms != null' >/dev/null; then
         printf '%s\n' "$action_log" | jq -e \
             '.result.logs[0].status == "succeeded"' >/dev/null || {
             printf 'Stationary repair action failed\n' >&2
             printf '%s\n' "$action_log" >&2
             exit 1
         }
+        action_completed=1
         break
     fi
     sleep 0.25
 done
+[ "$action_completed" -eq 1 ] || {
+    printf 'Stationary repair action timed out\n' >&2
+    exit 1
+}
 wait_for_layout "$ORDINARY_WORKSPACE_ID"
 wait_for_expected_processes "$ORDINARY_WORKSPACE_ID"
 REPAIRED_PANE_IDS=$(herdr pane list --workspace "$ORDINARY_WORKSPACE_ID" | jq -er \

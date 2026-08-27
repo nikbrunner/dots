@@ -200,14 +200,18 @@ verify_repairable() {
                 SOURCE_ID=$(printf '%s\n' "$PANES_JSON" | jq -er \
                     --arg tab_id "$TAB_ID" --arg name "$SOURCE_NAME" \
                     '.result.panes[] | select(.tab_id == $tab_id and .label == $name) | .pane_id') || return 1
+                TARGET_NAME=$(printf '%s\n' "$SPLIT_JSON" | jq -er '.pane') || return 1
+                TARGET_ID=$(printf '%s\n' "$PANES_JSON" | jq -er \
+                    --arg tab_id "$TAB_ID" --arg name "$TARGET_NAME" \
+                    '.result.panes[] | select(.tab_id == $tab_id and .label == $name) | .pane_id') || return 1
                 DIRECTION=$(printf '%s\n' "$SPLIT_JSON" | jq -er '.direction') || return 1
                 TARGET_RATIO=$(printf '%s\n' "$SPLIT_JSON" | jq -er '.ratio + 0') || return 1
                 CURRENT_RATIO=$(printf '%s\n' "$TAB_LAYOUT" | jq -er --argjson index "$INDEX" \
                     '.result.layout.splits[$index].ratio + 0') || return 1
                 FOCUS=$(printf '%s\n' "$SPLIT_JSON" | jq -r '.focus // false') || return 1
-                printf '%s\t%s\t%s\t%s\t%s\t%s\n' \
-                    "$TAB_ID" "$SOURCE_ID" "$DIRECTION" "$TARGET_RATIO" \
-                    "$CURRENT_RATIO" "$FOCUS"
+                printf '%s\t%s\t%s\t%s\t%s\t%s\t%s\n' \
+                    "$TAB_ID" "$SOURCE_ID" "$TARGET_ID" "$DIRECTION" \
+                    "$TARGET_RATIO" "$CURRENT_RATIO" "$FOCUS"
                 INDEX=$((INDEX + 1))
             done <<EOF
 $SPLIT_ROWS
@@ -218,8 +222,29 @@ $TAB_ROWS
 EOF
 }
 
+focus_to_pane() {
+    TAB_ID=$1
+    CURRENT_ID=$2
+    TARGET_ID=$3
+    DIRECTION=$4
+    "$HERDR_BIN" tab focus "$TAB_ID" >/dev/null || return 1
+
+    STEPS=0
+    while [ "$CURRENT_ID" != "$TARGET_ID" ]; do
+        NEXT_ID=$("$HERDR_BIN" pane neighbor --pane "$CURRENT_ID" \
+            --direction "$DIRECTION" | jq -er \
+            '.result.neighbor.neighbor_pane_id // .result.neighbor_pane_id // empty') || return 1
+        [ -n "$NEXT_ID" ] || return 1
+        [ "$NEXT_ID" != "$CURRENT_ID" ] || return 1
+        "$HERDR_BIN" pane focus --pane "$CURRENT_ID" --direction "$DIRECTION" >/dev/null || return 1
+        CURRENT_ID=$NEXT_ID
+        STEPS=$((STEPS + 1))
+        [ "$STEPS" -lt 100 ] || return 1
+    done
+}
+
 apply_repair_plan() {
-    while IFS='	' read -r TAB_ID SOURCE_ID DIRECTION TARGET_RATIO CURRENT_RATIO FOCUS; do
+    while IFS='	' read -r TAB_ID SOURCE_ID TARGET_ID DIRECTION TARGET_RATIO CURRENT_RATIO FOCUS; do
         [ -n "$TAB_ID" ] || continue
         AMOUNT=$(awk -v target="$TARGET_RATIO" -v current="$CURRENT_RATIO" \
             'BEGIN { difference = target - current; if (difference < 0) difference = -difference; printf "%.6g", difference }')
@@ -240,8 +265,7 @@ apply_repair_plan() {
                 --direction "$RESIZE_DIRECTION" --amount "$AMOUNT" >/dev/null || return 1
         fi
         if [ "$FOCUS" = true ]; then
-            "$HERDR_BIN" tab focus "$TAB_ID" >/dev/null || return 1
-            "$HERDR_BIN" pane focus --pane "$SOURCE_ID" --direction "$DIRECTION" >/dev/null || return 1
+            focus_to_pane "$TAB_ID" "$SOURCE_ID" "$TARGET_ID" "$DIRECTION" || return 1
         fi
     done <"$1"
 
@@ -262,7 +286,7 @@ if [ "$REAPPLY" = true ]; then
     log "Stationary repair was not possible; rebuilding workspace $HERDR_WORKSPACE_ID"
     RESULT=$(
         "$HERDR_BIN" tab create --workspace "$HERDR_WORKSPACE_ID" \
-            --cwd "${HERDR_ACTIVE_PANE_CWD:-$PWD}" --label "$LAYOUT_NAME" --no-focus
+            --label "$LAYOUT_NAME" --no-focus
     )
     TAB_ID=$(printf '%s\n' "$RESULT" | jq -er '.result.tab.tab_id')
     PANE_ID=$(printf '%s\n' "$RESULT" | jq -er '.result.root_pane.pane_id')

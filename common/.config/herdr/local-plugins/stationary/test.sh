@@ -18,7 +18,7 @@ case "$*" in
   "tab list --workspace w-test")
     case "${FAKE_STATE:-fresh}" in
       fresh|empty-panes) printf '%s\n' '{"result":{"tabs":[{"tab_id":"t-root"}]}}' ;;
-      repairable) printf '%s\n' '{"result":{"tabs":[{"tab_id":"t-work","label":"Work"},{"tab_id":"t-servers","label":"Servers"}]}}' ;;
+      repairable) printf '%s\n' '{"result":{"tabs":[{"tab_id":"t-work","label":"Work"},{"tab_id":"t-edit","label":"Edit"},{"tab_id":"t-servers","label":"Servers"}]}}' ;;
       reapply) printf '%s\n' '{"result":{"tabs":[{"tab_id":"t-root"},{"tab_id":"t-extra"}]}}' ;;
       empty-tabs) printf '%s\n' '{"result":{"tabs":[]}}' ;;
       *) printf '%s\n' '{"result":{"tabs":[{"tab_id":"t-root"},{"tab_id":"t-extra"}]}}' ;;
@@ -27,42 +27,40 @@ case "$*" in
   "pane list --workspace w-test")
     case "${FAKE_STATE:-fresh}" in
       fresh|empty-tabs) printf '%s\n' '{"result":{"panes":[{"pane_id":"p-root"}]}}' ;;
-      repairable) printf '%s\n' '{"result":{"panes":[{"pane_id":"p-root","tab_id":"t-work","label":"Agent"},{"pane_id":"p-nvim","tab_id":"t-work","label":"Nvim"},{"pane_id":"p-shell","tab_id":"t-work","label":"Shell"},{"pane_id":"p-server1","tab_id":"t-servers","label":"Server I"},{"pane_id":"p-server2","tab_id":"t-servers","label":"Server II"},{"pane_id":"p-server3","tab_id":"t-servers","label":"Server III"},{"pane_id":"p-server4","tab_id":"t-servers","label":"Server IV"}]}}' ;;
+      repairable) printf '%s\n' '{"result":{"panes":[{"pane_id":"p-root","tab_id":"t-work","label":"Agent I"},{"pane_id":"p-agent2","tab_id":"t-work","label":"Agent II"},{"pane_id":"p-edit","tab_id":"t-edit","label":"Nvim"},{"pane_id":"p-server1","tab_id":"t-servers","label":"Server I"},{"pane_id":"p-server2","tab_id":"t-servers","label":"Server II"},{"pane_id":"p-server3","tab_id":"t-servers","label":"Server III"},{"pane_id":"p-server4","tab_id":"t-servers","label":"Server IV"}]}}' ;;
       reapply) printf '%s\n' '{"result":{"panes":[{"pane_id":"p-root"},{"pane_id":"p-extra"}]}}' ;;
       empty-panes) printf '%s\n' '{"result":{"panes":[]}}' ;;
       *) printf '%s\n' '{"result":{"panes":[{"pane_id":"p-root"},{"pane_id":"p-extra"}]}}' ;;
     esac
     ;;
-  "pane split --pane p-root --direction right --ratio 0.3 --focus"|\
-  "pane split --pane p-root --direction right --ratio 0.25 --focus"|\
-  "pane split --pane p-root --direction right --ratio 0.2 --focus")
+  "pane split --pane p-root --direction right --ratio 0.5 --no-focus"|\
+  "pane split --pane p-root --direction right --ratio 0.4 --no-focus")
     if [ "${FAKE_FAIL_SPLIT:-0}" = 1 ]; then exit 1; fi
-    printf '%s\n' '{"result":{"pane":{"pane_id":"p-nvim"}}}'
+    printf '%s\n' '{"result":{"pane":{"pane_id":"p-agent2"}}}'
     ;;
-  "pane split --pane p-root --direction down --ratio 0.65 --no-focus")
-    printf '%s\n' '{"result":{"pane":{"pane_id":"p-shell1"}}}'
-    ;;
-  "pane split --pane p-nvim --direction down --ratio 0.65 --no-focus"|\
-  "pane split --pane p-nvim --direction down --ratio 0.8 --no-focus")
-    printf '%s\n' '{"result":{"pane":{"pane_id":"p-shell2"}}}'
-    ;;
-  "pane split --pane p-root --direction down --ratio 0.8 --no-focus")
-    printf '%s\n' '{"result":{"pane":{"pane_id":"p-shell2"}}}'
-    ;;
-  "pane split --pane p-reapply --direction right --ratio 0.25 --focus")
-    printf '%s\n' '{"result":{"pane":{"pane_id":"p-reapply-nvim"}}}'
-    ;;
-  "pane split --pane p-reapply-nvim --direction down --ratio 0.8 --no-focus")
-    printf '%s\n' '{"result":{"pane":{"pane_id":"p-reapply-shell"}}}'
+  "pane split --pane p-reapply --direction right --ratio 0.5 --no-focus")
+    printf '%s\n' '{"result":{"pane":{"pane_id":"p-reapply-agent2"}}}'
     ;;
   "pane layout --pane p-root")
-    printf '%s\n' '{"result":{"layout":{"splits":[{"direction":"right","ratio":0.3},{"direction":"down","ratio":0.7}]}}}'
+    printf '%s\n' '{"result":{"layout":{"splits":[{"direction":"right","ratio":0.4}]}}}'
+    ;;
+  "pane layout --pane p-edit")
+    printf '%s\n' '{"result":{"layout":{"splits":[]}}}'
     ;;
   "pane layout --pane p-server1")
     printf '%s\n' '{"result":{"layout":{"splits":[{"direction":"right","ratio":0.4},{"direction":"down","ratio":0.6},{"direction":"down","ratio":0.4}]}}}'
     ;;
-  "tab create --workspace w-test --cwd /tmp/stationary --label default --no-focus")
+  "pane neighbor --pane p-root --direction right")
+    printf '%s\n' '{"result":{"neighbor":{"neighbor_pane_id":"p-agent2"}}}'
+    ;;
+  "pane neighbor --pane p-agent2 --direction right")
+    printf '%s\n' '{"result":{"neighbor":{"neighbor_pane_id":"p-agent1"}}}'
+    ;;
+  "tab create --workspace w-test --label default --no-focus")
     printf '%s\n' '{"result":{"tab":{"tab_id":"t-reapply"},"root_pane":{"pane_id":"p-reapply"}}}'
+    ;;
+  "tab create --workspace w-test --label Edit --no-focus")
+    printf '%s\n' '{"result":{"tab":{"tab_id":"t-edit"},"root_pane":{"pane_id":"p-edit"}}}'
     ;;
   "tab create --workspace w-test --label Servers --no-focus")
     printf '%s\n' '{"result":{"tab":{"tab_id":"t-servers"},"root_pane":{"pane_id":"p-server1"}}}'
@@ -180,11 +178,11 @@ cat >"$TMP_DIR/expected" <<'EXPECTED'
 tab list --workspace w-test
 pane list --workspace w-test
 tab rename t-root Work
-pane rename p-root Agent
-pane split --pane p-root --direction right --ratio 0.25 --focus
-pane rename p-nvim Nvim
-pane split --pane p-nvim --direction down --ratio 0.8 --no-focus
-pane rename p-shell2 Shell
+pane rename p-root Agent I
+pane split --pane p-root --direction right --ratio 0.5 --no-focus
+pane rename p-agent2 Agent II
+tab create --workspace w-test --label Edit --no-focus
+pane rename p-edit Nvim
 tab create --workspace w-test --label Servers --no-focus
 pane rename p-server1 Server I
 pane split --pane p-server1 --direction right --ratio 0.5 --no-focus
@@ -193,26 +191,25 @@ pane split --pane p-server1 --direction down --ratio 0.5 --no-focus
 pane rename p-server3 Server III
 pane split --pane p-server2 --direction down --ratio 0.5 --no-focus
 pane rename p-server4 Server IV
-pane run p-nvim nvim
 tab focus t-root
 EXPECTED
 cmp -s "$TMP_DIR/expected" "$CALLS" || {
     diff -u "$TMP_DIR/expected" "$CALLS" >&2 || true
     fail "fresh workspace calls differ"
 }
-[ "$(grep -c '^pane run p-nvim nvim$' "$CALLS")" -eq 1 ] || fail "Nvim was not started exactly once"
-if grep -E '^(agent start|pane run)' "$CALLS" | grep -v '^pane run p-nvim nvim$' >/dev/null; then
+if grep -E '^(agent start|pane run)' "$CALLS" >/dev/null; then
     fail "unexpected command-bearing operation found"
 fi
-printf 'ok - default recipe creates the exact layout and starts Nvim\n'
+printf 'ok - default recipe creates the exact layout\n'
 
 FIXTURE_DIR="$TMP_DIR/fixture-plugin"
 mkdir -p "$FIXTURE_DIR"
 cp "$SCRIPT_DIR/apply-layout.sh" "$FIXTURE_DIR/apply-layout.sh"
-sed 's/ratio = 0.25/ratio = 0.20/' "$SCRIPT_DIR/layouts.toml" >"$FIXTURE_DIR/layouts.toml"
+awk '!changed && /ratio = 0.5/ { sub(/ratio = 0.5/, "ratio = 0.4"); changed = 1 } { print }' \
+    "$SCRIPT_DIR/layouts.toml" >"$FIXTURE_DIR/layouts.toml"
 TEST_SCRIPT="$FIXTURE_DIR/apply-layout.sh"
 run_hook default || fail "custom ratio fixture failed"
-grep -q '^pane split --pane p-root --direction right --ratio 0.2 --focus$' "$CALLS" || fail "custom ratio was not interpreted"
+grep -q '^pane split --pane p-root --direction right --ratio 0.4 --no-focus$' "$CALLS" || fail "custom ratio was not interpreted"
 unset TEST_SCRIPT
 printf 'ok - recipe values control emitted splits\n'
 
@@ -224,8 +221,7 @@ mkdir -p "$BACKSLASH_PANE_DIR"
 cp "$SCRIPT_DIR/apply-layout.sh" "$BACKSLASH_PANE_DIR/apply-layout.sh"
 jq '
   .layouts.default.tabs.Work.root.pane = "Agent\\t" |
-  .layouts.default.tabs.Work.splits[0].source = "Agent\\t" |
-  .layouts.default.tabs.Work.splits[1].source = "Agent\\t"
+  .layouts.default.tabs.Work.splits[0].source = "Agent\\t"
 ' "$BASE_JSON" | yq -p json -o toml '.' >"$BACKSLASH_PANE_DIR/layouts.toml"
 TEST_SCRIPT="$BACKSLASH_PANE_DIR/apply-layout.sh"
 run_hook default || fail "literal backslash-t pane source failed"
@@ -256,13 +252,11 @@ run_hook default --reapply || {
     fail "repairable layout failed"
 }
 for expected_call in \
-    'pane resize --pane p-root --direction left --amount 0.05' \
-    'pane resize --pane p-nvim --direction down --amount 0.1' \
+    'pane resize --pane p-root --direction right --amount 0.1' \
     'pane resize --pane p-server1 --direction right --amount 0.1' \
     'pane resize --pane p-server1 --direction up --amount 0.1' \
     'pane resize --pane p-server2 --direction down --amount 0.1' \
-    'tab focus t-work' \
-    'pane focus --pane p-root --direction right'; do
+    'tab focus t-work'; do
     grep -Fqx "$expected_call" "$CALLS" || fail "repair omitted: $expected_call"
 done
 if grep -E '^(tab create|tab close|pane split|pane run)' "$CALLS" >/dev/null; then
@@ -280,13 +274,13 @@ run_hook default --reapply || {
 cat >"$TMP_DIR/expected-reapply" <<'EXPECTED'
 tab list --workspace w-test
 pane list --workspace w-test
-tab create --workspace w-test --cwd /tmp/stationary --label default --no-focus
+tab create --workspace w-test --label default --no-focus
 tab rename t-reapply Work
-pane rename p-reapply Agent
-pane split --pane p-reapply --direction right --ratio 0.25 --focus
-pane rename p-reapply-nvim Nvim
-pane split --pane p-reapply-nvim --direction down --ratio 0.8 --no-focus
-pane rename p-reapply-shell Shell
+pane rename p-reapply Agent I
+pane split --pane p-reapply --direction right --ratio 0.5 --no-focus
+pane rename p-reapply-agent2 Agent II
+tab create --workspace w-test --label Edit --no-focus
+pane rename p-edit Nvim
 tab create --workspace w-test --label Servers --no-focus
 pane rename p-server1 Server I
 pane split --pane p-server1 --direction right --ratio 0.5 --no-focus
@@ -295,7 +289,6 @@ pane split --pane p-server1 --direction down --ratio 0.5 --no-focus
 pane rename p-server3 Server III
 pane split --pane p-server2 --direction down --ratio 0.5 --no-focus
 pane rename p-server4 Server IV
-pane run p-reapply-nvim nvim
 tab focus t-reapply
 tab close t-root
 tab close t-extra
@@ -319,7 +312,7 @@ layout-focus-missing|.layouts.default.focus = "Missing"
 tabs-empty|.layouts.default.tabs = {}
 tab-extra|.layouts.default.tabs.Work.extra = true
 order-type|.layouts.default.tabs.Work.order = "1"
-order-gap|.layouts.default.tabs.Servers.order = 3
+order-gap|.layouts.default.tabs.Servers.order = 4
 root-extra|.layouts.default.tabs.Work.root.extra = true
 root-missing-pane|del(.layouts.default.tabs.Work.root.pane)
 splits-type|.layouts.default.tabs.Work.splits = {}
@@ -328,8 +321,8 @@ direction|.layouts.default.tabs.Work.splits[0].direction = "left"
 ratio-type|.layouts.default.tabs.Work.splits[0].ratio = "0.3"
 ratio-zero|.layouts.default.tabs.Work.splits[0].ratio = 0
 ratio-one|.layouts.default.tabs.Work.splits[0].ratio = 1
-duplicate-pane|.layouts.default.tabs.Work.splits[1].pane = "Nvim"
-forward-source|.layouts.default.tabs.Work.splits[0].source = "Shell II"
+duplicate-pane|.layouts.default.tabs.Work.splits[0].pane = "Agent I"
+forward-source|.layouts.default.tabs.Work.splits[0].source = "Agent II"
 run-empty|.layouts.default.tabs.Work.splits[0].run = ""
 run-control|.layouts.default.tabs.Work.splits[0].run = "nvim\nexit"
 pane-control|.layouts.default.tabs.Work.splits[0].pane = "Nvim\tbad"
@@ -339,7 +332,7 @@ run-next-line|.layouts.default.tabs.Work.splits[0].run = "nvim\u0085exit"
 tab-line-separator|.layouts.default.tabs["Work\u2028bad"] = .layouts.default.tabs.Work | del(.layouts.default.tabs.Work) | .layouts.default.focus = "Work\u2028bad"
 layout-paragraph-separator|.layouts["bad\u2029layout"] = .layouts.default
 focus-type|.layouts.default.tabs.Work.splits[0].focus = "yes"
-multiple-focus|.layouts.default.tabs.Work.root.focus = true
+multiple-focus|.layouts.default.tabs.Work.root.focus = true | .layouts.default.tabs.Work.splits[0].focus = true
 invalid-sibling|.layouts.bad = .layouts.default | .layouts.bad.tabs.Work.splits[0].direction = "left"
 FILTERS
 
@@ -374,8 +367,8 @@ cat >"$TMP_DIR/expected-failure" <<'EXPECTED'
 tab list --workspace w-test
 pane list --workspace w-test
 tab rename t-root Work
-pane rename p-root Agent
-pane split --pane p-root --direction right --ratio 0.25 --focus
+pane rename p-root Agent I
+pane split --pane p-root --direction right --ratio 0.5 --no-focus
 notification show Stationary failed --body Workspace w-test may have a partial layout. --sound request
 EXPECTED
 cmp -s "$TMP_DIR/expected-failure" "$CALLS" || {
