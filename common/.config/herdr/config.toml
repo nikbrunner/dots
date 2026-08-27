@@ -209,3 +209,9 @@ description = "jump to previous workspace"
 key = "cmd+r"
 type = "plugin_action"
 command = "persiyanov.reviewr.toggle"
+
+[[keys.command]]
+key = "alt+shift+s"
+type = "plugin_action"
+command = "dots.stationary.reapply"
+description = "Reapply Stationary layout"

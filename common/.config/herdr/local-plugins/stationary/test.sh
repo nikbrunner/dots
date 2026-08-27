@@ -18,6 +18,7 @@ case "$*" in
   "tab list --workspace w-test")
     case "${FAKE_STATE:-fresh}" in
       fresh|empty-panes) printf '%s\n' '{"result":{"tabs":[{"tab_id":"t-root"}]}}' ;;
+      reapply) printf '%s\n' '{"result":{"tabs":[{"tab_id":"t-root"},{"tab_id":"t-extra"}]}}' ;;
       empty-tabs) printf '%s\n' '{"result":{"tabs":[]}}' ;;
       *) printf '%s\n' '{"result":{"tabs":[{"tab_id":"t-root"},{"tab_id":"t-extra"}]}}' ;;
     esac
@@ -25,6 +26,7 @@ case "$*" in
   "pane list --workspace w-test")
     case "${FAKE_STATE:-fresh}" in
       fresh|empty-tabs) printf '%s\n' '{"result":{"panes":[{"pane_id":"p-root"}]}}' ;;
+      reapply) printf '%s\n' '{"result":{"panes":[{"pane_id":"p-root"},{"pane_id":"p-extra"}]}}' ;;
       empty-panes) printf '%s\n' '{"result":{"panes":[]}}' ;;
       *) printf '%s\n' '{"result":{"panes":[{"pane_id":"p-root"},{"pane_id":"p-extra"}]}}' ;;
     esac
@@ -41,6 +43,18 @@ case "$*" in
   "pane split --pane p-nvim --direction down --ratio 0.65 --no-focus"|\
   "pane split --pane p-nvim --direction down --ratio 0.8 --no-focus")
     printf '%s\n' '{"result":{"pane":{"pane_id":"p-shell2"}}}'
+    ;;
+  "pane split --pane p-root --direction down --ratio 0.8 --no-focus")
+    printf '%s\n' '{"result":{"pane":{"pane_id":"p-shell2"}}}'
+    ;;
+  "pane split --pane p-reapply --direction right --ratio 0.25 --focus")
+    printf '%s\n' '{"result":{"pane":{"pane_id":"p-reapply-nvim"}}}'
+    ;;
+  "pane split --pane p-reapply-nvim --direction down --ratio 0.8 --no-focus")
+    printf '%s\n' '{"result":{"pane":{"pane_id":"p-reapply-shell"}}}'
+    ;;
+  "tab create --workspace w-test --cwd /tmp/stationary --label default --no-focus")
+    printf '%s\n' '{"result":{"tab":{"tab_id":"t-reapply"},"root_pane":{"pane_id":"p-reapply"}}}'
     ;;
   "tab create --workspace w-test --label Servers --no-focus")
     printf '%s\n' '{"result":{"tab":{"tab_id":"t-servers"},"root_pane":{"pane_id":"p-server1"}}}'
@@ -80,6 +94,7 @@ run_hook() {
         HERDR_WORKSPACE_ID="${TEST_WORKSPACE_ID-w-test}" \
         HERDR_TAB_ID="${TEST_TAB_ID-t-root}" \
         HERDR_PANE_ID="${TEST_PANE_ID-p-root}" \
+        HERDR_ACTIVE_PANE_CWD="${TEST_PANE_CWD-/tmp/stationary}" \
         /bin/sh "$script" "$@" >"$TMP_DIR/stdout" 2>"$TMP_DIR/stderr"
 }
 
@@ -160,10 +175,8 @@ tab rename t-root Work
 pane rename p-root Agent
 pane split --pane p-root --direction right --ratio 0.25 --focus
 pane rename p-nvim Nvim
-pane split --pane p-root --direction down --ratio 0.65 --no-focus
-pane rename p-shell1 Shell I
 pane split --pane p-nvim --direction down --ratio 0.8 --no-focus
-pane rename p-shell2 Shell II
+pane rename p-shell2 Shell
 tab create --workspace w-test --label Servers --no-focus
 pane rename p-server1 Server I
 pane split --pane p-server1 --direction right --ratio 0.5 --no-focus
@@ -227,6 +240,41 @@ grep -Fqx "tab rename t-root $BACKSLASH_TAB" "$CALLS" || fail "literal backslash
 grep -qx 'tab focus t-root' "$CALLS" || fail "literal backslash-t tab was not focused"
 unset TEST_SCRIPT
 printf 'ok - literal backslashes survive pane and tab map lookups\n'
+
+FAKE_STATE=reapply
+run_hook default --reapply || {
+    cat "$TMP_DIR/stderr" >&2
+    fail "reapply mode failed"
+}
+cat >"$TMP_DIR/expected-reapply" <<'EXPECTED'
+tab list --workspace w-test
+pane list --workspace w-test
+tab create --workspace w-test --cwd /tmp/stationary --label default --no-focus
+tab rename t-reapply Work
+pane rename p-reapply Agent
+pane split --pane p-reapply --direction right --ratio 0.25 --focus
+pane rename p-reapply-nvim Nvim
+pane split --pane p-reapply-nvim --direction down --ratio 0.8 --no-focus
+pane rename p-reapply-shell Shell
+tab create --workspace w-test --label Servers --no-focus
+pane rename p-server1 Server I
+pane split --pane p-server1 --direction right --ratio 0.5 --no-focus
+pane rename p-server2 Server II
+pane split --pane p-server1 --direction down --ratio 0.5 --no-focus
+pane rename p-server3 Server III
+pane split --pane p-server2 --direction down --ratio 0.5 --no-focus
+pane rename p-server4 Server IV
+pane run p-reapply-nvim nvim
+tab focus t-reapply
+tab close t-root
+tab close t-extra
+EXPECTED
+cmp -s "$TMP_DIR/expected-reapply" "$CALLS" || {
+    diff -u "$TMP_DIR/expected-reapply" "$CALLS" >&2 || true
+    fail "reapply calls differ"
+}
+unset FAKE_STATE
+printf 'ok - reapply mode rebuilds the workspace\n'
 
 INVALID_DIR="$TMP_DIR/invalid"
 mkdir -p "$INVALID_DIR"

@@ -34,10 +34,15 @@ configuration_failed() {
     exit 1
 }
 
-if [ "$#" -ne 1 ] || [ -z "$1" ]; then
-    configuration_failed "Expected exactly one layout name"
+REAPPLY=false
+if [ "$#" -eq 1 ] && [ -n "$1" ]; then
+    LAYOUT_NAME=$1
+elif [ "$#" -eq 2 ] && [ -n "$1" ] && [ "$2" = "--reapply" ]; then
+    LAYOUT_NAME=$1
+    REAPPLY=true
+else
+    configuration_failed "Expected a layout name, optionally followed by --reapply"
 fi
-LAYOUT_NAME=$1
 
 if ! command -v jq >/dev/null 2>&1; then
     configuration_failed "jq is unavailable"
@@ -141,17 +146,31 @@ PANES_JSON=$("$HERDR_BIN" pane list --workspace "$HERDR_WORKSPACE_ID")
 TAB_COUNT=$(printf '%s\n' "$TABS_JSON" | jq -er '.result.tabs | length')
 PANE_COUNT=$(printf '%s\n' "$PANES_JSON" | jq -er '.result.panes | length')
 
-if [ "$TAB_COUNT" -ne 1 ] || [ "$PANE_COUNT" -ne 1 ]; then
-    log "Skipping Stationary for non-fresh workspace $HERDR_WORKSPACE_ID"
-    exit 0
-fi
+OLD_TAB_IDS=
+if [ "$REAPPLY" = true ]; then
+    if ! printf '%s\n' "$TABS_JSON" | jq -e --arg id "$HERDR_TAB_ID" 'any(.result.tabs[]; .tab_id == $id)' >/dev/null; then
+        configuration_failed "Current tab is unavailable in workspace $HERDR_WORKSPACE_ID"
+    fi
+    OLD_TAB_IDS=$(printf '%s\n' "$TABS_JSON" | jq -er '.result.tabs[].tab_id')
+    RESULT=$(
+        "$HERDR_BIN" tab create --workspace "$HERDR_WORKSPACE_ID" \
+            --cwd "${HERDR_ACTIVE_PANE_CWD:-$PWD}" --label "$LAYOUT_NAME" --no-focus
+    )
+    TAB_ID=$(printf '%s\n' "$RESULT" | jq -er '.result.tab.tab_id')
+    PANE_ID=$(printf '%s\n' "$RESULT" | jq -er '.result.root_pane.pane_id')
+else
+    if [ "$TAB_COUNT" -ne 1 ] || [ "$PANE_COUNT" -ne 1 ]; then
+        log "Skipping Stationary for non-fresh workspace $HERDR_WORKSPACE_ID"
+        exit 0
+    fi
 
-TAB_ID=$(printf '%s\n' "$TABS_JSON" | jq -er '.result.tabs[0].tab_id')
-PANE_ID=$(printf '%s\n' "$PANES_JSON" | jq -er '.result.panes[0].pane_id')
+    TAB_ID=$(printf '%s\n' "$TABS_JSON" | jq -er '.result.tabs[0].tab_id')
+    PANE_ID=$(printf '%s\n' "$PANES_JSON" | jq -er '.result.panes[0].pane_id')
 
-if [ "$TAB_ID" != "$HERDR_TAB_ID" ] || [ "$PANE_ID" != "$HERDR_PANE_ID" ]; then
-    log "Skipping Stationary for non-fresh workspace $HERDR_WORKSPACE_ID"
-    exit 0
+    if [ "$TAB_ID" != "$HERDR_TAB_ID" ] || [ "$PANE_ID" != "$HERDR_PANE_ID" ]; then
+        log "Skipping Stationary for non-fresh workspace $HERDR_WORKSPACE_ID"
+        exit 0
+    fi
 fi
 
 WORK_DIR=$(mktemp -d)
@@ -254,6 +273,14 @@ done <"$COMMANDS"
 FOCUS_TAB_NAME=$(printf '%s\n' "$LAYOUT_JSON" | jq -er '.focus')
 FOCUS_TAB_ID=$(mapped_id_for "$TAB_MAP" "$FOCUS_TAB_NAME")
 "$HERDR_BIN" tab focus "$FOCUS_TAB_ID" >/dev/null
+
+if [ "$REAPPLY" = true ]; then
+    while IFS= read -r OLD_TAB_ID; do
+        [ -n "$OLD_TAB_ID" ] && "$HERDR_BIN" tab close "$OLD_TAB_ID" >/dev/null
+    done <<EOF
+$OLD_TAB_IDS
+EOF
+fi
 
 trap - EXIT HUP INT TERM
 rm -rf "$WORK_DIR"

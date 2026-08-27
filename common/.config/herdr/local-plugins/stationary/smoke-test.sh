@@ -68,9 +68,9 @@ layout_has_exact_labels() {
     ($tabs | map(select(.label == "Servers")) | if length == 1 then .[0].tab_id else null end) as $servers_id |
     ([ $tabs[].label ] | sort) == ["Servers", "Work"] and
     ([ $panes[].label ] | sort) ==
-      ["Agent", "Nvim", "Server I", "Server II", "Server III", "Server IV", "Shell I", "Shell II"] and
+      ["Agent", "Nvim", "Server I", "Server II", "Server III", "Server IV", "Shell"] and
     ([ $panes[] | select(.tab_id == $work_id) | .label ] | sort) ==
-      ["Agent", "Nvim", "Shell I", "Shell II"] and
+      ["Agent", "Nvim", "Shell"] and
     ([ $panes[] | select(.tab_id == $servers_id) | .label ] | sort) ==
       ["Server I", "Server II", "Server III", "Server IV"]
   ' >/dev/null
@@ -163,9 +163,8 @@ verify_layout() {
     .result.layout as $layout |
     $layout.splits as $s |
     $layout.focused_pane_id == $nvim_id and
-    ($s | length) == 3 and
+    ($s | length) == 2 and
     ([ $s[] | select(.direction == "right" and (.ratio | near(0.25))) ] | length) == 1 and
-    ([ $s[] | select(.direction == "down" and (.ratio | near(0.65))) ] | length) == 1 and
     ([ $s[] | select(.direction == "down" and (.ratio | near(0.80))) ] | length) == 1
   ' >/dev/null
     printf '%s\n' "$servers_layout" | jq -e '

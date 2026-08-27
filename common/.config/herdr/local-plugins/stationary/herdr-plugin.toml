@@ -4,6 +4,12 @@ version = "0.2.0"
 min_herdr_version = "0.8.0"
 platforms = ["linux", "macos"]
 
+[[actions]]
+id = "reapply"
+title = "Reapply Stationary layout"
+contexts = ["workspace"]
+command = ["sh", "apply-layout.sh", "default", "--reapply"]
+
 [[events]]
 on = "workspace.created"
 command = ["sh", "apply-layout.sh", "default"]
