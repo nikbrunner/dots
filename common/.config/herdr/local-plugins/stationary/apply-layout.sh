@@ -152,12 +152,6 @@ if [ "$REAPPLY" = true ]; then
         configuration_failed "Current tab is unavailable in workspace $HERDR_WORKSPACE_ID"
     fi
     OLD_TAB_IDS=$(printf '%s\n' "$TABS_JSON" | jq -er '.result.tabs[].tab_id')
-    RESULT=$(
-        "$HERDR_BIN" tab create --workspace "$HERDR_WORKSPACE_ID" \
-            --cwd "${HERDR_ACTIVE_PANE_CWD:-$PWD}" --label "$LAYOUT_NAME" --no-focus
-    )
-    TAB_ID=$(printf '%s\n' "$RESULT" | jq -er '.result.tab.tab_id')
-    PANE_ID=$(printf '%s\n' "$RESULT" | jq -er '.result.root_pane.pane_id')
 else
     if [ "$TAB_COUNT" -ne 1 ] || [ "$PANE_COUNT" -ne 1 ]; then
         log "Skipping Stationary for non-fresh workspace $HERDR_WORKSPACE_ID"
@@ -171,6 +165,107 @@ else
         log "Skipping Stationary for non-fresh workspace $HERDR_WORKSPACE_ID"
         exit 0
     fi
+fi
+
+verify_repairable() {
+    EXPECTED_TAB_LABELS=$(printf '%s\n' "$LAYOUT_JSON" | jq -c '[.tabs | keys[]] | sort') || return 1
+    ACTUAL_TAB_LABELS=$(printf '%s\n' "$TABS_JSON" | jq -c '[.result.tabs[].label] | sort') || return 1
+    [ "$EXPECTED_TAB_LABELS" = "$ACTUAL_TAB_LABELS" ] || return 1
+
+    TAB_ROWS=$(printf '%s\n' "$LAYOUT_JSON" | jq -c '.tabs | to_entries | sort_by(.value.order)[]') || return 1
+    while IFS= read -r TAB_JSON; do
+        TAB_NAME=$(printf '%s\n' "$TAB_JSON" | jq -er '.key') || return 1
+        TAB_ID=$(printf '%s\n' "$TABS_JSON" | jq -er --arg name "$TAB_NAME" \
+            '.result.tabs[] | select(.label == $name) | .tab_id') || return 1
+        EXPECTED_PANE_LABELS=$(printf '%s\n' "$TAB_JSON" | jq -c \
+            '[.value.root.pane] + [.value.splits[].pane] | sort') || return 1
+        ACTUAL_PANE_LABELS=$(printf '%s\n' "$PANES_JSON" | jq -c --arg tab_id "$TAB_ID" \
+            '[.result.panes[] | select(.tab_id == $tab_id) | .label] | sort') || return 1
+        [ "$EXPECTED_PANE_LABELS" = "$ACTUAL_PANE_LABELS" ] || return 1
+
+        ROOT_SOURCE_NAME=$(printf '%s\n' "$TAB_JSON" | jq -er '.value.root.pane') || return 1
+        SOURCE_ID=$(printf '%s\n' "$PANES_JSON" | jq -er \
+            --arg tab_id "$TAB_ID" --arg name "$ROOT_SOURCE_NAME" \
+            '.result.panes[] | select(.tab_id == $tab_id and .label == $name) | .pane_id') || return 1
+        TAB_LAYOUT=$("$HERDR_BIN" pane layout --pane "$SOURCE_ID") || return 1
+        EXPECTED_DIRECTIONS=$(printf '%s\n' "$TAB_JSON" | jq -c '[.value.splits[].direction]') || return 1
+        ACTUAL_DIRECTIONS=$(printf '%s\n' "$TAB_LAYOUT" | jq -c '[.result.layout.splits[].direction]') || return 1
+        [ "$EXPECTED_DIRECTIONS" = "$ACTUAL_DIRECTIONS" ] || return 1
+
+        SPLIT_ROWS=$(printf '%s\n' "$TAB_JSON" | jq -c '.value.splits[]') || return 1
+        INDEX=0
+        if [ -n "$SPLIT_ROWS" ]; then
+            while IFS= read -r SPLIT_JSON; do
+                SOURCE_NAME=$(printf '%s\n' "$SPLIT_JSON" | jq -er '.source') || return 1
+                SOURCE_ID=$(printf '%s\n' "$PANES_JSON" | jq -er \
+                    --arg tab_id "$TAB_ID" --arg name "$SOURCE_NAME" \
+                    '.result.panes[] | select(.tab_id == $tab_id and .label == $name) | .pane_id') || return 1
+                DIRECTION=$(printf '%s\n' "$SPLIT_JSON" | jq -er '.direction') || return 1
+                TARGET_RATIO=$(printf '%s\n' "$SPLIT_JSON" | jq -er '.ratio + 0') || return 1
+                CURRENT_RATIO=$(printf '%s\n' "$TAB_LAYOUT" | jq -er --argjson index "$INDEX" \
+                    '.result.layout.splits[$index].ratio + 0') || return 1
+                FOCUS=$(printf '%s\n' "$SPLIT_JSON" | jq -r '.focus // false') || return 1
+                printf '%s\t%s\t%s\t%s\t%s\t%s\n' \
+                    "$TAB_ID" "$SOURCE_ID" "$DIRECTION" "$TARGET_RATIO" \
+                    "$CURRENT_RATIO" "$FOCUS"
+                INDEX=$((INDEX + 1))
+            done <<EOF
+$SPLIT_ROWS
+EOF
+        fi
+    done <<EOF
+$TAB_ROWS
+EOF
+}
+
+apply_repair_plan() {
+    while IFS='	' read -r TAB_ID SOURCE_ID DIRECTION TARGET_RATIO CURRENT_RATIO FOCUS; do
+        [ -n "$TAB_ID" ] || continue
+        AMOUNT=$(awk -v target="$TARGET_RATIO" -v current="$CURRENT_RATIO" \
+            'BEGIN { difference = target - current; if (difference < 0) difference = -difference; printf "%.6g", difference }')
+        if awk -v amount="$AMOUNT" 'BEGIN { exit !(amount > 0.001) }'; then
+            if awk -v target="$TARGET_RATIO" -v current="$CURRENT_RATIO" \
+                'BEGIN { exit !(target > current) }'; then
+                RESIZE_DIRECTION=$DIRECTION
+            else
+                case "$DIRECTION" in
+                    right) RESIZE_DIRECTION=left ;;
+                    down) RESIZE_DIRECTION=up ;;
+                    left) RESIZE_DIRECTION=right ;;
+                    up) RESIZE_DIRECTION=down ;;
+                    *) return 1 ;;
+                esac
+            fi
+            "$HERDR_BIN" pane resize --pane "$SOURCE_ID" \
+                --direction "$RESIZE_DIRECTION" --amount "$AMOUNT" >/dev/null || return 1
+        fi
+        if [ "$FOCUS" = true ]; then
+            "$HERDR_BIN" tab focus "$TAB_ID" >/dev/null || return 1
+            "$HERDR_BIN" pane focus --pane "$SOURCE_ID" --direction "$DIRECTION" >/dev/null || return 1
+        fi
+    done <"$1"
+
+    FOCUS_TAB_NAME=$(printf '%s\n' "$LAYOUT_JSON" | jq -er '.focus') || return 1
+    FOCUS_TAB_ID=$(printf '%s\n' "$TABS_JSON" | jq -er --arg name "$FOCUS_TAB_NAME" \
+        '.result.tabs[] | select(.label == $name) | .tab_id') || return 1
+    "$HERDR_BIN" tab focus "$FOCUS_TAB_ID" >/dev/null || return 1
+}
+
+if [ "$REAPPLY" = true ]; then
+    REPAIR_PLAN=$(mktemp)
+    if verify_repairable >"$REPAIR_PLAN" && apply_repair_plan "$REPAIR_PLAN"; then
+        rm -f "$REPAIR_PLAN"
+        log "Repaired Stationary layout $LAYOUT_NAME in workspace $HERDR_WORKSPACE_ID"
+        exit 0
+    fi
+    rm -f "$REPAIR_PLAN"
+    log "Stationary repair was not possible; rebuilding workspace $HERDR_WORKSPACE_ID"
+    RESULT=$(
+        "$HERDR_BIN" tab create --workspace "$HERDR_WORKSPACE_ID" \
+            --cwd "${HERDR_ACTIVE_PANE_CWD:-$PWD}" --label "$LAYOUT_NAME" --no-focus
+    )
+    TAB_ID=$(printf '%s\n' "$RESULT" | jq -er '.result.tab.tab_id')
+    PANE_ID=$(printf '%s\n' "$RESULT" | jq -er '.result.root_pane.pane_id')
 fi
 
 WORK_DIR=$(mktemp -d)

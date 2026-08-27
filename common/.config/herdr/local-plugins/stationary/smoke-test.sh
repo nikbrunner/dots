@@ -182,6 +182,43 @@ wait_for_layout "$ORDINARY_WORKSPACE_ID"
 wait_for_layout "$WORKTREE_WORKSPACE_ID"
 wait_for_expected_processes "$ORDINARY_WORKSPACE_ID"
 wait_for_expected_processes "$WORKTREE_WORKSPACE_ID"
+
+ORDINARY_TABS=$(herdr tab list --workspace "$ORDINARY_WORKSPACE_ID")
+ORDINARY_PANES=$(herdr pane list --workspace "$ORDINARY_WORKSPACE_ID")
+ORDINARY_WORK_TAB_ID=$(printf '%s\n' "$ORDINARY_TABS" | jq -er '.result.tabs[] | select(.label == "Work") | .tab_id')
+ORDINARY_PANE_IDS=$(printf '%s\n' "$ORDINARY_PANES" | jq -er --arg tab_id "$ORDINARY_WORK_TAB_ID" \
+    '.result.panes[] | select(.tab_id == $tab_id) | .pane_id' | sort)
+ORDINARY_AGENT_ID=$(printf '%s\n' "$ORDINARY_PANES" | jq -er \
+    --arg tab_id "$ORDINARY_WORK_TAB_ID" '.result.panes[] | select(.tab_id == $tab_id and .label == "Agent") | .pane_id')
+ORDINARY_NVIM_ID=$(printf '%s\n' "$ORDINARY_PANES" | jq -er \
+    --arg tab_id "$ORDINARY_WORK_TAB_ID" '.result.panes[] | select(.tab_id == $tab_id and .label == "Nvim") | .pane_id')
+herdr workspace focus "$ORDINARY_WORKSPACE_ID" >/dev/null
+herdr pane resize --pane "$ORDINARY_AGENT_ID" --direction right --amount 0.05 >/dev/null
+herdr pane resize --pane "$ORDINARY_NVIM_ID" --direction up --amount 0.1 >/dev/null
+herdr plugin action invoke reapply --plugin dots.stationary >/dev/null
+for attempt in $(seq 1 40); do
+    action_log=$(herdr plugin log list --plugin dots.stationary --limit 1)
+    if printf '%s\n' "$action_log" | jq -e \
+        '.result.logs[0].action_id == "reapply" and .result.logs[0].finished_unix_ms != null' >/dev/null; then
+        printf '%s\n' "$action_log" | jq -e \
+            '.result.logs[0].status == "succeeded"' >/dev/null || {
+            printf 'Stationary repair action failed\n' >&2
+            printf '%s\n' "$action_log" >&2
+            exit 1
+        }
+        break
+    fi
+    sleep 0.25
+done
+wait_for_layout "$ORDINARY_WORKSPACE_ID"
+wait_for_expected_processes "$ORDINARY_WORKSPACE_ID"
+REPAIRED_PANE_IDS=$(herdr pane list --workspace "$ORDINARY_WORKSPACE_ID" | jq -er \
+    --arg tab_id "$ORDINARY_WORK_TAB_ID" '.result.panes[] | select(.tab_id == $tab_id) | .pane_id' | sort)
+[ "$REPAIRED_PANE_IDS" = "$ORDINARY_PANE_IDS" ] || {
+    printf 'repair replaced existing panes in workspace %s\n' "$ORDINARY_WORKSPACE_ID" >&2
+    exit 1
+}
+
 verify_layout "$ORDINARY_WORKSPACE_ID"
 verify_layout "$WORKTREE_WORKSPACE_ID"
-printf 'ok - ordinary and worktree workspaces received the Stationary layout and started Nvim\n'
+printf 'ok - ordinary and worktree workspaces received the Stationary layout and repaired it in place\n'

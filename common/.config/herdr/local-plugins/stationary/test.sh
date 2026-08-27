@@ -18,6 +18,7 @@ case "$*" in
   "tab list --workspace w-test")
     case "${FAKE_STATE:-fresh}" in
       fresh|empty-panes) printf '%s\n' '{"result":{"tabs":[{"tab_id":"t-root"}]}}' ;;
+      repairable) printf '%s\n' '{"result":{"tabs":[{"tab_id":"t-work","label":"Work"},{"tab_id":"t-servers","label":"Servers"}]}}' ;;
       reapply) printf '%s\n' '{"result":{"tabs":[{"tab_id":"t-root"},{"tab_id":"t-extra"}]}}' ;;
       empty-tabs) printf '%s\n' '{"result":{"tabs":[]}}' ;;
       *) printf '%s\n' '{"result":{"tabs":[{"tab_id":"t-root"},{"tab_id":"t-extra"}]}}' ;;
@@ -26,6 +27,7 @@ case "$*" in
   "pane list --workspace w-test")
     case "${FAKE_STATE:-fresh}" in
       fresh|empty-tabs) printf '%s\n' '{"result":{"panes":[{"pane_id":"p-root"}]}}' ;;
+      repairable) printf '%s\n' '{"result":{"panes":[{"pane_id":"p-root","tab_id":"t-work","label":"Agent"},{"pane_id":"p-nvim","tab_id":"t-work","label":"Nvim"},{"pane_id":"p-shell","tab_id":"t-work","label":"Shell"},{"pane_id":"p-server1","tab_id":"t-servers","label":"Server I"},{"pane_id":"p-server2","tab_id":"t-servers","label":"Server II"},{"pane_id":"p-server3","tab_id":"t-servers","label":"Server III"},{"pane_id":"p-server4","tab_id":"t-servers","label":"Server IV"}]}}' ;;
       reapply) printf '%s\n' '{"result":{"panes":[{"pane_id":"p-root"},{"pane_id":"p-extra"}]}}' ;;
       empty-panes) printf '%s\n' '{"result":{"panes":[]}}' ;;
       *) printf '%s\n' '{"result":{"panes":[{"pane_id":"p-root"},{"pane_id":"p-extra"}]}}' ;;
@@ -52,6 +54,12 @@ case "$*" in
     ;;
   "pane split --pane p-reapply-nvim --direction down --ratio 0.8 --no-focus")
     printf '%s\n' '{"result":{"pane":{"pane_id":"p-reapply-shell"}}}'
+    ;;
+  "pane layout --pane p-root")
+    printf '%s\n' '{"result":{"layout":{"splits":[{"direction":"right","ratio":0.3},{"direction":"down","ratio":0.7}]}}}'
+    ;;
+  "pane layout --pane p-server1")
+    printf '%s\n' '{"result":{"layout":{"splits":[{"direction":"right","ratio":0.4},{"direction":"down","ratio":0.6},{"direction":"down","ratio":0.4}]}}}'
     ;;
   "tab create --workspace w-test --cwd /tmp/stationary --label default --no-focus")
     printf '%s\n' '{"result":{"tab":{"tab_id":"t-reapply"},"root_pane":{"pane_id":"p-reapply"}}}'
@@ -240,6 +248,29 @@ grep -Fqx "tab rename t-root $BACKSLASH_TAB" "$CALLS" || fail "literal backslash
 grep -qx 'tab focus t-root' "$CALLS" || fail "literal backslash-t tab was not focused"
 unset TEST_SCRIPT
 printf 'ok - literal backslashes survive pane and tab map lookups\n'
+
+FAKE_STATE=repairable
+TEST_TAB_ID=t-work
+run_hook default --reapply || {
+    cat "$TMP_DIR/stderr" >&2
+    fail "repairable layout failed"
+}
+for expected_call in \
+    'pane resize --pane p-root --direction left --amount 0.05' \
+    'pane resize --pane p-nvim --direction down --amount 0.1' \
+    'pane resize --pane p-server1 --direction right --amount 0.1' \
+    'pane resize --pane p-server1 --direction up --amount 0.1' \
+    'pane resize --pane p-server2 --direction down --amount 0.1' \
+    'tab focus t-work' \
+    'pane focus --pane p-root --direction right'; do
+    grep -Fqx "$expected_call" "$CALLS" || fail "repair omitted: $expected_call"
+done
+if grep -E '^(tab create|tab close|pane split|pane run)' "$CALLS" >/dev/null; then
+    fail "repairable layout was rebuilt"
+fi
+unset TEST_TAB_ID
+unset FAKE_STATE
+printf 'ok - repairable layout is fixed without rebuilding\n'
 
 FAKE_STATE=reapply
 run_hook default --reapply || {
