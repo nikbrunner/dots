@@ -1,14 +1,11 @@
 [layouts.default]
-focus = "Work"
+focus = "Agents"
 
-[layouts.default.tabs.Work]
+[layouts.default.tabs.Agents]
 order = 1
 root = { pane = "Agent I" }
 splits = [
   { source = "Agent I", pane = "Agent II", direction = "right", ratio = 0.5 },
-
-  # { source = "Agent", direction = "down", ratio = 0.65, pane = "Shell I" },
-  # { source = "Nvim", direction = "down", ratio = 0.80, pane = "Shell" },
 ]
 
 [layouts.default.tabs.Edit]
@@ -16,11 +13,11 @@ order = 2
 root = { pane = "Nvim" }
 splits = []
 
-[layouts.default.tabs.Servers]
+[layouts.default.tabs.Shells]
 order = 3
-root = { pane = "Server I" }
+root = { pane = "Shell I" }
 splits = [
-  { source = "Server I", direction = "right", ratio = 0.50, pane = "Server II" },
-  { source = "Server I", direction = "down", ratio = 0.50, pane = "Server III" },
-  { source = "Server II", direction = "down", ratio = 0.50, pane = "Server IV" },
+  { source = "Shell I", direction = "right", ratio = 0.50, pane = "Shell II" },
+  { source = "Shell I", direction = "down", ratio = 0.50, pane = "Shell III" },
+  { source = "Shell II", direction = "down", ratio = 0.50, pane = "Shell IV" },
 ]
