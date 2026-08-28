@@ -30,7 +30,27 @@ Edit.later(function()
 		},
 	})
 
-	vim.keymap.set("n", "<leader>ac", function()
+	local function convert_to_black_atom_oklch()
+		local color = require("oklch-color-picker").color_under_cursor()
+		if not color or not color.color:match("^#%x%x%x%x%x%x$") then
+			vim.notify("No 6-digit hex color under cursor", vim.log.levels.INFO)
+			return
+		end
+
+		local oklch = require("mini.colors").convert(color.color, "oklch", {
+			adjust_lightness = false,
+		})
+		local replacement = string.format("oklch(%.3f, %.4f, %.1f)", oklch.l / 100, oklch.c / 100, oklch.h or 0)
+		local row = vim.api.nvim_win_get_cursor(0)[1]
+
+		vim.api.nvim_buf_set_text(0, row - 1, color.pos[1] - 1, row - 1, color.pos[2] - 1, { replacement })
+	end
+
+	vim.keymap.set("n", "<leader>aC", function()
 		require("oklch-color-picker").pick_under_cursor()
 	end, { desc = "[C]olor picker" })
+
+	vim.keymap.set("n", "<leader>ac", convert_to_black_atom_oklch, {
+		desc = "Convert to Black Atom OKLCH",
+	})
 end)
