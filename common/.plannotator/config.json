@@ -1,12 +1,17 @@
 {
   "diffOptions": {
-    "defaultDiffType": "uncommitted",
+    "defaultDiffType": "since-base",
     "fontFamily": "JetBrains Mono",
-    "diffStyle": "unified",
+    "diffStyle": "split",
     "lineBgIntensity": "subtle",
     "tabSize": 4,
-    "hideWhitespace": true
+    "hideWhitespace": true,
+    "overflow": "wrap"
   },
   "conventionalComments": true,
-  "pfmReminder": true
+  "pfmReminder": true,
+  "reviewAnalysis": {
+    "semanticDiff": true,
+    "callFlow": false
+  }
 }
