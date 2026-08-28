@@ -174,7 +174,7 @@ gwt() {
     fi
 }
 
-eval "$(zoxide init zsh --cmd cd)"
+eval "$(zoxide init zsh)"
 
 # Plugin Configuration (after plugins loaded by os.zsh) ==================
 bindkey '^y' autosuggest-accept
