@@ -6,183 +6,146 @@
       "custom_name": "notes",
       "identity_cwd": "/Users/brunner/repos/nikbrunner/notes",
       "public_pane_numbers": {
-        "7": 8,
-        "3": 4,
-        "1": 1,
-        "2": 2,
-        "5": 7,
-        "6": 6,
-        "4": 5
+        "60": 10,
+        "62": 12,
+        "59": 9,
+        "61": 11
       },
-      "next_public_pane_number": 9,
+      "next_public_pane_number": 16,
       "public_tab_numbers": [
-        1,
-        2
+        3,
+        4,
+        5
       ],
-      "next_public_tab_number": 3,
+      "next_public_tab_number": 6,
       "tabs": [
         {
-          "custom_name": "Work",
-          "layout": {
-            "Split": {
-              "direction": "Horizontal",
-              "ratio": 0.25,
-              "first": {
-                "Pane": 1
-              },
-              "second": {
-                "Split": {
-                  "direction": "Vertical",
-                  "ratio": 0.8,
-                  "first": {
-                    "Pane": 2
-                  },
-                  "second": {
-                    "Pane": 3
-                  }
-                }
-              }
-            }
-          },
-          "panes": {
-            "1": {
-              "cwd": "/Users/brunner/repos/nikbrunner/notes",
-              "label": "Agent"
-            },
-            "3": {
-              "cwd": "/Users/brunner/repos/nikbrunner/notes",
-              "label": "Shell II"
-            },
-            "2": {
-              "cwd": "/Users/brunner/repos/nikbrunner/notes",
-              "label": "Nvim"
-            }
-          },
-          "zoomed": false,
-          "focused": 2,
-          "root_pane": 1
-        },
-        {
-          "custom_name": "Servers",
+          "custom_name": "Agents",
           "layout": {
             "Split": {
               "direction": "Horizontal",
               "ratio": 0.5,
               "first": {
-                "Split": {
-                  "direction": "Vertical",
-                  "ratio": 0.5,
-                  "first": {
-                    "Pane": 4
-                  },
-                  "second": {
-                    "Pane": 5
-                  }
-                }
+                "Pane": 59
               },
               "second": {
-                "Split": {
-                  "direction": "Vertical",
-                  "ratio": 0.5,
-                  "first": {
-                    "Pane": 6
-                  },
-                  "second": {
-                    "Pane": 7
-                  }
-                }
+                "Pane": 60
               }
             }
           },
           "panes": {
-            "5": {
+            "59": {
               "cwd": "/Users/brunner/repos/nikbrunner/notes",
-              "label": "Server III"
+              "label": "Agent I"
             },
-            "7": {
+            "60": {
               "cwd": "/Users/brunner/repos/nikbrunner/notes",
-              "label": "Server IV"
-            },
-            "4": {
-              "cwd": "/Users/brunner/repos/nikbrunner/notes",
-              "label": "Server I"
-            },
-            "6": {
-              "cwd": "/Users/brunner/repos/nikbrunner/notes",
-              "label": "Server II"
+              "label": "Agent II"
             }
           },
           "zoomed": false,
-          "focused": 4,
-          "root_pane": 4
+          "focused": 59,
+          "root_pane": 59
+        },
+        {
+          "custom_name": "Edit",
+          "layout": {
+            "Pane": 61
+          },
+          "panes": {
+            "61": {
+              "cwd": "/Users/brunner/repos/nikbrunner/notes",
+              "label": "Nvim"
+            }
+          },
+          "zoomed": false,
+          "focused": 61,
+          "root_pane": 61
+        },
+        {
+          "custom_name": "Servers",
+          "layout": {
+            "Pane": 62
+          },
+          "panes": {
+            "62": {
+              "cwd": "/Users/brunner/repos/nikbrunner/notes",
+              "label": "Server I"
+            }
+          },
+          "zoomed": false,
+          "focused": 62,
+          "root_pane": 62
         }
       ],
-      "active_tab": 0
+      "active_tab": 2
     },
     {
       "id": "w2C",
       "custom_name": "dots",
       "identity_cwd": "/Users/brunner/repos/nikbrunner/dots",
       "public_pane_numbers": {
-        "48": 23,
-        "13": 6,
-        "12": 7,
-        "11": 5,
-        "59": 34,
-        "8": 1,
-        "14": 8
+        "80": 62,
+        "77": 59,
+        "78": 60,
+        "81": 63,
+        "82": 64,
+        "79": 61,
+        "83": 65
       },
-      "next_public_pane_number": 35,
+      "next_public_pane_number": 66,
       "public_tab_numbers": [
-        1,
-        2,
-        3
+        10,
+        11,
+        12
       ],
-      "next_public_tab_number": 4,
+      "next_public_tab_number": 13,
       "tabs": [
         {
-          "custom_name": "Work",
+          "custom_name": "Agents",
           "layout": {
             "Split": {
               "direction": "Horizontal",
               "ratio": 0.5,
               "first": {
-                "Pane": 8
+                "Pane": 77
               },
               "second": {
-                "Pane": 59
+                "Pane": 78
               }
             }
           },
           "panes": {
-            "8": {
+            "77": {
               "cwd": "/Users/brunner/repos/nikbrunner/dots",
-              "label": "Agent",
-              "agent_session": {
-                "source": "herdr:pi",
-                "agent": "pi",
-                "kind": "path",
-                "value": "/Users/brunner/.pi/agent/sessions/--Users-brunner-repos-nikbrunner-dots--/2026-08-26T10-47-04-076Z_01a03dae-3c8c-720b-9b41-b7249e9c10f7.jsonl"
-              }
+              "label": "Agent I"
             },
-            "59": {
+            "78": {
               "cwd": "/Users/brunner/repos/nikbrunner/dots",
-              "agent_name": "dispatch-1787746198",
-              "managed_agent_kind": "pi",
-              "agent_session": {
-                "source": "herdr:pi",
-                "agent": "pi",
-                "kind": "path",
-                "value": "/Users/brunner/.pi/agent/sessions/--Users-brunner-repos-nikbrunner-dots--/2026-08-26T12-09-59-212Z_01a03dfa-26ac-7cf2-abb1-1d9516053ac9.jsonl"
-              }
+              "label": "Agent II"
             }
           },
           "zoomed": false,
-          "focused": 8,
-          "root_pane": 8
+          "focused": 77,
+          "root_pane": 77
         },
         {
-          "custom_name": "Servers",
+          "custom_name": "Edit",
+          "layout": {
+            "Pane": 79
+          },
+          "panes": {
+            "79": {
+              "cwd": "/Users/brunner/repos/nikbrunner/dots",
+              "label": "Nvim"
+            }
+          },
+          "zoomed": false,
+          "focused": 79,
+          "root_pane": 79
+        },
+        {
+          "custom_name": "Shells",
           "layout": {
             "Split": {
               "direction": "Horizontal",
@@ -192,10 +155,10 @@
                   "direction": "Vertical",
                   "ratio": 0.5,
                   "first": {
-                    "Pane": 11
+                    "Pane": 80
                   },
                   "second": {
-                    "Pane": 12
+                    "Pane": 82
                   }
                 }
               },
@@ -204,53 +167,39 @@
                   "direction": "Vertical",
                   "ratio": 0.5,
                   "first": {
-                    "Pane": 13
+                    "Pane": 81
                   },
                   "second": {
-                    "Pane": 14
+                    "Pane": 83
                   }
                 }
               }
             }
           },
           "panes": {
-            "13": {
+            "81": {
               "cwd": "/Users/brunner/repos/nikbrunner/dots",
-              "label": "Server II"
+              "label": "Shell II"
             },
-            "12": {
+            "80": {
               "cwd": "/Users/brunner/repos/nikbrunner/dots",
-              "label": "Server III"
+              "label": "Shell I"
             },
-            "11": {
+            "83": {
               "cwd": "/Users/brunner/repos/nikbrunner/dots",
-              "label": "Server I"
+              "label": "Shell IV"
             },
-            "14": {
+            "82": {
               "cwd": "/Users/brunner/repos/nikbrunner/dots",
-              "label": "Server IV"
+              "label": "Shell III"
             }
           },
           "zoomed": false,
-          "focused": 11,
-          "root_pane": 11
-        },
-        {
-          "custom_name": null,
-          "layout": {
-            "Pane": 48
-          },
-          "panes": {
-            "48": {
-              "cwd": "/Users/brunner/repos/nikbrunner/dots"
-            }
-          },
-          "zoomed": false,
-          "focused": 48,
-          "root_pane": 48
+          "focused": 80,
+          "root_pane": 80
         }
       ],
-      "active_tab": 0
+      "active_tab": 1
     },
     {
       "id": "w29",
@@ -264,69 +213,64 @@
         "is_linked_worktree": false
       },
       "public_pane_numbers": {
-        "20": 6,
-        "18": 5,
-        "21": 8,
-        "15": 1,
-        "17": 4,
-        "16": 2,
-        "22": 13,
-        "19": 7
+        "71": 50,
+        "67": 46,
+        "70": 49,
+        "69": 48,
+        "72": 51,
+        "66": 45,
+        "68": 47
       },
-      "next_public_pane_number": 43,
+      "next_public_pane_number": 53,
       "public_tab_numbers": [
-        1,
-        2,
-        3
+        4,
+        5,
+        6
       ],
-      "next_public_tab_number": 4,
+      "next_public_tab_number": 7,
       "tabs": [
         {
-          "custom_name": "Work",
+          "custom_name": "Agents",
           "layout": {
             "Split": {
               "direction": "Horizontal",
-              "ratio": 0.21619715,
+              "ratio": 0.5,
               "first": {
-                "Pane": 15
+                "Pane": 66
               },
               "second": {
-                "Split": {
-                  "direction": "Vertical",
-                  "ratio": 0.796875,
-                  "first": {
-                    "Pane": 16
-                  },
-                  "second": {
-                    "Pane": 17
-                  }
-                }
+                "Pane": 67
               }
             }
           },
           "panes": {
-            "16": {
+            "66": {
               "cwd": "/Users/brunner/repos/nikbrunner/black-atom",
-              "label": "Nvim"
+              "label": "Agent I"
             },
-            "17": {
+            "67": {
               "cwd": "/Users/brunner/repos/nikbrunner/black-atom",
-              "label": "Shell II"
-            },
-            "15": {
-              "cwd": "/Users/brunner/repos/nikbrunner/black-atom",
-              "label": "Agent",
-              "agent_session": {
-                "source": "herdr:pi",
-                "agent": "pi",
-                "kind": "path",
-                "value": "/Users/brunner/.pi/agent/sessions/--Users-brunner-repos-nikbrunner-black-atom--/2026-08-24T11-04-02-656Z_01a03371-0f60-793e-93b1-1e48c417df85.jsonl"
-              }
+              "label": "Agent II"
             }
           },
           "zoomed": false,
-          "focused": 16,
-          "root_pane": 15
+          "focused": 66,
+          "root_pane": 66
+        },
+        {
+          "custom_name": "Edit",
+          "layout": {
+            "Pane": 68
+          },
+          "panes": {
+            "68": {
+              "cwd": "/Users/brunner/repos/nikbrunner/black-atom",
+              "label": "Nvim"
+            }
+          },
+          "zoomed": false,
+          "focused": 68,
+          "root_pane": 68
         },
         {
           "custom_name": "Servers",
@@ -339,10 +283,10 @@
                   "direction": "Vertical",
                   "ratio": 0.5,
                   "first": {
-                    "Pane": 18
+                    "Pane": 69
                   },
                   "second": {
-                    "Pane": 19
+                    "Pane": 71
                   }
                 }
               },
@@ -351,50 +295,36 @@
                   "direction": "Vertical",
                   "ratio": 0.5,
                   "first": {
-                    "Pane": 20
+                    "Pane": 70
                   },
                   "second": {
-                    "Pane": 21
+                    "Pane": 72
                   }
                 }
               }
             }
           },
           "panes": {
-            "18": {
+            "69": {
               "cwd": "/Users/brunner/repos/nikbrunner/black-atom",
               "label": "Server I"
             },
-            "20": {
+            "72": {
               "cwd": "/Users/brunner/repos/nikbrunner/black-atom",
-              "label": "Server II"
+              "label": "Server IV"
             },
-            "19": {
+            "71": {
               "cwd": "/Users/brunner/repos/nikbrunner/black-atom",
               "label": "Server III"
             },
-            "21": {
+            "70": {
               "cwd": "/Users/brunner/repos/nikbrunner/black-atom",
-              "label": "Server IV"
+              "label": "Server II"
             }
           },
           "zoomed": false,
-          "focused": 20,
-          "root_pane": 18
-        },
-        {
-          "custom_name": null,
-          "layout": {
-            "Pane": 22
-          },
-          "panes": {
-            "22": {
-              "cwd": "/Users/brunner/repos/black-atom-industries/obsidian"
-            }
-          },
-          "zoomed": false,
-          "focused": 22,
-          "root_pane": 22
+          "focused": 69,
+          "root_pane": 69
         }
       ],
       "active_tab": 0
@@ -405,10 +335,10 @@
       "identity_cwd": "/Users/brunner/repos/black-atom-industries/helm.herdr",
       "public_pane_numbers": {
         "25": 7,
-        "27": 8,
-        "23": 1,
         "24": 5,
-        "26": 6
+        "26": 6,
+        "27": 8,
+        "23": 1
       },
       "next_public_pane_number": 28,
       "public_tab_numbers": [
@@ -465,21 +395,21 @@
             }
           },
           "panes": {
-            "24": {
-              "cwd": "/Users/brunner/repos/black-atom-industries/helm.herdr",
-              "label": "Server I"
-            },
-            "25": {
-              "cwd": "/Users/brunner/repos/black-atom-industries/helm.herdr",
-              "label": "Server III"
-            },
             "27": {
               "cwd": "/Users/brunner/repos/black-atom-industries/helm.herdr",
               "label": "Server IV"
             },
+            "24": {
+              "cwd": "/Users/brunner/repos/black-atom-industries/helm.herdr",
+              "label": "Server I"
+            },
             "26": {
               "cwd": "/Users/brunner/repos/black-atom-industries/helm.herdr",
               "label": "Server II"
+            },
+            "25": {
+              "cwd": "/Users/brunner/repos/black-atom-industries/helm.herdr",
+              "label": "Server III"
             }
           },
           "zoomed": false,
@@ -501,12 +431,12 @@
         "is_linked_worktree": true
       },
       "public_pane_numbers": {
-        "28": 1,
-        "30": 4,
-        "31": 5,
-        "32": 7,
         "33": 6,
+        "30": 4,
+        "28": 1,
+        "31": 5,
         "29": 2,
+        "32": 7,
         "34": 8
       },
       "next_public_pane_number": 28,
@@ -540,6 +470,10 @@
             }
           },
           "panes": {
+            "28": {
+              "cwd": "/Users/brunner/.herdr/worktrees/black-atom/rework-structure",
+              "label": "Agent"
+            },
             "29": {
               "cwd": "/Users/brunner/.herdr/worktrees/black-atom/rework-structure",
               "label": "Nvim"
@@ -547,10 +481,6 @@
             "30": {
               "cwd": "/Users/brunner/.herdr/worktrees/black-atom/rework-structure",
               "label": "Shell II"
-            },
-            "28": {
-              "cwd": "/Users/brunner/.herdr/worktrees/black-atom/rework-structure",
-              "label": "Agent"
             }
           },
           "zoomed": false,
@@ -590,6 +520,10 @@
             }
           },
           "panes": {
+            "31": {
+              "cwd": "/Users/brunner/.herdr/worktrees/black-atom/rework-structure",
+              "label": "Server I"
+            },
             "34": {
               "cwd": "/Users/brunner/.herdr/worktrees/black-atom/rework-structure",
               "label": "Server IV"
@@ -601,15 +535,132 @@
             "33": {
               "cwd": "/Users/brunner/.herdr/worktrees/black-atom/rework-structure",
               "label": "Server II"
-            },
-            "31": {
-              "cwd": "/Users/brunner/.herdr/worktrees/black-atom/rework-structure",
-              "label": "Server I"
             }
           },
           "zoomed": false,
           "focused": 31,
           "root_pane": 31
+        }
+      ],
+      "active_tab": 0
+    },
+    {
+      "id": "w2R",
+      "custom_name": "mdn.nvim",
+      "identity_cwd": "/Users/brunner/repos/nikbrunner/mdn.nvim",
+      "public_pane_numbers": {
+        "49": 14,
+        "46": 11,
+        "43": 8,
+        "47": 12,
+        "44": 9,
+        "45": 10,
+        "48": 13
+      },
+      "next_public_pane_number": 15,
+      "public_tab_numbers": [
+        3,
+        4,
+        5
+      ],
+      "next_public_tab_number": 6,
+      "tabs": [
+        {
+          "custom_name": "Agents",
+          "layout": {
+            "Split": {
+              "direction": "Horizontal",
+              "ratio": 0.5,
+              "first": {
+                "Pane": 43
+              },
+              "second": {
+                "Pane": 44
+              }
+            }
+          },
+          "panes": {
+            "43": {
+              "cwd": "/Users/brunner/repos/nikbrunner/mdn.nvim",
+              "label": "Agent I"
+            },
+            "44": {
+              "cwd": "/Users/brunner/repos/nikbrunner/mdn.nvim",
+              "label": "Agent II"
+            }
+          },
+          "zoomed": false,
+          "focused": 43,
+          "root_pane": 43
+        },
+        {
+          "custom_name": "Edit",
+          "layout": {
+            "Pane": 45
+          },
+          "panes": {
+            "45": {
+              "cwd": "/Users/brunner/repos/nikbrunner/mdn.nvim",
+              "label": "Nvim"
+            }
+          },
+          "zoomed": false,
+          "focused": 45,
+          "root_pane": 45
+        },
+        {
+          "custom_name": "Servers",
+          "layout": {
+            "Split": {
+              "direction": "Horizontal",
+              "ratio": 0.5,
+              "first": {
+                "Split": {
+                  "direction": "Vertical",
+                  "ratio": 0.5,
+                  "first": {
+                    "Pane": 46
+                  },
+                  "second": {
+                    "Pane": 48
+                  }
+                }
+              },
+              "second": {
+                "Split": {
+                  "direction": "Vertical",
+                  "ratio": 0.5,
+                  "first": {
+                    "Pane": 47
+                  },
+                  "second": {
+                    "Pane": 49
+                  }
+                }
+              }
+            }
+          },
+          "panes": {
+            "49": {
+              "cwd": "/Users/brunner/repos/nikbrunner/mdn.nvim",
+              "label": "Server IV"
+            },
+            "47": {
+              "cwd": "/Users/brunner/repos/nikbrunner/mdn.nvim",
+              "label": "Server II"
+            },
+            "46": {
+              "cwd": "/Users/brunner/repos/nikbrunner/mdn.nvim",
+              "label": "Server I"
+            },
+            "48": {
+              "cwd": "/Users/brunner/repos/nikbrunner/mdn.nvim",
+              "label": "Server III"
+            }
+          },
+          "zoomed": false,
+          "focused": 46,
+          "root_pane": 46
         }
       ],
       "active_tab": 0

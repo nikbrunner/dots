@@ -53,7 +53,7 @@
     "deny": [],
     "ask": []
   },
-  "model": "opus[1m]",
+  "model": "sonnet",
   "hooks": {
     "Notification": [],
     "PostToolUse": [

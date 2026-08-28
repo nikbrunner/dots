@@ -246,11 +246,12 @@
       "~/.claude/jobs/83245695/tmp/wt-prompt-bold",
       "~/.herdr/worktrees/dots/worktree-rapid-stone-2f36",
       "~/repos/nikbrunner/dots",
+      "~/repos/nikbrunner/dots/common/.config/herdr/local-plugins/stationary",
       "~/repos/nikbrunner/dots/common/.config/herdr/plugins/config/herdr-navigator",
       "~/repos/nikbrunner/dots/common/.config/nvim",
       "~/repos/nikbrunner/dots/common/.config/nvim/sessions"
     ],
-    "last_seen": "2026-07-30"
+    "last_seen": "2026-08-27"
   },
   "nikbrunner/herdr": {
     "root": "~/repos/nikbrunner/herdr",
@@ -323,15 +324,26 @@
     ],
     "last_seen": "2026-07-27"
   },
+  "web-sdk-wk-fumadocs/emsdk": {
+    "root": "~/repos/imfusion/websdk/web-sdk-wk-fumadocs/emsdk",
+    "owner": "web-sdk-wk-fumadocs",
+    "name": "emsdk",
+    "work": true,
+    "session_dirs": [
+      "~/repos/imfusion/websdk/web-sdk-wk-fumadocs/emsdk"
+    ],
+    "last_seen": "2026-08-27"
+  },
   "websdk/web-sdk": {
     "root": "~/repos/imfusion/websdk/web-sdk",
     "owner": "websdk",
     "name": "web-sdk",
     "work": true,
     "session_dirs": [
-      "~/repos/imfusion/websdk/web-sdk"
+      "~/repos/imfusion/websdk/web-sdk",
+      "~/repos/imfusion/websdk/web-sdk-wk-fumadocs"
     ],
-    "last_seen": "2026-07-29"
+    "last_seen": "2026-08-27"
   },
   "websdk/web-ui": {
     "root": "~/repos/imfusion/websdk/web-ui",
@@ -343,15 +355,18 @@
       "~/.herdr/worktrees/web-ui/hw-probe-tmp",
       "~/.herdr/worktrees/web-ui/imfusion-logo-improvements",
       "~/.herdr/worktrees/web-ui/improve-frontend-audit",
+      "~/.herdr/worktrees/web-ui/improve-pre-commit-and-push-hooks",
       "~/.herdr/worktrees/web-ui/improve-react-patterns-skill",
       "~/.herdr/worktrees/web-ui/improve-stop-hook",
       "~/.herdr/worktrees/web-ui/showcase-improvements",
+      "~/.herdr/worktrees/web-ui/simplify-documentation",
       "~/.herdr/worktrees/web-ui/skills-improvements-ii",
       "~/.herdr/worktrees/web-ui/tanstack-intent",
       "~/.herdr/worktrees/web-ui/teardown-selftest",
       "~/.herdr/worktrees/web-ui/teardown-skill-selftest",
       "~/.herdr/worktrees/web-ui/teardown-skill-selftest-2",
       "~/.herdr/worktrees/web-ui/websdk-133-image-display-options",
+      "~/.herdr/worktrees/web-ui/websdk-146-web-ui-v1-components-toast",
       "~/.herdr/worktrees/web-ui/websdk-205-web-ui-improve-logo-variants",
       "~/.herdr/worktrees/web-ui/websdk-209-web-ui-replace-shiki-with-tanstack-high",
       "~/.herdr/worktrees/web-ui/websdk-210-web-ui-add-iconography",
@@ -369,6 +384,6 @@
       "~/repos/imfusion/websdk/web-ui/src/llms/skills",
       "~/repos/imfusion/websdk/websdk-169-storybook-controls"
     ],
-    "last_seen": "2026-08-24"
+    "last_seen": "2026-08-27"
   }
 }

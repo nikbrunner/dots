@@ -12,7 +12,7 @@ let s:shortmess_save = &shortmess
 set shortmess+=aoO
 badd +1 core/src/themes/mnml/black-atom-mnml-47-light.ts
 badd +6 core/src/themes/mnml/create-feedback-light.ts
-badd +54 core/src/themes/mnml/create-syntax-light.ts
+badd +53 core/src/themes/mnml/create-syntax-light.ts
 argglobal
 %argdel
 edit core/src/themes/mnml/black-atom-mnml-47-light.ts
@@ -35,9 +35,9 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe 'vert 1resize ' . ((&columns * 82 + 124) / 248)
-exe 'vert 2resize ' . ((&columns * 82 + 124) / 248)
-exe 'vert 3resize ' . ((&columns * 82 + 124) / 248)
+exe 'vert 1resize ' . ((&columns * 94 + 142) / 285)
+exe 'vert 2resize ' . ((&columns * 95 + 142) / 285)
+exe 'vert 3resize ' . ((&columns * 94 + 142) / 285)
 tcd ~/repos/nikbrunner/black-atom
 argglobal
 balt ~/repos/nikbrunner/black-atom/core/src/themes/mnml/create-feedback-light.ts
@@ -149,7 +149,7 @@ setlocal winhighlight=
 setlocal nowinpinned
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 57 - ((35 * winheight(0) + 23) / 47)
+let s:l = 57 - ((16 * winheight(0) + 27) / 54)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
@@ -261,7 +261,7 @@ setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#...%*%#WinBarSeparator#/%*%#WinBarPath#mnml%*%#WinBarSeparator#/%*%#WinBarFilename#create-feedback-light.ts%*%=
+setlocal winbar=%#WinBarPath#...%*%#WinBarSeparator#/%*%#WinBarPath#themes%*%#WinBarSeparator#/%*%#WinBarPath#mnml%*%#WinBarSeparator#/%*%#WinBarFilename#create-feedback-light.ts%*%=
 setlocal winblend=10
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -270,11 +270,11 @@ setlocal winhighlight=
 setlocal nowinpinned
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 6 - ((5 * winheight(0) + 23) / 47)
+let s:l = 11 - ((10 * winheight(0) + 27) / 54)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 6
+keepjumps 11
 normal! 0
 wincmd w
 argglobal
@@ -382,7 +382,7 @@ setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#...%*%#WinBarSeparator#/%*%#WinBarPath#mnml%*%#WinBarSeparator#/%*%#WinBarFilename#create-syntax-light.ts%*%=%#WinBarGitLabel#\ [GIT:%#WinBarGitChange#\ ~3%#WinBarGitLabel#]%*\ 
+setlocal winbar=%#WinBarPath#...%*%#WinBarSeparator#/%*%#WinBarPath#mnml%*%#WinBarSeparator#/%*%#WinBarFilename#create-syntax-light.ts%*%=%#WinBarGitLabel#\ [GIT:%#WinBarGitChange#\ ~2%#WinBarGitLabel#]%*\ 
 setlocal winblend=10
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -391,21 +391,17 @@ setlocal winhighlight=
 setlocal nowinpinned
 setlocal nowrap
 setlocal wrapmargin=0
-3
-sil! normal! zo
-6
-sil! normal! zo
-let s:l = 53 - ((29 * winheight(0) + 23) / 47)
+let s:l = 55 - ((31 * winheight(0) + 27) / 54)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 53
-normal! 036|
+keepjumps 55
+normal! 010|
 wincmd w
 2wincmd w
-exe 'vert 1resize ' . ((&columns * 82 + 124) / 248)
-exe 'vert 2resize ' . ((&columns * 82 + 124) / 248)
-exe 'vert 3resize ' . ((&columns * 82 + 124) / 248)
+exe 'vert 1resize ' . ((&columns * 94 + 142) / 285)
+exe 'vert 2resize ' . ((&columns * 95 + 142) / 285)
+exe 'vert 3resize ' . ((&columns * 94 + 142) / 285)
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
