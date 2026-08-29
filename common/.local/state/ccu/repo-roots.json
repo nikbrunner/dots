@@ -249,9 +249,20 @@
       "~/repos/nikbrunner/dots/common/.config/herdr/local-plugins/stationary",
       "~/repos/nikbrunner/dots/common/.config/herdr/plugins/config/herdr-navigator",
       "~/repos/nikbrunner/dots/common/.config/nvim",
-      "~/repos/nikbrunner/dots/common/.config/nvim/sessions"
+      "~/repos/nikbrunner/dots/common/.config/nvim/sessions",
+      "~/repos/nikbrunner/dots/common/.pi"
     ],
-    "last_seen": "2026-08-27"
+    "last_seen": "2026-08-28"
+  },
+  "nikbrunner/fonts": {
+    "root": "~/repos/nikbrunner/fonts",
+    "owner": "nikbrunner",
+    "name": "fonts",
+    "work": false,
+    "session_dirs": [
+      "~/repos/nikbrunner/fonts"
+    ],
+    "last_seen": "2026-08-29"
   },
   "nikbrunner/herdr": {
     "root": "~/repos/nikbrunner/herdr",

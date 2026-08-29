@@ -14,7 +14,8 @@
     "npm:pi-subagents",
     "npm:pi-codex-limit",
     "npm:@syzom/nopus",
-    "git:github.com/obra/superpowers"
+    "git:github.com/obra/superpowers",
+    "npm:@narumitw/pi-accounts"
   ],
   "defaultProvider": "openai-codex",
   "defaultModel": "gpt-5.6-luna",
@@ -23,7 +24,7 @@
     "openai-codex/gpt-5.6-sol",
     "openai-codex/gpt-5.6-luna"
   ],
-  "hideThinkingBlock": false,
+  "hideThinkingBlock": true,
   "compaction": {
     "enabled": true
   },

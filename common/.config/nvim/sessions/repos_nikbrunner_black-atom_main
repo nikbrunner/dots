@@ -10,9 +10,10 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +1 core/src/themes/mnml/black-atom-mnml-47-light.ts
-badd +6 core/src/themes/mnml/create-feedback-light.ts
-badd +53 core/src/themes/mnml/create-syntax-light.ts
+badd +37 core/src/themes/mnml/black-atom-mnml-47-light.ts
+badd +52 core/src/themes/mnml/create-syntax-light.ts
+badd +45 core/src/themes/mnml/black-atom-mnml-47-dark.ts
+badd +45 core/src/themes/mnml/create-syntax-dark.ts
 argglobal
 %argdel
 edit core/src/themes/mnml/black-atom-mnml-47-light.ts
@@ -23,7 +24,10 @@ wincmd _ | wincmd |
 vsplit
 wincmd _ | wincmd |
 vsplit
-2wincmd h
+wincmd _ | wincmd |
+vsplit
+3wincmd h
+wincmd w
 wincmd w
 wincmd w
 let &splitbelow = s:save_splitbelow
@@ -35,12 +39,12 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe 'vert 1resize ' . ((&columns * 94 + 142) / 285)
-exe 'vert 2resize ' . ((&columns * 95 + 142) / 285)
-exe 'vert 3resize ' . ((&columns * 94 + 142) / 285)
+exe 'vert 1resize ' . ((&columns * 51 + 103) / 207)
+exe 'vert 2resize ' . ((&columns * 51 + 103) / 207)
+exe 'vert 3resize ' . ((&columns * 51 + 103) / 207)
+exe 'vert 4resize ' . ((&columns * 51 + 103) / 207)
 tcd ~/repos/nikbrunner/black-atom
 argglobal
-balt ~/repos/nikbrunner/black-atom/core/src/themes/mnml/create-feedback-light.ts
 setlocal keymap=
 setlocal noarabic
 setlocal autoindent
@@ -140,7 +144,7 @@ setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#...%*%#WinBarSeparator#/%*%#WinBarPath#themes%*%#WinBarSeparator#/%*%#WinBarPath#mnml%*%#WinBarSeparator#/%*%#WinBarFilename#black-atom-mnml-47-light.ts%*%=%#WinBarGitLabel#\ [GIT:%#WinBarGitAdd#\ +2%#WinBarGitChange#\ ~18%#WinBarGitLabel#]%*\ 
+setlocal winbar=%#WinBarPath#...%*%#WinBarSeparator#/%*%#WinBarFilename#black-atom-mnml-47-light.ts%*%=%#WinBarGitLabel#\ [GIT:%#WinBarGitAdd#\ +4%#WinBarGitChange#\ ~18%#WinBarGitLabel#]%*\ 
 setlocal winblend=10
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -149,17 +153,17 @@ setlocal winhighlight=
 setlocal nowinpinned
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 57 - ((16 * winheight(0) + 27) / 54)
+let s:l = 42 - ((34 * winheight(0) + 19) / 39)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 57
-normal! 0
+keepjumps 42
+normal! 02|
 wincmd w
 argglobal
-if bufexists(fnamemodify("~/repos/nikbrunner/black-atom/core/src/themes/mnml/create-feedback-light.ts", ":p")) | buffer ~/repos/nikbrunner/black-atom/core/src/themes/mnml/create-feedback-light.ts | else | edit ~/repos/nikbrunner/black-atom/core/src/themes/mnml/create-feedback-light.ts | endif
+if bufexists(fnamemodify("~/repos/nikbrunner/black-atom/core/src/themes/mnml/black-atom-mnml-47-dark.ts", ":p")) | buffer ~/repos/nikbrunner/black-atom/core/src/themes/mnml/black-atom-mnml-47-dark.ts | else | edit ~/repos/nikbrunner/black-atom/core/src/themes/mnml/black-atom-mnml-47-dark.ts | endif
 if &buftype ==# 'terminal'
-  silent file ~/repos/nikbrunner/black-atom/core/src/themes/mnml/create-feedback-light.ts
+  silent file ~/repos/nikbrunner/black-atom/core/src/themes/mnml/black-atom-mnml-47-dark.ts
 endif
 balt ~/repos/nikbrunner/black-atom/core/src/themes/mnml/black-atom-mnml-47-light.ts
 setlocal keymap=
@@ -261,7 +265,7 @@ setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#...%*%#WinBarSeparator#/%*%#WinBarPath#themes%*%#WinBarSeparator#/%*%#WinBarPath#mnml%*%#WinBarSeparator#/%*%#WinBarFilename#create-feedback-light.ts%*%=
+setlocal winbar=%#WinBarPath#...%*%#WinBarSeparator#/%*%#WinBarFilename#black-atom-mnml-47-dark.ts%*%=%#WinBarGitLabel#\ [GIT:%#WinBarGitAdd#\ +4%#WinBarGitChange#\ ~18%#WinBarGitLabel#]%*\ 
 setlocal winblend=10
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -270,19 +274,21 @@ setlocal winhighlight=
 setlocal nowinpinned
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 11 - ((10 * winheight(0) + 27) / 54)
+41
+sil! normal! zo
+let s:l = 45 - ((34 * winheight(0) + 19) / 39)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 11
-normal! 0
+keepjumps 45
+normal! 026|
 wincmd w
 argglobal
 if bufexists(fnamemodify("~/repos/nikbrunner/black-atom/core/src/themes/mnml/create-syntax-light.ts", ":p")) | buffer ~/repos/nikbrunner/black-atom/core/src/themes/mnml/create-syntax-light.ts | else | edit ~/repos/nikbrunner/black-atom/core/src/themes/mnml/create-syntax-light.ts | endif
 if &buftype ==# 'terminal'
   silent file ~/repos/nikbrunner/black-atom/core/src/themes/mnml/create-syntax-light.ts
 endif
-balt ~/repos/nikbrunner/black-atom/core/src/themes/mnml/create-feedback-light.ts
+balt ~/repos/nikbrunner/black-atom/core/src/themes/mnml/black-atom-mnml-47-light.ts
 setlocal keymap=
 setlocal noarabic
 setlocal autoindent
@@ -391,17 +397,139 @@ setlocal winhighlight=
 setlocal nowinpinned
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 55 - ((31 * winheight(0) + 27) / 54)
+let s:l = 23 - ((22 * winheight(0) + 19) / 39)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 55
+keepjumps 23
 normal! 010|
 wincmd w
+argglobal
+if bufexists(fnamemodify("~/repos/nikbrunner/black-atom/core/src/themes/mnml/create-syntax-dark.ts", ":p")) | buffer ~/repos/nikbrunner/black-atom/core/src/themes/mnml/create-syntax-dark.ts | else | edit ~/repos/nikbrunner/black-atom/core/src/themes/mnml/create-syntax-dark.ts | endif
+if &buftype ==# 'terminal'
+  silent file ~/repos/nikbrunner/black-atom/core/src/themes/mnml/create-syntax-dark.ts
+endif
+balt ~/repos/nikbrunner/black-atom/core/src/themes/mnml/create-syntax-light.ts
+setlocal keymap=
+setlocal noarabic
+setlocal autoindent
+setlocal nobinary
+setlocal breakindent
+setlocal breakindentopt=list:-1
+setlocal bufhidden=
+setlocal buflisted
+setlocal buftype=
+setlocal busy=0
+setlocal nocindent
+setlocal cinkeys=0{,0},0),0],:,0#,!^F,o,O,e
+setlocal cinoptions=
+setlocal cinscopedecls=public,protected,private
+setlocal cinwords=if,else,while,do,for,switch
+setlocal colorcolumn=
+setlocal comments=sO:*\ -,mO:*\ \ ,exO:*/,s1:/*,mb:*,ex:*/,://
+setlocal commentstring=//\ %s
+setlocal complete=.,w,b,kspell
+setlocal completefunc=
+setlocal completeslash=
+setlocal concealcursor=
+setlocal conceallevel=0
+setlocal nocopyindent
+setlocal nocursorbind
+setlocal nocursorcolumn
+setlocal cursorline
+setlocal cursorlineopt=screenline,number
+setlocal nodiff
+setlocal eventignorewin=
+setlocal expandtab
+if &filetype != 'typescript'
+setlocal filetype=typescript
+endif
+setlocal fixendofline
+setlocal foldcolumn=0
+setlocal foldenable
+setlocal foldexpr=v:lua.vim.treesitter.foldexpr()
+setlocal foldignore=#
+setlocal foldlevel=99
+setlocal foldmarker={{{,}}}
+setlocal foldmethod=expr
+setlocal foldminlines=1
+setlocal foldnestmax=10
+setlocal foldtext=
+setlocal formatexpr=v:lua.require'conform'.formatexpr()
+setlocal formatlistpat=^\\s*[0-9\\-\\+\\*]\\+[\\.\\)]*\\s\\+
+setlocal formatoptions=n1jrql
+setlocal iminsert=0
+setlocal imsearch=-1
+setlocal includeexpr=
+setlocal indentexpr=v:lua.require'arborist.indent'.indentexpr()
+setlocal indentkeys=0{,0},0),0],0,,!^F,o,O,e
+setlocal infercase
+setlocal iskeyword=@,48-57,_,192-255,-,$,#
+setlocal lhistory=10
+setlocal linebreak
+setlocal nolisp
+setlocal lispoptions=
+setlocal list
+setlocal matchpairs=(:),{:},[:]
+setlocal modeline
+setlocal modifiable
+setlocal nrformats=bin,hex
+setlocal number
+setlocal numberwidth=4
+setlocal omnifunc=v:lua.vim.lsp.omnifunc
+setlocal nopreserveindent
+setlocal nopreviewwindow
+setlocal quoteescape=\\
+setlocal noreadonly
+setlocal relativenumber
+setlocal norightleft
+setlocal rightleftcmd=search
+setlocal scrollback=-1
+setlocal noscrollbind
+setlocal shiftwidth=4
+setlocal signcolumn=yes
+setlocal nosmartindent
+setlocal nosmoothscroll
+setlocal softtabstop=-1
+setlocal nospell
+setlocal spellcapcheck=[.?!]\\_[\\])'\"\\t\ ]\\+
+setlocal spellfile=
+setlocal spelllang=en_us,de_de
+setlocal spelloptions=camel,noplainbuffer
+setlocal statuscolumn=
+setlocal suffixesadd=.ts,.d.ts,.tsx,.js,.jsx,.cjs,.mjs
+setlocal noswapfile
+setlocal synmaxcol=3000
+if &syntax != ''
+setlocal syntax=
+endif
+setlocal tabstop=2
+setlocal tagfunc=v:lua.vim.lsp.tagfunc
+setlocal textwidth=0
+setlocal undofile
+setlocal varsofttabstop=
+setlocal vartabstop=
+setlocal winbar=%#WinBarPath#...%*%#WinBarSeparator#/%*%#WinBarPath#mnml%*%#WinBarSeparator#/%*%#WinBarFilename#create-syntax-dark.ts%*%=%#WinBarGitLabel#\ [GIT:%#WinBarGitChange#\ ~1%#WinBarGitLabel#]%*\ 
+setlocal winblend=10
+setlocal nowinfixbuf
+setlocal nowinfixheight
+setlocal nowinfixwidth
+setlocal winhighlight=
+setlocal nowinpinned
+setlocal nowrap
+setlocal wrapmargin=0
+let s:l = 53 - ((34 * winheight(0) + 19) / 39)
+if s:l < 1 | let s:l = 1 | endif
+keepjumps exe s:l
+normal! zt
+keepjumps 53
+normal! 026|
+wincmd w
 2wincmd w
-exe 'vert 1resize ' . ((&columns * 94 + 142) / 285)
-exe 'vert 2resize ' . ((&columns * 95 + 142) / 285)
-exe 'vert 3resize ' . ((&columns * 94 + 142) / 285)
+exe 'vert 1resize ' . ((&columns * 51 + 103) / 207)
+exe 'vert 2resize ' . ((&columns * 51 + 103) / 207)
+exe 'vert 3resize ' . ((&columns * 51 + 103) / 207)
+exe 'vert 4resize ' . ((&columns * 51 + 103) / 207)
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
