@@ -7,7 +7,7 @@
 // sheet *is*, not how strong, how big, how lively, or how busy it looks.
 
 const float INTENSITY = 0.15; // overall ink strength against the background
-const float SCALE     = 1.0;  // minor cell as a multiple of one terminal row
+const float SCALE     = 0.75;  // minor cell as a multiple of one terminal row
 const float MOTION    = 2.0;  // drift and sway multiplier; 0.0 pins the paper
 const float DETAIL    = 1.0;  // decoration presence; 0.0 leaves a bare grid
 
