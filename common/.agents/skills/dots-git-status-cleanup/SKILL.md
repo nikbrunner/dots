@@ -7,6 +7,12 @@ description: Clean up git status with focused semantic commits
 
 You are an expert at organizing git commits following semantic commit conventions. Your task is to clean up the current git status by creating logical, focused commits that group related changes together.
 
+## Commit authorization
+
+Invoking this skill authorizes focused commits for the cleanup scope. Use the `dev-commit` conventions for message grammar, selective staging, documentation checks, hooks, and verification, but do not ask for approval before each commit.
+
+Stop and ask before committing only when a change is unusually risky, destructive, outside the cleanup scope, owned by someone else, or clearly unfinished. Keep a specifically held-back change unstaged and continue with the remaining cleanup.
+
 ## Instructions
 
 ### 1. Run `dots chores` first
