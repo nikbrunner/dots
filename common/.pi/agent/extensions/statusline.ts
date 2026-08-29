@@ -10,6 +10,7 @@ import {
 	getAlignedColumnWidths,
 	type FooterRow,
 } from "./lib/statusline-layout";
+import { getActiveAccountLabel } from "./lib/statusline-accounts";
 import {
 	getCodexWeeklyWindow,
 	type CodexLimitSnapshot,
@@ -105,22 +106,11 @@ function getActiveCodexAccount(): ActiveCodexAccount | undefined {
 	const active = readCredential(readJson(join(getAgentDir(), "auth.json"))?.["openai-codex"]);
 	const identity = active?.accountId ?? active?.refresh;
 	if (!identity) return undefined;
-	const accounts = readJson(join(getAgentDir(), "codex-accounts.json"))?.accounts;
-	if (!accounts || typeof accounts !== "object" || Array.isArray(accounts)) return { identity };
-
-	for (const [label, value] of Object.entries(accounts)) {
-		const saved = value && typeof value === "object" && !Array.isArray(value)
-			? readCredential((value as Record<string, unknown>).credential)
-			: undefined;
-		if (active?.accountId && saved?.accountId === active.accountId) return { identity, label };
-	}
-	for (const [label, value] of Object.entries(accounts)) {
-		const saved = value && typeof value === "object" && !Array.isArray(value)
-			? readCredential((value as Record<string, unknown>).credential)
-			: undefined;
-		if (active?.refresh && saved?.refresh === active.refresh) return { identity, label };
-	}
-	return { identity };
+	const label = getActiveAccountLabel(
+		readJson(join(getAgentDir(), "pi-accounts.json")),
+		"openai-codex",
+	);
+	return label ? { identity, label } : { identity };
 }
 
 function isCodexProvider(provider: string | undefined): boolean {
@@ -152,7 +142,7 @@ function conciseStatus(status: string): string {
 	return characters.length <= 48 ? status : `${characters.slice(0, 47).join("")}…`;
 }
 
-function formatMcpFooterStatus(status: string, wide: boolean): string | undefined {
+function formatMcpFooterStatus(status: string): string | undefined {
 	const plain = sanitizeMcpStatus(status);
 	if (!plain) return undefined;
 
@@ -161,7 +151,7 @@ function formatMcpFooterStatus(status: string, wide: boolean): string | undefine
 		const connected = Number(compact[1]);
 		const enabled = Number(compact[2]);
 		if (Number.isSafeInteger(connected) && Number.isSafeInteger(enabled) && connected <= enabled) {
-			return wide ? `MCP ${connected} connected / ${enabled} enabled` : plain;
+			return plain;
 		}
 	}
 
@@ -170,7 +160,7 @@ function formatMcpFooterStatus(status: string, wide: boolean): string | undefine
 		const enabled = Number(full[1]);
 		const connected = Number(full[2] ?? 0);
 		if (Number.isSafeInteger(connected) && Number.isSafeInteger(enabled) && connected <= enabled) {
-			return wide ? `MCP ${connected} connected / ${enabled} enabled` : `MCP ${connected}/${enabled}`;
+			return `MCP ${connected}/${enabled}`;
 		}
 	}
 
@@ -222,11 +212,6 @@ function usageTotals(ctx: ExtensionContext): { usage: Usage; cacheHit?: number }
 		usage.cost.total += item.cost.total;
 	}
 	return { usage, cacheHit };
-}
-
-function meter(percent: number, width: number): string {
-	const filled = Math.round(clampPercent(percent) / 100 * width);
-	return `[${"█".repeat(filled)}${"·".repeat(width - filled)}]`;
 }
 
 export default function (pi: ExtensionAPI): void {
@@ -296,12 +281,11 @@ export default function (pi: ExtensionAPI): void {
 			});
 
 			const separator = theme.fg("dim", " │ ");
-			const rawLine = ({ label, parts }: FooterRow, compact = false): string =>
-				theme.bold(theme.fg("warning", formatFooterRowLabel(label, compact))) + parts.join(separator);
-			const renderLine = (row: FooterRow, width: number, compact = false): string =>
-				truncateToWidth(rawLine(row, compact), width, theme.fg("dim", "…"));
+			const rawLine = ({ label, parts }: FooterRow): string =>
+				theme.bold(theme.fg("warning", formatFooterRowLabel(label))) + parts.join(separator);
+			const renderLine = (row: FooterRow, width: number): string =>
+				truncateToWidth(rawLine(row), width, theme.fg("dim", "…"));
 			const renderRows = (rows: FooterRow[], width: number): string[] => {
-				const compact = width < 110;
 				const columnWidths = getAlignedColumnWidths(rows, visibleWidth);
 				const aligned = rows.map((row) => ({
 					...row,
@@ -312,25 +296,21 @@ export default function (pi: ExtensionAPI): void {
 					),
 				}));
 				return aligned.map((row) =>
-					truncateToWidth(rawLine(row, compact), width, theme.fg("dim", "…")),
+					truncateToWidth(rawLine(row), width, theme.fg("dim", "…")),
 				);
 			};
-			const indicator = (label: string, compactLabel = label, compact = false): string =>
-				theme.fg("warning", `${compact ? compactLabel : label} `);
+			const indicator = (label: string): string => theme.fg("warning", `${label} `);
 			const stateText = (): string => {
 				const color = state === "ready" ? "success" : state === "working" ? "warning" : "error";
 				return theme.bold(theme.fg(color, `${state === "working" ? "●" : state === "error" ? "×" : "✓"} ${state}`));
 			};
-			const contextText = (compact: boolean): string | undefined => {
+			const contextText = (): string | undefined => {
 				const context = ctx.getContextUsage();
 				if (!context) return undefined;
 				const percent = context.percent;
-				const value = percent === null ? "?" : `${percent.toFixed(compact ? 0 : 1)}%`;
+				const value = percent === null ? "?" : `${percent.toFixed(0)}%`;
 				const color = (percent ?? 0) > 90 ? "error" : (percent ?? 0) > 70 ? "warning" : "success";
-				const details = compact
-					? `${value}/${formatTokens(context.contextWindow)}`
-					: `${percent === null ? "" : `${meter(percent, 12)} `}${value} / ${formatTokens(context.contextWindow)}`;
-				return indicator("context", "ctx", compact) + theme.fg(color, details);
+				return indicator("ctx") + theme.fg(color, `${value}/${formatTokens(context.contextWindow)}`);
 			};
 
 			return {
@@ -341,13 +321,10 @@ export default function (pi: ExtensionAPI): void {
 				invalidate(): void {},
 				render(width: number): string[] {
 					if (width <= 0) return [];
-					const wide = width >= 110;
-					const compact = !wide;
-					const medium = width >= 68;
 					const branch = footerData.getGitBranch();
-					const workspace = [`${indicator("cwd", "dir", compact)}${theme.bold(formatCwd(ctx.cwd))}`];
+					const workspace = [`${indicator("dir")}${theme.bold(formatCwd(ctx.cwd))}`];
 					const git: string[] = [];
-					if (branch) git.push(`${indicator("branch", "br", compact)}${branch}${dirty ? theme.fg("warning", "*") : ""}`);
+					if (branch) git.push(`${indicator("br.")}${branch}${dirty ? theme.fg("warning", "*") : ""}`);
 					if (branch && gitStatus) {
 						const statusParts = [
 							gitStatus.added > 0 ? theme.fg("success", `+${gitStatus.added}`) : undefined,
@@ -355,49 +332,44 @@ export default function (pi: ExtensionAPI): void {
 							gitStatus.deleted > 0 ? theme.fg("error", `-${gitStatus.deleted}`) : undefined,
 							gitStatus.untracked > 0 ? theme.fg("accent", `?${gitStatus.untracked}`) : undefined,
 						].filter((part): part is string => part !== undefined);
-						git.push(`${indicator("status", "git", compact)}${statusParts.length > 0 ? statusParts.join(" ") : theme.fg("success", "clean")}`);
+						git.push(`${indicator("st.")}${statusParts.length > 0 ? statusParts.join(" ") : theme.fg("success", "clean")}`);
 					}
 					if (linkedWorktree) git.push(theme.fg("muted", "worktree"));
 
 					const model = ctx.model?.id;
 					const thinking = ctx.thinkingLevel ?? (ctx.model?.reasoning ? "off" : undefined);
 					const agent = [stateText()];
-					if (model) agent.push(`${indicator("model", "mdl", compact)}${theme.bold(model)}`);
-					if (thinking) {
-						agent.push(`${indicator("thinking", "th", compact)}${theme.fg("dim", thinking)}`);
-					}
-					if (medium) {
-						const enabled = mcp ? mcp.servers.length - mcp.disabledCount : undefined;
-						const mcpStatus = mcp
-							? wide ? `MCP ${mcp.connectedCount} connected / ${enabled} enabled` : `MCP ${mcp.connectedCount}/${enabled}`
-							: formatMcpFooterStatus(footerData.getExtensionStatuses().get("mcp") ?? "", wide);
-						if (mcpStatus) {
-							const color = mcp
-								? mcp.connectedCount === enabled ? "success" : mcp.connectedCount === 0 ? "error" : "warning"
-								: "accent";
-							const value = mcpStatus.replace(/^MCP:?\s*/, "");
-							agent.push(indicator("MCP", "mcp", compact) + theme.fg(color, value));
-						}
+					if (model) agent.push(`${indicator("mdl")}${theme.bold(model)}`);
+					if (thinking) agent.push(`${indicator("thk")}${theme.fg("dim", thinking)}`);
+					const enabled = mcp ? mcp.servers.length - mcp.disabledCount : undefined;
+					const mcpStatus = mcp
+						? `MCP ${mcp.connectedCount}/${enabled}`
+						: formatMcpFooterStatus(footerData.getExtensionStatuses().get("mcp") ?? "");
+					if (mcpStatus) {
+						const color = mcp
+							? mcp.connectedCount === enabled ? "success" : mcp.connectedCount === 0 ? "error" : "warning"
+							: "accent";
+						const value = mcpStatus.replace(/^MCP:?\s*/, "");
+						agent.push(indicator("mcp") + theme.fg(color, value));
 					}
 
 					const totals = usageTotals(ctx);
 					const subscription = isCodexProvider(ctx.model?.provider) || ctx.model?.provider === "kimi-coding";
 					const session = [
-						`${indicator(wide ? "input" : "↑")}${formatTokens(totals.usage.input)}`,
-						`${indicator(wide ? "output" : "↓")}${formatTokens(totals.usage.output)}`,
+						`${indicator("↑")}${formatTokens(totals.usage.input)}`,
+						`${indicator("↓")}${formatTokens(totals.usage.output)}`,
 					];
-					const context = contextText(compact);
+					const context = contextText();
 					if (context) session.push(context);
 					const cache = totals.cacheHit === undefined
 						? undefined
-						: indicator("latest cache", "hit", compact) + `${totals.cacheHit.toFixed(0)}%`;
-					if (medium && cache) session.push(cache);
-					session.push(`${indicator(wide ? "cost" : "$")}${totals.usage.cost.total.toFixed(3)}${subscription ? theme.fg("dim", " (sub)") : ""}`);
+						: indicator("hit") + `${totals.cacheHit.toFixed(0)}%`;
+					if (cache) session.push(cache);
+					session.push(`${indicator("$")}${totals.usage.cost.total.toFixed(3)}${subscription ? theme.fg("dim", " (sub)") : ""}`);
 
 					const providerDetails: string[] = [];
 					const provider = ctx.model?.provider;
 					if (isCodexProvider(provider)) {
-						providerDetails.push(theme.bold("Codex"));
 						const snapshot = globalThis.piCodexLimit;
 						if (snapshot !== undefined && snapshot.provider === provider && typeof snapshot.fetchedAt === "number") {
 							lastCodexSnapshot = snapshot;
@@ -407,15 +379,9 @@ export default function (pi: ExtensionAPI): void {
 						const reset = formatReset(weekly?.resetAt);
 						const label = activeAccount?.label;
 						const quotaColor = (used ?? 0) >= 90 ? "error" : (used ?? 0) >= 70 ? "warning" : "success";
-						if (wide) {
-							if (label) providerDetails.push(`${indicator("account")}${theme.bold(label)}`);
-							if (used !== undefined) providerDetails.push(`${indicator("weekly")}${theme.fg(quotaColor, `${used.toFixed(0)}% used`)}`);
-							if (reset) providerDetails.push(indicator("resets") + theme.fg("dim", reset));
-						} else {
-							if (label) providerDetails.push(indicator("account", "acct", compact) + theme.bold(label));
-							if (used !== undefined) providerDetails.push(indicator("weekly", "wk", compact) + theme.fg(quotaColor, `${used.toFixed(0)}%`));
-							if (reset) providerDetails.push(indicator("resets", "rst", compact) + theme.fg("dim", reset));
-						}
+						providerDetails.push(theme.bold(`Codex${label ? ` [${label}]` : ""}`));
+						if (used !== undefined) providerDetails.push(indicator("wk.") + theme.fg(quotaColor, `${used.toFixed(0)}%`));
+						if (reset) providerDetails.push(indicator("rst") + theme.fg("dim", reset));
 					}
 
 					const rows: FooterRow[] = [];
@@ -425,7 +391,7 @@ export default function (pi: ExtensionAPI): void {
 						{ label: "SESSION", parts: session },
 					);
 					if (providerDetails.length > 0) rows.push({ label: "PROVIDER", parts: providerDetails });
-					return [renderLine({ label: "WORKSPACE", parts: [workspace.join("  ")] }, width, compact), ...renderRows(rows, width)];
+					return [renderLine({ label: "WORKSPACE", parts: [workspace.join("  ")] }, width), ...renderRows(rows, width)];
 				},
 			};
 		});

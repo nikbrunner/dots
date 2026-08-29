@@ -12,14 +12,14 @@ function assertEquals<T>(actual: T, expected: T): void {
 }
 
 Deno.test("uses compact row labels", () => {
-	assertEquals(compactFooterLabel("WORKSPACE"), "WS");
-	assertEquals(compactFooterLabel("AGENT"), "AG");
-	assertEquals(compactFooterLabel("SESSION"), "SESS");
-	assertEquals(compactFooterLabel("PROVIDER"), "PROV");
+	assertEquals(compactFooterLabel("WORKSPACE"), "WRK");
+	assertEquals(compactFooterLabel("AGENT"), "AGT");
+	assertEquals(compactFooterLabel("SESSION"), "SES");
+	assertEquals(compactFooterLabel("PROVIDER"), "PRV");
 });
 
 Deno.test("leaves a gap after compact row labels", () => {
-	assertEquals(formatFooterRowLabel("PROVIDER", true), "PROV ");
+	assertEquals(formatFooterRowLabel("PROVIDER"), "PRV  ");
 });
 
 Deno.test("keeps compact rows aligned when shortened labels fit", () => {

@@ -4,19 +4,18 @@ export interface FooterRow {
 }
 
 const compactLabels: Record<string, string> = {
-	WORKSPACE: "WS",
-	AGENT: "AG",
-	SESSION: "SESS",
-	PROVIDER: "PROV",
+	WORKSPACE: "WRK",
+	AGENT: "AGT",
+	SESSION: "SES",
+	PROVIDER: "PRV",
 };
 
 export function compactFooterLabel(label: string): string {
 	return compactLabels[label] ?? label;
 }
 
-export function formatFooterRowLabel(label: string, compact: boolean): string {
-	const displayLabel = compact ? compactFooterLabel(label) : label;
-	return displayLabel.padEnd(compact ? 5 : 10);
+export function formatFooterRowLabel(label: string): string {
+	return compactFooterLabel(label).padEnd(5);
 }
 
 export function getAlignedColumnWidths(
