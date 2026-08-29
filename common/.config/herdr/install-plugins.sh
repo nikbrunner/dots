@@ -11,6 +11,7 @@ if herdr plugin list --plugin dots.default-layout --json |
 fi
 
 herdr plugin link "$HOME/.config/herdr/local-plugins/stationary" --enabled
+herdr plugin link "$HOME/.config/herdr/local-plugins/herdr-somars" --enabled
 
 # https://github.com/aimdevlee/herdr-nvim-nav
 herdr plugin install aimdevlee/herdr-nvim-nav --yes

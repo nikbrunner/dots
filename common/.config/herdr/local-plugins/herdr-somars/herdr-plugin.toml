@@ -1,0 +1,20 @@
+id = "dots.herdr-somars"
+name = "Herdr Somars"
+version = "0.1.0"
+min_herdr_version = "0.8.0"
+description = "A Herdr wrapper for Somars, the terminal SomaFM player."
+platforms = ["linux", "macos"]
+
+[[actions]]
+id = "open"
+title = "Open Somars"
+contexts = ["workspace"]
+command = ["sh", "open.sh"]
+
+[[panes]]
+id = "player"
+title = "Somars"
+placement = "popup"
+width = "80%"
+height = "80%"
+command = ["sh", "player.sh"]
