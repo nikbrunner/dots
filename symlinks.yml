@@ -39,6 +39,7 @@ common:
   common/.gitconfig.delta: ~/.gitconfig.delta
   common/.gitignore: ~/.gitignore
   common/.config/gh/config.yml: ~/.config/gh/config.yml
+  common/.config/glab-tui/config.toml: ~/.config/glab-tui/config.toml
   common/.config/lazygit/config.yml: ~/.config/lazygit/config.yml
 
   # Editors & Terminals ====================================================
