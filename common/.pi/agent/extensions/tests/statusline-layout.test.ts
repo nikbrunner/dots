@@ -1,3 +1,4 @@
+import * as statuslineLayout from "../lib/statusline-layout.ts";
 import {
 	compactFooterLabel,
 	formatFooterRowLabel,
@@ -38,4 +39,17 @@ Deno.test("keeps shared compact widths when rows overflow", () => {
 	];
 
 	assertEquals(getAlignedColumnWidths(rows), [7, 16, 12, 7, 6]);
+});
+
+Deno.test("formats the pi-usage status for the custom footer", () => {
+	const formatUsageFooterStatus = (statuslineLayout as {
+		formatUsageFooterStatus?: (status: string) => string | undefined;
+	}).formatUsageFooterStatus;
+	if (!formatUsageFooterStatus) throw new Error("Expected usage footer formatter.");
+
+	assertEquals(
+		formatUsageFooterStatus("\u001b[32mcodex 59% ↻ 2h30m\u001b[0m"),
+		"59% ↻ 2h30m",
+	);
+	assertEquals(formatUsageFooterStatus("   "), undefined);
 });

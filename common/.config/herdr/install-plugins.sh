@@ -13,6 +13,9 @@ fi
 herdr plugin link "$HOME/.config/herdr/local-plugins/stationary" --enabled
 herdr plugin link "$HOME/.config/herdr/local-plugins/herdr-somars" --enabled
 
+# https://github.com/narumiruna/pi-extensions/tree/main/packages/pi-usage
+pi install npm:@narumitw/pi-usage
+
 # https://github.com/aimdevlee/herdr-nvim-nav
 herdr plugin install aimdevlee/herdr-nvim-nav --yes
 

@@ -7,16 +7,11 @@ import { join, resolve } from "node:path";
 import { stripVTControlCharacters } from "node:util";
 import {
 	formatFooterRowLabel,
+	formatUsageFooterStatus,
 	getAlignedColumnWidths,
 	type FooterRow,
 } from "./lib/statusline-layout";
 import { getActiveAccountLabel } from "./lib/statusline-accounts";
-import {
-	getCodexWeeklyWindow,
-	type CodexLimitSnapshot,
-	type UsageWindow,
-} from "./lib/statusline-limits";
-
 const MCP_STATUS_CHANNEL = "pi-mcp-adapter/status/v1";
 
 interface Usage {
@@ -34,13 +29,7 @@ interface McpStatusSnapshot {
 	disabledCount: number;
 }
 
-interface CodexCredential {
-	accountId?: string;
-	refresh?: string;
-}
-
 interface ActiveCodexAccount {
-	identity: string;
 	label?: string;
 }
 
@@ -61,10 +50,6 @@ function parseGitStatus(output: string): GitStatus {
 		else if (code.length === 2) status.changed++;
 	}
 	return status;
-}
-
-declare global {
-	var piCodexLimit: CodexLimitSnapshot | undefined;
 }
 
 function getAgentDir(): string {
@@ -93,24 +78,12 @@ function readJson(path: string): Record<string, unknown> | undefined {
 	}
 }
 
-function readCredential(value: unknown): CodexCredential | undefined {
-	if (!value || typeof value !== "object" || Array.isArray(value)) return undefined;
-	const record = value as Record<string, unknown>;
-	return {
-		...(typeof record.accountId === "string" ? { accountId: record.accountId } : {}),
-		...(typeof record.refresh === "string" ? { refresh: record.refresh } : {}),
-	};
-}
-
 function getActiveCodexAccount(): ActiveCodexAccount | undefined {
-	const active = readCredential(readJson(join(getAgentDir(), "auth.json"))?.["openai-codex"]);
-	const identity = active?.accountId ?? active?.refresh;
-	if (!identity) return undefined;
 	const label = getActiveAccountLabel(
 		readJson(join(getAgentDir(), "pi-accounts.json")),
 		"openai-codex",
 	);
-	return label ? { identity, label } : { identity };
+	return label ? { label } : undefined;
 }
 
 function isCodexProvider(provider: string | undefined): boolean {
@@ -175,20 +148,6 @@ function formatTokens(count: number): string {
 	return `${Math.round(count / 1_000_000)}M`;
 }
 
-function formatReset(resetAt: number | undefined): string | undefined {
-	if (resetAt === undefined) return undefined;
-	const minutes = Math.max(0, Math.ceil((resetAt * 1_000 - Date.now()) / 60_000));
-	const days = Math.floor(minutes / 1_440);
-	const hours = Math.floor((minutes % 1_440) / 60);
-	if (days > 0) return `${days}d ${hours}h`;
-	if (hours > 0) return `${hours}h ${minutes % 60}m`;
-	return `${minutes}m`;
-}
-
-function clampPercent(value: number): number {
-	return Math.max(0, Math.min(100, value));
-}
-
 function usageTotals(ctx: ExtensionContext): { usage: Usage; cacheHit?: number } {
 	const usage: Usage = { input: 0, output: 0, cacheRead: 0, cacheWrite: 0, cost: { total: 0 } };
 	let cacheHit: number | undefined;
@@ -225,7 +184,6 @@ export default function (pi: ExtensionAPI): void {
 	let dirtyRefreshTimer: ReturnType<typeof setTimeout> | undefined;
 	let mcp: McpStatusSnapshot | undefined;
 	let activeAccount: ActiveCodexAccount | undefined;
-	let lastCodexSnapshot: CodexLimitSnapshot | undefined;
 
 	const repaint = (): void => requestRender();
 	const refreshActiveAccount = (): void => {
@@ -370,18 +328,10 @@ export default function (pi: ExtensionAPI): void {
 					const providerDetails: string[] = [];
 					const provider = ctx.model?.provider;
 					if (isCodexProvider(provider)) {
-						const snapshot = globalThis.piCodexLimit;
-						if (snapshot !== undefined && snapshot.provider === provider && typeof snapshot.fetchedAt === "number") {
-							lastCodexSnapshot = snapshot;
-						}
-						const weekly = getCodexWeeklyWindow(snapshot, provider, lastCodexSnapshot);
-						const used = weekly?.usedPercent === undefined ? undefined : clampPercent(weekly.usedPercent);
-						const reset = formatReset(weekly?.resetAt);
 						const label = activeAccount?.label;
-						const quotaColor = (used ?? 0) >= 90 ? "error" : (used ?? 0) >= 70 ? "warning" : "success";
+						const usage = formatUsageFooterStatus(footerData.getExtensionStatuses().get("usage") ?? "");
 						providerDetails.push(theme.bold(`Codex${label ? ` [${label}]` : ""}`));
-						if (used !== undefined) providerDetails.push(indicator("wk.") + theme.fg(quotaColor, `${used.toFixed(0)}%`));
-						if (reset) providerDetails.push(indicator("rst") + theme.fg("dim", reset));
+						if (usage) providerDetails.push(theme.fg("accent", usage));
 					}
 
 					const rows: FooterRow[] = [];
