@@ -85,6 +85,7 @@ pipx = "latest"
 maven = "latest"
 cmake = "latest"
 ninja = "latest"
+"github:opmr0/zeitx" = "latest"
 
 [env]
 _.file = "~/.env"
