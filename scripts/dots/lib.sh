@@ -409,15 +409,39 @@ dots_stage_herdr_sessions() {
 
 dots_stage_herdr_config() {
     local repo_path="$1"
-    local herdr_config="common/.config/herdr/config.toml"
+    local herdr_configs=(
+        "common/.config/herdr/config.toml"
+        "common/.config/herdr/plugins/config/helm-herdr/recent-workspaces.json"
+    )
 
-    if [[ -z $(git -C "$repo_path" status --porcelain "$herdr_config" 2>/dev/null) ]]; then
+    local has_changes=false
+    for p in "${herdr_configs[@]}"; do
+        if [[ -n $(git -C "$repo_path" status --porcelain "$p" 2>/dev/null) ]]; then
+            has_changes=true
+            break
+        fi
+    done
+
+    if [[ "$has_changes" == false ]]; then
         echo "No herdr config changes to commit"
         return 1
     fi
 
-    (cd "$repo_path" && git add "$herdr_config")
+    (cd "$repo_path" && git add "${herdr_configs[@]}")
     log_okay "Herdr config changes staged"
+}
+
+dots_stage_zoxide() {
+    local repo_path="$1"
+    local zoxide_seed="common/.config/zoxide/seed.txt"
+
+    if [[ -z $(git -C "$repo_path" status --porcelain "$zoxide_seed" 2>/dev/null) ]]; then
+        echo "No zoxide changes to commit"
+        return 1
+    fi
+
+    (cd "$repo_path" && git add "$zoxide_seed")
+    log_okay "Zoxide changes staged"
 }
 
 dots_stage_radar() {

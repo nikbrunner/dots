@@ -560,6 +560,7 @@ cmd_chores() {
 		[dots_stage_gitconfig]="gitconfig"
 		[dots_stage_gitconfig_delta]="gitconfig.delta"
 		[dots_stage_helm_config]="helm"
+		[dots_stage_zoxide]="zoxide"
 		[dots_stage_claude_settings]="claude-settings"
 	)
 
