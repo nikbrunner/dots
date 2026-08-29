@@ -19,6 +19,7 @@ fd = "prefix:10"
 fzf = "prefix:0"
 gh = "prefix:2"
 git-lfs = "prefix:3"
+"cargo:glab-tui-crate" = "latest"
 gum = "prefix:0"
 jq = "prefix:1"
 just = "prefix:1"
@@ -81,6 +82,9 @@ lazydocker = "latest"
 "github:agavra/tuicr" = "latest"
 aws = { version = "latest", symlink_bins = "true" }
 pipx = "latest"
+maven = "latest"
+cmake = "latest"
+ninja = "latest"
 
 [env]
 _.file = "~/.env"
