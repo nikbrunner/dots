@@ -32,10 +32,12 @@
 ~/repos/black-atom-industries/website
 ~/repos/black-atom-industries/wezterm
 ~/repos/black-atom-industries/zed
+~/repos/emscripten-core/emsdk
 ~/repos/imfusion/brunner
 ~/repos/imfusion/cp
 ~/repos/imfusion/misc
 ~/repos/imfusion/projects
+~/repos/imfusion/suite
 ~/repos/imfusion/websdk
 ~/repos/nikbrunner/airship
 ~/repos/nikbrunner/bc-desktop-client
@@ -45,6 +47,7 @@
 ~/repos/nikbrunner/dots
 ~/repos/nikbrunner/fff-snacks.nvim
 ~/repos/nikbrunner/fonts
+~/repos/nikbrunner/glab-tui
 ~/repos/nikbrunner/herdr
 ~/repos/nikbrunner/imf-notes
 ~/repos/nikbrunner/imfusion-coding-assignment
