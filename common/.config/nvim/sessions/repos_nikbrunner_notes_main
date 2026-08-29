@@ -10,7 +10,7 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +14 Log/2026/2026.08/2026.08.29\ -\ Sat.md
+badd +35 Log/2026/2026.08/2026.08.29\ -\ Sat.md
 argglobal
 %argdel
 edit Log/2026/2026.08/2026.08.29\ -\ Sat.md
@@ -77,10 +77,10 @@ setlocal foldnestmax=10
 setlocal foldtext=
 setlocal formatexpr=
 setlocal formatlistpat=^\\s*\\d\\+\\.\\s\\+\\|^\\s*[-*+]\\s\\+\\|^\\[^\\ze[^\\]]\\+\\]:\\&^.\\{4\\}
-setlocal formatoptions=jn1tlq
+setlocal formatoptions=j1tqln
 setlocal iminsert=0
 setlocal imsearch=-1
-setlocal includeexpr=
+setlocal includeexpr=v:lua.require('obsidian.link').includeexpr(v:fname)
 setlocal indentexpr=v:lua.require'arborist.indent'.indentexpr()
 setlocal indentkeys=0{,0},0),0],:,0#,!^F,o,O,e
 setlocal infercase
@@ -146,11 +146,17 @@ sil! normal! zo
 sil! normal! zo
 19
 sil! normal! zo
-let s:l = 15 - ((14 * winheight(0) + 21) / 42)
+27
+sil! normal! zo
+37
+sil! normal! zo
+48
+sil! normal! zo
+let s:l = 35 - ((34 * winheight(0) + 31) / 63)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 15
+keepjumps 35
 normal! 0
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'

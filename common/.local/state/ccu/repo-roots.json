@@ -264,6 +264,16 @@
     ],
     "last_seen": "2026-08-29"
   },
+  "nikbrunner/glab-tui": {
+    "root": "~/repos/nikbrunner/glab-tui",
+    "owner": "nikbrunner",
+    "name": "glab-tui",
+    "work": false,
+    "session_dirs": [
+      "~/repos/nikbrunner/glab-tui"
+    ],
+    "last_seen": "2026-08-29"
+  },
   "nikbrunner/herdr": {
     "root": "~/repos/nikbrunner/herdr",
     "owner": "nikbrunner",

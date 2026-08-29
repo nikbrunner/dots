@@ -198,6 +198,14 @@ width = "95%"
 height = "80%"
 
 [[keys.command]]
+description = "Github (dev)"
+key = "alt+ctrl+g"
+type = "popup"
+command = "/Users/brunner/repos/nikbrunner/glab-tui-copy-issue-reference/target/debug/glab-tui"
+width = "95%"
+height = "80%"
+
+[[keys.command]]
 description = "Open LazyDocker"
 key = "alt+shift+d"
 type = "popup"
@@ -244,3 +252,34 @@ key = "alt+shift+s"
 type = "plugin_action"
 command = "dots.stationary.reapply"
 description = "Reapply Stationary layout"
+
+[[keys.command]]
+key = "prefix+a"
+type = "plugin_action"
+command = "annotate.capture"
+description = "annotate text"
+
+[[keys.command]]
+key = "prefix+shift+a"
+type = "plugin_action"
+command = "annotate.copy-context"
+description = "copy annotations as context"
+
+[[keys.command]]
+key = "prefix+m"
+type = "plugin_action"
+command = "annotate.manage"
+description = "manage annotations"
+
+# Document review (plannotator-tui)
+[[keys.command]]
+key = "prefix+o"
+type = "plugin_action"
+command = "annotate.open"
+description = "review documents in this folder"
+
+[[keys.command]]
+key = "prefix+shift+o"
+type = "plugin_action"
+command = "annotate.last"
+description = "review the agent's last reply"

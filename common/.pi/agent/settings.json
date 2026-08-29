@@ -12,10 +12,10 @@
     "npm:pi-terminal-theme",
     "npm:pi-mcp-adapter",
     "npm:pi-subagents",
-    "npm:@syzom/nopus",
     "git:github.com/obra/superpowers",
     "npm:@narumitw/pi-accounts",
-    "npm:@narumitw/pi-usage"
+    "npm:@narumitw/pi-usage",
+    "npm:@juicesharp/rpiv-advisor"
   ],
   "extensions": [
     "extensions/ask-user-inline.ts"
