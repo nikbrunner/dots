@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+# Override these with environment variables when needed.
+WORK_DURATION="${POM_WORK_DURATION:-50m}"
+BREAK_DURATION="${POM_BREAK_DURATION:-10m}"
+SOUND_ENABLED="${POM_SOUND_ENABLED:-1}"
+SOUND_FILE="${POM_SOUND_FILE:-/System/Library/Sounds/Glass.aiff}"
+
+play_sound() {
+	[[ "$SOUND_ENABLED" == "0" ]] && return 0
+
+	if command -v afplay >/dev/null 2>&1 && [[ -f "$SOUND_FILE" ]]; then
+		afplay "$SOUND_FILE" >/dev/null 2>&1 || true
+	elif command -v canberra-gtk-play >/dev/null 2>&1; then
+		canberra-gtk-play -i complete >/dev/null 2>&1 || true
+	elif command -v paplay >/dev/null 2>&1 && [[ -f "$SOUND_FILE" ]]; then
+		paplay "$SOUND_FILE" >/dev/null 2>&1 || true
+	else
+		printf '\a'
+	fi
+}
+
+while true; do
+	zeitx "$WORK_DURATION"
+	play_sound
+
+	zeitx "$BREAK_DURATION"
+	play_sound
+done
