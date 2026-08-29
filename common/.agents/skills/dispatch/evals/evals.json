@@ -3,20 +3,26 @@
   "evals": [
     {
       "id": 1,
-      "prompt": "/dispatch I’m in the dots repo. The issue is actually in imf-notes. Dispatch an agent to fix the broken link handling there, using the current session context, and keep this chat usable while it works.",
-      "expected_output": "Uses the available conversation context to resolve imf-notes or asks one focused repository question, then starts a real Herdr child pane and returns without waiting.",
+      "prompt": "/skill:dispatch The link handling is wrong here. Start a Pi worker to fix it.",
+      "expected_output": "Resolves the current Git root, asks the user to confirm its absolute path before inspecting the worktree or creating a pane, then launches the worker in the confirmed repository's workspace.",
       "files": []
     },
     {
       "id": 2,
-      "prompt": "/dispatch claude Please spin up a sidekick in whichever repo this brief points to: the lazyjira sync command is writing stale credentials. Make the fix and stop. Do not make me copy a transcript or choose a Pi package.",
-      "expected_output": "Honors Claude Code, resolves the repository from conversation context or asks one focused question, launches one real Herdr child pane, and does not block on completion.",
+      "prompt": "/skill:dispatch claude Make popup borders configurable in the Black Atom Herdr themes. The Black Atom workspace is already open.",
+      "expected_output": "Infers one candidate from Git roots under ~/repos, asks the user to confirm its absolute checkout, matches only an open workspace with that exact checkout path, and starts Claude in a new pane in that workspace.",
       "files": []
     },
     {
       "id": 3,
-      "prompt": "/dispatch codex There’s a small fix needed in another project. Find the right repository from this context, open it in a separate Herdr pane, and let Codex handle it. I want to continue talking here immediately.",
-      "expected_output": "Honors Codex, resolves the repository from conversation context or asks one focused question, and launches without synchronous delegation or a Pi-only API.",
+      "prompt": "/skill:dispatch codex Fix stale credentials in imf-notes. Its worktree has uncommitted changes.",
+      "expected_output": "Confirms the exact target first, shows the dirty-state summary before opening a pane, and offers launch anyway, a copy-ready handoff, a tracker issue, or stop. Tracker issue creation asks for confirmation after inspecting the remote.",
+      "files": []
+    },
+    {
+      "id": 4,
+      "prompt": "/skill:dispatch pi Update the release notes formatter in notes. There is no Notes workspace open.",
+      "expected_output": "Confirms the inferred target, creates a non-focused workspace at that checkout when no exact match is open, starts Pi in the new root pane, and returns without waiting for the worker.",
       "files": []
     }
   ]
