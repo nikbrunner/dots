@@ -47,7 +47,9 @@ macos/.config/karabiner/automatic_backups/
 
 # Compiled from tools/ by scripts/dots/build-tools.sh
 common/.local/bin/bic
+common/.local/bin/herdr-somars-relay
 /common/.pi/agent/codex-accounts.json
 /.pi-subagents
 /common/.pi/agent/fff/history
 /.superpowers/brainstorm
+/common/.pi/agent/pi-accounts.json
