@@ -232,8 +232,6 @@ description = "Open Helm"
 key = "alt+space"
 type = "plugin_action"
 command = "helm-herdr.open"
-width = "50%"
-height = "50%"
 
 [[keys.command]]
 key = "alt+shift+o"

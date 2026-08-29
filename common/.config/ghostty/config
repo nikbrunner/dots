@@ -19,7 +19,7 @@ adjust-underline-position = 3
 
 # Fonts
 font-size = 14
-font-family = JetBrainsMono Nerd Font
+font-family = Iosevka Nerd Font
 font-style-bold = Bold
 font-thicken = true
 window-inherit-working-directory = true
