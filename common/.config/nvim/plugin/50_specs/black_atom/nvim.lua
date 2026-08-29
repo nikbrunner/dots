@@ -23,5 +23,5 @@ Edit.now(function()
 		},
 	}
 
-	vim.cmd.colorscheme("black-atom-mnml-47-light")
+	vim.cmd.colorscheme("black-atom-mnml-47-dark")
 end)

@@ -2,7 +2,7 @@
 # https://github.com/imrajyavardhan12/spectre-ghostty-config
 
 # Colors
-theme = black-atom-mnml-47-light.conf
+theme = black-atom-mnml-47-dark.conf
 bold-is-bright = true
 
 # Window
@@ -19,7 +19,7 @@ adjust-underline-position = 3
 
 # Fonts
 font-size = 14
-font-family = Kode Mono
+font-family = Paper Mono
 font-style-bold = Bold
 font-thicken = true
 window-inherit-working-directory = true

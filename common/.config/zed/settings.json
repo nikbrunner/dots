@@ -39,7 +39,7 @@
   "session": {
     "trust_all_worktrees": false,
   },
-  "buffer_font_family": "Kode Mono",
+  "buffer_font_family": "Paper Mono",
   "which_key": {
     "delay_ms": 250,
     "enabled": true,
@@ -160,7 +160,7 @@
     "font_size": 14.0,
     "line_height": "comfortable",
     "working_directory": "current_project_directory",
-    "font_family": "Kode Mono",
+    "font_family": "Paper Mono",
   },
   "lsp": {
     "vtsls": {
@@ -194,5 +194,5 @@
       },
     },
   },
-  "ui_font_family": "Kode Mono",
+  "ui_font_family": "Paper Mono",
 }
