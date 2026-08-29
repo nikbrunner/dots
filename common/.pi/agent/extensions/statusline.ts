@@ -10,6 +10,11 @@ import {
 	getAlignedColumnWidths,
 	type FooterRow,
 } from "./lib/statusline-layout";
+import {
+	getCodexWeeklyWindow,
+	type CodexLimitSnapshot,
+	type UsageWindow,
+} from "./lib/statusline-limits";
 
 const MCP_STATUS_CHANNEL = "pi-mcp-adapter/status/v1";
 
@@ -19,17 +24,6 @@ interface Usage {
 	cacheRead: number;
 	cacheWrite: number;
 	cost: { total: number };
-}
-
-interface UsageWindow {
-	usedPercent?: number;
-	resetAt?: number;
-}
-
-interface CodexLimitSnapshot {
-	provider?: string;
-	weekly?: UsageWindow;
-	fetchedAt?: number;
 }
 
 interface McpStatusSnapshot {
@@ -236,7 +230,6 @@ function meter(percent: number, width: number): string {
 }
 
 export default function (pi: ExtensionAPI): void {
-	const runtimeStartedAt = Date.now();
 	let active = true;
 	let requestRender = (): void => {};
 	let state: "ready" | "working" | "error" = "ready";
@@ -247,8 +240,7 @@ export default function (pi: ExtensionAPI): void {
 	let dirtyRefreshTimer: ReturnType<typeof setTimeout> | undefined;
 	let mcp: McpStatusSnapshot | undefined;
 	let activeAccount: ActiveCodexAccount | undefined;
-	let attributedSnapshotFetchedAt: number | undefined;
-	let attributedAccountIdentity: string | undefined;
+	let lastCodexSnapshot: CodexLimitSnapshot | undefined;
 
 	const repaint = (): void => requestRender();
 	const refreshActiveAccount = (): void => {
@@ -407,21 +399,10 @@ export default function (pi: ExtensionAPI): void {
 					if (isCodexProvider(provider)) {
 						providerDetails.push(theme.bold("Codex"));
 						const snapshot = globalThis.piCodexLimit;
-						let weekly: UsageWindow | undefined;
-						if (
-							snapshot
-							&& snapshot.provider === provider
-							&& typeof snapshot.fetchedAt === "number"
-							&& snapshot.fetchedAt >= runtimeStartedAt
-						) {
-							if (snapshot.fetchedAt !== attributedSnapshotFetchedAt) {
-								attributedSnapshotFetchedAt = snapshot.fetchedAt;
-								attributedAccountIdentity = activeAccount?.identity;
-							}
-							if (activeAccount?.identity && attributedAccountIdentity === activeAccount.identity) {
-								weekly = snapshot.weekly;
-							}
+						if (snapshot !== undefined && snapshot.provider === provider && typeof snapshot.fetchedAt === "number") {
+							lastCodexSnapshot = snapshot;
 						}
+						const weekly = getCodexWeeklyWindow(snapshot, provider, lastCodexSnapshot);
 						const used = weekly?.usedPercent === undefined ? undefined : clampPercent(weekly.usedPercent);
 						const reset = formatReset(weekly?.resetAt);
 						const label = activeAccount?.label;
