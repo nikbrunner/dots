@@ -33,6 +33,10 @@
       "rev": "016802de402556da54c36bd7359b441266b01cdd",
       "src": "git@github.com:stevearc/conform.nvim"
     },
+    "datepicker.nvim": {
+      "rev": "3e6b8f2b87cb694b2492ea3254cf7d871f6ca954",
+      "src": "https://github.com/Dzejkop/datepicker.nvim"
+    },
     "friendly-snippets": {
       "rev": "6cd7280adead7f586db6fccbd15d2cac7e2188b9",
       "src": "git@github.com:rafamadriz/friendly-snippets"
@@ -88,6 +92,11 @@
     "nvim-ts-autotag": {
       "rev": "88c1453db4ba7dd24131086fe51fdf74e587d275",
       "src": "git@github.com:windwp/nvim-ts-autotag"
+    },
+    "obsidian.nvim": {
+      "rev": "69fe7c6bf61a5222b5061a9a9dfc5023f2ec0fdc",
+      "src": "https://github.com/obsidian-nvim/obsidian.nvim",
+      "version": ">=0.0.0"
     },
     "oklch-color-picker.nvim": {
       "rev": "8bf807853ccd7b7772fdc56951278a5347bb6d59",

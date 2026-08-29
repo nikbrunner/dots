@@ -93,8 +93,8 @@ Edit.later(function()
 
 	conform.setup({
 		log_level = vim.log.levels.DEBUG,
-		format_on_save = function()
-			if vim.g.vin_autoformat_enabled then
+		format_on_save = function(bufnr)
+			if vim.g.vin_autoformat_enabled and not vim.b[bufnr].vin_autoformat_disabled then
 				return { timeout_ms = 500, lsp_fallback = "fallback" }
 			end
 		end,
