@@ -5,7 +5,7 @@
       "src": "git@github.com:numToStr/Navigator.nvim.git"
     },
     "SchemaStore.nvim": {
-      "rev": "cef8d093b63c9be7e8b49f7dc341e8447fc4c300",
+      "rev": "2a9b750cbaba7a7417e0d20774374dd0756d967d",
       "src": "git@github.com:b0o/SchemaStore.nvim"
     },
     "annotator.nvim": {
@@ -26,7 +26,7 @@
       "version": "1.0.0 - 2.0.0"
     },
     "codediff.nvim": {
-      "rev": "e08a35a56a52c290398ebfaec33c34cfcf2d0f3c",
+      "rev": "ae8d28896184d4a02ed590da9c3063ba50389b43",
       "src": "git@github.com:esmuellert/codediff.nvim"
     },
     "conform.nvim": {
@@ -38,7 +38,7 @@
       "src": "git@github.com:rafamadriz/friendly-snippets"
     },
     "fyler.nvim": {
-      "rev": "377540cefb9d8162e92487507708c07da65cf5f6",
+      "rev": "81066aa5d1fabdd6c71f57f1af57f2a1a6f91166",
       "src": "https://github.com/FylerOrg/fyler.nvim"
     },
     "gitlinker.nvim": {
@@ -58,7 +58,7 @@
       "src": "https://github.com/aimdevlee/herdr-nvim-nav"
     },
     "kulala.nvim": {
-      "rev": "b1c1cd9430d1f506e9b7add09cc2f2aac067565f",
+      "rev": "232a9939919fe9bc88d573bce92de50f2f160c60",
       "src": "git@github.com:mistweaverco/kulala.nvim"
     },
     "lazydev.nvim": {
@@ -66,19 +66,19 @@
       "src": "git@github.com:folke/lazydev.nvim"
     },
     "mdn.nvim": {
-      "rev": "cb426795a68ac68802383e36fd5fe746d3532f36",
+      "rev": "688eb10b914014429f8f31803d52998908fdc87c",
       "src": "git@github.com:nikbrunner/mdn.nvim"
     },
     "mini.nvim": {
-      "rev": "e58ad4b0c9e9376096b9704f98fc00d4c9448870",
+      "rev": "fb2bbae327f3c306f3c825031345b89dd176ce60",
       "src": "https://github.com/nvim-mini/mini.nvim"
     },
     "nui.nvim": {
-      "rev": "a25dd472316d806eb38a5dd667c2e40da5570c75",
+      "rev": "10fc361835c856ba4233ef5ea135b919bf3dce97",
       "src": "git@github.com:MunifTanjim/nui.nvim"
     },
     "nvim-lint": {
-      "rev": "5b5b794458b5ff0b17d26c9d7400faaebd00b32d",
+      "rev": "3d55c8f67c6ae5c15e1042571e107c7a3d5c5f4e",
       "src": "git@github.com:mfussenegger/nvim-lint"
     },
     "nvim-spider": {
@@ -118,7 +118,7 @@
       "src": "git@github.com:noisesfromspace/touchup.nvim"
     },
     "treewalker.nvim": {
-      "rev": "58b5c38634398230d5a4a20d3d52b49c994a9746",
+      "rev": "c6c37b912e84d0522fa585ce83da93b0fd53563b",
       "src": "git@github.com:aaronik/treewalker.nvim"
     },
     "trouble.nvim": {
