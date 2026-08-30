@@ -10,7 +10,7 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +1 Log/2026/2026.08/2026.08.30\ -\ Sun.md
+badd +16 Log/2026/2026.08/2026.08.30\ -\ Sun.md
 argglobal
 %argdel
 edit Log/2026/2026.08/2026.08.30\ -\ Sun.md
@@ -129,7 +129,7 @@ setlocal textwidth=80
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#...%*%#WinBarSeparator#/%*%#WinBarFilename#2026.08.30\ -\ Sun.md%*%=
+setlocal winbar=%#WinBarPath#Log%*%#WinBarSeparator#/%*%#WinBarPath#2026%*%#WinBarSeparator#/%*%#WinBarPath#2026.08%*%#WinBarSeparator#/%*%#WinBarFilename#2026.08.30\ -\ Sun.md%*%=%#WinBarGitLabel#\ [GIT:%#WinBarGitAdd#\ +10%#WinBarGitChange#\ ~2%#WinBarGitLabel#]%*%#WinBarLspLabel#\ [LSP:\ %#DiagnosticSignInfo#:1%##%#WinBarLspLabel#]%*\
 setlocal winblend=10
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -138,15 +138,15 @@ setlocal winhighlight=
 setlocal nowinpinned
 setlocal nowrap
 setlocal wrapmargin=0
-5
+6
 sil! normal! zo
-9
+19
 sil! normal! zo
-let s:l = 1 - ((0 * winheight(0) + 10) / 21)
+let s:l = 18 - ((17 * winheight(0) + 32) / 64)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 1
+keepjumps 18
 normal! 0
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
