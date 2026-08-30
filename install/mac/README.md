@@ -69,10 +69,10 @@ Background reading:
 
 ## 5. Dependencies & Runtimes
 
-Install brew packages (system deps + casks). Check `./Brewfile` for the list.
+Install the curated Homebrew package set. Homebrew Bundle does not provide portable exact-version locking for formulae or casks.
 
 ```sh
-brew bundle install --file=install/mac/Brewfile
+brew bundle install --no-upgrade --file=install/mac/Brewfile
 ```
 
 Install [mise](https://mise.jdx.dev/) (runtime + CLI tool manager):
@@ -81,15 +81,15 @@ Install [mise](https://mise.jdx.dev/) (runtime + CLI tool manager):
 curl https://mise.run | sh
 ```
 
-Install all tools and runtimes tracked in `common/.config/mise/config.toml`:
+Trust the checked-out config, generate the committed lockfile when tool declarations change, then install from it:
 
 ```sh
-# Trust this repo's config
 mise trust
-
-# Install everything from common/.config/mise/config.toml
-mise install
+mise lock --global
+mise install --cd common/.config/mise --locked
 ```
+
+`dots chores` refreshes the lock metadata and stages `config.toml` with `mise.lock`. It does not bump fuzzy version selectors. After bootstrap, `dots pull` installs missing declared packages without upgrading existing ones. Use `dots pull --upgrade` when upgrades are intended.
 
 ## 6. ProtonPass + SSH
 

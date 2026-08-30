@@ -57,12 +57,13 @@ The `dots` CLI sources two shared libraries:
 
 1. `scripts/log.sh` — logging functions (`log_section`, `log_success`, `log_warning`, `log_error`, `log_info`), plus `has_gum`, `confirm`, `choose` helpers. Uses `gum` for enhanced output when available.
 2. `scripts/dots/lib.sh` — config loading (`load_config`), git URL parsing, repo state detection, and automated chore staging functions. Each stages its files; `cmd_chores` rolls them into a single commit.
+3. `scripts/dots/packages.sh` — mise, Homebrew, and Arch package installation and confirmation-gated purge.
 
 `lib.sh` requires `DOTS_DIR` to be set before sourcing and reads helm config from `~/.config/helm/config.yml` for `REPOS_BASE_PATH`.
 
 ### Black Atom Theme Integration
 
-Theme files in this repo are symlinks to Black Atom adapter repos. `dots link` automatically runs `scripts/dots/theme-link.sh` which creates relative symlinks from dots theme directories to Black Atom adapter repos at `~/repos/black-atom-industries/`.
+Black Atom Livery owns theme provisioning. The tracked `common/.config/black-atom/livery/config.json` records the active theme and enabled app integrations; `dots pull` reapplies it after repository refreshes when setup data and an active theme are present.
 
 ## Key Files
 
@@ -70,9 +71,9 @@ Theme files in this repo are symlinks to Black Atom adapter repos. `dots link` a
 - `common/.agents/AGENTS.md` — Canonical global agent instructions, symlinked to `~/.claude/CLAUDE.md` and `~/.pi/agent/AGENTS.md`
 - `common/.local/bin/dots` — Main CLI implementation (dispatcher + `cmd_pull`, `cmd_push`, `cmd_chores`, `cmd_link`)
 - `scripts/dots/lib.sh` — Shared library (config loading, repo helpers, chore staging functions)
+- `scripts/dots/packages.sh` — Package installation, inventory, and confirmation-gated purge
 - `scripts/dots/symlinks.sh` — Symlink creation/cleanup logic (also sourceable as a library)
 - `scripts/dots/detect-os.sh` — OS detection (`macos`, `arch`, `linux`)
-- `scripts/dots/theme-link.sh` — Black Atom theme symlink creation
 - `scripts/log.sh` — Shared logging/UI functions
 - `install/mac/Brewfile`, `install/arch/pkglist.txt` — OS-specific native packages
 - `common/.config/mise/config.toml` — Cross-platform CLI tools + runtimes (via mise)

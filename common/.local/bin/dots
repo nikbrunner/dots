@@ -11,6 +11,8 @@ DOTS_DIR="${DOTS_DIR:-$HOME/repos/nikbrunner/dots}"
 source "$DOTS_DIR/scripts/log.sh"
 # shellcheck disable=SC1091
 source "$DOTS_DIR/scripts/dots/lib.sh"
+# shellcheck disable=SC1091
+source "$DOTS_DIR/scripts/dots/packages.sh"
 
 # Change to dots directory for git operations
 cd "$DOTS_DIR"
@@ -33,6 +35,7 @@ _inside_lazygit() {
 cmd_pull() {
 	local hard_reset=false
 	local rebuild_all=false
+	local upgrade=false
 
 	while [[ $# -gt 0 ]]; do
 		case "$1" in
@@ -42,6 +45,10 @@ cmd_pull() {
 			;;
 		--rebuild-all)
 			rebuild_all=true
+			shift
+			;;
+		--upgrade)
+			upgrade=true
 			shift
 			;;
 		*) shift ;;
@@ -101,14 +108,23 @@ cmd_pull() {
 		fi
 	fi
 
-	# ── Phase 2: Update symlinks ──
+	# ── Phase 2: Install declared packages ──
 	echo ""
-	log_section "Phase 2: Update symlinks"
+	log_section "Phase 2: Install declared packages"
+	if [[ "$upgrade" == true ]]; then
+		packages_install --upgrade || log_warn "Package installation finished with errors"
+	else
+		packages_install || log_warn "Package installation finished with errors"
+	fi
+
+	# ── Phase 3: Update symlinks ──
+	echo ""
+	log_section "Phase 3: Update symlinks"
 	cmd_link
 
-	# ── Phase 3: Pull all repos ──
+	# ── Phase 4: Pull all repos ──
 	echo ""
-	log_section "Phase 3: Pull all repositories"
+	log_section "Phase 4: Pull all repositories"
 	load_config
 
 	local updated_repos=()
@@ -240,9 +256,9 @@ cmd_pull() {
 		fi
 	fi
 
-	# ── Phase 4: Rebuild tools ──
+	# ── Phase 5: Rebuild tools ──
 	echo ""
-	log_section "Phase 4: Rebuild tools"
+	log_section "Phase 5: Rebuild tools"
 
 	if [[ "$rebuild_all" == true ]]; then
 		helm repos rebuild --all
@@ -255,6 +271,16 @@ cmd_pull() {
 		helm repos rebuild --repos "$repos_csv"
 	else
 		log_info "No tools needed rebuilding"
+	fi
+
+	# ── Phase 6: Reapply active Livery theme ──
+	echo ""
+	log_section "Phase 6: Reapply active Livery theme"
+	local livery_config="$DOTS_DIR/common/.config/black-atom/livery/config.json"
+	if command -v livery >/dev/null 2>&1 && command -v jq >/dev/null 2>&1 && [[ -f "$livery_config" ]] && jq -e '(.apps | type == "object" and length > 0) and (.active_theme | type == "string" and length > 0)' "$livery_config" >/dev/null 2>&1; then
+		livery reapply || log_warn "Livery reapply failed"
+	else
+		log_info "No configured Livery theme to reapply"
 	fi
 
 	echo ""
@@ -548,7 +574,9 @@ cmd_chores() {
 
 	# stager function → topic label (order matters for output)
 	local -A stagers=(
+		[dots_stage_mise]="mise"
 		[dots_stage_theme]="themes"
+		[dots_stage_livery]="livery"
 		[dots_stage_sessions]="sessions"
 		[dots_stage_herdr_sessions]="herdr-sessions"
 		[dots_stage_herdr_config]="herdr-config"
@@ -632,9 +660,12 @@ show_usage() {
 	echo ""
 	echo "  chores       - Commit routine changes (fonts, themes, sessions, etc.)"
 	echo ""
-	echo "  pull         - Full sync: pull dots, symlinks, all repos, rebuild"
+	echo "  pull         - Full sync: pull dots, packages, symlinks, repos, rebuild"
 	echo "                 --hard: force reset diverged/dirty repos"
 	echo "                 --rebuild-all: rebuild all tools, not just updated"
+	echo "                 --upgrade: upgrade declared packages"
+	echo "  purge        - Review and remove undeclared packages"
+	echo "                 --dry-run: show candidates without removing"
 	echo "  push         - Chores, commit/push dots repo"
 	echo "                 --include-repos: also handle dirty repos and push all"
 	echo ""
@@ -859,10 +890,6 @@ cmd_link() {
 	echo ""
 	echo "→ Creating symlinks..."
 	"$DOTS_DIR/scripts/dots/symlinks.sh" "$@"
-
-	echo ""
-	echo "→ Linking Black Atom themes..."
-	"$DOTS_DIR/scripts/dots/theme-link.sh" "$@"
 }
 
 # Shared push function
@@ -946,6 +973,10 @@ open)
 pull)
 	shift
 	cmd_pull "$@"
+	;;
+purge)
+	shift
+	packages_purge "$@"
 	;;
 push)
 	shift

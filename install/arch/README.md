@@ -35,7 +35,7 @@ rm -rf "$TMP_DIR"
 
 ## 3. Dependencies & Runtimes
 
-Install system packages from `pkglist.txt` via paru. Check the file for the list — it contains everything mise can't handle (system deps, desktop apps, Wayland compositor, etc.).
+Install system packages from the curated `pkglist.txt` via paru. It contains packages mise cannot provide, such as system dependencies and desktop applications.
 
 ```sh
 paru -S --needed --noconfirm $(grep -v '^\s*#\|^\s*$' install/arch/pkglist.txt)
@@ -47,15 +47,15 @@ Install [mise](https://mise.jdx.dev/) (runtime + CLI tool manager):
 curl https://mise.run | sh
 ```
 
-Install all tools and runtimes tracked in `common/.config/mise/config.toml`:
+Trust the checked-out config, generate the committed lockfile when tool declarations change, then install from it:
 
 ```sh
-# Trust this repo's config
 mise trust
-
-# Install everything from common/.config/mise/config.toml
-mise install
+mise lock --global
+mise install --cd common/.config/mise --locked
 ```
+
+`dots chores` refreshes the lock metadata and stages `config.toml` with `mise.lock`. It does not bump fuzzy version selectors. After bootstrap, `dots pull` installs missing declared packages without upgrading existing ones. Use `dots pull --upgrade` when upgrades are intended.
 
 ## 4. ProtonPass + SSH
 

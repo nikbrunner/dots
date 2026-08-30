@@ -200,6 +200,56 @@ is_dots_repo() {
     [[ -f "$repo_path/common/.config/ghostty/config" ]] && [[ -f "$repo_path/symlinks.yml" ]]
 }
 
+dots_stage_mise() {
+    local repo_path="$1"
+    local mise_config="common/.config/mise/config.toml"
+    local mise_lock="common/.config/mise/mise.lock"
+
+    if ! command -v mise >/dev/null 2>&1; then
+        log_warn "mise not found — skipping mise lock refresh"
+        return 1
+    fi
+
+    if ! (cd "$repo_path" && mise lock --global --quiet); then
+        log_fail "Failed to refresh mise lockfile"
+        return 1
+    fi
+
+    if [[ ! -f "$repo_path/$mise_config" || ! -f "$repo_path/$mise_lock" ]]; then
+        log_fail "mise config or lockfile is missing"
+        return 1
+    fi
+
+    if [[ -z $(git -C "$repo_path" status --porcelain -- "$mise_config" "$mise_lock") ]]; then
+        echo "No mise changes to commit"
+        return 1
+    fi
+
+    if (cd "$repo_path" && git add "$mise_config" "$mise_lock"); then
+        log_okay "mise config and lockfile staged"
+    else
+        log_fail "Failed to stage mise config and lockfile"
+        return 1
+    fi
+}
+
+dots_stage_livery() {
+    local repo_path="$1"
+    local livery_config="common/.config/black-atom/livery/config.json"
+
+    if [[ -z $(git -C "$repo_path" status --porcelain "$livery_config" 2>/dev/null) ]]; then
+        echo "No Livery config changes to commit"
+        return 1
+    fi
+
+    if (cd "$repo_path" && git add "$livery_config"); then
+        log_okay "Livery config changes staged"
+    else
+        log_fail "Failed to stage Livery config"
+        return 1
+    fi
+}
+
 dots_stage_theme() {
     local repo_path="$1"
     local theme_files=(

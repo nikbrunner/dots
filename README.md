@@ -49,7 +49,11 @@ cd ~/repos/nikbrunner/dots
 
 ### Core Commands
 
-- **`dots`** — Dotfiles management (pull, push, link, chores). Run `dots` with no args for usage.
+- **`dots`** — Dotfiles management (pull, push, link, chores, purge). Run `dots` with no args for usage.
+- **`dots pull`** — Installs missing mise and platform-native packages without upgrading existing packages. Add `--upgrade` to upgrade declared packages.
+- **`dots chores`** — Refreshes the mise lock metadata and stages `config.toml` with `mise.lock` alongside routine changes. It does not bump fuzzy version selectors.
+- **`dots purge`** — Reviews undeclared Homebrew, mise, and Arch entries. Nothing is selected by default; removal requires explicit selection and confirmation. Use `--dry-run` to inspect candidates without changes.
+- **`mole uninstall`** — Separate macOS application cleanup. It does not replace `dots purge` for package-manager entries.
 - **`shiplog`** — AI-powered git operations (commit, branch). Run `shiplog --help` for usage.
 - **`helm`** — External tool for multi-repo management. Invoked by `dots pull` and `dots push`.
 
@@ -112,29 +116,6 @@ The system always processes the `common` section first, then adds the platform-s
 
 ## Black Atom Theme Integration
 
-This dotfiles system integrates with [Black Atom Industries](https://github.com/black-atom-industries) theme adapters. The theme files in this repository are **symlinks** pointing to the Black Atom adapter repos, not copies of the actual theme files.
+[Black Atom Livery](https://github.com/black-atom-industries/black-atom) owns theme provisioning. The tracked configuration at `common/.config/black-atom/livery/config.json` records the active theme and enabled app integrations.
 
-**Architecture:**
-
-```
-~/.config/ghostty/themes/black-atom-*.conf
-        ↓ (symlink via dots link)
-~/repos/nikbrunner/dots/common/.config/ghostty/themes/black-atom-*.conf
-        ↓ (relative symlink via dots theme-link)
-~/repos/black-atom-industries/ghostty/themes/**/*.conf
-```
-
-This two-layer approach means:
-
-1. Your home directory links to dots (managed by `dots link`)
-2. Dots links to Black Atom repos (managed by `scripts/dots/theme-link.sh`, run automatically by `dots link`)
-
-**Why relative symlinks?**
-
-The symlinks inside dots use **relative paths** (e.g., `../../../../../../black-atom-industries/ghostty/...`) so they work on any machine as long as both repos are cloned to the same relative locations.
-
-Theme linking runs automatically as part of `dots link`. It can also be run directly:
-
-```bash
-scripts/dots/theme-link.sh [--dry-run]
-```
+`dots pull` runs `livery reapply` after linking files and refreshing repositories when the configuration contains setup data and an active theme. Run `livery apply` to choose a different theme interactively.
