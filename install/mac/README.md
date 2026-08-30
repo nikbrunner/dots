@@ -200,7 +200,7 @@ Only relevant if you'll be committing changes to this repo. Format staged work f
 
 ### App Logins
 
-- [ ] **Raycast** - Open, sign in, import settings
+- [ ] **Vicinae** - Open
 - [ ] **Claude** - Open, sign in
 - [ ] **Obsidian** - Open, sign in and setup sync
 - [ ] **Readwise Reader** - Open, sign in

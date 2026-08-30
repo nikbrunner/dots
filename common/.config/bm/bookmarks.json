@@ -1693,16 +1693,6 @@
       "pinned": false
     },
     {
-      "id": "b7af0c1a-dfa0-40bd-b3cd-d7950a1807d1",
-      "title": "GitHub - martipops/popcorn-raycast: A Raycast extension that uses the Stremio API to search for movies and TV shows and stream them to local media players using Stremio addons.",
-      "url": "https://github.com/martipops/popcorn-raycast",
-      "folderId": "941849e1-0a68-4433-b75b-75129a5f9dfc",
-      "tags": [],
-      "createdAt": "2025-06-15T08:06:58+02:00",
-      "visitedAt": null,
-      "pinned": false
-    },
-    {
       "id": "382cdca1-ae2a-4b32-86ce-b79db79679fc",
       "title": "YEAKE Cosmetic Mirror Makeup Mirror with Natural Bamboo Stand, 1X/3X Magnification Double-Sided Portable Table and Worktop Mirror for Bathroom for Shaving and Makeup Application",
       "url": "https://amzn.eu/d/fckt0gi",
@@ -6089,16 +6079,6 @@
       "folderId": "941849e1-0a68-4433-b75b-75129a5f9dfc",
       "tags": [],
       "createdAt": "2022-12-12T14:22:27+01:00",
-      "visitedAt": null,
-      "pinned": false
-    },
-    {
-      "id": "295425b1-7412-488d-a551-607b925e81a1",
-      "title": "GitHub - jackMort/ChatGPT.nvim: ChatGPT Neovim Plugin: Effortless Natural Language Generation with OpenAI's ChatGPT API",
-      "url": "https://github.com/jackMort/ChatGPT.nvim",
-      "folderId": "941849e1-0a68-4433-b75b-75129a5f9dfc",
-      "tags": [],
-      "createdAt": "2022-12-15T22:18:42+01:00",
       "visitedAt": null,
       "pinned": false
     },
@@ -19057,11 +19037,7 @@
       "title": "TanStack AI",
       "url": "https://tanstack.com/ai/latest/docs/",
       "folderId": "4035e599-bf30-4d23-b6da-732392594fbd",
-      "tags": [
-        "ai",
-        "tanstack",
-        "documentation"
-      ],
+      "tags": ["ai", "tanstack", "documentation"],
       "createdAt": "2025-12-05T19:51:38.990218+01:00",
       "visitedAt": "2025-12-05T19:52:06.94732+01:00",
       "pinned": false
@@ -19071,11 +19047,7 @@
       "title": "TanStack Router",
       "url": "https://tanstack.com/router/latest/docs/",
       "folderId": "4035e599-bf30-4d23-b6da-732392594fbd",
-      "tags": [
-        "ai",
-        "tanstack",
-        "documentation"
-      ],
+      "tags": ["ai", "tanstack", "documentation"],
       "createdAt": "2025-12-05T19:52:12.418038+01:00",
       "visitedAt": "2025-12-05T19:52:20.892701+01:00",
       "pinned": false
@@ -19095,10 +19067,7 @@
       "title": "Spectre Ghostty Terminal Config Editor",
       "url": "https://spectre-ghostty-config.vercel.app/editor",
       "folderId": "d247d348-8d31-4399-adb9-cd37e79d9f50",
-      "tags": [
-        "terminals",
-        "config"
-      ],
+      "tags": ["terminals", "config"],
       "createdAt": "2025-12-06T12:05:33.356364+01:00",
       "visitedAt": null,
       "pinned": false
@@ -19118,9 +19087,7 @@
       "title": "Exa MCP",
       "url": "https://dashboard.exa.ai/home",
       "folderId": "1b54f93f-ca07-4c21-9b0b-6df8587981a4",
-      "tags": [
-        "mcp"
-      ],
+      "tags": ["mcp"],
       "createdAt": "2025-12-06T12:11:43.840519+01:00",
       "visitedAt": null,
       "pinned": false
@@ -19130,9 +19097,7 @@
       "title": "ref.tools MCP",
       "url": "https://ref.tools/dashboard",
       "folderId": "1b54f93f-ca07-4c21-9b0b-6df8587981a4",
-      "tags": [
-        "mcp"
-      ],
+      "tags": ["mcp"],
       "createdAt": "2025-12-06T12:11:41.563001+01:00",
       "visitedAt": null,
       "pinned": false
@@ -19142,9 +19107,7 @@
       "title": "Pulse MCP Directory",
       "url": "https://www.pulsemcp.com/servers",
       "folderId": "1b54f93f-ca07-4c21-9b0b-6df8587981a4",
-      "tags": [
-        "mcp"
-      ],
+      "tags": ["mcp"],
       "createdAt": "2025-12-06T12:11:38.892582+01:00",
       "visitedAt": null,
       "pinned": false
@@ -19154,11 +19117,7 @@
       "title": "How Claude Opus Gave Me a Perfect Tmux Setup - Hadi Javeedred",
       "url": "https://www.hadijaveed.me/2025/12/05/how-claude-opus-gave-me-perfect-tmux-setup/",
       "folderId": "941849e1-0a68-4433-b75b-75129a5f9dfc",
-      "tags": [
-        "config",
-        "ai",
-        "documentation"
-      ],
+      "tags": ["config", "ai", "documentation"],
       "createdAt": "2025-12-06T21:21:47.014992+01:00",
       "visitedAt": null,
       "pinned": false
@@ -19178,11 +19137,7 @@
       "title": "Hubba Maxim Neovim - Dark Colorscheme",
       "url": "https://www.reddit.com/r/neovim/comments/1pheflg/hubbamaxnvim_a_dark_neovim_colorscheme_based_on/",
       "folderId": "941849e1-0a68-4433-b75b-75129a5f9dfc",
-      "tags": [
-        "neovim",
-        "colorscheme",
-        "design"
-      ],
+      "tags": ["neovim", "colorscheme", "design"],
       "createdAt": "2025-12-08T17:15:18.718546+01:00",
       "visitedAt": null,
       "pinned": false
@@ -19192,11 +19147,7 @@
       "title": "The Monospace Web - Typography and Design Resources",
       "url": "https://owickstrom.github.io/the-monospace-web/",
       "folderId": "941849e1-0a68-4433-b75b-75129a5f9dfc",
-      "tags": [
-        "design",
-        "typography",
-        "web"
-      ],
+      "tags": ["design", "typography", "web"],
       "createdAt": "2025-12-08T19:14:54.138594+01:00",
       "visitedAt": null,
       "pinned": false
@@ -19206,10 +19157,7 @@
       "title": "German with Sammy - TikTok",
       "url": "https://www.tiktok.com/@germanwithsammy",
       "folderId": "f8a1daa4-51aa-45df-b5f8-0f2b6fc39bcd",
-      "tags": [
-        "social",
-        "language learning"
-      ],
+      "tags": ["social", "language learning"],
       "createdAt": "2025-12-12T10:06:59.105119+01:00",
       "visitedAt": "2025-12-12T10:12:51.55588+01:00",
       "pinned": false

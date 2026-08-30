@@ -51,6 +51,9 @@ common:
   common/.config/kitty: ~/.config/kitty
   common/.config/tmux: ~/.config/tmux
 
+  # Apps ====================================================================
+  common/.config/vicinae: ~/.config/vicinae
+
   # Herdr ===================================================================
   # Linked per entry so ~/.config/herdr is a real directory: work-scoped
   # session state under sessions/ stays out of the repo, and the daemon's
