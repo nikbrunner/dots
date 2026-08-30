@@ -26,6 +26,9 @@
    "providers": {
       "applications": {
          "entrypoints": {
+            "com.apple.finder": {
+               "shortcut": "super+control+alt+shift+F"
+            },
             "com.mitchellh.ghostty": {
                "shortcut": "super+control+alt+shift+SPACE"
             },
@@ -44,6 +47,13 @@
          "entrypoints": {
             "history": {
                "shortcut": "super+control+alt+shift+V"
+            }
+         }
+      },
+      "core": {
+         "entrypoints": {
+            "search-emojis": {
+               "shortcut": "super+shift+E"
             }
          }
       },
