@@ -205,18 +205,25 @@ dots_stage_mise() {
     local mise_config="common/.config/mise/config.toml"
     local mise_lock="common/.config/mise/mise.lock"
 
-    if ! command -v mise >/dev/null 2>&1; then
-        log_warn "mise not found — skipping mise lock refresh"
+    if [[ ! -f "$repo_path/$mise_config" ]]; then
+        log_fail "mise config is missing"
         return 1
     fi
 
-    if ! (cd "$repo_path" && mise lock --global --quiet); then
-        log_fail "Failed to refresh mise lockfile"
-        return 1
+    if [[ ! -f "$repo_path/$mise_lock" || -n $(git -C "$repo_path" status --porcelain -- "$mise_config") ]]; then
+        if ! command -v mise >/dev/null 2>&1; then
+            log_warn "mise not found — skipping mise lock refresh"
+            return 1
+        fi
+
+        if ! (cd "$repo_path" && mise lock --global --quiet); then
+            log_fail "Failed to refresh mise lockfile"
+            return 1
+        fi
     fi
 
-    if [[ ! -f "$repo_path/$mise_config" || ! -f "$repo_path/$mise_lock" ]]; then
-        log_fail "mise config or lockfile is missing"
+    if [[ ! -f "$repo_path/$mise_lock" ]]; then
+        log_fail "mise lockfile is missing"
         return 1
     fi
 

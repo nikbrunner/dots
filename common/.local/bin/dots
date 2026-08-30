@@ -306,7 +306,9 @@ cmd_push() {
 
 	# ── Phase 1: Dots chores ──
 	log_section "Phase 1: Dots chores"
+	DOTS_PUSH_MODE=true
 	cmd_chores
+	unset DOTS_PUSH_MODE
 
 	# ── Phase 2: Commit/push dots ──
 	echo ""
@@ -634,7 +636,9 @@ EOF
 		log_warn "Remaining uncommitted changes:"
 		git status --short
 
-		if ! _inside_lazygit && [[ -z "$PI_CODING_AGENT" && -z "$CLAUDE_VERSION" ]]; then
+		if [[ "${DOTS_PUSH_MODE:-false}" == true ]]; then
+			log_info "Continuing to dots commit & push"
+		elif ! _inside_lazygit && [[ -z "${PI_CODING_AGENT:-}" && -z "${CLAUDE_VERSION:-}" ]]; then
 			echo -n "Open LazyGit? (y/N) "
 			read -r open_lazygit_choice
 			if [[ "$open_lazygit_choice" == "y" || "$open_lazygit_choice" == "Y" ]]; then
