@@ -13,9 +13,14 @@
    "global_shortcuts": {
       "toggle": "super+control+alt+shift+:"
    },
+   "font": {
+      "normal": {
+         "family": "TX-02"
+      }
+   },
    "theme": {
       "light": {
-         "name": "solarized-dark"
+         "name": "solarized-light"
       }
    },
    "providers": {
@@ -26,6 +31,9 @@
             },
             "md.obsidian": {
                "shortcut": "super+control+alt+shift+N"
+            },
+            "me.proton.pass.electron": {
+               "shortcut": "super+control+alt+shift+X"
             },
             "net.imput.helium": {
                "shortcut": "super+control+alt+shift+W"
