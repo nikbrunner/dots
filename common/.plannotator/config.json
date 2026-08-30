@@ -13,5 +13,10 @@
   "reviewAnalysis": {
     "semanticDiff": true,
     "callFlow": false
+  },
+  "theme": {
+    "mode": "system",
+    "light": "github",
+    "dark": "github"
   }
 }
