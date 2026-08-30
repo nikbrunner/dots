@@ -86,7 +86,7 @@ Used when no project convention exists.
 
 **Subject** — imperative mood ("add X", not "added X"), under 70 chars, focused on _why_ not _what_. Do not use a `type(scope):` prefix.
 
-**Ticket or issue** — when the commit is tied to one, prepend its key in square brackets: `[WEBSDK-123] add X`. Omit the brackets when none applies.
+**Ticket or issue** — when the commit is tied to one, prepend its key in square brackets: `[WEBSDK-123] add X`. For a GitHub issue, keep the hash inside the brackets: `[#22] add X`, never `[22] add X`. Omit the brackets when none applies.
 
 **Breaking change** — put `BREAKING:` after the optional ticket: `[WEBSDK-123] BREAKING: remove the v1 API`. Without a ticket, use `BREAKING: remove the v1 API`.
 
