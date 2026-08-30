@@ -48,6 +48,7 @@
 ~/repos/nikbrunner/fff-snacks.nvim
 ~/repos/nikbrunner/fonts
 ~/repos/nikbrunner/glab-tui
+~/repos/nikbrunner/glab-tui-copy-issue-reference
 ~/repos/nikbrunner/herdr
 ~/repos/nikbrunner/imf-notes
 ~/repos/nikbrunner/imfusion-coding-assignment

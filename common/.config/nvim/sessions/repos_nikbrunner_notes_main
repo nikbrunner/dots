@@ -10,10 +10,10 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +35 Log/2026/2026.08/2026.08.29\ -\ Sat.md
+badd +1 Log/2026/2026.08/2026.08.30\ -\ Sun.md
 argglobal
 %argdel
-edit Log/2026/2026.08/2026.08.29\ -\ Sat.md
+edit Log/2026/2026.08/2026.08.30\ -\ Sun.md
 tcd ~/repos/nikbrunner/notes
 argglobal
 xnoremap <buffer> $ g$
@@ -77,7 +77,7 @@ setlocal foldnestmax=10
 setlocal foldtext=
 setlocal formatexpr=
 setlocal formatlistpat=^\\s*\\d\\+\\.\\s\\+\\|^\\s*[-*+]\\s\\+\\|^\\[^\\ze[^\\]]\\+\\]:\\&^.\\{4\\}
-setlocal formatoptions=j1tqln
+setlocal formatoptions=1jtqln
 setlocal iminsert=0
 setlocal imsearch=-1
 setlocal includeexpr=v:lua.require('obsidian.link').includeexpr(v:fname)
@@ -106,7 +106,7 @@ setlocal norightleft
 setlocal rightleftcmd=search
 setlocal scrollback=-1
 setlocal noscrollbind
-setlocal shiftwidth=4
+setlocal shiftwidth=0
 setlocal signcolumn=yes
 setlocal smartindent
 setlocal nosmoothscroll
@@ -129,7 +129,7 @@ setlocal textwidth=80
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#Log%*%#WinBarSeparator#/%*%#WinBarPath#2026%*%#WinBarSeparator#/%*%#WinBarPath#2026.08%*%#WinBarSeparator#/%*%#WinBarFilename#2026.08.29\ -\ Sat.md%*%=
+setlocal winbar=%#WinBarPath#...%*%#WinBarSeparator#/%*%#WinBarFilename#2026.08.30\ -\ Sun.md%*%=
 setlocal winblend=10
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -140,23 +140,13 @@ setlocal nowrap
 setlocal wrapmargin=0
 5
 sil! normal! zo
-7
+9
 sil! normal! zo
-17
-sil! normal! zo
-19
-sil! normal! zo
-27
-sil! normal! zo
-37
-sil! normal! zo
-48
-sil! normal! zo
-let s:l = 35 - ((34 * winheight(0) + 31) / 63)
+let s:l = 1 - ((0 * winheight(0) + 10) / 21)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 35
+keepjumps 1
 normal! 0
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'

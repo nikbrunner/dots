@@ -4,17 +4,16 @@ let v:this_session=expand("<sfile>:p")
 doautoall SessionLoadPre
 silent only
 silent tabonly
-cd ~/repos/imfusion/cp/imfusion-portal-CP-89/frontend
+cd ~/repos/nikbrunner/fonts
 if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +3 .env.development
+badd +0 pick-font
 argglobal
 %argdel
-edit .env.development
-tcd ~/repos/imfusion/cp/imfusion-portal-CP-89/frontend
+edit pick-font
 argglobal
 setlocal keymap=
 setlocal noarabic
@@ -45,10 +44,11 @@ setlocal nocursorcolumn
 setlocal cursorline
 setlocal cursorlineopt=screenline,number
 setlocal nodiff
+setlocal errorformat=%f:%l:%c:\ %trror:\ %m\ [SC%n],%f:%l:%c:\ %tarning:\ %m\ [SC%n],%f:%l:%c:\ %tote:\ %m\ [SC%n],%-G%.%#
 setlocal eventignorewin=
 setlocal expandtab
-if &filetype != 'env'
-setlocal filetype=env
+if &filetype != 'sh'
+setlocal filetype=sh
 endif
 setlocal fixendofline
 setlocal foldcolumn=0
@@ -67,22 +67,24 @@ setlocal formatoptions=n1jrql
 setlocal iminsert=0
 setlocal imsearch=-1
 setlocal includeexpr=
-setlocal indentexpr=
-setlocal indentkeys=0{,0},0),0],:,0#,!^F,o,O,e
+setlocal indentexpr=v:lua.require'arborist.indent'.indentexpr()
+setlocal indentkeys=0{,0},0),0],!^F,o,O,e,0=then,0=do,0=else,0=elif,0=fi,0=esac,0=done,0=end,),0=;;,0=;&,0=fin,0=fil,0=fip,0=fir,0=fix
 setlocal infercase
 setlocal iskeyword=@,48-57,_,192-255,-
+setlocal keywordprg=:ShKeywordPrg
 setlocal lhistory=10
 setlocal linebreak
 setlocal nolisp
 setlocal lispoptions=
 setlocal list
+setlocal makeprg=shellcheck\ -f\ gcc
 setlocal matchpairs=(:),{:},[:]
 setlocal modeline
 setlocal modifiable
 setlocal nrformats=bin,hex
 setlocal number
 setlocal numberwidth=4
-setlocal omnifunc=
+setlocal omnifunc=v:lua.vim.lsp.omnifunc
 setlocal nopreserveindent
 setlocal nopreviewwindow
 setlocal quoteescape=\\
@@ -92,30 +94,30 @@ setlocal norightleft
 setlocal rightleftcmd=search
 setlocal scrollback=-1
 setlocal noscrollbind
-setlocal shiftwidth=2
+setlocal shiftwidth=4
 setlocal signcolumn=yes
-setlocal smartindent
+setlocal nosmartindent
 setlocal nosmoothscroll
-setlocal softtabstop=0
+setlocal softtabstop=-1
 setlocal nospell
 setlocal spellcapcheck=[.?!]\\_[\\])'\"\\t\ ]\\+
 setlocal spellfile=
 setlocal spelllang=en_us,de_de
-setlocal spelloptions=camel
+setlocal spelloptions=camel,noplainbuffer
 setlocal statuscolumn=
 setlocal suffixesadd=
 setlocal noswapfile
 setlocal synmaxcol=3000
-if &syntax != 'env'
-setlocal syntax=env
+if &syntax != ''
+setlocal syntax=
 endif
 setlocal tabstop=2
-setlocal tagfunc=
+setlocal tagfunc=v:lua.vim.lsp.tagfunc
 setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarFilename#.env.development%*%=
+setlocal winbar=%#WinBarFilename#pick-font%*%=%#WinBarGitLabel#\ [GIT:%#WinBarGitAdd#\ +13%#WinBarGitChange#\ ~10%#WinBarGitDelete#\ -13%#WinBarGitLabel#]%*\ 
 setlocal winblend=10
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -124,11 +126,11 @@ setlocal winhighlight=
 setlocal nowinpinned
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 3 - ((2 * winheight(0) + 19) / 38)
+let s:l = 160 - ((16 * winheight(0) + 10) / 21)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 3
+keepjumps 160
 normal! 0
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'

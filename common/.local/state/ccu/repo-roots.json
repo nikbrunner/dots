@@ -227,6 +227,16 @@
     ],
     "last_seen": "2026-08-23"
   },
+  "nikbrunner/bm": {
+    "root": "~/repos/nikbrunner/bm",
+    "owner": "nikbrunner",
+    "name": "bm",
+    "work": false,
+    "session_dirs": [
+      "~/repos/nikbrunner/bm"
+    ],
+    "last_seen": "2026-08-30"
+  },
   "nikbrunner/dooing": {
     "root": "~/repos/nikbrunner/dooing",
     "owner": "nikbrunner",
@@ -246,13 +256,14 @@
       "~/.claude/jobs/83245695/tmp/wt-prompt-bold",
       "~/.herdr/worktrees/dots/worktree-rapid-stone-2f36",
       "~/repos/nikbrunner/dots",
+      "~/repos/nikbrunner/dots/common/.config",
       "~/repos/nikbrunner/dots/common/.config/herdr/local-plugins/stationary",
       "~/repos/nikbrunner/dots/common/.config/herdr/plugins/config/herdr-navigator",
       "~/repos/nikbrunner/dots/common/.config/nvim",
       "~/repos/nikbrunner/dots/common/.config/nvim/sessions",
       "~/repos/nikbrunner/dots/common/.pi"
     ],
-    "last_seen": "2026-08-28"
+    "last_seen": "2026-08-30"
   },
   "nikbrunner/fonts": {
     "root": "~/repos/nikbrunner/fonts",
