@@ -53,6 +53,7 @@ common:
 
   # Apps ====================================================================
   common/.config/vicinae: ~/.config/vicinae
+  common/.config/zennotes: ~/.config/zennotes
 
   # Herdr ===================================================================
   # Linked per entry so ~/.config/herdr is a real directory: work-scoped
