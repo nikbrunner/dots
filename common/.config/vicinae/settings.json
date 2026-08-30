@@ -26,14 +26,14 @@
    "providers": {
       "applications": {
          "entrypoints": {
+            "com.adibhanna.zennotes": {
+               "shortcut": "super+control+alt+shift+N"
+            },
             "com.apple.finder": {
                "shortcut": "super+control+alt+shift+F"
             },
             "com.mitchellh.ghostty": {
                "shortcut": "super+control+alt+shift+SPACE"
-            },
-            "md.obsidian": {
-               "shortcut": "super+control+alt+shift+N"
             },
             "me.proton.pass.electron": {
                "shortcut": "super+control+alt+shift+X"
