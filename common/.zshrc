@@ -47,7 +47,6 @@ alias npmu="npm-upgrade"
 alias pp="pass-cli"
 alias scratch="\$EDITOR \$HOME/scratchpad.md"
 alias ydl='yt-dlp --audio-format mp3 --embed-thumbnail --embed-metadata --extract-audio'
-alias mise-edge='mise upgrade --interactive --minimum-release-age 0s'
 # debug builds use ~/.config/herdr-dev; env -u strips the stable session's
 # socket overrides so this works from inside a herdr pane
 alias herdr-dev='env -u HERDR_SOCKET_PATH -u HERDR_CLIENT_SOCKET_PATH $HOME/repos/nikbrunner/herdr/target/debug/herdr'
