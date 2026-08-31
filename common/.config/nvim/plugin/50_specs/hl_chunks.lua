@@ -31,7 +31,7 @@ Edit.later(function()
 			delay = 50,
 			duration = 0,
 			chars = {
-				horizontal_line = "",
+				horizontal_line = "─",
 				left_top = "┌",
 				vertical_line = "│",
 				left_bottom = "└",
