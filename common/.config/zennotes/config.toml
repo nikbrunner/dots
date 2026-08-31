@@ -19,7 +19,7 @@ yank_to_clipboard = false  # sync the system clipboard with Vim yank/delete/chan
 block_ime_in_normal_mode = true  # keep the OS input method (a CJK IME) from composing in normal and visual mode, so hjkl stay motions
 wrapped_line_motions = "display"  # display | logical — how $, I, A and dependent operators treat soft-wrapped lines
 which_key_hints = true  # show the leader-key hint overlay (Vim only)
-which_key_hint_mode = "timed"  # timed | sticky
+which_key_hint_mode = "sticky"  # timed | sticky
 which_key_hint_timeout_ms = 900  # how long timed hints stay visible (ms)
 
 [search]
@@ -61,9 +61,9 @@ pdf_embed_in_edit_mode = "compact"  # compact | full
 
 [appearance]
 pdf_export_use_theme = false  # true | false — export PDFs using the current theme instead of a clean light print theme
-theme_family = "custom"  # apple | gruvbox | catppuccin | github | solarized | one | nord | tokyo-night | kanagawa | black-metal | custom
+theme_family = "rose-pine"  # apple | gruvbox | catppuccin | github | solarized | one | nord | tokyo-night | kanagawa | black-metal | custom
 theme_mode = "auto"  # light | dark | auto
-theme_id = "custom-soft-paper"  # resolved theme id; normally set automatically from family + mode
+theme_id = "rose-pine-main"  # resolved theme id; normally set automatically from family + mode
 dark_sidebar = true  # tint the sidebar darker than the canvas
 show_sidebar_chevrons = true  # show disclosure arrows in the sidebar
 content_align = "center"  # center | left
@@ -88,7 +88,7 @@ quick_note_title_prefix = "Quick Note"  # prefix for new quick-note titles; empt
 auto_calendar_panel = true  # auto-show the calendar for daily / weekly notes
 calendar_week_start = "monday"  # monday | sunday | locale
 calendar_show_week_numbers = true  # show ISO week numbers in the calendar
-tasks_view_mode = "calendar"  # list | calendar | kanban
+tasks_view_mode = "kanban"  # list | calendar | kanban
 show_archived_tasks = false  # keep tasks from archived notes in the Tasks views
 kanban_group_by = "status"  # status | priority | folder
 kanban_statuses = []  # custom-status Kanban columns, in order — e.g. ["backlog", "in_progress", "review", "done"]
@@ -98,6 +98,7 @@ hidden_workflow_presets = []  # built-in workflow recipes hidden from the galler
 # Binding syntax: "Mod+P" = Cmd/Ctrl+P, "Shift+Mod+K", "Ctrl+W", "Space",
 # or a two-key sequence like "g g". Uncomment a reference line to remap it.
 [keymaps]
+"vim.leaderPrefix" = ","
 
 # --- All actions (defaults shown; uncomment + edit to override) ---
 # Global
@@ -141,7 +142,6 @@ hidden_workflow_presets = []  # built-in workflow recipes hidden from the galler
 # "tabs.select8" = "Ctrl+8"  # Go to tab 8
 # "tabs.select9" = "Ctrl+9"  # Go to tab 9
 # Vim
-# "vim.leaderPrefix" = "Space"  # Leader key
 # "vim.leaderOpenBuffers" = "o"  # Leader: open buffers
 # "vim.leaderWorkflows" = "a"  # Leader: open workflows
 # "vim.leaderAtlas" = "g"  # Leader: open atlas
