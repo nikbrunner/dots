@@ -281,9 +281,10 @@
     "name": "glab-tui",
     "work": false,
     "session_dirs": [
-      "~/repos/nikbrunner/glab-tui"
+      "~/repos/nikbrunner/glab-tui",
+      "~/repos/nikbrunner/glab-tui-copy-issue-reference"
     ],
-    "last_seen": "2026-08-29"
+    "last_seen": "2026-08-31"
   },
   "nikbrunner/herdr": {
     "root": "~/repos/nikbrunner/herdr",

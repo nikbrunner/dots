@@ -1863,6 +1863,10 @@ backend = "npm:css-variables-language-server"
 version = "3.2.1"
 backend = "npm:exa-mcp-server"
 
+[[tools."npm:pm2"]]
+version = "0.15.10"
+backend = "npm:pm2"
+
 [[tools."npm:typescript"]]
 version = "6.0.3"
 backend = "npm:typescript"

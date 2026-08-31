@@ -39,6 +39,7 @@
 ~/repos/imfusion/projects
 ~/repos/imfusion/suite
 ~/repos/imfusion/websdk
+~/repos/jeantinland/simple-bar-server
 ~/repos/nikbrunner/airship
 ~/repos/nikbrunner/bc-desktop-client
 ~/repos/nikbrunner/bc-web-client
