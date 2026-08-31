@@ -12,7 +12,7 @@
     "npm:pi-terminal-theme",
     "npm:pi-mcp-adapter",
     "npm:pi-subagents",
-    "git:github.com/obra/superpowers",
+    "git:git@github.com:obra/superpowers",
     "npm:@narumitw/pi-accounts",
     "npm:@narumitw/pi-usage",
     "npm:@juicesharp/rpiv-advisor"
