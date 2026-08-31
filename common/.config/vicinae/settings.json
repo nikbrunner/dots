@@ -1,85 +1,88 @@
-// This configuration is merged with the default vicinae configuration file, which you can obtain by running the `vicinae config default` command.
-// Every item defined in this file takes precedence over the values defined in the default config or any other imported file.
-//
-// You can make manual edits to this file, however you should keep in mind that this file may be written to by vicinae when a configuration change is made through the GUI.
-// When that happens, any custom comments or formatting will be lost.
-//
-// If you want to maintain a configuration file with your own comments and formatting, you should create a separate file and add it to the 'imports' array.
-//
-// Learn more about configuration at https://docs.vicinae.com/config
-
 {
-   "$schema": "https://vicinae.com/schemas/config.json",
-   "global_shortcuts": {
-      "toggle": "super+control+alt+shift+:"
-   },
-   "font": {
-      "normal": {
-         "family": "TX-02"
+  "$schema": "https://vicinae.com/schemas/config.json",
+  "global_shortcuts": {
+    "toggle": "super+control+alt+shift+:"
+  },
+  "font": {
+    "normal": {
+      "family": "TX-02"
+    }
+  },
+  "theme": {
+    "light": {
+      "name": "solarized-light"
+    }
+  },
+  "favorites": [],
+  "providers": {
+    "@rasmusbe/store.raycast.connect-to-vpn": {
+      "entrypoints": {
+        "index": {
+          "alias": "vpn"
+        }
       }
-   },
-   "theme": {
-      "light": {
-         "name": "solarized-light"
+    },
+    "applications": {
+      "entrypoints": {
+        "Mattermost.Desktop": {
+          "alias": "mm"
+        },
+        "com.adibhanna.zennotes": {
+          "shortcut": "super+control+alt+shift+N"
+        },
+        "com.apple.finder": {
+          "shortcut": "super+control+alt+shift+F"
+        },
+        "com.apple.iCal": {
+          "shortcut": "super+control+alt+shift+C"
+        },
+        "com.mitchellh.ghostty": {
+          "shortcut": "super+control+alt+shift+SPACE"
+        },
+        "me.proton.pass.electron": {
+          "shortcut": "super+control+alt+shift+X"
+        },
+        "net.imput.helium": {
+          "shortcut": "super+control+alt+shift+W"
+        }
       }
-   },
-   "favorites": [],
-   "providers": {
-      "applications": {
-         "entrypoints": {
-            "com.adibhanna.zennotes": {
-               "shortcut": "super+control+alt+shift+N"
-            },
-            "com.apple.finder": {
-               "shortcut": "super+control+alt+shift+F"
-            },
-            "com.mitchellh.ghostty": {
-               "shortcut": "super+control+alt+shift+SPACE"
-            },
-            "me.proton.pass.electron": {
-               "shortcut": "super+control+alt+shift+X"
-            },
-            "net.imput.helium": {
-               "shortcut": "super+control+alt+shift+W"
-            }
-         }
-      },
-      "browser-extension": {
-         "entrypoints": {
-            "browse-tabs": {
-               "alias": "tabs"
-            }
-         }
-      },
-      "clipboard": {
-         "entrypoints": {
-            "history": {
-               "shortcut": "super+control+alt+shift+V"
-            }
-         }
-      },
-      "core": {
-         "entrypoints": {
-            "search-emojis": {
-               "shortcut": "super+shift+E"
-            }
-         }
-      },
-      "raycast-compat": {
-         "entrypoints": {
-            "store": {
-               "preferences": {
-                  "alwaysShowIntro": false
-               }
-            }
-         }
-      },
-      "wm": {
-         "entrypoints": {
-            "switch-windows": {
-               "shortcut": "super+control+alt+shift+R"
-            }
-         }
+    },
+    "browser-extension": {
+      "entrypoints": {
+        "browse-tabs": {
+          "alias": "tabs"
+        }
       }
-   }
+    },
+    "clipboard": {
+      "entrypoints": {
+        "history": {
+          "shortcut": "super+control+alt+shift+V"
+        }
+      }
+    },
+    "core": {
+      "entrypoints": {
+        "search-emojis": {
+          "shortcut": "super+shift+E"
+        }
+      }
+    },
+    "raycast-compat": {
+      "entrypoints": {
+        "store": {
+          "preferences": {
+            "alwaysShowIntro": false
+          }
+        }
+      }
+    },
+    "wm": {
+      "entrypoints": {
+        "switch-windows": {
+          "shortcut": "super+control+alt+shift+R"
+        }
+      }
+    }
+  }
 }
