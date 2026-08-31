@@ -1,7 +1,7 @@
 {
   "version": 2,
   "system_appearance": true,
-  "active_theme": "black-atom-mnml-47-light",
+  "active_theme": "black-atom-mnml-47-dark",
   "keymappings": {
     "toggle_window": "super+ctrl+alt+shift+KeyT"
   },
