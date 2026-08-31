@@ -10,29 +10,10 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +12 logs/2026/2026.08/2026.08.28\ -\ Fri.md
-badd +0 TIMESHEET.md
+badd +66 logs/2026/2026.08/2026.08.31\ -\ Mon.md
 argglobal
 %argdel
-edit logs/2026/2026.08/2026.08.28\ -\ Fri.md
-let s:save_splitbelow = &splitbelow
-let s:save_splitright = &splitright
-set splitbelow splitright
-wincmd _ | wincmd |
-vsplit
-1wincmd h
-wincmd w
-let &splitbelow = s:save_splitbelow
-let &splitright = s:save_splitright
-wincmd t
-let s:save_winminheight = &winminheight
-let s:save_winminwidth = &winminwidth
-set winminheight=0
-set winheight=1
-set winminwidth=0
-set winwidth=1
-exe 'vert 1resize ' . ((&columns * 175 + 176) / 352)
-exe 'vert 2resize ' . ((&columns * 176 + 176) / 352)
+edit logs/2026/2026.08/2026.08.31\ -\ Mon.md
 tcd ~/repos/nikbrunner/imf-notes
 argglobal
 xnoremap <buffer> $ g$
@@ -96,7 +77,7 @@ setlocal foldnestmax=10
 setlocal foldtext=
 setlocal formatexpr=
 setlocal formatlistpat=^\\s*\\d\\+\\.\\s\\+\\|^\\s*[-*+]\\s\\+\\|^\\[^\\ze[^\\]]\\+\\]:\\&^.\\{4\\}
-setlocal formatoptions=1jtqln
+setlocal formatoptions=qnt1lj
 setlocal iminsert=0
 setlocal imsearch=-1
 setlocal includeexpr=
@@ -148,7 +129,7 @@ setlocal textwidth=80
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#logs%*%#WinBarSeparator#/%*%#WinBarPath#2026%*%#WinBarSeparator#/%*%#WinBarPath#2026.08%*%#WinBarSeparator#/%*%#WinBarFilename#2026.08.28\ -\ Fri.md%*%=%#WinBarGitLabel#\ [GIT:%#WinBarGitAdd#\ +28%#WinBarGitChange#\ ~6%#WinBarGitLabel#]%*\ 
+setlocal winbar=%#WinBarPath#...%*%#WinBarSeparator#/%*%#WinBarFilename#2026.08.31\ -\ Mon.md%*%=%#WinBarGitLabel#\ [GIT:%#WinBarGitAdd#\ +61%#WinBarGitChange#\ ~9%#WinBarGitLabel#]%*\ 
 setlocal winblend=10
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -159,166 +140,34 @@ setlocal nowrap
 setlocal wrapmargin=0
 1
 sil! normal! zo
-5
+45
 sil! normal! zo
-14
+47
 sil! normal! zo
-16
+55
 sil! normal! zo
-17
+68
 sil! normal! zo
-29
+69
 sil! normal! zo
-31
+71
 sil! normal! zo
-33
+78
 sil! normal! zo
-let s:l = 15 - ((14 * winheight(0) + 35) / 71)
+68
+sil! normal! zo
+70
+sil! normal! zo
+72
+sil! normal! zo
+79
+sil! normal! zo
+let s:l = 42 - ((16 * winheight(0) + 10) / 21)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 15
+keepjumps 42
 normal! 0
-wincmd w
-argglobal
-if bufexists(fnamemodify("~/repos/nikbrunner/imf-notes/TIMESHEET.md", ":p")) | buffer ~/repos/nikbrunner/imf-notes/TIMESHEET.md | else | edit ~/repos/nikbrunner/imf-notes/TIMESHEET.md | endif
-if &buftype ==# 'terminal'
-  silent file ~/repos/nikbrunner/imf-notes/TIMESHEET.md
-endif
-xnoremap <buffer> $ g$
-onoremap <buffer> $ g$
-nnoremap <buffer> $ g$
-xnoremap <buffer> 0 g0
-onoremap <buffer> 0 g0
-nnoremap <buffer> 0 g0
-xnoremap <buffer> <silent> [[ :exe "normal! gv"|call search('\%(^#\{1,5\}\s\+\S\|^\S.*\n^[=-]\+$\)', "bsW")
-xnoremap <buffer> <silent> ]] :exe "normal! gv"|call search('\%(^#\{1,5\}\s\+\S\|^\S.*\n^[=-]\+$\)', "sW")
-xnoremap <buffer> j gj
-onoremap <buffer> j gj
-nnoremap <buffer> j gj
-xnoremap <buffer> k gk
-onoremap <buffer> k gk
-nnoremap <buffer> k gk
-setlocal keymap=
-setlocal noarabic
-setlocal autoindent
-setlocal nobinary
-setlocal breakindent
-setlocal breakindentopt=list:-1
-setlocal bufhidden=
-setlocal buflisted
-setlocal buftype=
-setlocal busy=0
-setlocal nocindent
-setlocal cinkeys=0{,0},0),0],:,0#,!^F,o,O,e
-setlocal cinoptions=
-setlocal cinscopedecls=public,protected,private
-setlocal cinwords=if,else,while,do,for,switch
-setlocal colorcolumn=
-setlocal comments=fb:*,fb:-,fb:+,n:>
-setlocal commentstring=<!--\ %s\ -->
-setlocal complete=.,w,b,kspell
-setlocal completefunc=
-setlocal completeslash=
-setlocal concealcursor=
-setlocal conceallevel=2
-setlocal nocopyindent
-setlocal nocursorbind
-setlocal nocursorcolumn
-setlocal cursorline
-setlocal cursorlineopt=screenline,number
-setlocal nodiff
-setlocal eventignorewin=
-setlocal expandtab
-if &filetype != 'markdown'
-setlocal filetype=markdown
-endif
-setlocal fixendofline
-setlocal foldcolumn=0
-setlocal foldenable
-setlocal foldexpr=v:lua.vim.treesitter.foldexpr()
-setlocal foldignore=#
-setlocal foldlevel=99
-setlocal foldmarker={{{,}}}
-setlocal foldmethod=expr
-setlocal foldminlines=1
-setlocal foldnestmax=10
-setlocal foldtext=
-setlocal formatexpr=
-setlocal formatlistpat=^\\s*\\d\\+\\.\\s\\+\\|^\\s*[-*+]\\s\\+\\|^\\[^\\ze[^\\]]\\+\\]:\\&^.\\{4\\}
-setlocal formatoptions=1jtqln
-setlocal iminsert=0
-setlocal imsearch=-1
-setlocal includeexpr=
-setlocal indentexpr=v:lua.require'arborist.indent'.indentexpr()
-setlocal indentkeys=0{,0},0),0],:,0#,!^F,o,O,e
-setlocal infercase
-setlocal iskeyword=@,48-57,_,192-255,-
-setlocal lhistory=10
-setlocal linebreak
-setlocal nolisp
-setlocal lispoptions=
-setlocal list
-setlocal matchpairs=(:),{:},[:],<:>
-setlocal modeline
-setlocal modifiable
-setlocal nrformats=bin,hex
-setlocal number
-setlocal numberwidth=4
-setlocal omnifunc=htmlcomplete#CompleteTags
-setlocal nopreserveindent
-setlocal nopreviewwindow
-setlocal quoteescape=\\
-setlocal noreadonly
-setlocal relativenumber
-setlocal norightleft
-setlocal rightleftcmd=search
-setlocal scrollback=-1
-setlocal noscrollbind
-setlocal shiftwidth=2
-setlocal signcolumn=yes
-setlocal smartindent
-setlocal nosmoothscroll
-setlocal softtabstop=-1
-setlocal nospell
-setlocal spellcapcheck=[.?!]\\_[\\])'\"\\t\ ]\\+
-setlocal spellfile=
-setlocal spelllang=en_us,de_de
-setlocal spelloptions=camel,noplainbuffer
-setlocal statuscolumn=
-setlocal suffixesadd=
-setlocal noswapfile
-setlocal synmaxcol=3000
-if &syntax != ''
-setlocal syntax=
-endif
-setlocal tabstop=4
-setlocal tagfunc=v:lua.vim.lsp.tagfunc
-setlocal textwidth=80
-setlocal undofile
-setlocal varsofttabstop=
-setlocal vartabstop=
-setlocal winbar=%#WinBarFilename#TIMESHEET.md%*%=%#WinBarGitLabel#\ [GIT:%#WinBarGitAdd#\ +19%#WinBarGitLabel#]%*\ 
-setlocal winblend=10
-setlocal nowinfixbuf
-setlocal nowinfixheight
-setlocal nowinfixwidth
-setlocal winhighlight=
-setlocal nowinpinned
-setlocal nowrap
-setlocal wrapmargin=0
-1
-sil! normal! zo
-let s:l = 10 - ((9 * winheight(0) + 35) / 71)
-if s:l < 1 | let s:l = 1 | endif
-keepjumps exe s:l
-normal! zt
-keepjumps 10
-normal! 0
-wincmd w
-2wincmd w
-exe 'vert 1resize ' . ((&columns * 175 + 176) / 352)
-exe 'vert 2resize ' . ((&columns * 176 + 176) / 352)
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
@@ -326,8 +175,6 @@ endif
 unlet! s:wipebuf
 set winheight=1 winwidth=20
 let &shortmess = s:shortmess_save
-let &winminheight = s:save_winminheight
-let &winminwidth = s:save_winminwidth
 let s:sx = expand("<sfile>:p:r")."x.vim"
 if filereadable(s:sx)
   exe "source " . fnameescape(s:sx)
