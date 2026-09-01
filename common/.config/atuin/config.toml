@@ -233,8 +233,9 @@ records = true
 # strategy = "auto"
 
 [daemon]
-## Enables using the daemon to sync. Requires the daemon to be running in the background. Start it with `atuin daemon`
-# enabled = false
+name = "default"
+enabled = true
+autostart = true
 
 ## How often the daemon should sync in seconds
 # sync_frequency = 300
@@ -262,9 +263,6 @@ records = true
 ##    https://ogeon.github.io/docs/palette/master/palette/named/index.html
 ## If you provide a custom theme file, it should be  called "NAME.toml" and the theme below
 ## should be the stem, i.e. `theme = "NAME"` for your chosen NAME.
-name = "default"
-enabled = true
-autostart = true
 
 ## Whether the theme manager should output normal or extra information to help fix themes.
 ## Boolean, true or false. If unset, left up to the theme manager.
