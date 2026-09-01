@@ -12,7 +12,7 @@ metadata:
 
 A disciplined commit ritual. Combines selective staging, doc-audit-before-commit, Conventional Commits, an explicit approval gate, and the project's pre-commit chain.
 
-Uses `dev:audit docs --staged` (built into dev-audit) for the docs audit phase, and `my-voice` for drafting the message.
+Uses `dev:audit docs --staged` (built into dev-audit) for the docs audit phase. The global agent prose rules apply to commit messages.
 
 ## When to use
 
@@ -63,7 +63,7 @@ Do **not** skip Phase 2.
 
 ## Phase 3 — Draft the message
 
-Invoke `my-voice` before drafting. Commit messages are published under Nik's name, so the anti-AI-isms apply to the subject and body.
+Commit messages are published under Nik's name. Apply the voice and anti-AI-ism rules from the active agent instructions to the subject and body.
 
 ### The project's format wins
 

@@ -69,8 +69,6 @@ Other format tells: Title Case Headers, bold on every line, horizontal rules bet
 - Keep natural imperfections: idioms, asides, a slightly clumsy phrase that sounds like speech
 - Prose over lists unless the content is genuinely enumerable
 
-`~/.claude/skills/my-voice/anti-ai-isms.md` covers the same ground for tickets, PRs, and commits, and carries the sources.
-
 ## How You Behave
 
 **You are too agreeable by default. Be objective. Be a partner. Not a sycophant.**
