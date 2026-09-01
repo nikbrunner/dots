@@ -1,9 +1,8 @@
 import type { ExtensionAPI, ExtensionContext } from "@earendil-works/pi-coding-agent";
 import { truncateToWidth, visibleWidth } from "@earendil-works/pi-tui";
 import { execFile } from "node:child_process";
-import { existsSync, readFileSync } from "node:fs";
 import { homedir } from "node:os";
-import { join, resolve } from "node:path";
+import { resolve } from "node:path";
 import { stripVTControlCharacters } from "node:util";
 import {
 	formatFooterRowLabel,
@@ -11,7 +10,7 @@ import {
 	getAlignedColumnWidths,
 	type FooterRow,
 } from "./lib/statusline-layout";
-import { getActiveAccountLabel } from "./lib/statusline-accounts";
+import { getActiveAccountLabelFromStatus } from "./lib/statusline-accounts";
 const MCP_STATUS_CHANNEL = "pi-mcp-adapter/status/v1";
 
 interface Usage {
@@ -27,10 +26,6 @@ interface McpStatusSnapshot {
 	servers: ReadonlyArray<{ disabled: boolean }>;
 	connectedCount: number;
 	disabledCount: number;
-}
-
-interface ActiveCodexAccount {
-	label?: string;
 }
 
 interface GitStatus {
@@ -52,38 +47,10 @@ function parseGitStatus(output: string): GitStatus {
 	return status;
 }
 
-function getAgentDir(): string {
-	const override = process.env.PI_CODING_AGENT_DIR?.trim();
-	if (!override) return join(homedir(), ".pi", "agent");
-	if (override === "~") return homedir();
-	if (override.startsWith("~/")) return join(homedir(), override.slice(2));
-	return override;
-}
-
 function formatCwd(cwd: string): string {
 	const home = homedir();
 	if (cwd === home) return "~";
 	return cwd.startsWith(`${home}/`) ? `~${cwd.slice(home.length)}` : cwd;
-}
-
-function readJson(path: string): Record<string, unknown> | undefined {
-	if (!existsSync(path)) return undefined;
-	try {
-		const value: unknown = JSON.parse(readFileSync(path, "utf8"));
-		return value && typeof value === "object" && !Array.isArray(value)
-			? value as Record<string, unknown>
-			: undefined;
-	} catch {
-		return undefined;
-	}
-}
-
-function getActiveCodexAccount(): ActiveCodexAccount | undefined {
-	const label = getActiveAccountLabel(
-		readJson(join(getAgentDir(), "pi-accounts.json")),
-		"openai-codex",
-	);
-	return label ? { label } : undefined;
 }
 
 function isCodexProvider(provider: string | undefined): boolean {
@@ -183,12 +150,8 @@ export default function (pi: ExtensionAPI): void {
 	let dirtyRefreshGeneration = 0;
 	let dirtyRefreshTimer: ReturnType<typeof setTimeout> | undefined;
 	let mcp: McpStatusSnapshot | undefined;
-	let activeAccount: ActiveCodexAccount | undefined;
 
 	const repaint = (): void => requestRender();
-	const refreshActiveAccount = (): void => {
-		activeAccount = getActiveCodexAccount();
-	};
 	const refreshDirty = (cwd: string): void => {
 		const generation = ++dirtyRefreshGeneration;
 		gitStatus = undefined;
@@ -227,7 +190,6 @@ export default function (pi: ExtensionAPI): void {
 	pi.on("session_start", (_event, ctx) => {
 		active = true;
 		state = ctx.isIdle() ? "ready" : "working";
-		refreshActiveAccount();
 		refreshDirty(ctx.cwd);
 		refreshWorktreeState(ctx.cwd);
 
@@ -328,7 +290,9 @@ export default function (pi: ExtensionAPI): void {
 					const providerDetails: string[] = [];
 					const provider = ctx.model?.provider;
 					if (isCodexProvider(provider)) {
-						const label = activeAccount?.label;
+						const label = getActiveAccountLabelFromStatus(
+							footerData.getExtensionStatuses().get("accounts") ?? "",
+						);
 						const usage = formatUsageFooterStatus(footerData.getExtensionStatuses().get("usage") ?? "");
 						providerDetails.push(theme.bold(`Codex${label ? ` [${label}]` : ""}`));
 						if (usage) providerDetails.push(theme.fg("accent", usage));
@@ -350,10 +314,7 @@ export default function (pi: ExtensionAPI): void {
 	pi.on("session_info_changed", () => {
 		repaint();
 	});
-	pi.on("before_provider_request", () => {
-		refreshActiveAccount();
-		repaint();
-	});
+	pi.on("before_provider_request", () => repaint());
 	pi.on("agent_start", () => {
 		state = "working";
 		repaint();
@@ -365,14 +326,10 @@ export default function (pi: ExtensionAPI): void {
 	});
 	pi.on("agent_end", (_event, ctx) => {
 		if (state !== "error") state = "ready";
-		refreshActiveAccount();
 		refreshDirty(ctx.cwd);
 		repaint();
 	});
-	pi.on("model_select", () => {
-		refreshActiveAccount();
-		repaint();
-	});
+	pi.on("model_select", () => repaint());
 	pi.on("thinking_level_select", () => repaint());
 	pi.on("tool_execution_end", (_event, ctx) => refreshDirty(ctx.cwd));
 	pi.on("user_bash", (event) => scheduleDirtyRefresh(event.cwd));
