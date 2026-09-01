@@ -144,8 +144,11 @@ Configure MCP servers for Claude Code (requires Step 7 env sync for API keys).
 ```sh
 claude mcp add --scope user exa -e "EXA_API_KEY=$EXA_API_KEY" -- npx -y exa-mcp-server
 claude mcp add --scope user --transport http Ref https://api.ref.tools/mcp -H "x-ref-api-key: $REF_API_KEY"
-claude mcp add --scope user chrome-devtools -- npx chrome-devtools-mcp@latest
+claude mcp add --scope user chrome-devtools -- npx chrome-devtools-mcp@latest --isolated
 ```
+
+> [!NOTE]
+> **Pi MCP:** Pi includes `pi-mcp-adapter`. Its MCP config imports the Claude Code configuration, so Chrome DevTools is available in Pi without a second registration. The `--isolated` setting is retained. Start Pi and run `/mcp` to verify the server.
 
 ## 11. Fonts
 

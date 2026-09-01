@@ -178,13 +178,16 @@ Configure MCP servers for Claude Code (requires Step 9 env sync for API keys).
 claude mcp add --scope user exa -e "EXA_API_KEY=$EXA_API_KEY" -- npx -y exa-mcp-server
 claude mcp add --scope user --transport http atlassian-rovo-mcp https://mcp.atlassian.com/v1/mcp/authv2
 claude mcp add --scope user fff -- "$HOME/.local/bin/fff-mcp"
-claude mcp add --scope user chrome-devtools -- npx chrome-devtools-mcp@latest
+claude mcp add --scope user chrome-devtools -- npx chrome-devtools-mcp@latest --isolated
 ```
 
 > [!NOTE]
 > `claude mcp add --scope user` writes to whichever config `CLAUDE_CONFIG_DIR` points at (default `~/.claude`). If you also
 > use the `claude-work` identity (see `.zshrc`), re-run the same commands with `CLAUDE_CONFIG_DIR=~/.claude-work` set —
 > it's a separate config dir and won't inherit these automatically.
+
+> [!NOTE]
+> **Pi MCP:** Pi includes `pi-mcp-adapter`. Its MCP config imports the Claude Code configuration, so Chrome DevTools is available in Pi without a second registration. The `--isolated` setting is retained. Start Pi and run `/mcp` to verify the server.
 
 ## 13. Git Hooks (contributing to dots)
 
