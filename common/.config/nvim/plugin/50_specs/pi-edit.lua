@@ -2,8 +2,7 @@
 -- Usage: visually select code and hit <C-g> (or :PiEdit), enter an
 -- instruction, review the result in the split, `:w` to apply.
 -- In normal mode <C-g> refactors the whole file.
--- In the result split: `r` regenerates, `e` edits the instruction,
--- `<C-r>` picks a model (from pi's enabledModels) and regenerates, `q` closes.
+-- In the result split: `r` regenerates, `e` edits the instruction, `q` closes.
 -- Modernized port of claude-edit.lua with `pi -p` as the only backend.
 
 -- ========================================================================
@@ -17,13 +16,15 @@
 ---@field end_line integer 1-based, inclusive
 ---@field source_bufnr integer
 ---@field full_file string|nil full file context (only when a range was given)
----@field model string|nil model override for `pi --model` (default: pi's default)
+---@field model string model passed to `pi --model`
 ---@field result_bufnr integer|nil
 ---@field win_id integer|nil
 ---@field proc vim.SystemObj|nil running pi process, killed on close
 
 ---@type PiEditSession|nil
 local session = nil
+
+local DEFAULT_MODEL = "openai-codex/gpt-5.3-codex-spark"
 
 local function build_prompt(s)
 	if s.full_file then
@@ -101,12 +102,14 @@ local function call_pi(prompt, model, callback)
 	end
 	table.insert(cmd, prompt)
 
-	return vim.system(
+	local ok, proc = pcall(
+		vim.system,
 		cmd,
 		{ text = true },
 		vim.schedule_wrap(function(out)
 			if out.signal ~= 0 then
-				return -- killed on purpose (split closed), stay silent
+				callback(nil, string.format("pi terminated by signal %d", out.signal))
+				return
 			end
 			if out.code ~= 0 then
 				callback(nil, string.format("pi failed (exit code %d)\n%s", out.code, out.stderr or ""))
@@ -125,6 +128,13 @@ local function call_pi(prompt, model, callback)
 			callback(result)
 		end)
 	)
+
+	if not ok then
+		callback(nil, "failed to start pi\n" .. tostring(proc))
+		return nil
+	end
+
+	return proc
 end
 
 -- ========================================================================
@@ -142,11 +152,20 @@ local function get_enabled_models()
 
 	local decoded
 	ok, decoded = pcall(vim.json.decode, table.concat(content, "\n"))
-	if not ok or type(decoded) ~= "table" then
+	if not ok or type(decoded) ~= "table" or type(decoded.enabledModels) ~= "table" then
 		return nil
 	end
 
-	return decoded.enabledModels
+	local models = decoded.enabledModels
+	for index, model in ipairs(models) do
+		if model == DEFAULT_MODEL then
+			table.remove(models, index)
+			table.insert(models, 1, model)
+			break
+		end
+	end
+
+	return models
 end
 
 local function set_content(buf, lines)
@@ -266,31 +285,26 @@ local function open_result_split()
 			end
 		end)
 	end, "Edit instruction and regenerate")
-
-	bmap("<C-r>", function()
-		local models = get_enabled_models()
-		if not models or #models == 0 then
-			vim.notify("No enabledModels found in pi settings", vim.log.levels.WARN)
-			return
-		end
-
-		vim.ui.select(models, {
-			prompt = "Regenerate with model:",
-			format_item = function(model)
-				return (session and session.model == model) and (model .. " (current)") or model
-			end,
-		}, function(choice)
-			if session and choice then
-				session.model = choice
-				generate()
-			end
-		end)
-	end, "Pick model and regenerate")
 end
 
 -- ========================================================================
 -- Entry point
 -- ========================================================================
+
+local function select_model(callback)
+	local models = get_enabled_models()
+	if not models or #models == 0 then
+		vim.notify("No enabledModels found in pi settings", vim.log.levels.WARN)
+		return
+	end
+
+	vim.ui.select(models, {
+		prompt = "Choose model:",
+		format_item = function(model)
+			return model == DEFAULT_MODEL and (model .. " (default)") or model
+		end,
+	}, callback)
+end
 
 ---@param opts table command opts (range, line1, line2)
 local function pi_edit(opts)
@@ -321,19 +335,26 @@ local function pi_edit(opts)
 			return
 		end
 
-		close_session() -- only one session at a time
+		select_model(function(model)
+			if not model then
+				return
+			end
 
-		session = {
-			instruction = instruction,
-			original_lines = lines,
-			start_line = start_line,
-			end_line = end_line,
-			source_bufnr = source_bufnr,
-			full_file = full_file,
-		}
+			close_session() -- only one session at a time
 
-		open_result_split()
-		generate()
+			session = {
+				instruction = instruction,
+				original_lines = lines,
+				start_line = start_line,
+				end_line = end_line,
+				source_bufnr = source_bufnr,
+				full_file = full_file,
+				model = model,
+			}
+
+			open_result_split()
+			generate()
+		end)
 	end)
 end
 
