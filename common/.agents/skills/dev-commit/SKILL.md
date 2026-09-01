@@ -49,6 +49,8 @@ Identify three buckets:
 
 ## Phase 2 — Audit docs
 
+Use `/documentation-writer` for this phase. Invoke it before auditing or editing documentation, and follow its guidance for the affected docs.
+
 Invoke `dev:audit docs --staged`. Read the findings. Three outcomes:
 
 | Result        | Action                                                                                            |
