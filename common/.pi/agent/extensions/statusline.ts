@@ -1,5 +1,5 @@
 import type { ExtensionAPI, ExtensionContext } from "@earendil-works/pi-coding-agent";
-import { truncateToWidth, visibleWidth } from "@earendil-works/pi-tui";
+import { truncateToWidth } from "@earendil-works/pi-tui";
 import { execFile } from "node:child_process";
 import { homedir } from "node:os";
 import { resolve } from "node:path";
@@ -7,10 +7,15 @@ import { stripVTControlCharacters } from "node:util";
 import {
 	formatFooterRowLabel,
 	formatUsageFooterStatus,
-	getAlignedColumnWidths,
 	type FooterRow,
 } from "./lib/statusline-layout";
 import { getActiveAccountLabelFromStatus } from "./lib/statusline-accounts";
+import {
+	fetchOpenRouterPricing,
+	formatModelRate,
+	openrouterCostAdjustment,
+	type OpenRouterPricing,
+} from "./lib/statusline-openrouter";
 const MCP_STATUS_CHANNEL = "pi-mcp-adapter/status/v1";
 
 interface Usage {
@@ -55,6 +60,18 @@ function formatCwd(cwd: string): string {
 
 function isCodexProvider(provider: string | undefined): boolean {
 	return /^openai-codex(?:-\d+)?$/.test(provider ?? "");
+}
+
+function providerDisplayName(provider: string | undefined): string | undefined {
+	if (!provider) return undefined;
+	if (isCodexProvider(provider)) return "Codex";
+	const known: Record<string, string> = {
+		openrouter: "OpenRouter",
+		anthropic: "Anthropic",
+		openai: "OpenAI",
+		"kimi-coding": "Kimi",
+	};
+	return known[provider] ?? provider;
 }
 
 function isMcpStatusSnapshot(value: unknown): value is McpStatusSnapshot {
@@ -140,9 +157,30 @@ function usageTotals(ctx: ExtensionContext): { usage: Usage; cacheHit?: number }
 	return { usage, cacheHit };
 }
 
+const OPENROUTER_PRICING_TTL_MS = 30 * 60 * 1000;
+
 export default function (pi: ExtensionAPI): void {
 	let active = true;
 	let requestRender = (): void => {};
+	let openrouterPricing: Map<string, OpenRouterPricing> | undefined;
+	let openrouterPricingAt = 0;
+	let openrouterPricingInFlight = false;
+	const ensureOpenRouterPricing = (): void => {
+		if (!active || Date.now() - openrouterPricingAt < OPENROUTER_PRICING_TTL_MS || openrouterPricingInFlight) return;
+		openrouterPricingInFlight = true;
+		fetchOpenRouterPricing()
+			.then((pricing) => {
+				openrouterPricing = pricing;
+				openrouterPricingAt = Date.now();
+				repaint();
+			})
+			.catch(() => {
+				openrouterPricingAt = Date.now();
+			})
+			.finally(() => {
+				openrouterPricingInFlight = false;
+			});
+	};
 	let state: "ready" | "working" | "error" = "ready";
 	let dirty = false;
 	let gitStatus: GitStatus | undefined;
@@ -200,25 +238,13 @@ export default function (pi: ExtensionAPI): void {
 				tui.requestRender();
 			});
 
-			const separator = theme.fg("dim", " │ ");
+			const separator = "  ";
 			const rawLine = ({ label, parts }: FooterRow): string =>
 				theme.bold(theme.fg("warning", formatFooterRowLabel(label))) + parts.join(separator);
 			const renderLine = (row: FooterRow, width: number): string =>
 				truncateToWidth(rawLine(row), width, theme.fg("dim", "…"));
-			const renderRows = (rows: FooterRow[], width: number): string[] => {
-				const columnWidths = getAlignedColumnWidths(rows, visibleWidth);
-				const aligned = rows.map((row) => ({
-					...row,
-					parts: row.parts.map((part, index) =>
-						index === row.parts.length - 1
-							? part
-							: part + " ".repeat(columnWidths[index] - visibleWidth(part)),
-					),
-				}));
-				return aligned.map((row) =>
-					truncateToWidth(rawLine(row), width, theme.fg("dim", "…")),
-				);
-			};
+			const renderRows = (rows: FooterRow[], width: number): string[] =>
+				rows.map((row) => renderLine(row, width));
 			const indicator = (label: string): string => theme.fg("warning", `${label} `);
 			const stateText = (): string => {
 				const color = state === "ready" ? "success" : state === "working" ? "warning" : "error";
@@ -258,10 +284,8 @@ export default function (pi: ExtensionAPI): void {
 
 					const model = ctx.model?.id;
 					const thinking = ctx.thinkingLevel ?? (ctx.model?.reasoning ? "off" : undefined);
-					const agent = [stateText()];
-					if (model) agent.push(`${indicator("mdl")}${theme.bold(model)}`);
-					if (thinking) agent.push(`${indicator("thk")}${theme.fg("dim", thinking)}`);
 					const enabled = mcp ? mcp.servers.length - mcp.disabledCount : undefined;
+					let mcpPart: string | undefined;
 					const mcpStatus = mcp
 						? `MCP ${mcp.connectedCount}/${enabled}`
 						: formatMcpFooterStatus(footerData.getExtensionStatuses().get("mcp") ?? "");
@@ -269,42 +293,66 @@ export default function (pi: ExtensionAPI): void {
 						const color = mcp
 							? mcp.connectedCount === enabled ? "success" : mcp.connectedCount === 0 ? "error" : "warning"
 							: "accent";
-						const value = mcpStatus.replace(/^MCP:?\s*/, "");
-						agent.push(indicator("mcp") + theme.fg(color, value));
+						mcpPart = indicator("mcp") + theme.fg(color, mcpStatus.replace(/^MCP:?\s*/, ""));
 					}
 
 					const totals = usageTotals(ctx);
 					const subscription = isCodexProvider(ctx.model?.provider) || ctx.model?.provider === "kimi-coding";
-					const session = [
-						`${indicator("↑")}${formatTokens(totals.usage.input)}`,
-						`${indicator("↓")}${formatTokens(totals.usage.output)}`,
-					];
+					const openrouter = ctx.model?.provider === "openrouter" ? ctx.model : undefined;
+					let sessionCost = totals.usage.cost.total;
+					if (openrouter) {
+						ensureOpenRouterPricing();
+						if (openrouterPricing) {
+							const adjustment = openrouterCostAdjustment(ctx.sessionManager.getEntries(), openrouterPricing);
+							sessionCost += adjustment.live - adjustment.estimated;
+						}
+					}
 					const context = contextText();
-					if (context) session.push(context);
 					const cache = totals.cacheHit === undefined
 						? undefined
 						: indicator("hit") + `${totals.cacheHit.toFixed(0)}%`;
-					if (cache) session.push(cache);
-					session.push(`${indicator("$")}${totals.usage.cost.total.toFixed(3)}${subscription ? theme.fg("dim", " (sub)") : ""}`);
+					const session = [
+						...(context ? [context] : []),
+						...(cache ? [cache] : []),
+						`${indicator("$")}${sessionCost.toFixed(3)}${subscription ? theme.fg("dim", " (sub)") : ""}`,
+						`${indicator("↑")}${formatTokens(totals.usage.input)} ${indicator("↓")}${formatTokens(totals.usage.output)}`,
+					];
 
-					const providerDetails: string[] = [];
 					const provider = ctx.model?.provider;
-					if (isCodexProvider(provider)) {
-						const label = getActiveAccountLabelFromStatus(
-							footerData.getExtensionStatuses().get("accounts") ?? "",
-						);
-						const usage = formatUsageFooterStatus(footerData.getExtensionStatuses().get("usage") ?? "");
-						providerDetails.push(theme.bold(`Codex${label ? ` [${label}]` : ""}`));
-						if (usage) providerDetails.push(theme.fg("accent", usage));
+					const providerName = providerDisplayName(provider);
+					const modelParts: string[] = [];
+					if (model) {
+						modelParts.push(theme.bold(model));
+						if (thinking) modelParts.push(theme.fg("dim", `[${thinking}]`));
+						if (providerName) {
+							const codexLabel = isCodexProvider(provider)
+								? getActiveAccountLabelFromStatus(footerData.getExtensionStatuses().get("accounts") ?? "")
+								: undefined;
+							modelParts.push(theme.fg("muted", `by ${providerName}${codexLabel ? ` [${codexLabel}]` : ""}`));
+						}
 					}
+
+					const runtimeParts = [stateText()];
+					if (openrouter) {
+						const fallback = openrouter.cost
+							? { prompt: openrouter.cost.input / 1_000_000, completion: openrouter.cost.output / 1_000_000 }
+							: undefined;
+						const rates = openrouterPricing?.get(openrouter.id) ?? fallback;
+						if (rates) {
+							runtimeParts.push(theme.fg("accent", `in ${formatModelRate(rates.prompt)} · out ${formatModelRate(rates.completion)}`));
+						}
+					}
+					if (isCodexProvider(provider)) {
+						const usage = formatUsageFooterStatus(footerData.getExtensionStatuses().get("usage") ?? "");
+						if (usage) runtimeParts.push(theme.fg("accent", usage));
+					}
+					if (mcpPart) runtimeParts.push(mcpPart);
 
 					const rows: FooterRow[] = [];
 					if (git.length > 0) rows.push({ label: "GIT", parts: git });
-					rows.push(
-						{ label: "AGENT", parts: agent },
-						{ label: "SESSION", parts: session },
-					);
-					if (providerDetails.length > 0) rows.push({ label: "PROVIDER", parts: providerDetails });
+					if (modelParts.length > 0) rows.push({ label: "AGENT", parts: modelParts });
+					rows.push({ label: modelParts.length > 0 ? "     " : "AGENT", parts: runtimeParts });
+					rows.push({ label: "SESSION", parts: session });
 					return [renderLine({ label: "WORKSPACE", parts: [workspace.join("  ")] }, width), ...renderRows(rows, width)];
 				},
 			};
