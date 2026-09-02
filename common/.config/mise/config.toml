@@ -87,6 +87,7 @@ maven = "latest"
 cmake = "latest"
 ninja = "latest"
 "github:opmr0/zeitx" = "latest"
+pre-commit = "latest"
 
 [env]
 _.file = "~/.env"

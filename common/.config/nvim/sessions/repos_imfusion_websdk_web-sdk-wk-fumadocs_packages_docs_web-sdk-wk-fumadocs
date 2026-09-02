@@ -10,10 +10,10 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +15 components/mdx.tsx
+badd +37 components/Link.tsx
 argglobal
 %argdel
-edit components/mdx.tsx
+edit components/Link.tsx
 tcd ~/repos/imfusion/websdk/web-sdk-wk-fumadocs/packages/docs
 argglobal
 setlocal keymap=
@@ -115,7 +115,7 @@ setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#components%*%#WinBarSeparator#/%*%#WinBarFilename#mdx.tsx%*%=
+setlocal winbar=%#WinBarPath#components%*%#WinBarSeparator#/%*%#WinBarFilename#Link.tsx%*%=
 setlocal winblend=10
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -124,11 +124,15 @@ setlocal winhighlight=
 setlocal nowinpinned
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 15 - ((14 * winheight(0) + 30) / 60)
+19
+sil! normal! zo
+26
+sil! normal! zo
+let s:l = 39 - ((34 * winheight(0) + 34) / 69)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 15
+keepjumps 39
 normal! 0
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'

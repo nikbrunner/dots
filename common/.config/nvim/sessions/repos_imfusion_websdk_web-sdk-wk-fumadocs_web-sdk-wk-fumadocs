@@ -10,13 +10,27 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +17 packages/docs/components/mdx.tsx
+badd +193 README.md
 argglobal
 %argdel
 $argadd ~/repos/imfusion/websdk/web-sdk-wk-fumadocs/packages/docs/components/Callout.tsx
-edit packages/docs/components/mdx.tsx
+edit README.md
 tcd ~/repos/imfusion/websdk/web-sdk-wk-fumadocs
 argglobal
+xnoremap <buffer> $ g$
+onoremap <buffer> $ g$
+nnoremap <buffer> $ g$
+xnoremap <buffer> 0 g0
+onoremap <buffer> 0 g0
+nnoremap <buffer> 0 g0
+xnoremap <buffer> <silent> [[ :exe "normal! gv"|call search('\%(^#\{1,5\}\s\+\S\|^\S.*\n^[=-]\+$\)', "bsW")
+xnoremap <buffer> <silent> ]] :exe "normal! gv"|call search('\%(^#\{1,5\}\s\+\S\|^\S.*\n^[=-]\+$\)', "sW")
+xnoremap <buffer> j gj
+onoremap <buffer> j gj
+nnoremap <buffer> j gj
+xnoremap <buffer> k gk
+onoremap <buffer> k gk
+nnoremap <buffer> k gk
 setlocal keymap=
 setlocal noarabic
 setlocal autoindent
@@ -33,8 +47,8 @@ setlocal cinoptions=
 setlocal cinscopedecls=public,protected,private
 setlocal cinwords=if,else,while,do,for,switch
 setlocal colorcolumn=
-setlocal comments=sO:*\ -,mO:*\ \ ,exO:*/,s1:/*,mb:*,ex:*/,://
-setlocal commentstring=//\ %s
+setlocal comments=fb:*,fb:-,fb:+,n:>
+setlocal commentstring=<!--\ %s\ -->
 setlocal complete=.,w,b,kspell
 setlocal completefunc=
 setlocal completeslash=
@@ -48,8 +62,8 @@ setlocal cursorlineopt=screenline,number
 setlocal nodiff
 setlocal eventignorewin=
 setlocal expandtab
-if &filetype != 'typescriptreact'
-setlocal filetype=typescriptreact
+if &filetype != 'markdown'
+setlocal filetype=markdown
 endif
 setlocal fixendofline
 setlocal foldcolumn=0
@@ -62,28 +76,28 @@ setlocal foldmethod=expr
 setlocal foldminlines=1
 setlocal foldnestmax=10
 setlocal foldtext=
-setlocal formatexpr=v:lua.require'conform'.formatexpr()
-setlocal formatlistpat=^\\s*[0-9\\-\\+\\*]\\+[\\.\\)]*\\s\\+
-setlocal formatoptions=n1jrql
+setlocal formatexpr=
+setlocal formatlistpat=^\\s*\\d\\+\\.\\s\\+\\|^\\s*[-*+]\\s\\+\\|^\\[^\\ze[^\\]]\\+\\]:\\&^.\\{4\\}
+setlocal formatoptions=jntq1l
 setlocal iminsert=0
 setlocal imsearch=-1
 setlocal includeexpr=
 setlocal indentexpr=v:lua.require'arborist.indent'.indentexpr()
-setlocal indentkeys=0{,0},0),0],0,,!^F,o,O,e
+setlocal indentkeys=0{,0},0),0],:,0#,!^F,o,O,e
 setlocal infercase
-setlocal iskeyword=@,48-57,_,192-255,-,#,$
+setlocal iskeyword=@,48-57,_,192-255,-
 setlocal lhistory=10
 setlocal linebreak
 setlocal nolisp
 setlocal lispoptions=
 setlocal list
-setlocal matchpairs=(:),{:},[:]
+setlocal matchpairs=(:),{:},[:],<:>
 setlocal modeline
 setlocal modifiable
 setlocal nrformats=bin,hex
 setlocal number
 setlocal numberwidth=4
-setlocal omnifunc=v:lua.vim.lsp.omnifunc
+setlocal omnifunc=htmlcomplete#CompleteTags
 setlocal nopreserveindent
 setlocal nopreviewwindow
 setlocal quoteescape=\\
@@ -95,7 +109,7 @@ setlocal scrollback=-1
 setlocal noscrollbind
 setlocal shiftwidth=2
 setlocal signcolumn=yes
-setlocal nosmartindent
+setlocal smartindent
 setlocal nosmoothscroll
 setlocal softtabstop=-1
 setlocal nospell
@@ -104,19 +118,19 @@ setlocal spellfile=
 setlocal spelllang=en_us,de_de
 setlocal spelloptions=camel,noplainbuffer
 setlocal statuscolumn=
-setlocal suffixesadd=.ts,.d.ts,.tsx,.js,.jsx,.cjs,.mjs
+setlocal suffixesadd=
 setlocal noswapfile
 setlocal synmaxcol=3000
 if &syntax != ''
 setlocal syntax=
 endif
-setlocal tabstop=2
+setlocal tabstop=4
 setlocal tagfunc=v:lua.vim.lsp.tagfunc
-setlocal textwidth=0
+setlocal textwidth=80
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#...%*%#WinBarSeparator#/%*%#WinBarPath#components%*%#WinBarSeparator#/%*%#WinBarFilename#mdx.tsx%*%=
+setlocal winbar=%#WinBarFilename#README.md%*%=
 setlocal winblend=10
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -125,13 +139,43 @@ setlocal winhighlight=
 setlocal nowinpinned
 setlocal nowrap
 setlocal wrapmargin=0
-9
+74
 sil! normal! zo
-let s:l = 17 - ((16 * winheight(0) + 10) / 21)
+76
+sil! normal! zo
+78
+sil! normal! zo
+113
+sil! normal! zo
+115
+sil! normal! zo
+118
+sil! normal! zo
+119
+sil! normal! zo
+121
+sil! normal! zo
+122
+sil! normal! zo
+177
+sil! normal! zo
+182
+sil! normal! zo
+183
+sil! normal! zo
+190
+sil! normal! zo
+192
+sil! normal! zo
+210
+sil! normal! zo
+214
+sil! normal! zo
+let s:l = 194 - ((45 * winheight(0) + 25) / 51)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 17
+keepjumps 194
 normal! 0
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'

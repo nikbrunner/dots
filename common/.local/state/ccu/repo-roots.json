@@ -128,13 +128,14 @@
     "name": "imfusion-portal",
     "work": true,
     "session_dirs": [
+      "~/repos/imfusion/cp/CP-105-security-avoid-email-spamming-merge-conflicts-resolved",
       "~/repos/imfusion/cp/imfusion-portal",
       "~/repos/imfusion/cp/imfusion-portal-CP-89",
       "~/repos/imfusion/cp/imfusion-portal-CP-89/fe",
       "~/repos/imfusion/cp/imfusion-portal-CP-89/fe/.claude/skills",
       "~/repos/imfusion/cp/imfusion-portal-CP-89/fe/src/partials"
     ],
-    "last_seen": "2026-08-05"
+    "last_seen": "2026-09-02"
   },
   "cp/labels-web": {
     "root": "~/repos/imfusion/cp/labels-web",
@@ -374,9 +375,10 @@
     "work": true,
     "session_dirs": [
       "~/repos/imfusion/websdk/web-sdk",
-      "~/repos/imfusion/websdk/web-sdk-wk-fumadocs"
+      "~/repos/imfusion/websdk/web-sdk-wk-fumadocs",
+      "~/repos/imfusion/websdk/web-sdk-wk-fumadocs/packages/docs"
     ],
-    "last_seen": "2026-08-27"
+    "last_seen": "2026-09-01"
   },
   "websdk/web-ui": {
     "root": "~/repos/imfusion/websdk/web-ui",

@@ -53,7 +53,7 @@
     "deny": [],
     "ask": []
   },
-  "model": "sonnet",
+  "model": "opus[1m]",
   "hooks": {
     "Notification": [],
     "PostToolUse": [
@@ -164,8 +164,7 @@
     "rust-analyzer-lsp@claude-plugins-official": true,
     "typescript-lsp@claude-plugins-official": true,
     "storybook@storybook": true,
-    "superpowers@claude-plugins-official": true,
-    "nopus@nopus": true
+    "superpowers@claude-plugins-official": true
   },
   "extraKnownMarketplaces": {
     "impeccable": {
@@ -210,6 +209,12 @@
         "source": "github",
         "repo": "Vistyy/nopus"
       }
+    },
+    "caveman": {
+      "source": {
+        "source": "github",
+        "repo": "JuliusBrussee/caveman"
+      }
     }
   },
   "alwaysThinkingEnabled": false,
@@ -224,7 +229,6 @@
   "theme": "auto",
   "editorMode": "vim",
   "agentPushNotifEnabled": true,
-  "skipAutoPermissionPrompt": true,
   "autoMode": {
     "soft_deny": [
       "$defaults",

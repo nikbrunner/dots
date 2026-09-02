@@ -1805,7 +1805,7 @@ checksum = "sha256:57f71ab3652e797d84acddc79c81cc9ff1c6ddb2a1974cdb83f00fee9bff4
 url = "https://nodejs.org/dist/v24.19.0/node-v24.19.0-win-x64.zip"
 
 [[tools."npm:@anthropic-ai/claude-code"]]
-version = "2.1.251"
+version = "2.1.258"
 backend = "npm:@anthropic-ai/claude-code"
 
 [tools."npm:@anthropic-ai/claude-code".options]
@@ -1820,7 +1820,7 @@ version = "0.84.4"
 backend = "npm:@earendil-works/pi-coding-agent"
 
 [[tools."npm:@openai/codex"]]
-version = "0.151.0"
+version = "0.152.1"
 backend = "npm:@openai/codex"
 
 [[tools."npm:@readwise/cli"]]
@@ -2069,6 +2069,55 @@ backend = "pipx:eyeD3"
 [[tools."pipx:gallery-dl"]]
 version = "1.32.10"
 backend = "pipx:gallery-dl"
+
+[[tools.pre-commit]]
+version = "4.6.2"
+backend = "aqua:pre-commit/pre-commit"
+
+[tools.pre-commit."platforms.linux-arm64"]
+checksum = "sha256:43c09a73d82af8efff09900e60d76d67a2c3d990613c3c770b2b5c4418a16c4b"
+url = "https://github.com/pre-commit/pre-commit/releases/download/v4.6.2/pre-commit-4.6.2.pyz"
+url_api = "https://api.github.com/repos/pre-commit/pre-commit/releases/assets/509317714"
+
+[tools.pre-commit."platforms.linux-arm64-musl"]
+checksum = "sha256:43c09a73d82af8efff09900e60d76d67a2c3d990613c3c770b2b5c4418a16c4b"
+url = "https://github.com/pre-commit/pre-commit/releases/download/v4.6.2/pre-commit-4.6.2.pyz"
+url_api = "https://api.github.com/repos/pre-commit/pre-commit/releases/assets/509317714"
+
+[tools.pre-commit."platforms.linux-x64"]
+checksum = "sha256:43c09a73d82af8efff09900e60d76d67a2c3d990613c3c770b2b5c4418a16c4b"
+url = "https://github.com/pre-commit/pre-commit/releases/download/v4.6.2/pre-commit-4.6.2.pyz"
+url_api = "https://api.github.com/repos/pre-commit/pre-commit/releases/assets/509317714"
+
+[tools.pre-commit."platforms.linux-x64-baseline"]
+checksum = "sha256:43c09a73d82af8efff09900e60d76d67a2c3d990613c3c770b2b5c4418a16c4b"
+url = "https://github.com/pre-commit/pre-commit/releases/download/v4.6.2/pre-commit-4.6.2.pyz"
+url_api = "https://api.github.com/repos/pre-commit/pre-commit/releases/assets/509317714"
+
+[tools.pre-commit."platforms.linux-x64-musl"]
+checksum = "sha256:43c09a73d82af8efff09900e60d76d67a2c3d990613c3c770b2b5c4418a16c4b"
+url = "https://github.com/pre-commit/pre-commit/releases/download/v4.6.2/pre-commit-4.6.2.pyz"
+url_api = "https://api.github.com/repos/pre-commit/pre-commit/releases/assets/509317714"
+
+[tools.pre-commit."platforms.linux-x64-musl-baseline"]
+checksum = "sha256:43c09a73d82af8efff09900e60d76d67a2c3d990613c3c770b2b5c4418a16c4b"
+url = "https://github.com/pre-commit/pre-commit/releases/download/v4.6.2/pre-commit-4.6.2.pyz"
+url_api = "https://api.github.com/repos/pre-commit/pre-commit/releases/assets/509317714"
+
+[tools.pre-commit."platforms.macos-arm64"]
+checksum = "sha256:43c09a73d82af8efff09900e60d76d67a2c3d990613c3c770b2b5c4418a16c4b"
+url = "https://github.com/pre-commit/pre-commit/releases/download/v4.6.2/pre-commit-4.6.2.pyz"
+url_api = "https://api.github.com/repos/pre-commit/pre-commit/releases/assets/509317714"
+
+[tools.pre-commit."platforms.macos-x64"]
+checksum = "sha256:43c09a73d82af8efff09900e60d76d67a2c3d990613c3c770b2b5c4418a16c4b"
+url = "https://github.com/pre-commit/pre-commit/releases/download/v4.6.2/pre-commit-4.6.2.pyz"
+url_api = "https://api.github.com/repos/pre-commit/pre-commit/releases/assets/509317714"
+
+[tools.pre-commit."platforms.macos-x64-baseline"]
+checksum = "sha256:43c09a73d82af8efff09900e60d76d67a2c3d990613c3c770b2b5c4418a16c4b"
+url = "https://github.com/pre-commit/pre-commit/releases/download/v4.6.2/pre-commit-4.6.2.pyz"
+url_api = "https://api.github.com/repos/pre-commit/pre-commit/releases/assets/509317714"
 
 [[tools.prettier]]
 version = "3.9.6"
