@@ -1,5 +1,5 @@
 ---
-name: self-improvement
+name: self-reflection
 description: Use when the user explicitly asks to learn from something that went wrong in the current conversation or wants a correction turned into a durable improvement.
 argument-hint: "[what went wrong or what to inspect]"
 disable-model-invocation: true
