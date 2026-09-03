@@ -157,6 +157,18 @@ function usageTotals(ctx: ExtensionContext): { usage: Usage; cacheHit?: number }
 	return { usage, cacheHit };
 }
 
+function lastRoutedOpenRouterModel(ctx: ExtensionContext): string | undefined {
+	const currentModelId = ctx.model?.id;
+	if (!currentModelId) return undefined;
+	let routed: string | undefined;
+	for (const entry of ctx.sessionManager.getEntries()) {
+		const message = entry.type === "message" ? entry.message : undefined;
+		if (message?.role !== "assistant" || message.provider !== "openrouter" || message.model !== currentModelId) continue;
+		if (typeof message.responseModel === "string" && message.responseModel.length > 0) routed = message.responseModel;
+	}
+	return routed;
+}
+
 const OPENROUTER_PRICING_TTL_MS = 30 * 60 * 1000;
 
 export default function (pi: ExtensionAPI): void {
@@ -246,9 +258,25 @@ export default function (pi: ExtensionAPI): void {
 			const renderRows = (rows: FooterRow[], width: number): string[] =>
 				rows.map((row) => renderLine(row, width));
 			const indicator = (label: string): string => theme.fg("warning", `${label} `);
+			const icons = {
+				dir: "\uf07b",
+				branch: "\uf418",
+				diff: "\uf440",
+				skills: "\uf02d",
+				mcp: "\uec47",
+				context: "\uf0e4",
+				cache: "\uf0e7",
+				cost: "\uf155",
+				brain: "󰧑",
+				check: "✓",
+				error: "×",
+			};
+			ctx.ui.setWorkingIndicator({ frames: [theme.fg("warning", icons.brain)] });
+			ctx.ui.setHiddenThinkingLabel(theme.fg("warning", icons.brain));
 			const stateText = (): string => {
 				const color = state === "ready" ? "success" : state === "working" ? "warning" : "error";
-				return theme.bold(theme.fg(color, `${state === "working" ? "●" : state === "error" ? "×" : "✓"} ${state}`));
+				const glyph = state === "working" ? icons.brain : state === "error" ? icons.error : icons.check;
+				return theme.bold(theme.fg(color, glyph));
 			};
 			const contextText = (): string | undefined => {
 				const context = ctx.getContextUsage();
@@ -256,7 +284,7 @@ export default function (pi: ExtensionAPI): void {
 				const percent = context.percent;
 				const value = percent === null ? "?" : `${percent.toFixed(0)}%`;
 				const color = (percent ?? 0) > 90 ? "error" : (percent ?? 0) > 70 ? "warning" : "success";
-				return indicator("ctx") + theme.fg(color, `${value}/${formatTokens(context.contextWindow)}`);
+				return indicator(icons.context) + theme.fg(color, `${value}/${formatTokens(context.contextWindow)}`);
 			};
 
 			return {
@@ -268,9 +296,9 @@ export default function (pi: ExtensionAPI): void {
 				render(width: number): string[] {
 					if (width <= 0) return [];
 					const branch = footerData.getGitBranch();
-					const workspace = [`${indicator("dir")}${theme.bold(formatCwd(ctx.cwd))}`];
+					const workspace = [`${indicator(icons.dir)}${theme.bold(formatCwd(ctx.cwd))}`];
 					const git: string[] = [];
-					if (branch) git.push(`${indicator("br.")}${branch}${dirty ? theme.fg("warning", "*") : ""}`);
+					if (branch) git.push(`${indicator(icons.branch)}${branch}${dirty ? theme.fg("warning", "*") : ""}`);
 					if (branch && gitStatus) {
 						const statusParts = [
 							gitStatus.added > 0 ? theme.fg("success", `+${gitStatus.added}`) : undefined,
@@ -278,7 +306,7 @@ export default function (pi: ExtensionAPI): void {
 							gitStatus.deleted > 0 ? theme.fg("error", `-${gitStatus.deleted}`) : undefined,
 							gitStatus.untracked > 0 ? theme.fg("accent", `?${gitStatus.untracked}`) : undefined,
 						].filter((part): part is string => part !== undefined);
-						git.push(`${indicator("st.")}${statusParts.length > 0 ? statusParts.join(" ") : theme.fg("success", "clean")}`);
+						git.push(`${indicator(icons.diff)}${statusParts.length > 0 ? statusParts.join(" ") : theme.fg("success", "clean")}`);
 					}
 					if (linkedWorktree) git.push(theme.fg("muted", "worktree"));
 
@@ -293,7 +321,7 @@ export default function (pi: ExtensionAPI): void {
 						const color = mcp
 							? mcp.connectedCount === enabled ? "success" : mcp.connectedCount === 0 ? "error" : "warning"
 							: "accent";
-						mcpPart = indicator("mcp") + theme.fg(color, mcpStatus.replace(/^MCP:?\s*/, ""));
+						mcpPart = indicator(icons.mcp) + theme.fg(color, mcpStatus.replace(/^MCP:?\s*/, ""));
 					}
 
 					const totals = usageTotals(ctx);
@@ -310,35 +338,39 @@ export default function (pi: ExtensionAPI): void {
 					const context = contextText();
 					const cache = totals.cacheHit === undefined
 						? undefined
-						: indicator("hit") + `${totals.cacheHit.toFixed(0)}%`;
+						: indicator(icons.cache) + `${totals.cacheHit.toFixed(0)}%`;
 					const session = [
 						...(context ? [context] : []),
 						...(cache ? [cache] : []),
-						`${indicator("$")}${sessionCost.toFixed(3)}${subscription ? theme.fg("dim", " (sub)") : ""}`,
+						`${indicator(icons.cost)}${sessionCost.toFixed(3)}${subscription ? theme.fg("dim", " (sub)") : ""}`,
 						`${indicator("↑")}${formatTokens(totals.usage.input)} ${indicator("↓")}${formatTokens(totals.usage.output)}`,
 					];
 
 					const provider = ctx.model?.provider;
+					const routedModel = lastRoutedOpenRouterModel(ctx);
 					const providerName = providerDisplayName(provider);
+					const providerParts: string[] = [];
+					if (providerName) {
+						const codexLabel = isCodexProvider(provider)
+							? getActiveAccountLabelFromStatus(footerData.getExtensionStatuses().get("accounts") ?? "")
+							: undefined;
+						providerParts.push(theme.bold(theme.fg("accent", `${providerName}${codexLabel ? ` [${codexLabel}]` : ""}`)));
+					}
 					const modelParts: string[] = [];
 					if (model) {
 						modelParts.push(theme.bold(model));
-						if (thinking) modelParts.push(theme.fg("dim", `[${thinking}]`));
-						if (providerName) {
-							const codexLabel = isCodexProvider(provider)
-								? getActiveAccountLabelFromStatus(footerData.getExtensionStatuses().get("accounts") ?? "")
-								: undefined;
-							modelParts.push(theme.fg("muted", `by ${providerName}${codexLabel ? ` [${codexLabel}]` : ""}`));
-						}
+						if (routedModel) modelParts.push(theme.italic(`(${routedModel})`));
+						if (thinking) modelParts.push(theme.fg("accent", `${icons.brain} ${thinking}`));
 					}
 
 					const runtimeParts = [stateText()];
 					if (openrouter) {
+						const resolvedId = routedModel ?? openrouter.id;
 						const fallback = openrouter.cost
 							? { prompt: openrouter.cost.input / 1_000_000, completion: openrouter.cost.output / 1_000_000 }
 							: undefined;
-						const rates = openrouterPricing?.get(openrouter.id) ?? fallback;
-						if (rates) {
+						const rates = openrouterPricing?.get(resolvedId) ?? openrouterPricing?.get(openrouter.id) ?? fallback;
+						if (rates && (rates.prompt > 0 || rates.completion > 0)) {
 							runtimeParts.push(theme.fg("accent", `in ${formatModelRate(rates.prompt)} · out ${formatModelRate(rates.completion)}`));
 						}
 					}
@@ -346,13 +378,40 @@ export default function (pi: ExtensionAPI): void {
 						const usage = formatUsageFooterStatus(footerData.getExtensionStatuses().get("usage") ?? "");
 						if (usage) runtimeParts.push(theme.fg("accent", usage));
 					}
-					if (mcpPart) runtimeParts.push(mcpPart);
+
+					const skillNames = new Set<string>();
+					for (const entry of ctx.sessionManager.getEntries()) {
+						const message = entry.type === "message" ? entry.message : undefined;
+						if (message?.role !== "user") continue;
+						const content = message.content;
+						const text = typeof content === "string"
+							? content
+							: Array.isArray(content)
+								? content
+									.filter((block) => typeof (block as { text?: unknown })?.text === "string")
+									.map((block) => (block as { text: string }).text)
+									.join("\n")
+								: "";
+						for (const match of text.matchAll(/<skill name="([^"]+)"/g)) skillNames.add(match[1]);
+					}
+					const skillsAvailable = pi.getCommands().filter((command) => command.source === "skill").length;
+					const skillsPart = skillsAvailable > 0
+						? indicator(icons.skills) + (skillNames.size > 0 ? theme.fg("accent", `${skillNames.size}`) : "")
+							+ theme.fg("dim", `/${skillsAvailable}`)
+						: undefined;
 
 					const rows: FooterRow[] = [];
 					if (git.length > 0) rows.push({ label: "GIT", parts: git });
-					if (modelParts.length > 0) rows.push({ label: "AGENT", parts: modelParts });
-					rows.push({ label: modelParts.length > 0 ? "     " : "AGENT", parts: runtimeParts });
-					rows.push({ label: "SESSION", parts: session });
+					if (modelParts.length > 0) {
+						rows.push({ label: "AGT", parts: providerParts });
+						rows.push({ label: "     ", parts: modelParts });
+						rows.push({ label: "     ", parts: runtimeParts });
+					} else {
+						rows.push({ label: "AGT", parts: runtimeParts });
+					}
+					const extParts = [skillsPart, mcpPart].filter((part): part is string => part !== undefined);
+					if (extParts.length > 0) rows.push({ label: "EXT", parts: extParts });
+					rows.push({ label: "SES", parts: session });
 					return [renderLine({ label: "WORKSPACE", parts: [workspace.join("  ")] }, width), ...renderRows(rows, width)];
 				},
 			};

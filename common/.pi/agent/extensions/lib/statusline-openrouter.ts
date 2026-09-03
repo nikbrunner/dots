@@ -14,7 +14,7 @@ export interface UsageLike {
 export interface SessionEntriesSource {
 	getEntries(): ReadonlyArray<{
 		type: string;
-		message?: { role?: string; provider?: string; model?: string; usage?: UsageLike };
+		message?: { role?: string; provider?: string; model?: string; responseModel?: string; usage?: UsageLike };
 		usage?: UsageLike;
 	}>;
 }
@@ -34,6 +34,8 @@ export function parseOpenRouterPricing(payload: unknown): Map<string, OpenRouter
 		const completionRate = typeof completion === "string" ? Number(completion) : completion;
 		if (typeof promptRate !== "number" || !Number.isFinite(promptRate)) continue;
 		if (typeof completionRate !== "number" || !Number.isFinite(completionRate)) continue;
+		// OpenRouter marks dynamically-priced models (e.g. openrouter/auto) with -1 rates.
+		if (promptRate <= 0 || completionRate <= 0) continue;
 		pricing.set(id, { prompt: promptRate, completion: completionRate });
 	}
 	return pricing;
@@ -57,7 +59,7 @@ export interface CostAdjustment {
 export function openrouterCostAdjustment(
 	entries: ReadonlyArray<{
 		type: string;
-		message?: { role?: string; provider?: string; model?: string; usage?: UsageLike };
+		message?: { role?: string; provider?: string; model?: string; responseModel?: string; usage?: UsageLike };
 		usage?: UsageLike;
 	}>,
 	pricing: Map<string, OpenRouterPricing>,
@@ -69,7 +71,8 @@ export function openrouterCostAdjustment(
 		if (entry.type !== "message" || message?.role !== "assistant" || message.provider !== "openrouter") continue;
 		const usage = message.usage;
 		if (!usage) continue;
-		const rates = message.model ? pricing.get(message.model) : undefined;
+		// With routing endpoints (openrouter/auto) each request may resolve to a different model.
+		const rates = pricing.get(message.responseModel ?? message.model ?? "");
 		if (!rates) continue;
 		estimated += usage.cost.total;
 		live += openrouterUsageCost(rates, usage);
