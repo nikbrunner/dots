@@ -50,7 +50,7 @@ args = ["@eslint/mcp@latest"]
 
 [mcp_servers.chrome-devtools]
 command = "npx"
-args = ["-y", "chrome-devtools-mcp@latest", "--no-usage-statistics"]
+args = ["-y", "chrome-devtools-mcp@latest", "--no-usage-statistics", "--isolated"]
 
 [mcp_servers.storybook]
 url = "http://localhost:6006/mcp"

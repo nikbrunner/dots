@@ -124,7 +124,7 @@ Prefer these over generic web fetch or ad-hoc CLI tools.
 
 Chrome DevTools MCP covers both driving (navigate, click, fill, screenshot, extract) and inspecting (Lighthouse, performance traces, network requests, console, heap snapshots). It launches Chrome itself via Puppeteer, so the OS default browser is never involved.
 
-It runs against its own profile under `$HOME/.cache/chrome-devtools-mcp/`, not the daily Chrome, so logged-in sessions are not inherited. Auth-dependent work needs a fresh login in that profile, or a server flag (`--autoConnect` / `--browserUrl`) to attach to a debuggable Chrome. Those flags live in the MCP server config, which dots does not track for Claude Code, so setting one is a manual step plus a restart.
+It runs with `--isolated`, so each server instance gets a throwaway profile under `$TMPDIR` that Puppeteer deletes when the browser closes. Nothing is inherited from the daily Chrome and nothing survives a restart, which is what lets several agent sessions drive Chrome at once without fighting over one profile directory. Auth-dependent work therefore logs in every time. To keep a session, point the server at a persistent profile with `--userDataDir <path>`, or attach to an already-debuggable Chrome with `--autoConnect` / `--browserUrl`. Those flags live in the MCP server config, so changing one means editing the config and restarting the agent.
 
 Snapshots and screenshots return through MCP and cost real context. Prefer `take_snapshot` over `take_screenshot` when the question is about structure or text rather than pixels.
 
