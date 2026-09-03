@@ -382,7 +382,7 @@ export default function (pi: ExtensionAPI): void {
 					const skillNames = new Set<string>();
 					for (const entry of ctx.sessionManager.getEntries()) {
 						const message = entry.type === "message" ? entry.message : undefined;
-						if (message?.role !== "user") continue;
+						if (message?.role !== "user" && message?.role !== "assistant") continue;
 						const content = message.content;
 						const text = typeof content === "string"
 							? content
@@ -393,6 +393,7 @@ export default function (pi: ExtensionAPI): void {
 									.join("\n")
 								: "";
 						for (const match of text.matchAll(/<skill name="([^"]+)"/g)) skillNames.add(match[1]);
+						for (const match of text.matchAll(/\[\s?skill\s?\]\s*([a-z0-9][a-z0-9-]*)/gi)) skillNames.add(match[1]);
 					}
 					const skillsAvailable = pi.getCommands().filter((command) => command.source === "skill").length;
 					const skillsPart = skillsAvailable > 0
