@@ -1,6 +1,6 @@
 {
   "theme": "terminal",
-  "lastChangelogVersion": "0.84.4",
+  "lastChangelogVersion": "0.85.1",
   "packages": [
     "npm:pi-web-access",
     "npm:@ff-labs/pi-fff",
@@ -28,7 +28,8 @@
     "openai-codex/gpt-5.6-sol",
     "openai-codex/gpt-5.6-luna",
     "openrouter/z-ai/glm-5.3-flash",
-    "openrouter/deepseek/deepseek-v4-flash-0731"
+    "openrouter/deepseek/deepseek-v4-flash-0731",
+    "openrouter/openrouter/auto"
   ],
   "hideThinkingBlock": true,
   "compaction": {

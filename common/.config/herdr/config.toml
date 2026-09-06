@@ -248,10 +248,12 @@ command = "dots.herdr-somars.open"
 description = "Radio"
 
 [[keys.command]]
-description = "Open Helm"
 key = "alt+space"
-type = "plugin_action"
-command = "helm-herdr.open"
+type = "popup"
+command = "helm-herdr"
+description = "Open Helm"
+width = "100%"
+height = "100%"
 
 [[keys.command]]
 key = "alt+shift+o"

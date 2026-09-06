@@ -417,8 +417,9 @@
       "~/repos/imfusion/websdk/web-ui/.workspaces/websdk-207-skills",
       "~/repos/imfusion/websdk/web-ui/node_modules/@base-ui",
       "~/repos/imfusion/websdk/web-ui/src/llms/skills",
-      "~/repos/imfusion/websdk/websdk-169-storybook-controls"
+      "~/repos/imfusion/websdk/websdk-169-storybook-controls",
+      "~/repos/imfusion/websdk/websdk-224-public-release"
     ],
-    "last_seen": "2026-08-27"
+    "last_seen": "2026-09-02"
   }
 }

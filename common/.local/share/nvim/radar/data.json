@@ -78,9 +78,17 @@
           {
             "filename": "packages/web-ui/src/tokens/showcase.stories.tsx",
             "label": "1"
+          },
+          {
+            "filename": "docs/releases.md",
+            "label": "2"
+          },
+          {
+            "filename": "CHANGELOG.md",
+            "label": "3"
           }
         ],
-        "lastAccessed": 1788354941
+        "lastAccessed": 1788535730
       }
     },
     "~/repos/nikbrunner/black-atom": {
@@ -95,7 +103,7 @@
             "label": "2"
           }
         ],
-        "lastAccessed": 1788339049
+        "lastAccessed": 1788613576
       }
     },
     "~/repos/nikbrunner/dots": {
@@ -122,7 +130,7 @@
             "label": "6"
           }
         ],
-        "lastAccessed": 1788348941
+        "lastAccessed": 1788614130
       }
     },
     "~/repos/nikbrunner/imf-notes": {
@@ -141,7 +149,7 @@
             "label": "3"
           }
         ],
-        "lastAccessed": 1788354850
+        "lastAccessed": 1788514604
       }
     },
     "~/repos/nikbrunner/minifugit.nvim": {
@@ -183,7 +191,7 @@
             "label": "6"
           }
         ],
-        "lastAccessed": 1788246110
+        "lastAccessed": 1788691245
       }
     }
   }
