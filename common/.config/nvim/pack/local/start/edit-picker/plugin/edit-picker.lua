@@ -1,10 +1,9 @@
 -- Custom pickers with no stock Snacks source: frecency-aware smart files,
 -- project/worktree switching, related documents, and buffer jump history.
 -- Backed by Snacks.picker.pick. (git_status uses the builtin source.)
-Edit.pickers = {}
 
 local function get_project_dirs()
-	local repos_path = require("config").pathes.repos
+	local repos_path = vim.fn.expand("~/repos")
 	local dirs = {}
 	local orgs = vim.fn.readdir(repos_path, function(name)
 		return vim.fn.isdirectory(repos_path .. "/" .. name) == 1
@@ -24,44 +23,54 @@ local function get_project_dirs()
 	return dirs
 end
 
-function _G.Edit.pickers.smart_files()
+local function smart_files_finder(opts, _ctx)
 	local MiniVisits = require("mini.visits")
 	local cwd = vim.fn.getcwd()
 	local current = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(0), ":.")
 
-	local visited = {}
+	local rg_args = { "rg", "--files", "--glob", "!.git" }
+	if opts.hidden then
+		table.insert(rg_args, "--hidden")
+	end
+	if opts.ignored then
+		table.insert(rg_args, "--no-ignore")
+	end
+	if opts.follow then
+		table.insert(rg_args, "-L")
+	end
+
+	local visited, visited_set = {}, {}
 	for _, path in ipairs(MiniVisits.list_paths(cwd)) do
 		local rel = vim.fn.fnamemodify(path, ":.")
 		if rel ~= current and vim.uv.fs_stat(path) then
-			table.insert(visited, rel)
+			visited[#visited + 1] = rel
+			visited_set[rel] = true
 		end
 	end
 
-	local visited_set = {}
-	for _, f in ipairs(visited) do
-		visited_set[f] = true
-	end
-
-	local all_files = vim.fn.systemlist({ "rg", "--files", "--hidden", "--glob", "!.git" })
 	local unvisited = vim.tbl_filter(function(f)
 		return f ~= current and not visited_set[f]
-	end, all_files)
+	end, vim.fn.systemlist(rg_args))
 
 	local files = vim.list_extend(vim.deepcopy(visited), unvisited)
 	local items = {}
 	for idx, f in ipairs(files) do
 		items[#items + 1] = { text = f, file = f, idx = idx }
 	end
+	return items
+end
 
+local function smart_files()
 	Snacks.picker.pick({
 		source = "smart_files",
-		items = items,
+		finder = smart_files_finder,
 		format = "file",
 		title = "Files",
+		hidden = true,
 	})
 end
 
-function _G.Edit.pickers.project_switch()
+local function project_switch()
 	local get_session_name = require("lib.sessions").get_session_name
 	local items = {}
 	for idx, d in ipairs(get_project_dirs()) do
@@ -98,7 +107,7 @@ function _G.Edit.pickers.project_switch()
 	})
 end
 
-function _G.Edit.pickers.worktree_switch()
+local function worktree_switch()
 	local git_root = vim.fs.root(0, ".git")
 	if not git_root then
 		vim.notify("Not in a git repository", vim.log.levels.ERROR)
@@ -140,7 +149,7 @@ function _G.Edit.pickers.worktree_switch()
 	})
 end
 
-function _G.Edit.pickers.related_documents()
+local function related_documents()
 	local current_filename = vim.fn.expand("%:t:r")
 	local base_name = current_filename:match("^([^.]+)") or current_filename
 	local current_path = vim.fn.expand("%:.")
@@ -172,7 +181,7 @@ function _G.Edit.pickers.related_documents()
 	})
 end
 
-function _G.Edit.pickers.buffer_jumps()
+local function buffer_jumps()
 	local current_buf = vim.api.nvim_get_current_buf()
 	local jumps = vim.fn.getjumplist()[1]
 	local items = {}
@@ -204,3 +213,15 @@ function _G.Edit.pickers.buffer_jumps()
 		end,
 	})
 end
+
+Edit.later(function()
+	local map = vim.keymap.set
+
+	-- stylua: ignore start
+	map("n", "<leader><leader>", function() smart_files() end,       { desc = "Files (smart)" })
+	map("n", "<leader>aw",       function() project_switch() end,    { desc = "[W]orkspace" })
+	map("n", "<leader>ww",       function() worktree_switch() end,   { desc = "[W]orktrees" })
+	map("n", "<leader>dr",       function() related_documents() end, { desc = "[R]elated Documents" })
+	map("n", "<leader>dj",       function() buffer_jumps() end,      { desc = "[J]umps" })
+	-- stylua: ignore end
+end)

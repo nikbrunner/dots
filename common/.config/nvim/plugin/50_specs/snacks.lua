@@ -173,7 +173,6 @@ Edit.later(function()
 	map("n", "<leader>'",   function() Snacks.picker.registers() end, { desc = "Registers" })
 
 	-- App
-	map("n", "<leader><leader>", function() Edit.pickers.smart_files() end, { desc = "Files (smart)" })
 	map("n", "<leader>aa",  function() Snacks.picker.commands() end, { desc = "[A]ctions" })
 	map("n", "<leader>ag",  function() Snacks.lazygit() end, { desc = "[G]it Module" })
 	map("n", "<leader>ad",  function() Snacks.picker.files() end, { desc = "[D]ocument (in project)" })
@@ -183,7 +182,6 @@ Edit.later(function()
 	map("n", "<leader>aht", function() Snacks.picker.help() end, { desc = "[T]ags" })
 	map("n", "<leader>ar",  function() Snacks.picker.recent() end, { desc = "[R]ecent Documents (Anywhere)" })
 	map("n", "<leader>at",  function() Snacks.picker.colorschemes() end, { desc = "[T]hemes" })
-	map("n", "<leader>aw",  function() Edit.pickers.project_switch() end, { desc = "[W]orkspace" })
 	map("n", "<leader>a,",  function() Snacks.picker.files({ cwd = dots_path }) end, { desc = "[,]Settings (Dots)" })
 
 	-- Workspace
@@ -196,12 +194,9 @@ Edit.later(function()
 	map("n", "<leader>wc",  function() Snacks.picker.git_diff() end, { desc = "[C]hanges" })
 	map("n", "<leader>wgb", function() Snacks.picker.git_branches() end, { desc = "[B]ranches" })
 	map("n", "<leader>wgh", function() Snacks.picker.git_log() end, { desc = "[H]istory" })
-	map("n", "<leader>ww",  function() Edit.pickers.worktree_switch() end, { desc = "[W]orktrees" })
 
 	-- Document
-	map("n", "<leader>dr",  function() Edit.pickers.related_documents() end, { desc = "[R]elated Documents" })
 	map("n", "<leader>dc",  function() Snacks.picker.git_diff({ path = vim.fn.expand("%") }) end, { desc = "[C]hanges" })
-	map("n", "<leader>dj",  function() Edit.pickers.buffer_jumps() end, { desc = "[J]umps" })
 	map("n", "<leader>dp",  function() Snacks.picker.diagnostics({ scope = "current" }) end, { desc = "[P]roblems" })
 	map("n", "<leader>ds",  function() Snacks.picker.lsp_symbols() end, { desc = "[S]ymbols" })
 	map("n", "<leader>dt",  function() Snacks.picker.lines() end, { desc = "[T]ext" })
