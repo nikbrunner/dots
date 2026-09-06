@@ -269,7 +269,7 @@ autostart = true
 # debug = true
 
 [search]
-filters = ["workspace", "session", "global"]
+filters = ["directory", "workspace", "session", "global"]
 
 [ai]
 enabled = true
