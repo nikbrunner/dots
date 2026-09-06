@@ -21,7 +21,7 @@
     "extensions/ask-user-inline.ts"
   ],
   "defaultProvider": "openai-codex",
-  "defaultModel": "gpt-5.6-luna",
+  "defaultModel": "gpt-6-astra",
   "enabledModels": [
     "openai-codex/gpt-5.3-codex-spark",
     "openai-codex/gpt-5.6-terra",
@@ -29,7 +29,8 @@
     "openai-codex/gpt-5.6-luna",
     "openrouter/z-ai/glm-5.3-flash",
     "openrouter/deepseek/deepseek-v4-flash-0731",
-    "openrouter/openrouter/auto"
+    "openrouter/openrouter/auto",
+    "openai-codex/gpt-6-astra"
   ],
   "hideThinkingBlock": true,
   "compaction": {
