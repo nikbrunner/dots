@@ -1,0 +1,37 @@
+pre-commit:
+  jobs:
+    - name: markdown
+      glob:
+        - "*.md"
+        - "**/*.md"
+      file_types:
+        - not symlink
+      run: prettier --check {staged_files}
+
+    - name: shell
+      glob:
+        - "*.{sh,bash}"
+        - "**/*.{sh,bash}"
+        - "common/.local/bin/*"
+        - "arch/.local/bin/*"
+      file_types:
+        - not symlink
+        - text/x-shellscript
+        - text/x-sh
+      run: shfmt -d {staged_files}
+
+pre-push:
+  jobs:
+    - name: markdown
+      run: prettier --check "**/*.md"
+    - name: shell
+      glob:
+        - "*.{sh,bash}"
+        - "**/*.{sh,bash}"
+        - "common/.local/bin/*"
+        - "arch/.local/bin/*"
+      file_types:
+        - not symlink
+        - text/x-shellscript
+        - text/x-sh
+      run: shfmt -d {push_files}

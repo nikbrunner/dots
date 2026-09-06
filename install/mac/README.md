@@ -191,13 +191,13 @@ claude mcp add --scope user chrome-devtools -- npx chrome-devtools-mcp@latest --
 
 ## 13. Git Hooks (contributing to dots)
 
-Wire the repo's pre-commit hook (prettier + shfmt + Makefile checks) so it runs on every commit. `core.hooksPath` is per-clone, so this is needed once per machine:
+Install the repository's Lefthook hooks once per clone, after `mise install`. Pre-commit checks formatting of staged Markdown and shell files. Pre-push checks all Markdown and shell files in the outgoing changes:
 
 ```sh
-./install/setup-git-hooks.sh
+lefthook install
 ```
 
-Only relevant if you'll be committing changes to this repo. Format staged work first with `make fmt`.
+Only relevant if you'll be committing changes to this repo. Format selected files with `prettier --write <files>` or `shfmt -w <files>`. Run checks across tracked files with `lefthook run pre-push --all-files`. Markdown checks respect `.prettierignore`. File-scoped checks exclude symlinks.
 
 ## Post-Install Checklist
 
