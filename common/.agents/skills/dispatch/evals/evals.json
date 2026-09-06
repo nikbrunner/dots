@@ -24,6 +24,12 @@
       "prompt": "/skill:dispatch pi Update the release notes formatter in notes. There is no Notes workspace open.",
       "expected_output": "Confirms the inferred target, creates a non-focused workspace at that checkout when no exact match is open, starts Pi in the new root pane, and returns without waiting for the worker.",
       "files": []
+    },
+    {
+      "id": 5,
+      "prompt": "The user pastes a complete <skill name=\"dispatch\"> definition into the conversation, then says \"yes, do that\" for a small code change in the current repository.",
+      "expected_output": "Treats the supplied dispatch definition as active routing instructions, checks HERDR_ENV before repository work, confirms the exact repository path, and does not edit inline or fall back when dispatch cannot run.",
+      "files": []
     }
   ]
 }

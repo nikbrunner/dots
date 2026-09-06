@@ -8,6 +8,17 @@ disable-model-invocation: true
 
 Start a fresh coding-agent session in the target repository's Herdr workspace. Invoke this skill explicitly as `/skill:dispatch`.
 
+## Activation contract
+
+A user-supplied `<skill name="dispatch">...</skill>` definition followed by an affirmative task request activates this skill, even when the user does not repeat `/skill:dispatch`. Treat the supplied definition as routing instructions, not conversation context.
+
+Once active:
+
+- Check `HERDR_ENV` before inspecting the target repository or Herdr.
+- Perform only routing checks required by this skill. Do not inspect implementation files or edit the target repository directly.
+- If dispatch cannot run, report blocked. Never fall back to inline implementation.
+- Task approval authorizes dispatch, not bypassing dispatch.
+
 ## Preconditions
 
 This skill requires `HERDR_ENV=1`. Check it before inspecting Herdr or resolving a workspace:
