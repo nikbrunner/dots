@@ -10,13 +10,12 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +31 qmk/chocofi/src/keymap.c
+badd +36 qmk/chocofi/src/keymap.c
 argglobal
 %argdel
 edit qmk/chocofi/src/keymap.c
 tcd ~/repos/nikbrunner/koyo
 argglobal
-balt ~/repos/nikbrunner/koyo/qmk/chocofi/src/keymap.c
 setlocal keymap=
 setlocal noarabic
 setlocal autoindent
@@ -135,12 +134,12 @@ sil! normal! zo
 sil! normal! zo
 290
 sil! normal! zo
-let s:l = 30 - ((24 * winheight(0) + 21) / 42)
+let s:l = 36 - ((35 * winheight(0) + 35) / 71)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 30
-normal! 0
+keepjumps 36
+normal! 0137|
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
@@ -154,6 +153,7 @@ if filereadable(s:sx)
 endif
 let &g:so = s:so_save | let &g:siso = s:siso_save
 set hlsearch
+nohlsearch
 doautoall SessionLoadPost
 unlet SessionLoad
 " vim: set ft=vim :
