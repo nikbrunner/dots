@@ -197,7 +197,7 @@ Edit.later(function()
 
 	-- Document
 	map("n", "<leader>dc",  function() Snacks.picker.git_diff({ path = vim.fn.expand("%") }) end, { desc = "[C]hanges" })
-	map("n", "<leader>dp",  function() Snacks.picker.diagnostics({ scope = "current" }) end, { desc = "[P]roblems" })
+	map("n", "<leader>dp",  function() Snacks.picker.diagnostics_buffer({ scope = "current" }) end, { desc = "[P]roblems" })
 	map("n", "<leader>ds",  function() Snacks.picker.lsp_symbols() end, { desc = "[S]ymbols" })
 	map("n", "<leader>dt",  function() Snacks.picker.lines() end, { desc = "[T]ext" })
 
