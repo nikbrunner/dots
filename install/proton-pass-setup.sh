@@ -27,6 +27,7 @@ if [[ "$OS" == "Darwin" ]]; then
     pass-cli ssh-agent daemon stop >/dev/null 2>&1 || true
     pass-cli ssh-agent daemon start
     export SSH_AUTH_SOCK="$HOME/.ssh/proton-pass-agent.sock"
+    launchctl setenv SSH_AUTH_SOCK "$HOME/.ssh/proton-pass-agent.sock"
     sleep 2
     echo "==> Loaded SSH keys:"
     ssh-add -l
