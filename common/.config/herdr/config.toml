@@ -213,7 +213,7 @@ height = "80%"
 description = "Github (dev)"
 key = "alt+ctrl+g"
 type = "popup"
-command = "/Users/brunner/repos/nikbrunner/glab-tui-copy-issue-reference/target/debug/glab-tui"
+command = "~/repos/nikbrunner/glab-tui/target/release/glab-tui"
 width = "95%"
 height = "80%"
 
