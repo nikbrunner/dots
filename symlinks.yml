@@ -87,6 +87,7 @@ common:
   common/.config/mise: ~/.config/mise
   common/.config/rmpc: ~/.config/rmpc
   common/.config/mpd/mpd.conf: ~/.config/mpd/mpd.conf
+  common/.config/starship.toml: ~/.config/starship.toml
   common/.config/yazi: ~/.config/yazi
   common/.config/yt-dlp/config: ~/.config/yt-dlp/config
   common/.config/zoxide/seed.txt: ~/.config/zoxide/seed.txt

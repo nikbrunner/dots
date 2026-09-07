@@ -89,6 +89,7 @@ ninja = "latest"
 "github:opmr0/zeitx" = "latest"
 pre-commit = "latest"
 lefthook = "latest"
+starship = "latest"
 
 [env]
 _.file = "~/.env"

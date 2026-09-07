@@ -190,15 +190,8 @@ bindkey '^g' push-line-or-edit
 [[ -f "$HOME/.atuin/bin/env" ]] && . "$HOME/.atuin/bin/env"
 command -v atuin &>/dev/null && eval "$(atuin init zsh)"
 
-# Minimal prompt: gray path + green branch on line 1, yellow $ on line 2
-autoload -Uz vcs_info
-zstyle ':vcs_info:git:*' formats ' %F{green}%b%f'
-precmd_functions+=(vcs_info)
-setopt PROMPT_SUBST
-[[ -n $SSH_CONNECTION ]] && host_color=red || host_color=gray
-PROMPT='%F{$host_color}󰢹 %B%m%b%f %F{gray}%~%f${vcs_info_msg_0_}%(1j. %F{red}[%j]%f.)
-%F{yellow}$%f '
-
 # mise — runtime and tool version manager (MUST run last, after all
 # PATH modifications, so mise's tool paths win precedence over user dirs).
 command -v mise &>/dev/null && eval "$(mise activate zsh)"
+
+command -v starship &>/dev/null && eval "$(starship init zsh)"
