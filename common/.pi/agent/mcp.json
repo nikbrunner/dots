@@ -3,6 +3,11 @@
     "open-design": {
       "command": "open-design-mcp",
       "args": []
+    },
+    "atlassian-rovo-mcp": {
+      "type": "http",
+      "url": "https://mcp.atlassian.com/v1/mcp/authv2",
+      "directTools": true
     }
   },
   "imports": [
