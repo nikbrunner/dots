@@ -446,6 +446,23 @@ dots_stage_pi() {
     fi
 }
 
+dots_stage_codex() {
+    local repo_path="$1"
+    local codex_config="common/.codex/config.toml"
+
+    if [[ -z $(git -C "$repo_path" status --porcelain "$codex_config" 2>/dev/null) ]]; then
+        echo "No Codex config changes to commit"
+        return 1
+    fi
+
+    if (cd "$repo_path" && git add "$codex_config"); then
+        log_okay "Codex config changes staged"
+    else
+        log_fail "Failed to stage Codex config"
+        return 1
+    fi
+}
+
 dots_stage_herdr_sessions() {
     local repo_path="$1"
     local herdr_dir="common/.config/herdr"
