@@ -28,36 +28,35 @@ Skip routine backups, formatting-only commits, WIP/index snapshots, and ignore-o
 
 Use these values for each item:
 
-| Item | Title | Marker |
+| Item | Title | Source URL |
 | --- | --- | --- |
-| Commit | `[owner/repository] subject` | `changelog-activity:DATE:commit:FULL_SHA` |
-| Pull request | `[owner/repository] PR #NUMBER: title` | `changelog-activity:DATE:pull-request:owner/repository#NUMBER` |
-| Issue | `[owner/repository] Issue #NUMBER: title` | `changelog-activity:DATE:issue:owner/repository#NUMBER` |
+| Commit | `[owner/repository] subject` | Commit URL |
+| Pull request | `[owner/repository] PR #NUMBER: title` | Pull request URL |
+| Issue | `[owner/repository] Issue #NUMBER: title` | Issue URL |
 
-Put the source URL and marker in the notes. Before adding a todo, search all Things states for the exact marker:
+Use the source URL as the deduplication key. Keep the task title human-readable and put only the source URL in the notes. Before adding a todo, search all Things states for the exact URL:
 
 ```bash
-things search "$MARKER" --status any --format json
+things search "$URL" --status any --format json
 ```
 
 If a match exists, skip it. Otherwise create the completed todo for the target date:
 
 ```bash
 things add --when YYYY-MM-DD --completed --completion-date YYYY-MM-DD \
-  --notes "$URL
-$MARKER" \
+  --notes "$URL" \
   "$TITLE"
 ```
 
-`things add` has no dry-run mode. Print the title, target date, URL, and marker before running it.
+`things add` has no dry-run mode. Print the title, target date, and URL before running it.
 
-Verify every add by searching for its marker, capture the returned UUID, then read it:
+Verify every add by searching for its URL, capture the returned UUID, then read it:
 
 ```bash
 things show --id "$UUID" --json
 ```
 
-The result must be a completed todo scheduled for the target date, with the expected URL and marker. Stop and report any item that cannot be verified. Do not create another one to retry.
+The search result must contain exactly the expected URL as the notes, and the shown todo must be completed and scheduled for the target date. Stop and report any item that cannot be verified. Do not create another one to retry.
 
 ## Report
 
