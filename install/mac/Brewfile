@@ -4,7 +4,7 @@
 # Everything else (CLI tools, runtimes) lives in common/.config/mise/config.toml.
 
 tap "protonpass/tap"
-tap "y3owk1n/tap"
+tap "ossianhempel/tap"
 
 # Shell & git (system deps mise doesn't cover)
 brew "coreutils"
@@ -23,6 +23,7 @@ brew "mole"                      # not in mise registry
 brew "mpd"                       # music player daemon — dots has mpd.conf
 brew "rmpc"                      # mpd client TUI — dots has rmpc config
 brew "btop"
+brew "thing3-cli"
 
 # lazyjira runs from a local fork, built by `lazyjira-sync` (common/.local/bin).
 
