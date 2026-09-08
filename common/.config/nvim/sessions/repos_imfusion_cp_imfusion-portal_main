@@ -10,10 +10,10 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +39 local-setup/README.md
+badd +20 ~/repos/imfusion/cp/imfusion-portal/KEYCLOAK_MULTIFACTOR_AUTHORIZATION.md
 argglobal
 %argdel
-edit local-setup/README.md
+edit ~/repos/imfusion/cp/imfusion-portal/KEYCLOAK_MULTIFACTOR_AUTHORIZATION.md
 argglobal
 xnoremap <buffer> $ g$
 onoremap <buffer> $ g$
@@ -51,7 +51,7 @@ setlocal complete=.,w,b,kspell
 setlocal completefunc=
 setlocal completeslash=
 setlocal concealcursor=
-setlocal conceallevel=2
+setlocal conceallevel=1
 setlocal nocopyindent
 setlocal nocursorbind
 setlocal nocursorcolumn
@@ -76,7 +76,7 @@ setlocal foldnestmax=10
 setlocal foldtext=
 setlocal formatexpr=
 setlocal formatlistpat=^\\s*\\d\\+\\.\\s\\+\\|^\\s*[-*+]\\s\\+\\|^\\[^\\ze[^\\]]\\+\\]:\\&^.\\{4\\}
-setlocal formatoptions=1jtqln
+setlocal formatoptions=1jlntq
 setlocal iminsert=0
 setlocal imsearch=-1
 setlocal includeexpr=
@@ -95,7 +95,7 @@ setlocal modifiable
 setlocal nrformats=bin,hex
 setlocal number
 setlocal numberwidth=4
-setlocal omnifunc=htmlcomplete#CompleteTags
+setlocal omnifunc=v:lua.vim.lsp.omnifunc
 setlocal nopreserveindent
 setlocal nopreviewwindow
 setlocal quoteescape=\\
@@ -128,7 +128,7 @@ setlocal textwidth=80
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#local-setup%*%#WinBarSeparator#/%*%#WinBarFilename#README.md%*%=%#WinBarGitLabel#\ [GIT:%#WinBarGitChange#\ ~1%#WinBarGitLabel#]%*%#WinBarLspLabel#\ [LSP:\ %#DiagnosticSignInfo#:2%##%#WinBarLspLabel#]%*\ 
+setlocal winbar=%#WinBarFilename#KEYCLOAK_MULTIFACTOR_AUTHORIZATION.md%*%=
 setlocal winblend=10
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -137,13 +137,7 @@ setlocal winhighlight=
 setlocal nowinpinned
 setlocal nowrap
 setlocal wrapmargin=0
-1
-sil! normal! zo
-30
-sil! normal! zo
-32
-sil! normal! zo
-let s:l = 20 - ((16 * winheight(0) + 20) / 40)
+let s:l = 20 - ((19 * winheight(0) + 32) / 64)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt

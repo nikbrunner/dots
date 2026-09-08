@@ -221,12 +221,13 @@
     "name": "black-atom",
     "work": false,
     "session_dirs": [
+      "~/.codex/worktrees/8d95/black-atom",
       "~/.herdr/worktrees/black-atom/rework-structure",
       "~/repos/nikbrunner/black-atom",
       "~/repos/nikbrunner/black-atom-theme-catalog-rebuild",
       "~/repos/nikbrunner/black-atom/livery"
     ],
-    "last_seen": "2026-08-23"
+    "last_seen": "2026-09-06"
   },
   "nikbrunner/bm": {
     "root": "~/repos/nikbrunner/bm",
@@ -376,9 +377,10 @@
     "session_dirs": [
       "~/repos/imfusion/websdk/web-sdk",
       "~/repos/imfusion/websdk/web-sdk-wk-fumadocs",
-      "~/repos/imfusion/websdk/web-sdk-wk-fumadocs/packages/docs"
+      "~/repos/imfusion/websdk/web-sdk-wk-fumadocs/packages/docs",
+      "~/repos/imfusion/websdk/worktree/update-link-styling"
     ],
-    "last_seen": "2026-09-01"
+    "last_seen": "2026-09-07"
   },
   "websdk/web-ui": {
     "root": "~/repos/imfusion/websdk/web-ui",
@@ -418,8 +420,9 @@
       "~/repos/imfusion/websdk/web-ui/node_modules/@base-ui",
       "~/repos/imfusion/websdk/web-ui/src/llms/skills",
       "~/repos/imfusion/websdk/websdk-169-storybook-controls",
+      "~/repos/imfusion/websdk/websdk-216-web-ui-adjust-component-defaults-the-po",
       "~/repos/imfusion/websdk/websdk-224-public-release"
     ],
-    "last_seen": "2026-09-02"
+    "last_seen": "2026-09-08"
   }
 }

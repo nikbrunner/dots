@@ -86,9 +86,21 @@
           {
             "filename": "CHANGELOG.md",
             "label": "3"
+          },
+          {
+            "filename": "src/components/code/code.module.css",
+            "label": "4"
+          },
+          {
+            "filename": "src/components/typo/typo.module.css",
+            "label": "5"
+          },
+          {
+            "filename": "src/components/tooltip/tooltip.module.css",
+            "label": "6"
           }
         ],
-        "lastAccessed": 1788535730
+        "lastAccessed": 1788862316
       }
     },
     "~/repos/nikbrunner/black-atom": {
@@ -130,7 +142,7 @@
             "label": "6"
           }
         ],
-        "lastAccessed": 1788699754
+        "lastAccessed": 1788871253
       }
     },
     "~/repos/nikbrunner/imf-notes": {
@@ -149,7 +161,7 @@
             "label": "3"
           }
         ],
-        "lastAccessed": 1788514604
+        "lastAccessed": 1788853999
       }
     },
     "~/repos/nikbrunner/minifugit.nvim": {
@@ -191,7 +203,7 @@
             "label": "6"
           }
         ],
-        "lastAccessed": 1788691245
+        "lastAccessed": 1788868407
       }
     }
   }

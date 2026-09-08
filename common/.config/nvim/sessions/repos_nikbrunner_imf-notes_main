@@ -10,10 +10,10 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +23 logs/2026/2026.09/2026.09.04\ -\ Fri.md
+badd +16 logs/2026/2026.09/2026.09.08\ -\ Tue.md
 argglobal
 %argdel
-edit logs/2026/2026.09/2026.09.04\ -\ Fri.md
+edit logs/2026/2026.09/2026.09.08\ -\ Tue.md
 tcd ~/repos/nikbrunner/imf-notes
 argglobal
 xnoremap <buffer> $ g$
@@ -52,7 +52,7 @@ setlocal complete=.,w,b,kspell
 setlocal completefunc=
 setlocal completeslash=
 setlocal concealcursor=
-setlocal conceallevel=0
+setlocal conceallevel=1
 setlocal nocopyindent
 setlocal nocursorbind
 setlocal nocursorcolumn
@@ -123,13 +123,13 @@ setlocal synmaxcol=3000
 if &syntax != ''
 setlocal syntax=
 endif
-setlocal tabstop=4
+setlocal tabstop=2
 setlocal tagfunc=v:lua.vim.lsp.tagfunc
 setlocal textwidth=80
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#logs%*%#WinBarSeparator#/%*%#WinBarPath#2026%*%#WinBarSeparator#/%*%#WinBarPath#2026.09%*%#WinBarSeparator#/%*%#WinBarFilename#2026.09.04\ -\ Fri.md%*%=
+setlocal winbar=%#WinBarPath#logs%*%#WinBarSeparator#/%*%#WinBarPath#2026%*%#WinBarSeparator#/%*%#WinBarPath#2026.09%*%#WinBarSeparator#/%*%#WinBarFilename#2026.09.08\ -\ Tue.md%*%=
 setlocal winblend=10
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -140,20 +140,16 @@ setlocal nowrap
 setlocal wrapmargin=0
 1
 sil! normal! zo
-9
+10
 sil! normal! zo
-11
+12
 sil! normal! zo
-13
-sil! normal! zo
-21
-sil! normal! zo
-let s:l = 37 - ((20 * winheight(0) + 20) / 41)
+let s:l = 18 - ((17 * winheight(0) + 32) / 64)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 37
-normal! 0
+keepjumps 18
+normal! 085|
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf

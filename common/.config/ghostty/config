@@ -2,7 +2,7 @@
 # https://github.com/imrajyavardhan12/spectre-ghostty-config
 
 # Colors
-theme = black-atom-jpn-sanshoku-dark.conf
+theme = black-atom-minium-viridian-dark.conf
 bold-is-bright = true
 
 # Window
@@ -20,7 +20,7 @@ adjust-underline-position = 3
 
 # Fonts
 font-size = 14
-font-family = MartianMono Nerd Font
+font-family = TX-02
 font-style-bold = Bold
 font-thicken = true
 window-inherit-working-directory = true
