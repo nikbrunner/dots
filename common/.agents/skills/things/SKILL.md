@@ -1,21 +1,36 @@
 ---
 name: things
-jjjjjjk
+description: Use when the user asks to create, find, schedule, update, complete, delete, or review Things 3 tasks, projects, areas, tags, checklists, or recurring items on macOS.
+---
 
-# things
+# Things
 
-Use `things` to read from the local Things 3 database and to create/update items via the Things URL scheme (areas use AppleScript).
+Use `things` to read from the local Things 3 database and to create/update items through Things. Use Apple Reminders only when the user explicitly asks for Reminders.
+
+## Capture conventions
+
+- Turn a vague request into a concrete next-action title. Preserve the user's wording when they clearly want a verbatim capture.
+- Split unrelated actions into separate todos.
+- Use Inbox or Anytime by default. Schedule Today only when the user says or clearly implies it.
+- Run `date` for calendar arithmetic. Do not guess dates such as “next Tuesday”.
+- Invoke the `things` CLI only. Never manipulate its SQLite database directly.
 
 ## Safe operating workflow
 
-For any write whose target is not already a trusted UUID:
+### Existing items
+
+For an update, completion, move, or delete whose target is not already a trusted UUID:
 
 1. **Read** with `things search`, `things tasks`, or `things templates`.
-2. **Identify** the intended row and capture its UUID. If multiple items match, show the candidates and ask the human; never guess by title.
+2. **Identify** the intended row and capture its UUID. If multiple items match, show the candidates and ask the human; never guess by title or recency.
 3. **Preview** the exact write with `--dry-run` when the command supports it.
 4. **Write** using `--id <UUID>`.
 5. **Verify** by re-reading that UUID (and, for recurrence, the resolved template UUID).
 6. **Report** what was requested, what was verified, and any remaining uncertainty.
+
+### New items
+
+Create the requested todo or project, then find it by exact title plus creation context and read it back. If more than one candidate matches, ask the human to identify it. For repeating adds, follow the repeat workflow below so the created item can be matched to its template safely.
 
 Reads do not authorize writes. Prefer UUIDs even when a command accepts a title.
 
@@ -43,7 +58,7 @@ Write (URL scheme)
 - `things update-project --id <uuid> "New project title"`
 - `things rename-project --id <uuid> --title "New project title"`
 - `things list-project-tasks --id <project_uuid>`
-- `things delete --id <uuid>` or `things delete "Todo title"`
+- `things delete --id <uuid>`
 - Bulk delete (preview then apply): `things delete --query 'notes:/deprecated/i' --dry-run` then `things delete --query 'notes:/deprecated/i' --yes`
 - Undo last bulk action: `things undo --dry-run` then `things undo --yes`
 - `things delete-project --id <uuid>` or `things delete-project "Project title"`
@@ -94,8 +109,8 @@ Filters + DB
 Auth + permissions
 - Read-only database commands may require Full Disk Access for the terminal or agent host.
 - Ordinary URL-scheme updates require an auth token: run `things auth`, set `THINGS_AUTH_TOKEN`, or pass `--auth-token`.
-- Repeat-only updates write directly to the Things database and require writable database access (normally Full Disk Access), but not a URL token.
-- Repeat adds use the unauthenticated add URL plus a direct database write, so they require writable database access but not an auth token.
+- The CLI handles repeat-only updates through its database layer, which requires writable database access (normally Full Disk Access), but not a URL token. Never edit the database yourself.
+- Repeat adds use the unauthenticated add URL plus the CLI's database layer, so they require writable database access but not a URL token.
 - Repeat updates that also change ordinary fields use both paths and require both auth and writable database access.
 - Use `--db` or `THINGSDB` only for an explicitly trusted Things database. Check the resolved target shown by preview before writing.
 - URL scheme writes can open/foreground Things; use `--dry-run` to print URLs or `--foreground` to force focus.

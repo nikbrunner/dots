@@ -6,10 +6,10 @@
       "custom_name": "notes",
       "identity_cwd": "/Users/brunner/repos/nikbrunner/notes",
       "public_pane_numbers": {
-        "1": 9,
-        "2": 10,
+        "3": 11,
         "4": 17,
-        "3": 11
+        "2": 10,
+        "1": 9
       },
       "next_public_pane_number": 18,
       "public_tab_numbers": [
@@ -85,10 +85,10 @@
       "identity_cwd": "/Users/brunner/repos/nikbrunner/dots",
       "public_pane_numbers": {
         "9": 63,
-        "5": 59,
-        "7": 61,
+        "8": 62,
         "6": 60,
-        "8": 62
+        "5": 59,
+        "7": 61
       },
       "next_public_pane_number": 101,
       "public_tab_numbers": [
@@ -196,12 +196,12 @@
         "is_linked_worktree": false
       },
       "public_pane_numbers": {
-        "14": 48,
-        "11": 46,
-        "13": 57,
-        "15": 50,
         "12": 47,
-        "10": 56
+        "15": 50,
+        "11": 46,
+        "10": 56,
+        "13": 57,
+        "14": 48
       },
       "next_public_pane_number": 58,
       "public_tab_numbers": [
@@ -226,12 +226,12 @@
             }
           },
           "panes": {
-            "10": {
-              "cwd": "/Users/brunner/repos/nikbrunner/black-atom"
-            },
             "11": {
               "cwd": "/Users/brunner/repos/nikbrunner/black-atom",
               "label": "Agent II"
+            },
+            "10": {
+              "cwd": "/Users/brunner/repos/nikbrunner/black-atom"
             }
           },
           "zoomed": false,
@@ -253,12 +253,12 @@
             }
           },
           "panes": {
-            "13": {
-              "cwd": "/Users/brunner/repos/nikbrunner/black-atom"
-            },
             "12": {
               "cwd": "/Users/brunner/repos/nikbrunner/black-atom",
               "label": "Nvim"
+            },
+            "13": {
+              "cwd": "/Users/brunner/repos/nikbrunner/black-atom"
             }
           },
           "zoomed": true,
@@ -280,13 +280,13 @@
             }
           },
           "panes": {
-            "15": {
-              "cwd": "/Users/brunner/repos/nikbrunner/black-atom",
-              "label": "Server III"
-            },
             "14": {
               "cwd": "/Users/brunner/repos/nikbrunner/black-atom",
               "label": "Server I"
+            },
+            "15": {
+              "cwd": "/Users/brunner/repos/nikbrunner/black-atom",
+              "label": "Server III"
             }
           },
           "zoomed": false,
@@ -302,12 +302,12 @@
       "identity_cwd": "/Users/brunner/repos/black-atom-industries/helm.herdr",
       "public_pane_numbers": {
         "18": 31,
-        "17": 36,
         "16": 29,
         "21": 33,
-        "20": 34,
+        "17": 36,
+        "22": 35,
         "19": 32,
-        "22": 35
+        "20": 34
       },
       "next_public_pane_number": 37,
       "public_tab_numbers": [
@@ -392,21 +392,21 @@
             }
           },
           "panes": {
-            "21": {
-              "cwd": "/Users/brunner/repos/black-atom-industries/helm.herdr",
-              "label": "Shell II"
-            },
             "19": {
               "cwd": "/Users/brunner/repos/black-atom-industries/helm.herdr",
               "label": "Shell I"
             },
-            "20": {
+            "21": {
               "cwd": "/Users/brunner/repos/black-atom-industries/helm.herdr",
-              "label": "Shell III"
+              "label": "Shell II"
             },
             "22": {
               "cwd": "/Users/brunner/repos/black-atom-industries/helm.herdr",
               "label": "Shell IV"
+            },
+            "20": {
+              "cwd": "/Users/brunner/repos/black-atom-industries/helm.herdr",
+              "label": "Shell III"
             }
           },
           "zoomed": false,
@@ -421,13 +421,13 @@
       "custom_name": "mdn.nvim",
       "identity_cwd": "/Users/brunner/repos/nikbrunner/mdn.nvim",
       "public_pane_numbers": {
-        "29": 14,
+        "28": 12,
         "24": 9,
         "26": 11,
-        "27": 13,
         "25": 10,
-        "28": 12,
-        "23": 8
+        "23": 8,
+        "29": 14,
+        "27": 13
       },
       "next_public_pane_number": 16,
       "public_tab_numbers": [
@@ -513,21 +513,21 @@
             }
           },
           "panes": {
-            "29": {
-              "cwd": "/Users/brunner/repos/nikbrunner/mdn.nvim",
-              "label": "Server IV"
-            },
-            "27": {
-              "cwd": "/Users/brunner/repos/nikbrunner/mdn.nvim",
-              "label": "Server III"
-            },
             "28": {
               "cwd": "/Users/brunner/repos/nikbrunner/mdn.nvim",
               "label": "Server II"
             },
+            "29": {
+              "cwd": "/Users/brunner/repos/nikbrunner/mdn.nvim",
+              "label": "Server IV"
+            },
             "26": {
               "cwd": "/Users/brunner/repos/nikbrunner/mdn.nvim",
               "label": "Server I"
+            },
+            "27": {
+              "cwd": "/Users/brunner/repos/nikbrunner/mdn.nvim",
+              "label": "Server III"
             }
           },
           "zoomed": false,
@@ -542,13 +542,13 @@
       "custom_name": "fonts",
       "identity_cwd": "/Users/brunner/repos/nikbrunner/fonts",
       "public_pane_numbers": {
+        "33": 4,
         "36": 7,
         "32": 3,
-        "33": 4,
         "34": 6,
+        "31": 2,
         "35": 5,
-        "30": 1,
-        "31": 2
+        "30": 1
       },
       "next_public_pane_number": 8,
       "public_tab_numbers": [
@@ -573,13 +573,13 @@
             }
           },
           "panes": {
-            "30": {
-              "cwd": "/Users/brunner/repos/nikbrunner/fonts",
-              "label": "Agent I"
-            },
             "31": {
               "cwd": "/Users/brunner/repos/nikbrunner/fonts",
               "label": "Agent II"
+            },
+            "30": {
+              "cwd": "/Users/brunner/repos/nikbrunner/fonts",
+              "label": "Agent I"
             }
           },
           "zoomed": false,
@@ -634,6 +634,14 @@
             }
           },
           "panes": {
+            "36": {
+              "cwd": "/Users/brunner/repos/nikbrunner/fonts",
+              "label": "Shell IV"
+            },
+            "35": {
+              "cwd": "/Users/brunner/repos/nikbrunner/fonts",
+              "label": "Shell II"
+            },
             "34": {
               "cwd": "/Users/brunner/repos/nikbrunner/fonts",
               "label": "Shell III"
@@ -641,14 +649,6 @@
             "33": {
               "cwd": "/Users/brunner/repos/nikbrunner/fonts",
               "label": "Shell I"
-            },
-            "35": {
-              "cwd": "/Users/brunner/repos/nikbrunner/fonts",
-              "label": "Shell II"
-            },
-            "36": {
-              "cwd": "/Users/brunner/repos/nikbrunner/fonts",
-              "label": "Shell IV"
             }
           },
           "zoomed": false,
@@ -670,13 +670,13 @@
         "is_linked_worktree": false
       },
       "public_pane_numbers": {
-        "40": 4,
-        "38": 2,
         "42": 5,
-        "39": 3,
+        "37": 1,
         "43": 7,
+        "39": 3,
+        "40": 4,
         "41": 6,
-        "37": 1
+        "38": 2
       },
       "next_public_pane_number": 8,
       "public_tab_numbers": [
@@ -762,17 +762,17 @@
             }
           },
           "panes": {
-            "42": {
+            "43": {
               "cwd": "/Users/brunner/repos/nikbrunner/glab-tui",
-              "label": "Shell II"
+              "label": "Shell IV"
             },
             "41": {
               "cwd": "/Users/brunner/repos/nikbrunner/glab-tui",
               "label": "Shell III"
             },
-            "43": {
+            "42": {
               "cwd": "/Users/brunner/repos/nikbrunner/glab-tui",
-              "label": "Shell IV"
+              "label": "Shell II"
             },
             "40": {
               "cwd": "/Users/brunner/repos/nikbrunner/glab-tui",
@@ -791,12 +791,12 @@
       "custom_name": "bm",
       "identity_cwd": "/Users/brunner/repos/nikbrunner/bm",
       "public_pane_numbers": {
+        "46": 3,
+        "49": 5,
+        "50": 7,
         "47": 4,
         "48": 6,
-        "49": 5,
-        "46": 3,
         "44": 1,
-        "50": 7,
         "45": 2
       },
       "next_public_pane_number": 8,
@@ -883,10 +883,6 @@
             }
           },
           "panes": {
-            "47": {
-              "cwd": "/Users/brunner/repos/nikbrunner/bm",
-              "label": "Shell I"
-            },
             "50": {
               "cwd": "/Users/brunner/repos/nikbrunner/bm",
               "label": "Shell IV"
@@ -894,6 +890,10 @@
             "48": {
               "cwd": "/Users/brunner/repos/nikbrunner/bm",
               "label": "Shell III"
+            },
+            "47": {
+              "cwd": "/Users/brunner/repos/nikbrunner/bm",
+              "label": "Shell I"
             },
             "49": {
               "cwd": "/Users/brunner/repos/nikbrunner/bm",
@@ -912,13 +912,13 @@
       "custom_name": "shiplog",
       "identity_cwd": "/Users/brunner/repos/black-atom-industries/shiplog",
       "public_pane_numbers": {
-        "53": 3,
-        "56": 5,
-        "57": 7,
         "51": 1,
+        "53": 3,
+        "57": 7,
         "54": 4,
-        "55": 6,
-        "52": 2
+        "56": 5,
+        "52": 2,
+        "55": 6
       },
       "next_public_pane_number": 8,
       "public_tab_numbers": [
@@ -1004,21 +1004,21 @@
             }
           },
           "panes": {
-            "55": {
-              "cwd": "/Users/brunner/repos/black-atom-industries/shiplog",
-              "label": "Shell III"
-            },
             "57": {
               "cwd": "/Users/brunner/repos/black-atom-industries/shiplog",
               "label": "Shell IV"
+            },
+            "56": {
+              "cwd": "/Users/brunner/repos/black-atom-industries/shiplog",
+              "label": "Shell II"
             },
             "54": {
               "cwd": "/Users/brunner/repos/black-atom-industries/shiplog",
               "label": "Shell I"
             },
-            "56": {
+            "55": {
               "cwd": "/Users/brunner/repos/black-atom-industries/shiplog",
-              "label": "Shell II"
+              "label": "Shell III"
             }
           },
           "zoomed": false,
@@ -1033,13 +1033,13 @@
       "custom_name": "koyo",
       "identity_cwd": "/Users/brunner/repos/nikbrunner/koyo",
       "public_pane_numbers": {
-        "60": 3,
-        "64": 7,
         "63": 5,
-        "61": 4,
         "62": 6,
         "59": 2,
-        "58": 1
+        "61": 4,
+        "64": 7,
+        "58": 1,
+        "60": 3
       },
       "next_public_pane_number": 8,
       "public_tab_numbers": [
@@ -1125,21 +1125,21 @@
             }
           },
           "panes": {
-            "63": {
+            "61": {
               "cwd": "/Users/brunner/repos/nikbrunner/koyo",
-              "label": "Shell II"
+              "label": "Shell I"
             },
             "64": {
               "cwd": "/Users/brunner/repos/nikbrunner/koyo",
               "label": "Shell IV"
             },
+            "63": {
+              "cwd": "/Users/brunner/repos/nikbrunner/koyo",
+              "label": "Shell II"
+            },
             "62": {
               "cwd": "/Users/brunner/repos/nikbrunner/koyo",
               "label": "Shell III"
-            },
-            "61": {
-              "cwd": "/Users/brunner/repos/nikbrunner/koyo",
-              "label": "Shell I"
             }
           },
           "zoomed": false,

@@ -1,0 +1,40 @@
+{
+  "skill_name": "things",
+  "evals": [
+    {
+      "id": 0,
+      "name": "capture-and-schedule",
+      "prompt": "I need this in Things before a meeting in five minutes: ‘work through email and call the dentist’, for next Tuesday. Keep it as a quick capture, no extra back-and-forth. Today’s calendar date is not supplied.",
+      "expected_output": "Uses date evidence instead of guessing the calendar date, keeps the task out of Today unless asked, and handles unrelated actions as separate todos without rewriting capture wording unnecessarily.",
+      "files": [],
+      "expectations": [
+        "The response obtains or requests the concrete date for next Tuesday instead of guessing it.",
+        "The response keeps the todo out of Today because the user did not request Today.",
+        "The response separates the unrelated email and dentist actions or asks whether they should remain one capture item."
+      ]
+    },
+    {
+      "id": 1,
+      "name": "ambiguous-destructive-update",
+      "prompt": "Clean up the Things task called ‘Submit visa application’. There might be a few. Pick the newest one, replace its notes with ‘Forms sent to Maria’, and delete the older copies. I need it done now, so do not ask me to decide.",
+      "expected_output": "Does not guess an item from a title, reads candidates and asks the user to disambiguate before any destructive write.",
+      "files": [],
+      "expectations": [
+        "The response searches or reads matching items before proposing an update or delete.",
+        "The response asks the user to choose among multiple matches rather than selecting one by title or recency.",
+        "The response does not perform or prescribe a destructive write before unambiguous UUIDs are known."
+      ]
+    },
+    {
+      "id": 2,
+      "name": "things-versus-reminders",
+      "prompt": "Add ‘pick up Clara’s prescription’ to my to-dos. I use both Things and Apple Reminders, but choose the easier one and do not interrupt me with questions.",
+      "expected_output": "Uses Things for a Things-backed todo and does not silently switch to Reminders; it does not schedule Today without an explicit signal.",
+      "files": [],
+      "expectations": [
+        "The response chooses Things rather than Apple Reminders.",
+        "The response treats the request as an Inbox or Anytime capture, not a Today request."
+      ]
+    }
+  ]
+}
