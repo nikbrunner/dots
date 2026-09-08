@@ -41,7 +41,7 @@ Edit.later(function()
 		},
 
 		indent = {
-			enable = true,
+			enable = false,
 			style = { hl_subtle },
 			priority = 10,
 			use_treesitter = false,
