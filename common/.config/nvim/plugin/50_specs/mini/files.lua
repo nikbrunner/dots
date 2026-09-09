@@ -57,9 +57,13 @@ Edit.later(function()
 	vim.api.nvim_create_autocmd("User", {
 		pattern = "MiniFilesWindowOpen",
 		callback = function(args)
-			local config = vim.api.nvim_win_get_config(args.data.win_id)
+			local win_id = args.data.win_id
+			vim.wo[win_id].scrolloff = 0
+			vim.wo[win_id].scrolloffpad = 0
+
+			local config = vim.api.nvim_win_get_config(win_id)
 			config.border = "solid"
-			vim.api.nvim_win_set_config(args.data.win_id, config)
+			vim.api.nvim_win_set_config(win_id, config)
 		end,
 	})
 
