@@ -3,7 +3,12 @@
 #
 # Everything else (CLI tools, runtimes) lives in common/.config/mise/config.toml.
 
-tap "protonpass/tap"
+tap "aviator-co/tap", trusted: { formula: "av" }
+tap "avivsinai/tap", trusted: { formula: "bitbucket-cli" }
+tap "jetbrains/utils", trusted: { formula: "teamcity" }
+tap "ngrok/ngrok", trusted: { cask: "ngrok" }
+tap "protonpass/tap", trusted: { formula: "pass-cli" }
+tap "thdxg/tap", trusted: { cask: "macterm" }
 tap "ossianhempel/tap"
 
 # Shell & git (system deps mise doesn't cover)
