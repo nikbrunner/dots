@@ -77,7 +77,7 @@ See `dev:start` skill for the canonical pipeline tree with all review gates.
 
 - [ ] **Skill auto-discovery unreliable** — [#30387](https://github.com/anthropics/claude-code/issues/30387)
   - Skills overlapping with built-in behaviors (git, styling, testing) are skipped ~50% of the time
-  - Workaround: "Skill Check (mandatory)" section in CLAUDE.md & `common/.claude/hooks/enforce/skills-check.sh`
+  - Workaround: targeted skill reminders in `common/.claude/hooks/enforce/skills-check.sh`
 - [ ] **CLAUDE.md instructions ignored** — [#32161](https://github.com/anthropics/claude-code/issues/32161)
   - Knowledge retrieval rules in CLAUDE.md systematically ignored
   - Related: context file dispatch feature request [#31575](https://github.com/anthropics/claude-code/issues/31575)

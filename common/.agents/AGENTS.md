@@ -152,9 +152,7 @@ Every changed line traces directly to what I asked for.
 
 ### Skills
 
-Before starting ANY task, check available skills for relevance. If there is even a 1% chance a skill applies, load and follow it before doing anything else. Never rationalize skipping a skill check with "this is simple enough" or "I already know how."
-
-Skills that overlap with built-in behaviors (git, styling, testing, TypeScript) are the ones most likely to be skipped — and the ones that matter most, because they contain project-specific overrides.
+Use skills requested by the user or relevant to the current step, especially those covering project and language conventions. Reuse skills already in context.
 
 #### Sources of Truth
 
