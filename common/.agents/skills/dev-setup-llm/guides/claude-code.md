@@ -42,7 +42,7 @@ Hook registration in `settings.json`:
         "hooks": [
           {
             "type": "command",
-            "command": "~/.claude/hooks/enforce/warn-any-type.sh"
+            "command": "~/.claude/hooks/enforce/your-hook.sh"
           }
         ]
       }
@@ -53,7 +53,7 @@ Hook registration in `settings.json`:
         "hooks": [
           {
             "type": "command",
-            "command": "~/.claude/hooks/enforce/warn-any-type.sh"
+            "command": "~/.claude/hooks/enforce/your-hook.sh"
           }
         ]
       }
