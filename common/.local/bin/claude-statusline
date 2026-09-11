@@ -1,15 +1,23 @@
 #!/usr/bin/env bash
-# Claude Code statusLine: account, model, repo/branch, context, limits, cost.
+# Claude Code statusLine: four labelled rows — workspace, git, agent, session.
 #
-# Pure bash + one jq call. The previous statusline spawned a node process every
-# 5s per session; un-stapled node binaries cannot have their Gatekeeper verdict
-# cached, so each spawn forced a full signature validation and saturated
-# syspolicyd — pushing every unrelated exec on the machine from ~1ms to ~75ms.
-# Keep this dependency-free: no node, no npm, no per-render subprocess beyond jq.
+# Pure bash + one jq call + one git call. The previous statusline spawned a node
+# process every 5s per session; un-stapled node binaries cannot have their
+# Gatekeeper verdict cached, so each spawn forced a full signature validation and
+# saturated syspolicyd — pushing every unrelated exec on the machine from ~1ms to
+# ~75ms. Keep this dependency-free: no node, no npm, no per-render subprocess
+# beyond jq and a single git status.
 #
 # Payload schema: https://code.claude.com/docs/en/statusline.md
 
 input=$(cat)
+
+# Declared so the eval below only ever overwrites a known set; an absent payload
+# field then reads as empty rather than leaking a variable from the environment.
+transcript='' model='' dir='' worktree='' repo='' ctx='' cache_hit=''
+hourly='' weekly='' cost='' added='' removed='' effort=''
+style='' cache_warm='' cache_expires='' cache_misses=''
+cache_rebuilds='' resets_5h='' resets_7d='' session_name=''
 
 eval "$(
 	printf '%s' "$input" | jq -r '
@@ -19,16 +27,43 @@ eval "$(
     @sh "worktree=\(.workspace.git_worktree // "")",
     @sh "repo=\(.workspace.repo.name // "")",
     @sh "ctx=\(.context_window.used_percentage // "")",
+    @sh "cache_hit=\(.prompt_cache.hit_ratio // "")",
     @sh "hourly=\(.rate_limits.five_hour.used_percentage // "")",
     @sh "weekly=\(.rate_limits.seven_day.used_percentage // "")",
-    @sh "cost=\(.cost.total_cost_usd // "")"
+    @sh "cost=\(.cost.total_cost_usd // "")",
+    @sh "added=\(.cost.total_lines_added // "")",
+    @sh "removed=\(.cost.total_lines_removed // "")",
+    @sh "effort=\(.effort.level // "")",
+    @sh "style=\(.output_style.name // "")",
+    @sh "cache_warm=\(.prompt_cache.warm // "")",
+    @sh "cache_expires=\(.prompt_cache.expires_at // "")",
+    @sh "cache_misses=\(.prompt_cache.misses // "")",
+    @sh "cache_rebuilds=\(.prompt_cache.expected_rebuilds // "")",
+    @sh "resets_5h=\(.rate_limits.five_hour.resets_at // "")",
+    @sh "resets_7d=\(.rate_limits.seven_day.resets_at // "")",
+    @sh "session_name=\(.session_name // "")"
   ' 2>/dev/null
 )"
 
 dim=$'\033[38;5;240m'
 reset=$'\033[0m'
-out=""
-add() { [ -n "$1" ] && out="${out:+$out ${dim}·${reset} }$1"; }
+label_color=$'\033[1;38;5;179m'
+icon_color=$'\033[38;5;179m'
+bold=$'\033[1m'
+green=$'\033[38;5;108m'
+green_b=$'\033[1;38;5;108m'
+red=$'\033[1;31m'
+blue=$'\033[38;5;110m'
+gold=$'\033[38;5;180m'
+
+# Nerd Font glyphs, matching the pi statusline.
+i_dir=$''
+i_branch=$''
+i_diff=$''
+i_ctx=$''
+i_cache=''
+i_cost=$''
+i_brain='󰧑'
 
 # Colour a percentage by how close it is to its ceiling.
 heat() {
@@ -41,35 +76,148 @@ heat() {
 	fi
 }
 
-# Work sessions authenticate via ANTHROPIC_API_KEY, so oauthAccount is null
-# there and the payload carries no auth field at all. Identify the instance from
+# Epoch seconds -> compact "2h10" / "45m" / "5d" remaining. Empty once elapsed.
+until_now() {
+	[ -n "$1" ] || return 0
+	left=$((${1%.*} - now))
+	[ "$left" -gt 0 ] 2>/dev/null || return 0
+	if [ "$left" -ge 86400 ]; then
+		printf '%dd' "$((left / 86400))"
+	elif [ "$left" -ge 3600 ]; then
+		printf '%dh%02d' "$((left / 3600))" "$(((left % 3600) / 60))"
+	else
+		printf '%dm' "$((left / 60))"
+	fi
+}
+
+now=$(printf '%(%s)T' -1 2>/dev/null) || now=$(date +%s)
+
+row=""
+add() { [ -n "$1" ] && row="${row:+$row  }$1"; }
+emit() {
+	[ -n "$row" ] && printf '%b\n' "${label_color}$(printf '%-4s' "$1")${reset}${row}"
+	row=""
+}
+
+# --- WRK: where we are -------------------------------------------------------
+
+label="${repo:-${dir##*/}}"
+add "${icon_color}${i_dir}${reset} ${bold}${label}${reset}"
+# git_worktree is set only in a linked worktree, and its basename is usually the
+# branch name repeated; show it as a marker rather than a second copy of the name.
+[ -n "$worktree" ] && add "${dim}worktree${reset}"
+emit "WRK"
+# Claude's own title for this conversation — the only thing distinguishing two
+# sessions open on the same repo in different panes.
+[ -n "$session_name" ] && add "${dim}▸ ${session_name}${reset}" && emit "    "
+
+# --- GIT: branch, divergence, dirty counts -----------------------------------
+
+if [ -n "$dir" ]; then
+	# --porcelain=v2 --branch yields head, upstream divergence and per-file status
+	# in the one process a bare symbolic-ref would have cost.
+	status=$(git -C "$dir" --no-optional-locks status --porcelain=v2 --branch 2>/dev/null)
+	if [ -n "$status" ]; then
+		branch=''
+		ahead=0
+		behind=0
+		a=0
+		m=0
+		d=0
+		u=0
+		while IFS= read -r line; do
+			case "$line" in
+			'# branch.head '*) branch="${line#\# branch.head }" ;;
+			'# branch.ab '*)
+				ab="${line#\# branch.ab }"
+				ahead="${ab%% *}"
+				behind="${ab##* }"
+				;;
+			'? '*) u=$((u + 1)) ;;
+			'1 '* | '2 '*)
+				xy="${line#? }"
+				xy="${xy%% *}"
+				case "$xy" in
+				*D*) d=$((d + 1)) ;;
+				A*) a=$((a + 1)) ;;
+				*) m=$((m + 1)) ;;
+				esac
+				;;
+			esac
+		done <<<"$status"
+
+		if [ -n "$branch" ] && [ "$branch" != "(detached)" ]; then
+			div=''
+			[ "${ahead#+}" -gt 0 ] 2>/dev/null && div="${div}${dim}↑${ahead#+}${reset}"
+			[ "${behind#-}" -gt 0 ] 2>/dev/null && div="${div}${dim}↓${behind#-}${reset}"
+			add "${icon_color}${i_branch}${reset} ${gold}${branch}${reset}${div}"
+		else
+			add "${icon_color}${i_branch}${reset} ${dim}detached${reset}"
+		fi
+
+		diff=''
+		[ "$a" -gt 0 ] && diff="${diff:+$diff }${green}+${a}${reset}"
+		[ "$m" -gt 0 ] && diff="${diff:+$diff }${icon_color}~${m}${reset}"
+		[ "$d" -gt 0 ] && diff="${diff:+$diff }${red}-${d}${reset}"
+		[ "$u" -gt 0 ] && diff="${diff:+$diff }${blue}?${u}${reset}"
+		add "${icon_color}${i_diff}${reset} ${diff:-${dim}clean${reset}}"
+	fi
+fi
+emit "GIT"
+
+# --- AGT: who and what is answering ------------------------------------------
+
+# Work sessions authenticate via ANTHROPIC_API_KEY, so oauthAccount is null there
+# and the payload carries no auth field at all. Identify the instance from
 # transcript_path — the statusline subprocess does not reliably inherit
 # CLAUDE_CONFIG_DIR. An unlabelled line always means broken, never "work".
-# shellcheck disable=SC2154 # assigned by the eval'd jq output above
 case "$transcript" in
 */.claude-work/*)
-	add $'\033[1;31m⚠ WORK\033[0m'
+	add "${red}⚠ WORK${reset}"
 	;;
 *)
-	config="${CLAUDE_CONFIG_DIR:+$CLAUDE_CONFIG_DIR/.claude.json}"
-	email=$(jq -r '.oauthAccount.emailAddress // empty' "${config:-$HOME/.claude.json}" 2>/dev/null)
-	add "${email:+$'\033[38;5;110m'${email%%@*}$reset}"
+	# ~/.claude.json is large and the account never changes mid-session, so the
+	# parsed handle is cached and only re-read when that file is newer.
+	config="${CLAUDE_CONFIG_DIR:-$HOME}/.claude.json"
+	cache="${TMPDIR:-/tmp}/claude-statusline-account.${UID}"
+	if [ -s "$cache" ] && [ "$cache" -nt "$config" ]; then
+		read -r email <"$cache"
+	else
+		email=$(jq -r '.oauthAccount.emailAddress // empty' "$config" 2>/dev/null)
+		printf '%s' "$email" >"$cache" 2>/dev/null
+	fi
+	add "${email:+${blue}${email%%@*}${reset}}"
 	;;
 esac
 
-add "${model:+$'\033[38;5;108m'$model$reset}"
+add "${model:+${green_b}${model}${reset}}"
+[ -n "$effort" ] && add "${icon_color}${i_brain}${reset} ${effort}"
+[ -n "$style" ] && [ "$style" != "default" ] && add "${dim}${style}${reset}"
+emit "AGT"
 
-label="${worktree:-${repo:-${dir##*/}}}"
-if [ -n "$dir" ]; then
-	branch=$(git -C "$dir" --no-optional-locks symbolic-ref --short -q HEAD 2>/dev/null)
-	path_color=$'\033[38;5;245m'
-	branch_color=$'\033[38;5;180m'
-	add "${path_color}${label}${reset}${branch:+${branch_color} ⎇ ${branch}${reset}}"
+# --- SES: what this session has spent ----------------------------------------
+
+[ -n "$ctx" ] && add "${icon_color}${i_ctx}${reset} $(heat "$ctx")$(printf '%.0f%%' "$ctx")$reset"
+# hit_ratio is a 0..1 fraction; the e2 suffix scales it without forking bc.
+# The flame colour carries cache warmth, the number carries the hit ratio.
+if [ -n "$cache_hit" ]; then
+	[ "$cache_warm" = "true" ] && flame="$icon_color" || flame="$dim"
+	expiry=$(until_now "$cache_expires")
+	add "${flame}${i_cache}${reset} ${dim}$(printf '%.0f%%' "${cache_hit}e2")${expiry:+ ↓$expiry}${reset}"
 fi
-
-[ -n "$ctx" ] && add "$(heat "$ctx")$(printf 'ctx %.0f%%' "$ctx")$reset"
-[ -n "$hourly" ] && add "$(heat "$hourly")$(printf '5h %.0f%%' "$hourly")$reset"
-[ -n "$weekly" ] && add "$(heat "$weekly")$(printf '7d %.0f%%' "$weekly")$reset"
-[ -n "$cost" ] && add "$(printf '%s$%.2f%s' "$dim" "$cost" "$reset")"
-
-printf '%b\n' "$out"
+# Quiet unless the cache is actually misbehaving.
+[ "${cache_misses:-0}" -gt 0 ] 2>/dev/null && add "${red}${cache_misses} miss${reset}"
+[ "${cache_rebuilds:-0}" -gt 0 ] 2>/dev/null && add "${red}${cache_rebuilds} rebuild${reset}"
+if [ -n "$hourly" ]; then
+	r=$(until_now "$resets_5h")
+	add "$(heat "$hourly")$(printf '5h %.0f%%' "$hourly")$reset${r:+${dim} ↓$r${reset}}"
+fi
+if [ -n "$weekly" ]; then
+	r=$(until_now "$resets_7d")
+	add "$(heat "$weekly")$(printf '7d %.0f%%' "$weekly")$reset${r:+${dim} ↓$r${reset}}"
+fi
+[ -n "$cost" ] && add "${icon_color}${i_cost}${reset} ${dim}$(printf '%.2f' "$cost")${reset}"
+if [ "${added:-0}" -gt 0 ] || [ "${removed:-0}" -gt 0 ]; then
+	add "${green}+${added:-0}${reset}${dim}/${reset}${red}-${removed:-0}${reset}"
+fi
+emit "SES"
