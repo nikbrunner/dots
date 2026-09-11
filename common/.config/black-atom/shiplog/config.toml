@@ -13,7 +13,4 @@ models = [
 
 [anthropic]
 model = "claude-sonnet-4-5"
-models = [
-  "claude-sonnet-4-5",
-  "claude-haiku-4-6",
-]
+models = ["claude-sonnet-4-5", "claude-haiku-4-6"]
