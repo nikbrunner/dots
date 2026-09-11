@@ -14,5 +14,5 @@ Edit.now(function()
 		},
 	}
 
-	vim.cmd.colorscheme("black-atom-minium-viridian-dark")
+	vim.cmd.colorscheme("black-atom-minium-viridian-light")
 end)

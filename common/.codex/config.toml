@@ -1,4 +1,4 @@
-model = "gpt-6-astra"
+model = "gpt-5.6-luna"
 model_reasoning_effort = "low"
 approvals_reviewer = "auto_review"
 service_tier = "default"
@@ -61,6 +61,15 @@ trust_level = "trusted"
 [projects."/Users/brunner/Documents/Codex/2026-09-07/ho"]
 trust_level = "trusted"
 
+[projects."/Users/brunner/Documents/Codex/2026-09-10/realtime-voice-chat"]
+trust_level = "trusted"
+
+[projects."/Users/brunner/Documents/Codex/2026-09-10/realtime-voice-chat-2"]
+trust_level = "trusted"
+
+[projects."/Users/brunner/Documents/Codex/2026-09-10/realtime-voice-chat-3"]
+trust_level = "trusted"
+
 [tui]
 session_picker_view = "dense"
 status_line = [
@@ -82,6 +91,7 @@ status_line_use_colors = true
 
 [tui.model_availability_nux]
 "gpt-5.6-sol" = 4
+gpt-6-astra = 3
 
 [mcp_servers.openaiDeveloperDocs]
 url = "https://developers.openai.com/mcp"
@@ -131,8 +141,8 @@ NODE_REPL_INSTRUCTIONS_USE_CASE_BROWSER = ""
 NODE_REPL_INSTRUCTIONS_USE_CASE_CHROME = ""
 NODE_REPL_INSTRUCTIONS_USE_CASE_COMPUTER_USE = ""
 BROWSER_USE_CODEX_APP_BUILD_FLAVOR = "prod"
-BROWSER_USE_CODEX_APP_VERSION = "26.901.51231"
-NODE_REPL_TRUSTED_SERVICES = '{"browser":"/Users/brunner/.codex/plugins/cache/openai-bundled/browser/26.901.51231/scripts/browser-service.mjs","sky":"@oai/sky/service"}'
+BROWSER_USE_CODEX_APP_VERSION = "26.903.71938"
+NODE_REPL_TRUSTED_SERVICES = '{"browser":"/Users/brunner/.codex/plugins/cache/openai-bundled/browser/26.903.71938/scripts/browser-service.mjs","sky":"@oai/sky/service"}'
 SKY_CUA_SERVICE_PATH = "/Users/brunner/.codex/computer-use/Codex Computer Use.app"
 CODEX_CLI_PATH = "/Applications/ChatGPT.app/Contents/Resources/codex"
 
@@ -176,16 +186,19 @@ trusted_hash = "sha256:8d5de4fe94b3e8d605f429c703ab38d951cce57f148c3eda7af6b3b1a
 trusted_hash = "sha256:47b2666732ff5d2ba1f7089565acdb72a82bf025e285c372d7d1801dc6a06aaf"
 
 [hooks.state."impeccable@impeccable:hooks/hooks.json:post_tool_use:0:0"]
-trusted_hash = "sha256:2d1d403bc5408a48b5b11df685e9aafd6ccaaad8283880ab0e5a2bebc8846491"
+trusted_hash = "sha256:7c21510c97aef3035a77f380e84d716fbe7a25a289be3c57463eb5e2b1f4da69"
 
 [hooks.state."impeccable@impeccable:hooks/hooks.json:stop:0:0"]
-trusted_hash = "sha256:a78dfd4c6456516998f672841e124cc0b1976a7c77018b0030b84d0e8f082ae4"
+trusted_hash = "sha256:5e32e42c9a09a82fa89fe0a2bdd7d391207d01b8159a57080f8df5fdc5ee93bf"
 
 [hooks.state."plannotator@plannotator:hooks/hooks.json:pre_tool_use:0:0"]
 trusted_hash = "sha256:c14c21d72b8ddb7a4dbd7eedcac9d3fff0d7b4b97e4f24dd8f6277d78c45329e"
 
 [hooks.state."plannotator@plannotator:hooks/hooks.json:permission_request:0:0"]
 trusted_hash = "sha256:c8ae3770a85b13f9f51aabce263943340a878625c5e71eadb429bb2743835d9e"
+
+[hooks.state."/Users/brunner/.codex/hooks.json:stop:0:0"]
+trusted_hash = "sha256:1a4418c6f1e26de8b2b0109495dc837232346b187a808f8abd44af3c8586ba47"
 
 [desktop]
 followUpQueueMode = "steer"

@@ -10,12 +10,11 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +0 app/global.css
+badd +45 app/global.css
 argglobal
 %argdel
 edit app/global.css
 argglobal
-balt app/global.css
 setlocal keymap=
 setlocal noarabic
 setlocal autoindent
@@ -125,12 +124,12 @@ setlocal winhighlight=
 setlocal nowinpinned
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 43 - ((42 * winheight(0) + 32) / 64)
+let s:l = 33 - ((19 * winheight(0) + 12) / 25)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 43
-normal! 03|
+keepjumps 33
+normal! 0
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf

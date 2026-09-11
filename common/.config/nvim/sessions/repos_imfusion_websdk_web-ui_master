@@ -10,18 +10,28 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +52 src/studies/technical-article.stories.tsx
-badd +19 src/tokens/token-reference.stories.tsx
+badd +86 src/components/typo/typo.module.css
+badd +221 src/components/typo/typo.tsx
+badd +56 src/components/tooltip/tooltip.module.css
+badd +28 src/components/card/card.module.css
+badd +1 src/tokens/showcase.stories.tsx
 argglobal
 %argdel
 $argadd ~/repos/imfusion/websdk/web-ui/src/components/code/code.stories.tsx
-edit src/studies/technical-article.stories.tsx
+set stal=2
+tabnew +setlocal\ bufhidden=wipe
+tabnew +setlocal\ bufhidden=wipe
+tabrewind
+edit src/components/typo/typo.module.css
 let s:save_splitbelow = &splitbelow
 let s:save_splitright = &splitright
 set splitbelow splitright
 wincmd _ | wincmd |
 vsplit
-1wincmd h
+wincmd _ | wincmd |
+vsplit
+2wincmd h
+wincmd w
 wincmd w
 let &splitbelow = s:save_splitbelow
 let &splitright = s:save_splitright
@@ -32,8 +42,9 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe 'vert 1resize ' . ((&columns * 151 + 151) / 302)
-exe 'vert 2resize ' . ((&columns * 150 + 151) / 302)
+exe 'vert 1resize ' . ((&columns * 68 + 103) / 207)
+exe 'vert 2resize ' . ((&columns * 68 + 103) / 207)
+exe 'vert 3resize ' . ((&columns * 69 + 103) / 207)
 tcd ~/repos/imfusion/websdk/web-ui
 argglobal
 setlocal keymap=
@@ -52,8 +63,8 @@ setlocal cinoptions=
 setlocal cinscopedecls=public,protected,private
 setlocal cinwords=if,else,while,do,for,switch
 setlocal colorcolumn=
-setlocal comments=sO:*\ -,mO:*\ \ ,exO:*/,s1:/*,mb:*,ex:*/,://
-setlocal commentstring=//\ %s
+setlocal comments=s1:/*,mb:*,ex:*/
+setlocal commentstring=/*\ %s\ */
 setlocal complete=.,w,b,kspell
 setlocal completefunc=
 setlocal completeslash=
@@ -67,8 +78,8 @@ setlocal cursorlineopt=screenline,number
 setlocal nodiff
 setlocal eventignorewin=
 setlocal expandtab
-if &filetype != 'typescriptreact'
-setlocal filetype=typescriptreact
+if &filetype != 'css'
+setlocal filetype=css
 endif
 setlocal fixendofline
 setlocal foldcolumn=0
@@ -86,11 +97,12 @@ setlocal formatlistpat=^\\s*[0-9\\-\\+\\*]\\+[\\.\\)]*\\s\\+
 setlocal formatoptions=n1jrql
 setlocal iminsert=0
 setlocal imsearch=-1
+setlocal include=^\\s*@import\\s\\+\\%(url(\\)\\=
 setlocal includeexpr=
 setlocal indentexpr=v:lua.require'arborist.indent'.indentexpr()
-setlocal indentkeys=0{,0},0),0],0,,!^F,o,O,e
+setlocal indentkeys=0{,0},!^F,o,O
 setlocal infercase
-setlocal iskeyword=@,48-57,_,192-255,-,$,#
+setlocal iskeyword=@,48-57,_,192-255,-
 setlocal lhistory=10
 setlocal linebreak
 setlocal nolisp
@@ -123,7 +135,7 @@ setlocal spellfile=
 setlocal spelllang=en_us,de_de
 setlocal spelloptions=camel,noplainbuffer
 setlocal statuscolumn=
-setlocal suffixesadd=.ts,.d.ts,.tsx,.js,.jsx,.cjs,.mjs
+setlocal suffixesadd=
 setlocal noswapfile
 setlocal synmaxcol=3000
 if &syntax != ''
@@ -135,7 +147,7 @@ setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#...%*%#WinBarSeparator#/%*%#WinBarPath#studies%*%#WinBarSeparator#/%*%#WinBarFilename#technical-article.stories.tsx%*%=
+setlocal winbar=%#WinBarPath#...%*%#WinBarSeparator#/%*%#WinBarPath#typo%*%#WinBarSeparator#/%*%#WinBarFilename#typo.module.css%*%=%#WinBarGitLabel#\ [GIT:%#WinBarGitAdd#\ +1%#WinBarGitChange#\ ~6%#WinBarGitDelete#\ -41%#WinBarGitLabel#]%*%#WinBarLspLabel#\ [LSP:\ %#DiagnosticSignWarn#:2%##%#WinBarLspLabel#]%*\ 
 setlocal winblend=10
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -144,25 +156,25 @@ setlocal winhighlight=
 setlocal nowinpinned
 setlocal nowrap
 setlocal wrapmargin=0
-24
+1
 sil! normal! zo
-37
+81
 sil! normal! zo
-39
+107
 sil! normal! zo
-let s:l = 52 - ((28 * winheight(0) + 32) / 64)
+let s:l = 73 - ((21 * winheight(0) + 25) / 50)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 52
-normal! 0
+keepjumps 73
+normal! 03|
 wincmd w
 argglobal
-if bufexists(fnamemodify("~/repos/imfusion/websdk/web-ui/src/tokens/token-reference.stories.tsx", ":p")) | buffer ~/repos/imfusion/websdk/web-ui/src/tokens/token-reference.stories.tsx | else | edit ~/repos/imfusion/websdk/web-ui/src/tokens/token-reference.stories.tsx | endif
+if bufexists(fnamemodify("~/repos/imfusion/websdk/web-ui/src/components/typo/typo.tsx", ":p")) | buffer ~/repos/imfusion/websdk/web-ui/src/components/typo/typo.tsx | else | edit ~/repos/imfusion/websdk/web-ui/src/components/typo/typo.tsx | endif
 if &buftype ==# 'terminal'
-  silent file ~/repos/imfusion/websdk/web-ui/src/tokens/token-reference.stories.tsx
+  silent file ~/repos/imfusion/websdk/web-ui/src/components/typo/typo.tsx
 endif
-balt ~/repos/imfusion/websdk/web-ui/src/studies/technical-article.stories.tsx
+balt ~/repos/imfusion/websdk/web-ui/src/components/typo/typo.module.css
 setlocal keymap=
 setlocal noarabic
 setlocal autoindent
@@ -262,7 +274,7 @@ setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#src%*%#WinBarSeparator#/%*%#WinBarPath#tokens%*%#WinBarSeparator#/%*%#WinBarFilename#token-reference.stories.tsx%*%=
+setlocal winbar=%#WinBarPath#...%*%#WinBarSeparator#/%*%#WinBarPath#components%*%#WinBarSeparator#/%*%#WinBarPath#typo%*%#WinBarSeparator#/%*%#WinBarFilename#typo.tsx%*%=%#WinBarGitLabel#\ [GIT:%#WinBarGitAdd#\ +17%#WinBarGitChange#\ ~27%#WinBarGitDelete#\ -15%#WinBarGitLabel#]%*\ 
 setlocal winblend=10
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -271,16 +283,550 @@ setlocal winhighlight=
 setlocal nowinpinned
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 19 - ((18 * winheight(0) + 32) / 64)
+11
+sil! normal! zo
+12
+sil! normal! zo
+227
+sil! normal! zo
+let s:l = 221 - ((27 * winheight(0) + 25) / 50)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 19
-normal! 071|
+keepjumps 221
+normal! 0
 wincmd w
-exe 'vert 1resize ' . ((&columns * 151 + 151) / 302)
-exe 'vert 2resize ' . ((&columns * 150 + 151) / 302)
+argglobal
+if bufexists(fnamemodify("~/repos/imfusion/websdk/web-ui/src/components/typo/typo.tsx", ":p")) | buffer ~/repos/imfusion/websdk/web-ui/src/components/typo/typo.tsx | else | edit ~/repos/imfusion/websdk/web-ui/src/components/typo/typo.tsx | endif
+if &buftype ==# 'terminal'
+  silent file ~/repos/imfusion/websdk/web-ui/src/components/typo/typo.tsx
+endif
+setlocal keymap=
+setlocal noarabic
+setlocal autoindent
+setlocal nobinary
+setlocal breakindent
+setlocal breakindentopt=list:-1
+setlocal bufhidden=
+setlocal buflisted
+setlocal buftype=
+setlocal busy=0
+setlocal nocindent
+setlocal cinkeys=0{,0},0),0],:,0#,!^F,o,O,e
+setlocal cinoptions=
+setlocal cinscopedecls=public,protected,private
+setlocal cinwords=if,else,while,do,for,switch
+setlocal colorcolumn=
+setlocal comments=sO:*\ -,mO:*\ \ ,exO:*/,s1:/*,mb:*,ex:*/,://
+setlocal commentstring=//\ %s
+setlocal complete=.,w,b,kspell
+setlocal completefunc=
+setlocal completeslash=
+setlocal concealcursor=
+setlocal conceallevel=0
+setlocal nocopyindent
+setlocal nocursorbind
+setlocal nocursorcolumn
+setlocal cursorline
+setlocal cursorlineopt=screenline,number
+setlocal nodiff
+setlocal eventignorewin=
+setlocal expandtab
+if &filetype != 'typescriptreact'
+setlocal filetype=typescriptreact
+endif
+setlocal fixendofline
+setlocal foldcolumn=0
+setlocal foldenable
+setlocal foldexpr=v:lua.vim.treesitter.foldexpr()
+setlocal foldignore=#
+setlocal foldlevel=99
+setlocal foldmarker={{{,}}}
+setlocal foldmethod=expr
+setlocal foldminlines=1
+setlocal foldnestmax=10
+setlocal foldtext=
+setlocal formatexpr=v:lua.require'conform'.formatexpr()
+setlocal formatlistpat=^\\s*[0-9\\-\\+\\*]\\+[\\.\\)]*\\s\\+
+setlocal formatoptions=n1jrql
+setlocal iminsert=0
+setlocal imsearch=-1
+setlocal includeexpr=
+setlocal indentexpr=v:lua.require'arborist.indent'.indentexpr()
+setlocal indentkeys=0{,0},0),0],0,,!^F,o,O,e
+setlocal infercase
+setlocal iskeyword=@,48-57,_,192-255,-,$,#
+setlocal lhistory=10
+setlocal linebreak
+setlocal nolisp
+setlocal lispoptions=
+setlocal nolist
+setlocal matchpairs=(:),{:},[:]
+setlocal modeline
+setlocal modifiable
+setlocal nrformats=bin,hex
+setlocal number
+setlocal numberwidth=4
+setlocal omnifunc=v:lua.vim.lsp.omnifunc
+setlocal nopreserveindent
+setlocal nopreviewwindow
+setlocal quoteescape=\\
+setlocal noreadonly
+setlocal relativenumber
+setlocal norightleft
+setlocal rightleftcmd=search
+setlocal scrollback=-1
+setlocal noscrollbind
+setlocal shiftwidth=2
+setlocal signcolumn=yes
+setlocal nosmartindent
+setlocal nosmoothscroll
+setlocal softtabstop=-1
+setlocal nospell
+setlocal spellcapcheck=[.?!]\\_[\\])'\"\\t\ ]\\+
+setlocal spellfile=
+setlocal spelllang=en_us,de_de
+setlocal spelloptions=camel,noplainbuffer
+setlocal statuscolumn=
+setlocal suffixesadd=.ts,.d.ts,.tsx,.js,.jsx,.cjs,.mjs
+setlocal noswapfile
+setlocal synmaxcol=3000
+if &syntax != ''
+setlocal syntax=
+endif
+setlocal tabstop=2
+setlocal tagfunc=v:lua.vim.lsp.tagfunc
+setlocal textwidth=0
+setlocal undofile
+setlocal varsofttabstop=
+setlocal vartabstop=
+setlocal winbar=%#WinBarPath#...%*%#WinBarSeparator#/%*%#WinBarPath#components%*%#WinBarSeparator#/%*%#WinBarPath#typo%*%#WinBarSeparator#/%*%#WinBarFilename#typo.tsx%*%=%#WinBarGitLabel#\ [GIT:%#WinBarGitAdd#\ +9%#WinBarGitChange#\ ~8%#WinBarGitDelete#\ -8%#WinBarGitLabel#]%*\ 
+setlocal winblend=10
+setlocal nowinfixbuf
+setlocal nowinfixheight
+setlocal nowinfixwidth
+setlocal winhighlight=
+setlocal nowinpinned
+setlocal nowrap
+setlocal wrapmargin=0
+11
+sil! normal! zo
+12
+sil! normal! zo
+72
+sil! normal! zo
+87
+sil! normal! zo
+147
+sil! normal! zo
+let s:l = 137 - ((21 * winheight(0) + 25) / 50)
+if s:l < 1 | let s:l = 1 | endif
+keepjumps exe s:l
+normal! zt
+keepjumps 137
+normal! 012|
+wincmd w
+2wincmd w
+exe 'vert 1resize ' . ((&columns * 68 + 103) / 207)
+exe 'vert 2resize ' . ((&columns * 68 + 103) / 207)
+exe 'vert 3resize ' . ((&columns * 69 + 103) / 207)
+tabnext
+edit ~/repos/imfusion/websdk/web-ui/src/components/tooltip/tooltip.module.css
+tcd ~/repos/imfusion/websdk/web-ui
+argglobal
+balt ~/repos/imfusion/websdk/web-ui/src/components/typo/typo.module.css
+setlocal keymap=
+setlocal noarabic
+setlocal autoindent
+setlocal nobinary
+setlocal breakindent
+setlocal breakindentopt=list:-1
+setlocal bufhidden=
+setlocal buflisted
+setlocal buftype=
+setlocal busy=0
+setlocal nocindent
+setlocal cinkeys=0{,0},0),0],:,0#,!^F,o,O,e
+setlocal cinoptions=
+setlocal cinscopedecls=public,protected,private
+setlocal cinwords=if,else,while,do,for,switch
+setlocal colorcolumn=
+setlocal comments=s1:/*,mb:*,ex:*/
+setlocal commentstring=/*\ %s\ */
+setlocal complete=.,w,b,kspell
+setlocal completefunc=
+setlocal completeslash=
+setlocal concealcursor=
+setlocal conceallevel=0
+setlocal nocopyindent
+setlocal nocursorbind
+setlocal nocursorcolumn
+setlocal cursorline
+setlocal cursorlineopt=screenline,number
+setlocal nodiff
+setlocal eventignorewin=
+setlocal expandtab
+if &filetype != 'css'
+setlocal filetype=css
+endif
+setlocal fixendofline
+setlocal foldcolumn=0
+setlocal foldenable
+setlocal foldexpr=v:lua.vim.treesitter.foldexpr()
+setlocal foldignore=#
+setlocal foldlevel=99
+setlocal foldmarker={{{,}}}
+setlocal foldmethod=expr
+setlocal foldminlines=1
+setlocal foldnestmax=10
+setlocal foldtext=
+setlocal formatexpr=v:lua.require'conform'.formatexpr()
+setlocal formatlistpat=^\\s*[0-9\\-\\+\\*]\\+[\\.\\)]*\\s\\+
+setlocal formatoptions=n1jrql
+setlocal iminsert=0
+setlocal imsearch=-1
+setlocal include=^\\s*@import\\s\\+\\%(url(\\)\\=
+setlocal includeexpr=
+setlocal indentexpr=v:lua.require'arborist.indent'.indentexpr()
+setlocal indentkeys=0{,0},!^F,o,O
+setlocal infercase
+setlocal iskeyword=@,48-57,_,192-255,-
+setlocal lhistory=10
+setlocal linebreak
+setlocal nolisp
+setlocal lispoptions=
+setlocal list
+setlocal matchpairs=(:),{:},[:]
+setlocal modeline
+setlocal modifiable
+setlocal nrformats=bin,hex
+setlocal number
+setlocal numberwidth=4
+setlocal omnifunc=v:lua.vim.lsp.omnifunc
+setlocal nopreserveindent
+setlocal nopreviewwindow
+setlocal quoteescape=\\
+setlocal noreadonly
+setlocal relativenumber
+setlocal norightleft
+setlocal rightleftcmd=search
+setlocal scrollback=-1
+setlocal noscrollbind
+setlocal shiftwidth=2
+setlocal signcolumn=yes
+setlocal nosmartindent
+setlocal nosmoothscroll
+setlocal softtabstop=-1
+setlocal nospell
+setlocal spellcapcheck=[.?!]\\_[\\])'\"\\t\ ]\\+
+setlocal spellfile=
+setlocal spelllang=en_us,de_de
+setlocal spelloptions=camel,noplainbuffer
+setlocal statuscolumn=
+setlocal suffixesadd=
+setlocal noswapfile
+setlocal synmaxcol=3000
+if &syntax != ''
+setlocal syntax=
+endif
+setlocal tabstop=2
+setlocal tagfunc=v:lua.vim.lsp.tagfunc
+setlocal textwidth=0
+setlocal undofile
+setlocal varsofttabstop=
+setlocal vartabstop=
+setlocal winbar=%#WinBarPath#...%*%#WinBarSeparator#/%*%#WinBarPath#components%*%#WinBarSeparator#/%*%#WinBarPath#tooltip%*%#WinBarSeparator#/%*%#WinBarFilename#tooltip.module.css%*%=%#WinBarGitLabel#\ [GIT:%#WinBarGitChange#\ ~2%#WinBarGitDelete#\ -11%#WinBarGitLabel#]%*\ 
+setlocal winblend=10
+setlocal nowinfixbuf
+setlocal nowinfixheight
+setlocal nowinfixwidth
+setlocal winhighlight=
+setlocal nowinpinned
+setlocal nowrap
+setlocal wrapmargin=0
+1
+sil! normal! zo
+let s:l = 50 - ((36 * winheight(0) + 25) / 50)
+if s:l < 1 | let s:l = 1 | endif
+keepjumps exe s:l
+normal! zt
+keepjumps 50
+normal! 0
+tabnext
+edit ~/repos/imfusion/websdk/web-ui/src/components/card/card.module.css
+let s:save_splitbelow = &splitbelow
+let s:save_splitright = &splitright
+set splitbelow splitright
+wincmd _ | wincmd |
+vsplit
+1wincmd h
+wincmd w
+let &splitbelow = s:save_splitbelow
+let &splitright = s:save_splitright
+wincmd t
+let s:save_winminheight = &winminheight
+let s:save_winminwidth = &winminwidth
+set winminheight=0
+set winheight=1
+set winminwidth=0
+set winwidth=1
+exe 'vert 1resize ' . ((&columns * 103 + 103) / 207)
+exe 'vert 2resize ' . ((&columns * 103 + 103) / 207)
+tcd ~/repos/imfusion/websdk/web-ui
+argglobal
+balt ~/repos/imfusion/websdk/web-ui/src/components/tooltip/tooltip.module.css
+setlocal keymap=
+setlocal noarabic
+setlocal autoindent
+setlocal nobinary
+setlocal breakindent
+setlocal breakindentopt=list:-1
+setlocal bufhidden=
+setlocal buflisted
+setlocal buftype=
+setlocal busy=0
+setlocal nocindent
+setlocal cinkeys=0{,0},0),0],:,0#,!^F,o,O,e
+setlocal cinoptions=
+setlocal cinscopedecls=public,protected,private
+setlocal cinwords=if,else,while,do,for,switch
+setlocal colorcolumn=
+setlocal comments=s1:/*,mb:*,ex:*/
+setlocal commentstring=/*\ %s\ */
+setlocal complete=.,w,b,kspell
+setlocal completefunc=
+setlocal completeslash=
+setlocal concealcursor=
+setlocal conceallevel=0
+setlocal nocopyindent
+setlocal nocursorbind
+setlocal nocursorcolumn
+setlocal cursorline
+setlocal cursorlineopt=screenline,number
+setlocal nodiff
+setlocal eventignorewin=
+setlocal expandtab
+if &filetype != 'css'
+setlocal filetype=css
+endif
+setlocal fixendofline
+setlocal foldcolumn=0
+setlocal foldenable
+setlocal foldexpr=v:lua.vim.treesitter.foldexpr()
+setlocal foldignore=#
+setlocal foldlevel=99
+setlocal foldmarker={{{,}}}
+setlocal foldmethod=expr
+setlocal foldminlines=1
+setlocal foldnestmax=10
+setlocal foldtext=
+setlocal formatexpr=v:lua.require'conform'.formatexpr()
+setlocal formatlistpat=^\\s*[0-9\\-\\+\\*]\\+[\\.\\)]*\\s\\+
+setlocal formatoptions=n1jrql
+setlocal iminsert=0
+setlocal imsearch=-1
+setlocal include=^\\s*@import\\s\\+\\%(url(\\)\\=
+setlocal includeexpr=
+setlocal indentexpr=v:lua.require'arborist.indent'.indentexpr()
+setlocal indentkeys=0{,0},!^F,o,O
+setlocal infercase
+setlocal iskeyword=@,48-57,_,192-255,-
+setlocal lhistory=10
+setlocal linebreak
+setlocal nolisp
+setlocal lispoptions=
+setlocal list
+setlocal matchpairs=(:),{:},[:]
+setlocal modeline
+setlocal modifiable
+setlocal nrformats=bin,hex
+setlocal number
+setlocal numberwidth=4
+setlocal omnifunc=v:lua.vim.lsp.omnifunc
+setlocal nopreserveindent
+setlocal nopreviewwindow
+setlocal quoteescape=\\
+setlocal noreadonly
+setlocal relativenumber
+setlocal norightleft
+setlocal rightleftcmd=search
+setlocal scrollback=-1
+setlocal noscrollbind
+setlocal shiftwidth=2
+setlocal signcolumn=yes
+setlocal nosmartindent
+setlocal nosmoothscroll
+setlocal softtabstop=-1
+setlocal nospell
+setlocal spellcapcheck=[.?!]\\_[\\])'\"\\t\ ]\\+
+setlocal spellfile=
+setlocal spelllang=en_us,de_de
+setlocal spelloptions=camel,noplainbuffer
+setlocal statuscolumn=
+setlocal suffixesadd=
+setlocal noswapfile
+setlocal synmaxcol=3000
+if &syntax != ''
+setlocal syntax=
+endif
+setlocal tabstop=2
+setlocal tagfunc=v:lua.vim.lsp.tagfunc
+setlocal textwidth=0
+setlocal undofile
+setlocal varsofttabstop=
+setlocal vartabstop=
+setlocal winbar=%#WinBarPath#src%*%#WinBarSeparator#/%*%#WinBarPath#components%*%#WinBarSeparator#/%*%#WinBarPath#card%*%#WinBarSeparator#/%*%#WinBarFilename#card.module.css%*%=%#WinBarGitLabel#\ [GIT:%#WinBarGitChange#\ ~1%#WinBarGitLabel#]%*\ 
+setlocal winblend=10
+setlocal nowinfixbuf
+setlocal nowinfixheight
+setlocal nowinfixwidth
+setlocal winhighlight=
+setlocal nowinpinned
+setlocal nowrap
+setlocal wrapmargin=0
+1
+sil! normal! zo
+13
+sil! normal! zo
+let s:l = 30 - ((29 * winheight(0) + 25) / 50)
+if s:l < 1 | let s:l = 1 | endif
+keepjumps exe s:l
+normal! zt
+keepjumps 30
+normal! 0
+wincmd w
+argglobal
+if bufexists(fnamemodify("~/repos/imfusion/websdk/web-ui/src/tokens/showcase.stories.tsx", ":p")) | buffer ~/repos/imfusion/websdk/web-ui/src/tokens/showcase.stories.tsx | else | edit ~/repos/imfusion/websdk/web-ui/src/tokens/showcase.stories.tsx | endif
+if &buftype ==# 'terminal'
+  silent file ~/repos/imfusion/websdk/web-ui/src/tokens/showcase.stories.tsx
+endif
+setlocal keymap=
+setlocal noarabic
+setlocal autoindent
+setlocal nobinary
+setlocal breakindent
+setlocal breakindentopt=list:-1
+setlocal bufhidden=
+setlocal buflisted
+setlocal buftype=
+setlocal busy=0
+setlocal nocindent
+setlocal cinkeys=0{,0},0),0],:,0#,!^F,o,O,e
+setlocal cinoptions=
+setlocal cinscopedecls=public,protected,private
+setlocal cinwords=if,else,while,do,for,switch
+setlocal colorcolumn=
+setlocal comments=sO:*\ -,mO:*\ \ ,exO:*/,s1:/*,mb:*,ex:*/,://
+setlocal commentstring=//\ %s
+setlocal complete=.,w,b,kspell
+setlocal completefunc=
+setlocal completeslash=
+setlocal concealcursor=
+setlocal conceallevel=0
+setlocal nocopyindent
+setlocal nocursorbind
+setlocal nocursorcolumn
+setlocal cursorline
+setlocal cursorlineopt=screenline,number
+setlocal nodiff
+setlocal eventignorewin=
+setlocal expandtab
+if &filetype != 'typescriptreact'
+setlocal filetype=typescriptreact
+endif
+setlocal fixendofline
+setlocal foldcolumn=0
+setlocal foldenable
+setlocal foldexpr=v:lua.vim.treesitter.foldexpr()
+setlocal foldignore=#
+setlocal foldlevel=99
+setlocal foldmarker={{{,}}}
+setlocal foldmethod=expr
+setlocal foldminlines=1
+setlocal foldnestmax=10
+setlocal foldtext=
+setlocal formatexpr=v:lua.require'conform'.formatexpr()
+setlocal formatlistpat=^\\s*[0-9\\-\\+\\*]\\+[\\.\\)]*\\s\\+
+setlocal formatoptions=n1jrql
+setlocal iminsert=0
+setlocal imsearch=-1
+setlocal includeexpr=
+setlocal indentexpr=v:lua.require'arborist.indent'.indentexpr()
+setlocal indentkeys=0{,0},0),0],0,,!^F,o,O,e
+setlocal infercase
+setlocal iskeyword=@,48-57,_,192-255,-,$,#
+setlocal lhistory=10
+setlocal linebreak
+setlocal nolisp
+setlocal lispoptions=
+setlocal list
+setlocal matchpairs=(:),{:},[:]
+setlocal modeline
+setlocal modifiable
+setlocal nrformats=bin,hex
+setlocal number
+setlocal numberwidth=4
+setlocal omnifunc=v:lua.vim.lsp.omnifunc
+setlocal nopreserveindent
+setlocal nopreviewwindow
+setlocal quoteescape=\\
+setlocal noreadonly
+setlocal relativenumber
+setlocal norightleft
+setlocal rightleftcmd=search
+setlocal scrollback=-1
+setlocal noscrollbind
+setlocal shiftwidth=2
+setlocal signcolumn=yes
+setlocal nosmartindent
+setlocal nosmoothscroll
+setlocal softtabstop=-1
+setlocal nospell
+setlocal spellcapcheck=[.?!]\\_[\\])'\"\\t\ ]\\+
+setlocal spellfile=
+setlocal spelllang=en_us,de_de
+setlocal spelloptions=camel,noplainbuffer
+setlocal statuscolumn=
+setlocal suffixesadd=.ts,.d.ts,.tsx,.js,.jsx,.cjs,.mjs
+setlocal noswapfile
+setlocal synmaxcol=3000
+if &syntax != ''
+setlocal syntax=
+endif
+setlocal tabstop=2
+setlocal tagfunc=v:lua.vim.lsp.tagfunc
+setlocal textwidth=0
+setlocal undofile
+setlocal varsofttabstop=
+setlocal vartabstop=
+setlocal winbar=%#WinBarPath#src%*%#WinBarSeparator#/%*%#WinBarPath#tokens%*%#WinBarSeparator#/%*%#WinBarFilename#showcase.stories.tsx%*%=%#WinBarGitLabel#\ [GIT:%#WinBarGitAdd#\ +86%#WinBarGitChange#\ ~21%#WinBarGitLabel#]%*\ 
+setlocal winblend=10
+setlocal nowinfixbuf
+setlocal nowinfixheight
+setlocal nowinfixwidth
+setlocal winhighlight=
+setlocal nowinpinned
+setlocal nowrap
+setlocal wrapmargin=0
+463
+sil! normal! zo
+470
+sil! normal! zo
+471
+sil! normal! zo
+473
+sil! normal! zo
+let s:l = 472 - ((28 * winheight(0) + 25) / 50)
+if s:l < 1 | let s:l = 1 | endif
+keepjumps exe s:l
+normal! zt
+keepjumps 472
+normal! 0
+wincmd w
+exe 'vert 1resize ' . ((&columns * 103 + 103) / 207)
+exe 'vert 2resize ' . ((&columns * 103 + 103) / 207)
 tabnext 1
+set stal=1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
 endif
@@ -295,7 +841,6 @@ if filereadable(s:sx)
 endif
 let &g:so = s:so_save | let &g:siso = s:siso_save
 set hlsearch
-nohlsearch
 doautoall SessionLoadPost
 unlet SessionLoad
 " vim: set ft=vim :
