@@ -1,82 +1,52 @@
-#!/bin/bash
-# UserPromptSubmit hook: Smart skill recommendation based on prompt content.
-# Reads the user's prompt, matches keywords, and suggests specific skills.
-# Falls back to generic reminder if no specific match found.
+#!/usr/bin/env bash
+# UserPromptSubmit hook: Suggest skills that match the shape of the prompt.
+# Matches only on prompts that open with an explicit task verb — a mention of
+# "commit" mid-sentence is discussion, not a request to commit.
+# Emits an empty object when nothing matches, so no context is spent.
 
 set -euo pipefail
 
-# Read prompt from stdin JSON
-PROMPT=$(cat | jq -r '.prompt // empty' 2>/dev/null || echo "")
-
-# Gather context
-CWD=$(pwd)
-REPO=$(basename "$CWD")
-REPO_OWNER=$(basename "$(dirname "$CWD")")
-
-# Lowercase prompt for matching
-prompt_lower=$(echo "$PROMPT" | tr '[:upper:]' '[:lower:]')
-
-# Collect matching skills
+prompt_lower=$(jq -r '(.prompt // "") | ascii_downcase' 2>/dev/null || echo "")
+REPO=$(basename "$(pwd)")
 matches=()
 
-# dev:flow assess — explicit task start signals (not casual discussion)
-if echo "$prompt_lower" | grep -qiE '(^(implement|build|refactor|fix|add|create|migrate|remove|delete|update|upgrade) |lets (start|begin|work on)|i want to (start|begin|work on)|can you (implement|build|fix|add|create))'; then
-    matches+=("dev:flow assess — Orient and assess before implementation")
+if [[ "$prompt_lower" =~ ^(implement|build|refactor|fix|add|migrate|remove|delete|update|upgrade)\  ||
+    "$prompt_lower" =~ ^can\ you\ (implement|build|fix|add)\  ]]; then
+    matches+=("Implementation: load the relevant project/language convention skills before editing (dev-style-typescript for TypeScript, dev-style-react for React). Keep selection to the code being changed.")
 fi
 
-# dev:flow plan — explicit planning requests
-if echo "$prompt_lower" | grep -qiE '(^plan |write.*(prd|plan|spec)|break.*(down|into)|create.*(issues|tickets|tasks))'; then
-    matches+=("dev:flow plan — Create a plan or PRD")
+if [[ "$prompt_lower" =~ ^(use\ tdd|red.green.refactor|write\ tests?\ first|test.driven)([[:space:][:punct:]]|$) ||
+    "$prompt_lower" =~ ^(implement|build|fix)\ .*\ (using|with)\ tdd([[:space:][:punct:]]|$) ]]; then
+    matches+=("Explicit TDD request: load dev-style-tdd and follow its red-green-refactor discipline for this task.")
 fi
 
-# dev:util:commit — committing code
-if echo "$prompt_lower" | grep -qiE '(^commit|lets commit|create a commit|commit (this|these|the))'; then
-    matches+=("dev:util:commit — Commit format and strategy")
+if [[ "$prompt_lower" =~ ^(audit|review)([[:space:]]|$) ||
+    "$prompt_lower" =~ ^run\ (an?\ )?(audit|review)([[:space:]]|$) ||
+    "$prompt_lower" =~ ^check\ .*(quality|conventions|a11y|accessibility) ]]; then
+    matches+=("Review/audit request: load dev-audit for the requested focus and scope. Report findings; start implementation or shipping work only when explicitly requested.")
 fi
 
-# dev:style:tdd — explicit TDD requests
-if echo "$prompt_lower" | grep -qiE '(use tdd|red.green.refactor|write.*tests? first|test.driven)'; then
-    matches+=("dev:style:tdd — TDD discipline and test strategy")
+if [[ "$prompt_lower" =~ ^(commit|lets\ commit|let\'s\ commit)([[:space:]]|$) ||
+    "$prompt_lower" =~ ^create\ a\ commit([[:space:]]|$) ]]; then
+    matches+=("Commit request: load dev-commit for commit format, selective staging, and approval requirements. Stay within the requested commit scope.")
 fi
 
-# dev:flow close — explicit close/ship requests
-if echo "$prompt_lower" | grep -qiE '(^(close|ship|finish|wrap up)|lets (close|ship|finish|wrap up)|create a pr|open a pr|merge (this|to))'; then
-    matches+=("dev:flow close — Verify, ship, and close")
+if [[ "$REPO" == "dots" &&
+    ("$prompt_lower" =~ ^(add|create|remove|delete)\ .*config ||
+    "$prompt_lower" =~ ^(unlink|symlink)\ ) ]]; then
+    matches+=("Dotfiles change: follow this repository's AGENTS.md symlink conventions for the requested config change.")
 fi
 
-# dev:audit — explicit audit/review requests
-if echo "$prompt_lower" | grep -qiE '(^(audit|review)|run.*(audit|review)|check.*(quality|conventions|a11y|accessibility))'; then
-    matches+=("dev:audit — Audit code quality (ui, style, arch, docs)")
+if [[ ${#matches[@]} -eq 0 ]]; then
+    printf '{}\n'
+    exit 0
 fi
 
-# dots:add / dots:remove — dotfiles management
-if [[ "$REPO" == "dots" ]]; then
-    if echo "$prompt_lower" | grep -qiE '(add.*config|new.*config|symlink|dotfile)'; then
-        matches+=("dots:add — Add config to dots")
-    fi
-    if echo "$prompt_lower" | grep -qiE '(remove.*config|delete.*config|unlink)'; then
-        matches+=("dots:remove — Remove config from dots")
-    fi
-fi
+context=$(printf '%s\n' "${matches[@]}" "Reuse matching skills already loaded in this session.")
 
-# Build output
-if [[ ${#matches[@]} -gt 0 ]]; then
-    skill_list=""
-    for match in "${matches[@]}"; do
-        skill_list="${skill_list}\n  -> ${match}"
-    done
-    context="SKILL CHECK — The following skill(s) may apply:\n${skill_list}\n\nUse a suggested skill only when it genuinely fits the task. Do not load one merely because it was suggested; if none apply, continue normally. Current context: repo=${REPO}, owner=${REPO_OWNER}"
-else
-    context="Skills check: No specific skill match was found. Continue normally, and invoke a skill only if one clearly applies. Current context: repo=${REPO}, owner=${REPO_OWNER}, cwd=${CWD}"
-fi
-
-# Escape for JSON
-context_escaped=$(echo -e "$context" | sed 's/\\/\\\\/g; s/"/\\"/g' | tr '\n' ' ')
-
-printf '{
-  "hookSpecificOutput": {
-    "hookEventName": "UserPromptSubmit",
-    "additionalContext": "%s"
+jq -n --arg context "$context" '{
+  hookSpecificOutput: {
+    hookEventName: "UserPromptSubmit",
+    additionalContext: $context
   }
-}\n' "$context_escaped"
-exit 0
+}'
