@@ -33,6 +33,11 @@
          }
       },
       "applications": {
+         "preferences": {
+            "paths": [
+               "/Applications/Shure/MOTIV Mix"
+            ]
+         },
          "entrypoints": {
             "Mattermost.Desktop": {
                "alias": "mm"
