@@ -47,7 +47,7 @@ zoxide = "prefix:0"
 "npm:typescript" = "prefix:6"
 "pipx:eyeD3" = "prefix:0"
 "pipx:gallery-dl" = "prefix:1"
-herdr = "latest"
+"github:herdrdev/herdr" = "latest"
 
 # ── Formatters & linters ──
 biome = "prefix:2"
