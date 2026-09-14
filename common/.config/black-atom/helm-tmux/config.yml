@@ -27,7 +27,6 @@ ensure_cloned:
   - git@github.com:nikbrunner/fff-snacks.nvim
   - git@github.com:nikbrunner/flux.nvim
   - git@github.com:nikbrunner/mdn.nvim
-  - git@github.com:nikbrunner/review.nvim
   - url: git@github.com:nikbrunner/lazyjira
     post_clone: lazyjira-sync
   - url: git@github.com:black-atom-industries/helm.tmux
