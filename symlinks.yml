@@ -80,6 +80,7 @@ common:
   common/.config/bm: ~/.config/bm
   common/.config/ccstatusline: ~/.config/ccstatusline
   common/.config/tuicr/config.toml: ~/.config/tuicr/config.toml
+  common/.config/lager/config.toml: ~/.config/lager/config.toml
   common/.config/lazyjira: ~/.config/lazyjira
   common/.config/mise: ~/.config/mise
   common/.config/rmpc: ~/.config/rmpc
