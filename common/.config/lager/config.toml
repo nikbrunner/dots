@@ -1,0 +1,58 @@
+root = "~/repos"
+
+[providers."github.com"]
+preset = "github"
+prefix = ""
+
+[[repositories]]
+url = "git@github.com:nikbrunner/dots"
+
+[[repositories]]
+url = "git@github.com:nikbrunner/notes"
+
+[[repositories]]
+url = "git@github.com:nikbrunner/the-black-atom"
+
+[[repositories]]
+url = "git@github.com:nikbrunner/koyo"
+
+[[repositories]]
+url = "git@github.com:nikbrunner/nbr.haus"
+
+[[repositories]]
+url = "git@github.com:nikbrunner/fff-snacks.nvim"
+
+[[repositories]]
+url = "git@github.com:nikbrunner/flux.nvim"
+
+[[repositories]]
+url = "git@github.com:nikbrunner/mdn.nvim"
+
+[[repositories]]
+url = "git@github.com:nikbrunner/review.nvim"
+
+[[repositories]]
+url = "git@github.com:nikbrunner/lazyjira"
+post_clone = "lazyjira-sync"
+
+[[repositories]]
+url = "git@github.com:black-atom-industries/helm.tmux"
+post_clone = "make install"
+
+[[repositories]]
+url = "git@github.com:black-atom-industries/shiplog"
+post_clone = "deno task install"
+
+[[repositories]]
+url = "git@github.com:nikbrunner/bm"
+post_clone = "make install"
+
+[[repositories]]
+url = "git@github.com:nikbrunner/tmux-file-picker"
+post_clone = "make install"
+
+[[repositories]]
+url = "git@github.com:black-atom-industries/*"
+
+[[repositories]]
+url = "git@github.com:nikbrunner/lager.git"

@@ -330,6 +330,16 @@
     ],
     "last_seen": "2026-07-26"
   },
+  "nikbrunner/lager": {
+    "root": "~/repos/nikbrunner/lager",
+    "owner": "nikbrunner",
+    "name": "lager",
+    "work": false,
+    "session_dirs": [
+      "~/repos/nikbrunner/lager"
+    ],
+    "last_seen": "2026-09-13"
+  },
   "nikbrunner/lazyjira": {
     "root": "~/repos/nikbrunner/lazyjira",
     "owner": "nikbrunner",
