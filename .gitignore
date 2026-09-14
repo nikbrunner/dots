@@ -33,6 +33,7 @@ skills-lock.json
 /common/.pi/agent/models-store.json
 handoffs/
 /.repowise
+common/.config/herdr/plugins.json
 common/.config/herdr/plugins/github/*/
 common/.config/herdr/**/*.log
 common/.config/herdr/plugins/config/herdr-navigator/jump-back-workspace
