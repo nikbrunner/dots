@@ -5,6 +5,7 @@
 
 tap "aviator-co/tap", trusted: { formula: "av" }
 tap "avivsinai/tap", trusted: { formula: "bitbucket-cli" }
+tap "heartleo/tap", trusted: { formula: "zlib" }
 tap "jetbrains/utils", trusted: { formula: "teamcity" }
 tap "ngrok/ngrok", trusted: { cask: "ngrok" }
 tap "protonpass/tap", trusted: { formula: "pass-cli" }
@@ -35,6 +36,7 @@ brew "thing3-cli"
 # Custom formula / taps
 brew "protonpass/tap/pass-cli"
 brew "aviator-co/tap/av"         # aviator CLI — shell completion in os.zsh
+brew "heartleo/tap/zlib"
 
 # Casks — desktop apps
 cask "cameracontroller"
