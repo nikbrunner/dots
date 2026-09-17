@@ -4,18 +4,16 @@ let v:this_session=expand("<sfile>:p")
 doautoall SessionLoadPre
 silent only
 silent tabonly
-cd ~/repos/nikbrunner/dots
+cd ~/repos/imfusion/cp/imfusion-portal/local-setup
 if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +74 common/.config/herdr/config.toml
+badd +122 compose.yaml
 argglobal
 %argdel
-$argadd ~/repos/nikbrunner/dots/common/.agents/skills/dev-setup-pre-commit/SKILL.md
-edit common/.config/herdr/config.toml
-tcd ~/repos/nikbrunner/dots
+edit compose.yaml
 argglobal
 setlocal keymap=
 setlocal noarabic
@@ -48,8 +46,8 @@ setlocal cursorlineopt=screenline,number
 setlocal nodiff
 setlocal eventignorewin=
 setlocal expandtab
-if &filetype != 'toml'
-setlocal filetype=toml
+if &filetype != 'yaml'
+setlocal filetype=yaml
 endif
 setlocal fixendofline
 setlocal foldcolumn=0
@@ -64,12 +62,12 @@ setlocal foldnestmax=10
 setlocal foldtext=
 setlocal formatexpr=v:lua.require'conform'.formatexpr()
 setlocal formatlistpat=^\\s*[0-9\\-\\+\\*]\\+[\\.\\)]*\\s\\+
-setlocal formatoptions=rqnl1j
+setlocal formatoptions=n1jrql
 setlocal iminsert=0
 setlocal imsearch=-1
 setlocal includeexpr=
 setlocal indentexpr=v:lua.require'arborist.indent'.indentexpr()
-setlocal indentkeys=0{,0},0),0],:,0#,!^F,o,O,e
+setlocal indentkeys=!^F,o,O,0},0],<:>,0-
 setlocal infercase
 setlocal iskeyword=@,48-57,_,192-255,-
 setlocal lhistory=10
@@ -95,7 +93,7 @@ setlocal scrollback=-1
 setlocal noscrollbind
 setlocal shiftwidth=2
 setlocal signcolumn=yes
-setlocal smartindent
+setlocal nosmartindent
 setlocal nosmoothscroll
 setlocal softtabstop=-1
 setlocal nospell
@@ -111,12 +109,12 @@ if &syntax != ''
 setlocal syntax=
 endif
 setlocal tabstop=2
-setlocal tagfunc=
+setlocal tagfunc=v:lua.vim.lsp.tagfunc
 setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#common%*%#WinBarSeparator#/%*%#WinBarPath#.config%*%#WinBarSeparator#/%*%#WinBarPath#herdr%*%#WinBarSeparator#/%*%#WinBarFilename#config.toml%*%=%#WinBarGitLabel#\ [GIT:%#WinBarGitChange#\ ~3%#WinBarGitLabel#]%*\ 
+setlocal winbar=%#WinBarFilename#compose.yaml%*%=
 setlocal winblend=10
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -125,12 +123,12 @@ setlocal winhighlight=
 setlocal nowinpinned
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 87 - ((34 * winheight(0) + 20) / 40)
+let s:l = 122 - ((6 * winheight(0) + 17) / 35)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 87
-normal! 0
+keepjumps 122
+normal! 045|
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf

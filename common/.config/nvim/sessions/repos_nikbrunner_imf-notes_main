@@ -4,17 +4,31 @@ let v:this_session=expand("<sfile>:p")
 doautoall SessionLoadPre
 silent only
 silent tabonly
-cd ~/repos/nikbrunner/lager
+cd ~/repos/nikbrunner/imf-notes
 if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +0 lefthook.yml
+badd +27 reports/cloud-platform/2026-09-17.md
 argglobal
 %argdel
-edit lefthook.yml
+edit reports/cloud-platform/2026-09-17.md
 argglobal
+xnoremap <buffer> $ g$
+onoremap <buffer> $ g$
+nnoremap <buffer> $ g$
+xnoremap <buffer> 0 g0
+onoremap <buffer> 0 g0
+nnoremap <buffer> 0 g0
+xnoremap <buffer> <silent> [[ :exe "normal! gv"|call search('\%(^#\{1,5\}\s\+\S\|^\S.*\n^[=-]\+$\)', "bsW")
+xnoremap <buffer> <silent> ]] :exe "normal! gv"|call search('\%(^#\{1,5\}\s\+\S\|^\S.*\n^[=-]\+$\)', "sW")
+xnoremap <buffer> j gj
+onoremap <buffer> j gj
+nnoremap <buffer> j gj
+xnoremap <buffer> k gk
+onoremap <buffer> k gk
+nnoremap <buffer> k gk
 setlocal keymap=
 setlocal noarabic
 setlocal autoindent
@@ -31,13 +45,13 @@ setlocal cinoptions=
 setlocal cinscopedecls=public,protected,private
 setlocal cinwords=if,else,while,do,for,switch
 setlocal colorcolumn=
-setlocal comments=:#
-setlocal commentstring=#\ %s
+setlocal comments=fb:*,fb:-,fb:+,n:>
+setlocal commentstring=<!--\ %s\ -->
 setlocal complete=.,w,b,kspell
 setlocal completefunc=
 setlocal completeslash=
 setlocal concealcursor=
-setlocal conceallevel=0
+setlocal conceallevel=2
 setlocal nocopyindent
 setlocal nocursorbind
 setlocal nocursorcolumn
@@ -46,8 +60,8 @@ setlocal cursorlineopt=screenline,number
 setlocal nodiff
 setlocal eventignorewin=
 setlocal expandtab
-if &filetype != 'yaml'
-setlocal filetype=yaml
+if &filetype != 'markdown'
+setlocal filetype=markdown
 endif
 setlocal fixendofline
 setlocal foldcolumn=0
@@ -60,14 +74,14 @@ setlocal foldmethod=expr
 setlocal foldminlines=1
 setlocal foldnestmax=10
 setlocal foldtext=
-setlocal formatexpr=v:lua.require'conform'.formatexpr()
-setlocal formatlistpat=^\\s*[0-9\\-\\+\\*]\\+[\\.\\)]*\\s\\+
-setlocal formatoptions=n1jrql
+setlocal formatexpr=
+setlocal formatlistpat=^\\s*\\d\\+\\.\\s\\+\\|^\\s*[-*+]\\s\\+\\|^\\[^\\ze[^\\]]\\+\\]:\\&^.\\{4\\}
+setlocal formatoptions=jtln1q
 setlocal iminsert=0
 setlocal imsearch=-1
 setlocal includeexpr=
 setlocal indentexpr=v:lua.require'arborist.indent'.indentexpr()
-setlocal indentkeys=!^F,o,O,0},0],<:>,0-
+setlocal indentkeys=0{,0},0),0],:,0#,!^F,o,O,e
 setlocal infercase
 setlocal iskeyword=@,48-57,_,192-255,-
 setlocal lhistory=10
@@ -75,7 +89,7 @@ setlocal linebreak
 setlocal nolisp
 setlocal lispoptions=
 setlocal list
-setlocal matchpairs=(:),{:},[:]
+setlocal matchpairs=(:),{:},[:],<:>
 setlocal modeline
 setlocal modifiable
 setlocal nrformats=bin,hex
@@ -93,7 +107,7 @@ setlocal scrollback=-1
 setlocal noscrollbind
 setlocal shiftwidth=2
 setlocal signcolumn=yes
-setlocal nosmartindent
+setlocal smartindent
 setlocal nosmoothscroll
 setlocal softtabstop=-1
 setlocal nospell
@@ -110,11 +124,11 @@ setlocal syntax=
 endif
 setlocal tabstop=2
 setlocal tagfunc=v:lua.vim.lsp.tagfunc
-setlocal textwidth=0
+setlocal textwidth=80
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarFilename#lefthook.yml%*%=
+setlocal winbar=%#WinBarPath#reports%*%#WinBarSeparator#/%*%#WinBarPath#cloud-platform%*%#WinBarSeparator#/%*%#WinBarFilename#2026-09-17.md%*%=%#WinBarGitLabel#\ [GIT:%#WinBarGitDelete#\ -6%#WinBarGitLabel#]%*\ 
 setlocal winblend=10
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -125,12 +139,12 @@ setlocal nowrap
 setlocal wrapmargin=0
 1
 sil! normal! zo
-let s:l = 9 - ((8 * winheight(0) + 38) / 77)
+let s:l = 27 - ((24 * winheight(0) + 24) / 49)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 9
-normal! 0
+keepjumps 27
+normal! 09|
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf

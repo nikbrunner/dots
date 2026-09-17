@@ -1,5 +1,5 @@
-model = "gpt-5.6-luna"
-model_reasoning_effort = "low"
+model = "gpt-5.6-terra"
+model_reasoning_effort = "high"
 approvals_reviewer = "auto_review"
 service_tier = "default"
 notify = [
@@ -70,6 +70,15 @@ trust_level = "trusted"
 [projects."/Users/brunner/Documents/Codex/2026-09-10/realtime-voice-chat-3"]
 trust_level = "trusted"
 
+[projects."/Users/brunner/repos/imfusion/brunner/agents"]
+trust_level = "trusted"
+
+[projects."/Users/brunner/Documents/Codex/2026-09-15/ca"]
+trust_level = "trusted"
+
+[projects."/Users/brunner/Documents/Codex/2026-09-17/is-there-a-unstyled-component-lib"]
+trust_level = "trusted"
+
 [tui]
 session_picker_view = "dense"
 status_line = [
@@ -91,7 +100,7 @@ status_line_use_colors = true
 
 [tui.model_availability_nux]
 "gpt-5.6-sol" = 4
-gpt-6-astra = 3
+gpt-6-astra = 4
 
 [mcp_servers.openaiDeveloperDocs]
 url = "https://developers.openai.com/mcp"
@@ -141,8 +150,8 @@ NODE_REPL_INSTRUCTIONS_USE_CASE_BROWSER = ""
 NODE_REPL_INSTRUCTIONS_USE_CASE_CHROME = ""
 NODE_REPL_INSTRUCTIONS_USE_CASE_COMPUTER_USE = ""
 BROWSER_USE_CODEX_APP_BUILD_FLAVOR = "prod"
-BROWSER_USE_CODEX_APP_VERSION = "26.903.71938"
-NODE_REPL_TRUSTED_SERVICES = '{"browser":"/Users/brunner/.codex/plugins/cache/openai-bundled/browser/26.903.71938/scripts/browser-service.mjs","sky":"@oai/sky/service"}'
+BROWSER_USE_CODEX_APP_VERSION = "26.908.70816"
+NODE_REPL_TRUSTED_SERVICES = '{"browser":"/Users/brunner/.codex/plugins/cache/openai-bundled/browser/26.908.70816/scripts/browser-service.mjs","sky":"@oai/sky/service"}'
 SKY_CUA_SERVICE_PATH = "/Users/brunner/.codex/computer-use/Codex Computer Use.app"
 CODEX_CLI_PATH = "/Applications/ChatGPT.app/Contents/Resources/codex"
 
@@ -204,7 +213,7 @@ trusted_hash = "sha256:1a4418c6f1e26de8b2b0109495dc837232346b187a808f8abd44af3c8
 followUpQueueMode = "steer"
 external-agent-import-sync-item-types = "all"
 external-agent-import-sync-enabled = true
-conversationDetailMode = "STEPS_PROSE"
+conversationDetailMode = "STEPS_COMMANDS"
 ambient-suggestions-enabled = true
 realtimeVoiceScreenContextEnabled = true
 worktree-upstream-refresh-mode = "best-effort"

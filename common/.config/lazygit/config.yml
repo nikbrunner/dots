@@ -64,6 +64,8 @@ git:
       replace: "[WEBSDK-$1] "
     - pattern: "^(?i)cp-(\\d+).*"
       replace: "[CP-$1] "
+    - pattern: "^(?i)websdk-(\\d+).*"
+      replace: "[WEBSDK-$1] "
   diffRenderers:
     - colorArg: always
       command: delta --paging=never

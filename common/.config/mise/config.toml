@@ -36,7 +36,6 @@ zig = "latest"
 zls = "latest"
 zoxide = "prefix:0"
 "github:maaslalani/slides" = "latest"
-"github:nikbrunner/lager" = "latest"
 "go:github.com/BRO3886/ical/cmd/ical" = "latest"
 "npm:@anthropic-ai/claude-code" = { version = "prefix:2", npm_args = "--ignore-scripts=false" }
 "npm:@earendil-works/pi-coding-agent" = "latest"
@@ -91,6 +90,7 @@ ninja = "latest"
 pre-commit = "latest"
 lefthook = "latest"
 starship = "latest"
+"github:nikbrunner/lager" = "latest"
 
 [env]
 _.file = "~/.env"

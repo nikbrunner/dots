@@ -82,7 +82,7 @@ tab_bar_right = [
 tab_bar_right_separator = " | "
 
 [ui.sound]
-enabled = true
+enabled = false
 done_path = "./sounds/277033__headphaze__ui-completed-status-alert-notification-sfx001.mp3"
 request_path = "./sounds/337050__shinephoenixstormcrow__215415__unfa__ping_modified.mp3"
 
@@ -231,8 +231,8 @@ description = "Open LazyJira"
 key = "alt+shift+j"
 type = "popup"
 command = "lazyjira"
-width = "80%"
-height = "80%"
+width = "100%"
+height = "100%"
 
 [[keys.command]]
 description = "Open Tuicr"

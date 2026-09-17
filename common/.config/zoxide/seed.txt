@@ -46,12 +46,14 @@
 ~/repos/nikbrunner/bm
 ~/repos/nikbrunner/dots
 ~/repos/nikbrunner/fff-snacks.nvim
+~/repos/nikbrunner/flux.nvim
 ~/repos/nikbrunner/fonts
 ~/repos/nikbrunner/glab-tui
 ~/repos/nikbrunner/herdr
 ~/repos/nikbrunner/imf-notes
 ~/repos/nikbrunner/imfusion-coding-assignment
 ~/repos/nikbrunner/koyo
+~/repos/nikbrunner/lager
 ~/repos/nikbrunner/lazyjira
 ~/repos/nikbrunner/mdn.nvim
 ~/repos/nikbrunner/nbr.haus

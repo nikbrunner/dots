@@ -41,6 +41,6 @@
   "terminal": {
     "showTerminalProgress": true
   },
-  "quietStartup": true,
+  "quietStartup": false,
   "enableInstallTelemetry": false
 }
