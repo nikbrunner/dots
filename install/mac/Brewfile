@@ -5,6 +5,7 @@
 
 tap "aviator-co/tap", trusted: { formula: "av" }
 tap "avivsinai/tap", trusted: { formula: "bitbucket-cli" }
+tap "abue-ammar/tinycast", trusted: { cask: "tinycast" }
 tap "heartleo/tap", trusted: { formula: "zlib" }
 tap "jetbrains/utils", trusted: { formula: "teamcity" }
 tap "ngrok/ngrok", trusted: { cask: "ngrok" }
@@ -64,6 +65,7 @@ cask "shottr"
 cask "signal"
 cask "steam"
 cask "superwhisper"
+cask "tinycast"
 cask "utm"
 cask "vlc"
 cask "raycast"
