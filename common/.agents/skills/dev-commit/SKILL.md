@@ -1,6 +1,6 @@
 ---
 name: dev-commit
-description: "Commit workflow with staged docs audit, ticket-prefixed imperative messages, approval gate, and pre-commit chain. Stages selectively, runs dev:audit docs --staged, drafts a message, waits for explicit approval, then commits."
+description: "Commit workflow with staged docs audit, ticket-prefixed imperative messages, approval gate, and pre-commit chain. Stages selectively, audits staged docs, drafts a message, waits for explicit approval, then commits."
 argument-hint: "[optional message hint or scope hint]"
 user-invocable: true
 metadata:
@@ -12,7 +12,7 @@ metadata:
 
 A disciplined commit ritual. Combines selective staging, doc-audit-before-commit, Conventional Commits, an explicit approval gate, and the project's pre-commit chain.
 
-Uses `dev:audit docs --staged` (built into dev-audit) for the docs audit phase. The global agent prose rules apply to commit messages.
+Uses the `dev-audit` skill's `docs --staged` mode for the docs audit phase. The global agent prose rules apply to commit messages.
 
 ## When to use
 
@@ -51,7 +51,7 @@ Identify three buckets:
 
 Use `/documentation-writer` for this phase. Invoke it before auditing or editing documentation, and follow its guidance for the affected docs.
 
-Invoke `dev:audit docs --staged`. Read the findings. Three outcomes:
+Load `dev-audit` and perform its `docs --staged` mode against the staged diff. `dev:audit` is not a Bash command. Read the findings. Three outcomes:
 
 | Result        | Action                                                                                            |
 | ------------- | ------------------------------------------------------------------------------------------------- |

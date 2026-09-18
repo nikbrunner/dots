@@ -12,16 +12,16 @@ metadata:
 
 Run one or more audit passes on the current scope. Omit the first argument to run all applicable.
 
-## Usage
+## Modes
 
-```bash
-dev:audit                     # Run all applicable audits
-dev:audit arch                # Architecture only
-dev:audit docs --staged       # Documentation audit on staged changes
-dev:audit style src/          # Style audit on specific path
-dev:audit ui                  # UI quality
-dev:audit ux                  # UX heuristics
-```
+This is an agent skill, not a shell command. Load it with the audit mode and scope:
+
+- no mode: all applicable audits
+- `arch`: architecture only
+- `docs --staged`: documentation audit on staged changes
+- `style src/`: style audit on a path
+- `ui`: UI quality
+- `ux`: UX heuristics
 
 ---
 
