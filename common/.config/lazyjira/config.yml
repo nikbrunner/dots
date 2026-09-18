@@ -1,40 +1,48 @@
 # https://github.com/textfuel/lazyjira/blob/main/docs/Config.md
 gui:
   theme: default
-  sidePanelWidth: 125
+  sidePanelWidth: 100
   statusIcons:
-    Backlog: "💤"
-    Open: "📬"
-    In Progress: "⚡"
-    Resolved: "✅"
-    Done: "✅"
-    Closed: "❌"
-    WON'T FIX: "🚫"
+    Backlog: "Backlog"
+    Open: "Open"
+    In Progress: "In Progress"
+    Resolved: "Resolved"
+    Validation: "Validation"
+    Done: "Done"
+    Closed: "Closed"
+    WON'T FIX: "Won't fix"
+    Ready To Review: "Ready to Review"
   typeIcons:
-    Epic: "🗻"
-    Task: "📋"
-    Sub-task: "🔗"
-    New Feature: "✨"
-    Bug: "🐞"
-    Test: "🧪"
+    Epic: "EPIC"
+    Task: "TASK"
+    Sub-task: "SUB"
+    New Feature: "FEAT"
+    Bug: "BUG"
+    Test: "TEST"
   priorityIcons:
-    Blocker: "🛑"
-    Critical: "🔴"
-    Major: "🟠"
-    Default: "⚪️"
-    Minor: "🔵"
-    Trivial: "⚫️"
+    Blocker: "Blocker"
+    Critical: "Critical"
+    Major: "Major"
+    Default: "Default"
+    Minor: "Minor"
+    Trivial: "Trivial"
   issueListFields:
     - key
-    - type
-    - status
-    - priority
     - summary
+    - status
+    - type
+    - priority
     - updated
 
 issueTabs:
-  - name: WIP
-    jql: assignee = currentUser() AND status = "In Progress" ORDER BY updated DESC
+  - name: Overview (Sprint)
+    jql: (assignee = currentUser() OR cf[10500] = currentUser()) AND (statusCategory != Done OR resolved >= -14d) AND sprint IN openSprints() ORDER BY status DESC
+  - name: Overview
+    jql: (assignee = currentUser() OR cf[10500] = currentUser()) AND (statusCategory != Done OR resolved >= -14d) ORDER BY status DESC
+
+  # - name: WIP
+  #   jql: assignee = currentUser() AND status = "In Progress" ORDER BY updated DESC
+
   - name: Today
     jql: assignee = currentUser() AND updated >= startOfDay() ORDER BY updated DESC
   - name: Yesterday
@@ -94,12 +102,6 @@ customCommands:
       printf '%s' "$out" | (command -v pbcopy >/dev/null && pbcopy || wl-copy)
       command -v herdr >/dev/null && herdr notification show "Copied key + summary" --body "$out" --sound done
     suspend: false
-  - key: "b"
-    name: "Copy as branch name"
-    command: |
-      key=$(printf %s {{.Key | shellescape}} | tr '[:upper:]' '[:lower:]')
-      slug=$(printf %s {{.Summary | shellescape}} | tr '[:upper:]' '[:lower:]' | sed -E 's/[^a-z0-9]+/-/g; s/^-+//; s/-+$//')
-      out=$(printf '%s-%s' "$key" "$slug" | cut -c1-50 | sed -E 's/-+$//')
-      printf '%s' "$out" | (command -v pbcopy >/dev/null && pbcopy || wl-copy)
-      command -v herdr >/dev/null && herdr notification show "Copied branch name" --body "$out" --sound done
-    suspend: false
+
+git:
+  worktreeFormat: "{{if .RepoName}}{{.RepoName}}-{{end}}{{.Key}}-{{.Summary}}"
