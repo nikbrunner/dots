@@ -128,7 +128,7 @@ It runs with `--isolated`, so each server instance gets a throwaway profile unde
 
 Snapshots and screenshots return through MCP and cost real context. Prefer `take_snapshot` over `take_screenshot` when the question is about structure or text rather than pixels.
 
-If the chosen tool fails, say so and stop. Don't silently switch lanes.
+If Exa or Chrome DevTools fails, report it, then use the matching native tool when available. A search returning no matches is a result, not a failure.
 
 ## Development
 
@@ -229,4 +229,4 @@ Before renaming or changing a function signature, use `findReferences` to find a
 Private company context for ImFusion projects — Atlassian MCP defaults,
 Jira project keys, and company-specific skills.
 
-@~/repos/imfusion/~brunner/agents/AGENTS.md
+@~/repos/imfusion/brunner/agents/AGENTS.md
