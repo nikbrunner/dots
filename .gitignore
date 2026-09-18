@@ -36,6 +36,7 @@ handoffs/
 common/.config/herdr/plugins.json
 common/.config/herdr/plugins/github/*/
 common/.config/herdr/**/*.log
+common/.config/herdr/sessions/**/session-history.json
 common/.config/herdr/plugins/config/herdr-navigator/jump-back-workspace
 common/.config/herdr/plugins/config/herdr-navigator/update-check
 common/.config/herdr/plugins/config/herdr-navigator/pinned-entries.json
