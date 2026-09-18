@@ -26,7 +26,7 @@
       "version": "1.0.0 - 2.0.0"
     },
     "calendar.nvim": {
-      "rev": "1256abe5aafbd178d5dc39d1e66663f140165678",
+      "rev": "bf346215895aef7df1f29f6f89b579cb8d9ce5f5",
       "src": "https://github.com/wsdjeg/calendar.nvim"
     },
     "conform.nvim": {
@@ -36,10 +36,6 @@
     "friendly-snippets": {
       "rev": "6cd7280adead7f586db6fccbd15d2cac7e2188b9",
       "src": "git@github.com:rafamadriz/friendly-snippets"
-    },
-    "fyler.nvim": {
-      "rev": "81066aa5d1fabdd6c71f57f1af57f2a1a6f91166",
-      "src": "https://github.com/FylerOrg/fyler.nvim"
     },
     "gitlinker.nvim": {
       "rev": "a1b74070bbd5e50128190c85b09f1431ea5fbd83",
@@ -70,7 +66,7 @@
       "src": "git@github.com:folke/lazydev.nvim"
     },
     "mdn.nvim": {
-      "rev": "688eb10b914014429f8f31803d52998908fdc87c",
+      "rev": "972cd680ed3691b95fef72b0ad6759c6e2df8ce5",
       "src": "git@github.com:nikbrunner/mdn.nvim"
     },
     "mini.nvim": {
