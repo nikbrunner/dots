@@ -1,3 +1,4 @@
+project = WEBSDK AND assignee = currentUser()
 project = WEBSDK AND parent = WEBSDK-136
 project = WEBSDK AND parent = WEBSDK-90
 project = WEBSDK AND type = Epic
