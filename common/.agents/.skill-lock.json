@@ -74,6 +74,15 @@
       "pluginName": "mattpocock-skills",
       "installedAt": "2026-09-08T10:46:06.204Z",
       "updatedAt": "2026-09-08T10:46:06.204Z"
+    },
+    "bkt": {
+      "source": "avivsinai/bitbucket-cli",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/avivsinai/bitbucket-cli.git",
+      "skillPath": "skills/bkt/SKILL.md",
+      "skillFolderHash": "cf4a8e4af052a88f0846815105dd34fa9234633a",
+      "installedAt": "2026-09-16T13:02:19.350Z",
+      "updatedAt": "2026-09-16T13:02:19.350Z"
     }
   },
   "dismissed": {
@@ -81,14 +90,13 @@
   },
   "lastSelectedAgents": [
     "amp",
-    "antigravity",
-    "antigravity-cli",
     "cline",
     "codex",
     "cursor",
-    "deepagents",
+    "droid",
     "gemini-cli",
     "github-copilot",
+    "kilo",
     "kimi-code-cli",
     "opencode",
     "warp",
