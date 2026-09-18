@@ -14,5 +14,5 @@ Edit.now(function()
 		},
 	}
 
-	vim.cmd.colorscheme("black-atom-mono-light")
+	vim.cmd.colorscheme("black-atom-minium-polymer-light")
 end)

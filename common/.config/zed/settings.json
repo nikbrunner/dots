@@ -111,7 +111,7 @@
   "cursor_blink": false,
   "theme": {
     "mode": "system",
-    "light": "Black Atom — Mono ∷ Light",
+    "light": "Black Atom — Minium ∷ Polymer Light",
     "dark": "Black Atom — JPN ∷ Koyo Dark",
   },
   "base_keymap": "VSCode",

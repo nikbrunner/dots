@@ -1,7 +1,7 @@
 {
   "version": 2,
   "system_appearance": true,
-  "active_theme": "black-atom-mono-light",
+  "active_theme": "black-atom-minium-polymer-light",
   "keymappings": {
     "toggle_window": "super+ctrl+alt+shift+KeyT"
   },
