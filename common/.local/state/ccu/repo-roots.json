@@ -448,6 +448,7 @@
       "~/repos/imfusion/websdk/changelog-enforcement",
       "~/repos/imfusion/websdk/cp-154-frontends-add-favicon",
       "~/repos/imfusion/websdk/web-ui",
+      "~/repos/imfusion/websdk/web-ui-websdk-218-web-ui-audit-skills-with-skill-c",
       "~/repos/imfusion/websdk/web-ui/.storybook/decorators",
       "~/repos/imfusion/websdk/web-ui/.workspaces/WEBSDK-133-image-display-options",
       "~/repos/imfusion/websdk/web-ui/.workspaces/mcp-resilience",
@@ -460,6 +461,6 @@
       "~/repos/imfusion/websdk/websdk-216-web-ui-adjust-component-defaults-the-po",
       "~/repos/imfusion/websdk/websdk-224-public-release"
     ],
-    "last_seen": "2026-09-17"
+    "last_seen": "2026-09-18"
   }
 }

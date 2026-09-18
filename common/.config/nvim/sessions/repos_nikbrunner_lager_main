@@ -10,10 +10,10 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +29 README.md
+badd +101 ~/repos/nikbrunner/lager/docs/prd/1.0.0.md
 argglobal
 %argdel
-edit README.md
+edit ~/repos/nikbrunner/lager/docs/prd/1.0.0.md
 argglobal
 xnoremap <buffer> $ g$
 onoremap <buffer> $ g$
@@ -76,7 +76,7 @@ setlocal foldnestmax=10
 setlocal foldtext=
 setlocal formatexpr=
 setlocal formatlistpat=^\\s*\\d\\+\\.\\s\\+\\|^\\s*[-*+]\\s\\+\\|^\\[^\\ze[^\\]]\\+\\]:\\&^.\\{4\\}
-setlocal formatoptions=1jtqln
+setlocal formatoptions=j1tqln
 setlocal iminsert=0
 setlocal imsearch=-1
 setlocal includeexpr=
@@ -105,11 +105,11 @@ setlocal norightleft
 setlocal rightleftcmd=search
 setlocal scrollback=-1
 setlocal noscrollbind
-setlocal shiftwidth=2
+setlocal shiftwidth=4
 setlocal signcolumn=yes
 setlocal smartindent
 setlocal nosmoothscroll
-setlocal softtabstop=-1
+setlocal softtabstop=4
 setlocal nospell
 setlocal spellcapcheck=[.?!]\\_[\\])'\"\\t\ ]\\+
 setlocal spellfile=
@@ -128,7 +128,7 @@ setlocal textwidth=80
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarFilename#README.md%*%=
+setlocal winbar=%#WinBarPath#docs%*%#WinBarSeparator#/%*%#WinBarPath#prd%*%#WinBarSeparator#/%*%#WinBarFilename#1.0.0.md%*%=%#WinBarGitLabel#\ [GIT:%#WinBarGitAdd#\ +24%#WinBarGitChange#\ ~2%#WinBarGitLabel#]%*%#WinBarLspLabel#\ [LSP:\ %#DiagnosticSignInfo#:8%##%#WinBarLspLabel#]%*\ 
 setlocal winblend=10
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -137,15 +137,13 @@ setlocal winhighlight=
 setlocal nowinpinned
 setlocal nowrap
 setlocal wrapmargin=0
-18
+1
 sil! normal! zo
-40
-sil! normal! zo
-let s:l = 29 - ((13 * winheight(0) + 24) / 49)
+let s:l = 98 - ((35 * winheight(0) + 21) / 42)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 29
+keepjumps 98
 normal! 0
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'

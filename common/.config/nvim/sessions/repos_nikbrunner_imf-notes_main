@@ -10,10 +10,10 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +27 reports/cloud-platform/2026-09-17.md
+badd +24 .agents/skills/imf-sync-next/references/report-templates.md
 argglobal
 %argdel
-edit reports/cloud-platform/2026-09-17.md
+edit .agents/skills/imf-sync-next/references/report-templates.md
 argglobal
 xnoremap <buffer> $ g$
 onoremap <buffer> $ g$
@@ -76,7 +76,7 @@ setlocal foldnestmax=10
 setlocal foldtext=
 setlocal formatexpr=
 setlocal formatlistpat=^\\s*\\d\\+\\.\\s\\+\\|^\\s*[-*+]\\s\\+\\|^\\[^\\ze[^\\]]\\+\\]:\\&^.\\{4\\}
-setlocal formatoptions=jtln1q
+setlocal formatoptions=1jtqln
 setlocal iminsert=0
 setlocal imsearch=-1
 setlocal includeexpr=
@@ -128,7 +128,7 @@ setlocal textwidth=80
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#reports%*%#WinBarSeparator#/%*%#WinBarPath#cloud-platform%*%#WinBarSeparator#/%*%#WinBarFilename#2026-09-17.md%*%=%#WinBarGitLabel#\ [GIT:%#WinBarGitDelete#\ -6%#WinBarGitLabel#]%*\ 
+setlocal winbar=%#WinBarPath#...%*%#WinBarSeparator#/%*%#WinBarPath#references%*%#WinBarSeparator#/%*%#WinBarFilename#report-templates.md%*%=
 setlocal winblend=10
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -139,12 +139,12 @@ setlocal nowrap
 setlocal wrapmargin=0
 1
 sil! normal! zo
-let s:l = 27 - ((24 * winheight(0) + 24) / 49)
+let s:l = 24 - ((23 * winheight(0) + 21) / 42)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 27
-normal! 09|
+keepjumps 24
+normal! 0
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf

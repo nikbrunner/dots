@@ -79,6 +79,9 @@ trust_level = "trusted"
 [projects."/Users/brunner/Documents/Codex/2026-09-17/is-there-a-unstyled-component-lib"]
 trust_level = "trusted"
 
+[projects."/Users/brunner/Documents/Codex/2026-09-18/he"]
+trust_level = "trusted"
+
 [tui]
 session_picker_view = "dense"
 status_line = [
