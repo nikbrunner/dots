@@ -465,20 +465,19 @@ dots_stage_codex() {
 
 dots_stage_herdr_sessions() {
     local repo_path="$1"
-    local herdr_dir="common/.config/herdr"
-    local session_paths=(
-        "$herdr_dir/session.json"
-        "$herdr_dir/session-history.json"
-        "$herdr_dir/sessions"
-    )
+    local session_path=":(glob)common/.config/herdr/sessions/*/session.json"
 
-    if [[ -z $(git -C "$repo_path" status --porcelain "${session_paths[@]}" 2>/dev/null) ]]; then
+    if [[ -z $(git -C "$repo_path" status --porcelain "$session_path" 2>/dev/null) ]]; then
         echo "No herdr session changes to commit"
         return 1
     fi
 
-    (cd "$repo_path" && git add "${session_paths[@]}")
-    log_okay "Herdr session changes staged"
+    if (cd "$repo_path" && git add "$session_path"); then
+        log_okay "Herdr session changes staged"
+    else
+        log_fail "Failed to stage Herdr sessions"
+        return 1
+    fi
 }
 
 dots_stage_herdr_config() {
