@@ -276,9 +276,18 @@ Edit.later(function()
 	end
 
 	vim.keymap.set("n", "-", open_for_buf, { desc = "[E]xplorer" })
+	vim.keymap.set("n", "<leader>we", open_for_buf, { desc = "[E]xplorer" })
 
-	vim.keymap.set("n", "<leader>we", function()
+	local function open_at_root()
 		invoking_win_pos = vim.api.nvim_win_get_position(0)
 		MiniFiles.open(vim.fn.getcwd())
+	end
+
+	vim.keymap.set("n", "_", function()
+		open_at_root()
+	end, { desc = "[E]xplorer" })
+
+	vim.keymap.set("n", "<leader>wE", function()
+		open_at_root()
 	end, { desc = "[E]xplorer" })
 end)
