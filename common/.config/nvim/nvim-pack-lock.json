@@ -29,10 +29,6 @@
       "rev": "1256abe5aafbd178d5dc39d1e66663f140165678",
       "src": "https://github.com/wsdjeg/calendar.nvim"
     },
-    "codediff.nvim": {
-      "rev": "ae8d28896184d4a02ed590da9c3063ba50389b43",
-      "src": "git@github.com:esmuellert/codediff.nvim"
-    },
     "conform.nvim": {
       "rev": "016802de402556da54c36bd7359b441266b01cdd",
       "src": "git@github.com:stevearc/conform.nvim"
