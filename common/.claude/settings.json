@@ -5,6 +5,7 @@
     "ENABLE_TOOL_SEARCH": "true"
   },
   "includeCoAuthoredBy": false,
+  "syncClaudeAiSkills": false,
   "permissions": {
     "allow": [
       "Bash(cat:*)",
