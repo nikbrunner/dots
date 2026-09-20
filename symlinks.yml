@@ -7,6 +7,7 @@ common:
   # ~/.claude/hooks, not managed here — ~/.claude/hooks/enforce is itself
   # a wildcard-expanded target, not a single dots-repo source, so it
   # can't be listed as a second target above without re-triggering it.
+  common/.config/rpiv-advisor/advisor.json: ~/.config/rpiv-advisor/advisor.json
   common/.pi: ~/.pi
   common/.agents/AGENTS.md:
     [~/.claude/CLAUDE.md, ~/.claude-work/CLAUDE.md, ~/.pi/agent/AGENTS.md]
