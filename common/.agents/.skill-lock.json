@@ -24,9 +24,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/backnotprop/plannotator.git",
       "skillPath": "apps/skills/extra/plannotator-visual-explainer/SKILL.md",
-      "skillFolderHash": "b924766675f2a24c1e0194f0e100160a4ba6fd59",
+      "skillFolderHash": "060525d9a83760cc7cbc3004217c596a76a3e39a",
       "installedAt": "2026-07-03T10:39:20.277Z",
-      "updatedAt": "2026-07-03T10:39:20.277Z"
+      "updatedAt": "2026-09-20T15:31:00.871Z"
     },
     "skill-creator": {
       "source": "anthropics/skills",
@@ -52,9 +52,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/herdrdev/herdr.git",
       "skillPath": "skills/herdr/SKILL.md",
-      "skillFolderHash": "f8bb649bb92ddc99e6af463ab9a635da98c7b129",
+      "skillFolderHash": "6985a5e8418d43171c45c2a9e04b02de7308e1d8",
       "installedAt": "2026-08-29T09:50:00.412Z",
-      "updatedAt": "2026-08-29T09:50:00.412Z"
+      "updatedAt": "2026-09-20T15:31:04.517Z"
     },
     "find-skills": {
       "source": "vercel-labs/skills",
