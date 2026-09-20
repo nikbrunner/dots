@@ -404,9 +404,7 @@ export default function (pi: ExtensionAPI): void {
 					const rows: FooterRow[] = [];
 					if (git.length > 0) rows.push({ label: "GIT", parts: git });
 					if (modelParts.length > 0) {
-						rows.push({ label: "AGT", parts: providerParts });
-						rows.push({ label: "     ", parts: modelParts });
-						rows.push({ label: "     ", parts: runtimeParts });
+						rows.push({ label: "AGT", parts: [...providerParts, ...modelParts, ...runtimeParts] });
 					} else {
 						rows.push({ label: "AGT", parts: runtimeParts });
 					}
