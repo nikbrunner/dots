@@ -12,7 +12,6 @@ arch/.config/clipse/clipse.log
 arch/.config/clipse/tmp_files
 scratch.md
 skills-lock.json
-/docs/superpowers
 /common/.pi/agent/pi-fff
 /common/.pi/memory/*.db-shm
 /common/.pi/memory/*.db-wal
@@ -53,6 +52,5 @@ common/.local/bin/herdr-somars-relay
 /common/.pi/agent/codex-accounts.json
 /.pi-subagents
 /common/.pi/agent/fff/history
-/.superpowers/brainstorm
 /common/.pi/agent/pi-accounts.json
 /PLAN.md
