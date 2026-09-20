@@ -20,6 +20,7 @@ skills-lock.json
 /radar-debug.log
 /common/.pi/agent/mcp-npx-cache.json
 /common/.pi/agent/mcp-cache.json
+/common/.pi/agent/mcp-onboarding.json
 /common/.pi/agent/mcp-oauth/linear/tokens.json
 /common/.local/share/nvim/radar/radar-debug.log
 /common/.pi/agent/npm
