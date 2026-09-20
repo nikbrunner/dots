@@ -18,6 +18,8 @@ pre-commit:
         - not symlink
         - text/x-shellscript
         - text/x-sh
+      exclude:
+        - "common/.agents/skills/**"
       run: shfmt -d {staged_files}
 
 pre-push:
@@ -34,4 +36,6 @@ pre-push:
         - not symlink
         - text/x-shellscript
         - text/x-sh
+      exclude:
+        - "common/.agents/skills/**"
       run: shfmt -d {push_files}
