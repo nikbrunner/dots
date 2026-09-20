@@ -85,19 +85,19 @@ trust_level = "trusted"
 [tui]
 session_picker_view = "dense"
 status_line = [
-    "model-with-reasoning",
-    "current-dir",
-    "git-branch",
-    "context-remaining",
-    "five-hour-limit",
-    "weekly-limit",
-    "fast-mode",
-    "model",
-    "reasoning",
-    "project-name",
-    "branch-changes",
-    "run-state",
-    "context-used",
+  "model-with-reasoning",
+  "current-dir",
+  "git-branch",
+  "context-remaining",
+  "five-hour-limit",
+  "weekly-limit",
+  "fast-mode",
+  "model",
+  "reasoning",
+  "project-name",
+  "branch-changes",
+  "run-state",
+  "context-used",
 ]
 status_line_use_colors = true
 
@@ -118,10 +118,10 @@ args = ["@eslint/mcp@latest"]
 [mcp_servers.chrome-devtools]
 command = "npx"
 args = [
-    "-y",
-    "chrome-devtools-mcp@latest",
-    "--no-usage-statistics",
-    "--isolated",
+  "-y",
+  "chrome-devtools-mcp@latest",
+  "--no-usage-statistics",
+  "--isolated",
 ]
 
 [mcp_servers.chrome-devtools.tools.new_page]
@@ -153,8 +153,8 @@ NODE_REPL_INSTRUCTIONS_USE_CASE_BROWSER = ""
 NODE_REPL_INSTRUCTIONS_USE_CASE_CHROME = ""
 NODE_REPL_INSTRUCTIONS_USE_CASE_COMPUTER_USE = ""
 BROWSER_USE_CODEX_APP_BUILD_FLAVOR = "prod"
-BROWSER_USE_CODEX_APP_VERSION = "26.908.70816"
-NODE_REPL_TRUSTED_SERVICES = '{"browser":"/Users/brunner/.codex/plugins/cache/openai-bundled/browser/26.908.70816/scripts/browser-service.mjs","sky":"@oai/sky/service"}'
+BROWSER_USE_CODEX_APP_VERSION = "26.915.31029"
+NODE_REPL_TRUSTED_SERVICES = '{"browser":"/Users/brunner/.codex/plugins/cache/openai-bundled/browser/26.915.31029/scripts/browser-service.mjs","sky":"@oai/sky/service"}'
 SKY_CUA_SERVICE_PATH = "/Users/brunner/.codex/computer-use/Codex Computer Use.app"
 CODEX_CLI_PATH = "/Applications/ChatGPT.app/Contents/Resources/codex"
 
@@ -216,7 +216,7 @@ trusted_hash = "sha256:1a4418c6f1e26de8b2b0109495dc837232346b187a808f8abd44af3c8
 followUpQueueMode = "steer"
 external-agent-import-sync-item-types = "all"
 external-agent-import-sync-enabled = true
-conversationDetailMode = "STEPS_COMMANDS"
+conversationDetailMode = "STEPS_PROSE"
 ambient-suggestions-enabled = true
 realtimeVoiceScreenContextEnabled = true
 worktree-upstream-refresh-mode = "best-effort"
@@ -275,9 +275,6 @@ enabled = true
 [plugins."rust-analyzer-lsp@claude-plugins-official"]
 enabled = true
 
-[plugins."superpowers@claude-plugins-official"]
-enabled = true
-
 [plugins."typescript-lsp@claude-plugins-official"]
 enabled = true
 
@@ -306,9 +303,6 @@ enabled = true
 enabled = true
 
 [plugins."computer-use@openai-bundled"]
-enabled = true
-
-[plugins."sites@openai-bundled"]
 enabled = true
 
 [shell_environment_policy]

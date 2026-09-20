@@ -355,9 +355,10 @@
     "name": "lager",
     "work": false,
     "session_dirs": [
-      "~/repos/nikbrunner/lager"
+      "~/repos/nikbrunner/lager",
+      "~/repos/nikbrunner/lager/.worktrees/inventory"
     ],
-    "last_seen": "2026-09-13"
+    "last_seen": "2026-09-20"
   },
   "nikbrunner/lazyjira": {
     "root": "~/repos/nikbrunner/lazyjira",
@@ -449,6 +450,7 @@
       "~/repos/imfusion/websdk/cp-154-frontends-add-favicon",
       "~/repos/imfusion/websdk/web-ui",
       "~/repos/imfusion/websdk/web-ui-websdk-218-web-ui-audit-skills-with-skill-c",
+      "~/repos/imfusion/websdk/web-ui-websdk-218-web-ui-audit-skills-with-skill-c/src/llms/evals/fixtures/conformant-app",
       "~/repos/imfusion/websdk/web-ui/.storybook/decorators",
       "~/repos/imfusion/websdk/web-ui/.workspaces/WEBSDK-133-image-display-options",
       "~/repos/imfusion/websdk/web-ui/.workspaces/mcp-resilience",

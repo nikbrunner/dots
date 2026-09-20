@@ -6,6 +6,7 @@
 ~/.config/nvim
 
 # Repos
+~/repos/abue-ammar/tinycast
 ~/repos/black-atom-industries/.claude
 ~/repos/black-atom-industries/.github
 ~/repos/black-atom-industries/.github-private
@@ -61,6 +62,7 @@
 ~/repos/nikbrunner/pi-speak
 ~/repos/nikbrunner/plans
 ~/repos/nikbrunner/src
+~/repos/nikbrunner/tabula-rasa.nvim
 ~/repos/nikbrunner/the-black-atom
 ~/repos/nikbrunner/themes
 ~/repos/nikbrunner/tmux-file-picker
