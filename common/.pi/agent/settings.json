@@ -14,7 +14,8 @@
     "npm:pi-subagents",
     "npm:@narumitw/pi-accounts",
     "npm:@narumitw/pi-usage",
-    "npm:@juicesharp/rpiv-advisor"
+    "npm:@juicesharp/rpiv-advisor",
+    "npm:pi-zentui"
   ],
   "extensions": [
     "extensions/ask-user-inline.ts"
