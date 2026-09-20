@@ -44,6 +44,10 @@
   "terminal": {
     "showTerminalProgress": true
   },
-  "quietStartup": false,
-  "enableInstallTelemetry": false
+  "quietStartup": true,
+  "enableInstallTelemetry": false,
+  "enableSkillCommands": true,
+  "editorPaddingX": 1,
+  "showCacheMissNotices": true,
+  "collapseChangelog": true
 }
