@@ -15,7 +15,8 @@
     "npm:@narumitw/pi-accounts",
     "npm:@narumitw/pi-usage",
     "npm:@juicesharp/rpiv-advisor",
-    "npm:pi-zentui"
+    "npm:pi-zentui",
+    "npm:@tifan/pi-inline-skills"
   ],
   "extensions": [
     "extensions/ask-user-inline.ts"
