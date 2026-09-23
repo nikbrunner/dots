@@ -51,6 +51,21 @@
         "lastAccessed": 1779358546
       }
     },
+    "~/repos/imfusion/brunner/notes": {
+      "master": {
+        "locks": [
+          {
+            "filename": "templates/Daily Note.md",
+            "label": "1"
+          },
+          {
+            "filename": "logs/2026/2026.09/2026.09.23 - Wed.md",
+            "label": "2"
+          }
+        ],
+        "lastAccessed": 1790154660
+      }
+    },
     "~/repos/imfusion/websdk/web-ui": {
       "WEBSDK-133-image-display-options": {
         "locks": [
@@ -142,7 +157,7 @@
             "label": "6"
           }
         ],
-        "lastAccessed": 1789920864
+        "lastAccessed": 1790155431
       }
     },
     "~/repos/nikbrunner/imf-notes": {
@@ -161,7 +176,7 @@
             "label": "3"
           }
         ],
-        "lastAccessed": 1789653714
+        "lastAccessed": 1790151179
       }
     },
     "~/repos/nikbrunner/minifugit.nvim": {

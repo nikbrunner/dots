@@ -122,6 +122,16 @@
     ],
     "last_seen": "2026-08-18"
   },
+  "brunner/notes": {
+    "root": "~/repos/imfusion/brunner/notes",
+    "owner": "brunner",
+    "name": "notes",
+    "work": true,
+    "session_dirs": [
+      "~/repos/imfusion/brunner/notes"
+    ],
+    "last_seen": "2026-09-22"
+  },
   "cp/imfusion-portal": {
     "root": "~/repos/imfusion/cp/imfusion-portal",
     "owner": "cp",
@@ -449,6 +459,9 @@
       "~/repos/imfusion/websdk/changelog-enforcement",
       "~/repos/imfusion/websdk/cp-154-frontends-add-favicon",
       "~/repos/imfusion/websdk/web-ui",
+      "~/repos/imfusion/websdk/web-ui-websdk-206-web-ui-update-improve-design-fol",
+      "~/repos/imfusion/websdk/web-ui-websdk-206-web-ui-update-improve-design-fol/docs/user-guide",
+      "~/repos/imfusion/websdk/web-ui-websdk-206-web-ui-update-improve-design-fol/ds-bundle",
       "~/repos/imfusion/websdk/web-ui-websdk-218-web-ui-audit-skills-with-skill-c",
       "~/repos/imfusion/websdk/web-ui-websdk-218-web-ui-audit-skills-with-skill-c/src/llms/evals/fixtures/conformant-app",
       "~/repos/imfusion/websdk/web-ui/.storybook/decorators",
@@ -463,6 +476,6 @@
       "~/repos/imfusion/websdk/websdk-216-web-ui-adjust-component-defaults-the-po",
       "~/repos/imfusion/websdk/websdk-224-public-release"
     ],
-    "last_seen": "2026-09-18"
+    "last_seen": "2026-09-23"
   }
 }

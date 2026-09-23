@@ -111,8 +111,8 @@
   "cursor_blink": false,
   "theme": {
     "mode": "system",
-    "light": "One Light",
-    "dark": "Black Atom — Dimmed Dark",
+    "light": "Black Atom — Minium ∷ Viridian Light",
+    "dark": "Black Atom — Minium ∷ Viridian Dark",
   },
   "base_keymap": "VSCode",
   "vim_mode": true,
