@@ -300,3 +300,9 @@ key = "prefix+shift+o"
 type = "plugin_action"
 command = "annotate.last"
 description = "review the agent's last reply"
+
+[[keys.command]]
+key = "alt+shift+i"
+type = "plugin_action"
+command = "shadowfax.scratch.toggle-nvim"
+description = "Toggle work notes"

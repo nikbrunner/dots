@@ -22,6 +22,9 @@ herdr plugin install aimdevlee/herdr-nvim-nav --yes
 # https://github.com/black-atom-industries/helm.herdr
 herdr plugin install black-atom-industries/helm.herdr --yes
 
+# https://github.com/shadowfax92/herdr-scratch
+herdr plugin install shadowfax92/herdr-scratch --yes
+
 # https://github.com/zenbu-labs/terminal-browser/tree/main/herdr-plugin
 herdr plugin install zenbu-labs/terminal-browser/herdr-plugin --yes
 

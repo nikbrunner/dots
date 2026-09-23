@@ -1,0 +1,13 @@
+default_popup: {width: "90%", height: "95%"}
+
+scratches:
+  nvim:
+    command:
+      - sh
+      - -lc
+      - >-
+        tmux set-option -s extended-keys on &&
+        tmux set-option -s extended-keys-format csi-u &&
+        cd /Users/brunner/repos/imfusion/brunner/notes && exec nvim
+    tmx_type: vim
+    key: alt+shift+i
