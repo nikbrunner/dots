@@ -245,12 +245,6 @@ width = "100%"
 height = "100%"
 
 [[keys.command]]
-key = "alt+shift+r"
-type = "plugin_action"
-command = "dots.herdr-somars.open"
-description = "Radio"
-
-[[keys.command]]
 key = "alt+space"
 type = "popup"
 command = "helm-herdr"

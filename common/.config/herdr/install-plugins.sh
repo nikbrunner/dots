@@ -11,7 +11,6 @@ if herdr plugin list --plugin dots.default-layout --json |
 fi
 
 herdr plugin link "$HOME/.config/herdr/local-plugins/stationary" --enabled
-herdr plugin link "$HOME/.config/herdr/local-plugins/herdr-somars" --enabled
 
 # https://github.com/narumiruna/pi-extensions/tree/main/packages/pi-usage
 pi install npm:@narumitw/pi-usage
