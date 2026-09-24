@@ -91,16 +91,14 @@ customCommands:
     command: |
       s=$(printf %s {{.Summary | shellescape}} | tr -d '[]')
       link=$(printf '[%s %s](%s/browse/%s)' {{.Key | shellescape}} "$s" {{.JiraHost | shellescape}} {{.Key | shellescape}})
-      printf '%s' "$link" | (command -v pbcopy >/dev/null && pbcopy || wl-copy)
-      command -v herdr >/dev/null && herdr notification show "Copied markdown link" --body "$link" --sound done
+      printf '%s' "$link" | (command -v pbcopy >/dev/null && pbcopy || wl-copy) && printf 'Copied: %s\n' "$link"
     suspend: false
   - key: "y"
     name: "Copy key + summary"
     command: |
       s=$(printf %s {{.Summary | shellescape}} | tr -d '[]')
       out=$(printf '%s %s' {{.Key | shellescape}} "$s")
-      printf '%s' "$out" | (command -v pbcopy >/dev/null && pbcopy || wl-copy)
-      command -v herdr >/dev/null && herdr notification show "Copied key + summary" --body "$out" --sound done
+      printf '%s' "$out" | (command -v pbcopy >/dev/null && pbcopy || wl-copy) && printf 'Copied: %s\n' "$out"
     suspend: false
 
 git:
