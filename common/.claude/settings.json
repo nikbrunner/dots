@@ -106,6 +106,14 @@
             "command": "~/.claude/hooks/enforce/record-repo-root.sh"
           }
         ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/enforce/repair-core-bare.sh"
+          }
+        ]
       }
     ],
     "UserPromptSubmit": [
