@@ -175,6 +175,7 @@ Edit.later(function()
 	-- App
 	map("n", "<leader>aa",  function() Snacks.picker.commands() end, { desc = "[A]ctions" })
 	map("n", "<leader>ag",  function() Snacks.lazygit() end, { desc = "[G]it Module" })
+	map("n", "<leader>aj",  function() Snacks.terminal("lazyjira", { win = { width = 0, height = 0 } }) end, { desc = "[J]ira" })
 	map("n", "<leader>ad",  function() Snacks.picker.files() end, { desc = "[D]ocument (in project)" })
 	map("n", "<leader>ahh", function() Snacks.picker.highlights() end, { desc = "[H]ighlights" })
 	map("n", "<leader>ahk", function() Snacks.picker.keymaps() end, { desc = "[K]eymaps" })
