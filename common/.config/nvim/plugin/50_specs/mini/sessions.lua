@@ -130,8 +130,7 @@ vim.keymap.set("n", "<leader>asc", function()
 	end)
 end, { desc = "[C]lean" })
 
--- no args, or if the only arg is the current directory `nvim .`
-if vim.fn.argc(-1) == 0 or (vim.fn.argc(-1) == 1 and vim.fn.argv(0) == ".") then
+if vim.fn.argc(-1) == 0 then
 	-- Auto-load existing session on VimEnter event
 	vim.api.nvim_create_autocmd({ "VimEnter" }, {
 		nested = true,
