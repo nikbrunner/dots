@@ -92,6 +92,12 @@ alias :sp='tmux split-window -v -c "#{pane_current_path}"'
 # Claude
 alias claude='CLAUDE_CODE_NO_FLICKER=1 claude'
 
+claude-plugins-update() {
+    command claude plugin marketplace update &&
+        command claude plugin list --json | jq -r '.[] | select(.scope=="user" and (.id | endswith("@skills-dir") | not)) | .id' |
+        while read -r id; do command claude plugin update "$id" --scope user; done
+}
+
 claude-work() {
     ANTHROPIC_API_KEY="$ANTHROPIC_API_KEY_IMFUSION" \
         CLAUDE_CONFIG_DIR="$HOME/.claude-work" \
