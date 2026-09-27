@@ -29,6 +29,8 @@ dots/
 - **`shiplog`** — AI-powered git operations (commit, branch). Run `shiplog --help` for usage. See [nikbrunner/shiplog](https://github.com/nikbrunner/shiplog).
 - **`helm`** — External tool for multi-repo management (pull, push, status, rebuild). Invoked by `dots pull` and `dots push`.
 
+When sorting a dirty working tree into commits, run `dots chores` last, after the real changes are committed. It stages its files whole and commits them as one routine commit, so run earlier it would sweep real edits in those files along. What counts as routine is the `dots_stage_*` list in `cmd_chores`.
+
 Full machine setup: follow `install/mac/README.md` or `install/arch/README.md`.
 
 ## Symlink Configuration
