@@ -111,4 +111,12 @@ Edit.later(function()
 		delay = 0,
 	},
 })
+
+	-- oil creates buffer-local `g*` mappings after the triggers, which shadows them
+	vim.api.nvim_create_autocmd("User", {
+		pattern = "OilEnter",
+		callback = function(args)
+			MC.ensure_buf_triggers(args.data.buf)
+		end,
+	})
 end)
