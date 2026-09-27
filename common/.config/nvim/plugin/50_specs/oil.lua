@@ -1,6 +1,5 @@
 Edit.later(function()
 	vim.pack.add({ "https://github.com/stevearc/oil.nvim" })
-	vim.pack.add({ "https://github.com/FerretDetective/oil-git-signs.nvim" })
 
 	_G.oil_winbar_dir = function()
 		local dir = require("oil").get_current_dir()
@@ -25,6 +24,26 @@ Edit.later(function()
 		{ key = "0", path = "~", label = "~" },
 	}
 
+	local ns_git = vim.api.nvim_create_namespace("oil_git_status")
+
+	local jump_git = function(forward)
+		for _ = 1, vim.v.count1 do
+			local row = vim.api.nvim_win_get_cursor(0)[1] - 1
+			local mark
+			if forward then
+				mark = vim.api.nvim_buf_get_extmarks(0, ns_git, { row + 1, 0 }, -1, { limit = 1 })[1]
+					or vim.api.nvim_buf_get_extmarks(0, ns_git, 0, -1, { limit = 1 })[1]
+			else
+				mark = (row > 0 and vim.api.nvim_buf_get_extmarks(0, ns_git, { row - 1, 0 }, 0, { limit = 1 })[1])
+					or vim.api.nvim_buf_get_extmarks(0, ns_git, -1, 0, { limit = 1 })[1]
+			end
+			if not mark then
+				return
+			end
+			vim.api.nvim_win_set_cursor(0, { mark[2] + 1, 0 })
+		end
+	end
+
 	local keymaps = {
 		["<C-l>"] = false,
 		["<C-h>"] = false,
@@ -32,6 +51,21 @@ Edit.later(function()
 		["q"] = { "actions.close", mode = "n" },
 
 		["<C-v>"] = { "actions.select", opts = { vertical = true, close = true } },
+
+		["H"] = { "actions.parent", mode = "n" },
+		["L"] = {
+			callback = function()
+				local entry = require("oil").get_cursor_entry()
+				if entry and require("oil.util").is_directory(entry) then
+					require("oil").select()
+				end
+			end,
+			desc = "Enter directory",
+			mode = "n",
+		},
+
+		["]c"] = { callback = function() jump_git(true) end, desc = "Next git status", mode = "n" },
+		["[c"] = { callback = function() jump_git(false) end, desc = "Prev git status", mode = "n" },
 	}
 
 	for _, bm in ipairs(bookmarks) do
@@ -62,30 +96,9 @@ Edit.later(function()
 		},
 		win_options = {
 			winbar = "%{v:lua.oil_winbar_dir()}",
-			signcolumn = "yes:2",
+			signcolumn = "yes:1",
 		},
 		keymaps = keymaps,
-	})
-
-	require("oil-git-signs").setup({
-		keymaps = {
-			{
-				"n",
-				"]c",
-				function()
-					require("oil-git-signs").jump_to_status("down", vim.v.count1)
-				end,
-				{ desc = "Next git status" },
-			},
-			{
-				"n",
-				"[c",
-				function()
-					require("oil-git-signs").jump_to_status("up", vim.v.count1)
-				end,
-				{ desc = "Prev git status" },
-			},
-		},
 	})
 
 	local hint_buf = vim.api.nvim_create_buf(false, true)
@@ -151,6 +164,105 @@ Edit.later(function()
 				focusable = false,
 				noautocmd = true,
 			})
+		end,
+	})
+
+	local git_rank = " !?TCRDAMU"
+	local git_hl = {
+		M = "Changed",
+		T = "Changed",
+		R = "Changed",
+		C = "Changed",
+		A = "Added",
+		["?"] = "Added",
+		D = "Removed",
+		U = "DiagnosticError",
+		["!"] = "Comment",
+	}
+	local git_status = {}
+
+	local draw_git = function(buf)
+		if not vim.api.nvim_buf_is_valid(buf) then
+			return
+		end
+		vim.api.nvim_buf_clear_namespace(buf, ns_git, 0, -1)
+		local status = git_status[buf]
+		if not status then
+			return
+		end
+		for lnum = 1, vim.api.nvim_buf_line_count(buf) do
+			local entry = require("oil").get_entry_on_line(buf, lnum)
+			local code = entry and status[entry.name]
+			if code then
+				local wt = code:sub(2, 2)
+				vim.api.nvim_buf_set_extmark(buf, ns_git, lnum - 1, 0, {
+					sign_text = code,
+					sign_hl_group = git_hl[wt ~= " " and wt or code:sub(1, 1)],
+				})
+			end
+		end
+	end
+
+	-- Per column, the highest-ranked status of all paths below an entry wins
+	local refresh_git = function(buf)
+		local dir = require("oil").get_current_dir(buf)
+		if not dir or vim.fn.isdirectory(dir) == 0 then
+			return
+		end
+		local cmd = { "git", "-c", "status.relativePaths=true", "-c", "core.quotePath=false" }
+		vim.list_extend(cmd, { "status", "--short", "--untracked-files=normal", "--ignored", "." })
+		vim.system(
+			cmd,
+			{ cwd = dir, text = true },
+			vim.schedule_wrap(function(out)
+				local status = {}
+				if out.code == 0 then
+					for line in vim.gsplit(out.stdout, "\n", { trimempty = true }) do
+						local path = line:sub(4):gsub("^.* %-> ", ""):gsub('^"(.*)"$', "%1")
+						local name = path:match("^[^/]+")
+						local prev = status[name] or "  "
+						local merged = ""
+						for i = 1, 2 do
+							local a, b = prev:sub(i, i), line:sub(i, i)
+							merged = merged .. (git_rank:find(b, 1, true) > git_rank:find(a, 1, true) and b or a)
+						end
+						status[name] = merged
+					end
+				end
+				git_status[buf] = status
+				draw_git(buf)
+			end)
+		)
+	end
+
+	vim.api.nvim_create_autocmd("User", {
+		pattern = "OilEnter",
+		callback = function(args)
+			refresh_git(args.data.buf)
+		end,
+	})
+	vim.api.nvim_create_autocmd("User", {
+		pattern = "OilActionsPost",
+		callback = function()
+			refresh_git(vim.api.nvim_get_current_buf())
+		end,
+	})
+	vim.api.nvim_create_autocmd("BufEnter", {
+		pattern = "oil://*",
+		callback = function(args)
+			refresh_git(args.buf)
+		end,
+	})
+	vim.api.nvim_create_autocmd("TextChanged", {
+		pattern = "oil://*",
+		callback = function(args)
+			draw_git(args.buf)
+		end,
+	})
+	vim.api.nvim_create_autocmd("BufWipeout", {
+		pattern = "oil://*",
+		callback = function(args)
+			git_status[args.buf] = nil
 		end,
 	})
 

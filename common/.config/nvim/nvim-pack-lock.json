@@ -89,10 +89,6 @@
       "rev": "88c1453db4ba7dd24131086fe51fdf74e587d275",
       "src": "git@github.com:windwp/nvim-ts-autotag"
     },
-    "oil-git-signs.nvim": {
-      "rev": "58e74372a1a0f7387a8f53df3b81fbffc8fe9d83",
-      "src": "https://github.com/FerretDetective/oil-git-signs.nvim"
-    },
     "oil.nvim": {
       "rev": "b73018b75affd13fa38e2fc94ef753b465f770d7",
       "src": "https://github.com/stevearc/oil.nvim"
