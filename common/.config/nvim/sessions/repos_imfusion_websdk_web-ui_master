@@ -13,7 +13,7 @@ set shortmess+=aoO
 badd +12 docs/user-guide/Changelog.mdx
 badd +1 docs/development/Architecture.mdx
 badd +331 src/tokens/token-registry.ts
-badd +200 ~/repos/imfusion/websdk/web-ui/src/components/tabs/tabs.stories.tsx
+badd +4 src/components/tabs/tabs.module.css
 argglobal
 %argdel
 $argadd src/components/number-field/number-field.stories.tsx
@@ -280,7 +280,7 @@ wincmd w
 exe 'vert 1resize ' . ((&columns * 87 + 87) / 175)
 exe 'vert 2resize ' . ((&columns * 87 + 87) / 175)
 tabnext
-edit ~/repos/imfusion/websdk/web-ui/src/components/tabs/tabs.stories.tsx
+edit src/components/tabs/tabs.module.css
 argglobal
 setlocal keymap=
 setlocal noarabic
@@ -298,8 +298,8 @@ setlocal cinoptions=
 setlocal cinscopedecls=public,protected,private
 setlocal cinwords=if,else,while,do,for,switch
 setlocal colorcolumn=
-setlocal comments=sO:*\ -,mO:*\ \ ,exO:*/,s1:/*,mb:*,ex:*/,://
-setlocal commentstring=//\ %s
+setlocal comments=s1:/*,mb:*,ex:*/
+setlocal commentstring=/*\ %s\ */
 setlocal complete=.,w,b,kspell
 setlocal completefunc=
 setlocal completeslash=
@@ -313,8 +313,8 @@ setlocal cursorlineopt=screenline,number
 setlocal nodiff
 setlocal eventignorewin=
 setlocal expandtab
-if &filetype != 'typescriptreact'
-setlocal filetype=typescriptreact
+if &filetype != 'css'
+setlocal filetype=css
 endif
 setlocal fixendofline
 setlocal foldcolumn=0
@@ -332,11 +332,12 @@ setlocal formatlistpat=^\\s*[0-9\\-\\+\\*]\\+[\\.\\)]*\\s\\+
 setlocal formatoptions=n1jrql
 setlocal iminsert=0
 setlocal imsearch=-1
+setlocal include=^\\s*@import\\s\\+\\%(url(\\)\\=
 setlocal includeexpr=
 setlocal indentexpr=v:lua.require'arborist.indent'.indentexpr()
-setlocal indentkeys=0{,0},0),0],0,,!^F,o,O,e
+setlocal indentkeys=0{,0},!^F,o,O
 setlocal infercase
-setlocal iskeyword=@,48-57,_,192-255,-,$,#
+setlocal iskeyword=@,48-57,_,192-255,-
 setlocal lhistory=10
 setlocal linebreak
 setlocal nolisp
@@ -369,7 +370,7 @@ setlocal spellfile=
 setlocal spelllang=en_us,de_de
 setlocal spelloptions=camel,noplainbuffer
 setlocal statuscolumn=
-setlocal suffixesadd=.ts,.d.ts,.tsx,.js,.jsx,.cjs,.mjs
+setlocal suffixesadd=
 setlocal noswapfile
 setlocal synmaxcol=3000
 if &syntax != ''
@@ -381,7 +382,7 @@ setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#src%*%#WinBarSeparator#/%*%#WinBarPath#components%*%#WinBarSeparator#/%*%#WinBarPath#tabs%*%#WinBarSeparator#/%*%#WinBarFilename#tabs.stories.tsx%*%=
+setlocal winbar=%#WinBarPath#src%*%#WinBarSeparator#/%*%#WinBarPath#components%*%#WinBarSeparator#/%*%#WinBarPath#tabs%*%#WinBarSeparator#/%*%#WinBarFilename#tabs.module.css%*%=
 setlocal winblend=10
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -390,12 +391,14 @@ setlocal winhighlight=
 setlocal nowinpinned
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 119 - ((60 * winheight(0) + 33) / 66)
+1
+sil! normal! zo
+let s:l = 7 - ((6 * winheight(0) + 33) / 66)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 119
-normal! 017|
+keepjumps 7
+normal! 0
 tabnext
 edit src/tokens/token-registry.ts
 argglobal
