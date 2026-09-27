@@ -59,3 +59,6 @@ url = "git@github.com:ImFusionGmbH/Website.git"
 
 [[repositories]]
 url = "git@github.com:nikbrunner/writing.git"
+
+[[repositories]]
+url = "git@github.com:nikbrunner/scarth-johnson.git"
