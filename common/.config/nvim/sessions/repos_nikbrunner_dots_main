@@ -38,7 +38,7 @@ setlocal complete=.,w,b,kspell
 setlocal completefunc=
 setlocal completeslash=
 setlocal concealcursor=
-setlocal conceallevel=2
+setlocal conceallevel=0
 setlocal nocopyindent
 setlocal nocursorbind
 setlocal nocursorcolumn
@@ -63,7 +63,7 @@ setlocal foldnestmax=10
 setlocal foldtext=
 setlocal formatexpr=v:lua.require'conform'.formatexpr()
 setlocal formatlistpat=^\\s*[0-9\\-\\+\\*]\\+[\\.\\)]*\\s\\+
-setlocal formatoptions=ljn1tq
+setlocal formatoptions=rqnl1j
 setlocal iminsert=0
 setlocal imsearch=-1
 setlocal includeexpr=

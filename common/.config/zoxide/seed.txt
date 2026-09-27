@@ -67,5 +67,6 @@
 ~/repos/nikbrunner/themes
 ~/repos/nikbrunner/tmux-file-picker
 ~/repos/nikbrunner/wallpapers
+~/repos/nikbrunner/writing
 ~/repos/qmk/qmk_firmware
 ~/repos/ziglings/exercises

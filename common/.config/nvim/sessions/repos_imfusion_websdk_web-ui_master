@@ -13,7 +13,7 @@ set shortmess+=aoO
 badd +12 docs/user-guide/Changelog.mdx
 badd +1 docs/development/Architecture.mdx
 badd +331 src/tokens/token-registry.ts
-badd +99 src/components/typo/typo.module.css
+badd +173 ~/repos/imfusion/websdk/web-ui/src/components/tabs/tabs.stories.tsx
 argglobal
 %argdel
 $argadd src/components/number-field/number-field.stories.tsx
@@ -38,8 +38,8 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe 'vert 1resize ' . ((&columns * 52 + 52) / 105)
-exe 'vert 2resize ' . ((&columns * 52 + 52) / 105)
+exe 'vert 1resize ' . ((&columns * 87 + 87) / 175)
+exe 'vert 2resize ' . ((&columns * 87 + 87) / 175)
 argglobal
 setlocal keymap=
 setlocal noarabic
@@ -149,7 +149,7 @@ setlocal winhighlight=
 setlocal nowinpinned
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 5 - ((4 * winheight(0) + 22) / 45)
+let s:l = 5 - ((4 * winheight(0) + 33) / 66)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
@@ -270,17 +270,17 @@ setlocal winhighlight=
 setlocal nowinpinned
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 20 - ((18 * winheight(0) + 22) / 45)
+let s:l = 20 - ((19 * winheight(0) + 33) / 66)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
 keepjumps 20
 normal! 0
 wincmd w
-exe 'vert 1resize ' . ((&columns * 52 + 52) / 105)
-exe 'vert 2resize ' . ((&columns * 52 + 52) / 105)
+exe 'vert 1resize ' . ((&columns * 87 + 87) / 175)
+exe 'vert 2resize ' . ((&columns * 87 + 87) / 175)
 tabnext
-edit src/components/typo/typo.module.css
+edit ~/repos/imfusion/websdk/web-ui/src/components/tabs/tabs.stories.tsx
 argglobal
 setlocal keymap=
 setlocal noarabic
@@ -298,13 +298,13 @@ setlocal cinoptions=
 setlocal cinscopedecls=public,protected,private
 setlocal cinwords=if,else,while,do,for,switch
 setlocal colorcolumn=
-setlocal comments=s1:/*,mb:*,ex:*/
-setlocal commentstring=/*\ %s\ */
+setlocal comments=sO:*\ -,mO:*\ \ ,exO:*/,s1:/*,mb:*,ex:*/,://
+setlocal commentstring=//\ %s
 setlocal complete=.,w,b,kspell
 setlocal completefunc=
 setlocal completeslash=
 setlocal concealcursor=
-setlocal conceallevel=2
+setlocal conceallevel=0
 setlocal nocopyindent
 setlocal nocursorbind
 setlocal nocursorcolumn
@@ -313,8 +313,8 @@ setlocal cursorlineopt=screenline,number
 setlocal nodiff
 setlocal eventignorewin=
 setlocal expandtab
-if &filetype != 'css'
-setlocal filetype=css
+if &filetype != 'typescriptreact'
+setlocal filetype=typescriptreact
 endif
 setlocal fixendofline
 setlocal foldcolumn=0
@@ -329,15 +329,14 @@ setlocal foldnestmax=10
 setlocal foldtext=
 setlocal formatexpr=v:lua.require'conform'.formatexpr()
 setlocal formatlistpat=^\\s*[0-9\\-\\+\\*]\\+[\\.\\)]*\\s\\+
-setlocal formatoptions=nj1rql
+setlocal formatoptions=n1jrql
 setlocal iminsert=0
 setlocal imsearch=-1
-setlocal include=^\\s*@import\\s\\+\\%(url(\\)\\=
 setlocal includeexpr=
 setlocal indentexpr=v:lua.require'arborist.indent'.indentexpr()
-setlocal indentkeys=0{,0},!^F,o,O
+setlocal indentkeys=0{,0},0),0],0,,!^F,o,O,e
 setlocal infercase
-setlocal iskeyword=@,48-57,_,192-255,-
+setlocal iskeyword=@,48-57,_,192-255,-,$,#
 setlocal lhistory=10
 setlocal linebreak
 setlocal nolisp
@@ -370,7 +369,7 @@ setlocal spellfile=
 setlocal spelllang=en_us,de_de
 setlocal spelloptions=camel,noplainbuffer
 setlocal statuscolumn=
-setlocal suffixesadd=
+setlocal suffixesadd=.ts,.d.ts,.tsx,.js,.jsx,.cjs,.mjs
 setlocal noswapfile
 setlocal synmaxcol=3000
 if &syntax != ''
@@ -382,7 +381,7 @@ setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#src%*%#WinBarSeparator#/%*%#WinBarPath#components%*%#WinBarSeparator#/%*%#WinBarPath#typo%*%#WinBarSeparator#/%*%#WinBarFilename#typo.module.css%*%=%#WinBarGitLabel#\ [GIT:%#WinBarGitChange#\ ~1%#WinBarGitLabel#]%*%#WinBarLspLabel#\ [LSP:\ %#DiagnosticSignWarn#:2%##%#WinBarLspLabel#]%*\ 
+setlocal winbar=%#WinBarPath#src%*%#WinBarSeparator#/%*%#WinBarPath#components%*%#WinBarSeparator#/%*%#WinBarPath#tabs%*%#WinBarSeparator#/%*%#WinBarFilename#tabs.stories.tsx%*%=%#WinBarGitLabel#\ [GIT:%#WinBarGitAdd#\ +62%#WinBarGitChange#\ ~15%#WinBarGitLabel#]%*\ 
 setlocal winblend=10
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -391,23 +390,11 @@ setlocal winhighlight=
 setlocal nowinpinned
 setlocal nowrap
 setlocal wrapmargin=0
-1
-sil! normal! zo
-57
-sil! normal! zo
-70
-sil! normal! zo
-83
-sil! normal! zo
-95
-sil! normal! zo
-121
-sil! normal! zo
-let s:l = 100 - ((22 * winheight(0) + 22) / 45)
+let s:l = 173 - ((28 * winheight(0) + 33) / 66)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 100
+keepjumps 173
 normal! 0
 tabnext
 edit src/tokens/token-registry.ts
@@ -520,7 +507,7 @@ setlocal winhighlight=
 setlocal nowinpinned
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 305 - ((11 * winheight(0) + 22) / 45)
+let s:l = 305 - ((16 * winheight(0) + 33) / 66)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
