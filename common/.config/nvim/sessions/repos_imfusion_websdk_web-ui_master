@@ -13,7 +13,7 @@ set shortmess+=aoO
 badd +12 docs/user-guide/Changelog.mdx
 badd +1 docs/development/Architecture.mdx
 badd +331 src/tokens/token-registry.ts
-badd +173 ~/repos/imfusion/websdk/web-ui/src/components/tabs/tabs.stories.tsx
+badd +200 ~/repos/imfusion/websdk/web-ui/src/components/tabs/tabs.stories.tsx
 argglobal
 %argdel
 $argadd src/components/number-field/number-field.stories.tsx
@@ -381,7 +381,7 @@ setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#src%*%#WinBarSeparator#/%*%#WinBarPath#components%*%#WinBarSeparator#/%*%#WinBarPath#tabs%*%#WinBarSeparator#/%*%#WinBarFilename#tabs.stories.tsx%*%=%#WinBarGitLabel#\ [GIT:%#WinBarGitAdd#\ +62%#WinBarGitChange#\ ~15%#WinBarGitLabel#]%*\ 
+setlocal winbar=%#WinBarPath#src%*%#WinBarSeparator#/%*%#WinBarPath#components%*%#WinBarSeparator#/%*%#WinBarPath#tabs%*%#WinBarSeparator#/%*%#WinBarFilename#tabs.stories.tsx%*%=
 setlocal winblend=10
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -390,12 +390,12 @@ setlocal winhighlight=
 setlocal nowinpinned
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 173 - ((28 * winheight(0) + 33) / 66)
+let s:l = 119 - ((60 * winheight(0) + 33) / 66)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 173
-normal! 0
+keepjumps 119
+normal! 017|
 tabnext
 edit src/tokens/token-registry.ts
 argglobal
