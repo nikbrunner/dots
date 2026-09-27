@@ -48,7 +48,7 @@
             "label": "7"
           }
         ],
-        "lastAccessed": 1779358546
+        "lastAccessed": 1790507687
       }
     },
     "~/repos/imfusion/brunner/notes": {
@@ -145,10 +145,6 @@
             "label": "2"
           },
           {
-            "filename": "common/.config/ghostty/config",
-            "label": "3"
-          },
-          {
             "filename": "macos/.config/neru/config.toml",
             "label": "4"
           },
@@ -161,7 +157,7 @@
             "label": "6"
           }
         ],
-        "lastAccessed": 1790499414
+        "lastAccessed": 1790507560
       }
     },
     "~/repos/nikbrunner/imf-notes": {
