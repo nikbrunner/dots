@@ -56,3 +56,4 @@ common/.local/bin/bic
 /common/.pi/agent/fff/history
 /common/.pi/agent/pi-accounts.json
 /PLAN.md
+/common/.pi/context-mode
