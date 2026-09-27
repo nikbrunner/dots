@@ -1,4 +1,4 @@
-model = "gpt-5.6-terra"
+model = "gpt-6-luna"
 model_reasoning_effort = "high"
 approvals_reviewer = "auto_review"
 service_tier = "default"
@@ -6,6 +6,7 @@ notify = [
     "/Users/brunner/.codex/computer-use/Codex Computer Use.app/Contents/SharedSupport/SkyComputerUseClient.app/Contents/MacOS/SkyComputerUseClient",
     "turn-ended",
 ]
+plan_mode_reasoning_effort = "high"
 
 [projects."/Users/brunner/repos/nikbrunner/dots"]
 trust_level = "trusted"
@@ -82,6 +83,9 @@ trust_level = "trusted"
 [projects."/Users/brunner/Documents/Codex/2026-09-18/he"]
 trust_level = "trusted"
 
+[projects."/Users/brunner/Documents/Codex/2026-09-26/realtime-voice-chat"]
+trust_level = "trusted"
+
 [tui]
 session_picker_view = "dense"
 status_line = [
@@ -100,6 +104,7 @@ status_line = [
   "context-used",
 ]
 status_line_use_colors = true
+screen_reader_detection_done = true
 
 [tui.model_availability_nux]
 "gpt-5.6-sol" = 4
@@ -153,8 +158,8 @@ NODE_REPL_INSTRUCTIONS_USE_CASE_BROWSER = ""
 NODE_REPL_INSTRUCTIONS_USE_CASE_CHROME = ""
 NODE_REPL_INSTRUCTIONS_USE_CASE_COMPUTER_USE = ""
 BROWSER_USE_CODEX_APP_BUILD_FLAVOR = "prod"
-BROWSER_USE_CODEX_APP_VERSION = "26.915.31029"
-NODE_REPL_TRUSTED_SERVICES = '{"browser":"/Users/brunner/.codex/plugins/cache/openai-bundled/browser/26.915.31029/scripts/browser-service.mjs","sky":"@oai/sky/service"}'
+BROWSER_USE_CODEX_APP_VERSION = "26.917.71314"
+NODE_REPL_TRUSTED_SERVICES = '{"browser":"/Users/brunner/.codex/plugins/cache/openai-bundled/browser/26.917.71314/scripts/browser-service.mjs","sky":"@oai/sky/service"}'
 SKY_CUA_SERVICE_PATH = "/Users/brunner/.codex/computer-use/Codex Computer Use.app"
 CODEX_CLI_PATH = "/Applications/ChatGPT.app/Contents/Resources/codex"
 
@@ -189,7 +194,7 @@ enabled = false
 trusted_hash = "sha256:4e62f91b83d02845b0289064e7880e53411938334686ec2bc35db820690b1219"
 
 [hooks.state."/Users/brunner/.codex/hooks.json:subagent_start:0:0"]
-trusted_hash = "sha256:bdee2ac509ad84c8a697aaf540882f70cfa8fc86549624afd6d05ccb30e4d2bd"
+trusted_hash = "sha256:c5ab09b2948087650f3a6a9115271f157ed2ca65afabd4e6989d9352d76147d7"
 
 [hooks.state."/Users/brunner/repos/imfusion/cp/labels-web/frontend/.codex/hooks.json:pre_tool_use:0:0"]
 trusted_hash = "sha256:8d5de4fe94b3e8d605f429c703ab38d951cce57f148c3eda7af6b3b1a7b9cfbc"

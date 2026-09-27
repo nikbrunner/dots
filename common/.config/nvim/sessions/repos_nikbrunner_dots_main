@@ -10,7 +10,7 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +41 common/.config/nvim/plugin/50_specs/oil.lua
+badd +22 common/.config/nvim/plugin/50_specs/oil.lua
 argglobal
 %argdel
 $argadd ~/repos/nikbrunner/dots/common/.agents/skills/dev-setup-pre-commit/SKILL.md
@@ -130,16 +130,14 @@ setlocal nowrap
 setlocal wrapmargin=0
 1
 sil! normal! zo
-5
-sil! normal! zo
 15
 sil! normal! zo
-let s:l = 34 - ((31 * winheight(0) + 23) / 46)
+let s:l = 33 - ((30 * winheight(0) + 18) / 36)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 34
-normal! 06|
+keepjumps 33
+normal! 0
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf

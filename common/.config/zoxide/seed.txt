@@ -6,6 +6,7 @@
 ~/.config/nvim
 
 # Repos
+~/repos/ImFusionGmbH/Website
 ~/repos/abue-ammar/tinycast
 ~/repos/black-atom-industries/.claude
 ~/repos/black-atom-industries/.github
@@ -51,7 +52,6 @@
 ~/repos/nikbrunner/fonts
 ~/repos/nikbrunner/glab-tui
 ~/repos/nikbrunner/herdr
-~/repos/nikbrunner/imf-notes
 ~/repos/nikbrunner/imfusion-coding-assignment
 ~/repos/nikbrunner/koyo
 ~/repos/nikbrunner/lager
