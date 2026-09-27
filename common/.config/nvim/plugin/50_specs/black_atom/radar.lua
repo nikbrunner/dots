@@ -4,6 +4,7 @@
 
 Edit.later(function()
 	vim.pack.add({ "git@github.com:black-atom-industries/radar.nvim" })
+	-- vim.opt.rtp:prepend(vim.fn.expand("~/repos/black-atom-industries/radar.nvim"))
 
 	require("radar").setup({
 		keys = {
