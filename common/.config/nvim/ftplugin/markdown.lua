@@ -1,6 +1,6 @@
 vim.opt_local.wrap = false
 vim.opt_local.linebreak = true
-vim.opt_local.textwidth = 80
+vim.opt_local.textwidth = 125
 vim.opt_local.formatexpr = ""
 vim.opt_local.conceallevel = 3
 
