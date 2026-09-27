@@ -1,7 +1,7 @@
 # https://github.com/textfuel/lazyjira/blob/main/docs/Config.md
 gui:
   theme: default
-  sidePanelWidth: 100
+  sidePanelWidth: 35
   statusIcons:
     Backlog: "Backlog"
     Open: "Open"
