@@ -87,13 +87,13 @@ Held back
 
 Afterwards: `dots chores` commits the held-back routine files (from AGENTS.md)
 
-Reply: "go" (all) · "go 1,2" · "F1 yes / F2 no" · "merge 1+2" ·
-"move 45f9ae4 to [1]" · "reword 2: ..." · "drop 2" · "include mise.lock"
+Reply: "go" (all) · "go fix" (all + every finding) · "go 1,2" · "F1 yes / F2 no" ·
+"merge 1+2" · "move 45f9ae4 to [1]" · "reword 2: ..." · "drop 2" · "include mise.lock"
 ```
 
 Each bucket shows its commit message exactly as it will be written (subject line; add the body indented below it when there is one) and every path with either "whole file" or its hunk IDs plus a short hint. Findings sit under the bucket they belong to. Leave out sections that are empty.
 
-Unanswered findings count as declined. A prior approval does not carry to a re-planned report: after "merge", "move" or "reword", print the changed buckets again and wait.
+Unanswered findings count as declined; "go fix" accepts every finding along with every bucket. A prior approval does not carry to a re-planned report: after "merge", "move" or "reword", print the changed buckets again and wait.
 
 **Autocommit.** Only when the user's invoking message explicitly says to commit without asking: still print the report, then commit every bucket that carries no finding. Buckets with findings wait for an answer.
 
@@ -117,6 +117,6 @@ For each approved bucket, in order:
 
 Hooks run as configured. When one fails, fix the cause, re-stage, and commit again as a new commit; the failed commit never happened, so there is nothing to amend. When a hook changed files, or a check in step 3 or 5 doesn't match, stop and report what happened before the next bucket.
 
-After the last bucket, run the routine from step 2 when the reply approved it ("go" for all, or naming it).
+After the last bucket, run the routine from step 2 when the reply approved it ("go" or "go fix" for all, or naming it).
 
 Finish with `git log --oneline -<n>` for the commits just made and `git status --short` for what is left.
