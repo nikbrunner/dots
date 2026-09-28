@@ -189,13 +189,14 @@ selected=\$($fd_cmd -d 3 --type f 'README' '$refs_dir' 2>/dev/null | fzf --rever
 PICKER_EOF
 	chmod +x "$readme_picker_script"
 	# Prefixes each path with a colored git status char and a US separator, and
-	# emits dirty paths before clean ones. Outside a repo every row gets a blank
-	# marker so the field layout stays uniform.
+	# emits dirty paths first, then radar locks for the repo+branch, then nvim
+	# oldfiles, then the rest. Outside a repo every row gets a blank marker so
+	# the field layout stays uniform.
 	local annotate_script
 	annotate_script=$(mktemp)
 	cat >"$annotate_script" <<'ANNOTATE_EOF'
 #!/usr/bin/env bash
-git rev-parse --show-toplevel >/dev/null 2>&1 || { sed $'s/^/  \x1f/'; exit 0; }
+root=$(git rev-parse --show-toplevel 2>/dev/null) || { sed $'s/^/  \x1f/'; exit 0; }
 status_map=$(git status --porcelain=v1 -uall -z 2>/dev/null |
 	while IFS= read -r -d '' entry; do
 		case "${entry:0:2}" in
@@ -203,11 +204,31 @@ status_map=$(git status --porcelain=v1 -uall -z 2>/dev/null |
 		esac
 		printf '%s\t%s\n' "${entry:3}" "${entry:0:2}"
 	done)
-awk -F'\t' -v prefix="$(git rev-parse --show-prefix 2>/dev/null)" '
+radar_data="${XDG_DATA_HOME:-$HOME/.local/share}/nvim/radar/data.json"
+recent=$(
+	if [[ -f "$radar_data" ]] && command -v jq >/dev/null; then
+		jq -r --arg p "~${root#"$HOME"}" --arg b "$(git branch --show-current)" \
+			'.projects[$p][$b].locks // [] | sort_by(.label | tonumber? // 0) | .[].filename' "$radar_data" |
+			sed "s|^|$root/|"
+	fi
+	# `shada=` before quitting keeps this headless nvim from writing the shada file.
+	command -v nvim >/dev/null &&
+		nvim --headless -u NONE -c 'lua io.write(table.concat(vim.v.oldfiles, "\n"))' -c 'set shada=' -c 'qa!' 2>/dev/null
+)
+RECENT="$recent" awk -F'\t' -v prefix="$(git rev-parse --show-prefix 2>/dev/null)" -v cwd="$PWD/" '
+BEGIN {
+  n = split(ENVIRON["RECENT"], lines, "\n")
+  for (i = 1; i <= n; i++) {
+    if (index(lines[i], cwd) != 1) continue
+    r = substr(lines[i], length(cwd) + 1)
+    if (!(r in rank)) rank[r] = ++nr
+  }
+}
 NR==FNR { if (NF==2) st[$1]=$2; next }
 {
   code = ((prefix $0) in st) ? st[prefix $0] : ""
   gsub(/ /, "", code)
+  if (code == "" && ($0 in rank)) { recent[rank[$0]] = "  \x1f" $0; next }
   if (code == "") { clean[++nc] = "  \x1f" $0; next }
   c = substr(code, 1, 1)
   if (c == "?")      col = "\033[35m"
@@ -219,6 +240,7 @@ NR==FNR { if (NF==2) st[$1]=$2; next }
 }
 END {
   for (i = 1; i <= nd; i++) print dirty[i]
+  for (i = 1; i <= nr; i++) if (i in recent) print recent[i]
   for (i = 1; i <= nc; i++) print clean[i]
 }' <(printf '%s\n' "$status_map") -
 ANNOTATE_EOF
