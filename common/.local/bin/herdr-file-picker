@@ -152,21 +152,26 @@ main() {
 	[[ -z "$fd_search_roots" ]] && fd_search_roots="'$HOME'"
 
 	# --- temp state files ---
-	local dir_file dir_mode_file readme_file
+	local dir_file dir_mode_file dir_paste_file readme_file
 	dir_file=$(mktemp)
 	echo "$search_dir" >"$dir_file"
 	dir_mode_file=$(mktemp)
 	echo "false" >"$dir_mode_file"
+	dir_paste_file=$(mktemp)
 	readme_file=$(mktemp)
 
-	# Alt-D directory picker (own script so fzf escaping stays sane)
-	# Alt-D directory picker (own script so fzf escaping stays sane)
+	# Alt-D directory picker (own script so fzf escaping stays sane).
+	# Enter changes the search dir; Alt-Enter pastes the picked dir itself.
 	local dir_picker_script
 	dir_picker_script=$(mktemp)
 	cat >"$dir_picker_script" <<PICKER_EOF
 #!/usr/bin/env bash
-selected=\$($fd_cmd -H --type d --max-depth $dir_max_depth --exclude .git $fd_exclude_args . $fd_search_roots 2>/dev/null | awk '!seen[\$0]++' | fzf --reverse --preview '$dir_preview_cmd')
-[[ -n "\$selected" ]] && printf '%s' "\$selected"
+out=\$($fd_cmd -H --type d --max-depth $dir_max_depth --exclude .git $fd_exclude_args . $fd_search_roots 2>/dev/null | awk '!seen[\$0]++' | fzf --reverse --preview '$dir_preview_cmd' --expect alt-enter --header 'ENTER: chdir | ALT-ENTER: paste dir')
+key=\$(sed -n 1p <<<"\$out")
+selected=\$(sed -n 2p <<<"\$out")
+[[ -n "\$selected" ]] || exit 0
+[[ "\$key" == alt-enter ]] && echo true >$(printf '%q' "$dir_paste_file")
+printf '%s' "\$selected"
 PICKER_EOF
 	chmod +x "$dir_picker_script"
 
@@ -243,7 +248,7 @@ $preview_bin -- "\$f" 2>/dev/null || cat -- "\$f" 2>/dev/null
 PREVIEW_EOF
 	chmod +x "$preview_script"
 
-	trap "rm -f '$dir_file' '$dir_mode_file' '$readme_file' '$dir_picker_script' '$readme_picker_script' '$list_script' '$list_script_no_ignore' '$preview_script' '$annotate_script'" EXIT
+	trap "rm -f '$dir_file' '$dir_mode_file' '$dir_paste_file' '$readme_file' '$dir_picker_script' '$readme_picker_script' '$list_script' '$list_script_no_ignore' '$preview_script' '$annotate_script'" EXIT
 
 	local preview_cmd="$preview_script {}"
 
@@ -267,8 +272,9 @@ $header_line"
 		--bind "alt-i:transform:[[ ! \$FZF_PROMPT =~ ON ]] &&
 		    echo \"change-prompt(gitignore:ON> )+reload($list_script)\" ||
 		    echo \"change-prompt(gitignore:OFF> )+reload($list_script_no_ignore)\""
-		--bind "alt-d:execute($dir_picker_script > '$dir_file')+reload($list_script)+transform:[[ -s '$dir_file' ]] && echo \"change-header(\$(cat '$dir_file')
-$header_line)\""
+		--bind "alt-d:execute($dir_picker_script > '$dir_file')+reload($list_script)+transform:[[ -s '$dir_paste_file' ]] && echo abort ||
+		    { [[ -s '$dir_file' ]] && echo \"change-header(\$(cat '$dir_file')
+$header_line)\"; }"
 		--bind "ctrl-d:preview-half-page-down"
 		--bind "ctrl-u:preview-half-page-up"
 		--bind "alt-enter:execute-silent(echo true > '$dir_mode_file')+accept"
@@ -293,10 +299,11 @@ $header_line)\""
 	local dir_mode=false
 	[[ "$(cat "$dir_mode_file")" == "true" ]] && dir_mode=true
 
-	local readme_abs_path
-	readme_abs_path=$(cat "$readme_file")
+	local verbatim_path
+	verbatim_path=$(cat "$readme_file")
+	[[ -s "$dir_paste_file" ]] && verbatim_path=$("$realpath_cmd" -m "$final_search_dir")
 
-	if [[ -z "$selected_files_str" && -z "$readme_abs_path" ]]; then
+	if [[ -z "$selected_files_str" && -z "$verbatim_path" ]]; then
 		exit 0
 	fi
 
@@ -309,9 +316,9 @@ $header_line)\""
 
 	# --- build the output paths ---
 	local relative_paths=()
-	if [[ -n "$readme_abs_path" ]]; then
-		# Alt-R: output the absolute README path verbatim.
-		relative_paths=("$readme_abs_path")
+	if [[ -n "$verbatim_path" ]]; then
+		# Alt-R README or Alt-D Alt-Enter dir: output the absolute path verbatim.
+		relative_paths=("$verbatim_path")
 	else
 		if $use_git_root; then
 			# Relativize each path to the git root.
