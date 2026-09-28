@@ -36,9 +36,9 @@ gui:
 
 issueTabs:
   - name: Overview (Sprint)
-    jql: (assignee = currentUser() OR cf[10500] = currentUser()) AND (statusCategory != Done OR resolved >= -14d) AND sprint IN openSprints() ORDER BY status DESC
+    jql: (assignee = currentUser() OR cf[10500] = currentUser()) AND (statusCategory != Done OR resolutiondate >= -7d) AND sprint IN openSprints() ORDER BY status DESC
   - name: Overview
-    jql: (assignee = currentUser() OR cf[10500] = currentUser()) AND (statusCategory != Done OR resolved >= -14d) ORDER BY status DESC
+    jql: (assignee = currentUser() OR cf[10500] = currentUser()) AND (statusCategory != Done OR resolutiondate >= -7d) ORDER BY status DESC
 
   # - name: WIP
   #   jql: assignee = currentUser() AND status = "In Progress" ORDER BY updated DESC
@@ -48,20 +48,28 @@ issueTabs:
   - name: Yesterday
     jql: assignee = currentUser() AND updated >= startOfDay(-1) AND updated < startOfDay() ORDER BY updated DESC
   - name: Last 7 Days
-    jql: assignee = currentUser() AND updated >= startOfDay(-6) ORDER BY updated DESC
+    jql: assignee = currentUser() AND updated >= -7d ORDER BY updated DESC
     maxResults: 100
-  - name: Done This Week
-    jql: assignee = currentUser() AND statusCategory = Done AND resolutiondate >= -7d ORDER BY resolutiondate DESC
+
   - name: WEBSDK
-    jql: project = WEBSDK AND assignee=currentUser() AND (statusCategory != Done OR resolutiondate >= -7d) ORDER BY statusCategory ASC, resolutiondate DESC, status ASC, priority ASC, updated ASC
-  - name: Cloud Platform
-    jql: project = CP AND assignee=currentUser() AND (statusCategory != Done OR resolutiondate >= -7d) ORDER BY statusCategory ASC, resolutiondate DESC, status ASC, priority ASC, updated ASC
+    jql: project = WEBSDK AND (assignee = currentUser() OR cf[10500] = currentUser()) AND (statusCategory != Done OR resolutiondate >= -7d) ORDER BY statusCategory ASC, resolutiondate DESC, status ASC, priority ASC, updated ASC
+  - name: WEBSDK Resolved By Me
+    jql: project = WEBSDK AND status CHANGED TO ("Resolved", "Closed") BY currentUser() AFTER -7d ORDER BY updated DESC
+    maxResults: 100
+  - name: CP
+    jql: project = CP AND (assignee = currentUser() OR cf[10500] = currentUser()) AND (statusCategory != Done OR resolutiondate >= -7d) ORDER BY statusCategory ASC, resolutiondate DESC, status ASC, priority ASC, updated ASC
+  - name: CP Resolved By Me
+    jql: project = CP AND status CHANGED TO ("Resolved", "Done", "WON'T FIX") BY currentUser() AFTER -7d ORDER BY updated DESC
+    maxResults: 100
   # currently disabled because I have no issues here
   # - name: Labels Server
   #   jql: project = LS AND assignee=currentUser() AND (statusCategory != Done OR resolutiondate >= -7d) ORDER BY statusCategory ASC, resolutiondate DESC, status ASC, priority ASC, updated ASC
+
   - name: Created
     jql: reporter = currentUser() ORDER BY created DESC
     maxResults: 20
+  - name: Assigned Away
+    jql: reporter = currentUser() AND assignee != currentUser() AND statusCategory != Done ORDER BY created ASC
   # On this instance parent and "Epic Link" mirror each other, so one tab covers both.
   - name: No Parent
     jql: reporter = currentUser() AND parent IS EMPTY AND issuetype != Epic AND statusCategory != Done ORDER BY created ASC
@@ -89,15 +97,14 @@ customCommands:
   - key: "ctrl+y"
     name: "Copy as markdown link"
     command: |
-      s=$(printf %s {{.Summary | shellescape}} | tr -d '[]')
+      s=$(printf %s {{.Summary | sanitize}})
       link=$(printf '[%s %s](%s/browse/%s)' {{.Key | shellescape}} "$s" {{.JiraHost | shellescape}} {{.Key | shellescape}})
       printf '%s' "$link" | (command -v pbcopy >/dev/null && pbcopy || wl-copy) && printf 'Copied: %s\n' "$link"
     suspend: false
   - key: "y"
     name: "Copy key + summary"
     command: |
-      s=$(printf %s {{.Summary | shellescape}} | tr -d '[]')
-      out=$(printf '%s %s' {{.Key | shellescape}} "$s")
+      out=$(printf '%s %s' {{.Key | shellescape}} {{.Summary | sanitize}})
       printf '%s' "$out" | (command -v pbcopy >/dev/null && pbcopy || wl-copy) && printf 'Copied: %s\n' "$out"
     suspend: false
 
