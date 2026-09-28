@@ -63,10 +63,8 @@
 ~/repos/nikbrunner/plans
 ~/repos/nikbrunner/src
 ~/repos/nikbrunner/tabula-rasa.nvim
-~/repos/nikbrunner/the-black-atom
 ~/repos/nikbrunner/themes
 ~/repos/nikbrunner/tmux-file-picker
 ~/repos/nikbrunner/wallpapers
 ~/repos/nikbrunner/writing
 ~/repos/qmk/qmk_firmware
-~/repos/ziglings/exercises

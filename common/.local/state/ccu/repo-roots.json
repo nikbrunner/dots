@@ -153,15 +153,18 @@
       "~/repos/imfusion/cp/CP-105-security-avoid-email-spamming-merge-conflicts-resolved",
       "~/repos/imfusion/cp/cp-164-user-portal-convert-mermaid-diags-with-cli",
       "~/repos/imfusion/cp/imfusion-portal",
+      "~/repos/imfusion/cp/imfusion-portal-CP-159",
+      "~/repos/imfusion/cp/imfusion-portal-CP-159/frontend",
       "~/repos/imfusion/cp/imfusion-portal-CP-89",
       "~/repos/imfusion/cp/imfusion-portal-CP-89/fe",
       "~/repos/imfusion/cp/imfusion-portal-CP-89/fe/.claude/skills",
       "~/repos/imfusion/cp/imfusion-portal-CP-89/fe/src/partials",
       "~/repos/imfusion/cp/imfusion-portal-cp-154-frontends-add-favicon",
       "~/repos/imfusion/cp/imfusion-portal/e2e",
-      "~/repos/imfusion/cp/imfusion-portal/frontend"
+      "~/repos/imfusion/cp/imfusion-portal/frontend",
+      "~/repos/imfusion/cp/imfusion-portal/frontend/src"
     ],
-    "last_seen": "2026-09-16"
+    "last_seen": "2026-09-28"
   },
   "cp/keycloak": {
     "root": "~/repos/imfusion/cp/keycloak",
@@ -313,9 +316,10 @@
     "name": "fonts",
     "work": false,
     "session_dirs": [
-      "~/repos/nikbrunner/fonts"
+      "~/repos/nikbrunner/fonts",
+      "~/repos/nikbrunner/fonts/custom/kode-mono"
     ],
-    "last_seen": "2026-08-29"
+    "last_seen": "2026-09-27"
   },
   "nikbrunner/glab-tui": {
     "root": "~/repos/nikbrunner/glab-tui",
@@ -419,7 +423,14 @@
     "name": "writing",
     "work": false,
     "session_dirs": [
-      "~/repos/nikbrunner/writing"
+      "~/repos/nikbrunner/writing",
+      "~/repos/nikbrunner/writing/realms",
+      "~/repos/nikbrunner/writing/realms/scarth-johnson",
+      "~/repos/nikbrunner/writing/realms/scarth-johnson/assets",
+      "~/repos/nikbrunner/writing/realms/scarth-johnson/books/01-avalon",
+      "~/repos/nikbrunner/writing/realms/the-black-atom",
+      "~/repos/nikbrunner/writing/realms/the-black-atom/assets",
+      "~/repos/nikbrunner/writing/scarth-johnson"
     ],
     "last_seen": "2026-09-27"
   },
