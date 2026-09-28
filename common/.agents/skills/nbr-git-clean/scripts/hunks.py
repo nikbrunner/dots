@@ -12,6 +12,7 @@ numbers, so it survives commits of other hunks. Files without text hunks
 """
 
 import hashlib
+import re
 import subprocess
 import sys
 
@@ -91,6 +92,32 @@ def cmd_show(ids):
         sys.stdout.write(h["head"] + "".join(h["body"]))
 
 
+HEAD_RE = re.compile(r"^@@ -(\d+)(?:,(\d+))? \+(\d+)(?:,(\d+))? @@(.*)$", re.S)
+
+
+def rebase_heads(picked):
+    """Rewrite each hunk's new-side start to count only the picked hunks.
+
+    git apply places a zero-context hunk at its new-side line number, which
+    otherwise still includes the line shifts of unpicked hunks above it.
+    """
+    delta, out = 0, []
+    for h in picked:
+        m = HEAD_RE.match(h["head"])
+        old_start, old_len = int(m[1]), int(m[2] if m[2] is not None else 1)
+        new_len = int(m[4] if m[4] is not None else 1)
+        new_start = old_start + delta
+        if old_len == 0:
+            new_start += 1
+        elif new_len == 0:
+            new_start -= 1
+        old = f"{old_start}" if m[2] is None else f"{old_start},{old_len}"
+        new = f"{new_start}" if m[4] is None else f"{new_start},{new_len}"
+        out.append(f"@@ -{old} +{new} @@{m[5]}")
+        delta += new_len - old_len
+    return out
+
+
 def cmd_stage(ids):
     files = parse(git_diff([]))
     hunks = index(files)
@@ -103,8 +130,8 @@ def cmd_stage(ids):
         picked = [h for h in f["hunks"] if h["id"] in wanted]
         if picked:
             patch += f["header"]
-            for h in picked:
-                patch += [h["head"]] + h["body"]
+            for head, h in zip(rebase_heads(picked), picked):
+                patch += [head] + h["body"]
     res = subprocess.run(APPLY, input="".join(patch).encode("utf-8", "surrogateescape"), capture_output=True)
     if res.returncode != 0:
         sys.exit(f"git apply failed, nothing staged:\n{res.stderr.decode(errors='replace')}")
