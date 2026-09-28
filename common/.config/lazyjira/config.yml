@@ -2,6 +2,7 @@
 gui:
   theme: default
   sidePanelWidth: 35
+  borders: sharp
   statusIcons:
     Backlog: "Backlog"
     Open: "Open"
@@ -34,6 +35,17 @@ gui:
     - priority
     - updated
 
+statusOrder:
+  - In Progress
+  - Ready To Review
+  - Validation
+  - Open
+  - Backlog
+  - Resolved
+  - Done
+  - Closed
+  - WON'T FIX
+
 issueTabs:
   - name: Overview (Sprint)
     jql: (assignee = currentUser() OR cf[10500] = currentUser()) AND (statusCategory != Done OR resolutiondate >= -7d) AND sprint IN openSprints() ORDER BY status DESC
@@ -45,21 +57,26 @@ issueTabs:
 
   - name: Today
     jql: assignee = currentUser() AND updated >= startOfDay() ORDER BY updated DESC
+    sortByStatus: false
   - name: Yesterday
     jql: assignee = currentUser() AND updated >= startOfDay(-1) AND updated < startOfDay() ORDER BY updated DESC
+    sortByStatus: false
   - name: Last 7 Days
     jql: assignee = currentUser() AND updated >= -7d ORDER BY updated DESC
+    sortByStatus: false
     maxResults: 100
 
   - name: WEBSDK
     jql: project = WEBSDK AND (assignee = currentUser() OR cf[10500] = currentUser()) AND (statusCategory != Done OR resolutiondate >= -7d) ORDER BY statusCategory ASC, resolutiondate DESC, status ASC, priority ASC, updated ASC
   - name: WEBSDK Resolved By Me
     jql: project = WEBSDK AND status CHANGED TO ("Resolved", "Closed") BY currentUser() AFTER -7d ORDER BY updated DESC
+    sortByStatus: false
     maxResults: 100
   - name: CP
     jql: project = CP AND (assignee = currentUser() OR cf[10500] = currentUser()) AND (statusCategory != Done OR resolutiondate >= -7d) ORDER BY statusCategory ASC, resolutiondate DESC, status ASC, priority ASC, updated ASC
   - name: CP Resolved By Me
     jql: project = CP AND status CHANGED TO ("Resolved", "Done", "WON'T FIX") BY currentUser() AFTER -7d ORDER BY updated DESC
+    sortByStatus: false
     maxResults: 100
   # currently disabled because I have no issues here
   # - name: Labels Server
@@ -67,6 +84,7 @@ issueTabs:
 
   - name: Created
     jql: reporter = currentUser() ORDER BY created DESC
+    sortByStatus: false
     maxResults: 20
   - name: Assigned Away
     jql: reporter = currentUser() AND assignee != currentUser() AND statusCategory != Done ORDER BY created ASC
@@ -81,6 +99,7 @@ issueTabs:
     jql: reporter = currentUser() AND priority = "Default" AND statusCategory != Done ORDER BY created ASC
   - name: Stale
     jql: assignee = currentUser() AND statusCategory != Done AND updated <= -14d ORDER BY updated ASC
+    sortByStatus: false
 
 fields:
   - id: status
