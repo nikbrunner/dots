@@ -11,7 +11,7 @@ set -euo pipefail
 #
 # Toggles (active inside fzf):
 #   Alt-I       toggle gitignore filtering (fd respects .gitignore by default)
-#   Alt-D       change the search directory (pick from configured roots)
+#   Alt-D       change the search directory (zoxide ranking first, then configured roots)
 #   Alt-R       pick a README from your refs dir, paste its absolute path
 #   Alt-Enter   paste the selected file's *directory* path instead
 #   Tab         multi-select
@@ -166,7 +166,7 @@ main() {
 	dir_picker_script=$(mktemp)
 	cat >"$dir_picker_script" <<PICKER_EOF
 #!/usr/bin/env bash
-out=\$($fd_cmd -H --type d --max-depth $dir_max_depth --exclude .git $fd_exclude_args . $fd_search_roots 2>/dev/null | awk '!seen[\$0]++' | fzf --reverse --preview '$dir_preview_cmd' --expect alt-enter --header 'ENTER: chdir | ALT-ENTER: paste dir')
+out=\$({ command -v zoxide >/dev/null && zoxide query -l; $fd_cmd -H --type d --max-depth $dir_max_depth --exclude .git $fd_exclude_args . $fd_search_roots 2>/dev/null | sed 's:/\$::'; } | awk '!seen[\$0]++' | fzf --reverse --scheme history --preview '$dir_preview_cmd' --expect alt-enter --header 'ENTER: chdir | ALT-ENTER: paste dir')
 key=\$(sed -n 1p <<<"\$out")
 selected=\$(sed -n 2p <<<"\$out")
 [[ -n "\$selected" ]] || exit 0
