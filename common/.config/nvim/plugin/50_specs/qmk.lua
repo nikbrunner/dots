@@ -22,7 +22,7 @@ Edit.later(function()
 		require("qmk").setup(vim.tbl_deep_extend("force", shared_opts, opts or {}))
 	end
 
-	local group = vim.api.nvim_create_augroup("nvim-edit-qmk", {})
+	local group = vim.api.nvim_create_augroup("nvim-qmk", {})
 
 	vim.api.nvim_create_autocmd("BufEnter", {
 		desc = "Format CRKBD/Chocofi koyo keymap",

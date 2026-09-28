@@ -101,7 +101,6 @@ common:
   # Misc ====================================================================
   common/.hushlogin: ~/.hushlogin
   common/.local/share/nvim/radar: ~/.local/share/nvim/radar
-  common/.local/share/nvim-edit/radar: ~/.local/share/nvim-edit/radar
 
 macos:
   macos/.config/davit/config.toml: ~/.config/davit/config.toml

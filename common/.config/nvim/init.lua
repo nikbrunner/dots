@@ -1,5 +1,5 @@
 -- ┌────────────────────────────────────────┐
--- │ nvim-edit — init.lua (minimal bootstrap)│
+-- │ nvim — init.lua (minimal bootstrap)    │
 -- └────────────────────────────────────────┘
 -- Defines the Config table, helpers, and loads mini.nvim.
 -- Options, keymaps, autocmds live in plugin/10_*.lua (auto-loaded).
@@ -21,7 +21,7 @@ _G.Edit = {}
 -- Must live here: the exrc search runs right after init.lua, before plugin/ files.
 vim.o.exrc = true
 
-local gr = vim.api.nvim_create_augroup("nvim-edit", {})
+local gr = vim.api.nvim_create_augroup("nvim", {})
 Edit.new_autocmd = function(event, pattern, callback, desc)
 	vim.api.nvim_create_autocmd(event, { group = gr, pattern = pattern, callback = callback, desc = desc })
 end

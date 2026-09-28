@@ -38,7 +38,7 @@ THEMES_JSON="$DOTS_DIR/common/themes.json"
 
 # Tool configurations
 NVIM_CONFIG="$DOTS_DIR/common/.config/nvim/lua/config.lua"
-NVIM_SPEC_CONFIG="$DOTS_DIR/common/.config/nvim-edit/plugin/50_specs/black_atom/nvim.lua"
+NVIM_SPEC_CONFIG="$DOTS_DIR/common/.config/nvim/plugin/50_specs/black_atom/nvim.lua"
 TMUX_CONFIG="$DOTS_DIR/common/.config/tmux/tmux.conf"
 GHOSTTY_CONFIG="$DOTS_DIR/common/.config/ghostty/config"
 GIT_DELTA_CONFIG="$DOTS_DIR/common/.gitconfig.delta"

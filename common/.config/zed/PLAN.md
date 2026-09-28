@@ -8,7 +8,7 @@ Clean up and improve `keymap.json` to fix bugs, remove redundancies, align Zed l
 
 Nik uses nvim as primary editor with an AWDCS leader scheme (`<leader>` = comma): **A**pp, **W**orkspace, **D**ocument, **C**hange, **S**ymbol. Zed is secondary (`base_keymap: "VSCode"`, `vim_mode: true`). The keymap uses `,` as leader, nulled scoped in vim normal/visual to win precedence over default `vim::RepeatFindReversed`.
 
-**New direction (Nik's feedback):** Drop the leader prefix from the **Symbol** namespace only — `sn`, `sr`, `si` instead of `,sn`, `,sr`, `,si`. This aligns Zed with a parallel change in the `nvim-edit` config. The other namespaces (App/Workspace/Document/Change) keep the leader. **Mechanical requirement:** `s` is a non-waiting vim operator (substitute = `cl`), so it must be neutralized (`s` → `<Nop>` / made to wait) before any two-key `s<key>` binding can resolve. This is the cost Nik has accepted.
+**New direction (Nik's feedback):** Drop the leader prefix from the **Symbol** namespace only — `sn`, `sr`, `si` instead of `,sn`, `,sr`, `,si`. This aligns Zed with a parallel change in the nvim config. The other namespaces (App/Workspace/Document/Change) keep the leader. **Mechanical requirement:** `s` is a non-waiting vim operator (substitute = `cl`), so it must be neutralized (`s` → `<Nop>` / made to wait) before any two-key `s<key>` binding can resolve. This is the cost Nik has accepted.
 
 Zed `keymap.json` is JSONC (comments + trailing commas). Preserve that style throughout.
 
@@ -29,7 +29,7 @@ Zed `keymap.json` is JSONC (comments + trailing commas). Preserve that style thr
 
 | #   | Decision                                                                                                                                                                          |
 | --- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| S0  | **Symbol namespace leaderless: yes.** Drop `,` from Symbol bindings → `sd`/`sr`/`si`/…. Requires `s` → `<Nop>` (loses substitute, use `cl`). Mirror in nvim-edit.                 |
+| S0  | **Symbol namespace leaderless: yes.** Drop `,` from Symbol bindings → `sd`/`sr`/`si`/…. Requires `s` → `<Nop>` (loses substitute, use `cl`). Mirror in nvim.                      |
 | 1   | **`] c` / `[ c`:** revert to git hunk nav (`GoToHunk`/`GoToPreviousHunk`).                                                                                                        |
 | 2   | **`si`:** swap — `si` = GoToImplementation, `sh` = Hover.                                                                                                                         |
 | 3   | **rename:** keep `sn` (drop leader only). Mnemonic clash with `sr` accepted.                                                                                                      |
@@ -80,7 +80,7 @@ Standard JSON validators fail on JSONC. Options:
 
 ### nvim
 
-- `NVIM_APPNAME=nvim-edit nvim --headless "+qa!"` — startup errors print to stderr.
+- `nvim --headless "+qa!"` — startup errors print to stderr.
 - `:nmap s` / `:verbose nmap s` — confirm `s` is neutralized, no conflicting substitute mapping.
 - Grep for leftover `<leader>s` across the four files — should return zero matches.
 

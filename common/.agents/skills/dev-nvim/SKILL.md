@@ -46,7 +46,7 @@ Key help files: `pack.txt` (vim.pack), `lsp.txt` (vim.lsp.config/enable), `lua.t
 Plugin docs live inside the installed plugin's `doc/` directory, e.g. mini.nvim ships one file per module:
 
 ```bash
-ls "$(NVIM_APPNAME=nvim-edit nvim --clean --headless --cmd 'lua io.write(vim.fn.stdpath("data"))' --cmd 'q')/site/pack/core/opt/mini.nvim/doc/"
+ls "$(nvim --clean --headless --cmd 'lua io.write(vim.fn.stdpath("data"))' --cmd 'q')/site/pack/core/opt/mini.nvim/doc/"
 ```
 
 ## Headless Verification (only when docs are insufficient)
@@ -56,10 +56,10 @@ ls "$(NVIM_APPNAME=nvim-edit nvim --clean --headless --cmd 'lua io.write(vim.fn.
 nvim --clean --headless "+lua print(vim.inspect(vim.tbl_keys(vim.hl)))" +q
 
 # Smoke test a config — startup errors print to stderr
-NVIM_APPNAME=nvim-edit nvim --headless "+qa!"
+nvim --headless "+qa!"
 
 # Run something inside the full config (deferred/lazy errors only surface at runtime)
-NVIM_APPNAME=nvim-edit nvim --headless "+lua print(pcall(require, 'conform'))" +q
+nvim --headless "+lua print(pcall(require, 'conform'))" +q
 ```
 
 ## Sources of Truth

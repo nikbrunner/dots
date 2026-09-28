@@ -295,7 +295,7 @@ dots_stage_theme() {
 # Stale = modified more than 2 days ago.
 # Prints structured output: ORPHAN:<name> or OLD:<name> per deleted file.
 # Nvim config dirs whose sessions/ are managed by chores (NVIM_APPNAME dirs)
-DOTS_NVIM_CONFIGS=("nvim" "nvim-edit")
+DOTS_NVIM_CONFIGS=("nvim")
 
 dots_clean_sessions() {
     local home="$HOME"

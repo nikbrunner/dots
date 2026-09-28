@@ -61,7 +61,7 @@ Edit.later(function()
 	end
 
 	vim.api.nvim_create_autocmd({ "BufWritePost", "BufEnter" }, {
-		group = vim.api.nvim_create_augroup("nvim-edit-lint", { clear = true }),
+		group = vim.api.nvim_create_augroup("nvim-lint", { clear = true }),
 		callback = function()
 			setup_linters()
 			lint.try_lint(nil, { ignore_errors = true })
