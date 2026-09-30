@@ -1,7 +1,6 @@
 ---
 name: dispatch
 description: Start a fresh coding agent in a Herdr workspace for another repository. Use when the user asks to dispatch, spawn, sidekick, fork, or hand off a task to Pi, Claude Code, Codex, or another coding harness.
-disable-model-invocation: true
 ---
 
 # Dispatch
