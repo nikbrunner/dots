@@ -277,6 +277,12 @@ type = "plugin_action"
 command = "annotate.manage"
 description = "manage annotations"
 
+[[keys.command]]
+key = "prefix+p"
+type = "plugin_action"
+command = "agent-panel.toggle"
+description = "toggle agent panel"
+
 # Document review (plannotator-tui)
 [[keys.command]]
 key = "prefix+o"

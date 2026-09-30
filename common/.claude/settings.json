@@ -96,6 +96,15 @@
             "timeout": 10
           }
         ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/agent-panel/session-start.sh",
+            "timeout": 5
+          }
+        ]
       }
     ],
     "Stop": [
@@ -143,6 +152,15 @@
           {
             "type": "command",
             "command": "node '/Users/brunner/skills/tldraw-offline/inject-server-context.mjs' SubagentStart"
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/agent-panel/subagent-start.sh",
+            "timeout": 5
           }
         ]
       }
