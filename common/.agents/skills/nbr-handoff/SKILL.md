@@ -8,22 +8,21 @@ Write a handoff document summarising the current conversation so a fresh agent c
 
 ## Where to save
 
-Always save to the **main repository root**, never inside a worktree. Handoffs are cross-session artifacts; a worktree's filesystem is ephemeral and gets removed on `/imf-close-worktree`, taking gitignored files with it.
-
-Compute the target directory:
+Save to the root of the **current working tree**, so the handoff sits next to the work it describes. Inside a worktree, that is the worktree, not the main checkout:
 
 ```sh
-# Yields the main repo root even when invoked from inside a worktree under .claude/worktrees/<name>/
-MAIN_ROOT=$(dirname "$(git rev-parse --absolute-git-dir | sed 's|/worktrees/[^/]*$||')")
+ROOT=$(git rev-parse --show-toplevel)
 ```
 
-Save to `${MAIN_ROOT}/handoffs/YYYY-MM-DD-<slug>.md`, where `<slug>` is a short kebab-case identifier for the focus area (e.g. `2026-05-28-brand-color-token.md`).
+Save to `${ROOT}/handoffs/YYYY-MM-DD-<slug>.md`, where `<slug>` is a short kebab-case identifier for the focus area (e.g. `2026-05-28-brand-color-token.md`).
 
 Before writing:
 
-- Create `${MAIN_ROOT}/handoffs/` if it does not exist.
-- Ensure `handoffs/` is listed in `${MAIN_ROOT}/.gitignore`. Handoffs are ephemeral and must not be tracked.
-- If the session is inside a worktree, mention in the handoff itself which worktree it came from, so the next agent knows the context.
+- Create `${ROOT}/handoffs/` if it does not exist.
+- Ensure `handoffs/` is listed in `${ROOT}/.gitignore`. Handoffs are ephemeral and must not be tracked.
+- Name the branch and worktree path in the handoff itself, so the next agent knows where it is.
+
+A handoff in a worktree is deleted with that worktree. When the next session will run after the worktree is closed, say so before writing.
 
 Suggest the skills to be used, if any, by the next session.
 
