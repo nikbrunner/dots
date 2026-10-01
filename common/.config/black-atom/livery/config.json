@@ -93,6 +93,12 @@
         "/Users/brunner/repos/nikbrunner/imf-notes/.obsidian"
       ]
     },
+    "tuicr": {
+      "enabled": true,
+      "config_path": "~/.config/tuicr/config.toml",
+      "match_pattern": "^theme\\s*=\\s*.+$",
+      "replace_template": "theme = \"{themeKey}\""
+    },
     "helm-tmux": {
       "enabled": true,
       "config_path": "~/.config/black-atom/helm-tmux/config.yml",
