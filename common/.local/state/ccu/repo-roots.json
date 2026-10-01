@@ -151,6 +151,8 @@
       "~/.herdr/worktrees/imfusion-portal/cp-154-frontends-add-favicon",
       "~/.herdr/worktrees/imfusion-portal/cp-154-frontends-add-favicon/frontend",
       "~/repos/imfusion/cp/CP-105-security-avoid-email-spamming-merge-conflicts-resolved",
+      "~/repos/imfusion/cp/CP-159-update-web-ui",
+      "~/repos/imfusion/cp/CP-159-update-web-ui/frontend",
       "~/repos/imfusion/cp/cp-164-user-portal-convert-mermaid-diags-with-cli",
       "~/repos/imfusion/cp/imfusion-portal",
       "~/repos/imfusion/cp/imfusion-portal-CP-159",
@@ -164,7 +166,7 @@
       "~/repos/imfusion/cp/imfusion-portal/frontend",
       "~/repos/imfusion/cp/imfusion-portal/frontend/src"
     ],
-    "last_seen": "2026-09-28"
+    "last_seen": "2026-10-01"
   },
   "cp/keycloak": {
     "root": "~/repos/imfusion/cp/keycloak",
@@ -267,6 +269,7 @@
       "~/.herdr/worktrees/black-atom/rework-structure",
       "~/repos/nikbrunner/black-atom",
       "~/repos/nikbrunner/black-atom-theme-catalog-rebuild",
+      "~/repos/nikbrunner/black-atom/.agents/skills",
       "~/repos/nikbrunner/black-atom/adapters/herdr",
       "~/repos/nikbrunner/black-atom/adapters/nvim",
       "~/repos/nikbrunner/black-atom/livery"
@@ -514,6 +517,7 @@
       "~/repos/imfusion/websdk/web-ui/.workspaces/shadow-hardness-control",
       "~/repos/imfusion/websdk/web-ui/.workspaces/websdk-149-corner-radius-control",
       "~/repos/imfusion/websdk/web-ui/.workspaces/websdk-207-skills",
+      "~/repos/imfusion/websdk/web-ui/ds-bundle",
       "~/repos/imfusion/websdk/web-ui/node_modules/@base-ui",
       "~/repos/imfusion/websdk/web-ui/src/components/navigation-menu/subs",
       "~/repos/imfusion/websdk/web-ui/src/llms/skills",
@@ -521,8 +525,9 @@
       "~/repos/imfusion/websdk/websdk-216-web-ui-adjust-component-defaults-the-po",
       "~/repos/imfusion/websdk/websdk-224-public-release",
       "~/repos/imfusion/websdk/websdk-228-color-mode-spike",
+      "~/repos/imfusion/websdk/websdk-228-color-mode-spike/node_modules/storybook/dist",
       "~/repos/imfusion/websdk/websdk-256-trigger-ci-pr-release-tags"
     ],
-    "last_seen": "2026-09-29"
+    "last_seen": "2026-10-01"
   }
 }

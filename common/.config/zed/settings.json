@@ -111,7 +111,7 @@
   "cursor_blink": false,
   "theme": {
     "mode": "system",
-    "light": "Black Atom — Light",
+    "light": "Black Atom — Facility ∷ Dimmed Light",
     "dark": "Black Atom — Facility ∷ Dark",
   },
   "base_keymap": "VSCode",

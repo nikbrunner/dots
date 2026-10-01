@@ -6,8 +6,8 @@ theme = black-atom-facility-dark.conf
 bold-is-bright = true
 
 # Window
-window-padding-x = 15
-window-padding-y = 15
+window-padding-x = 0
+window-padding-y = 0
 window-vsync = true
 
 # Advanced
@@ -15,11 +15,11 @@ window-vsync = true
 # custom-shader = ./shaders/film-grain.glsl
 # custom-shader = ./shaders/boo.glsl
 
-adjust-cell-height = 25%
+adjust-cell-height = 15%
 adjust-underline-position = 3
 
 # Fonts
-font-size = 14
+font-size = 12
 font-family = Kode Mono
 font-style-bold = Bold
 font-thicken = true
