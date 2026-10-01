@@ -36,6 +36,8 @@ The files under the kit's skills. Paths are fixed: config and manifest live in `
 | Obsidian plugin  | `simple`       | `"extra-files": [{ "type": "json", "path": "manifest.json", "jsonpath": "$.version" }]` |
 | Anything else    | `simple`       |                                                                                         |
 
+`bump-minor-pre-major` keeps a breaking change before `1.0.0` on the next minor version; without it, release-please jumps
+to `1.0.0`. `bump-patch-for-minor-pre-major` stays at the release-please default, so `feat` bumps the minor version too.
 `skip-changelog` keeps release-please out of `CHANGELOG.md`. `include-component-in-tag: false` makes the tag `v<version>`,
 which the publish job and `docs/releases.md` expect. The `changelog-sections` decide which commit types count toward a
 release; the commit skill's type rules repeat that list.
