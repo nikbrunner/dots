@@ -302,7 +302,11 @@
       "~/.claude/jobs/83245695/tmp/wt-prompt-bold",
       "~/.herdr/worktrees/dots/worktree-rapid-stone-2f36",
       "~/repos/nikbrunner/dots",
+      "~/repos/nikbrunner/dots/common",
+      "~/repos/nikbrunner/dots/common/.agents",
       "~/repos/nikbrunner/dots/common/.agents/skills",
+      "~/repos/nikbrunner/dots/common/.agents/skills/nbr-llm",
+      "~/repos/nikbrunner/dots/common/.agents/skills/nbr-release-kit",
       "~/repos/nikbrunner/dots/common/.config",
       "~/repos/nikbrunner/dots/common/.config/herdr/local-plugins/stationary",
       "~/repos/nikbrunner/dots/common/.config/herdr/plugins/config/herdr-navigator",
@@ -310,7 +314,7 @@
       "~/repos/nikbrunner/dots/common/.config/nvim/sessions",
       "~/repos/nikbrunner/dots/common/.pi"
     ],
-    "last_seen": "2026-09-27"
+    "last_seen": "2026-10-01"
   },
   "nikbrunner/fonts": {
     "root": "~/repos/nikbrunner/fonts",
