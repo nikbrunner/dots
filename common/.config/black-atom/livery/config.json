@@ -89,8 +89,7 @@
     "obsidian": {
       "enabled": true,
       "config_folders": [
-        "/Users/brunner/repos/nikbrunner/notes/.obsidian",
-        "/Users/brunner/repos/nikbrunner/imf-notes/.obsidian"
+        "/Users/brunner/repos/nikbrunner/notes/.obsidian"
       ]
     },
     "tuicr": {
