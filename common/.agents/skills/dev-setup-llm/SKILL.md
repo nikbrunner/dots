@@ -168,5 +168,4 @@ After execution, run this checklist:
 
 ## Cross-References
 
-- `dev-setup-project` — may invoke this skill as Phase 6 of bootstrapping
 - `dev-setup-git-hooks` — for Git hook setup (fast pre-commit checks and broader pre-push checks)
