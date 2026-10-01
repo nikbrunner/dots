@@ -3,25 +3,25 @@
   "evals": [
     {
       "id": 1,
-      "prompt": "/skill:dispatch The link handling is wrong here. Start a Pi worker to fix it.",
+      "prompt": "/skill:nbr-dispatch The link handling is wrong here. Start a Pi worker to fix it.",
       "expected_output": "Resolves the current Git root, asks the user to confirm its absolute path before inspecting the worktree or creating a pane, then launches the worker in the confirmed repository's workspace.",
       "files": []
     },
     {
       "id": 2,
-      "prompt": "/skill:dispatch claude Make popup borders configurable in the Black Atom Herdr themes. The Black Atom workspace is already open.",
+      "prompt": "/skill:nbr-dispatch claude Make popup borders configurable in the Black Atom Herdr themes. The Black Atom workspace is already open.",
       "expected_output": "Infers one candidate from Git roots under ~/repos, asks the user to confirm its absolute checkout, matches only an open workspace with that exact checkout path, and starts Claude in a new pane in that workspace.",
       "files": []
     },
     {
       "id": 3,
-      "prompt": "/skill:dispatch codex Fix stale credentials in imf-notes. Its worktree has uncommitted changes.",
+      "prompt": "/skill:nbr-dispatch codex Fix stale credentials in imf-notes. Its worktree has uncommitted changes.",
       "expected_output": "Confirms the exact target first, shows the dirty-state summary before opening a pane, and offers launch anyway, a copy-ready handoff, a tracker issue, or stop. Tracker issue creation asks for confirmation after inspecting the remote.",
       "files": []
     },
     {
       "id": 4,
-      "prompt": "/skill:dispatch pi Update the release notes formatter in notes. There is no Notes workspace open.",
+      "prompt": "/skill:nbr-dispatch pi Update the release notes formatter in notes. There is no Notes workspace open.",
       "expected_output": "Confirms the inferred target, creates a non-focused workspace at that checkout when no exact match is open, starts Pi in the new root pane, and returns without waiting for the worker.",
       "files": []
     },

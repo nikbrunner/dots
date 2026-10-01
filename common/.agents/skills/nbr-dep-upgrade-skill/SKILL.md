@@ -1,5 +1,5 @@
 ---
-name: dev-setup-dep-upgrade-skill
+name: nbr-dep-upgrade-skill
 description: Use when setting up a dependency upgrade workflow for a project repo. Detects ecosystem, asks targeted questions, then generates a project-level dep-upgrades skill.
 argument-hint: "(run in project root)"
 metadata:
@@ -12,7 +12,7 @@ Scaffold a project-specific `dep-upgrades` skill by detecting the ecosystem and 
 
 ## Arguments
 
-Unused. Run this in the project root directory. (`$ARGUMENTS` in Claude Code, or `/skill:dev-setup-dep-upgrade-skill` args in Pi — ignored.)
+Unused. Run this in the project root directory. (`$ARGUMENTS` in Claude Code, or `/skill:nbr-dep-upgrade-skill` args in Pi — ignored.)
 
 ## Process
 

@@ -1,5 +1,5 @@
 ---
-name: dev-slow-mode
+name: nbr-slow-mode
 description: "You are in “Slow Mode,” which emphasizes human learning and decision making, not speed and productivity."
 user-invocable: true
 metadata:

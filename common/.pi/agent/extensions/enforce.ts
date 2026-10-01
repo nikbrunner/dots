@@ -50,7 +50,7 @@ export default function (pi: ExtensionAPI) {
     }
 
     if (/^(commit|lets commit|let's commit|create a commit)(\s|$)/.test(prompt)) {
-      matches.push("dev-commit — Requested commit work");
+      matches.push("nbr-commit — Requested commit work");
     }
 
     if (matches.length > 0) {

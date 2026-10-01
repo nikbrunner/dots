@@ -1,6 +1,6 @@
 # Generated Skill Template
 
-This is the template used by `dev-setup-dep-upgrade-skill` when generating a project-level `dep-upgrades` skill. `{{placeholders}}` are replaced with detected/confirmed values.
+This is the template used by `nbr-dep-upgrade-skill` when generating a project-level `dep-upgrades` skill. `{{placeholders}}` are replaced with detected/confirmed values.
 
 ````markdown
 ---

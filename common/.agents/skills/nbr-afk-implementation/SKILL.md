@@ -1,5 +1,5 @@
 ---
-name: afk-implementation
+name: nbr-afk-implementation
 description: Use when the user wants an agent to finish approved or sufficiently guided implementation work autonomously while they are away, including when work has already started or conversation context may run out.
 metadata:
   argument-hint: "[optional plan or AFK execution brief path]"
@@ -50,7 +50,7 @@ Readiness: `<status; remaining owner blockers or not applicable — reason>`
 
 Artifacts: `<brief path; ledger path>`
 
-Session: `Continue current session — <reason>` or `Roll to fresh session — <reason>; invocation: /skill:afk-implementation <actual brief path>`; whenever it says `Roll`, include that exact invocation with the actual path.
+Session: `Continue current session — <reason>` or `Roll to fresh session — <reason>; invocation: /skill:nbr-afk-implementation <actual brief path>`; whenever it says `Roll`, include that exact invocation with the actual path.
 
 Baseline: `<HEAD; index; preserved-work scope>`
 

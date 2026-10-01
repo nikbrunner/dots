@@ -1,5 +1,5 @@
 ---
-name: things
+name: nbr-things
 description: Use when the user asks to create, find, schedule, update, complete, delete, or review Things 3 tasks, projects, areas, tags, checklists, or recurring items on macOS.
 ---
 

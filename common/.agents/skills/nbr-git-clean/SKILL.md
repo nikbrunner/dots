@@ -34,7 +34,7 @@ Done when every changed path and every hunk ID is accounted for.
 
 ## 2. Conventions
 
-Commit message grammar follows the lookup order in Phase 3 of `dev-commit/SKILL.md` (a sibling of this skill's directory): a project commit skill, then AGENTS.md / CLAUDE.md, then the dominant pattern in `git log`, then its default. Read that phase as a file rather than loading the skill; its other phases carry their own approval and audit steps that this workflow replaces. The lookup covers ticket or issue prefixes, their placement, and body style. Pull the ticket key from the branch name when the convention uses one.
+Commit message grammar follows the lookup order in Phase 3 of `nbr-commit/SKILL.md` (a sibling of this skill's directory): a project commit skill, then AGENTS.md / CLAUDE.md, then the dominant pattern in `git log`, then its default. Read that phase as a file rather than loading the skill; its other phases carry their own approval and audit steps that this workflow replaces. The lookup covers ticket or issue prefixes, their placement, and body style. Pull the ticket key from the branch name when the convention uses one.
 
 While reading the project instructions, also look for a routine that commits on its own (a chores command). Such routines stage whole files, so run one only after the approved buckets are committed: by then the real edits in its files are gone, and it picks up only the routine churn left behind. Mark the files it will cover as held back with the routine's name, and put the routine on the report's last line.
 
@@ -63,7 +63,7 @@ Print the report in exactly this shape, then stop and wait:
 
 ```
 Working tree: 14 files, 23 hunks → 4 buckets, 2 held back, 2 findings
-Convention: dev-commit default ([#issue] prefix, imperative, no type:)
+Convention: nbr-commit default ([#issue] prefix, imperative, no type:)
 
 [0] pre-staged
     M  src/api.ts                                  (whole index)

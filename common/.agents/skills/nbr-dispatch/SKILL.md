@@ -1,15 +1,15 @@
 ---
-name: dispatch
+name: nbr-dispatch
 description: Start a fresh coding agent in a Herdr workspace for another repository. Use when the user asks to dispatch, spawn, sidekick, fork, or hand off a task to Pi, Claude Code, Codex, or another coding harness.
 ---
 
 # Dispatch
 
-Start a fresh coding-agent session in the target repository's Herdr workspace. Invoke this skill explicitly as `/skill:dispatch`.
+Start a fresh coding-agent session in the target repository's Herdr workspace. Invoke this skill explicitly as `/skill:nbr-dispatch`.
 
 ## Activation contract
 
-A user-supplied `<skill name="dispatch">...</skill>` definition followed by an affirmative task request activates this skill, even when the user does not repeat `/skill:dispatch`. Treat the supplied definition as routing instructions, not conversation context.
+A user-supplied `<skill name="nbr-dispatch">...</skill>` definition followed by an affirmative task request activates this skill, even when the user does not repeat `/skill:nbr-dispatch`. Treat the supplied definition as routing instructions, not conversation context.
 
 Once active:
 

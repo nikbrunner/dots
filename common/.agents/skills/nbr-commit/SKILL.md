@@ -1,5 +1,5 @@
 ---
-name: dev-commit
+name: nbr-commit
 description: "Commit workflow with staged docs audit, ticket-prefixed imperative messages, approval gate, and pre-commit chain. Stages selectively, audits staged docs, drafts a message, waits for explicit approval, then commits."
 argument-hint: "[optional message hint or scope hint]"
 user-invocable: true
@@ -8,7 +8,7 @@ metadata:
   user-invocable: true
 ---
 
-# dev:commit
+# nbr-commit
 
 A disciplined commit ritual. Combines selective staging, doc-audit-before-commit, Conventional Commits, an explicit approval gate, and the project's pre-commit chain.
 

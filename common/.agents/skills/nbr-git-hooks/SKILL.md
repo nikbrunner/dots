@@ -1,5 +1,5 @@
 ---
-name: dev-setup-git-hooks
+name: nbr-git-hooks
 description: Set up, review, or migrate Git hooks, including pre-commit and pre-push. Establish project control, preserve existing checks and team conventions, and keep commits fast. Use for hook setup, hook maintenance, migration to Lefthook, or optional agent hook integration.
 ---
 

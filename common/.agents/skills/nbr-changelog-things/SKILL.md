@@ -1,5 +1,5 @@
 ---
-name: changelog-things
+name: nbr-changelog-things
 description: Use when Nik asks to log today’s development work, commits, GitHub activity, or a changelog as completed Things items instead of updating an Obsidian daily note.
 user-invocable: true
 ---
@@ -15,7 +15,7 @@ Record collected development activity as completed Things todos. Keep the `chang
 
 ```bash
 ACTIVITY_REPORT=$(mktemp)
-node --no-warnings --experimental-strip-types .agents/skills/changelog-things/scripts/collect-activity.ts --date YYYY-MM-DD --root "$HOME/repos" > "$ACTIVITY_REPORT"
+node --no-warnings --experimental-strip-types .agents/skills/nbr-changelog-things/scripts/collect-activity.ts --date YYYY-MM-DD --root "$HOME/repos" > "$ACTIVITY_REPORT"
 ```
 
 3. Read the JSON unchanged. Collector errors are reportable data. Keep successful local activity when GitHub collection fails.
