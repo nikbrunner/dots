@@ -51,7 +51,3 @@ Use this structure:
 ## Quality bar
 
 Before finishing, verify that the document is executable by someone who did not make the change, covers the changed journey end to end, tests failure recovery and persistence, and does not claim an unverified requirement. Every checkbox must have one truthful agent result beneath it. Report failed, blocked, and skipped checks plainly, including the reason and any evidence path. Agent checks support the human review; they do not mark the human checkbox complete. Keep the checklist extensive enough to be useful, but prune duplicate or low-risk checks.
-
-## Cross-References
-
-- `dev:audit` — deeper UX and accessibility review when the checklist finds a concern.

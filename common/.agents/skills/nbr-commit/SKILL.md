@@ -12,7 +12,7 @@ metadata:
 
 A disciplined commit ritual. Combines selective staging, doc-audit-before-commit, Conventional Commits, an explicit approval gate, and the project's pre-commit chain.
 
-Uses the `dev-audit` skill's `docs --staged` mode for the docs audit phase. The global agent prose rules apply to commit messages.
+Uses `nbr-audit-docs --staged` for the docs audit phase. The global agent prose rules apply to commit messages.
 
 ## When to use
 
@@ -51,7 +51,7 @@ Identify three buckets:
 
 Use `/documentation-writer` for this phase. Invoke it before auditing or editing documentation, and follow its guidance for the affected docs.
 
-Load `dev-audit` and perform its `docs --staged` mode against the staged diff. `dev:audit` is not a Bash command. Read the findings. Three outcomes:
+Load `nbr-audit-docs` and run it with `--staged` against the staged diff. It is a skill, not a Bash command. Read the findings. Three outcomes:
 
 | Result        | Action                                                                                            |
 | ------------- | ------------------------------------------------------------------------------------------------- |

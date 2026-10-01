@@ -12,18 +12,18 @@ matches=()
 
 if [[ "$prompt_lower" =~ ^(implement|build|refactor|fix|add|migrate|remove|delete|update|upgrade)\  ||
     "$prompt_lower" =~ ^can\ you\ (implement|build|fix|add)\  ]]; then
-    matches+=("Implementation: load the relevant project/language convention skills before editing (dev-style-typescript for TypeScript, dev-style-react for React). Keep selection to the code being changed.")
+    matches+=("Implementation: load the project's convention skills and the matching nbr-conventions topics before editing (typescript, react, css, state, tanstack). Keep selection to the code being changed.")
 fi
 
 if [[ "$prompt_lower" =~ ^(use\ tdd|red.green.refactor|write\ tests?\ first|test.driven)([[:space:][:punct:]]|$) ||
     "$prompt_lower" =~ ^(implement|build|fix)\ .*\ (using|with)\ tdd([[:space:][:punct:]]|$) ]]; then
-    matches+=("Explicit TDD request: load dev-style-tdd and follow its red-green-refactor discipline for this task.")
+    matches+=("Explicit TDD request: load tdd and follow its red-green-refactor discipline for this task.")
 fi
 
 if [[ "$prompt_lower" =~ ^(audit|review)([[:space:]]|$) ||
     "$prompt_lower" =~ ^run\ (an?\ )?(audit|review)([[:space:]]|$) ||
     "$prompt_lower" =~ ^check\ .*(quality|conventions|a11y|accessibility) ]]; then
-    matches+=("Review/audit request: load dev-audit for the requested focus and scope. Report findings; start implementation or shipping work only when explicitly requested.")
+    matches+=("Review/audit request: load nbr-audit for a convention audit, or code-review for a branch or PR review. Report findings; start implementation or shipping work only when explicitly requested.")
 fi
 
 if [[ "$prompt_lower" =~ ^(commit|lets\ commit|let\'s\ commit)([[:space:]]|$) ||

@@ -38,7 +38,7 @@ export default function (pi: ExtensionAPI) {
       /^(use tdd|red.green.refactor|write tests? first|test.driven)(\s|[.,:;!?]|$)/.test(prompt) ||
       /^(implement|build|fix) .* (using|with) tdd(\s|[.,:;!?]|$)/.test(prompt)
     ) {
-      matches.push("dev-style-tdd — Requested test-first work");
+      matches.push("tdd — Requested test-first work");
     }
 
     if (
@@ -46,7 +46,7 @@ export default function (pi: ExtensionAPI) {
       /^run (an? )?(audit|review)(\s|$)/.test(prompt) ||
       /^check .*(quality|conventions|a11y|accessibility)/.test(prompt)
     ) {
-      matches.push("dev-audit — Requested review scope");
+      matches.push("nbr-audit — Requested review scope");
     }
 
     if (/^(commit|lets commit|let's commit|create a commit)(\s|$)/.test(prompt)) {
