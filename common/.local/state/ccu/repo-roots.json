@@ -267,6 +267,7 @@
       "~/.herdr/worktrees/black-atom/rework-structure",
       "~/repos/nikbrunner/black-atom",
       "~/repos/nikbrunner/black-atom-theme-catalog-rebuild",
+      "~/repos/nikbrunner/black-atom/adapters/herdr",
       "~/repos/nikbrunner/black-atom/adapters/nvim",
       "~/repos/nikbrunner/black-atom/livery"
     ],

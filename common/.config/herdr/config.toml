@@ -10,16 +10,16 @@ onboarding = false
 [theme.custom]
 accent = "#e2f776"
 panel_bg = "#040606"
-sidebar_bg = "#040606"
-active_row_bg = "#0c1010"
-selection_bg = "#272d2d"
+sidebar_bg = "#e2f776"
+active_row_bg = "#c8db6a"
+selection_bg = "#b7c962"
 surface_dim = "#0c1010"
-surface0 = "##191e1e"
-surface1 = "##0c1010"
-overlay0 = "#91bcad"
+surface0 = "#191e1e"
+surface1 = "#0c1010"
+overlay0 = "#5c776e"
 overlay1 = "#e2f776"
 text = "#d5f4e3"
-subtext0 = "#91bcad"
+subtext0 = "#5c776e"
 red = "#f08cb4"
 green = "#7fcd81"
 yellow = "#e2f776"
@@ -32,12 +32,12 @@ peach = "#e9b64b"
 row_gap = 1
 rows = [
   [
-    "state_icon",
-    { token = "workspace", bold = true, fg = "#e2f776" },
+    { token = "state_icon", fg = "#0c1010" },
+    { token = "workspace", bold = true, fg = "#0c1010" },
   ],
   [
-    "branch",
-    "git_status",
+    { token = "branch", fg = "#4c552f" },
+    { token = "git_status", fg = "#4c552f" },
   ],
 ]
 
@@ -45,15 +45,15 @@ rows = [
 row_gap = 1
 rows = [
   [
-    { token = "$parent", bold = true, dim = false, fg = "#e2f776" },
+    { token = "$parent", bold = true, dim = false, fg = "#0c1010" },
   ],
   [
-    { token = "workspace", bold = false, dim = true },
+    { token = "workspace", bold = false, dim = false, fg = "#4c552f" },
   ],
   [
-    "state_icon",
-    "state_text",
-    "agent",
+    { token = "state_icon", fg = "#0c1010" },
+    { token = "state_text", fg = "#0c1010" },
+    { token = "agent", fg = "#4c552f" },
   ],
 ]
 # END BLACK ATOM LIVERY THEME
