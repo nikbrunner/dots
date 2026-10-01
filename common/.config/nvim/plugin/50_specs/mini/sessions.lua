@@ -143,8 +143,16 @@ if vim.fn.argc(-1) == 0 then
 			end
 		end,
 	})
+end
 
-	-- Auto-create session on VimLeave for specified directories
+-- `nvim .` opens oil instead of the session, but its layout is still saved
+if vim.fn.argc(-1) == 0 or (vim.fn.argc(-1) == 1 and vim.fn.argv(0) == ".") then
+	-- :restart reuses v:argv, so the session has to be read explicitly
+	vim.keymap.set("n", "ZR", function()
+		local force = vim.v.count > 0 and "+qall! " or ""
+		vim.cmd("restart " .. force .. "lua require('mini.sessions').read('" .. get_session_name() .. "')")
+	end, { desc = "Restart with session" })
+
 	vim.api.nvim_create_autocmd({ "VimLeave" }, {
 		callback = function()
 			local session_name = get_session_name()
@@ -159,8 +167,7 @@ if vim.fn.argc(-1) == 0 then
 				end
 			end
 
-			-- Only create if in specified dir and session doesn't exist
-			if should_auto_create and not MS.detected[session_name] then
+			if should_auto_create and #vim.api.nvim_list_uis() > 0 then
 				-- Skip session creation inside git worktrees (e.g., .claude/worktrees/)
 				if cwd:find("worktrees", 1, true) then
 					return
