@@ -112,20 +112,5 @@ fields:
   - id: assignee
   - id: reporter
 
-customCommands:
-  - key: "ctrl+y"
-    name: "Copy as markdown link"
-    command: |
-      s=$(printf %s {{.Summary | sanitize}})
-      link=$(printf '[%s %s](%s/browse/%s)' {{.Key | shellescape}} "$s" {{.JiraHost | shellescape}} {{.Key | shellescape}})
-      printf '%s' "$link" | (command -v pbcopy >/dev/null && pbcopy || wl-copy) && printf 'Copied: %s\n' "$link"
-    suspend: false
-  - key: "y"
-    name: "Copy key + summary"
-    command: |
-      out=$(printf '%s %s' {{.Key | shellescape}} {{.Summary | sanitize}})
-      printf '%s' "$out" | (command -v pbcopy >/dev/null && pbcopy || wl-copy) && printf 'Copied: %s\n' "$out"
-    suspend: false
-
 git:
   worktreeFormat: "{{if .RepoName}}{{.RepoName}}-{{end}}{{.Key}}-{{.Summary}}"
