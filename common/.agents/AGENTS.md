@@ -150,6 +150,10 @@ Every changed line traces directly to what I asked for.
 - Spot unrelated dead code? Mention it. Don't delete it.
 - Clean up orphans _your_ change created — imports, variables, functions it made unused. Pre-existing dead code stays until I ask.
 
+### Third-party code
+
+Never propose patching `node_modules` or other vendored dependency code as a fix. When the behavior comes from a dependency, say so, name the config or workaround if one exists, and stop. A local patch is fine only as a throwaway experiment to confirm a bug we want to report or fix upstream.
+
 ### Skills
 
 Use skills requested by the user or relevant to the current step, especially those covering project and language conventions. Reuse skills already in context.
