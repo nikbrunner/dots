@@ -396,7 +396,7 @@ export default function (pi: ExtensionAPI): void {
 
 		void ctx.ui.custom<void>(
 			async (tui, theme) => {
-				const terminalBackground = await tui.queryTerminalBackgroundColor({ timeoutMs: 100 });
+				const { background: terminalBackground } = await tui.queryTerminalColors({ timeoutMs: 100 });
 				const background = terminalBackground
 					? darkenRgb(terminalBackground, config.background.darken)
 					: undefined;
