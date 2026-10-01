@@ -26,6 +26,7 @@ skills-lock.json
 /common/.pi/agent/npm
 /common/.pi/exa-usage.json
 /common/.pi/agent/run-history.jsonl
+/common/.pi/agent/crashes.json
 /common/.pi/agent/mcp-oauth/
 /common/.config/lazyjira/auth.json
 /common/.pi/agent/auth.json
