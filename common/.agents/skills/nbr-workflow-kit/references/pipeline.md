@@ -54,7 +54,8 @@ release; the commit skill's type rules repeat that list.
 { ".": "<latest released version>" }
 ```
 
-After bootstrap, only release-please edits it.
+After bootstrap, only release-please edits it. It writes compact JSON, so exclude the manifest from the repo's formatter; otherwise the format check
+fails on every release commit.
 
 ## `.github/workflows/release.yml`
 

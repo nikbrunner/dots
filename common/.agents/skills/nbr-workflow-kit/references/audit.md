@@ -25,7 +25,7 @@ release at all. Run them all. The audit is done when each check reports pass or 
 9. `release-please-config.json` has `skip-changelog: true` and `include-component-in-tag: false`, and its `release-type`
    matches the ecosystem.
 10. The commit skill's type rules match `changelog-sections`: the types it says count toward a release are the listed ones.
-11. The manifest version equals the latest `v*` tag. A leftover `bootstrap-sha`, `initial-version`, or `release-as` after the
+11. The manifest version equals the latest `v*` tag, and the repo's formatter excludes the manifest. A leftover `bootstrap-sha`, `initial-version`, or `release-as` after the
     first release PR merged is a finding.
 12. A workflow runs the CI-parity command on pushes to the default branch. The release PR gets no CI of its own, so this run
     is the release gate.
