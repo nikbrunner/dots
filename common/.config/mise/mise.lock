@@ -1977,7 +1977,7 @@ version = "2.16.15"
 backend = "npm:@astrojs/language-server"
 
 [[tools."npm:@earendil-works/pi-coding-agent"]]
-version = "0.87.1"
+version = "0.99.1"
 backend = "npm:@earendil-works/pi-coding-agent"
 
 [[tools."npm:@openai/codex"]]

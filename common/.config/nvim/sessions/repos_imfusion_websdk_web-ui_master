@@ -13,7 +13,7 @@ set shortmess+=aoO
 badd +1 docs/user-guide/Changelog.mdx
 badd +1 docs/development/Architecture.mdx
 badd +331 src/tokens/token-registry.ts
-badd +17 ~/repos/imfusion/websdk/web-ui/ANNOUNCEMENT.md
+badd +161 .storybook/manager.css
 argglobal
 %argdel
 $argadd src/components/number-field/number-field.stories.tsx
@@ -38,8 +38,8 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe 'vert 1resize ' . ((&columns * 109 + 109) / 219)
-exe 'vert 2resize ' . ((&columns * 109 + 109) / 219)
+exe 'vert 1resize ' . ((&columns * 101 + 101) / 203)
+exe 'vert 2resize ' . ((&columns * 101 + 101) / 203)
 argglobal
 setlocal keymap=
 setlocal noarabic
@@ -149,7 +149,7 @@ setlocal winhighlight=
 setlocal nowinpinned
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 5 - ((4 * winheight(0) + 22) / 45)
+let s:l = 5 - ((4 * winheight(0) + 25) / 51)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
@@ -270,32 +270,18 @@ setlocal winhighlight=
 setlocal nowinpinned
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 20 - ((18 * winheight(0) + 22) / 45)
+let s:l = 20 - ((19 * winheight(0) + 25) / 51)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
 keepjumps 20
 normal! 0
 wincmd w
-exe 'vert 1resize ' . ((&columns * 109 + 109) / 219)
-exe 'vert 2resize ' . ((&columns * 109 + 109) / 219)
+exe 'vert 1resize ' . ((&columns * 101 + 101) / 203)
+exe 'vert 2resize ' . ((&columns * 101 + 101) / 203)
 tabnext
-edit ~/repos/imfusion/websdk/web-ui/ANNOUNCEMENT.md
+edit .storybook/manager.css
 argglobal
-xnoremap <buffer> $ g$
-onoremap <buffer> $ g$
-nnoremap <buffer> $ g$
-xnoremap <buffer> 0 g0
-onoremap <buffer> 0 g0
-nnoremap <buffer> 0 g0
-xnoremap <buffer> <silent> [[ :exe "normal! gv"|call search('\%(^#\{1,5\}\s\+\S\|^\S.*\n^[=-]\+$\)', "bsW")
-xnoremap <buffer> <silent> ]] :exe "normal! gv"|call search('\%(^#\{1,5\}\s\+\S\|^\S.*\n^[=-]\+$\)', "sW")
-xnoremap <buffer> j gj
-onoremap <buffer> j gj
-nnoremap <buffer> j gj
-xnoremap <buffer> k gk
-onoremap <buffer> k gk
-nnoremap <buffer> k gk
 setlocal keymap=
 setlocal noarabic
 setlocal autoindent
@@ -312,8 +298,8 @@ setlocal cinoptions=
 setlocal cinscopedecls=public,protected,private
 setlocal cinwords=if,else,while,do,for,switch
 setlocal colorcolumn=
-setlocal comments=fb:*,fb:-,fb:+,n:>
-setlocal commentstring=<!--\ %s\ -->
+setlocal comments=s1:/*,mb:*,ex:*/
+setlocal commentstring=/*\ %s\ */
 setlocal complete=.,w,b,kspell
 setlocal completefunc=
 setlocal completeslash=
@@ -327,8 +313,8 @@ setlocal cursorlineopt=screenline,number
 setlocal nodiff
 setlocal eventignorewin=
 setlocal expandtab
-if &filetype != 'markdown'
-setlocal filetype=markdown
+if &filetype != 'css'
+setlocal filetype=css
 endif
 setlocal fixendofline
 setlocal foldcolumn=0
@@ -341,14 +327,15 @@ setlocal foldmethod=expr
 setlocal foldminlines=1
 setlocal foldnestmax=10
 setlocal foldtext=
-setlocal formatexpr=
-setlocal formatlistpat=^\\s*\\d\\+\\.\\s\\+\\|^\\s*[-*+]\\s\\+\\|^\\[^\\ze[^\\]]\\+\\]:\\&^.\\{4\\}
-setlocal formatoptions=tql1jn
+setlocal formatexpr=v:lua.require'conform'.formatexpr()
+setlocal formatlistpat=^\\s*[0-9\\-\\+\\*]\\+[\\.\\)]*\\s\\+
+setlocal formatoptions=n1jrql
 setlocal iminsert=0
 setlocal imsearch=-1
+setlocal include=^\\s*@import\\s\\+\\%(url(\\)\\=
 setlocal includeexpr=
 setlocal indentexpr=v:lua.require'arborist.indent'.indentexpr()
-setlocal indentkeys=0{,0},0),0],:,0#,!^F,o,O,e
+setlocal indentkeys=0{,0},!^F,o,O
 setlocal infercase
 setlocal iskeyword=@,48-57,_,192-255,-
 setlocal lhistory=10
@@ -356,13 +343,13 @@ setlocal linebreak
 setlocal nolisp
 setlocal lispoptions=
 setlocal list
-setlocal matchpairs=(:),{:},[:],<:>
+setlocal matchpairs=(:),{:},[:]
 setlocal modeline
 setlocal modifiable
 setlocal nrformats=bin,hex
 setlocal number
 setlocal numberwidth=4
-setlocal omnifunc=htmlcomplete#CompleteTags
+setlocal omnifunc=v:lua.vim.lsp.omnifunc
 setlocal nopreserveindent
 setlocal nopreviewwindow
 setlocal quoteescape=\\
@@ -374,7 +361,7 @@ setlocal scrollback=-1
 setlocal noscrollbind
 setlocal shiftwidth=2
 setlocal signcolumn=yes
-setlocal smartindent
+setlocal nosmartindent
 setlocal nosmoothscroll
 setlocal softtabstop=-1
 setlocal nospell
@@ -389,13 +376,13 @@ setlocal synmaxcol=3000
 if &syntax != ''
 setlocal syntax=
 endif
-setlocal tabstop=4
+setlocal tabstop=2
 setlocal tagfunc=v:lua.vim.lsp.tagfunc
-setlocal textwidth=125
+setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarFilename#ANNOUNCEMENT.md%*%=
+setlocal winbar=%#WinBarPath#.storybook%*%#WinBarSeparator#/%*%#WinBarFilename#manager.css%*%=
 setlocal winblend=10
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -404,13 +391,17 @@ setlocal winhighlight=
 setlocal nowinpinned
 setlocal nowrap
 setlocal wrapmargin=0
-1
+61
 sil! normal! zo
-let s:l = 17 - ((16 * winheight(0) + 22) / 45)
+102
+sil! normal! zo
+148
+sil! normal! zo
+let s:l = 161 - ((35 * winheight(0) + 25) / 51)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 17
+keepjumps 161
 normal! 0
 tabnext
 edit src/tokens/token-registry.ts
@@ -523,7 +514,7 @@ setlocal winhighlight=
 setlocal nowinpinned
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 305 - ((11 * winheight(0) + 22) / 45)
+let s:l = 305 - ((12 * winheight(0) + 25) / 51)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
@@ -545,6 +536,7 @@ if filereadable(s:sx)
 endif
 let &g:so = s:so_save | let &g:siso = s:siso_save
 set hlsearch
+nohlsearch
 doautoall SessionLoadPost
 unlet SessionLoad
 " vim: set ft=vim :

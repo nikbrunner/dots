@@ -267,9 +267,10 @@
       "~/.herdr/worktrees/black-atom/rework-structure",
       "~/repos/nikbrunner/black-atom",
       "~/repos/nikbrunner/black-atom-theme-catalog-rebuild",
+      "~/repos/nikbrunner/black-atom/adapters/nvim",
       "~/repos/nikbrunner/black-atom/livery"
     ],
-    "last_seen": "2026-09-06"
+    "last_seen": "2026-10-01"
   },
   "nikbrunner/bm": {
     "root": "~/repos/nikbrunner/bm",
@@ -500,6 +501,7 @@
       "~/repos/imfusion/websdk/web-ui-websdk-206-web-ui-update-improve-design-fol/node_modules/@base-ui/react/avatar/image",
       "~/repos/imfusion/websdk/web-ui-websdk-218-web-ui-audit-skills-with-skill-c",
       "~/repos/imfusion/websdk/web-ui-websdk-218-web-ui-audit-skills-with-skill-c/src/llms/evals/fixtures/conformant-app",
+      "~/repos/imfusion/websdk/web-ui/.storybook/components/showcase-layout",
       "~/repos/imfusion/websdk/web-ui/.storybook/decorators",
       "~/repos/imfusion/websdk/web-ui/.storybook/docs/page-nav",
       "~/repos/imfusion/websdk/web-ui/.workspaces/WEBSDK-133-image-display-options",
@@ -508,12 +510,14 @@
       "~/repos/imfusion/websdk/web-ui/.workspaces/websdk-149-corner-radius-control",
       "~/repos/imfusion/websdk/web-ui/.workspaces/websdk-207-skills",
       "~/repos/imfusion/websdk/web-ui/node_modules/@base-ui",
+      "~/repos/imfusion/websdk/web-ui/src/components/navigation-menu/subs",
       "~/repos/imfusion/websdk/web-ui/src/llms/skills",
       "~/repos/imfusion/websdk/websdk-169-storybook-controls",
       "~/repos/imfusion/websdk/websdk-216-web-ui-adjust-component-defaults-the-po",
       "~/repos/imfusion/websdk/websdk-224-public-release",
+      "~/repos/imfusion/websdk/websdk-228-color-mode-spike",
       "~/repos/imfusion/websdk/websdk-256-trigger-ci-pr-release-tags"
     ],
-    "last_seen": "2026-09-27"
+    "last_seen": "2026-09-29"
   }
 }

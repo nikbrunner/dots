@@ -24,31 +24,15 @@
             "label": "2"
           },
           {
-            "filename": "README.md",
+            "filename": "oil:///Users/brunner/repos/black-atom-industries/radar.nvim/",
             "label": "3"
           },
           {
-            "filename": "lua/radar/persist/persistence.lua",
-            "label": "5"
-          },
-          {
-            "filename": "radar-debug.log",
-            "label": "6"
-          },
-          {
-            "filename": "lua/radar/config.lua",
+            "filename": ".github/workflows/release.yml",
             "label": "4"
-          },
-          {
-            "filename": "lua/radar/ui/edit.lua",
-            "label": "8"
-          },
-          {
-            "filename": "lua/radar/debug.lua",
-            "label": "7"
           }
         ],
-        "lastAccessed": 1790509691
+        "lastAccessed": 1790672773
       }
     },
     "~/repos/imfusion/brunner/notes": {
@@ -60,14 +44,18 @@
           },
           {
             "filename": "logs/2026/2026.09/2026.09 - Sep.md",
+            "label": "2"
+          },
+          {
+            "filename": "logs/2026/2026.09/2026.09.30 - Wed.md",
             "label": "3"
           },
           {
-            "filename": "logs/2026/2026.09/2026.09.28 - Mon.md",
-            "label": "2"
+            "filename": "logs/2026/2026.09/2026.10.01 - Thu.md",
+            "label": "4"
           }
         ],
-        "lastAccessed": 1790584636
+        "lastAccessed": 1790837399
       }
     },
     "~/repos/imfusion/websdk/web-ui": {
@@ -123,7 +111,7 @@
             "label": "7"
           }
         ],
-        "lastAccessed": 1790527864
+        "lastAccessed": 1790763347
       }
     },
     "~/repos/nikbrunner/black-atom": {
@@ -138,7 +126,7 @@
             "label": "2"
           }
         ],
-        "lastAccessed": 1790591075
+        "lastAccessed": 1790838134
       }
     },
     "~/repos/nikbrunner/dots": {
@@ -161,7 +149,7 @@
             "label": "6"
           }
         ],
-        "lastAccessed": 1790583290
+        "lastAccessed": 1790672716
       }
     },
     "~/repos/nikbrunner/imf-notes": {
