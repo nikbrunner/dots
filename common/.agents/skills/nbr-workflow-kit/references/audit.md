@@ -5,7 +5,7 @@ release at all. Run them all. The audit is done when each check reports pass or 
 
 ## Skills
 
-1. `.agents/skills/<prefix>-{commit,changelog,release}/SKILL.md` and the changelog's two `references/` files exist, and each
+1. `.agents/skills/repo-{commit,changelog,release}/SKILL.md` and the changelog's two `references/` files exist, and each
    `name` matches its directory.
 2. Every relative link in the kit's skills and `docs/releases.md` resolves. A link to a skill that lives only in the global
    skill directory (`humanizer`) is a finding; the fix names the skill instead of linking it.
@@ -35,7 +35,7 @@ release at all. Run them all. The audit is done when each check reports pass or 
 
 ## Changelog
 
-15. Every release heading matches ``## `X.Y.Z` `` + eight `&nbsp;` + `YYYY.MM.DD`, sections are separated by `---` with blank
+15. Every release heading matches `` ## `X.Y.Z` `` + eight `&nbsp;` + `YYYY.MM.DD`, sections are separated by `---` with blank
     lines around it, and no `---` sits inside a section where it would cut the notes short.
 16. The newest heading's version is the manifest version. When `gh pr list --label "autorelease: pending"` shows an open
     release PR, its version needs a section before the merge: without one, release-please tags and creates the release, and

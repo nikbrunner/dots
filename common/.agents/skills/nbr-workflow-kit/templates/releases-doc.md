@@ -1,6 +1,6 @@
 # Releases
 
-Release with an agent: run [`{{prefix}}-release`](../.agents/skills/{{prefix}}-release/SKILL.md). It asks for approval
+Release with an agent: run [`repo-release`](../.agents/skills/repo-release/SKILL.md). It asks for approval
 before it merges the release PR.
 
 This page is the process that skill follows, and every step can also be run by hand.
@@ -32,7 +32,7 @@ version.
 ## Prepare the release commit
 
 Read the proposed version from the release PR title. Curate its `CHANGELOG.md` section with
-[`{{prefix}}-changelog`](../.agents/skills/{{prefix}}-changelog/references/curated-release.md) in release mode:
+[`repo-changelog`](../.agents/skills/repo-changelog/references/curated-release.md) in release mode:
 highlights by impact, the trimmed log below them, and the heading date set to the release day. The version in the heading
 must match the release PR.
 

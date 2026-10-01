@@ -15,7 +15,7 @@ live in [`agent-tooling/claude-code.md`](agent-tooling/claude-code.md) and [`age
 - `AGENTS.md` and `.agents/skills/` are agent-neutral and canonical. Agent-specific config lives only in that agent's own
   directory: `.claude/settings.json`, `.pi/settings.json`, `.pi/extensions/`.
 - `.claude/skills` is a relative symlink, so it survives clones and worktrees. Pi discovers `.agents/skills/` on its own.
-- Project skills carry the project prefix (`lj-commit`); personal global skills carry `nbr-`.
+- Project skills carry the `repo-` prefix (`repo-commit`); personal global skills carry `nbr-`.
 
 ## AGENTS.md
 

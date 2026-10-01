@@ -147,13 +147,7 @@ when Nik asks for it.
 
 ## `CHANGELOG.md`
 
-When the repo has none, start it as:
-
-```md
-# Changelog
-
-## [Unreleased]
-```
+When the repo has none, start it as a bare `# Changelog` heading. The first entry adds `## [Unreleased]` below it.
 
 An existing changelog in another format stays as history below a `---`; new sections follow the kit's heading format.
 

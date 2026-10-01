@@ -1,5 +1,5 @@
 ---
-name: {{prefix}}-release
+name: repo-release
 description:
   "Prepare and ship a {{project}} release. Use this when cutting a version, preparing release notes, or merging the
   release-please PR. Ask for approval before merging the release PR."
@@ -12,7 +12,7 @@ allowed-tools: Bash Read Edit
 Follow [`docs/releases.md`](../../../docs/releases.md). It is the maintainer source of truth for the release PR, the curated
 changelog commit, and checking the GitHub Release.
 
-Prepare the release notes with [`{{prefix}}-changelog`](../{{prefix}}-changelog/SKILL.md) in release mode before merging:
+Prepare the release notes with [`repo-changelog`](../repo-changelog/SKILL.md) in release mode before merging:
 it curates the section and sets the release date. The section's version must match the release PR title. Read the title
 after release-please has finished its run for the latest push to `main`; each run can change the version.
 

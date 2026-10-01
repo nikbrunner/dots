@@ -1,5 +1,5 @@
 ---
-name: {{prefix}}-commit
+name: repo-commit
 description:
   "Prepare a commit in the {{project}} repository. Use this when the user asks to commit, stage, ship, or finish a change. Add
   the changelog entry, stage selectively, run the CI-parity checks, show the exact Conventional Commit, and wait for explicit
@@ -30,7 +30,7 @@ restore, or clean.
 
 ## 2. Verify the changelog entry
 
-The change already carries its {{reader}}-facing line under `CHANGELOG.md`; `{{prefix}}-changelog` writes it as part of every
+The change already carries its {{reader}}-facing line under `CHANGELOG.md`; `repo-changelog` writes it as part of every
 implementation. Confirm it is present, accurate, and under the correct Unreleased category. Write a new entry only when the
 implementation did not add one.
 
@@ -70,6 +70,8 @@ The message is a [Conventional Commit](https://www.conventionalcommits.org/); re
 <type>(<scope>): <imperative summary>
 ```
 
+When `AGENTS.md` names a commit suffix, such as an issue reference, end the subject with it.
+
 - `feat` for new {{reader}}-facing behavior, `fix` for a {{reader}}-facing bug fix. Both trigger a release.
 - `docs`, `refactor`, `perf`, `test`, `ci`, `chore` for the rest. Only `docs`, `refactor`, and `perf` count toward a release.
 - `docs` is for {{reader}}-facing documentation. Agent skills, `AGENTS.md`, and maintainer-only docs are `chore`, so they
@@ -77,7 +79,7 @@ The message is a [Conventional Commit](https://www.conventionalcommits.org/); re
 - The scope is the area, as in recent history: {{scopes}}. Omit it when the change spans areas.
 - A breaking change adds `!` after the scope and a `BREAKING CHANGE:` footer.
 
-Keep the subject under 70 characters and describe the outcome, not the file list. Add a short bullet body only when the change
+Keep the subject under 70 characters, not counting a suffix, and describe the outcome, not the file list. Add a short bullet body only when the change
 has several moving parts. Do not narrate history with phrases such as "instead of" or "no longer".
 
 Show:
