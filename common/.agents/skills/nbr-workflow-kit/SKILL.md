@@ -1,15 +1,18 @@
 ---
-name: nbr-release-kit
+name: nbr-workflow-kit
 description:
-  "Set up or audit the release kit of a personal GitHub project: project-local `<prefix>-commit`, `<prefix>-changelog`, and
-  `<prefix>-release` skills on top of release-please and a hand-written, curated CHANGELOG.md. Use when setting up
-  release-please, releases, or a changelog workflow in a repo, or when checking an existing kit for drift."
+  "Set up or audit the workflow kit of a personal GitHub project: agent setup, Git hooks, and project-local
+  `<prefix>-commit`, `<prefix>-changelog`, and `<prefix>-release` skills on top of release-please and a curated
+  CHANGELOG.md. Use when setting up a repo for agent work, release-please, releases, or a changelog workflow, or when
+  checking an existing kit for drift."
 argument-hint: "setup | audit"
 ---
 
-# Release kit
+# Workflow kit
 
-The **release kit** is one pipeline in three skills and four files:
+The **workflow kit** is everything a repo needs for the agent-driven commit-to-release cycle. It stands on the repo's agent
+setup (the `agent-tooling` topic of `nbr-conventions`) and Git hooks (`nbr-git-hooks`), and adds one pipeline in three skills
+and four files:
 
 | Piece                                                                 | Job                                                                    |
 | --------------------------------------------------------------------- | ---------------------------------------------------------------------- |
@@ -75,22 +78,22 @@ Show one table of placeholder values with what each was inferred from, and wait 
 
 Write each missing piece from its source, replace every placeholder, and keep the prose as the template has it:
 
-| Write                                                               | From                                                                                                 |
-| ------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
-| `.agents/skills/{{prefix}}-commit/SKILL.md`                         | [`templates/commit.md`](templates/commit.md)                                                         |
-| `.agents/skills/{{prefix}}-changelog/SKILL.md`                      | [`templates/changelog.md`](templates/changelog.md)                                                   |
-| `.agents/skills/{{prefix}}-changelog/references/mechanical-log.md`  | [`templates/changelog-mechanical-log.md`](templates/changelog-mechanical-log.md)                     |
-| `.agents/skills/{{prefix}}-changelog/references/curated-release.md` | [`templates/changelog-curated-release.md`](templates/changelog-curated-release.md)                   |
-| `.agents/skills/{{prefix}}-release/SKILL.md`                        | [`templates/release.md`](templates/release.md)                                                       |
-| `docs/releases.md`                                                  | [`templates/releases-doc.md`](templates/releases-doc.md)                                             |
-| release-please config, manifest, `release.yml`, `CHANGELOG.md`      | [`references/pipeline.md`](references/pipeline.md)                                                   |
-| CI on the default branch                                            | A workflow that runs `{{check}}` on pushes to the default branch, when none does yet                 |
-| Git hooks                                                           | The `dev-setup-git-hooks` skill: Lefthook, fast staged checks on pre-commit, `{{check}}` on pre-push |
+| Write                                                               | From                                                                                           |
+| ------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
+| `.agents/skills/{{prefix}}-commit/SKILL.md`                         | [`templates/commit.md`](templates/commit.md)                                                   |
+| `.agents/skills/{{prefix}}-changelog/SKILL.md`                      | [`templates/changelog.md`](templates/changelog.md)                                             |
+| `.agents/skills/{{prefix}}-changelog/references/mechanical-log.md`  | [`templates/changelog-mechanical-log.md`](templates/changelog-mechanical-log.md)               |
+| `.agents/skills/{{prefix}}-changelog/references/curated-release.md` | [`templates/changelog-curated-release.md`](templates/changelog-curated-release.md)             |
+| `.agents/skills/{{prefix}}-release/SKILL.md`                        | [`templates/release.md`](templates/release.md)                                                 |
+| `docs/releases.md`                                                  | [`templates/releases-doc.md`](templates/releases-doc.md)                                       |
+| release-please config, manifest, `release.yml`, `CHANGELOG.md`      | [`references/pipeline.md`](references/pipeline.md)                                             |
+| CI on the default branch                                            | A workflow that runs `{{check}}` on pushes to the default branch, when none does yet           |
+| Agent setup: `AGENTS.md`, `.agents/skills/`, `.claude/skills` link  | The `agent-tooling` topic of `nbr-conventions`, before anything else                           |
+| Git hooks                                                           | The `nbr-git-hooks` skill: Lefthook, fast staged checks on pre-commit, `{{check}}` on pre-push |
 
-Set up the hooks before writing `{{hooks}}` into the commit skill, so the sentence describes what the hooks run.
-
-When `.claude/skills` is not a relative symlink to `../.agents/skills`, the agent setup belongs to `dev-setup-llm`; name it as
-a finding. Build is done when every piece exists and no `{{` remains in the repo.
+Build in order: agent setup first, since the kit's skills live in `.agents/skills/`; then hooks, so `{{hooks}}` describes
+what they run; then the skills and the pipeline. An existing agent setup is checked with `nbr-audit agent-tooling` rather
+than rebuilt. Build is done when every piece exists and no `{{` remains in the repo.
 
 ## 5. Audit
 
@@ -103,7 +106,7 @@ Leave every file unstaged. Report what was written and the audit result, then na
 
 - The repository setting that lets Actions open the release PR ([`references/pipeline.md`](references/pipeline.md#actions-permission)).
   Run it only after an explicit yes.
-- Committing the kit, through the new `{{prefix}}-commit` skill, as `ci: add the release kit`.
+- Committing the kit, through the new `{{prefix}}-commit` skill, as `ci: add the workflow kit`.
 
 When an audit shows a project skill that improved on its template, propose carrying the improvement back into these
 templates and into lazyjira's skills.

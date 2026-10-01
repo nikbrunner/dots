@@ -9,13 +9,14 @@ release at all. Run them all. The audit is done when each check reports pass or 
    `name` matches its directory.
 2. Every relative link in the kit's skills and `docs/releases.md` resolves. A link to a skill that lives only in the global
    skill directory (`humanizer`) is a finding; the fix names the skill instead of linking it.
-3. Every skill the kit names (`humanizer`, `dev-setup-git-hooks`) exists in the project's `.agents/skills/` or the global
+3. Every skill the kit names (`humanizer`, `nbr-git-hooks`) exists in the project's `.agents/skills/` or the global
    `~/.claude/skills/`. A missing one is a finding that names the skill and where to install it, since the step that calls it
    silently does nothing.
 4. No `{{` placeholder remains.
 5. Every command the skills run exists: Makefile targets, `package.json` scripts, `mise` tasks.
 6. The commit scopes and topic roots still match `git log` since the last tag and the glossary.
-7. `.claude/skills` is a relative symlink to `../.agents/skills`.
+7. The agent setup passes the `agent-tooling` block of the `nbr-conventions` checklist; run `nbr-audit agent-tooling` and
+   carry its findings over.
 8. Hooks are installed (`lefthook.yml` with `lefthook install` run, or the repo's existing manager), pre-push runs the commit
    skill's CI-parity command, and the commit skill's sentence on hooks matches what they run.
 
