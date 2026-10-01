@@ -1,0 +1,85 @@
+#!/usr/bin/env bash
+# Claude Code subagentStatusLine: replaces each subagent row with a progress bar
+# built from the last `PROGRESS: n/m · step` line in that subagent's transcript.
+# Subagents write those lines because of the SubagentStart hook
+# ~/.claude/hooks/subagent-progress/subagent-start.sh. Rows without one keep
+# Claude Code's default rendering.
+#
+# Same constraint as claude-statusline: bash, jq and grep only, no node.
+#
+# Payload schema: https://code.claude.com/docs/en/statusline.md#subagent-status-lines
+
+export LC_ALL=en_US.UTF-8
+
+input=$(cat)
+transcript=$(jq -r '.transcript_path // ""' <<<"$input")
+columns=$(jq -r '.columns // 80' <<<"$input")
+subagents_dir="${transcript%.jsonl}/subagents"
+now=$(date +%s)
+
+bar_width=12
+dim=$'\e[90m' bold=$'\e[1m' reset=$'\e[0m'
+
+elapsed() {
+	local s=$1
+	if ((s < 60)); then
+		printf '%ds' "$s"
+	elif ((s < 3600)); then
+		printf '%dm%02ds' $((s / 60)) $((s % 60))
+	else
+		printf '%dh%02dm' $((s / 3600)) $((s % 3600 / 60))
+	fi
+}
+
+repeat() {
+	local i
+	for ((i = 0; i < $2; i++)); do printf '%s' "$1"; done
+}
+
+truncate() {
+	local text=$1 max=$2
+	if ((${#text} <= max)); then
+		printf '%s' "$text"
+	elif ((max > 1)); then
+		printf '%s…' "${text:0:max-1}"
+	fi
+}
+
+jq -r '.tasks[] | [.id, .status, .description, ((.startTime // 0) / 1000 | floor)] | @tsv' <<<"$input" |
+	while IFS=$'\t' read -r id status description started; do
+		file="$subagents_dir/agent-$id.jsonl"
+		[[ -f $file ]] || continue
+
+		# Only assistant lines: the hook's own instruction text contains an example PROGRESS line.
+		progress=$(grep '"type":"assistant"' "$file" | grep -oE 'PROGRESS: [0-9]+/[0-9]+ · [^"\\]*' | tail -1)
+		[[ -n $progress ]] || continue
+
+		ratio=${progress#PROGRESS: }
+		ratio=${ratio%% *}
+		step=${progress#*· }
+		current=${ratio%/*} total=${ratio#*/}
+		((total > 0)) || continue
+		((current > total)) && current=$total
+
+		case $status in
+		running) color=$'\e[32m' ;;
+		completed) color=$'\e[32m' current=$total ;;
+		*) color=$'\e[31m' ;;
+		esac
+
+		filled=$((current * bar_width / total))
+		bar="${color}$(repeat ▰ "$filled")${dim}$(repeat ▱ $((bar_width - filled)))${reset}"
+
+		ratio="$current/$total"
+		time=$(elapsed $((now - started)))
+
+		# Fixed parts: bar, two spaces around the ratio, separators " · " ×3.
+		budget=$((columns - bar_width - ${#ratio} - ${#time} - 11))
+		desc_max=$((budget - ${#step}))
+		((desc_max < 8)) && desc_max=8
+		desc=$(truncate "$description" "$desc_max")
+		step=$(truncate "$step" $((budget - ${#desc})))
+
+		content="$desc · $bar ${bold}$ratio${reset} · $step${dim} · $time${reset}"
+		jq -cn --arg id "$id" --arg content "$content" '{id: $id, content: $content}'
+	done

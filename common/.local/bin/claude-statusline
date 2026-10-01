@@ -1,12 +1,13 @@
 #!/usr/bin/env bash
-# Claude Code statusLine: four labelled rows — workspace, git, agent, session.
+# Claude Code statusLine: labelled rows — workspace, git, agent, tasks, session.
 #
-# Pure bash + one jq call + one git call. The previous statusline spawned a node
-# process every 5s per session; un-stapled node binaries cannot have their
-# Gatekeeper verdict cached, so each spawn forced a full signature validation and
-# saturated syspolicyd — pushing every unrelated exec on the machine from ~1ms to
-# ~75ms. Keep this dependency-free: no node, no npm, no per-render subprocess
-# beyond jq and a single git status.
+# Pure bash + one jq call + one git call, plus a second jq call while a task list
+# exists. The previous statusline spawned a node process every 5s per session;
+# un-stapled node binaries cannot have their Gatekeeper verdict cached, so each
+# spawn forced a full signature validation and saturated syspolicyd — pushing
+# every unrelated exec on the machine from ~1ms to ~75ms. Keep this
+# dependency-free: no node, no npm, no per-render subprocess beyond jq and a
+# single git status.
 #
 # Payload schema: https://code.claude.com/docs/en/statusline.md
 
@@ -17,7 +18,7 @@ input=$(cat)
 transcript='' model='' dir='' worktree='' repo='' ctx='' cache_hit=''
 hourly='' weekly='' cost='' added='' removed='' effort=''
 style='' cache_warm='' cache_expires='' cache_misses=''
-cache_rebuilds='' resets_5h='' resets_7d='' session_name=''
+cache_rebuilds='' resets_5h='' resets_7d='' session_name='' session_id=''
 
 eval "$(
 	printf '%s' "$input" | jq -r '
@@ -41,7 +42,8 @@ eval "$(
     @sh "cache_rebuilds=\(.prompt_cache.expected_rebuilds // "")",
     @sh "resets_5h=\(.rate_limits.five_hour.resets_at // "")",
     @sh "resets_7d=\(.rate_limits.seven_day.resets_at // "")",
-    @sh "session_name=\(.session_name // "")"
+    @sh "session_name=\(.session_name // "")",
+    @sh "session_id=\(.session_id // "")"
   ' 2>/dev/null
 )"
 
@@ -194,6 +196,48 @@ add "${model:+${green_b}${model}${reset}}"
 [ -n "$effort" ] && add "${icon_color}${i_brain}${reset} ${effort}"
 [ -n "$style" ] && [ "$style" != "default" ] && add "${dim}${style}${reset}"
 emit "AGT"
+
+# --- TSK: the main agent's task list -----------------------------------------
+
+# TaskCreate/TaskUpdate keep one JSON file per task next to the projects dir the
+# transcript lives in. Hidden once every task is done, or the bar would sit at
+# full for the rest of the session.
+tasks_dir="${transcript%/projects/*}/tasks/${session_id}"
+if [ -n "$session_id" ] && [ -d "$tasks_dir" ]; then
+	set -- "$tasks_dir"/*.json
+	if [ -e "$1" ]; then
+		IFS=$'\t' read -r done total step < <(jq -rs '
+			[(map(select(.status == "completed")) | length), length,
+			 (map(select(.status == "in_progress"))[0] | .activeForm // .subject // "")]
+			| @tsv' "$@" 2>/dev/null)
+		if [ "${total:-0}" -gt 0 ] && [ "$done" -lt "$total" ]; then
+			width=12
+			filled=$((done * width / total))
+			bar=''
+			for ((i = 0; i < width; i++)); do
+				[ "$i" -lt "$filled" ] && bar="${bar}${green}▰" || bar="${bar}${dim}▱"
+			done
+			add "${bar}${reset} ${bold}${done}/${total}${reset}${step:+ ${step}}"
+		fi
+	fi
+fi
+
+# The tool call the main agent is on. Only the last assistant entry counts: once
+# it is plain text the turn has ended and the call would be stale. Tail first,
+# since the transcript grows to many MB.
+if [ -f "$transcript" ]; then
+	activity=$(tail -n 40 "$transcript" | grep '"type":"assistant"' | tail -n 1 | jq -r '
+		[.message.content[]? | select(.type == "tool_use")] | last // empty
+		| "\(.name) \((.input.file_path // .input.path | values | split("/") | last)
+			// .input.description // .input.pattern // .input.query // .input.subject // "")"
+		| .[:60]' 2>/dev/null)
+	if [ -n "$activity" ]; then
+		[ -n "$row" ] && emit "TSK" && tsk_label="    " || tsk_label="TSK"
+		add "${icon_color}↳${reset} ${dim}${activity}${reset}"
+		emit "$tsk_label"
+	fi
+fi
+emit "TSK"
 
 # --- SES: what this session has spent ----------------------------------------
 

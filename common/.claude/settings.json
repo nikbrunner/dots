@@ -96,15 +96,6 @@
             "timeout": 10
           }
         ]
-      },
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "~/.claude/hooks/agent-panel/session-start.sh",
-            "timeout": 5
-          }
-        ]
       }
     ],
     "Stop": [
@@ -159,7 +150,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "~/.claude/hooks/agent-panel/subagent-start.sh",
+            "command": "~/.claude/hooks/subagent-progress/subagent-start.sh",
             "timeout": 5
           }
         ]
@@ -261,5 +252,9 @@
   "feedbackSurveyState": {
     "lastShownTime": 1754313915132
   },
-  "mcpServers": {}
+  "mcpServers": {},
+  "subagentStatusLine": {
+    "type": "command",
+    "command": "claude-subagent-statusline"
+  }
 }
