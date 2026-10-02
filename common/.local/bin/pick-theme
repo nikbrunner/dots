@@ -33,7 +33,7 @@ run_step() {
 
 # Configuration
 DOTS_DIR="${DOTS_DIR:-$HOME/repos/nikbrunner/dots}"
-BLACK_ATOM_DIR="${BLACK_ATOM_DIR:-$HOME/repos/nikbrunner/black-atom}"
+BLACK_ATOM_DIR="${BLACK_ATOM_DIR:-$HOME/repos/black-atom-industries/black-atom}"
 THEMES_JSON="$DOTS_DIR/common/themes.json"
 
 # Tool configurations

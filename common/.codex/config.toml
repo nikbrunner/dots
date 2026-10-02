@@ -26,16 +26,13 @@ trust_level = "trusted"
 [projects."/Users/brunner/repos/black-atom-industries/helm.herdr"]
 trust_level = "trusted"
 
-[projects."/Users/brunner/repos/black-atom-industries/livery"]
-trust_level = "trusted"
-
 [projects."/Users/brunner/repos/imfusion/cp/labels-rest-api"]
 trust_level = "trusted"
 
 [projects."/Users/brunner/repos/nikbrunner/airship"]
 trust_level = "trusted"
 
-[projects."/Users/brunner/repos/nikbrunner/black-atom"]
+[projects."/Users/brunner/repos/black-atom-industries/black-atom"]
 trust_level = "trusted"
 
 [projects."/Users/brunner/Documents/Codex/2026-09-04/realtime-voice-chat"]
