@@ -16,10 +16,6 @@
       "rev": "fdeef56c2840c6772b9f68c5774ed87e9340ec7d",
       "src": "git@github.com:arborist-ts/arborist.nvim"
     },
-    "black-atom": {
-      "rev": "ca0ce699313beeb254be32e692ee5c57135e9e37",
-      "src": "git@github.com:black-atom-industries/nvim.git"
-    },
     "blink.cmp": {
       "rev": "78336bc89ee5365633bcf754d93df01678b5c08f",
       "src": "git@github.com:saghen/blink.cmp",
