@@ -3,15 +3,16 @@
   "key_format": "encoded",
   "sessions": {
     "n:626c61636b2d61746f6d": [
+      "w4",
       "w2",
       "w1"
     ],
     "n:696d667573696f6e": [
+      "w3V",
+      "w3Y",
       "w2T",
       "w2V",
-      "w3V",
       "w3X",
-      "w3Y",
       "w3M",
       "w3W",
       "w1J",
