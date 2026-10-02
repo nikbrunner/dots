@@ -265,6 +265,7 @@ dots_stage_theme() {
         "common/.config/nvim/plugin/50_specs/black_atom/nvim.lua"
         "common/.config/tmux/tmux.conf"
         "common/.config/zed/settings.json"
+        "common/.config/tuicr/config.toml"
         "arch/.config/waybar/theme.css"
         "arch/.config/niri/theme.kdl"
     )
