@@ -283,6 +283,15 @@ cmd_pull() {
 		log_info "No configured Livery theme to reapply"
 	fi
 
+	# ── Phase 7: Install herdr plugins and integrations ──
+	echo ""
+	log_section "Phase 7: Install herdr plugins and integrations"
+	if command -v herdr >/dev/null 2>&1; then
+		sh "$DOTS_DIR/common/.config/herdr/install-plugins.sh" || log_warn "herdr plugin install failed"
+	else
+		log_info "herdr not found — skipping"
+	fi
+
 	echo ""
 	log_okay "Dots pull complete!"
 }
