@@ -12,6 +12,15 @@ fi
 
 herdr plugin link "$HOME/.config/herdr/local-plugins/stationary" --enabled
 
+# The installer writes an absolute-path hook into settings.json, which dots
+# shares across machines. Install into a throwaway config dir and keep only the
+# script; the portable hook entry lives in common/.claude/settings.json.
+claude_tmp="$(mktemp -d)"
+CLAUDE_CONFIG_DIR="$claude_tmp" herdr integration install claude
+mkdir -p "$HOME/.claude/hooks"
+cp "$claude_tmp/hooks/herdr-agent-state.sh" "$HOME/.claude/hooks/"
+rm -rf "$claude_tmp"
+
 # https://github.com/narumiruna/pi-extensions/tree/main/packages/pi-usage
 pi install npm:@narumitw/pi-usage
 
