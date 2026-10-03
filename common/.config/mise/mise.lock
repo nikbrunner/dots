@@ -1970,7 +1970,7 @@ version = "2.1.287"
 backend = "npm:@anthropic-ai/claude-code"
 
 [tools."npm:@anthropic-ai/claude-code".options]
-npm_args = "--ignore-scripts=false"
+allow_builds = '["@anthropic-ai/claude-code"]'
 
 [[tools."npm:@astrojs/language-server"]]
 version = "2.16.15"

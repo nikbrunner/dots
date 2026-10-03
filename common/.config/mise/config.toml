@@ -37,7 +37,9 @@ zls = "latest"
 zoxide = "prefix:0"
 "github:maaslalani/slides" = "latest"
 "go:github.com/BRO3886/ical/cmd/ical" = "latest"
-"npm:@anthropic-ai/claude-code" = { version = "prefix:2", npm_args = "--ignore-scripts=false" }
+"npm:@anthropic-ai/claude-code" = { version = "latest", allow_builds = [
+  "@anthropic-ai/claude-code",
+] }
 "npm:@earendil-works/pi-coding-agent" = "latest"
 "npm:@openai/codex" = "latest"
 "npm:pm2" = "prefix:0"
