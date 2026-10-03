@@ -54,7 +54,7 @@
     "deny": [],
     "ask": []
   },
-  "model": "opus",
+  "model": "opus[1m]",
   "hooks": {
     "Notification": [],
     "PostToolUse": [],
@@ -162,6 +162,10 @@
     "type": "command",
     "command": "claude-statusline"
   },
+  "subagentStatusLine": {
+    "type": "command",
+    "command": "claude-subagent-statusline"
+  },
   "enabledPlugins": {
     "figma@claude-plugins-official": true,
     "frontend-design@claude-plugins-official": true,
@@ -253,9 +257,5 @@
   "feedbackSurveyState": {
     "lastShownTime": 1754313915132
   },
-  "mcpServers": {},
-  "subagentStatusLine": {
-    "type": "command",
-    "command": "claude-subagent-statusline"
-  }
+  "mcpServers": {}
 }
