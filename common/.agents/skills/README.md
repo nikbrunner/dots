@@ -30,6 +30,7 @@ CONVENTIONS
 COMMIT
   nbr-git-clean ──▶ nbr-commit ──▶ nbr-audit-docs
                     defers to a project <prefix>-commit when one exists
+  nbr-create-pr            PR description: slice title, nested bullets, tests, how to test
 
 SESSION AND AGENTS
   nbr-handoff              handoff doc in <worktree>/handoffs/

@@ -314,15 +314,6 @@
       "installedAt": "2026-09-20T15:56:04.437Z",
       "updatedAt": "2026-09-20T15:56:04.437Z"
     },
-    "pr": {
-      "source": "mattpocock/skills",
-      "sourceType": "github",
-      "sourceUrl": "https://github.com/mattpocock/skills.git",
-      "skillPath": "skills/in-progress/pr/SKILL.md",
-      "skillFolderHash": "80d46d68aa3fea9ff45e191b7ec107d65d37e416",
-      "installedAt": "2026-09-20T15:56:04.437Z",
-      "updatedAt": "2026-09-20T15:56:04.437Z"
-    },
     "humanizer": {
       "source": "blader/humanizer",
       "sourceType": "github",
