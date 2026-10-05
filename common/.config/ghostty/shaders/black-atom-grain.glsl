@@ -7,10 +7,15 @@
 //   custom-shader-animation = true
 
 // ---- settings ----
-const float GRAIN      = 0.25;  // strength (website default .22)
+const float GRAIN      = 0.5;  // strength (website default .22)
 const float GRAIN_SIZE = 0.65;   // grain size in points (website default .9)
-const float FPS        = 12.0;  // how often the grain re-rolls (website: every 83 ms)
-const float BLUR       = 0.9;   // softness of each grain, like the site's 0.9px blur
+const float FPS        = 10.0;  // how often the grain re-rolls
+const float BLUR       = 1.35;   // softness of each grain, like the site's 0.9px blur
+// dark themes: 0 = pure soft-light (strong on mid-tone colors, faint on near-black),
+// 1 = flat grain with the same strength on every color
+const float BALANCE    = 1.0;
+// dark themes: how much weaker the grain gets on brighter backgrounds (0 = not at all)
+const float TAME       = 0.6;
 // 0 = detect from the background, 1 = always dark mode, 2 = always light mode
 const int   MODE       = 0;
 
@@ -70,7 +75,10 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord) {
     float lv = 1.0 - pow(n, 1.6) * (120.0 / 255.0);
     col = mix(src.rgb, src.rgb * lv, GRAIN * 0.5);
   } else {
-    col = mix(src.rgb, softLight(src.rgb, n), GRAIN);
+    vec3 soft = softLight(src.rgb, n);
+    vec3 even = src.rgb + (n - 0.5) * 0.3;
+    float tame = 1.0 - TAME * smoothstep(0.08, 0.25, luma(src.rgb));
+    col = mix(src.rgb, mix(soft, even, BALANCE), GRAIN * tame);
   }
   fragColor = vec4(col, src.a);
 }
