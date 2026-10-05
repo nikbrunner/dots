@@ -1,6 +1,6 @@
 ---
 name: nbr-create-pr
-description: "Write or update a pull request description in Nik's shape: slice title, short nested bullets for what changed, tests added (e2e per scenario), how to test, optional screenshots and design-file changes, open decisions. Drafts locally, waits for approval, then publishes."
+description: "Write or update a pull request in Nik's shape: a slice title, short nested bullets for what changed, tests added (e2e per scenario), how to test, optional screenshots and design-file changes, open decisions. Drafts locally, waits for approval, then publishes."
 argument-hint: "[optional PR number or URL]"
 user-invocable: true
 metadata:
@@ -29,9 +29,9 @@ short nested bullet a reviewer scans top to bottom.
 
 ## Template
 
-```markdown
-# [TICKET] <what this PR delivers; for a slice, name the slice>
+Title, set as the PR title and never repeated in the body: `[TICKET] <what this PR delivers; for a slice, name the slice>`
 
+```markdown
 - <Slice of | Implements> [TICKET <ticket title>](<ticket link>)
 - Scope: <what is in>
 - Later PRs: <what follows> (slices only)
