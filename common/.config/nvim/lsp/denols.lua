@@ -6,13 +6,10 @@ return {
 	cmd_env = { NO_COLOR = true },
 	filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
 	root_dir = function(bufnr, cb)
-		local configs = { "deno.json", "deno.jsonc" }
+		local root = vim.fs.root(bufnr, "deno.lock") or vim.fs.root(bufnr, { "deno.json", "deno.jsonc" })
 
-		local fname = vim.uri_to_fname(vim.uri_from_bufnr(bufnr))
-		local match = vim.fs.find(configs, { upward = true, path = fname })[1]
-
-		if match then
-			cb(vim.fn.fnamemodify(match, ":h"))
+		if root then
+			cb(root)
 		end
 	end,
 
