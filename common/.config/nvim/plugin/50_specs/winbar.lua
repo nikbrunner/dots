@@ -59,7 +59,7 @@ local function truncate_path(parts, max_len)
 	return keep
 end
 
-local function get_relative_path(bufnr)
+local function get_relative_path(bufnr, max_len)
 	local file_path = vim.fn.bufname(bufnr)
 	if not file_path or file_path == "" then
 		return "[No Name]"
@@ -79,10 +79,6 @@ local function get_relative_path(bufnr)
 	end
 
 	local parts = vim.split(relative_path, "/", { plain = true })
-
-	-- Estimate max path length: try 40 chars, or half the window width if smaller
-	local max_len = math.min(40, math.floor(vim.api.nvim_win_get_width(0) / 2.5))
-	max_len = math.max(max_len, 20) -- absolute floor so it's never unusable
 
 	if #table.concat(parts, "/") > max_len then
 		parts = truncate_path(parts, max_len)
@@ -172,8 +168,10 @@ local function winbar_set()
 		return
 	end
 
-	local left_base = get_ft_icon(bufnr) .. get_relative_path(bufnr)
 	local right = build_right(bufnr)
+	local right_width = vim.api.nvim_eval_statusline(right, { winid = winnr }).width
+	local max_len = math.max(vim.api.nvim_win_get_width(winnr) - right_width - 2, 20)
+	local left_base = get_ft_icon(bufnr) .. get_relative_path(bufnr, max_len)
 
 	vim.api.nvim_set_option_value("winbar", left_base .. "%=" .. right, { win = winnr })
 end
