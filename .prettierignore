@@ -4,6 +4,7 @@ common/.agents/
 common/.pi/agent/extensions/
 common/.pi/agent/sessions/
 common/.pi/agent/git/
+common/.pi/agent/skills/tldraw-offline/
 
 # Claude Code writes these through symlinks, so its formatting wins over
 # prettier's. The README documents the directory and stays formatted.
