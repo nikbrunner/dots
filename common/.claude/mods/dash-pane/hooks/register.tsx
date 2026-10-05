@@ -45,10 +45,26 @@ const FILE_COLOR: Record<string, string> = {
 const ICON = {
   dir: '\uf07b',
   branch: '\uf418',
-  diff: '\uf440',
   ctx: '\uf0e4',
   cache: '\uf06d',
   brain: '\u{f09d1}',
+  tasks: '☰',
+}
+// Stroke icons in a 24×24 box, drawn on surfaces whose font has no Nerd Font glyphs.
+const ICON_SVG: Record<keyof typeof ICON, string> = {
+  dir: '<path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/>',
+  branch: '<path d="M6 3v12"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/>',
+  ctx: '<path d="m12 14 4-4"/><path d="M3.34 19a10 10 0 1 1 17.32 0"/>',
+  cache:
+    '<path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.07-2.14-.22-4.05 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.15.43-2.29 1-3a2.5 2.5 0 0 0 2.5 2.5z"/>',
+  brain: '<path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/><path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8z"/>',
+  tasks: '<path d="M10 6h11"/><path d="M10 12h11"/><path d="M10 18h11"/><path d="m3 6 1.5 1.5L7 5"/><path d="m3 12 1.5 1.5L7 11"/><path d="m3 18 1.5 1.5L7 17"/>',
+}
+const SVG_COLOR: Record<string, string> = {
+  claude: '#d77757',
+  success: '#4eba65',
+  warning: '#ffc107',
+  dim: '#999999',
 }
 const LIMIT_LABEL: Record<string, string> = {
   five_hour: '5h',
@@ -269,7 +285,24 @@ export const register: Register = on => {
   })
 
   on('ui.render', { component: 'Pane', requestId: DASH }, async ($, e) => {
-    const { Box, Text } = $.ui.resolve(e)
+    const els = $.ui.resolve(e)
+    const { Box, Text } = els
+    // The desktop app's font carries no Nerd Font glyphs and lays text out proportionally.
+    const isDesktop = e.surface === 'desktop'
+    const Svg = 'Svg' in els ? els.Svg : undefined
+    const mark = (key: keyof typeof ICON, color: string) =>
+      isDesktop && Svg ? (
+        <Svg
+          alt={key}
+          width={14}
+          height={14}
+          source={`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="${SVG_COLOR[color] ?? color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${ICON_SVG[key]}</svg>`}
+        />
+      ) : (
+        <Text color={color === 'dim' ? undefined : color} dimColor={color === 'dim'}>
+          {ICON[key]}
+        </Text>
+      )
     const g = await read($, git)
     const a: Agent = await read($, agent)
     const t = await read($, title)
@@ -286,20 +319,26 @@ export const register: Register = on => {
 
     const rule = '╌'.repeat(Math.max(10, (e.viewport?.columns ?? 40) - 2))
     let isFirstCard = true
-    const card = (icon: string, name: string, meta: RenderChildren, body: RenderChildren, accent = 'yellow') => {
+    const card = (icon: keyof typeof ICON, name: string, meta: RenderChildren, body: RenderChildren, accent = 'claude') => {
       const isFirst = isFirstCard
       isFirstCard = false
       return (
         <Box flexDirection="column" paddingX={1}>
-          {!isFirst && (
-            <Text dimColor wrap="truncate-end">
-              {rule}
-            </Text>
-          )}
+          {!isFirst &&
+            (isDesktop ? (
+              <Box marginTop={1} />
+            ) : (
+              <Text dimColor wrap="truncate-end">
+                {rule}
+              </Text>
+            ))}
           <Box justifyContent="space-between">
-            <Text color={accent} bold>
-              {icon} {name}
-            </Text>
+            <Box gap={1} alignItems="center">
+              {mark(icon, accent)}
+              <Text color={accent} bold>
+                {name}
+              </Text>
+            </Box>
             {meta}
           </Box>
           {body}
@@ -308,20 +347,55 @@ export const register: Register = on => {
     }
 
     const LABEL = 9
-    const kv = (name: string, value: RenderChildren, wrap: 'truncate-end' | 'truncate-start' = 'truncate-end') => (
-      <Text wrap={wrap}>
-        <Text dimColor>{name.padEnd(LABEL)}</Text>
-        {value}
-      </Text>
+    const kv = (
+      name: string,
+      value: RenderChildren,
+      wrap: 'truncate-end' | 'truncate-start' = 'truncate-end',
+      lead?: RenderChildren,
+    ) => (
+      <Box alignItems="center">
+        <Box width={LABEL} flexShrink={0}>
+          <Text color="inactive">{name}</Text>
+        </Box>
+        {lead && (
+          <Box marginRight={1} flexShrink={0}>
+            {lead}
+          </Box>
+        )}
+        <Text wrap={wrap}>{value}</Text>
+      </Box>
     )
+
+    const gauge = (percent: number, width: number, fill = 'rate_limit_fill') => {
+      if (isDesktop) {
+        const pct = Math.min(100, Math.max(0, percent))
+        return (
+          <Box width={width} height={1} flexShrink={0} alignItems="center">
+            <Box width="100%" height={0.4} backgroundColor="rate_limit_empty" overflow="hidden">
+              <Box width={`${pct}%`} backgroundColor={fill} />
+            </Box>
+          </Box>
+        )
+      }
+      const b = bar(percent, width)
+      const n = b.lastIndexOf('▰') + 1
+      return (
+        <Text>
+          <Text color={fill}>{b.slice(0, n)}</Text>
+          <Text color="rate_limit_empty">{b.slice(n)}</Text>
+        </Text>
+      )
+    }
 
     const meter = (name: string, percent: number, extra: string) => (
       <Box justifyContent="space-between">
-        <Text>
-          <Text dimColor>{name.padEnd(LABEL)}</Text>
-          <Text color={heat(percent) ?? 'green'}>{bar(percent, 12)}</Text>
+        <Box>
+          <Box width={LABEL} flexShrink={0}>
+            <Text color="inactive">{name}</Text>
+          </Box>
+          {gauge(percent, 12, heat(percent))}
           <Text bold> {String(Math.round(percent)).padStart(3)}%</Text>
-        </Text>
+        </Box>
         <Text dimColor>{extra}</Text>
       </Box>
     )
@@ -329,7 +403,7 @@ export const register: Register = on => {
     return (
       <Box flexDirection="column">
         {card(
-          ICON.dir,
+          'dir',
           g?.repo ?? '-',
           g?.isWorktree ? <Text color="suggestion">worktree</Text> : null,
           <Box flexDirection="column">
@@ -346,7 +420,7 @@ export const register: Register = on => {
         )}
 
         {card(
-          ICON.brain,
+          'brain',
           a.model,
           a.isWork ? (
             <Text color="error" bold>
@@ -366,15 +440,15 @@ export const register: Register = on => {
         {tk.length > 0 &&
           done < tk.length &&
           card(
-            '☰',
             'tasks',
-            <Text>
-              <Text color="green">{bar((done / tk.length) * 100, 8)}</Text>
+            'tasks',
+            <Box>
+              {gauge((done / tk.length) * 100, 8)}
               <Text bold>
                 {' '}
                 {done}/{tk.length}
               </Text>
-            </Text>,
+            </Box>,
             <Box flexDirection="column">
               {tk.map(x => (
                 <Text
@@ -390,7 +464,7 @@ export const register: Register = on => {
           )}
 
         {card(
-          ICON.ctx,
+          'ctx',
           'session',
           null,
           <Box flexDirection="column">
@@ -406,9 +480,6 @@ export const register: Register = on => {
             {kv(
               'cache',
               <Text>
-                <Text color={isCacheWarm ? 'yellow' : undefined} dimColor={!isCacheWarm}>
-                  {ICON.cache}{' '}
-                </Text>
                 <Text>{c.hit !== undefined ? `${Math.round(c.hit * 100)}% hit` : '–'}</Text>
                 <Text dimColor>
                   {' '}
@@ -416,6 +487,8 @@ export const register: Register = on => {
                 </Text>
                 {c.misses > 0 && <Text color="error"> · {c.misses} miss</Text>}
               </Text>,
+              'truncate-end',
+              mark('cache', isCacheWarm ? 'warning' : 'dim'),
             )}
             {kv(
               'edits',
@@ -432,7 +505,7 @@ export const register: Register = on => {
 
         {g &&
           card(
-            ICON.branch,
+            'branch',
             g.branch ?? 'detached',
             null,
             <Box flexDirection="column">
