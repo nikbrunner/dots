@@ -89,6 +89,8 @@ Edit.later(function()
 		{ mode = "n", keys = "<leader>d", desc = "[D]ocument" },
 		{ mode = "n", keys = "<leader>dy", desc = "[Y]ank" },
 		{ mode = "n", keys = "<leader>dg", desc = "[G]it" },
+		{ mode = "n", keys = "<leader>da", desc = "[A]ctions" },
+		{ mode = "n", keys = "<leader>dn", desc = "a[N]notations" },
 
 		-- Symbol
 		{ mode = "n", keys = "<leader>s", desc = "[S]ymbol" },

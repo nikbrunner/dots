@@ -134,4 +134,10 @@ Edit.later(function()
 			vim.notify("Autoformat disabled", vim.log.levels.INFO, { title = "Conform" })
 		end
 	end, { desc = "Toggle Format on Save" })
+
+	vim.keymap.set("n", "<leader>daf", function()
+		local view = vim.fn.winsaveview()
+		vim.cmd("%!prettier --stdin-filepath % --ignore-path /dev/null")
+		vim.fn.winrestview(view)
+	end, { desc = "[F]ormat with Prettier (ignoring ignore files)" })
 end)
