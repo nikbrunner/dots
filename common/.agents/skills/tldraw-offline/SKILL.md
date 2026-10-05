@@ -160,6 +160,8 @@ Arrange existing shapes with `editor.alignShapes(ids, 'top')`, `editor.stackShap
 
 A card and the words on it are one shape: the words go in the geo's `richText` label, as above; a long label wants a bigger card (`verticalAlign: 'start'`), not a separate `text` shape. `text` shapes are for words that stand on their own, like a heading over a group of cards.
 
+A text box sits fully inside a panel or frame or fully outside it, never across its border, and nothing inside a frame extends past the frame's edge; `helpers.getLints()` reports both as `text-crosses-container` and `shape-outside-frame`. A shape parented to a frame or group takes `x`/`y` relative to that parent, not the page: a card for a column frame at page x 360 gets local x 20, not 380. `editor.reparentShapes(ids, frameId)` keeps page positions when moving existing shapes in.
+
 ### Freehand draw shapes
 
 A `draw` shape's `props.segments` hold delta-encoded base64 `path` strings, not point arrays — a segment like `{ type: 'free', points: [...] }` fails validation and crashes `createShape`. Never build `path` strings by hand: compute your points as `{ x, y, z }` objects (`z` is pressure; use `0.5`) and convert them with `compressLegacySegments` from `'tldraw'`. Coordinates are relative to the shape's own `x`/`y`:
@@ -210,7 +212,7 @@ Comment threads are how people and agents talk about the canvas in context — e
 2. Choose durability:
    - Static drawing edits such as moving, arranging, labeling, or styling shapes use `/exec`.
    - Durable behavior on a locally owned document such as clickable UI, animations, reactive layouts, or "run on open" logic uses `/script-workspace` and direct filesystem edits under `script/**`. Read the worked recipes from `api.recipes` (via `/api/search`) before building durable behavior. Remote boards have no local script workspace; an offline-server board's script is written on the server (the `script-a-board-on-an-offline-server` recipe).
-3. Verify once with records from `api.getShapes()`, `api.getBindings()`, `api.getScriptStatus()`, or a screenshot when visual placement is uncertain. After a resize or move, compare `helpers.getLints()` from before and after your edit: fix only lints your edit introduced, on the shape you edited, never by moving a neighbour you were not asked to touch. Save only a locally owned document with `helpers.saveDoc()`; remote edits sync to the host working copy.
+3. Verify once with records from `api.getShapes()`, `api.getBindings()`, `api.getScriptStatus()`, or a screenshot when visual placement is uncertain. After a resize or move, compare `helpers.getLints()` from before and after your edit: fix only lints your edit introduced, on the shape you edited, never by moving a neighbour you were not asked to touch. Save only a locally owned document that has a `filePath` with `helpers.saveDoc()`; remote edits sync to the host working copy.
 4. Stop after one successful verification unless the user explicitly asks for debugging.
 
 Never edit `.tldraw` archive files directly while they are open, and never edit `db.sqlite`, `db.sqlite-wal`, `db.sqlite-shm`, `metadata.json`, `.lock`, or `.script-workspace/**`.
@@ -234,6 +236,7 @@ Use this when a board script draws a board that users should rearrange or restyl
 - Use `helpers.onShapeTranslate(anchorId, ({ dx, dy }) => ... , { signal })` to respond only to that anchor.
 - Move script-owned internals with `helpers.translateShapes(..., dx, dy)` — the handler's dx/dy and the delta it consumes are both page-space, so pass them straight through even when shapes sit in frames or groups. It runs without recording undo history; wrap other script-owned writes in `editor.run(fn, { history: 'ignore' })`.
 - Render per-frame or purely visual writes through `helpers.renderEphemeral(fn)`: they paint without dirtying the document, landing in a save, syncing to LAN participants, or entering undo. `history: 'ignore'` alone still persists every frame, so an animation written that way can never be saved cleanly.
+- A shape id is bound to its type for the life of the editor: deleting a shape and creating a different type under the same id (in one batch or one `renderEphemeral` frame) leaves an "Error" badge in its place. Give a slot that changes type a new id. `helpers.getLints()` reports a shape showing that badge as `shape-render-error`, for shapes on the current page.
 - Avoid broad `store.listen` / `afterChange` layout handlers that react to every shape; they can treat the script's own writes as new user edits and recurse.
 
 ## Editor customization: custom shapes, tools, and overlays (`config.js`)
@@ -262,7 +265,7 @@ curl -s -X POST http://localhost:$PORT/api/search \
   -H "authorization: Bearer $TOKEN" \
   -d '{"code":"const [doc] = await api.getDocs(); return await api.getShapes(doc.id)"}'
 
-# Mutate a LOCAL doc and save with /exec, then verify once with api.getShapes().
+# Mutate a LOCAL doc (one with a filePath) and save with /exec, then verify once with api.getShapes().
 # For a remote doc, omit helpers.saveDoc(); its host owns archive saving.
 curl -s -X POST http://localhost:$PORT/api/doc/DOC_ID/exec \
   -H 'content-type: application/json' \
