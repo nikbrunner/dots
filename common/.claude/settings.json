@@ -3,7 +3,8 @@
   "syncClaudeAiSkills": false,
   "env": {
     "DISABLE_AUTOUPDATER": "0",
-    "ENABLE_TOOL_SEARCH": "true"
+    "ENABLE_TOOL_SEARCH": "true",
+    "CLAUDE_CODE_PLUGIN_DIRS": "~/repos/nikbrunner/dots/common/.claude/mods/dash-pane:~/repos/nikbrunner/dots/common/.claude/mods/subagents-pane:~/repos/nikbrunner/dots/common/.claude/mods/topbar"
   },
   "includeCoAuthoredBy": false,
   "permissions": {

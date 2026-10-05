@@ -1,0 +1,6 @@
+{
+  "name": "subagents-pane",
+  "version": "0.1.0",
+  "description": "Pane listing subagents with their progress and current tool call",
+  "types": "./types/index.d.ts"
+}
