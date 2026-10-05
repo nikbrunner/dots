@@ -59,3 +59,4 @@ common/.local/bin/bic
 /PLAN.md
 /common/.pi/context-mode
 /common/.agents/skills/terminal-browser
+/common/.pi/agent/skills/tldraw-offline/SKILL.md
