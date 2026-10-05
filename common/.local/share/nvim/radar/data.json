@@ -47,15 +47,15 @@
             "label": "2"
           },
           {
-            "filename": "logs/2026/2026.09/2026.09.30 - Wed.md",
+            "filename": "logs/2026/2026.10/2026.10.05 - Mon.md",
             "label": "3"
           },
           {
-            "filename": "logs/2026/2026.09/2026.10.01 - Thu.md",
+            "filename": "logs/2026/2026.10/2026.10.02 - Fri.md",
             "label": "4"
           }
         ],
-        "lastAccessed": 1790865161
+        "lastAccessed": 1791192561
       }
     },
     "~/repos/imfusion/websdk/web-ui": {
@@ -83,35 +83,15 @@
       "master": {
         "locks": [
           {
-            "filename": "packages/web-ui/src/tokens/showcase.stories.tsx",
+            "filename": "CHANGELOG.md",
             "label": "1"
           },
           {
-            "filename": "docs/releases.md",
+            "filename": "plans/portal-gaps.md",
             "label": "2"
-          },
-          {
-            "filename": "CHANGELOG.md",
-            "label": "3"
-          },
-          {
-            "filename": "src/components/code/code.module.css",
-            "label": "4"
-          },
-          {
-            "filename": "src/components/typo/typo.module.css",
-            "label": "5"
-          },
-          {
-            "filename": "src/components/tooltip/tooltip.module.css",
-            "label": "6"
-          },
-          {
-            "filename": "oil:///Users/brunner/repos/imfusion/websdk/web-ui/src/components/tabs/",
-            "label": "7"
           }
         ],
-        "lastAccessed": 1790874896
+        "lastAccessed": 1791210054
       }
     },
     "~/repos/nikbrunner/black-atom": {
@@ -149,7 +129,7 @@
             "label": "4"
           }
         ],
-        "lastAccessed": 1791048305
+        "lastAccessed": 1791188516
       }
     },
     "~/repos/nikbrunner/imf-notes": {

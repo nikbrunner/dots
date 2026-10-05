@@ -25,9 +25,13 @@
     "name": "black-atom",
     "work": false,
     "session_dirs": [
-      "~/repos/black-atom-industries/black-atom"
+      "~/repos/black-atom-industries/black-atom",
+      "~/repos/black-atom-industries/black-atom/core",
+      "~/repos/black-atom-industries/black-atom/core/src/themes",
+      "~/repos/black-atom-industries/black-atom/livery",
+      "~/repos/black-atom-industries/black-atom/livery/e2e"
     ],
-    "last_seen": "2026-08-16"
+    "last_seen": "2026-10-05"
   },
   "black-atom-industries/core": {
     "root": "~/repos/black-atom-industries/core",
@@ -156,7 +160,9 @@
       "~/repos/imfusion/cp/cp-164-user-portal-convert-mermaid-diags-with-cli",
       "~/repos/imfusion/cp/imfusion-portal",
       "~/repos/imfusion/cp/imfusion-portal-CP-159",
+      "~/repos/imfusion/cp/imfusion-portal-CP-159/e2e",
       "~/repos/imfusion/cp/imfusion-portal-CP-159/frontend",
+      "~/repos/imfusion/cp/imfusion-portal-CP-159/frontend/tmp",
       "~/repos/imfusion/cp/imfusion-portal-CP-89",
       "~/repos/imfusion/cp/imfusion-portal-CP-89/fe",
       "~/repos/imfusion/cp/imfusion-portal-CP-89/fe/.claude/skills",
@@ -166,7 +172,7 @@
       "~/repos/imfusion/cp/imfusion-portal/frontend",
       "~/repos/imfusion/cp/imfusion-portal/frontend/src"
     ],
-    "last_seen": "2026-10-01"
+    "last_seen": "2026-10-05"
   },
   "cp/keycloak": {
     "root": "~/repos/imfusion/cp/keycloak",
@@ -314,13 +320,15 @@
       "~/repos/nikbrunner/dots/common/.agents/skills/nbr-llm",
       "~/repos/nikbrunner/dots/common/.agents/skills/nbr-release-kit",
       "~/repos/nikbrunner/dots/common/.config",
+      "~/repos/nikbrunner/dots/common/.config/ghostty/shaders",
       "~/repos/nikbrunner/dots/common/.config/herdr/local-plugins/stationary",
       "~/repos/nikbrunner/dots/common/.config/herdr/plugins/config/herdr-navigator",
       "~/repos/nikbrunner/dots/common/.config/nvim",
+      "~/repos/nikbrunner/dots/common/.config/nvim/plugin/50_specs",
       "~/repos/nikbrunner/dots/common/.config/nvim/sessions",
       "~/repos/nikbrunner/dots/common/.pi"
     ],
-    "last_seen": "2026-10-01"
+    "last_seen": "2026-10-05"
   },
   "nikbrunner/fonts": {
     "root": "~/repos/nikbrunner/fonts",

@@ -54,7 +54,7 @@
     "deny": [],
     "ask": []
   },
-  "model": "opus[1m]",
+  "model": "opus",
   "hooks": {
     "Notification": [],
     "PostToolUse": [],
@@ -139,20 +139,20 @@
     ],
     "SubagentStart": [
       {
-        "matcher": "tldraw-offline",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "node '/Users/brunner/skills/tldraw-offline/inject-server-context.mjs' SubagentStart"
-          }
-        ]
-      },
-      {
         "hooks": [
           {
             "type": "command",
             "command": "~/.claude/hooks/subagent-progress/subagent-start.sh",
             "timeout": 5
+          }
+        ]
+      },
+      {
+        "matcher": "tldraw-offline",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node '/Users/brunner/skills/tldraw-offline/inject-server-context.mjs' SubagentStart"
           }
         ]
       }

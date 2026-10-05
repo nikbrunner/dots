@@ -112,7 +112,7 @@
   "theme": {
     "mode": "system",
     "light": "Black Atom — Facility ∷ Dimmed Light",
-    "dark": "Black Atom — Facility ∷ Dimmed Dark",
+    "dark": "Black Atom — Facility ∷ Dark",
   },
   "base_keymap": "VSCode",
   "vim_mode": true,
