@@ -114,7 +114,7 @@ export const register: Register = on => {
 
     const kv = (name: string, value: RenderChildren) => (
       <Text wrap="truncate-end">
-        <Text dimColor>{name.padEnd(LABEL)}</Text>
+        <Text color="inactive">{name.padEnd(LABEL)}</Text>
         {value}
       </Text>
     )
@@ -122,19 +122,19 @@ export const register: Register = on => {
     return (
       <Box flexDirection="column" paddingX={1}>
         <Box justifyContent="space-between">
-          <Text color="yellow" bold>
+          <Text color="claude" bold>
             ◆ subagents
           </Text>
           <Text>
-            {running > 0 && <Text color="yellow">● {running} running </Text>}
-            <Text color="green">✓ {list.length - running - failed}</Text>
-            {failed > 0 && <Text color="red"> ✗ {failed}</Text>}
+            {running > 0 && <Text color="warning">● {running} running </Text>}
+            <Text color="success">✓ {list.length - running - failed}</Text>
+            {failed > 0 && <Text color="error"> ✗ {failed}</Text>}
           </Text>
         </Box>
         {list.length === 0 && <Text dimColor>No subagents yet. They show up here as soon as one spawns.</Text>}
         {[...list].reverse().map(s => {
           const isDone = s.endedAt !== undefined
-          const accent = isDone ? (isOk(s.status) ? 'green' : 'red') : 'yellow'
+          const accent = isDone ? (isOk(s.status) ? 'success' : 'error') : 'warning'
           const idle = at - (s.lastAt ?? s.startedAt)
           const isStalled = !isDone && idle > STALL_MS
           const p = s.progress
@@ -156,7 +156,7 @@ export const register: Register = on => {
                 kv(
                   'model',
                   <Text>
-                    <Text color="green">{s.model}</Text>
+                    <Text color="success">{s.model}</Text>
                     <Text dimColor> · {s.isBackground ? 'background' : 'foreground'}</Text>
                   </Text>,
                 )}
@@ -164,7 +164,7 @@ export const register: Register = on => {
                 kv(
                   'progress',
                   <Text>
-                    <Text color={isDone ? undefined : 'green'} dimColor={isDone}>
+                    <Text color={isDone ? undefined : 'success'} dimColor={isDone}>
                       {bar((p.step / Math.max(1, p.total)) * 100, 8)}
                     </Text>
                     <Text bold>
@@ -174,14 +174,14 @@ export const register: Register = on => {
                     <Text dimColor> {p.text}</Text>
                   </Text>,
                 )}
-              {!isDone && s.tool && kv('now', <Text color="blue">↳ {s.tool}</Text>)}
+              {!isDone && s.tool && kv('now', <Text color="suggestion">↳ {s.tool}</Text>)}
               {kv(
                 'activity',
                 <Text>
                   <Text>{s.tools ?? 0} tools</Text>
                   <Text dimColor> · {compact(s.tokens ?? 0)} tokens</Text>
                   {!isDone && (
-                    <Text color={isStalled ? 'red' : undefined} dimColor={!isStalled}>
+                    <Text color={isStalled ? 'error' : undefined} dimColor={!isStalled}>
                       {' '}
                       · {isStalled ? 'stalled' : 'idle'} {duration(idle)}
                     </Text>

@@ -127,13 +127,13 @@ export const register: Register = on => {
     return (
       <Box flexDirection="column" paddingX={1}>
         {t !== '' && (
-          <Text color="blue" bold wrap="truncate-end">
+          <Text color="suggestion" bold wrap="truncate-end">
             ▸ {t}
           </Text>
         )}
         {f !== '' && (
           <Text wrap="truncate-end">
-            <Text color="yellow" bold>
+            <Text color="warning" bold>
               Focus{' '}
             </Text>
             <Text>{f}</Text>
@@ -141,7 +141,7 @@ export const register: Register = on => {
         )}
         {n !== '' && (
           <Text wrap="truncate-end">
-            <Text color="green" bold>
+            <Text color="success" bold>
               Now{'   '}
             </Text>
             <Text>{n}</Text>

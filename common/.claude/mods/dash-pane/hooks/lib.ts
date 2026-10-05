@@ -71,8 +71,8 @@ export function bar(percent: number, width = 10): string {
 }
 
 export function heat(percent: number): string | undefined {
-  if (percent >= 85) return 'red'
-  if (percent >= 60) return 'yellow'
+  if (percent >= 85) return 'error'
+  if (percent >= 60) return 'warning'
   return undefined
 }
 

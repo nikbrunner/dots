@@ -34,13 +34,13 @@ const EDIT_TOOLS = new Set(['Edit', 'Write', 'MultiEdit'])
 const GIT_TOOLS = new Set(['Bash', 'Edit', 'Write', 'NotebookEdit'])
 const TASK_TOOLS = new Set(['TaskCreate', 'TaskUpdate'])
 const FILE_COLOR: Record<string, string> = {
-  A: 'green',
-  M: 'yellow',
-  D: 'red',
-  R: 'blue',
-  C: 'blue',
-  '?': 'blue',
-  U: 'red',
+  A: 'success',
+  M: 'warning',
+  D: 'error',
+  R: 'suggestion',
+  C: 'suggestion',
+  '?': 'suggestion',
+  U: 'error',
 }
 const ICON = {
   dir: '\uf07b',
@@ -331,13 +331,13 @@ export const register: Register = on => {
         {card(
           ICON.dir,
           g?.repo ?? '-',
-          g?.isWorktree ? <Text color="blue">worktree</Text> : null,
+          g?.isWorktree ? <Text color="suggestion">worktree</Text> : null,
           <Box flexDirection="column">
             {kv('cwd', <Text>{w.cwd}</Text>, 'truncate-start')}
             {t !== '' &&
               kv(
                 'session',
-                <Text color="blue" italic>
+                <Text color="suggestion" italic>
                   {t}
                 </Text>,
               )}
@@ -349,18 +349,18 @@ export const register: Register = on => {
           ICON.brain,
           a.model,
           a.isWork ? (
-            <Text color="red" bold>
+            <Text color="error" bold>
               ⚠ WORK
             </Text>
           ) : null,
           <Box flexDirection="column">
-            {a.account && kv('account', <Text color="blue">{a.account}</Text>)}
-            {a.effort && kv('effort', <Text color="yellow">{a.effort}</Text>)}
+            {a.account && kv('account', <Text color="suggestion">{a.account}</Text>)}
+            {a.effort && kv('effort', <Text color="warning">{a.effort}</Text>)}
             {w.mode && kv('mode', <Text>{w.mode}</Text>)}
             {a.style && a.style !== 'default' && kv('style', <Text>{a.style}</Text>)}
             {kv('turns', <Text>{w.turns}</Text>)}
           </Box>,
-          'green',
+          'success',
         )}
 
         {tk.length > 0 &&
@@ -379,7 +379,7 @@ export const register: Register = on => {
               {tk.map(x => (
                 <Text
                   dimColor={x.status === 'completed'}
-                  color={x.status === 'in_progress' ? 'yellow' : undefined}
+                  color={x.status === 'in_progress' ? 'warning' : undefined}
                   wrap="truncate-end"
                 >
                   {x.status === 'completed' ? '✓ ' : x.status === 'in_progress' ? '▸ ' : '· '}
@@ -414,19 +414,19 @@ export const register: Register = on => {
                   {' '}
                   · {isCacheWarm && c.lastAt ? `expires ${until(c.lastAt + CACHE_TTL_MS, at)}` : 'cold'}
                 </Text>
-                {c.misses > 0 && <Text color="red"> · {c.misses} miss</Text>}
+                {c.misses > 0 && <Text color="error"> · {c.misses} miss</Text>}
               </Text>,
             )}
             {kv(
               'edits',
               <Text>
-                <Text color="green">+{ln.added}</Text>
+                <Text color="success">+{ln.added}</Text>
                 <Text dimColor>/</Text>
-                <Text color="red">-{ln.removed}</Text>
+                <Text color="error">-{ln.removed}</Text>
                 <Text dimColor> lines</Text>
               </Text>,
             )}
-            {u.cost !== undefined && kv('cost', <Text color="yellow">${u.cost.toFixed(2)}</Text>)}
+            {u.cost !== undefined && kv('cost', <Text color="warning">${u.cost.toFixed(2)}</Text>)}
           </Box>,
         )}
 
@@ -441,8 +441,8 @@ export const register: Register = on => {
                   'upstream',
                   <Text>
                     <Text>{g.upstream}</Text>
-                    {g.ahead > 0 && <Text color="green"> ↑{g.ahead}</Text>}
-                    {g.behind > 0 && <Text color="red"> ↓{g.behind}</Text>}
+                    {g.ahead > 0 && <Text color="success"> ↑{g.ahead}</Text>}
+                    {g.behind > 0 && <Text color="error"> ↓{g.behind}</Text>}
                     {g.ahead === 0 && g.behind === 0 && <Text dimColor> in sync</Text>}
                   </Text>,
                 )}
@@ -450,22 +450,22 @@ export const register: Register = on => {
                 kv(
                   'last',
                   <Text>
-                    <Text color="yellow">{g.last.hash}</Text>
+                    <Text color="warning">{g.last.hash}</Text>
                     <Text> {g.last.subject}</Text>
                     <Text dimColor> · {g.last.age}</Text>
                   </Text>,
                 )}
-              {g.stashes > 0 && kv('stashes', <Text color="blue">{g.stashes}</Text>)}
+              {g.stashes > 0 && kv('stashes', <Text color="suggestion">{g.stashes}</Text>)}
               {kv(
                 'changes',
                 g.files.length === 0 ? (
-                  <Text color="green">✓ clean</Text>
+                  <Text color="success">✓ clean</Text>
                 ) : (
                   <Text>
-                    {g.added > 0 && <Text color="green">+{g.added} added </Text>}
-                    {g.modified > 0 && <Text color="yellow">~{g.modified} modified </Text>}
-                    {g.deleted > 0 && <Text color="red">-{g.deleted} deleted </Text>}
-                    {g.untracked > 0 && <Text color="blue">?{g.untracked} untracked</Text>}
+                    {g.added > 0 && <Text color="success">+{g.added} added </Text>}
+                    {g.modified > 0 && <Text color="warning">~{g.modified} modified </Text>}
+                    {g.deleted > 0 && <Text color="error">-{g.deleted} deleted </Text>}
+                    {g.untracked > 0 && <Text color="suggestion">?{g.untracked} untracked</Text>}
                   </Text>
                 ),
               )}
@@ -474,14 +474,14 @@ export const register: Register = on => {
                   {g.files.slice(0, room).map(f => (
                     <Box justifyContent="space-between">
                       <Text wrap="truncate-start">
-                        <Text color={FILE_COLOR[f.status] ?? 'yellow'} bold={f.isStaged}>
+                        <Text color={FILE_COLOR[f.status] ?? 'warning'} bold={f.isStaged}>
                           {f.isStaged ? '●' : '○'} {f.status}{' '}
                         </Text>
                         <Text>{f.path}</Text>
                       </Text>
                       <Text>
-                        {f.added !== undefined && <Text color="green">+{f.added}</Text>}
-                        {f.removed !== undefined && <Text color="red"> -{f.removed}</Text>}
+                        {f.added !== undefined && <Text color="success">+{f.added}</Text>}
+                        {f.removed !== undefined && <Text color="error"> -{f.removed}</Text>}
                       </Text>
                     </Box>
                   ))}
