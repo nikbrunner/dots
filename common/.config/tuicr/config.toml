@@ -7,6 +7,8 @@ diff_view = "unified" # unified" | "side-by-side"
 
 ignore_whitespace = false # ignore all whitespace in local VCS diffs
 
+wrap = true
+
 mouse = true
 leader = ","                    # configurable prefix for leader shortcuts
 comment_vim = true              # vim modal editing in the review comment box
