@@ -14,5 +14,5 @@ Edit.now(function()
 		},
 	}
 
-	vim.cmd.colorscheme("black-atom-facility-dimmed-light")
+	vim.cmd.colorscheme("black-atom-facility-light")
 end)
