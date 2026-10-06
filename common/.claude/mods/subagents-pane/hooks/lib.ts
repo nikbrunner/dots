@@ -37,6 +37,10 @@ export function compact(n: number): string {
   return String(n)
 }
 
-export function firstLine(text: string): string {
-  return (text.split('\n').find(l => l.trim() !== '' && !l.startsWith('PROGRESS:')) ?? '').trim()
+export function report(text: string): string {
+  return text
+    .split('\n')
+    .filter(l => !l.startsWith('PROGRESS:'))
+    .join('\n')
+    .trim()
 }

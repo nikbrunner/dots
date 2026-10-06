@@ -2,7 +2,7 @@ import { atom, read, update } from 'claude-code'
 import type { EngineInterface, Register, RenderChildren } from 'claude-code'
 
 import type { Sub } from '../types'
-import { bar, compact, describeCall, duration, firstLine, lastProgress, shortModel } from './lib'
+import { bar, compact, describeCall, duration, lastProgress, report, shortModel } from './lib'
 
 const PANE = 'subagents'
 const STALL_MS = 60_000
@@ -96,7 +96,7 @@ export const register: Register = on => {
   on('turn.complete', async ($, e, next) => {
     const result = await next(e)
     if (e.agentId) {
-      const answer = firstLine(e.answer)
+      const answer = report(e.answer)
       if (answer) void updateSub($, e.agentId, s => ({ ...s, result: answer }))
       void syncSubs($)
     }
@@ -188,7 +188,14 @@ export const register: Register = on => {
                   )}
                 </Text>,
               )}
-              {isDone && s.result && kv('result', <Text>{s.result}</Text>)}
+              {isDone && s.result && (
+                <Box>
+                  <Box width={LABEL} flexShrink={0}>
+                    <Text color="inactive">result</Text>
+                  </Box>
+                  <Text wrap="wrap">{s.result}</Text>
+                </Box>
+              )}
             </Box>
           )
         })}
