@@ -26,12 +26,13 @@
     "work": false,
     "session_dirs": [
       "~/repos/black-atom-industries/black-atom",
+      "~/repos/black-atom-industries/black-atom/adapters/tuicr/themes",
       "~/repos/black-atom-industries/black-atom/core",
       "~/repos/black-atom-industries/black-atom/core/src/themes",
       "~/repos/black-atom-industries/black-atom/livery",
       "~/repos/black-atom-industries/black-atom/livery/e2e"
     ],
-    "last_seen": "2026-10-05"
+    "last_seen": "2026-10-06"
   },
   "black-atom-industries/core": {
     "root": "~/repos/black-atom-industries/core",
@@ -322,6 +323,7 @@
       "~/repos/nikbrunner/dots/common/.claude/mods",
       "~/repos/nikbrunner/dots/common/.claude/mods/dash",
       "~/repos/nikbrunner/dots/common/.claude/mods/dash-pane",
+      "~/repos/nikbrunner/dots/common/.claude/mods/subagents-pane",
       "~/repos/nikbrunner/dots/common/.claude/mods/topbar",
       "~/repos/nikbrunner/dots/common/.config",
       "~/repos/nikbrunner/dots/common/.config/ghostty/shaders",
@@ -332,7 +334,7 @@
       "~/repos/nikbrunner/dots/common/.config/nvim/sessions",
       "~/repos/nikbrunner/dots/common/.pi"
     ],
-    "last_seen": "2026-10-05"
+    "last_seen": "2026-10-06"
   },
   "nikbrunner/fonts": {
     "root": "~/repos/nikbrunner/fonts",

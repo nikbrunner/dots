@@ -21,7 +21,7 @@ adjust-underline-position = 3
 
 # Fonts
 font-size = 16
-font-family = Kode Mono
+font-family = TX-02
 font-style-bold = Bold
 font-thicken = true
 window-inherit-working-directory = true
