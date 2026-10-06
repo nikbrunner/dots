@@ -19,7 +19,7 @@ Save to `${ROOT}/handoffs/YYYY-MM-DD-<slug>.md`, where `<slug>` is a short kebab
 Before writing:
 
 - Create `${ROOT}/handoffs/` if it does not exist.
-- Ensure `handoffs/` is listed in `${ROOT}/.gitignore`. Handoffs are ephemeral and must not be tracked.
+- Ensure `handoffs/` is listed in `$(git rev-parse --git-common-dir)/info/exclude`. Handoffs are ephemeral and must not be tracked, and a local exclude keeps them out of the user's diff without touching the tracked `.gitignore`. In a worktree `.git` is a file, so resolve the path with `--git-common-dir`; the exclude then applies to every worktree of the repo.
 - Name the branch and worktree path in the handoff itself, so the next agent knows where it is.
 
 A handoff in a worktree is deleted with that worktree. When the next session will run after the worktree is closed, say so before writing.
