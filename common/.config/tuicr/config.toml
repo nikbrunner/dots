@@ -3,6 +3,8 @@ theme = "black-atom-facility-light"
 # theme_light = "catppuccin-latte"
 # theme_dark = "catppuccin-latte"
 
+transparent_background = false
+
 diff_view = "unified" # unified" | "side-by-side"
 
 ignore_whitespace = false # ignore all whitespace in local VCS diffs
