@@ -19,9 +19,10 @@ const float TAME       = 0.6;
 // 0 = detect from the background, 1 = always dark mode, 2 = always light mode
 const int   MODE       = 0;
 
+// frame is wrapped so the hash input stays small enough for float precision
 float hash(vec2 p, float f) {
-  vec3 q = fract(vec3(p.xyx) * 0.1031 + f * 0.1373);
-  q += dot(q, q.yzx + 33.33);
+  vec3 q = fract(vec3(p, mod(f, 997.0)) * vec3(0.1031, 0.1030, 0.0973));
+  q += dot(q, q.yxz + 33.33);
   return fract((q.x + q.y) * q.z);
 }
 
