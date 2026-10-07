@@ -38,6 +38,8 @@ const labels: Record<ThemeKey, string> = {
 - 1-2 positional args are fine: `useNav("/settings", { ...options })`
 - 3+ parameters → object argument with destructuring
 - Never more than 2 positional parameters
+- Named functions are `function` declarations, not const arrows -- including local helpers inside components: `function resetCaptcha() {...}`, not `const resetCaptcha = () => {...}`
+- Inline callbacks passed directly as props or arguments stay arrows: `onClick={() => ...}`, `.map((x) => ...)`, option objects
 
 ## Code Style
 

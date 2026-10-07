@@ -12,6 +12,7 @@ Each rule is a target state; classify every rule in a topic's block with `path:l
 - [ ] Where a Zod schema exists, its type is `z.infer<typeof schema>`, with no parallel hand-written type. (typescript.md#type-derivation)
 - [ ] Object contracts use `interface`; unions and computed types use `type`. (typescript.md#type-derivation)
 - [ ] Functions take at most 2 positional parameters; 3 or more go into one destructured object argument. (typescript.md#function-design)
+- [ ] Named functions, including helpers inside components, are `function` declarations, not const arrows; arrows appear only as inline callbacks passed as props or arguments. (typescript.md#function-design)
 - [ ] Logic uses functions and object literals, with creator functions (`createUser`) instead of classes and constructors. (typescript.md#code-style)
 - [ ] No commented-out code remains. (typescript.md#code-style)
 
