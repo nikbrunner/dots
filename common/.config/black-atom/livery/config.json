@@ -1,7 +1,7 @@
 {
   "version": 2,
   "system_appearance": true,
-  "active_theme": "black-atom-facility-light",
+  "active_theme": "black-atom-minium-polymer-light",
   "keymappings": {
     "toggle_window": "super+ctrl+alt+shift+KeyT"
   },
@@ -73,8 +73,9 @@
     "delta": {
       "enabled": true,
       "config_path": "~/.gitconfig.delta",
-      "match_pattern": "features\\s*=\\s*black-atom-(dark|light)",
-      "replace_template": "features = black-atom-{appearance}"
+      "themes_path": "~/.config/delta/themes",
+      "match_pattern": "path\\s*=\\s*\\S+/black-atom-[\\w-]+\\.gitconfig",
+      "replace_template": "path = {themesPath}/{themeKey}.gitconfig"
     },
     "lazygit": {
       "enabled": true,

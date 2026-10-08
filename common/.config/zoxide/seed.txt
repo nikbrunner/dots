@@ -27,6 +27,7 @@
 ~/repos/imfusion/suite
 ~/repos/imfusion/websdk
 ~/repos/nikbrunner/airship
+~/repos/nikbrunner/bali
 ~/repos/nikbrunner/bc-desktop-client
 ~/repos/nikbrunner/bc-web-client
 ~/repos/nikbrunner/bm

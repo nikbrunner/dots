@@ -5,7 +5,8 @@
     "DISABLE_AUTOUPDATER": "0",
     "ENABLE_TOOL_SEARCH": "true",
     "CLAUDE_CODE_PLUGIN_DIRS": "~/repos/nikbrunner/dots/common/.claude/mods/dash-pane:~/repos/nikbrunner/dots/common/.claude/mods/subagents-pane:~/repos/nikbrunner/dots/common/.claude/mods/topbar",
-    "CLAUDE_CODE_PLUGIN_DIR_WATCH": "1"
+    "CLAUDE_CODE_PLUGIN_DIR_WATCH": "1",
+    "CLAUDE_CODE_SUBAGENT_MODEL": "haiku"
   },
   "includeCoAuthoredBy": false,
   "permissions": {
@@ -176,7 +177,8 @@
     "plannotator@plannotator": true,
     "rust-analyzer-lsp@claude-plugins-official": true,
     "typescript-lsp@claude-plugins-official": true,
-    "storybook@storybook": true
+    "storybook@storybook": true,
+    "vercel@claude-plugins-official": true
   },
   "extraKnownMarketplaces": {
     "plannotator": {

@@ -29,10 +29,11 @@
       "~/repos/black-atom-industries/black-atom/adapters/tuicr/themes",
       "~/repos/black-atom-industries/black-atom/core",
       "~/repos/black-atom-industries/black-atom/core/src/themes",
+      "~/repos/black-atom-industries/black-atom/core/src/themes/jpn",
       "~/repos/black-atom-industries/black-atom/livery",
       "~/repos/black-atom-industries/black-atom/livery/e2e"
     ],
-    "last_seen": "2026-10-06"
+    "last_seen": "2026-10-08"
   },
   "black-atom-industries/core": {
     "root": "~/repos/black-atom-industries/core",
@@ -163,6 +164,8 @@
       "~/repos/imfusion/cp/imfusion-portal-CP-159",
       "~/repos/imfusion/cp/imfusion-portal-CP-159/e2e",
       "~/repos/imfusion/cp/imfusion-portal-CP-159/frontend",
+      "~/repos/imfusion/cp/imfusion-portal-CP-159/frontend/cp-159",
+      "~/repos/imfusion/cp/imfusion-portal-CP-159/frontend/src",
       "~/repos/imfusion/cp/imfusion-portal-CP-159/frontend/tmp",
       "~/repos/imfusion/cp/imfusion-portal-CP-89",
       "~/repos/imfusion/cp/imfusion-portal-CP-89/fe",
@@ -173,7 +176,7 @@
       "~/repos/imfusion/cp/imfusion-portal/frontend",
       "~/repos/imfusion/cp/imfusion-portal/frontend/src"
     ],
-    "last_seen": "2026-10-05"
+    "last_seen": "2026-10-08"
   },
   "cp/keycloak": {
     "root": "~/repos/imfusion/cp/keycloak",
@@ -318,6 +321,7 @@
       "~/repos/nikbrunner/dots/common",
       "~/repos/nikbrunner/dots/common/.agents",
       "~/repos/nikbrunner/dots/common/.agents/skills",
+      "~/repos/nikbrunner/dots/common/.agents/skills/nbr-git-commit-rebuild",
       "~/repos/nikbrunner/dots/common/.agents/skills/nbr-llm",
       "~/repos/nikbrunner/dots/common/.agents/skills/nbr-release-kit",
       "~/repos/nikbrunner/dots/common/.claude/mods",
@@ -334,7 +338,7 @@
       "~/repos/nikbrunner/dots/common/.config/nvim/sessions",
       "~/repos/nikbrunner/dots/common/.pi"
     ],
-    "last_seen": "2026-10-06"
+    "last_seen": "2026-10-08"
   },
   "nikbrunner/fonts": {
     "root": "~/repos/nikbrunner/fonts",
@@ -432,6 +436,16 @@
       "~/repos/nikbrunner/mdn.nvim"
     ],
     "last_seen": "2026-08-10"
+  },
+  "nikbrunner/nbr.haus": {
+    "root": "~/repos/nikbrunner/nbr.haus",
+    "owner": "nikbrunner",
+    "name": "nbr.haus",
+    "work": false,
+    "session_dirs": [
+      "~/repos/nikbrunner/nbr.haus"
+    ],
+    "last_seen": "2026-10-06"
   },
   "nikbrunner/notes": {
     "root": "~/repos/nikbrunner/notes",
@@ -537,6 +551,7 @@
       "~/repos/imfusion/websdk/web-ui/ds-bundle",
       "~/repos/imfusion/websdk/web-ui/node_modules/@base-ui",
       "~/repos/imfusion/websdk/web-ui/src/components/navigation-menu/subs",
+      "~/repos/imfusion/websdk/web-ui/src/llms/evals/scenarios",
       "~/repos/imfusion/websdk/web-ui/src/llms/skills",
       "~/repos/imfusion/websdk/websdk-169-storybook-controls",
       "~/repos/imfusion/websdk/websdk-216-web-ui-adjust-component-defaults-the-po",
@@ -545,6 +560,6 @@
       "~/repos/imfusion/websdk/websdk-228-color-mode-spike/node_modules/storybook/dist",
       "~/repos/imfusion/websdk/websdk-256-trigger-ci-pr-release-tags"
     ],
-    "last_seen": "2026-10-01"
+    "last_seen": "2026-10-07"
   }
 }

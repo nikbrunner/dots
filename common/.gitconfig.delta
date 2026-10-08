@@ -1,10 +1,7 @@
 # Managed by livery — https://github.com/black-atom-industries/livery
 
-[delta "black-atom-dark"]
-    dark = true
-
-[delta "black-atom-light"]
-    light = true
+[include]
+    path = ~/.config/delta/themes/black-atom-minium-polymer-light.gitconfig
 
 [delta]
     navigate = true
@@ -13,4 +10,3 @@
     hyperlinks = true
     hyperlinks-file-link-format = "lazygit-edit://{path}:{line}"
     line-numbers = true
-    features = black-atom-light

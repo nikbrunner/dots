@@ -2914,6 +2914,14 @@ url = "https://github.com/astral-sh/uv/releases/download/0.12.7/uv-x86_64-pc-win
 url_api = "https://api.github.com/repos/astral-sh/uv/releases/assets/532935273"
 provenance = "github-attestations"
 
+[[tools.vercel]]
+version = "62.2.0"
+backend = "npm:vercel"
+
+[tools.vercel.options]
+allow_builds = '["esbuild"]'
+trust_policy_excludes = '["undici"]'
+
 [[tools.yazi]]
 version = "26.9.1"
 backend = "aqua:sxyazi/yazi"
