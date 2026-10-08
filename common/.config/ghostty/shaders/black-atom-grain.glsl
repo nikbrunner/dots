@@ -1,16 +1,16 @@
 // Black Atom film grain for Ghostty
 // Same grain as the Black Atom Industries website: soft blurred noise,
-// re-rolled 12 times a second, soft-light on dark themes, multiply on light ones.
+// re-rolled over time, soft-light on dark themes, multiply on light ones.
 //
 // Install (~/.config/ghostty/config):
 //   custom-shader = ~/.config/ghostty/shaders/black-atom-grain.glsl
 //   custom-shader-animation = true
 
 // ---- settings ----
-const float GRAIN      = 0.5;  // strength (website default .22)
-const float GRAIN_SIZE = 0.65;   // grain size in points (website default .9)
-const float FPS        = 10.0;  // how often the grain re-rolls
-const float BLUR       = 1.35;   // softness of each grain, like the site's 0.9px blur
+const float GRAIN      = 0.35;  // strength
+const float GRAIN_SIZE = 0.65;   // grain size in points
+const float FPS        = 20.0;  // how often the grain re-rolls
+const float BLUR       = 1.35;   // softness of each grain, like the site's blur
 // dark themes: 0 = pure soft-light (strong on mid-tone colors, faint on near-black),
 // 1 = flat grain with the same strength on every color
 const float BALANCE    = 1.0;
