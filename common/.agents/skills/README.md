@@ -28,8 +28,14 @@ CONVENTIONS
   nbr-audit         read-only, [full|<topic>] [path]
 
 COMMIT
-  nbr-git-clean ──▶ nbr-commit ──▶ nbr-audit-docs
-                    defers to a project <prefix>-commit when one exists
+  nbr-git-commit-rebuild   history → dirty tree: target, backup, reset, verify
+          │ hands the tree to
+  nbr-git-commit-buckets   dirty tree → buckets, one report and one gate
+          │ per bucket, reads Conventions · Review · Commit of
+  nbr-git-commit           one commit: review ─▶ gate ─▶ commit
+          ├──runs────▶ nbr-audit-docs   --staged · --worktree
+          └──reads───▶ repo conventions, per field: project *-commit skill ·
+                       AGENTS.md · tool config · git log
   nbr-create-pr            PR description: slice title, nested bullets, tests, how to test
 
 SESSION AND AGENTS

@@ -28,7 +28,7 @@ fi
 
 if [[ "$prompt_lower" =~ ^(commit|lets\ commit|let\'s\ commit)([[:space:]]|$) ||
     "$prompt_lower" =~ ^create\ a\ commit([[:space:]]|$) ]]; then
-    matches+=("Commit request: load nbr-commit for commit format, selective staging, and approval requirements. Stay within the requested commit scope.")
+    matches+=("Commit request: load nbr-git-commit for commit format, selective staging, and approval requirements. Stay within the requested commit scope.")
 fi
 
 if [[ "$REPO" == "dots" &&
