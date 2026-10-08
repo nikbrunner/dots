@@ -96,6 +96,16 @@ The reply to the report approves every bucket it names: commit them in a row wit
 
 For each approved bucket, in order, run nbr-git-commit's Commit section with the bucket as the approved paths. Stage hunks with `hunks.py stage`, whole files with `git add` / `git rm`. After each commit, also check that the remaining buckets' IDs still appear in `hunks.py list`; a missing one means a hook pulled it in, so stop and report before the next bucket.
 
+**Per-commit checks.** When the caller asks for them (`nbr-git-commit-rebuild` does), prove each commit on its own right after making it: hide everything uncommitted so the tree equals HEAD, run the checks, bring the rest back.
+
+```sh
+git stash push --include-untracked -m "buckets-check-<n>"
+<checks>
+git stash pop
+```
+
+Pop only when `git stash list` shows the `buckets-check-<n>` entry on top: with nothing left uncommitted, the push saves nothing, and a pop would apply an older stash. A failing check stops the run: report the bucket and the failure, and offer to fold the fix into that commit with `git commit --amend` before the next bucket.
+
 After the last bucket, run the routine from step 2 when the reply approved it ("go" or "go fix" for all, or naming it).
 
 Finish with `git log --oneline -<n>` for the commits just made and `git status --short` for what is left.

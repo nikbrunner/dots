@@ -64,7 +64,7 @@ Done when the backup branch exists and `git status --short` shows the rewritten 
 
 Invoke `nbr-git-commit-buckets`. Hand it the old log as input: the old subjects show what the work was meant to be, so use them to name and order buckets, and drop the ones that only describe save points ("wip", "fix", "more"). The buckets follow the final diff, never the old commit boundaries.
 
-nbr-git-commit-buckets runs its own report and approval gate. Its routine-commit handling (a chores command) applies unchanged.
+Ask it for per-commit checks, so every rebuilt commit builds on its own. nbr-git-commit-buckets runs its own report and approval gate. Its routine-commit handling (a chores command) applies unchanged.
 
 ## 5. Verify
 
