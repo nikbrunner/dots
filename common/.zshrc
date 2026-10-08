@@ -29,7 +29,7 @@ export RIPGREP_CONFIG_PATH=$HOME/.ripgreprc
 export DOTS_DIR="$HOME/repos/nikbrunner/dots"
 export SSH_AUTH_SOCK="$HOME/.ssh/proton-pass-agent.sock"
 export MANPAGER='nvim +Man!'
-export BAT_THEME="base16"
+export BAT_THEME="ansi"
 
 # Aliases ================================================================
 alias ls="eza --all --oneline --long --icons --sort=type"
