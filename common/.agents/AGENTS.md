@@ -185,6 +185,8 @@ Default to no comments. A comment earns its place only if it states something du
 
 Never write comments that are conversation artifacts — content only valid inside the one loop/iteration that wrote it. That includes: explaining what the code does, restating the diff, referencing a ticket/ADR/task/PR/prior implementation, or reading like a docstring essay written to justify the change to yourself. That belongs in the commit message, not the file. Ask: would this sentence mean anything to someone with zero memory of this conversation, reading it in six months? If not, cut it.
 
+A comment says what a setting does, never its current value: "strength", not "strength (default .22)". The value lives in the code, and a copy in the comment goes stale with the next tweak. Meanings of values stay (`0 = auto, 1 = dark`).
+
 ### Finding Code
 
 Work down this list — reach for the next tool only when the one above can't answer the question.
