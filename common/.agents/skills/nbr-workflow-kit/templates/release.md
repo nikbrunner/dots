@@ -10,12 +10,11 @@ allowed-tools: Bash Read Edit
 # Release {{project}}
 
 Follow [`docs/releases.md`](../../../docs/releases.md). It is the maintainer source of truth for the release PR, the curated
-changelog commit, and checking the GitHub Release.
+release section, and checking the GitHub Release.
 
-Prepare the release notes with [`repo-changelog`](../repo-changelog/SKILL.md) in release mode before merging:
-it curates the section and sets the release date. The section's version must match the release PR title. Read the title
-after release-please has finished its run for the latest push to `main`; each run can change the version.
+Read the version from the release PR title after release-please has finished its run for the latest push to `main`; each
+run can change the version. Curate the section on the release branch with [`repo-changelog`](../repo-changelog/SKILL.md).
 
 {{release_assets}}
 
-Ask for explicit approval immediately before merging the release PR.
+Nothing lands on `main` between curating and merging. Ask for explicit approval immediately before merging the release PR.

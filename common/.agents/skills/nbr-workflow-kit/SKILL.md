@@ -2,9 +2,9 @@
 name: nbr-workflow-kit
 description:
   "Set up or audit the workflow kit of a personal GitHub project: agent setup, Git hooks, and project-local
-  `repo-commit`, `repo-changelog`, and `repo-release` skills on top of release-please and a curated
-  CHANGELOG.md. Use when setting up a repo for agent work, release-please, releases, or a changelog workflow, or when
-  checking an existing kit for drift."
+  `repo-commit`, `repo-changelog`, and `repo-release` skills on top of release-please, which writes CHANGELOG.md and the
+  release notes from a curated release PR. Use when setting up a repo for agent work, release-please, releases, or a
+  changelog workflow, or when checking an existing kit for drift."
 argument-hint: "setup | audit"
 ---
 
@@ -16,16 +16,16 @@ and four files:
 
 | Piece                                                                 | Job                                                                    |
 | --------------------------------------------------------------------- | ---------------------------------------------------------------------- |
-| `repo-commit`                                                         | Conventional Commit with changelog check, CI-parity run, approval gate |
-| `repo-changelog`                                                      | Mechanical entry per change, curated section per release               |
-| `repo-release`                                                        | Curate, merge the release PR, verify                                   |
+| `repo-commit`                                                         | Conventional Commit with CI-parity run and approval gate               |
+| `repo-changelog`                                                      | Curated Highlights per release, in the changelog and the release PR    |
+| `repo-release`                                                        | Curate on the release branch, merge the release PR, verify             |
 | `docs/releases.md`                                                    | The release process a maintainer can run by hand                       |
-| `.github/release-please-config.json`, `.release-please-manifest.json` | Version bumps from Conventional Commits, `skip-changelog`              |
-| `.github/workflows/release.yml`                                       | release-please, then publish with the curated section as the notes     |
+| `.github/release-please-config.json`, `.release-please-manifest.json` | Version bumps and `CHANGELOG.md` sections from Conventional Commits    |
+| `.github/workflows/release.yml`                                       | release-please, then attach any release artifacts                      |
 
-release-please owns the version and the tag. Humans and agents own `CHANGELOG.md`. The publish job copies the section for the
-tagged version into the GitHub Release notes, so the heading format in the changelog and the extraction in the workflow are
-one contract.
+release-please owns the version, the tag, and each release section of `CHANGELOG.md`. The curated Highlights are written on
+the release branch and into the release PR description. release-please publishes that description as the GitHub Release
+notes, so the changelog section and the release page match.
 
 Every project skill carries the `repo-` prefix, so it reads as repo-specific next to the global `nbr-` skills.
 
@@ -42,7 +42,7 @@ Run in the project root. Collect, without asking:
 - `git tag --sort=-v:refname | head`, `git log --oneline -30`: latest version, commit style, recurring scopes.
 - Check commands from `Makefile`, `package.json` scripts, `mise.toml`, CI workflows: the CI-parity pass and a docs lint.
 - Hooks: `lefthook.yml`, `.githooks/`, `core.hooksPath`.
-- `GLOSSARY.md`, `CONTEXT.md`, `docs/`: domain names for topic roots and the docs the commit skill audits.
+- `GLOSSARY.md`, `CONTEXT.md`, `docs/`: domain names and the docs the commit skill audits.
 - Existing kit pieces: `.agents/skills/*-{commit,changelog,release}`, the release-please files, `release.yml`,
   `CHANGELOG.md`, `docs/releases.md`, and the `.claude/skills` symlink.
 
@@ -67,11 +67,12 @@ Show one table of placeholder values with what each was inferred from, and wait 
 | `{{check}}`          | CI-parity command, the pre-push pass                                                          | `make check`, `npm run verify`, `deno task check` |
 | `{{lint_docs}}`      | Docs lint command; drop every line naming it when there is none                               | `make lint-docs`                                  |
 | `{{hooks}}`          | One sentence on what the hooks run                                                            | "The pre-commit hook formats staged files."       |
+| `{{e2e}}`            | When to run the end-to-end suite `{{check}}` leaves out, and to fix its specs in the same commit; drop when none | "Also run `deno task test:e2e` when ..."          |
+| `{{suffix}}`         | Sentence naming the commit-subject suffix; drop when there is none                            | "End the subject with ` #<issue>`."               |
 | `{{scopes}}`         | Commit scopes from history                                                                    | `ui`, `config`, `cli`                             |
 | `{{docs}}`           | Docs to check when config, commands, or terms change                                          | `README.md`, `docs/config.md`                     |
-| `{{topic_roots}}`    | Changelog topic roots, from the glossary when one exists                                      | Configuration, Documentation, CI and releases     |
 | `{{release_assets}}` | Release-time asset step for `repo-release` and `docs/releases.md`; drop when there is none    | "Re-record the screenshots with ..."              |
-| `{{publish}}`        | Sentence on the publish job for `docs/releases.md`, see the pipeline reference                | "The publish job then replaces ..."               |
+| `{{publish}}`        | Sentence on the publish job for `docs/releases.md`, see the pipeline reference; drop when no artifacts | "GoReleaser then builds the archives ..."         |
 | `{{verify_install}}` | Commands in `docs/releases.md` that install the release and print its version; drop when none | `npx <pkg>@<version> --version`                   |
 | release-please       | `release-type`, manifest version, `initial-version`, `bootstrap-sha`, artifacts               | `node`, `0.8.0`                                   |
 
@@ -83,7 +84,6 @@ Write each missing piece from its source, replace every placeholder, and keep th
 | ------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------- |
 | `.agents/skills/repo-commit/SKILL.md`                              | [`templates/commit.md`](templates/commit.md)                                                   |
 | `.agents/skills/repo-changelog/SKILL.md`                           | [`templates/changelog.md`](templates/changelog.md)                                             |
-| `.agents/skills/repo-changelog/references/mechanical-log.md`       | [`templates/changelog-mechanical-log.md`](templates/changelog-mechanical-log.md)               |
 | `.agents/skills/repo-changelog/references/curated-release.md`      | [`templates/changelog-curated-release.md`](templates/changelog-curated-release.md)             |
 | `.agents/skills/repo-release/SKILL.md`                             | [`templates/release.md`](templates/release.md)                                                 |
 | `docs/releases.md`                                                 | [`templates/releases-doc.md`](templates/releases-doc.md)                                       |
