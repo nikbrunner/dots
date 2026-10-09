@@ -138,9 +138,6 @@ approval_mode = "approve"
 [mcp_servers.storybook]
 url = "http://localhost:6006/mcp"
 
-[mcp_servers.caveman]
-command = "/Users/brunner/.caveman/bin/caveman-mcp"
-
 [mcp_servers.claude-design]
 url = "https://api.anthropic.com/v1/design/mcp"
 
