@@ -95,8 +95,7 @@ claude-plugins-update() {
 }
 
 claude-work() {
-    ANTHROPIC_API_KEY="$ANTHROPIC_API_KEY_IMFUSION" \
-        CLAUDE_CONFIG_DIR="$HOME/.claude-work" \
+    CLAUDE_CONFIG_DIR="$HOME/.claude-work" \
         CLAUDE_CODE_NO_FLICKER=1 \
         command claude "$@"
 }
