@@ -146,7 +146,7 @@ url = "https://api.anthropic.com/v1/design/mcp"
 
 [mcp_servers.exa]
 command = "sh"
-args = ["-c", "EXA_API_KEY=$(pass-cli item view pass://Nik/.env/EXA_API_KEY) exec exa-mcp-server"]
+args = ["-c", "EXA_API_KEY=$(pass-cli item view pass://Nik/.env/EXA_API_KEY) || exit 1; export EXA_API_KEY; exec exa-mcp-server"]
 startup_timeout_sec = 30
 
 [mcp_servers.fff]

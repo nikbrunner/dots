@@ -154,6 +154,20 @@ Every changed line traces directly to what I asked for.
 
 Never propose patching `node_modules` or other vendored dependency code as a fix. When the behavior comes from a dependency, say so, name the config or workaround if one exists, and stop. A local patch is fine only as a throwaway experiment to confirm a bug we want to report or fix upstream.
 
+### Secrets
+
+Secrets live in Proton Pass: vault `Nik`, item `.env`, one hidden field per variable. Address each as `pass://Nik/.env/<FIELD>` and let the one consumer that needs it resolve the reference when it runs:
+
+| Consumer                          | How                                                                                         |
+| --------------------------------- | ------------------------------------------------------------------------------------------- |
+| CLI or script                     | `VAR=pass://Nik/.env/VAR pass-cli run -- <cmd>`                                             |
+| MCP stdio server (Claude, Codex)  | `sh -c 'VAR=$(pass-cli item view pass://Nik/.env/VAR) \|\| exit 1; export VAR; exec <server>'` |
+| Tool with its own credential file | its command hook if it has one (pi `auth.json`: `"key": "!pass-cli item view pass://Nik/.env/VAR"`), else its own login command |
+
+`pass-cli run` sits between the client and the server's stdout, which breaks TUIs and Codex's MCP handshake; the MCP form resolves first and then gets out of the way. A Pass lookup takes a few seconds, so Codex MCP entries need `startup_timeout_sec = 30`, and `codex exec` starts its turn before such servers are ready.
+
+Never export secrets globally (shell rc, mise `[env]`, launchd), never write a value into a tracked file, and never print one. Check a secret by length, `grep -c` or comparison, not by showing it. Pattern-based redaction misses formats, so don't print secret-bearing files through a redacting filter either.
+
 ### Skills
 
 Use skills requested by the user or relevant to the current step, especially those covering project and language conventions. Reuse skills already in context.

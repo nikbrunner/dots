@@ -126,13 +126,16 @@ git remote set-url origin git@github.com:nikbrunner/dots.git
 
 After that, the dot binaries from `~/.local/bin` will be available in your `$PATH`.
 
-## 9. Env Sync
+## 9. Secrets
 
-Pull API keys and env vars from ProtonPass into `~/.env` and `~/.env.*`.
+Secrets stay in Proton Pass (vault `Nik`, item `.env`) and are referenced as `pass://Nik/.env/<FIELD>`. Nothing exports them globally; each consumer resolves its own reference (see "Secrets" in `common/.agents/AGENTS.md`). Log in once, then set up the tools that keep their own credentials:
 
 ```sh
-pp-env-sync
+pass-cli login
+opencode auth login   # once per provider (OpenRouter, Cerebras, OpenCode); paste the key shown by: pass-cli item view pass://Nik/.env/<FIELD> | pbcopy
 ```
+
+pi (`~/.pi/agent/auth.json`), the Codex and Claude MCP configs and `things` resolve their `pass://` references on their own.
 
 ## 10. helm + Repos
 
@@ -172,10 +175,10 @@ Enter Neovim to see if plugins are installed.
 
 ## 12. Claude Code MCP Servers
 
-Configure MCP servers for Claude Code (requires Step 9 env sync for API keys).
+Configure MCP servers for Claude Code (requires the Pass login from Step 9).
 
 ```sh
-claude mcp add --scope user exa -e "EXA_API_KEY=$EXA_API_KEY" -- npx -y exa-mcp-server
+claude mcp add --scope user exa -- sh -c 'EXA_API_KEY=$(pass-cli item view pass://Nik/.env/EXA_API_KEY) || exit 1; export EXA_API_KEY; exec npx -y exa-mcp-server'
 claude mcp add --scope user --transport http atlassian-rovo-mcp https://mcp.atlassian.com/v1/mcp/authv2
 claude mcp add --scope user fff -- "$HOME/.local/bin/fff-mcp"
 claude mcp add --scope user chrome-devtools -- npx chrome-devtools-mcp@latest --isolated

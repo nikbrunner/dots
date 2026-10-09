@@ -92,13 +92,16 @@ git remote set-url origin git@github.com:nikbrunner/dots.git
 
 After that, the dot binaries from `~/.local/bin` will be available in your `$PATH`.
 
-## 7. Env Sync
+## 7. Secrets
 
-Pull API keys and env vars from ProtonPass into `~/.env` and `~/.env.*`.
+Secrets stay in Proton Pass (vault `Nik`, item `.env`) and are referenced as `pass://Nik/.env/<FIELD>`. Nothing exports them globally; each consumer resolves its own reference (see "Secrets" in `common/.agents/AGENTS.md`). Log in once, then set up the tools that keep their own credentials:
 
 ```sh
-pp-env-sync
+pass-cli login
+opencode auth login   # once per provider (OpenRouter, Cerebras, OpenCode); paste the key from: pass-cli item view pass://Nik/.env/<FIELD>
 ```
+
+pi (`~/.pi/agent/auth.json`), the Codex and Claude MCP configs and `things` resolve their `pass://` references on their own.
 
 ## 8. Helm + Repos
 
@@ -139,11 +142,11 @@ Enter Neovim to see if plugins are installed.
 
 ## 10. Claude Code MCP Servers
 
-Configure MCP servers for Claude Code (requires Step 7 env sync for API keys).
+Configure MCP servers for Claude Code (requires the Pass login from Step 7).
 
 ```sh
-claude mcp add --scope user exa -e "EXA_API_KEY=$EXA_API_KEY" -- npx -y exa-mcp-server
-claude mcp add --scope user --transport http Ref https://api.ref.tools/mcp -H "x-ref-api-key: $REF_API_KEY"
+claude mcp add --scope user exa -- sh -c 'EXA_API_KEY=$(pass-cli item view pass://Nik/.env/EXA_API_KEY) || exit 1; export EXA_API_KEY; exec npx -y exa-mcp-server'
+claude mcp add --scope user Ref -- sh -c 'REF_API_KEY=$(pass-cli item view pass://Nik/.env/REF_API_KEY) || exit 1; export REF_API_KEY; exec npx -y ref-tools-mcp@latest'
 claude mcp add --scope user chrome-devtools -- npx chrome-devtools-mcp@latest --isolated
 ```
 

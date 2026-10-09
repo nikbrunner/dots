@@ -1,10 +1,6 @@
 fpath=("$HOME/.zsh/completions" $fpath)
 
-for f in ~/.env ~/.env.*(N); do [[ -r "$f" ]] && {
-    set -a
-    source "$f"
-    set +a
-}; done
+things() { THINGS_AUTH_TOKEN=pass://Nik/.env/THINGS_AUTH_TOKEN pass-cli run -- things "$@"; }
 
 # Git completion (fpath must be set before compinit in os.zsh) ===========
 zstyle ':completion:*:*:git:*' script ~/.config/.zsh/git-completion.bash

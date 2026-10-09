@@ -111,7 +111,6 @@ macos:
   macos/Library/Application Support/Claude/claude_desktop_config.json: ~/Library/Application Support/Claude/claude_desktop_config.json
   macos/Library/LaunchAgents/dev.nbr.zoxide-seed-sync.plist: ~/Library/LaunchAgents/dev.nbr.zoxide-seed-sync.plist
   macos/Library/LaunchAgents/me.proton.pass-ssh-agent.plist: ~/Library/LaunchAgents/me.proton.pass-ssh-agent.plist
-  macos/Library/LaunchAgents/me.proton.pass-env-sync.plist: ~/Library/LaunchAgents/me.proton.pass-env-sync.plist
 
 arch:
   arch/.config/pacman.conf: ~/.config/pacman.conf
@@ -132,7 +131,6 @@ arch:
   arch/.config/waybar: ~/.config/waybar
   arch/.config/waypaper: ~/.config/waypaper
   arch/.config/systemd/user/pass-ssh-agent.service: ~/.config/systemd/user/pass-ssh-agent.service
-  arch/.config/systemd/user/pass-env-sync.service: ~/.config/systemd/user/pass-env-sync.service
   arch/.config/systemd/user/zoxide-seed-sync.service: ~/.config/systemd/user/zoxide-seed-sync.service
   arch/.config/systemd/user/zoxide-seed-sync.timer: ~/.config/systemd/user/zoxide-seed-sync.timer
   arch/etc/systemd/system/nvidia-power-limit.service: /etc/systemd/system/nvidia-power-limit.service
