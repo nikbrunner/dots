@@ -1,7 +1,7 @@
 # Managed by livery — https://github.com/black-atom-industries/livery
 
 [include]
-    path = ~/.config/delta/themes/black-atom-minium-polymer-light.gitconfig
+    path = ~/.config/delta/themes/black-atom-minium-polymer-dark.gitconfig
 
 [delta]
     navigate = true

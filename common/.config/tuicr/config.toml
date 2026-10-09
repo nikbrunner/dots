@@ -1,5 +1,5 @@
 appearance = "system" # or "dark" / "light"
-theme = "black-atom-minium-polymer-light"
+theme = "black-atom-minium-polymer-dark"
 # theme_light = "catppuccin-latte"
 # theme_dark = "catppuccin-latte"
 

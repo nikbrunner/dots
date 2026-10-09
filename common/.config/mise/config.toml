@@ -95,9 +95,6 @@ lefthook = "latest"
 starship = "latest"
 "github:nikbrunner/lager" = "latest"
 
-[env]
-_.file = "~/.env"
-
 [settings]
 lockfile = true
 # Supply-chain buffer: hide releases younger than 2 days from fuzzy resolution

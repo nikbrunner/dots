@@ -57,7 +57,7 @@
     "deny": [],
     "ask": []
   },
-  "model": "opus",
+  "model": "opus[1m]",
   "hooks": {
     "Notification": [],
     "PostToolUse": [],
