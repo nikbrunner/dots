@@ -1,0 +1,26 @@
+[catalogConfiguration]
+customFolders = []
+customItems = []
+scriptsDirectories = []
+
+    [[catalogConfiguration.folderDepthOverrides]]
+    catalogIdentifier = 'tuna.system-settings'
+    depthRawValue = 0
+
+[catalogs]
+globalScopes = []
+sortOrders = []
+
+    [[catalogs.searchPriorities]]
+    catalogIdentifier = 'tuna.system-settings'
+    level = 1
+
+[hotkeys]
+custom = []
+
+    [hotkeys.app.activate]
+    carbonKeyCode = 5
+    carbonModifiers = 6912
+
+[settings]
+showResultsImmediatelyOnActivation = true
