@@ -161,6 +161,9 @@
       }
     ]
   },
+  "worktree": {
+    "bgIsolation": "none"
+  },
   "statusLine": {
     "type": "command",
     "command": "claude-statusline"
@@ -246,7 +249,7 @@
     "mode": "hold"
   },
   "autoDreamEnabled": true,
-  "theme": "auto",
+  "theme": "light-ansi",
   "editorMode": "vim",
   "agentPushNotifEnabled": true,
   "autoMode": {

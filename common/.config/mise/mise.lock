@@ -2690,40 +2690,40 @@ version = "3.2.2"
 backend = "aqua:tfutils/tfenv"
 
 [tools.tfenv."platforms.linux-arm64"]
-url = "https://github.com/tfutils/tfenv/archive/refs/tags/v3.2.2.tar.gz"
-url_api = "https://api.github.com/repos/tfutils/tfenv/tarball/v3.2.2"
+url = "https://github.com/tfutils/tfenv/archive/refs/tags/3.2.2.tar.gz"
+url_api = "https://api.github.com/repos/tfutils/tfenv/tarball/3.2.2"
 
 [tools.tfenv."platforms.linux-arm64-musl"]
-url = "https://github.com/tfutils/tfenv/archive/refs/tags/v3.2.2.tar.gz"
-url_api = "https://api.github.com/repos/tfutils/tfenv/tarball/v3.2.2"
+url = "https://github.com/tfutils/tfenv/archive/refs/tags/3.2.2.tar.gz"
+url_api = "https://api.github.com/repos/tfutils/tfenv/tarball/3.2.2"
 
 [tools.tfenv."platforms.linux-x64"]
-url = "https://github.com/tfutils/tfenv/archive/refs/tags/v3.2.2.tar.gz"
-url_api = "https://api.github.com/repos/tfutils/tfenv/tarball/v3.2.2"
+url = "https://github.com/tfutils/tfenv/archive/refs/tags/3.2.2.tar.gz"
+url_api = "https://api.github.com/repos/tfutils/tfenv/tarball/3.2.2"
 
 [tools.tfenv."platforms.linux-x64-baseline"]
-url = "https://github.com/tfutils/tfenv/archive/refs/tags/v3.2.2.tar.gz"
-url_api = "https://api.github.com/repos/tfutils/tfenv/tarball/v3.2.2"
+url = "https://github.com/tfutils/tfenv/archive/refs/tags/3.2.2.tar.gz"
+url_api = "https://api.github.com/repos/tfutils/tfenv/tarball/3.2.2"
 
 [tools.tfenv."platforms.linux-x64-musl"]
-url = "https://github.com/tfutils/tfenv/archive/refs/tags/v3.2.2.tar.gz"
-url_api = "https://api.github.com/repos/tfutils/tfenv/tarball/v3.2.2"
+url = "https://github.com/tfutils/tfenv/archive/refs/tags/3.2.2.tar.gz"
+url_api = "https://api.github.com/repos/tfutils/tfenv/tarball/3.2.2"
 
 [tools.tfenv."platforms.linux-x64-musl-baseline"]
-url = "https://github.com/tfutils/tfenv/archive/refs/tags/v3.2.2.tar.gz"
-url_api = "https://api.github.com/repos/tfutils/tfenv/tarball/v3.2.2"
+url = "https://github.com/tfutils/tfenv/archive/refs/tags/3.2.2.tar.gz"
+url_api = "https://api.github.com/repos/tfutils/tfenv/tarball/3.2.2"
 
 [tools.tfenv."platforms.macos-arm64"]
-url = "https://github.com/tfutils/tfenv/archive/refs/tags/v3.2.2.tar.gz"
-url_api = "https://api.github.com/repos/tfutils/tfenv/tarball/v3.2.2"
+url = "https://github.com/tfutils/tfenv/archive/refs/tags/3.2.2.tar.gz"
+url_api = "https://api.github.com/repos/tfutils/tfenv/tarball/3.2.2"
 
 [tools.tfenv."platforms.macos-x64"]
-url = "https://github.com/tfutils/tfenv/archive/refs/tags/v3.2.2.tar.gz"
-url_api = "https://api.github.com/repos/tfutils/tfenv/tarball/v3.2.2"
+url = "https://github.com/tfutils/tfenv/archive/refs/tags/3.2.2.tar.gz"
+url_api = "https://api.github.com/repos/tfutils/tfenv/tarball/3.2.2"
 
 [tools.tfenv."platforms.macos-x64-baseline"]
-url = "https://github.com/tfutils/tfenv/archive/refs/tags/v3.2.2.tar.gz"
-url_api = "https://api.github.com/repos/tfutils/tfenv/tarball/v3.2.2"
+url = "https://github.com/tfutils/tfenv/archive/refs/tags/3.2.2.tar.gz"
+url_api = "https://api.github.com/repos/tfutils/tfenv/tarball/3.2.2"
 
 [[tools.tmux]]
 version = "3.7b"

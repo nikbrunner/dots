@@ -26,14 +26,17 @@
     "work": false,
     "session_dirs": [
       "~/repos/black-atom-industries/black-atom",
+      "~/repos/black-atom-industries/black-atom/.claude/worktrees/kagi-adapter",
+      "~/repos/black-atom-industries/black-atom/.claude/worktrees/replace-deno-with-node",
       "~/repos/black-atom-industries/black-atom/adapters/tuicr/themes",
       "~/repos/black-atom-industries/black-atom/core",
       "~/repos/black-atom-industries/black-atom/core/src/themes",
       "~/repos/black-atom-industries/black-atom/core/src/themes/jpn",
+      "~/repos/black-atom-industries/black-atom/core/src/themes/minium",
       "~/repos/black-atom-industries/black-atom/livery",
       "~/repos/black-atom-industries/black-atom/livery/e2e"
     ],
-    "last_seen": "2026-10-08"
+    "last_seen": "2026-10-10"
   },
   "black-atom-industries/core": {
     "root": "~/repos/black-atom-industries/core",
@@ -324,21 +327,26 @@
       "~/repos/nikbrunner/dots/common/.agents/skills/nbr-git-commit-rebuild",
       "~/repos/nikbrunner/dots/common/.agents/skills/nbr-llm",
       "~/repos/nikbrunner/dots/common/.agents/skills/nbr-release-kit",
+      "~/repos/nikbrunner/dots/common/.agents/skills/nbr-repo-conventions",
       "~/repos/nikbrunner/dots/common/.claude/mods",
       "~/repos/nikbrunner/dots/common/.claude/mods/dash",
       "~/repos/nikbrunner/dots/common/.claude/mods/dash-pane",
       "~/repos/nikbrunner/dots/common/.claude/mods/subagents-pane",
       "~/repos/nikbrunner/dots/common/.claude/mods/topbar",
       "~/repos/nikbrunner/dots/common/.config",
+      "~/repos/nikbrunner/dots/common/.config/dinky",
       "~/repos/nikbrunner/dots/common/.config/ghostty/shaders",
       "~/repos/nikbrunner/dots/common/.config/herdr/local-plugins/stationary",
       "~/repos/nikbrunner/dots/common/.config/herdr/plugins/config/herdr-navigator",
       "~/repos/nikbrunner/dots/common/.config/nvim",
       "~/repos/nikbrunner/dots/common/.config/nvim/plugin/50_specs",
       "~/repos/nikbrunner/dots/common/.config/nvim/sessions",
-      "~/repos/nikbrunner/dots/common/.pi"
+      "~/repos/nikbrunner/dots/common/.pi",
+      "~/repos/nikbrunner/dots/macos/.config/sketchybar",
+      "~/repos/nikbrunner/dots/macos/.config/sketchybar/plugins",
+      "~/repos/nikbrunner/dots/macos/.config/tuna"
     ],
-    "last_seen": "2026-10-08"
+    "last_seen": "2026-10-11"
   },
   "nikbrunner/fonts": {
     "root": "~/repos/nikbrunner/fonts",
@@ -443,9 +451,11 @@
     "name": "nbr.haus",
     "work": false,
     "session_dirs": [
-      "~/repos/nikbrunner/nbr.haus"
+      "~/repos/nikbrunner/nbr.haus",
+      "~/repos/nikbrunner/nbr.haus/.claude/skills",
+      "~/repos/nikbrunner/nbr.haus/.claude/worktrees/g-n-nav"
     ],
-    "last_seen": "2026-10-06"
+    "last_seen": "2026-10-11"
   },
   "nikbrunner/notes": {
     "root": "~/repos/nikbrunner/notes",

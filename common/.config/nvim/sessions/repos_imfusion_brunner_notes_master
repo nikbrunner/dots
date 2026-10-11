@@ -10,11 +10,11 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +23 logs/2026/2026.10/2026.10.08\ -\ Thu.md
+badd +15 logs/2026/2026.10/2026.10.09\ -\ Fri.md
 argglobal
 %argdel
 $argadd ./
-edit logs/2026/2026.10/2026.10.08\ -\ Thu.md
+edit logs/2026/2026.10/2026.10.09\ -\ Fri.md
 argglobal
 xnoremap <buffer> $ g$
 onoremap <buffer> $ g$
@@ -77,7 +77,7 @@ setlocal foldnestmax=10
 setlocal foldtext=
 setlocal formatexpr=
 setlocal formatlistpat=^\\s*\\d\\+\\.\\s\\+\\|^\\s*[-*+]\\s\\+\\|^\\[^\\ze[^\\]]\\+\\]:\\&^.\\{4\\}
-setlocal formatoptions=tl1jnq
+setlocal formatoptions=jnq1lt
 setlocal iminsert=0
 setlocal imsearch=-1
 setlocal includeexpr=
@@ -129,7 +129,7 @@ setlocal textwidth=125
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#logs%*%#WinBarSeparator#/%*%#WinBarPath#2026%*%#WinBarSeparator#/%*%#WinBarPath#2026.10%*%#WinBarSeparator#/%*%#WinBarFilename#2026.10.08\ -\ Thu.md%*%=%#WinBarGitLabel#\ [GIT:%#WinBarGitAdd#\ +3%#WinBarGitDelete#\ -8%#WinBarGitLabel#]%*\ 
+setlocal winbar=%#WinBarPath#logs%*%#WinBarSeparator#/%*%#WinBarPath#2026%*%#WinBarSeparator#/%*%#WinBarPath#2026.10%*%#WinBarSeparator#/%*%#WinBarFilename#2026.10.09\ -\ Fri.md%*%=%#WinBarGitLabel#\ [GIT:%#WinBarGitAdd#\ +4%#WinBarGitChange#\ ~1%#WinBarGitLabel#]%*\ 
 setlocal winblend=10
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -140,19 +140,17 @@ setlocal nowrap
 setlocal wrapmargin=0
 1
 sil! normal! zo
-13
-sil! normal! zo
-15
-sil! normal! zo
-20
+12
 sil! normal! zo
 22
 sil! normal! zo
-let s:l = 23 - ((22 * winheight(0) + 34) / 68)
+28
+sil! normal! zo
+let s:l = 16 - ((8 * winheight(0) + 34) / 68)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 23
+keepjumps 16
 normal! 0
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'

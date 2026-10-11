@@ -4,17 +4,17 @@ let v:this_session=expand("<sfile>:p")
 doautoall SessionLoadPre
 silent only
 silent tabonly
-cd ~/repos/nikbrunner/bali
+cd ~/repos/nikbrunner/nbr.haus
 if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +20 src/routes/index.tsx
+badd +50 ~/repos/nikbrunner/nbr.haus/src/config.ts
 argglobal
 %argdel
-$argadd .
-edit src/routes/index.tsx
+$argadd ./
+edit ~/repos/nikbrunner/nbr.haus/src/config.ts
 argglobal
 setlocal keymap=
 setlocal noarabic
@@ -38,7 +38,7 @@ setlocal complete=.,w,b,kspell
 setlocal completefunc=
 setlocal completeslash=
 setlocal concealcursor=
-setlocal conceallevel=0
+setlocal conceallevel=2
 setlocal nocopyindent
 setlocal nocursorbind
 setlocal nocursorcolumn
@@ -47,8 +47,8 @@ setlocal cursorlineopt=screenline,number
 setlocal nodiff
 setlocal eventignorewin=
 setlocal expandtab
-if &filetype != 'typescriptreact'
-setlocal filetype=typescriptreact
+if &filetype != 'typescript'
+setlocal filetype=typescript
 endif
 setlocal fixendofline
 setlocal foldcolumn=0
@@ -63,7 +63,7 @@ setlocal foldnestmax=10
 setlocal foldtext=
 setlocal formatexpr=v:lua.require'conform'.formatexpr()
 setlocal formatlistpat=^\\s*[0-9\\-\\+\\*]\\+[\\.\\)]*\\s\\+
-setlocal formatoptions=n1jrql
+setlocal formatoptions=j1nrql
 setlocal iminsert=0
 setlocal imsearch=-1
 setlocal includeexpr=
@@ -115,7 +115,7 @@ setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#src%*%#WinBarSeparator#/%*%#WinBarPath#routes%*%#WinBarSeparator#/%*%#WinBarFilename#index.tsx%*%=
+setlocal winbar=%#WinBarPath#src%*%#WinBarSeparator#/%*%#WinBarFilename#config.ts%*%=
 setlocal winblend=10
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -124,20 +124,14 @@ setlocal winhighlight=
 setlocal nowinpinned
 setlocal nowrap
 setlocal wrapmargin=0
-5
+40
 sil! normal! zo
-9
-sil! normal! zo
-15
-sil! normal! zo
-16
-sil! normal! zo
-let s:l = 21 - ((20 * winheight(0) + 23) / 47)
+let s:l = 50 - ((35 * winheight(0) + 23) / 47)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 21
-normal! 07|
+keepjumps 50
+normal! 04|
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
@@ -151,7 +145,6 @@ if filereadable(s:sx)
 endif
 let &g:so = s:so_save | let &g:siso = s:siso_save
 set hlsearch
-nohlsearch
 doautoall SessionLoadPost
 unlet SessionLoad
 " vim: set ft=vim :

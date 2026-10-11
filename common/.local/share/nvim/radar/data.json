@@ -91,7 +91,7 @@
             "label": "2"
           }
         ],
-        "lastAccessed": 1791534473
+        "lastAccessed": 1791554154
       }
     },
     "~/repos/nikbrunner/black-atom": {
@@ -129,7 +129,7 @@
             "label": "4"
           }
         ],
-        "lastAccessed": 1791462851
+        "lastAccessed": 1791729539
       }
     },
     "~/repos/nikbrunner/imf-notes": {
@@ -160,6 +160,17 @@
           }
         ],
         "lastAccessed": 1779356522
+      }
+    },
+    "~/repos/nikbrunner/nbr.haus": {
+      "feat/spec-sheet": {
+        "locks": [
+          {
+            "filename": "src/content/study/the-trust-evolution.en.md",
+            "label": "1"
+          }
+        ],
+        "lastAccessed": 1791652144
       }
     },
     "~/repos/nikbrunner/notes": {
