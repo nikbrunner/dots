@@ -1,3 +1,6 @@
+local oxfmt_cmd = "oxfmt"
+local oxfmt_configs = { ".oxfmtrc.json", ".oxfmtrc.jsonc", "oxfmt.config.ts", "oxfmt.config.mts" }
+
 local prettier_cmd = "prettier"
 local prettier_configs = {
 	".prettierrc",
@@ -28,10 +31,26 @@ Edit.later(function()
 
 	local function handle_shared_formatter(buf)
 		-- NOTE: Priority order:
-		-- 1. Prettier (explicit formatting config)
-		-- 2. Deno (all-in-one tool for Deno projects)
-		-- 3. Biome (all-in-one tool, but in some projects only used for linting)
+		-- 1. Oxfmt (explicit formatting config)
+		-- 2. Prettier (explicit formatting config)
+		-- 3. Deno (all-in-one tool for Deno projects)
+		-- 4. Biome (all-in-one tool, but in some projects only used for linting)
 		local buf_fname = vim.uri_to_fname(vim.uri_from_bufnr(buf))
+
+		local is_oxfmt = conform.get_formatter_info(oxfmt_cmd, buf).available
+		local oxfmt_config = vim.fs.find(oxfmt_configs, { upward = true, path = buf_fname })[1]
+
+		if oxfmt_config ~= nil and not is_oxfmt then
+			vim.notify(
+				string.format("There is an `oxfmt` config (%s), but `%s` is not installed", oxfmt_config, oxfmt_cmd),
+				vim.log.levels.WARN,
+				{ title = "Conform" }
+			)
+		end
+
+		if oxfmt_config ~= nil and is_oxfmt then
+			return { oxfmt_cmd, stop_after_first = true }
+		end
 
 		local is_prettier = conform.get_formatter_info(prettier_cmd, buf).available
 		local prettier_config = vim.fs.find(prettier_configs, { upward = true, path = buf_fname })[1]
@@ -137,7 +156,32 @@ Edit.later(function()
 
 	vim.keymap.set("n", "<leader>daf", function()
 		local view = vim.fn.winsaveview()
-		vim.cmd("%!prettier --stdin-filepath % --ignore-path /dev/null")
+		local oxfmt = conform.get_formatter_info(oxfmt_cmd, 0)
+
+		if oxfmt.available then
+			-- oxfmt applies the config's `ignorePatterns` even on stdin, so run it from the
+			-- config root with only the basename to keep path-based patterns from matching
+			local result = vim.system({
+				oxfmt.command,
+				"--stdin-filepath",
+				vim.fs.basename(vim.api.nvim_buf_get_name(0)),
+				"--ignore-path",
+				"/dev/null",
+			}, {
+				cwd = vim.fs.root(0, oxfmt_configs) or vim.fn.getcwd(),
+				stdin = vim.api.nvim_buf_get_lines(0, 0, -1, false),
+			}):wait()
+
+			if result.code ~= 0 then
+				vim.notify(result.stderr, vim.log.levels.ERROR, { title = "oxfmt" })
+				return
+			end
+
+			vim.api.nvim_buf_set_lines(0, 0, -1, false, vim.split(result.stdout, "\n", { trimempty = true }))
+		else
+			vim.cmd("%!prettier --stdin-filepath % --ignore-path /dev/null")
+		end
+
 		vim.fn.winrestview(view)
-	end, { desc = "[F]ormat with Prettier (ignoring ignore files)" })
+	end, { desc = "[F]ormat with oxfmt or Prettier (ignoring ignore files)" })
 end)
