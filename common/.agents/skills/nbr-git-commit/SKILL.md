@@ -20,13 +20,15 @@ Repo-local conventions win. Resolve each field on its own; the first source that
 
 | Field         | Lookup order                                                                                                                                                                                                        |
 | ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Grammar**   | project commit skill → `AGENTS.md` / `CLAUDE.md` / `CONTRIBUTING.md` → tool config (`commitlint.config.*`, `.gitmessage`; a release-please config means Conventional Commits) → `git log --oneline -30` → the default below |
+| **Grammar**   | project commit skill → a release-please config (`release-please-config.json`): Conventional Commits → `AGENTS.md` / `CLAUDE.md` / `CONTRIBUTING.md` → tool config (`commitlint.config.*`, `.gitmessage`) → `git log --oneline -30` → the default below |
 | **Checks**    | project commit skill → `AGENTS.md` / `CLAUDE.md` → hook config (`lefthook.yml`, `.githooks/`, `.husky/`; pre-push first) → a `check` or `verify` task in `package.json`, `Makefile`, `mise.toml` → the CI workflow → none |
 | **Docs list** | project commit skill → `AGENTS.md` / `CLAUDE.md` → every tracked `.md` file                                                                                                                                         |
 
 A **project commit skill** is any `SKILL.md` under `.agents/skills/` or `.claude/skills/` whose name or description is about committing (`repo-commit`, `<project>-commit`, `ship`). With two candidates, ask which one applies. A workflow-kit `repo-commit` holds the docs list in its section 3, the checks in section 4 and the grammar in section 5.
 
 Grammar covers the whole message: type list, scope vocabulary, ticket-key placement (leading `[ABC-123]` vs. trailing `(ABC-123)`), body style. Pull the ticket key from the branch name when the grammar uses one. Where a project skill and the log disagree, the skill wins; mention the divergence.
+
+A release-please config outranks the instruction files because release-please silently skips every commit that is not a Conventional Commit: no version bump, no changelog line. When an instruction file declares another grammar, name the conflict at the gate. In a Conventional Commits repo, a ticket or issue key is a trailing subject suffix (`feat(ui): add copy keymap (#12)`), never a leading `[#12]`, which breaks parsing.
 
 Show the resolved values with their sources, so a wrong guess is caught at the gate:
 

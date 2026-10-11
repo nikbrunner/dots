@@ -33,7 +33,9 @@ notes, so the changelog section and the release page match.
 - `changelog-sections` decide which types count toward a release: `feat`, `refactor`, `fix`, `docs`, `perf`. The commit
   skill's type rules repeat that list.
 - Before `1.0.0`, a breaking change bumps the minor version (`bump-minor-pre-major`), and `feat` bumps the minor too.
-- `AGENTS.md` holds no commit or changelog rules. `repo-commit` and `repo-changelog` own them.
+- No instruction file (`AGENTS.md`, `CLAUDE.md`, `CONTRIBUTING.md`) declares commit or changelog rules.
+  `repo-commit` and `repo-changelog` own them; a contradicting grammar in an instruction file is a broken pipeline.
+- A ticket or issue key is a trailing subject suffix: `feat(ui): add copy keymap (#12)`. The scope stays the area.
 - Repos without release-please keep their own commit style; `nbr-git-commit` resolves it per field.
 
 ## Changelog

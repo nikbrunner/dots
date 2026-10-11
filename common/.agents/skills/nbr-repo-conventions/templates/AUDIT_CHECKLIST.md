@@ -173,7 +173,7 @@ Applies when the repo has a GitHub remote and any kit piece exists. Shell checks
 - [ ] The commit scopes in `repo-commit` match `git log` since the last tag. (workflow.md#commits)
 - [ ] The commit skill's sentence on hooks matches what the hooks run. (git.md#verify-scopes)
 - [ ] An end-to-end suite outside the CI-parity command is named in the commit skill, with when to run it and that a failure updates the suite in the same commit; a suite no skill runs rots unnoticed. (workflow.md#project-skills)
-- [ ] `AGENTS.md` holds no commit or changelog rules; a commit suffix rule lives in `repo-commit`. (workflow.md#commits)
+- [ ] No instruction file (`AGENTS.md`, `CLAUDE.md`, `CONTRIBUTING.md`) declares commit or changelog rules; a suffix rule lives in `repo-commit`. A grammar that contradicts Conventional Commits next to a release-please config is Broken. (workflow.md#commits)
 - [ ] `release-please-config.json` has `include-component-in-tag: false`, no `skip-changelog`, and a `release-type` matching the ecosystem. (workflow.md#ownership)
 - [ ] The commit skill's release-counting types match `changelog-sections`. (workflow.md#commits)
 - [ ] The manifest version equals the latest `v*` tag, the formatter excludes the manifest, and no `bootstrap-sha`, `initial-version`, or `release-as` remains after the first release PR merged. (workflow.md#ownership)
@@ -183,7 +183,8 @@ Applies when the repo has a GitHub remote and any kit piece exists. Shell checks
 - [ ] Release headings use release-please's format, no `## [Unreleased]` block or `---`-only line remains, and the docs lint passes on `*` bullets next to older `-` ones. (workflow.md#changelog)
 - [ ] The newest `CHANGELOG.md` heading is the manifest version; an open release PR (`gh pr list --label "autorelease: pending"`) has `### Highlights` on its branch and matching PR notes, and is not opened by internal-only commits. (workflow.md#changelog)
 - [ ] Each released version's GitHub Release notes (`gh release view v<version>`) match its `CHANGELOG.md` section. (workflow.md#ownership)
-- [ ] Every commit on the default branch since the last tag is a Conventional Commit. (workflow.md#commits)
+- [ ] Every commit on the default branch since the last tag is a Conventional Commit; the finding lists the hashes release-please will skip. (workflow.md#commits)
+- [ ] Ticket or issue keys sit in a trailing subject suffix, never a leading `[KEY]`. (workflow.md#commits)
 - [ ] Each kit file matches its `nbr-repo-setup` template with the project's values filled in. A divergence is project-specific (keep), lag (offer the template update), or lead (propose carrying it back into the template). (workflow.md#project-skills)
 
 ## dependencies

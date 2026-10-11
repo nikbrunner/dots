@@ -15,6 +15,8 @@ Collect, without asking:
 - `GLOSSARY.md`, `docs/`, and a `CONTEXT.md` when an older repo has one: domain names and the docs the commit skill audits.
 - Existing kit pieces: `.agents/skills/*-{commit,changelog,release}`, the release-please files, `release.yml`,
   `CHANGELOG.md`, `docs/releases.md`, and the `.claude/skills` symlink.
+- Declared commit grammar in `AGENTS.md`, `CLAUDE.md` (also `.claude/CLAUDE.md`), and `CONTRIBUTING.md`. A grammar that
+  contradicts Conventional Commits stops the survey: show the conflict and ask before building the kit.
 
 The survey is done when every placeholder below has a proposed value or is marked unused.
 
@@ -31,7 +33,7 @@ The plan carries one table of placeholder values with what each was inferred fro
 | `{{lint_docs}}`      | Docs lint command; drop every line naming it when there is none                                                  | `make lint-docs`                                  |
 | `{{hooks}}`          | One sentence on what the hooks run                                                                               | "The pre-commit hook runs `verify:staged`."       |
 | `{{e2e}}`            | When to run the end-to-end suite `{{check}}` leaves out, and to fix its specs in the same commit; drop when none | "Also run `deno task test:e2e` when ..."          |
-| `{{suffix}}`         | Sentence naming the commit-subject suffix; drop when there is none                                               | "End the subject with ` #<issue>`."               |
+| `{{suffix}}`         | Sentence naming the commit-subject suffix; drop when there is none                                               | "End the subject with ` (#<issue>)`."             |
 | `{{scopes}}`         | Commit scopes from history                                                                                       | `ui`, `config`, `cli`                             |
 | `{{docs}}`           | Docs to check when config, commands, or terms change                                                             | `README.md`, `docs/config.md`                     |
 | `{{release_assets}}` | Release-time asset step for `repo-release` and `docs/releases.md`; drop when there is none                       | "Re-record the screenshots with ..."              |
