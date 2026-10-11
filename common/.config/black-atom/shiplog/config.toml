@@ -1,5 +1,5 @@
 #:schema https://raw.githubusercontent.com/black-atom-industries/shiplog/main/schema.json
-provider = "openrouter"
+provider = "claude-code"
 summary_length = 72
 history_count = 10
 
