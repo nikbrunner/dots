@@ -35,6 +35,8 @@ COMMIT
   nbr-create-pr            PR description: slice title, nested bullets, tests, how to test
 
 SESSION AND AGENTS
+  nbr-plan                 grill ─▶ optional docs ─▶ plan shape ─▶ humanizer ─▶ Plannotator
+                           ▲ the plan-mode hook (~/.plannotator/hooks/compound) points here
   nbr-handoff              handoff doc in <worktree>/handoffs/
   nbr-dispatch             fresh agent in a Herdr workspace
   nbr-afk-implementation   finish approved work while Nik is away

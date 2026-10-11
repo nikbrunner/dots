@@ -1,23 +1,2 @@
 [Plan structure]
-Use this section order in every plan:
-
-## Context
-Explain the problem, what prompted the change, and its intended outcome.
-
-## Approach
-Describe the recommended approach only.
-
-## Files to modify
-List the critical paths that will change.
-
-## Reuse
-Reference existing functions and utilities to use, with paths.
-
-## Steps
-Use an implementation checklist.
-
-## Verification
-Describe end-to-end checks: running the code, automated tests, and relevant manual validation.
-
-[Visual guidance]
-Add a Mermaid diagram immediately after Approach when three or more components interact. Do not add a diagram when the relationship is clear from the text.
+Load the nbr-plan skill and write the plan in its shape, readable by a Product Owner and a Developer: a goal paragraph, decisions, one section per slice with product-language prose first and an Implementation block (including verification) beneath, then out of scope and open questions.
