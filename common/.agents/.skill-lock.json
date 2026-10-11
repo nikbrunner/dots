@@ -143,6 +143,16 @@
       "pluginName": "humanizer",
       "installedAt": "2026-09-24T13:20:24.626Z",
       "updatedAt": "2026-09-24T13:20:24.626Z"
+    },
+    "tuna": {
+      "source": "tunaformac.com",
+      "sourceType": "well-known",
+      "sourceUrl": "https://tunaformac.com/.well-known/skills/tuna/SKILL.md",
+      "skillFolderHash": "",
+      "sourceBaseUrl": "https://tunaformac.com",
+      "wellKnownDigest": "sha256:78ecfdc0f0b508c426ebdc3ab35ed50ae15acbc50b57a22977aa4d5f1acaf93a",
+      "installedAt": "2026-10-11T12:39:00.582Z",
+      "updatedAt": "2026-10-11T12:39:00.582Z"
     }
   },
   "dismissed": {
