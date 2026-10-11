@@ -15,12 +15,24 @@ sortOrders = []
     catalogIdentifier = 'tuna.system-settings'
     level = 1
 
-[hotkeys]
-custom = []
+[hotkeys.app.activate]
+carbonKeyCode = 41
+carbonModifiers = 6912
 
-    [hotkeys.app.activate]
-    carbonKeyCode = 5
-    carbonModifiers = 6912
+[[hotkeys.custom]]
+id = '55815FBD-CA8E-4D95-8454-B73C6AA6C4F6'
+
+    [hotkeys.custom.command]
+    actionIdentifier = 'tuna.common-actions/browse'
+    behavior = 'run'
+    presentation = 'automatic'
+    subjectIdentifiers = [ 'tuna.emoji/emoji.search' ]
+    type = 'savedCommand'
+
+    [hotkeys.custom.shortcut]
+    carbonKeyCode = 14
+    carbonModifiers = 4608
 
 [settings]
+resultListNavigationBindings = 'vimStyle'
 showResultsImmediatelyOnActivation = true
