@@ -46,7 +46,7 @@ export default function (pi: ExtensionAPI) {
       /^run (an? )?(audit|review)(\s|$)/.test(prompt) ||
       /^check .*(quality|conventions|a11y|accessibility)/.test(prompt)
     ) {
-      matches.push("nbr-audit — Requested review scope");
+      matches.push("nbr-repo-audit — Requested review scope");
     }
 
     if (/^(commit|lets commit|let's commit|create a commit)(\s|$)/.test(prompt)) {

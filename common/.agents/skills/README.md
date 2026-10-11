@@ -12,20 +12,16 @@ agents repo; `tldraw-offline` and `terminal-browser` belong to their apps.
 Arrows are references written in the skill files.
 
 ```
-PROJECT SETUP
-  nbr-workflow-kit  setup | audit
-    0 agent setup ───reads───▶ nbr-conventions › agent-tooling
-    1 hooks ─────delegates───▶ nbr-git-hooks
-    2 skills ────generates───▶ <prefix>-commit · <prefix>-changelog · <prefix>-release
-    3 pipeline                 release-please · release.yml · CHANGELOG.md
-  nbr-glossary                 GLOSSARY.md from the conversation
-  nbr-dep-upgrade-skill ─generates─▶ <project> dep-upgrades skill
-
-CONVENTIONS
-  nbr-conventions   knowledge: typescript · react · css · state · tanstack · agent-tooling
+REPO CONVENTIONS
+  nbr-repo-conventions  knowledge: typescript · react · css · state · tanstack ·
+                        agent-tooling · hooks · workflow · dependencies
     templates/AUDIT_CHECKLIST.md · templates/REPORT.md
-          ▲ runs against
-  nbr-audit         read-only, [full|<topic>] [path]
+          ▲ reads                         ▲ runs against
+  nbr-repo-setup [topic]                nbr-repo-audit [topic] [path]   read-only, git/gh queries
+    agent-tooling · hooks                 workflow drift ──compares──▶ nbr-repo-setup/templates
+    workflow ──generates──▶ repo-commit · repo-changelog · repo-release · release-please
+    dependencies ─generates─▶ repo-dep-upgrades
+  nbr-glossary                 GLOSSARY.md from the conversation
 
 COMMIT
   nbr-git-commit-rebuild   history → dirty tree: target, backup, reset, verify
@@ -55,5 +51,5 @@ TOOLS
 ## Adding a skill
 
 Use the installed `skill-creator` and `writing-for-agents` skills. A personal skill gets the `nbr-` prefix; a new convention
-is a topic in `nbr-conventions` with a block in its `AUDIT_CHECKLIST.md`, not a new skill. Update the map when a skill or an
+is a topic in `nbr-repo-conventions` with a block in its `AUDIT_CHECKLIST.md`, not a new skill. Update the map when a skill or an
 arrow changes.

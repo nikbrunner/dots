@@ -1,10 +1,10 @@
 # Lefthook
 
-Use this method after the main skill establishes project control and the intended checks.
+Use this method after the hooks procedure (`../hooks.md`) establishes project control and the intended checks.
 
 ## Sources of truth
 
-Start with the [documentation map](../references/lefthook-docs.md) to select pages by topic and fetch their official raw Markdown. It includes exact paths, version selection, and a tree-discovery fallback. Use the website links below for human browsing.
+Start with the [documentation map](lefthook-docs.md) to select pages by topic and fetch their official raw Markdown. It includes exact paths, version selection, and a tree-discovery fallback. Use the website links below for human browsing.
 
 Verify relevant syntax and installation behavior against the official documentation before changing a project:
 
@@ -74,4 +74,4 @@ Lefthook can generate provider settings during installation. Inspect the generat
 
 ## Verify
 
-Use the installed version's validation command and inspect the effective configuration. Run each configured stage with representative input, using CLI help to determine supported file/ref options. Confirm actual hook installation and failure propagation as described in the main skill.
+Use the installed version's validation command and inspect the effective configuration. Run each configured stage with representative input, using CLI help to determine supported file/ref options. Confirm actual hook installation and failure propagation as described in `../hooks.md`.

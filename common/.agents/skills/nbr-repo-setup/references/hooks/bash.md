@@ -1,6 +1,6 @@
 # Native shell hooks
 
-Use this fallback when the user chooses native hooks or project conventions require them. Keep the check distribution defined in the main skill.
+Use this fallback when the user chooses native hooks or project conventions require them. Keep the stage distribution of the `hooks` topic.
 
 ## References and discovery
 
@@ -28,4 +28,4 @@ For Node projects, integrate installation into the project's existing setup or `
 
 ## Verify
 
-Check executable bits and Git's effective hook directory. Run scripts with representative arguments and input. Verify a failing check blocks the appropriate Git operation in a disposable repository. Direct script execution alone does not prove Git wiring. Follow the main skill's file-selection and working-tree preservation checks.
+Check executable bits and Git's effective hook directory. Run scripts with representative arguments and input. Verify a failing check blocks the appropriate Git operation in a disposable repository. Direct script execution alone does not prove Git wiring. Follow the file-selection and working-tree preservation checks in `../hooks.md`.

@@ -49,7 +49,7 @@ Knowledge and workflow skills the agent should reach on its own keep a descripti
 ## Feedback loops
 
 An agent works best against fast, deterministic checks: a typecheck script, a lint, Git hooks with staged checks on
-pre-commit and the CI-parity pass on pre-push (`nbr-git-hooks` sets them up).
+pre-commit and the CI-parity pass on pre-push (the [`hooks`](hooks.md) topic).
 
 ## Health
 

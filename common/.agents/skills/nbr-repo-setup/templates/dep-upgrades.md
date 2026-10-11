@@ -1,10 +1,10 @@
 # Generated Skill Template
 
-This is the template used by `nbr-dep-upgrade-skill` when generating a project-level `dep-upgrades` skill. `{{placeholders}}` are replaced with detected/confirmed values.
+The template `nbr-repo-setup dependencies` fills to write `.agents/skills/repo-dep-upgrades/SKILL.md`. `{{placeholders}}` are replaced with detected/confirmed values.
 
 ````markdown
 ---
-name: dep-upgrades
+name: repo-dep-upgrades
 description: Use when upgrading dependencies, reviewing Dependabot/Renovate PRs, or auditing outdated packages in this project.
 metadata:
   argument-hint: "[package-name|all]"
@@ -16,7 +16,7 @@ Upgrade dependencies with changelog review, verification, and safe commits.
 
 ## Arguments
 
-The argument (`$ARGUMENTS` in Claude Code, or `/skill:dep-upgrades` args in Pi) — optional package name(s) to upgrade. Empty to review all outdated deps.
+The argument (`$ARGUMENTS` in Claude Code, or `/skill:repo-dep-upgrades` args in Pi) — optional package name(s) to upgrade. Empty to review all outdated deps.
 
 ## Ecosystem
 
@@ -48,14 +48,15 @@ Run the outdated command and gather Dependabot PRs if applicable:
 
 ### 3. Per-Upgrade Checklist
 
-Research changelog, check usage in project (`grep` for imports), upgrade, verify, report, commit:
+Research changelog, check usage in project (`grep` for imports), upgrade, verify, report:
 
 ```bash
 {{upgrade_command}} {{package}}@latest
 {{verify_command}}
-git add -A
-git commit -m "{{commit_prefix}} upgrade {{package}} from X to Y"
 ```
+
+Commit a green upgrade only after approval, staging the manifest, the lock file, and the code the upgrade required, as
+`{{commit_prefix}} upgrade {{package}} from X to Y`.
 
 ### 4. Summary
 

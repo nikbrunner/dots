@@ -122,7 +122,7 @@ A repo that already has a release tool keeps it, configured to leave existing no
 them, keeping the notes." Drop it when the project ships no artifacts.
 
 Publishing to a package registry (npm, JSR, crates.io, PyPI) is a separate decision with its own credentials. Add it only
-when Nik asks for it.
+when the maintainer asks for it.
 
 ## `CHANGELOG.md`
 
@@ -143,7 +143,7 @@ when its generated description differs, so change the PR description and rerun t
 ## Actions permission
 
 release-please opens its PR with `GITHUB_TOKEN`, which needs the repository to let Actions create pull requests. This changes
-a repo-level setting and needs admin access, so it runs only after Nik says yes:
+a repo-level setting and needs admin access, so it runs only after the maintainer says yes:
 
 ```sh
 gh api --method PUT "/repos/{{repo}}/actions/permissions/workflow" \

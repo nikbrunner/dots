@@ -84,3 +84,44 @@ Each rule is a target state; classify every rule in a topic's block with `path:l
 - [ ] Skills and enforcement name only files, commands, and tools that exist in the repo. (agent-tooling.md#health)
 - [ ] A skill only the human starts sets `disable-model-invocation: true`. (agent-tooling.md#where-an-instruction-belongs)
 - [ ] Fast checks exist for the agent to run: a typecheck or lint command, and Git hooks on pre-commit and pre-push. (agent-tooling.md#feedback-loops)
+
+## hooks
+
+- [ ] One hook manager is active: Lefthook in a repo under the maintainer's control, otherwise the repo's established tool. (hooks.md#control)
+- [ ] Hooks are installed: `git config --get core.hooksPath` or the Lefthook install points Git at the configured hooks. (hooks.md#installation)
+- [ ] Pre-commit runs fast checks scoped to staged files, read-only unless an existing autofix hook was kept by agreement. (hooks.md#stages)
+- [ ] Pre-push runs the CI-parity command. (hooks.md#stages)
+- [ ] Hooks call existing scripts or tasks, and every command they name exists. (hooks.md#stages)
+- [ ] A fresh clone installs the hooks through the project's setup, and the contributor instructions name it. (hooks.md#installation)
+
+## workflow
+
+Applies when the repo has a GitHub remote and any kit piece exists. Shell checks use read-only `git` and `gh`.
+
+- [ ] `.agents/skills/repo-{commit,changelog,release}/SKILL.md` and `repo-changelog/references/curated-release.md` exist, and each `name` matches its directory. (workflow.md)
+- [ ] Every relative link in the kit's skills and `docs/releases.md` resolves; a skill that lives only in the global directory (`humanizer`) is named, not linked. (workflow.md#project-skills)
+- [ ] Every skill the kit names exists in `.agents/skills/` or `~/.claude/skills/`; the step that calls a missing one silently does nothing. (workflow.md#project-skills)
+- [ ] No `{{` placeholder remains, and every command the skills run exists: Makefile targets, `package.json` scripts, `mise` tasks. (workflow.md#project-skills)
+- [ ] The commit scopes in `repo-commit` match `git log` since the last tag. (workflow.md#commits)
+- [ ] The commit skill's sentence on hooks matches what the hooks run. (hooks.md#stages)
+- [ ] An end-to-end suite outside the CI-parity command is named in the commit skill, with when to run it and that a failure updates the suite in the same commit; a suite no skill runs rots unnoticed. (workflow.md#project-skills)
+- [ ] `AGENTS.md` holds no commit or changelog rules; a commit suffix rule lives in `repo-commit`. (workflow.md#commits)
+- [ ] `release-please-config.json` has `include-component-in-tag: false`, no `skip-changelog`, and a `release-type` matching the ecosystem. (workflow.md#ownership)
+- [ ] The commit skill's release-counting types match `changelog-sections`. (workflow.md#commits)
+- [ ] The manifest version equals the latest `v*` tag, the formatter excludes the manifest, and no `bootstrap-sha`, `initial-version`, or `release-as` remains after the first release PR merged. (workflow.md#ownership)
+- [ ] A workflow runs the CI-parity command on pushes to the default branch and on pull requests, which gates the release PR. (workflow.md#ownership)
+- [ ] `release.yml` points at both `.github/` files and runs on the default branch; a publish job only attaches artifacts, no step edits the notes, and a release tool keeps existing notes. (workflow.md#ownership)
+- [ ] `gh api /repos/<owner>/<repo>/actions/permissions/workflow` reports `can_approve_pull_request_reviews: true`. (workflow.md#ownership)
+- [ ] Release headings use release-please's format, no `## [Unreleased]` block or `---`-only line remains, and the docs lint passes on `*` bullets next to older `-` ones. (workflow.md#changelog)
+- [ ] The newest `CHANGELOG.md` heading is the manifest version; an open release PR (`gh pr list --label "autorelease: pending"`) has `### Highlights` on its branch and matching PR notes, and is not opened by internal-only commits. (workflow.md#changelog)
+- [ ] Each released version's GitHub Release notes (`gh release view v<version>`) match its `CHANGELOG.md` section. (workflow.md#ownership)
+- [ ] Every commit on the default branch since the last tag is a Conventional Commit. (workflow.md#commits)
+- [ ] Each kit file matches its `nbr-repo-setup` template with the project's values filled in. A divergence is project-specific (keep), lag (offer the template update), or lead (propose carrying it back into the template). (workflow.md#project-skills)
+
+## dependencies
+
+Applies when a `repo-dep-upgrades` skill exists.
+
+- [ ] `.agents/skills/repo-dep-upgrades/SKILL.md` exists, and its outdated, upgrade, and verification commands exist. (dependencies.md)
+- [ ] Its commit prefix matches the repo's commit convention. (dependencies.md)
+- [ ] When Dependabot or Renovate is configured, the skill covers its PRs. (dependencies.md)
