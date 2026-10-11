@@ -4,7 +4,11 @@ Use exactly these H2 headings. Every Broken, Missing, Deviation, and Unverified 
 
 ## Scope
 
-Topics audited, the paths covered, and the commit (`git rev-parse --short HEAD`).
+Mode (`audit` or `setup`), topics covered, the paths, and the commit (`git rev-parse --short HEAD`).
+
+## Verdict
+
+One short assessment of where the project stands.
 
 ## Findings
 
@@ -22,15 +26,18 @@ One block per topic, in checklist order:
 
 | Class      | Meaning                                                             | Severity                        |
 | ---------- | ------------------------------------------------------------------- | ------------------------------- |
-| Broken     | Code violates a rule in a way that blocks or risks the work         | high                            |
-| Missing    | A required piece is absent                                          | high, or medium for a small gap |
-| Deviation  | The project works differently from the convention                   | low when a stated reason exists |
+| Broken     | The convention is followed but does not work: unwired, unmounted, or failing at runtime | high |
+| Missing    | A convention expects it and the project has nothing there           | high                            |
+| Deviation  | It works, and differs from what a convention says                   | high; lower only with a stated reason, named in the entry |
 | Present    | The rule is met                                                     | none; one line with evidence    |
-| Unverified | Static reading cannot establish it; the next action names the check | as the unknown risks            |
+| Unverified | It could not be checked; the next action names the check            | as the unknown risks; never folded into another class |
+
+Broken, Missing, and Deviation are high by default: the project adopted these conventions, so a gap is not a preference.
 
 ## Suggestions
 
-Anything noticed while reading that no checklist rule covers. Low priority, never mixed into Findings.
+Real improvements no checklist rule asks for. Never high severity, never mixed into Findings, never a reason to hold up the
+work.
 
 ## Reviewer notes
 

@@ -13,13 +13,15 @@ Arrows are references written in the skill files.
 
 ```
 REPO CONVENTIONS
-  nbr-repo-conventions  knowledge: typescript · react · css · state · tanstack ·
-                        agent-tooling · hooks · workflow · dependencies
+  nbr-repo-conventions  knowledge: typescript · react · css · state · tanstack · validation ·
+                        authentication · testing · assets · tooling · npm-project · git ·
+                        docs-structure · agent-tooling · workflow · dependencies
     templates/AUDIT_CHECKLIST.md · templates/REPORT.md
           ▲ reads                         ▲ runs against
   nbr-repo-setup [topic]                nbr-repo-audit [topic] [path]   read-only, git/gh queries
-    agent-tooling · hooks                 workflow drift ──compares──▶ nbr-repo-setup/templates
+    agent-tooling · npm-project · git     workflow drift ──compares──▶ nbr-repo-setup/templates
     workflow ──generates──▶ repo-commit · repo-changelog · repo-release · release-please
+    docs-structure
     dependencies ─generates─▶ repo-dep-upgrades
   nbr-glossary                 GLOSSARY.md from the conversation
 

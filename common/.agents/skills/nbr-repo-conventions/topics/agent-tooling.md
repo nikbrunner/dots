@@ -15,7 +15,9 @@ live in [`agent-tooling/claude-code.md`](agent-tooling/claude-code.md) and [`age
 - `AGENTS.md` and `.agents/skills/` are agent-neutral and canonical. Agent-specific config lives only in that agent's own
   directory: `.claude/settings.json`, `.pi/settings.json`, `.pi/extensions/`.
 - `.claude/skills` is a relative symlink, so it survives clones and worktrees. Pi discovers `.agents/skills/` on its own.
-- Project skills carry the `repo-` prefix (`repo-commit`); personal global skills carry `nbr-`.
+- A `CLAUDE.md`, when present, is only a symlink to `AGENTS.md`.
+- Each skill's `name` matches its directory. Project skills carry the `repo-` prefix (`repo-commit`); personal global
+  skills carry `nbr-`.
 
 ## AGENTS.md
 
@@ -46,10 +48,19 @@ and pointers to skills and docs with the condition for reading them.
 A skill only the human should start sets `disable-model-invocation: true`, which keeps its description out of every session.
 Knowledge and workflow skills the agent should reach on its own keep a description that names their triggers.
 
+## Agent hooks
+
+- Read the host's current hook docs before adding or adapting a hook: [Claude Code](https://code.claude.com/docs/en/hooks),
+  [Codex](https://learn.chatgpt.com/docs/hooks).
+- Read existing registrations first. When the project already covers an event, adapt that registration instead of stacking
+  a second hook on it.
+- Codex runs project hooks only after the project is trusted and each script is approved through `/hooks`. A changed hook
+  script needs that review again.
+
 ## Feedback loops
 
-An agent works best against fast, deterministic checks: a typecheck script, a lint, Git hooks with staged checks on
-pre-commit and the CI-parity pass on pre-push (the [`hooks`](hooks.md) topic).
+An agent works best against fast, deterministic checks: a typecheck script, a lint, Git hooks with fast checks on
+pre-commit and the CI-parity pass on pre-push (the [`git`](git.md) topic).
 
 ## Health
 

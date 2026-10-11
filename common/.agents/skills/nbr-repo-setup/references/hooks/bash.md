@@ -1,6 +1,6 @@
 # Native shell hooks
 
-Use this fallback when the user chooses native hooks or project conventions require them. Keep the stage distribution of the `hooks` topic.
+Use this fallback when the user chooses native hooks or project conventions require them. Keep the verify scopes of the `git` topic.
 
 ## References and discovery
 

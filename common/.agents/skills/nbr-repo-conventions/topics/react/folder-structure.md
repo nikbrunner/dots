@@ -20,7 +20,7 @@ src/
 
 ## Multi-File Components
 
-When a component has multiple associated files, group them in a folder.
+A one-file component stays a file in its group. A component with parts, styles, or tests gets a folder.
 
 ### Preferred: Named files + re-export index
 
@@ -43,13 +43,12 @@ Why this over `index.tsx` as the component file:
 
 ### Alternative: Flat files (small projects)
 
-For simple projects or single-file components, folders are optional:
+A component with no styles, parts, or tests stays a single file next to its siblings:
 
 ```
 components/
-├── button.tsx
-├── button.module.css
-├── button.stories.tsx
+├── divider.tsx
+├── spacer.tsx
 ```
 
 ## Co-Located Sub-Components
@@ -100,3 +99,15 @@ Note: Don't colocate hooks in route directories — file-based routers (TanStack
 - Components are PascalCase named exports (`export function Button`); `index.ts` re-exports them by name
 - The folder name IS the component name, in kebab-case
 - A project with an established different scheme keeps it; be consistent within a project
+
+## Imports
+
+Siblings import with `./`; everything else in `src/` imports through the `#/` alias, never `../`:
+
+```ts
+import { Button } from "#/components/button";
+import { formatDate } from "./format-date";
+```
+
+The alias is wired once, through `package.json`'s `imports` field and the matching TypeScript paths (see the `npm-project`
+topic).

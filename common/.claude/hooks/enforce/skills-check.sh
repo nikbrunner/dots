@@ -12,7 +12,7 @@ matches=()
 
 if [[ "$prompt_lower" =~ ^(implement|build|refactor|fix|add|migrate|remove|delete|update|upgrade)\  ||
     "$prompt_lower" =~ ^can\ you\ (implement|build|fix|add)\  ]]; then
-    matches+=("Implementation: load the project's convention skills and the matching nbr-repo-conventions topics before editing (typescript, react, css, state, tanstack). Keep selection to the code being changed.")
+    matches+=("Implementation: load the project's convention skills and the matching nbr-repo-conventions topics before editing (typescript, react, css, state, tanstack, validation, testing). Keep selection to the code being changed.")
 fi
 
 if [[ "$prompt_lower" =~ ^(use\ tdd|red.green.refactor|write\ tests?\ first|test.driven)([[:space:][:punct:]]|$) ||

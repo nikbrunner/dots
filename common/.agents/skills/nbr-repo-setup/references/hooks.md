@@ -1,7 +1,7 @@
 # Hooks setup
 
-Builds the hooks the `hooks` topic of `nbr-repo-conventions` describes: who controls the repo decides the manager, and the
-stage table decides where each check runs.
+Builds the hooks the `git` topic of `nbr-repo-conventions` describes: who controls the repo decides the manager, and the
+verify scopes decide where each check runs.
 
 ## Inspect
 
@@ -16,8 +16,9 @@ failure behavior, and file modifications. This inventory is the migration checkl
 
 ## Plan
 
-Map each check to a stage and show the mapping with any behavior change. During a migration, preserve coverage and make
-stage moves explicit. Report missing checks; adding a formatter, linter, or test framework is a separate decision.
+Map each check to a scope (`verify:staged` on pre-commit, `verify:full` on pre-push) and show the mapping with any
+behavior change. A writer or re-staging step in an existing hook is a behavior change to propose, not to keep silently.
+During a migration, preserve coverage and make stage moves explicit. Report missing checks; adding a formatter, linter, or test framework is a separate decision.
 
 Read only the applicable method before implementation:
 

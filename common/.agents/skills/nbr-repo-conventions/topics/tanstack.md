@@ -57,6 +57,20 @@ Three complexity levels depending on API surface size. See `tanstack/query-patte
 - Never spread the query object -- return `{ query, derivedValue }` to avoid unnecessary re-renders
 - Single source of truth fetch wrapper for auth, base URL, error handling
 
+### Data Boundary
+
+- The fetch wrapper returns `unknown`. The topic's Zod schema parses it inside `queryFn`/`mutationFn`, and `z.infer`
+  supplies the type (see the `validation` topic). A generic on `fetch` is not validation.
+- Failed requests become an `ApiError` with a machine-readable code; the UI maps the code to text.
+- Query factories are named `get*` (`getAll`, `getById`); mutation factories are bare verbs (`update`, `delete`). No topic
+  prefix, no `Options` suffix: `context.api.user.getDetails()` already carries the context.
+- The API object and the `QueryClient` live in router context. Loaders call `context.api.<topic>.<fn>()`, route components
+  read the same context with `Route.useRouteContext()`.
+- Loaders read the cache with `queryClient.query({ ...factory(), staleTime: "static" })`. `ensureQueryData` and
+  `fetchQuery` are deprecated; without `"static"` the factory's `staleTime` applies, so every loader run waits on the
+  network.
+- A mutation where a topic-wide refetch is wrong opts out with `meta: { autoInvalidate: false }` and invalidates exact keys.
+
 ## Form: Core Principles
 
 TanStack Form manages form state with full TypeScript inference -- field names, values, and validation errors are all type-safe. It's headless (no UI opinions), uses render props for fields, and integrates with Standard Schema validators (Zod, Valibot, ArkType).

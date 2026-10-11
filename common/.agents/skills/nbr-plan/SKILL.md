@@ -32,9 +32,8 @@ that after one or two questions.
 
 Ask once whether any decision belongs in the repo's documentation, and propose where. Write only on a yes.
 
-Decisions go into real documentation a teammate reads: the README, or the `docs/<topic>.md` page a reader would open for
-that subject, extended or new. A page has one reader goal and states the current situation with its reason. Code owns
-changing facts such as scripts, types, and config; the doc links to them.
+Decisions go into the repo's real documentation, following the `docs-structure` topic of `nbr-repo-conventions`: the
+`docs/<topic>.md` page a reader would open for that subject, extended or new, with the decision's reason.
 
 ## 3. Write the plan
 

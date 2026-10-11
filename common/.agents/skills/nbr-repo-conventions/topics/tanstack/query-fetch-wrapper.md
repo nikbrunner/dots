@@ -12,10 +12,10 @@ interface RequestOptions extends Omit<RequestInit, "body"> {
   body?: unknown;
 }
 
-export async function apiClient<T>(
+export async function apiClient(
   endpoint: string,
   options: RequestOptions = {},
-): Promise<T> {
+): Promise<unknown> {
   const { body, headers, ...rest } = options;
 
   const response = await fetch(`${API_BASE_URL}${endpoint}`, {
@@ -42,7 +42,7 @@ export async function apiClient<T>(
 - Auth headers (token injection)
 - Content-Type defaults
 - Error normalization (consistent error shape)
-- Response parsing
+- Response decoding to `unknown`; the topic's schema validates it
 
 ## What It Does NOT Handle
 

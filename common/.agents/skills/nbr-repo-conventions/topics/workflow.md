@@ -1,7 +1,7 @@
 # Workflow
 
 The **workflow kit** is everything a repo needs for the agent-driven commit-to-release cycle. It stands on the agent setup
-([`agent-tooling`](agent-tooling.md)) and Git hooks ([`hooks`](hooks.md)), and adds one pipeline in three project skills
+([`agent-tooling`](agent-tooling.md)) and Git hooks ([`git`](git.md)), and adds one pipeline in three project skills
 and four files:
 
 | Piece                                                                 | Job                                                                 |

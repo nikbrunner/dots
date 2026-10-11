@@ -100,5 +100,5 @@ MSG
 )"
 ```
 
-The hook runs its staged checks. If a hook fails, fix the cause, restage, and make a new commit attempt. Do not amend an
+The pre-commit hook runs its checks. If a hook fails, fix the cause, restage, and make a new commit attempt. Do not amend an
 unrelated commit. Confirm the new log entry and final status.

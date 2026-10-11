@@ -19,7 +19,7 @@ If consumed by only one container, co-locate it there instead. See the `react` t
 
 ## Complexity 1: One File Per Endpoint
 
-Best for small API surfaces. Co-locates queries and mutations per topic, with `queryKey` and `queryFn` inside the hook. Once a route loader prefetches a query, its key and fn move into a `queryOptions` factory (Complexity 2), since `ensureQueryData` needs them outside React.
+Best for small API surfaces. Co-locates queries and mutations per topic, with `queryKey` and `queryFn` inside the hook. Once a route loader prefetches a query, its key and fn move into a `queryOptions` factory (Complexity 2), since the loader's `queryClient.query` needs them outside React.
 
 ```
 api/
@@ -253,7 +253,7 @@ api/
 
 Within a topic folder, `queryOptions()`/`mutationOptions()` factories are the
 thing that actually gets reused — a route `loader` calls
-`ensureQueryData(factory())` directly, a component calls
+`queryClient.query({ ...factory(), staleTime: "static" })` directly, a component calls
 `useQuery(factory())`/`useMutation(factory())` through a thin hook. Pull that
 factory layer into its own file, named after the **entity it covers** (not
 generically `api.ts`, and not one file per hook):
@@ -289,7 +289,7 @@ independent caller.
 
 ## Complexity 3: API Folder with Query Option Factories
 
-For large API surfaces or GraphQL. Instead of `useQuery` hooks, export **query option factories** — plain functions that return query options. Consumers (route loaders, components) call `useSuspenseQuery(factory())` or `ensureQueryData(factory())`.
+For large API surfaces or GraphQL. Instead of `useQuery` hooks, export **query option factories** — plain functions that return query options. Consumers (route loaders, components) call `useSuspenseQuery(factory())` or `queryClient.query({ ...factory(), staleTime: "static" })`.
 
 ```
 api/
@@ -377,9 +377,10 @@ export function getBySlug(args: {
 export const Route = createFileRoute("/products/$slug")({
   loader: async ({ params, context }) => {
     // Prefetch in loader — data ready before component renders
-    await context.queryClient.ensureQueryData(
-      context.api.products.getBySlug({ variables: { slug: params.slug } }),
-    );
+    await context.queryClient.query({
+      ...context.api.products.getBySlug({ variables: { slug: params.slug } }),
+      staleTime: "static",
+    });
   },
 });
 

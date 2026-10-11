@@ -9,8 +9,8 @@ Not all state is the same. Where the source of truth lives determines the tool.
 1. **Should this be shareable via URL?** → URL state (TanStack Router search params)
 2. **Does it come from an API?** → Server state (TanStack Query)
 3. **Is it scoped to a subtree and should reset on leave?** → React Context
-4. **Is it shared across unrelated components and persists?** → Client state manager (RTK, Zustand, TanStack Store)
-5. **Is it local to one component?** → `useState`
+4. **Is it local to one component?** → `useState`
+5. **Is it shared across unrelated components and persists?** → Client store (TanStack Store), the last resort
 
 Most projects need far less client state management than they think. URL params often eliminate the need for a dedicated state manager entirely.
 
@@ -30,13 +30,14 @@ in the client store.
 
 ## Client State Libraries
 
-No default library -- choose per project.
+A client store is the last resort: most state belongs in the URL, the server cache, a component, or a Context subtree.
+When one is needed, TanStack Store is the default.
 
 | Library            | Status              | Notes                                                                                    |
 | ------------------ | ------------------- | ---------------------------------------------------------------------------------------- |
 | **Redux Toolkit**  | Proven, used at DCD | Good for complex state with many reducers. Migration from vanilla Redux straightforward. |
 | **Zustand**        | Not tried yet       | Lighter than RTK, minimal boilerplate.                                                   |
-| **TanStack Store** | Available           | Preferred in TanStack ecosystem -- signals-based, tiny bundle.                           |
+| **TanStack Store** | Default             | Signals-based, tiny bundle, fits the TanStack stack.                                     |
 
 The separation principle matters more than the specific library.
 

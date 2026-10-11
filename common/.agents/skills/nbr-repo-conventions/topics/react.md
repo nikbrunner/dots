@@ -31,11 +31,16 @@ Example: a `UserProfileHeader` composing `Avatar` + `UserName` + `EditButton` wi
 
 In route-based architectures (TanStack Start, Next.js, etc.), the **route component IS the container**. Data fetching happens in loaders, orchestration in the route component, and it renders partials/components. A separate `*Container` wrapper is redundant in these setups.
 
-- Route loaders prefetch data (`ensureQueryData`)
+- Route loaders read the cache with `queryClient.query({ ...factory(), staleTime: "static" })`
 - Route components use `useSuspenseQuery` for guaranteed data
 - Route components compose partials, pass data down, wire callbacks
 
 Standalone `*Container` components still make sense for non-route-level orchestration (e.g., a modal that fetches its own data, a widget embedded in a larger page).
+
+## Compose, Don't Configure
+
+Compose small parts instead of one component configured through many boolean props. Shared state lifts to the nearest
+common parent.
 
 ## Data Flow
 

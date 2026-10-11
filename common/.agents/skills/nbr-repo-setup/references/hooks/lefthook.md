@@ -29,26 +29,22 @@ Read the official [configuration reference](https://lefthook.dev/configuration/)
 
 Use the existing supported Lefthook config file, or create `lefthook.yml`. Give jobs meaningful names. Prefer existing scripts/tasks over reproducing their implementation in shell.
 
-Illustrative Node configuration, only when these scripts exist and terminate without watch mode. Use whole-project pre-commit scripts only after verifying they are fast enough for this project. Prefer staged-file selection where supported:
+Illustrative Node configuration, with the `verify:*` scripts of the `npm-project` topic in place and terminating without watch mode. The whole-repo `verify:staged` stays while it is fast; a slow repo switches to staged-file selection:
 
 ```yaml
 pre-commit:
   jobs:
-    - name: format
-      run: npm run format:check
-    - name: lint
-      run: npm run lint
+    - name: verify
+      run: npm run verify:staged
 pre-push:
   jobs:
-    - name: typecheck
-      run: npm run typecheck
-    - name: test
-      run: npm run test
+    - name: verify
+      run: npm run verify:full
 ```
 
 Adapt to the detected package manager. In Deno projects, reuse `deno task` commands or the project's existing Deno checks. In other ecosystems, use their native commands.
 
-Use `{staged_files}` and file filters for checks that accept file arguments. Use `{push_files}` only when the intended check is scoped to pushed files. Keep project-wide checks project-wide. Verify quoting, paths containing spaces, deletions, and no matching files. A selected working-tree file is not necessarily identical to its staged contents; preserve any existing protection for partially staged files and state limitations honestly.
+When pre-commit is scoped to staged files, use `{staged_files}` and file filters for checks that accept file arguments. Use `{push_files}` only when the intended check is scoped to pushed files. Keep project-wide checks project-wide. Verify quoting, paths containing spaces, deletions, and no matching files. A selected working-tree file is not necessarily identical to its staged contents; preserve any existing protection for partially staged files and state limitations honestly.
 
 Default new checks to read-only modes such as `--check`; keep formatting as an explicit developer action. Preserve or explicitly agree changes to existing autofix/staging behavior. Enable parallel execution only for independent checks; use documented sequential flow when one job depends on another.
 
