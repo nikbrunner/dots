@@ -2,7 +2,7 @@ import { atom, read, update } from 'claude-code'
 import type { EngineInterface, Register, RenderChildren } from 'claude-code'
 
 import type { Sub } from '../types'
-import { bar, compact, describeCall, duration, lastProgress, report, shortModel } from './lib'
+import { bar, compact, describeCall, duration, lastProgress, report, shortModel, windowOf } from './lib'
 
 const PANE = 'subagents'
 const STALL_MS = 60_000
@@ -77,7 +77,10 @@ export const register: Register = on => {
       void updateSub($, e.agentId, s => ({
         ...s,
         progress: progress ?? s.progress,
+        effort: typeof e.effort === 'string' ? e.effort : s.effort,
         tokens: s.tokens + tokens,
+        context: u ? tokens : s.context,
+        window: windowOf(e.model),
         lastAt: at,
       }))
     }
@@ -138,6 +141,7 @@ export const register: Register = on => {
           const idle = at - (s.lastAt ?? s.startedAt)
           const isStalled = !isDone && idle > STALL_MS
           const p = s.progress
+          const ctx = s.context && s.window ? Math.round((s.context / s.window) * 100) : undefined
           return (
             <Box flexDirection="column">
               <Text dimColor wrap="truncate-end">
@@ -157,6 +161,7 @@ export const register: Register = on => {
                   'model',
                   <Text>
                     <Text color="success">{s.model}</Text>
+                    {s.effort && <Text dimColor> · {s.effort}</Text>}
                     <Text dimColor> · {s.isBackground ? 'background' : 'foreground'}</Text>
                   </Text>,
                 )}
@@ -179,6 +184,12 @@ export const register: Register = on => {
                 'activity',
                 <Text>
                   <Text>{s.tools ?? 0} tools</Text>
+                  {ctx !== undefined && (
+                    <Text color={ctx >= 80 ? 'warning' : undefined} dimColor={ctx < 80}>
+                      {' '}
+                      · ctx {ctx}%
+                    </Text>
+                  )}
                   <Text dimColor> · {compact(s.tokens ?? 0)} tokens</Text>
                   {!isDone && (
                     <Text color={isStalled ? 'error' : undefined} dimColor={!isStalled}>

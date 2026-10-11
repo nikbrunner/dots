@@ -31,6 +31,11 @@ export function shortModel(id: string): string {
   return m ? `${m[1]} ${m[2]}.${m[3]}` : id
 }
 
+// The step event carries no window size; Haiku runs 200k, every other model here 1M.
+export function windowOf(model: string): number {
+  return /haiku/i.test(model) ? 200_000 : 1_000_000
+}
+
 export function compact(n: number): string {
   if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(1)}M`
   if (n >= 1000) return `${Math.round(n / 1000)}k`

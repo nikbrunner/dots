@@ -1,6 +1,6 @@
 import { expect, test } from 'claude-code/testing'
 
-import { compact, lastProgress, report, shortModel } from '../hooks/lib'
+import { compact, lastProgress, report, shortModel, windowOf } from '../hooks/lib'
 
 test('lastProgress takes the last PROGRESS line', async () => {
   const text = 'PROGRESS: 1/3 · Reading files\nstuff\nPROGRESS: 2/3 · Running tests'
@@ -14,4 +14,9 @@ test('shortModel, compact and report format agent facts', async () => {
   expect(compact(22_671)).toBe('23k')
   expect(compact(1_250_000)).toBe('1.3M')
   expect(report('PROGRESS: 4/4 · Done\n\nSurvey of dots:\n1. ...')).toBe('Survey of dots:\n1. ...')
+})
+
+test('windowOf sizes the context window by model', async () => {
+  expect(windowOf('claude-haiku-5-5')).toBe(200_000)
+  expect(windowOf('claude-opus-5-5')).toBe(1_000_000)
 })

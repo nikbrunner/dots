@@ -5,6 +5,7 @@ export type Sub = {
   type: string
   description: string
   model: string
+  effort?: string
   isBackground: boolean
   status: string
   startedAt: number
@@ -14,6 +15,8 @@ export type Sub = {
   tool?: string
   tools: number
   tokens: number
+  context?: number
+  window?: number
   result?: string
 }
 
