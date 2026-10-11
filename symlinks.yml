@@ -114,6 +114,7 @@ macos:
   macos/.config/zsh/os.zsh: ~/.config/zsh/os.zsh
   macos/.local/bin/open-design-mcp: ~/.local/bin/open-design-mcp
   macos/.local/bin/dinky-windows: ~/.local/bin/dinky-windows
+  macos/.local/bin/dinky-focus-app: ~/.local/bin/dinky-focus-app
   macos/Library/Application Support/Claude/claude_desktop_config.json: ~/Library/Application Support/Claude/claude_desktop_config.json
   macos/Library/LaunchAgents/dev.nbr.zoxide-seed-sync.plist: ~/Library/LaunchAgents/dev.nbr.zoxide-seed-sync.plist
   macos/Library/LaunchAgents/me.proton.pass-ssh-agent.plist: ~/Library/LaunchAgents/me.proton.pass-ssh-agent.plist

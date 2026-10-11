@@ -144,8 +144,8 @@ cmd-shift-9 = 'move-window-to-workspace 9'
 
 cmd-o = 'workspace-back-and-forth'
 ctrl-alt-cmd-shift-r = 'exec-and-forget $HOME/.local/bin/dinky-windows'
-ctrl-alt-cmd-shift-w = 'exec-and-forget open -a Helium'
-ctrl-alt-cmd-shift-space = 'exec-and-forget open -a Ghostty'
+ctrl-alt-cmd-shift-w = 'exec-and-forget $HOME/.local/bin/dinky-focus-app net.imput.helium'
+ctrl-alt-cmd-shift-space = 'exec-and-forget $HOME/.local/bin/dinky-focus-app com.mitchellh.ghostty'
 
 cmd-h = 'focus left'
 cmd-j = 'focus down'

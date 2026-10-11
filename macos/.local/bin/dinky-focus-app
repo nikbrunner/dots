@@ -1,0 +1,16 @@
+#!/bin/sh
+# Focus an app by bundle ID. Starts dinky's Space switch to the app's workspace before activating
+# it, instead of waiting for dinky to follow the activation. Stays put when the app already has a
+# window on the focused workspace; with no window anywhere, just opens the app.
+
+DINKY=/opt/homebrew/bin/dinky
+bundle="$1"
+
+workspaces=$("$DINKY" list-windows --all --app-bundle-id "$bundle" --format '%{workspace}')
+current=$("$DINKY" list-workspaces --focused)
+
+if [ -n "$workspaces" ] && ! printf '%s\n' "$workspaces" | grep -qx "$current"; then
+    "$DINKY" workspace "$(printf '%s\n' "$workspaces" | head -n 1)"
+fi
+
+open -b "$bundle"
