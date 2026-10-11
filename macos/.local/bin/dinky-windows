@@ -1,0 +1,31 @@
+#!/bin/sh
+# Pick an open window from every dinky workspace in Tuna, then switch there and focus its app.
+# dinky reports no window titles, so apps with several windows on one workspace appear once.
+# Needs Tuna's CLI (Settings → General → Command Line).
+
+DINKY=/opt/homebrew/bin/dinky
+TUNA="$HOME/.local/bin/tuna"
+HIDDEN='com.brnbw.Tuna|cc.ffitch.shottr'
+
+rows=$("$DINKY" list-windows --all --format '%{workspace}%{tab}%{app-name}%{tab}%{app-bundle-id}' |
+  grep -vE "	($HIDDEN)$" | sort -u -t '	' -k1,1n -k2,2)
+[ -n "$rows" ] || exit 0
+
+choice=$(printf '%s\n' "$rows" | awk -F '\t' '{ printf "[%s] %s\n", $1, $2 }' | "$TUNA" pick --limit 0 -) || exit 0
+
+line=$(printf '%s\n' "$rows" | awk -F '\t' -v c="$choice" '"[" $1 "] " $2 == c { print; exit }')
+[ -n "$line" ] || exit 1
+
+workspace=$(printf '%s' "$line" | cut -f1)
+bundle=$(printf '%s' "$line" | cut -f3)
+
+# Closing Tuna reactivates the previous app, and dinky follows that activation to its workspace.
+# Wait until Tuna has given up the front, or that activation pulls the switch back.
+i=0
+while [ $i -lt 25 ] && lsappinfo info -only bundleid "$(lsappinfo front)" | grep -q com.brnbw.Tuna; do
+  sleep 0.02
+  i=$((i + 1))
+done
+
+"$DINKY" workspace "$workspace"
+open -b "$bundle"

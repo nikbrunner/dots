@@ -89,6 +89,7 @@ common:
   common/.config/mpd/mpd.conf: ~/.config/mpd/mpd.conf
   common/.config/starship.toml: ~/.config/starship.toml
   common/.config/yazi: ~/.config/yazi
+  common/.config/dinky: ~/.config/dinky
   common/.config/yt-dlp/config: ~/.config/yt-dlp/config
   common/.config/zoxide/seed.txt: ~/.config/zoxide/seed.txt
   common/.plannotator/config.json: ~/.plannotator/config.json
@@ -110,6 +111,7 @@ macos:
   macos/.config/tuna: ~/.config/tuna
   macos/.config/zsh/os.zsh: ~/.config/zsh/os.zsh
   macos/.local/bin/open-design-mcp: ~/.local/bin/open-design-mcp
+  macos/.local/bin/dinky-windows: ~/.local/bin/dinky-windows
   macos/Library/Application Support/Claude/claude_desktop_config.json: ~/Library/Application Support/Claude/claude_desktop_config.json
   macos/Library/LaunchAgents/dev.nbr.zoxide-seed-sync.plist: ~/Library/LaunchAgents/dev.nbr.zoxide-seed-sync.plist
   macos/Library/LaunchAgents/me.proton.pass-ssh-agent.plist: ~/Library/LaunchAgents/me.proton.pass-ssh-agent.plist
