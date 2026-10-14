@@ -147,9 +147,11 @@
     "name": "notes",
     "work": true,
     "session_dirs": [
-      "~/repos/imfusion/brunner/notes"
+      "~/repos/imfusion/brunner/notes",
+      "~/repos/imfusion/brunner/notes/logs/2026",
+      "~/repos/imfusion/brunner/notes/logs/2026/2026.10"
     ],
-    "last_seen": "2026-09-22"
+    "last_seen": "2026-10-14"
   },
   "cp/imfusion-portal": {
     "root": "~/repos/imfusion/cp/imfusion-portal",
@@ -523,7 +525,9 @@
       "~/.herdr/worktrees/web-ui/improve-stop-hook",
       "~/.herdr/worktrees/web-ui/showcase-improvements",
       "~/.herdr/worktrees/web-ui/simplify-documentation",
+      "~/.herdr/worktrees/web-ui/skeleton",
       "~/.herdr/worktrees/web-ui/skills-improvements-ii",
+      "~/.herdr/worktrees/web-ui/table-link-styling-fix",
       "~/.herdr/worktrees/web-ui/tanstack-intent",
       "~/.herdr/worktrees/web-ui/teardown-selftest",
       "~/.herdr/worktrees/web-ui/teardown-skill-selftest",
@@ -539,6 +543,7 @@
       "~/.herdr/worktrees/web-ui/websdk-229-web-ui-remove-manual-prop-type-remappin",
       "~/.herdr/worktrees/web-ui/websdk-236-web-ui-add-a-numberinput-primitive",
       "~/.herdr/worktrees/web-ui/websdk-239-web-ui-replace-custom-cpp-support-with",
+      "~/.herdr/worktrees/web-ui/websdk-tryout-vite-plus",
       "~/.herdr/worktrees/web-ui/worktree-websdk-207-web-ui-setup-tanstack-intent",
       "~/repos/imfusion/websdk/changelog-enforcement",
       "~/repos/imfusion/websdk/cp-154-frontends-add-favicon",
@@ -558,18 +563,24 @@
       "~/repos/imfusion/websdk/web-ui/.workspaces/shadow-hardness-control",
       "~/repos/imfusion/websdk/web-ui/.workspaces/websdk-149-corner-radius-control",
       "~/repos/imfusion/websdk/web-ui/.workspaces/websdk-207-skills",
+      "~/repos/imfusion/websdk/web-ui/ds-artifact/MnBxqCdCKyHVRG4uoZMP3C",
       "~/repos/imfusion/websdk/web-ui/ds-bundle",
       "~/repos/imfusion/websdk/web-ui/node_modules/@base-ui",
+      "~/repos/imfusion/websdk/web-ui/node_modules/iconoir-react/dist/esm/regular",
       "~/repos/imfusion/websdk/web-ui/src/components/navigation-menu/subs",
       "~/repos/imfusion/websdk/web-ui/src/llms/evals/scenarios",
       "~/repos/imfusion/websdk/web-ui/src/llms/skills",
+      "~/repos/imfusion/websdk/web-ui/src/llms/skills/imf-web-ui-conventions",
       "~/repos/imfusion/websdk/websdk-169-storybook-controls",
       "~/repos/imfusion/websdk/websdk-216-web-ui-adjust-component-defaults-the-po",
       "~/repos/imfusion/websdk/websdk-224-public-release",
       "~/repos/imfusion/websdk/websdk-228-color-mode-spike",
       "~/repos/imfusion/websdk/websdk-228-color-mode-spike/node_modules/storybook/dist",
-      "~/repos/imfusion/websdk/websdk-256-trigger-ci-pr-release-tags"
+      "~/repos/imfusion/websdk/websdk-255-typo-inherit",
+      "~/repos/imfusion/websdk/websdk-256-trigger-ci-pr-release-tags",
+      "~/repos/imfusion/websdk/websdk-267-icon-design-system",
+      "~/repos/imfusion/websdk/websdk-267-icon-design-system/src/icons/svg/regular"
     ],
-    "last_seen": "2026-10-07"
+    "last_seen": "2026-10-13"
   }
 }
