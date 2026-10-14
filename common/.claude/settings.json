@@ -182,7 +182,6 @@
     "typescript-lsp@claude-plugins-official": true,
     "storybook@storybook": true,
     "vercel@claude-plugins-official": true,
-    "filetree@claude-code-filetree": true,
     "cache-tax@claude-code-mods": true
   },
   "extraKnownMarketplaces": {
@@ -232,16 +231,7 @@
   },
   "alwaysThinkingEnabled": false,
   "advisorModel": "opus",
-  "pluginConfigs": {
-    "filetree@claude-code-filetree": {
-      "options": {
-        "activity": "reads and writes",
-        "glyphs": "auto",
-        "follow": "on",
-        "column": "date"
-      }
-    }
-  },
+  "pluginConfigs": {},
   "autoUpdatesChannel": "latest",
   "tui": "fullscreen",
   "voice": {
