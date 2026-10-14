@@ -79,6 +79,11 @@ run = 'layout floating'
 app-id = 'com.brnbw.Tuna'
 run = 'layout floating'
 
+[[rules]]
+app-id = 'com.itaysoft.CameraController'
+run = 'layout floating'
+
+# Workspace names show in the bar from sketchybar's plugins/dinky_spaces.sh.
 # Workspace 3: Notes
 [[rules]]
 app-id = 'md.obsidian'             # Obsidian
@@ -95,6 +100,10 @@ run = 'move-window-to-workspace 4'
 
 [[rules]]
 app-id = 'net.imput.helium.app.cinhimbnkkaeohfgghhklpknlkffjgod' # YouTube Music (Helium web app)
+run = 'move-window-to-workspace 4'
+
+[[rules]]
+app-id = 'com.culturedcode.ThingsMac' # Things
 run = 'move-window-to-workspace 4'
 
 # Workspace 5: Social
@@ -155,6 +164,8 @@ cmd-shift-h = 'move left'
 cmd-shift-j = 'move down'
 cmd-shift-k = 'move up'
 cmd-shift-l = 'move right'
+ctrl-alt-shift-h = 'move-window-to-display prev --follow'
+ctrl-alt-shift-l = 'move-window-to-display next --follow'
 
 cmd-f = 'fullscreen'
 
