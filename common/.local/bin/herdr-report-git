@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+# Report the git repo, branch and linked worktree of $PWD as herdr pane tokens
+# ($parent, $branch, $worktree) for the agent sidebar rows.
+
+[[ "$HERDR_ENV" == "1" && -n "$HERDR_PANE_ID" ]] || exit 0
+
+parent="" branch="" worktree=""
+common_dir="$(git rev-parse --path-format=absolute --git-common-dir 2>/dev/null)"
+if [[ -n "$common_dir" ]]; then
+	parent="$(cd "$common_dir/.." 2>/dev/null && pwd -P)"
+	parent="${parent##*/}"
+	branch="$(git branch --show-current 2>/dev/null)"
+	git_dir="$(git rev-parse --absolute-git-dir 2>/dev/null)"
+	if [[ "$git_dir" != "$common_dir" ]]; then
+		worktree="$(git rev-parse --show-toplevel 2>/dev/null)"
+		worktree="${worktree##*/}"
+		[[ "$worktree" == "$branch" ]] && worktree="worktree"
+	fi
+fi
+
+args=()
+for name in parent branch worktree; do
+	if [[ -n "${!name}" ]]; then
+		args+=(--token "$name=${!name}")
+	else
+		args+=(--clear-token "$name")
+	fi
+done
+
+herdr pane report-metadata "$HERDR_PANE_ID" --source user:git "${args[@]}" >/dev/null 2>&1
+exit 0

@@ -27,13 +27,14 @@ blue = "#00a3e9"
 teal = "#a09a95"
 mauve = "#7e7974"
 peach = "#18171f"
+# END BLACK ATOM LIVERY THEME
 
 [ui.sidebar.spaces]
 row_gap = 1
 rows = [
   [
     "state_icon",
-    { token = "workspace", bold = true, fg = "#fd4200" },
+    { token = "workspace", bold = true },
   ],
   [
     "branch",
@@ -45,10 +46,14 @@ rows = [
 row_gap = 1
 rows = [
   [
-    { token = "$parent", bold = true, dim = false, fg = "#fd4200" },
+    { token = "$parent", bold = true, dim = false },
+    { token = "$branch", dim = true },
   ],
   [
-    { token = "workspace", bold = false, dim = true },
+    { token = "$worktree", dim = true },
+  ],
+  [
+    "terminal_title_stripped",
   ],
   [
     "state_icon",
@@ -56,7 +61,6 @@ rows = [
     "agent",
   ],
 ]
-# END BLACK ATOM LIVERY THEME
 
 [update]
 channel = "preview"
