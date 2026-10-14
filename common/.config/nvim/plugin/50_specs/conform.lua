@@ -1,3 +1,24 @@
+-- Vite+ keeps Oxfmt options in the `fmt` block of vite.config.*, which only `vp fmt` reads
+local vp_cmd = "vp_fmt"
+local vp_configs = { "vite.config.ts", "vite.config.mts", "vite.config.js", "vite.config.mjs" }
+
+---@param path string
+---@return string|nil root The directory holding a vite.config.* with a `fmt` block and a local `vp`
+local function vp_fmt_root(path)
+	local config = vim.fs.find(vp_configs, { upward = true, path = path })[1]
+	if not config then
+		return nil
+	end
+
+	local root = vim.fs.dirname(config)
+	if vim.fn.executable(root .. "/node_modules/.bin/vp") == 0 then
+		return nil
+	end
+
+	local source = table.concat(vim.fn.readfile(config), "\n")
+	return source:find("%f[%w_]fmt%s*:") and root or nil
+end
+
 local oxfmt_cmd = "oxfmt"
 local oxfmt_configs = { ".oxfmtrc.json", ".oxfmtrc.jsonc", "oxfmt.config.ts", "oxfmt.config.mts" }
 
@@ -31,11 +52,16 @@ Edit.later(function()
 
 	local function handle_shared_formatter(buf)
 		-- NOTE: Priority order:
-		-- 1. Oxfmt (explicit formatting config)
-		-- 2. Prettier (explicit formatting config)
-		-- 3. Deno (all-in-one tool for Deno projects)
-		-- 4. Biome (all-in-one tool, but in some projects only used for linting)
+		-- 1. Vite+ (`fmt` block in vite.config.*)
+		-- 2. Oxfmt (explicit formatting config)
+		-- 3. Prettier (explicit formatting config)
+		-- 4. Deno (all-in-one tool for Deno projects)
+		-- 5. Biome (all-in-one tool, but in some projects only used for linting)
 		local buf_fname = vim.uri_to_fname(vim.uri_from_bufnr(buf))
+
+		if vp_fmt_root(buf_fname) then
+			return { vp_cmd, stop_after_first = true }
+		end
 
 		local is_oxfmt = conform.get_formatter_info(oxfmt_cmd, buf).available
 		local oxfmt_config = vim.fs.find(oxfmt_configs, { upward = true, path = buf_fname })[1]
@@ -112,6 +138,16 @@ Edit.later(function()
 
 	conform.setup({
 		log_level = vim.log.levels.DEBUG,
+		formatters = {
+			[vp_cmd] = {
+				command = require("conform.util").from_node_modules("vp"),
+				args = { "fmt", "--stdin-filepath", "$FILENAME" },
+				stdin = true,
+				cwd = function(_, ctx)
+					return vp_fmt_root(ctx.filename)
+				end,
+			},
+		},
 		format_on_save = function(bufnr)
 			if vim.g.vin_autoformat_enabled and not vim.b[bufnr].vin_autoformat_disabled then
 				return { timeout_ms = 500, lsp_fallback = "fallback" }
@@ -156,24 +192,27 @@ Edit.later(function()
 
 	vim.keymap.set("n", "<leader>daf", function()
 		local view = vim.fn.winsaveview()
+		local vp_root = vp_fmt_root(vim.api.nvim_buf_get_name(0))
 		local oxfmt = conform.get_formatter_info(oxfmt_cmd, 0)
 
-		if oxfmt.available then
+		if vp_root or oxfmt.available then
 			-- oxfmt applies the config's `ignorePatterns` even on stdin, so run it from the
 			-- config root with only the basename to keep path-based patterns from matching
-			local result = vim.system({
-				oxfmt.command,
+			local cmd = vp_root and { vp_root .. "/node_modules/.bin/vp", "fmt" } or { oxfmt.command }
+			vim.list_extend(cmd, {
 				"--stdin-filepath",
 				vim.fs.basename(vim.api.nvim_buf_get_name(0)),
 				"--ignore-path",
 				"/dev/null",
-			}, {
-				cwd = vim.fs.root(0, oxfmt_configs) or vim.fn.getcwd(),
+			})
+
+			local result = vim.system(cmd, {
+				cwd = vp_root or vim.fs.root(0, oxfmt_configs) or vim.fn.getcwd(),
 				stdin = vim.api.nvim_buf_get_lines(0, 0, -1, false),
 			}):wait()
 
 			if result.code ~= 0 then
-				vim.notify(result.stderr, vim.log.levels.ERROR, { title = "oxfmt" })
+				vim.notify(result.stderr, vim.log.levels.ERROR, { title = vp_root and "vp fmt" or "oxfmt" })
 				return
 			end
 
@@ -183,5 +222,5 @@ Edit.later(function()
 		end
 
 		vim.fn.winrestview(view)
-	end, { desc = "[F]ormat with oxfmt or Prettier (ignoring ignore files)" })
+	end, { desc = "[F]ormat with vp fmt, oxfmt or Prettier (ignoring ignore files)" })
 end)
