@@ -1,11 +1,10 @@
-vim.opt_local.wrap = false
+vim.opt_local.wrap = true
 vim.opt_local.linebreak = true
-vim.opt_local.textwidth = 125
+vim.opt_local.breakindent = true
+vim.opt_local.breakindentopt = "list:-1"
+vim.opt_local.textwidth = 0
 vim.opt_local.formatexpr = ""
 vim.opt_local.conceallevel = 3
-
-vim.opt_local.formatoptions:append("t") -- Auto-wrap text using textwidth
-vim.opt_local.formatoptions:remove("l") -- Allow wrapping of long lines in insert mode
 
 local map = vim.keymap.set
 
