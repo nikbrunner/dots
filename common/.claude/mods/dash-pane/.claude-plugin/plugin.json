@@ -2,5 +2,8 @@
   "name": "dash-pane",
   "version": "0.1.0",
   "description": "Session dashboard pane: workspace, git, agent, tasks, limits and cost",
-  "types": "./types/index.d.ts"
+  "types": "./types/index.d.ts",
+  "dependencies": [
+    "toggle-panes"
+  ]
 }

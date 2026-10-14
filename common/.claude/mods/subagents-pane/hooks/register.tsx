@@ -10,6 +10,7 @@ const LABEL = 9
 
 const subs = atom({ plugin: 'subagents-pane', key: 'subs' } as const, [])
 const tick = atom({ plugin: 'subagents-pane', key: 'tick' } as const, 0)
+const panesHidden = { plugin: 'toggle-panes', key: 'isHidden' } as const
 
 const isOk = (status: string) => status === 'completed' || status === 'idle'
 
@@ -45,6 +46,14 @@ export const register: Register = on => {
     return { text: 'Subagents pane opened.' }
   })
 
+  on('state.set', { plugin: 'toggle-panes', key: 'isHidden' }, async ($, e, next) => {
+    const result = await next(e)
+    if (!result.value?.isSet) return result
+    if (e.value) await $.ui.close({ id: PANE })
+    else if ((await read($, subs)).length) await $.ui.open({ id: PANE, title: 'Subagents' })
+    return result
+  })
+
   on('agent.spawn', async ($, e, next) => {
     const result = await next(e)
     if (result.agentId) {
@@ -62,7 +71,7 @@ export const register: Register = on => {
         tokens: 0,
       }
       await update($, subs, list => [...list, sub].slice(-20))
-      void $.ui.open({ id: PANE, title: 'Subagents' })
+      if (!(await read($, panesHidden))) void $.ui.open({ id: PANE, title: 'Subagents' })
     }
     return result
   })

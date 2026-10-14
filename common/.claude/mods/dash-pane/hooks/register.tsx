@@ -25,6 +25,7 @@ const lines = atom({ plugin: 'dash-pane', key: 'lines' } as const, {
   removed: 0,
 })
 const tick = atom({ plugin: 'dash-pane', key: 'tick' } as const, 0)
+const panesHidden = { plugin: 'toggle-panes', key: 'isHidden' } as const
 const work = atom({ plugin: 'dash-pane', key: 'work' } as const, {
   cwd: '',
   turns: 0,
@@ -191,7 +192,7 @@ export const register: Register = on => {
       name: 'dash-pane',
       description: 'Open the session dashboard pane',
     })
-    void $.ui.open({ id: DASH, title: 'Dash' })
+    if (!(await read($, panesHidden))) void $.ui.open({ id: DASH, title: 'Dash' })
     await loadAgent($)
     void refreshTitle($)
     void refreshWork($)
@@ -205,6 +206,12 @@ export const register: Register = on => {
   on('command.run', { command: 'dash-pane' }, async $ => {
     await $.ui.open({ id: DASH, title: 'Dash' })
     return { text: 'Dash pane opened.' }
+  })
+
+  on('state.set', { plugin: 'toggle-panes', key: 'isHidden' }, async ($, e, next) => {
+    const result = await next(e)
+    if (result.value?.isSet) await (e.value ? $.ui.close({ id: DASH }) : $.ui.open({ id: DASH, title: 'Dash' }))
+    return result
   })
 
   on('classic.UserPromptSubmit', async ($, e, next) => {
