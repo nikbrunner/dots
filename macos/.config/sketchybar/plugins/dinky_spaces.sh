@@ -10,6 +10,16 @@ source "$CONFIG_DIR/plugins/icon_map.sh"
 
 DINKY=/opt/homebrew/bin/dinky
 
+workspace_name() {
+    case "$1" in
+    1) echo Web ;;
+    2) echo Code ;;
+    3) echo Notes ;;
+    4) echo Media ;;
+    5) echo Social ;;
+    esac
+}
+
 # Color the requested workspace before dinky confirms the switch, so the bar
 # follows a burst of requests without waiting for each one to land.
 if [ "$SENDER" = dinky_workspace_changing ] && [ -n "$DINKY_DISPLAY" ] && [ -n "$DINKY_WORKSPACE" ]; then
@@ -18,10 +28,10 @@ if [ "$SENDER" = dinky_workspace_changing ] && [ -n "$DINKY_DISPLAY" ] && [ -n "
         item="space.$workspace"
         if [ "$workspace" = "$DINKY_WORKSPACE" ]; then
             args+=(--set "$item" background.drawing=off background.border_width=0
-                icon.color=$SPACE_ACTIVE_COLOR label.color=$SPACE_ACTIVE_COLOR)
+                icon.color="$SPACE_ACTIVE_COLOR" label.color="$SPACE_ACTIVE_COLOR")
         else
             args+=(--set "$item" background.drawing=off background.border_width=0
-                icon.color=$SPACE_INACTIVE_COLOR label.color=$SPACE_INACTIVE_COLOR)
+                icon.color="$SPACE_INACTIVE_COLOR" label.color="$SPACE_INACTIVE_COLOR")
         fi
     done
     [ ${#args[@]} -gt 0 ] && sketchybar "${args[@]}"
@@ -38,20 +48,21 @@ while read -r workspace focused visible monitor is_main; do
     # dinky's monitor-id and sketchybar's arrangement-id both count displays in WindowServer's order.
     args+=(--set "$item" display="$monitor")
     if [ "$is_main" = true ]; then
-        args+=(--set "$item" icon="[$workspace]")
+        name=$(workspace_name "$workspace")
+        args+=(--set "$item" icon="[$workspace${name:+ $name}]")
     else
         args+=(--set "$item" icon="↖")
     fi
 
     if [ "$focused" = true ]; then
         args+=(--set "$item" background.drawing=off background.border_width=0
-            icon.color=$SPACE_ACTIVE_COLOR label.color=$SPACE_ACTIVE_COLOR)
+            icon.color="$SPACE_ACTIVE_COLOR" label.color="$SPACE_ACTIVE_COLOR")
     elif [ "$visible" = true ]; then
         args+=(--set "$item" background.drawing=off background.border_width=0
-            icon.color=$SPACE_ACTIVE_COLOR label.color=$SPACE_ACTIVE_COLOR)
+            icon.color="$SPACE_ACTIVE_COLOR" label.color="$SPACE_ACTIVE_COLOR")
     else
         args+=(--set "$item" background.drawing=off background.border_width=0
-            icon.color=$SPACE_INACTIVE_COLOR label.color=$SPACE_INACTIVE_COLOR)
+            icon.color="$SPACE_INACTIVE_COLOR" label.color="$SPACE_INACTIVE_COLOR")
     fi
 
     icons=""
