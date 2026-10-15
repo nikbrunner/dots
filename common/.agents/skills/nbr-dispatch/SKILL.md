@@ -53,7 +53,24 @@ target_repo=$(git -C "$candidate" rev-parse --show-toplevel)
 target_repo=$(cd -- "$target_repo" && pwd -P)
 ```
 
-Ask the user to confirm the resolved absolute target path in the current conversation. For example: “I resolved this to `/Users/nik/repos/acme/project`. Dispatch there?” Do this even for the current checkout. If no candidate is clear or several candidates tie, ask one focused question for the path. Do not open a repository picker and do not create a pane from an unconfirmed inference.
+Ask the user to confirm the resolved absolute target path in the current conversation. For example: “I resolved this to `/Users/nik/repos/acme/project`. Dispatch there?” Do this even for the current checkout, unless a calling skill passes a target the user already confirmed. If no candidate is clear or several candidates tie, ask one focused question for the path. Do not open a repository picker and do not create a pane from an unconfirmed inference.
+
+## Create a worktree
+
+Run this step only when the brief or the calling skill asks for a new worktree. The dispatcher creates it; the worker never does.
+
+Follow the target repository's own worktree convention when its `AGENTS.md` or a start skill it names documents one: naming, base branch, and install step. Without one, derive the primary branch and create a sibling:
+
+```bash
+base=$(git -C "$target_repo" symbolic-ref --short refs/remotes/origin/HEAD | sed 's|^origin/||')
+: "${base:?origin/HEAD is unset; ask the user for the base branch}"
+worktree_path="$(dirname "$target_repo")/<name>"
+git -C "$target_repo" fetch origin "$base"
+git -C "$target_repo" worktree add "$worktree_path" -b "<name>" "origin/$base"
+target_repo=$(cd -- "$worktree_path" && pwd -P)
+```
+
+Confirm the name with the user before creating it, unless the brief or calling skill already confirmed it, then run the repository's install step in the new tree. The new `$target_repo` holds for every later step. A fresh worktree is clean, so skip the state check below. Tell the worker that its location is settled and is this worktree. If dispatch stops after this point, name the created worktree in the report so the user can remove it.
 
 ## Check the target worktree
 
