@@ -29,6 +29,10 @@ url = "git@github.com:nikbrunner/flux.nvim"
 url = "git@github.com:nikbrunner/mdn.nvim"
 
 [[repositories]]
+url = "git@github.com:nikbrunner/skills"
+post_clone = "./setup.sh"
+
+[[repositories]]
 url = "git@github.com:nikbrunner/lazyjira"
 post_clone = "lazyjira-sync"
 

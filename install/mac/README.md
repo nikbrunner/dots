@@ -137,21 +137,12 @@ opencode auth login   # once per provider (OpenRouter, Cerebras, OpenCode); past
 
 pi (`~/.pi/agent/auth.json`), the Codex and Claude MCP configs and `things` resolve their `pass://` references on their own.
 
-## 10. helm + Repos
+## 10. Repos
 
-> [!NOTE]
-> Currently, helm only supports GitHub repos.
-
-```sh
-mkdir -p ~/repos/black-atom-industries/
-git clone git@github.com:black-atom-industries/helm.tmux.git ~/repos/black-atom-industries/helm.tmux
-cd ~/repos/black-atom-industries/helm.tmux && make install
-```
-
-Clone configured repos:
+Clone the repositories declared in `~/.config/lager/config.toml`. Lager comes from mise, the config from the symlinks step. Post-clone hooks install the tools built from those repos (helm among them) and link the `nbr-*` agent skills:
 
 ```sh
-helm setup
+lager ensure
 ```
 
 Seed zoxide with all cloned repo paths (also runs hourly via LaunchAgent):
