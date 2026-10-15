@@ -5,6 +5,7 @@ import { describeCall, oneLine } from './lib'
 
 const MODEL = 'haiku'
 const SUMMARY_INTERVAL_MS = 10_000
+const TITLE_EVERY_TURNS = 3
 
 const title = atom({ plugin: 'topbar', key: 'title' } as const, '')
 const focus = atom({ plugin: 'topbar', key: 'focus' } as const, '')
@@ -16,6 +17,10 @@ let prompt = ''
 let recent: string[] = []
 let lastSummaryAt = 0
 let isSummarizing = false
+let prompts: string[] = []
+let turns = 0
+let isRenamed = false
+let isTitling = false
 
 async function refreshTitle($: EngineInterface) {
   if (!configDir) {
@@ -26,13 +31,38 @@ async function refreshTitle($: EngineInterface) {
     'sh',
     '-c',
     'f=$(ls "$1"/projects/*/"$2".jsonl 2>/dev/null | head -1); [ -n "$f" ] || exit 0; ' +
-      'grep -o \'"\\(customTitle\\|aiTitle\\)":"[^"]*"\' "$f" | tail -1 | sed \'s/.*":"//; s/"$//\'',
+      'grep -o \'"\\(customTitle\\|aiTitle\\)":"[^"]*"\' "$f" | tail -1 | sed \'s/":"/ /; s/^"//; s/"$//\'',
     'sh',
     configDir,
     await $.session.id(),
   ])
-  const found = run.stdout.trim()
-  if (found) await update($, title, () => found)
+  const [kind, ...words] = run.stdout.trim().split(' ')
+  const found = words.join(' ')
+  if (!found) return
+  if (kind === 'customTitle') isRenamed = true
+  if (isRenamed || (await read($, title)) === '') await update($, title, () => found)
+}
+
+async function summarizeTitle($: EngineInterface) {
+  if (isRenamed || isTitling || prompts.length === 0) return
+  isTitling = true
+  try {
+    const r = await $.model.complete({
+      model: MODEL,
+      maxTokens: 30,
+      system:
+        'You name a coding session after its overall subject, the thing all its steps serve, never the latest step. ' +
+        'Keep the current title unless the subject has clearly moved on. ' +
+        'Reply with a title of 3 to 8 words, sentence case, no quotes, no trailing period.',
+      prompt: [
+        `Current title: ${(await read($, title)) || '(none)'}`,
+        `Developer prompts, oldest first:\n${prompts.map(p => `- ${p.slice(0, 300)}`).join('\n')}`,
+      ].join('\n\n'),
+    })
+    if (r.isAnswered && !isRenamed) await update($, title, () => oneLine(r.text))
+  } finally {
+    isTitling = false
+  }
 }
 
 async function summarizeFocus($: EngineInterface, text: string) {
@@ -83,6 +113,7 @@ export const register: Register = on => {
     recent = []
     lastSummaryAt = 0
     if (e.text.trim() !== '' && !e.text.startsWith('/')) {
+      prompts = [...prompts, e.text].slice(-20)
       void update($, now, () => 'Reading the request')
       void summarizeFocus($, e.text)
     }
@@ -108,7 +139,10 @@ export const register: Register = on => {
     if (!e.agentId) {
       await update($, tool, () => '')
       void summarizeNow($, 'answer' in e ? e.answer : '', true)
-      void refreshTitle($)
+      turns += 1
+      void refreshTitle($).then(() =>
+        turns === 1 || turns % TITLE_EVERY_TURNS === 0 ? summarizeTitle($) : undefined,
+      )
     }
     return result
   })
@@ -127,9 +161,11 @@ export const register: Register = on => {
     return (
       <Box flexDirection="column" paddingX={1}>
         {t !== '' && (
-          <Text color="suggestion" bold wrap="truncate-end">
-            ▸ {t}
-          </Text>
+          <Box borderStyle="bold" borderColor="claude" paddingX={1} alignSelf="flex-start">
+            <Text color="claude" bold wrap="truncate-end">
+              {t.toUpperCase()}
+            </Text>
+          </Box>
         )}
         {f !== '' && (
           <Text wrap="truncate-end">
