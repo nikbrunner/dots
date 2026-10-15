@@ -259,7 +259,7 @@
     "mode": "hold"
   },
   "autoDreamEnabled": true,
-  "theme": "light-ansi",
+  "theme": "custom:black-atom",
   "editorMode": "vim",
   "agentPushNotifEnabled": true,
   "autoMode": {

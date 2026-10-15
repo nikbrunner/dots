@@ -177,11 +177,13 @@
       "~/repos/imfusion/cp/imfusion-portal-CP-89/fe/.claude/skills",
       "~/repos/imfusion/cp/imfusion-portal-CP-89/fe/src/partials",
       "~/repos/imfusion/cp/imfusion-portal-cp-154-frontends-add-favicon",
+      "~/repos/imfusion/cp/imfusion-portal-cp-159-final-touches",
+      "~/repos/imfusion/cp/imfusion-portal-cp-159-final-touches/frontend",
       "~/repos/imfusion/cp/imfusion-portal/e2e",
       "~/repos/imfusion/cp/imfusion-portal/frontend",
       "~/repos/imfusion/cp/imfusion-portal/frontend/src"
     ],
-    "last_seen": "2026-10-08"
+    "last_seen": "2026-10-15"
   },
   "cp/keycloak": {
     "root": "~/repos/imfusion/cp/keycloak",
@@ -557,6 +559,7 @@
       "~/repos/imfusion/websdk/web-ui-websdk-206-web-ui-update-improve-design-fol/node_modules/@base-ui/react/avatar/image",
       "~/repos/imfusion/websdk/web-ui-websdk-218-web-ui-audit-skills-with-skill-c",
       "~/repos/imfusion/websdk/web-ui-websdk-218-web-ui-audit-skills-with-skill-c/src/llms/evals/fixtures/conformant-app",
+      "~/repos/imfusion/websdk/web-ui-websdk-247-web-ui-add-dialog-and-preview-su",
       "~/repos/imfusion/websdk/web-ui/.storybook/components/showcase-layout",
       "~/repos/imfusion/websdk/web-ui/.storybook/decorators",
       "~/repos/imfusion/websdk/web-ui/.storybook/docs/page-nav",
