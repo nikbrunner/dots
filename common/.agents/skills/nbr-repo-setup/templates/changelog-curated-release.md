@@ -30,8 +30,16 @@ Highlights are the one place where prose addresses the reader. In order:
 3. **Upgrading from X.Y**: last, one sentence per breaking change and the change as a `diff` block, old line `-`, new line
    `+`.
 
-## Screenshots
+## Screenshots and clips
 
-Store screenshots under `docs/assets/changelog/<version>-<topic>.webp`, captured clean at a fixed size. Reference them with
-an absolute URL pinned to the release tag, `https://raw.githubusercontent.com/{{repo}}/v<version>/...`, so they render in
-the GitHub Release notes and keep showing that release after later captures replace the files on `main`.
+A visible feature or fix carries its images directly under its text, one image per line, with the alt text written as the
+caption.
+
+- A screenshot is a WebP captured clean at a fixed size. A project with light and dark themes gets a light and a dark
+  image.
+- Motion a still cannot show, such as a resize, a transition, or a terminal session, is a clip: an animated WebP recorded
+  with the `nbr-record-clip` skill. Put a clip first when it shows the feature better than the stills.
+
+Store both under `docs/assets/changelog/<version>-<topic>.webp`. Reference them with an absolute URL pinned to the release
+tag, `https://raw.githubusercontent.com/{{repo}}/v<version>/...`, so they render in the GitHub Release notes and keep
+showing that release after later captures replace the files on `main`.

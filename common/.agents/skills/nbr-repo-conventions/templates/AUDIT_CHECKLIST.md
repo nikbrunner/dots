@@ -112,6 +112,7 @@ Applies when the app has authenticated routes.
 
 - [ ] Application images are imported from `src/assets/`; photographs are WebP with a long edge of 2000px or less. (assets.md)
 - [ ] In-app icons and line art are inline SVG components using `currentColor`. (assets.md)
+- [ ] Motion in docs and release notes is animated WebP; a GIF or a video file referenced from Markdown is a finding. (assets.md)
 
 ## tooling
 

@@ -36,7 +36,7 @@ The plan carries one table of placeholder values with what each was inferred fro
 | `{{suffix}}`         | Sentence naming the commit-subject suffix; drop when there is none                                               | "End the subject with ` (#<issue>)`."             |
 | `{{scopes}}`         | Commit scopes from history                                                                                       | `ui`, `config`, `cli`                             |
 | `{{docs}}`           | Docs to check when config, commands, or terms change                                                             | `README.md`, `docs/config.md`                     |
-| `{{release_assets}}` | Release-time asset step for `repo-release` and `docs/releases.md`; drop when there is none                       | "Re-record the screenshots with ..."              |
+| `{{release_assets}}` | Release-time asset step for `repo-release` and `docs/releases.md`; drop when there is none                       | "Record the clips with `nbr-record-clip`"         |
 | `{{publish}}`        | Sentence on the publish job for `docs/releases.md`, see [`pipeline.md`](pipeline.md); drop when no artifacts     | "GoReleaser then builds the archives ..."         |
 | `{{verify_install}}` | Commands in `docs/releases.md` that install the release and print its version; drop when none                    | `npx <pkg>@<version> --version`                   |
 | release-please       | `release-type`, manifest version, `initial-version`, `bootstrap-sha`, artifacts                                  | `node`, `0.8.0`                                   |
