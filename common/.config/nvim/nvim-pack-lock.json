@@ -5,7 +5,7 @@
       "src": "git@github.com:numToStr/Navigator.nvim.git"
     },
     "SchemaStore.nvim": {
-      "rev": "2a9b750cbaba7a7417e0d20774374dd0756d967d",
+      "rev": "9485dacfff2828f06c4678b059e382e49ec54aeb",
       "src": "git@github.com:b0o/SchemaStore.nvim"
     },
     "annotator.nvim": {
@@ -13,7 +13,7 @@
       "src": "git@github.com:chpeters/annotator.nvim"
     },
     "arborist.nvim": {
-      "rev": "fdeef56c2840c6772b9f68c5774ed87e9340ec7d",
+      "rev": "a34436d6b5efdc86e6f80f8c79844aae8d649a92",
       "src": "git@github.com:arborist-ts/arborist.nvim"
     },
     "blink.cmp": {
@@ -30,11 +30,11 @@
       "src": "git@github.com:stevearc/conform.nvim"
     },
     "friendly-snippets": {
-      "rev": "6cd7280adead7f586db6fccbd15d2cac7e2188b9",
+      "rev": "b4d01b0fdf3c9a549961c2f9ffe8dc09be166219",
       "src": "git@github.com:rafamadriz/friendly-snippets"
     },
     "gitlinker.nvim": {
-      "rev": "a1b74070bbd5e50128190c85b09f1431ea5fbd83",
+      "rev": "cc6a52ee2b5d3639ce5c5d6c97bcc8e98d1c5980",
       "src": "git@github.com:linrongbin16/gitlinker.nvim"
     },
     "grug-far.nvim": {
@@ -62,11 +62,11 @@
       "src": "git@github.com:folke/lazydev.nvim"
     },
     "mdn.nvim": {
-      "rev": "972cd680ed3691b95fef72b0ad6759c6e2df8ce5",
+      "rev": "36072ec350c66d29d9ed40d81c2613dd7fe433ef",
       "src": "git@github.com:nikbrunner/mdn.nvim"
     },
     "mini.nvim": {
-      "rev": "fb2bbae327f3c306f3c825031345b89dd176ce60",
+      "rev": "8831fa150fa26492cfe135801fa498132f1491d2",
       "src": "https://github.com/nvim-mini/mini.nvim"
     },
     "nui.nvim": {
@@ -74,7 +74,7 @@
       "src": "git@github.com:MunifTanjim/nui.nvim"
     },
     "nvim-lint": {
-      "rev": "3d55c8f67c6ae5c15e1042571e107c7a3d5c5f4e",
+      "rev": "f6230a5c06ba59e6059c14637f1dbe29a7978b9b",
       "src": "git@github.com:mfussenegger/nvim-lint"
     },
     "nvim-spider": {
@@ -82,15 +82,15 @@
       "src": "git@github.com:chrisgrieser/nvim-spider"
     },
     "nvim-ts-autotag": {
-      "rev": "88c1453db4ba7dd24131086fe51fdf74e587d275",
+      "rev": "d7220b55e16ed3c04e88086256def5d282429493",
       "src": "git@github.com:windwp/nvim-ts-autotag"
     },
     "oil.nvim": {
-      "rev": "b73018b75affd13fa38e2fc94ef753b465f770d7",
+      "rev": "d3733d933833a0e59b813ecec99341527adf0c28",
       "src": "https://github.com/stevearc/oil.nvim"
     },
     "oklch-color-picker.nvim": {
-      "rev": "8bf807853ccd7b7772fdc56951278a5347bb6d59",
+      "rev": "671aa293f4df65b300c194999efc9949d0baa721",
       "src": "git@github.com:eero-lehtinen/oklch-color-picker.nvim"
     },
     "qmk.nvim": {
@@ -102,7 +102,7 @@
       "src": "git@github.com:stevearc/quicker.nvim"
     },
     "radar.nvim": {
-      "rev": "838540248be794c4c77baaa43619b418e73d50bd",
+      "rev": "a7759861841ee4045c9278a60aa09c345f9fcb48",
       "src": "git@github.com:black-atom-industries/radar.nvim"
     },
     "snacks.nvim": {
@@ -118,7 +118,7 @@
       "src": "git@github.com:noisesfromspace/touchup.nvim"
     },
     "treewalker.nvim": {
-      "rev": "c6c37b912e84d0522fa585ce83da93b0fd53563b",
+      "rev": "976eb9921c2f26a9a4314b5a0f4842d447a49592",
       "src": "git@github.com:aaronik/treewalker.nvim"
     },
     "trouble.nvim": {
