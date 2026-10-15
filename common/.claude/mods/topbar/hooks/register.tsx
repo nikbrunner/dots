@@ -121,6 +121,16 @@ export const register: Register = on => {
     return next(e)
   })
 
+  on('command.run', { command: 'rename' }, async ($, e, next) => {
+    const result = await next(e)
+    const name = e.args.trim()
+    isRenamed = true
+    pendingTitle = ''
+    if (name !== '') await update($, title, () => name)
+    else void refreshTitle($)
+    return result
+  })
+
   on('classic.UserPromptSubmit', async ($, e, next) => {
     const result = await next(e)
     if (pendingTitle === '' || isRenamed) return result
