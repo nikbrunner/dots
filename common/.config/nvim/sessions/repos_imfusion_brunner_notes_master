@@ -13,7 +13,7 @@ set shortmess+=aoO
 badd +25 logs/2026/2026.10/2026.10.09\ -\ Fri.md
 badd +50 logs/2026/2026.10/2026.10.12\ -\ Mon.md
 badd +1 logs/2026/2026.10/2026.10.08\ -\ Thu.md
-badd +37 logs/2026/2026.10/2026.10.13\ -\ Tue.md
+badd +0 logs/2026/2026.10/2026.10.15\ -\ Thu.md
 argglobal
 %argdel
 $argadd ./
@@ -40,9 +40,9 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe 'vert 1resize ' . ((&columns * 44 + 67) / 134)
-exe 'vert 2resize ' . ((&columns * 44 + 67) / 134)
-exe 'vert 3resize ' . ((&columns * 44 + 67) / 134)
+exe 'vert 1resize ' . ((&columns * 61 + 91) / 183)
+exe 'vert 2resize ' . ((&columns * 60 + 91) / 183)
+exe 'vert 3resize ' . ((&columns * 60 + 91) / 183)
 argglobal
 balt logs/2026/2026.10/2026.10.09\ -\ Fri.md
 xnoremap <buffer> $ g$
@@ -105,7 +105,7 @@ setlocal foldminlines=1
 setlocal foldnestmax=10
 setlocal foldtext=
 setlocal formatexpr=
-setlocal formatlistpat=^\\s*\\d\\+\\.\\s\\+\\|^\\s*[-*+]\\s\\+\\|^\\[^\\ze[^\\]]\\+\\]:\\&^.\\{4\\}
+setlocal formatlistpat=^\\s*\\%(\\d\\+\\.\\|[-*+]\\)\\s\\+\\%(\\[.\\]\\s\\+\\)\\=
 setlocal formatoptions=1jtqln
 setlocal iminsert=0
 setlocal imsearch=-1
@@ -154,7 +154,7 @@ setlocal syntax=
 endif
 setlocal tabstop=4
 setlocal tagfunc=v:lua.vim.lsp.tagfunc
-setlocal textwidth=125
+setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
@@ -173,7 +173,7 @@ sil! normal! zo
 sil! normal! zo
 19
 sil! normal! zo
-let s:l = 16 - ((14 * winheight(0) + 20) / 40)
+let s:l = 16 - ((14 * winheight(0) + 26) / 53)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
@@ -246,7 +246,7 @@ setlocal foldminlines=1
 setlocal foldnestmax=10
 setlocal foldtext=
 setlocal formatexpr=
-setlocal formatlistpat=^\\s*\\d\\+\\.\\s\\+\\|^\\s*[-*+]\\s\\+\\|^\\[^\\ze[^\\]]\\+\\]:\\&^.\\{4\\}
+setlocal formatlistpat=^\\s*\\%(\\d\\+\\.\\|[-*+]\\)\\s\\+\\%(\\[.\\]\\s\\+\\)\\=
 setlocal formatoptions=1jtqln
 setlocal iminsert=0
 setlocal imsearch=-1
@@ -295,7 +295,7 @@ setlocal syntax=
 endif
 setlocal tabstop=4
 setlocal tagfunc=v:lua.vim.lsp.tagfunc
-setlocal textwidth=125
+setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
@@ -308,7 +308,7 @@ setlocal winhighlight=
 setlocal nowinpinned
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 18 - ((15 * winheight(0) + 20) / 40)
+let s:l = 18 - ((15 * winheight(0) + 26) / 53)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
@@ -381,7 +381,7 @@ setlocal foldminlines=1
 setlocal foldnestmax=10
 setlocal foldtext=
 setlocal formatexpr=
-setlocal formatlistpat=^\\s*\\d\\+\\.\\s\\+\\|^\\s*[-*+]\\s\\+\\|^\\[^\\ze[^\\]]\\+\\]:\\&^.\\{4\\}
+setlocal formatlistpat=^\\s*\\%(\\d\\+\\.\\|[-*+]\\)\\s\\+\\%(\\[.\\]\\s\\+\\)\\=
 setlocal formatoptions=1jtqln
 setlocal iminsert=0
 setlocal imsearch=-1
@@ -430,7 +430,7 @@ setlocal syntax=
 endif
 setlocal tabstop=4
 setlocal tagfunc=v:lua.vim.lsp.tagfunc
-setlocal textwidth=125
+setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
@@ -461,25 +461,24 @@ sil! normal! zo
 sil! normal! zo
 63
 sil! normal! zo
-let s:l = 9 - ((7 * winheight(0) + 20) / 40)
+let s:l = 9 - ((7 * winheight(0) + 26) / 53)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
 keepjumps 9
-let s:c = 14 - ((0 * winwidth(0) + 22) / 44)
+let s:c = 14 - ((0 * winwidth(0) + 30) / 60)
 if s:c > 0
   exe 'normal! ' . s:c . '|zs' . 14 . '|'
 else
   normal! 014|
 endif
 wincmd w
-exe 'vert 1resize ' . ((&columns * 44 + 67) / 134)
-exe 'vert 2resize ' . ((&columns * 44 + 67) / 134)
-exe 'vert 3resize ' . ((&columns * 44 + 67) / 134)
+exe 'vert 1resize ' . ((&columns * 61 + 91) / 183)
+exe 'vert 2resize ' . ((&columns * 60 + 91) / 183)
+exe 'vert 3resize ' . ((&columns * 60 + 91) / 183)
 tabnext
-edit logs/2026/2026.10/2026.10.13\ -\ Tue.md
+edit logs/2026/2026.10/2026.10.15\ -\ Thu.md
 argglobal
-balt logs/2026/2026.10/2026.10.12\ -\ Mon.md
 xnoremap <buffer> $ g$
 onoremap <buffer> $ g$
 nnoremap <buffer> $ g$
@@ -540,7 +539,7 @@ setlocal foldminlines=1
 setlocal foldnestmax=10
 setlocal foldtext=
 setlocal formatexpr=
-setlocal formatlistpat=^\\s*\\d\\+\\.\\s\\+\\|^\\s*[-*+]\\s\\+\\|^\\[^\\ze[^\\]]\\+\\]:\\&^.\\{4\\}
+setlocal formatlistpat=^\\s*\\%(\\d\\+\\.\\|[-*+]\\)\\s\\+\\%(\\[.\\]\\s\\+\\)\\=
 setlocal formatoptions=1jtqln
 setlocal iminsert=0
 setlocal imsearch=-1
@@ -589,36 +588,26 @@ setlocal syntax=
 endif
 setlocal tabstop=4
 setlocal tagfunc=v:lua.vim.lsp.tagfunc
-setlocal textwidth=125
+setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#logs%*%#WinBarSeparator#/%*%#WinBarPath#2026%*%#WinBarSeparator#/%*%#WinBarPath#2026.10%*%#WinBarSeparator#/%*%#WinBarFilename#2026.10.13\ -\ Tue.md%*%=%#WinBarGitLabel#\ [GIT:%#WinBarGitAdd#\ +24%#WinBarGitChange#\ ~8%#WinBarGitLabel#]%*\ 
+setlocal winbar=%#WinBarPath#logs%*%#WinBarSeparator#/%*%#WinBarPath#2026%*%#WinBarSeparator#/%*%#WinBarPath#2026.10%*%#WinBarSeparator#/%*%#WinBarFilename#2026.10.15\ -\ Thu.md%*%=
 setlocal winblend=10
 setlocal nowinfixbuf
 setlocal nowinfixheight
 setlocal nowinfixwidth
 setlocal winhighlight=
 setlocal nowinpinned
-setlocal nowrap
+setlocal wrap
 setlocal wrapmargin=0
 1
 sil! normal! zo
-12
-sil! normal! zo
-14
-sil! normal! zo
-40
-sil! normal! zo
-42
-sil! normal! zo
-42
-sil! normal! zo
-let s:l = 37 - ((32 * winheight(0) + 20) / 40)
+let s:l = 30 - ((26 * winheight(0) + 26) / 53)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 37
+keepjumps 30
 normal! 0
 tabnext 2
 set stal=1

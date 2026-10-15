@@ -339,6 +339,7 @@
       "~/repos/nikbrunner/dots/common/.config/dinky",
       "~/repos/nikbrunner/dots/common/.config/ghostty/shaders",
       "~/repos/nikbrunner/dots/common/.config/herdr/local-plugins/stationary",
+      "~/repos/nikbrunner/dots/common/.config/herdr/plugins",
       "~/repos/nikbrunner/dots/common/.config/herdr/plugins/config/herdr-navigator",
       "~/repos/nikbrunner/dots/common/.config/nvim",
       "~/repos/nikbrunner/dots/common/.config/nvim/plugin/50_specs",
@@ -348,7 +349,7 @@
       "~/repos/nikbrunner/dots/macos/.config/sketchybar/plugins",
       "~/repos/nikbrunner/dots/macos/.config/tuna"
     ],
-    "last_seen": "2026-10-11"
+    "last_seen": "2026-10-14"
   },
   "nikbrunner/fonts": {
     "root": "~/repos/nikbrunner/fonts",
@@ -547,6 +548,7 @@
       "~/.herdr/worktrees/web-ui/worktree-websdk-207-web-ui-setup-tanstack-intent",
       "~/repos/imfusion/websdk/changelog-enforcement",
       "~/repos/imfusion/websdk/cp-154-frontends-add-favicon",
+      "~/repos/imfusion/websdk/keyboard-icon-with-button-and-toggle-integration",
       "~/repos/imfusion/websdk/web-ui",
       "~/repos/imfusion/websdk/web-ui-websdk-206-web-ui-update-improve-design-fol",
       "~/repos/imfusion/websdk/web-ui-websdk-206-web-ui-update-improve-design-fol/.agents/skills/web-ui-dev-claude-design-sync",
@@ -579,8 +581,9 @@
       "~/repos/imfusion/websdk/websdk-255-typo-inherit",
       "~/repos/imfusion/websdk/websdk-256-trigger-ci-pr-release-tags",
       "~/repos/imfusion/websdk/websdk-267-icon-design-system",
-      "~/repos/imfusion/websdk/websdk-267-icon-design-system/src/icons/svg/regular"
+      "~/repos/imfusion/websdk/websdk-267-icon-design-system/src/icons/svg/regular",
+      "~/repos/imfusion/websdk/websdk-272-rich-link"
     ],
-    "last_seen": "2026-10-13"
+    "last_seen": "2026-10-15"
   }
 }
