@@ -14,7 +14,11 @@ if [[ -n "$common_dir" ]]; then
 	if [[ "$git_dir" != "$common_dir" ]]; then
 		worktree="$(git rev-parse --show-toplevel 2>/dev/null)"
 		worktree="${worktree##*/}"
-		[[ "$worktree" == "$branch" ]] && worktree="worktree"
+	fi
+	if [[ -n "$worktree" && "$worktree" == "$branch" ]]; then
+		branch="󰙅 $branch" worktree=""
+	else
+		branch="${branch:+ $branch}" worktree="${worktree:+󰙅 $worktree}"
 	fi
 fi
 

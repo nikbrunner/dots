@@ -47,6 +47,8 @@ row_gap = 1
 rows = [
   [
     { token = "$parent", bold = true, dim = false },
+  ],
+  [
     { token = "$branch", dim = true },
   ],
   [
