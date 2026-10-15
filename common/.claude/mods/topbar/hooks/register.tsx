@@ -21,19 +21,28 @@ let prompts: string[] = []
 let turns = 0
 let isRenamed = false
 let isTitling = false
+let pendingTitle = ''
 
-async function refreshTitle($: EngineInterface) {
+async function getConfigDir($: EngineInterface) {
   if (!configDir) {
     const run = await $.process.run(['sh', '-c', 'printf %s "${CLAUDE_CONFIG_DIR:-$HOME/.claude}"'])
     configDir = run.stdout
   }
+  return configDir
+}
+
+// Titles this mod set land in the transcript as customTitle, the same as a
+// /rename, so each one is logged to topbar/<session-id> and reported as ownTitle.
+async function refreshTitle($: EngineInterface) {
   const run = await $.process.run([
     'sh',
     '-c',
     'f=$(ls "$1"/projects/*/"$2".jsonl 2>/dev/null | head -1); [ -n "$f" ] || exit 0; ' +
-      'grep -o \'"\\(customTitle\\|aiTitle\\)":"[^"]*"\' "$f" | tail -1 | sed \'s/":"/ /; s/^"//; s/"$//\'',
+      'line=$(grep -o \'"\\(customTitle\\|aiTitle\\)":"[^"]*"\' "$f" | tail -1 | sed \'s/":"/ /; s/^"//; s/"$//\'); ' +
+      'case $line in "customTitle "*) grep -Fxqs -- "${line#* }" "$1/topbar/$2" && line="ownTitle ${line#* }";; esac; ' +
+      'printf %s "$line"',
     'sh',
-    configDir,
+    await getConfigDir($),
     await $.session.id(),
   ])
   const [kind, ...words] = run.stdout.trim().split(' ')
@@ -59,7 +68,11 @@ async function summarizeTitle($: EngineInterface) {
         `Developer prompts, oldest first:\n${prompts.map(p => `- ${p.slice(0, 300)}`).join('\n')}`,
       ].join('\n\n'),
     })
-    if (r.isAnswered && !isRenamed) await update($, title, () => oneLine(r.text))
+    const next = r.isAnswered ? oneLine(r.text) : ''
+    if (next !== '' && !isRenamed && next !== (await read($, title))) {
+      await update($, title, () => next)
+      pendingTitle = next
+    }
   } finally {
     isTitling = false
   }
@@ -106,6 +119,23 @@ export const register: Register = on => {
   on('session.start', async ($, e, next) => {
     void refreshTitle($)
     return next(e)
+  })
+
+  on('classic.UserPromptSubmit', async ($, e, next) => {
+    const result = await next(e)
+    if (pendingTitle === '' || isRenamed) return result
+    const sessionTitle = pendingTitle
+    pendingTitle = ''
+    await $.process.run([
+      'sh',
+      '-c',
+      'mkdir -p "$1/topbar" && printf "%s\\n" "$3" >> "$1/topbar/$2"',
+      'sh',
+      await getConfigDir($),
+      await $.session.id(),
+      sessionTitle,
+    ])
+    return { ...result, sessionTitle }
   })
 
   on('prompt.submit', async ($, e, next) => {
