@@ -123,7 +123,7 @@ Use an explicit `pi`, `claude`, or `codex` from the brief. Otherwise use the har
 
 ## Launch
 
-Build a concise child prompt containing the confirmed repository, the task, relevant current-session context, dirty-state summary when applicable, and the instruction to implement, verify, and stop. Do not paste the raw conversation.
+Build a concise child prompt containing the confirmed repository, the task (a calling skill's brief goes in verbatim), relevant current-session context, dirty-state summary when applicable, and the instruction to implement, verify, and stop. Do not paste the raw conversation.
 
 Send these boundary instructions literally, alongside the task details:
 
