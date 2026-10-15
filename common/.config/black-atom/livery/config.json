@@ -90,7 +90,8 @@
     "obsidian": {
       "enabled": true,
       "config_folders": [
-        "/Users/brunner/repos/nikbrunner/notes/.obsidian"
+        "/Users/brunner/repos/nikbrunner/notes/.obsidian",
+        "/Users/brunner/repos/imfusion/brunner/notes/.obsidian"
       ]
     },
     "tuicr": {
@@ -98,6 +99,14 @@
       "config_path": "~/.config/tuicr/config.toml",
       "match_pattern": "^theme\\s*=\\s*.+$",
       "replace_template": "theme = \"{themeKey}\""
+    },
+    "claude-code": {
+      "enabled": true,
+      "config_folders": [
+        "/Users/brunner/.claude",
+        "/Users/brunner/.claude-work"
+      ],
+      "themes_path": "~/.local/share/black-atom/themes/claude-code"
     },
     "helm-tmux": {
       "enabled": true,
