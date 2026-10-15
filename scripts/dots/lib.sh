@@ -523,15 +523,15 @@ dots_stage_radar() {
 
 dots_stage_lazy_lock() {
     local repo_path="$1"
-    local lazy_lock_file="common/.config/nvim/lazy-lock.json"
+    local lazy_lock_file="common/.config/nvim/nvim-pack-lock.json"
 
     if [[ -z $(git -C "$repo_path" status --porcelain "$lazy_lock_file" 2>/dev/null) ]]; then
-        echo "No lazy-lock changes to commit"
+        echo "No nvim-pack-lock changes to commit"
         return 1
     fi
 
     (cd "$repo_path" && git add "$lazy_lock_file")
-    log_okay "Lazy-lock changes staged"
+    log_okay "Nvim-pack-lock changes staged"
 }
 
 dots_stage_bookmarks() {
