@@ -172,7 +172,6 @@ Edit.later(function()
 			go = { "gofmt" },
 			rust = { "rustfmt" },
 			sh = { "shfmt" },
-			http = { "kulala-fmt" },
 		},
 	})
 

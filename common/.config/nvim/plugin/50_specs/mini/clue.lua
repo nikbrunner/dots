@@ -101,7 +101,6 @@ Edit.later(function()
 		-- Other
 		{ mode = "n", keys = "<leader>c", desc = "[C]hange" },
 		{ mode = "n", keys = "<leader>as", desc = "[S]ession" },
-		{ mode = "n", keys = "<leader>h", desc = "[H]ttp" },
 		{ mode = "n", keys = "<leader>n", desc = "[N]otes" },
 		{ mode = "n", keys = "<leader>x", desc = "Trouble/Quickfix" },
 		-- stylua: ignore end

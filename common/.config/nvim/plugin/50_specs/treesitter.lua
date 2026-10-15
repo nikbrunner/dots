@@ -15,8 +15,8 @@ Edit.now_if_args(function()
 		-- attempt (and its startup warning) and compile natively right away.
 		prefer_wasm = false,
 		-- The popular set already covers the rest of the old ensure_installed
-		-- list (incl. tsx); these two would only install on demand otherwise.
-		ensure_installed = { "astro", "http" },
+		-- list (incl. tsx); astro would only install on demand otherwise.
+		ensure_installed = { "astro" },
 	})
 
 	-- Fix: Stale node range race condition when async parse completes after

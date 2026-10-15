@@ -53,10 +53,6 @@
       "rev": "4ddc056e4ca45f1c7dc6aa21935df710b263b1aa",
       "src": "git@github.com:shellraining/hlchunk.nvim"
     },
-    "kulala.nvim": {
-      "rev": "232a9939919fe9bc88d573bce92de50f2f160c60",
-      "src": "git@github.com:mistweaverco/kulala.nvim"
-    },
     "lazydev.nvim": {
       "rev": "ff2cbcba459b637ec3fd165a2be59b7bbaeedf0d",
       "src": "git@github.com:folke/lazydev.nvim"
@@ -112,10 +108,6 @@
     "supermaven-nvim": {
       "rev": "07d20fce48a5629686aefb0a7cd4b25e33947d50",
       "src": "git@github.com:supermaven-inc/supermaven-nvim"
-    },
-    "touchup.nvim": {
-      "rev": "efc7df43515aeb29c84ef088f0197bde83e9ce12",
-      "src": "git@github.com:noisesfromspace/touchup.nvim"
     },
     "treewalker.nvim": {
       "rev": "976eb9921c2f26a9a4314b5a0f4842d447a49592",
