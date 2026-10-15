@@ -48,14 +48,8 @@ statusOrder:
   - WON'T FIX
 
 issueTabs:
-  - name: Overview (Sprint)
-    jql: (assignee = currentUser() OR cf[10500] = currentUser()) AND (statusCategory != Done OR resolutiondate >= -7d) AND sprint IN openSprints() ORDER BY status DESC
   - name: Overview
     jql: (assignee = currentUser() OR cf[10500] = currentUser()) AND (statusCategory != Done OR resolutiondate >= -7d) ORDER BY status DESC
-
-  # - name: WIP
-  #   jql: assignee = currentUser() AND status = "In Progress" ORDER BY updated DESC
-
   - name: Today
     jql: assignee = currentUser() AND updated >= startOfDay() ORDER BY updated DESC
     sortByStatus: false
