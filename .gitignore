@@ -60,3 +60,4 @@ common/.local/bin/bic
 /common/.pi/context-mode
 /common/.agents/skills/terminal-browser
 /common/.pi/agent/skills/tldraw-offline/SKILL.md
+/common/.agents/skills/nbr-*
