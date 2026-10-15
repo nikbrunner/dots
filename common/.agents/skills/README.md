@@ -48,6 +48,7 @@ SESSION AND AGENTS
 TOOLS
   nbr-how-to-test          HOW_TO_TEST.md acceptance checklist
   nbr-nvim                 Neovim and Lua workflow
+  nbr-record-clip          animated WebP clips: terminal · browser · native
   nbr-things               Things 3 tasks
   nbr-changelog-things     today's work logged as Things items
 ```
