@@ -98,7 +98,7 @@
       "src": "git@github.com:stevearc/quicker.nvim"
     },
     "radar.nvim": {
-      "rev": "a7759861841ee4045c9278a60aa09c345f9fcb48",
+      "rev": "a26822929d2cec908f20d7c414beb3b691b352cf",
       "src": "git@github.com:black-atom-industries/radar.nvim"
     },
     "snacks.nvim": {
