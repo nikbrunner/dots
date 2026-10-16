@@ -16,7 +16,6 @@ common:
     [~/.claude/settings.json, ~/.claude-work/settings.json]
   common/.claude/keybindings.json:
     [~/.claude/keybindings.json, ~/.claude-work/keybindings.json]
-  common/.agents/skills: [~/.claude/skills, ~/.claude-work/skills]
   common/.agents: ~/.agents
   "common/.claude/hooks/enforce/*": ~/.claude/hooks/enforce
   "common/.claude/hooks/subagent-progress/*": ~/.claude/hooks/subagent-progress
