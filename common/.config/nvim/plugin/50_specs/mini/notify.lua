@@ -16,7 +16,8 @@ Edit.now(function()
 						vim.wo[win].concealcursor = "nvic"
 					end
 				end)
-				return {}
+				local pad = vim.o.cmdheight + (vim.o.laststatus > 0 and 1 or 0)
+				return { anchor = "SE", col = vim.o.columns, row = vim.o.lines - pad }
 			end,
 		},
 	})
