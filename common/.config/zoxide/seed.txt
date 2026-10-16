@@ -45,6 +45,7 @@
 ~/repos/nikbrunner/notes
 ~/repos/nikbrunner/pi-speak
 ~/repos/nikbrunner/plans
+~/repos/nikbrunner/skills
 ~/repos/nikbrunner/src
 ~/repos/nikbrunner/tabula-rasa.nvim
 ~/repos/nikbrunner/themes
