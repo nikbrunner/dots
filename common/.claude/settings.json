@@ -9,6 +9,7 @@
     "CLAUDE_CODE_SUBAGENT_MODEL": "haiku"
   },
   "includeCoAuthoredBy": false,
+  "promptCacheTtl": "1h",
   "permissions": {
     "allow": [
       "Bash(cat:*)",
