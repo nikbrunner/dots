@@ -69,7 +69,7 @@ Black Atom Livery owns theme provisioning. The tracked `common/.config/black-ato
 
 ## Key Files
 
-- `common/.agents/skills/` — Agent skills, symlinked to `~/.claude/skills` and `~/.claude-work/skills` (`common/.claude/skills` is only a repo-internal symlink to this directory). The `nbr-*` skills live in [nikbrunner/skills](https://github.com/nikbrunner/skills) at `~/repos/nikbrunner/skills`, and its `setup.sh` links them in here (gitignored). New `nbr-*` skills go there, everything else here
+- `common/.agents/skills/` — Agent skills, symlinked to `~/.claude/skills` and `~/.claude-work/skills` (`common/.claude/skills` is only a repo-internal symlink to this directory). The `nbr-*` skills and the third-party skills they build on live in [nikbrunner/skills](https://github.com/nikbrunner/skills) at `~/repos/nikbrunner/skills`, and its `setup.sh` restores and links them in here (gitignored). New `nbr-*` and `npx skills` installs go there; tool-shipped skills and the `imfg-*` links stay here
 - `common/.agents/AGENTS.md` — Canonical global agent instructions, symlinked to `~/.claude/CLAUDE.md` and `~/.pi/agent/AGENTS.md`
 - `common/.claude/mods/` — Claude Code mods (function-hook plugins, one folder each, named after the command that opens them). Loaded from `CLAUDE_CODE_PLUGIN_DIRS` in `common/.claude/settings.json`, so a new mod's folder goes on that list
 - `common/.local/bin/dots` — Main CLI implementation (dispatcher + `cmd_pull`, `cmd_push`, `cmd_chores`, `cmd_link`)

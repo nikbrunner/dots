@@ -61,3 +61,14 @@ common/.local/bin/bic
 /common/.agents/skills/terminal-browser
 /common/.pi/agent/skills/tldraw-offline/SKILL.md
 /common/.agents/skills/nbr-*
+/common/.agents/skills/bkt
+/common/.agents/skills/code-review
+/common/.agents/skills/codebase-design
+/common/.agents/skills/diagnosing-bugs
+/common/.agents/skills/documentation-writer
+/common/.agents/skills/find-skills
+/common/.agents/skills/herdr
+/common/.agents/skills/humanizer
+/common/.agents/skills/skill-creator
+/common/.agents/skills/tdd
+/common/.agents/skills/writing-for-agents

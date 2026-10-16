@@ -3,9 +3,10 @@
 Global agent skills, linked to `~/.claude/skills` and `~/.claude-work/skills`, and read by Pi through `~/.agents/skills`.
 Neither agent loads this file: Claude Code reads `*/SKILL.md`, and Pi ignores root `.md` files here.
 
-Skills Nik wrote carry the `nbr-` prefix, and each `name` matches its directory. Everything else is installed:
-`../.skill-lock.json` records the source of each one, and `npx skills update` refreshes them. `imfg-*` link to the ImFusion
-agents repo; `tldraw-offline` and `terminal-browser` belong to their apps.
+Skills Nik wrote carry the `nbr-` prefix, and each `name` matches its directory. They and the third-party skills they build
+on live in [nikbrunner/skills](https://github.com/nikbrunner/skills): its `skills-lock.json` records each third-party
+source, and its `setup.sh` restores them and links everything in here. `plannotator-*` come from the Plannotator
+installer, and `imfg-*` link to the ImFusion agents repo; `tldraw-offline` and `terminal-browser` belong to their apps.
 
 ## Map
 
