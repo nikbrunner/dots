@@ -68,6 +68,14 @@ keybind = super+zero=reset_font_size
 keybind = super+h=previous_tab
 keybind = super+l=next_tab
 
+# Umlauts — macOS Option+U dead key, which left Option (as Alt) can't reach
+keybind = alt+u>a=text:ä
+keybind = alt+u>o=text:ö
+keybind = alt+u>u=text:ü
+keybind = alt+u>shift+a=text:Ä
+keybind = alt+u>shift+o=text:Ö
+keybind = alt+u>shift+u=text:Ü
+
 # Quick-terminal
 quick-terminal-position = center
 quick-terminal-size = 65%, 65%
