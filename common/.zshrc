@@ -46,6 +46,11 @@ alias ydl='yt-dlp --audio-format mp3 --embed-thumbnail --embed-metadata --extrac
 # debug builds use ~/.config/herdr-dev; env -u strips the stable session's
 # socket overrides so this works from inside a herdr pane
 alias herdr-dev='env -u HERDR_SOCKET_PATH -u HERDR_CLIENT_SOCKET_PATH $HOME/repos/nikbrunner/herdr/target/debug/herdr'
+# name the Ghostty tab after the herdr session; the server keeps it until it stops
+if [[ -n $HERDR_SESSION ]]; then
+    print -r -- "{\"id\":\"title\",\"method\":\"client.window_title.set\",\"params\":{\"title\":\"$HERDR_SESSION\"}}" |
+        nc -U -w 1 "$HERDR_SOCKET_PATH" >/dev/null 2>&1 &!
+fi
 # one-time snapshot of the real session into herdr-dev's default session;
 # stop herdr-dev first or its server just overwrites session.json again
 herdr-dev-sync-session() {

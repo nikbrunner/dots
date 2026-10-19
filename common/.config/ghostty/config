@@ -42,7 +42,7 @@ cursor-style = block
 shell-integration-features = no-cursor
 
 # Macos
-macos-titlebar-style = hidden
+macos-titlebar-style = tabs
 macos-icon = paper
 macos-option-as-alt = left
 
