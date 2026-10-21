@@ -185,10 +185,6 @@
   "worktree": {
     "bgIsolation": "none"
   },
-  "statusLine": {
-    "type": "command",
-    "command": "claude-statusline"
-  },
   "subagentStatusLine": {
     "type": "command",
     "command": "claude-subagent-statusline"

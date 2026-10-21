@@ -5,7 +5,9 @@
 # ~/.claude/hooks/subagent-progress/subagent-start.sh. Rows without one keep
 # Claude Code's default rendering.
 #
-# Same constraint as claude-statusline: bash, jq and grep only, no node.
+# Bash, jq and grep only, no node: un-stapled node binaries cannot have their
+# Gatekeeper verdict cached, so a node spawn per render saturates syspolicyd
+# and slows every exec on the machine.
 #
 # Payload schema: https://code.claude.com/docs/en/statusline.md#subagent-status-lines
 
