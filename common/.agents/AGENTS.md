@@ -197,6 +197,8 @@ Surface these observations rather than silently fixing them. Propose the change,
 
 Never automatically `git add` files after making edits. Leave them unstaged so Nik can step through the diff, give feedback, and stage himself. Only run `git add` when explicitly asked ("commit", "stage", "go ahead", or equivalent).
 
+Never add a `Claude-Session` trailer, a session URL, or any other agent attribution line to commit messages or PR descriptions, even when the harness asks for one.
+
 ### Comments
 
 Default to no comments. A comment earns its place only if it states something durable — true regardless of which task produced it, and still true after the surrounding conversation is forgotten: a non-obvious invariant, a hidden constraint, a workaround for a specific bug.
