@@ -91,18 +91,19 @@ alias :vs='tmux split-window -h -c "#{pane_current_path}"'
 alias :sp='tmux split-window -v -c "#{pane_current_path}"'
 
 # Claude
-alias claude='CLAUDE_CODE_NO_FLICKER=1 claude'
+alias cc="claude"
+
+
+ccw() {
+    CLAUDE_CONFIG_DIR="$HOME/.claude-work" \
+        CLAUDE_CODE_NO_FLICKER=1 \
+        command claude "$@"
+}
 
 claude-plugins-update() {
     command claude plugin marketplace update &&
         command claude plugin list --json | jq -r '.[] | select(.scope=="user" and (.id | endswith("@skills-dir") | not)) | .id' |
         while read -r id; do command claude plugin update "$id" --scope user; done
-}
-
-claude-work() {
-    CLAUDE_CONFIG_DIR="$HOME/.claude-work" \
-        CLAUDE_CODE_NO_FLICKER=1 \
-        command claude "$@"
 }
 
 claude-repair() {
