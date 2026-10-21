@@ -7,7 +7,7 @@
 //   custom-shader-animation = true
 
 // ---- settings ----
-const float GRAIN      = 0.25;  // strength
+const float GRAIN      = 0.35;  // strength
 const float GRAIN_SIZE = 0.65;   // grain size in points
 const float FPS        = 20.0;  // how often the grain re-rolls
 const float BLUR       = 1.35;   // softness of each grain, like the site's blur
