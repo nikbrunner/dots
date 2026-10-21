@@ -4,17 +4,16 @@ let v:this_session=expand("<sfile>:p")
 doautoall SessionLoadPre
 silent only
 silent tabonly
-cd ~/repos/imfusion/cp/imfusion-portal/frontend
+cd ~/repos/black-atom-industries/black-atom
 if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +419 ~/repos/imfusion/cp/imfusion-portal/frontend/src/routes/_app/route.tsx
+badd +30 ~/repos/black-atom-industries/black-atom/core/src/themes/minium/black-atom-minium-ivory-dark.ts
 argglobal
 %argdel
-$argadd .
-edit ~/repos/imfusion/cp/imfusion-portal/frontend/src/routes/_app/route.tsx
+edit ~/repos/black-atom-industries/black-atom/core/src/themes/minium/black-atom-minium-ivory-dark.ts
 argglobal
 setlocal keymap=
 setlocal noarabic
@@ -47,15 +46,15 @@ setlocal cursorlineopt=screenline,number
 setlocal nodiff
 setlocal eventignorewin=
 setlocal expandtab
-if &filetype != 'typescriptreact'
-setlocal filetype=typescriptreact
+if &filetype != 'typescript'
+setlocal filetype=typescript
 endif
 setlocal fixendofline
 setlocal foldcolumn=0
 setlocal foldenable
 setlocal foldexpr=v:lua.vim.treesitter.foldexpr()
 setlocal foldignore=#
-setlocal foldlevel=0
+setlocal foldlevel=99
 setlocal foldmarker={{{,}}}
 setlocal foldmethod=expr
 setlocal foldminlines=1
@@ -92,7 +91,7 @@ setlocal norightleft
 setlocal rightleftcmd=search
 setlocal scrollback=-1
 setlocal noscrollbind
-setlocal shiftwidth=2
+setlocal shiftwidth=4
 setlocal signcolumn=yes
 setlocal nosmartindent
 setlocal nosmoothscroll
@@ -115,7 +114,7 @@ setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#frontend%*%#WinBarSeparator#/%*%#WinBarPath#src%*%#WinBarSeparator#/%*%#WinBarPath#routes%*%#WinBarSeparator#/%*%#WinBarPath#_app%*%#WinBarSeparator#/%*%#WinBarFilename#route.tsx%*%=%#WinBarGitLabel#\ [GIT:%#WinBarGitChange#\ ~1%#WinBarGitLabel#]%*\ 
+setlocal winbar=%#WinBarPath#core%*%#WinBarSeparator#/%*%#WinBarPath#src%*%#WinBarSeparator#/%*%#WinBarPath#themes%*%#WinBarSeparator#/%*%#WinBarPath#minium%*%#WinBarSeparator#/%*%#WinBarFilename#black-atom-minium-ivory-dark.ts%*%=%#WinBarGitLabel#\ [GIT:%#WinBarGitChange#\ ~3%#WinBarGitLabel#]%*\ 
 setlocal winblend=10
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -124,18 +123,12 @@ setlocal winhighlight=
 setlocal nowinpinned
 setlocal nowrap
 setlocal wrapmargin=0
-419
-sil! normal! zo
-533
-sil! normal! zo
-594
-sil! normal! zo
-let s:l = 423 - ((180 * winheight(0) + 29) / 59)
+let s:l = 30 - ((29 * winheight(0) + 23) / 47)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 423
-normal! 01|
+keepjumps 30
+normal! 024|
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf

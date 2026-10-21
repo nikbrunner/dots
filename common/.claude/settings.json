@@ -9,7 +9,6 @@
     "CLAUDE_CODE_SUBAGENT_MODEL": "haiku"
   },
   "includeCoAuthoredBy": false,
-  "promptCacheTtl": "1h",
   "permissions": {
     "allow": [
       "Bash(cat:*)",
@@ -199,7 +198,8 @@
     "typescript-lsp@claude-plugins-official": true,
     "storybook@storybook": true,
     "vercel@claude-plugins-official": true,
-    "cache-tax@claude-code-mods": true
+    "cache-tax@claude-code-mods": true,
+    "clangd-lsp@claude-plugins-official": true
   },
   "extraKnownMarketplaces": {
     "plannotator": {
@@ -246,6 +246,7 @@
       }
     }
   },
+  "promptCacheTtl": "1h",
   "alwaysThinkingEnabled": false,
   "advisorModel": "opus",
   "pluginConfigs": {},

@@ -28,15 +28,21 @@
       "~/repos/black-atom-industries/black-atom",
       "~/repos/black-atom-industries/black-atom/.claude/worktrees/kagi-adapter",
       "~/repos/black-atom-industries/black-atom/.claude/worktrees/replace-deno-with-node",
+      "~/repos/black-atom-industries/black-atom/adapters/kagi",
       "~/repos/black-atom-industries/black-atom/adapters/tuicr/themes",
       "~/repos/black-atom-industries/black-atom/core",
+      "~/repos/black-atom-industries/black-atom/core/monitor",
       "~/repos/black-atom-industries/black-atom/core/src/themes",
       "~/repos/black-atom-industries/black-atom/core/src/themes/jpn",
       "~/repos/black-atom-industries/black-atom/core/src/themes/minium",
       "~/repos/black-atom-industries/black-atom/livery",
-      "~/repos/black-atom-industries/black-atom/livery/e2e"
+      "~/repos/black-atom-industries/black-atom/livery/core/src/updaters",
+      "~/repos/black-atom-industries/black-atom/livery/e2e",
+      "~/repos/black-atom-industries/black-atom/livery/e2e/test-results/theme-list-theme-list-matches-the-theme-list-baseline",
+      "~/repos/black-atom-industries/black-atom/livery/src",
+      "~/repos/black-atom-industries/black-atom/node_modules/@tanstack/hotkeys/dist"
     ],
-    "last_seen": "2026-10-10"
+    "last_seen": "2026-10-18"
   },
   "black-atom-industries/core": {
     "root": "~/repos/black-atom-industries/core",
@@ -79,6 +85,17 @@
       "~/repos/black-atom-industries/herdr"
     ],
     "last_seen": "2026-08-16"
+  },
+  "black-atom-industries/iter.nvim": {
+    "root": "~/repos/black-atom-industries/iter.nvim",
+    "owner": "black-atom-industries",
+    "name": "iter.nvim",
+    "work": false,
+    "session_dirs": [
+      "~/repos/black-atom-industries/iter.nvim",
+      "~/repos/black-atom-industries/iter.nvim/.claude/worktrees/review-relaunch"
+    ],
+    "last_seen": "2026-10-18"
   },
   "black-atom-industries/livery": {
     "root": "~/repos/black-atom-industries/livery",
@@ -179,11 +196,12 @@
       "~/repos/imfusion/cp/imfusion-portal-cp-154-frontends-add-favicon",
       "~/repos/imfusion/cp/imfusion-portal-cp-159-final-touches",
       "~/repos/imfusion/cp/imfusion-portal-cp-159-final-touches/frontend",
+      "~/repos/imfusion/cp/imfusion-portal-cp-159-final-touches/frontend/src",
       "~/repos/imfusion/cp/imfusion-portal/e2e",
       "~/repos/imfusion/cp/imfusion-portal/frontend",
       "~/repos/imfusion/cp/imfusion-portal/frontend/src"
     ],
-    "last_seen": "2026-10-15"
+    "last_seen": "2026-10-19"
   },
   "cp/keycloak": {
     "root": "~/repos/imfusion/cp/keycloak",
@@ -191,10 +209,24 @@
     "name": "keycloak",
     "work": true,
     "session_dirs": [
+      "~/repos/imfusion/cp/keycloak",
       "~/repos/imfusion/cp/keycloak-cp-154-frontends-add-favicon",
+      "~/repos/imfusion/cp/keycloak/login-theme",
+      "~/repos/imfusion/cp/keycloak/login-theme/src",
+      "~/repos/imfusion/cp/keycloak/login-theme/src/components",
       "~/repos/imfusion/cp/keycloak/provisioning"
     ],
-    "last_seen": "2026-09-24"
+    "last_seen": "2026-10-20"
+  },
+  "cp/labels-rest-api": {
+    "root": "~/repos/imfusion/cp/labels-rest-api",
+    "owner": "cp",
+    "name": "labels-rest-api",
+    "work": true,
+    "session_dirs": [
+      "~/repos/imfusion/cp/labels-rest-api"
+    ],
+    "last_seen": "2026-10-19"
   },
   "cp/labels-web": {
     "root": "~/repos/imfusion/cp/labels-web",
@@ -204,16 +236,22 @@
     "session_dirs": [
       "~/repos/imfusion/cp/CP-130-integrate-with-labels-server",
       "~/repos/imfusion/cp/CP-130-integrate-with-labels-server/frontend",
+      "~/repos/imfusion/cp/CP-174-create-project",
+      "~/repos/imfusion/cp/CP-174-create-project/frontend",
+      "~/repos/imfusion/cp/CP-174-labels-fe-experiment",
+      "~/repos/imfusion/cp/CP-174-labels-fe-experiment/frontend",
       "~/repos/imfusion/cp/cp-154-frontends-add-favicon",
+      "~/repos/imfusion/cp/feat/CP-174-create-project",
       "~/repos/imfusion/cp/labels-web",
       "~/repos/imfusion/cp/labels-web-cp-154-frontends-add-favicon",
       "~/repos/imfusion/cp/labels-web/.worktrees/CP-130-integrate-with-labels-server",
       "~/repos/imfusion/cp/labels-web/.worktrees/bootstrap-frontend",
       "~/repos/imfusion/cp/labels-web/.worktrees/bootstrap-frontend/frontend",
       "~/repos/imfusion/cp/labels-web/.worktrees/bootstrap-frontend/frontend/.agents/skills",
-      "~/repos/imfusion/cp/labels-web/frontend"
+      "~/repos/imfusion/cp/labels-web/frontend",
+      "~/repos/imfusion/cp/labels-web/local-setup"
     ],
-    "last_seen": "2026-09-17"
+    "last_seen": "2026-10-20"
   },
   "cp/license-server": {
     "root": "~/repos/imfusion/cp/license-server",
@@ -342,6 +380,7 @@
       "~/repos/nikbrunner/dots/common/.agents/skills/nbr-llm",
       "~/repos/nikbrunner/dots/common/.agents/skills/nbr-release-kit",
       "~/repos/nikbrunner/dots/common/.agents/skills/nbr-repo-conventions",
+      "~/repos/nikbrunner/dots/common/.claude",
       "~/repos/nikbrunner/dots/common/.claude/mods",
       "~/repos/nikbrunner/dots/common/.claude/mods/dash",
       "~/repos/nikbrunner/dots/common/.claude/mods/dash-pane",
@@ -361,7 +400,7 @@
       "~/repos/nikbrunner/dots/macos/.config/sketchybar/plugins",
       "~/repos/nikbrunner/dots/macos/.config/tuna"
     ],
-    "last_seen": "2026-10-14"
+    "last_seen": "2026-10-16"
   },
   "nikbrunner/fonts": {
     "root": "~/repos/nikbrunner/fonts",
@@ -424,9 +463,10 @@
     "name": "koyo",
     "work": false,
     "session_dirs": [
-      "~/repos/nikbrunner/koyo"
+      "~/repos/nikbrunner/koyo",
+      "~/repos/nikbrunner/koyo/qmk/voyager/src"
     ],
-    "last_seen": "2026-07-26"
+    "last_seen": "2026-10-18"
   },
   "nikbrunner/lager": {
     "root": "~/repos/nikbrunner/lager",
@@ -491,6 +531,7 @@
       "~/repos/nikbrunner/skills",
       "~/repos/nikbrunner/skills/skills",
       "~/repos/nikbrunner/skills/skills/engineering/nbr-repo-conventions/topics",
+      "~/repos/nikbrunner/skills/skills/engineering/nbr-repo-setup",
       "~/repos/nikbrunner/skills/skills/nbr-repo-conventions"
     ],
     "last_seen": "2026-10-16"
@@ -575,6 +616,7 @@
       "~/repos/imfusion/websdk/cp-154-frontends-add-favicon",
       "~/repos/imfusion/websdk/keyboard-icon-with-button-and-toggle-integration",
       "~/repos/imfusion/websdk/web-ui",
+      "~/repos/imfusion/websdk/web-ui-appearance-toggle",
       "~/repos/imfusion/websdk/web-ui-websdk-206-web-ui-update-improve-design-fol",
       "~/repos/imfusion/websdk/web-ui-websdk-206-web-ui-update-improve-design-fol/.agents/skills/web-ui-dev-claude-design-sync",
       "~/repos/imfusion/websdk/web-ui-websdk-206-web-ui-update-improve-design-fol/docs/user-guide",
@@ -594,6 +636,7 @@
       "~/repos/imfusion/websdk/web-ui/ds-artifact/MnBxqCdCKyHVRG4uoZMP3C",
       "~/repos/imfusion/websdk/web-ui/ds-bundle",
       "~/repos/imfusion/websdk/web-ui/node_modules/@base-ui",
+      "~/repos/imfusion/websdk/web-ui/node_modules/@base-ui/react",
       "~/repos/imfusion/websdk/web-ui/node_modules/iconoir-react/dist/esm/regular",
       "~/repos/imfusion/websdk/web-ui/src/components/navigation-menu/subs",
       "~/repos/imfusion/websdk/web-ui/src/llms/evals/scenarios",
@@ -610,6 +653,6 @@
       "~/repos/imfusion/websdk/websdk-267-icon-design-system/src/icons/svg/regular",
       "~/repos/imfusion/websdk/websdk-272-rich-link"
     ],
-    "last_seen": "2026-10-15"
+    "last_seen": "2026-10-21"
   }
 }

@@ -1,7 +1,7 @@
 # Managed by livery — https://github.com/black-atom-industries/livery
 
 [include]
-    path = ~/.config/delta/themes/black-atom-minium-viridian-dark.gitconfig
+    path = ~/.config/delta/themes/black-atom-jpn-murasaki-light.gitconfig
 
 [delta]
     navigate = true
@@ -9,4 +9,4 @@
     wrap-max-lines = 0
     hyperlinks = true
     hyperlinks-file-link-format = "lazygit-edit://{path}:{line}"
-    line-numbers = true
+   line-numbers = true
