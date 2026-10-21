@@ -42,7 +42,7 @@ export type Cache = { hit?: number; lastAt?: number; misses: number }
 
 declare module 'claude-code' {
   interface PluginState {
-    'dash-pane': {
+    dash: {
       git: Git | null
       agent: Agent
       title: string
@@ -52,6 +52,9 @@ declare module 'claude-code' {
       cache: Cache
       lines: { added: number; removed: number }
       tick: number
+      thread: string
+      now: string
+      tool: string
     }
   }
 }

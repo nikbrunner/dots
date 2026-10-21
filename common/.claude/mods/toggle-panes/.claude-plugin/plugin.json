@@ -1,6 +1,0 @@
-{
-  "name": "toggle-panes",
-  "version": "0.1.0",
-  "description": "/toggle-panes hides and shows the panes of the mods that listen to it",
-  "types": "./types/index.d.ts"
-}

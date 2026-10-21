@@ -4,6 +4,6 @@
   "description": "Pane listing subagents with their progress and current tool call",
   "types": "./types/index.d.ts",
   "dependencies": [
-    "toggle-panes"
+    "toggle-mods"
   ]
 }
