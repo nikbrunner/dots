@@ -39,22 +39,12 @@ const EDIT_TOOLS = new Set(['Edit', 'Write', 'MultiEdit'])
 const GIT_TOOLS = new Set(['Bash', 'Edit', 'Write', 'NotebookEdit'])
 const TASK_TOOLS = new Set(['TaskCreate', 'TaskUpdate'])
 const ICON = {
-  dir: '\uf07b',
-  branch: '\uf418',
-  ctx: '\uf0e4',
   cache: '\uf06d',
-  brain: '\u{f09d1}',
-  tasks: '☰',
 }
 // Stroke icons in a 24×24 box, drawn on surfaces whose font has no Nerd Font glyphs.
 const ICON_SVG: Record<keyof typeof ICON, string> = {
-  dir: '<path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/>',
-  branch: '<path d="M6 3v12"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/>',
-  ctx: '<path d="m12 14 4-4"/><path d="M3.34 19a10 10 0 1 1 17.32 0"/>',
   cache:
     '<path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.07-2.14-.22-4.05 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.15.43-2.29 1-3a2.5 2.5 0 0 0 2.5 2.5z"/>',
-  brain: '<path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/><path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8z"/>',
-  tasks: '<path d="M10 6h11"/><path d="M10 12h11"/><path d="M10 18h11"/><path d="m3 6 1.5 1.5L7 5"/><path d="m3 12 1.5 1.5L7 11"/><path d="m3 18 1.5 1.5L7 17"/>',
 }
 const SVG_COLOR: Record<string, string> = {
   claude: '#d77757',
@@ -344,8 +334,7 @@ export const register: Register = on => {
     const { Box, Text } = els
     // The desktop app's font carries no Nerd Font glyphs and lays text out proportionally.
     const isDesktop = e.surface === 'desktop'
-    const cols = e.props.bodyColumns < 64 ? 1 : e.props.bodyColumns < 192 ? 2 : 4
-    const isGrid = cols > 1
+    const isSplit = e.props.bodyColumns >= 150
     const below = await next(e)
     const Svg = 'Svg' in els ? els.Svg : undefined
     const mark = (key: keyof typeof ICON, color: string) =>
@@ -376,36 +365,6 @@ export const register: Register = on => {
     const at = await $.clock.now()
     const done = tk.filter(x => x.status === 'completed').length
     const isCacheWarm = c.lastAt !== undefined && at - c.lastAt < CACHE_TTL_MS
-
-    const rule = '╌'.repeat(Math.max(10, (e.viewport?.columns ?? 40) - 2))
-    let isFirstCard = true
-    const card = (icon: keyof typeof ICON, name: string, meta: RenderChildren, body: RenderChildren, accent = 'claude') => {
-      const isFirst = isFirstCard
-      isFirstCard = false
-      return (
-        <Box flexDirection="column" paddingX={1} width={isGrid ? Math.floor(e.props.bodyColumns / cols) : undefined}>
-          {!isFirst &&
-            !isGrid &&
-            (isDesktop ? (
-              <Box marginTop={1} />
-            ) : (
-              <Text dimColor wrap="truncate-end">
-                {rule}
-              </Text>
-            ))}
-          <Box justifyContent="space-between">
-            <Box gap={1} alignItems="center">
-              {mark(icon, accent)}
-              <Text color={accent} bold>
-                {name}
-              </Text>
-            </Box>
-            {meta}
-          </Box>
-          {body}
-        </Box>
-      )
-    }
 
     const LABEL = 9
     const kv = (
@@ -449,18 +408,42 @@ export const register: Register = on => {
     }
 
     const meter = (name: string, percent: number, extra: string) => (
-      <Box>
-        <Box width={LABEL} flexShrink={0}>
-          <Text color="inactive">{name}</Text>
-        </Box>
-        {gauge(percent, 12, heat(percent))}
+      <Box flexShrink={0}>
+        <Text dimColor>{name} </Text>
+        {gauge(percent, 6, heat(percent))}
         <Text bold> {String(Math.round(percent)).padStart(3)}%</Text>
-        {extra !== '' && <Text dimColor wrap="truncate-end"> · {extra}</Text>}
+        {extra !== '' && <Text dimColor> {extra}</Text>}
       </Box>
     )
 
-    const room = e.props.bodyColumns - 4 - th.length
-    const isNowShown = nw !== '' && (th === '' || room >= nw.length + 3)
+    const label = (name: string) => (
+      <Box width={LABEL} flexShrink={0}>
+        <Text color="inactive">{name}</Text>
+      </Box>
+    )
+    const dot = <Text dimColor> · </Text>
+    const modelParts = [
+      a.account && (
+        <Text>
+          <Text color="suggestion">{a.account}</Text>
+          {a.isWork && (
+            <Text color="error" bold>
+              {' '}
+              ⚠ WORK
+            </Text>
+          )}
+        </Text>
+      ),
+      a.effort && <Text color="warning">{a.effort}</Text>,
+      w.mode && <Text>{w.mode}</Text>,
+      a.style && a.style !== 'default' && <Text>{a.style}</Text>,
+      <Text>{w.turns} turns</Text>,
+    ].filter(Boolean)
+    const current = tk.find(x => x.status === 'in_progress')
+
+    const lead = t.length + th.length + (t !== '' && th !== '' ? 3 : 0)
+    const room = e.props.bodyColumns - 4 - lead
+    const isNowShown = nw !== '' && (lead === 0 || room >= nw.length + 3)
     const isLiveShown = live !== '' && isNowShown && room >= nw.length + live.length + 6
 
     return (
@@ -469,168 +452,159 @@ export const register: Register = on => {
         <Text dimColor wrap="truncate-end">
           {'╌'.repeat(e.props.bodyColumns)}
         </Text>
-        <Box flexDirection={isGrid ? 'row' : 'column'} flexWrap={isGrid ? 'wrap' : undefined} rowGap={isGrid ? 1 : 0}>
-          {card(
-            'dir',
-            g?.repo ?? '-',
-            g?.isWorktree ? <Text color="suggestion">worktree</Text> : null,
-            <Box flexDirection="column">
-              {kv('cwd', <Text>{w.cwd}</Text>, 'truncate-start')}
-              {t !== '' &&
-                kv(
-                  'session',
-                  <Text color="suggestion" italic>
-                    {t}
-                  </Text>,
-                )}
-              {u.startedAt !== undefined && kv('age', <Text>{duration(at - u.startedAt)}</Text>)}
-            </Box>,
-          )}
-
-          {card(
-            'brain',
-            a.model,
-            null,
-            <Box flexDirection="column">
-              {a.account &&
-                kv(
-                  'account',
-                  <Text>
-                    <Text color="suggestion">{a.account}</Text>
-                    {a.isWork && (
-                      <Text color="error" bold>
-                        {' '}
-                        ⚠ WORK
-                      </Text>
-                    )}
-                  </Text>,
-                )}
-              {a.effort && kv('effort', <Text color="warning">{a.effort}</Text>)}
-              {w.mode && kv('mode', <Text>{w.mode}</Text>)}
-              {a.style && a.style !== 'default' && kv('style', <Text>{a.style}</Text>)}
-              {kv('turns', <Text>{w.turns}</Text>)}
-            </Box>,
-            'success',
-          )}
-
-          {tk.length > 0 &&
-            done < tk.length &&
-            card(
-              'tasks',
-              'tasks',
-              <Box>
-                {gauge((done / tk.length) * 100, 8)}
-                <Text bold>
-                  {' '}
-                  {done}/{tk.length}
+        <Box flexDirection={isSplit ? 'row' : 'column'} paddingX={1}>
+          <Box
+            flexDirection="column"
+            flexShrink={0}
+            width={isSplit ? Math.floor(e.props.bodyColumns / 2) : undefined}
+            paddingRight={isSplit ? 2 : 0}
+          >
+            <Box>
+              {label('repo')}
+              <Box flexShrink={0}>
+                <Text color="claude" bold>
+                  {g?.repo ?? '-'}
                 </Text>
-              </Box>,
-              <Box flexDirection="column">
-                {tk.map(x => (
-                  <Text
-                    dimColor={x.status === 'completed'}
-                    color={x.status === 'in_progress' ? 'warning' : undefined}
-                    wrap="truncate-end"
-                  >
-                    {x.status === 'completed' ? '✓ ' : x.status === 'in_progress' ? '▸ ' : '· '}
-                    {x.subject}
+                {g?.isWorktree && <Text color="suggestion"> worktree</Text>}
+                <Text> </Text>
+              </Box>
+              <Text wrap="truncate-start">{w.cwd}</Text>
+              {u.startedAt !== undefined && (
+                <Box flexShrink={0}>
+                  <Text dimColor> · {duration(at - u.startedAt)}</Text>
+                </Box>
+              )}
+            </Box>
+            {(u.context !== undefined || u.limits.length > 0) && (
+              <Box>
+                {label('usage')}
+                <Box gap={3} overflow="hidden">
+                  {u.context !== undefined &&
+                    meter(
+                      'ctx',
+                      u.context,
+                      u.tokens !== undefined && u.window !== undefined
+                        ? `${Math.round(u.tokens / 1000)}k/${u.window >= 1_000_000 ? `${u.window / 1_000_000}M` : `${Math.round(u.window / 1000)}k`}`
+                        : '',
+                    )}
+                  {u.limits.map(l => meter(LIMIT_LABEL[l.kind] ?? l.kind, l.percent, until(l.resetsAt, at)))}
+                </Box>
+              </Box>
+            )}
+            {kv(
+              'cache',
+              <Text>
+                <Text>{c.hit !== undefined ? `${Math.round(c.hit * 100)}% hit` : '–'}</Text>
+                <Text dimColor>
+                  {' '}
+                  · {isCacheWarm && c.lastAt ? `expires ${until(c.lastAt + CACHE_TTL_MS, at)}` : 'cold'}
+                </Text>
+                {c.misses > 0 && <Text color="error"> · {c.misses} miss</Text>}
+              </Text>,
+              'truncate-end',
+              mark('cache', isCacheWarm ? 'warning' : 'dim'),
+            )}
+            {kv(
+              'spend',
+              <Text>
+                {u.cost !== undefined && <Text color="warning">${u.cost.toFixed(2)}</Text>}
+                {u.cost !== undefined && dot}
+                <Text color="success">+{ln.added}</Text>
+                <Text dimColor>/</Text>
+                <Text color="error">-{ln.removed}</Text>
+                <Text dimColor> lines</Text>
+              </Text>,
+            )}
+          </Box>
+
+          <Box flexDirection="column" flexGrow={1}>
+            {kv(
+              'model',
+              <Text>
+                <Text color="success" bold>
+                  {a.model}
+                </Text>
+                <Text> </Text>
+                {modelParts.map((p, i) => (
+                  <Text>
+                    {i > 0 && dot}
+                    {p}
                   </Text>
                 ))}
-              </Box>,
+              </Text>,
             )}
-
-          {card(
-            'ctx',
-            'session',
-            null,
-            <Box flexDirection="column">
-              {u.context !== undefined &&
-                meter(
-                  'context',
-                  u.context,
-                  u.tokens !== undefined && u.window !== undefined
-                    ? `${Math.round(u.tokens / 1000)}k/${u.window >= 1_000_000 ? `${u.window / 1_000_000}M` : `${Math.round(u.window / 1000)}k`}`
-                    : '',
-                )}
-              {u.limits.map(l => meter(LIMIT_LABEL[l.kind] ?? l.kind, l.percent, until(l.resetsAt, at)))}
-              {kv(
-                'cache',
+            {g &&
+              kv(
+                'branch',
                 <Text>
-                  <Text>{c.hit !== undefined ? `${Math.round(c.hit * 100)}% hit` : '–'}</Text>
-                  <Text dimColor>
-                    {' '}
-                    · {isCacheWarm && c.lastAt ? `expires ${until(c.lastAt + CACHE_TTL_MS, at)}` : 'cold'}
+                  <Text color="claude" bold>
+                    {g.branch ?? 'detached'}
                   </Text>
-                  {c.misses > 0 && <Text color="error"> · {c.misses} miss</Text>}
+                  {g.upstream && <Text> {g.upstream}</Text>}
+                  {g.ahead > 0 && <Text color="success"> ↑{g.ahead}</Text>}
+                  {g.behind > 0 && <Text color="error"> ↓{g.behind}</Text>}
+                  {g.upstream && g.ahead === 0 && g.behind === 0 && <Text dimColor> in sync</Text>}
+                  {g.stashes > 0 && dot}
+                  {g.stashes > 0 && <Text color="suggestion">{g.stashes} stashes</Text>}
                 </Text>,
-                'truncate-end',
-                mark('cache', isCacheWarm ? 'warning' : 'dim'),
               )}
-              {kv(
-                'edits',
+            {g?.last &&
+              kv(
+                'last',
                 <Text>
-                  <Text color="success">+{ln.added}</Text>
-                  <Text dimColor>/</Text>
-                  <Text color="error">-{ln.removed}</Text>
-                  <Text dimColor> lines</Text>
+                  <Text color="warning">{g.last.hash}</Text>
+                  <Text> {g.last.subject}</Text>
+                  <Text dimColor> · {g.last.age}</Text>
                 </Text>,
               )}
-              {u.cost !== undefined && kv('cost', <Text color="warning">${u.cost.toFixed(2)}</Text>)}
-            </Box>,
-          )}
-
-          {g &&
-            card(
-              'branch',
-              g.branch ?? 'detached',
-              null,
-              <Box flexDirection="column">
-                {g.upstream &&
-                  kv(
-                    'upstream',
-                    <Text>
-                      <Text>{g.upstream}</Text>
-                      {g.ahead > 0 && <Text color="success"> ↑{g.ahead}</Text>}
-                      {g.behind > 0 && <Text color="error"> ↓{g.behind}</Text>}
-                      {g.ahead === 0 && g.behind === 0 && <Text dimColor> in sync</Text>}
-                    </Text>,
-                  )}
-                {g.last &&
-                  kv(
-                    'last',
-                    <Text>
-                      <Text color="warning">{g.last.hash}</Text>
-                      <Text> {g.last.subject}</Text>
-                      <Text dimColor> · {g.last.age}</Text>
-                    </Text>,
-                  )}
-                {g.stashes > 0 && kv('stashes', <Text color="suggestion">{g.stashes}</Text>)}
-                {kv(
-                  'changes',
-                  g.files.length === 0 ? (
-                    <Text color="success">✓ clean</Text>
-                  ) : (
-                    <Text>
-                      {g.added > 0 && <Text color="success">+{g.added} added </Text>}
-                      {g.modified > 0 && <Text color="warning">~{g.modified} modified </Text>}
-                      {g.deleted > 0 && <Text color="error">-{g.deleted} deleted </Text>}
-                      {g.untracked > 0 && <Text color="suggestion">?{g.untracked} untracked</Text>}
-                    </Text>
-                  ),
-                )}
-              </Box>,
-            )}
+            {g &&
+              kv(
+                'changes',
+                g.files.length === 0 ? (
+                  <Text color="success">✓ clean</Text>
+                ) : (
+                  <Text>
+                    {g.added > 0 && <Text color="success">+{g.added} added </Text>}
+                    {g.modified > 0 && <Text color="warning">~{g.modified} modified </Text>}
+                    {g.deleted > 0 && <Text color="error">-{g.deleted} deleted </Text>}
+                    {g.untracked > 0 && <Text color="suggestion">?{g.untracked} untracked</Text>}
+                  </Text>
+                ),
+              )}
+          </Box>
         </Box>
-        {(th !== '' || nw !== '') && (
-          <Box paddingX={1} marginTop={1}>
+        {tk.length > 0 && done < tk.length && (
+          <Box paddingX={1}>
+            {label('tasks')}
+            {gauge((done / tk.length) * 100, 6)}
+            <Text bold>
+              {' '}
+              {done}/{tk.length}
+            </Text>
+            {current && (
+              <Text color="warning" wrap="truncate-end">
+                {'  ▸ '}
+                {current.subject}
+              </Text>
+            )}
+          </Box>
+        )}
+        {(lead > 0 || nw !== '') && (
+          <Box paddingX={1}>
             <Text wrap="truncate-end">
               <Text color="claude" bold>
                 ▸{' '}
               </Text>
+              {t !== '' && (
+                <Text color="suggestion" italic>
+                  {t}
+                </Text>
+              )}
+              {t !== '' && th !== '' && dot}
               {th !== '' && <Text bold>{th}</Text>}
               {isNowShown && (
                 <Text dimColor>
-                  {th !== '' ? ' · ' : ''}
+                  {lead > 0 ? ' · ' : ''}
                   {nw}
                 </Text>
               )}
