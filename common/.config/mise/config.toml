@@ -42,6 +42,7 @@ zoxide = "prefix:0"
   "@anthropic-ai/claude-code",
 ] }
 "npm:@earendil-works/pi-coding-agent" = "latest"
+"npm:@elevenlabs/cli" = "prefix:1"
 "npm:@openai/codex" = "latest"
 "npm:pm2" = "prefix:7"
 "npm:@readwise/cli" = "prefix:0"

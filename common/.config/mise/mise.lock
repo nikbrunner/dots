@@ -1980,6 +1980,10 @@ backend = "npm:@astrojs/language-server"
 version = "0.99.2"
 backend = "npm:@earendil-works/pi-coding-agent"
 
+[[tools."npm:@elevenlabs/cli"]]
+version = "1.7.0"
+backend = "npm:@elevenlabs/cli"
+
 [[tools."npm:@openai/codex"]]
 version = "0.162.0"
 backend = "npm:@openai/codex"
