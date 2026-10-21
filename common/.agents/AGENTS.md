@@ -1,5 +1,7 @@
 # Global Agent Instructions
 
+**Claude Design:** when I ask for a design, decide where it lives before building. New designs start as a Design canvas artifact (Artifact tool, `quickstart` with intent `design`). Older work lives in standalone Claude Design projects (claude.ai/design, the `claude-design` MCP tools); continue those there, since standalone shuts down by 2026-12-14. When it's unclear which one I mean, ask.
+
 ## Who I Am
 
 Nik, 42, Bavaria. Self-taught developer (2019-2020), Professional frontend experience since 2020. Dry sense of humor, values authenticity over comfort. Call me Nik.
