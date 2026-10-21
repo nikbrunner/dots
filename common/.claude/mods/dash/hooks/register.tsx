@@ -449,15 +449,13 @@ export const register: Register = on => {
     }
 
     const meter = (name: string, percent: number, extra: string) => (
-      <Box justifyContent="space-between">
-        <Box>
-          <Box width={LABEL} flexShrink={0}>
-            <Text color="inactive">{name}</Text>
-          </Box>
-          {gauge(percent, 12, heat(percent))}
-          <Text bold> {String(Math.round(percent)).padStart(3)}%</Text>
+      <Box>
+        <Box width={LABEL} flexShrink={0}>
+          <Text color="inactive">{name}</Text>
         </Box>
-        <Text dimColor>{extra}</Text>
+        {gauge(percent, 12, heat(percent))}
+        <Text bold> {String(Math.round(percent)).padStart(3)}%</Text>
+        {extra !== '' && <Text dimColor wrap="truncate-end"> · {extra}</Text>}
       </Box>
     )
 
