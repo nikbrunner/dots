@@ -344,7 +344,7 @@ export const register: Register = on => {
     const { Box, Text } = els
     // The desktop app's font carries no Nerd Font glyphs and lays text out proportionally.
     const isDesktop = e.surface === 'desktop'
-    const cols = Math.max(1, Math.min(4, Math.floor(e.props.bodyColumns / 32)))
+    const cols = e.props.bodyColumns < 64 ? 1 : e.props.bodyColumns < 192 ? 2 : 4
     const isGrid = cols > 1
     const below = await next(e)
     const Svg = 'Svg' in els ? els.Svg : undefined
