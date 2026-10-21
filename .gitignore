@@ -72,3 +72,4 @@ common/.local/bin/bic
 /common/.agents/skills/skill-creator
 /common/.agents/skills/tdd
 /common/.agents/skills/writing-for-agents
+/common/.config/herdr/plugins/config/helm-herdr/focused-workspace
