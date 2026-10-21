@@ -52,7 +52,9 @@
       "mcp__exa__*",
       "mcp__linear__*",
       "mcp__atlassian-rovo-mcp__*",
-      "mcp__supabase__*"
+      "mcp__supabase__*",
+      "Bash(herdr agent start:*)",
+      "Bash(herdr agent prompt:*)"
     ],
     "deny": [],
     "ask": []
