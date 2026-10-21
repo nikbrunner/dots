@@ -88,7 +88,7 @@
           "oil:///Users/brunner/repos/black-atom-industries/iter.nvim/.claude/",
           "AGENTS.md"
         ],
-        "lastAccessed": 1792578210
+        "lastAccessed": 1792584110
       }
     },
     "~/repos/black-atom-industries/iter.nvim/.claude/worktrees/review-relaunch": {
@@ -135,6 +135,16 @@
         "lastAccessed": 1792312285
       }
     },
+    "~/repos/imfusion/brunner/agents": {
+      "master": {
+        "locks": [],
+        "recent": [
+          "symlinks.yml",
+          "oil:///Users/brunner/repos/imfusion/brunner/agents/"
+        ],
+        "lastAccessed": 1792581122
+      }
+    },
     "~/repos/imfusion/brunner/notes": {
       "master": {
         "locks": [
@@ -148,8 +158,8 @@
           }
         ],
         "recent": [
-          "logs/2026/2026.10/2026.10.20 - Tue.md",
           "logs/2026/2026.10/2026.10.21 - Wed.md",
+          "logs/2026/2026.10/2026.10.20 - Tue.md",
           "templates/Daily Note.md",
           "oil:///Users/brunner/repos/imfusion/brunner/notes/logs/2026/2026.10/",
           "logs/2026/2026.10/2026.10.19 - Mon.md",
@@ -159,7 +169,7 @@
           "oil:///Users/brunner/repos/imfusion/brunner/notes/logs/2026/2026.09/",
           "logs/2026/2026.09/2026.09.30 - Wed.md"
         ],
-        "lastAccessed": 1792573191
+        "lastAccessed": 1792580024
       }
     },
     "~/repos/imfusion/cp/CP-174-create-project": {
@@ -322,13 +332,12 @@
           "common/.claude/settings.json",
           "common/.config/ghostty/shaders/black-atom-grain.glsl",
           "common/.gitconfig.delta",
-          "common/.config/nvim/plugin/50_specs/annotator.lua",
           "oil:///Users/brunner/repos/nikbrunner/dots/",
           "common/.config/herdr/config.toml",
           "common/.config/black-atom/livery/config.json",
           "oil:///Users/brunner/repos/nikbrunner/dots/common/.claude/"
         ],
-        "lastAccessed": 1792522016
+        "lastAccessed": 1792579343
       }
     },
     "~/repos/nikbrunner/imf-notes": {

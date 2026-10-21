@@ -93,9 +93,10 @@
     "work": false,
     "session_dirs": [
       "~/repos/black-atom-industries/iter.nvim",
-      "~/repos/black-atom-industries/iter.nvim/.claude/worktrees/review-relaunch"
+      "~/repos/black-atom-industries/iter.nvim/.claude/worktrees/review-relaunch",
+      "~/repos/black-atom-industries/iter.nvim/docs/assets/tapes"
     ],
-    "last_seen": "2026-10-18"
+    "last_seen": "2026-10-21"
   },
   "black-atom-industries/livery": {
     "root": "~/repos/black-atom-industries/livery",
@@ -249,9 +250,10 @@
       "~/repos/imfusion/cp/labels-web/.worktrees/bootstrap-frontend/frontend",
       "~/repos/imfusion/cp/labels-web/.worktrees/bootstrap-frontend/frontend/.agents/skills",
       "~/repos/imfusion/cp/labels-web/frontend",
-      "~/repos/imfusion/cp/labels-web/local-setup"
+      "~/repos/imfusion/cp/labels-web/local-setup",
+      "~/repos/imfusion/cp/review-labels-web-16-playwright-e2e"
     ],
-    "last_seen": "2026-10-20"
+    "last_seen": "2026-10-21"
   },
   "cp/license-server": {
     "root": "~/repos/imfusion/cp/license-server",
@@ -612,6 +614,7 @@
       "~/.herdr/worktrees/web-ui/websdk-239-web-ui-replace-custom-cpp-support-with",
       "~/.herdr/worktrees/web-ui/websdk-tryout-vite-plus",
       "~/.herdr/worktrees/web-ui/worktree-websdk-207-web-ui-setup-tanstack-intent",
+      "~/repos/imfusion/websdk/add-layout-icons",
       "~/repos/imfusion/websdk/changelog-enforcement",
       "~/repos/imfusion/websdk/cp-154-frontends-add-favicon",
       "~/repos/imfusion/websdk/keyboard-icon-with-button-and-toggle-integration",

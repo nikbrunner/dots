@@ -10,7 +10,7 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +12 ~/repos/black-atom-industries/iter.nvim/lua/iter/config/defaults.lua
+badd +26 ~/repos/black-atom-industries/iter.nvim/lua/iter/config/defaults.lua
 argglobal
 %argdel
 $argadd ./
@@ -84,7 +84,7 @@ setlocal modifiable
 setlocal nrformats=bin,hex
 setlocal number
 setlocal numberwidth=4
-setlocal omnifunc=v:lua.vim.lsp.omnifunc
+setlocal omnifunc=v:lua.vim.lua_omnifunc
 setlocal path=,
 setlocal nopreserveindent
 setlocal nopreviewwindow
@@ -118,7 +118,7 @@ setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#lua%*%#WinBarSeparator#/%*%#WinBarPath#iter%*%#WinBarSeparator#/%*%#WinBarPath#config%*%#WinBarSeparator#/%*%#WinBarFilename#defaults.lua%*%=%#WinBarGitLabel#\ [GIT:%#WinBarGitAdd#\ +2%#WinBarGitLabel#]%*\ 
+setlocal winbar=%#WinBarPath#lua%*%#WinBarSeparator#/%*%#WinBarPath#iter%*%#WinBarSeparator#/%*%#WinBarPath#config%*%#WinBarSeparator#/%*%#WinBarFilename#defaults.lua%*%=
 setlocal winblend=10
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -127,11 +127,11 @@ setlocal winhighlight=
 setlocal nowinpinned
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 12 - ((11 * winheight(0) + 33) / 66)
+let s:l = 26 - ((25 * winheight(0) + 33) / 66)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 12
+keepjumps 26
 normal! 0
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
