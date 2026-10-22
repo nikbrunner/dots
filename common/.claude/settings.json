@@ -162,6 +162,17 @@
         ]
       }
     ],
+    "PostToolBatch": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/subagent-progress/post-tool-batch.sh",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
     "SubagentStart": [
       {
         "hooks": [
