@@ -20,6 +20,7 @@
 ~/repos/black-atom-industries/shiplog
 ~/repos/black-atom-industries/website
 ~/repos/emscripten-core/emsdk
+~/repos/imfusion/.reviews
 ~/repos/imfusion/brunner
 ~/repos/imfusion/cp
 ~/repos/imfusion/misc

@@ -155,9 +155,11 @@
     "name": "agents",
     "work": true,
     "session_dirs": [
-      "~/repos/imfusion/brunner/agents"
+      "~/repos/imfusion/brunner/agents",
+      "~/repos/imfusion/brunner/agents/skills/imfg-atlassian",
+      "~/repos/imfusion/brunner/agents/skills/imfg-timesheet"
     ],
-    "last_seen": "2026-08-18"
+    "last_seen": "2026-10-21"
   },
   "brunner/notes": {
     "root": "~/repos/imfusion/brunner/notes",
@@ -235,6 +237,12 @@
     "name": "labels-web",
     "work": true,
     "session_dirs": [
+      "~/repos/imfusion/.reviews/labels-web-15-project-members",
+      "~/repos/imfusion/.reviews/labels-web-15-project-members/e2e",
+      "~/repos/imfusion/.reviews/labels-web-15-project-members/frontend",
+      "~/repos/imfusion/.reviews/labels-web-15-project-members/frontend/node_modules/@imfusion/web-ui",
+      "~/repos/imfusion/.reviews/labels-web-15-project-members/frontend/src",
+      "~/repos/imfusion/.reviews/labels-web-16-playwright-e2e",
       "~/repos/imfusion/cp/CP-130-integrate-with-labels-server",
       "~/repos/imfusion/cp/CP-130-integrate-with-labels-server/frontend",
       "~/repos/imfusion/cp/CP-174-create-project",
@@ -253,7 +261,7 @@
       "~/repos/imfusion/cp/labels-web/local-setup",
       "~/repos/imfusion/cp/review-labels-web-16-playwright-e2e"
     ],
-    "last_seen": "2026-10-21"
+    "last_seen": "2026-10-22"
   },
   "cp/license-server": {
     "root": "~/repos/imfusion/cp/license-server",
@@ -386,6 +394,7 @@
       "~/repos/nikbrunner/dots/common/.claude/mods",
       "~/repos/nikbrunner/dots/common/.claude/mods/dash",
       "~/repos/nikbrunner/dots/common/.claude/mods/dash-pane",
+      "~/repos/nikbrunner/dots/common/.claude/mods/dash/.claude-plugin/types/claude-code",
       "~/repos/nikbrunner/dots/common/.claude/mods/subagents-pane",
       "~/repos/nikbrunner/dots/common/.claude/mods/topbar",
       "~/repos/nikbrunner/dots/common/.config",
@@ -402,7 +411,7 @@
       "~/repos/nikbrunner/dots/macos/.config/sketchybar/plugins",
       "~/repos/nikbrunner/dots/macos/.config/tuna"
     ],
-    "last_seen": "2026-10-16"
+    "last_seen": "2026-10-21"
   },
   "nikbrunner/fonts": {
     "root": "~/repos/nikbrunner/fonts",
@@ -545,6 +554,7 @@
     "work": false,
     "session_dirs": [
       "~/repos/nikbrunner/writing",
+      "~/repos/nikbrunner/writing/neolib/book-mujrhkat-yjutb",
       "~/repos/nikbrunner/writing/realms",
       "~/repos/nikbrunner/writing/realms/scarth-johnson",
       "~/repos/nikbrunner/writing/realms/scarth-johnson/assets",
@@ -553,7 +563,7 @@
       "~/repos/nikbrunner/writing/realms/the-black-atom/assets",
       "~/repos/nikbrunner/writing/scarth-johnson"
     ],
-    "last_seen": "2026-09-27"
+    "last_seen": "2026-10-23"
   },
   "web-sdk-wk-fumadocs/emsdk": {
     "root": "~/repos/imfusion/websdk/web-sdk-wk-fumadocs/emsdk",
@@ -641,6 +651,7 @@
       "~/repos/imfusion/websdk/web-ui/node_modules/@base-ui",
       "~/repos/imfusion/websdk/web-ui/node_modules/@base-ui/react",
       "~/repos/imfusion/websdk/web-ui/node_modules/iconoir-react/dist/esm/regular",
+      "~/repos/imfusion/websdk/web-ui/src/components",
       "~/repos/imfusion/websdk/web-ui/src/components/navigation-menu/subs",
       "~/repos/imfusion/websdk/web-ui/src/llms/evals/scenarios",
       "~/repos/imfusion/websdk/web-ui/src/llms/skills",
@@ -656,6 +667,6 @@
       "~/repos/imfusion/websdk/websdk-267-icon-design-system/src/icons/svg/regular",
       "~/repos/imfusion/websdk/websdk-272-rich-link"
     ],
-    "last_seen": "2026-10-21"
+    "last_seen": "2026-10-22"
   }
 }

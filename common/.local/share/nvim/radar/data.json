@@ -79,16 +79,16 @@
       "main": {
         "locks": [],
         "recent": [
+          "README.md",
           "lua/iter/config/defaults.lua",
           "lua/iter/config/types.lua",
           "lua/iter/config/init.lua",
-          "README.md",
           ".claude/worktrees/review-relaunch/plans/github-issues.md",
           "oil:///Users/brunner/repos/black-atom-industries/iter.nvim/",
           "oil:///Users/brunner/repos/black-atom-industries/iter.nvim/.claude/",
           "AGENTS.md"
         ],
-        "lastAccessed": 1792584110
+        "lastAccessed": 1792685202
       }
     },
     "~/repos/black-atom-industries/iter.nvim/.claude/worktrees/review-relaunch": {
@@ -135,41 +135,69 @@
         "lastAccessed": 1792312285
       }
     },
+    "~/repos/imfusion/.reviews/labels-web-15-project-members": {
+      "feat/CP-230-members-and-roles-in-projects": {
+        "locks": [],
+        "recent": [
+          "PR-15-HANDOFF.md",
+          "oil:///Users/brunner/repos/imfusion/.reviews/labels-web-15-project-members/",
+          "HANDOFF.md",
+          "oil:///Users/brunner/repos/imfusion/.reviews/labels-web-15-project-members/frontend/",
+          "frontend/src/routes/_app/projects.$projectId/-settings/use-active-section.ts"
+        ],
+        "lastAccessed": 1792685724
+      }
+    },
+    "~/repos/imfusion/.reviews/labels-web-16-playwright-e2e": {
+      "feat/playwright-e2e-tests": {
+        "locks": [],
+        "recent": [
+          "e2e/package.json",
+          "oil:///Users/brunner/repos/imfusion/.reviews/labels-web-16-playwright-e2e/e2e/"
+        ],
+        "lastAccessed": 1792658874
+      }
+    },
     "~/repos/imfusion/brunner/agents": {
       "master": {
         "locks": [],
         "recent": [
-          "symlinks.yml",
-          "oil:///Users/brunner/repos/imfusion/brunner/agents/"
+          "oil:///Users/brunner/repos/imfusion/brunner/agents/skills/",
+          "oil:///Users/brunner/repos/imfusion/brunner/agents/",
+          "symlinks.yml"
         ],
-        "lastAccessed": 1792581122
+        "lastAccessed": 1792594256
       }
     },
     "~/repos/imfusion/brunner/notes": {
       "master": {
         "locks": [
           {
-            "filename": "templates/Daily Note.md",
+            "filename": "logs/2026/2026.10/2026.10.22 - Thu.md",
             "label": "a"
           },
           {
-            "filename": "logs/2026/2026.10/2026.10.16 - Fri.md",
+            "filename": "logs/2026/2026.10/2026.10.23 - Fri.md",
             "label": "s"
+          },
+          {
+            "filename": "templates/Daily Note.md",
+            "label": "d"
           }
         ],
         "recent": [
-          "logs/2026/2026.10/2026.10.21 - Wed.md",
-          "logs/2026/2026.10/2026.10.20 - Tue.md",
-          "templates/Daily Note.md",
-          "oil:///Users/brunner/repos/imfusion/brunner/notes/logs/2026/2026.10/",
-          "logs/2026/2026.10/2026.10.19 - Mon.md",
+          "logs/2026/2026.10/2026.10.23 - Fri.md",
           "logs/2026/2026.10/2026.10.16 - Fri.md",
-          "logs/2026/2026.10/2026.10.15 - Thu.md",
-          "oil:///Users/brunner/repos/imfusion/brunner/notes/logs/2026/",
-          "oil:///Users/brunner/repos/imfusion/brunner/notes/logs/2026/2026.09/",
-          "logs/2026/2026.09/2026.09.30 - Wed.md"
+          "logs/2026/2026.10/2026.10.22 - Thu.md",
+          "oil:///Users/brunner/repos/imfusion/brunner/notes/logs/2026/2026.10/",
+          "templates/Daily Note.md",
+          "logs/2026/2026.10/2026.10.21 - Wed.md",
+          "explainers/bff-and-local-setup-sharing.md",
+          "logs/2026/2026.10/2026.10.20 - Tue.md",
+          "logs/2026/2026.10/2026.10.19 - Mon.md",
+          "logs/2026/2026.10/2026.10.15 - Thu.md"
         ],
-        "lastAccessed": 1792580024
+        "lastAccessed": 1792745312
       }
     },
     "~/repos/imfusion/cp/CP-174-create-project": {
@@ -231,6 +259,15 @@
         "lastAccessed": 1792492229
       }
     },
+    "~/repos/imfusion/cp/labels-web": {
+      "main": {
+        "locks": [],
+        "recent": [
+          "PR-15-TAKEOVER.md"
+        ],
+        "lastAccessed": 1792666505
+      }
+    },
     "~/repos/imfusion/websdk/web-ui": {
       "WEBSDK-133-image-display-options": {
         "locks": [
@@ -270,6 +307,8 @@
           }
         ],
         "recent": [
+          "LABELS-COMPONENTS.md",
+          "src/components/collapsible/collapsible.tsx",
           "src/styles/variables/typo.css",
           "src/components/typo/typo.module.css",
           "oil:///Users/brunner/repos/imfusion/websdk/web-ui/src/components/",
@@ -277,11 +316,9 @@
           "dist/utils/break-hints.d.ts",
           "src/hooks/use-disclosure.ts",
           "src/components/app-shell/app-shell.tsx",
-          "CHANGELOG.md",
-          "src/components/icon-button/icon-button.tsx",
-          ".vite-hooks/pre-push"
+          "CHANGELOG.md"
         ],
-        "lastAccessed": 1792572927
+        "lastAccessed": 1792684599
       }
     },
     "~/repos/imfusion/websdk/web-ui-appearance-toggle": {
@@ -292,6 +329,18 @@
           "oil:///Users/brunner/repos/imfusion/websdk/web-ui-appearance-toggle/"
         ],
         "lastAccessed": 1792407966
+      }
+    },
+    "~/repos/imfusion/websdk/websdk-228-color-mode-spike": {
+      "websdk-228-color-mode-spike": {
+        "locks": [],
+        "recent": [
+          "plans/handoff-2026-10-22.md",
+          "oil:///Users/brunner/repos/imfusion/websdk/websdk-228-color-mode-spike/plans/",
+          "oil:///Users/brunner/repos/imfusion/websdk/websdk-228-color-mode-spike/",
+          "oil:///Users/brunner/repos/imfusion/websdk/websdk-228-color-mode-spike/tmp/"
+        ],
+        "lastAccessed": 1792684737
       }
     },
     "~/repos/nikbrunner/black-atom": {
@@ -327,17 +376,18 @@
           }
         ],
         "recent": [
+          "common/.config/nvim/plugin/50_specs/snacks.lua",
+          "common/.config/nvim/ftplugin/markdown.lua",
+          "common/.config/ghostty/themes/black-atom-default-dark.conf",
           "common/.config/ghostty/config",
           "common/.config/nvim/plugin/50_specs/black_atom/iter.lua",
           "common/.claude/settings.json",
           "common/.config/ghostty/shaders/black-atom-grain.glsl",
           "common/.gitconfig.delta",
           "oil:///Users/brunner/repos/nikbrunner/dots/",
-          "common/.config/herdr/config.toml",
-          "common/.config/black-atom/livery/config.json",
-          "oil:///Users/brunner/repos/nikbrunner/dots/common/.claude/"
+          "common/.config/herdr/config.toml"
         ],
-        "lastAccessed": 1792579343
+        "lastAccessed": 1792745231
       }
     },
     "~/repos/nikbrunner/imf-notes": {
@@ -407,31 +457,25 @@
         "locks": [
           {
             "filename": "Log/2026/2026.08/2026.08.20 - Thu.md",
-            "label": "1"
-          },
-          {
-            "filename": "Log/2026/Q3.2026.md",
-            "label": "2"
-          },
-          {
-            "filename": "Log/2026.md",
-            "label": "3"
+            "label": "a"
           },
           {
             "filename": "Log/2026/2026.md",
-            "label": "4"
+            "label": "s"
           },
           {
             "filename": "Log/2026/2026.08/2026.08.21 - Fri.md",
-            "label": "5"
+            "label": "d"
           },
           {
             "filename": "Log/2026/2026.08/2026.08.24 - Mon.md",
-            "label": "6"
+            "label": "f"
           }
         ],
-        "recent": [],
-        "lastAccessed": 1788868407
+        "recent": [
+          "oil:///Users/brunner/repos/nikbrunner/notes/Log/"
+        ],
+        "lastAccessed": 1792655062
       }
     }
   }
