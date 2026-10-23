@@ -134,21 +134,16 @@ Edit.later(function()
 		},
 	})
 
-	vim.api.nvim_create_autocmd("User", {
-		pattern = "VeryLazy",
-		callback = function()
-			-- stylua: ignore start
-			Snacks.toggle.line_number():map("<leader>aol")
-			Snacks.toggle.option("relativenumber", { name = "Relative Number" }):map("<leader>aoL")
-			Snacks.toggle.inlay_hints():map("<leader>aoh")
-			Snacks.toggle.treesitter():map("<leader>aoT")
-			Snacks.toggle.option("conceallevel", { off = 0, on = vim.o.conceallevel > 1 and vim.o.conceallevel or 3 }):map("<leader>aoc")
-			Snacks.toggle.option("background", { off = "light", on = "dark", name = "Dark Background" }):map("<leader>aob")
-			Snacks.toggle.option("spell", { name = "Spelling" }):map("<leader>aos")
-			Snacks.toggle.option("wrap", { name = "Wrap" }):map("<leader>aow")
-			-- stylua: ignore end
-		end,
-	})
+	-- stylua: ignore start
+	Snacks.toggle.line_number():map("<leader>aol")
+	Snacks.toggle.option("relativenumber", { name = "Relative Number" }):map("<leader>aoL")
+	Snacks.toggle.inlay_hints():map("<leader>aoh")
+	Snacks.toggle.treesitter():map("<leader>aoT")
+	Snacks.toggle.option("conceallevel", { off = 0, on = vim.o.conceallevel > 1 and vim.o.conceallevel or 3 }):map("<leader>aoc")
+	Snacks.toggle.option("background", { off = "light", on = "dark", name = "Dark Background" }):map("<leader>aob")
+	Snacks.toggle.option("spell", { name = "Spelling" }):map("<leader>aos")
+	Snacks.toggle.option("wrap", { name = "Wrap" }):map("<leader>aow")
+	-- stylua: ignore end
 
 	vim.api.nvim_create_autocmd("User", {
 		pattern = "SnacksTerminalClose",
