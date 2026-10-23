@@ -4,17 +4,16 @@ let v:this_session=expand("<sfile>:p")
 doautoall SessionLoadPre
 silent only
 silent tabonly
-cd ~/repos/imfusion/cp/keycloak
+cd ~/repos/imfusion/websdk/file-dropzone
 if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +16 ~/repos/imfusion/cp/keycloak/login-theme/src/login/pages/login.tsx
+badd +535 ~/repos/imfusion/websdk/file-dropzone/src/components/file-drop-zone/file-drop-zone.stories.tsx
 argglobal
 %argdel
-$argadd ~/repos/imfusion/cp/keycloak/login-theme/src/login/pages/login.tsx
-edit ~/repos/imfusion/cp/keycloak/login-theme/src/login/pages/login.tsx
+edit ~/repos/imfusion/websdk/file-dropzone/src/components/file-drop-zone/file-drop-zone.stories.tsx
 argglobal
 setlocal keymap=
 setlocal noarabic
@@ -115,7 +114,7 @@ setlocal textwidth=0
 setlocal undofile
 setlocal varsofttabstop=
 setlocal vartabstop=
-setlocal winbar=%#WinBarPath#login-theme%*%#WinBarSeparator#/%*%#WinBarPath#src%*%#WinBarSeparator#/%*%#WinBarPath#login%*%#WinBarSeparator#/%*%#WinBarPath#pages%*%#WinBarSeparator#/%*%#WinBarFilename#login.tsx%*%=
+setlocal winbar=%#WinBarPath#src%*%#WinBarSeparator#/%*%#WinBarPath#components%*%#WinBarSeparator#/%*%#WinBarPath#file-drop-zone%*%#WinBarSeparator#/%*%#WinBarFilename#file-drop-zone.stories.tsx%*%=
 setlocal winblend=10
 setlocal nowinfixbuf
 setlocal nowinfixheight
@@ -124,12 +123,12 @@ setlocal winhighlight=
 setlocal nowinpinned
 setlocal nowrap
 setlocal wrapmargin=0
-let s:l = 52 - ((47 * winheight(0) + 33) / 66)
+let s:l = 535 - ((26 * winheight(0) + 26) / 53)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 52
-normal! 012|
+keepjumps 535
+normal! 010|
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
