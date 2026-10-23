@@ -1,7 +1,7 @@
 {
   "version": 2,
   "system_appearance": true,
-  "active_theme": "black-atom-jpn-murasaki-light",
+  "active_theme": "black-atom-jpn-murasaki-dark",
   "keymappings": {
     "toggle_window": "super+ctrl+alt+shift+KeyT"
   },
