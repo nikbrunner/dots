@@ -179,6 +179,9 @@ bindkey '^g' push-line-or-edit
 [[ -f "$HOME/.atuin/bin/env" ]] && . "$HOME/.atuin/bin/env"
 command -v atuin &>/dev/null && eval "$(atuin init zsh)"
 
+# Cap
+export PATH="$HOME/.cap/bin:$PATH"
+
 # mise — runtime and tool version manager (MUST run last, after all
 # PATH modifications, so mise's tool paths win precedence over user dirs).
 command -v mise &>/dev/null && eval "$(mise activate zsh)"
