@@ -29,6 +29,7 @@ gui:
     Trivial: "Trivial"
   issueListFields:
     - key
+    - parent
     - summary
     - status
     - type
