@@ -1,10 +1,12 @@
 -- Git status UI (black-atom-industries/iter.nvim), loaded from the local checkout.
 
+-- Sourced at startup so `nvim iter://review` finds iter's BufReadCmd.
+vim.opt.rtp:prepend(vim.fn.expand("~/repos/black-atom-industries/iter.nvim/"))
+-- rtp is extended after startup sourced plugin/, so source iter's command file by hand
+vim.cmd.runtime("plugin/iter.lua")
+
 Edit.later(function()
 	-- vim.pack.add({ "https://github.com/barrettruth/diffs.nvim" })
-	vim.opt.rtp:prepend(vim.fn.expand("~/repos/black-atom-industries/iter.nvim/"))
-	-- rtp is extended after startup sourced plugin/, so source iter's command file by hand
-	vim.cmd.runtime("plugin/iter.lua")
 
 	local iter = require("iter")
 
