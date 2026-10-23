@@ -10,7 +10,5 @@ vim.opt_local.conceallevel = 3
 
 local map = vim.keymap.set
 
-map({ "n", "o", "x" }, "j", "gj", { buffer = true })
-map({ "n", "o", "x" }, "k", "gk", { buffer = true })
 map({ "n", "o", "x" }, "0", "g0", { buffer = true })
 map({ "n", "o", "x" }, "$", "g$", { buffer = true })

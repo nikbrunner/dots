@@ -46,6 +46,7 @@ vim.o.scrolloffpad    = 99                  -- Keep 'scrolloff' padding even at 
 vim.o.shortmess       = 'CFOSWaco'          -- Disable some built-in completion messages
 vim.o.showmode        = false               -- Don't show mode in command line
 vim.o.signcolumn      = 'yes'               -- Always show signcolumn (less flicker)
+vim.o.smoothscroll    = true                -- Scroll by screen line through wrapped lines
 vim.o.splitbelow      = true                -- Horizontal splits will be below
 vim.o.splitkeep       = 'screen'            -- Reduce scroll during window split
 vim.o.splitright      = true                -- Vertical splits will be to the right
