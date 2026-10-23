@@ -3,6 +3,8 @@ gui:
   theme: default
   sidePanelWidth: 35
   borders: sharp
+  themeLight:
+    cyan: "2"
   statusIcons:
     Backlog: "Backlog"
     Open: "Open"
