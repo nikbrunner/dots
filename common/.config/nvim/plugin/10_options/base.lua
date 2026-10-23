@@ -17,7 +17,7 @@ vim.o.jumpoptions     = 'stack'        -- Make jumplist behave like a stack
 
 vim.o.shada           = "'100,<50,s10,:1000,/100,@100,h" -- Limit ShaDa file (for startup)
 
-vim.o.sessionoptions  = 'blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions'
+vim.o.sessionoptions  = 'blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal'
 
 -- NOTE: 'exrc' is set in 'init.lua' — the `.nvim.lua` search happens right
 -- after init.lua is sourced, before plugin/ files. Setting it here is too late.
