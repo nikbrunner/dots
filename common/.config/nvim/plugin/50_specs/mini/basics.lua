@@ -17,7 +17,7 @@ Edit.now(function()
 			extra_ui = true,
 			-- Presets for window borders ('single', 'double', ...)
 			-- Default 'auto' infers from 'winborder' option
-			win_borders = "single",
+			win_borders = "solid",
 		},
 		mappings = {
 			basic = true,

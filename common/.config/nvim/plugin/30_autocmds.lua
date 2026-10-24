@@ -23,6 +23,14 @@ Edit.new_autocmd("FileType", {
 	vim.keymap.set("n", "q", "<cmd>close<CR>", { buffer = event.buf, silent = true })
 end, "Close with q")
 
+-- Vertical split edges are a solid band in the float background (fillchars vert is blank).
+local function solid_separator()
+	local float = vim.api.nvim_get_hl(0, { name = "NormalFloat", link = false })
+	vim.api.nvim_set_hl(0, "WinSeparator", { fg = float.bg, bg = float.bg })
+end
+solid_separator()
+Edit.new_autocmd("ColorScheme", nil, solid_separator, "Solid split separators")
+
 -- Go to last cursor position when opening a buffer
 Edit.later(function()
 	require("mini.misc").setup_restore_cursor()
