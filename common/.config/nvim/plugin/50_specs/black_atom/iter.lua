@@ -11,6 +11,7 @@ Edit.later(function()
 	local iter = require("iter")
 
 	iter.setup({ diff = { layout = "auto" } })
+	vim.o.statuscolumn = "%!v:lua.require'iter'.statuscolumn()"
 
 	local map = vim.keymap.set
 
@@ -22,7 +23,9 @@ Edit.later(function()
 	map({ "n", "x" }, "<leader>dna", function() iter.annotate() end,                     { desc = "[A]nnotate line or selection" })
 	map("n",          "<leader>dnf", function() iter.annotate({ scope = "file" }) end,   { desc = "Annotate [F]ile" })
 	map("n",          "<leader>dnr", function() iter.annotate({ scope = "review" }) end, { desc = "Annotate [R]eview" })
-	map("n",          "<leader>dnl", iter.annotations,                                   { desc = "[L]ist annotations" })
+	map("n",          "<leader>dnl", iter.sidebar,                                       { desc = "[L]ist annotations" })
 	map("n",          "<leader>dny", iter.yank,                                          { desc = "[Y]ank annotations" })
+	map("n",          "]a",          iter.next_annotation,                               { desc = "Next annotation" })
+	map("n",          "[a",          iter.prev_annotation,                               { desc = "Previous annotation" })
 	-- stylua: ignore end
 end)
