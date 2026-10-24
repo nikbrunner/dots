@@ -2,7 +2,7 @@
 # https://github.com/imrajyavardhan12/spectre-ghostty-config
 
 # Colors
-theme = black-atom-jpn-murasaki-dark.conf
+theme = black-atom-mono-dimmed-light.conf
 bold-is-bright = true
 
 # Window
@@ -21,8 +21,8 @@ adjust-underline-position = 3
 
 # Fonts
 font-size = 13
-font-family = TX-02 Condensed
-font-family-bold = TX-02 Bold Condensed
+font-family = IosevkaTermSlab Nerd Font
+font-style-bold = Bold
 font-thicken = true
 window-inherit-working-directory = true
 unfocused-split-opacity = 1

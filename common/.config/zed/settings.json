@@ -39,7 +39,7 @@
   "session": {
     "trust_all_worktrees": false,
   },
-  "buffer_font_family": "TX-02 Condensed",
+  "buffer_font_family": "IosevkaTermSlab Nerd Font",
   "which_key": {
     "delay_ms": 250,
     "enabled": true,
@@ -111,7 +111,7 @@
   "cursor_blink": false,
   "theme": {
     "mode": "system",
-    "light": "Black Atom — JPN ∷ Murasaki Light",
+    "light": "Black Atom — Mono ∷ Dimmed Light",
     "dark": "Black Atom — JPN ∷ Murasaki Dark",
   },
   "base_keymap": "VSCode",
@@ -160,7 +160,7 @@
     "font_size": 14.0,
     "line_height": "comfortable",
     "working_directory": "current_project_directory",
-    "font_family": "TX-02 Condensed",
+    "font_family": "IosevkaTermSlab Nerd Font",
   },
   "lsp": {
     "vtsls": {
@@ -194,5 +194,5 @@
       },
     },
   },
-  "ui_font_family": "TX-02 Condensed",
+  "ui_font_family": "IosevkaTermSlab Nerd Font",
 }

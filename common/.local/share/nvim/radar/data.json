@@ -39,6 +39,21 @@
       }
     },
     "~/repos/black-atom-industries/black-atom": {
+      "feat/website": {
+        "locks": [],
+        "recent": [
+          "website/src/components/panel/panel.module.css",
+          "website/src/components/section/section.module.css",
+          "website/src/audio/soundscapes/organic/params.ts",
+          "oil:///Users/brunner/repos/black-atom-industries/black-atom/",
+          "oil:///Users/brunner/repos/black-atom-industries/black-atom/website/src/",
+          "oil:///Users/brunner/repos/black-atom-industries/black-atom/website/src/audio/",
+          "oil:///Users/brunner/repos/black-atom-industries/black-atom/website/src/audio/soundscapes/",
+          "oil:///Users/brunner/repos/black-atom-industries/black-atom/website/src/audio/soundscapes/organic/",
+          "website/src/audio/soundscapes/organic/motion.ts"
+        ],
+        "lastAccessed": 1792855832
+      },
       "main": {
         "locks": [],
         "recent": [
@@ -147,16 +162,22 @@
     },
     "~/repos/imfusion/.reviews/labels-web-15-project-members": {
       "feat/CP-230-members-and-roles-in-projects": {
-        "locks": [],
+        "locks": [
+          {
+            "filename": "PR-15.md",
+            "label": "a"
+          }
+        ],
         "recent": [
-          "PR-15-HANDOFF.md",
-          "PR-15-TAKEOVER.md",
+          "PR-15.md",
           "oil:///Users/brunner/repos/imfusion/.reviews/labels-web-15-project-members/",
+          "PR-15-TAKEOVER.md",
+          "PR-15-HANDOFF.md",
           "HANDOFF.md",
           "oil:///Users/brunner/repos/imfusion/.reviews/labels-web-15-project-members/frontend/",
           "frontend/src/routes/_app/projects.$projectId/-settings/use-active-section.ts"
         ],
-        "lastAccessed": 1792754039
+        "lastAccessed": 1792761969
       }
     },
     "~/repos/imfusion/.reviews/labels-web-16-playwright-e2e": {
@@ -329,18 +350,18 @@
           }
         ],
         "recent": [
+          "labels-web-plan.md",
+          "src/components/collapsible/collapsible.tsx",
           "LABELS-COMPONENTS.md",
           "oil:///Users/brunner/repos/imfusion/websdk/web-ui/",
-          "src/components/collapsible/collapsible.tsx",
           "src/styles/variables/typo.css",
           "src/components/typo/typo.module.css",
           "oil:///Users/brunner/repos/imfusion/websdk/web-ui/src/components/",
           "oil:///Users/brunner/repos/imfusion/websdk/web-ui/src/components/typo/",
           "dist/utils/break-hints.d.ts",
-          "src/hooks/use-disclosure.ts",
-          "src/components/app-shell/app-shell.tsx"
+          "src/hooks/use-disclosure.ts"
         ],
-        "lastAccessed": 1792750498
+        "lastAccessed": 1792761382
       }
     },
     "~/repos/imfusion/websdk/web-ui-appearance-toggle": {
@@ -498,6 +519,40 @@
           "oil:///Users/brunner/repos/nikbrunner/notes/Log/"
         ],
         "lastAccessed": 1792655062
+      }
+    },
+    "~/repos/nikbrunner/writing": {
+      "claude/black-atom-story-ii36w6": {
+        "locks": [],
+        "recent": [
+          "oil:///Users/brunner/repos/nikbrunner/writing/",
+          "oil:///Users/brunner/repos/nikbrunner/writing/series/",
+          "oil:///Users/brunner/repos/nikbrunner/writing/series/scarth-johnson/",
+          "oil:///Users/brunner/repos/nikbrunner/writing/neolib/",
+          "oil:///Users/brunner/repos/nikbrunner/writing/neolib/book-mujrhkat-yjutb/",
+          "oil:///Users/brunner/repos/nikbrunner/writing/neolib/book-mujrhkat-yjutb/chapters/",
+          "oil:///Users/brunner/repos/nikbrunner/writing/series/scarth-johnson/books/",
+          "oil:///Users/brunner/repos/nikbrunner/writing/series/scarth-johnson/books/01-avalon/",
+          "oil:///Users/brunner/repos/nikbrunner/writing/realms/",
+          "neolib/book-mujrhkat-yjutb/chapters/ch-mujy6y0u-bix5.html"
+        ],
+        "lastAccessed": 1792776929
+      },
+      "main": {
+        "locks": [],
+        "recent": [
+          "LOG.md",
+          "series/scarth-johnson/books/01-avalon/outline.md",
+          "oil:///Users/brunner/repos/nikbrunner/writing/series/scarth-johnson/books/01-avalon/",
+          "oil:///Users/brunner/repos/nikbrunner/writing/series/scarth-johnson/books/",
+          "oil:///Users/brunner/repos/nikbrunner/writing/series/scarth-johnson/",
+          "oil:///Users/brunner/repos/nikbrunner/writing/series/",
+          "oil:///Users/brunner/repos/nikbrunner/writing/",
+          "oil:///Users/brunner/repos/nikbrunner/writing/neolib/",
+          "oil:///Users/brunner/repos/nikbrunner/writing/neolib/book-mujrhkat-yjutb/",
+          "oil:///Users/brunner/repos/nikbrunner/writing/neolib/book-mujrhkat-yjutb/chapters/"
+        ],
+        "lastAccessed": 1792789890
       }
     }
   }

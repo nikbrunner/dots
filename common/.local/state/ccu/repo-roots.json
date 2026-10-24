@@ -35,14 +35,21 @@
       "~/repos/black-atom-industries/black-atom/core/src/themes",
       "~/repos/black-atom-industries/black-atom/core/src/themes/jpn",
       "~/repos/black-atom-industries/black-atom/core/src/themes/minium",
+      "~/repos/black-atom-industries/black-atom/handoffs/one-space/shots",
+      "~/repos/black-atom-industries/black-atom/handoffs/website-design",
       "~/repos/black-atom-industries/black-atom/livery",
       "~/repos/black-atom-industries/black-atom/livery/core/src/updaters",
       "~/repos/black-atom-industries/black-atom/livery/e2e",
       "~/repos/black-atom-industries/black-atom/livery/e2e/test-results/theme-list-theme-list-matches-the-theme-list-baseline",
       "~/repos/black-atom-industries/black-atom/livery/src",
-      "~/repos/black-atom-industries/black-atom/node_modules/@tanstack/hotkeys/dist"
+      "~/repos/black-atom-industries/black-atom/node_modules/@tanstack/hotkeys/dist",
+      "~/repos/black-atom-industries/black-atom/website",
+      "~/repos/black-atom-industries/black-atom/website/src",
+      "~/repos/black-atom-industries/black-atom/website/src/background/black-hole",
+      "~/repos/black-atom-industries/black-atom/website/src/components",
+      "~/repos/black-atom-industries/black-atom/website/src/components/panel"
     ],
-    "last_seen": "2026-10-18"
+    "last_seen": "2026-10-24"
   },
   "black-atom-industries/core": {
     "root": "~/repos/black-atom-industries/core",
@@ -184,6 +191,7 @@
       "~/.herdr/worktrees/imfusion-portal/imfusion-portal-product-cards",
       "~/.herdr/worktrees/imfusion-portal/imfusion-portal-product-cards/bff",
       "~/.herdr/worktrees/imfusion-portal/imfusion-portal-product-cards/frontend",
+      "~/.herdr/worktrees/imfusion-portal/imfusion-portal-product-cards/local-setup",
       "~/repos/imfusion/cp/CP-105-security-avoid-email-spamming-merge-conflicts-resolved",
       "~/repos/imfusion/cp/CP-159-update-web-ui",
       "~/repos/imfusion/cp/CP-159-update-web-ui/frontend",
@@ -403,6 +411,7 @@
       "~/repos/nikbrunner/dots/common/.config",
       "~/repos/nikbrunner/dots/common/.config/dinky",
       "~/repos/nikbrunner/dots/common/.config/ghostty/shaders",
+      "~/repos/nikbrunner/dots/common/.config/herdr",
       "~/repos/nikbrunner/dots/common/.config/herdr/local-plugins/stationary",
       "~/repos/nikbrunner/dots/common/.config/herdr/plugins",
       "~/repos/nikbrunner/dots/common/.config/herdr/plugins/config/herdr-navigator",
@@ -414,7 +423,7 @@
       "~/repos/nikbrunner/dots/macos/.config/sketchybar/plugins",
       "~/repos/nikbrunner/dots/macos/.config/tuna"
     ],
-    "last_seen": "2026-10-21"
+    "last_seen": "2026-10-24"
   },
   "nikbrunner/fonts": {
     "root": "~/repos/nikbrunner/fonts",
@@ -558,6 +567,7 @@
     "session_dirs": [
       "~/repos/nikbrunner/writing",
       "~/repos/nikbrunner/writing/neolib/book-mujrhkat-yjutb",
+      "~/repos/nikbrunner/writing/neolib/book-mujrhkat-yjutb/chapters",
       "~/repos/nikbrunner/writing/realms",
       "~/repos/nikbrunner/writing/realms/scarth-johnson",
       "~/repos/nikbrunner/writing/realms/scarth-johnson/assets",
