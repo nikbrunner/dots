@@ -138,6 +138,36 @@ Snapshots and screenshots return through MCP and cost real context. Prefer `take
 
 If Exa or Chrome DevTools fails, report it, then use the matching native tool when available. A search returning no matches is a result, not a failure.
 
+## My Projects
+
+Tools I build and use daily, my own and ImFusion's. When I name one, it's mine: check its repo and its memory before searching the web. Use them unprompted too. When a task touches something another project already solves, documents or depends on, look there and tell me what you found.
+
+Memory lives in `~/.claude/projects/<repo path, with / and . as ->/memory/`, for ImFusion repos in `~/.claude-work/projects/`.
+
+| Project          | Repo                                     | What                                                                                                                                             |
+| ---------------- | ---------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| dots             | ~/repos/nikbrunner/dots                  | My dotfiles for macOS and Arch, symlinked into `~`, managed by the `dots` CLI                                                                    |
+| Black Atom       | ~/repos/black-atom-industries/black-atom | Dark and light themes for developer tools; `livery/` is the desktop app that applies them                                                        |
+| iter.nvim        | ~/repos/black-atom-industries/iter.nvim  | Neovim plugin for Git staging and code review: status drawer, annotations, export for agents                                                     |
+| radar.nvim       | ~/repos/black-atom-industries/radar.nvim | Neovim file navigation: locks, recent files, alternative file, per project and branch                                                            |
+| mdn.nvim         | ~/repos/nikbrunner/mdn.nvim              | Minimal Markdown utilities for Neovim: list continuation, checkbox cycle, concealed list markers                                                 |
+| lazyjira         | ~/repos/nikbrunner/lazyjira              | Jira terminal UI in Go                                                                                                                           |
+| helm.herdr       | ~/repos/black-atom-industries/helm.herdr | One popup to reach every workspace, tab, pane, agent and project in Herdr                                                                        |
+| helm.tmux        | ~/repos/black-atom-industries/helm.tmux  | Go TUI for tmux sessions; the `helm` that `dots pull` and `dots push` call                                                                       |
+| shiplog          | ~/repos/black-atom-industries/shiplog    | AI git CLI that writes commit messages and branch names                                                                                          |
+| lager            | ~/repos/nikbrunner/lager                 | Keeps a declared set of Git repositories available in one local root                                                                             |
+| skills           | ~/repos/nikbrunner/skills                | My `nbr-*` agent skills, linked into `~/.agents/skills`                                                                                          |
+| nbr.haus         | ~/repos/nikbrunner/nbr.haus              | My portfolio and study essays, TanStack Start and React                                                                                          |
+| writing          | ~/repos/nikbrunner/writing               | My fiction: one shared world, series and manuscripts                                                                                             |
+| notes            | ~/repos/nikbrunner/notes                 | My Obsidian vault                                                                                                                                |
+| kōyō             | ~/repos/nikbrunner/koyo                  | My 36-key split keyboard layout and its flashing CLI for Moonlander and Corne                                                                    |
+| fonts            | ~/repos/nikbrunner/fonts                 | My font collection and installer; `pick-font` updates the Ghostty and Zed configs                                                                |
+| @imfusion/web-ui | ~/repos/imfusion/websdk/web-ui           | Shared React UI library for ImFusion web apps: primitives, tokens, one import surface. I am its main author and maintainer                       |
+| imfusion-portal  | ~/repos/imfusion/cp/imfusion-portal      | Web portal for ImFusion Cloud: register, sign in, manage licenses and members. I work on the frontend SPA and its e2e tests                      |
+| labels-web       | ~/repos/imfusion/cp/labels-web           | Web portal for the cloud deployment of ImFusion Labels. I work on the frontend SPA                                                               |
+| web-sdk          | ~/repos/imfusion/websdk/web-sdk          | ImFusionLib subset in WebAssembly, published as `@imfusion/sdk` and `@imfusion/sdk-react`. I contribute now and then, mostly to the docs package |
+| imf-notes        | ~/repos/imfusion/brunner/notes           | My ImFusion notes: timesheet, per-repo notes, research, ADRs                                                                                     |
+
 ## Development
 
 Research before implementation — check official docs and real examples before writing against an unfamiliar API.
