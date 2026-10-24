@@ -3,20 +3,16 @@ local vp_cmd = "vp_fmt"
 local vp_configs = { "vite.config.ts", "vite.config.mts", "vite.config.js", "vite.config.mjs" }
 
 ---@param path string
----@return string|nil root The directory holding a vite.config.* with a `fmt` block and a local `vp`
+---@return string|nil root The nearest directory holding a vite.config.* with a `fmt` block and a local `vp`
 local function vp_fmt_root(path)
-	local config = vim.fs.find(vp_configs, { upward = true, path = path })[1]
-	if not config then
-		return nil
+	for _, config in ipairs(vim.fs.find(vp_configs, { upward = true, path = path, limit = math.huge })) do
+		local source = table.concat(vim.fn.readfile(config), "\n")
+		if source:find("%f[%w_]fmt%s*:") then
+			local root = vim.fs.dirname(config)
+			return vim.fn.executable(root .. "/node_modules/.bin/vp") == 1 and root or nil
+		end
 	end
-
-	local root = vim.fs.dirname(config)
-	if vim.fn.executable(root .. "/node_modules/.bin/vp") == 0 then
-		return nil
-	end
-
-	local source = table.concat(vim.fn.readfile(config), "\n")
-	return source:find("%f[%w_]fmt%s*:") and root or nil
+	return nil
 end
 
 local oxfmt_cmd = "oxfmt"
