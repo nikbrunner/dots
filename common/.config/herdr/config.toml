@@ -82,10 +82,11 @@ pane_scrollbars = false
 
 tab_bar_right = [
   # { type = "zoom" },
-  { type = "hostname" },
-  { type = "command", command = "~/.config/herdr/status.sh", interval_seconds = 2, timeout_seconds = 2 },
+  { type = "command", command = 'echo " $(hostname -s)"', interval_seconds = 3600, timeout_seconds = 2 },
+  { type = "command", command = "~/.config/herdr/status.sh", interval_seconds = 1, timeout_seconds = 2 },
+  { type = "command", command = "~/.config/herdr/helm-last.sh", interval_seconds = 1, timeout_seconds = 2 },
   { type = "datetime", format = "\uf073 %A %d.%m." },
-  { type = "datetime", format = "%H:%M" },
+  { type = "datetime", format = "\uf017 %H:%M" },
   # { type = "text", text = "prod" },
 ]
 tab_bar_right_separator = " | "
