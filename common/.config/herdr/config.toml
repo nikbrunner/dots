@@ -82,9 +82,10 @@ pane_scrollbars = false
 
 tab_bar_right = [
   # { type = "zoom" },
-  { type = "command", command = 'echo " $(hostname -s)"', interval_seconds = 3600, timeout_seconds = 2 },
   { type = "command", command = "~/.config/herdr/status.sh", interval_seconds = 1, timeout_seconds = 2 },
   { type = "command", command = "~/.config/herdr/helm-last.sh", interval_seconds = 1, timeout_seconds = 2 },
+  { type = "command", command = 'command -v scutil >/dev/null || exit 0; n=$(scutil --nc list | grep "^\* (Connected)" | grep " VPN (" | sed -E "s/.*\"([^\"]*)\".*/\1/;s/ +$//" | paste -sd, -); echo "󰖂 ${n:-off}"', interval_seconds = 5, timeout_seconds = 2 },
+  { type = "command", command = 'pmset -g batt 2>/dev/null | grep -Eo "[0-9]+%" | sed "s/^/󰁹 /"', interval_seconds = 60, timeout_seconds = 2 },
   { type = "datetime", format = "\uf073 %A %d.%m." },
   { type = "datetime", format = "\uf017 %H:%M" },
   # { type = "text", text = "prod" },
