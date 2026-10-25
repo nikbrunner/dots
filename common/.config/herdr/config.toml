@@ -255,12 +255,12 @@ width = "100%"
 height = "100%"
 
 [[keys.command]]
-key = "alt+space"
+key = "ctrl+s"
 type = "popup"
 command = "helm-herdr"
 description = "Open Helm"
 width = "70%"
-height = "60%"
+height = "80%"
 
 [[keys.command]]
 key = "alt+shift+o"
