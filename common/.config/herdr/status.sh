@@ -27,5 +27,17 @@ fi
 last=$("$(dirname "$0")/helm-last.sh")
 [ -n "$last" ] && out="$out   $last"
 
-# Braille blanks pad the group away from the next entry; Herdr trims trailing spaces.
-echo "${out}⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀"
+# Braille blanks pad the group toward the middle of the tab bar, down to none when space is short;
+# Herdr trims trailing spaces. 40 is roughly the width of the entries to the right.
+width=$("$(dirname "$0")/tab-width.sh")
+pad=$((width / 2 - 40 - $(printf %s "$out" | wc -m) / 2))
+[ "$pad" -lt 0 ] && pad=0
+gap=$(
+    i=0
+    while [ $i -lt $pad ]; do
+        printf '⠀'
+        i=$((i + 1))
+    done
+)
+
+echo "${out}${gap}"
