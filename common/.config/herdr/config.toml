@@ -264,6 +264,12 @@ width = 124
 height = 34
 
 [[keys.command]]
+key = "prefix+shift+t"
+type = "plugin_action"
+command = "helm-herdr.open-side"
+description = "helm side pane"
+
+[[keys.command]]
 key = "alt+shift+o"
 type = "plugin_action"
 command = "helm-herdr.jump-back"

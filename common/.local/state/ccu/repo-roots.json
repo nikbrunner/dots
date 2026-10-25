@@ -47,9 +47,12 @@
       "~/repos/black-atom-industries/black-atom/website/src",
       "~/repos/black-atom-industries/black-atom/website/src/background/black-hole",
       "~/repos/black-atom-industries/black-atom/website/src/components",
-      "~/repos/black-atom-industries/black-atom/website/src/components/panel"
+      "~/repos/black-atom-industries/black-atom/website/src/components/heading",
+      "~/repos/black-atom-industries/black-atom/website/src/components/panel",
+      "~/repos/black-atom-industries/black-atom/website/src/content/products",
+      "~/repos/black-atom-industries/black-atom/website/src/routes"
     ],
-    "last_seen": "2026-10-24"
+    "last_seen": "2026-10-25"
   },
   "black-atom-industries/core": {
     "root": "~/repos/black-atom-industries/core",
@@ -581,7 +584,13 @@
       "~/repos/nikbrunner/writing/scarth-johnson",
       "~/repos/nikbrunner/writing/series/scarth-johnson/books/01-avalon",
       "~/repos/nikbrunner/writing/series/scarth-johnson/books/01-avalon/editor",
-      "~/repos/nikbrunner/writing/series/scarth-johnson/books/01-avalon/manuscript"
+      "~/repos/nikbrunner/writing/series/scarth-johnson/books/01-avalon/manuscript",
+      "~/repos/nikbrunner/writing/world/characters/scarth-johnson",
+      "~/repos/nikbrunner/writing/world/characters/scarth-johnson/images",
+      "~/repos/nikbrunner/writing/world/characters/scarth-johnson/images/drafts",
+      "~/repos/nikbrunner/writing/world/characters/scarth-johnson/images/flux",
+      "~/repos/nikbrunner/writing/world/characters/scarth-johnson/images/references",
+      "~/repos/nikbrunner/writing/world/characters/scarth-johnson/images/references/photo"
     ],
     "last_seen": "2026-10-25"
   },

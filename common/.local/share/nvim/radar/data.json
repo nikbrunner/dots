@@ -42,6 +42,7 @@
       "feat/website": {
         "locks": [],
         "recent": [
+          "website/src/routes/index.tsx",
           "website/src/components/panel/panel.module.css",
           "website/src/components/section/section.module.css",
           "website/src/audio/soundscapes/organic/params.ts",
@@ -52,7 +53,7 @@
           "oil:///Users/brunner/repos/black-atom-industries/black-atom/website/src/audio/soundscapes/organic/",
           "website/src/audio/soundscapes/organic/motion.ts"
         ],
-        "lastAccessed": 1792855832
+        "lastAccessed": 1792947728
       },
       "main": {
         "locks": [],
@@ -88,7 +89,7 @@
           "docs/assets/changelog/0.6.0-topology.webp",
           "src/theme.rs"
         ],
-        "lastAccessed": 1792342891
+        "lastAccessed": 1792951370
       }
     },
     "~/repos/black-atom-industries/iter.nvim": {
@@ -426,6 +427,7 @@
           }
         ],
         "recent": [
+          "common/.config/herdr/config.toml",
           "common/.agents/AGENTS.md",
           "install/mac/Brewfile",
           "common/.zshrc",
@@ -434,10 +436,9 @@
           "common/.config/ghostty/themes/black-atom-default-dark.conf",
           "common/.config/ghostty/config",
           "common/.config/nvim/plugin/50_specs/black_atom/iter.lua",
-          "common/.claude/settings.json",
-          "common/.config/ghostty/shaders/black-atom-grain.glsl"
+          "common/.claude/settings.json"
         ],
-        "lastAccessed": 1792924533
+        "lastAccessed": 1792936194
       }
     },
     "~/repos/nikbrunner/imf-notes": {
@@ -476,6 +477,16 @@
           "qmk/crkbd/src/keymap.generated.h"
         ],
         "lastAccessed": 1792335091
+      }
+    },
+    "~/repos/nikbrunner/mdn.nvim": {
+      "main": {
+        "locks": [],
+        "recent": [
+          "examples/conceal-demo.md",
+          "oil:///Users/brunner/repos/nikbrunner/mdn.nvim/"
+        ],
+        "lastAccessed": 1792934728
       }
     },
     "~/repos/nikbrunner/minifugit.nvim": {
@@ -546,17 +557,25 @@
         "lastAccessed": 1792776929
       },
       "main": {
-        "locks": [],
+        "locks": [
+          {
+            "filename": "series/scarth-johnson/books/01-avalon/manuscript/01-business-as-usual.md",
+            "label": "a"
+          }
+        ],
         "recent": [
+          "oil:///Users/brunner/repos/nikbrunner/writing/world/characters/scarth-johnson/",
+          "oil:///Users/brunner/repos/nikbrunner/writing/world/characters/scarth-johnson/style/",
+          "world/characters/scarth-johnson/style/sources.md",
+          "series/scarth-johnson/books/01-avalon/manuscript/01-business-as-usual.md",
+          "package.json",
           "series/scarth-johnson/books/01-avalon/manuscript/02-home.md",
           "LOG.md",
           "oil:///Users/brunner/repos/nikbrunner/writing/series/scarth-johnson/books/01-avalon/manuscript/",
-          "series/scarth-johnson/books/01-avalon/manuscript/01-business-as-usual.md",
           "series/scarth-johnson/books/01-avalon/outline.md",
-          "oil:///Users/brunner/repos/nikbrunner/writing/series/scarth-johnson/books/01-avalon/",
-          "oil:///Users/brunner/repos/nikbrunner/writing/series/scarth-johnson/books/"
+          "oil:///Users/brunner/repos/nikbrunner/writing/series/scarth-johnson/books/01-avalon/"
         ],
-        "lastAccessed": 1792916853
+        "lastAccessed": 1792936766
       }
     }
   }
