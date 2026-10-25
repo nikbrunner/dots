@@ -29,6 +29,10 @@ herdr plugin install aimdevlee/herdr-nvim-nav --yes
 
 # https://github.com/black-atom-industries/helm.herdr
 herdr plugin install black-atom-industries/helm.herdr --yes
+# The alt+space popup runs helm-herdr from PATH, so link the plugin's build there.
+helm_root=$(herdr plugin list --plugin helm-herdr --json | jq -r '.result.plugins[0].plugin_root')
+mkdir -p "$HOME/.local/bin"
+ln -sfn "$helm_root/target/release/helm-herdr" "$HOME/.local/bin/helm-herdr"
 
 # https://github.com/zenbu-labs/terminal-browser/tree/main/herdr-plugin
 herdr plugin install zenbu-labs/terminal-browser/herdr-plugin --yes
