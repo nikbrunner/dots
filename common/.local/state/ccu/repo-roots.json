@@ -553,11 +553,12 @@
     "session_dirs": [
       "~/repos/nikbrunner/skills",
       "~/repos/nikbrunner/skills/skills",
+      "~/repos/nikbrunner/skills/skills/engineering",
       "~/repos/nikbrunner/skills/skills/engineering/nbr-repo-conventions/topics",
       "~/repos/nikbrunner/skills/skills/engineering/nbr-repo-setup",
       "~/repos/nikbrunner/skills/skills/nbr-repo-conventions"
     ],
-    "last_seen": "2026-10-16"
+    "last_seen": "2026-10-24"
   },
   "nikbrunner/writing": {
     "root": "~/repos/nikbrunner/writing",
@@ -566,6 +567,7 @@
     "work": false,
     "session_dirs": [
       "~/repos/nikbrunner/writing",
+      "~/repos/nikbrunner/writing/neolib",
       "~/repos/nikbrunner/writing/neolib/book-mujrhkat-yjutb",
       "~/repos/nikbrunner/writing/neolib/book-mujrhkat-yjutb/chapters",
       "~/repos/nikbrunner/writing/realms",
@@ -574,9 +576,11 @@
       "~/repos/nikbrunner/writing/realms/scarth-johnson/books/01-avalon",
       "~/repos/nikbrunner/writing/realms/the-black-atom",
       "~/repos/nikbrunner/writing/realms/the-black-atom/assets",
-      "~/repos/nikbrunner/writing/scarth-johnson"
+      "~/repos/nikbrunner/writing/scarth-johnson",
+      "~/repos/nikbrunner/writing/series/scarth-johnson/books/01-avalon",
+      "~/repos/nikbrunner/writing/series/scarth-johnson/books/01-avalon/manuscript"
     ],
-    "last_seen": "2026-10-23"
+    "last_seen": "2026-10-25"
   },
   "web-sdk-wk-fumadocs/emsdk": {
     "root": "~/repos/imfusion/websdk/web-sdk-wk-fumadocs/emsdk",

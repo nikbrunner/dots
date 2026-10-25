@@ -101,6 +101,13 @@
         ],
         "lastAccessed": 1792508592
       },
+      "feat/annotation-sidebar": {
+        "locks": [],
+        "recent": [
+          "lua/iter/log.lua"
+        ],
+        "lastAccessed": 1792869900
+      },
       "main": {
         "locks": [],
         "recent": [
@@ -419,6 +426,7 @@
           }
         ],
         "recent": [
+          "common/.agents/AGENTS.md",
           "install/mac/Brewfile",
           "common/.zshrc",
           "common/.config/nvim/plugin/50_specs/snacks.lua",
@@ -427,10 +435,9 @@
           "common/.config/ghostty/config",
           "common/.config/nvim/plugin/50_specs/black_atom/iter.lua",
           "common/.claude/settings.json",
-          "common/.config/ghostty/shaders/black-atom-grain.glsl",
-          "common/.gitconfig.delta"
+          "common/.config/ghostty/shaders/black-atom-grain.glsl"
         ],
-        "lastAccessed": 1792757290
+        "lastAccessed": 1792857451
       }
     },
     "~/repos/nikbrunner/imf-notes": {
@@ -541,18 +548,15 @@
       "main": {
         "locks": [],
         "recent": [
+          "series/scarth-johnson/books/01-avalon/manuscript/02-home.md",
           "LOG.md",
+          "oil:///Users/brunner/repos/nikbrunner/writing/series/scarth-johnson/books/01-avalon/manuscript/",
+          "series/scarth-johnson/books/01-avalon/manuscript/01-business-as-usual.md",
           "series/scarth-johnson/books/01-avalon/outline.md",
           "oil:///Users/brunner/repos/nikbrunner/writing/series/scarth-johnson/books/01-avalon/",
-          "oil:///Users/brunner/repos/nikbrunner/writing/series/scarth-johnson/books/",
-          "oil:///Users/brunner/repos/nikbrunner/writing/series/scarth-johnson/",
-          "oil:///Users/brunner/repos/nikbrunner/writing/series/",
-          "oil:///Users/brunner/repos/nikbrunner/writing/",
-          "oil:///Users/brunner/repos/nikbrunner/writing/neolib/",
-          "oil:///Users/brunner/repos/nikbrunner/writing/neolib/book-mujrhkat-yjutb/",
-          "oil:///Users/brunner/repos/nikbrunner/writing/neolib/book-mujrhkat-yjutb/chapters/"
+          "oil:///Users/brunner/repos/nikbrunner/writing/series/scarth-johnson/books/"
         ],
-        "lastAccessed": 1792789890
+        "lastAccessed": 1792916853
       }
     }
   }
