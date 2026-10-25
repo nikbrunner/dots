@@ -83,14 +83,13 @@ pane_scrollbars = false
 tab_bar_right = [
   # { type = "zoom" },
   { type = "command", command = "~/.config/herdr/status.sh", interval_seconds = 1, timeout_seconds = 2 },
-  { type = "command", command = "~/.config/herdr/helm-last.sh", interval_seconds = 1, timeout_seconds = 2 },
   { type = "command", command = 'command -v scutil >/dev/null || exit 0; n=$(scutil --nc list | grep "^\* (Connected)" | grep " VPN (" | sed -E "s/.*\"([^\"]*)\".*/\1/;s/ +$//" | paste -sd, -); echo "󰖂 ${n:-off}"', interval_seconds = 5, timeout_seconds = 2 },
   { type = "command", command = 'b=$(pmset -g batt 2>/dev/null) || exit 0; p=$(echo "$b" | grep -Eo "[0-9]+%") || exit 0; case $b in *"AC Power"*) i=󰂄 ;; *) i=󰁹 ;; esac; echo "$i $p"', interval_seconds = 60, timeout_seconds = 2 },
   { type = "datetime", format = "\uf073 %A %d.%m." },
   { type = "datetime", format = "\uf017 %H:%M" },
   # { type = "text", text = "prod" },
 ]
-tab_bar_right_separator = " | "
+tab_bar_right_separator = "  "
 
 status_indicators = "symbols"
 [ui.sound]
