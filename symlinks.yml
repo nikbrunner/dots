@@ -69,6 +69,7 @@ common:
   common/.config/herdr/plugins: ~/.config/herdr/plugins
   common/.config/herdr/release-notes.json: ~/.config/herdr/release-notes.json
   common/.config/herdr/sounds: ~/.config/herdr/sounds
+  common/.config/herdr/helm-last.sh: ~/.config/herdr/helm-last.sh
   common/.config/herdr/status.sh: ~/.config/herdr/status.sh
 
   # Theming =================================================================
