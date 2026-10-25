@@ -27,7 +27,7 @@ vim_mode = false
 vim_filter_search = true
 
 [notifications]
-enabled = true
+enabled = false
 audio = false
 sound = "default"
 custom_sound = "" # Example: "~/sounds/navigator.wav"
