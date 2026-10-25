@@ -7,7 +7,7 @@ bold-is-bright = true
 
 # Window
 window-padding-x = 25
-window-padding-y = 25
+window-padding-y = 25,10
 window-vsync = true
 
 # Advanced
