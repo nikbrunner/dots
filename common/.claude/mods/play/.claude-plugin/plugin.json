@@ -1,0 +1,6 @@
+{
+  "name": "play",
+  "version": "0.1.0",
+  "description": "/play reads the last reply aloud through ElevenLabs, with pause, rewind and stop in a band above the prompt",
+  "types": "./types/index.d.ts"
+}

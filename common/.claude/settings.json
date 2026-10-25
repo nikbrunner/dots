@@ -4,7 +4,7 @@
   "env": {
     "DISABLE_AUTOUPDATER": "0",
     "ENABLE_TOOL_SEARCH": "true",
-    "CLAUDE_CODE_PLUGIN_DIRS": "~/repos/nikbrunner/dots/common/.claude/mods/dash:~/repos/nikbrunner/dots/common/.claude/mods/toggle-mods",
+    "CLAUDE_CODE_PLUGIN_DIRS": "~/repos/nikbrunner/dots/common/.claude/mods/dash:~/repos/nikbrunner/dots/common/.claude/mods/toggle-mods:~/repos/nikbrunner/dots/common/.claude/mods/play",
     "CLAUDE_CODE_PLUGIN_DIR_WATCH": "1",
     "CLAUDE_CODE_SUBAGENT_MODEL": "haiku"
   },

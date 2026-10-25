@@ -28,6 +28,7 @@ brew "entr"                      # not in mise registry
 brew "ffmpeg"                    # mise backend compiles from source (slow)
 brew "make"                      # mise backend via asdf compiles; brew's gmake is better
 brew "mole"                      # not in mise registry
+brew "mpv"                       # /play mod plays and seeks through its IPC socket
 brew "mpd"                       # music player daemon — dots has mpd.conf
 brew "rmpc"                      # mpd client TUI — dots has rmpc config
 brew "btop"
