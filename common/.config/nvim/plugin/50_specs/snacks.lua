@@ -178,6 +178,7 @@ Edit.later(function()
 	map("n", "<leader>aht", function() Snacks.picker.help() end, { desc = "[T]ags" })
 	map("n", "<leader>ar",  function() Snacks.picker.recent() end, { desc = "[R]ecent Documents (Anywhere)" })
 	map("n", "<leader>at",  function() Snacks.picker.colorschemes() end, { desc = "[T]hemes" })
+	map("n", "<leader>az",  function() Snacks.zen({ toggles = { dim = false }, win = { width = 100, backdrop = { blend = 15 }, keys = { q = "close" }, wo = { wrap = true, linebreak = true } } }) end, { desc = "[Z]en" })
 	map("n", "<leader>a,",  function() Snacks.picker.files({ cwd = dots_path }) end, { desc = "[,]Settings (Dots)" })
 
 	-- Workspace
