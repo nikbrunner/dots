@@ -259,8 +259,8 @@ key = "ctrl+s"
 type = "popup"
 command = "helm-herdr"
 description = "Open Helm"
-width = "70%"
-height = "80%"
+width = 124
+height = 34
 
 [[keys.command]]
 key = "alt+shift+o"
