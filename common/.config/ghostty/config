@@ -33,6 +33,11 @@ window-decoration = auto
 # background-opacity = 0.9
 # background-blur = 65
 
+background-image = ./backgrounds/scarth-stomach-ba-green.jpg
+background-image-fit = cover
+background-image-position = center
+background-image-opacity = 0.1
+
 # Cursor
 adjust-cursor-thickness = 5
 cursor-style-blink = false
