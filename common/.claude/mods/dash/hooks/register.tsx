@@ -149,11 +149,27 @@ async function refreshTitle($: EngineInterface) {
 async function refreshWork($: EngineInterface) {
   const cwd = await $.session.cwd()
   const turns = await $.session.turns()
+  const run = await $.process.run([
+    'sh',
+    '-c',
+    'f=$(ls "$1"/projects/*/"$2".jsonl 2>/dev/null | head -1); [ -n "$f" ] || exit 0; ' +
+      'grep -o \'"permissionMode":"[^"]*"\' "$f" | tail -1 | sed \'s/.*":"//; s/"$//\'',
+    'sh',
+    configDir,
+    await $.session.id(),
+  ])
+  const mode = run.stdout.trim() || undefined
   await update($, work, w => ({
     ...w,
     cwd: home && cwd.startsWith(home) ? `~${cwd.slice(home.length)}` : cwd,
     turns,
+    mode: mode ?? w.mode,
   }))
+}
+
+async function refreshStyle($: EngineInterface) {
+  const style = await $.settings.read({ key: 'outputStyle' })
+  await update($, agent, a => ({ ...a, style: typeof style === 'string' ? style : undefined }))
 }
 
 function toUsage(u: Pick<SessionUsage, 'context' | 'rateLimits' | 'cost'>): Usage {
@@ -231,14 +247,8 @@ export const register: Register = on => {
     void refreshGit($)
     void refreshTasks($)
     void refreshUsage($)
+    void refreshStyle($)
     $.clock.every(1000, () => void update($, tick, n => n + 1))
-    return next(e)
-  })
-
-  on('classic.UserPromptSubmit', async ($, e, next) => {
-    if (e.session_title) await update($, title, () => e.session_title ?? '')
-    const mode = e.permission_mode
-    if (mode) void update($, work, w => ({ ...w, mode }))
     return next(e)
   })
 
@@ -255,12 +265,6 @@ export const register: Register = on => {
     void refreshUsage($)
     void refreshWork($)
     void $.session.model().then(m => update($, agent, a => ({ ...a, model: prettyModel(m) })))
-    return next(e)
-  })
-
-  on('prompt.compose', async ($, e, next) => {
-    const style = e.outputStyle?.name
-    void update($, agent, a => ({ ...a, style }))
     return next(e)
   })
 
@@ -316,6 +320,7 @@ export const register: Register = on => {
       void summarizeNow($, 'answer' in e ? e.answer : '', true)
       void refreshTitle($)
       void refreshWork($)
+      void refreshStyle($)
     }
     return result
   })
