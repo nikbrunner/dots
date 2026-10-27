@@ -137,7 +137,9 @@ async function refreshTitle($: EngineInterface) {
     'sh',
     '-c',
     'f=$(ls "$1"/projects/*/"$2".jsonl 2>/dev/null | head -1); [ -n "$f" ] || exit 0; ' +
-      'grep -o \'"\\(customTitle\\|aiTitle\\)":"[^"]*"\' "$f" | tail -1 | sed \'s/.*":"//; s/"$//\'',
+      't=$(grep -o \'"customTitle":"[^"]*"\' "$f" | tail -1); ' +
+      '[ -n "$t" ] || t=$(grep -o \'"aiTitle":"[^"]*"\' "$f" | tail -1); ' +
+      'printf %s "$t" | sed \'s/.*":"//; s/"$//\'',
     'sh',
     configDir,
     await $.session.id(),
@@ -446,7 +448,7 @@ export const register: Register = on => {
     ].filter(Boolean)
     const current = tk.find(x => x.status === 'in_progress')
 
-    const lead = t.length + th.length + (t !== '' && th !== '' ? 3 : 0)
+    const lead = th.length
     const room = e.props.bodyColumns - 4 - lead
     const isNowShown = nw !== '' && (lead === 0 || room >= nw.length + 3)
     const isLiveShown = live !== '' && isNowShown && room >= nw.length + live.length + 6
@@ -457,6 +459,13 @@ export const register: Register = on => {
         <Text dimColor wrap="truncate-end">
           {'╌'.repeat(e.props.bodyColumns)}
         </Text>
+        {t !== '' && (
+          <Box paddingX={1}>
+            <Text color="claude" bold wrap="truncate-end">
+              [{t}]
+            </Text>
+          </Box>
+        )}
         <Box flexDirection={isSplit ? 'row' : 'column'} paddingX={1}>
           <Box
             flexDirection="column"
@@ -597,15 +606,6 @@ export const register: Register = on => {
         {(lead > 0 || nw !== '') && (
           <Box paddingX={1}>
             <Text wrap="truncate-end">
-              <Text color="claude" bold>
-                ▸{' '}
-              </Text>
-              {t !== '' && (
-                <Text color="suggestion" italic>
-                  {t}
-                </Text>
-              )}
-              {t !== '' && th !== '' && dot}
               {th !== '' && <Text bold>{th}</Text>}
               {isNowShown && (
                 <Text dimColor>
