@@ -101,6 +101,8 @@ ccw() {
         command claude "$@"
 }
 
+alias kiel='cd ~/repos/imfusion/brunner/notes && ccw -n kiel "/imfg-kiel Good Morning"'
+
 claude-plugins-update() {
     command claude plugin marketplace update &&
         command claude plugin list --json | jq -r '.[] | select(.scope=="user" and (.id | endswith("@skills-dir") | not)) | .id' |
