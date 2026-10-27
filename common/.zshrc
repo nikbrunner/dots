@@ -101,20 +101,20 @@ ccw() {
         command claude "$@"
 }
 
-kiel() {
+tom() {
     case "$1" in
     launch)
-        cd ~/repos/imfusion/brunner/notes && ccw -n kiel "/imfg-kiel Good Morning"
+        cd ~/repos/imfusion/brunner/notes && ccw -n tom "/imfg-tom Good Morning"
         ;;
     message)
         shift
         local pane
-        pane=$(herdr agent list | jq -r '.result.agents[] | select(.terminal_title_stripped == "kiel") | .pane_id' | head -1)
-        [ -n "$pane" ] || { echo "kiel: no Herdr pane runs a session named kiel" >&2; return 1; }
+        pane=$(herdr agent list | jq -r '.result.agents[] | select(.terminal_title_stripped == "tom") | .pane_id' | head -1)
+        [ -n "$pane" ] || { echo "tom: no Herdr pane runs a session named tom" >&2; return 1; }
         herdr agent prompt "$pane" "$*"
         ;;
     *)
-        echo "usage: kiel launch | kiel message <text>" >&2
+        echo "usage: tom launch | tom message <text>" >&2
         return 1
         ;;
     esac
