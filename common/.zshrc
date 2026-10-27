@@ -111,7 +111,7 @@ tom() {
         local pane
         pane=$(herdr agent list | jq -r '.result.agents[] | select(.terminal_title_stripped == "tom") | .pane_id' | head -1)
         [ -n "$pane" ] || { echo "tom: no Herdr pane runs a session named tom" >&2; return 1; }
-        herdr agent prompt "$pane" "$*"
+        herdr agent prompt "$pane" "$*" >/dev/null && echo "Sent to tom."
         ;;
     *)
         echo "usage: tom launch | tom message <text>" >&2
