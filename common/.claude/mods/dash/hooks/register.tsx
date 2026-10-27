@@ -315,6 +315,14 @@ export const register: Register = on => {
     return ran
   })
 
+  on('command.run', { command: 'rename' }, async ($, e, next) => {
+    const result = await next(e)
+    const name = e.args.trim()
+    if (name !== '') await update($, title, () => name)
+    else void refreshTitle($)
+    return result
+  })
+
   on('turn.complete', async ($, e, next) => {
     const result = await next(e)
     if (!e.agentId) {
