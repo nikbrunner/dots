@@ -101,7 +101,24 @@ ccw() {
         command claude "$@"
 }
 
-alias kiel='cd ~/repos/imfusion/brunner/notes && ccw -n kiel "/imfg-kiel Good Morning"'
+kiel() {
+    case "$1" in
+    launch)
+        cd ~/repos/imfusion/brunner/notes && ccw -n kiel "/imfg-kiel Good Morning"
+        ;;
+    message)
+        shift
+        local pane
+        pane=$(herdr agent list | jq -r '.result.agents[] | select(.terminal_title_stripped == "kiel") | .pane_id' | head -1)
+        [ -n "$pane" ] || { echo "kiel: no Herdr pane runs a session named kiel" >&2; return 1; }
+        herdr agent prompt "$pane" "$*"
+        ;;
+    *)
+        echo "usage: kiel launch | kiel message <text>" >&2
+        return 1
+        ;;
+    esac
+}
 
 claude-plugins-update() {
     command claude plugin marketplace update &&
