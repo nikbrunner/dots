@@ -20,11 +20,12 @@ Edit.later(function()
 	end, { desc = "Git [S]tatus (iter)" })
 
 	-- stylua: ignore start
-	map({ "n", "x" }, "<leader>dna", function() iter.annotate() end,                     { desc = "[A]nnotate line or selection" })
-	map("n",          "<leader>dnf", function() iter.annotate({ scope = "file" }) end,   { desc = "Annotate [F]ile" })
-	map("n",          "<leader>dnr", function() iter.annotate({ scope = "review" }) end, { desc = "Annotate [R]eview" })
-	map("n",          "<leader>dnl", iter.sidebar,                                       { desc = "[L]ist annotations" })
-	map("n",          "<leader>dny", iter.yank,                                          { desc = "[Y]ank annotations" })
+	map({ "n", "x" }, "<leader>ia", function() iter.annotate() end,                     { desc = "[A]nnotate line or selection" })
+	map("n",          "<leader>if", function() iter.annotate({ scope = "file" }) end,   { desc = "Annotate [F]ile" })
+	map("n",          "<leader>ir", function() iter.annotate({ scope = "review" }) end, { desc = "Annotate [R]eview" })
+	map("n",          "<leader>il", iter.sidebar,                                       { desc = "[L]ist annotations" })
+	map("n",          "<leader>iy", iter.yank,                                          { desc = "[Y]ank annotations" })
+	map("n",          "<leader>ix", iter.clear,                                         { desc = "Clear all annotations" })
 	map("n",          "]a",          iter.next_annotation,                               { desc = "Next annotation" })
 	map("n",          "[a",          iter.prev_annotation,                               { desc = "Previous annotation" })
 	-- stylua: ignore end
