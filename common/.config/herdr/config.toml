@@ -304,3 +304,11 @@ key = "prefix+shift+o"
 type = "plugin_action"
 command = "annotate.last"
 description = "review the agent's last reply"
+
+[[keys.command]]
+key = "prefix+t"
+type = "popup"
+command = "tom-send"
+description = "message Tom"
+width = "60%"
+height = "40%"

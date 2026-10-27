@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# tom-send — send a message to Tom, the ImFusion notes session, through Herdr
+#
+#   tom-send <text>   sends the text
+#   tom-send          opens a scratch file in nvim; save and quit sends it,
+#                     an empty file sends nothing
+#
+# Bound to a herdr popup, so a failure waits for a key before the popup closes.
+
+fail() {
+	echo "tom: $1" >&2
+	[ -t 0 ] && read -rsn1 -p "Press any key to close."
+	exit 1
+}
+
+if [ $# -gt 0 ]; then
+	text="$*"
+else
+	file=$(mktemp "${TMPDIR:-/tmp}/tom.XXXXXX")
+	trap 'rm -f "$file"' EXIT
+	nvim -c 'set filetype=markdown' -c startinsert "$file"
+	text=$(cat "$file")
+	[ -n "${text//[[:space:]]/}" ] || exit 0
+fi
+
+pane=$(herdr agent list | jq -r '.result.agents[] | select(.terminal_title_stripped == "tom") | .pane_id' | head -1)
+[ -n "$pane" ] || fail "no Herdr pane runs a session named tom"
+
+err=$(herdr agent prompt "$pane" "$text" 2>&1 >/dev/null) || fail "$(jq -r '.error.message // empty' <<<"$err" 2>/dev/null || echo "$err")"
+echo "Sent to tom."
