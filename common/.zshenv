@@ -15,6 +15,9 @@ export PATH="$HOME/.local/share/mise/shims:$PATH"
 # plus dots scripts. Prepended last so these always win.
 export PATH="$HOME/.local/bin:$PATH"
 
+# Neovim from bob, so EDITOR below resolves outside interactive shells too.
+export PATH="$HOME/.local/share/bob/nvim-bin:$PATH"
+
 # Non-interactive contexts spawn an editor too — `git commit` from a script, a
 # pre-commit hook, sudoedit. Without this they fall back to vi.
 export EDITOR="nvim"
