@@ -73,6 +73,7 @@ common:
   common/.config/herdr/helm-last.sh: ~/.config/herdr/helm-last.sh
   common/.config/herdr/tab-width.sh: ~/.config/herdr/tab-width.sh
   common/.config/herdr/status.sh: ~/.config/herdr/status.sh
+  common/.config/rex/init.lua: ~/.config/rex/init.lua
 
   # Theming =================================================================
   "common/.config/black-atom/*": ~/.config/black-atom
