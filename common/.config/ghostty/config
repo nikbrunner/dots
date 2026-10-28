@@ -10,9 +10,9 @@ window-padding-x = 25
 window-padding-y = 25,10
 window-vsync = true
 
-# Advanced
-# custom-shader = ./shaders/blueprint.glsl
+# Shader
 custom-shader = ./shaders/black-atom-grain.glsl
+# custom-shader = ./shaders/blueprint.glsl
 # custom-shader = ./shaders/bloom075.glsl
 # custom-shader = ./shaders/tft.glsl
 
@@ -23,12 +23,12 @@ adjust-underline-position = 3
 font-size = 13
 font-family = TX-02
 font-style-bold = Bold
-font-thicken = true
+font-thicken = false
+
 window-inherit-working-directory = true
 unfocused-split-opacity = 1
 window-inherit-font-size = true
 window-theme = system
-window-decoration = auto
 
 # background-opacity = 0.9
 # background-blur = 65
@@ -47,14 +47,14 @@ cursor-style = block
 shell-integration-features = no-cursor
 
 # Macos
-macos-titlebar-style = tabs
+macos-titlebar-style = hidden
 macos-icon = paper
 macos-option-as-alt = left
 
 # Application
 link-url = true
 link-previews = true
-# maximize = true
+maximize = true
 
 # Mouse
 mouse-hide-while-typing = true
