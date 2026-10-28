@@ -2,7 +2,7 @@ Edit.now(function()
 	---@type BlackAtom.Config
 	vim.g.black_atom_core_config = {
 		styles = {
-			transparency = "none",
+			transparency = "partial",
 			cmp_kind_color_mode = "bg",
 			diagnostics = {
 				background = true,
@@ -14,5 +14,5 @@ Edit.now(function()
 		},
 	}
 
-	vim.cmd.colorscheme("black-atom-minium-sienna-dark")
+	vim.cmd.colorscheme("black-atom-jpn-koyo-dark")
 end)

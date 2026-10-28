@@ -28,7 +28,9 @@
       "~/repos/black-atom-industries/black-atom",
       "~/repos/black-atom-industries/black-atom/.claude/worktrees/kagi-adapter",
       "~/repos/black-atom-industries/black-atom/.claude/worktrees/replace-deno-with-node",
+      "~/repos/black-atom-industries/black-atom/adapters/claude-code",
       "~/repos/black-atom-industries/black-atom/adapters/kagi",
+      "~/repos/black-atom-industries/black-atom/adapters/nvim",
       "~/repos/black-atom-industries/black-atom/adapters/tuicr/themes",
       "~/repos/black-atom-industries/black-atom/core",
       "~/repos/black-atom-industries/black-atom/core/monitor",
@@ -52,7 +54,7 @@
       "~/repos/black-atom-industries/black-atom/website/src/content/products",
       "~/repos/black-atom-industries/black-atom/website/src/routes"
     ],
-    "last_seen": "2026-10-25"
+    "last_seen": "2026-10-26"
   },
   "black-atom-industries/core": {
     "root": "~/repos/black-atom-industries/core",
@@ -194,6 +196,7 @@
       "~/.herdr/worktrees/imfusion-portal/imfusion-portal-product-cards",
       "~/.herdr/worktrees/imfusion-portal/imfusion-portal-product-cards/bff",
       "~/.herdr/worktrees/imfusion-portal/imfusion-portal-product-cards/frontend",
+      "~/.herdr/worktrees/imfusion-portal/imfusion-portal-product-cards/frontend/src",
       "~/.herdr/worktrees/imfusion-portal/imfusion-portal-product-cards/local-setup",
       "~/repos/imfusion/cp/CP-105-security-avoid-email-spamming-merge-conflicts-resolved",
       "~/repos/imfusion/cp/CP-159-update-web-ui",
@@ -218,7 +221,7 @@
       "~/repos/imfusion/cp/imfusion-portal/frontend",
       "~/repos/imfusion/cp/imfusion-portal/frontend/src"
     ],
-    "last_seen": "2026-10-23"
+    "last_seen": "2026-10-27"
   },
   "cp/keycloak": {
     "root": "~/repos/imfusion/cp/keycloak",
@@ -256,6 +259,7 @@
       "~/repos/imfusion/.reviews/labels-web-15-project-members/frontend",
       "~/repos/imfusion/.reviews/labels-web-15-project-members/frontend/node_modules/@imfusion/web-ui",
       "~/repos/imfusion/.reviews/labels-web-15-project-members/frontend/src",
+      "~/repos/imfusion/.reviews/labels-web-15-project-members/local-setup",
       "~/repos/imfusion/.reviews/labels-web-16-playwright-e2e",
       "~/repos/imfusion/cp/CP-130-integrate-with-labels-server",
       "~/repos/imfusion/cp/CP-130-integrate-with-labels-server/frontend",
@@ -266,7 +270,16 @@
       "~/repos/imfusion/cp/cp-154-frontends-add-favicon",
       "~/repos/imfusion/cp/feat/CP-174-create-project",
       "~/repos/imfusion/cp/labels-web",
+      "~/repos/imfusion/cp/labels-web-CP-203-labels-web-configure-the-labels-of-a-project",
+      "~/repos/imfusion/cp/labels-web-CP-203-labels-web-configure-the-labels-of-a-project/e2e",
+      "~/repos/imfusion/cp/labels-web-CP-203-labels-web-configure-the-labels-of-a-project/frontend",
+      "~/repos/imfusion/cp/labels-web-CP-203-labels-web-configure-the-labels-of-a-project/frontend/src",
       "~/repos/imfusion/cp/labels-web-cp-154-frontends-add-favicon",
+      "~/repos/imfusion/cp/labels-web-feat-CP-204-data-tags",
+      "~/repos/imfusion/cp/labels-web-feat-CP-204-data-tags/bff",
+      "~/repos/imfusion/cp/labels-web-feat-CP-204-data-tags/e2e",
+      "~/repos/imfusion/cp/labels-web-feat-CP-204-data-tags/frontend",
+      "~/repos/imfusion/cp/labels-web-feat-CP-204-data-tags/local-setup",
       "~/repos/imfusion/cp/labels-web/.worktrees/CP-130-integrate-with-labels-server",
       "~/repos/imfusion/cp/labels-web/.worktrees/bootstrap-frontend",
       "~/repos/imfusion/cp/labels-web/.worktrees/bootstrap-frontend/frontend",
@@ -275,7 +288,7 @@
       "~/repos/imfusion/cp/labels-web/local-setup",
       "~/repos/imfusion/cp/review-labels-web-16-playwright-e2e"
     ],
-    "last_seen": "2026-10-22"
+    "last_seen": "2026-10-27"
   },
   "cp/license-server": {
     "root": "~/repos/imfusion/cp/license-server",
@@ -415,6 +428,7 @@
       "~/repos/nikbrunner/dots/common/.claude/mods/topbar",
       "~/repos/nikbrunner/dots/common/.config",
       "~/repos/nikbrunner/dots/common/.config/dinky",
+      "~/repos/nikbrunner/dots/common/.config/ghostty/backgrounds",
       "~/repos/nikbrunner/dots/common/.config/ghostty/shaders",
       "~/repos/nikbrunner/dots/common/.config/herdr",
       "~/repos/nikbrunner/dots/common/.config/herdr/local-plugins/stationary",
@@ -428,7 +442,7 @@
       "~/repos/nikbrunner/dots/macos/.config/sketchybar/plugins",
       "~/repos/nikbrunner/dots/macos/.config/tuna"
     ],
-    "last_seen": "2026-10-25"
+    "last_seen": "2026-10-26"
   },
   "nikbrunner/fonts": {
     "root": "~/repos/nikbrunner/fonts",
@@ -572,6 +586,8 @@
     "work": false,
     "session_dirs": [
       "~/repos/nikbrunner/writing",
+      "~/repos/nikbrunner/writing/.agents/skills/repo-images",
+      "~/repos/nikbrunner/writing/.agents/skills/repo-images/references",
       "~/repos/nikbrunner/writing/neolib",
       "~/repos/nikbrunner/writing/neolib/book-mujrhkat-yjutb",
       "~/repos/nikbrunner/writing/neolib/book-mujrhkat-yjutb/chapters",
@@ -588,11 +604,15 @@
       "~/repos/nikbrunner/writing/world/characters/scarth-johnson",
       "~/repos/nikbrunner/writing/world/characters/scarth-johnson/images",
       "~/repos/nikbrunner/writing/world/characters/scarth-johnson/images/drafts",
+      "~/repos/nikbrunner/writing/world/characters/scarth-johnson/images/drafts/1k",
+      "~/repos/nikbrunner/writing/world/characters/scarth-johnson/images/drafts/4k",
       "~/repos/nikbrunner/writing/world/characters/scarth-johnson/images/flux",
       "~/repos/nikbrunner/writing/world/characters/scarth-johnson/images/references",
+      "~/repos/nikbrunner/writing/world/characters/scarth-johnson/images/references/charcoal",
+      "~/repos/nikbrunner/writing/world/characters/scarth-johnson/images/references/ink",
       "~/repos/nikbrunner/writing/world/characters/scarth-johnson/images/references/photo"
     ],
-    "last_seen": "2026-10-25"
+    "last_seen": "2026-10-27"
   },
   "web-sdk-wk-fumadocs/emsdk": {
     "root": "~/repos/imfusion/websdk/web-sdk-wk-fumadocs/emsdk",
@@ -614,9 +634,11 @@
       "~/repos/imfusion/websdk/web-sdk-wk-fumadocs",
       "~/repos/imfusion/websdk/web-sdk-wk-fumadocs/packages/docs",
       "~/repos/imfusion/websdk/web-sdk/packages/docs",
+      "~/repos/imfusion/websdk/web-sdk/packages/docs/content",
+      "~/repos/imfusion/websdk/web-sdk/tmp/screenshots",
       "~/repos/imfusion/websdk/worktree/update-link-styling"
     ],
-    "last_seen": "2026-10-23"
+    "last_seen": "2026-10-26"
   },
   "websdk/web-ui": {
     "root": "~/repos/imfusion/websdk/web-ui",
@@ -660,7 +682,11 @@
       "~/repos/imfusion/websdk/file-dropzone",
       "~/repos/imfusion/websdk/keyboard-icon-with-button-and-toggle-integration",
       "~/repos/imfusion/websdk/web-ui",
+      "~/repos/imfusion/websdk/web-ui-WEBSDK-290-view-tools-integration",
+      "~/repos/imfusion/websdk/web-ui-WEBSDK-292-layout-mode-integration",
       "~/repos/imfusion/websdk/web-ui-appearance-toggle",
+      "~/repos/imfusion/websdk/web-ui-fix-storybook-docgen-import",
+      "~/repos/imfusion/websdk/web-ui-fix-storybook-docgen-import/.teamcity",
       "~/repos/imfusion/websdk/web-ui-websdk-206-web-ui-update-improve-design-fol",
       "~/repos/imfusion/websdk/web-ui-websdk-206-web-ui-update-improve-design-fol/.agents/skills/web-ui-dev-claude-design-sync",
       "~/repos/imfusion/websdk/web-ui-websdk-206-web-ui-update-improve-design-fol/docs/user-guide",
@@ -692,13 +718,16 @@
       "~/repos/imfusion/websdk/websdk-224-public-release",
       "~/repos/imfusion/websdk/websdk-228-color-mode-spike",
       "~/repos/imfusion/websdk/websdk-228-color-mode-spike/node_modules/storybook/dist",
+      "~/repos/imfusion/websdk/websdk-248-menu",
+      "~/repos/imfusion/websdk/websdk-250-image",
       "~/repos/imfusion/websdk/websdk-250-progress",
       "~/repos/imfusion/websdk/websdk-255-typo-inherit",
       "~/repos/imfusion/websdk/websdk-256-trigger-ci-pr-release-tags",
       "~/repos/imfusion/websdk/websdk-267-icon-design-system",
       "~/repos/imfusion/websdk/websdk-267-icon-design-system/src/icons/svg/regular",
-      "~/repos/imfusion/websdk/websdk-272-rich-link"
+      "~/repos/imfusion/websdk/websdk-272-rich-link",
+      "~/repos/imfusion/websdk/websdk-306-table-selection"
     ],
-    "last_seen": "2026-10-23"
+    "last_seen": "2026-10-27"
   }
 }

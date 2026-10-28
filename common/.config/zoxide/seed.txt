@@ -14,6 +14,7 @@
 ~/repos/black-atom-industries/atlas
 ~/repos/black-atom-industries/black-atom
 ~/repos/black-atom-industries/helm.herdr
+~/repos/black-atom-industries/helm.herdr-wt
 ~/repos/black-atom-industries/helm.tmux
 ~/repos/black-atom-industries/iter.nvim
 ~/repos/black-atom-industries/radar.nvim

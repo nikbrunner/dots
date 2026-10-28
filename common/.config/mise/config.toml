@@ -98,6 +98,7 @@ starship = "latest"
 
 [settings]
 lockfile = true
+idiomatic_version_file_enable_tools = ["node"]
 # Supply-chain buffer: hide releases younger than 2 days from fuzzy resolution
 # (`outdated`/`up`/`latest`), giving time for compromised releases to be yanked.
 # Bypass per-tool with: MISE_MINIMUM_RELEASE_AGE=0 mise up <tool>
