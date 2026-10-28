@@ -35,7 +35,7 @@ window-theme = system
 
 background-image = ./backgrounds/scarth/scarth-charcoal-sitting.jpg
 background-image-fit = cover
-background-image-position = center
+background-image-position = center-right
 background-image-opacity = 0.1
 
 # Cursor
