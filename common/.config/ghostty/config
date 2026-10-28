@@ -33,7 +33,7 @@ window-decoration = auto
 # background-opacity = 0.9
 # background-blur = 65
 
-background-image = ./backgrounds/scarth-charcoal-sitting.jpg
+background-image = ./backgrounds/scarth/scarth-charcoal-sitting.jpg
 background-image-fit = cover
 background-image-position = center
 background-image-opacity = 0.1
