@@ -1,13 +1,15 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# herdr-file-picker — fzf file picker for herdr
+# file-picker — fzf file picker for terminal multiplexers
 #
-# Designed to run inside a herdr `type = "pane"` custom-command binding.
-# herdr injects HERDR_ACTIVE_PANE_ID / HERDR_ACTIVE_PANE_CWD for the pane that
-# had focus when the binding fired (the "calling" pane). This script lists the
-# files in that pane's working directory, lets you pick with fzf, and pastes
-# the selection back into the calling pane via `herdr pane send-text`.
+# Runs in a popup that the multiplexer opens from a key binding. It lists the
+# files in the working directory of the pane that had focus (the "calling"
+# pane), lets you pick with fzf, and pastes the selection back into that pane.
+# The multiplexer is found from the environment the popup was started with,
+# and an adapter next to this script talks to it:
+#   herdr.sh   HERDR_ACTIVE_PANE_ID / HERDR_ACTIVE_PANE_CWD, set by herdr
+#   rex.sh     REX_TARGET_BLOCK, set by the Rex binding in init.lua
 #
 # Toggles (active inside fzf):
 #   Alt-I       toggle gitignore filtering (fd respects .gitignore by default)
@@ -20,7 +22,7 @@ set -euo pipefail
 # Flags:
 #   -g, --git-root   relativize pasted paths to the git root
 #
-# Config: ~/.config/herdr-file-picker/config  (sourced if present)
+# Config: ~/.config/file-picker/config  (sourced if present)
 #   dir_roots=(...)        dirs searched by Alt-D (default: ~/repos then ~)
 #   dir_excludes=(...)      patterns excluded everywhere (see defaults below)
 #   dir_max_depth=N         max depth for the Alt-D directory search
@@ -35,35 +37,40 @@ _load_config() {
 	fd_flags="-H --type f --exclude .git"
 	refs_dir="$HOME/repos"
 
-	local config_file="${XDG_CONFIG_HOME:-$HOME/.config}/herdr-file-picker/config"
+	local config_file="${XDG_CONFIG_HOME:-$HOME/.config}/file-picker/config"
 	if [[ -f "$config_file" ]]; then
 		# shellcheck source=/dev/null
 		source "$config_file"
 	fi
 }
 
-main() {
-	if [[ -z "${HERDR_ACTIVE_PANE_ID:-}" ]]; then
-		echo "Error: HERDR_ACTIVE_PANE_ID is not set." >&2
-		echo "Run this via a herdr [[keys.command]] type=\"pane\" binding." >&2
+_load_adapter() {
+	local dir
+	dir=$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")
+	if [[ -n "${HERDR_ACTIVE_PANE_ID:-}" ]]; then
+		# shellcheck source=herdr.sh
+		source "$dir/herdr.sh"
+	elif [[ -n "${REX_TARGET_BLOCK:-}" ]]; then
+		# shellcheck source=rex.sh
+		source "$dir/rex.sh"
+	else
+		echo "Error: no calling pane. Run this from a herdr or Rex popup binding." >&2
 		exit 1
 	fi
+}
 
-	local target_pane="$HERDR_ACTIVE_PANE_ID"
+main() {
+	_load_adapter
 
-	# --- detect agent on the calling pane (for @-prefix output) ---
-	# herdr already knows the agent; no process-scraping needed. Empty = shell/editor → raw.
-	local target_agent=""
-	if command -v jq >/dev/null 2>&1; then
-		target_agent=$(herdr pane get "$target_pane" 2>/dev/null | jq -r '.result.pane.agent // empty' 2>/dev/null || true)
-	fi
+	# Agent panes get @-prefixed paths; shells and editors get raw ones.
 	local at_prefix=false
-	[[ -n "$target_agent" ]] && at_prefix=true
+	pane_is_agent && at_prefix=true
 
 	_load_config
 
 	# --- resolve the calling pane's working directory (search root) ---
-	local pane_dir="${HERDR_ACTIVE_PANE_CWD:-}"
+	local pane_dir
+	pane_dir=$(pane_cwd)
 	if [[ -z "$pane_dir" ]]; then
 		pane_dir="${PWD:-$HOME}"
 	fi
@@ -393,7 +400,7 @@ $header_line)\"; }"
 	fi
 
 	# --- paste into the calling pane ---
-	herdr pane send-text "$target_pane" "$files_oneline"
+	pane_send "$files_oneline"
 }
 
 main "$@"

@@ -21,6 +21,7 @@ common:
   "common/.claude/hooks/subagent-progress/*": ~/.claude/hooks/subagent-progress
   common/.claude/plugins/local-marketplace: ~/.claude/plugins/marketplaces/local-plugins
   common/.local/bin/claude-hooks: ~/.local/bin/claude-hooks
+  common/.local/share/file-picker/file-picker: ~/.local/bin/file-picker
   # Which repo each agent session ran in, written by bic-record and read by
   # bic. Tracked because a worktree recorded on one machine cannot be
   # reconstructed anywhere else once it is deleted.

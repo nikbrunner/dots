@@ -194,7 +194,7 @@ height = "35%"
 description = "Pick a file"
 key = "alt+shift+p"
 type = "popup"
-command = "herdr-file-picker -g"
+command = "file-picker -g"
 width = "95%"
 height = "80%"
 
