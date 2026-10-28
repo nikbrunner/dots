@@ -13,13 +13,13 @@ Edit.later(function()
 
 	local bookmarks = {
 		{ key = "1", path = "~/repos/nikbrunner/dots", label = "dots" },
-		{ key = "2", path = "~/repos/nikbrunner/notes", label = "notes" },
-		{ key = "3", path = "~/repos/nikbrunner/scarth-johnson", label = "scarth-johnson" },
-		{ key = "4", path = "~/repos/black-atom-industries/black-atom/core", label = "black-atom core" },
-		{ key = "5", path = "~/repos/black-atom-industries/black-atom/adapters/nvim", label = "black-atom nvim" },
-		{ key = "6", path = "~/repos/black-atom-industries/black-atom/livery", label = "livery" },
-		{ key = "7", path = "~/repos/nikbrunner/nbr.haus", label = "nbr.haus" },
-		{ key = "8", path = "~/repos/nikbrunner/koyo", label = "koyo" },
+		{ key = "2", path = "~/repos/black-atom-industries/black-atom", label = "black-atom" },
+		{ key = "3", path = "~/repos/nikbrunner/writing", label = "writing" },
+		{ key = "4", path = "~/repos/imfusion/cp/imfusion-portal", label = "imfusion-portal", divider = true },
+		{ key = "5", path = "~/repos/imfusion/websdk/web-ui", label = "web-ui" },
+		{ key = "6", path = "~/repos/imfusion/brunner/notes", label = "imf-notes" },
+		{ key = "7", path = "~/repos/imfusion/cp/labels-web", label = "labels-web" },
+		{ key = "8", path = "~/repos/imfusion/websdk/web-sdk", label = "web-sdk" },
 		{ key = "9", path = "~/repos", label = "repos" },
 		{ key = "0", path = "~", label = "~" },
 	}
@@ -103,16 +103,26 @@ Edit.later(function()
 
 	local hint_buf = vim.api.nvim_create_buf(false, true)
 	local hint_width = 0
-	local hint_lines = {}
 	for _, bm in ipairs(bookmarks) do
-		local line = " " .. bm.key .. "  " .. bm.label .. " "
-		table.insert(hint_lines, line)
-		hint_width = math.max(hint_width, #line)
+		hint_width = math.max(hint_width, #bm.key + #bm.label + 4)
+	end
+	local hint_lines = {}
+	local divider_rows = {}
+	for _, bm in ipairs(bookmarks) do
+		if bm.divider then
+			table.insert(hint_lines, string.rep("─", hint_width))
+			table.insert(divider_rows, #hint_lines - 1)
+		end
+		table.insert(hint_lines, " " .. bm.key .. "  " .. bm.label .. " ")
+		bm.row = #hint_lines - 1
 	end
 	vim.api.nvim_buf_set_lines(hint_buf, 0, -1, false, hint_lines)
 	local ns_hint = vim.api.nvim_create_namespace("oil_bookmark_hint")
-	for i = 0, #hint_lines - 1 do
-		vim.api.nvim_buf_set_extmark(hint_buf, ns_hint, i, 1, { end_col = 2, hl_group = "Special" })
+	for _, bm in ipairs(bookmarks) do
+		vim.api.nvim_buf_set_extmark(hint_buf, ns_hint, bm.row, 1, { end_col = 2, hl_group = "Special" })
+	end
+	for _, row in ipairs(divider_rows) do
+		vim.api.nvim_buf_set_extmark(hint_buf, ns_hint, row, 0, { line_hl_group = "Comment" })
 	end
 
 	local ns_active = vim.api.nvim_create_namespace("oil_bookmark_active")
@@ -131,7 +141,7 @@ Edit.later(function()
 			end
 		end
 		if best then
-			vim.api.nvim_buf_set_extmark(hint_buf, ns_active, best - 1, 0, { line_hl_group = "CursorLine" })
+			vim.api.nvim_buf_set_extmark(hint_buf, ns_active, bookmarks[best].row, 0, { line_hl_group = "CursorLine" })
 		end
 	end
 
