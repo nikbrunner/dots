@@ -183,14 +183,6 @@ width = "50%"
 height = "50%"
 
 [[keys.command]]
-description = "Pick a file"
-key = "alt+shift+c"
-type = "popup"
-command = "livery apply"
-width = "35%"
-height = "25%"
-
-[[keys.command]]
 description = "Bookmarks"
 key = "alt+shift+w"
 type = "popup"
@@ -255,8 +247,8 @@ width = "100%"
 height = "100%"
 
 [[keys.command]]
-description = "Open Tuicr"
-key = "alt+t"
+description = "Open Livery"
+key = "prefix+l"
 type = "popup"
 command = "livery apply"
 width = 65
