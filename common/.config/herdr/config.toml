@@ -255,6 +255,14 @@ width = "100%"
 height = "100%"
 
 [[keys.command]]
+description = "Open Tuicr"
+key = "alt+t"
+type = "popup"
+command = "livery apply"
+width = 65
+height = 15
+
+[[keys.command]]
 key = "alt+s"
 type = "popup"
 command = "helm-herdr"
