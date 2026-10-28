@@ -468,18 +468,18 @@
           }
         ],
         "recent": [
-          ".gitignore",
-          "symlinks.yml",
           "common/.config/herdr/config.toml",
           "common/.config/ghostty/config",
-          "oil:///Users/brunner/repos/nikbrunner/dots/common/.config/ghostty/backgrounds/",
           "oil:///Users/brunner/repos/nikbrunner/dots/common/.config/ghostty/",
+          "common/.config/ghostty/backgrounds/scarth/scarth-charcoal-sitting.jpg",
+          ".gitignore",
+          "symlinks.yml",
+          "oil:///Users/brunner/repos/nikbrunner/dots/common/.config/ghostty/backgrounds/",
           "oil:///Users/brunner/repos/nikbrunner/dots/common/.config/ghostty/shaders/",
           "oil:///Users/brunner/repos/nikbrunner/dots/common/.config/ghostty/themes/",
-          "common/.agents/AGENTS.md",
-          "common/.config/nvim/plugin/50_specs/black_atom/nvim.lua"
+          "common/.agents/AGENTS.md"
         ],
-        "lastAccessed": 1793173200
+        "lastAccessed": 1793174958
       }
     },
     "~/repos/nikbrunner/imf-notes": {
