@@ -25,6 +25,7 @@ Edit.later(function()
 		debug = { enabled = true },
 		toggle = { enabled = true },
 		gitbrowse = { enabled = true },
+		image = { enabled = true },
 		input = { enabled = false },
 		scroll = { enabled = false },
 		notifier = {
