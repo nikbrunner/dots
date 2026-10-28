@@ -158,19 +158,19 @@ main() {
 	fi
 	[[ -z "$fd_search_roots" ]] && fd_search_roots="'$HOME'"
 
-	# --- temp state files ---
-	local dir_file dir_mode_file dir_paste_file readme_file
-	dir_file=$(mktemp)
+	# --- temp state files and helper scripts ---
+	# Global, not local: the EXIT trap also fires after main has returned.
+	tmp=$(mktemp -d)
+	trap 'rm -rf "$tmp"' EXIT
+	local dir_file="$tmp/dir" dir_mode_file="$tmp/dir-mode" dir_paste_file="$tmp/dir-paste" readme_file="$tmp/readme"
 	echo "$search_dir" >"$dir_file"
-	dir_mode_file=$(mktemp)
 	echo "false" >"$dir_mode_file"
-	dir_paste_file=$(mktemp)
-	readme_file=$(mktemp)
+	: >"$dir_paste_file"
+	: >"$readme_file"
 
 	# Alt-D directory picker (own script so fzf escaping stays sane).
 	# Enter changes the search dir; Alt-Enter pastes the picked dir itself.
-	local dir_picker_script
-	dir_picker_script=$(mktemp)
+	local dir_picker_script="$tmp/dir-picker"
 	cat >"$dir_picker_script" <<PICKER_EOF
 #!/usr/bin/env bash
 out=\$({ command -v zoxide >/dev/null && zoxide query -l; $fd_cmd -H --type d --max-depth $dir_max_depth --exclude .git $fd_exclude_args . $fd_search_roots 2>/dev/null | sed 's:/\$::'; } | awk '!seen[\$0]++' | fzf --reverse --scheme history --preview '$dir_preview_cmd' --expect alt-enter --header 'ENTER: chdir | ALT-ENTER: paste dir')
@@ -183,8 +183,7 @@ PICKER_EOF
 	chmod +x "$dir_picker_script"
 
 	# Alt-R README reference picker (absolute path output)
-	local readme_picker_script
-	readme_picker_script=$(mktemp)
+	local readme_picker_script="$tmp/readme-picker"
 	local readme_preview_cmd="cat {}"
 	if command -v bat >/dev/null 2>&1; then
 		readme_preview_cmd="bat --style=numbers --color=always {}"
@@ -199,8 +198,7 @@ PICKER_EOF
 	# emits dirty paths first, then radar locks for the repo+branch, then nvim
 	# oldfiles, then the rest. Outside a repo every row gets a blank marker so
 	# the field layout stays uniform.
-	local annotate_script
-	annotate_script=$(mktemp)
+	local annotate_script="$tmp/annotate"
 	cat >"$annotate_script" <<'ANNOTATE_EOF'
 #!/usr/bin/env bash
 root=$(git rev-parse --show-toplevel 2>/dev/null) || { sed $'s/^/  \x1f/'; exit 0; }
@@ -257,9 +255,7 @@ ANNOTATE_EOF
 	# reference a path, avoiding any quote/parenthesis escaping issues inside
 	# fzf's transform() reloads. Both read the current search dir from dir_file
 	# so they stay correct after Alt-D changes it.
-	local list_script list_script_no_ignore
-	list_script=$(mktemp)
-	list_script_no_ignore=$(mktemp)
+	local list_script="$tmp/list" list_script_no_ignore="$tmp/list-no-ignore"
 	printf '#!/usr/bin/env bash\ncd "$(cat %q)" || exit 0\n%s | %q\n' "$dir_file" "$fd_cmd $fd_flags" "$annotate_script" >"$list_script"
 	printf '#!/usr/bin/env bash\ncd "$(cat %q)" || exit 0\n%s | %q\n' "$dir_file" "$fd_cmd $fd_flags --no-ignore" "$annotate_script" >"$list_script_no_ignore"
 	chmod +x "$list_script" "$list_script_no_ignore"
@@ -267,8 +263,7 @@ ANNOTATE_EOF
 	# fzf shell-quotes {} on substitution, so it must be passed as a standalone
 	# argument — interpolating it into a path string yields "dir/'name'", which
 	# does not exist. The script cds into the live search dir instead.
-	local preview_script
-	preview_script=$(mktemp)
+	local preview_script="$tmp/preview"
 	cat >"$preview_script" <<PREVIEW_EOF
 #!/usr/bin/env bash
 cd "\$(cat $(printf '%q' "$dir_file"))" || exit 0
@@ -276,8 +271,6 @@ f=\${1#*\$'\\x1f'}
 $preview_bin -- "\$f" 2>/dev/null || cat -- "\$f" 2>/dev/null
 PREVIEW_EOF
 	chmod +x "$preview_script"
-
-	trap "rm -f '$dir_file' '$dir_mode_file' '$dir_paste_file' '$readme_file' '$dir_picker_script' '$readme_picker_script' '$list_script' '$list_script_no_ignore' '$preview_script' '$annotate_script'" EXIT
 
 	local preview_cmd="$preview_script {}"
 
@@ -349,17 +342,17 @@ $header_line)\"; }"
 		# Alt-R README or Alt-D Alt-Enter dir: output the absolute path verbatim.
 		relative_paths=("$verbatim_path")
 	else
-		if $use_git_root; then
+		if $dir_was_changed; then
+			# Search dir moved via Alt-D, possibly out of the git root: emit absolute paths.
+			for p in "${selected_files[@]}"; do
+				relative_paths+=("$("$realpath_cmd" -m "$search_dir/$p")")
+			done
+		elif $use_git_root; then
 			# Relativize each path to the git root.
 			for p in "${selected_files[@]}"; do
 				local abs
 				abs=$("$realpath_cmd" -m "$search_dir/$p")
 				relative_paths+=("$("$realpath_cmd" --relative-to="$git_root" "$abs")")
-			done
-		elif $dir_was_changed; then
-			# Search dir moved via Alt-D: emit absolute paths.
-			for p in "${selected_files[@]}"; do
-				relative_paths+=("$("$realpath_cmd" -m "$search_dir/$p")")
 			done
 		else
 			# search_dir == pane_dir: paths are already correct & relative.
