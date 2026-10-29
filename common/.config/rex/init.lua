@@ -45,3 +45,16 @@ rex.bind("alt+shift+d", popup({ "lazydocker" }, 0.8, 0.8))
 rex.bind("alt+shift+j", popup({ "lazyjira" }, 1, 1))
 
 rex.bind("alt+r", popup({ "nvim", "iter://review" }, 1, 1))
+
+-- Ctrl+hjkl moves between panes, except in Neovim, which gets the key and
+-- crosses back into Rex at its split edges (see nvim's navigator.lua).
+for key, direction in pairs({ h = "left", j = "down", k = "up", l = "right" }) do
+	rex.bind("ctrl+" .. key, function(ctx)
+		local process = ctx.block_id and rex.block.call(terminal, "process", { block_id = ctx.block_id })
+		if process and process.foreground and process.foreground.name == "nvim" then
+			return false
+		end
+		rex.session.focus_direction({ session_id = ctx.session_id, direction = direction })
+		return true
+	end)
+end
