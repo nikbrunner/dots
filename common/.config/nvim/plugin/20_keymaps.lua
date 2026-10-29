@@ -80,6 +80,19 @@ map("n", "L", vim.cmd.tabnext, { desc = "Next Tab" })
 map("n", "<C-s>", vim.cmd.wa, { desc = "Save" })
 map("n", "<C-q>", ":q!<CR>", { desc = "Quit (force)" })
 
+local wqa_armed = false
+map("n", "<C-c>", function()
+	if wqa_armed then
+		vim.cmd("wqa!")
+		return
+	end
+	wqa_armed = true
+	vim.notify("Press <C-c> again to save all and quit", vim.log.levels.WARN)
+	vim.defer_fn(function()
+		wqa_armed = false
+	end, 2000)
+end, { desc = "Save all and quit (press twice)" })
+
 map("t", "<Esc>", "<C-\\><C-n>", { desc = "Exit Terminal Mode" })
 
 -- Split resizing: <C-arrows> via mini.basics (see 50_specs/mini/basics.lua).
