@@ -126,3 +126,44 @@ Edit.new_autocmd({ "FocusGained", "TermLeave", "BufEnter", "WinEnter", "CursorHo
 		vim.cmd("checktime")
 	end
 end, "Check for external file changes")
+
+-- Watch open files so external writes reload without waiting for focus. An
+-- atomic save replaces the file, so each event re-arms the watcher on the new one.
+local watchers = {}
+
+local function unwatch(buf)
+	if watchers[buf] then
+		watchers[buf]:close()
+		watchers[buf] = nil
+	end
+end
+
+local function watch(buf)
+	unwatch(buf)
+	local path = vim.api.nvim_buf_get_name(buf)
+	if vim.bo[buf].buftype ~= "" or path == "" or not vim.uv.fs_stat(path) then
+		return
+	end
+	watchers[buf] = vim.uv.new_fs_event()
+	watchers[buf]:start(
+		path,
+		{},
+		vim.schedule_wrap(function()
+			if not vim.api.nvim_buf_is_valid(buf) then
+				return unwatch(buf)
+			end
+			watch(buf)
+			if should_check() then
+				vim.cmd.checktime(buf)
+			end
+		end)
+	)
+end
+
+Edit.new_autocmd({ "BufReadPost", "BufWritePost", "BufFilePost" }, nil, function(ev)
+	watch(ev.buf)
+end, "Watch file for external changes")
+
+Edit.new_autocmd({ "BufDelete", "BufWipeout" }, nil, function(ev)
+	unwatch(ev.buf)
+end, "Stop watching file")
