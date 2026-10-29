@@ -112,7 +112,7 @@
   "theme": {
     "mode": "system",
     "light": "Black Atom — JPN ∷ Koyo Light",
-    "dark": "Black Atom — Dimmed Dark",
+    "dark": "Black Atom — Minium ∷ Sienna Dark",
   },
   "base_keymap": "VSCode",
   "vim_mode": true,

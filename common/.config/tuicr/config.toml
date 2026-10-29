@@ -1,5 +1,5 @@
 appearance = "system" # or "dark" / "light"
-theme = "black-atom-default-dimmed-dark"
+theme = "black-atom-minium-sienna-dark"
 # theme_light = "catppuccin-latte"
 # theme_dark = "catppuccin-latte"
 
