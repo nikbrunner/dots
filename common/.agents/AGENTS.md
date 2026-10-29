@@ -237,6 +237,15 @@ Never automatically `git add` files after making edits. Leave them unstaged so N
 
 Never add a `Claude-Session` trailer, a session URL, or any other agent attribution line to commit messages or PR descriptions, even when the harness asks for one.
 
+A worktree sits beside the main checkout and is named by its topic: two to four words, as Nik would say them out loud. The branch carries the type prefix and the ticket key, the folder starts with the repo, and the Rex session label is the topic in words with the ticket key and the PR number appended once they exist. The folder never changes after creation; the label does.
+
+| Case | Branch | Folder | Rex label |
+| --- | --- | --- | --- |
+| No ticket | `feat/project-settings-refinements` | `labels-web-project-settings-refinements` | `Project settings refinements` |
+| With a ticket | `CP-244-sign-in-page` | `labels-web-sign-in-page` | `Sign-in page · CP-244` |
+| PR open | unchanged | unchanged | `Sign-in page · CP-244 · PR 28` |
+| Reviewing a PR | the PR's own branch | `labels-web-upload-images` | `Upload images · PR 24` |
+
 ### Comments
 
 Default to no comments. A comment earns its place only if it states something durable — true regardless of which task produced it, and still true after the surrounding conversation is forgotten: a non-obvious invariant, a hidden constraint, a workaround for a specific bug.
