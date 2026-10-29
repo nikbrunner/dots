@@ -67,6 +67,17 @@
     ],
     "last_seen": "2026-08-05"
   },
+  "black-atom-industries/helm": {
+    "root": "~/repos/black-atom-industries/helm",
+    "owner": "black-atom-industries",
+    "name": "helm",
+    "work": false,
+    "session_dirs": [
+      "~/repos/black-atom-industries/helm",
+      "~/repos/black-atom-industries/helm/crates/helm-core/src"
+    ],
+    "last_seen": "2026-10-29"
+  },
   "black-atom-industries/helm.herdr": {
     "root": "~/repos/black-atom-industries/helm.herdr",
     "owner": "black-atom-industries",
@@ -276,6 +287,7 @@
       "~/repos/imfusion/cp/labels-web-CP-203-labels-web-configure-the-labels-of-a-project/frontend",
       "~/repos/imfusion/cp/labels-web-CP-203-labels-web-configure-the-labels-of-a-project/frontend/src",
       "~/repos/imfusion/cp/labels-web-CP-203-labels-web-configure-the-labels-of-a-project/frontend/src/routes/_app/projects.$projectId/-settings",
+      "~/repos/imfusion/cp/labels-web-CP-203-labels-web-configure-the-labels-of-a-project/handoffs/2026-10-29-label-map-outline",
       "~/repos/imfusion/cp/labels-web-CP-203-labels-web-configure-the-labels-of-a-project/local-setup",
       "~/repos/imfusion/cp/labels-web-cp-154-frontends-add-favicon",
       "~/repos/imfusion/cp/labels-web-feat-CP-204-data-tags",
@@ -283,6 +295,14 @@
       "~/repos/imfusion/cp/labels-web-feat-CP-204-data-tags/e2e",
       "~/repos/imfusion/cp/labels-web-feat-CP-204-data-tags/frontend",
       "~/repos/imfusion/cp/labels-web-feat-CP-204-data-tags/local-setup",
+      "~/repos/imfusion/cp/labels-web-feat-CP-246-enforce-labels-product-access",
+      "~/repos/imfusion/cp/labels-web-feat-settings-input-shortcuts",
+      "~/repos/imfusion/cp/labels-web-feat-settings-input-shortcuts/frontend",
+      "~/repos/imfusion/cp/labels-web-feat-settings-input-shortcuts/frontend/node_modules/@imfusion/web-ui/dist",
+      "~/repos/imfusion/cp/labels-web-feat-settings-input-shortcuts/frontend/src/routes/_app/projects.$projectId/-settings",
+      "~/repos/imfusion/cp/labels-web-feat-sidebar-projects-item",
+      "~/repos/imfusion/cp/labels-web-feat-sidebar-projects-item/frontend",
+      "~/repos/imfusion/cp/labels-web-feat-sidebar-projects-item/local-setup",
       "~/repos/imfusion/cp/labels-web/.worktrees/CP-130-integrate-with-labels-server",
       "~/repos/imfusion/cp/labels-web/.worktrees/bootstrap-frontend",
       "~/repos/imfusion/cp/labels-web/.worktrees/bootstrap-frontend/frontend",
@@ -291,7 +311,7 @@
       "~/repos/imfusion/cp/labels-web/local-setup",
       "~/repos/imfusion/cp/review-labels-web-16-playwright-e2e"
     ],
-    "last_seen": "2026-10-28"
+    "last_seen": "2026-10-29"
   },
   "cp/license-server": {
     "root": "~/repos/imfusion/cp/license-server",
@@ -692,6 +712,7 @@
       "~/repos/imfusion/websdk/web-ui-codeblock-scroll",
       "~/repos/imfusion/websdk/web-ui-fix-storybook-docgen-import",
       "~/repos/imfusion/websdk/web-ui-fix-storybook-docgen-import/.teamcity",
+      "~/repos/imfusion/websdk/web-ui-image-display-options",
       "~/repos/imfusion/websdk/web-ui-websdk-206-web-ui-update-improve-design-fol",
       "~/repos/imfusion/websdk/web-ui-websdk-206-web-ui-update-improve-design-fol/.agents/skills/web-ui-dev-claude-design-sync",
       "~/repos/imfusion/websdk/web-ui-websdk-206-web-ui-update-improve-design-fol/docs/user-guide",
@@ -733,6 +754,6 @@
       "~/repos/imfusion/websdk/websdk-272-rich-link",
       "~/repos/imfusion/websdk/websdk-306-table-selection"
     ],
-    "last_seen": "2026-10-28"
+    "last_seen": "2026-10-29"
   }
 }

@@ -10,10 +10,10 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +22 logs/2026/2026.10/2026.10.28\ -\ Wed.md
+badd +24 logs/2026/2026.10/2026.10.29\ -\ Thu.md
 argglobal
 %argdel
-edit logs/2026/2026.10/2026.10.28\ -\ Wed.md
+edit logs/2026/2026.10/2026.10.29\ -\ Thu.md
 argglobal
 setlocal foldmethod=expr
 setlocal foldexpr=v:lua.vim.treesitter.foldexpr()
@@ -27,13 +27,11 @@ setlocal foldenable
 sil! normal! zo
 3
 sil! normal! zo
-5
+15
 sil! normal! zo
-16
+17
 sil! normal! zo
-18
-sil! normal! zo
-20
+19
 sil! normal! zo
 45
 sil! normal! zo
@@ -41,11 +39,19 @@ sil! normal! zo
 sil! normal! zo
 53
 sil! normal! zo
-let s:l = 22 - ((16 * winheight(0) + 25) / 50)
+71
+sil! normal! zo
+73
+sil! normal! zo
+73
+sil! normal! zo
+83
+sil! normal! zo
+let s:l = 27 - ((26 * winheight(0) + 38) / 76)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 22
+keepjumps 27
 normal! 0
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
