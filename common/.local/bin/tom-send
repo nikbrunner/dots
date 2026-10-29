@@ -1,13 +1,14 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# tom-send — send a message to Tom, the ImFusion notes session, through Herdr
+# tom-send — send a message to Tom, the ImFusion notes session, through Rex
+# when REX_SESSION is set, else through Herdr
 #
 #   tom-send <text>   sends the text
 #   tom-send          opens a scratch file in nvim; save and quit sends it,
-#                     an empty file sends nothing
+#                     an empty file sends nothing, q in normal mode cancels
 #
-# Bound to a herdr popup, so a failure waits for a key before the popup closes.
+# Bound to a Herdr and a Rex popup, so a failure waits for a key before the popup closes.
 
 fail() {
 	echo "tom: $1" >&2
@@ -20,13 +21,26 @@ if [ $# -gt 0 ]; then
 else
 	file=$(mktemp "${TMPDIR:-/tmp}/tom.XXXXXX")
 	trap 'rm -f "$file"' EXIT
-	nvim -c 'set filetype=markdown' -c startinsert "$file"
+	nvim -c 'set filetype=markdown' -c 'nnoremap <buffer> q <cmd>cquit<cr>' -c startinsert "$file" || exit 0
 	text=$(cat "$file")
 	[ -n "${text//[[:space:]]/}" ] || exit 0
 fi
 
-pane=$(herdr agent list | jq -r '.result.agents[] | select(.terminal_title_stripped == "tom") | .pane_id' | head -1)
-[ -n "$pane" ] || fail "no Herdr pane runs a session named tom"
+send_rex() {
+	local session block _
+	read -r session block _ < <(tom-pane) || fail "no Rex pane runs a session named tom"
+	# Bracketed paste keeps newlines in the text from submitting early
+	rex send -s "$session" -b "$block" $'\e[200~'"$text"$'\e[201~' || fail "rex send failed"
+	sleep 0.2
+	rex send-key -s "$session" -b "$block" Enter || fail "rex send-key failed"
+}
 
-err=$(herdr agent prompt "$pane" "$text" 2>&1 >/dev/null) || fail "$(jq -r '.error.message // empty' <<<"$err" 2>/dev/null || echo "$err")"
+send_herdr() {
+	local pane err
+	pane=$(herdr agent list | jq -r '.result.agents[] | select(.terminal_title_stripped == "tom") | .pane_id' | head -1)
+	[ -n "$pane" ] || fail "no Herdr pane runs a session named tom"
+	err=$(herdr agent prompt "$pane" "$text" 2>&1 >/dev/null) || fail "$(jq -r '.error.message // empty' <<<"$err" 2>/dev/null || echo "$err")"
+}
+
+if [ -n "${REX_SESSION:-}" ]; then send_rex; else send_herdr; fi
 echo "Sent to tom."

@@ -130,6 +130,36 @@ rex.bind("cmd+g", popup("lazygit", { "lazygit" }, 1, 1))
 rex.bind("cmd+r", popup("review", { "nvim", "iter://review" }, 1, 1))
 rex.bind("cmd+j", popup("lazyjira", { "lazyjira" }, 1, 1))
 rex.bind("cmd+l", popup("livery", { "livery", "apply" }, 0.15, 0.25))
+rex.bind("cmd+shift+m", popup("tom-send", { "tom-send" }, 0.6, 0.4))
+
+-- Tom, the notes session's Claude: the key jumps to its pane, and from there
+-- back to the session it came from. A popup can't hold another session's block.
+-- Lua here only reaches its own session, so tom-pane and the rex CLI do the
+-- cross-session work. An action, since rex.client.queue only works inside one.
+local home = os.getenv("HOME")
+local rex_cli = home .. "/Library/Application Support/com.superlogical.rex/RexServer/Versions/Current/Rex Server.app/Contents/MacOS/rex"
+local tom_return
+rex.action({
+	name = "tom_toggle",
+	title = "Jump to Tom and back",
+	run = function(ctx)
+		local found = rex.exec({ home .. "/.local/bin/tom-pane" })
+		local session, block, window = (found and found.stdout or ""):match("(%S+) (%S+) (%S+)")
+		if not session then
+			return
+		end
+		if ctx.block_id == block then
+			if tom_return then
+				rex.client.queue("session.select", { session_id = tom_return })
+			end
+			return
+		end
+		tom_return = ctx.session_id
+		rex.exec({ rex_cli, "focus", "-s", session, block })
+		rex.client.queue("session.select", { session_id = session, window_id = window })
+	end,
+})
+rex.bind("cmd+shift+t", "tom_toggle")
 
 -- rex.bind("cmd+shift+g", popup("glab-tui", { "glab-tui" }, 0.95, 0.8))
 -- rex.bind("cmd+shift+d", popup("lazydocker", { "lazydocker" }, 0.8, 0.8))
