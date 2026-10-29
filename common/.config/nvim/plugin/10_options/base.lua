@@ -7,7 +7,7 @@ vim.g.mapleader       = ',' -- Use `,` as <Leader> key
 vim.g.maplocalleader  = '.' -- Use `.` as <LocalLeader> key
 
 vim.o.mouse           = 'a'            -- Enable mouse
-vim.o.mousescroll     = 'ver:25,hor:6' -- Customize mouse scroll
+vim.o.mousescroll     = 'ver:3,hor:6'  -- Customize mouse scroll
 vim.o.switchbuf       = 'usetab'       -- Use already opened buffers when switching
 vim.o.undofile        = true           -- Enable persistent undo
 vim.o.swapfile        = false          -- Don't create swap files
