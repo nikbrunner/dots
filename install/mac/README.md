@@ -173,6 +173,7 @@ claude mcp add --scope user exa -- sh -c 'EXA_API_KEY=$(pass-cli item view pass:
 claude mcp add --scope user --transport http atlassian-rovo-mcp https://mcp.atlassian.com/v1/mcp/authv2
 claude mcp add --scope user fff -- "$HOME/.local/bin/fff-mcp"
 claude mcp add --scope user chrome-devtools -- npx chrome-devtools-mcp@latest --isolated
+claude mcp add --scope user --transport http superlogical https://www.superlogical.com/rex/community-mcp
 ```
 
 > [!NOTE]

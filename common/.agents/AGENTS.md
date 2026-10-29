@@ -168,6 +168,10 @@ Memory lives in `~/.claude/projects/<repo path, with / and . as ->/memory/`, for
 | web-sdk          | ~/repos/imfusion/websdk/web-sdk          | ImFusionLib subset in WebAssembly, published as `@imfusion/sdk` and `@imfusion/sdk-react`. I contribute now and then, mostly to the docs package |
 | imf-notes        | ~/repos/imfusion/brunner/notes           | My ImFusion notes: timesheet, per-repo notes, research, ADRs                                                                                     |
 
+### Rex beta feedback
+
+I'm testing Rex, Superlogical's terminal multiplexer. `~/repos/nikbrunner/notes/01 - Projects/Rex Beta.md` collects feedback for their Discord. When I hit a Rex bug or a missing feature, add it there. Check the `superlogical` MCP first for an existing feedback post and link it.
+
 ## Development
 
 Research before implementation — check official docs and real examples before writing against an unfamiliar API.
@@ -196,10 +200,10 @@ Never propose patching `node_modules` or other vendored dependency code as a fix
 
 Secrets live in Proton Pass: vault `Nik`, item `.env`, one hidden field per variable. Address each as `pass://Nik/.env/<FIELD>` and let the one consumer that needs it resolve the reference when it runs:
 
-| Consumer                          | How                                                                                         |
-| --------------------------------- | ------------------------------------------------------------------------------------------- |
-| CLI or script                     | `VAR=pass://Nik/.env/VAR pass-cli run -- <cmd>`                                             |
-| MCP stdio server (Claude, Codex)  | `sh -c 'VAR=$(pass-cli item view pass://Nik/.env/VAR) \|\| exit 1; export VAR; exec <server>'` |
+| Consumer                          | How                                                                                                                             |
+| --------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| CLI or script                     | `VAR=pass://Nik/.env/VAR pass-cli run -- <cmd>`                                                                                 |
+| MCP stdio server (Claude, Codex)  | `sh -c 'VAR=$(pass-cli item view pass://Nik/.env/VAR) \|\| exit 1; export VAR; exec <server>'`                                  |
 | Tool with its own credential file | its command hook if it has one (pi `auth.json`: `"key": "!pass-cli item view pass://Nik/.env/VAR"`), else its own login command |
 
 `pass-cli run` sits between the client and the server's stdout, which breaks TUIs and Codex's MCP handshake; the MCP form resolves first and then gets out of the way. A Pass lookup takes a few seconds, so Codex MCP entries need `startup_timeout_sec = 30`, and `codex exec` starts its turn before such servers are ready.

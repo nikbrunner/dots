@@ -114,6 +114,9 @@ url = "https://developers.openai.com/mcp"
 [mcp_servers.atlassian-rovo-mcp]
 url = "https://mcp.atlassian.com/v1/mcp"
 
+[mcp_servers.superlogical]
+url = "https://www.superlogical.com/rex/community-mcp"
+
 [mcp_servers.eslint]
 command = "npx"
 args = ["@eslint/mcp@latest"]
@@ -314,6 +317,7 @@ ANTHROPIC_BASE_URL = "http://127.0.0.1:8787/w/claude"
 _CLAUDE_CODE_ASSUME_FIRST_PARTY_BASE_URL = "1"
 
 [features]
+hooks = true
 memories = true
 
 [memories]

@@ -62,7 +62,6 @@
   "model": "opus[1m]",
   "hooks": {
     "Notification": [],
-    "PostToolUse": [],
     "PreToolUse": [
       {
         "matcher": "WebFetch|WebSearch",
@@ -109,6 +108,25 @@
           {
             "type": "command",
             "command": "~/.local/bin/herdr-report-git",
+            "timeout": 10
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/bin/sh -c 'rex __internal session-start --agent claude --feature-session-naming=false 2>/dev/null || true'",
+            "timeout": 5
+          }
+        ]
+      },
+      {
+        "matcher": "^(startup|resume|clear|compact|fork)$",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash '/Users/brunner/.claude/hooks/herdr-agent-state.sh' session",
             "timeout": 10
           }
         ]
