@@ -11,27 +11,27 @@ gui:
   # Theme colors managed by pick-theme
   theme:
     activeBorderColor:
-      - "#d0e08d"
+      - "#4ec983"
       - bold
     inactiveBorderColor:
-      - "#946996"
+      - "#7b8187"
     optionsTextColor:
-      - "#8cb6c5"
+      - "#6a6f76"
     selectedLineBgColor:
-      - "#5b3e47"
+      - "#3e4349"
     cherryPickedCommitBgColor:
-      - "#452a32"
+      - "#2e3339"
     cherryPickedCommitFgColor:
-      - "#d0e08d"
+      - "#4ec983"
     unstagedChangesColor:
-      - "#ff857b"
+      - "#e97292"
     defaultFgColor:
-      - "#d4bfd6"
+      - "#e5ecf3"
     searchingActiveBorderColor:
-      - "#d0e08d"
+      - "#7b8187"
 
   authorColors:
-    "*": "#d49bb2"
+    "*": "#7faaff"
   branchColors:
     "main": "#e74c3c"
     "master": "#e74c3c"

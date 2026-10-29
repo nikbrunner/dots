@@ -271,9 +271,12 @@
       "~/repos/imfusion/cp/feat/CP-174-create-project",
       "~/repos/imfusion/cp/labels-web",
       "~/repos/imfusion/cp/labels-web-CP-203-labels-web-configure-the-labels-of-a-project",
+      "~/repos/imfusion/cp/labels-web-CP-203-labels-web-configure-the-labels-of-a-project/bff",
       "~/repos/imfusion/cp/labels-web-CP-203-labels-web-configure-the-labels-of-a-project/e2e",
       "~/repos/imfusion/cp/labels-web-CP-203-labels-web-configure-the-labels-of-a-project/frontend",
       "~/repos/imfusion/cp/labels-web-CP-203-labels-web-configure-the-labels-of-a-project/frontend/src",
+      "~/repos/imfusion/cp/labels-web-CP-203-labels-web-configure-the-labels-of-a-project/frontend/src/routes/_app/projects.$projectId/-settings",
+      "~/repos/imfusion/cp/labels-web-CP-203-labels-web-configure-the-labels-of-a-project/local-setup",
       "~/repos/imfusion/cp/labels-web-cp-154-frontends-add-favicon",
       "~/repos/imfusion/cp/labels-web-feat-CP-204-data-tags",
       "~/repos/imfusion/cp/labels-web-feat-CP-204-data-tags/bff",
@@ -288,7 +291,7 @@
       "~/repos/imfusion/cp/labels-web/local-setup",
       "~/repos/imfusion/cp/review-labels-web-16-playwright-e2e"
     ],
-    "last_seen": "2026-10-27"
+    "last_seen": "2026-10-28"
   },
   "cp/license-server": {
     "root": "~/repos/imfusion/cp/license-server",
@@ -437,12 +440,13 @@
       "~/repos/nikbrunner/dots/common/.config/nvim",
       "~/repos/nikbrunner/dots/common/.config/nvim/plugin/50_specs",
       "~/repos/nikbrunner/dots/common/.config/nvim/sessions",
+      "~/repos/nikbrunner/dots/common/.local/share/file-picker",
       "~/repos/nikbrunner/dots/common/.pi",
       "~/repos/nikbrunner/dots/macos/.config/sketchybar",
       "~/repos/nikbrunner/dots/macos/.config/sketchybar/plugins",
       "~/repos/nikbrunner/dots/macos/.config/tuna"
     ],
-    "last_seen": "2026-10-26"
+    "last_seen": "2026-10-28"
   },
   "nikbrunner/fonts": {
     "root": "~/repos/nikbrunner/fonts",
@@ -685,6 +689,7 @@
       "~/repos/imfusion/websdk/web-ui-WEBSDK-290-view-tools-integration",
       "~/repos/imfusion/websdk/web-ui-WEBSDK-292-layout-mode-integration",
       "~/repos/imfusion/websdk/web-ui-appearance-toggle",
+      "~/repos/imfusion/websdk/web-ui-codeblock-scroll",
       "~/repos/imfusion/websdk/web-ui-fix-storybook-docgen-import",
       "~/repos/imfusion/websdk/web-ui-fix-storybook-docgen-import/.teamcity",
       "~/repos/imfusion/websdk/web-ui-websdk-206-web-ui-update-improve-design-fol",
@@ -728,6 +733,6 @@
       "~/repos/imfusion/websdk/websdk-272-rich-link",
       "~/repos/imfusion/websdk/websdk-306-table-selection"
     ],
-    "last_seen": "2026-10-27"
+    "last_seen": "2026-10-28"
   }
 }

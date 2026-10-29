@@ -10,7 +10,7 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +1 lua/iter/log.lua
+badd +61 lua/iter/log.lua
 argglobal
 %argdel
 edit lua/iter/log.lua
@@ -25,11 +25,11 @@ setlocal foldnestmax=10
 setlocal foldenable
 16
 sil! normal! zo
-let s:l = 59 - ((27 * winheight(0) + 27) / 54)
+let s:l = 58 - ((25 * winheight(0) + 25) / 50)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 59
+keepjumps 58
 normal! 0
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'

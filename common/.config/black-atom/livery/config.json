@@ -1,7 +1,7 @@
 {
   "version": 2,
   "system_appearance": true,
-  "active_theme": "black-atom-jpn-murasaki-dark",
+  "active_theme": "black-atom-default-dimmed-dark",
   "keymappings": {
     "toggle_window": "super+ctrl+alt+shift+KeyT"
   },
@@ -93,6 +93,11 @@
         "/Users/brunner/repos/nikbrunner/notes/.obsidian",
         "/Users/brunner/repos/imfusion/brunner/notes/.obsidian"
       ]
+    },
+    "rex": {
+      "enabled": true,
+      "config_path": "~/Library/Application Support/com.superlogical.rex/RexServer/Versions/Current/Rex Server.app/Contents/MacOS/rex",
+      "themes_path": "~/.local/share/black-atom/themes/rex"
     },
     "tuicr": {
       "enabled": true,

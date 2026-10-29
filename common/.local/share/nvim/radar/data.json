@@ -42,18 +42,18 @@
       "feat/website": {
         "locks": [],
         "recent": [
+          "core/src/themes/terra/black-atom-terra-fall-dark.ts",
           "adapters/ghostty/themes/collection.template.conf",
+          "adapters/ghostty/themes/default/black-atom-default-dark.conf",
           "oil:///Users/brunner/repos/black-atom-industries/black-atom/adapters/ghostty/themes/",
           "oil:///Users/brunner/repos/black-atom-industries/black-atom/adapters/ghostty/themes/default/",
-          "adapters/ghostty/themes/default/black-atom-default-dark.conf",
           "website/src/routes/index.tsx",
           "website/src/components/panel/panel.module.css",
           "website/src/components/section/section.module.css",
           "website/src/audio/soundscapes/organic/params.ts",
-          "oil:///Users/brunner/repos/black-atom-industries/black-atom/",
-          "oil:///Users/brunner/repos/black-atom-industries/black-atom/website/src/"
+          "oil:///Users/brunner/repos/black-atom-industries/black-atom/"
         ],
-        "lastAccessed": 1793008986
+        "lastAccessed": 1793178690
       },
       "main": {
         "locks": [],
@@ -78,6 +78,22 @@
         ],
         "recent": [],
         "lastAccessed": 1780564117
+      }
+    },
+    "~/repos/black-atom-industries/helm": {
+      "feat/rex": {
+        "locks": [],
+        "recent": [
+          "crates/helm-core/src/app.rs",
+          "oil:///Users/brunner/repos/black-atom-industries/helm/crates/helm-core/src/",
+          "oil:///Users/brunner/repos/black-atom-industries/helm/crates/helm-core/",
+          "oil:///Users/brunner/repos/black-atom-industries/helm/crates/",
+          "oil:///Users/brunner/repos/black-atom-industries/helm/",
+          "oil:///Users/brunner/repos/black-atom-industries/helm/target/",
+          "target/.rustc_info.json",
+          "target/CACHEDIR.TAG"
+        ],
+        "lastAccessed": 1793221371
       }
     },
     "~/repos/black-atom-industries/helm.herdr": {
@@ -111,7 +127,7 @@
         "recent": [
           "lua/iter/log.lua"
         ],
-        "lastAccessed": 1793101783
+        "lastAccessed": 1793181768
       },
       "main": {
         "locks": [],
@@ -230,9 +246,9 @@
           }
         ],
         "recent": [
-          "logs/2026/2026.10/2026.10.27 - Tue.md",
-          "oil:///Users/brunner/repos/imfusion/brunner/notes/logs/2026/2026.10/",
           "logs/2026/2026.10/2026.10.28 - Wed.md",
+          "oil:///Users/brunner/repos/imfusion/brunner/notes/logs/2026/2026.10/",
+          "logs/2026/2026.10/2026.10.27 - Tue.md",
           "logs/2026/2026.10/2026.10.26 - Mon.md",
           "logs/2026/2026.10/2026.10.23 - Fri.md",
           "logs/2026/2026.10/2026.10.22 - Thu.md",
@@ -241,7 +257,7 @@
           "logs/2026/2026.10/2026.10.21 - Wed.md",
           "explainers/bff-and-local-setup-sharing.md"
         ],
-        "lastAccessed": 1793131968
+        "lastAccessed": 1793182142
       }
     },
     "~/repos/imfusion/cp/CP-174-create-project": {
@@ -310,6 +326,15 @@
           "PR-15-TAKEOVER.md"
         ],
         "lastAccessed": 1792666505
+      }
+    },
+    "~/repos/imfusion/cp/labels-web-CP-203-labels-web-configure-the-labels-of-a-project": {
+      "CP-203-labels-web-configure-the-labels-of-a-project": {
+        "locks": [],
+        "recent": [
+          "CP-203.md"
+        ],
+        "lastAccessed": 1793200653
       }
     },
     "~/repos/imfusion/cp/labels-web-feat-CP-204-data-tags": {
@@ -468,18 +493,18 @@
           }
         ],
         "recent": [
-          ".gitignore",
+          "common/.config/nvim/plugin/30_autocmds.lua",
+          "common/.config/rex/init.lua",
           "common/.config/herdr/config.toml",
-          "common/.config/ghostty/config",
-          "oil:///Users/brunner/repos/nikbrunner/dots/common/.config/ghostty/",
-          "common/.config/ghostty/backgrounds/scarth/scarth-charcoal-sitting.jpg",
-          "symlinks.yml",
-          "oil:///Users/brunner/repos/nikbrunner/dots/common/.config/ghostty/backgrounds/",
-          "oil:///Users/brunner/repos/nikbrunner/dots/common/.config/ghostty/shaders/",
-          "oil:///Users/brunner/repos/nikbrunner/dots/common/.config/ghostty/themes/",
-          "common/.agents/AGENTS.md"
+          ".gitignore",
+          "common/.config/nvim/plugin/50_specs/navigator.lua",
+          "common/.zshrc",
+          "oil:///Users/brunner/repos/nikbrunner/dots/common/.config/rex/",
+          "common/.config/rex/.luarc.json",
+          "oil:///Users/brunner/repos/nikbrunner/dots/",
+          "common/.config/ghostty/config"
         ],
-        "lastAccessed": 1793175558
+        "lastAccessed": 1793266715
       }
     },
     "~/repos/nikbrunner/imf-notes": {
@@ -575,9 +600,10 @@
           }
         ],
         "recent": [
+          "01 - Projects/Rex Beta.md",
           "oil:///Users/brunner/repos/nikbrunner/notes/Log/"
         ],
-        "lastAccessed": 1792655062
+        "lastAccessed": 1793197928
       }
     },
     "~/repos/nikbrunner/skills": {
@@ -614,18 +640,18 @@
           }
         ],
         "recent": [
-          "world/characters/scarth-johnson/images/4k-redo.md",
-          "series/scarth-johnson/books/01-avalon/manuscript/01-business-as-usual.md",
+          "oil:///Users/brunner/repos/nikbrunner/writing/world/characters/scarth-johnson/images/drafts/1k/",
+          "world/characters/scarth-johnson/images/drafts/1k/2026-10-28-style-baroque.webp",
+          "oil:///Users/brunner/repos/nikbrunner/writing/world/characters/scarth-johnson/images/drafts/",
+          "oil:///Users/brunner/repos/nikbrunner/writing/world/characters/scarth-johnson/images/",
+          "oil:///Users/brunner/repos/nikbrunner/writing/world/characters/scarth-johnson/images/flux/",
+          "world/characters/scarth-johnson/images/flux/2026-10-28-sitting-clean-silk-4k.webp",
           "oil:///Users/brunner/repos/nikbrunner/writing/world/characters/scarth-johnson/",
-          "oil:///Users/brunner/repos/nikbrunner/writing/world/characters/scarth-johnson/style/",
-          "world/characters/scarth-johnson/style/sources.md",
-          "package.json",
-          "series/scarth-johnson/books/01-avalon/manuscript/02-home.md",
-          "LOG.md",
-          "oil:///Users/brunner/repos/nikbrunner/writing/series/scarth-johnson/books/01-avalon/manuscript/",
-          "series/scarth-johnson/books/01-avalon/outline.md"
+          "world/characters/scarth-johnson/images/drafts/1k/2026-10-28-apartment-film-b.webp",
+          "world/characters/scarth-johnson/images/drafts/1k/2026-10-28-apartment-film-a.webp",
+          "world/characters/scarth-johnson/images/drafts/1k/2026-10-28-apartment-charcoal-b.webp"
         ],
-        "lastAccessed": 1793123987
+        "lastAccessed": 1793198754
       }
     }
   }

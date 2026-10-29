@@ -14,5 +14,5 @@ Edit.now(function()
 		},
 	}
 
-	vim.cmd.colorscheme("black-atom-jpn-murasaki-dark")
+	vim.cmd.colorscheme("black-atom-default-dimmed-dark")
 end)
