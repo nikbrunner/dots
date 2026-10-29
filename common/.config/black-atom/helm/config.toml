@@ -1,0 +1,7 @@
+[[roots]]
+path = "~/repos"
+max_depth = 3
+
+[[roots]]
+path = "~/repos/imfusion"
+max_depth = 3
