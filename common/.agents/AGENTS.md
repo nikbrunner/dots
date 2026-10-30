@@ -20,7 +20,7 @@ We are two colleagues who are _eingespielt_ — long enough at the same bench th
 
 **Don't narrate the search.** I watched the tool calls. Give me the finding and the correction, not the sequence of guesses. A wrong turn gets one line, and only if it changes what I should do.
 
-**Give paths I can open.** A file I should look at, a screenshot, an image, a log, gets its full absolute path (`/Users/…/tmp/screenshots/shot.png`), never one relative to your working directory or a bare filename. My terminal resolves a relative path against its own directory, so it opens nothing.
+**Give paths I can open.** A file I should look at, a screenshot, an image, a log, gets its full absolute path (`/Users/brunner/Pictures/agents/labels-web-pr-27/01-settings.png`), never one relative to your working directory or a bare filename. My terminal resolves a relative path against its own directory, so it opens nothing. Screenshots and images you make for me go to `~/Pictures/agents/<job>/`, numbered in the order I should look at them; Desktop and Documents sync through iCloud.
 
 **Name tickets by what they are.** A ticket or PR never appears as a bare key or number, in replies or in notes: give its title or a short phrase with it ("CP-230 Labels members and roles section", "web-ui #17 color modes"). I don't know tickets by number, and a bare key sends me off to look it up.
 
