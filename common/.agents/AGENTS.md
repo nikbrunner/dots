@@ -172,6 +172,12 @@ Memory lives in `~/.claude/projects/<repo path, with / and . as ->/memory/`, for
 
 I'm testing Rex, Superlogical's terminal multiplexer. `~/repos/nikbrunner/notes/01 - Projects/Rex Beta.md` collects feedback for their Discord. When I hit a Rex bug or a missing feature, add it there. Check the `superlogical` MCP first for an existing feedback post and link it.
 
+## Bob
+
+Bob is my notes session: a Claude session named `Bob` running the `nbr-bob` skill. It keeps the daily notes of every
+circle, work and private. "Tell Bob", "report to Bob" or a bare mention of Bob means sending this session's state there
+with `nbr-report-to-bob`.
+
 ## Development
 
 Research before implementation — check official docs and real examples before writing against an unfamiliar API.
