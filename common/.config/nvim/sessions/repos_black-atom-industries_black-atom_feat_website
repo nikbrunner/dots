@@ -10,29 +10,10 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +17 adapters/ghostty/themes/default/black-atom-default-dark.conf
-badd +15 core/src/themes/terra/black-atom-terra-fall-dark.ts
+badd +56 core/src/themes/minium/black-atom-minium-sienna-light.ts
 argglobal
 %argdel
-edit core/src/themes/terra/black-atom-terra-fall-dark.ts
-let s:save_splitbelow = &splitbelow
-let s:save_splitright = &splitright
-set splitbelow splitright
-wincmd _ | wincmd |
-vsplit
-1wincmd h
-wincmd w
-let &splitbelow = s:save_splitbelow
-let &splitright = s:save_splitright
-wincmd t
-let s:save_winminheight = &winminheight
-let s:save_winminwidth = &winminwidth
-set winminheight=0
-set winheight=1
-set winminwidth=0
-set winwidth=1
-exe 'vert 1resize ' . ((&columns * 143 + 143) / 287)
-exe 'vert 2resize ' . ((&columns * 143 + 143) / 287)
+edit core/src/themes/minium/black-atom-minium-sienna-light.ts
 argglobal
 setlocal foldmethod=expr
 setlocal foldexpr=v:lua.vim.treesitter.foldexpr()
@@ -44,35 +25,20 @@ setlocal foldnestmax=10
 setlocal foldenable
 9
 sil! normal! zo
-let s:l = 13 - ((12 * winheight(0) + 25) / 50)
+32
+sil! normal! zo
+39
+sil! normal! zo
+60
+sil! normal! zo
+63
+sil! normal! zo
+let s:l = 56 - ((41 * winheight(0) + 36) / 72)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 13
+keepjumps 56
 normal! 0
-wincmd w
-argglobal
-if bufexists(fnamemodify("adapters/ghostty/themes/default/black-atom-default-dark.conf", ":p")) | buffer adapters/ghostty/themes/default/black-atom-default-dark.conf | else | edit adapters/ghostty/themes/default/black-atom-default-dark.conf | endif
-if &buftype ==# 'terminal'
-  silent file adapters/ghostty/themes/default/black-atom-default-dark.conf
-endif
-setlocal foldmethod=expr
-setlocal foldexpr=v:lua.vim.treesitter.foldexpr()
-setlocal foldmarker={{{,}}}
-setlocal foldignore=#
-setlocal foldlevel=99
-setlocal foldminlines=1
-setlocal foldnestmax=10
-setlocal foldenable
-let s:l = 17 - ((16 * winheight(0) + 25) / 50)
-if s:l < 1 | let s:l = 1 | endif
-keepjumps exe s:l
-normal! zt
-keepjumps 17
-normal! 0
-wincmd w
-exe 'vert 1resize ' . ((&columns * 143 + 143) / 287)
-exe 'vert 2resize ' . ((&columns * 143 + 143) / 287)
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
@@ -80,8 +46,6 @@ endif
 unlet! s:wipebuf
 set winheight=1 winwidth=20
 let &shortmess = s:shortmess_save
-let &winminheight = s:save_winminheight
-let &winminwidth = s:save_winminwidth
 let s:sx = expand("<sfile>:p:r")."x.vim"
 if filereadable(s:sx)
   exe "source " . fnameescape(s:sx)

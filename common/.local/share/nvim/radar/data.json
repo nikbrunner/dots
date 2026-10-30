@@ -259,10 +259,10 @@
           }
         ],
         "recent": [
+          "logs/2026/2026.10/2026.10.30 - Fri.md",
           "logs/2026/2026.11/2026.11.09 - Mon.md",
           "logs/2026/2026.11/2026.11 - Nov.md",
           "oil:///Users/brunner/repos/imfusion/brunner/notes/logs/2026/2026.11/",
-          "logs/2026/2026.10/2026.10.30 - Fri.md",
           "oil:///Users/brunner/repos/imfusion/brunner/notes/logs/2026/",
           "oil:///Users/brunner/repos/imfusion/brunner/notes/logs/2026/2026.10/",
           "logs/2026/2026.10/2026.10.29 - Thu.md",
@@ -270,7 +270,7 @@
           "logs/2026/2026.10/2026.10 - Oct.md",
           "logs/2026/2026.10/2026.10.27 - Tue.md"
         ],
-        "lastAccessed": 1793376001
+        "lastAccessed": 1793376886
       }
     },
     "~/repos/imfusion/cp/CP-174-create-project": {
@@ -466,7 +466,7 @@
           "src/components/typo/typo.module.css",
           "oil:///Users/brunner/repos/imfusion/websdk/web-ui/src/components/"
         ],
-        "lastAccessed": 1793365880
+        "lastAccessed": 1793376264
       }
     },
     "~/repos/imfusion/websdk/web-ui-WEBSDK-290-view-tools-integration": {

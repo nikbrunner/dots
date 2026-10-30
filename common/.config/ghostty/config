@@ -2,7 +2,7 @@
 # https://github.com/imrajyavardhan12/spectre-ghostty-config
 
 # Colors
-theme = black-atom-minium-sienna-light.conf
+theme = black-atom-minium-sienna-dark.conf
 bold-is-bright = true
 
 # Window
