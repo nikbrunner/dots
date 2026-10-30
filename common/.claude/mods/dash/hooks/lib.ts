@@ -115,3 +115,9 @@ export function describeCall(e: Record<string, unknown>): string {
 export function oneLine(text: string): string {
   return (text.split('\n').find(l => l.trim() !== '') ?? '').trim().replace(/[.。]$/, '')
 }
+
+export function clip(text: string, width: number, fromStart = false): string {
+  if (text.length <= width) return text
+  if (width <= 0) return ''
+  return fromStart ? `…${text.slice(text.length - width + 1)}` : `${text.slice(0, width - 1)}…`
+}

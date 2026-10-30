@@ -2,7 +2,7 @@ import { atom, read, update } from 'claude-code'
 import type { EngineInterface, Register, RenderChildren, SessionUsage } from 'claude-code'
 
 import type { Agent, Task, Usage } from '../types'
-import { bar, describeCall, editDelta, duration, heat, oneLine, parseGit, prettyModel, until } from './lib'
+import { bar, clip, describeCall, editDelta, duration, heat, oneLine, parseGit, prettyModel, until } from './lib'
 
 const CACHE_TTL_MS = 60 * 60 * 1000
 const MODEL = 'haiku'
@@ -461,6 +461,27 @@ export const register: Register = on => {
     const isNowShown = nw !== '' && (lead === 0 || room >= nw.length + 3)
     const isLiveShown = live !== '' && isNowShown && room >= nw.length + live.length + 6
 
+    const upstream = g?.upstream && g.upstream !== `origin/${g.branch}` ? g.upstream : undefined
+    const status = (
+      g
+        ? [
+            [upstream && ` ${upstream}`, undefined],
+            [g.ahead > 0 && ` ↑${g.ahead}`, 'success'],
+            [g.behind > 0 && ` ↓${g.behind}`, 'error'],
+            [g.upstream && g.ahead === 0 && g.behind === 0 && ' ✓', 'success'],
+          ]
+        : []
+    ).filter((s): s is [string, string | undefined] => typeof s[0] === 'string' && s[0] !== '')
+    const tail = u.startedAt !== undefined ? ` · ${duration(at - u.startedAt)}` : ''
+    const repoWidth = (isSplit ? Math.floor(e.props.bodyColumns / 2) - 2 : e.props.bodyColumns - 2) - LABEL
+    const repoRoom =
+      repoWidth -
+      `${g?.repo ?? '-'}${g?.isWorktree ? ' worktree' : ''} `.length -
+      tail.length -
+      (g ? 3 + status.reduce((n, [s]) => n + s.length, 0) : 0)
+    const branch = clip(g ? (g.branch ?? 'detached') : '', repoRoom)
+    const repoLine = { branch, cwd: clip(w.cwd, repoRoom - branch.length, true) }
+
     return (
       <Box flexDirection="column">
         {below}
@@ -483,35 +504,25 @@ export const register: Register = on => {
           >
             <Box>
               {label('repo')}
-              <Box flexShrink={0}>
+              <Text wrap="truncate-end">
                 <Text color="claude" bold>
                   {g?.repo ?? '-'}
                 </Text>
                 {g?.isWorktree && <Text color="suggestion"> worktree</Text>}
-                <Text> </Text>
-              </Box>
-              <Text wrap="truncate-start">{w.cwd}</Text>
-              {g && (
-                <Box flexShrink={0}>
-                  <Text>
-                    {dot}
-                    <Text color="claude" bold>
-                      {g.branch ?? 'detached'}
-                    </Text>
-                    {g.upstream && <Text> {g.upstream}</Text>}
-                    {g.ahead > 0 && <Text color="success"> ↑{g.ahead}</Text>}
-                    {g.behind > 0 && <Text color="error"> ↓{g.behind}</Text>}
-                    {g.upstream && g.ahead === 0 && g.behind === 0 && <Text dimColor> in sync</Text>}
-                    {g.stashes > 0 && dot}
-                    {g.stashes > 0 && <Text color="suggestion">{g.stashes} stashes</Text>}
+                <Text> {repoLine.cwd}</Text>
+                {g && dot}
+                {g && (
+                  <Text color="claude" bold>
+                    {repoLine.branch}
                   </Text>
-                </Box>
-              )}
-              {u.startedAt !== undefined && (
-                <Box flexShrink={0}>
-                  <Text dimColor> · {duration(at - u.startedAt)}</Text>
-                </Box>
-              )}
+                )}
+                {status.map(([s, color]) => (
+                  <Text color={color === 'dim' ? undefined : color} dimColor={color === 'dim'}>
+                    {s}
+                  </Text>
+                ))}
+                {tail !== '' && <Text dimColor>{tail}</Text>}
+              </Text>
             </Box>
             {g &&
               kv(
