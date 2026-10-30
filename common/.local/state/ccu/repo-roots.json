@@ -192,9 +192,10 @@
     "session_dirs": [
       "~/repos/imfusion/brunner/notes",
       "~/repos/imfusion/brunner/notes/logs/2026",
-      "~/repos/imfusion/brunner/notes/logs/2026/2026.10"
+      "~/repos/imfusion/brunner/notes/logs/2026/2026.10",
+      "~/repos/imfusion/brunner/notes/logs/2026/2026.11"
     ],
-    "last_seen": "2026-10-14"
+    "last_seen": "2026-10-30"
   },
   "cp/imfusion-portal": {
     "root": "~/repos/imfusion/cp/imfusion-portal",
@@ -228,11 +229,14 @@
       "~/repos/imfusion/cp/imfusion-portal-cp-159-final-touches",
       "~/repos/imfusion/cp/imfusion-portal-cp-159-final-touches/frontend",
       "~/repos/imfusion/cp/imfusion-portal-cp-159-final-touches/frontend/src",
+      "~/repos/imfusion/cp/imfusion-portal-labels-license-key",
+      "~/repos/imfusion/cp/imfusion-portal-labels-license-key/frontend",
+      "~/repos/imfusion/cp/imfusion-portal-labels-license-key/frontend/tmp/screenshots",
       "~/repos/imfusion/cp/imfusion-portal/e2e",
       "~/repos/imfusion/cp/imfusion-portal/frontend",
       "~/repos/imfusion/cp/imfusion-portal/frontend/src"
     ],
-    "last_seen": "2026-10-27"
+    "last_seen": "2026-10-30"
   },
   "cp/keycloak": {
     "root": "~/repos/imfusion/cp/keycloak",
@@ -296,6 +300,12 @@
       "~/repos/imfusion/cp/labels-web-feat-CP-204-data-tags/frontend",
       "~/repos/imfusion/cp/labels-web-feat-CP-204-data-tags/local-setup",
       "~/repos/imfusion/cp/labels-web-feat-CP-246-enforce-labels-product-access",
+      "~/repos/imfusion/cp/labels-web-feat-project-settings-refinements",
+      "~/repos/imfusion/cp/labels-web-feat-project-settings-refinements/frontend",
+      "~/repos/imfusion/cp/labels-web-feat-project-settings-refinements/frontend/src",
+      "~/repos/imfusion/cp/labels-web-feat-project-settings-refinements/frontend/src/routes/_app/projects.$projectId",
+      "~/repos/imfusion/cp/labels-web-feat-project-settings-refinements/frontend/src/routes/_app/projects.$projectId/-settings",
+      "~/repos/imfusion/cp/labels-web-feat-project-settings-refinements/local-setup",
       "~/repos/imfusion/cp/labels-web-feat-settings-input-shortcuts",
       "~/repos/imfusion/cp/labels-web-feat-settings-input-shortcuts/frontend",
       "~/repos/imfusion/cp/labels-web-feat-settings-input-shortcuts/frontend/node_modules/@imfusion/web-ui/dist",
@@ -311,7 +321,7 @@
       "~/repos/imfusion/cp/labels-web/local-setup",
       "~/repos/imfusion/cp/review-labels-web-16-playwright-e2e"
     ],
-    "last_seen": "2026-10-29"
+    "last_seen": "2026-10-30"
   },
   "cp/license-server": {
     "root": "~/repos/imfusion/cp/license-server",
@@ -595,13 +605,15 @@
     "work": false,
     "session_dirs": [
       "~/repos/nikbrunner/skills",
+      "~/repos/nikbrunner/skills-dispatch-check",
+      "~/repos/nikbrunner/skills-session-setup-check",
       "~/repos/nikbrunner/skills/skills",
       "~/repos/nikbrunner/skills/skills/engineering",
       "~/repos/nikbrunner/skills/skills/engineering/nbr-repo-conventions/topics",
       "~/repos/nikbrunner/skills/skills/engineering/nbr-repo-setup",
       "~/repos/nikbrunner/skills/skills/nbr-repo-conventions"
     ],
-    "last_seen": "2026-10-24"
+    "last_seen": "2026-10-30"
   },
   "nikbrunner/writing": {
     "root": "~/repos/nikbrunner/writing",
@@ -713,6 +725,7 @@
       "~/repos/imfusion/websdk/web-ui-fix-storybook-docgen-import",
       "~/repos/imfusion/websdk/web-ui-fix-storybook-docgen-import/.teamcity",
       "~/repos/imfusion/websdk/web-ui-image-display-options",
+      "~/repos/imfusion/websdk/web-ui-image-display-options/tmp",
       "~/repos/imfusion/websdk/web-ui-websdk-206-web-ui-update-improve-design-fol",
       "~/repos/imfusion/websdk/web-ui-websdk-206-web-ui-update-improve-design-fol/.agents/skills/web-ui-dev-claude-design-sync",
       "~/repos/imfusion/websdk/web-ui-websdk-206-web-ui-update-improve-design-fol/docs/user-guide",
@@ -754,6 +767,6 @@
       "~/repos/imfusion/websdk/websdk-272-rich-link",
       "~/repos/imfusion/websdk/websdk-306-table-selection"
     ],
-    "last_seen": "2026-10-29"
+    "last_seen": "2026-10-30"
   }
 }
