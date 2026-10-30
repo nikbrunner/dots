@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# bob-send — send a message to Bob, the ImFusion notes session, through Rex
+# bob-send — send a message to Bob, the notes session, through Rex
 # when REX_SESSION is set, else through Herdr
 #
 #   bob-send <text>   sends the text
