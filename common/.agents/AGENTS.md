@@ -234,10 +234,11 @@ Surface these observations rather than silently fixing them. Propose the change,
 ### Servers and other long-running processes
 
 A dev server, a backend stack, a watcher or anything else that keeps running starts in a pane of
-the multiplexer, so Nik sees its output live, never as a background Bash task. In Rex, type the
-command into an idle pane of the session's Shells tab (`rex send`, then `rex send-key Enter`) and
-read its output with `rex capture`; with every Shell pane busy, split one with `--label`. In Herdr,
-run it in a pane of the workspace with `herdr pane run`, and read it with `herdr pane read` or
+the multiplexer, so Nik sees its output live, never as a background Bash task. Its place is the
+Shells tab, the third tab Helm's layout creates in every session (Agents, Edit, Shells). In Rex,
+type the command into an idle `Shell …` pane there (`rex send`, then `rex send-key Enter`) and read
+its output with `rex capture`; with every Shell pane busy, split one with `--label`. In Herdr, run it
+in a pane of the workspace's Shells tab with `herdr pane run`, and read it with `herdr pane read` or
 `herdr pane wait-output`. Name the session and pane in the reply, and stop only what you started.
 Outside a multiplexer, a background task is the fallback.
 
