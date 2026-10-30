@@ -99,17 +99,17 @@ ccw() {
         command claude "$@"
 }
 
-tom() {
+bob() {
     case "$1" in
     launch)
-        cd ~/repos/imfusion/brunner/notes && ccw -n tom "/imfg-tom Good Morning"
+        cd ~/repos/imfusion/brunner/notes && ccw -n Bob "/imfg-bob Good Morning"
         ;;
     message)
         shift
-        tom-send "$@"
+        bob-send "$@"
         ;;
     *)
-        echo "usage: tom launch | tom message [text]" >&2
+        echo "usage: bob launch | bob message [text]" >&2
         return 1
         ;;
     esac

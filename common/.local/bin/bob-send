@@ -1,17 +1,17 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# tom-send — send a message to Tom, the ImFusion notes session, through Rex
+# bob-send — send a message to Bob, the ImFusion notes session, through Rex
 # when REX_SESSION is set, else through Herdr
 #
-#   tom-send <text>   sends the text
-#   tom-send          opens a scratch file in nvim; save and quit sends it,
+#   bob-send <text>   sends the text
+#   bob-send          opens a scratch file in nvim; save and quit sends it,
 #                     an empty file sends nothing, q in normal mode cancels
 #
-# Bound to a Herdr and a Rex popup, so a failure waits for a key before the popup closes.
+# A failure waits for a key, so a popup running this stays open to show it.
 
 fail() {
-	echo "tom: $1" >&2
+	echo "bob: $1" >&2
 	[ -t 0 ] && read -rsn1 -p "Press any key to close."
 	exit 1
 }
@@ -19,7 +19,7 @@ fail() {
 if [ $# -gt 0 ]; then
 	text="$*"
 else
-	file=$(mktemp "${TMPDIR:-/tmp}/tom.XXXXXX")
+	file=$(mktemp "${TMPDIR:-/tmp}/bob.XXXXXX")
 	trap 'rm -f "$file"' EXIT
 	nvim -c 'set filetype=markdown' -c 'nnoremap <buffer> q <cmd>cquit<cr>' -c startinsert "$file" || exit 0
 	text=$(cat "$file")
@@ -28,7 +28,7 @@ fi
 
 send_rex() {
 	local session block _
-	read -r session block _ < <(tom-pane) || fail "no Rex pane runs a session named tom"
+	read -r session block _ < <(bob-pane) || fail "no Rex pane runs a session named Bob"
 	# Bracketed paste keeps newlines in the text from submitting early
 	rex send -s "$session" -b "$block" $'\e[200~'"$text"$'\e[201~' || fail "rex send failed"
 	sleep 0.2
@@ -37,10 +37,10 @@ send_rex() {
 
 send_herdr() {
 	local pane err
-	pane=$(herdr agent list | jq -r '.result.agents[] | select(.terminal_title_stripped == "tom") | .pane_id' | head -1)
-	[ -n "$pane" ] || fail "no Herdr pane runs a session named tom"
+	pane=$(herdr agent list | jq -r '.result.agents[] | select(.terminal_title_stripped // "" | ascii_downcase == "bob") | .pane_id' | head -1)
+	[ -n "$pane" ] || fail "no Herdr pane runs a session named Bob"
 	err=$(herdr agent prompt "$pane" "$text" 2>&1 >/dev/null) || fail "$(jq -r '.error.message // empty' <<<"$err" 2>/dev/null || echo "$err")"
 }
 
 if [ -n "${REX_SESSION:-}" ]; then send_rex; else send_herdr; fi
-echo "Sent to tom."
+echo "Sent to Bob."

@@ -266,17 +266,9 @@ command = "helm-herdr.jump-back"
 description = "jump to previous workspace"
 
 [[keys.command]]
-key = "prefix+t"
+key = "prefix+b"
 type = "popup"
-command = "tom-send"
-description = "message Tom"
-width = "60%"
-height = "40%"
-
-[[keys.command]]
-key = "prefix+shift+t"
-type = "popup"
-command = "sh -c 'herdr agent attach \"$(herdr agent list | jq -r \".result.agents[] | select(.terminal_title_stripped == \\\"tom\\\") | .pane_id\" | head -1)\"'"
-description = "open Tom (ctrl+b q closes)"
+command = "sh -c 'herdr agent attach \"$(herdr agent list | jq -r \".result.agents[] | select(.terminal_title_stripped // \\\"\\\" | ascii_downcase == \\\"bob\\\") | .pane_id\" | head -1)\"'"
+description = "open Bob (ctrl+b q closes)"
 width = "80%"
 height = "80%"
