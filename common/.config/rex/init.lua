@@ -129,7 +129,7 @@ rex.bind(
 rex.bind("cmd+g", popup("lazygit", { "lazygit" }, 1, 1))
 rex.bind("cmd+r", popup("review", { "nvim", "iter://review" }, 1, 1))
 rex.bind("cmd+j", popup("lazyjira", { "lazyjira" }, 1, 1))
-rex.bind("cmd+l", popup("livery", { "livery", "apply" }, 0.15, 0.25))
+rex.bind("cmd+l", popup("livery", { "livery", "apply" }, 0.35, 0.25))
 
 -- Bob, the notes session's Claude: the key jumps to its pane, and from there
 -- back to the session it came from. A popup can't hold another session's block.
