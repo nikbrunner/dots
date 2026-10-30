@@ -10,7 +10,6 @@ export function parseGit(repo: string, out: string): Git {
     modified: 0,
     deleted: 0,
     untracked: 0,
-    stashes: 0,
     files: [],
   }
   const numstat = new Map<string, [number, number]>()
@@ -31,8 +30,6 @@ export function parseGit(repo: string, out: string): Git {
     } else if (line.startsWith('# last ')) {
       const [hash = '', age = '', subject = ''] = line.slice(7).split('\t')
       g.last = { hash, age, subject }
-    } else if (line.startsWith('# stash ')) {
-      g.stashes = Number(line.slice(8)) || 0
     } else if (line.startsWith('# num ')) {
       const [a, r, path] = line.slice(6).split('\t')
       if (path && a !== '-') numstat.set(path, [Number(a), Number(r)])

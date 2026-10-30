@@ -12,7 +12,6 @@ export type Git = {
   repo: string
   upstream?: string
   last?: { hash: string; age: string; subject: string }
-  stashes: number
   files: GitFile[]
   isWorktree: boolean
   branch?: string

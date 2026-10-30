@@ -77,7 +77,6 @@ async function refreshGit($: EngineInterface) {
         'git --no-optional-locks status --porcelain=v2 --branch || exit 1; ' +
         'printf "# gitdir %s\\n" "$(git rev-parse --absolute-git-dir)"; ' +
         'git log -1 --format="# last %h%x09%cr%x09%s" 2>/dev/null; ' +
-        'printf "# stash %s\\n" "$(git stash list 2>/dev/null | wc -l | tr -d " ")"; ' +
         'git --no-optional-locks diff --numstat HEAD 2>/dev/null | sed "s/^/# num /"',
     ],
     { cwd, timeoutMs: 3000 },

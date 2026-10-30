@@ -31,7 +31,6 @@ test('lists files with status, staging and numstat', async () => {
     '2 R. N... 100644 100644 100644 a b R100 to.ts\tfrom.ts',
     '? scratch.txt',
     '# last abc123\t2 hours ago\tFix things',
-    '# stash 2',
     '# num 3\t1\tsrc/my file.ts',
   ].join('\n')
   const g = parseGit('dots', out)
@@ -42,5 +41,4 @@ test('lists files with status, staging and numstat', async () => {
     { path: 'scratch.txt', status: '?', isStaged: false },
   ])
   expect(g.last).toEqual({ hash: 'abc123', age: '2 hours ago', subject: 'Fix things' })
-  expect(g.stashes).toBe(2)
 })
