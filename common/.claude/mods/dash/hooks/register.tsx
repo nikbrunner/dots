@@ -491,12 +491,69 @@ export const register: Register = on => {
                 <Text> </Text>
               </Box>
               <Text wrap="truncate-start">{w.cwd}</Text>
+              {g && (
+                <Box flexShrink={0}>
+                  <Text>
+                    {dot}
+                    <Text color="claude" bold>
+                      {g.branch ?? 'detached'}
+                    </Text>
+                    {g.upstream && <Text> {g.upstream}</Text>}
+                    {g.ahead > 0 && <Text color="success"> ↑{g.ahead}</Text>}
+                    {g.behind > 0 && <Text color="error"> ↓{g.behind}</Text>}
+                    {g.upstream && g.ahead === 0 && g.behind === 0 && <Text dimColor> in sync</Text>}
+                    {g.stashes > 0 && dot}
+                    {g.stashes > 0 && <Text color="suggestion">{g.stashes} stashes</Text>}
+                  </Text>
+                </Box>
+              )}
               {u.startedAt !== undefined && (
                 <Box flexShrink={0}>
                   <Text dimColor> · {duration(at - u.startedAt)}</Text>
                 </Box>
               )}
             </Box>
+            {g &&
+              kv(
+                'changes',
+                g.files.length === 0 ? (
+                  <Text color="success">✓ clean</Text>
+                ) : (
+                  <Text>
+                    {g.added > 0 && <Text color="success">+{g.added} added </Text>}
+                    {g.modified > 0 && <Text color="warning">~{g.modified} modified </Text>}
+                    {g.deleted > 0 && <Text color="error">-{g.deleted} deleted </Text>}
+                    {g.untracked > 0 && <Text color="suggestion">?{g.untracked} untracked</Text>}
+                  </Text>
+                ),
+              )}
+            {g?.last &&
+              kv(
+                'last',
+                <Text>
+                  <Text color="warning">{g.last.hash}</Text>
+                  <Text> {g.last.subject}</Text>
+                  <Text dimColor> · {g.last.age}</Text>
+                </Text>,
+              )}
+          </Box>
+
+          <Box flexDirection="column" flexGrow={1}>
+            {kv(
+              'model',
+              <Text>
+                <Text color="success" bold>
+                  {a.model}
+                </Text>
+                <Text> </Text>
+                {modelParts.map((p, i) => (
+                  <Text>
+                    {i > 0 && dot}
+                    {p}
+                  </Text>
+                ))}
+              </Text>,
+            )}
             {(u.context !== undefined || u.limits.length > 0) && (
               <Box>
                 {label('usage')}
@@ -522,77 +579,17 @@ export const register: Register = on => {
                   · {isCacheWarm && c.lastAt ? `expires ${until(c.lastAt + CACHE_TTL_MS, at)}` : 'cold'}
                 </Text>
                 {c.misses > 0 && <Text color="error"> · {c.misses} miss</Text>}
-              </Text>,
-              'truncate-end',
-              mark('cache', isCacheWarm ? 'warning' : 'dim'),
-            )}
-            {kv(
-              'spend',
-              <Text>
-                {u.cost !== undefined && <Text color="warning">${u.cost.toFixed(2)}</Text>}
                 {u.cost !== undefined && dot}
+                {u.cost !== undefined && <Text color="warning">${u.cost.toFixed(2)}</Text>}
+                {dot}
                 <Text color="success">+{ln.added}</Text>
                 <Text dimColor>/</Text>
                 <Text color="error">-{ln.removed}</Text>
                 <Text dimColor> lines</Text>
               </Text>,
+              'truncate-end',
+              mark('cache', isCacheWarm ? 'warning' : 'dim'),
             )}
-          </Box>
-
-          <Box flexDirection="column" flexGrow={1}>
-            {kv(
-              'model',
-              <Text>
-                <Text color="success" bold>
-                  {a.model}
-                </Text>
-                <Text> </Text>
-                {modelParts.map((p, i) => (
-                  <Text>
-                    {i > 0 && dot}
-                    {p}
-                  </Text>
-                ))}
-              </Text>,
-            )}
-            {g &&
-              kv(
-                'branch',
-                <Text>
-                  <Text color="claude" bold>
-                    {g.branch ?? 'detached'}
-                  </Text>
-                  {g.upstream && <Text> {g.upstream}</Text>}
-                  {g.ahead > 0 && <Text color="success"> ↑{g.ahead}</Text>}
-                  {g.behind > 0 && <Text color="error"> ↓{g.behind}</Text>}
-                  {g.upstream && g.ahead === 0 && g.behind === 0 && <Text dimColor> in sync</Text>}
-                  {g.stashes > 0 && dot}
-                  {g.stashes > 0 && <Text color="suggestion">{g.stashes} stashes</Text>}
-                </Text>,
-              )}
-            {g?.last &&
-              kv(
-                'last',
-                <Text>
-                  <Text color="warning">{g.last.hash}</Text>
-                  <Text> {g.last.subject}</Text>
-                  <Text dimColor> · {g.last.age}</Text>
-                </Text>,
-              )}
-            {g &&
-              kv(
-                'changes',
-                g.files.length === 0 ? (
-                  <Text color="success">✓ clean</Text>
-                ) : (
-                  <Text>
-                    {g.added > 0 && <Text color="success">+{g.added} added </Text>}
-                    {g.modified > 0 && <Text color="warning">~{g.modified} modified </Text>}
-                    {g.deleted > 0 && <Text color="error">-{g.deleted} deleted </Text>}
-                    {g.untracked > 0 && <Text color="suggestion">?{g.untracked} untracked</Text>}
-                  </Text>
-                ),
-              )}
           </Box>
         </Box>
         {tk.length > 0 && done < tk.length && (
