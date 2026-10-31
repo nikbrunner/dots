@@ -71,6 +71,7 @@ vim.g.black_atom_core_config = {
         cmp_kind_color_mode = "bg",
         dark_sidebars = true,
         dark_floats = true,
+        dark_gutter = true,
         diagnostics = {
             undercurl = false,
             background = false,
