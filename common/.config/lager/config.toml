@@ -53,6 +53,10 @@ url = "git@github.com:nikbrunner/tmux-file-picker"
 post_clone = "make install"
 
 [[repositories]]
+url = "git@github.com:black-atom-industries/.github"
+post_clone = "./install.sh"
+
+[[repositories]]
 url = "git@github.com:black-atom-industries/*"
 
 [[repositories]]
