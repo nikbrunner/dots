@@ -6,6 +6,7 @@
     "ENABLE_TOOL_SEARCH": "true",
     "CLAUDE_CODE_PLUGIN_DIRS": "~/repos/nikbrunner/skills/mods/dash:~/repos/nikbrunner/skills/mods/toggle-mods:~/repos/nikbrunner/skills/mods/play",
     "CLAUDE_CODE_PLUGIN_DIR_WATCH": "1",
+    "ELEVENLABS_API_KEY_COMMAND": "pass-cli item view pass://Nik/.env/ELEVENLABS_API_TOKEN",
     "CLAUDE_CODE_SUBAGENT_MODEL": "haiku"
   },
   "includeCoAuthoredBy": false,
