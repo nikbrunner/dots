@@ -45,8 +45,8 @@ _relative_path() {
 
 # Helper: print the canonical link text for a symlink at abs_target pointing to
 # abs_source. When the link physically lives inside the repo (its parent
-# directory resolves through another symlink into the repo, e.g. ~/.pi ->
-# home/.pi), the link text is repo-relative so the committed link stays
+# directory resolves through another symlink into the repo), the link text is
+# repo-relative so the committed link stays
 # portable across machines with different absolute paths.
 # Usage: _canonical_link_text <abs_source> <abs_target> <resolved_dots_dir>
 _canonical_link_text() {

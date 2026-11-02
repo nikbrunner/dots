@@ -399,7 +399,7 @@ dots_stage_sessions() {
 
 dots_stage_pi() {
     local repo_path="$1"
-    local pi_sessions_dir="$repo_path/home/.pi/agent/sessions"
+    local pi_sessions_dir="$HOME/.pi/agent/sessions"
     local pi_paths=(
         "home/.pi/agent/settings.json"
     )
