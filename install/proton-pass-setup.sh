@@ -56,7 +56,7 @@ else
     PAT=$(pass-cli personal-access-token create --name "$PAT_NAME" --expiration 1y)
 
     mkdir -p "$(dirname "$PAT_FILE")"
-    echo "$PAT" > "$PAT_FILE"
+    echo "$PAT" >"$PAT_FILE"
     chmod 600 "$PAT_FILE"
     echo "    Saved to $PAT_FILE"
 

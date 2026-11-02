@@ -254,11 +254,11 @@ apply_repair_plan() {
                 RESIZE_DIRECTION=$DIRECTION
             else
                 case "$DIRECTION" in
-                    right) RESIZE_DIRECTION=left ;;
-                    down) RESIZE_DIRECTION=up ;;
-                    left) RESIZE_DIRECTION=right ;;
-                    up) RESIZE_DIRECTION=down ;;
-                    *) return 1 ;;
+                right) RESIZE_DIRECTION=left ;;
+                down) RESIZE_DIRECTION=up ;;
+                left) RESIZE_DIRECTION=right ;;
+                up) RESIZE_DIRECTION=down ;;
+                *) return 1 ;;
                 esac
             fi
             "$HERDR_BIN" pane resize --pane "$SOURCE_ID" \

@@ -120,9 +120,9 @@ for missing_id in HERDR_WORKSPACE_ID HERDR_TAB_ID HERDR_PANE_ID; do
     TEST_TAB_ID=t-root
     TEST_PANE_ID=p-root
     case "$missing_id" in
-      HERDR_WORKSPACE_ID) TEST_WORKSPACE_ID='' ;;
-      HERDR_TAB_ID) TEST_TAB_ID='' ;;
-      HERDR_PANE_ID) TEST_PANE_ID='' ;;
+    HERDR_WORKSPACE_ID) TEST_WORKSPACE_ID='' ;;
+    HERDR_TAB_ID) TEST_TAB_ID='' ;;
+    HERDR_PANE_ID) TEST_PANE_ID='' ;;
     esac
     if run_hook default; then fail "missing $missing_id succeeded"; fi
     [ ! -s "$CALLS" ] || fail "missing $missing_id reached Herdr"
@@ -144,8 +144,8 @@ for missing_tool in jq yq; do
     mkdir -p "$tool_dir"
     ln -s "$(command -v dirname)" "$tool_dir/dirname"
     case "$missing_tool" in
-      jq) ln -s "$(command -v yq)" "$tool_dir/yq" ;;
-      yq) ln -s "$(command -v jq)" "$tool_dir/jq" ;;
+    jq) ln -s "$(command -v yq)" "$tool_dir/yq" ;;
+    yq) ln -s "$(command -v jq)" "$tool_dir/jq" ;;
     esac
     TEST_PATH="$tool_dir"
     if run_hook default; then fail "missing $missing_tool succeeded"; fi
