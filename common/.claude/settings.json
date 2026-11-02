@@ -186,7 +186,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "~/.claude/hooks/subagent-progress/post-tool-batch.sh",
+            "command": "~/repos/nikbrunner/skills/statusline/post-tool-batch.sh",
             "timeout": 5
           }
         ]
@@ -197,7 +197,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "~/.claude/hooks/subagent-progress/subagent-start.sh",
+            "command": "~/repos/nikbrunner/skills/statusline/subagent-start.sh",
             "timeout": 5
           }
         ]
@@ -218,7 +218,7 @@
   },
   "subagentStatusLine": {
     "type": "command",
-    "command": "claude-subagent-statusline"
+    "command": "~/repos/nikbrunner/skills/statusline/claude-subagent-statusline"
   },
   "enabledPlugins": {
     "figma@claude-plugins-official": true,

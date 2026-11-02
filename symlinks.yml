@@ -18,7 +18,6 @@ common:
     [~/.claude/keybindings.json, ~/.claude-work/keybindings.json]
   common/.agents: ~/.agents
   "common/.claude/hooks/enforce/*": ~/.claude/hooks/enforce
-  "common/.claude/hooks/subagent-progress/*": ~/.claude/hooks/subagent-progress
   common/.claude/plugins/local-marketplace: ~/.claude/plugins/marketplaces/local-plugins
   common/.local/bin/claude-hooks: ~/.local/bin/claude-hooks
   common/.local/share/file-picker/file-picker: ~/.local/bin/file-picker
