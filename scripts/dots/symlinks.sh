@@ -44,9 +44,9 @@ _relative_path() {
 }
 
 # Helper: print the canonical link text for a symlink at abs_target pointing to
-# abs_source. When the link physically lives inside the dots repo (its parent
-# directory resolves through another symlink into dots_dir, e.g. ~/.pi ->
-# common/.pi), the link text is repo-relative so the committed link stays
+# abs_source. When the link physically lives inside the repo (its parent
+# directory resolves through another symlink into the repo, e.g. ~/.pi ->
+# home/.pi), the link text is repo-relative so the committed link stays
 # portable across machines with different absolute paths.
 # Usage: _canonical_link_text <abs_source> <abs_target> <resolved_dots_dir>
 _canonical_link_text() {
@@ -620,16 +620,15 @@ if [[ "${BASH_SOURCE[0]}" != "${0}" ]]; then
     return 0
 fi
 
-# Get dots directory
-DOTS_DIR="${DOTS_DIR:-$HOME/repos/nikbrunner/dots}"
+# The repo this script lives in; symlinks.yml sits at its root.
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_DIR="$(git -C "$SCRIPT_DIR" rev-parse --show-toplevel)"
 
-# Source detect-os library
 # shellcheck disable=SC1091
-source "$DOTS_DIR/scripts/dots/detect-os.sh"
+source "$SCRIPT_DIR/detect-os.sh"
 
-# Get current OS
 CURRENT_OS=$(get_os)
-SYMLINKS_FILE="$DOTS_DIR/symlinks.yml"
+SYMLINKS_FILE="$REPO_DIR/symlinks.yml"
 
 # Check for flags
 DRY_RUN=false
@@ -679,7 +678,7 @@ if [[ "$NO_BACKUP" == true ]]; then
     echo ""
 fi
 
-echo "Setting up dotfiles symlinks from configuration..."
+echo "Setting up symlinks from configuration..."
 echo "OS detected: $CURRENT_OS"
 echo "Configuration: $SYMLINKS_FILE"
 echo ""

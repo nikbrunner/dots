@@ -5,6 +5,7 @@ set -e
 
 # Get the dots directory
 DOTS_DIR="${DOTS_DIR:-$HOME/repos/nikbrunner/dots}"
+AGENTS_DIR="${AGENTS_DIR:-$HOME/repos/nikbrunner/agents}"
 
 # Source shared libraries
 # shellcheck disable=SC1091
@@ -576,22 +577,46 @@ cmd_push() {
 }
 
 # ── Chores command ──────────────────────────────────────────────
-# Commit routine dots repo changes: fonts, themes, sessions, radar, lazy-lock, bookmarks
+# Runs each stager against repo and rolls what they staged into one commit.
+# Usage: _commit_chores <repo> <subject> <stager=label>...
+_commit_chores() {
+	local repo="$1" subject="$2"
+	shift 2
+	local topics_changed=() pair
+
+	for pair in "$@"; do
+		if ${pair%%=*} "$repo"; then
+			topics_changed+=("${pair#*=}")
+		fi
+		echo ""
+	done
+
+	if [[ ${#topics_changed[@]} -gt 0 ]]; then
+		local topic_list topic_body
+		topic_list=$(
+			IFS=,
+			echo "${topics_changed[*]}"
+		)
+		topic_body=$(printf -- '- %s\n' "${topics_changed[@]}")
+		git -C "$repo" commit -m "$subject"$'\n\n'"$topic_body"
+		log_okay "Created 1 chore commit in $(basename "$repo"): update ${topic_list}"
+	else
+		log_info "No chore changes to commit in $(basename "$repo")"
+	fi
+}
+
+# Commit routine changes in dots and agents: fonts, themes, sessions, radar, lazy-lock, bookmarks, agent settings
 cmd_chores() {
 	log_section "Dots Chores"
 	echo ""
 
-	local topics_changed=()
-
-	# stager function → topic label (order matters for output)
+	# stager function → topic label
 	local -A stagers=(
 		[dots_stage_mise]="mise"
 		[dots_stage_theme]="themes"
 		[dots_stage_livery]="livery"
 		[dots_stage_sessions]="sessions"
 		[dots_stage_herdr_config]="herdr-config"
-		[dots_stage_pi]="pi"
-		[dots_stage_codex]="codex"
 		[dots_stage_radar]="radar"
 		[dots_stage_lazy_lock]="lazy-lock"
 		[dots_stage_bookmarks]="bookmarks"
@@ -600,42 +625,22 @@ cmd_chores() {
 		[dots_stage_gitconfig_delta]="gitconfig.delta"
 		[dots_stage_helm_config]="helm"
 		[dots_stage_zoxide]="zoxide"
-		[dots_stage_claude_settings]="claude-settings"
 	)
-
+	local dots_pairs=() stager
 	for stager in "${!stagers[@]}"; do
-		if $stager "$DOTS_DIR"; then
-			topics_changed+=("${stagers[$stager]}")
-		fi
-		echo ""
+		dots_pairs+=("$stager=${stagers[$stager]}")
 	done
 
-	# Summary
+	_commit_chores "$DOTS_DIR" "update routine dotfiles" "${dots_pairs[@]}"
+
+	if [[ -d "$AGENTS_DIR/.git" ]]; then
+		echo ""
+		_commit_chores "$AGENTS_DIR" "update routine agent config" \
+			dots_stage_pi=pi dots_stage_codex=codex dots_stage_claude_settings=claude-settings
+	fi
+
 	echo ""
 	echo "────────────────────────────────────────────────"
-
-	if [[ ${#topics_changed[@]} -gt 0 ]]; then
-		# Build a single commit message from staged changes
-		local topic_list topic_body
-		topic_list=$(
-			IFS=,
-			echo "${topics_changed[*]}"
-		)
-		topic_body=$(printf -- '- %s\n' "${topics_changed[@]}")
-		(
-			cd "$DOTS_DIR"
-			git commit -m "$(
-				cat <<EOF
-update routine dotfiles
-
-$topic_body
-EOF
-			)"
-		)
-		log_okay "Created 1 chore commit: update ${topic_list}"
-	else
-		log_info "No chore changes to commit"
-	fi
 
 	# Check for remaining uncommitted changes
 	local remaining
@@ -710,7 +715,7 @@ cmd_cleanup() {
 	local total_deleted=0
 
 	# ── Pi sessions ──
-	local pi_sessions="$DOTS_DIR/common/.pi/agent/sessions"
+	local pi_sessions="$HOME/.pi/agent/sessions"
 	if [[ -d "$pi_sessions" ]]; then
 		log_info "Pi sessions older than 2 weeks:"
 		local pi_deleted=0
@@ -903,6 +908,14 @@ cmd_link() {
 	echo ""
 	echo "→ Creating symlinks..."
 	"$DOTS_DIR/scripts/dots/symlinks.sh" "$@"
+
+	if [[ -x "$AGENTS_DIR/scripts/symlinks.sh" ]]; then
+		echo ""
+		echo "→ Creating agents symlinks..."
+		"$AGENTS_DIR/scripts/symlinks.sh" "$@"
+	else
+		log_warn "agents repo not found at $AGENTS_DIR — skipping its symlinks"
+	fi
 }
 
 # Shared push function

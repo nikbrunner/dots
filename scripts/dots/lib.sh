@@ -399,9 +399,9 @@ dots_stage_sessions() {
 
 dots_stage_pi() {
     local repo_path="$1"
-    local pi_sessions_dir="$repo_path/common/.pi/agent/sessions"
+    local pi_sessions_dir="$repo_path/home/.pi/agent/sessions"
     local pi_paths=(
-        "common/.pi/agent/settings.json"
+        "home/.pi/agent/settings.json"
     )
 
     # Clean up old sessions (>2 days)
@@ -449,7 +449,7 @@ dots_stage_pi() {
 
 dots_stage_codex() {
     local repo_path="$1"
-    local codex_config="common/.codex/config.toml"
+    local codex_config="home/.codex/config.toml"
 
     if [[ -z $(git -C "$repo_path" status --porcelain "$codex_config" 2>/dev/null) ]]; then
         echo "No Codex config changes to commit"
@@ -601,7 +601,7 @@ dots_stage_helm_config() {
 
 dots_stage_claude_settings() {
     local repo_path="$1"
-    local claude_settings="common/.claude/settings.json"
+    local claude_settings="home/.claude/settings.json"
 
     if [[ -z $(git -C "$repo_path" status --porcelain "$claude_settings" 2>/dev/null) ]]; then
         echo "No claude settings changes to commit"

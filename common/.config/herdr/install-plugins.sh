@@ -14,7 +14,7 @@ herdr plugin link "$HOME/.config/herdr/local-plugins/stationary" --enabled
 
 # The installer writes an absolute-path hook into settings.json, which dots
 # shares across machines. Install into a throwaway config dir and keep only the
-# script; the portable hook entry lives in common/.claude/settings.json.
+# script; the portable hook entry lives in home/.claude/settings.json of nikbrunner/agents.
 claude_tmp="$(mktemp -d)"
 CLAUDE_CONFIG_DIR="$claude_tmp" herdr integration install claude
 mkdir -p "$HOME/.claude/hooks"

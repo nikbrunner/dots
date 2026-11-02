@@ -1,4 +1,0 @@
-{
-  "defaultModel": "openrouter/google/gemini-2.5-flash",
-  "maxImagesPerCall": 10
-}

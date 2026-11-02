@@ -1,6 +1,6 @@
 # AGENTS.md
 
-This file provides guidance to Claude Code and Pi when working with code in this repository. The canonical global instructions live in `common/.agents/AGENTS.md` (symlinked to `~/.claude/CLAUDE.md` and `~/.pi/agent/AGENTS.md`). This file supplements it with repo-specific context.
+This file provides guidance to Claude Code and Pi when working with code in this repository. The canonical global instructions live in `home/.agents/AGENTS.md` of [nikbrunner/agents](https://github.com/nikbrunner/agents) (symlinked to `~/.claude/CLAUDE.md` and `~/.pi/agent/AGENTS.md`). This file supplements it with repo-specific context.
 
 ## Repository Overview
 
@@ -29,7 +29,7 @@ dots/
 - **`shiplog`** — AI-powered git operations (commit, branch). Run `shiplog --help` for usage. See [nikbrunner/shiplog](https://github.com/nikbrunner/shiplog).
 - **`helm`** — External tool for multi-repo management (pull, push, status, rebuild). Invoked by `dots pull` and `dots push`.
 
-When sorting a dirty working tree into commits, run `dots chores` last, after the real changes are committed. It stages its files whole and commits them as one routine commit, so run earlier it would sweep real edits in those files along. What counts as routine is the `dots_stage_*` list in `cmd_chores`.
+When sorting a dirty working tree into commits, run `dots chores` last, after the real changes are committed. It stages its files whole and commits them as one routine commit per repo (dots and agents), so run earlier it would sweep real edits in those files along. What counts as routine is the `dots_stage_*` list in `cmd_chores`.
 
 Full machine setup: follow `install/mac/README.md` or `install/arch/README.md`.
 
@@ -41,7 +41,7 @@ The `symlinks.yml` file defines all symlinks with OS-specific sections:
 - **Processing order**: `common` section loads first, then platform-specific section
 - **Wildcard patterns**: `"common/.local/bin/*": "~/.local/bin"` links individual files
 - **Backups**: Existing files are backed up as `.<name>.backup.YYYYMMDD_HHMMSS`
-- **Repo-internal targets**: When a target's directory resolves into the repo itself (e.g. `~/.pi/agent` via the `common/.pi: ~/.pi` dir-link), the link is created repo-relative so it stays portable when committed
+- **Repo-internal targets**: When a target's directory resolves into the repo itself (e.g. `~/.pi/agent` via the agents repo's `home/.pi: ~/.pi` dir-link), the link is created repo-relative so it stays portable when committed
 
 ### Managing Configurations
 
@@ -69,9 +69,7 @@ Black Atom Livery owns theme provisioning. The tracked `common/.config/black-ato
 
 ## Key Files
 
-- `common/.agents/skills/` — Agent skills (`common/.claude/skills` is only a repo-internal symlink to this directory). The `nbr-*` skills and the third-party skills they build on live in [nikbrunner/skills](https://github.com/nikbrunner/skills) at `~/repos/nikbrunner/skills`. Its `install.sh` restores and links them in here (gitignored) and points `~/.claude/skills` and `~/.claude-work/skills` at this directory. New `nbr-*` and `npx skills` installs go there; tool-shipped skills and the `imfg-*` links stay here
-- `common/.agents/AGENTS.md` — Canonical global agent instructions, symlinked to `~/.claude/CLAUDE.md` and `~/.pi/agent/AGENTS.md`
-- Claude Code mods (function-hook plugins) live in [nikbrunner/skills](https://github.com/nikbrunner/skills) under `mods/`, which also publishes them as the `nbr` plugin marketplace. Loaded from `CLAUDE_CODE_PLUGIN_DIRS` in `common/.claude/settings.json`, so a new mod's folder goes on that list
+- Agent config (Claude Code, Pi, Codex, OpenCode, the global `AGENTS.md`, skills and Claude Code mods) lives in [nikbrunner/agents](https://github.com/nikbrunner/agents) at `~/repos/nikbrunner/agents`, which has its own `symlinks.yml` and a copy of `scripts/dots/symlinks.sh`. `dots link` runs that linker after its own, and `dots chores` commits the routine agent config changes there. A fix to the linker goes into both copies
 - `common/.local/bin/dots` — Main CLI implementation (dispatcher + `cmd_pull`, `cmd_push`, `cmd_chores`, `cmd_link`)
 - `scripts/dots/lib.sh` — Shared library (config loading, repo helpers, chore staging functions)
 - `scripts/dots/packages.sh` — Package installation, inventory, and confirmation-gated purge
@@ -85,6 +83,7 @@ Black Atom Livery owns theme provisioning. The tracked `common/.config/black-ato
 ## Environment Variables
 
 - `DOTS_DIR` — Override dots directory (default: `~/repos/nikbrunner/dots`)
+- `AGENTS_DIR` — Override agents directory (default: `~/repos/nikbrunner/agents`)
 - `BLACK_ATOM_DIR` — Override Black Atom repos directory (default: `~/repos/black-atom-industries`)
 - `ANTHROPIC_API_KEY` — Required for `shiplog commit --smart` / `shiplog branch --smart` API mode
 

@@ -94,9 +94,13 @@ alias cc="claude"
 
 
 ccw() {
+    local imfusion_settings="$HOME/repos/imfusion/brunner/agents/claude-settings.json"
+    local extra=()
+    [[ -f $imfusion_settings ]] && extra=(--settings "$imfusion_settings")
     CLAUDE_CONFIG_DIR="$HOME/.claude-work" \
         CLAUDE_CODE_NO_FLICKER=1 \
-        command claude "$@"
+        DASH_BADGE=WORK \
+        command claude "${extra[@]}" "$@"
 }
 
 bob() {

@@ -128,7 +128,7 @@ After that, the dot binaries from `~/.local/bin` will be available in your `$PAT
 
 ## 9. Secrets
 
-Secrets stay in Proton Pass (vault `Nik`, item `.env`) and are referenced as `pass://Nik/.env/<FIELD>`. Nothing exports them globally; each consumer resolves its own reference (see "Secrets" in `common/.agents/AGENTS.md`). Log in once, then set up the tools that keep their own credentials:
+Secrets stay in Proton Pass (vault `Nik`, item `.env`) and are referenced as `pass://Nik/.env/<FIELD>`. Nothing exports them globally; each consumer resolves its own reference (see "Secrets" in `home/.agents/AGENTS.md` of [nikbrunner/agents](https://github.com/nikbrunner/agents)). Log in once, then set up the tools that keep their own credentials:
 
 ```sh
 pass-cli login
@@ -139,7 +139,7 @@ pi (`~/.pi/agent/auth.json`), the Codex and Claude MCP configs and `things` reso
 
 ## 10. Repos
 
-Clone the repositories declared in `~/.config/lager/config.toml`. Lager comes from mise, the config from the symlinks step. Post-clone hooks install the tools built from those repos (helm among them) and link the `nbr-*` agent skills:
+Clone the repositories declared in `~/.config/lager/config.toml`. Lager comes from mise, the config from the symlinks step. Post-clone hooks install the tools built from those repos (helm among them) and set up nikbrunner/agents: its agent skills and the agent config links (Claude Code, Pi, Codex, OpenCode). From then on `dots link` links both repos:
 
 ```sh
 lager ensure

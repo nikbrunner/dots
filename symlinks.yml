@@ -1,34 +1,12 @@
 common:
-  # Agents (Claude Code, Pi) ==============================================
-  # claude-work is an isolated CLAUDE_CONFIG_DIR for a second Anthropic
-  # account (see the claude-work() function in .zshrc), sharing the same
-  # AGENTS.md/agents/settings/skills as the primary ~/.claude. Its hooks
-  # dir (~/.claude-work/hooks) is a manual home->home symlink to
-  # ~/.claude/hooks, not managed here — ~/.claude/hooks/enforce is itself
-  # a wildcard-expanded target, not a single dots-repo source, so it
-  # can't be listed as a second target above without re-triggering it.
-  common/.config/rpiv-advisor/advisor.json: ~/.config/rpiv-advisor/advisor.json
-  common/.pi: ~/.pi
-  common/.agents/AGENTS.md:
-    [~/.claude/CLAUDE.md, ~/.claude-work/CLAUDE.md, ~/.pi/agent/AGENTS.md]
-  common/.agents/agents: [~/.claude/agents, ~/.claude-work/agents]
-  common/.claude/settings.json:
-    [~/.claude/settings.json, ~/.claude-work/settings.json]
-  common/.claude/keybindings.json:
-    [~/.claude/keybindings.json, ~/.claude-work/keybindings.json]
-  common/.agents: ~/.agents
-  "common/.claude/hooks/enforce/*": ~/.claude/hooks/enforce
-  common/.claude/plugins/local-marketplace: ~/.claude/plugins/marketplaces/local-plugins
-  common/.local/bin/claude-hooks: ~/.local/bin/claude-hooks
+  # Agents ==================================================================
+  # Agent config (Claude Code, Pi, Codex, OpenCode) is linked by
+  # nikbrunner/agents' own symlinks.yml, which `dots link` runs after this one.
   common/.local/share/file-picker/file-picker: ~/.local/bin/file-picker
   # Which repo each agent session ran in, written by bic-record and read by
   # bic. Tracked because a worktree recorded on one machine cannot be
   # reconstructed anywhere else once it is deleted.
   common/.local/state/ccu/repo-roots.json: ~/.local/state/ccu/repo-roots.json
-
-  # Codex CLI ===============================================================
-  # Link only the config; authentication, sessions, and runtime state remain local.
-  common/.codex/config.toml: ~/.codex/config.toml
 
   # Shell (zsh, git completion) ===========================================
   common/.config/.zsh/_git: ~/.config/.zsh/_git
@@ -80,7 +58,6 @@ common:
 
   # CLI Tools ===============================================================
   common/.config/atuin/config.toml: ~/.config/atuin/config.toml
-  common/.config/opencode/opencode.jsonc: ~/.config/opencode/opencode.jsonc
   common/.config/av/config.yaml: ~/.config/av/config.yaml
   common/.config/bat/config: ~/.config/bat/config
   common/.config/bob/config.json: ~/.config/bob/config.json
@@ -118,7 +95,6 @@ macos:
   macos/.local/bin/open-design-mcp: ~/.local/bin/open-design-mcp
   macos/.local/bin/dinky-windows: ~/.local/bin/dinky-windows
   macos/.local/bin/dinky-focus-app: ~/.local/bin/dinky-focus-app
-  macos/Library/Application Support/Claude/claude_desktop_config.json: ~/Library/Application Support/Claude/claude_desktop_config.json
   macos/Library/LaunchAgents/dev.nbr.zoxide-seed-sync.plist: ~/Library/LaunchAgents/dev.nbr.zoxide-seed-sync.plist
   macos/Library/LaunchAgents/me.proton.pass-ssh-agent.plist: ~/Library/LaunchAgents/me.proton.pass-ssh-agent.plist
 
