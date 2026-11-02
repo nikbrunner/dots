@@ -498,7 +498,7 @@ cmd_push() {
 				;;
 			"Cleanup with Claude")
 				if command -v claude &>/dev/null; then
-					(cd "$repo_path" && claude -p "$DOTS_DIR/common/.claude/commands/dots/git-cleanup.md")
+					(cd "$repo_path" && claude "/nbr-git-commit-buckets")
 				else
 					log_fail "'claude' command not found"
 				fi
