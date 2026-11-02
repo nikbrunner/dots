@@ -58,7 +58,7 @@ The `symlinks.yml` file defines all symlinks with OS-specific sections:
 The `dots` CLI sources two shared libraries:
 
 1. `scripts/log.sh` — logging functions (`log_section`, `log_success`, `log_warning`, `log_error`, `log_info`), plus `has_gum`, `confirm`, `choose` helpers. Uses `gum` for enhanced output when available.
-2. `scripts/dots/lib.sh` — config loading (`load_config`), git URL parsing, repo state detection, and automated chore staging functions. Each stages its files; `cmd_chores` rolls them into a single commit.
+2. `scripts/dots/lib.sh` — config loading (`load_config`), git URL parsing, repo state detection, and automated chore staging functions. Each stages its files; `cmd_chores` rolls them into one commit per repo.
 3. `scripts/dots/packages.sh` — mise, Homebrew, and Arch package installation and confirmation-gated purge.
 
 `lib.sh` requires `DOTS_DIR` to be set before sourcing and reads helm config from `~/.config/helm/config.yml` for `REPOS_BASE_PATH`.
