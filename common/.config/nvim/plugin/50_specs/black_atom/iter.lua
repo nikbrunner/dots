@@ -11,7 +11,25 @@ Edit.later(function()
 	local iter = require("iter")
 
 	iter.setup({ diff = { layout = "auto" } })
-	vim.o.statuscolumn = "%!v:lua.require'iter'.statuscolumn()"
+
+	-- Blank `Normal` cells between the dark gutter and the code. `Normal` would
+	-- notch a float's panel.
+	_G.PaddedStatuscolumn = function()
+		local padding = 2
+		local base = iter.statuscolumn()
+		local win = vim.g.statusline_winid
+		local wo = vim.wo[win]
+		local gutter = wo.number or wo.relativenumber or wo.signcolumn ~= "no"
+
+		if not gutter or vim.api.nvim_win_get_config(win).relative ~= "" then
+			return base
+		end
+
+		local on_cursor = wo.cursorline and vim.v.relnum == 0 and vim.v.virtnum <= 0
+		return base .. (on_cursor and "%#CursorLine#" or "%#Normal#") .. string.rep(" ", padding)
+	end
+
+	vim.o.statuscolumn = "%!v:lua.PaddedStatuscolumn()"
 
 	local map = vim.keymap.set
 
