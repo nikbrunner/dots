@@ -8,7 +8,7 @@ os:
   openDirInEditor: '[ -z "$NVIM" ] && (nvim -- {{dir}}) || (nvim --server "$NVIM" --remote-send "<C-\\><C-n>:close<CR>" && nvim --server "$NVIM" --remote {{dir}})'
 promptToReturnFromSubprocess: false
 gui:
-  # Theme colors managed by pick-theme
+  # Theme colors managed by Black Atom Livery
   theme:
     activeBorderColor:
       - "#e49e22"
