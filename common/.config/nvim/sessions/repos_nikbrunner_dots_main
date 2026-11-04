@@ -10,12 +10,54 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +253 common/.agents/AGENTS.md
+badd +1 common/.config/nvim/plugin/50_specs/black_atom/iter.lua
+badd +191 ~/repos/nikbrunner/dots/common/.config/nvim/plugin/50_specs/snacks.lua
 argglobal
 %argdel
 $argadd ~/repos/nikbrunner/dots/.gitignore
-edit common/.agents/AGENTS.md
+edit common/.config/nvim/plugin/50_specs/black_atom/iter.lua
+let s:save_splitbelow = &splitbelow
+let s:save_splitright = &splitright
+set splitbelow splitright
+wincmd _ | wincmd |
+vsplit
+1wincmd h
+wincmd w
+let &splitbelow = s:save_splitbelow
+let &splitright = s:save_splitright
+wincmd t
+let s:save_winminheight = &winminheight
+let s:save_winminwidth = &winminwidth
+set winminheight=0
+set winheight=1
+set winminwidth=0
+set winwidth=1
+exe 'vert 1resize ' . ((&columns * 152 + 153) / 306)
+exe 'vert 2resize ' . ((&columns * 153 + 153) / 306)
 argglobal
+setlocal foldmethod=expr
+setlocal foldexpr=v:lua.vim.treesitter.foldexpr()
+setlocal foldmarker={{{,}}}
+setlocal foldignore=#
+setlocal foldlevel=99
+setlocal foldminlines=1
+setlocal foldnestmax=10
+setlocal foldenable
+24
+sil! normal! zo
+let s:l = 37 - ((35 * winheight(0) + 33) / 67)
+if s:l < 1 | let s:l = 1 | endif
+keepjumps exe s:l
+normal! zt
+keepjumps 37
+normal! 017|
+wincmd w
+argglobal
+if bufexists(fnamemodify("~/repos/nikbrunner/dots/common/.config/nvim/plugin/50_specs/snacks.lua", ":p")) | buffer ~/repos/nikbrunner/dots/common/.config/nvim/plugin/50_specs/snacks.lua | else | edit ~/repos/nikbrunner/dots/common/.config/nvim/plugin/50_specs/snacks.lua | endif
+if &buftype ==# 'terminal'
+  silent file ~/repos/nikbrunner/dots/common/.config/nvim/plugin/50_specs/snacks.lua
+endif
+balt common/.config/nvim/plugin/50_specs/black_atom/iter.lua
 setlocal foldmethod=expr
 setlocal foldexpr=v:lua.vim.treesitter.foldexpr()
 setlocal foldmarker={{{,}}}
@@ -26,14 +68,18 @@ setlocal foldnestmax=10
 setlocal foldenable
 1
 sil! normal! zo
-141
+19
 sil! normal! zo
-let s:l = 253 - ((18 * winheight(0) + 25) / 51)
+let s:l = 191 - ((36 * winheight(0) + 33) / 67)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 253
-normal! 0274|
+keepjumps 191
+normal! 03|
+wincmd w
+2wincmd w
+exe 'vert 1resize ' . ((&columns * 152 + 153) / 306)
+exe 'vert 2resize ' . ((&columns * 153 + 153) / 306)
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
@@ -41,6 +87,8 @@ endif
 unlet! s:wipebuf
 set winheight=1 winwidth=20
 let &shortmess = s:shortmess_save
+let &winminheight = s:save_winminheight
+let &winminwidth = s:save_winminwidth
 let s:sx = expand("<sfile>:p:r")."x.vim"
 if filereadable(s:sx)
   exe "source " . fnameescape(s:sx)

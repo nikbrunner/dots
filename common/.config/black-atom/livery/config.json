@@ -1,17 +1,13 @@
 {
   "version": 2,
   "system_appearance": true,
-  "active_theme": "black-atom-minium-sienna-dark",
+  "active_theme": "black-atom-jpn-koyo-dark",
   "keymappings": {
     "toggle_window": "super+ctrl+alt+shift+KeyT"
   },
   "apps": {
     "nvim": {
       "enabled": true,
-      "config_path": "~/.config/nvim/plugin/50_specs/black_atom/nvim.lua",
-      "match_pattern": "vim\\.cmd\\.colorscheme\\(\"[^\"]*\"\\)",
-      "replace_template": "vim.cmd.colorscheme(\"{themeKey}\")",
-      "settings_path": "~/.config/nvim/init.lua",
       "settings": {
         "term_colors": true,
         "styles": {
@@ -20,7 +16,8 @@
           "cmp_kind_color_mode": "bg",
           "dark_sidebars": true,
           "dark_floats": true,
-          "dark_gutter": true,
+          "dark_gutter": false,
+          "gutter_padding": 0,
           "diagnostics": {
             "undercurl": false,
             "background": false

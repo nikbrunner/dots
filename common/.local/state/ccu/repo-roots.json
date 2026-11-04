@@ -1,4 +1,24 @@
 {
+  "ba/shiplog-sim": {
+    "root": "/private/tmp/claude-501/-Users-brunner-repos-nikbrunner-agents/5b5c5803-cdda-4cf8-8753-681a497a5a39/scratchpad/wt/ba/shiplog-sim",
+    "owner": "ba",
+    "name": "shiplog-sim",
+    "work": false,
+    "session_dirs": [
+      "/private/tmp/claude-501/-Users-brunner-repos-nikbrunner-agents/5b5c5803-cdda-4cf8-8753-681a497a5a39/scratchpad/wt/ba/shiplog-sim"
+    ],
+    "last_seen": "2026-11-02"
+  },
+  "ba/sim": {
+    "root": "/private/tmp/claude-501/-Users-brunner-repos-nikbrunner-agents/5b5c5803-cdda-4cf8-8753-681a497a5a39/scratchpad/wt/ba/sim",
+    "owner": "ba",
+    "name": "sim",
+    "work": false,
+    "session_dirs": [
+      "/private/tmp/claude-501/-Users-brunner-repos-nikbrunner-agents/5b5c5803-cdda-4cf8-8753-681a497a5a39/scratchpad/wt/ba/sim"
+    ],
+    "last_seen": "2026-11-02"
+  },
   "black-atom-industries/adapter-template": {
     "root": "~/repos/black-atom-industries/adapter-template",
     "owner": "black-atom-industries",
@@ -26,6 +46,8 @@
     "work": false,
     "session_dirs": [
       "~/repos/black-atom-industries/black-atom",
+      "~/repos/black-atom-industries/black-atom-livery-window-accessibility",
+      "~/repos/black-atom-industries/black-atom/.claude/hooks",
       "~/repos/black-atom-industries/black-atom/.claude/worktrees/kagi-adapter",
       "~/repos/black-atom-industries/black-atom/.claude/worktrees/replace-deno-with-node",
       "~/repos/black-atom-industries/black-atom/adapters/claude-code",
@@ -54,7 +76,7 @@
       "~/repos/black-atom-industries/black-atom/website/src/content/products",
       "~/repos/black-atom-industries/black-atom/website/src/routes"
     ],
-    "last_seen": "2026-10-26"
+    "last_seen": "2026-11-04"
   },
   "black-atom-industries/core": {
     "root": "~/repos/black-atom-industries/core",
@@ -116,10 +138,11 @@
     "work": false,
     "session_dirs": [
       "~/repos/black-atom-industries/iter.nvim",
+      "~/repos/black-atom-industries/iter.nvim-split-ribbons",
       "~/repos/black-atom-industries/iter.nvim/.claude/worktrees/review-relaunch",
       "~/repos/black-atom-industries/iter.nvim/docs/assets/tapes"
     ],
-    "last_seen": "2026-10-21"
+    "last_seen": "2026-11-04"
   },
   "black-atom-industries/livery": {
     "root": "~/repos/black-atom-industries/livery",
@@ -196,6 +219,17 @@
       "~/repos/imfusion/brunner/notes/logs/2026/2026.11"
     ],
     "last_seen": "2026-10-30"
+  },
+  "cp/app": {
+    "root": "/private/tmp/claude-501/-Users-brunner-repos-nikbrunner-agents/5b5c5803-cdda-4cf8-8753-681a497a5a39/scratchpad/nest/claude/cp/app",
+    "owner": "cp",
+    "name": "app",
+    "work": false,
+    "session_dirs": [
+      "/private/tmp/claude-501/-Users-brunner-repos-nikbrunner-agents/5b5c5803-cdda-4cf8-8753-681a497a5a39/scratchpad/nest/agents/cp/app",
+      "/private/tmp/claude-501/-Users-brunner-repos-nikbrunner-agents/5b5c5803-cdda-4cf8-8753-681a497a5a39/scratchpad/nest/claude/cp/app"
+    ],
+    "last_seen": "2026-11-02"
   },
   "cp/imfusion-portal": {
     "root": "~/repos/imfusion/cp/imfusion-portal",
@@ -334,6 +368,16 @@
     ],
     "last_seen": "2026-10-15"
   },
+  "ctl/app": {
+    "root": "/private/tmp/claude-501/-Users-brunner-repos-nikbrunner-agents/5b5c5803-cdda-4cf8-8753-681a497a5a39/scratchpad/ctl/app",
+    "owner": "ctl",
+    "name": "app",
+    "work": false,
+    "session_dirs": [
+      "/private/tmp/claude-501/-Users-brunner-repos-nikbrunner-agents/5b5c5803-cdda-4cf8-8753-681a497a5a39/scratchpad/ctl/app"
+    ],
+    "last_seen": "2026-11-02"
+  },
   "github/cloudmanic.herdr-plus-0cce37b56fb9": {
     "root": "~/repos/nikbrunner/dots/common/.config/herdr/plugins/github/cloudmanic.herdr-plus-0cce37b56fb9",
     "owner": "github",
@@ -373,6 +417,16 @@
       "~/repos/nikbrunner/dots/common/.config/herdr/plugins/github/vim-herdr-navigation-a8bf42123d81"
     ],
     "last_seen": "2026-07-27"
+  },
+  "nikbrunner/agents": {
+    "root": "~/repos/nikbrunner/agents",
+    "owner": "nikbrunner",
+    "name": "agents",
+    "work": false,
+    "session_dirs": [
+      "~/repos/nikbrunner/agents"
+    ],
+    "last_seen": "2026-11-02"
   },
   "nikbrunner/airship": {
     "root": "~/repos/nikbrunner/airship",
@@ -485,10 +539,11 @@
     "name": "fonts",
     "work": false,
     "session_dirs": [
+      "/private/tmp/claude-501/-Users-brunner-repos-nikbrunner-agents/5b5c5803-cdda-4cf8-8753-681a497a5a39/scratchpad/wt/fonts",
       "~/repos/nikbrunner/fonts",
       "~/repos/nikbrunner/fonts/custom/kode-mono"
     ],
-    "last_seen": "2026-09-27"
+    "last_seen": "2026-11-02"
   },
   "nikbrunner/glab-tui": {
     "root": "~/repos/nikbrunner/glab-tui",
@@ -651,6 +706,33 @@
     ],
     "last_seen": "2026-10-27"
   },
+  "org/app": {
+    "root": "/private/tmp/claude-501/-Users-brunner-repos-nikbrunner-agents/5b5c5803-cdda-4cf8-8753-681a497a5a39/scratchpad/matrix/H-parentAG+clink_repoDotClaude/org/app",
+    "owner": "org",
+    "name": "app",
+    "work": false,
+    "session_dirs": [
+      "/private/tmp/claude-501/-Users-brunner-repos-nikbrunner-agents/5b5c5803-cdda-4cf8-8753-681a497a5a39/scratchpad/matrix/A-parentAG_repoAG/org/app",
+      "/private/tmp/claude-501/-Users-brunner-repos-nikbrunner-agents/5b5c5803-cdda-4cf8-8753-681a497a5a39/scratchpad/matrix/B-parentAG_repoAG+clink/org/app",
+      "/private/tmp/claude-501/-Users-brunner-repos-nikbrunner-agents/5b5c5803-cdda-4cf8-8753-681a497a5a39/scratchpad/matrix/C-parentAG_repoCreal/org/app",
+      "/private/tmp/claude-501/-Users-brunner-repos-nikbrunner-agents/5b5c5803-cdda-4cf8-8753-681a497a5a39/scratchpad/matrix/D-parentAG_repoDotClaude/org/app",
+      "/private/tmp/claude-501/-Users-brunner-repos-nikbrunner-agents/5b5c5803-cdda-4cf8-8753-681a497a5a39/scratchpad/matrix/E-parentAG+clink_repoAG/org/app",
+      "/private/tmp/claude-501/-Users-brunner-repos-nikbrunner-agents/5b5c5803-cdda-4cf8-8753-681a497a5a39/scratchpad/matrix/F-parentAG+clink_repoAG+clink/org/app",
+      "/private/tmp/claude-501/-Users-brunner-repos-nikbrunner-agents/5b5c5803-cdda-4cf8-8753-681a497a5a39/scratchpad/matrix/G-parentAG+clink_repoCreal/org/app",
+      "/private/tmp/claude-501/-Users-brunner-repos-nikbrunner-agents/5b5c5803-cdda-4cf8-8753-681a497a5a39/scratchpad/matrix/H-parentAG+clink_repoDotClaude/org/app"
+    ],
+    "last_seen": "2026-11-02"
+  },
+  "pi/repo": {
+    "root": "/private/tmp/claude-501/-Users-brunner-repos-nikbrunner-agents/5b5c5803-cdda-4cf8-8753-681a497a5a39/scratchpad/wt/pi/repo",
+    "owner": "pi",
+    "name": "repo",
+    "work": false,
+    "session_dirs": [
+      "/private/tmp/claude-501/-Users-brunner-repos-nikbrunner-agents/5b5c5803-cdda-4cf8-8753-681a497a5a39/scratchpad/wt/pi/repo"
+    ],
+    "last_seen": "2026-11-02"
+  },
   "web-sdk-wk-fumadocs/emsdk": {
     "root": "~/repos/imfusion/websdk/web-sdk-wk-fumadocs/emsdk",
     "owner": "web-sdk-wk-fumadocs",
@@ -749,6 +831,7 @@
       "~/repos/imfusion/websdk/web-ui/node_modules/@base-ui/react",
       "~/repos/imfusion/websdk/web-ui/node_modules/iconoir-react/dist/esm/regular",
       "~/repos/imfusion/websdk/web-ui/src/components",
+      "~/repos/imfusion/websdk/web-ui/src/components/logo/product",
       "~/repos/imfusion/websdk/web-ui/src/components/navigation-menu/subs",
       "~/repos/imfusion/websdk/web-ui/src/llms/evals/scenarios",
       "~/repos/imfusion/websdk/web-ui/src/llms/skills",
@@ -768,6 +851,16 @@
       "~/repos/imfusion/websdk/websdk-272-rich-link",
       "~/repos/imfusion/websdk/websdk-306-table-selection"
     ],
-    "last_seen": "2026-10-30"
+    "last_seen": "2026-11-01"
+  },
+  "wt/cl": {
+    "root": "/private/tmp/claude-501/-Users-brunner-repos-nikbrunner-agents/5b5c5803-cdda-4cf8-8753-681a497a5a39/scratchpad/wt/cl",
+    "owner": "wt",
+    "name": "cl",
+    "work": false,
+    "session_dirs": [
+      "/private/tmp/claude-501/-Users-brunner-repos-nikbrunner-agents/5b5c5803-cdda-4cf8-8753-681a497a5a39/scratchpad/wt/cl"
+    ],
+    "last_seen": "2026-11-02"
   }
 }

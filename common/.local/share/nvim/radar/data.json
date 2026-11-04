@@ -49,20 +49,25 @@
         "lastAccessed": 1793355566
       },
       "feat/website": {
-        "locks": [],
-        "recent": [
-          "core/src/themes/minium/black-atom-minium-sienna-light.ts",
-          "core/src/themes/terra/black-atom-terra-fall-dark.ts",
-          "adapters/ghostty/themes/default/black-atom-default-dark.conf",
-          "adapters/ghostty/themes/collection.template.conf",
-          "oil:///Users/brunner/repos/black-atom-industries/black-atom/adapters/ghostty/themes/",
-          "oil:///Users/brunner/repos/black-atom-industries/black-atom/adapters/ghostty/themes/default/",
-          "website/src/routes/index.tsx",
-          "website/src/components/panel/panel.module.css",
-          "website/src/components/section/section.module.css",
-          "website/src/audio/soundscapes/organic/params.ts"
+        "locks": [
+          {
+            "filename": "core/src/themes/minium/black-atom-minium-sienna-light.ts",
+            "label": "a"
+          }
         ],
-        "lastAccessed": 1793374386
+        "recent": [
+          "adapters/nvim/lua/black-atom/config.lua",
+          "adapters/nvim/README.md",
+          "oil:///Users/brunner/repos/black-atom-industries/black-atom/adapters/nvim/",
+          "oil:///Users/brunner/repos/black-atom-industries/black-atom/adapters/nvim/lua/",
+          "oil:///Users/brunner/repos/black-atom-industries/black-atom/adapters/nvim/lua/black-atom/",
+          "core/src/themes/terra/black-atom-terra-fall-light.ts",
+          "adapters/nvim/.editorconfig",
+          "core/src/themes/terra/black-atom-terra-fall-dark.ts",
+          "oil:///Users/brunner/repos/black-atom-industries/black-atom/core/src/themes/terra/",
+          "core/src/themes/terra/create-ui-light.ts"
+        ],
+        "lastAccessed": 1793821116
       },
       "main": {
         "locks": [],
@@ -107,10 +112,9 @@
       "main": {
         "locks": [],
         "recent": [
-          "HANDOFF.md",
           "oil:///Users/brunner/repos/black-atom-industries/helm/"
         ],
-        "lastAccessed": 1793276345
+        "lastAccessed": 1793795732
       }
     },
     "~/repos/black-atom-industries/helm.herdr": {
@@ -146,19 +150,46 @@
         ],
         "lastAccessed": 1793181768
       },
+      "feat/review-tree": {
+        "locks": [],
+        "recent": [
+          "lua/iter/log.lua"
+        ],
+        "lastAccessed": 1793466795
+      },
+      "feat/status-sidebar": {
+        "locks": [],
+        "recent": [
+          "lua/iter/highlight.lua",
+          "plugin/iter.lua",
+          "lua/iter/config/defaults.lua",
+          "oil:///Users/brunner/repos/black-atom-industries/iter.nvim/lua/iter/config/"
+        ],
+        "lastAccessed": 1793519946
+      },
       "main": {
         "locks": [],
         "recent": [
-          "README.md",
-          "lua/iter/config/defaults.lua",
-          "lua/iter/config/types.lua",
-          "lua/iter/config/init.lua",
-          ".claude/worktrees/review-relaunch/plans/github-issues.md",
+          "oil:///Users/brunner/repos/black-atom-industries/iter.nvim/plans/",
           "oil:///Users/brunner/repos/black-atom-industries/iter.nvim/",
-          "oil:///Users/brunner/repos/black-atom-industries/iter.nvim/.claude/",
-          "AGENTS.md"
+          "oil:///Users/brunner/repos/black-atom-industries/iter.nvim/lua/",
+          "oil:///Users/brunner/repos/black-atom-industries/iter.nvim/lua/iter/",
+          "oil:///Users/brunner/repos/black-atom-industries/iter.nvim/lua/iter/config/",
+          "lua/iter/config/defaults.lua",
+          "README.md",
+          "lua/iter/config/types.lua",
+          "lua/iter/config/init.lua"
         ],
-        "lastAccessed": 1793366732
+        "lastAccessed": 1793820666
+      }
+    },
+    "~/repos/black-atom-industries/iter.nvim-split-ribbons": {
+      "feat/split-ribbons": {
+        "locks": [],
+        "recent": [
+          "vite.config.ts"
+        ],
+        "lastAccessed": 1793810770
       }
     },
     "~/repos/black-atom-industries/iter.nvim/.claude/worktrees/review-relaunch": {
@@ -196,13 +227,14 @@
           }
         ],
         "recent": [
+          "oil:///Users/brunner/repos/black-atom-industries/radar.nvim/lua/radar/",
           "lua/radar/init.lua",
-          ".github/workflows/release.yml",
           "README.md",
+          ".github/workflows/release.yml",
           "CHANGELOG.md",
           ".github/.release-please-manifest.json"
         ],
-        "lastAccessed": 1792312285
+        "lastAccessed": 1793793630
       }
     },
     "~/repos/imfusion/.reviews/labels-web-15-project-members": {
@@ -239,11 +271,10 @@
       "master": {
         "locks": [],
         "recent": [
-          "symlinks.yml",
           "oil:///Users/brunner/repos/imfusion/brunner/agents/skills/",
           "oil:///Users/brunner/repos/imfusion/brunner/agents/"
         ],
-        "lastAccessed": 1793084300
+        "lastAccessed": 1793786111
       }
     },
     "~/repos/imfusion/brunner/notes": {
@@ -260,8 +291,8 @@
         ],
         "recent": [
           "logs/2026/2026.10/2026.10.30 - Fri.md",
-          "logs/2026/2026.11/2026.11.09 - Mon.md",
           "logs/2026/2026.11/2026.11 - Nov.md",
+          "logs/2026/2026.11/2026.11.09 - Mon.md",
           "oil:///Users/brunner/repos/imfusion/brunner/notes/logs/2026/2026.11/",
           "oil:///Users/brunner/repos/imfusion/brunner/notes/logs/2026/",
           "oil:///Users/brunner/repos/imfusion/brunner/notes/logs/2026/2026.10/",
@@ -270,7 +301,7 @@
           "logs/2026/2026.10/2026.10 - Oct.md",
           "logs/2026/2026.10/2026.10.27 - Tue.md"
         ],
-        "lastAccessed": 1793376886
+        "lastAccessed": 1793380217
       }
     },
     "~/repos/imfusion/cp/CP-174-create-project": {
@@ -346,10 +377,8 @@
     "~/repos/imfusion/cp/labels-web": {
       "main": {
         "locks": [],
-        "recent": [
-          "PR-15-TAKEOVER.md"
-        ],
-        "lastAccessed": 1792666505
+        "recent": [],
+        "lastAccessed": 1793810818
       }
     },
     "~/repos/imfusion/cp/labels-web-CP-203-labels-web-configure-the-labels-of-a-project": {
@@ -466,7 +495,7 @@
           "src/components/typo/typo.module.css",
           "oil:///Users/brunner/repos/imfusion/websdk/web-ui/src/components/"
         ],
-        "lastAccessed": 1793376264
+        "lastAccessed": 1793810807
       }
     },
     "~/repos/imfusion/websdk/web-ui-WEBSDK-290-view-tools-integration": {
@@ -554,18 +583,18 @@
           }
         ],
         "recent": [
-          "common/.config/rex/init.lua",
-          "common/.agents/AGENTS.md",
+          "common/.config/nvim/plugin/50_specs/black_atom/iter.lua",
+          "common/.config/nvim/plugin/50_specs/snacks.lua",
           "common/.config/black-atom/livery/config.json",
-          "common/.config/nvim/plugin/30_autocmds.lua",
-          "common/.config/herdr/config.toml",
-          ".gitignore",
-          "common/.config/nvim/plugin/50_specs/navigator.lua",
-          "common/.zshrc",
-          "oil:///Users/brunner/repos/nikbrunner/dots/common/.config/rex/",
-          "common/.config/rex/.luarc.json"
+          "oil:///Users/brunner/repos/nikbrunner/dots/common/.config/black-atom/livery/",
+          "oil:///Users/brunner/repos/nikbrunner/dots/common/.config/nvim/plugin/50_specs/black_atom/",
+          "common/.config/nvim/plugin/50_specs/black_atom/radar.lua",
+          "common/.config/nvim/plugin/10_options/base.lua",
+          "common/.config/rex/init.lua",
+          "common/.local/share/nvim/radar/data.json",
+          "common/.config/nvim/plugin/30_autocmds.lua"
         ],
-        "lastAccessed": 1793347552
+        "lastAccessed": 1793821196
       }
     },
     "~/repos/nikbrunner/imf-notes": {
@@ -661,13 +690,18 @@
           }
         ],
         "recent": [
-          "Log/2026/2026.10/2026.10.30 - Fri.md",
+          "Log/2026/2026.11/2026.11.04 - Wed.md",
+          "Log/2026/2026.11/2026.11 - Nov.md",
+          "oil:///Users/brunner/repos/nikbrunner/notes/Log/2026/",
+          "oil:///Users/brunner/repos/nikbrunner/notes/Log/2026/2026.11/",
           "oil:///Users/brunner/repos/nikbrunner/notes/Log/2026/2026.10/",
-          "Log/2026/2026.08/2026.08.20 - Thu.md",
-          "01 - Projects/Rex Beta.md",
-          "oil:///Users/brunner/repos/nikbrunner/notes/Log/"
+          "oil:///Users/brunner/repos/nikbrunner/notes/Log/",
+          "oil:///Users/brunner/repos/nikbrunner/notes/",
+          "05 - Meta/Templates/Daily Note.md",
+          "oil:///Users/brunner/repos/nikbrunner/notes/Log/2026/2026.08/",
+          "Log/2026/2026.08/2026.08.20 - Thu.md"
         ],
-        "lastAccessed": 1793367330
+        "lastAccessed": 1793783994
       }
     },
     "~/repos/nikbrunner/skills": {
