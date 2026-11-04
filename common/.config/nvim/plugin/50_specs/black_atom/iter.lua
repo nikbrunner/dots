@@ -5,31 +5,33 @@ vim.opt.rtp:prepend(vim.fn.expand("~/repos/black-atom-industries/iter.nvim/"))
 -- rtp is extended after startup sourced plugin/, so source iter's command file by hand
 vim.cmd.runtime("plugin/iter.lua")
 
+-- Blank `Normal` cells between the dark gutter and the code. `Normal` would
+-- notch a float's panel.
+_G.PaddedStatuscolumn = function()
+	local padding = 2
+	local base = require("iter").statuscolumn()
+	local win = vim.g.statusline_winid
+	local wo = vim.wo[win]
+	local gutter = wo.number or wo.relativenumber or wo.signcolumn ~= "no"
+
+	if not gutter or vim.api.nvim_win_get_config(win).relative ~= "" then
+		return base
+	end
+
+	local on_cursor = wo.cursorline and vim.v.relnum == 0 and vim.v.virtnum <= 0
+	return base .. (on_cursor and "%#CursorLine#" or "%#Normal#") .. string.rep(" ", padding)
+end
+
+-- Set during startup: the option only reaches windows created after it, so
+-- deferring it leaves the splits of a restored session without it.
+vim.o.statuscolumn = "%!v:lua.PaddedStatuscolumn()"
+
 Edit.later(function()
 	-- vim.pack.add({ "https://github.com/barrettruth/diffs.nvim" })
 
 	local iter = require("iter")
 
 	iter.setup({ diff = { layout = "auto" } })
-
-	-- Blank `Normal` cells between the dark gutter and the code. `Normal` would
-	-- notch a float's panel.
-	_G.PaddedStatuscolumn = function()
-		local padding = 2
-		local base = iter.statuscolumn()
-		local win = vim.g.statusline_winid
-		local wo = vim.wo[win]
-		local gutter = wo.number or wo.relativenumber or wo.signcolumn ~= "no"
-
-		if not gutter or vim.api.nvim_win_get_config(win).relative ~= "" then
-			return base
-		end
-
-		local on_cursor = wo.cursorline and vim.v.relnum == 0 and vim.v.virtnum <= 0
-		return base .. (on_cursor and "%#CursorLine#" or "%#Normal#") .. string.rep(" ", padding)
-	end
-
-	vim.o.statuscolumn = "%!v:lua.PaddedStatuscolumn()"
 
 	local map = vim.keymap.set
 
