@@ -43,9 +43,9 @@ Edit.later(function()
 
 	local map = vim.keymap.set
 
-	map("n", "gs", function()
+	map("n", "<leader>ce", function()
 		iter.status()
-	end, { desc = "Git [S]tatus (iter)" })
+	end, { desc = "[C]hange [E]xplorer (iter)" })
 
 	-- stylua: ignore start
 	map({ "n", "x" }, "<leader>ia", function() iter.annotate() end,                     { desc = "[A]nnotate line or selection" })
