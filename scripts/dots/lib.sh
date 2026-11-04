@@ -374,9 +374,7 @@ dots_stage_sessions() {
     local clean_output
     clean_output=$(dots_clean_sessions)
     if [[ -n "$clean_output" && "$clean_output" != "NONE" ]]; then
-        while IFS= read -r line; do
-            echo "  $line"
-        done <<<"$clean_output"
+        log_info "Cleaned $(grep -c '' <<<"$clean_output") stale sessions"
     fi
 
     local nvim_config staged=false

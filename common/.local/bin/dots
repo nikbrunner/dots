@@ -598,7 +598,7 @@ _commit_chores() {
 			echo "${topics_changed[*]}"
 		)
 		topic_body=$(printf -- '- %s\n' "${topics_changed[@]}")
-		git -C "$repo" commit -m "$subject"$'\n\n'"$topic_body"
+		LEFTHOOK_OUTPUT=false git -C "$repo" commit -m "$subject"$'\n\n'"$topic_body"
 		log_okay "Created 1 chore commit in $(basename "$repo"): update ${topic_list}"
 	else
 		log_info "No chore changes to commit in $(basename "$repo")"
@@ -652,7 +652,7 @@ cmd_chores() {
 
 		if [[ "${DOTS_PUSH_MODE:-false}" == true ]]; then
 			log_info "Continuing to dots commit & push"
-		elif ! _inside_lazygit && [[ -z "${PI_CODING_AGENT:-}" && -z "${CLAUDE_VERSION:-}" ]]; then
+		elif [[ -t 0 ]] && ! _inside_lazygit && [[ -z "${PI_CODING_AGENT:-}" && -z "${CLAUDE_VERSION:-}" ]]; then
 			echo -n "Open LazyGit? (y/N) "
 			read -r open_lazygit_choice
 			if [[ "$open_lazygit_choice" == "y" || "$open_lazygit_choice" == "Y" ]]; then
