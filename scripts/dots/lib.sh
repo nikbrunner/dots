@@ -228,7 +228,6 @@ dots_stage_mise() {
     fi
 
     if [[ -z $(git -C "$repo_path" status --porcelain -- "$mise_config" "$mise_lock") ]]; then
-        echo "No mise changes to commit"
         return 1
     fi
 
@@ -245,7 +244,6 @@ dots_stage_livery() {
     local livery_config="common/.config/black-atom/livery/config.json"
 
     if [[ -z $(git -C "$repo_path" status --porcelain "$livery_config" 2>/dev/null) ]]; then
-        echo "No Livery config changes to commit"
         return 1
     fi
 
@@ -278,7 +276,6 @@ dots_stage_theme() {
     done
 
     if [[ "$has_changes" == false ]]; then
-        echo "No theme changes to commit"
         return 1
     fi
 
@@ -387,7 +384,6 @@ dots_stage_sessions() {
     done
 
     if [[ "$staged" == false ]]; then
-        echo "No session changes to commit"
         return 1
     fi
 
@@ -419,7 +415,6 @@ dots_stage_pi() {
     done
 
     if [[ ${#existing_paths[@]} -eq 0 ]]; then
-        echo "No pi changes to commit"
         return 1
     fi
 
@@ -432,7 +427,6 @@ dots_stage_pi() {
     done
 
     if [[ "$has_changes" == false ]]; then
-        echo "No pi changes to commit"
         return 1
     fi
 
@@ -449,7 +443,6 @@ dots_stage_codex() {
     local codex_config="home/.codex/config.toml"
 
     if [[ -z $(git -C "$repo_path" status --porcelain "$codex_config" 2>/dev/null) ]]; then
-        echo "No Codex config changes to commit"
         return 1
     fi
 
@@ -477,7 +470,6 @@ dots_stage_herdr_config() {
     done
 
     if [[ "$has_changes" == false ]]; then
-        echo "No herdr config changes to commit"
         return 1
     fi
 
@@ -490,7 +482,6 @@ dots_stage_zoxide() {
     local zoxide_seed="common/.config/zoxide/seed.txt"
 
     if [[ -z $(git -C "$repo_path" status --porcelain "$zoxide_seed" 2>/dev/null) ]]; then
-        echo "No zoxide changes to commit"
         return 1
     fi
 
@@ -511,7 +502,6 @@ dots_stage_radar() {
     done
 
     if [[ "$staged" == false ]]; then
-        echo "No radar changes to commit"
         return 1
     fi
 
@@ -523,7 +513,6 @@ dots_stage_lazy_lock() {
     local lazy_lock_file="common/.config/nvim/nvim-pack-lock.json"
 
     if [[ -z $(git -C "$repo_path" status --porcelain "$lazy_lock_file" 2>/dev/null) ]]; then
-        echo "No nvim-pack-lock changes to commit"
         return 1
     fi
 
@@ -536,7 +525,6 @@ dots_stage_bookmarks() {
     local bookmarks_file="common/.config/bm/bookmarks.db"
 
     if [[ -z $(git -C "$repo_path" status --porcelain "$bookmarks_file" 2>/dev/null) ]]; then
-        echo "No bookmarks changes to commit"
         return 1
     fi
 
@@ -549,7 +537,6 @@ dots_stage_agentcost_roots() {
     local roots_file="common/.local/state/ccu/repo-roots.json"
 
     if [[ -z $(git -C "$repo_path" status --porcelain "$roots_file" 2>/dev/null) ]]; then
-        echo "No agentcost repo-roots changes to commit"
         return 1
     fi
 
@@ -562,7 +549,6 @@ dots_stage_gitconfig() {
     local gitconfig="common/.gitconfig"
 
     if [[ -z $(git -C "$repo_path" status --porcelain "$gitconfig" 2>/dev/null) ]]; then
-        echo "No gitconfig changes to commit"
         return 1
     fi
 
@@ -575,7 +561,6 @@ dots_stage_gitconfig_delta() {
     local gitconfig_delta="common/.gitconfig.delta"
 
     if [[ -z $(git -C "$repo_path" status --porcelain "$gitconfig_delta" 2>/dev/null) ]]; then
-        echo "No gitconfig.delta changes to commit"
         return 1
     fi
 
@@ -588,7 +573,6 @@ dots_stage_helm_config() {
     local helm_config="common/.config/black-atom/helm-tmux/config.yml"
 
     if [[ -z $(git -C "$repo_path" status --porcelain "$helm_config" 2>/dev/null) ]]; then
-        echo "No helm config changes to commit"
         return 1
     fi
 
@@ -601,7 +585,6 @@ dots_stage_claude_settings() {
     local claude_settings="home/.claude/settings.json"
 
     if [[ -z $(git -C "$repo_path" status --porcelain "$claude_settings" 2>/dev/null) ]]; then
-        echo "No claude settings changes to commit"
         return 1
     fi
 

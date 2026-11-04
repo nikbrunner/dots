@@ -593,7 +593,6 @@ _commit_chores() {
 		if ${pair%%=*} "$repo"; then
 			topics_changed+=("${pair#*=}")
 		fi
-		echo ""
 	done
 
 	while IFS= read -r -d '' path; do
