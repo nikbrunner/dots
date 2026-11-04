@@ -54,7 +54,6 @@ common:
 
   # Theming =================================================================
   "common/.config/black-atom/*": ~/.config/black-atom
-  common/themes.json: ~/themes.json
 
   # CLI Tools ===============================================================
   common/.config/atuin/config.toml: ~/.config/atuin/config.toml
