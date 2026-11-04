@@ -34,6 +34,10 @@ Edit.later(function()
 		iter.status()
 	end, { desc = "[C]hange [E]xplorer (iter)" })
 
+	map("n", "<leader>wm", function()
+		iter.status()
+	end, { desc = "[W]orkspace [M]odified (iter)" })
+
 	-- stylua: ignore start
 	map({ "n", "x" }, "<leader>ia", function() iter.annotate() end,                     { desc = "[A]nnotate line or selection" })
 	map("n",          "<leader>if", function() iter.annotate({ scope = "file" }) end,   { desc = "Annotate [F]ile" })
