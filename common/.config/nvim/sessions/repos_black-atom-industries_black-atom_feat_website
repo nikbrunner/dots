@@ -10,29 +10,10 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +1 adapters/nvim/lua/black-atom/config.lua
-badd +24 ~/repos/nikbrunner/dots/common/.config/black-atom/livery/config.json
+badd +200 adapters/nvim/README.md
 argglobal
 %argdel
-edit adapters/nvim/lua/black-atom/config.lua
-let s:save_splitbelow = &splitbelow
-let s:save_splitright = &splitright
-set splitbelow splitright
-wincmd _ | wincmd |
-vsplit
-1wincmd h
-wincmd w
-let &splitbelow = s:save_splitbelow
-let &splitright = s:save_splitright
-wincmd t
-let s:save_winminheight = &winminheight
-let s:save_winminwidth = &winminwidth
-set winminheight=0
-set winheight=1
-set winminwidth=0
-set winwidth=1
-exe 'vert 1resize ' . ((&columns * 153 + 153) / 306)
-exe 'vert 2resize ' . ((&columns * 152 + 153) / 306)
+edit adapters/nvim/README.md
 argglobal
 setlocal foldmethod=expr
 setlocal foldexpr=v:lua.vim.treesitter.foldexpr()
@@ -42,43 +23,32 @@ setlocal foldlevel=99
 setlocal foldminlines=1
 setlocal foldnestmax=10
 setlocal foldenable
-4
+1
 sil! normal! zo
-6
+25
 sil! normal! zo
-18
+135
 sil! normal! zo
-let s:l = 31 - ((30 * winheight(0) + 33) / 67)
+137
+sil! normal! zo
+160
+sil! normal! zo
+206
+sil! normal! zo
+213
+sil! normal! zo
+228
+sil! normal! zo
+240
+sil! normal! zo
+245
+sil! normal! zo
+let s:l = 200 - ((34 * winheight(0) + 33) / 67)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 31
-normal! 014|
-wincmd w
-argglobal
-if bufexists(fnamemodify("~/repos/nikbrunner/dots/common/.config/black-atom/livery/config.json", ":p")) | buffer ~/repos/nikbrunner/dots/common/.config/black-atom/livery/config.json | else | edit ~/repos/nikbrunner/dots/common/.config/black-atom/livery/config.json | endif
-if &buftype ==# 'terminal'
-  silent file ~/repos/nikbrunner/dots/common/.config/black-atom/livery/config.json
-endif
-balt adapters/nvim/lua/black-atom/config.lua
-setlocal foldmethod=expr
-setlocal foldexpr=v:lua.vim.treesitter.foldexpr()
-setlocal foldmarker={{{,}}}
-setlocal foldignore=#
-setlocal foldlevel=99
-setlocal foldminlines=1
-setlocal foldnestmax=10
-setlocal foldenable
-let s:l = 24 - ((23 * winheight(0) + 33) / 67)
-if s:l < 1 | let s:l = 1 | endif
-keepjumps exe s:l
-normal! zt
-keepjumps 24
-normal! 012|
-wincmd w
-2wincmd w
-exe 'vert 1resize ' . ((&columns * 153 + 153) / 306)
-exe 'vert 2resize ' . ((&columns * 152 + 153) / 306)
+keepjumps 200
+normal! 0
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
@@ -86,8 +56,6 @@ endif
 unlet! s:wipebuf
 set winheight=1 winwidth=20
 let &shortmess = s:shortmess_save
-let &winminheight = s:save_winminheight
-let &winminwidth = s:save_winminwidth
 let s:sx = expand("<sfile>:p:r")."x.vim"
 if filereadable(s:sx)
   exe "source " . fnameescape(s:sx)

@@ -61,29 +61,3 @@ end
 Edit.on_filetype = function(ft, f)
 	misc.safely("filetype:" .. ft, f)
 end
-
--- BEGIN BLACK ATOM LIVERY CONFIG
-vim.g.black_atom_core_config = {
-    term_colors = true,
-    styles = {
-        transparency = "none",
-        ending_tildes = false,
-        cmp_kind_color_mode = "bg",
-        dark_sidebars = true,
-        dark_floats = true,
-        dark_gutter = true,
-        diagnostics = {
-            undercurl = false,
-            background = false,
-        },
-        syntax = {
-            comments = { italic = true },
-            keywords = { bold = true },
-            functions = {},
-            strings = { italic = false },
-            variables = {},
-            messages = { bold = true },
-        },
-    },
-}
--- END BLACK ATOM LIVERY CONFIG
