@@ -1,7 +1,15 @@
 -- Git status UI (black-atom-industries/iter.nvim), loaded from the local checkout.
 
 -- Sourced at startup so `nvim iter://review` finds iter's BufReadCmd.
-vim.opt.rtp:prepend(vim.fn.expand("~/repos/black-atom-industries/iter.nvim/"))
+local checkout = vim.fn.expand("~/repos/black-atom-industries/iter.nvim/")
+local cwd = vim.fn.getcwd()
+
+-- Started from a worktree of iter, run that worktree's code.
+if vim.fs.basename(cwd):match("^iter%.nvim%-") then
+	checkout = cwd
+end
+
+vim.opt.rtp:prepend(checkout)
 -- rtp is extended after startup sourced plugin/, so source iter's command file by hand
 vim.cmd.runtime("plugin/iter.lua")
 
