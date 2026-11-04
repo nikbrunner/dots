@@ -1,7 +1,7 @@
 function _G.tabline_render()
 	local current_tab = vim.fn.tabpagenr()
 	local current_win = vim.fn.tabpagewinnr(current_tab)
-	local parts = { "%#TabLine# " .. current_tab .. ":" .. vim.fn.tabpagenr("$") .. " %#TabLineFill#   " }
+	local parts = { "%#TabLineFill# " .. current_tab .. ":" .. vim.fn.tabpagenr("$") .. " %#TabLineFill#   " }
 
 	for i, bufnr in ipairs(vim.fn.tabpagebuflist(current_tab)) do
 		local bufname = vim.fn.bufname(bufnr)
