@@ -582,7 +582,12 @@ cmd_push() {
 _commit_chores() {
 	local repo="$1" subject="$2"
 	shift 2
-	local topics_changed=() pair
+	local topics_changed=() pair path chore_paths=()
+	local -A pre_staged=()
+
+	while IFS= read -r -d '' path; do
+		pre_staged[$path]=1
+	done < <(git -C "$repo" diff --cached --name-only -z)
 
 	for pair in "$@"; do
 		if ${pair%%=*} "$repo"; then
@@ -591,14 +596,18 @@ _commit_chores() {
 		echo ""
 	done
 
-	if [[ ${#topics_changed[@]} -gt 0 ]]; then
+	while IFS= read -r -d '' path; do
+		[[ -n "${pre_staged[$path]:-}" ]] || chore_paths+=("$path")
+	done < <(git -C "$repo" diff --cached --name-only -z)
+
+	if [[ ${#chore_paths[@]} -gt 0 ]]; then
 		local topic_list topic_body
 		topic_list=$(
 			IFS=,
 			echo "${topics_changed[*]}"
 		)
 		topic_body=$(printf -- '- %s\n' "${topics_changed[@]}")
-		LEFTHOOK_OUTPUT=false git -C "$repo" commit -m "$subject"$'\n\n'"$topic_body"
+		LEFTHOOK_OUTPUT=false git -C "$repo" commit -m "$subject"$'\n\n'"$topic_body" --only -- "${chore_paths[@]}"
 		log_okay "Created 1 chore commit in $(basename "$repo"): update ${topic_list}"
 	else
 		log_info "No chore changes to commit in $(basename "$repo")"
