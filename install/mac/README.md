@@ -174,7 +174,12 @@ claude mcp add --scope user --transport http atlassian-rovo-mcp https://mcp.atla
 claude mcp add --scope user fff -- "$HOME/.local/bin/fff-mcp"
 claude mcp add --scope user chrome-devtools -- npx chrome-devtools-mcp@latest --isolated
 claude mcp add --scope user --transport http superlogical https://www.superlogical.com/rex/community-mcp
+pipx install applemusic-mcp
+claude mcp add --scope user apple-music -- "$HOME/.local/bin/applemusic-mcp" serve --level api
 ```
+
+> [!NOTE]
+> **Apple Music:** sign in at music.apple.com in Safari, enable Develop → Allow JavaScript from Apple Events, then run `applemusic-mcp login` and check it with `applemusic-mcp status`.
 
 > [!NOTE]
 > `claude mcp add --scope user` writes to whichever config `CLAUDE_CONFIG_DIR` points at (default `~/.claude`). If you also
