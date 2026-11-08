@@ -176,6 +176,7 @@ claude mcp add --scope user chrome-devtools -- npx chrome-devtools-mcp@latest --
 claude mcp add --scope user --transport http superlogical https://www.superlogical.com/rex/community-mcp
 pipx install applemusic-mcp
 claude mcp add --scope user apple-music -- "$HOME/.local/bin/applemusic-mcp" serve --level api
+claude mcp add --scope user --transport http FLUX https://mcp.bfl.ai
 ```
 
 > [!NOTE]
