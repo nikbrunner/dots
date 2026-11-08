@@ -29,7 +29,7 @@ if vim.fn.exists('syntax_on') ~= 1 then vim.cmd('syntax enable') end
 -- UI =========================================================================
 vim.o.breakindent     = true                -- Indent wrapped lines to match line start
 vim.o.breakindentopt  = 'list:-1'           -- Add padding for lists (if 'wrap' is set)
-vim.o.cmdheight       = 0                   -- Reclaim the cmdline row; messages go to :messages
+vim.o.cmdheight       = 1                   -- Rows reserved for the cmdline
 vim.o.cursorline      = true                -- Enable current line highlighting
 vim.o.inccommand      = 'split'             -- Preview :substitute results in a split
 vim.o.laststatus      = 3                   -- Single global statusline
@@ -108,6 +108,8 @@ Edit.new_autocmd('FileType', nil, f, "Proper 'formatoptions'")
 -- Diagnostics are configured in 'plugin/10_options/lsp.lua'.
 -- stylua: ignore end
 
+vim.o.messagesopt = "hit-enter,history:500,progress:c,timeout:4000,maxheight:50"
+
 require("vim._core.ui2").enable({
 	enable = true, -- Whether to enable or disable the UI.
 	msg = { -- Options related to the message module.
@@ -116,17 +118,11 @@ require("vim._core.ui2").enable({
 		---Table keys are are matched as a Lua pattern to the message ID. 'default'
 		---mapping applies to any omitted kind: { default = 'cmd', progress = 'msg' }.
 		targets = "cmd",
-		cmd = { -- Options related to messages in the cmdline window.
-			-- Maximum height (rows if >=1, or % of 'lines' if <1) of messages expanded
-			-- beyond 'cmdheight'; 0.999 for full height.
-			height = 0.5,
-		},
 		dialog = { -- Options related to dialog window.
 			height = 0.5, -- Maximum height.
 		},
 		msg = { -- Options related to msg window.
 			height = 0.5, -- Maximum height.
-			timeout = 4000, -- Time a message is visible in the message window.
 		},
 		pager = { -- Options related to message window.
 			height = 0.999, -- Maximum height.

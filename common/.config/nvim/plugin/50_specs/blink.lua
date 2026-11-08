@@ -105,7 +105,7 @@ Edit.later(function()
 					components = {
 						kind = {
 							text = function(ctx)
-								return ctx.kind:sub(1, 4):upper()
+								return " " .. ctx.kind:sub(1, 4):upper() .. " "
 							end,
 						},
 					},

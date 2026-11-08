@@ -185,7 +185,6 @@ Edit.later(function()
 	-- Workspace
 	map("n", "<leader>wd",  function() Snacks.picker.files() end, { desc = "[D]ocuments" })
 	map("n", "<leader>wt",  function() Snacks.picker.grep() end, { desc = "[T]ext" })
-	map("n", "<leader>wm",  function() Snacks.picker.git_status() end, { desc = "[M]odified files" })
 	map("n", "<leader>wp",  function() Snacks.picker.diagnostics() end, { desc = "[P]roblems" })
 	map("n", "<leader>wr",  function() Snacks.picker.recent({ filter = { cwd = true } }) end, { desc = "[R]ecent Documents" })
 	map("n", "<leader>ws",  function() Snacks.picker.lsp_workspace_symbols() end, { desc = "[S]ymbols" })
