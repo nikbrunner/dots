@@ -13,7 +13,6 @@
 ~/repos/black-atom-industries/.github-private
 ~/repos/black-atom-industries/atlas
 ~/repos/black-atom-industries/black-atom
-~/repos/black-atom-industries/black-atom-nvim-single-source
 ~/repos/black-atom-industries/helm
 ~/repos/black-atom-industries/helm.herdr
 ~/repos/black-atom-industries/helm.tmux

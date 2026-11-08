@@ -53,21 +53,25 @@
           {
             "filename": "core/src/themes/minium/black-atom-minium-sienna-light.ts",
             "label": "a"
+          },
+          {
+            "filename": "adapters/nvim/lua/black-atom/config.lua",
+            "label": "s"
           }
         ],
         "recent": [
+          "core/src/themes/tr-1000/black-atom-tr-1000-dark.ts",
+          "core/src/themes/tr-1000/black-atom-tr-1000-light.ts",
+          "oil:///Users/brunner/repos/black-atom-industries/black-atom/core/src/themes/tr-1000/",
+          "core/src/themes/tr-1000/create-ui-dark.ts",
           "adapters/nvim/lua/black-atom/config.lua",
           "adapters/nvim/README.md",
+          "adapters/nvim/lua/black-atom/types.lua",
           "oil:///Users/brunner/repos/black-atom-industries/black-atom/adapters/nvim/",
           "oil:///Users/brunner/repos/black-atom-industries/black-atom/adapters/nvim/lua/",
-          "oil:///Users/brunner/repos/black-atom-industries/black-atom/adapters/nvim/lua/black-atom/",
-          "core/src/themes/terra/black-atom-terra-fall-light.ts",
-          "adapters/nvim/.editorconfig",
-          "core/src/themes/terra/black-atom-terra-fall-dark.ts",
-          "oil:///Users/brunner/repos/black-atom-industries/black-atom/core/src/themes/terra/",
-          "core/src/themes/terra/create-ui-light.ts"
+          "oil:///Users/brunner/repos/black-atom-industries/black-atom/adapters/nvim/lua/black-atom/"
         ],
-        "lastAccessed": 1793822196
+        "lastAccessed": 1793986197
       },
       "main": {
         "locks": [],
@@ -114,7 +118,7 @@
         "recent": [
           "oil:///Users/brunner/repos/black-atom-industries/helm/"
         ],
-        "lastAccessed": 1793795732
+        "lastAccessed": 1793873017
       }
     },
     "~/repos/black-atom-industries/helm.herdr": {
@@ -180,7 +184,7 @@
           "lua/iter/config/types.lua",
           "lua/iter/config/init.lua"
         ],
-        "lastAccessed": 1793820666
+        "lastAccessed": 1793887420
       }
     },
     "~/repos/black-atom-industries/iter.nvim-split-ribbons": {
@@ -227,6 +231,7 @@
           }
         ],
         "recent": [
+          "lua/radar/config.lua",
           "oil:///Users/brunner/repos/black-atom-industries/radar.nvim/lua/radar/",
           "lua/radar/init.lua",
           "README.md",
@@ -234,7 +239,7 @@
           "CHANGELOG.md",
           ".github/.release-please-manifest.json"
         ],
-        "lastAccessed": 1793793630
+        "lastAccessed": 1793888177
       }
     },
     "~/repos/imfusion/.reviews/labels-web-15-project-members": {
@@ -301,7 +306,7 @@
           "logs/2026/2026.10/2026.10 - Oct.md",
           "logs/2026/2026.10/2026.10.27 - Tue.md"
         ],
-        "lastAccessed": 1793380217
+        "lastAccessed": 1794141061
       }
     },
     "~/repos/imfusion/cp/CP-174-create-project": {
@@ -485,6 +490,7 @@
         ],
         "recent": [
           "src/components/button/button.tsx",
+          "oil:///Users/brunner/repos/imfusion/websdk/web-ui/src/components/button/",
           "src/components/dialog/dialog.tsx",
           "src/components/card/card.tsx",
           "labels-web-plan.md",
@@ -492,10 +498,9 @@
           "oil:///Users/brunner/repos/imfusion/websdk/web-ui/plans/",
           "src/components/collapsible/collapsible.tsx",
           "src/styles/variables/typo.css",
-          "src/components/typo/typo.module.css",
-          "oil:///Users/brunner/repos/imfusion/websdk/web-ui/src/components/"
+          "src/components/typo/typo.module.css"
         ],
-        "lastAccessed": 1793810807
+        "lastAccessed": 1793823072
       }
     },
     "~/repos/imfusion/websdk/web-ui-WEBSDK-290-view-tools-integration": {
@@ -580,21 +585,24 @@
           {
             "filename": "common/.config/rex/init.lua",
             "label": "f"
+          },
+          {
+            "filename": "/Users/brunner/Library/Application Support/Claude/claude_desktop_config.json",
+            "label": "g"
           }
         ],
         "recent": [
+          "oil:///Users/brunner/repos/nikbrunner/dots/",
+          "common/.config/rex/init.lua",
           "common/.config/nvim/plugin/50_specs/black_atom/iter.lua",
           "common/.config/nvim/plugin/50_specs/snacks.lua",
           "common/.config/black-atom/livery/config.json",
           "oil:///Users/brunner/repos/nikbrunner/dots/common/.config/black-atom/livery/",
           "oil:///Users/brunner/repos/nikbrunner/dots/common/.config/nvim/plugin/50_specs/black_atom/",
           "common/.config/nvim/plugin/50_specs/black_atom/radar.lua",
-          "common/.config/nvim/plugin/10_options/base.lua",
-          "common/.config/rex/init.lua",
-          "common/.local/share/nvim/radar/data.json",
-          "common/.config/nvim/plugin/30_autocmds.lua"
+          "common/.config/nvim/plugin/10_options/base.lua"
         ],
-        "lastAccessed": 1793822362
+        "lastAccessed": 1794144541
       }
     },
     "~/repos/nikbrunner/imf-notes": {
@@ -619,7 +627,12 @@
     },
     "~/repos/nikbrunner/koyo": {
       "main": {
-        "locks": [],
+        "locks": [
+          {
+            "filename": "keymap.yml",
+            "label": "a"
+          }
+        ],
         "recent": [
           "keymap.yml",
           "qmk/voyager/src/keymap.generated.h",
@@ -632,7 +645,7 @@
           "qmk/moonlander/src/keymap.c",
           "qmk/crkbd/src/keymap.generated.h"
         ],
-        "lastAccessed": 1792335091
+        "lastAccessed": 1794141277
       }
     },
     "~/repos/nikbrunner/mdn.nvim": {
@@ -642,7 +655,7 @@
           "examples/conceal-demo.md",
           "oil:///Users/brunner/repos/nikbrunner/mdn.nvim/"
         ],
-        "lastAccessed": 1792934728
+        "lastAccessed": 1794143167
       }
     },
     "~/repos/nikbrunner/minifugit.nvim": {

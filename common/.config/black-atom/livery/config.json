@@ -1,7 +1,7 @@
 {
   "version": 2,
   "system_appearance": true,
-  "active_theme": "black-atom-jpn-koyo-dark",
+  "active_theme": "black-atom-terra-fall-dark",
   "keymappings": {
     "toggle_window": "super+ctrl+alt+shift+KeyT"
   },
@@ -10,43 +10,41 @@
       "enabled": true,
       "settings": {
         "term_colors": true,
-        "styles": {
-          "transparency": "none",
-          "ending_tildes": false,
-          "cmp_kind_color_mode": "bg",
-          "dark_sidebars": true,
-          "dark_floats": true,
-          "dark_gutter": false,
-          "gutter_padding": 0,
-          "diagnostics": {
-            "undercurl": false,
-            "background": false
+        "transparency": "none",
+        "ending_tildes": false,
+        "cmp_kind_color_mode": "bg",
+        "dark_sidebars": true,
+        "dark_floats": true,
+        "dark_gutter": false,
+        "gutter_padding": 0,
+        "diagnostics": {
+          "undercurl": false,
+          "background": false
+        },
+        "syntax": {
+          "comments": {
+            "bold": false,
+            "italic": true
           },
-          "syntax": {
-            "comments": {
-              "bold": false,
-              "italic": true
-            },
-            "keywords": {
-              "bold": true,
-              "italic": false
-            },
-            "functions": {
-              "bold": false,
-              "italic": false
-            },
-            "strings": {
-              "bold": false,
-              "italic": false
-            },
-            "variables": {
-              "bold": false,
-              "italic": false
-            },
-            "messages": {
-              "bold": true,
-              "italic": false
-            }
+          "keywords": {
+            "bold": true,
+            "italic": false
+          },
+          "functions": {
+            "bold": false,
+            "italic": false
+          },
+          "strings": {
+            "bold": false,
+            "italic": false
+          },
+          "variables": {
+            "bold": false,
+            "italic": false
+          },
+          "messages": {
+            "bold": true,
+            "italic": false
           }
         }
       }
