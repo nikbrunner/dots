@@ -227,6 +227,7 @@ Only relevant if you'll be committing changes to this repo. Format selected file
 - [ ] **Keyboard** - Set key repeat rate / delay in System Settings
 - [ ] **Keyboard** - Disable Hypr and Meh Keybings from Mac System Settings
 - [ ] **ProtonPass** - Enable browser extension
+- [ ] **rekordbox** - Open once and quit, then run `rekordbox-automix` for longer Automix crossfades
 
 ### Verify
 

@@ -1,0 +1,59 @@
+#!/bin/sh
+# Set rekordbox's Automix transition values in its settings file and show the diff.
+# Run it with rekordbox closed, after rekordbox has started once so the file exists.
+
+set -e
+
+# Time before a track's end that Automix may trigger. A track's own ending can start it later.
+export TRIGGER_MS=45000
+# About 2 bars of crossfade per unit. Too high for a track's ending and it stops mid-fade.
+export RATE=8
+
+if pgrep -il rekordbox; then
+  echo "rekordbox is running. Quit it first." >&2
+  exit 1
+fi
+
+files=$(find "$HOME/Library/Application Support/Pioneer" "$HOME/Library/Pioneer" \
+  -name rekordbox3.settings 2>/dev/null || true)
+count=$(printf '%s' "$files" | grep -c . || true)
+if [ "$count" -ne 1 ]; then
+  echo "Expected one rekordbox3.settings, found $count:" >&2
+  [ -z "$files" ] || printf '%s\n' "$files" >&2
+  exit 1
+fi
+file=$files
+
+for key in AutoMixBeforeTriggerEndTimeMs kAutoMixCrossfadeRate; do
+  if [ "$(grep -c "<VALUE name=\"$key\" val=\"" "$file" || true)" -ne 1 ]; then
+    echo "Expected exactly one $key entry in $file" >&2
+    exit 1
+  fi
+done
+
+is_set() {
+  grep -q "<VALUE name=\"AutoMixBeforeTriggerEndTimeMs\" val=\"$TRIGGER_MS\"/>" "$file" &&
+    grep -q "<VALUE name=\"kAutoMixCrossfadeRate\" val=\"$RATE\"/>" "$file"
+}
+
+if is_set; then
+  echo "Already set: trigger $TRIGGER_MS ms, rate $RATE"
+  exit 0
+fi
+
+backup="$file.bak"
+[ ! -e "$backup" ] || backup="$file.bak.$(date +%Y%m%d_%H%M%S)"
+cp -p "$file" "$backup"
+
+perl -pi -e '
+  s/(<VALUE name="AutoMixBeforeTriggerEndTimeMs" val=")[^"]*(")/${1}$ENV{TRIGGER_MS}${2}/;
+  s/(<VALUE name="kAutoMixCrossfadeRate" val=")[^"]*(")/${1}$ENV{RATE}${2}/;
+' "$file"
+
+is_set || {
+  echo "Edit did not apply. Restore with: cp -p \"$backup\" \"$file\"" >&2
+  exit 1
+}
+
+diff "$backup" "$file" || true
+echo "Backup: $backup"
