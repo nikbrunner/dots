@@ -105,19 +105,25 @@ bob() {
     launch)
         # Commands Rex starts run in the login environment, where ccw is missing,
         # so each pane gets an interactive shell and its command typed in.
-        bob-pane >/dev/null && { echo "bob: Bob already runs; quit it first" >&2; return 1; }
-        local created session bob notes private work
-        created=$(rex new Bob -c ~/repos/imfusion/brunner/notes --window Bob --json) || return 1
-        session=$(jq -er '.session_id' <<<"$created") || return 1
-        bob=$(jq -er '.initial_windows[0].block_ids[0]' <<<"$created") || return 1
-        rex block rename -s "$session" "$bob" Bob
-        notes=$(rex window new -s "$session" Notes -c ~/repos/nikbrunner/notes --json) || return 1
-        private=$(jq -er '.block_ids[0]' <<<"$notes") || return 1
-        rex block rename -s "$session" "$private" "Private note"
-        work=$(rex split -s "$session" -b "$private" --split=right -c ~/repos/imfusion/brunner/notes \
-            --label "Work note" --focus=false --json | jq -er '.block_ids[0]') || return 1
-        rex send -s "$session" -b "$private" nvim && rex send-key -s "$session" -b "$private" Enter
-        rex send -s "$session" -b "$work" nvim && rex send-key -s "$session" -b "$work" Enter
+        local found created session bob notes private work
+        if found=$(bob-pane); then
+            # The pane outlives Claude; its title reads Bob only while ccw -n Bob runs in it.
+            read -r session bob _ <<<"$found"
+            [[ $(rex block call -s "$session" -b "$bob" title | jq -r '.title // empty | ascii_downcase') == bob ]] &&
+                { echo "bob: Bob already runs; quit it first" >&2; return 1; }
+        else
+            created=$(rex new Bob -c ~/repos/imfusion/brunner/notes --window Bob --json) || return 1
+            session=$(jq -er '.session_id' <<<"$created") || return 1
+            bob=$(jq -er '.initial_windows[0].block_ids[0]' <<<"$created") || return 1
+            rex block rename -s "$session" "$bob" Bob
+            notes=$(rex window new -s "$session" Notes -c ~/repos/nikbrunner/notes --json) || return 1
+            private=$(jq -er '.block_ids[0]' <<<"$notes") || return 1
+            rex block rename -s "$session" "$private" "Private note"
+            work=$(rex split -s "$session" -b "$private" --split=right -c ~/repos/imfusion/brunner/notes \
+                --label "Work note" --focus=false --json | jq -er '.block_ids[0]') || return 1
+            rex send -s "$session" -b "$private" nvim && rex send-key -s "$session" -b "$private" Enter
+            rex send -s "$session" -b "$work" nvim && rex send-key -s "$session" -b "$work" Enter
+        fi
         rex send -s "$session" -b "$bob" 'ccw -n Bob "/nbr-bob Good Morning"' &&
             rex send-key -s "$session" -b "$bob" Enter
         ;;
