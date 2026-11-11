@@ -22,3 +22,8 @@ export PATH="$HOME/.local/share/bob/nvim-bin:$PATH"
 # pre-commit hook, sudoedit. Without this they fall back to vi.
 export EDITOR="nvim"
 
+
+# Proton Pass holds the signing key. Processes Rex starts outside an interactive
+# shell (popups, `zsh -c` from lazygit) otherwise get launchd's agent, which has
+# no keys, and `git commit` fails with "Couldn't find key in agent".
+export SSH_AUTH_SOCK="$HOME/.ssh/proton-pass-agent.sock"
