@@ -10,11 +10,11 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +35 core/src/themes/tr-1000/black-atom-tr-1000-dark.ts
-badd +1 core/src/themes/tr-1000/black-atom-tr-1000-light.ts
+badd +9 core/src/themes/terra/create-syntax-dark.ts
+badd +12 core/src/themes/terra/create-syntax-light.ts
 argglobal
 %argdel
-edit core/src/themes/tr-1000/black-atom-tr-1000-dark.ts
+edit core/src/themes/terra/create-syntax-dark.ts
 let s:save_splitbelow = &splitbelow
 let s:save_splitright = &splitright
 set splitbelow splitright
@@ -31,8 +31,8 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe 'vert 1resize ' . ((&columns * 181 + 181) / 363)
-exe 'vert 2resize ' . ((&columns * 181 + 181) / 363)
+exe 'vert 1resize ' . ((&columns * 172 + 173) / 346)
+exe 'vert 2resize ' . ((&columns * 173 + 173) / 346)
 argglobal
 setlocal foldmethod=expr
 setlocal foldexpr=v:lua.vim.treesitter.foldexpr()
@@ -42,23 +42,23 @@ setlocal foldlevel=99
 setlocal foldminlines=1
 setlocal foldnestmax=10
 setlocal foldenable
-9
+3
 sil! normal! zo
-32
+4
 sil! normal! zo
-let s:l = 39 - ((32 * winheight(0) + 38) / 77)
+let s:l = 9 - ((8 * winheight(0) + 35) / 70)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 39
-normal! 0
+keepjumps 9
+normal! 041|
 wincmd w
 argglobal
-if bufexists(fnamemodify("core/src/themes/tr-1000/black-atom-tr-1000-light.ts", ":p")) | buffer core/src/themes/tr-1000/black-atom-tr-1000-light.ts | else | edit core/src/themes/tr-1000/black-atom-tr-1000-light.ts | endif
+if bufexists(fnamemodify("core/src/themes/terra/create-syntax-light.ts", ":p")) | buffer core/src/themes/terra/create-syntax-light.ts | else | edit core/src/themes/terra/create-syntax-light.ts | endif
 if &buftype ==# 'terminal'
-  silent file core/src/themes/tr-1000/black-atom-tr-1000-light.ts
+  silent file core/src/themes/terra/create-syntax-light.ts
 endif
-balt core/src/themes/tr-1000/black-atom-tr-1000-dark.ts
+balt core/src/themes/terra/create-syntax-dark.ts
 setlocal foldmethod=expr
 setlocal foldexpr=v:lua.vim.treesitter.foldexpr()
 setlocal foldmarker={{{,}}}
@@ -67,15 +67,16 @@ setlocal foldlevel=99
 setlocal foldminlines=1
 setlocal foldnestmax=10
 setlocal foldenable
-let s:l = 12 - ((11 * winheight(0) + 38) / 77)
+let s:l = 12 - ((11 * winheight(0) + 35) / 70)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
 keepjumps 12
-normal! 0
+normal! 013|
 wincmd w
-exe 'vert 1resize ' . ((&columns * 181 + 181) / 363)
-exe 'vert 2resize ' . ((&columns * 181 + 181) / 363)
+2wincmd w
+exe 'vert 1resize ' . ((&columns * 172 + 173) / 346)
+exe 'vert 2resize ' . ((&columns * 173 + 173) / 346)
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
@@ -91,6 +92,7 @@ if filereadable(s:sx)
 endif
 let &g:so = s:so_save | let &g:siso = s:siso_save
 set hlsearch
+nohlsearch
 doautoall SessionLoadPost
 unlet SessionLoad
 " vim: set ft=vim :

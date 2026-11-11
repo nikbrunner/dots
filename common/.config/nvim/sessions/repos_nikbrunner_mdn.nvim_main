@@ -10,7 +10,7 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +72 examples/conceal-demo.md
+badd +48 examples/conceal-demo.md
 argglobal
 %argdel
 edit examples/conceal-demo.md
@@ -37,12 +37,12 @@ sil! normal! zo
 sil! normal! zo
 131
 sil! normal! zo
-let s:l = 72 - ((28 * winheight(0) + 41) / 82)
+let s:l = 48 - ((25 * winheight(0) + 40) / 81)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 72
-normal! 013|
+keepjumps 48
+normal! 0
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf

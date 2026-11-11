@@ -66,6 +66,7 @@
       "~/repos/black-atom-industries/black-atom/livery/e2e",
       "~/repos/black-atom-industries/black-atom/livery/e2e/test-results/theme-list-theme-list-matches-the-theme-list-baseline",
       "~/repos/black-atom-industries/black-atom/livery/src",
+      "~/repos/black-atom-industries/black-atom/livery/src-tauri",
       "~/repos/black-atom-industries/black-atom/node_modules/@tanstack/hotkeys/dist",
       "~/repos/black-atom-industries/black-atom/website",
       "~/repos/black-atom-industries/black-atom/website/src",
@@ -76,7 +77,7 @@
       "~/repos/black-atom-industries/black-atom/website/src/content/products",
       "~/repos/black-atom-industries/black-atom/website/src/routes"
     ],
-    "last_seen": "2026-11-04"
+    "last_seen": "2026-11-09"
   },
   "black-atom-industries/core": {
     "root": "~/repos/black-atom-industries/core",
@@ -266,11 +267,13 @@
       "~/repos/imfusion/cp/imfusion-portal-labels-license-key",
       "~/repos/imfusion/cp/imfusion-portal-labels-license-key/frontend",
       "~/repos/imfusion/cp/imfusion-portal-labels-license-key/frontend/tmp/screenshots",
+      "~/repos/imfusion/cp/imfusion-portal-web-ui-update",
+      "~/repos/imfusion/cp/imfusion-portal-web-ui-update/frontend",
       "~/repos/imfusion/cp/imfusion-portal/e2e",
       "~/repos/imfusion/cp/imfusion-portal/frontend",
       "~/repos/imfusion/cp/imfusion-portal/frontend/src"
     ],
-    "last_seen": "2026-10-30"
+    "last_seen": "2026-11-09"
   },
   "cp/keycloak": {
     "root": "~/repos/imfusion/cp/keycloak",
@@ -328,6 +331,10 @@
       "~/repos/imfusion/cp/labels-web-CP-203-labels-web-configure-the-labels-of-a-project/handoffs/2026-10-29-label-map-outline",
       "~/repos/imfusion/cp/labels-web-CP-203-labels-web-configure-the-labels-of-a-project/local-setup",
       "~/repos/imfusion/cp/labels-web-cp-154-frontends-add-favicon",
+      "~/repos/imfusion/cp/labels-web-data-list-redesign",
+      "~/repos/imfusion/cp/labels-web-data-list-redesign/e2e",
+      "~/repos/imfusion/cp/labels-web-data-list-redesign/frontend",
+      "~/repos/imfusion/cp/labels-web-data-list-redesign/frontend/node_modules/@imfusion/web-ui/dist/components",
       "~/repos/imfusion/cp/labels-web-feat-CP-204-data-tags",
       "~/repos/imfusion/cp/labels-web-feat-CP-204-data-tags/bff",
       "~/repos/imfusion/cp/labels-web-feat-CP-204-data-tags/e2e",
@@ -347,6 +354,10 @@
       "~/repos/imfusion/cp/labels-web-feat-sidebar-projects-item",
       "~/repos/imfusion/cp/labels-web-feat-sidebar-projects-item/frontend",
       "~/repos/imfusion/cp/labels-web-feat-sidebar-projects-item/local-setup",
+      "~/repos/imfusion/cp/labels-web-navbar-rail",
+      "~/repos/imfusion/cp/labels-web-navbar-rail/frontend",
+      "~/repos/imfusion/cp/labels-web-rail-toggle",
+      "~/repos/imfusion/cp/labels-web-rail-toggle/frontend",
       "~/repos/imfusion/cp/labels-web-upload-images",
       "~/repos/imfusion/cp/labels-web/.worktrees/CP-130-integrate-with-labels-server",
       "~/repos/imfusion/cp/labels-web/.worktrees/bootstrap-frontend",
@@ -356,7 +367,7 @@
       "~/repos/imfusion/cp/labels-web/local-setup",
       "~/repos/imfusion/cp/review-labels-web-16-playwright-e2e"
     ],
-    "last_seen": "2026-10-30"
+    "last_seen": "2026-11-11"
   },
   "cp/license-server": {
     "root": "~/repos/imfusion/cp/license-server",
@@ -803,12 +814,23 @@
       "~/repos/imfusion/websdk/web-ui",
       "~/repos/imfusion/websdk/web-ui-WEBSDK-290-view-tools-integration",
       "~/repos/imfusion/websdk/web-ui-WEBSDK-292-layout-mode-integration",
+      "~/repos/imfusion/websdk/web-ui-annotation-type-icons",
       "~/repos/imfusion/websdk/web-ui-appearance-toggle",
+      "~/repos/imfusion/websdk/web-ui-aside-scroll",
+      "~/repos/imfusion/websdk/web-ui-brush-integrations",
       "~/repos/imfusion/websdk/web-ui-codeblock-scroll",
       "~/repos/imfusion/websdk/web-ui-fix-storybook-docgen-import",
       "~/repos/imfusion/websdk/web-ui-fix-storybook-docgen-import/.teamcity",
       "~/repos/imfusion/websdk/web-ui-image-display-options",
       "~/repos/imfusion/websdk/web-ui-image-display-options/tmp",
+      "~/repos/imfusion/websdk/web-ui-ioskeley-mono",
+      "~/repos/imfusion/websdk/web-ui-logo-column",
+      "~/repos/imfusion/websdk/web-ui-morphable-product-logo",
+      "~/repos/imfusion/websdk/web-ui-pr-review-skill",
+      "~/repos/imfusion/websdk/web-ui-rail-toggle",
+      "~/repos/imfusion/websdk/web-ui-toggle-group-cleanup",
+      "~/repos/imfusion/websdk/web-ui-tool-panel",
+      "~/repos/imfusion/websdk/web-ui-transfer-function-editor",
       "~/repos/imfusion/websdk/web-ui-websdk-206-web-ui-update-improve-design-fol",
       "~/repos/imfusion/websdk/web-ui-websdk-206-web-ui-update-improve-design-fol/.agents/skills/web-ui-dev-claude-design-sync",
       "~/repos/imfusion/websdk/web-ui-websdk-206-web-ui-update-improve-design-fol/docs/user-guide",
@@ -851,7 +873,7 @@
       "~/repos/imfusion/websdk/websdk-272-rich-link",
       "~/repos/imfusion/websdk/websdk-306-table-selection"
     ],
-    "last_seen": "2026-11-01"
+    "last_seen": "2026-11-11"
   },
   "wt/cl": {
     "root": "/private/tmp/claude-501/-Users-brunner-repos-nikbrunner-agents/5b5c5803-cdda-4cf8-8753-681a497a5a39/scratchpad/wt/cl",

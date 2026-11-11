@@ -111,8 +111,8 @@
   "cursor_blink": false,
   "theme": {
     "mode": "system",
-    "light": "Black Atom — TERRA ∷ Fall Light",
-    "dark": "Black Atom — TERRA ∷ Fall Dark",
+    "light": "Black Atom — JPN ∷ Koyo Light",
+    "dark": "Black Atom — JPN ∷ Koyo Dark",
   },
   "base_keymap": "VSCode",
   "vim_mode": true,
