@@ -17,26 +17,9 @@ skills-lock.json
 /common/.config/lazyjira/auth.json
 handoffs/
 /.repowise
-common/.config/herdr/plugins.json
-common/.config/herdr/plugins/github/*/
-common/.config/herdr/**/*.log
-common/.config/herdr/session.json
-common/.config/herdr/session-history.json
-common/.config/herdr/plugins/config/herdr-navigator/jump-back-workspace
-common/.config/herdr/plugins/config/herdr-navigator/update-check
-common/.config/herdr/plugins/config/herdr-navigator/pinned-entries.json
-common/.config/herdr/plugins/config/helm-herdr/jump-back-workspace
-common/.config/herdr/plugins/config/helm-herdr/update-check
-common/.config/herdr/plugins/config/helm-herdr/pinned-entries.json
-common/.config/herdr/plugins/config/helm-herdr/activity.json
-common/.config/herdr/plugins/config/helm-herdr/activity.json.lock
-common/.config/herdr/plugins/config/helm-herdr/cold-entries.json
-common/.config/herdr/plugins/config/official.browser/browser.json
 macos/.config/karabiner/automatic_backups/
 
 # Compiled from tools/ by scripts/dots/build-tools.sh
 common/.local/bin/bic
 /.pi-subagents
 /PLAN.md
-/common/.config/herdr/plugins/config/helm-herdr/focused-workspace
-/common/.config/herdr/plugins/config/helm-herdr/launchers

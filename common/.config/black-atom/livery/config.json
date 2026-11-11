@@ -78,11 +78,6 @@
       "config_path": "~/.config/lazygit/config.yml",
       "themes_path": "~/.local/share/black-atom/themes/lazygit"
     },
-    "herdr": {
-      "enabled": true,
-      "config_path": "~/.config/herdr/config.toml",
-      "themes_path": "~/.local/share/black-atom/themes/herdr"
-    },
     "obsidian": {
       "enabled": true,
       "config_folders": [

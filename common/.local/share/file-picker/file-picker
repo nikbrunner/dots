@@ -8,7 +8,6 @@ set -euo pipefail
 # pane), lets you pick with fzf, and pastes the selection back into that pane.
 # The multiplexer is found from the environment the popup was started with,
 # and an adapter next to this script talks to it:
-#   herdr.sh   HERDR_ACTIVE_PANE_ID / HERDR_ACTIVE_PANE_CWD, set by herdr
 #   rex.sh     REX_TARGET_BLOCK, set by the Rex binding in init.lua
 #
 # Toggles (active inside fzf):
@@ -47,14 +46,11 @@ _load_config() {
 _load_adapter() {
 	local dir
 	dir=$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")
-	if [[ -n "${HERDR_ACTIVE_PANE_ID:-}" ]]; then
-		# shellcheck source=herdr.sh
-		source "$dir/herdr.sh"
-	elif [[ -n "${REX_TARGET_BLOCK:-}" ]]; then
+	if [[ -n "${REX_TARGET_BLOCK:-}" ]]; then
 		# shellcheck source=rex.sh
 		source "$dir/rex.sh"
 	else
-		echo "Error: no calling pane. Run this from a herdr or Rex popup binding." >&2
+		echo "Error: no calling pane. Run this from a Rex popup binding." >&2
 		exit 1
 	fi
 }

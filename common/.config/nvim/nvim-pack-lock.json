@@ -49,10 +49,6 @@
       "rev": "06006b471890f19efeb199ffab5da49a2d624619",
       "src": "git@github.com:OXY2DEV/helpview.nvim"
     },
-    "herdr-nvim-nav": {
-      "rev": "ec047fd6d8d0269d54a34e9405af28d8aad4c8f0",
-      "src": "https://github.com/aimdevlee/herdr-nvim-nav"
-    },
     "hlchunk.nvim": {
       "rev": "4ddc056e4ca45f1c7dc6aa21935df710b263b1aa",
       "src": "git@github.com:shellraining/hlchunk.nvim"

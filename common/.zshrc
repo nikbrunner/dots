@@ -21,7 +21,6 @@ export RIPGREP_CONFIG_PATH=$HOME/.ripgreprc
 
 # Globals ================================================================
 export DOTS_DIR="$HOME/repos/nikbrunner/dots"
-export SSH_AUTH_SOCK="$HOME/.ssh/proton-pass-agent.sock"
 export MANPAGER='nvim +Man!'
 export BAT_THEME="ansi"
 
@@ -42,30 +41,6 @@ alias pp="pass-cli"
 alias scratch="\$EDITOR \$HOME/scratchpad.md"
 alias ydl='yt-dlp --audio-format mp3 --embed-thumbnail --embed-metadata --extract-audio'
 alias review="nvim iter://review"
-# debug builds use ~/.config/herdr-dev; env -u strips the stable session's
-# socket overrides so this works from inside a herdr pane
-alias herdr-dev='env -u HERDR_SOCKET_PATH -u HERDR_CLIENT_SOCKET_PATH $HOME/repos/nikbrunner/herdr/target/debug/herdr'
-# name the Ghostty tab after the herdr session; the server keeps it until it stops
-if [[ -n $HERDR_SESSION ]]; then
-    print -r -- "{\"id\":\"title\",\"method\":\"client.window_title.set\",\"params\":{\"title\":\"$HERDR_SESSION\"}}" |
-        nc -U -w 1 "$HERDR_SOCKET_PATH" >/dev/null 2>&1 &!
-fi
-# one-time snapshot of the real session into herdr-dev's default session;
-# stop herdr-dev first or its server just overwrites session.json again
-herdr-dev-sync-session() {
-    if pgrep -f "target/debug/herdr server" >/dev/null; then
-        echo "herdr-dev server is running; stop it first (herdr-dev server stop)" >&2
-        return 1
-    fi
-    cp "$HOME/.config/herdr/session.json" "$HOME/.config/herdr-dev/session.json"
-    cp "$HOME/.config/herdr/session-history.json" "$HOME/.config/herdr-dev/session-history.json"
-    echo "copied session.json + session-history.json from herdr -> herdr-dev"
-}
-# release build of local master, to try out unreleased upstream changes;
-# release binaries default to the stable ~/.config/herdr dir (no herdr-dev
-# override), so pin XDG_CONFIG_HOME to an isolated dir to avoid touching
-# the real stable session
-alias herdr-master='env -u HERDR_SOCKET_PATH -u HERDR_CLIENT_SOCKET_PATH XDG_CONFIG_HOME="$HOME/.config/herdr-master-xdg" $HOME/repos/nikbrunner/herdr/target/release/herdr'
 unalias groot 2>/dev/null
 groot() {
     local dir
@@ -179,9 +154,6 @@ alias gbr='branch-picker'
 alias ,,="fzf -m --preview='bat --color=always {}' --bind 'enter:become(nvim {+}),ctrl-y:execute-silent(echo {} | pbcopy)+abort'"
 
 # Custom Script Functions ================================================
-herdr-report-precmd() { herdr-report-git }
-precmd_functions+=(herdr-report-precmd)
-
 # Source 'run' script to enable print -z functionality
 [ -f "$HOME/.local/bin/run" ] && source "$HOME/.local/bin/run"
 

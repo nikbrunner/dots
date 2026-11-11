@@ -454,29 +454,6 @@ dots_stage_codex() {
     fi
 }
 
-dots_stage_herdr_config() {
-    local repo_path="$1"
-    local herdr_configs=(
-        "common/.config/herdr/config.toml"
-        "common/.config/herdr/plugins/config/helm-herdr/recent-workspaces.json"
-    )
-
-    local has_changes=false
-    for p in "${herdr_configs[@]}"; do
-        if [[ -n $(git -C "$repo_path" status --porcelain "$p" 2>/dev/null) ]]; then
-            has_changes=true
-            break
-        fi
-    done
-
-    if [[ "$has_changes" == false ]]; then
-        return 1
-    fi
-
-    (cd "$repo_path" && git add "${herdr_configs[@]}")
-    log_okay "Herdr config changes staged"
-}
-
 dots_stage_zoxide() {
     local repo_path="$1"
     local zoxide_seed="common/.config/zoxide/seed.txt"

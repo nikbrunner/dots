@@ -36,20 +36,6 @@ common:
   common/.config/vicinae: ~/.config/vicinae
   common/.config/zennotes: ~/.config/zennotes
 
-  # Herdr ===================================================================
-  # Linked per entry so ~/.config/herdr is a real directory: work-scoped
-  # session state under sessions/ stays out of the repo, and the daemon's
-  # sockets and logs land outside the working tree.
-  common/.config/herdr/.plugins.lock: ~/.config/herdr/.plugins.lock
-  common/.config/herdr/config.toml: ~/.config/herdr/config.toml
-  common/.config/herdr/install-plugins.sh: ~/.config/herdr/install-plugins.sh
-  common/.config/herdr/local-plugins: ~/.config/herdr/local-plugins
-  common/.config/herdr/plugins: ~/.config/herdr/plugins
-  common/.config/herdr/release-notes.json: ~/.config/herdr/release-notes.json
-  common/.config/herdr/sounds: ~/.config/herdr/sounds
-  common/.config/herdr/helm-last.sh: ~/.config/herdr/helm-last.sh
-  common/.config/herdr/tab-width.sh: ~/.config/herdr/tab-width.sh
-  common/.config/herdr/status.sh: ~/.config/herdr/status.sh
   common/.config/rex/init.lua: ~/.config/rex/init.lua
 
   # Theming =================================================================

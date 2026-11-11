@@ -2,7 +2,6 @@
 set -euo pipefail
 
 # bob-send — send a message to Bob, my digital assistant, through Rex
-# when REX_SESSION is set, else through Herdr
 #
 #   bob-send <text>   sends the text
 #   bob-send          opens a scratch file in nvim; save and quit sends it,
@@ -35,12 +34,5 @@ send_rex() {
 	rex send-key -s "$session" -b "$block" Enter || fail "rex send-key failed"
 }
 
-send_herdr() {
-	local pane err
-	pane=$(herdr agent list | jq -r '.result.agents[] | select(.terminal_title_stripped // "" | ascii_downcase == "bob") | .pane_id' | head -1)
-	[ -n "$pane" ] || fail "no Herdr pane runs a session named Bob"
-	err=$(herdr agent prompt "$pane" "$text" 2>&1 >/dev/null) || fail "$(jq -r '.error.message // empty' <<<"$err" 2>/dev/null || echo "$err")"
-}
-
-if [ -n "${REX_SESSION:-}" ]; then send_rex; else send_herdr; fi
+send_rex
 echo "Sent to Bob."
