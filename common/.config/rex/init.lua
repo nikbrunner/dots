@@ -136,6 +136,7 @@ require("helm").setup({
 	detail_bounds = { 0.05, 0.075, 0.9, 0.85 },
 })
 rex.bind("cmd+s", "helm_open")
+rex.bind("cmd+o", "helm_jump_back")
 
 bind_popup("cmd+p", "file-picker", function(ctx)
 	return { "env", "REX_TARGET_BLOCK=" .. ctx.block_id, "file-picker", "-g" }
