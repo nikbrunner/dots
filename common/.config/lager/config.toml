@@ -3,6 +3,7 @@ root = "~/repos"
 [providers."github.com"]
 preset = "github"
 prefix = ""
+remote_actions = ["create", "rename", "archive", "visibility", "delete"]
 
 [[repositories]]
 url = "git@github.com:nikbrunner/dots"
