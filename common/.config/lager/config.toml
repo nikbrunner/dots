@@ -12,9 +12,6 @@ url = "git@github.com:nikbrunner/dots"
 url = "git@github.com:nikbrunner/notes"
 
 [[repositories]]
-url = "git@github.com:nikbrunner/the-black-atom"
-
-[[repositories]]
 url = "git@github.com:nikbrunner/koyo"
 
 [[repositories]]
@@ -68,6 +65,3 @@ url = "git@github.com:ImFusionGmbH/Website.git"
 
 [[repositories]]
 url = "git@github.com:nikbrunner/writing.git"
-
-[[repositories]]
-url = "git@github.com:nikbrunner/scarth-johnson.git"
