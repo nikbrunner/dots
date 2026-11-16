@@ -578,7 +578,7 @@ _commit_chores() {
 
 	while IFS= read -r -d '' path; do
 		pre_staged[$path]=1
-	done < <(git -C "$repo" diff --cached --name-only -z)
+	done < <(git -C "$repo" diff --cached --name-only --no-renames -z)
 
 	for pair in "$@"; do
 		if ${pair%%=*} "$repo"; then
@@ -588,7 +588,7 @@ _commit_chores() {
 
 	while IFS= read -r -d '' path; do
 		[[ -n "${pre_staged[$path]:-}" ]] || chore_paths+=("$path")
-	done < <(git -C "$repo" diff --cached --name-only -z)
+	done < <(git -C "$repo" diff --cached --name-only --no-renames -z)
 
 	if [[ ${#chore_paths[@]} -gt 0 ]]; then
 		local topic_list topic_body
