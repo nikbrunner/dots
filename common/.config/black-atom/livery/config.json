@@ -1,7 +1,7 @@
 {
   "version": 2,
   "system_appearance": true,
-  "active_theme": "black-atom-jpn-koyo-dark",
+  "active_theme": "black-atom-terra-spring-dark",
   "keymappings": {
     "toggle_window": "super+ctrl+alt+shift+KeyT"
   },
@@ -77,6 +77,11 @@
       "enabled": true,
       "config_path": "~/.config/lazygit/config.yml",
       "themes_path": "~/.local/share/black-atom/themes/lazygit"
+    },
+    "herdr": {
+      "enabled": false,
+      "config_path": "~/.config/herdr/config.toml",
+      "themes_path": "~/.local/share/black-atom/themes/herdr"
     },
     "obsidian": {
       "enabled": true,

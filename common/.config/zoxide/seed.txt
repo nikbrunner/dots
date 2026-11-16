@@ -23,6 +23,7 @@
 ~/repos/imfusion/.reviews
 ~/repos/imfusion/brunner
 ~/repos/imfusion/cp
+~/repos/imfusion/labels
 ~/repos/imfusion/misc
 ~/repos/imfusion/projects
 ~/repos/imfusion/suite
@@ -37,7 +38,6 @@
 ~/repos/nikbrunner/flux.nvim
 ~/repos/nikbrunner/fonts
 ~/repos/nikbrunner/glab-tui
-~/repos/nikbrunner/herdr
 ~/repos/nikbrunner/imfusion-coding-assignment
 ~/repos/nikbrunner/koyo
 ~/repos/nikbrunner/lager
@@ -48,7 +48,7 @@
 ~/repos/nikbrunner/pi-speak
 ~/repos/nikbrunner/plans
 ~/repos/nikbrunner/src
-~/repos/nikbrunner/tabula-rasa.nvim
+~/repos/nikbrunner/study-ergotherapy
 ~/repos/nikbrunner/themes
 ~/repos/nikbrunner/tmux-file-picker
 ~/repos/nikbrunner/wallpapers

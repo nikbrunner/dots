@@ -10,17 +10,21 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +9 core/src/themes/terra/create-syntax-dark.ts
-badd +12 core/src/themes/terra/create-syntax-light.ts
+badd +17 core/src/themes/jpn/black-atom-jpn-murasaki-light.ts
+badd +19 core/src/themes/tr-1000/black-atom-tr-1000-light.ts
+badd +22 core/src/themes/jpn/create-ui-light.ts
 argglobal
 %argdel
-edit core/src/themes/terra/create-syntax-dark.ts
+edit core/src/themes/tr-1000/black-atom-tr-1000-light.ts
 let s:save_splitbelow = &splitbelow
 let s:save_splitright = &splitright
 set splitbelow splitright
 wincmd _ | wincmd |
 vsplit
-1wincmd h
+wincmd _ | wincmd |
+vsplit
+2wincmd h
+wincmd w
 wincmd w
 let &splitbelow = s:save_splitbelow
 let &splitright = s:save_splitright
@@ -31,9 +35,11 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe 'vert 1resize ' . ((&columns * 172 + 173) / 346)
-exe 'vert 2resize ' . ((&columns * 173 + 173) / 346)
+exe 'vert 1resize ' . ((&columns * 102 + 154) / 309)
+exe 'vert 2resize ' . ((&columns * 103 + 154) / 309)
+exe 'vert 3resize ' . ((&columns * 102 + 154) / 309)
 argglobal
+balt core/src/themes/jpn/black-atom-jpn-murasaki-light.ts
 setlocal foldmethod=expr
 setlocal foldexpr=v:lua.vim.treesitter.foldexpr()
 setlocal foldmarker={{{,}}}
@@ -42,23 +48,22 @@ setlocal foldlevel=99
 setlocal foldminlines=1
 setlocal foldnestmax=10
 setlocal foldenable
-3
+9
 sil! normal! zo
-4
+32
 sil! normal! zo
-let s:l = 9 - ((8 * winheight(0) + 35) / 70)
+let s:l = 19 - ((18 * winheight(0) + 31) / 63)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 9
-normal! 041|
+keepjumps 19
+normal! 0
 wincmd w
 argglobal
-if bufexists(fnamemodify("core/src/themes/terra/create-syntax-light.ts", ":p")) | buffer core/src/themes/terra/create-syntax-light.ts | else | edit core/src/themes/terra/create-syntax-light.ts | endif
+if bufexists(fnamemodify("core/src/themes/jpn/black-atom-jpn-murasaki-light.ts", ":p")) | buffer core/src/themes/jpn/black-atom-jpn-murasaki-light.ts | else | edit core/src/themes/jpn/black-atom-jpn-murasaki-light.ts | endif
 if &buftype ==# 'terminal'
-  silent file core/src/themes/terra/create-syntax-light.ts
+  silent file core/src/themes/jpn/black-atom-jpn-murasaki-light.ts
 endif
-balt core/src/themes/terra/create-syntax-dark.ts
 setlocal foldmethod=expr
 setlocal foldexpr=v:lua.vim.treesitter.foldexpr()
 setlocal foldmarker={{{,}}}
@@ -67,16 +72,45 @@ setlocal foldlevel=99
 setlocal foldminlines=1
 setlocal foldnestmax=10
 setlocal foldenable
-let s:l = 12 - ((11 * winheight(0) + 35) / 70)
+9
+sil! normal! zo
+30
+sil! normal! zo
+let s:l = 24 - ((19 * winheight(0) + 31) / 63)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 12
-normal! 013|
+keepjumps 24
+normal! 0
+wincmd w
+argglobal
+if bufexists(fnamemodify("core/src/themes/jpn/create-ui-light.ts", ":p")) | buffer core/src/themes/jpn/create-ui-light.ts | else | edit core/src/themes/jpn/create-ui-light.ts | endif
+if &buftype ==# 'terminal'
+  silent file core/src/themes/jpn/create-ui-light.ts
+endif
+setlocal foldmethod=expr
+setlocal foldexpr=v:lua.vim.treesitter.foldexpr()
+setlocal foldmarker={{{,}}}
+setlocal foldignore=#
+setlocal foldlevel=99
+setlocal foldminlines=1
+setlocal foldnestmax=10
+setlocal foldenable
+5
+sil! normal! zo
+19
+sil! normal! zo
+let s:l = 29 - ((28 * winheight(0) + 31) / 63)
+if s:l < 1 | let s:l = 1 | endif
+keepjumps exe s:l
+normal! zt
+keepjumps 29
+normal! 036|
 wincmd w
 2wincmd w
-exe 'vert 1resize ' . ((&columns * 172 + 173) / 346)
-exe 'vert 2resize ' . ((&columns * 173 + 173) / 346)
+exe 'vert 1resize ' . ((&columns * 102 + 154) / 309)
+exe 'vert 2resize ' . ((&columns * 103 + 154) / 309)
+exe 'vert 3resize ' . ((&columns * 102 + 154) / 309)
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
@@ -92,7 +126,6 @@ if filereadable(s:sx)
 endif
 let &g:so = s:so_save | let &g:siso = s:siso_save
 set hlsearch
-nohlsearch
 doautoall SessionLoadPost
 unlet SessionLoad
 " vim: set ft=vim :

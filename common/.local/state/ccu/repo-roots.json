@@ -354,20 +354,38 @@
       "~/repos/imfusion/cp/labels-web-feat-sidebar-projects-item",
       "~/repos/imfusion/cp/labels-web-feat-sidebar-projects-item/frontend",
       "~/repos/imfusion/cp/labels-web-feat-sidebar-projects-item/local-setup",
+      "~/repos/imfusion/cp/labels-web-labels-editor",
+      "~/repos/imfusion/cp/labels-web-labels-editor/.agents/skills/impeccable",
+      "~/repos/imfusion/cp/labels-web-labels-editor/.shots",
+      "~/repos/imfusion/cp/labels-web-labels-editor/.shots/header",
+      "~/repos/imfusion/cp/labels-web-labels-editor/.shots/slice-4",
+      "~/repos/imfusion/cp/labels-web-labels-editor/.shots/slice-5",
+      "~/repos/imfusion/cp/labels-web-labels-editor/.shots/slice-7",
+      "~/repos/imfusion/cp/labels-web-labels-editor/e2e",
+      "~/repos/imfusion/cp/labels-web-labels-editor/frontend",
+      "~/repos/imfusion/cp/labels-web-labels-editor/frontend/src",
+      "~/repos/imfusion/cp/labels-web-labels-editor/frontend/src/features/labels-editor",
+      "~/repos/imfusion/cp/labels-web-labels-editor/handoffs",
+      "~/repos/imfusion/cp/labels-web-labels-editor/handoffs/reviews-slice-6",
+      "~/repos/imfusion/cp/labels-web-labels-editor/handoffs/reviews-slice-7",
+      "~/repos/imfusion/cp/labels-web-labels-editor/local-setup",
       "~/repos/imfusion/cp/labels-web-navbar-rail",
       "~/repos/imfusion/cp/labels-web-navbar-rail/frontend",
       "~/repos/imfusion/cp/labels-web-rail-toggle",
       "~/repos/imfusion/cp/labels-web-rail-toggle/frontend",
       "~/repos/imfusion/cp/labels-web-upload-images",
+      "~/repos/imfusion/cp/labels-web-web-ui-upgrade",
+      "~/repos/imfusion/cp/labels-web-web-ui-upgrade/frontend",
       "~/repos/imfusion/cp/labels-web/.worktrees/CP-130-integrate-with-labels-server",
       "~/repos/imfusion/cp/labels-web/.worktrees/bootstrap-frontend",
       "~/repos/imfusion/cp/labels-web/.worktrees/bootstrap-frontend/frontend",
       "~/repos/imfusion/cp/labels-web/.worktrees/bootstrap-frontend/frontend/.agents/skills",
       "~/repos/imfusion/cp/labels-web/frontend",
+      "~/repos/imfusion/cp/labels-web/frontend/node_modules/@imfusion/web-ui",
       "~/repos/imfusion/cp/labels-web/local-setup",
       "~/repos/imfusion/cp/review-labels-web-16-playwright-e2e"
     ],
-    "last_seen": "2026-11-11"
+    "last_seen": "2026-11-14"
   },
   "cp/license-server": {
     "root": "~/repos/imfusion/cp/license-server",
@@ -618,9 +636,10 @@
     "work": false,
     "session_dirs": [
       "~/repos/nikbrunner/lager",
-      "~/repos/nikbrunner/lager/.worktrees/inventory"
+      "~/repos/nikbrunner/lager/.worktrees/inventory",
+      "~/repos/nikbrunner/lager/handoffs"
     ],
-    "last_seen": "2026-09-20"
+    "last_seen": "2026-11-14"
   },
   "nikbrunner/lazyjira": {
     "root": "~/repos/nikbrunner/lazyjira",
@@ -681,6 +700,17 @@
       "~/repos/nikbrunner/skills/skills/nbr-repo-conventions"
     ],
     "last_seen": "2026-10-30"
+  },
+  "nikbrunner/study-ergotherapy": {
+    "root": "~/repos/nikbrunner/study-ergotherapy",
+    "owner": "nikbrunner",
+    "name": "study-ergotherapy",
+    "work": false,
+    "session_dirs": [
+      "~/repos/nikbrunner/study-ergotherapy",
+      "~/repos/nikbrunner/study-ergotherapy/src/styles"
+    ],
+    "last_seen": "2026-11-15"
   },
   "nikbrunner/writing": {
     "root": "~/repos/nikbrunner/writing",
@@ -815,6 +845,7 @@
       "~/repos/imfusion/websdk/web-ui-WEBSDK-290-view-tools-integration",
       "~/repos/imfusion/websdk/web-ui-WEBSDK-292-layout-mode-integration",
       "~/repos/imfusion/websdk/web-ui-annotation-type-icons",
+      "~/repos/imfusion/websdk/web-ui-app-shell-rail",
       "~/repos/imfusion/websdk/web-ui-appearance-toggle",
       "~/repos/imfusion/websdk/web-ui-aside-scroll",
       "~/repos/imfusion/websdk/web-ui-brush-integrations",

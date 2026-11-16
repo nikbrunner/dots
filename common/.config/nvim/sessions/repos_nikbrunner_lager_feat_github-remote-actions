@@ -4,16 +4,16 @@ let v:this_session=expand("<sfile>:p")
 doautoall SessionLoadPre
 silent only
 silent tabonly
-cd ~/repos/nikbrunner/mdn.nvim
+cd ~/repos/nikbrunner/lager
 if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +48 examples/conceal-demo.md
+badd +58 README.md
 argglobal
 %argdel
-edit examples/conceal-demo.md
+edit README.md
 argglobal
 setlocal foldmethod=expr
 setlocal foldexpr=v:lua.vim.treesitter.foldexpr()
@@ -25,24 +25,16 @@ setlocal foldnestmax=10
 setlocal foldenable
 1
 sil! normal! zo
-31
+18
 sil! normal! zo
-48
+40
 sil! normal! zo
-48
-sil! normal! zo
-97
-sil! normal! zo
-101
-sil! normal! zo
-131
-sil! normal! zo
-let s:l = 48 - ((25 * winheight(0) + 40) / 81)
+let s:l = 60 - ((28 * winheight(0) + 37) / 74)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 48
-normal! 0
+keepjumps 60
+normal! 014|
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
@@ -56,7 +48,6 @@ if filereadable(s:sx)
 endif
 let &g:so = s:so_save | let &g:siso = s:siso_save
 set hlsearch
-nohlsearch
 doautoall SessionLoadPost
 unlet SessionLoad
 " vim: set ft=vim :

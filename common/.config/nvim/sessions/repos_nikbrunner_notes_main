@@ -4,16 +4,16 @@ let v:this_session=expand("<sfile>:p")
 doautoall SessionLoadPre
 silent only
 silent tabonly
-cd ~/repos/nikbrunner/koyo
+cd ~/repos/nikbrunner/notes
 if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +47 ~/repos/nikbrunner/koyo/keymap.yml
+badd +0 Log/2026/2026.08/2026.09.01\ -\ Tue.md
 argglobal
 %argdel
-edit ~/repos/nikbrunner/koyo/keymap.yml
+edit Log/2026/2026.08/2026.09.01\ -\ Tue.md
 argglobal
 setlocal foldmethod=expr
 setlocal foldexpr=v:lua.vim.treesitter.foldexpr()
@@ -23,22 +23,14 @@ setlocal foldlevel=99
 setlocal foldminlines=1
 setlocal foldnestmax=10
 setlocal foldenable
-33
+1
 sil! normal! zo
-45
-sil! normal! zo
-57
-sil! normal! zo
-68
-sil! normal! zo
-81
-sil! normal! zo
-let s:l = 47 - ((18 * winheight(0) + 38) / 77)
+let s:l = 6 - ((5 * winheight(0) + 29) / 59)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 47
-normal! 015|
+keepjumps 6
+normal! 0
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
