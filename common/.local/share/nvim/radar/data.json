@@ -60,18 +60,18 @@
           }
         ],
         "recent": [
+          "core/src/themes/terra/black-atom-terra-spring-dark.ts",
+          "core/src/themes/tr-1000/black-atom-tr-1000-light.ts",
           "core/src/themes/jpn/black-atom-jpn-murasaki-light.ts",
           "core/src/themes/jpn/create-ui-light.ts",
-          "core/src/themes/tr-1000/black-atom-tr-1000-light.ts",
           "oil:///Users/brunner/repos/black-atom-industries/black-atom/core/src/themes/jpn/",
           "core/src/themes/jpn/create-feedback-light.ts",
           "oil:///Users/brunner/repos/black-atom-industries/black-atom/core/src/themes/",
           "core/src/themes/catalog.ts",
           "oil:///Users/brunner/repos/black-atom-industries/black-atom/core/src/themes/terra/",
-          "core/src/themes/terra/mod.ts",
-          "core/src/themes/jpn/black-atom-jpn-murasaki-dark.ts"
+          "core/src/themes/terra/mod.ts"
         ],
-        "lastAccessed": 1794574084
+        "lastAccessed": 1794836945
       },
       "main": {
         "locks": [],
@@ -296,17 +296,17 @@
         ],
         "recent": [
           "logs/2026/2026.11/2026.11.16 - Mon.md",
+          "oil:///Users/brunner/repos/imfusion/brunner/notes/bob/",
+          "oil:///Users/brunner/repos/imfusion/brunner/notes/",
+          "oil:///Users/brunner/repos/imfusion/brunner/notes/logs/",
+          "oil:///Users/brunner/repos/imfusion/brunner/notes/logs/2026/",
           "oil:///Users/brunner/repos/imfusion/brunner/notes/logs/2026/2026.11/",
+          "plans/rsna-2026.md",
           "logs/2026/2026.11/2026.11.14 - Sat.md",
           "logs/2026/2026.11/2026.11.10 - Tue.md",
-          "logs/2026/2026.11/2026.11.13 - Fri.md",
-          "logs/2026/2026.11/2026.11.12 - Thu.md",
-          "plans/rsna-2026.md",
-          "logs/2026/2026.11/2026.11.11 - Wed.md",
-          "logs/2026/2026.11/2026.11.09 - Mon.md",
-          "templates/Daily Note.md"
+          "logs/2026/2026.11/2026.11.13 - Fri.md"
         ],
-        "lastAccessed": 1794654829
+        "lastAccessed": 1794829599
       }
     },
     "~/repos/imfusion/cp/CP-174-create-project": {
@@ -382,8 +382,19 @@
     "~/repos/imfusion/cp/labels-web": {
       "main": {
         "locks": [],
-        "recent": [],
-        "lastAccessed": 1794658218
+        "recent": [
+          "frontend/src/features/labels-editor/editor-header.tsx",
+          "frontend/src/lib/desktop/desktop-link.ts",
+          "frontend/src/features/labels-editor/labels-editor.tsx",
+          "frontend/src/routes/_app/projects.$projectId/images.$datasetId.tsx",
+          "oil:///Users/brunner/repos/imfusion/cp/labels-web/frontend/src/routes/_app/projects.$projectId/",
+          "oil:///Users/brunner/repos/imfusion/cp/labels-web/frontend/src/routes/_app/projects.$projectId/_tabs/",
+          "frontend/src/routes/_app/projects.$projectId/_tabs/images.tsx",
+          "oil:///Users/brunner/repos/imfusion/cp/labels-web/frontend/src/routes/_app/projects.$projectId/-route/",
+          "oil:///Users/brunner/repos/imfusion/cp/labels-web/frontend/src/routes/_app/projects.$projectId/_tabs/-images/",
+          "frontend/src/routes/_app/projects.$projectId/-route/project-pending.tsx"
+        ],
+        "lastAccessed": 1794848136
       }
     },
     "~/repos/imfusion/cp/labels-web-CP-203-labels-web-configure-the-labels-of-a-project": {
@@ -393,6 +404,18 @@
           "CP-203.md"
         ],
         "lastAccessed": 1793272718
+      }
+    },
+    "~/repos/imfusion/cp/labels-web-editor-tool-rail": {
+      "feat/editor-tool-rail": {
+        "locks": [],
+        "recent": [
+          "handoffs/2026-11-16-editor-tool-rail.md",
+          "oil:///Users/brunner/repos/imfusion/cp/labels-web-editor-tool-rail/handoffs/",
+          "oil:///Users/brunner/repos/imfusion/cp/labels-web-editor-tool-rail/",
+          "oil:///Users/brunner/repos/imfusion/cp/labels-web-editor-tool-rail/docs/"
+        ],
+        "lastAccessed": 1794853201
       }
     },
     "~/repos/imfusion/cp/labels-web-feat-CP-204-data-tags": {
@@ -450,6 +473,15 @@
           "frontend/src/routes/_app/projects.$projectId/images.$datasetId.tsx"
         ],
         "lastAccessed": 1794576846
+      }
+    },
+    "~/repos/imfusion/cp/labels-web-workflow-projects": {
+      "feat/workflow-projects": {
+        "locks": [],
+        "recent": [
+          "frontend/src/routes/_app/projects.$projectId/_tabs/-images/image-details.tsx"
+        ],
+        "lastAccessed": 1794841562
       }
     },
     "~/repos/imfusion/websdk/file-dropzone": {
@@ -513,7 +545,7 @@
           "src/components/dialog/dialog.tsx",
           "src/components/card/card.tsx"
         ],
-        "lastAccessed": 1794597446
+        "lastAccessed": 1794856908
       }
     },
     "~/repos/imfusion/websdk/web-ui-WEBSDK-290-view-tools-integration": {
@@ -568,6 +600,21 @@
           "src/components/color-picker/color-picker.stories.tsx"
         ],
         "lastAccessed": 1794330171
+      }
+    },
+    "~/repos/imfusion/websdk/web-ui-type-foundations": {
+      "WEBSDK-322-type-foundations": {
+        "locks": [],
+        "recent": [
+          ".git",
+          "oil:///Users/brunner/repos/imfusion/websdk/web-ui-type-foundations/",
+          "oil:///Users/brunner/repos/imfusion/websdk/web-ui-type-foundations/.storybook/",
+          "src/styles/variables/typo.css",
+          "src/styles/variables/sizes.css",
+          "oil:///Users/brunner/repos/imfusion/websdk/web-ui-type-foundations/src/styles/variables/",
+          "src/styles/variables/focus.css"
+        ],
+        "lastAccessed": 1794853362
       }
     },
     "~/repos/imfusion/websdk/websdk-228-color-mode-spike": {

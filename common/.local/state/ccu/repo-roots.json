@@ -335,6 +335,8 @@
       "~/repos/imfusion/cp/labels-web-data-list-redesign/e2e",
       "~/repos/imfusion/cp/labels-web-data-list-redesign/frontend",
       "~/repos/imfusion/cp/labels-web-data-list-redesign/frontend/node_modules/@imfusion/web-ui/dist/components",
+      "~/repos/imfusion/cp/labels-web-editor-tool-rail",
+      "~/repos/imfusion/cp/labels-web-editor-tool-rail/frontend",
       "~/repos/imfusion/cp/labels-web-feat-CP-204-data-tags",
       "~/repos/imfusion/cp/labels-web-feat-CP-204-data-tags/bff",
       "~/repos/imfusion/cp/labels-web-feat-CP-204-data-tags/e2e",
@@ -376,16 +378,23 @@
       "~/repos/imfusion/cp/labels-web-upload-images",
       "~/repos/imfusion/cp/labels-web-web-ui-upgrade",
       "~/repos/imfusion/cp/labels-web-web-ui-upgrade/frontend",
+      "~/repos/imfusion/cp/labels-web-workflow-projects",
+      "~/repos/imfusion/cp/labels-web-workflow-projects/e2e",
+      "~/repos/imfusion/cp/labels-web-workflow-projects/frontend",
+      "~/repos/imfusion/cp/labels-web-workflow-projects/local-setup",
       "~/repos/imfusion/cp/labels-web/.worktrees/CP-130-integrate-with-labels-server",
       "~/repos/imfusion/cp/labels-web/.worktrees/bootstrap-frontend",
       "~/repos/imfusion/cp/labels-web/.worktrees/bootstrap-frontend/frontend",
       "~/repos/imfusion/cp/labels-web/.worktrees/bootstrap-frontend/frontend/.agents/skills",
       "~/repos/imfusion/cp/labels-web/frontend",
       "~/repos/imfusion/cp/labels-web/frontend/node_modules/@imfusion/web-ui",
+      "~/repos/imfusion/cp/labels-web/frontend/node_modules/@imfusion/web-ui/dist",
+      "~/repos/imfusion/cp/labels-web/frontend/src/components/app-shell",
+      "~/repos/imfusion/cp/labels-web/frontend/src/features/labels-editor",
       "~/repos/imfusion/cp/labels-web/local-setup",
       "~/repos/imfusion/cp/review-labels-web-16-playwright-e2e"
     ],
-    "last_seen": "2026-11-14"
+    "last_seen": "2026-11-16"
   },
   "cp/license-server": {
     "root": "~/repos/imfusion/cp/license-server",
@@ -859,9 +868,11 @@
       "~/repos/imfusion/websdk/web-ui-morphable-product-logo",
       "~/repos/imfusion/websdk/web-ui-pr-review-skill",
       "~/repos/imfusion/websdk/web-ui-rail-toggle",
+      "~/repos/imfusion/websdk/web-ui-spacing-alignment",
       "~/repos/imfusion/websdk/web-ui-toggle-group-cleanup",
       "~/repos/imfusion/websdk/web-ui-tool-panel",
       "~/repos/imfusion/websdk/web-ui-transfer-function-editor",
+      "~/repos/imfusion/websdk/web-ui-type-foundations",
       "~/repos/imfusion/websdk/web-ui-websdk-206-web-ui-update-improve-design-fol",
       "~/repos/imfusion/websdk/web-ui-websdk-206-web-ui-update-improve-design-fol/.agents/skills/web-ui-dev-claude-design-sync",
       "~/repos/imfusion/websdk/web-ui-websdk-206-web-ui-update-improve-design-fol/docs/user-guide",
@@ -904,7 +915,7 @@
       "~/repos/imfusion/websdk/websdk-272-rich-link",
       "~/repos/imfusion/websdk/websdk-306-table-selection"
     ],
-    "last_seen": "2026-11-11"
+    "last_seen": "2026-11-16"
   },
   "wt/cl": {
     "root": "/private/tmp/claude-501/-Users-brunner-repos-nikbrunner-agents/5b5c5803-cdda-4cf8-8753-681a497a5a39/scratchpad/wt/cl",
