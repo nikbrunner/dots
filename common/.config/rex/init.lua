@@ -137,8 +137,8 @@ require("helm").setup({
 	popup = false,
 	-- side = "cmd+shift+s",
 	bin = os.getenv("HOME") .. "/.local/bin/helm-rex",
-	bounds = { 0.125, 0.075, 0.75, 0.75 },
-	detail_bounds = { 0.05, 0.075, 0.9, 0.75 },
+	bounds = { 0.25, 0.175, 0.6, 0.55 },
+	detail_bounds = { 0.15, 0.055, 0.9, 0.55 },
 })
 rex.bind("cmd+s", "helm_open")
 rex.bind("cmd+o", "helm_jump_back")
