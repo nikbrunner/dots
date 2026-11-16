@@ -43,7 +43,12 @@ local function bind_popup(key, label, command, w, h, keep)
 					rex.session.close_layer({ session_id = ctx.session_id, layer_id = layer })
 				end
 			elseif block then
-				rex.session.set_layer_state({ session_id = ctx.session_id, layer_id = layer, state = "normal", focus = true })
+				rex.session.set_layer_state({
+					session_id = ctx.session_id,
+					layer_id = layer,
+					state = "normal",
+					focus = true,
+				})
 			else
 				rex.session.new_layer({
 					session_id = ctx.session_id,
