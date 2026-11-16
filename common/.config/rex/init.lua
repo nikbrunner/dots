@@ -138,13 +138,14 @@ require("helm").setup({
 rex.bind("cmd+s", "helm_open")
 rex.bind("cmd+o", "helm_jump_back")
 
-bind_popup("cmd+p", "file-picker", function(ctx)
+bind_popup("cmd+i", "file-picker", function(ctx)
 	return { "env", "REX_TARGET_BLOCK=" .. ctx.block_id, "file-picker", "-g" }
 end, 0.95, 0.8)
 bind_popup("cmd+g", "lazygit", { "lazygit" }, 1, 1, true)
 bind_popup("cmd+r", "review", { "nvim", "iter://review" }, 1, 1, true)
 bind_popup("cmd+j", "lazyjira", { "lazyjira" }, 1, 1, true)
-bind_popup("cmd+l", "livery", { "livery", "apply" }, 0.35, 0.25)
+bind_popup("cmd+t", "livery", { "livery", "apply" }, 0.35, 0.25)
+bind_popup("cmd+l", "lager", { "lager", "tui" }, 0.75, 0.65)
 
 -- Bob, the notes session's Claude: the key jumps to its pane, and from there
 -- back to the session it came from. A popup can't hold another session's block.
