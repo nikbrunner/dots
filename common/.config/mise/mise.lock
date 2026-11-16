@@ -961,65 +961,6 @@ checksum = "sha256:033467b54bc3b1630b2e95bbfb7c0d168e162255e1c343df72744bc953695
 url = "https://github.com/maaslalani/slides/releases/download/v0.9.0/slides_0.9.0_darwin_amd64.tar.gz"
 url_api = "https://api.github.com/repos/maaslalani/slides/releases/assets/77736979"
 
-[[tools."github:nikbrunner/lager"]]
-version = "0.1.1"
-backend = "github:nikbrunner/lager"
-
-[tools."github:nikbrunner/lager"."platforms.linux-arm64"]
-checksum = "sha256:bbc0cd2bec425bb2067e8254597ab308a8974df7af8f0b1c776afa8d0b5bafcc"
-url = "https://github.com/nikbrunner/lager/releases/download/v0.1.1/lager-v0.1.1-aarch64-unknown-linux-musl.tar.gz"
-url_api = "https://api.github.com/repos/nikbrunner/lager/releases/assets/562016995"
-provenance = "github-attestations"
-
-[tools."github:nikbrunner/lager"."platforms.linux-arm64-musl"]
-checksum = "sha256:bbc0cd2bec425bb2067e8254597ab308a8974df7af8f0b1c776afa8d0b5bafcc"
-url = "https://github.com/nikbrunner/lager/releases/download/v0.1.1/lager-v0.1.1-aarch64-unknown-linux-musl.tar.gz"
-url_api = "https://api.github.com/repos/nikbrunner/lager/releases/assets/562016995"
-provenance = "github-attestations"
-
-[tools."github:nikbrunner/lager"."platforms.linux-x64"]
-checksum = "sha256:5b908fcf3f050ccf8ef296f7dc4c75749a436026bd6edbc7af0cc59d240f9d0a"
-url = "https://github.com/nikbrunner/lager/releases/download/v0.1.1/lager-v0.1.1-x86_64-unknown-linux-musl.tar.gz"
-url_api = "https://api.github.com/repos/nikbrunner/lager/releases/assets/562016997"
-provenance = "github-attestations"
-
-[tools."github:nikbrunner/lager"."platforms.linux-x64-baseline"]
-checksum = "sha256:5b908fcf3f050ccf8ef296f7dc4c75749a436026bd6edbc7af0cc59d240f9d0a"
-url = "https://github.com/nikbrunner/lager/releases/download/v0.1.1/lager-v0.1.1-x86_64-unknown-linux-musl.tar.gz"
-url_api = "https://api.github.com/repos/nikbrunner/lager/releases/assets/562016997"
-provenance = "github-attestations"
-
-[tools."github:nikbrunner/lager"."platforms.linux-x64-musl"]
-checksum = "sha256:5b908fcf3f050ccf8ef296f7dc4c75749a436026bd6edbc7af0cc59d240f9d0a"
-url = "https://github.com/nikbrunner/lager/releases/download/v0.1.1/lager-v0.1.1-x86_64-unknown-linux-musl.tar.gz"
-url_api = "https://api.github.com/repos/nikbrunner/lager/releases/assets/562016997"
-provenance = "github-attestations"
-
-[tools."github:nikbrunner/lager"."platforms.linux-x64-musl-baseline"]
-checksum = "sha256:5b908fcf3f050ccf8ef296f7dc4c75749a436026bd6edbc7af0cc59d240f9d0a"
-url = "https://github.com/nikbrunner/lager/releases/download/v0.1.1/lager-v0.1.1-x86_64-unknown-linux-musl.tar.gz"
-url_api = "https://api.github.com/repos/nikbrunner/lager/releases/assets/562016997"
-provenance = "github-attestations"
-
-[tools."github:nikbrunner/lager"."platforms.macos-arm64"]
-checksum = "sha256:971bb46c4a95720043c64ce22bcab39b1ddb9b15d7a9bc87fb152a2743a9f376"
-url = "https://github.com/nikbrunner/lager/releases/download/v0.1.1/lager-v0.1.1-aarch64-apple-darwin.tar.gz"
-url_api = "https://api.github.com/repos/nikbrunner/lager/releases/assets/562016994"
-provenance = "github-attestations"
-provenance_verified = true
-
-[tools."github:nikbrunner/lager"."platforms.macos-x64"]
-checksum = "sha256:d04fe6f966baa9fd070e0a98915202d907aa1c5596641e7d0f73d810c3ad89a2"
-url = "https://github.com/nikbrunner/lager/releases/download/v0.1.1/lager-v0.1.1-x86_64-apple-darwin.tar.gz"
-url_api = "https://api.github.com/repos/nikbrunner/lager/releases/assets/562016996"
-provenance = "github-attestations"
-
-[tools."github:nikbrunner/lager"."platforms.macos-x64-baseline"]
-checksum = "sha256:d04fe6f966baa9fd070e0a98915202d907aa1c5596641e7d0f73d810c3ad89a2"
-url = "https://github.com/nikbrunner/lager/releases/download/v0.1.1/lager-v0.1.1-x86_64-apple-darwin.tar.gz"
-url_api = "https://api.github.com/repos/nikbrunner/lager/releases/assets/562016996"
-provenance = "github-attestations"
-
 [[tools."github:opmr0/zeitx"]]
 version = "0.1.0"
 backend = "github:opmr0/zeitx"

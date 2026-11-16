@@ -93,7 +93,6 @@ ninja = "latest"
 pre-commit = "latest"
 lefthook = "latest"
 starship = "latest"
-"github:nikbrunner/lager" = "latest"
 
 [settings]
 lockfile = true

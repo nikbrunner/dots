@@ -105,9 +105,10 @@ pi (`~/.pi/agent/auth.json`), the Codex and Claude MCP configs and `things` reso
 
 ## 8. Repos
 
-Clone the repositories declared in `~/.config/lager/config.toml`. Lager comes from mise, the config from the symlinks step. Post-clone hooks install the tools built from those repos (helm among them) and set up nikbrunner/agents: its agent skills and the agent config links (Claude Code, Pi, Codex, OpenCode). From then on `dots link` links both repos:
+Clone the repositories declared in `~/.config/lager/config.toml`. Lager builds with Cargo from the mise Rust toolchain, the config comes from the symlinks step. Post-clone hooks install the tools built from those repos (helm among them) and set up nikbrunner/agents: its agent skills and the agent config links (Claude Code, Pi, Codex, OpenCode). From then on `dots link` links both repos:
 
 ```sh
+cargo install --git https://github.com/nikbrunner/lager --locked
 lager ensure
 ```
 
