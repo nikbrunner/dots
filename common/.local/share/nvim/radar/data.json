@@ -295,18 +295,17 @@
           }
         ],
         "recent": [
+          "logs/2026/2026.11/2026.11.17 - Tue.md",
           "logs/2026/2026.11/2026.11.16 - Mon.md",
+          "oil:///Users/brunner/repos/imfusion/brunner/notes/logs/2026/2026.11/",
           "oil:///Users/brunner/repos/imfusion/brunner/notes/bob/",
           "oil:///Users/brunner/repos/imfusion/brunner/notes/",
           "oil:///Users/brunner/repos/imfusion/brunner/notes/logs/",
           "oil:///Users/brunner/repos/imfusion/brunner/notes/logs/2026/",
-          "oil:///Users/brunner/repos/imfusion/brunner/notes/logs/2026/2026.11/",
-          "plans/rsna-2026.md",
           "logs/2026/2026.11/2026.11.14 - Sat.md",
-          "logs/2026/2026.11/2026.11.10 - Tue.md",
-          "logs/2026/2026.11/2026.11.13 - Fri.md"
+          "logs/2026/2026.11/2026.11.10 - Tue.md"
         ],
-        "lastAccessed": 1794829599
+        "lastAccessed": 1794899545
       }
     },
     "~/repos/imfusion/cp/CP-174-create-project": {
@@ -698,6 +697,17 @@
         "lastAccessed": 1794818042
       }
     },
+    "~/repos/nikbrunner/fonts": {
+      "main": {
+        "locks": [],
+        "recent": [
+          "README.md",
+          "oil:///Users/brunner/repos/nikbrunner/fonts/",
+          "AGENTS.md"
+        ],
+        "lastAccessed": 1794901700
+      }
+    },
     "~/repos/nikbrunner/imf-notes": {
       "main": {
         "locks": [
@@ -805,6 +815,7 @@
           }
         ],
         "recent": [
+          "Log/2026/2026.11/2026.11.17 - Tue.md",
           "Log/2026/2026.08/2026.09.01 - Tue.md",
           "oil:///Users/brunner/repos/nikbrunner/notes/Log/2026/2026.08/",
           "Log/2026/2026.08/2026.08.20 - Thu.md",
@@ -813,10 +824,9 @@
           "oil:///Users/brunner/repos/nikbrunner/notes/Log/2026/2026.11/",
           "oil:///Users/brunner/repos/nikbrunner/notes/Log/2026/",
           "oil:///Users/brunner/repos/nikbrunner/notes/Log/2026/2026.10/",
-          "oil:///Users/brunner/repos/nikbrunner/notes/Log/",
-          "oil:///Users/brunner/repos/nikbrunner/notes/"
+          "oil:///Users/brunner/repos/nikbrunner/notes/Log/"
         ],
-        "lastAccessed": 1794568470
+        "lastAccessed": 1794899545
       }
     },
     "~/repos/nikbrunner/skills": {

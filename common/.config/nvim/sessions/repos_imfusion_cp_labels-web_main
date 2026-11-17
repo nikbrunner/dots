@@ -10,10 +10,11 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
+badd +135 frontend/src/features/labels-editor/editor-header.tsx
 argglobal
 %argdel
+edit frontend/src/features/labels-editor/editor-header.tsx
 argglobal
-enew
 setlocal foldmethod=expr
 setlocal foldexpr=v:lua.vim.treesitter.foldexpr()
 setlocal foldmarker={{{,}}}
@@ -22,6 +23,28 @@ setlocal foldlevel=99
 setlocal foldminlines=1
 setlocal foldnestmax=10
 setlocal foldenable
+72
+sil! normal! zo
+83
+sil! normal! zo
+84
+sil! normal! zo
+108
+sil! normal! zo
+118
+sil! normal! zo
+120
+sil! normal! zo
+139
+sil! normal! zo
+159
+sil! normal! zo
+let s:l = 135 - ((27 * winheight(0) + 27) / 55)
+if s:l < 1 | let s:l = 1 | endif
+keepjumps exe s:l
+normal! zt
+keepjumps 135
+normal! 0
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
@@ -35,7 +58,6 @@ if filereadable(s:sx)
 endif
 let &g:so = s:so_save | let &g:siso = s:siso_save
 set hlsearch
-nohlsearch
 doautoall SessionLoadPost
 unlet SessionLoad
 " vim: set ft=vim :
