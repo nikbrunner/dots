@@ -26,7 +26,9 @@
 //   with "images" only on an answer that has pasted images.
 //
 // Exit 0 on answer, 1 on cancel (Escape, close button), 2 on timeout, 64 on bad input.
-// Keys: Cmd+Return sends, Escape cancels, Return is a newline.
+// Keys: Cmd+Return sends, Escape cancels, Return is a newline. Tab and Shift+Tab move
+// through every control (a picked radio group is one stop), arrows within a question's
+// options, Space ticks or picks, and Option+Tab types a tab.
 // `bob-ask --self-test` checks the parsers and the image paste and save without a window.
 
 ObjC.import("AppKit");
@@ -154,10 +156,16 @@ function selfTest() {
 	eq(pasteImages(tv, board("public.png", png)), true, "raw png pastes");
 	eq(pasteImages(tv, board("public.file-url", $.NSURL.fileURLWithPath($(file)).absoluteString.js)), true, "image file pastes");
 	eq(pasteImages(tv, board("public.file-url", "file:///etc/hosts")), false, "non-image file falls back to text");
+	const both = $.NSPasteboard.pasteboardWithUniqueName, item = $.NSPasteboardItem.alloc.init;
+	both.clearContents;
+	item.setDataForType(png, $("public.png"));
+	item.setStringForType($("file:///nonexistent/bob-ask.png"), $("public.file-url"));
+	both.writeObjects($([item]));
+	eq(pasteImages(tv, both), true, "png with a dead file url pastes the png");
 	tv.insertText($("b"));
 	const paths = saveImages(tv, newImageDir());
 	const r = answer(tv.string.js, paths);
-	eq([r.text, paths.length], ["ab", 2], "two images saved, text stripped");
+	eq([r.text, paths.length], ["ab", 3], "three images saved, text stripped");
 	for (const p of paths) {
 		const rep = $.NSBitmapImageRep.imageRepWithData($.NSData.dataWithContentsOfFile($(p)));
 		eq([Number(rep.pixelsWide), Number(rep.pixelsHigh)], [2880, 1800], `${p} keeps full size`);
@@ -189,7 +197,9 @@ function pasteImages(tv, pb) {
 		const d = $.NSData.dataWithContentsOfURL($.NSURL.URLWithString(u));
 		if (!d.isNil() && !$.NSBitmapImageRep.imageRepWithData(d).isNil()) datas.push(d);
 	}
-	if (!files && pb.stringForType($("public.utf8-plain-text")).isNil()) {
+	// Raw data also covers file URLs that yield no image, such as a clipboard
+	// history entry whose file is gone or unreadable.
+	if (!datas.length && pb.stringForType($("public.utf8-plain-text")).isNil()) {
 		const d = ["public.png", "public.tiff"].map((t) => pb.dataForType($(t))).find((d) => !d.isNil());
 		if (d) datas.push(d);
 	}
@@ -237,6 +247,21 @@ function saveImages(tv, dir) {
 	return paths;
 }
 
+// Edit shortcuts for a text view. The Edit menu doesn't reliably get key equivalents
+// in this non-activating accessory panel, so the focused text view handles them.
+const EDIT_KEYS = { v: "paste:", c: "copy:", x: "cut:", a: "selectAll:", z: "undo:", Z: "redo:" };
+const editKeys = {
+	"performKeyEquivalent:": {
+		types: ["bool", ["id"]],
+		implementation: function (e) {
+			const mods = Number(e.modifierFlags) & ($.NSEventModifierFlagCommand | $.NSEventModifierFlagOption | $.NSEventModifierFlagControl);
+			const action = EDIT_KEYS[e.charactersIgnoringModifiers.js];
+			if (mods !== Number($.NSEventModifierFlagCommand) || !action || !this.window.firstResponder.isEqual(this)) return false;
+			return this.tryToPerformWith(action, null);
+		},
+	},
+};
+
 function write(stream, s) {
 	const h = stream === 1 ? $.NSFileHandle.fileHandleWithStandardOutput : $.NSFileHandle.fileHandleWithStandardError;
 	h.writeData($(s + "\n").dataUsingEncoding($.NSUTF8StringEncoding));
@@ -263,6 +288,8 @@ function scrollingText(frame, editable, text, cls = $.NSTextView) {
 	tv.automaticDashSubstitutionEnabled = false;
 	tv.string = $(text);
 	if (!editable) tv.drawsBackground = false;
+	// A text view draws no focus ring of its own; its scroll view draws one around it.
+	if (editable) scroll.focusRingType = $.NSFocusRingTypeExterior;
 	scroll.documentView = tv;
 	return { scroll, tv };
 }
@@ -272,7 +299,8 @@ function scrollingText(frame, editable, text, cls = $.NSTextView) {
 function makeWindow(W, H) {
 	const app = $.NSApplication.sharedApplication;
 	app.setActivationPolicy($.NSApplicationActivationPolicyAccessory);
-	// Cmd+C, V, X, A and Z reach text only through a main menu, so give the app an Edit menu.
+	// An Edit menu gives the filter field Cmd+C, V, X, A and Z where the menu reaches the panel;
+	// the text views map those keys themselves (editKeys).
 	const main = $.NSMenu.alloc.init, editItem = $.NSMenuItem.alloc.init, edit = $.NSMenu.alloc.initWithTitle($("Edit"));
 	[["Undo", "undo:", "z"], ["Redo", "redo:", "Z"], ["Cut", "cut:", "x"], ["Copy", "copy:", "c"],
 		["Paste", "paste:", "v"], ["Select All", "selectAll:", "a"]]
@@ -282,19 +310,77 @@ function makeWindow(W, H) {
 	app.mainMenu = main;
 
 	const handlers = {};
+	// Scrolls the focused control into view, for a form taller than the window.
+	const reveal = (win) => {
+		const r = win.firstResponder;
+		const v = r.isKindOfClass($.BobAskTextView) ? r.enclosingScrollView : r;
+		if (v.isKindOfClass($.NSView)) v.scrollRectToVisible(v.bounds);
+	};
 	// A text view turns Escape into complete: (word completion); here it cancels.
 	ObjC.registerSubclass({
 		name: "BobAskTextView",
 		superclass: "NSTextView",
-		methods: {
+		methods: Object.assign({
 			"complete:": { types: ["void", ["id"]], implementation: () => handlers.cancel() },
 			"cancelOperation:": { types: ["void", ["id"]], implementation: () => handlers.cancel() },
+			// Tab moves focus on; Option+Tab still types a tab.
+			"insertTab:": { types: ["void", ["id"]], implementation: function () { this.window.selectNextKeyView(this); reveal(this.window); } },
+			"insertBacktab:": { types: ["void", ["id"]], implementation: function () { this.window.selectPreviousKeyView(this); reveal(this.window); } },
+			"insertTabIgnoringFieldEditor:": {
+				types: ["void", ["id"]],
+				implementation: function () { this.insertTextReplacementRange($("\t"), this.selectedRange); },
+			},
 			"paste:": {
 				types: ["void", ["id"]],
 				implementation: function (s) { if (!pasteImages(this, $.NSPasteboard.generalPasteboard)) this.pasteAsPlainText(s); },
 			},
-		},
+		}, editKeys),
 	});
+	// Buttons, options and popups join the Tab order even with system keyboard navigation off.
+	const focusable = {
+		"acceptsFirstResponder": { types: ["bool", []], implementation: () => true },
+		// A click on any control makes the panel key, not only one on a text area.
+		"needsPanelToBecomeKey": { types: ["bool", []], implementation: () => true },
+		"canBecomeKeyView": { types: ["bool", []], implementation: function () { return !this.hiddenOrHasHiddenAncestor; } },
+	};
+	// Arrow keys move between the options of a question; on a radio they also pick.
+	const arrows = { 123: -1, 126: -1, 124: 1, 125: 1 };
+	ObjC.registerSubclass({
+		name: "BobAskButton",
+		superclass: "NSButton",
+		methods: Object.assign({
+			"keyDown:": {
+				types: ["void", ["id"]],
+				implementation: function (e) {
+					const step = arrows[Number(e.keyCode)];
+					const list = this.superview;
+					const win = this.window;
+					if (!step || !list.isKindOfClass($.NSStackView)) {
+						ObjC.super(this).keyDown(e);
+						return reveal(win);
+					}
+					const rows = list.arrangedSubviews.js.filter((b) => !b.hidden);
+					const at = rows.findIndex((b) => b.isEqual(this));
+					const next = rows[(at + step + rows.length) % rows.length];
+					this.window.makeFirstResponder(next);
+					if (next.identifier.js === "radio") next.performClick(null);
+					reveal(win);
+				},
+			},
+		}, focusable, {
+			// Once a radio is picked, Tab stops only at it and skips the rest of its group.
+			"canBecomeKeyView": {
+				types: ["bool", []],
+				implementation: function () {
+					if (this.hiddenOrHasHiddenAncestor) return false;
+					if (this.identifier.js !== "radio") return true;
+					const on = this.superview.arrangedSubviews.js.find((b) => !b.hidden && b.state === $.NSControlStateValueOn);
+					return !on || on.isEqual(this);
+				},
+			},
+		}),
+	});
+	ObjC.registerSubclass({ name: "BobAskPopUp", superclass: "NSPopUpButton", methods: focusable });
 	ObjC.registerSubclass({
 		name: "BobAskTarget",
 		protocols: ["NSWindowDelegate", "NSTextFieldDelegate"],
@@ -302,6 +388,8 @@ function makeWindow(W, H) {
 			"clicked:": { types: ["void", ["id"]], implementation: (s) => handlers.clicked(s) },
 			"picked:": { types: ["void", ["id"]], implementation: () => {} },
 			"windowWillClose:": { types: ["void", ["id"]], implementation: () => handlers.cancel() },
+			// The first click makes bob-ask the frontmost app, so tools that paste into it (Raycast) target it.
+			"windowDidBecomeKey:": { types: ["void", ["id"]], implementation: () => $.NSApplication.sharedApplication.activateIgnoringOtherApps(true) },
 			"controlTextDidChange:": { types: ["void", ["id"]], implementation: (n) => handlers.filter(n.object) },
 		},
 	});
@@ -319,14 +407,16 @@ function makeWindow(W, H) {
 		},
 	});
 
-	// A floating panel that never activates: it sits on top while Nik types
-	// elsewhere and takes keys only once he clicks into it.
+	// A floating panel that doesn't activate on appear: it sits on top while Nik
+	// types elsewhere and becomes key, and the app frontmost, once he clicks into it.
 	const win = $.NSPanel.alloc.initWithContentRectStyleMaskBackingDefer(
 		$.NSMakeRect(0, 0, W, H),
 		$.NSWindowStyleMaskTitled | $.NSWindowStyleMaskClosable | $.NSWindowStyleMaskResizable | $.NSWindowStyleMaskNonactivatingPanel,
 		$.NSBackingStoreBuffered, false);
 	win.floatingPanel = true;
 	win.becomesKeyOnlyIfNeeded = true;
+	// Tab follows the layout, top to bottom.
+	win.autorecalculatesKeyViewLoop = true;
 	win.hidesOnDeactivate = false;
 	win.title = "Bob";
 	win.minSize = $.NSMakeSize(360, 260);
@@ -335,7 +425,7 @@ function makeWindow(W, H) {
 	win.delegate = target;
 
 	let result = null;
-	const w = { app, win, content: win.contentView, target, handlers, W, H };
+	const w = { app, win, content: win.contentView, target, handlers, W, H, reveal: () => reveal(win) };
 	w.end = (code, extra) => {
 		if (result) return;
 		result = { r: Object.assign(w.snapshot(code === 0), extra, { gaveUp: code === 2, cancelled: code === 1 }), code };
@@ -354,7 +444,7 @@ function makeWindow(W, H) {
 function addBar(w, sendTitles) {
 	let x = w.W - M;
 	const button = (title, tag, hint) => {
-		const b = $.NSButton.alloc.initWithFrame($.NSMakeRect(0, 0, 10, BAR));
+		const b = $.BobAskButton.alloc.initWithFrame($.NSMakeRect(0, 0, 10, BAR));
 		b.bezelStyle = $.NSBezelStyleRounded;
 		b.title = $(title);
 		if (hint) {
@@ -394,8 +484,10 @@ function present(w, focusView, timeout) {
 	if (timeout > 0) later(timeout, () => w.end(2));
 
 	w.win.center;
-	w.win.makeFirstResponder(focusView);
 	w.win.orderFrontRegardless;
+	// Ordering front focuses the first key view, so the chosen focus goes after it.
+	w.win.makeFirstResponder(focusView);
+	w.reveal();
 	$.NSSound.soundNamed("Glass").play;
 	// A modal session would activate the app, so run the plain loop.
 	w.app.run;
@@ -443,13 +535,34 @@ function ask({ question, options, timeout, title, meta }) {
 	const head = header(title, meta);
 	const headH = head ? head.fittingSize.height + 10 : 0;
 
+	// Cmd+V in the read-only question goes to the answer; Tab skips the question.
+	let answerView = null;
+	ObjC.registerSubclass({
+		name: "BobAskQuestionView",
+		superclass: "NSTextView",
+		methods: Object.assign({
+			"canBecomeKeyView": { types: ["bool", []], implementation: () => false },
+			"validateMenuItem:": { types: ["bool", ["id"]], implementation: () => true },
+			"paste:": {
+				types: ["void", ["id"]],
+				implementation: function (s) { this.window.makeFirstResponder(answerView); answerView.paste(s); },
+			},
+		}, editKeys),
+	});
+
 	// The question pane fits its text and the answer starts at four lines; the
 	// window grows to hold both, up to 80% of the screen, past which the question scrolls.
-	const q = scrollingText($.NSMakeRect(0, 0, W - 2 * M, 1e4), false, question);
+	const q = scrollingText($.NSMakeRect(0, 0, W - 2 * M, 1e4), false, question, $.BobAskQuestionView);
 	const lm = q.tv.layoutManager;
+	// Scroll views report overlay scrollers until the app runs, then switch to the
+	// system style; measuring with the wider legacy scroller fits either.
+	q.scroll.scrollerStyle = $.NSScrollerStyleLegacy;
+	q.scroll.tile;
 	lm.ensureLayoutForTextContainer(q.tv.textContainer);
 	const border = q.scroll.frame.size.height - q.scroll.contentSize.height;
 	const qNeed = Math.ceil(lm.usedRectForTextContainer(q.tv.textContainer).size.height + border + 4);
+	q.scroll.scrollerStyle = $.NSScroller.preferredScrollerStyle;
+	q.scroll.tile;
 	const aH = Math.ceil(4 * lm.defaultLineHeightForFont(q.tv.font) + border + 4);
 	const divider = 9;
 	const chrome = headH + BAR + 3 * M + divider;
@@ -477,6 +590,7 @@ function ask({ question, options, timeout, title, meta }) {
 	q.tv.minSize = $.NSMakeSize(0, q.scroll.contentSize.height);
 	q.tv.sizeToFit;
 	const a = scrollingText($.NSMakeRect(0, 0, W - 2 * M, areaH - qH), true, "", $.BobAskTextView);
+	answerView = a.tv;
 	split.addSubview(q.scroll);
 	split.addSubview(a.scroll);
 	split.adjustSubviews;
@@ -485,7 +599,7 @@ function ask({ question, options, timeout, title, meta }) {
 
 	let popup = null;
 	if (options.length > 3) {
-		popup = $.NSPopUpButton.alloc.initWithFramePullsDown($.NSMakeRect(M, M, 220, BAR), false);
+		popup = $.BobAskPopUp.alloc.initWithFramePullsDown($.NSMakeRect(M, M, 220, BAR), false);
 		options.forEach((o) => popup.addItemWithTitle($(o)));
 		popup.autoresizingMask = $.NSViewMaxXMargin | $.NSViewMaxYMargin;
 		w.content.addSubview(popup);
@@ -548,8 +662,9 @@ function askForm({ title, meta, timeout, questions }) {
 	const blocks = questions.map((q, i) => {
 		label(q.question, 13);
 		if (q.meta.length) add(header("", q.meta), true);
+		let f = null;
 		if (q.options.length > 6) {
-			const f = $.NSTextField.alloc.init;
+			f = $.NSTextField.alloc.init;
 			f.placeholderString = $("Filter");
 			f.delegate = w.target;
 			f.tag = i;
@@ -557,9 +672,10 @@ function askForm({ title, meta, timeout, questions }) {
 		}
 		const rows = q.options.map((o) => {
 			const b = q.multi
-				? $.NSButton.checkboxWithTitleTargetAction($(o), w.target, "picked:")
-				: $.NSButton.radioButtonWithTitleTargetAction($(o), w.target, "picked:");
+				? $.BobAskButton.checkboxWithTitleTargetAction($(o), w.target, "picked:")
+				: $.BobAskButton.radioButtonWithTitleTargetAction($(o), w.target, "picked:");
 			b.state = q.default.includes(o) ? $.NSControlStateValueOn : $.NSControlStateValueOff;
+			if (!q.multi) b.identifier = $("radio");
 			return b;
 		});
 		if (rows.length) {
@@ -596,7 +712,7 @@ function askForm({ title, meta, timeout, questions }) {
 		grip.centerYAnchor.constraintEqualToAnchor(handle.centerYAnchor).active = true;
 		add(handle, true);
 		stack.setCustomSpacingAfterView(20, handle);
-		return { q, rows, tv: t.tv, height };
+		return { q, rows, tv: t.tv, height, first: f || rows[0] || t.tv };
 	});
 
 	// Dragging a handle by dy changes its area's height by the same amount.
@@ -628,7 +744,10 @@ function askForm({ title, meta, timeout, questions }) {
 	w.content.layoutSubtreeIfNeeded;
 	const maxH = Math.floor($.NSScreen.mainScreen.visibleFrame.size.height * 0.8);
 	w.win.setContentSize($.NSMakeSize(W, Math.max(260, Math.min(maxH, stack.frame.size.height + BAR + 2 * M))));
-	return present(w, blocks[0].tv, timeout);
+	// Open at the top; present then only scrolls if the first control is still hidden.
+	const top = stack.arrangedSubviews.js[0];
+	top.scrollRectToVisible(top.bounds);
+	return present(w, blocks[0].first, timeout);
 }
 
 function run(argv) {
