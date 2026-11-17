@@ -1,0 +1,650 @@
+#!/usr/bin/osascript -l JavaScript
+
+// bob-ask — ask Nik in a native window, print the answer as JSON
+//
+//   bob-ask [-o OPTION]... [-t SECONDS] [--title TEXT] [--meta "Label: value"]... QUESTION
+//
+//   -o       an option to pick; repeatable. The first is the default for Cmd+Return.
+//            Up to three show as buttons, more as a popup.
+//   -t       close as gave-up after this many seconds
+//   --title  a heading over the question
+//   --meta   a small context line under the title; repeatable. The value is selectable.
+//
+//   Prints {"choice", "text", "gaveUp", "cancelled"} as one line on stdout.
+//   Pasted images add "images": ["/abs/path/1.png", ...] after "text", on send only.
+//
+//   bob-ask --form < spec.json
+//
+//   Several questions in one window. The spec:
+//   {"title": "...", "meta": [["Label", "value"]], "timeout": 1800, "questions": [
+//     {"id": "q1", "question": "...", "meta": [["Label", "value"]],
+//      "options": ["a", "b"], "multi": false, "default": "a"}]}
+//   Only questions, id and question are required. "multi" turns the options into
+//   checkboxes, and its default may be an array. More than six options get a filter.
+//
+//   Prints {"answers": {"<id>": {"choice": "a" | ["a"], "text": "...", "images": [...]}}, "gaveUp", "cancelled"},
+//   with "images" only on an answer that has pasted images.
+//
+// Exit 0 on answer, 1 on cancel (Escape, close button), 2 on timeout, 64 on bad input.
+// Keys: Cmd+Return sends, Escape cancels, Return is a newline.
+// `bob-ask --self-test` checks the parsers and the image paste and save without a window.
+
+ObjC.import("AppKit");
+ObjC.import("stdlib");
+
+const USAGE = 'usage: bob-ask [-o OPTION]... [-t SECONDS] [--title TEXT] [--meta "Label: value"]... QUESTION\n       bob-ask --form < spec.json';
+const M = 16, BAR = 32;
+
+function parseArgs(argv) {
+	const out = { question: "", options: [], timeout: 0, title: "", meta: [] };
+	const words = [];
+	for (let i = 0; i < argv.length; i++) {
+		const a = argv[i];
+		if (["-o", "-t", "--title", "--meta"].includes(a)) {
+			if (i + 1 >= argv.length) throw new Error(`${a} needs a value`);
+			const v = argv[++i];
+			if (a === "-o") out.options.push(v);
+			else if (a === "--title") out.title = v;
+			else if (a === "--meta") {
+				const at = v.indexOf(":");
+				if (at < 1) throw new Error(`--meta needs "Label: value", got "${v}"`);
+				out.meta.push([v.slice(0, at).trim(), v.slice(at + 1).trim()]);
+			} else {
+				out.timeout = Number(v);
+				if (!(out.timeout > 0)) throw new Error(`-t needs a positive number, got "${v}"`);
+			}
+		} else words.push(a);
+	}
+	out.question = words.join(" ");
+	if (!out.question) throw new Error("missing QUESTION");
+	return out;
+}
+
+function parseMeta(meta, at) {
+	if (meta === undefined) return [];
+	const pair = (p) => Array.isArray(p) && p.length === 2 && p.every((x) => typeof x === "string");
+	if (!Array.isArray(meta) || !meta.every(pair)) throw new Error(`${at} must be an array of ["Label", "value"] pairs`);
+	return meta;
+}
+
+function parseSpec(text) {
+	let s;
+	try { s = JSON.parse(text); } catch (e) { throw new Error(`spec is not JSON: ${e.message}`); }
+	if (!s || typeof s !== "object") throw new Error("spec must be an object");
+	if (s.title !== undefined && typeof s.title !== "string") throw new Error("title must be a string");
+	const meta = parseMeta(s.meta, "meta");
+	if (s.timeout !== undefined && !(typeof s.timeout === "number" && s.timeout > 0)) throw new Error("timeout must be a positive number");
+	if (!Array.isArray(s.questions) || !s.questions.length) throw new Error("questions must be a non-empty array");
+	const ids = new Set();
+	const questions = s.questions.map((q, i) => {
+		const at = `questions[${i}]`;
+		if (!q || typeof q.id !== "string" || !q.id) throw new Error(`${at}.id must be a non-empty string`);
+		if (ids.has(q.id)) throw new Error(`${at}.id "${q.id}" is used twice`);
+		ids.add(q.id);
+		if (typeof q.question !== "string" || !q.question) throw new Error(`${at}.question must be a non-empty string`);
+		const options = q.options === undefined ? [] : q.options;
+		if (!Array.isArray(options) || !options.every((o) => typeof o === "string")) throw new Error(`${at}.options must be an array of strings`);
+		const multi = q.multi === true;
+		const def = q.default === undefined ? [] : [].concat(q.default);
+		if (!multi && def.length > 1) throw new Error(`${at}.default must be one option`);
+		for (const d of def) if (!options.includes(d)) throw new Error(`${at}.default "${d}" is not one of the options`);
+		return { id: q.id, question: q.question, meta: parseMeta(q.meta, `${at}.meta`), options, multi, default: def };
+	});
+	return { title: s.title || "", meta, timeout: s.timeout || 0, questions };
+}
+
+function selfTest() {
+	const eq = (a, b, msg) => {
+		if (JSON.stringify(a) !== JSON.stringify(b)) throw new Error(`${msg}: ${JSON.stringify(a)} != ${JSON.stringify(b)}`);
+	};
+	const throws = (f, arg, msg) => {
+		try { f(arg); } catch (e) { return; }
+		throw new Error(`${msg}: expected an error`);
+	};
+	eq(parseArgs(["Hi?"]), { question: "Hi?", options: [], timeout: 0, title: "", meta: [] }, "bare question");
+	eq(parseArgs(["-o", "Yes", "-o", "No", "-t", "30", "Go\non?"]),
+		{ question: "Go\non?", options: ["Yes", "No"], timeout: 30, title: "", meta: [] }, "options and timeout");
+	eq(parseArgs(["a", "-o", "x", "b"]).question, "a b", "words join");
+	eq(parseArgs(["--title", "T", "--meta", "Branch: feat/x:y", "--meta", "PR:28", "q"]),
+		{ question: "q", options: [], timeout: 0, title: "T", meta: [["Branch", "feat/x:y"], ["PR", "28"]] }, "title and meta");
+	throws(parseArgs, [], "no question");
+	throws(parseArgs, ["-o"], "dangling -o");
+	throws(parseArgs, ["-t", "soon", "q"], "bad timeout");
+	throws(parseArgs, ["-t", "0", "q"], "zero timeout");
+	throws(parseArgs, ["--meta", "no colon", "q"], "meta without label");
+	throws(parseArgs, ["--meta", ": value", "q"], "meta with empty label");
+
+	const spec = (questions, extra) => JSON.stringify(Object.assign({ questions }, extra));
+	eq(parseSpec(spec([{ id: "a", question: "A?" }])),
+		{ title: "", meta: [], timeout: 0, questions: [{ id: "a", question: "A?", meta: [], options: [], multi: false, default: [] }] }, "minimal spec");
+	eq(parseSpec(spec([{ id: "a", question: "A?", options: ["x", "y"], default: "y", meta: [["File", "a.ts"]] }], { title: "T", timeout: 60, meta: [["PR", "28"]] })),
+		{ title: "T", meta: [["PR", "28"]], timeout: 60, questions: [{ id: "a", question: "A?", meta: [["File", "a.ts"]], options: ["x", "y"], multi: false, default: ["y"] }] }, "single default and meta");
+	throws(parseSpec, spec([{ id: "a", question: "A?" }], { meta: [["only label"]] }), "meta pair too short");
+	throws(parseSpec, spec([{ id: "a", question: "A?", meta: "PR: 28" }]), "question meta not an array");
+	eq(parseSpec(spec([{ id: "a", question: "A?", options: ["x", "y"], multi: true, default: ["x", "y"] }])).questions[0].default,
+		["x", "y"], "multi defaults");
+	throws(parseSpec, "{", "not JSON");
+	throws(parseSpec, spec([]), "no questions");
+	throws(parseSpec, spec([{ question: "A?" }]), "missing id");
+	throws(parseSpec, spec([{ id: "a", question: "A?" }, { id: "a", question: "B?" }]), "duplicate id");
+	throws(parseSpec, spec([{ id: "a" }]), "missing question");
+	throws(parseSpec, spec([{ id: "a", question: "A?", options: ["x"], default: "z" }]), "default not an option");
+	throws(parseSpec, spec([{ id: "a", question: "A?", options: ["x", "y"], default: ["x", "y"] }]), "two defaults on single");
+	throws(parseSpec, spec([{ id: "a", question: "A?", options: [1] }]), "non-string option");
+	throws(parseSpec, spec([{ id: "a", question: "A?" }], { timeout: -1 }), "bad timeout");
+
+	eq(answer("a b", []), { text: "a b" }, "answer without images");
+	eq(answer("a\uFFFCb\uFFFC", ["/x/1.png", "/x/2.png"]), { text: "ab", images: ["/x/1.png", "/x/2.png"] }, "answer with images");
+
+	// Paste through the real path from private pasteboards, never Nik's clipboard.
+	const png = $.NSBitmapImageRep.alloc.initWithBitmapDataPlanesPixelsWidePixelsHighBitsPerSampleSamplesPerPixelHasAlphaIsPlanarColorSpaceNameBytesPerRowBitsPerPixel(
+		null, 2880, 1800, 8, 4, true, false, $.NSDeviceRGBColorSpace, 0, 0).representationUsingTypeProperties($.NSBitmapImageFileTypePNG, $.NSDictionary.dictionary);
+	const file = `${$.NSTemporaryDirectory().js}bob-ask-self-test-${$.NSProcessInfo.processInfo.processIdentifier}.png`;
+	png.writeToFileAtomically($(file), true);
+	const board = (type, value) => {
+		const pb = $.NSPasteboard.pasteboardWithUniqueName;
+		pb.clearContents;
+		typeof value === "string" ? pb.setStringForType($(value), $(type)) : pb.setDataForType(value, $(type));
+		return pb;
+	};
+	const tv = $.NSTextView.alloc.initWithFrame($.NSMakeRect(0, 0, 400, 100));
+	tv.richText = true;
+	eq(pasteImages(tv, board("public.utf8-plain-text", "hi")), false, "text is not an image");
+	tv.insertText($("a"));
+	eq(pasteImages(tv, board("public.png", png)), true, "raw png pastes");
+	eq(pasteImages(tv, board("public.file-url", $.NSURL.fileURLWithPath($(file)).absoluteString.js)), true, "image file pastes");
+	eq(pasteImages(tv, board("public.file-url", "file:///etc/hosts")), false, "non-image file falls back to text");
+	tv.insertText($("b"));
+	const paths = saveImages(tv, newImageDir());
+	const r = answer(tv.string.js, paths);
+	eq([r.text, paths.length], ["ab", 2], "two images saved, text stripped");
+	for (const p of paths) {
+		const rep = $.NSBitmapImageRep.imageRepWithData($.NSData.dataWithContentsOfFile($(p)));
+		eq([Number(rep.pixelsWide), Number(rep.pixelsHigh)], [2880, 1800], `${p} keeps full size`);
+	}
+	$.NSFileManager.defaultManager.removeItemAtPathError($(file), null);
+	$.NSFileManager.defaultManager.removeItemAtPathError($(paths[0]).stringByDeletingLastPathComponent, null);
+	return "ok";
+}
+
+// The answer of one text area: its text without the attachment marks, plus the
+// image paths when there are any.
+function answer(text, images) {
+	const r = { text: text.replace(/\uFFFC/g, "") };
+	if (images.length) r.images = images;
+	return r;
+}
+
+// Pastes image files or raw image data from pb as attachments; false when pb holds
+// neither, so the caller pastes plain text. Text wins over raw image data, since
+// apps that copy text often add a picture of it.
+function pasteImages(tv, pb) {
+	const datas = [];
+	let files = 0;
+	for (const it of pb.pasteboardItems.js || []) {
+		const u = it.stringForType($("public.file-url"));
+		if (u.isNil()) continue;
+		files++;
+		// shortcut: reads the whole file to test it is an image, fine for what gets copied into an answer.
+		const d = $.NSData.dataWithContentsOfURL($.NSURL.URLWithString(u));
+		if (!d.isNil() && !$.NSBitmapImageRep.imageRepWithData(d).isNil()) datas.push(d);
+	}
+	if (!files && pb.stringForType($("public.utf8-plain-text")).isNil()) {
+		const d = ["public.png", "public.tiff"].map((t) => pb.dataForType($(t))).find((d) => !d.isNil());
+		if (d) datas.push(d);
+	}
+	if (!datas.length) return false;
+	const s = $.NSMutableAttributedString.alloc.init;
+	for (const d of datas) {
+		const att = $.NSTextAttachment.alloc.initWithDataOfType(d, $("public.image"));
+		const img = $.NSImage.alloc.initWithData(d);
+		att.image = img;
+		// Shown as a thumbnail; the saved PNG keeps the full image.
+		const k = Math.min(1, 240 / img.size.width, 48 / img.size.height);
+		att.bounds = $.NSMakeRect(0, 0, img.size.width * k, img.size.height * k);
+		s.appendAttributedString($.NSAttributedString.attributedStringWithAttachment(att));
+	}
+	tv.insertTextReplacementRange(s, tv.selectedRange);
+	return true;
+}
+
+// A fresh folder per send; created on the first image saved.
+function newImageDir() {
+	const stamp = new Date().toISOString().replace(/[:.]/g, "-");
+	return { path: `${$.NSTemporaryDirectory().js}bob-ask/${stamp}-${$.NSProcessInfo.processInfo.processIdentifier}`, n: 0 };
+}
+
+// Writes each attachment in tv as a PNG into dir and returns the paths. A failed
+// image is reported on stderr and skipped, so the text answer still goes out.
+function saveImages(tv, dir) {
+	const paths = [], ts = tv.textStorage, str = ts.string.js;
+	for (let i = 0; i < str.length; i++) {
+		if (str[i] !== "\uFFFC") continue;
+		try {
+			const att = ts.attributeAtIndexEffectiveRange($.NSAttachmentAttributeName, i, null);
+			const data = att.contents.isNil() ? att.image.TIFFRepresentation : att.contents;
+			const rep = $.NSBitmapImageRep.imageRepWithData(data);
+			if (rep.isNil()) throw new Error("not an image");
+			const png = rep.representationUsingTypeProperties($.NSBitmapImageFileTypePNG, $.NSDictionary.dictionary);
+			if (!dir.n) $.NSFileManager.defaultManager.createDirectoryAtPathWithIntermediateDirectoriesAttributesError($(dir.path), true, $(), null);
+			const p = `${dir.path}/${++dir.n}.png`;
+			if (!png.writeToFileAtomically($(p), true)) throw new Error(`cannot write ${p}`);
+			paths.push(p);
+		} catch (e) {
+			write(2, `bob-ask: an image was not saved: ${e.message}`);
+		}
+	}
+	return paths;
+}
+
+function write(stream, s) {
+	const h = stream === 1 ? $.NSFileHandle.fileHandleWithStandardOutput : $.NSFileHandle.fileHandleWithStandardError;
+	h.writeData($(s + "\n").dataUsingEncoding($.NSUTF8StringEncoding));
+}
+
+function scrollingText(frame, editable, text, cls = $.NSTextView) {
+	const scroll = $.NSScrollView.alloc.initWithFrame(frame);
+	scroll.hasVerticalScroller = true;
+	scroll.borderType = $.NSBezelBorder;
+	const size = scroll.contentSize;
+	const tv = cls.alloc.initWithFrame($.NSMakeRect(0, 0, size.width, size.height));
+	tv.minSize = $.NSMakeSize(0, size.height);
+	tv.maxSize = $.NSMakeSize(1e7, 1e7);
+	tv.verticallyResizable = true;
+	tv.horizontallyResizable = false;
+	tv.autoresizingMask = $.NSViewWidthSizable;
+	tv.textContainer.widthTracksTextView = true;
+	tv.font = $.NSFont.systemFontOfSize(13);
+	tv.editable = editable;
+	// Rich only to hold pasted images; text still pastes plain.
+	tv.richText = editable;
+	tv.allowsUndo = true;
+	tv.automaticQuoteSubstitutionEnabled = false;
+	tv.automaticDashSubstitutionEnabled = false;
+	tv.string = $(text);
+	if (!editable) tv.drawsBackground = false;
+	scroll.documentView = tv;
+	return { scroll, tv };
+}
+
+// The window both modes share. A mode sets w.snapshot (the answer so far)
+// and handlers.clicked, then calls present().
+function makeWindow(W, H) {
+	const app = $.NSApplication.sharedApplication;
+	app.setActivationPolicy($.NSApplicationActivationPolicyAccessory);
+	// Cmd+C, V, X, A and Z reach text only through a main menu, so give the app an Edit menu.
+	const main = $.NSMenu.alloc.init, editItem = $.NSMenuItem.alloc.init, edit = $.NSMenu.alloc.initWithTitle($("Edit"));
+	[["Undo", "undo:", "z"], ["Redo", "redo:", "Z"], ["Cut", "cut:", "x"], ["Copy", "copy:", "c"],
+		["Paste", "paste:", "v"], ["Select All", "selectAll:", "a"]]
+		.forEach(([t, a, k]) => edit.addItemWithTitleActionKeyEquivalent($(t), a, $(k)));
+	editItem.submenu = edit;
+	main.addItem(editItem);
+	app.mainMenu = main;
+
+	const handlers = {};
+	// A text view turns Escape into complete: (word completion); here it cancels.
+	ObjC.registerSubclass({
+		name: "BobAskTextView",
+		superclass: "NSTextView",
+		methods: {
+			"complete:": { types: ["void", ["id"]], implementation: () => handlers.cancel() },
+			"cancelOperation:": { types: ["void", ["id"]], implementation: () => handlers.cancel() },
+			"paste:": {
+				types: ["void", ["id"]],
+				implementation: function (s) { if (!pasteImages(this, $.NSPasteboard.generalPasteboard)) this.pasteAsPlainText(s); },
+			},
+		},
+	});
+	ObjC.registerSubclass({
+		name: "BobAskTarget",
+		protocols: ["NSWindowDelegate", "NSTextFieldDelegate"],
+		methods: {
+			"clicked:": { types: ["void", ["id"]], implementation: (s) => handlers.clicked(s) },
+			"picked:": { types: ["void", ["id"]], implementation: () => {} },
+			"windowWillClose:": { types: ["void", ["id"]], implementation: () => handlers.cancel() },
+			"controlTextDidChange:": { types: ["void", ["id"]], implementation: (n) => handlers.filter(n.object) },
+		},
+	});
+	// The grip under a form text area; dragging it changes that area's height.
+	ObjC.registerSubclass({
+		name: "BobAskHandle",
+		superclass: "NSView",
+		methods: {
+			"mouseDown:": { types: ["void", ["id"]], implementation: function (e) { handlers.grab(this.identifier.js, e); } },
+			"mouseDragged:": { types: ["void", ["id"]], implementation: (e) => handlers.drag(e) },
+			"resetCursorRects": {
+				types: ["void", []],
+				implementation: function () { this.addCursorRectCursor(this.bounds, $.NSCursor.resizeUpDownCursor); },
+			},
+		},
+	});
+
+	// A floating panel that never activates: it sits on top while Nik types
+	// elsewhere and takes keys only once he clicks into it.
+	const win = $.NSPanel.alloc.initWithContentRectStyleMaskBackingDefer(
+		$.NSMakeRect(0, 0, W, H),
+		$.NSWindowStyleMaskTitled | $.NSWindowStyleMaskClosable | $.NSWindowStyleMaskResizable | $.NSWindowStyleMaskNonactivatingPanel,
+		$.NSBackingStoreBuffered, false);
+	win.floatingPanel = true;
+	win.becomesKeyOnlyIfNeeded = true;
+	win.hidesOnDeactivate = false;
+	win.title = "Bob";
+	win.minSize = $.NSMakeSize(360, 260);
+	win.releasedWhenClosed = false;
+	const target = $.BobAskTarget.alloc.init;
+	win.delegate = target;
+
+	let result = null;
+	const w = { app, win, content: win.contentView, target, handlers, W, H };
+	w.end = (code, extra) => {
+		if (result) return;
+		result = { r: Object.assign(w.snapshot(code === 0), extra, { gaveUp: code === 2, cancelled: code === 1 }), code };
+		app.stop(null);
+		// stop: takes effect after the next event, so post one.
+		app.postEventAtStart($.NSEvent.otherEventWithTypeLocationModifierFlagsTimestampWindowNumberContextSubtypeData1Data2(
+			$.NSEventTypeApplicationDefined, $.NSMakePoint(0, 0), 0, 0, 0, null, 0, 0, 0), true);
+	};
+	w.result = () => result;
+	handlers.cancel = () => w.end(1);
+	return w;
+}
+
+// Buttons right to left: the send titles in order, then Cancel. A button with a
+// shortcut shows it after its title, in a smaller font.
+function addBar(w, sendTitles) {
+	let x = w.W - M;
+	const button = (title, tag, hint) => {
+		const b = $.NSButton.alloc.initWithFrame($.NSMakeRect(0, 0, 10, BAR));
+		b.bezelStyle = $.NSBezelStyleRounded;
+		b.title = $(title);
+		if (hint) {
+			// The bridge can't call initWithString: on attributed strings; mutableString works.
+			const s = $.NSMutableAttributedString.alloc.init;
+			s.mutableString.setString($(`${title} ${hint}`));
+			const centered = $.NSMutableParagraphStyle.alloc.init;
+			centered.alignment = $.NSTextAlignmentCenter;
+			const all = { location: 0, length: s.length };
+			s.addAttributeValueRange($.NSFontAttributeName, b.font, all);
+			s.addAttributeValueRange($.NSParagraphStyleAttributeName, centered, all);
+			s.addAttributeValueRange($.NSFontAttributeName, $.NSFont.systemFontOfSize(10), { location: title.length + 1, length: hint.length });
+			b.attributedTitle = s;
+		}
+		b.sizeToFit;
+		const bw = Math.max(b.frame.size.width + 8, 80);
+		x -= bw;
+		b.frame = $.NSMakeRect(x, M, bw, BAR);
+		x -= 8;
+		b.tag = tag;
+		b.target = w.target;
+		b.action = "clicked:";
+		b.autoresizingMask = $.NSViewMinXMargin | $.NSViewMaxYMargin;
+		w.content.addSubview(b);
+		return b;
+	};
+	// The first send button takes Cmd+Return; plain Return stays a newline.
+	const sendButtons = sendTitles.map((t, i) => button(t, 100 + i, i === 0 ? "⌘↩" : ""));
+	button("Cancel", 1, "esc").keyEquivalent = $("\x1b");
+	sendButtons[0].keyEquivalent = $("\r");
+	sendButtons[0].keyEquivalentModifierMask = $.NSEventModifierFlagCommand;
+}
+
+function present(w, focusView, timeout) {
+	const later = (seconds, f) =>
+		$.NSRunLoop.currentRunLoop.addTimerForMode($.NSTimer.timerWithTimeIntervalRepeatsBlock(seconds, false, f), $.NSRunLoopCommonModes);
+	if (timeout > 0) later(timeout, () => w.end(2));
+
+	w.win.center;
+	w.win.makeFirstResponder(focusView);
+	w.win.orderFrontRegardless;
+	$.NSSound.soundNamed("Glass").play;
+	// A modal session would activate the app, so run the plain loop.
+	w.app.run;
+	w.win.orderOut(null);
+	return w.result();
+}
+
+// An optional bold title over small "Label: value" lines; values are selectable.
+// Returns null when there is neither.
+function header(title, meta) {
+	if (!title && !meta.length) return null;
+	const stack = (orientation, spacing) => {
+		const s = $.NSStackView.alloc.init;
+		s.orientation = orientation;
+		s.alignment = orientation === $.NSUserInterfaceLayoutOrientationVertical ? $.NSLayoutAttributeLeading : $.NSLayoutAttributeFirstBaseline;
+		s.spacing = spacing;
+		return s;
+	};
+	const small = (text) => {
+		const l = $.NSTextField.labelWithString($(text));
+		l.font = $.NSFont.systemFontOfSize(11);
+		l.textColor = $.NSColor.secondaryLabelColor;
+		return l;
+	};
+	const head = stack($.NSUserInterfaceLayoutOrientationVertical, 2);
+	if (title) {
+		const t = $.NSTextField.labelWithString($(title));
+		t.font = $.NSFont.boldSystemFontOfSize(15);
+		head.addArrangedSubview(t);
+		head.setCustomSpacingAfterView(6, t);
+	}
+	for (const [label, value] of meta) {
+		const row = stack($.NSUserInterfaceLayoutOrientationHorizontal, 4);
+		row.addArrangedSubview(small(`${label}:`));
+		const v = small(value);
+		v.selectable = true;
+		row.addArrangedSubview(v);
+		head.addArrangedSubview(row);
+	}
+	return head;
+}
+
+function ask({ question, options, timeout, title, meta }) {
+	const W = 560;
+	const head = header(title, meta);
+	const headH = head ? head.fittingSize.height + 10 : 0;
+
+	// The question pane fits its text and the answer starts at four lines; the
+	// window grows to hold both, up to 80% of the screen, past which the question scrolls.
+	const q = scrollingText($.NSMakeRect(0, 0, W - 2 * M, 1e4), false, question);
+	const lm = q.tv.layoutManager;
+	lm.ensureLayoutForTextContainer(q.tv.textContainer);
+	const border = q.scroll.frame.size.height - q.scroll.contentSize.height;
+	const qNeed = Math.ceil(lm.usedRectForTextContainer(q.tv.textContainer).size.height + border + 4);
+	const aH = Math.ceil(4 * lm.defaultLineHeightForFont(q.tv.font) + border + 4);
+	const divider = 9;
+	const chrome = headH + BAR + 3 * M + divider;
+	const maxH = Math.floor($.NSScreen.mainScreen.visibleFrame.size.height * 0.8);
+	const H = Math.max(260, Math.min(maxH, chrome + qNeed + aH));
+
+	const w = makeWindow(W, H);
+	let top = H - M;
+	if (head) {
+		const hh = headH - 10;
+		head.frame = $.NSMakeRect(M, top - hh, W - 2 * M, hh);
+		head.autoresizingMask = $.NSViewWidthSizable | $.NSViewMinYMargin;
+		w.content.addSubview(head);
+		top -= headH;
+	}
+
+	// Question on top, answer below, split by a divider that resizes both;
+	// the split grows with the window.
+	const areaTop = BAR + 2 * M, areaH = top - areaTop, qH = Math.min(qNeed, areaH - divider - aH);
+	const split = $.NSSplitView.alloc.initWithFrame($.NSMakeRect(M, areaTop, W - 2 * M, areaH));
+	split.vertical = false;
+	split.dividerStyle = $.NSSplitViewDividerStylePaneSplitter;
+	split.autoresizingMask = $.NSViewWidthSizable | $.NSViewHeightSizable;
+	q.scroll.frame = $.NSMakeRect(0, 0, W - 2 * M, qH);
+	q.tv.minSize = $.NSMakeSize(0, q.scroll.contentSize.height);
+	q.tv.sizeToFit;
+	const a = scrollingText($.NSMakeRect(0, 0, W - 2 * M, areaH - qH), true, "", $.BobAskTextView);
+	split.addSubview(q.scroll);
+	split.addSubview(a.scroll);
+	split.adjustSubviews;
+	split.setPositionOfDividerAtIndex(qH, 0);
+	w.content.addSubview(split);
+
+	let popup = null;
+	if (options.length > 3) {
+		popup = $.NSPopUpButton.alloc.initWithFramePullsDown($.NSMakeRect(M, M, 220, BAR), false);
+		options.forEach((o) => popup.addItemWithTitle($(o)));
+		popup.autoresizingMask = $.NSViewMaxXMargin | $.NSViewMaxYMargin;
+		w.content.addSubview(popup);
+	}
+	const asButtons = options.length > 0 && options.length <= 3;
+	const sendTitles = asButtons ? options : ["Send"];
+	addBar(w, sendTitles);
+
+	w.snapshot = (send) => Object.assign({ choice: "" }, answer(a.tv.string.js, send ? saveImages(a.tv, newImageDir()) : []));
+	w.handlers.clicked = (s) => {
+		// The bridge hands the tag over as a string.
+		const tag = Number(s.tag);
+		if (tag === 1) return w.end(1);
+		const choice = asButtons ? sendTitles[tag - 100] : popup ? popup.titleOfSelectedItem.js : "";
+		w.end(0, { choice });
+	};
+	return present(w, a.tv, timeout);
+}
+
+function askForm({ title, meta, timeout, questions }) {
+	const w = makeWindow(600, 640);
+	const { W, H } = w;
+
+	const scroll = $.NSScrollView.alloc.initWithFrame($.NSMakeRect(0, BAR + 2 * M, W, H - BAR - 2 * M));
+	scroll.hasVerticalScroller = true;
+	// A shown scroller narrows the form, so it may only appear once the form overflows.
+	scroll.autohidesScrollers = true;
+	scroll.drawsBackground = false;
+	scroll.autoresizingMask = $.NSViewWidthSizable | $.NSViewHeightSizable;
+	w.content.addSubview(scroll);
+
+	const stack = $.NSStackView.alloc.init;
+	stack.orientation = $.NSUserInterfaceLayoutOrientationVertical;
+	stack.alignment = $.NSLayoutAttributeLeading;
+	stack.spacing = 8;
+	stack.edgeInsets = { top: M, left: M, bottom: M, right: M };
+	stack.translatesAutoresizingMaskIntoConstraints = false;
+	scroll.documentView = stack;
+	const clip = scroll.contentView;
+	stack.leadingAnchor.constraintEqualToAnchor(clip.leadingAnchor).active = true;
+	stack.topAnchor.constraintEqualToAnchor(clip.topAnchor).active = true;
+	stack.widthAnchor.constraintEqualToAnchor(clip.widthAnchor).active = true;
+
+	const add = (view, fullWidth) => {
+		stack.addArrangedSubview(view);
+		if (fullWidth) view.widthAnchor.constraintEqualToAnchorConstant(stack.widthAnchor, -2 * M).active = true;
+		return view;
+	};
+	const label = (text, size) => {
+		const l = $.NSTextField.wrappingLabelWithString($(text));
+		l.font = $.NSFont.boldSystemFontOfSize(size);
+		return add(l, true);
+	};
+
+	const head = header(title, meta);
+	if (head) {
+		add(head, true);
+		stack.setCustomSpacingAfterView(16, head);
+	}
+	const blocks = questions.map((q, i) => {
+		label(q.question, 13);
+		if (q.meta.length) add(header("", q.meta), true);
+		if (q.options.length > 6) {
+			const f = $.NSTextField.alloc.init;
+			f.placeholderString = $("Filter");
+			f.delegate = w.target;
+			f.tag = i;
+			add(f).widthAnchor.constraintEqualToConstant(240).active = true;
+		}
+		const rows = q.options.map((o) => {
+			const b = q.multi
+				? $.NSButton.checkboxWithTitleTargetAction($(o), w.target, "picked:")
+				: $.NSButton.radioButtonWithTitleTargetAction($(o), w.target, "picked:");
+			b.state = q.default.includes(o) ? $.NSControlStateValueOn : $.NSControlStateValueOff;
+			return b;
+		});
+		if (rows.length) {
+			// One list per question keeps each question's radio buttons a group of their own.
+			const list = $.NSStackView.alloc.init;
+			list.orientation = $.NSUserInterfaceLayoutOrientationVertical;
+			list.alignment = $.NSLayoutAttributeLeading;
+			list.spacing = 4;
+			rows.forEach((b) => list.addArrangedSubview(b));
+			add(list);
+		}
+		// A text-only question gets the taller area, since the text is the whole answer.
+		const t = scrollingText($.NSMakeRect(0, 0, 100, 100), true, "", $.BobAskTextView);
+		t.scroll.translatesAutoresizingMaskIntoConstraints = false;
+		const height = t.scroll.heightAnchor.constraintEqualToConstant(rows.length ? 64 : 160);
+		height.active = true;
+		add(t.scroll, true);
+		stack.setCustomSpacingAfterView(0, t.scroll);
+
+		const handle = $.BobAskHandle.alloc.initWithFrame($.NSMakeRect(0, 0, 100, 10));
+		handle.identifier = $(String(i));
+		handle.translatesAutoresizingMaskIntoConstraints = false;
+		handle.heightAnchor.constraintEqualToConstant(10).active = true;
+		const grip = $.NSBox.alloc.initWithFrame($.NSMakeRect(0, 0, 36, 4));
+		grip.boxType = $.NSBoxCustom;
+		grip.borderWidth = 0;
+		grip.cornerRadius = 2;
+		grip.fillColor = $.NSColor.tertiaryLabelColor;
+		grip.translatesAutoresizingMaskIntoConstraints = false;
+		handle.addSubview(grip);
+		grip.widthAnchor.constraintEqualToConstant(36).active = true;
+		grip.heightAnchor.constraintEqualToConstant(4).active = true;
+		grip.centerXAnchor.constraintEqualToAnchor(handle.centerXAnchor).active = true;
+		grip.centerYAnchor.constraintEqualToAnchor(handle.centerYAnchor).active = true;
+		add(handle, true);
+		stack.setCustomSpacingAfterView(20, handle);
+		return { q, rows, tv: t.tv, height };
+	});
+
+	// Dragging a handle by dy changes its area's height by the same amount.
+	let drag = null;
+	w.handlers.grab = (id, e) => {
+		const c = blocks[Number(id)].height;
+		drag = { c, y: e.locationInWindow.y, h: c.constant };
+	};
+	w.handlers.drag = (e) => {
+		if (drag) drag.c.constant = Math.max(40, drag.h + drag.y - e.locationInWindow.y);
+	};
+
+	w.handlers.filter = (field) => {
+		const s = field.stringValue.js.toLowerCase();
+		blocks[field.tag].rows.forEach((b) => (b.hidden = !b.title.js.toLowerCase().includes(s)));
+	};
+	w.snapshot = (send) => {
+		const answers = {}, dir = newImageDir();
+		for (const { q, rows, tv } of blocks) {
+			const on = rows.filter((b) => b.state === $.NSControlStateValueOn).map((b) => b.title.js);
+			answers[q.id] = Object.assign({ choice: q.multi ? on : on[0] || "" }, answer(tv.string.js, send ? saveImages(tv, dir) : []));
+		}
+		return { answers };
+	};
+	w.handlers.clicked = (s) => w.end(Number(s.tag) === 1 ? 1 : 0);
+	addBar(w, ["Send"]);
+
+	// Fit the window to the form, up to 80% of the screen; past that the form scrolls.
+	w.content.layoutSubtreeIfNeeded;
+	const maxH = Math.floor($.NSScreen.mainScreen.visibleFrame.size.height * 0.8);
+	w.win.setContentSize($.NSMakeSize(W, Math.max(260, Math.min(maxH, stack.frame.size.height + BAR + 2 * M))));
+	return present(w, blocks[0].tv, timeout);
+}
+
+function run(argv) {
+	if (argv[0] === "--self-test") return selfTest();
+	let args;
+	try {
+		if (argv[0] === "--form") {
+			if (argv.length > 1) throw new Error("--form takes no arguments, the spec comes on stdin");
+			const data = $.NSFileHandle.fileHandleWithStandardInput.readDataToEndOfFile;
+			args = parseSpec($.NSString.alloc.initWithDataEncoding(data, $.NSUTF8StringEncoding).js || "");
+		} else args = parseArgs(argv);
+	} catch (e) {
+		write(2, `bob-ask: ${e.message}\n${USAGE}`);
+		$.exit(64);
+	}
+	const { r, code } = argv[0] === "--form" ? askForm(args) : ask(args);
+	write(1, JSON.stringify(r));
+	$.exit(code);
+}
