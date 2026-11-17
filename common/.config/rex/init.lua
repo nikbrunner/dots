@@ -197,6 +197,4 @@ rex.action({
 rex.bind("cmd+b", "bob_toggle")
 
 bind_popup("cmd+alt+g", "glab-tui", { "glab-tui" }, 0.95, 0.8, true)
--- bind_popup("cmd+shift+d", "lazydocker", { "lazydocker" }, 0.8, 0.8)
--- bind_popup("cmd+shift+f", "pick-font", { "pick-font" }, 0.5, 0.5) -- pick-font can't switch Rex's font: the app keeps it in its plist and only reads it on launch.
--- bind_popup("cmd+shift+w", "bm", { "bm" }, 0.5, 0.35)
+bind_popup("cmd+alt+f", "pick-font", { "pick-font" }, 0.5, 0.5)
