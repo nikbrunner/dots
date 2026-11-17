@@ -11,31 +11,31 @@ gui:
   # Theme colors managed by Black Atom Livery
   theme:
     activeBorderColor:
-      - "#ef9369"
+      - "#e4e4e4"
       - bold
     inactiveBorderColor:
-      - "#857f7a"
+      - "#82807d"
     optionsTextColor:
       - "#79b5cc"
     selectedLineBgColor:
-      - "#4a4342"
+      - "#2b2826"
     cherryPickedCommitBgColor:
-      - "#3b4a50"
+      - "#2e424a"
     cherryPickedCommitFgColor:
       - "#79b5cc"
     unstagedChangesColor:
-      - "#f47a7d"
+      - "#dd7577"
     defaultFgColor:
-      - "#d9ccba"
+      - "#edeae8"
     searchingActiveBorderColor:
       - "#d6b174"
 
     markedBaseCommitBgColor:
-      - "#52493a"
+      - "#4d412d"
     markedBaseCommitFgColor:
-      - "#d9ccba"
+      - "#edeae8"
   authorColors:
-    "*": "#c9a0ba"
+    "*": "#8e8c89"
   branchColors:
     "main": "#e74c3c"
     "master": "#e74c3c"

@@ -409,12 +409,18 @@
       "feat/editor-tool-rail": {
         "locks": [],
         "recent": [
+          "frontend/src/features/labels-editor/labels-panel.tsx",
+          "oil:///Users/brunner/repos/imfusion/cp/labels-web-editor-tool-rail/frontend/src/features/labels-editor/",
+          "oil:///Users/brunner/repos/imfusion/cp/labels-web-editor-tool-rail/frontend/src/features/",
+          "oil:///Users/brunner/repos/imfusion/cp/labels-web-editor-tool-rail/frontend/src/",
+          "oil:///Users/brunner/repos/imfusion/cp/labels-web-editor-tool-rail/frontend/src/lib/",
+          "oil:///Users/brunner/repos/imfusion/cp/labels-web-editor-tool-rail/frontend/src/lib/imaging/",
+          "frontend/src/lib/imaging/label-map-editor.ts",
           "handoffs/2026-11-16-editor-tool-rail.md",
           "oil:///Users/brunner/repos/imfusion/cp/labels-web-editor-tool-rail/handoffs/",
-          "oil:///Users/brunner/repos/imfusion/cp/labels-web-editor-tool-rail/",
-          "oil:///Users/brunner/repos/imfusion/cp/labels-web-editor-tool-rail/docs/"
+          "oil:///Users/brunner/repos/imfusion/cp/labels-web-editor-tool-rail/"
         ],
-        "lastAccessed": 1794853201
+        "lastAccessed": 1794916084
       }
     },
     "~/repos/imfusion/cp/labels-web-feat-CP-204-data-tags": {
@@ -533,18 +539,18 @@
           }
         ],
         "recent": [
+          "src/integrations/label-panel/label-panel-view.tsx",
+          "src/integrations/label-panel/label-panel.stories.tsx",
+          "src/components/callout/callout.tsx",
           "src/components/tool-panel/tool-panel.module.css",
           ".storybook/examples/labels-editor/labels-app.tsx",
           ".storybook/examples/labels-editor/labels-editor.tsx",
           "src/integrations/label-panel/label-panel.module.css",
           "docs/user-guide/AgentTooling.mdx",
           "oil:///Users/brunner/repos/imfusion/websdk/web-ui/",
-          "src/components/button/button.tsx",
-          "oil:///Users/brunner/repos/imfusion/websdk/web-ui/src/components/button/",
-          "src/components/dialog/dialog.tsx",
-          "src/components/card/card.tsx"
+          "src/components/button/button.tsx"
         ],
-        "lastAccessed": 1794856908
+        "lastAccessed": 1794913833
       }
     },
     "~/repos/imfusion/websdk/web-ui-WEBSDK-290-view-tools-integration": {
@@ -683,6 +689,7 @@
           }
         ],
         "recent": [
+          "common/.local/bin/bob-ask",
           "common/.config/rex/init.lua",
           "common/.zshrc",
           "oil:///Users/brunner/repos/nikbrunner/dots/",
@@ -691,10 +698,9 @@
           "common/.config/black-atom/livery/config.json",
           "oil:///Users/brunner/repos/nikbrunner/dots/common/.config/black-atom/livery/",
           "oil:///Users/brunner/repos/nikbrunner/dots/common/.config/nvim/plugin/50_specs/black_atom/",
-          "common/.config/nvim/plugin/50_specs/black_atom/radar.lua",
-          "common/.config/nvim/plugin/10_options/base.lua"
+          "common/.config/nvim/plugin/50_specs/black_atom/radar.lua"
         ],
-        "lastAccessed": 1794818042
+        "lastAccessed": 1794921958
       }
     },
     "~/repos/nikbrunner/fonts": {

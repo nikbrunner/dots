@@ -1,0 +1,106 @@
+let SessionLoad = 1
+let s:so_save = &g:so | let s:siso_save = &g:siso | setg so=0 siso=0 | setl so=-1 siso=-1
+let v:this_session=expand("<sfile>:p")
+doautoall SessionLoadPre
+silent only
+silent tabonly
+cd ~/repos/imfusion/cp/labels-web-editor-tool-rail
+if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
+  let s:wipebuf = bufnr('%')
+endif
+let s:shortmess_save = &shortmess
+set shortmess+=aoO
+badd +73 frontend/src/features/labels-editor/labels-panel.tsx
+argglobal
+%argdel
+edit frontend/src/features/labels-editor/labels-panel.tsx
+let s:save_splitbelow = &splitbelow
+let s:save_splitright = &splitright
+set splitbelow splitright
+wincmd _ | wincmd |
+vsplit
+1wincmd h
+wincmd w
+let &splitbelow = s:save_splitbelow
+let &splitright = s:save_splitright
+wincmd t
+let s:save_winminheight = &winminheight
+let s:save_winminwidth = &winminwidth
+set winminheight=0
+set winheight=1
+set winminwidth=0
+set winwidth=1
+exe 'vert 1resize ' . ((&columns * 133 + 133) / 267)
+exe 'vert 2resize ' . ((&columns * 133 + 133) / 267)
+argglobal
+setlocal foldmethod=expr
+setlocal foldexpr=v:lua.vim.treesitter.foldexpr()
+setlocal foldmarker={{{,}}}
+setlocal foldignore=#
+setlocal foldlevel=99
+setlocal foldminlines=1
+setlocal foldnestmax=10
+setlocal foldenable
+37
+sil! normal! zo
+66
+sil! normal! zo
+67
+sil! normal! zo
+68
+sil! normal! zo
+let s:l = 73 - ((26 * winheight(0) + 27) / 55)
+if s:l < 1 | let s:l = 1 | endif
+keepjumps exe s:l
+normal! zt
+keepjumps 73
+normal! 016|
+wincmd w
+argglobal
+if bufexists(fnamemodify("frontend/src/features/labels-editor/labels-panel.tsx", ":p")) | buffer frontend/src/features/labels-editor/labels-panel.tsx | else | edit frontend/src/features/labels-editor/labels-panel.tsx | endif
+if &buftype ==# 'terminal'
+  silent file frontend/src/features/labels-editor/labels-panel.tsx
+endif
+setlocal foldmethod=expr
+setlocal foldexpr=v:lua.vim.treesitter.foldexpr()
+setlocal foldmarker={{{,}}}
+setlocal foldignore=#
+setlocal foldlevel=99
+setlocal foldminlines=1
+setlocal foldnestmax=10
+setlocal foldenable
+37
+sil! normal! zo
+66
+sil! normal! zo
+67
+sil! normal! zo
+68
+sil! normal! zo
+let s:l = 75 - ((28 * winheight(0) + 27) / 55)
+if s:l < 1 | let s:l = 1 | endif
+keepjumps exe s:l
+normal! zt
+keepjumps 75
+normal! 016|
+wincmd w
+exe 'vert 1resize ' . ((&columns * 133 + 133) / 267)
+exe 'vert 2resize ' . ((&columns * 133 + 133) / 267)
+tabnext 1
+if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
+  silent exe 'bwipe ' . s:wipebuf
+endif
+unlet! s:wipebuf
+set winheight=1 winwidth=20
+let &shortmess = s:shortmess_save
+let &winminheight = s:save_winminheight
+let &winminwidth = s:save_winminwidth
+let s:sx = expand("<sfile>:p:r")."x.vim"
+if filereadable(s:sx)
+  exe "source " . fnameescape(s:sx)
+endif
+let &g:so = s:so_save | let &g:siso = s:siso_save
+set hlsearch
+doautoall SessionLoadPost
+unlet SessionLoad
+" vim: set ft=vim :

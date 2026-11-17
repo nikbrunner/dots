@@ -2,7 +2,7 @@
 # https://github.com/imrajyavardhan12/spectre-ghostty-config
 
 # Colors
-theme = black-atom-minium-sienna-dark.conf
+theme = black-atom-mono-dark.conf
 bold-is-bright = true
 
 # Window
@@ -21,7 +21,7 @@ adjust-underline-position = 3
 
 # Fonts
 font-size = 13
-font-family = Annotation Mono Cursive
+font-family = TX-02
 font-style-bold = Bold
 font-thicken = false
 

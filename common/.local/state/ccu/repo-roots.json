@@ -337,6 +337,8 @@
       "~/repos/imfusion/cp/labels-web-data-list-redesign/frontend/node_modules/@imfusion/web-ui/dist/components",
       "~/repos/imfusion/cp/labels-web-editor-tool-rail",
       "~/repos/imfusion/cp/labels-web-editor-tool-rail/frontend",
+      "~/repos/imfusion/cp/labels-web-editor-tool-rail/frontend/src/features/labels-editor",
+      "~/repos/imfusion/cp/labels-web-editor-tool-rail/frontend/src/features/labels-editor/hooks",
       "~/repos/imfusion/cp/labels-web-feat-CP-204-data-tags",
       "~/repos/imfusion/cp/labels-web-feat-CP-204-data-tags/bff",
       "~/repos/imfusion/cp/labels-web-feat-CP-204-data-tags/e2e",
@@ -371,6 +373,7 @@
       "~/repos/imfusion/cp/labels-web-labels-editor/handoffs/reviews-slice-6",
       "~/repos/imfusion/cp/labels-web-labels-editor/handoffs/reviews-slice-7",
       "~/repos/imfusion/cp/labels-web-labels-editor/local-setup",
+      "~/repos/imfusion/cp/labels-web-migrate-e2e-tests",
       "~/repos/imfusion/cp/labels-web-navbar-rail",
       "~/repos/imfusion/cp/labels-web-navbar-rail/frontend",
       "~/repos/imfusion/cp/labels-web-rail-toggle",
@@ -394,7 +397,7 @@
       "~/repos/imfusion/cp/labels-web/local-setup",
       "~/repos/imfusion/cp/review-labels-web-16-playwright-e2e"
     ],
-    "last_seen": "2026-11-16"
+    "last_seen": "2026-11-17"
   },
   "cp/license-server": {
     "root": "~/repos/imfusion/cp/license-server",
@@ -462,9 +465,10 @@
     "name": "agents",
     "work": false,
     "session_dirs": [
-      "~/repos/nikbrunner/agents"
+      "~/repos/nikbrunner/agents",
+      "~/repos/nikbrunner/agents/mods/dash"
     ],
-    "last_seen": "2026-11-02"
+    "last_seen": "2026-11-17"
   },
   "nikbrunner/airship": {
     "root": "~/repos/nikbrunner/airship",
@@ -563,13 +567,14 @@
       "~/repos/nikbrunner/dots/common/.config/nvim",
       "~/repos/nikbrunner/dots/common/.config/nvim/plugin/50_specs",
       "~/repos/nikbrunner/dots/common/.config/nvim/sessions",
+      "~/repos/nikbrunner/dots/common/.local/bin",
       "~/repos/nikbrunner/dots/common/.local/share/file-picker",
       "~/repos/nikbrunner/dots/common/.pi",
       "~/repos/nikbrunner/dots/macos/.config/sketchybar",
       "~/repos/nikbrunner/dots/macos/.config/sketchybar/plugins",
       "~/repos/nikbrunner/dots/macos/.config/tuna"
     ],
-    "last_seen": "2026-10-28"
+    "last_seen": "2026-11-17"
   },
   "nikbrunner/fonts": {
     "root": "~/repos/nikbrunner/fonts",
@@ -853,11 +858,13 @@
       "~/repos/imfusion/websdk/web-ui",
       "~/repos/imfusion/websdk/web-ui-WEBSDK-290-view-tools-integration",
       "~/repos/imfusion/websdk/web-ui-WEBSDK-292-layout-mode-integration",
+      "~/repos/imfusion/websdk/web-ui-absorb-icons",
       "~/repos/imfusion/websdk/web-ui-annotation-type-icons",
       "~/repos/imfusion/websdk/web-ui-app-shell-rail",
       "~/repos/imfusion/websdk/web-ui-appearance-toggle",
       "~/repos/imfusion/websdk/web-ui-aside-scroll",
       "~/repos/imfusion/websdk/web-ui-brush-integrations",
+      "~/repos/imfusion/websdk/web-ui-callout-compact",
       "~/repos/imfusion/websdk/web-ui-codeblock-scroll",
       "~/repos/imfusion/websdk/web-ui-fix-storybook-docgen-import",
       "~/repos/imfusion/websdk/web-ui-fix-storybook-docgen-import/.teamcity",
@@ -866,6 +873,7 @@
       "~/repos/imfusion/websdk/web-ui-ioskeley-mono",
       "~/repos/imfusion/websdk/web-ui-logo-column",
       "~/repos/imfusion/websdk/web-ui-morphable-product-logo",
+      "~/repos/imfusion/websdk/web-ui-navbar-improvements",
       "~/repos/imfusion/websdk/web-ui-pr-review-skill",
       "~/repos/imfusion/websdk/web-ui-rail-toggle",
       "~/repos/imfusion/websdk/web-ui-spacing-alignment",
@@ -915,7 +923,7 @@
       "~/repos/imfusion/websdk/websdk-272-rich-link",
       "~/repos/imfusion/websdk/websdk-306-table-selection"
     ],
-    "last_seen": "2026-11-16"
+    "last_seen": "2026-11-17"
   },
   "wt/cl": {
     "root": "/private/tmp/claude-501/-Users-brunner-repos-nikbrunner-agents/5b5c5803-cdda-4cf8-8753-681a497a5a39/scratchpad/wt/cl",
