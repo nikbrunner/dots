@@ -5,8 +5,11 @@
 //   bob-ask [-o OPTION]... [-t SECONDS] [--title TEXT] [--meta "Label: value"]... QUESTION
 //
 //   -o       an option to pick; repeatable. The first is the default for Cmd+Return.
-//            Up to three show as buttons, more as a popup.
-//   -t       close as gave-up after this many seconds
+//            Up to three show as buttons, more as a popup. Buttons too wide for one
+//            row stack. With options there is also a plain Send (Cmd+Shift+Return),
+//            which sends the text with "choice": "", or with the popup option Nik
+//            picked himself.
+//   -t      close as gave-up after this many seconds
 //   --title  a heading over the question
 //   --meta   a small context line under the title; repeatable. The value is selectable.
 //
@@ -23,19 +26,37 @@
 //   checkboxes, and its default may be an array. More than six options get a filter.
 //
 //   Prints {"answers": {"<id>": {"choice": "a" | ["a"], "text": "...", "images": [...]}}, "gaveUp", "cancelled"},
-//   with "images" only on an answer that has pasted images.
+//   with "images" only on an answer that has pasted images. A form with options has
+//   "Send with choices" (Cmd+Return) and a plain Send (Cmd+Shift+Return), which leaves
+//   out the preset defaults: a question Nik picked or ticked in keeps its choice, any
+//   other gets "", or [] on a multi question.
 //
 // Exit 0 on answer, 1 on cancel (Escape, close button), 2 on timeout, 64 on bad input.
-// Keys: Cmd+Return sends, Escape cancels, Return is a newline. Tab and Shift+Tab move
-// through every control (a picked radio group is one stop), arrows within a question's
-// options, Space ticks or picks, and Option+Tab types a tab.
-// `bob-ask --self-test` checks the parsers and the image paste and save without a window.
+// Keys: Cmd+Return sends with the default option or the picked choices, Cmd+Shift+Return
+// sends the text without any option, Escape cancels, Return is a newline. Tab and
+// Shift+Tab move through every control (a picked radio group is one stop), arrows within
+// a question's options, Space ticks or picks, and Option+Tab types a tab.
+// `bob-ask --self-test` checks the parsers, the image paste and save, the button layout
+// and the send shortcuts without showing a window.
+// BOB_ASK_SNAPSHOT=/abs/path.png renders the dialog into that PNG without showing it, and exits.
 
 ObjC.import("AppKit");
 ObjC.import("stdlib");
 
 const USAGE = 'usage: bob-ask [-o OPTION]... [-t SECONDS] [--title TEXT] [--meta "Label: value"]... QUESTION\n       bob-ask --form < spec.json';
 const M = 16, BAR = 32;
+
+// Set per window; the registered classes reach the current window through them.
+let handlers, answerView;
+// When set, present hands it the built window in place of showing it.
+let probe = null;
+// A process can build several windows (self-test); a class registers once.
+const registered = new Set();
+const register = (spec) => {
+	if (registered.has(spec.name)) return;
+	registered.add(spec.name);
+	ObjC.registerSubclass(spec);
+};
 
 function parseArgs(argv) {
 	const out = { question: "", options: [], timeout: 0, title: "", meta: [] };
@@ -172,6 +193,59 @@ function selfTest() {
 	}
 	$.NSFileManager.defaultManager.removeItemAtPathError($(file), null);
 	$.NSFileManager.defaultManager.removeItemAtPathError($(paths[0]).stringByDeletingLastPathComponent, null);
+
+	// The bar and the send shortcuts, on windows that are built and never shown.
+	// Returns the JSON a dialog prints after `shift`+Cmd+Return, and checks that
+	// every bar control lies inside the window and none overlaps another.
+	const press = (dialog, args, shift, msg, pick) => {
+		probe = (w) => {
+			const find = (v) => (v.isKindOfClass($.NSButton) && v.title.js === pick ? v : v.subviews.js.map(find).find(Boolean));
+			const pop = w.content.subviews.js.find((v) => v.isKindOfClass($.NSPopUpButton));
+			if (pick && pop) pop.menu.performActionForItemAtIndex(pop.indexOfItemWithTitle($(pick)));
+			else if (pick) find(w.content).performClick(null);
+			const W = w.content.frame.size.width;
+			const controls = w.content.subviews.js.filter((v) => v.isKindOfClass($.NSControl));
+			const bar = controls.map((v) => v.frame);
+			if (bar.length < 2) throw new Error(`${msg}: no bar found`);
+			const first = controls.find((v) => Number(v.tag) === 100);
+			if (!w.win.defaultButtonCell.isEqual(first.cell)) throw new Error(`${msg}: the Cmd+Return button is not the default button`);
+			bar.forEach((f, i) => {
+				if (f.origin.x < M || f.origin.x + f.size.width > W - M) throw new Error(`${msg}: a button leaves the window: ${JSON.stringify(f)}`);
+				for (const g of bar.slice(i + 1)) {
+					const apart = f.origin.x + f.size.width <= g.origin.x || g.origin.x + g.size.width <= f.origin.x
+						|| f.origin.y + f.size.height <= g.origin.y || g.origin.y + g.size.height <= f.origin.y;
+					if (!apart) throw new Error(`${msg}: buttons overlap: ${JSON.stringify([f, g])}`);
+				}
+			});
+			const flags = $.NSEventModifierFlagCommand | (shift ? $.NSEventModifierFlagShift : 0);
+			w.win.performKeyEquivalent($.NSEvent.keyEventWithTypeLocationModifierFlagsTimestampWindowNumberContextCharactersCharactersIgnoringModifiersIsARepeatKeyCode(
+				$.NSEventTypeKeyDown, $.NSMakePoint(0, 0), flags, 0, w.win.windowNumber, null, $("\r"), $("\r"), false, 36));
+			if (!w.result()) throw new Error(`${msg}: the shortcut sent nothing`);
+			return w.result();
+		};
+		const { r, code } = dialog(args);
+		probe = null;
+		return [JSON.stringify(r), code];
+	};
+	const long = ["Tests in agents, results private (Recommended)", "One private repo for all", "Two repos, tests public and results private"];
+	const sent = (rest) => [`{${rest},"text":"","gaveUp":false,"cancelled":false}`, 0];
+	const one = (options) => ({ question: "Which setup?", options, timeout: 0, title: "T", meta: [] });
+	eq(press(ask, one(long), false, "long buttons"), sent(`"choice":"${long[0]}"`), "Cmd+Return sends the default option");
+	eq(press(ask, one(long), true, "long buttons, plain"), sent('"choice":""'), "Cmd+Shift+Return sends no option");
+	eq(press(ask, one(["Yes", "No"]), true, "short buttons, plain"), sent('"choice":""'), "plain send beside short options");
+	eq(press(ask, one(long.concat("Four", "Five")), false, "popup"), sent(`"choice":"${long[0]}"`), "Cmd+Return sends the popup's option");
+	eq(press(ask, one(long.concat("Four", "Five")), true, "popup, plain"), sent('"choice":""'), "plain send beside a popup");
+	eq(press(ask, one(long.concat("Four", "Five")), false, "popup, picked", "Four"), sent('"choice":"Four"'), "a picked popup option is sent");
+	eq(press(ask, one(long.concat("Four", "Five")), true, "popup, picked, plain", "Four"), sent('"choice":"Four"'), "the plain send keeps a picked popup option");
+	eq(press(ask, one([]), false, "no options"), sent('"choice":""'), "a dialog without options sends its text");
+	eq(press(ask, one([]), true, "no options, shifted"), sent('"choice":""'), "Cmd+Shift+Return sends without options too");
+	const form = parseSpec(spec([{ id: "a", question: "A?", options: long, default: long[1] },
+		{ id: "b", question: "B?", options: long, multi: true, default: [long[0], long[2]] }]));
+	const formSent = (a, b) => [`{"answers":{"a":{"choice":${a},"text":""},"b":{"choice":${b},"text":""}},"gaveUp":false,"cancelled":false}`, 0];
+	eq(press(askForm, form, false, "form"), formSent(`"${long[1]}"`, JSON.stringify([long[0], long[2]])), "Cmd+Return sends the picked choices");
+	eq(press(askForm, form, true, "form, plain"), formSent('""', "[]"), "Cmd+Shift+Return sends empty choices");
+	eq(press(askForm, form, false, "form, picked", long[2]), formSent(`"${long[2]}"`, JSON.stringify([long[0], long[2]])), "a picked radio is sent");
+	eq(press(askForm, form, true, "form, picked, plain", long[2]), formSent(`"${long[2]}"`, "[]"), "the plain send keeps a picked radio and drops the untouched default");
 	return "ok";
 }
 
@@ -309,7 +383,7 @@ function makeWindow(W, H) {
 	main.addItem(editItem);
 	app.mainMenu = main;
 
-	const handlers = {};
+	handlers = {};
 	// Scrolls the focused control into view, for a form taller than the window.
 	const reveal = (win) => {
 		const r = win.firstResponder;
@@ -317,7 +391,7 @@ function makeWindow(W, H) {
 		if (v.isKindOfClass($.NSView)) v.scrollRectToVisible(v.bounds);
 	};
 	// A text view turns Escape into complete: (word completion); here it cancels.
-	ObjC.registerSubclass({
+	register({
 		name: "BobAskTextView",
 		superclass: "NSTextView",
 		methods: Object.assign({
@@ -345,7 +419,7 @@ function makeWindow(W, H) {
 	};
 	// Arrow keys move between the options of a question; on a radio they also pick.
 	const arrows = { 123: -1, 126: -1, 124: 1, 125: 1 };
-	ObjC.registerSubclass({
+	register({
 		name: "BobAskButton",
 		superclass: "NSButton",
 		methods: Object.assign({
@@ -368,6 +442,21 @@ function makeWindow(W, H) {
 				},
 			},
 		}, focusable, {
+			// Only the Cmd+Return button carries Return, so it alone is the window's default
+			// button. AppKit ignores Shift when it matches Return, so that button hands
+			// Cmd+Shift+Return to the plain Send (tag 2) when the bar has one.
+			"performKeyEquivalent:": {
+				types: ["bool", ["id"]],
+				implementation: function (e) {
+					const flags = Number(e.modifierFlags), chars = e.charactersIgnoringModifiers;
+					const shifted = (flags & $.NSEventModifierFlagCommand) && (flags & $.NSEventModifierFlagShift) && !chars.isNil() && chars.js === "\r";
+					const plain = shifted && Number(this.tag) === 100
+						&& this.superview.subviews.js.find((v) => v.isKindOfClass($.BobAskButton) && Number(v.tag) === 2);
+					if (!plain) return ObjC.super(this).performKeyEquivalent(e);
+					plain.performClick(null);
+					return true;
+				},
+			},
 			// Once a radio is picked, Tab stops only at it and skips the rest of its group.
 			"canBecomeKeyView": {
 				types: ["bool", []],
@@ -380,13 +469,13 @@ function makeWindow(W, H) {
 			},
 		}),
 	});
-	ObjC.registerSubclass({ name: "BobAskPopUp", superclass: "NSPopUpButton", methods: focusable });
-	ObjC.registerSubclass({
+	register({ name: "BobAskPopUp", superclass: "NSPopUpButton", methods: focusable });
+	register({
 		name: "BobAskTarget",
 		protocols: ["NSWindowDelegate", "NSTextFieldDelegate"],
 		methods: {
 			"clicked:": { types: ["void", ["id"]], implementation: (s) => handlers.clicked(s) },
-			"picked:": { types: ["void", ["id"]], implementation: () => {} },
+			"picked:": { types: ["void", ["id"]], implementation: (s) => handlers.picked(s) },
 			"windowWillClose:": { types: ["void", ["id"]], implementation: () => handlers.cancel() },
 			// The first click makes bob-ask the frontmost app, so tools that paste into it (Raycast) target it.
 			"windowDidBecomeKey:": { types: ["void", ["id"]], implementation: () => $.NSApplication.sharedApplication.activateIgnoringOtherApps(true) },
@@ -394,7 +483,7 @@ function makeWindow(W, H) {
 		},
 	});
 	// The grip under a form text area; dragging it changes that area's height.
-	ObjC.registerSubclass({
+	register({
 		name: "BobAskHandle",
 		superclass: "NSView",
 		methods: {
@@ -439,48 +528,78 @@ function makeWindow(W, H) {
 	return w;
 }
 
-// Buttons right to left: the send titles in order, then Cancel. A button with a
-// shortcut shows it after its title, in a smaller font.
-function addBar(w, sendTitles) {
-	let x = w.W - M;
+// The button bar, right to left: the send titles in order, a plain Send (tag 2) when
+// `plain`, then Cancel. The window widens to fit the row, up to a cap; past it the send
+// buttons stack above the row at full width, the first on top. `left` is the width
+// other controls take at the row's left. A button with a shortcut shows it after its
+// title, in a smaller font. Returns the bar's height.
+function addBar(w, sendTitles, plain, left = 0) {
 	const button = (title, tag, hint) => {
 		const b = $.BobAskButton.alloc.initWithFrame($.NSMakeRect(0, 0, 10, BAR));
 		b.bezelStyle = $.NSBezelStyleRounded;
 		b.title = $(title);
-		if (hint) {
-			// The bridge can't call initWithString: on attributed strings; mutableString works.
-			const s = $.NSMutableAttributedString.alloc.init;
-			s.mutableString.setString($(`${title} ${hint}`));
-			const centered = $.NSMutableParagraphStyle.alloc.init;
-			centered.alignment = $.NSTextAlignmentCenter;
-			const all = { location: 0, length: s.length };
-			s.addAttributeValueRange($.NSFontAttributeName, b.font, all);
-			s.addAttributeValueRange($.NSParagraphStyleAttributeName, centered, all);
-			s.addAttributeValueRange($.NSFontAttributeName, $.NSFont.systemFontOfSize(10), { location: title.length + 1, length: hint.length });
-			b.attributedTitle = s;
-		}
+		// The bridge can't call initWithString: on attributed strings; mutableString works.
+		const s = $.NSMutableAttributedString.alloc.init;
+		s.mutableString.setString($(hint ? `${title} ${hint}` : title));
+		const style = $.NSMutableParagraphStyle.alloc.init;
+		style.alignment = $.NSTextAlignmentCenter;
+		const all = { location: 0, length: s.length };
+		s.addAttributeValueRange($.NSFontAttributeName, b.font, all);
+		s.addAttributeValueRange($.NSParagraphStyleAttributeName, style, all);
+		if (hint) s.addAttributeValueRange($.NSFontAttributeName, $.NSFont.systemFontOfSize(10), { location: title.length + 1, length: hint.length });
+		b.attributedTitle = s;
 		b.sizeToFit;
-		const bw = Math.max(b.frame.size.width + 8, 80);
-		x -= bw;
-		b.frame = $.NSMakeRect(x, M, bw, BAR);
-		x -= 8;
+		b.frame = $.NSMakeRect(0, 0, Math.max(b.frame.size.width + 8, 80), BAR);
 		b.tag = tag;
 		b.target = w.target;
 		b.action = "clicked:";
-		b.autoresizingMask = $.NSViewMinXMargin | $.NSViewMaxYMargin;
 		w.content.addSubview(b);
 		return b;
 	};
 	// The first send button takes Cmd+Return; plain Return stays a newline.
-	const sendButtons = sendTitles.map((t, i) => button(t, 100 + i, i === 0 ? "⌘↩" : ""));
-	button("Cancel", 1, "esc").keyEquivalent = $("\x1b");
-	sendButtons[0].keyEquivalent = $("\r");
-	sendButtons[0].keyEquivalentModifierMask = $.NSEventModifierFlagCommand;
+	const sends = sendTitles.map((t, i) => button(t, 100 + i, i === 0 ? "⌘↩" : ""));
+	const rest = (plain ? [button("Send", 2, "⇧⌘↩")] : []).concat(button("Cancel", 1, "esc"));
+	rest[rest.length - 1].keyEquivalent = $("\x1b");
+	sends[0].keyEquivalent = $("\r");
+	sends[0].keyEquivalentModifierMask = $.NSEventModifierFlagCommand;
+
+	const width = (bs) => bs.reduce((n, b) => n + b.frame.size.width + 8, -8);
+	const cap = Math.min(800, Math.floor($.NSScreen.mainScreen.visibleFrame.size.width * 0.8));
+	const one = 2 * M + left + width(sends.concat(rest));
+	const low = 2 * M + left + width(rest);
+	const stacked = one > cap;
+	const W = stacked
+		? Math.min(cap, Math.max(w.W, low, 2 * M + Math.max(...sends.map((b) => b.frame.size.width))))
+		: Math.max(w.W, one);
+	w.W = W;
+	w.win.setContentSize($.NSMakeSize(W, w.H));
+	// The row can't reflow, so the window never gets narrower than it.
+	w.win.minSize = $.NSMakeSize(Math.max(360, stacked ? low : one), 260);
+
+	let x = W - M;
+	for (const b of stacked ? rest : sends.concat(rest)) {
+		x -= b.frame.size.width;
+		b.frame = $.NSMakeRect(x, M, b.frame.size.width, BAR);
+		x -= 8;
+		b.autoresizingMask = $.NSViewMinXMargin | $.NSViewMaxYMargin;
+	}
+	if (!stacked) return BAR;
+	sends.forEach((b, i) => {
+		b.frame = $.NSMakeRect(M, M + (BAR + 8) * (sends.length - i), W - 2 * M, BAR);
+		b.autoresizingMask = $.NSViewWidthSizable | $.NSViewMaxYMargin;
+		// shortcut: a title wider than the capped window loses its end and its shortcut hint; wrap it once options get that long.
+		b.toolTip = b.title;
+	});
+	return BAR + sends.length * (BAR + 8);
 }
 
 function present(w, focusView, timeout) {
 	const later = (seconds, f) =>
 		$.NSRunLoop.currentRunLoop.addTimerForMode($.NSTimer.timerWithTimeIntervalRepeatsBlock(seconds, false, f), $.NSRunLoopCommonModes);
+	if (probe) {
+		w.win.makeFirstResponder(focusView);
+		return probe(w);
+	}
 	if (timeout > 0) later(timeout, () => w.end(2));
 
 	w.win.center;
@@ -531,13 +650,12 @@ function header(title, meta) {
 }
 
 function ask({ question, options, timeout, title, meta }) {
-	const W = 560;
 	const head = header(title, meta);
 	const headH = head ? head.fittingSize.height + 10 : 0;
 
 	// Cmd+V in the read-only question goes to the answer; Tab skips the question.
-	let answerView = null;
-	ObjC.registerSubclass({
+	answerView = null;
+	register({
 		name: "BobAskQuestionView",
 		superclass: "NSTextView",
 		methods: Object.assign({
@@ -549,6 +667,25 @@ function ask({ question, options, timeout, title, meta }) {
 			},
 		}, editKeys),
 	});
+
+	// The bar comes first, since it sets the window's width.
+	const w = makeWindow(560, 260);
+	let popup = null;
+	if (options.length > 3) {
+		popup = $.BobAskPopUp.alloc.initWithFramePullsDown($.NSMakeRect(M, M, 220, BAR), false);
+		options.forEach((o) => popup.addItemWithTitle($(o)));
+		popup.autoresizingMask = $.NSViewMaxXMargin | $.NSViewMaxYMargin;
+		popup.target = w.target;
+		popup.action = "picked:";
+		w.content.addSubview(popup);
+	}
+	// The plain Send drops the popup's preset option and keeps one Nik picked himself.
+	let touched = false;
+	w.handlers.picked = () => (touched = true);
+	const asButtons = options.length > 0 && options.length <= 3;
+	const sendTitles = asButtons ? options : [popup ? "Send with choice" : "Send"];
+	const barH = addBar(w, sendTitles, options.length > 0, popup ? 220 + 8 : 0);
+	const W = w.W;
 
 	// The question pane fits its text and the answer starts at four lines; the
 	// window grows to hold both, up to 80% of the screen, past which the question scrolls.
@@ -565,11 +702,11 @@ function ask({ question, options, timeout, title, meta }) {
 	q.scroll.tile;
 	const aH = Math.ceil(4 * lm.defaultLineHeightForFont(q.tv.font) + border + 4);
 	const divider = 9;
-	const chrome = headH + BAR + 3 * M + divider;
+	const chrome = headH + barH + 3 * M + divider;
 	const maxH = Math.floor($.NSScreen.mainScreen.visibleFrame.size.height * 0.8);
 	const H = Math.max(260, Math.min(maxH, chrome + qNeed + aH));
 
-	const w = makeWindow(W, H);
+	w.win.setContentSize($.NSMakeSize(W, H));
 	let top = H - M;
 	if (head) {
 		const hh = headH - 10;
@@ -581,7 +718,7 @@ function ask({ question, options, timeout, title, meta }) {
 
 	// Question on top, answer below, split by a divider that resizes both;
 	// the split grows with the window.
-	const areaTop = BAR + 2 * M, areaH = top - areaTop, qH = Math.min(qNeed, areaH - divider - aH);
+	const areaTop = barH + 2 * M, areaH = top - areaTop, qH = Math.min(qNeed, areaH - divider - aH);
 	const split = $.NSSplitView.alloc.initWithFrame($.NSMakeRect(M, areaTop, W - 2 * M, areaH));
 	split.vertical = false;
 	split.dividerStyle = $.NSSplitViewDividerStylePaneSplitter;
@@ -597,23 +734,12 @@ function ask({ question, options, timeout, title, meta }) {
 	split.setPositionOfDividerAtIndex(qH, 0);
 	w.content.addSubview(split);
 
-	let popup = null;
-	if (options.length > 3) {
-		popup = $.BobAskPopUp.alloc.initWithFramePullsDown($.NSMakeRect(M, M, 220, BAR), false);
-		options.forEach((o) => popup.addItemWithTitle($(o)));
-		popup.autoresizingMask = $.NSViewMaxXMargin | $.NSViewMaxYMargin;
-		w.content.addSubview(popup);
-	}
-	const asButtons = options.length > 0 && options.length <= 3;
-	const sendTitles = asButtons ? options : ["Send"];
-	addBar(w, sendTitles);
-
 	w.snapshot = (send) => Object.assign({ choice: "" }, answer(a.tv.string.js, send ? saveImages(a.tv, newImageDir()) : []));
 	w.handlers.clicked = (s) => {
 		// The bridge hands the tag over as a string.
 		const tag = Number(s.tag);
 		if (tag === 1) return w.end(1);
-		const choice = asButtons ? sendTitles[tag - 100] : popup ? popup.titleOfSelectedItem.js : "";
+		const choice = tag === 2 && !touched ? "" : asButtons ? sendTitles[tag - 100] : popup ? popup.titleOfSelectedItem.js : "";
 		w.end(0, { choice });
 	};
 	return present(w, a.tv, timeout);
@@ -729,21 +855,29 @@ function askForm({ title, meta, timeout, questions }) {
 		const s = field.stringValue.js.toLowerCase();
 		blocks[field.tag].rows.forEach((b) => (b.hidden = !b.title.js.toLowerCase().includes(s)));
 	};
+	// The plain Send drops the preset defaults and keeps what Nik picked or ticked himself.
+	let plain = false;
+	w.handlers.picked = (s) => (blocks.find((b) => b.rows.some((r) => r.isEqual(s))).touched = true);
 	w.snapshot = (send) => {
 		const answers = {}, dir = newImageDir();
-		for (const { q, rows, tv } of blocks) {
-			const on = rows.filter((b) => b.state === $.NSControlStateValueOn).map((b) => b.title.js);
+		for (const { q, rows, tv, touched } of blocks) {
+			const on = plain && !touched ? [] : rows.filter((b) => b.state === $.NSControlStateValueOn).map((b) => b.title.js);
 			answers[q.id] = Object.assign({ choice: q.multi ? on : on[0] || "" }, answer(tv.string.js, send ? saveImages(tv, dir) : []));
 		}
 		return { answers };
 	};
-	w.handlers.clicked = (s) => w.end(Number(s.tag) === 1 ? 1 : 0);
-	addBar(w, ["Send"]);
+	w.handlers.clicked = (s) => {
+		const tag = Number(s.tag);
+		plain = tag === 2;
+		w.end(tag === 1 ? 1 : 0);
+	};
+	const hasOptions = questions.some((q) => q.options.length > 0);
+	addBar(w, [hasOptions ? "Send with choices" : "Send"], hasOptions);
 
 	// Fit the window to the form, up to 80% of the screen; past that the form scrolls.
 	w.content.layoutSubtreeIfNeeded;
 	const maxH = Math.floor($.NSScreen.mainScreen.visibleFrame.size.height * 0.8);
-	w.win.setContentSize($.NSMakeSize(W, Math.max(260, Math.min(maxH, stack.frame.size.height + BAR + 2 * M))));
+	w.win.setContentSize($.NSMakeSize(w.W, Math.max(260, Math.min(maxH, stack.frame.size.height + BAR + 2 * M))));
 	// Open at the top; present then only scrolls if the first control is still hidden.
 	const top = stack.arrangedSubviews.js[0];
 	top.scrollRectToVisible(top.bounds);
@@ -763,6 +897,16 @@ function run(argv) {
 		write(2, `bob-ask: ${e.message}\n${USAGE}`);
 		$.exit(64);
 	}
+	const shot = $.NSProcessInfo.processInfo.environment.objectForKey($("BOB_ASK_SNAPSHOT"));
+	if (!shot.isNil()) probe = (w) => {
+		// The frame view, so the title bar is in the picture.
+		const v = w.content.superview;
+		w.win.displayIfNeeded;
+		const rep = v.bitmapImageRepForCachingDisplayInRect(v.bounds);
+		v.cacheDisplayInRectToBitmapImageRep(v.bounds, rep);
+		rep.representationUsingTypeProperties($.NSBitmapImageFileTypePNG, $.NSDictionary.dictionary).writeToFileAtomically(shot, true);
+		$.exit(0);
+	};
 	const { r, code } = argv[0] === "--form" ? askForm(args) : ask(args);
 	write(1, JSON.stringify(r));
 	$.exit(code);
