@@ -37,6 +37,7 @@ common:
   common/.config/zennotes: ~/.config/zennotes
 
   common/.config/rex/init.lua: ~/.config/rex/init.lua
+  common/.config/rex/bob_ask.lua: ~/.config/rex/bob_ask.lua
 
   # Theming =================================================================
   "common/.config/black-atom/*": ~/.config/black-atom

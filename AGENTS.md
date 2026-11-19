@@ -26,7 +26,8 @@ dots/
 
 - **`dots`** — Dotfiles management. Run `dots` with no args for usage. See `common/.local/bin/dots`.
 - **`bic`** — borrowed intelligence cost, agent spend per repo split work vs personal. See `tools/bic/README.md`.
-- **`bob-ask`** — native question dialog Bob uses to ask Nik, prints the answer as JSON. See `common/.local/bin/bob-ask`.
+- **`bob_ask`** — Rex action Bob uses to ask Nik in the command palette (`rex do bob_ask --args -`), prints the answer as JSON. See `common/.config/rex/bob_ask.lua`.
+- **`bob-ask`** — native question dialog, prints the answer as JSON. See `common/.local/bin/bob-ask`.
 - **`shiplog`** — AI-powered git operations (commit, branch). Run `shiplog --help` for usage. See [nikbrunner/shiplog](https://github.com/nikbrunner/shiplog).
 - **`helm`** — External tool for multi-repo management (pull, push, status, rebuild). Invoked by `dots pull` and `dots push`.
 

@@ -195,6 +195,7 @@ rex.action({
 	end,
 })
 rex.bind("cmd+b", "bob_toggle")
+dofile(home .. "/.config/rex/bob_ask.lua")
 
 bind_popup("cmd+alt+g", "glab-tui", { "glab-tui" }, 0.95, 0.8, true)
 bind_popup("cmd+alt+f", "pick-font", { "pick-font" }, 0.5, 0.5)
