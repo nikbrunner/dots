@@ -229,44 +229,31 @@ bind_popup("cmd+l", "lager", { "lager", "tui" }, 0.75, 0.65)
 
 -- Bob, the notes session's Claude: the key jumps to its pane, and from there
 -- back to the session it came from. A popup can't hold another session's block.
--- Lua here can't list another session's blocks, so bob-pane finds Bob's pane.
 -- An action, since rex.client.queue only works inside one.
 local home = os.getenv("HOME")
 local bob_return
--- bob-pane is the slow part, so its answer is kept until focusing that pane fails.
-local bob
-local function find_bob()
-	local found = rex.exec({ home .. "/.local/bin/bob-pane" })
-	local session, block, window = (found and found.stdout or ""):match("(%S+) (%S+) (%S+)")
-	bob = session and { session = session, block = block, window = window } or nil
-end
 rex.action({
 	name = "bob_toggle",
 	title = "Jump to Bob and back",
 	run = function(ctx)
-		if not bob then
-			find_bob()
+		local bob
+		for _, pane in ipairs(panes()) do
+			if (pane.label or ""):lower() == "bob" then
+				bob = pane
+				break
+			end
 		end
 		if not bob then
 			return
 		end
-		if ctx.block_id == bob.block then
-			if bob_return then
+		if ctx.block_id == bob.block_id then
+			if bob_return and rex.session.view({ session_id = bob_return }) then
 				rex.client.queue("session.select", { session_id = bob_return })
 			end
 			return
 		end
-		local function focus()
-			return pcall(rex.session.focus_block, { session_id = bob.session, block_id = bob.block })
-		end
-		if not focus() then
-			find_bob()
-			if not bob or ctx.block_id == bob.block or not focus() then
-				return
-			end
-		end
 		bob_return = ctx.session_id
-		rex.client.queue("session.select", { session_id = bob.session, window_id = bob.window })
+		jump(bob)
 	end,
 })
 rex.bind("cmd+b", "bob_toggle")
