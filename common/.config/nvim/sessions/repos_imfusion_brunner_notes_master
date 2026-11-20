@@ -10,10 +10,10 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +147 ~/repos/nikbrunner/dots/common/.config/rex/init.lua
+badd +21 logs/2026/2026.11/2026.11.19\ -\ Thu.md
 argglobal
 %argdel
-edit ~/repos/nikbrunner/dots/common/.config/rex/init.lua
+edit logs/2026/2026.11/2026.11.19\ -\ Thu.md
 argglobal
 setlocal foldmethod=expr
 setlocal foldexpr=v:lua.vim.treesitter.foldexpr()
@@ -23,12 +23,34 @@ setlocal foldlevel=99
 setlocal foldminlines=1
 setlocal foldnestmax=10
 setlocal foldenable
-let s:l = 147 - ((29 * winheight(0) + 26) / 53)
+1
+sil! normal! zo
+12
+sil! normal! zo
+14
+sil! normal! zo
+16
+sil! normal! zo
+22
+sil! normal! zo
+24
+sil! normal! zo
+26
+sil! normal! zo
+36
+sil! normal! zo
+45
+sil! normal! zo
+47
+sil! normal! zo
+53
+sil! normal! zo
+let s:l = 21 - ((18 * winheight(0) + 31) / 63)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 147
-normal! 013|
+keepjumps 21
+normal! 0
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf

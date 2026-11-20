@@ -267,13 +267,15 @@
       "~/repos/imfusion/cp/imfusion-portal-labels-license-key",
       "~/repos/imfusion/cp/imfusion-portal-labels-license-key/frontend",
       "~/repos/imfusion/cp/imfusion-portal-labels-license-key/frontend/tmp/screenshots",
+      "~/repos/imfusion/cp/imfusion-portal-web-ui-changes",
+      "~/repos/imfusion/cp/imfusion-portal-web-ui-changes/frontend",
       "~/repos/imfusion/cp/imfusion-portal-web-ui-update",
       "~/repos/imfusion/cp/imfusion-portal-web-ui-update/frontend",
       "~/repos/imfusion/cp/imfusion-portal/e2e",
       "~/repos/imfusion/cp/imfusion-portal/frontend",
       "~/repos/imfusion/cp/imfusion-portal/frontend/src"
     ],
-    "last_seen": "2026-11-09"
+    "last_seen": "2026-11-20"
   },
   "cp/keycloak": {
     "root": "~/repos/imfusion/cp/keycloak",
@@ -336,9 +338,16 @@
       "~/repos/imfusion/cp/labels-web-data-list-redesign/frontend",
       "~/repos/imfusion/cp/labels-web-data-list-redesign/frontend/node_modules/@imfusion/web-ui/dist/components",
       "~/repos/imfusion/cp/labels-web-editor-tool-rail",
+      "~/repos/imfusion/cp/labels-web-editor-tool-rail/e2e",
       "~/repos/imfusion/cp/labels-web-editor-tool-rail/frontend",
+      "~/repos/imfusion/cp/labels-web-editor-tool-rail/frontend/node_modules/@tanstack",
+      "~/repos/imfusion/cp/labels-web-editor-tool-rail/frontend/node_modules/@tanstack/react-hotkeys/dist",
+      "~/repos/imfusion/cp/labels-web-editor-tool-rail/frontend/src",
+      "~/repos/imfusion/cp/labels-web-editor-tool-rail/frontend/src/components/web-ui-pending/empty-state",
       "~/repos/imfusion/cp/labels-web-editor-tool-rail/frontend/src/features/labels-editor",
       "~/repos/imfusion/cp/labels-web-editor-tool-rail/frontend/src/features/labels-editor/hooks",
+      "~/repos/imfusion/cp/labels-web-editor-tool-rail/frontend/src/features/labels-editor/keymap",
+      "~/repos/imfusion/cp/labels-web-editor-tool-rail/local-setup/utils",
       "~/repos/imfusion/cp/labels-web-feat-CP-204-data-tags",
       "~/repos/imfusion/cp/labels-web-feat-CP-204-data-tags/bff",
       "~/repos/imfusion/cp/labels-web-feat-CP-204-data-tags/e2e",
@@ -376,8 +385,16 @@
       "~/repos/imfusion/cp/labels-web-migrate-e2e-tests",
       "~/repos/imfusion/cp/labels-web-navbar-rail",
       "~/repos/imfusion/cp/labels-web-navbar-rail/frontend",
+      "~/repos/imfusion/cp/labels-web-pinned-comments",
+      "~/repos/imfusion/cp/labels-web-pinned-comments/frontend",
+      "~/repos/imfusion/cp/labels-web-project-members",
       "~/repos/imfusion/cp/labels-web-rail-toggle",
       "~/repos/imfusion/cp/labels-web-rail-toggle/frontend",
+      "~/repos/imfusion/cp/labels-web-small-fixes",
+      "~/repos/imfusion/cp/labels-web-small-fixes/frontend",
+      "~/repos/imfusion/cp/labels-web-small-fixes/frontend/src",
+      "~/repos/imfusion/cp/labels-web-small-fixes/frontend/src/features/labels-editor",
+      "~/repos/imfusion/cp/labels-web-small-fixes/frontend/src/routes/_app/projects.$projectId/_tabs",
       "~/repos/imfusion/cp/labels-web-upload-images",
       "~/repos/imfusion/cp/labels-web-web-ui-upgrade",
       "~/repos/imfusion/cp/labels-web-web-ui-upgrade/frontend",
@@ -397,7 +414,7 @@
       "~/repos/imfusion/cp/labels-web/local-setup",
       "~/repos/imfusion/cp/review-labels-web-16-playwright-e2e"
     ],
-    "last_seen": "2026-11-17"
+    "last_seen": "2026-11-19"
   },
   "cp/license-server": {
     "root": "~/repos/imfusion/cp/license-server",
@@ -567,6 +584,7 @@
       "~/repos/nikbrunner/dots/common/.config/nvim",
       "~/repos/nikbrunner/dots/common/.config/nvim/plugin/50_specs",
       "~/repos/nikbrunner/dots/common/.config/nvim/sessions",
+      "~/repos/nikbrunner/dots/common/.config/rex",
       "~/repos/nikbrunner/dots/common/.local/bin",
       "~/repos/nikbrunner/dots/common/.local/share/file-picker",
       "~/repos/nikbrunner/dots/common/.pi",
@@ -574,7 +592,7 @@
       "~/repos/nikbrunner/dots/macos/.config/sketchybar/plugins",
       "~/repos/nikbrunner/dots/macos/.config/tuna"
     ],
-    "last_seen": "2026-11-17"
+    "last_seen": "2026-11-19"
   },
   "nikbrunner/fonts": {
     "root": "~/repos/nikbrunner/fonts",
