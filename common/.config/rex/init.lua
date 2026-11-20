@@ -117,6 +117,7 @@ for _, direction in ipairs({ "left", "down", "up", "right" }) do
 end
 rex.bind("alt+=", "pane.balance")
 rex.bind("alt+z", "pane.zoom")
+rex.bind("alt+esc", "pane.copy_mode.enter")
 
 -- Clears screen and scrollback in a shell; a TUI keeps the key, since a reset
 -- would wipe its screen.
