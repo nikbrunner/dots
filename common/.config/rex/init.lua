@@ -76,8 +76,9 @@ rex.bind("cmd+shift+r", "client.config.reload")
 
 -- Sessions
 
-rex.bind("alt+k", "session.previous")
-rex.bind("alt+j", "session.next")
+rex.bind("alt+shift+k", "session.previous")
+rex.bind("alt+shift+j", "session.next")
+
 rex.bind("alt+shift+t", "session.new")
 rex.bind("alt+shift+n", "session.rename")
 rex.bind("alt+shift+q", "session.close")
@@ -90,8 +91,8 @@ end
 rex.bind("alt+t", "client.tab.new")
 rex.bind("alt+n", "client.tab.rename")
 rex.bind("alt+q", "client.tab.close")
-rex.bind("alt+h", "client.tab.previous")
-rex.bind("alt+l", "client.tab.next")
+rex.bind("alt+k", "client.tab.previous")
+rex.bind("alt+j", "client.tab.next")
 rex.bind("alt+shift+h", "client.tab.move.backward")
 rex.bind("alt+shift+l", "client.tab.move.forward")
 
