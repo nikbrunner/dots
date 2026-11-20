@@ -80,9 +80,17 @@ bob() {
     launch)
         # Commands Rex starts run in the login environment, where ccw is missing,
         # so each pane gets an interactive shell and its command typed in.
-        local found created session bob notes private work
+        local found created session bob notes private work cmd
+        case "${2:-work}" in
+        work) cmd=ccw ;;
+        private) cmd=claude ;;
+        *)
+            echo "bob: unknown account '$2', use work or private" >&2
+            return 1
+            ;;
+        esac
         if found=$(bob-pane); then
-            # The pane outlives Claude; its title reads Bob only while ccw -n Bob runs in it.
+            # The pane outlives Claude; its title reads Bob only while Claude runs in it under -n Bob.
             read -r session bob _ <<<"$found"
             [[ $(rex block call -s "$session" -b "$bob" title | jq -r '.title // empty | ascii_downcase') == bob ]] &&
                 { echo "bob: Bob already runs; quit it first" >&2; return 1; }
@@ -99,7 +107,7 @@ bob() {
             rex send -s "$session" -b "$private" nvim && rex send-key -s "$session" -b "$private" Enter
             rex send -s "$session" -b "$work" nvim && rex send-key -s "$session" -b "$work" Enter
         fi
-        rex send -s "$session" -b "$bob" 'ccw -n Bob "/nbr-bob Good Morning"' &&
+        rex send -s "$session" -b "$bob" "$cmd -n Bob \"/nbr-bob Good Morning\"" &&
             rex send-key -s "$session" -b "$bob" Enter
         ;;
     message)
@@ -107,7 +115,7 @@ bob() {
         bob-send "$@"
         ;;
     *)
-        echo "usage: bob launch | bob message [text]" >&2
+        echo "usage: bob launch [work|private] | bob message [text]" >&2
         return 1
         ;;
     esac
