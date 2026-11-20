@@ -130,6 +130,81 @@ rex.bind("alt+c", function(ctx)
 	return true
 end)
 
+-- Agents
+
+-- Every pane of every session, in sidebar and tab order. Rex answers only for
+-- sessions the calling client is attached to: the app sees them all, `rex do`
+-- from a shell sees its own.
+local function panes()
+	local found = {}
+	local sessions = rex.call("session.list") or {}
+	for _, session in ipairs(sessions.sessions or {}) do
+		local view = rex.session.view({ session_id = session.session_id }) or {}
+		for _, window in ipairs(view.windows or {}) do
+			for _, layer in ipairs(window.layers or {}) do
+				for _, block in ipairs(layer.blocks or {}) do
+					found[#found + 1] = {
+						session_id = session.session_id,
+						window_id = window.window_id,
+						block_id = block.block_id,
+						label = block.label,
+					}
+				end
+			end
+		end
+	end
+	return found
+end
+
+-- Works from an action only, like the rex.client.queue it calls.
+local function jump(pane)
+	rex.session.focus_block({ session_id = pane.session_id, block_id = pane.block_id })
+	rex.client.queue("session.select", { session_id = pane.session_id, window_id = pane.window_id })
+end
+
+-- An agent is a pane whose program reports a status, or runs under one of these
+-- names. Pi and OpenCode report no status while idle, so they need the name.
+local agent_programs = { claude = true, codex = true, opencode = true, pi = true }
+
+local function is_agent(pane)
+	local at = { session_id = pane.session_id, block_id = pane.block_id }
+	local status = rex.block.call(terminal, "program_status", at)
+	if status and status.records and status.records[1] then
+		return true
+	end
+	local process = rex.block.call(terminal, "process", at)
+	local argv0 = process and process.foreground and process.foreground.argv0
+	return argv0 and agent_programs[argv0:match("[^/]*$")]
+end
+
+-- The keys walk the agents across all sessions and wrap; from any other pane
+-- they go to the nearest agent in that order.
+for key, step in pairs({ j = 1, k = -1 }) do
+	local name = step > 0 and "agent_next" or "agent_previous"
+	rex.action({
+		name = name,
+		title = step > 0 and "Next Agent" or "Previous Agent",
+		run = function(ctx)
+			local agents, before, on = {}, 0, false
+			for _, pane in ipairs(panes()) do
+				local here = pane.block_id == ctx.block_id
+				if here then
+					before = #agents
+				end
+				if is_agent(pane) then
+					agents[#agents + 1] = pane
+					on = on or here
+				end
+			end
+			if #agents == 0 then
+				return
+			end
+			jump(agents[(step > 0 and before + (on and 1 or 0) or before - 1) % #agents + 1])
+		end,
+	})
+	rex.bind("alt+ctrl+" .. key, name)
+end
+
 -- Popups
 package.path = os.getenv("HOME") .. "/repos/black-atom-industries/helm/lua/?.lua;" .. package.path
 
