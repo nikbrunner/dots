@@ -222,7 +222,7 @@ require("helm").setup({
 	bounds = { 0.25, 0.175, 0.6, 0.55 },
 	detail_bounds = { 0.15, 0.055, 0.9, 0.55 },
 })
-rex.bind("alt+s", "helm_open")
+-- rex.bind("alt+s", "helm_open")
 rex.bind("alt+o", "helm_jump_back")
 
 bind_popup("cmd+i", "file-picker", function(ctx)
