@@ -65,27 +65,41 @@ alias :vs='tmux split-window -h -c "#{pane_current_path}"'
 alias :sp='tmux split-window -v -c "#{pane_current_path}"'
 
 # Claude
-alias cc="claude"
-
-
-ccw() {
-    CLAUDE_CONFIG_DIR="$HOME/.claude-work" \
-        CLAUDE_CODE_NO_FLICKER=1 \
-        DASH_BADGE=WORK \
+# cc [work|personal] [claude args]: without an account, work under ~/repos/imfusion, personal elsewhere.
+# unalias keeps a re-sourced shell from expanding the old alias into the definition.
+unalias cc 2>/dev/null
+cc() {
+    local account
+    case "$1" in
+    work | personal)
+        account=$1
+        shift
+        ;;
+    *)
+        [[ $PWD == "$HOME/repos/imfusion" || $PWD == "$HOME/repos/imfusion/"* ]] && account=work || account=personal
+        ;;
+    esac
+    if [[ $account == work ]]; then
+        CLAUDE_CONFIG_DIR="$HOME/.claude-work" \
+            CLAUDE_CODE_NO_FLICKER=1 \
+            DASH_BADGE=WORK \
+            command claude "$@"
+    else
         command claude "$@"
+    fi
 }
 
 bob() {
     case "$1" in
     launch)
-        # Commands Rex starts run in the login environment, where ccw is missing,
+        # Commands Rex starts run in the login environment, where cc is missing,
         # so each pane gets an interactive shell and its command typed in.
         local found created session bob notes private work cmd
         case "${2:-work}" in
-        work) cmd=ccw ;;
-        private) cmd=claude ;;
+        work) cmd="cc work" ;;
+        personal) cmd="cc personal" ;;
         *)
-            echo "bob: unknown account '$2', use work or private" >&2
+            echo "bob: unknown account '$2', use work or personal" >&2
             return 1
             ;;
         esac
@@ -115,7 +129,7 @@ bob() {
         bob-send "$@"
         ;;
     *)
-        echo "usage: bob launch [work|private] | bob message [text]" >&2
+        echo "usage: bob launch [work|personal] | bob message [text]" >&2
         return 1
         ;;
     esac
