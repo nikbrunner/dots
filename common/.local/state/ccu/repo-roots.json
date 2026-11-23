@@ -215,11 +215,12 @@
     "work": true,
     "session_dirs": [
       "~/repos/imfusion/brunner/notes",
+      "~/repos/imfusion/brunner/notes/logs",
       "~/repos/imfusion/brunner/notes/logs/2026",
       "~/repos/imfusion/brunner/notes/logs/2026/2026.10",
       "~/repos/imfusion/brunner/notes/logs/2026/2026.11"
     ],
-    "last_seen": "2026-10-30"
+    "last_seen": "2026-11-23"
   },
   "cp/app": {
     "root": "/private/tmp/claude-501/-Users-brunner-repos-nikbrunner-agents/5b5c5803-cdda-4cf8-8753-681a497a5a39/scratchpad/nest/claude/cp/app",
@@ -483,9 +484,10 @@
     "work": false,
     "session_dirs": [
       "~/repos/nikbrunner/agents",
+      "~/repos/nikbrunner/agents-dash-git-refresh",
       "~/repos/nikbrunner/agents/mods/dash"
     ],
-    "last_seen": "2026-11-17"
+    "last_seen": "2026-11-20"
   },
   "nikbrunner/airship": {
     "root": "~/repos/nikbrunner/airship",
@@ -916,6 +918,7 @@
       "~/repos/imfusion/websdk/web-ui/.workspaces/websdk-149-corner-radius-control",
       "~/repos/imfusion/websdk/web-ui/.workspaces/websdk-207-skills",
       "~/repos/imfusion/websdk/web-ui/ds-artifact/MnBxqCdCKyHVRG4uoZMP3C",
+      "~/repos/imfusion/websdk/web-ui/ds-artifact/MnBxqCdCKyHVRG4uoZMP3C/project",
       "~/repos/imfusion/websdk/web-ui/ds-bundle",
       "~/repos/imfusion/websdk/web-ui/node_modules/@base-ui",
       "~/repos/imfusion/websdk/web-ui/node_modules/@base-ui/react",
@@ -941,7 +944,7 @@
       "~/repos/imfusion/websdk/websdk-272-rich-link",
       "~/repos/imfusion/websdk/websdk-306-table-selection"
     ],
-    "last_seen": "2026-11-17"
+    "last_seen": "2026-11-20"
   },
   "wt/cl": {
     "root": "/private/tmp/claude-501/-Users-brunner-repos-nikbrunner-agents/5b5c5803-cdda-4cf8-8753-681a497a5a39/scratchpad/wt/cl",

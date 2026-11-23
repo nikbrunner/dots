@@ -284,29 +284,20 @@
     },
     "~/repos/imfusion/brunner/notes": {
       "master": {
-        "locks": [
-          {
-            "filename": "logs/2026/2026.10/2026.10.30 - Fri.md",
-            "label": "a"
-          },
-          {
-            "filename": "logs/2026/2026.11/2026.11.09 - Mon.md",
-            "label": "s"
-          }
-        ],
+        "locks": [],
         "recent": [
-          "logs/2026/2026.11/2026.11.20 - Fri.md",
+          "performance-reviews/eoy26/bilal.md",
           "logs/2026/2026.11/2026.11.23 - Mon.md",
+          "oil:///Users/brunner/repos/imfusion/brunner/notes/performance-reviews/eoy26/",
+          "performance-reviews/eoy26/self.md",
           "oil:///Users/brunner/repos/imfusion/brunner/notes/logs/2026/2026.11/",
-          "logs/2026/2026.11/2026.11.19 - Thu.md",
-          "logs/2026/2026.11/2026.11.18 - Wed.md",
-          "logs/2026/2026.11/2026.11.17 - Tue.md",
-          "logs/2026/2026.11/2026.11.16 - Mon.md",
-          "oil:///Users/brunner/repos/imfusion/brunner/notes/bob/",
           "oil:///Users/brunner/repos/imfusion/brunner/notes/",
+          "logs/2026/2026.11/2026.11.09 - Mon.md",
+          "oxfmt.config.ts",
+          "oil:///Users/brunner/repos/imfusion/brunner/notes/performance-reviews/",
           "oil:///Users/brunner/repos/imfusion/brunner/notes/logs/"
         ],
-        "lastAccessed": 1795169219
+        "lastAccessed": 1795451368
       }
     },
     "~/repos/imfusion/cp/CP-174-create-project": {
@@ -536,7 +527,7 @@
           "frontend/src/components/web-ui-pending/comment/comment.module.css",
           "frontend/src/features/labels-editor/annotation-viewer.tsx"
         ],
-        "lastAccessed": 1795101001
+        "lastAccessed": 1795172364
       }
     },
     "~/repos/imfusion/cp/labels-web-workflow-projects": {
@@ -614,18 +605,18 @@
           }
         ],
         "recent": [
+          "src/components/button/button.module.css",
+          "ds-artifact/MnBxqCdCKyHVRG4uoZMP3C/project/components/bundle.css",
+          "src/components/button/button.tsx",
+          "oil:///Users/brunner/repos/imfusion/websdk/web-ui/src/components/button/",
+          "src/integrations/label-panel/label-panel-view.tsx",
           ".storybook/manager.css",
           "oil:///Users/brunner/repos/imfusion/websdk/web-ui/.storybook/",
           "src/styles/variables/colors.css",
           "src/components/workspace-shell/workspace-shell.module.css",
-          "src/components/button/button.module.css",
-          "src/tokens/token-registry.ts",
-          "ds-artifact/MnBxqCdCKyHVRG4uoZMP3C/project/components/WorkspaceShell/preview.css",
-          "oil:///Users/brunner/repos/imfusion/websdk/web-ui/src/tokens/",
-          "oil:///Users/brunner/repos/imfusion/websdk/web-ui/src/",
-          "oil:///Users/brunner/repos/imfusion/websdk/web-ui/src/llms/"
+          "src/tokens/token-registry.ts"
         ],
-        "lastAccessed": 1795104551
+        "lastAccessed": 1795172728
       }
     },
     "~/repos/imfusion/websdk/web-ui-WEBSDK-290-view-tools-integration": {
@@ -727,7 +718,17 @@
           "mods/dash/hooks/lib.ts",
           "home/.agents/AGENTS.md"
         ],
-        "lastAccessed": 1794988706
+        "lastAccessed": 1795441352
+      }
+    },
+    "~/repos/nikbrunner/bc-desktop-client": {
+      "main": {
+        "locks": [],
+        "recent": [
+          "src/client/kiosk/container/Tool/InstalledTool.tsx",
+          "src/client/commons/components/Button/Button.tsx"
+        ],
+        "lastAccessed": 1795365845
       }
     },
     "~/repos/nikbrunner/black-atom": {
@@ -778,7 +779,7 @@
           "oil:///Users/brunner/repos/nikbrunner/dots/common/.config/nvim/plugin/50_specs/black_atom/",
           "common/.config/nvim/plugin/50_specs/black_atom/radar.lua"
         ],
-        "lastAccessed": 1795166961
+        "lastAccessed": 1795443701
       }
     },
     "~/repos/nikbrunner/fonts": {
@@ -841,7 +842,7 @@
         "recent": [
           "README.md"
         ],
-        "lastAccessed": 1794737499
+        "lastAccessed": 1795428129
       }
     },
     "~/repos/nikbrunner/mdn.nvim": {
@@ -899,6 +900,7 @@
           }
         ],
         "recent": [
+          "Log/2026/2026.11/2026.11.23 - Mon.md",
           "Log/2026/2026.11/2026.11.19 - Thu.md",
           "Log/2026/2026.11/2026.11.17 - Tue.md",
           "Log/2026/2026.08/2026.09.01 - Tue.md",
@@ -907,10 +909,9 @@
           "Log/2026/2026.11/2026.11.10 - Tue.md",
           "Log/2026/2026.11/2026.11.09 - Mon.md",
           "oil:///Users/brunner/repos/nikbrunner/notes/Log/2026/2026.11/",
-          "oil:///Users/brunner/repos/nikbrunner/notes/Log/2026/",
-          "oil:///Users/brunner/repos/nikbrunner/notes/Log/2026/2026.10/"
+          "oil:///Users/brunner/repos/nikbrunner/notes/Log/2026/"
         ],
-        "lastAccessed": 1795073970
+        "lastAccessed": 1795426374
       }
     },
     "~/repos/nikbrunner/skills": {

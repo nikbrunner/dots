@@ -10,10 +10,14 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +21 logs/2026/2026.11/2026.11.19\ -\ Thu.md
+badd +242 performance-reviews/eoy26/self.md
+badd +8 logs/2026/2026.11/2026.11.23\ -\ Mon.md
 argglobal
 %argdel
-edit logs/2026/2026.11/2026.11.19\ -\ Thu.md
+set stal=2
+tabnew +setlocal\ bufhidden=wipe
+tabrewind
+edit logs/2026/2026.11/2026.11.23\ -\ Mon.md
 argglobal
 setlocal foldmethod=expr
 setlocal foldexpr=v:lua.vim.treesitter.foldexpr()
@@ -25,33 +29,49 @@ setlocal foldnestmax=10
 setlocal foldenable
 1
 sil! normal! zo
-12
+39
 sil! normal! zo
-14
+46
 sil! normal! zo
-16
-sil! normal! zo
-22
-sil! normal! zo
-24
-sil! normal! zo
-26
-sil! normal! zo
-36
-sil! normal! zo
-45
-sil! normal! zo
-47
-sil! normal! zo
-53
-sil! normal! zo
-let s:l = 21 - ((18 * winheight(0) + 31) / 63)
+let s:l = 31 - ((30 * winheight(0) + 30) / 61)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 21
+keepjumps 31
 normal! 0
-tabnext 1
+tabnext
+edit performance-reviews/eoy26/self.md
+argglobal
+setlocal foldmethod=expr
+setlocal foldexpr=v:lua.vim.treesitter.foldexpr()
+setlocal foldmarker={{{,}}}
+setlocal foldignore=#
+setlocal foldlevel=99
+setlocal foldminlines=1
+setlocal foldnestmax=10
+setlocal foldenable
+1
+sil! normal! zo
+3
+sil! normal! zo
+16
+sil! normal! zo
+25
+sil! normal! zo
+27
+sil! normal! zo
+146
+sil! normal! zo
+154
+sil! normal! zo
+let s:l = 243 - ((21 * winheight(0) + 30) / 61)
+if s:l < 1 | let s:l = 1 | endif
+keepjumps exe s:l
+normal! zt
+keepjumps 243
+normal! 0
+tabnext 2
+set stal=1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
 endif
