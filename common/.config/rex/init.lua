@@ -1,5 +1,9 @@
 -- https://www.superlogical.com/rex/docs/reference/lua
 
+-- Action names for rex.bind: `rex actions` lists the server's, and the app's
+-- (palette, tabs, sidebar, settings) come from its client:
+--   rex -C "$(rex client ls --json | jq -r '.clients[] | select(.info.kind == "app") | .client_id' | head -1)" actions
+
 local terminal = "com.superlogical.terminal"
 
 -- The foreground process's cwd, which shells and TUIs alike report; `pwd`
