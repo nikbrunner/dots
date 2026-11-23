@@ -232,7 +232,7 @@ bind_popup("cmd+g", "lazygit", { "lazygit" }, 1, 1, true)
 bind_popup("cmd+r", "review", { "nvim", "iter://review" }, 1, 1, true)
 bind_popup("cmd+j", "lazyjira", { "lazyjira" }, 1, 1, true)
 bind_popup("cmd+t", "livery", { "livery", "apply" }, 0.35, 0.25)
-bind_popup("cmd+l", "lager", { "lager", "tui" }, 0.75, 0.65)
+bind_popup("cmd+l", "lager", { "lager", "tui" }, 1, 1)
 
 -- Bob, the notes session's Claude: the key jumps to its pane, and from there
 -- back to the session it came from. A popup can't hold another session's block.
