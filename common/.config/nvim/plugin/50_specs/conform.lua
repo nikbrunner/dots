@@ -171,6 +171,78 @@ Edit.later(function()
 		},
 	})
 
+	-- 'shiftwidth' follows the formatter, so >> and insert-mode <C-t> indent the way the next format will.
+	-- Each probe is a snippet the formatter indents by one level; its output reveals the indent unit,
+	-- with the buffer's path, so project configs, overrides and .editorconfig all apply.
+	-- Without a probe, a formatter, or a changed result, vim-sleuth's detection stays.
+	local js_probe = { "if (a) {", "b();", "}" }
+	local markup_probe = { "<div>", "<p>a</p>", "</div>" }
+	local indent_probes = {
+		markdown = { "- a", "   - b" },
+		lua = { "if a then", "b()", "end" },
+		javascript = js_probe,
+		javascriptreact = js_probe,
+		typescript = js_probe,
+		typescriptreact = js_probe,
+		json = { "{", '"a": 1', "}" },
+		css = { "a {", "b: c;", "}" },
+		scss = { "a {", "b: c;", "}" },
+		graphql = { "query {", "a", "}" },
+		html = markup_probe,
+		svelte = markup_probe,
+		astro = markup_probe,
+		yaml = { "a:", "- b" },
+		toml = { "a = [", '"' .. ("a"):rep(40) .. '",', '"' .. ("b"):rep(40) .. '",', "]" },
+		go = { "package a", "func f() {", "return", "}" },
+		rust = { "fn f() {", "g();", "}" },
+		sh = { "if a; then", "b", "fi" },
+	}
+
+	local function follow_formatter_indent(buf)
+		local probe = indent_probes[vim.bo[buf].filetype]
+		if not probe then
+			return
+		end
+		local names = vim.tbl_map(function(f)
+			return f.name
+		end, conform.list_formatters_to_run(buf))
+		if #names == 0 then
+			return
+		end
+		-- format_lines is undocumented in conform; revisit on conform updates
+		conform.format_lines(names, probe, { bufnr = buf, async = true, quiet = true }, function(err, lines)
+			if err or not lines or vim.deep_equal(lines, probe) then
+				return
+			end
+			for _, line in ipairs(lines) do
+				local indent = line:match("^%s+")
+				if indent then
+					return vim.schedule(function()
+						if not vim.api.nvim_buf_is_valid(buf) then
+							return
+						end
+						local tabs = indent:find("\t") ~= nil
+						vim.bo[buf].expandtab = not tabs
+						vim.bo[buf].shiftwidth = tabs and 0 or #indent
+					end)
+				end
+			end
+		end)
+	end
+
+	vim.api.nvim_create_autocmd("FileType", {
+		group = vim.api.nvim_create_augroup("conform_indent", {}),
+		callback = function(ev)
+			follow_formatter_indent(ev.buf)
+		end,
+		desc = "Set 'shiftwidth' from the buffer's formatter",
+	})
+	for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+		if vim.api.nvim_buf_is_loaded(buf) then
+			follow_formatter_indent(buf)
+		end
+	end
+
 	vim.keymap.set("n", "<leader>aof", function()
 		if vim.g.vin_autoformat_enabled then
 			vim.g.vin_autoformat_enabled = false
