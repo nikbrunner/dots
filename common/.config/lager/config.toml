@@ -65,3 +65,27 @@ url = "git@github.com:ImFusionGmbH/Website.git"
 
 [[repositories]]
 url = "git@github.com:nikbrunner/writing.git"
+
+[session]
+host = "rex"
+
+[session.layouts.default]
+focus = "Agents"
+
+[session.layouts.default.tabs.Agents]
+order = 1
+root = { pane = "Agent I" }
+splits = [{ source = "Agent I", pane = "Agent II", direction = "right" }]
+
+[session.layouts.default.tabs.Edit]
+order = 2
+root = { pane = "Editor" }
+
+[session.layouts.default.tabs.Shells]
+order = 3
+root = { pane = "Shell I" }
+splits = [
+  { source = "Shell I", pane = "Shell II", direction = "right" },
+  { source = "Shell I", pane = "Shell III", direction = "down" },
+  { source = "Shell II", pane = "Shell IV", direction = "down" },
+]
