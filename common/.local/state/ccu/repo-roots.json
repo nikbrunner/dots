@@ -272,11 +272,12 @@
       "~/repos/imfusion/cp/imfusion-portal-web-ui-changes/frontend",
       "~/repos/imfusion/cp/imfusion-portal-web-ui-update",
       "~/repos/imfusion/cp/imfusion-portal-web-ui-update/frontend",
+      "~/repos/imfusion/cp/imfusion-portal-web-ui-update/frontend/node_modules/@imfusion/web-ui",
       "~/repos/imfusion/cp/imfusion-portal/e2e",
       "~/repos/imfusion/cp/imfusion-portal/frontend",
       "~/repos/imfusion/cp/imfusion-portal/frontend/src"
     ],
-    "last_seen": "2026-11-20"
+    "last_seen": "2026-11-24"
   },
   "cp/keycloak": {
     "root": "~/repos/imfusion/cp/keycloak",
@@ -333,6 +334,11 @@
       "~/repos/imfusion/cp/labels-web-CP-203-labels-web-configure-the-labels-of-a-project/frontend/src/routes/_app/projects.$projectId/-settings",
       "~/repos/imfusion/cp/labels-web-CP-203-labels-web-configure-the-labels-of-a-project/handoffs/2026-10-29-label-map-outline",
       "~/repos/imfusion/cp/labels-web-CP-203-labels-web-configure-the-labels-of-a-project/local-setup",
+      "~/repos/imfusion/cp/labels-web-brush-sliders-test",
+      "~/repos/imfusion/cp/labels-web-brush-sliders-test/frontend",
+      "~/repos/imfusion/cp/labels-web-brush-wheel-keys",
+      "~/repos/imfusion/cp/labels-web-brush-wheel-keys/frontend",
+      "~/repos/imfusion/cp/labels-web-brush-wheel-keys/local-setup",
       "~/repos/imfusion/cp/labels-web-cp-154-frontends-add-favicon",
       "~/repos/imfusion/cp/labels-web-data-list-redesign",
       "~/repos/imfusion/cp/labels-web-data-list-redesign/e2e",
@@ -384,6 +390,9 @@
       "~/repos/imfusion/cp/labels-web-labels-editor/handoffs/reviews-slice-7",
       "~/repos/imfusion/cp/labels-web-labels-editor/local-setup",
       "~/repos/imfusion/cp/labels-web-migrate-e2e-tests",
+      "~/repos/imfusion/cp/labels-web-multi-frame-annotation",
+      "~/repos/imfusion/cp/labels-web-multi-frame-annotation/frontend",
+      "~/repos/imfusion/cp/labels-web-multi-frame-annotation/local-setup",
       "~/repos/imfusion/cp/labels-web-navbar-rail",
       "~/repos/imfusion/cp/labels-web-navbar-rail/frontend",
       "~/repos/imfusion/cp/labels-web-pinned-comments",
@@ -396,6 +405,9 @@
       "~/repos/imfusion/cp/labels-web-small-fixes/frontend/src",
       "~/repos/imfusion/cp/labels-web-small-fixes/frontend/src/features/labels-editor",
       "~/repos/imfusion/cp/labels-web-small-fixes/frontend/src/routes/_app/projects.$projectId/_tabs",
+      "~/repos/imfusion/cp/labels-web-undo-redo",
+      "~/repos/imfusion/cp/labels-web-undo-redo/frontend",
+      "~/repos/imfusion/cp/labels-web-undo-redo/frontend/node_modules/@imfusion/web-ui/dist",
       "~/repos/imfusion/cp/labels-web-upload-images",
       "~/repos/imfusion/cp/labels-web-web-ui-upgrade",
       "~/repos/imfusion/cp/labels-web-web-ui-upgrade/frontend",
@@ -412,10 +424,11 @@
       "~/repos/imfusion/cp/labels-web/frontend/node_modules/@imfusion/web-ui/dist",
       "~/repos/imfusion/cp/labels-web/frontend/src/components/app-shell",
       "~/repos/imfusion/cp/labels-web/frontend/src/features/labels-editor",
+      "~/repos/imfusion/cp/labels-web/frontend/src/routes/_app",
       "~/repos/imfusion/cp/labels-web/local-setup",
       "~/repos/imfusion/cp/review-labels-web-16-playwright-e2e"
     ],
-    "last_seen": "2026-11-19"
+    "last_seen": "2026-11-25"
   },
   "cp/license-server": {
     "root": "~/repos/imfusion/cp/license-server",
@@ -485,9 +498,11 @@
     "session_dirs": [
       "~/repos/nikbrunner/agents",
       "~/repos/nikbrunner/agents-dash-git-refresh",
+      "~/repos/nikbrunner/agents-dash-pane-names",
+      "~/repos/nikbrunner/agents/home/.claude/hooks/enforce",
       "~/repos/nikbrunner/agents/mods/dash"
     ],
-    "last_seen": "2026-11-20"
+    "last_seen": "2026-11-25"
   },
   "nikbrunner/airship": {
     "root": "~/repos/nikbrunner/airship",
@@ -886,6 +901,7 @@
       "~/repos/imfusion/websdk/web-ui-brush-integrations",
       "~/repos/imfusion/websdk/web-ui-callout-compact",
       "~/repos/imfusion/websdk/web-ui-codeblock-scroll",
+      "~/repos/imfusion/websdk/web-ui-corner-radius-audit",
       "~/repos/imfusion/websdk/web-ui-fix-storybook-docgen-import",
       "~/repos/imfusion/websdk/web-ui-fix-storybook-docgen-import/.teamcity",
       "~/repos/imfusion/websdk/web-ui-image-display-options",
@@ -944,7 +960,7 @@
       "~/repos/imfusion/websdk/websdk-272-rich-link",
       "~/repos/imfusion/websdk/websdk-306-table-selection"
     ],
-    "last_seen": "2026-11-20"
+    "last_seen": "2026-11-24"
   },
   "wt/cl": {
     "root": "/private/tmp/claude-501/-Users-brunner-repos-nikbrunner-agents/5b5c5803-cdda-4cf8-8753-681a497a5a39/scratchpad/wt/cl",

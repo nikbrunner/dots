@@ -79,11 +79,9 @@
           "core/src/themes/minium/black-atom-minium-sienna-light.ts",
           "core/src/themes/minium/black-atom-minium-sienna-dark.ts",
           "oil:///Users/brunner/repos/black-atom-industries/black-atom/core/src/themes/minium/",
-          "adapters/nvim/colors/black-atom-minium-sienna-dark.lua",
-          "core/src/themes/minium/black-atom-minium-ivory-dark.ts",
-          "core/src/themes/minium/black-atom-minium-ivory-light.ts"
+          "adapters/nvim/colors/black-atom-minium-sienna-dark.lua"
         ],
-        "lastAccessed": 1792331225
+        "lastAccessed": 1795515630
       }
     },
     "~/repos/black-atom-industries/core": {
@@ -286,18 +284,18 @@
       "master": {
         "locks": [],
         "recent": [
-          "performance-reviews/eoy26/bilal.md",
-          "logs/2026/2026.11/2026.11.23 - Mon.md",
-          "oil:///Users/brunner/repos/imfusion/brunner/notes/performance-reviews/eoy26/",
-          "performance-reviews/eoy26/self.md",
+          "logs/2026/2026.11/2026.11.25 - Wed.md",
           "oil:///Users/brunner/repos/imfusion/brunner/notes/logs/2026/2026.11/",
-          "oil:///Users/brunner/repos/imfusion/brunner/notes/",
-          "logs/2026/2026.11/2026.11.09 - Mon.md",
-          "oxfmt.config.ts",
-          "oil:///Users/brunner/repos/imfusion/brunner/notes/performance-reviews/",
-          "oil:///Users/brunner/repos/imfusion/brunner/notes/logs/"
+          "logs/2026/2026.11/2026.11.24 - Tue.md",
+          "performance-reviews/eoy26/self.md",
+          "logs/2026/2026.11/2026.11.23 - Mon.md",
+          "performance-reviews/eoy26/mattia.md",
+          "oil:///Users/brunner/repos/imfusion/brunner/notes/performance-reviews/eoy26/",
+          "performance-reviews/eoy26/stephan.md",
+          "performance-reviews/eoy26/bilal.md",
+          "oil:///Users/brunner/repos/imfusion/brunner/notes/"
         ],
-        "lastAccessed": 1795451368
+        "lastAccessed": 1795599771
       }
     },
     "~/repos/imfusion/cp/CP-174-create-project": {
@@ -408,6 +406,24 @@
         "lastAccessed": 1793272718
       }
     },
+    "~/repos/imfusion/cp/labels-web-brush-sliders-test": {
+      "CP-267-brush-sliders-test": {
+        "locks": [],
+        "recent": [
+          "frontend/src/routes/_app/projects.$projectId/images.$datasetId.test.tsx"
+        ],
+        "lastAccessed": 1795600445
+      }
+    },
+    "~/repos/imfusion/cp/labels-web-brush-wheel-keys": {
+      "feat/brush-wheel-keys": {
+        "locks": [],
+        "recent": [
+          "frontend/src/features/labels-editor/hooks/use-brush-wheel.ts"
+        ],
+        "lastAccessed": 1795518873
+      }
+    },
     "~/repos/imfusion/cp/labels-web-editor-tool-rail": {
       "feat/editor-tool-rail": {
         "locks": [],
@@ -497,6 +513,23 @@
           "frontend/src/routes/_app/projects.$projectId/images.$datasetId.tsx"
         ],
         "lastAccessed": 1794576846
+      }
+    },
+    "~/repos/imfusion/cp/labels-web-multi-frame-annotation": {
+      "docs/local-setup-agents-guide": {
+        "locks": [],
+        "recent": [
+          "local-setup/AGENTS.md",
+          "AGENTS.md"
+        ],
+        "lastAccessed": 1795514574
+      },
+      "feat/multi-frame-annotation": {
+        "locks": [],
+        "recent": [
+          "AGENTS.md"
+        ],
+        "lastAccessed": 1795511151
       }
     },
     "~/repos/imfusion/cp/labels-web-pinned-comments": {
@@ -605,18 +638,18 @@
           }
         ],
         "recent": [
+          "src/components/input/input.stories.tsx",
+          "oil:///Users/brunner/repos/imfusion/websdk/web-ui/src/components/input/",
+          "src/components/input/input.tsx",
+          "oil:///Users/brunner/repos/imfusion/websdk/web-ui/src/components/",
           "src/components/button/button.module.css",
           "ds-artifact/MnBxqCdCKyHVRG4uoZMP3C/project/components/bundle.css",
           "src/components/button/button.tsx",
           "oil:///Users/brunner/repos/imfusion/websdk/web-ui/src/components/button/",
           "src/integrations/label-panel/label-panel-view.tsx",
-          ".storybook/manager.css",
-          "oil:///Users/brunner/repos/imfusion/websdk/web-ui/.storybook/",
-          "src/styles/variables/colors.css",
-          "src/components/workspace-shell/workspace-shell.module.css",
-          "src/tokens/token-registry.ts"
+          ".storybook/manager.css"
         ],
-        "lastAccessed": 1795172728
+        "lastAccessed": 1795527647
       }
     },
     "~/repos/imfusion/websdk/web-ui-WEBSDK-290-view-tools-integration": {
@@ -713,12 +746,12 @@
       "main": {
         "locks": [],
         "recent": [
+          "home/.agents/AGENTS.md",
           "mods/dash/hooks/register.tsx",
           "mods/dash/README.md",
-          "mods/dash/hooks/lib.ts",
-          "home/.agents/AGENTS.md"
+          "mods/dash/hooks/lib.ts"
         ],
-        "lastAccessed": 1795441352
+        "lastAccessed": 1795608131
       }
     },
     "~/repos/nikbrunner/bc-desktop-client": {
@@ -751,35 +784,35 @@
       "main": {
         "locks": [
           {
-            "filename": "common/.config/black-atom/livery/config.json",
+            "filename": "common/.config/rex/init.lua",
             "label": "a"
           },
           {
-            "filename": "common/.config/ghostty/config",
+            "filename": "common/.config/lager/config.toml",
             "label": "s"
           },
           {
-            "filename": "common/.config/rex/init.lua",
+            "filename": "common/.config/black-atom/livery/config.json",
             "label": "d"
           },
           {
-            "filename": "/Users/brunner/Library/Application Support/Claude/claude_desktop_config.json",
+            "filename": "macos/Library/Application Support/com.superlogical.rex/Shortcuts/shortcuts.json",
             "label": "f"
           }
         ],
         "recent": [
+          "common/.config/rex/popups.lua",
+          "oil:///Users/brunner/repos/nikbrunner/dots/common/.config/rex/",
           "common/.config/rex/init.lua",
-          "common/.local/bin/bob-ask",
-          "common/.zshrc",
-          "oil:///Users/brunner/repos/nikbrunner/dots/",
-          "common/.config/nvim/plugin/50_specs/black_atom/iter.lua",
-          "common/.config/nvim/plugin/50_specs/snacks.lua",
-          "common/.config/black-atom/livery/config.json",
-          "oil:///Users/brunner/repos/nikbrunner/dots/common/.config/black-atom/livery/",
-          "oil:///Users/brunner/repos/nikbrunner/dots/common/.config/nvim/plugin/50_specs/black_atom/",
-          "common/.config/nvim/plugin/50_specs/black_atom/radar.lua"
+          "common/.config/rex/panes.lua",
+          "common/.config/rex/keys.lua",
+          "common/.config/rex/agents.lua",
+          "common/.config/lager/config.toml",
+          "macos/Library/Application Support/com.superlogical.rex/Shortcuts/shortcuts.json",
+          "oil:///Users/brunner/repos/nikbrunner/dots/macos/Library/",
+          "oil:///Users/brunner/repos/nikbrunner/dots/macos/Library/Application Support/"
         ],
-        "lastAccessed": 1795443701
+        "lastAccessed": 1795608740
       }
     },
     "~/repos/nikbrunner/fonts": {

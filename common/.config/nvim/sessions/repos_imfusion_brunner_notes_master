@@ -10,37 +10,14 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +242 performance-reviews/eoy26/self.md
-badd +8 logs/2026/2026.11/2026.11.23\ -\ Mon.md
+badd +243 performance-reviews/eoy26/self.md
+badd +21 logs/2026/2026.11/2026.11.24\ -\ Tue.md
 argglobal
 %argdel
 set stal=2
 tabnew +setlocal\ bufhidden=wipe
 tabrewind
-edit logs/2026/2026.11/2026.11.23\ -\ Mon.md
-argglobal
-setlocal foldmethod=expr
-setlocal foldexpr=v:lua.vim.treesitter.foldexpr()
-setlocal foldmarker={{{,}}}
-setlocal foldignore=#
-setlocal foldlevel=99
-setlocal foldminlines=1
-setlocal foldnestmax=10
-setlocal foldenable
-1
-sil! normal! zo
-39
-sil! normal! zo
-46
-sil! normal! zo
-let s:l = 31 - ((30 * winheight(0) + 30) / 61)
-if s:l < 1 | let s:l = 1 | endif
-keepjumps exe s:l
-normal! zt
-keepjumps 31
-normal! 0
-tabnext
-edit performance-reviews/eoy26/self.md
+edit logs/2026/2026.11/2026.11.24\ -\ Tue.md
 argglobal
 setlocal foldmethod=expr
 setlocal foldexpr=v:lua.vim.treesitter.foldexpr()
@@ -56,6 +33,41 @@ sil! normal! zo
 sil! normal! zo
 16
 sil! normal! zo
+18
+sil! normal! zo
+20
+sil! normal! zo
+30
+sil! normal! zo
+40
+sil! normal! zo
+52
+sil! normal! zo
+54
+sil! normal! zo
+62
+sil! normal! zo
+let s:l = 21 - ((20 * winheight(0) + 23) / 47)
+if s:l < 1 | let s:l = 1 | endif
+keepjumps exe s:l
+normal! zt
+keepjumps 21
+normal! 0
+tabnext
+edit performance-reviews/eoy26/self.md
+argglobal
+setlocal foldmethod=expr
+setlocal foldexpr=v:lua.vim.treesitter.foldexpr()
+setlocal foldmarker={{{,}}}
+setlocal foldignore=#
+setlocal foldlevel=99
+setlocal foldminlines=1
+setlocal foldnestmax=10
+setlocal foldenable
+1
+sil! normal! zo
+16
+sil! normal! zo
 25
 sil! normal! zo
 27
@@ -64,13 +76,13 @@ sil! normal! zo
 sil! normal! zo
 154
 sil! normal! zo
-let s:l = 243 - ((21 * winheight(0) + 30) / 61)
+let s:l = 6 - ((5 * winheight(0) + 23) / 47)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 243
+keepjumps 6
 normal! 0
-tabnext 2
+tabnext 1
 set stal=1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
