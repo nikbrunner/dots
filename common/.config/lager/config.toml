@@ -75,7 +75,6 @@ focus = "Agents"
 [session.layouts.default.tabs.Agents]
 order = 1
 root = { pane = "Agent I" }
-splits = [{ source = "Agent I", pane = "Agent II", direction = "right" }]
 
 [session.layouts.default.tabs.Edit]
 order = 2
