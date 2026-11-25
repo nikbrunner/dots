@@ -1,0 +1,165 @@
+{
+  "layer": {
+    "bindings": [
+      {
+        "action": "client.palette.toggle",
+        "keys": ["cmd+;"],
+        "source": "settings"
+      },
+      {
+        "action": "client.config.reload",
+        "keys": ["shift+cmd+r"],
+        "source": "settings"
+      },
+      {
+        "action": "session.previous",
+        "keys": ["alt+shift+k"],
+        "source": "settings"
+      },
+      {
+        "action": "session.next",
+        "keys": ["alt+shift+j"],
+        "source": "settings"
+      },
+      {
+        "action": "session.new",
+        "keys": ["alt+shift+t"],
+        "source": "settings"
+      },
+      {
+        "action": "session.rename",
+        "keys": ["alt+shift+n"],
+        "source": "settings"
+      },
+      {
+        "action": "session.close",
+        "keys": ["alt+shift+q"],
+        "source": "settings"
+      },
+      {
+        "action": "client.tab.new",
+        "keys": ["alt+t"],
+        "source": "settings"
+      },
+      {
+        "action": "client.tab.rename",
+        "keys": ["alt+n"],
+        "source": "settings"
+      },
+      {
+        "action": "client.tab.close",
+        "keys": ["alt+q"],
+        "source": "settings"
+      },
+      {
+        "action": "client.tab.previous",
+        "keys": ["alt+k"],
+        "source": "settings"
+      },
+      {
+        "action": "client.tab.next",
+        "keys": ["alt+j"],
+        "source": "settings"
+      },
+      {
+        "action": "client.tab.move.backward",
+        "keys": ["alt+shift+h"],
+        "source": "settings"
+      },
+      {
+        "action": "client.tab.move.forward",
+        "keys": ["alt+shift+l"],
+        "source": "settings"
+      },
+      {
+        "action": "pane.balance",
+        "keys": ["alt+="],
+        "source": "settings"
+      },
+      {
+        "action": "pane.zoom",
+        "keys": ["alt+z"],
+        "source": "settings"
+      },
+      {
+        "action": "pane.view_activity",
+        "keys": ["alt+a"],
+        "source": "settings"
+      },
+      {
+        "action": "pane.copy_mode.enter",
+        "keys": ["alt+esc"],
+        "source": "settings"
+      },
+      {
+        "action": "client.navigate.back",
+        "keys": ["alt+o"],
+        "source": "settings"
+      },
+      {
+        "action": "pane.go_to",
+        "keys": ["cmd+space"],
+        "source": "settings"
+      },
+      {
+        "action": "popup_file_picker",
+        "keys": ["cmd+i"],
+        "source": "settings"
+      },
+      {
+        "action": "popup_lazygit",
+        "keys": ["cmd+g"],
+        "source": "settings"
+      },
+      {
+        "action": "popup_review",
+        "keys": ["cmd+r"],
+        "source": "settings"
+      },
+      {
+        "action": "popup_lazyjira",
+        "keys": ["cmd+j"],
+        "source": "settings"
+      },
+      {
+        "action": "popup_livery",
+        "keys": ["cmd+t"],
+        "source": "settings"
+      },
+      {
+        "action": "popup_lager",
+        "keys": ["cmd+l"],
+        "source": "settings"
+      },
+      {
+        "action": "popup_glab_tui",
+        "keys": ["alt+cmd+g"],
+        "source": "settings"
+      },
+      {
+        "action": "agent_next",
+        "keys": ["ctrl+alt+j"],
+        "source": "settings"
+      },
+      {
+        "action": "agent_previous",
+        "keys": ["ctrl+alt+k"],
+        "source": "settings"
+      },
+      {
+        "action": "bob_toggle",
+        "keys": ["cmd+b"],
+        "source": "settings"
+      }
+    ],
+    "name": "settings",
+    "removals": [
+      {
+        "action": "pane.go_to",
+        "keys": ["cmd+p"]
+      }
+    ]
+  },
+  "migrations": ["bracket-characters"],
+  "version": 1
+}
