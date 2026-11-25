@@ -109,6 +109,3 @@ fields:
   - id: labels
   - id: assignee
   - id: reporter
-
-git:
-  worktreeFormat: "{{if .RepoName}}{{.RepoName}}-{{end}}{{.Key}}-{{.Summary}}"

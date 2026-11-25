@@ -18,7 +18,7 @@ REPOS_DIR="$HOME/repos"
 	echo
 	echo "# Repos"
 	if [[ -d "$REPOS_DIR" ]]; then
-		find "$REPOS_DIR" -mindepth 2 -maxdepth 2 -type d | sort | sed "s|^$HOME|~|"
+		find "$REPOS_DIR" -mindepth 2 -maxdepth 2 -type d ! -name '*.worktrees' | sort | sed "s|^$HOME|~|"
 	fi
 } >"$SEED_FILE"
 

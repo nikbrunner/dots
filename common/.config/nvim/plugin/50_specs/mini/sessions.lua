@@ -168,8 +168,8 @@ if vim.fn.argc(-1) == 0 or (vim.fn.argc(-1) == 1 and vim.fn.argv(0) == ".") then
 			end
 
 			if should_auto_create and #vim.api.nvim_list_uis() > 0 then
-				-- Skip session creation inside git worktrees (e.g., .claude/worktrees/)
-				if cwd:find("worktrees", 1, true) then
+				-- Skip session creation inside agent-owned worktrees (.claude/worktrees/)
+				if cwd:find("/.claude/worktrees/", 1, true) then
 					return
 				end
 				MS.write(session_name)

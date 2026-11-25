@@ -124,6 +124,14 @@ func (r *Resolver) guess(key string) Project {
 		}
 	}
 	if start >= 0 {
+		// lager's <repo>.worktrees/<name> puts the repo right before the container,
+		// so its name wins over a topic that happens to match another repo.
+		before := segs[:start-1]
+		for take := len(before); take > 0; take-- {
+			if root, ok := r.byName[strings.Join(before[len(before)-take:], "-")]; ok {
+				return Project{filepath.Base(root), root}
+			}
+		}
 		after := segs[start:]
 		for take := len(after); take > 0; take-- {
 			if root, ok := r.byName[strings.Join(after[:take], "-")]; ok {
