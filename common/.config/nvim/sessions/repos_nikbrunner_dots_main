@@ -10,24 +10,42 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 let s:shortmess_save = &shortmess
 set shortmess+=aoO
-badd +84 common/.config/lager/config.toml
+badd +36 common/.config/rex/popups.lua
 argglobal
 %argdel
-edit common/.config/lager/config.toml
+edit common/.config/rex/popups.lua
 argglobal
 setlocal foldmethod=expr
 setlocal foldexpr=v:lua.vim.treesitter.foldexpr()
 setlocal foldmarker={{{,}}}
 setlocal foldignore=#
-setlocal foldlevel=99
+setlocal foldlevel=0
 setlocal foldminlines=1
 setlocal foldnestmax=10
 setlocal foldenable
-let s:l = 87 - ((24 * winheight(0) + 24) / 48)
+23
+sil! normal! zo
+24
+sil! normal! zo
+27
+sil! normal! zo
+29
+sil! normal! zo
+30
+sil! normal! zo
+36
+sil! normal! zo
+43
+sil! normal! zo
+47
+sil! normal! zo
+50
+sil! normal! zo
+let s:l = 36 - ((35 * winheight(0) + 22) / 44)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 87
+keepjumps 36
 normal! 0
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'

@@ -961,55 +961,6 @@ checksum = "sha256:033467b54bc3b1630b2e95bbfb7c0d168e162255e1c343df72744bc953695
 url = "https://github.com/maaslalani/slides/releases/download/v0.9.0/slides_0.9.0_darwin_amd64.tar.gz"
 url_api = "https://api.github.com/repos/maaslalani/slides/releases/assets/77736979"
 
-[[tools."github:opmr0/zeitx"]]
-version = "0.1.0"
-backend = "github:opmr0/zeitx"
-
-[tools."github:opmr0/zeitx"."platforms.linux-x64"]
-checksum = "sha256:848b074a2785ecb4ae058c07f1017b72573f93d54454675f98c895bdf4d7f8d5"
-url = "https://github.com/opmr0/zeitx/releases/download/v0.1.0/zeitx-linux-x86_64"
-url_api = "https://api.github.com/repos/opmr0/zeitx/releases/assets/534287550"
-
-[tools."github:opmr0/zeitx"."platforms.linux-x64-baseline"]
-checksum = "sha256:848b074a2785ecb4ae058c07f1017b72573f93d54454675f98c895bdf4d7f8d5"
-url = "https://github.com/opmr0/zeitx/releases/download/v0.1.0/zeitx-linux-x86_64"
-url_api = "https://api.github.com/repos/opmr0/zeitx/releases/assets/534287550"
-
-[tools."github:opmr0/zeitx"."platforms.linux-x64-musl"]
-checksum = "sha256:848b074a2785ecb4ae058c07f1017b72573f93d54454675f98c895bdf4d7f8d5"
-url = "https://github.com/opmr0/zeitx/releases/download/v0.1.0/zeitx-linux-x86_64"
-url_api = "https://api.github.com/repos/opmr0/zeitx/releases/assets/534287550"
-
-[tools."github:opmr0/zeitx"."platforms.linux-x64-musl-baseline"]
-checksum = "sha256:848b074a2785ecb4ae058c07f1017b72573f93d54454675f98c895bdf4d7f8d5"
-url = "https://github.com/opmr0/zeitx/releases/download/v0.1.0/zeitx-linux-x86_64"
-url_api = "https://api.github.com/repos/opmr0/zeitx/releases/assets/534287550"
-
-[tools."github:opmr0/zeitx"."platforms.macos-arm64"]
-checksum = "sha256:43e1d48406303b5e6c9c114d288d095e9689165fb4506321eaeaf69f80bef698"
-url = "https://github.com/opmr0/zeitx/releases/download/v0.1.0/zeitx-macos-aarch64"
-url_api = "https://api.github.com/repos/opmr0/zeitx/releases/assets/534287553"
-
-[tools."github:opmr0/zeitx"."platforms.macos-x64"]
-checksum = "sha256:32d336f012916b83df0b3d9908a5340488ec31a7f0dbd55ecf80d36b549fe943"
-url = "https://github.com/opmr0/zeitx/releases/download/v0.1.0/zeitx-macos-x86_64"
-url_api = "https://api.github.com/repos/opmr0/zeitx/releases/assets/534287551"
-
-[tools."github:opmr0/zeitx"."platforms.macos-x64-baseline"]
-checksum = "sha256:32d336f012916b83df0b3d9908a5340488ec31a7f0dbd55ecf80d36b549fe943"
-url = "https://github.com/opmr0/zeitx/releases/download/v0.1.0/zeitx-macos-x86_64"
-url_api = "https://api.github.com/repos/opmr0/zeitx/releases/assets/534287551"
-
-[tools."github:opmr0/zeitx"."platforms.windows-x64"]
-checksum = "sha256:301420f17c5c8ab41ff8cbfca92cfd5dc9cf780d1f4694253bf10dbf2abe1534"
-url = "https://github.com/opmr0/zeitx/releases/download/v0.1.0/zeitx-windows-x86_64.exe"
-url_api = "https://api.github.com/repos/opmr0/zeitx/releases/assets/534287552"
-
-[tools."github:opmr0/zeitx"."platforms.windows-x64-baseline"]
-checksum = "sha256:301420f17c5c8ab41ff8cbfca92cfd5dc9cf780d1f4694253bf10dbf2abe1534"
-url = "https://github.com/opmr0/zeitx/releases/download/v0.1.0/zeitx-windows-x86_64.exe"
-url_api = "https://api.github.com/repos/opmr0/zeitx/releases/assets/534287552"
-
 [[tools.go]]
 version = "1.27.0"
 backend = "core:go"
@@ -1884,7 +1835,7 @@ version = "2.16.15"
 backend = "npm:@astrojs/language-server"
 
 [[tools."npm:@earendil-works/pi-coding-agent"]]
-version = "1.5.0"
+version = "1.6.1"
 backend = "npm:@earendil-works/pi-coding-agent"
 
 [[tools."npm:@elevenlabs/cli"]]

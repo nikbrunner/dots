@@ -284,9 +284,9 @@
       "master": {
         "locks": [],
         "recent": [
+          "logs/2026/2026.11/2026.11.24 - Tue.md",
           "logs/2026/2026.11/2026.11.25 - Wed.md",
           "oil:///Users/brunner/repos/imfusion/brunner/notes/logs/2026/2026.11/",
-          "logs/2026/2026.11/2026.11.24 - Tue.md",
           "performance-reviews/eoy26/self.md",
           "logs/2026/2026.11/2026.11.23 - Mon.md",
           "performance-reviews/eoy26/mattia.md",
@@ -295,7 +295,7 @@
           "performance-reviews/eoy26/bilal.md",
           "oil:///Users/brunner/repos/imfusion/brunner/notes/"
         ],
-        "lastAccessed": 1795599771
+        "lastAccessed": 1795645455
       }
     },
     "~/repos/imfusion/cp/CP-174-create-project": {
@@ -746,12 +746,18 @@
       "main": {
         "locks": [],
         "recent": [
+          "skills/personal/nbr-tv/SKILL.md",
+          "home/.pi/agent/settings.json",
+          "skills/personal/nbr-voice/references/rules.toml",
+          "vite.config.ts",
+          "oil:///Users/brunner/repos/nikbrunner/agents/",
           "home/.agents/AGENTS.md",
+          "skills/personal/nbr-voice/SKILL.md",
+          "oil:///Users/brunner/repos/nikbrunner/agents/home/.agents/",
           "mods/dash/hooks/register.tsx",
-          "mods/dash/README.md",
-          "mods/dash/hooks/lib.ts"
+          "mods/dash/README.md"
         ],
-        "lastAccessed": 1795608131
+        "lastAccessed": 1795647360
       }
     },
     "~/repos/nikbrunner/bc-desktop-client": {
@@ -812,7 +818,7 @@
           "oil:///Users/brunner/repos/nikbrunner/dots/macos/Library/",
           "oil:///Users/brunner/repos/nikbrunner/dots/macos/Library/Application Support/"
         ],
-        "lastAccessed": 1795608740
+        "lastAccessed": 1795642872
       }
     },
     "~/repos/nikbrunner/fonts": {
@@ -875,7 +881,7 @@
         "recent": [
           "README.md"
         ],
-        "lastAccessed": 1795428129
+        "lastAccessed": 1795619458
       }
     },
     "~/repos/nikbrunner/mdn.nvim": {
