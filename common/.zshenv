@@ -22,6 +22,10 @@ export PATH="$HOME/.local/share/bob/nvim-bin:$PATH"
 # pre-commit hook, sudoedit. Without this they fall back to vi.
 export EDITOR="nvim"
 
+# Pi asks providers for the 1-hour prompt cache instead of the 5-minute default.
+# Cache writes bill at 2x input rather than 1.25x, reads at 0.1x either way.
+export PI_CACHE_RETENTION=long
+
 
 # Proton Pass holds the signing key. Processes Rex starts outside an interactive
 # shell (popups, `zsh -c` from lazygit) otherwise get launchd's agent, which has
