@@ -84,8 +84,4 @@ root = { pane = "Editor" }
 [session.layouts.default.tabs.Shells]
 order = 3
 root = { pane = "Shell I" }
-splits = [
-  { source = "Shell I", pane = "Shell II", direction = "right" },
-  { source = "Shell I", pane = "Shell III", direction = "down" },
-  { source = "Shell II", pane = "Shell IV", direction = "down" },
-]
+splits = [{ source = "Shell I", pane = "Shell II", direction = "down" }]
