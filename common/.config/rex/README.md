@@ -20,6 +20,7 @@ Shortcuts from the app take priority over `rex.bind` for the same key, and neith
 | `popups.lua`  | The `popup_*` actions                                        |
 | `agents.lua`  | `agent_next`, `agent_previous`, `bob_toggle`                 |
 | `bob_ask.lua` | `bob_ask`, the palette question Bob asks Nik                 |
+| `fonts.lua`   | `pick_font`, the palette picker for `pick-font`              |
 
 ## Working on it
 
