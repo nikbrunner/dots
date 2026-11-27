@@ -52,7 +52,8 @@ statusOrder:
 
 issueTabs:
   - name: Overview
-    jql: (assignee = currentUser() OR cf[10500] = currentUser()) AND (statusCategory != Done OR resolutiondate >= -7d) ORDER BY status DESC
+    jql: (assignee = currentUser() OR cf[10500] = currentUser()) AND (statusCategory != Done OR resolutiondate >= -7d) ORDER BY status ASC
+    maxResults: 100
   - name: Today
     jql: assignee = currentUser() AND updated >= startOfDay() ORDER BY updated DESC
     sortByStatus: false
